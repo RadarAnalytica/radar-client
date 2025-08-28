@@ -717,6 +717,7 @@ const OrdersMap = () => {
           <div style={{ width: '100%' }} className="map-container dash-container container p-3">
             <Filters
               setLoading={setLoading}
+              isDataLoading={loading}
             />
           </div>
 

@@ -275,6 +275,7 @@ export default function ReportProfitLoss() {
 						// brandSelect={false}
 						// articleSelect={false}
 						// groupSelect={false}
+						isDataLoading={loading}
 					/>
 				</div>
 				<div className={styles.how}>

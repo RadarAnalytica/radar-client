@@ -27,7 +27,7 @@ ChartJS.register(
 
 const MainChartWidget = ({ id, dataType, dataHandler }) => {
     const dispatch = useAppDispatch()
-    const [chartControls, setChartControls] = useState(chartCompareConfigObject.filter(_ => _.isControl).map(_ => ({ ..._, isActive: _.defaultActive })))
+    const [chartControls, setChartControls] = useState(undefined)
     const [normilizedChartData, setNormilizedChartData] = useState()
     const { selectedRange } = useAppSelector(store => store.filters)
     const widgetData = useAppSelector(store => store.supplierAnalysis[dataType])
@@ -55,6 +55,15 @@ const MainChartWidget = ({ id, dataType, dataHandler }) => {
             dispatch(dataHandler(reqData))
         }
     }, [selectedRange, id])
+
+    useEffect(() => {
+        const chartControlsFromLocalStorage = JSON.parse(localStorage.getItem('SuppierAnalysysMainChartControls'))
+        if (chartControlsFromLocalStorage) {
+            setChartControls(chartControlsFromLocalStorage)
+        } else {
+            setChartControls(chartCompareConfigObject.filter(_ => _.isControl).map(_ => ({ ..._, isActive: _.defaultActive })))
+        }
+    }, [chartCompareConfigObject])
 
 
     useEffect(() => {

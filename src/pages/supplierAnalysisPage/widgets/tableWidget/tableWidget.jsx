@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useRef, useEffect } from 'react'
 import styles from './tableWidget.module.css'
 import DownloadButton from '../../../../components/DownloadButton';
 import { ConfigProvider, Table, Button } from 'antd';
@@ -181,7 +181,7 @@ const TableWidget = ({
 
 
     // ---------------------- loading layout -----------------//
-    if (isLoading) {
+    if (!tableData && isLoading) {
         return (
             <div className={styles.widget}>
                 <div className={styles.loaderWrapper} style={{ height: containerHeight }}>
@@ -245,6 +245,11 @@ const TableWidget = ({
 
 
             <div className={styles.widget__tableWrapper} ref={containerRef}>
+                {tableData && isLoading &&
+                    <div className={styles.dataExistLoader}>
+                        <span className='loader'></span>
+                    </div>
+                }
                 <ConfigProvider
                     renderEmpty={() => (<div>Нет данных</div>)}
                     theme={{

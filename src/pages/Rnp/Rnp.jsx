@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useRef } from 'react';
 import AuthContext from '../../service/AuthContext';
 import { useState, useEffect, useContext } from 'react';
 import MobilePlug from '../../components/sharedComponents/mobilePlug/mobilePlug';
@@ -7,31 +7,28 @@ import Header from '../../components/sharedComponents/header/header';
 import { NoDataWidget } from '../productsGroupsPages/widgets';
 import AddSkuModal from './widget/AddSkuModal/AddSkuModal';
 import styles from './Rnp.module.css';
-import { useAppDispatch, useAppSelector } from '../../redux/hooks';
-import downloadIcon from '../images/Download.svg';
+import { useAppSelector, useAppDispatch } from '../../redux/hooks';
 import { ServiceFunctions } from '../../service/serviceFunctions';
-import { Filters } from '../../components/sharedComponents/apiServicePagesFiltersComponent';
-import { COLUMNS, RESPONSE_BY_ARTICLE, ROWS } from './config';
+import { Filters } from './widget/Filters/Filters';
+import { COLUMNS, ROWS, renderFunction } from './config';
 import { format } from 'date-fns';
 import { ru } from 'date-fns/locale';
-import { ConfigProvider, Button, Flex } from 'antd';
-import { grip, remove, expand } from './widget/icons';
-import SkuItem from './widget/SkuItem/SkuItem';
-import SkuTable from './widget/SkuTable/SkuTable';
-import { fetchShops } from '../../redux/shops/shopsActions';
-import { fetchFilters } from '../../redux/apiServicePagesFiltersState/filterActions';
+import SkuList from './widget/SkuList/SkuList';
+import ModalDeleteConfirm from '../../components/sharedComponents/ModalDeleteConfirm/ModalDeleteConfirm';
+import DataCollectWarningBlock from '../../components/sharedComponents/dataCollectWarningBlock/dataCollectWarningBlock';
+import SelfCostWarningBlock from '../../components/sharedComponents/selfCostWraningBlock/selfCostWarningBlock';
+import { actions as rnpSelectedActions } from '../../redux/rnpSelected/rnpSelectedSlice'
+import ErrorModal from '../../components/sharedComponents/modals/errorModal/errorModal';
 
 export default function Rnp() {
-	const dispatch = useAppDispatch()
 	const { authToken } = useContext(AuthContext);
+	const dispatch = useAppDispatch();
 	const { activeBrand, selectedRange } = useAppSelector(
-		(state) => state.filters
+		(state) => state.filtersRnp
 	);
-	const filters = useAppSelector((state) => state.filters);
+	const filters = useAppSelector((state) => state.filtersRnp);
 	const { shops } = useAppSelector((state) => state.shopsSlice);
-	
-	// const filters = useAppSelector((state) => state.filters);
-	// const { shops } = useAppSelector((state) => state.shopsSlice);
+
 	const shopStatus = useMemo(() => {
 		if (!activeBrand || !shops) return null;
 
@@ -51,37 +48,42 @@ export default function Rnp() {
 		return shops.find((shop) => shop.id === activeBrand.id);
 	}, [activeBrand, shops]);
 
+	const rnpSelected = useAppSelector((state) => state.rnpSelected);
+
+	const initLoad = useRef(true);
+
 	const [loading, setLoading] = useState(true);
 	const [addSkuModalShow, setAddSkuModalShow] = useState(false);
-	const [dateRange, setDateRange] = useState(null);
 	const [page, setPage] = useState(1);
-	const [columnsList, setColumnsList] = useState(COLUMNS);
+	// const [paginationState, setPaginationState] = useState(null);
 	const [view, setView] = useState('sku');
-	const [expanded, setExpanded] = useState(null);
 	const [skuDataByArticle, setSkuDataByArticle] = useState(null);
 	const [skuDataTotal, setSkuDataTotal] = useState(null)
-
-	useEffect(() => {
-		if (skuDataByArticle?.length > 0 && view === 'sku') {
-			setExpanded(skuDataByArticle[0].id);
-		}
-	}, [skuDataByArticle]);
+	const [deleteSkuId, setDeleteSkuId] = useState(null);
+	const [skuSelectedList, setSkuSelectedList] = useState([]);
+	const [error, setError] = useState(null);
+	const [expanded, setExpanded] = useState([]);
+	// const abortController = useMemo(() => new AbortController(), []);
 
 	const updateSkuListByArticle = async () => {
 		setLoading(true);
 		try {
 			if (!!activeBrand) {
-				const response = await ServiceFunctions.getRnpByArticle(
+				const response = await ServiceFunctions.postRnpByArticle(
 					authToken,
 					selectedRange,
 					activeBrand.id,
 					filters,
-					page,
-					dateRange
+					page
 				);
 				dataToSkuList(response);
+				if (initLoad.current) {
+					initLoad.current = false;
+					dispatch(rnpSelectedActions.setList(response?.data?.map((article) => article.article_data.wb_id)));
+				}
 			}
 		} catch (error) {
+			console.error('updateSkuListByArticle error', error)
 		} finally {
 			setLoading(false);
 		}
@@ -91,51 +93,85 @@ export default function Rnp() {
 		setLoading(true);
 		try {
 			if (!!activeBrand) {
-				const response = await ServiceFunctions.getRnpSummary(
+				const response = await ServiceFunctions.postRnpSummary(
 					authToken,
 					selectedRange,
 					activeBrand.id,
 					filters,
-					page,
-					dateRange
+					page
 				);
 				dataToSkuTotalList(response);
 			}
 		} catch (error) {
+			console.error('updateSkuListSummary error', error)
 		} finally {
 			setLoading(false);
 		}
 	};
+
+	const deleteSku = async (id) => {
+		setDeleteSkuId(null);
+		setLoading(true);
+		try {
+			if (!!activeBrand) {
+				const response = await ServiceFunctions.deleteRnpId(
+					authToken,
+					id
+				);
+				dispatch(rnpSelectedActions.setList(rnpSelected.filter((el) => el !== id)));
+			}
+		} catch (error) {
+			console.error('deleteSku error', error)
+		} finally {
+			setPage(1);
+			updateSkuListByArticle();
+		}
+	}
 
 	const dataToSkuList = (response) => {
 		const list = response.data.map((article, i) => {
 			// for (const article of response.data){
 			const item = {
 				table: {
-					columns: [...COLUMNS],
-					rows: [...ROWS],
+					columns: [],
+					rows: [],
 				},
-				article_data: article.article_data || null,
+				article_data: article.article_data,
 			};
 			// сборка колонок по датам из ответа
-			for (const dateData of article.by_date_data) {
+			for (const column of COLUMNS){
+				item.table.columns.push(column)
+			}
+			for (const dateData of article.by_date_data.reverse()) {
 				item.table.columns.push({
 					key: dateData.date,
 					dataIndex: dateData.date,
 					title: format(dateData.date, 'd MMMM', { locale: ru }),
-					width: 90,
+					width: 160,
+					render: renderFunction
 				});
 			}
 			// сборка суммарных значений
-			for (const row of item.table.rows) {
+			for (const row of ROWS) {
+				const rowItem = {
+					key: row.key,
+					period: row.period,
+				};
 				const dataRow = article.summary_data[row.key];
-				row['sum'] = dataRow[row?.key?.slice(0, -5)];
+				rowItem['sum'] = dataRow[row.key.slice(0, -5)];
+				// rowItem['sum'] = article.article_data.wb_id;
 				if (row.children) {
+					rowItem.children = [];
 					for (const childrenRow of row.children) {
-						childrenRow.key = `${row.key}_${childrenRow.dataIndex}`;
-						childrenRow['sum'] = dataRow[childrenRow.dataIndex];
+						const rowItemChildren = {};
+						rowItemChildren.key = `${row.key}_${childrenRow.dataIndex}`;
+						rowItemChildren.dataIndex = childrenRow.dataIndex;
+						rowItemChildren.period = childrenRow.period;
+						rowItemChildren['sum'] = dataRow[childrenRow.dataIndex];
+						rowItem.children.push(rowItemChildren);
 					}
 				}
+				item.table.rows.push(rowItem);
 			}
 			// сборка данных по датам
 			for (const dateData of article.by_date_data) {
@@ -143,10 +179,11 @@ export default function Rnp() {
 				for (const row of item.table.rows) {
 					const dataRow = dateData.rnp_data;
 					row[date] = dataRow[row.key][row?.key?.slice(0, -5)];
+					// row[date] = article.article_data.wb_id
 					if (row.children) {
 						for (const childrenRow of row.children) {
-							childrenRow[date] =
-								dataRow[row.key][childrenRow.dataIndex];
+							childrenRow[date] = dataRow[row.key][childrenRow.dataIndex];
+							// childrenRow[date] = childrenRow.key
 						}
 					}
 				}
@@ -155,76 +192,202 @@ export default function Rnp() {
 			return item;
 		});
 
+		setSkuSelectedList(list.map((sku) => sku.article_data.wb_id));
 		setSkuDataByArticle(list);
+		// setPaginationState({
+		// 	total: response.total_count,
+		// 	pageSize: response.per_page
+		// })
 	};
 
 	const dataToSkuTotalList = (response) => {
 		const article = response.data;
+		if (article.length === 0){
+			setSkuDataTotal([]);
+			return
+		}
 		const item = {
-			table: {
-				columns: [...COLUMNS],
-				rows: [...ROWS],
+				table: {
+					columns: [],
+					rows: [],
+				},
+				article_data: article.article_data,
+			};
+			// сборка колонок по датам из ответа
+			for (const column of COLUMNS){
+				item.table.columns.push(column)
 			}
-		};
-		// сборка колонок по датам из ответа
-		for (const dateData of article.by_date_data) {
-			item.table.columns.push({
-				key: dateData.date,
-				dataIndex: dateData.date,
-				title: format(dateData.date, 'd MMMM', { locale: ru }),
-				width: 90,
-			});
-		}
-		// сборка суммарных значений
-		for (const row of item.table.rows) {
-			const dataRow = article.summary_data[row.key];
-			row['sum'] = dataRow[row?.key?.slice(0, -5)];
-			if (row.children) {
-				for (const childrenRow of row.children) {
-					childrenRow.key = `${row.key}_${childrenRow.dataIndex}`;
-					childrenRow['sum'] = dataRow[childrenRow.dataIndex];
-					// console.log('childrenRow', childrenRow.key)
-				}
+			for (const dateData of article.by_date_data.reverse()) {
+				item.table.columns.push({
+					key: dateData.date,
+					dataIndex: dateData.date,
+					title: format(dateData.date, 'd MMMM', { locale: ru }),
+					width: 160,
+					render: renderFunction
+				});
 			}
-		}
-		// сборка данных по датам
-		for (const dateData of article.by_date_data) {
-			const date = dateData.date;
-			for (const row of item.table.rows) {
-				const dataRow = dateData.rnp_data;
-				row[date] = dataRow[row.key][row?.key?.slice(0, -5)];
+			// сборка суммарных значений
+			for (const row of ROWS) {
+				const rowItem = {
+					key: row.key,
+					period: row.period,
+				};
+				const dataRow = article.summary_data[row.key];
+				rowItem['sum'] = dataRow[row.key.slice(0, -5)];
+				// rowItem['sum'] = article.article_data.wb_id;
 				if (row.children) {
+					rowItem.children = [];
 					for (const childrenRow of row.children) {
-						childrenRow[date] =
-							dataRow[row.key][childrenRow.dataIndex];
+						const rowItemChildren = {};
+						rowItemChildren.key = `${row.key}_${childrenRow.dataIndex}`;
+						rowItemChildren.dataIndex = childrenRow.dataIndex;
+						rowItemChildren.period = childrenRow.period;
+						rowItemChildren['sum'] = dataRow[childrenRow.dataIndex];
+						rowItem.children.push(rowItemChildren);
+					}
+				}
+				item.table.rows.push(rowItem);
+			}
+			// сборка данных по датам
+			for (const dateData of article.by_date_data) {
+				const date = dateData.date;
+				for (const row of item.table.rows) {
+					const dataRow = dateData.rnp_data;
+					row[date] = dataRow[row.key][row?.key?.slice(0, -5)];
+					// row[date] = article.article_data.wb_id
+					if (row.children) {
+						for (const childrenRow of row.children) {
+							childrenRow[date] = dataRow[row.key][childrenRow.dataIndex];
+							// childrenRow[date] = childrenRow.key
+						}
 					}
 				}
 			}
-		}
-
 		setSkuDataTotal(item);
 	};
 
-	const expandHandler = (value) => {
-		setExpanded((id) => id !== value ? value : null)
+	const deleteHandler = (value) => {
+		deleteSku(value)
 	}
 	
-	const removeHandler = (value) => {
-		console.log('removeHandler', value)
-		// setSkuList((list) => list.filter((el) => el.id !== value))
+	const addSkuList = async (porductIds) => {
+		setLoading(true);
+		try {
+			if (!!activeBrand) {
+				const response = await ServiceFunctions.postUpdateRnpProducts(
+					authToken,
+					porductIds
+				);
+				if (response.detail){
+					setError(response.detail);
+					return
+				}
+				dispatch(rnpSelectedActions.setList(porductIds));
+			}
+		} catch (error) {
+			console.error('addSkuList error', error)
+		} finally {
+			setPage(1);
+			updateSkuListByArticle();
+		}
+	};
+
+	const viewHandler = (value) => {
+		if (view !== value){
+			setView(value);
+			setLoading(true);
+		}
 	}
 
 	useEffect(() => {
+		if (!activeBrand && !activeBrand?.is_primary_collect){
+			return
+		}
+		// const { signal } = abortController;
+
+		// const updateSkuListByArticle = async () => {
+		// 	setLoading(true);
+		// 	try {
+		// 		const response = await ServiceFunctions.postRnpByArticle(
+		// 			authToken,
+		// 			selectedRange,
+		// 			activeBrand.id,
+		// 			filters,
+		// 			signal
+		// 		);
+		// 		dataToSkuList(response);
+		// 		if (initLoad.current) {
+		// 			initLoad.current = false;
+		// 			dispatch(rnpSelectedActions.setList(response?.data?.map((article) => article.article_data.wb_id)));
+		// 		}
+		// 		setLoading(false);
+		// 	} catch (error) {
+		// 		if (error.message == 'AbortError') {
+		// 			setLoading(true)
+		// 		} else {
+		// 			console.error('updateSkuListByArticle error', error)
+		// 			setLoading(false)
+		// 		}
+		// 	}
+		// };
+
+		// const updateSkuListSummary = async () => {
+		// 	setLoading(true);
+		// 	try {
+		// 		const response = await ServiceFunctions.postRnpSummary(
+		// 			authToken,
+		// 			selectedRange,
+		// 			activeBrand.id,
+		// 			filters,
+		// 			signal
+		// 		);
+		// 		dataToSkuTotalList(response);
+		// 		setLoading(false);
+		// 	} catch (error) {
+		// 		if (error.message == 'AbortError') {
+		// 			setLoading(true)
+		// 		} else {
+		// 			console.error('updateSkuListSummary error', error)
+		// 			setLoading(false)
+		// 		}
+		// 	}
+		// };
+
 		if (activeBrand && activeBrand.is_primary_collect) {
 			if (view === 'sku'){
 				updateSkuListByArticle();
-				return
+			} else {
+				updateSkuListSummary();
 			}
-			updateSkuListSummary();
 		}
-	}, [activeBrand, shopStatus, shops, filters, page, view]);
 
-	
+		if (activeBrand && !activeBrand?.is_primary_collect){
+			setLoading(false)
+		}
+
+		return () => {
+			// abortController.abort('AbortError');
+		};
+	}, [activeBrand, shopStatus, shops, filters, page, view, selectedRange]);
+
+	// useEffect(() => {
+	// 	if (activeBrand && activeBrand.is_primary_collect) {
+	// 		if (view === 'sku'){
+	// 			updateSkuListByArticle();
+	// 			return
+	// 		}
+	// 		updateSkuListSummary();
+	// 	}
+	// 	if (activeBrand && !activeBrand?.is_primary_collect){
+	// 		setLoading(false)
+	// 	}
+	// }, [activeBrand, shopStatus, shops, filters, page, view, selectedRange]);
+
+	const addSkuHandler = (list) => {
+		setAddSkuModalShow(false);
+		addSkuList(list);
+	}
+
 
 	return (
 		<main className={styles.page}>
@@ -240,260 +403,68 @@ export default function Rnp() {
 					<Header title="Рука на пульсе"></Header>
 				</div>
 
-				<div style={{display: 'none'}}>
-					<Filters />
-				</div>
-
 				{loading && (
 					<div className={styles.loading}>
-						<span className="loader"></span>
+						<div className={styles.loading__loader}>
+							<span className="loader"></span>
+						</div>
 					</div>
 				)}
 
-				{/* {!loading && shopStatus && !shopStatus?.is_self_cost_set && (
-					<SelfCostWarningBlock />
-				)}
-				{!loading && !shopStatus?.is_primary_collect && (
-						<DataCollectWarningBlock
-								title='Ваши данные еще формируются и обрабатываются.'
-						/>
-				)} */}
-
-				{/* {!loading && skuList?.length !== 0 && (
-					<SkuList data={skuList} setAddSkuModalShow={setAddSkuModalShow} setSkuList={setSkuList} />
-					)} */}
-
-				{!loading && !!skuDataByArticle && (
+				<div style={{display: 'none'}}>
+					<Filters />
+				</div>
+				
+				{!loading  && shopStatus && !shopStatus?.is_primary_collect && (
 					<>
-						<ConfigProvider
-							theme={{
-								token: {
-									colorPrimary: '#EEEAFF',
-									colorTextLightSolid: '#1a1a1a',
-									fontSize: 16,
-									borderRadius: 8,
-								},
-								components: {
-									Button: {
-										paddingBlockLG: 10,
-										paddingInlineLG: 20,
-										controlHeightLG: 45,
-										defaultShadow: false,
-										contentFontSize: 16,
-										fontWeight: 500,
-										defaultBorderColor: 'transparent',
-										defaultColor: 'rgba(26, 26, 26, 0.5)',
-										defaultBg: 'transparent',
-										defaultHoverBg: '#EEEAFF',
-										defaultHoverColor: '#1a1a1a',
-										defaultHoverBorderColor: 'transparent',
-										defaultActiveColor:
-											'rgba(26, 26, 26, 1)',
-										defaultActiveBg: '#EEEAFF',
-										defaultActiveBorderColor: '#EEEAFF',
-									},
-								},
-							}}
-						>
-							<Flex justify="space-between">
-								<Flex>
-									<Button
-										type={
-											view === 'sku'
-												? 'primary'
-												: 'default'
-										}
-										size="large"
-										onClick={() => {
-											// setSkuList(null);
-											setView('sku');
-										}}
-									>
-										По артикулам
-									</Button>
-									<Button
-										type={
-											view === 'total'
-												? 'primary'
-												: 'default'
-										}
-										size="large"
-										onClick={() => {
-											// setSkuList(null);
-											setView('total');
-										}}
-									>
-										Сводный
-									</Button>
-								</Flex>
-								<ConfigProvider
-									theme={{
-										token: {
-											colorPrimary: '#5329ff',
-											colorText: '#fff',
-										},
-										components: {
-											Button: {
-												primaryColor: '#fff',
-											},
-										},
-									}}
-								>
-									<Button
-										type="primary"
-										size="large"
-										onClick={setAddSkuModalShow}
-									>
-										Добавить артикул
-									</Button>
-								</ConfigProvider>
-							</Flex>
-						</ConfigProvider>
-						<div>
-							<Filters timeSelect={false}/>
-						</div>
-						<ConfigProvider
-							theme={{
-								token: {
-									colorPrimary: '#EEEAFF',
-									colorTextLightSolid: '#1a1a1a',
-									fontSize: 16,
-									borderRadius: 8,
-								},
-								components: {
-									Button: {
-										paddingBlockLG: 10,
-										paddingInlineLG: 20,
-										controlHeightLG: 45,
-										defaultShadow: false,
-										contentFontSize: 16,
-										fontWeight: 500,
-										defaultBorderColor: 'transparent',
-										defaultColor: 'rgba(26, 26, 26, 0.5)',
-										defaultBg: 'transparent',
-										defaultHoverBg: '#EEEAFF',
-										defaultHoverColor: '#1a1a1a',
-										defaultHoverBorderColor: 'transparent',
-										defaultActiveColor:
-											'rgba(26, 26, 26, 1)',
-										defaultActiveBg: '#EEEAFF',
-										defaultActiveBorderColor: '#EEEAFF',
-									},
-								},
-							}}
-						>
-							{view === 'sku' && (
-								<>
-									{skuDataByArticle?.map((el, i) => (
-										<div key={i} className={styles.item}>
-											<header
-												className={styles.item__header}
-											>
-												<Flex gap={20} align="center">
-													<Button
-														className={
-															styles.item__button
-														}
-														icon={grip}
-													/>
-													<div
-														className={
-															styles.item__product
-														}
-													>
-														<SkuItem
-															title={
-																el.article_data
-																	.title
-															}
-															photo={
-																el.article_data
-																	.photo
-															}
-															sku={
-																el.article_data
-																	.wb_id
-															}
-															shop={
-																el.article_data
-																	.shop_name
-															}
-														/>
-													</div>
-													<Button
-														className={
-															styles.item__button
-														}
-														onClick={() =>
-															removeHandler(el.article_data.product_id)
-														}
-														icon={remove}
-													/>
-													<Button
-														className={`${
-															styles.item__button
-														} ${
-															expanded ===
-																el.id &&
-															styles.item__button_expand
-														}`}
-														value={el.id}
-														onClick={() =>
-															expandHandler(el.id)
-														}
-														icon={expand}
-													></Button>
-												</Flex>
-											</header>
-											{expanded === el.id && (
-												<div
-													className={`${styles.item__table} ${styles.item}`}
-												>
-													<SkuTable
-														data={el.table.rows}
-														columns={
-															el.table.columns
-														}
-														defaultExpandAllRows={
-															view === 'sku'
-														}
-													/>
-												</div>
-											)}
-										</div>
-									))}
-								</>
-							)}
-							{view === 'total' && (
-								<div className={styles.item}>
-									<SkuTable
-										// data={null}
-										data={skuDataTotal?.table?.rows}
-										// columns={null}
-										columns={skuDataTotal?.table?.columns}
-										defaultExpandAllRows={false}
-									/>
-								</div>
-							)}
-						</ConfigProvider>
+						<div><Filters /></div>
+						<DataCollectWarningBlock
+							title='Ваши данные еще формируются и обрабатываются.'
+						/>
 					</>
 				)}
-				{!loading && skuDataByArticle?.length === 0 &&
+
+				{!loading && shopStatus && shopStatus?.is_primary_collect && rnpSelected?.length > 0 && (
+					<SkuList
+						view={view}
+						setView={viewHandler}
+						setAddSkuModalShow={setAddSkuModalShow}
+						skuDataByArticle={skuDataByArticle}
+						skuDataTotal={skuDataTotal}
+						setDeleteSkuId={setDeleteSkuId}
+						expanded={expanded}
+						setExpanded={setExpanded}
+						// page={page}
+						// setPage={setPage}
+						// paginationState={paginationState}
+					/>
+				)}
+
+				{!loading && skuDataByArticle?.length === 0 && rnpSelected?.length == 0 && 
 					<NoDataWidget
 						mainTitle='Здесь пока нет ни одного артикула'
 						mainText='Добавьте артикулы для отчета «Рука на пульсе»'
 						buttonTitle='Добавить'
 						action={() => setAddSkuModalShow(true)}
-						how={false}
+						howLinkGroup={false}
 					/>
 				}
 
-				<AddSkuModal
+				{addSkuModalShow && <AddSkuModal
 					isAddSkuModalVisible={addSkuModalShow}
 					setIsAddSkuModalVisible={setAddSkuModalShow}
-					addSku={console.log}
+					addSku={addSkuHandler}
 					skuDataArticle={skuDataByArticle}
-				/> 
+					skuList={skuSelectedList}
+				/>}
+
+				{deleteSkuId && <ModalDeleteConfirm
+					title={'Удалить данный артикул?'}
+					onCancel={() => setDeleteSkuId(null)}
+					onOk={() => deleteHandler(deleteSkuId)}
+				/>}
+
+				<ErrorModal open={!!error} message={error} onCancel={() => setError(null)}/>
 			</section>
 		</main>
 	);

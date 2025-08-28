@@ -19,7 +19,7 @@ export const menuConfig = [
                 url: '/supplier-analysis',
                 label: 'Анализ поставщика',
                 isActive: true,
-                isNew: false,
+                isNew: true,
                 features: ['popular']
             },
             {
@@ -56,7 +56,7 @@ export const menuConfig = [
                 url: '/monitoring',
                 label: 'Поиск прибыльной ниши',
                 isActive: true,
-                isNew: false,
+                isNew: true,
                 features: ['popular']
             },
             {
@@ -107,7 +107,7 @@ export const menuConfig = [
                 url: '/operations-costs', 
                 label: 'Операционные расходы',
                 isActive: true,
-                isNew: false
+                isNew: true
             },
             {
                 id: 6,
@@ -184,8 +184,8 @@ export const menuConfig = [
                 id: 6,
                 url: '/rnp',
                 label: 'Рука на пульсе',
-                isActive: false,
-                isNew: false,
+                isActive: true,
+                isNew: true,
             },
         ]
     },

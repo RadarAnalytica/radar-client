@@ -37,6 +37,7 @@ import {
 const SupplierIdPage = () => {
     const dispatch = useAppDispatch()
     const mainSupplierData = useAppSelector(selectMainSupplierData)
+    const isAnyDataLoading = useAppSelector(store => store.supplierAnalysis.isAnyDataLoading)
     const params = useParams()
     const navigate = useNavigate()
 
@@ -122,6 +123,7 @@ const SupplierIdPage = () => {
                             articleSelect={false}
                             groupSelect={false}
                             tempPageCondition='supplier'
+                            isDataLoading={isAnyDataLoading}
                         />
                     </div>
                     <BarsWidget

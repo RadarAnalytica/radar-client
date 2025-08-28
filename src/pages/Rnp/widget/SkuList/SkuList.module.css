@@ -1,9 +1,21 @@
 .item {
+  padding: 10px 0;
+}
+
+.item_content {
   position: relative;
-  padding: 16px;
+  padding: 20px;
   background-color: #fff;
   border-radius: 16px;
   box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.08);
+}
+
+.item_empty{
+  font-size: 18px;
+}
+
+.item + .item {
+  /* margin-top: 20px; */
 }
 
 .item__product{
@@ -30,4 +42,44 @@
 
 .item__button_expand :global(.ant-btn-icon){
   transform: rotate(180deg);
+}
+
+.preview {
+  padding: 8px 16px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.08);
+}
+
+.is_drag{
+  /* opacity: 0; */
+  background-color: tomato;
+}
+
+.edge_top,
+.edge_bottom{
+  position: absolute;
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background-color: #5329ff;
+  border-radius: 2px;
+  opacity: 0.5;
+}
+
+.edge_top{
+  top: -11px;
+}
+
+.edge_bottom{
+  bottom: -13px;
+}
+
+.no_drop{
+  cursor: no-drop;
+}
+
+.copy{
+  cursor: copy;
 }

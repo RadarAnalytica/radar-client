@@ -139,7 +139,7 @@ const SearchBlock = ({ supplierType = 'main' }) => {
                             if (b_index < 0 && a_index < 0) {
                                 return 0
                             }
-                        })?.map(_ => ({ label: `${_?.display_name} (${_?.name})`, value: _?.supplier_id, key: _?.supplier_id }))}
+                        })?.map(_ => ({ label: _?.display_name, value: _?.supplier_id, key: _?.supplier_id }))}
                         
                     />
                     {supplierType === 'main' &&

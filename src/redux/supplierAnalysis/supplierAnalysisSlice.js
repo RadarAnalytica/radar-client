@@ -19,6 +19,7 @@ import {
 
 
 const initialState = {
+    isAnyDataLoading: false,
     supplierCurrentBrand: -1,
     ordersStructureTab: 'По складам (последние 30 дней)',
     stockChartTab: 'Входящие заказы',
@@ -147,6 +148,12 @@ const supplierAnalysisSlice = createSlice({
     name: "supplierAnalysis",
     initialState,
     reducers: {
+        setIsAnyDataLoading: (state, action) => {
+            return {
+                ...state,
+                isAnyDataLoading: action.payload
+            }
+        },
         setSupplierMainData: (state, action) => {
             return {
                 ...state,
@@ -223,40 +230,58 @@ const supplierAnalysisSlice = createSlice({
         },
         resetState: () => {
             return {
-               ...initialState
+                ...initialState
             }
         }
     },
     extraReducers: (bulder) => {
         bulder
             .addCase(fetchSupplierAnalysisMetaData.fulfilled, (state, action) => {
+                let isAnyDataLoadingUpd = Object.keys(state).every(key => !state[key]?.isLoading)
+                state.isAnyDataLoading = !isAnyDataLoadingUpd;
                 state.metaData.data = action.payload;
             })
             .addCase(fetchSupplierAnalysisIndicatorsData.fulfilled, (state, action) => {
+                let isAnyDataLoadingUpd = Object.keys(state).every(key => !state[key]?.isLoading)
+                state.isAnyDataLoading = !isAnyDataLoadingUpd;
                 state.indicatorsData.data = action.payload;
             })
             .addCase(fetchSupplierAnalysisMainChartData.fulfilled, (state, action) => {
+                let isAnyDataLoadingUpd = Object.keys(state).every(key => !state[key]?.isLoading)
+                state.isAnyDataLoading = !isAnyDataLoadingUpd;
                 state.mainChartData.data = action.payload;
             })
             .addCase(fetchSupplierAnalysisByDatesTableData.fulfilled, (state, action) => {
+                let isAnyDataLoadingUpd = Object.keys(state).every(key => !state[key]?.isLoading)
+                state.isAnyDataLoading = !isAnyDataLoadingUpd;
                 state.byDatesTableData.data = action.payload;
             })
             .addCase(fetchSupplierAnalysisBrandsData.fulfilled, (state, action) => {
+                // let isAnyDataLoadingUpd = Object.keys(state).every(key => !state[key]?.isLoading)
+                // state.isAnyDataLoading = isAnyDataLoadingUpd;
                 state.supplierBrands = action.payload;
                 state.supplierCurrentBrand = -1
             })
             .addCase(fetchSupplierAnalysisByBrandTableData.fulfilled, (state, action) => {
+                let isAnyDataLoadingUpd = Object.keys(state).every(key => !state[key]?.isLoading)
+                state.isAnyDataLoading = !isAnyDataLoadingUpd;
                 state.byBrandsTableData.data = action.payload.data;
                 state.byBrandsTableData.pagination.total = action.payload.pagination.total
             })
             .addCase(fetchSupplierAnalysisBySubjectsTableData.fulfilled, (state, action) => {
+                let isAnyDataLoadingUpd = Object.keys(state).every(key => !state[key]?.isLoading)
+                state.isAnyDataLoading = !isAnyDataLoadingUpd;
                 state.bySubjectsTableData.data = action.payload.data;
                 state.bySubjectsTableData.pagination.total = action.payload.pagination.total
             })
             .addCase(fetchSupplierAnalysisByWarehousesTableData.fulfilled, (state, action) => {
+                let isAnyDataLoadingUpd = Object.keys(state).every(key => !state[key]?.isLoading)
+                state.isAnyDataLoading = !isAnyDataLoadingUpd;
                 state.byWarehousesTableData.data = action.payload;
             })
             .addCase(fetchSupplierAnalysisBySizesTableData.fulfilled, (state, action) => {
+                let isAnyDataLoadingUpd = Object.keys(state).every(key => !state[key]?.isLoading)
+                state.isAnyDataLoading = !isAnyDataLoadingUpd;
                 state.bySizesTableData.data = action.payload;
             })
             .addCase(fetchSupplierAnalysisByWharehousesComparsionData.fulfilled, (state, action) => {

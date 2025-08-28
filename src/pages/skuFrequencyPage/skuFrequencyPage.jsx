@@ -22,7 +22,7 @@ import ErrorModal from '../../components/sharedComponents/modals/errorModal/erro
 const SkuFrequencyPage = () => {
     //const { skuFrequencyMode } = useAppSelector(store => store.filters)
     const [ tableConfig, setTableConfig ] = useState(newTableConfig)
-    const { requestData, formType, requestObject } = useAppSelector(store => store.requestsMonitoring)
+    const { requestData, formType, requestObject, isLoadingForButton } = useAppSelector(store => store.requestsMonitoring)
     const [ downloadStatus, setDownloadStatus ] = useState({
         isLoading: false,
         isError: false,
@@ -82,6 +82,7 @@ const SkuFrequencyPage = () => {
                             articleSelect={false}
                             groupSelect={false}
                             timeSelect={false}
+                            isDataLoading={isLoadingForButton}
                         />
                         {/* {skuFrequencyMode === 'Продвинутый' &&
                             <OptionsSettingsWidget />

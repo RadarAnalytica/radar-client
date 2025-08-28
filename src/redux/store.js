@@ -8,6 +8,8 @@ import messagesSlice from './messages/messagesSlice';
 import stockAnalysisDataSlice from './stockAnalysis/stockAnalysisDataSlice';
 import supportWindowSlice from './supportWindow/supportWindowSlice';
 import filtersDataSlice from './filters/filtersDataSlice';
+import { reducer as filtersRnpSliceReducer } from './filtersRnp/filtersRnpSlice';
+import { reducer as filtersRnpAddSliceReducer } from './filtersRnpAdd/filtersRnpAddSlice'
 import dashboardReportSlice from './dashboardReport/dashboardReportSlice';
 import reportByMonthSlice from './reportByMonth/reportByMonthSlice';
 import byMonthFiltersSlice from './reportByMonth/byMonthFiltersSlice';
@@ -28,6 +30,7 @@ import { reducer as utilsReducer } from './utils/utilsSlice'
 import { reducer as skuAnalysisReducer } from './skuAnalysis/skuAnalysisSlice'
 import { reducer as requestsMonitoringReducer } from './requestsMonitoring/requestsMonitoringSlice'
 import { reducer as supplierAnalysisReducer } from './supplierAnalysis/supplierAnalysisSlice'
+import { reducer as rnpSelectedSliceReducer } from './rnpSelected/rnpSelectedSlice';
 
 const storeOptions = {
   reducer: {
@@ -55,10 +58,13 @@ const storeOptions = {
     downloadReducer,
     blog: blogReducer,
     filters: apiServicePagesFilterStateReducer,
+    filtersRnp: filtersRnpSliceReducer,
+    filtersRnpAdd: filtersRnpAddSliceReducer,
     utils: utilsReducer,
     skuAnalysis: skuAnalysisReducer,
     requestsMonitoring: requestsMonitoringReducer,
     supplierAnalysis: supplierAnalysisReducer,
+    rnpSelected: rnpSelectedSliceReducer
   },
 };
 

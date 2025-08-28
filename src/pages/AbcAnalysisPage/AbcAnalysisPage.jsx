@@ -271,7 +271,7 @@ const AbcAnalysisPage = () => {
 				</div>
 				{/* !header */}
 				<div>
-					<Filters setLoading={setLoading} />
+					<Filters setLoading={setLoading} isDataLoading={loading} />
 				</div>
 
 				{/* SELF-COST WARNING */}

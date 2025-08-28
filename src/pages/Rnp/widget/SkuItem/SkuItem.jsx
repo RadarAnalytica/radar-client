@@ -5,17 +5,20 @@ import wb_icon from '../../../../assets/wbicon.svg';
 export default function SkuItem({ title, photo, sku, shop }) {
 	return (
 		<Flex gap={20}>
-			{photo && (<div className={styles.item__pic}>
-					<img
-						src={ photo }
-						width={45}
-						height={60}
-						onError={(e) => {
-							e.target.onerror = null;
-							e.target.style.display = 'none';
-						}}
-					/>
-			</div>)}
+			<div className={styles.item__preview}>
+					{ photo && 
+						<img
+							src={ photo }
+							width={45}
+							height={60}
+							className={styles.item__pic}
+							alt=''
+							onError={(e) => {
+								e.target.src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/wcAAgAB/HHpC6UAAAAASUVORK5CYII=';
+								e.target.style.display = 'none'
+							}}
+					/>}
+			</div>
 			<div className={styles.item__description}>
 				<div className={styles.item__title}>
 					{title}
@@ -27,7 +30,7 @@ export default function SkuItem({ title, photo, sku, shop }) {
 								src={wb_icon}
 								className={styles.item__article_icon}
 							/>
-							Артикул
+							{sku}
 						</Flex>
 					</a>
 					&bull;

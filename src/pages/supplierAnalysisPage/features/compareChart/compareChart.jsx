@@ -112,7 +112,7 @@ export const CompareChart = ({ data, mainSupplier, compareSupplier, isMainSuppli
                         type: chartType,
                         data: isCompareSupplierActive && data[compareSupplier?.supplier_id?.toString()],
                         borderColor: '#1BC5D1',
-                        yAxisID: 'B',
+                        yAxisID: 'A',
                         tension: 0.4,
                         pointBorderColor: 'white',
                         backgroundColor: '#1BC5D1',
@@ -196,20 +196,20 @@ export const CompareChart = ({ data, mainSupplier, compareSupplier, isMainSuppli
                     //stepSize: getArrayStep(getMaxValue(chartData)),
                 },
             },
-            B: {
-                id: 'B',
-                type: 'linear',
-                position: 'right',
-                min: 0,
-                display: compareSupplier && chartType !== 'bar' ? true : false,
-                //suggestedMax: getMaxAmount(chartData),
-                grid: {
-                    drawOnChartArea: false,
-                },
-                ticks: {
-                    //stepSize: getArrayStep(getMaxAmount(chartData)),
-                },
-            },
+            // B: {
+            //     id: 'B',
+            //     type: 'linear',
+            //     position: 'right',
+            //     min: 0,
+            //     display: compareSupplier && chartType !== 'bar' ? true : false,
+            //     //suggestedMax: getMaxAmount(chartData),
+            //     grid: {
+            //         drawOnChartArea: false,
+            //     },
+            //     ticks: {
+            //         //stepSize: getArrayStep(getMaxAmount(chartData)),
+            //     },
+            // },
         },
     }
 

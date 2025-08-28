@@ -1,0 +1,6 @@
+.search{
+  width: 100%;
+}
+.search__input{
+  flex-grow: 1;
+}

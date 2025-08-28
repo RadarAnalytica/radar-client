@@ -29,7 +29,7 @@ const predefinedRanges = [
     }
 ];
 
-export const TempTimeSelect = () => {
+export const TempTimeSelect = ({ isDataLoading }) => {
 
     const dispatch = useAppDispatch()
     const { selectedRange } = useAppSelector(store => store.filters)
@@ -45,7 +45,7 @@ export const TempTimeSelect = () => {
     // Если время после 10:00 UTC, то разблокируем вчерашний день
     const maxDate = currentHourUTC < 10 ? today.setDate(today.getDate() - 2) : today.setDate(today.getDate() - 1);
     
-    const minDate = new Date('2025-06-25');
+    const minDate = new Date('2025-06-15');
 
 
     const startMonth = new Date(today);
@@ -223,7 +223,7 @@ export const TempTimeSelect = () => {
                         }}
                         value={selectValue}
                         onSelect={timeSelectChangeHandler}
-                        disabled={isCalendarOpen}
+                        disabled={isCalendarOpen || isDataLoading}
                         placeholder={'опция'}
                     />
                 </ConfigProvider>

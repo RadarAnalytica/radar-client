@@ -24,6 +24,36 @@ export const getRequestObject = (filters, selectedRange, shopId) => {
 	if (filters.activeGroup && Array.isArray(filters.activeGroup) && !filters.activeGroup.some(_ => _.value === 'Все')) {
 		requestObject.product_groups = filters.activeGroup.map(_ => _.id)
 	}
+	if (filters.activeCategory && Array.isArray(filters.activeCategory) && !filters.activeCategory.some(_ => _.value === 'Все')) {
+		requestObject.categories = filters.activeCategory.map(_ => _.id)
+	}
+	return requestObject;
+}
+
+export const getRnpRequestObject = (filters, selectedRange, shopId) => {
+	let requestObject = {
+		articles: null,
+		product_groups: null,
+		brands: null,
+		shops: !!shopId ? [shopId] : null,
+		period: selectedRange?.period && selectedRange.period,
+		date_from: selectedRange?.from && selectedRange.from,
+		date_to: selectedRange?.to && selectedRange.to
+	}
+
+	if (filters.activeBrandName && Array.isArray(filters.activeBrandName) && !filters.activeBrandName.some(_ => _.value === 'Все')) {
+		requestObject.brands = filters.activeBrandName.map(_ => _.name)
+	}
+	// filters?.activeArticle.value !== 'Все'
+	if (filters.activeArticle && Array.isArray(filters.activeArticle) && !filters.activeArticle.some(_ => _.value === 'Все')) {
+		requestObject.articles = filters.activeArticle.map(_ => _.value)
+	}
+	if (filters.activeGroup && Array.isArray(filters.activeGroup) && !filters.activeGroup.some(_ => _.value === 'Все')) {
+		requestObject.product_groups = filters.activeGroup.map(_ => _.id)
+	}
+	if (filters.activeCategory && Array.isArray(filters.activeCategory) && !filters.activeCategory.some(_ => _.value === 'Все')) {
+		requestObject.categories = filters.activeCategory.map(_ => _.id)
+	}
 	return requestObject;
 }
 
@@ -1355,8 +1385,7 @@ export const ServiceFunctions = {
 			);
 			
 			if (res.status !== 200){
-				throw new Error('Ошибка запроса');
-				throw new Error('Ошибка запроса');
+				throw new Error('Ощибка запроса');
 			}
 	
 			return res.json();
@@ -1381,7 +1410,6 @@ export const ServiceFunctions = {
 			);
 			
 			if (res.status !== 200){
-				throw new Error('Ошибка запроса');
 				throw new Error('Ошибка запроса');
 			}
 	
@@ -1441,18 +1469,19 @@ export const ServiceFunctions = {
 			setIsLoading(false);
 		}
 	},
-	// getReportProfitLoss: async (token, selectedRange, shopId, filters, monthRange) => {
-
-	getRnpByArticle: async(token, selectedRange, shopId, filters, page, dateRange) => {
+	postRnpByArticle: async(token, selectedRange, shopId, filters, signal) => {
 		try {
+			let body = getRnpRequestObject(filters, selectedRange, shopId);
 			const res = await fetch(
-				`${URL}/api/rnp/by_article?page=${page}&per_page=25`,
+				`${URL}/api/rnp/by_article?page=1&per_page=25`,
 				{
-					method: 'GET',
+					method: 'POST',
 					headers: {
 						'content-type': 'application/json',
 						authorization: 'JWT ' + token,
-					}
+					},
+					body: JSON.stringify(body),
+					// signal
 				}
 			);
 			
@@ -1463,16 +1492,70 @@ export const ServiceFunctions = {
 			return res.json();
 
 		} catch(error) {
-			console.error('getRnpByArticle ', error);
+			console.error('postRnpByArticle ', error);
 			throw new Error(error);
 		}
 	},
-	getRnpSummary: async(token) => {
+	postRnpSummary: async(token, selectedRange, shopId, filters, signal) => {
 		try {
+			let body = getRnpRequestObject(filters, selectedRange, shopId);
 			const res = await fetch(
 				`${URL}/api/rnp/summary`,
 				{
-					method: 'GET',
+					method: 'POST',
+					headers: {
+						'content-type': 'application/json',
+						authorization: 'JWT ' + token,
+					},
+					body: JSON.stringify(body),
+					// signal
+				}
+			);
+			
+			if (res.status !== 200){
+				throw new Error('Ошибка запроса');
+			}
+	
+			return res.json();
+
+		} catch(error) {
+			console.error('postRnpSummary ', error);
+			throw new Error(error);
+		}
+	},
+	getRnpProducts: async(token, selectedRange, shopId, filters, page, search, signal) => {
+		try {
+			let body = getRnpRequestObject(filters, selectedRange, shopId);
+			const res = await fetch(
+				`${URL}/api/rnp/products?page=${page}&per_page=25${!!search ? `&search=${search}` : ''}` ,
+				{
+					method: 'POST',
+					headers: {
+						'content-type': 'application/json',
+						authorization: 'JWT ' + token,
+					},
+					body: JSON.stringify(body),
+					signal
+				}
+			);
+			
+			if (res.status !== 200){
+				throw new Error('Ошибка запроса');
+			}
+	
+			return res.json();
+
+		} catch(error) {
+			console.error('getRnpProducts ', error);
+			throw new Error(error);
+		}
+	},
+	deleteRnpId: async(token, id) => {
+		try {
+			const res = await fetch(
+				`${URL}/api/rnp/${id}`,
+				{
+					method: 'DELETE',
 					headers: {
 						'content-type': 'application/json',
 						authorization: 'JWT ' + token,
@@ -1487,14 +1570,44 @@ export const ServiceFunctions = {
 			return res.json();
 
 		} catch(error) {
-			console.error('getRnpSummary ', error);
+			console.error('deleteRnpId ', error);
 			throw new Error(error);
 		}
 	},
-	getRnpProducts: async(token, selectedRange, shopId, filters, page, dateRange) => {
+	postUpdateRnpProducts: async(token, idList) => {
 		try {
 			const res = await fetch(
-				`${URL}/api/rnp/products?page=${page}&per_page=25`,
+				`${URL}/api/rnp/`,
+				{
+					method: 'POST',
+					headers: {
+						'content-type': 'application/json',
+						authorization: 'JWT ' + token,
+					},
+					body: JSON.stringify({
+						wb_ids: idList
+					})
+				}
+			);
+			
+			if (res.status !== 200){
+				if (res.status == 400){
+					return res.json();
+				}
+				throw new Error('Ошибка запроса');
+			}
+	
+			return res.json();
+
+		} catch(error) {
+			console.error('postUpdateRnpProducts ', error);
+			throw new Error(error);
+		}
+	},
+	getRnpFilters: async(token) => {
+		try {
+			const res = await fetch(
+				`${URL}/api/rnp/filters`,
 				{
 					method: 'GET',
 					headers: {
@@ -1511,9 +1624,9 @@ export const ServiceFunctions = {
 			return res.json();
 
 		} catch(error) {
-			console.error('getRnpByArticle ', error);
+			console.error('getRnpFilters ', error);
 			throw new Error(error);
 		}
-	},
+	}
 };
 

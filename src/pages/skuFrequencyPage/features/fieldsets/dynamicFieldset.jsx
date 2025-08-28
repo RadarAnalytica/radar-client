@@ -110,6 +110,10 @@ const DynamicFieldset = ({ form }) => {
                                     <Form.Item
                                         style={{ margin: 0, width: '100%' }}
                                         name='dynamic_30_days_from'
+                                        normalize={(value) => {
+                                            // Удаляем все символы кроме цифр, точки и минуса
+                                            return value ? value.replace(/[^0-9.-]/g, '') : value;
+                                        }}
                                         //help=""
                                         rules={[
                                             ({ getFieldValue }) => ({
@@ -131,13 +135,16 @@ const DynamicFieldset = ({ form }) => {
                                             // placeholder={'от 20'}
                                             prefix={<span style={{color: '#8C8C8C'}}>от</span>}
                                             suffix={<span style={{color: '#8C8C8C'}}>%</span>}
-                                            type="number"
                                             style={{ height: '44px' }}
                                         />
                                     </Form.Item>
                                     <Form.Item
                                         style={{ margin: 0, width: '100%' }}
                                         name='dynamic_30_days_to'
+                                        normalize={(value) => {
+                                            // Удаляем все символы кроме цифр, точки и минуса
+                                            return value ? value.replace(/[^0-9.-]/g, '') : value;
+                                        }}
                                         //help=''
                                         rules={[
                                             ({ getFieldValue }) => ({
@@ -159,7 +166,6 @@ const DynamicFieldset = ({ form }) => {
                                             // placeholder={'до 100'}
                                             prefix={<span style={{color: '#8C8C8C'}}>до</span>}
                                             suffix={<span style={{color: '#8C8C8C'}}>%</span>}
-                                            type="number"
                                             style={{ height: '44px' }}
                                         />
                                     </Form.Item>
@@ -194,6 +200,10 @@ const DynamicFieldset = ({ form }) => {
                                     <Form.Item
                                         style={{ margin: 0, width: '100%' }}
                                         name='dynamic_60_days_from'
+                                        normalize={(value) => {
+                                            // Удаляем все символы кроме цифр, точки и минуса
+                                            return value ? value.replace(/[^0-9.-]/g, '') : value;
+                                        }}
                                         rules={[
                                             ({ getFieldValue }) => ({
                                                 validator(_, value) {
@@ -216,12 +226,15 @@ const DynamicFieldset = ({ form }) => {
                                             // placeholder={'от 20'}
                                             prefix={<span style={{color: '#8C8C8C'}}>от</span>}
                                             suffix={<span style={{color: '#8C8C8C'}}>%</span>}
-                                            type="number"
                                         />
                                     </Form.Item>
                                     <Form.Item
                                         style={{ margin: 0, width: '100%' }}
                                         name='dynamic_60_days_to'
+                                        normalize={(value) => {
+                                            // Удаляем все символы кроме цифр, точки и минуса
+                                            return value ? value.replace(/[^0-9.-]/g, '') : value;
+                                        }}
                                         rules={[
                                             ({ getFieldValue }) => ({
                                                 validator(_, value) {
@@ -243,7 +256,6 @@ const DynamicFieldset = ({ form }) => {
                                             // placeholder={'до 100'}
                                             prefix={<span style={{color: '#8C8C8C'}}>до</span>}
                                             suffix={<span style={{color: '#8C8C8C'}}>%</span>}
-                                            type="number"
                                         />
                                     </Form.Item>
                                 </>
@@ -278,6 +290,10 @@ const DynamicFieldset = ({ form }) => {
                                     <Form.Item
                                         style={{ margin: 0, width: '100%' }}
                                         name='dynamic_90_days_from'
+                                        normalize={(value) => {
+                                            // Удаляем все символы кроме цифр, точки и минуса
+                                            return value ? value.replace(/[^0-9.-]/g, '') : value;
+                                        }}
                                         rules={[
                                             ({ getFieldValue }) => ({
                                                 validator(_, value) {
@@ -299,12 +315,15 @@ const DynamicFieldset = ({ form }) => {
                                             // placeholder={'от 20'}
                                             prefix={<span style={{color: '#8C8C8C'}}>от</span>}
                                             suffix={<span style={{color: '#8C8C8C'}}>%</span>}
-                                            type="number"
                                         />
                                     </Form.Item>
                                     <Form.Item
                                         style={{ margin: 0, width: '100%' }}
                                         name='dynamic_90_days_to'
+                                        normalize={(value) => {
+                                            // Удаляем все символы кроме цифр, точки и минуса
+                                            return value ? value.replace(/[^0-9.-]/g, '') : value;
+                                        }}
                                         rules={[
                                             ({ getFieldValue }) => ({
                                                 validator(_, value) {
@@ -326,7 +345,6 @@ const DynamicFieldset = ({ form }) => {
                                             // placeholder={'до 100'}
                                             prefix={<span style={{color: '#8C8C8C'}}>до</span>}
                                             suffix={<span style={{color: '#8C8C8C'}}>%</span>}
-                                            type="number"
                                         />
                                     </Form.Item>
                                 </>

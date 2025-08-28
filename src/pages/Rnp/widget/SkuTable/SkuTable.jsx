@@ -1,22 +1,11 @@
 import { ConfigProvider, Table, Button } from 'antd';
-import { useRef, useCallback } from 'react';
 import styles from './SkuTable.module.css';
-// import { COLUMNS, DATA } from '../../config';
 
-export default function SkuTable({ loading, columns, data, defaultExpandAllRows=false }) {
-	const tableContainerRef = useRef(null);
-  const tableRef = useRef(null);
-
-  const handleBodyScroll = useCallback((e) => {
-		const header = tableRef.current?.nativeElement?.querySelector('.ant-table-header');
-    if (header) {
-      header.scrollLeft = e.target.scrollLeft;
-    }
-  }, []);
+export default function SkuTable({ loading, columns, data }) {
 
 	return (
 		<div className={styles.container} >
-			<div className={styles.tableContainer} ref={tableContainerRef}>
+			<div className={styles.tableContainer}>
 				{loading && <div className={styles.loading}>
 						<span className='loader'></span>
 				</div>}
@@ -53,7 +42,6 @@ export default function SkuTable({ loading, columns, data, defaultExpandAllRows=
 					}}
 				>
 					<Table
-      			ref={tableRef}
 						columns={columns}
 						dataSource={data}
 						pagination={false}
@@ -62,13 +50,13 @@ export default function SkuTable({ loading, columns, data, defaultExpandAllRows=
 							return record.key === 'summary' ? styles.summaryRow : '';
 						}}
 						expandable={{
-							defaultExpandAllRows: defaultExpandAllRows,
+							defaultExpandAllRows: true,
 							expandIcon: ExpandIcon,
 							rowExpandable: (row) => row.children,
 							expandedRowClassName: styles.expandRow,
 							expandRowByClick: true
 						}}
-						// scroll={ { x: 'max-content', y: 9999 }}
+						scroll={ { x: 'max-content' }}
 					></Table>
 				</ConfigProvider>
 				}

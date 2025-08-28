@@ -3,7 +3,7 @@ import styles from './dataCollectWarningBlock.module.css'
 import cover from './cover.png'
 import header_bg from './header_bg.png'
 
-const DataCollectWarningBlock = () => {
+const DataCollectWarningBlock = ({bigPreview = true}) => {
 
     return (
         <div className={styles.block}>
@@ -14,9 +14,9 @@ const DataCollectWarningBlock = () => {
                     <img src={header_bg} alt='' />
                 </div>
             </div>
-            <div className={styles.block__coverWrapper}>
+            { bigPreview && <div className={styles.block__coverWrapper}>
                 <img src={cover} alt='' />
-            </div>
+            </div> }
         </div>
     )
 }
