@@ -76,27 +76,10 @@
   bottom: -13px;
 }
 
-:global(.is-dragging),
-:global(.is-dragging-over),
-:global(.pragmatic-drag-and-drop-item.is-dragging),
-:global(.drag-preview){
-  width: 40px!important;
-  height: 40px!important;
-  background-color: red!important;
+.no_drop{
+  cursor: no-drop;
 }
 
-/* Глобальное отключение тени для всех превью */
-:global([data-drag-preview]) {
-  box-shadow: none !important;
-}
-
-/* Отключение тени для конкретных элементов */
-:global(.no-shadow-preview [data-drag-preview]) {
-  box-shadow: none !important;
-}
-
-/* Альтернативный селектор */
-:global(.draggable-item ~ [data-drag-preview]) {
-  box-shadow: none !important;
-  border: 1px solid #c1c7d0 !important;
+.copy{
+  cursor: copy;
 }

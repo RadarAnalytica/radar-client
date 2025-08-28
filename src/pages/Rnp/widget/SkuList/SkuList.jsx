@@ -42,6 +42,8 @@ function SkuListItem({el, index, expanded, setExpanded, setDeleteSkuId, onReorde
 		};
 
 		function onChange({ source, self }) {
+			document.body.classList.remove(styles.no_drop)
+			document.body.classList.add(styles.copy)
 			const isSource = source.data.id === id;
 			if (isSource) {
 				setClosestEdge(null);
@@ -84,9 +86,13 @@ function SkuListItem({el, index, expanded, setExpanded, setDeleteSkuId, onReorde
 				onDragEnter: onChange,
 				onDrag: onChange,
 				onDragLeave() {
+					document.body.classList.remove(styles.copy)
+					document.body.classList.add(styles.no_drop)
 					setClosestEdge(null);
 				},
 				onDrop() {
+					document.body.classList.remove(styles.no_drop)
+					document.body.classList.remove(styles.copy)
 					setClosestEdge(null);
 				},
 				// onGenerateDragPreview: ({ nativeSetDragImage }) => {
