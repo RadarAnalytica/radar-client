@@ -12,22 +12,33 @@ export const createFiltersDTO = (data) => {
   let allBransdData = [];
   let allArticlesData = []
   const allGroupsData = []
-  const allCategoriesData = []
+  let allCategoriesData = []
   data.forEach((_, id) => {
     _.categories.forEach(c => {
-      allCategoriesData.push({name: c.name, value: c.name, key: c.id, id: c.id })
-      c.brand.forEach((b => {
-        allBransdData.push({
-          name: b.name ? b.name : `Без названия&${_.shop_data.id}`,
-          value: b.name ? b.name : `Без названия (${_.shop_data.brand_name})`,
+      if (_.shop_data.is_primary_collect) {
+        allCategoriesData.push({
+          name: c.name,
+          value: c.name,
+          key: c.id,
+          id: c.id
         })
-        b.wb_id.forEach(a => {
-          allArticlesData.push({
-            name: a,
-            value: a,
-            brand: b.name ? b.name :`Без названия (${_.shop_data.brand_name})`,
-            category: c.name
+      }
+      c.brand.forEach((b => {
+        if (_.shop_data.is_primary_collect) {
+          allBransdData.push({
+            name: b.name ? b.name : `Без названия&${_.shop_data.id}`,
+            value: b.name ? b.name : `Без названия (${_.shop_data.brand_name})`,
           })
+        }
+        b.wb_id.forEach(a => {
+          if (_.shop_data.is_primary_collect) {
+            allArticlesData.push({
+              name: a,
+              value: a,
+              brand: b.name ? b.name :`Без названия (${_.shop_data.brand_name})`,
+              category: c.name
+            })
+          }
         })
       }))
     })
@@ -36,10 +47,21 @@ export const createFiltersDTO = (data) => {
     })
 
   })
+
+  allCategoriesData = allCategoriesData.filter((item, index, self) => 
+    index === self.findIndex((t) => (
+      t.id === item.id
+    )));
   
   allBransdData = allBransdData.filter((item, index, self) => 
     index === self.findIndex((t) => (
-      JSON.stringify(t) === JSON.stringify(item)
+      t.name === item.name
+    ))
+  );
+
+  allArticlesData = allArticlesData.filter((item, index, self) => 
+    index === self.findIndex((t) => (
+      t.value === item.value
     ))
   );
   // 2.4 - собираем обьект для "все магазины"
@@ -96,7 +118,7 @@ export const createFiltersDTO = (data) => {
     
     brandsData = brandsData.filter((item, index, self) => 
     index === self.findIndex((t) => (
-      JSON.stringify(t) === JSON.stringify(item)
+      t.name === item.name
     )));
 
 

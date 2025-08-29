@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@atlaskit/pragmatic-drag-and-drop": "^1.7.4",
+    "@atlaskit/pragmatic-drag-and-drop-hitbox": "^1.1.0",
     "@reduxjs/toolkit": "^2.2.5",
     "antd": "^5.24.3",
     "axios": "^1.6.7",

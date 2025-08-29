@@ -55,13 +55,15 @@ export default function Rnp() {
 	const [loading, setLoading] = useState(true);
 	const [addSkuModalShow, setAddSkuModalShow] = useState(false);
 	const [page, setPage] = useState(1);
-	const [paginationState, setPaginationState] = useState(null);
+	// const [paginationState, setPaginationState] = useState(null);
 	const [view, setView] = useState('sku');
 	const [skuDataByArticle, setSkuDataByArticle] = useState(null);
 	const [skuDataTotal, setSkuDataTotal] = useState(null)
 	const [deleteSkuId, setDeleteSkuId] = useState(null);
 	const [skuSelectedList, setSkuSelectedList] = useState([]);
 	const [error, setError] = useState(null);
+	const [expanded, setExpanded] = useState([]);
+	// const abortController = useMemo(() => new AbortController(), []);
 
 	const updateSkuListByArticle = async () => {
 		setLoading(true);
@@ -78,7 +80,6 @@ export default function Rnp() {
 				if (initLoad.current) {
 					initLoad.current = false;
 					dispatch(rnpSelectedActions.setList(response?.data?.map((article) => article.article_data.wb_id)));
-
 				}
 			}
 		} catch (error) {
@@ -117,6 +118,7 @@ export default function Rnp() {
 					authToken,
 					id
 				);
+				dispatch(rnpSelectedActions.setList(rnpSelected.filter((el) => el !== id)));
 			}
 		} catch (error) {
 			console.error('deleteSku error', error)
@@ -192,10 +194,10 @@ export default function Rnp() {
 
 		setSkuSelectedList(list.map((sku) => sku.article_data.wb_id));
 		setSkuDataByArticle(list);
-		setPaginationState({
-			total: response.total_count,
-			pageSize: response.per_page
-		})
+		// setPaginationState({
+		// 	total: response.total_count,
+		// 	pageSize: response.per_page
+		// })
 	};
 
 	const dataToSkuTotalList = (response) => {
@@ -298,17 +300,88 @@ export default function Rnp() {
 	}
 
 	useEffect(() => {
+		if (!activeBrand && !activeBrand?.is_primary_collect){
+			return
+		}
+		// const { signal } = abortController;
+
+		// const updateSkuListByArticle = async () => {
+		// 	setLoading(true);
+		// 	try {
+		// 		const response = await ServiceFunctions.postRnpByArticle(
+		// 			authToken,
+		// 			selectedRange,
+		// 			activeBrand.id,
+		// 			filters,
+		// 			signal
+		// 		);
+		// 		dataToSkuList(response);
+		// 		if (initLoad.current) {
+		// 			initLoad.current = false;
+		// 			dispatch(rnpSelectedActions.setList(response?.data?.map((article) => article.article_data.wb_id)));
+		// 		}
+		// 		setLoading(false);
+		// 	} catch (error) {
+		// 		if (error.message == 'AbortError') {
+		// 			setLoading(true)
+		// 		} else {
+		// 			console.error('updateSkuListByArticle error', error)
+		// 			setLoading(false)
+		// 		}
+		// 	}
+		// };
+
+		// const updateSkuListSummary = async () => {
+		// 	setLoading(true);
+		// 	try {
+		// 		const response = await ServiceFunctions.postRnpSummary(
+		// 			authToken,
+		// 			selectedRange,
+		// 			activeBrand.id,
+		// 			filters,
+		// 			signal
+		// 		);
+		// 		dataToSkuTotalList(response);
+		// 		setLoading(false);
+		// 	} catch (error) {
+		// 		if (error.message == 'AbortError') {
+		// 			setLoading(true)
+		// 		} else {
+		// 			console.error('updateSkuListSummary error', error)
+		// 			setLoading(false)
+		// 		}
+		// 	}
+		// };
+
 		if (activeBrand && activeBrand.is_primary_collect) {
 			if (view === 'sku'){
 				updateSkuListByArticle();
-				return
+			} else {
+				updateSkuListSummary();
 			}
-			updateSkuListSummary();
 		}
+
 		if (activeBrand && !activeBrand?.is_primary_collect){
 			setLoading(false)
 		}
+
+		return () => {
+			// abortController.abort('AbortError');
+		};
 	}, [activeBrand, shopStatus, shops, filters, page, view, selectedRange]);
+
+	// useEffect(() => {
+	// 	if (activeBrand && activeBrand.is_primary_collect) {
+	// 		if (view === 'sku'){
+	// 			updateSkuListByArticle();
+	// 			return
+	// 		}
+	// 		updateSkuListSummary();
+	// 	}
+	// 	if (activeBrand && !activeBrand?.is_primary_collect){
+	// 		setLoading(false)
+	// 	}
+	// }, [activeBrand, shopStatus, shops, filters, page, view, selectedRange]);
 
 	const addSkuHandler = (list) => {
 		setAddSkuModalShow(false);
@@ -359,6 +432,8 @@ export default function Rnp() {
 						skuDataByArticle={skuDataByArticle}
 						skuDataTotal={skuDataTotal}
 						setDeleteSkuId={setDeleteSkuId}
+						expanded={expanded}
+						setExpanded={setExpanded}
 						// page={page}
 						// setPage={setPage}
 						// paginationState={paginationState}

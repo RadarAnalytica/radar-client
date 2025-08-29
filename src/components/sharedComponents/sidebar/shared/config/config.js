@@ -33,7 +33,7 @@ export const menuConfig = [
                 id: 3,
                 url: '/sku-frequency',
                 label: 'Частотность артикула',
-                isActive: true,
+                isActive: false,
                 isNew: false
             },
             {
@@ -121,14 +121,14 @@ export const menuConfig = [
                 url: '/report-profit-loss', 
                 label: 'Отчет о прибыли и убытках',
                 isActive: true,
-                isNew: true
+                isNew: false
             },
             // {
             //     id: 8,
             //     url: '/operations-costs', 
             //     label: 'Операционные расходы',
             //     isActive: false,
-            //     isNew: true
+            //     isNew: false
             // },
             {
                 id: 4,
@@ -241,6 +241,3 @@ export const adminConfig = {
         },
     ]
 }
-
-
-

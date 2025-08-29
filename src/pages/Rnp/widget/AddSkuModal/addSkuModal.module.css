@@ -89,3 +89,11 @@
 .hide{
     display: none;
 }
+
+.data_collect{
+    width: 100%;
+}
+
+.control{
+    width: 100%;
+}
