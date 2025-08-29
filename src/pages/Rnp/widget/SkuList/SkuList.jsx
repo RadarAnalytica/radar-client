@@ -21,13 +21,14 @@ function SkuListItem({el, index, expanded, setExpanded, setDeleteSkuId, onReorde
 	const [ closestEdge, setClosestEdge ] = useState(null);
 
 	const expandHandler = (value) => {
-		setExpanded((list) => {
-			if (list.includes(value)){
-				return list.filter((id) => id !== value)
-			} else {
-			 return [...list, value]
-		 }
-		})
+		setTimeout(() => {
+			ref.current.scrollIntoView({ behavior: "smooth"});
+		}, 150)
+		if (expanded.includes(value)){
+			setExpanded([]);
+		} else {
+			setExpanded([value]);
+		}
 	};
 
 	useEffect(() => {
