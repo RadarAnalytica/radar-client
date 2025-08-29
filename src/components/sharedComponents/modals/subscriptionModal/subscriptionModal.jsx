@@ -118,8 +118,8 @@ const SubscriptionModal = ({ visible, visibilityHandler }) => {
       .replaceAll(':', '')}`;
 
     if (selectedPeriod === '1month') {
-      amountSubscribe = 2990;
-      firstAmount = newTrialExpired ? 2990 : 10;
+      amountSubscribe = 3990;
+      firstAmount = newTrialExpired ? 3990 : 10;
       periodSubscribe = 1;
       if (!!newTrialExpired) {
         startDateSubscribe.setMonth(
@@ -130,17 +130,25 @@ const SubscriptionModal = ({ visible, visibilityHandler }) => {
       }
     }
     if (selectedPeriod === '3month') {
-      amountSubscribe = 8073;
-      firstAmount = !subscriptionDiscount ? 8073 : 4485;
+      amountSubscribe = 10174;
+      firstAmount = 10174;
       periodSubscribe = 3;
       startDateSubscribe.setMonth(
         startDateSubscribe.getMonth() + periodSubscribe
       );
     }
     if (selectedPeriod === '6month') {
-      amountSubscribe = 10764;
-      firstAmount = !subscriptionDiscount ? 10764 : 5382;
+      amountSubscribe = 16758;
+      firstAmount = 16758;
       periodSubscribe = 6;
+      startDateSubscribe.setMonth(
+        startDateSubscribe.getMonth() + periodSubscribe
+      );
+    }
+    if (selectedPeriod === '12month') {
+      amountSubscribe = 23940;
+      firstAmount = 23940;
+      periodSubscribe = 12;
       startDateSubscribe.setMonth(
         startDateSubscribe.getMonth() + periodSubscribe
       );

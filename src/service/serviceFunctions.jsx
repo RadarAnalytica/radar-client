@@ -1385,8 +1385,7 @@ export const ServiceFunctions = {
 			);
 			
 			if (res.status !== 200){
-				throw new Error('Ошибка запроса');
-				throw new Error('Ошибка запроса');
+				throw new Error('Ощибка запроса');
 			}
 	
 			return res.json();
