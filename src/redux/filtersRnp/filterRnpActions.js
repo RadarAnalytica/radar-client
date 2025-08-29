@@ -17,17 +17,21 @@ export const createFiltersDTO = (data) => {
     _.categories.forEach(c => {
       allCategoriesData.push({name: c.name, value: c.name, key: c.id, id: c.id })
       c.brand.forEach((b => {
-        allBransdData.push({
-          name: b.name ? b.name : `Без названия&${_.shop_data.id}`,
-          value: b.name ? b.name : `Без названия (${_.shop_data.brand_name})`,
-        })
-        b.wb_id.forEach(a => {
-          allArticlesData.push({
-            name: a,
-            value: a,
-            brand: b.name ? b.name :`Без названия (${_.shop_data.brand_name})`,
-            category: c.name
+        if (_.shop_data.is_primary_collect) {
+          allBransdData.push({
+            name: b.name ? b.name : `Без названия&${_.shop_data.id}`,
+            value: b.name ? b.name : `Без названия (${_.shop_data.brand_name})`,
           })
+        }
+        b.wb_id.forEach(a => {
+          if (_.shop_data.is_primary_collect) {
+            allArticlesData.push({
+              name: a,
+              value: a,
+              brand: b.name ? b.name :`Без названия (${_.shop_data.brand_name})`,
+              category: c.name
+            })
+          }
         })
       }))
     })
