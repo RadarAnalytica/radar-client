@@ -23,11 +23,11 @@ export const COLUMNS = [
 export const ROWS = [
   {
     key: 'expected_marginality_data',
-    period: 'Прогноз. маржинальность',
+    period: 'Прогноз. маржинальность, %',
     children: [
       {
         dataIndex: 'plan_marginality',
-        period: 'План. маржинальность',
+        period: 'План. маржинальность, %',
       },
       {
         dataIndex: 'roi',
