@@ -118,7 +118,7 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku }) 
             setPage(1)
         }
         setRequest((state) => !state);
-    }, [search, filters, activeBrand])
+    }, [search, filters, activeBrand, shops])
 
     return (
         <>
