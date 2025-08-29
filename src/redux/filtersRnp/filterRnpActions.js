@@ -12,7 +12,7 @@ export const createFiltersDTO = (data) => {
   let allBransdData = [];
   let allArticlesData = []
   const allGroupsData = []
-  const allCategoriesData = []
+  let allCategoriesData = []
   data.forEach((_, id) => {
     _.categories.forEach(c => {
       allCategoriesData.push({name: c.name, value: c.name, key: c.id, id: c.id })
@@ -36,10 +36,15 @@ export const createFiltersDTO = (data) => {
     })
 
   })
+
+  allCategoriesData = allCategoriesData.filter((item, index, self) => 
+    index === self.findIndex((t) => (
+      t.id === item.id
+    )));
   
   allBransdData = allBransdData.filter((item, index, self) => 
     index === self.findIndex((t) => (
-      JSON.stringify(t) === JSON.stringify(item)
+      t.name === item.name
     ))
   );
   // 2.4 - собираем обьект для "все магазины"
@@ -96,7 +101,7 @@ export const createFiltersDTO = (data) => {
     
     brandsData = brandsData.filter((item, index, self) => 
     index === self.findIndex((t) => (
-      JSON.stringify(t) === JSON.stringify(item)
+      t.name === item.name
     )));
 
 
