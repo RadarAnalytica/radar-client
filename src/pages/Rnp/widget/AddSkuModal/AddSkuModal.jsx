@@ -88,7 +88,7 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku }) 
                 setLocalskuDataArticle(response);
                 setSkuLoading(false);
             } catch (error) {
-				if (error.message == 'AbortError') {
+                if (error.message == 'Отмена запроса') {
 					setSkuLoading(true)
 				} else {
                     console.error('updateskuDataArticle error', error);
@@ -101,13 +101,15 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku }) 
         return () => {
             abortController.abort('Отмена запроса');
         };
-    }, [isAddSkuModalVisible, activeBrand, shops, filters, page, request]);
+    }, [isAddSkuModalVisible, page, request]);
 
     useEffect(() => {
         return () => {
-            setPage(1);
-            setSearch(null);
-            dispatch(filterActions.setActiveShop(null));
+            if (!isAddSkuModalVisible){
+                setPage(1);
+                setSearch(null);
+                dispatch(filterActions.setActiveShop(null));
+            }
         }
     }, [isAddSkuModalVisible])
 
@@ -116,7 +118,7 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku }) 
             setPage(1)
         }
         setRequest((state) => !state);
-    }, [search, filters])
+    }, [search, filters, activeBrand])
 
     return (
         <>
@@ -219,8 +221,8 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku }) 
                             defaultCurrent={1}
                             current={page}
                             onChange={setPage}
-                            total={localskuDataArticle.total_count}
-                            pageSize={localskuDataArticle.per_page}
+                            total={localskuDataArticle?.total_count}
+                            pageSize={localskuDataArticle?.per_page}
                             showSizeChanger={false}
                             hideOnSinglePage={true}
                         />}
