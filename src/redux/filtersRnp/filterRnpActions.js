@@ -15,7 +15,14 @@ export const createFiltersDTO = (data) => {
   let allCategoriesData = []
   data.forEach((_, id) => {
     _.categories.forEach(c => {
-      allCategoriesData.push({name: c.name, value: c.name, key: c.id, id: c.id })
+      if (_.shop_data.is_primary_collect) {
+        allCategoriesData.push({
+          name: c.name,
+          value: c.name,
+          key: c.id,
+          id: c.id
+        })
+      }
       c.brand.forEach((b => {
         if (_.shop_data.is_primary_collect) {
           allBransdData.push({
@@ -49,6 +56,12 @@ export const createFiltersDTO = (data) => {
   allBransdData = allBransdData.filter((item, index, self) => 
     index === self.findIndex((t) => (
       t.name === item.name
+    ))
+  );
+
+  allArticlesData = allArticlesData.filter((item, index, self) => 
+    index === self.findIndex((t) => (
+      t.value === item.value
     ))
   );
   // 2.4 - собираем обьект для "все магазины"
