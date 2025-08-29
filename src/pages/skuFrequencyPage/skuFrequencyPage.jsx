@@ -10,7 +10,7 @@ import { useAppSelector, useAppDispatch } from '../../redux/hooks'
 import DownloadButton from '../../components/DownloadButton'
 import { actions as reqActions } from '../../redux/requestsMonitoring/requestsMonitoringSlice'
 import { actions as filterActions } from '../../redux/apiServicePagesFiltersState/apiServicePagesFilterState.slice'
-import { newTableConfig } from './shared'
+import { newTableConfig, radarTableConfig } from './shared'
 import HowToLink from '../../components/sharedComponents/howToLink/howToLink'
 import { ServiceFunctions } from '../../service/serviceFunctions'
 import { fileDownload } from '../../service/utils'
@@ -21,7 +21,7 @@ import ErrorModal from '../../components/sharedComponents/modals/errorModal/erro
 
 const SkuFrequencyPage = () => {
     //const { skuFrequencyMode } = useAppSelector(store => store.filters)
-    const [ tableConfig, setTableConfig ] = useState(newTableConfig)
+    const [ tableConfig, setTableConfig ] = useState(radarTableConfig)
     const { requestData, formType, requestObject, isLoadingForButton } = useAppSelector(store => store.requestsMonitoring)
     const [ downloadStatus, setDownloadStatus ] = useState({
         isLoading: false,

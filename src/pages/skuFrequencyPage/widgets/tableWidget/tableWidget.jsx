@@ -1,15 +1,13 @@
 import React, { useState, useRef, useEffect } from 'react'
 import styles from './tableWidget.module.css'
-import { formatPrice } from '../../../../service/utils';
 import { useAppSelector, useAppDispatch } from '../../../../redux/hooks';
-import { Link } from 'react-router-dom';
-import { formatRateValue, sortTableDataFunc } from '../../shared';
 import { fetchRequestsMonitoringData, fetchRequestsMonitoringDataEasy } from '../../../../redux/requestsMonitoring/requestsMonitoringActions';
 import { actions as reqsMonitoringActions } from '../../../../redux/requestsMonitoring/requestsMonitoringSlice';
 import ErrorModal from '../../../../components/sharedComponents/modals/errorModal/errorModal';
-import { ConfigProvider, Pagination, Table } from 'antd'
-import { useNavigate } from 'react-router-dom';
-import { newTableConfig } from '../../shared/configs/tableConfig';
+import { ConfigProvider, Table } from 'antd'
+import { newTableConfig, radarTableConfig } from '../../shared/configs/tableConfig';
+import { Table as RadarTable } from 'radar-ui';
+import 'radar-ui/dist/style.css'; 
 
 //инит стейт сортировки
 const initSortState = {
@@ -39,10 +37,9 @@ const paginationTheme = {
 const TableWidget = ({ tableConfig, setTableConfig }) => {
     const dispatch = useAppDispatch()
     const containerRef = useRef(null) // реф скролл-контейнера (используется чтобы седить за позицией скрола)
-    const [scrollY, setScrollY] = useState(0);
-    const [scrollX, setScrollX] = useState(0);
     const { requestData, requestStatus, requestObject, formType, tableConfig: tableSettings, pagination } = useAppSelector(store => store.requestsMonitoring)
-
+    console.log(requestObject)
+    console.log(pagination)
     const updateTableConfig = (settings) => {
         let newConfig = tableConfig;
         newConfig = newConfig.map(col => ({
@@ -82,7 +79,6 @@ const TableWidget = ({ tableConfig, setTableConfig }) => {
     };
 
     //задаем начальную дату
-    //задаем начальную дату
     useEffect(() => {
         if (requestObject && formType === 'complex') {
             dispatch(fetchRequestsMonitoringData({ requestObject, requestData }))
@@ -90,75 +86,12 @@ const TableWidget = ({ tableConfig, setTableConfig }) => {
         if (requestObject && formType === 'easy') {
             dispatch(fetchRequestsMonitoringDataEasy({ requestObject, requestData }))
         }
+        if (containerRef?.current) {
+            console.log('scrollTo', { top: 0, behavior: 'smooth' })
+            containerRef.current.scrollTo({ top: 0, behavior: 'smooth' })
+        }
     }, [requestObject])
 
-
-
-
-
-    useEffect(() => {
-        if (requestData) {
-            const jumper = document.querySelector('.ant-pagination-options-quick-jumper')
-            const input = jumper?.querySelector('input')
-            if (jumper && input) {
-
-                input.style.backgroundColor = '#EEEAFF'
-                input.style.padding = '5px'
-                input.style.width = '32px'
-                jumper.textContent = 'Перейти на'
-                jumper.appendChild(input)
-                const suffix = document.createElement('span');
-                suffix.textContent = 'стр.'
-                jumper.appendChild(suffix)
-                jumper.style.color = 'black'
-            }
-        }
-    }, [requestData])
-
-
-
-    useEffect(() => {
-        const updateHeight = () => {
-            if (containerRef?.current) {
-                // ref контейнера который занимает всю высоту
-                const container = containerRef.current;
-
-                // расчет высоты шапки и добавление отступов контейнера
-                const headerHeight = container.querySelector('.ant-table-header')?.offsetHeight || 70;
-                const paddings = 32;
-                // расчет и сохранение высоты таблицы
-                const availableHeight = container.offsetHeight - headerHeight - paddings;
-                setScrollY(availableHeight);
-                // расчет ширины контейнера
-                setScrollX(container.offsetWidth - 32);
-            }
-        };
-
-        updateHeight();
-
-    }, [newTableConfig, requestData])
-
-    useEffect(() => {
-        const tableBody = document.querySelector('.ant-table-tbody')
-        const headerCell = document.querySelectorAll('.table__mainHeader')
-        const coloredHeaderCell = document.querySelectorAll('.table__mainHeader_colored')
-        //const firstCells = document.querySelectorAll('.first__cell')
-
-        if (headerCell && coloredHeaderCell) {
-            headerCell?.forEach(_ => _.style.color = '#1A1A1A')
-            coloredHeaderCell?.forEach(_ => _.style.color = '#1A1A1A')
-            //firstCells.forEach(_ => _.style.border = '1px solid black')
-            //headerCell.style.color = '#1A1A1A'
-            //coloredHeaderCell.color = '#1A1A1A'
-        }
-        if (tableBody) {
-            //tableBody.style.height = '50%';
-            //tableBody.style.minHeight = '100%';
-            tableBody.style.maxHeight = '80vh'
-            // tableBody.style.border = '1px solid red'
-        }
-
-    }, [requestData, tableSettings, tableConfig])
 
     useEffect(() => {
         updateTableConfig(tableSettings)
@@ -168,52 +101,6 @@ const TableWidget = ({ tableConfig, setTableConfig }) => {
         updateTableConfig(tableSettings)
     }, [])
 
-
-    //pagination styles
-    useEffect(() => {
-        const paginationNextButton = document.querySelectorAll('.ant-pagination-jump-next')
-        const paginationPrevButton = document.querySelectorAll('.ant-pagination-jump-prev')
-        const paginationSingleNextButton = document.querySelectorAll('.ant-pagination-next')
-        const paginationSinglePrevButton = document.querySelectorAll('.ant-pagination-prev')
-        const jumper = document.querySelectorAll('.ant-pagination-options-quick-jumper')
-
-
-        if (jumper) {
-            jumper.forEach(_ => {
-                const input = _?.querySelector('input')
-
-                if (input && _) {
-                    input.style.backgroundColor = '#EEEAFF'
-                    input.style.padding = '5px'
-                    input.style.width = '32px'
-                    _.textContent = 'Перейти на'
-                    _.appendChild(input)
-                    const suffix = document.createElement('span');
-                    suffix.textContent = 'стр'
-                    _.appendChild(suffix)
-                    _.style.color = 'black'
-                }
-            })
-
-        }
-
-        if (paginationNextButton) {
-            paginationNextButton.forEach(_ => _.setAttribute('title', 'Следующие 5 страниц'))
-        }
-        if (paginationSingleNextButton) {
-            paginationSingleNextButton.forEach(_ => _.setAttribute('title', 'Следующая страница'))
-        }
-        if (paginationSinglePrevButton) {
-            paginationSinglePrevButton.forEach(_ => _.setAttribute('title', 'Предыдущая страница'))
-        }
-        if (paginationPrevButton) {
-            paginationPrevButton.forEach(_ => _.setAttribute('title', 'Предыдущие 5 страниц'))
-        }
-    }, [requestData, pagination])
-
-    const paginationHandler = (page) => {
-        dispatch(reqsMonitoringActions.updateRequestObject({ page: page }))
-    }
 
     if (requestStatus.isLoading) {
         return (
@@ -263,20 +150,71 @@ const TableWidget = ({ tableConfig, setTableConfig }) => {
 
     }
 
-    const handleChange = (pagination, filters, sorterObj) => {
-        if (!sorterObj.order) {
-            dispatch(reqsMonitoringActions.updateRequestObject({ sorting: undefined }))
-            return
-        }
-        const obj = {
-            sort_field: sorterObj.field,
-            sort_order: sorterObj.order,
-        }
-        dispatch(reqsMonitoringActions.updateRequestObject({ sorting: obj, page: 1, limit: 25 }))
-    };
+
+
+    const onResizeGroup = (columnKey, width) => {
+        console.log('Column resized:', columnKey, width);
+    
+        // Обновляем конфигурацию колонок с группированной структурой
+        const updateColumnWidth = (columns) => {
+          return columns.map(col => {
+            // Если это группа с children
+            if (col.children && col.children.length > 0) {
+              const updatedChildren = updateColumnWidth(col.children);
+    
+              // Всегда пересчитываем ширину группы на основе суммы ширин дочерних колонок
+              const totalWidth = updatedChildren.reduce((sum, child) => sum + (child.width || child.minWidth || 200), 0);
+              return { ...col, width: totalWidth, minWidth: totalWidth, children: updatedChildren };
+            }
+    
+            // Если это листовая колонка
+            if (col.key === columnKey) {
+              return { ...col, width: width, minWidth: width };
+            }
+    
+            return col;
+          });
+        };
+    
+        // Обновляем состояние config2
+        setTableConfig(prevConfig => updateColumnWidth(prevConfig));
+      };
 
     return requestData && newTableConfig && (
         <div className={styles.widget}>
+            <div
+                className={styles.container}
+                ref={containerRef}
+            >
+                <RadarTable
+                    dataSource={requestData}
+                    config={sortFunc(tableConfig)}
+                    resizeable
+                    draggableColumns
+                    onResize={onResizeGroup}
+                    stickyHeader
+                    preset="radar-table-simple"
+                    onSort={(sort_field, sort_order) => { 
+                        console.log('sorting', { sort_field, sort_order }) 
+                        dispatch(reqsMonitoringActions.updatePagination({ page: 1 }))
+                        dispatch(reqsMonitoringActions.updateRequestObject({ sorting: { sort_field, sort_order } }))
+                    }}
+                    onColumnReorder={(newConfig) => {
+                      console.log('onColumnReorder grouped', { newConfig })
+                      setTableConfig(newConfig)
+                    }}
+                    pagination={{
+                      current: pagination.page,
+                      pageSize: pagination.limit,
+                      total: pagination.total_pages,
+                      onChange: (page, pageSize) => { 
+                        console.log('pagination', { page, pageSize }) 
+                        dispatch(reqsMonitoringActions.updatePagination({ page }))
+                      },
+                      showQuickJumper: true,
+                    }}
+                />
+            </div>
             <div
                 className={styles.container}
                 ref={containerRef}
@@ -326,7 +264,7 @@ const TableWidget = ({ tableConfig, setTableConfig }) => {
                         },
                     }}
                 >
-                    <Table
+                    {/* <Table
                         rowKey={(record) => {return `${record.query}-${record.avg_daily_revenue}`}}
                         key={JSON.stringify(pagination)}
                         dataSource={requestData}
@@ -347,7 +285,7 @@ const TableWidget = ({ tableConfig, setTableConfig }) => {
                         bordered
                         onChange={handleChange}
                         scroll={{ x: tableConfig?.reduce((acc, group) => acc + (group.children?.reduce((groupAcc, column) => groupAcc + (column.width || 0), 0) || 0), 0) + 16, y: `calc(90vh + 16px)`, scrollToFirstRowOnChange: true, }}
-                    />
+                    /> */}
                 </ConfigProvider>
             </div>
         </div>
