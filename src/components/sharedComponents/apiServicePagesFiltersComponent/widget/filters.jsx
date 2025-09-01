@@ -99,7 +99,7 @@ export const Filters = ({
         const now = Date.now();
         filteredMessages = filteredMessages
           .filter(m => /Данные магазина [A-Za-z0-9]+ успешно собраны\. Результаты доступны на страницах сервиса/.test(m.text))
-          .filter(m => (now - new Date(m.created_at)) > 60000 )
+          .filter(m => (now - new Date(m.created_at)) < 60000 )
         
 
         // Если выходим если таких нет
