@@ -29,7 +29,7 @@ export const fetchMessages = createAsyncThunk(
 );
 
 const initialState = {
-    messages: [],
+    messages: undefined,
     isLoading: false,
     error: null,
 };

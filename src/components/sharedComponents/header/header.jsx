@@ -30,12 +30,12 @@ const Header = ({
     // получение и обновление сообщений
     useEffect(() => {
         let intervalId;
-        if (!messages || messages.length === 0) {
+        if (!messages) {
             dispatch(fetchMessages(authToken));
         } else {
             intervalId = setInterval(() => {
                 dispatch(fetchMessages(authToken));
-            }, 10000);
+            }, 60000);
         }
         return () => { intervalId && clearInterval(intervalId); }
     }, [authToken, messages]);
