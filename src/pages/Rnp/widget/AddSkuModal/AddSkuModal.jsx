@@ -99,7 +99,7 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku }) 
         return () => {
             abortController.abort('Отмена запроса');
         };
-    }, [isAddSkuModalVisible, page, request, shops]);
+    }, [isAddSkuModalVisible, page, request, shops, activeBrand]);
 
     useEffect(() => {
         return () => {
@@ -116,7 +116,7 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku }) 
             setPage(1)
         }
         setRequest((state) => !state);
-    }, [search, filters, activeBrand])
+    }, [search, filters])
 
     return (
         <>
