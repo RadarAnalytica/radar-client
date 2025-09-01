@@ -5,7 +5,7 @@ import { fetchRequestsMonitoringData, fetchRequestsMonitoringDataEasy } from '..
 import { actions as reqsMonitoringActions } from '../../../../redux/requestsMonitoring/requestsMonitoringSlice';
 import ErrorModal from '../../../../components/sharedComponents/modals/errorModal/errorModal';
 import { ConfigProvider, Table } from 'antd'
-import { newTableConfig, radarTableConfig } from '../../shared/configs/tableConfig';
+import { radarTableConfig } from '../../shared/configs/tableConfig';
 import { Table as RadarTable } from 'radar-ui';
 import 'radar-ui/dist/style.css'; 
 
@@ -37,28 +37,14 @@ const paginationTheme = {
 const TableWidget = ({ tableConfig, setTableConfig }) => {
     const dispatch = useAppDispatch()
     const containerRef = useRef(null) // реф скролл-контейнера (используется чтобы седить за позицией скрола)
-    const { requestData, requestStatus, requestObject, formType, tableConfig: tableSettings, pagination } = useAppSelector(store => store.requestsMonitoring)
-    console.log(requestObject)
-    console.log(pagination)
-    const updateTableConfig = (settings) => {
-        let newConfig = tableConfig;
-        newConfig = newConfig.map(col => ({
-            ...col,
-            children: col.children.map(child => {
-                const curr = settings.find(i => i.dataIndex === child.dataIndex);
-                return {
-                    ...child,
-                    hidden: !curr?.isActive
-                };
-            })
-        }))
-        newConfig = newConfig.map(_ => ({
-            ..._,
-            hidden: _.children.every(c => c.hidden)
-        }))
-        setTableConfig(newConfig)
-    };
-    const updateTableConfigTest = (config, settings) => {
+    const { requestData, requestStatus, requestObject, formType, pagination } = useAppSelector(store => store.requestsMonitoring)
+
+
+
+    const updateTableConfig = (config, settings) => {
+        if (!settings || !config) {
+            return radarTableConfig
+        }
         let newConfig = config;
         newConfig = newConfig.map(col => ({
             ...col,
@@ -93,13 +79,6 @@ const TableWidget = ({ tableConfig, setTableConfig }) => {
     }, [requestObject])
 
 
-    useEffect(() => {
-        updateTableConfig(tableSettings)
-    }, [tableSettings])
-
-    useEffect(() => {
-        updateTableConfig(tableSettings)
-    }, [])
 
 
     if (requestStatus.isLoading) {
@@ -125,30 +104,7 @@ const TableWidget = ({ tableConfig, setTableConfig }) => {
         )
     }
 
-    const sortFunc = (config) => {
-        if (requestObject?.sorting) {
-            const { sort_field, sort_order } = requestObject.sorting
 
-            let sortedConfig = config.map(_ => {
-                return {
-                    ..._,
-                    children: _.children?.map((i) => { return { ...i, sortOrder: sort_field === i.dataIndex ? sort_order : null, columnKey: i.dataIndex, } }),
-                }
-
-            })
-            return sortedConfig
-        } else {
-            let sortedConfig = config.map(_ => {
-                return {
-                    ..._,
-                    children: _.children?.map((i) => { return { ...i, sortOrder: null, columnKey: i.dataIndex, } }),
-                }
-
-            })
-            return updateTableConfigTest(sortedConfig, tableSettings)
-        }
-
-    }
 
 
 
@@ -180,7 +136,7 @@ const TableWidget = ({ tableConfig, setTableConfig }) => {
         setTableConfig(prevConfig => updateColumnWidth(prevConfig));
       };
 
-    return requestData && newTableConfig && (
+    return requestData && tableConfig && (
         <div className={styles.widget}>
             <div
                 className={styles.container}
@@ -188,7 +144,7 @@ const TableWidget = ({ tableConfig, setTableConfig }) => {
             >
                 <RadarTable
                     dataSource={requestData}
-                    config={sortFunc(tableConfig)}
+                    config={tableConfig}
                     resizeable
                     draggableColumns
                     onResize={onResizeGroup}

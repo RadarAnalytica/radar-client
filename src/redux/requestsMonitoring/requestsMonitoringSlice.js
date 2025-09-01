@@ -1,11 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { fetchRequestsMonitoringData, fetchRequestsMonitoringDataEasy } from './requestsMonitoringActions'
 import { optionsConfig } from "../../pages/skuFrequencyPage/shared";
-import { tableSettings } from "../../pages/skuFrequencyPage/shared/configs/tableConfig";
 
 const initialState = {
     optionsConfig: [...optionsConfig],
-    tableConfig: tableSettings,
     requestObject: undefined,
     requestStatus: {
         isLoading: false,
@@ -72,16 +70,6 @@ const requestsMonitoringSlice = createSlice({
             ...state,
             optionsConfig: [...optionsConfig]
            }
-        },
-        updateTableConfig: (state, action) => {
-            localStorage.setItem('rmTableConfig', JSON.stringify(action.payload))
-            state.tableConfig = JSON.parse(JSON.stringify(action.payload))
-        },
-        setDefaultTableConfig: (state) => {
-            return {
-                ...state,
-                //tableConfig: [...tableConfig]
-               }
         },
         resetState: () => {
             return initialState
