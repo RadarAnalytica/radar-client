@@ -73,39 +73,39 @@ export const Filters = ({
       fetchShopData();
       fetchFiltersData();
     }
-  }, [shops]);
+  }, []);
 
 
   //Данные магазина [A-Za-z0-9]+ успешно собраны\. Результаты доступны на страницах сервиса
   useEffect(() => {
     // Если это первая пачка сообщений, то данные актуальны и мы просто записываем сообщения для последующего сравнения
     if (!prevMessages?.current) {
-        prevMessages.current = messages;
-        return
+      prevMessages.current = messages;
+      return
     }
-    
+
     // Если это последующие сообщения ....
     if (messages && activeBrand?.id === 0 && prevMessages?.current) {
       // Ищем свежие сообщения
       let filteredMessages = messages.filter(m => !prevMessages.current.some(_ => _.id === m.id))
       // Выходим если свежих нет
-      if (!filteredMessages || filteredMessages.length === 0) {return}
+      if (!filteredMessages || filteredMessages.length === 0) { return }
       else {
         // Если свежие есть, то ищем интересующее нас (про сбор данных магазина) и полученные меньше минуты назад
         const now = Date.now();
         filteredMessages = filteredMessages
           .filter(m => /Данные магазина [A-Za-z0-9]+ успешно собраны\. Результаты доступны на страницах сервиса/.test(m.text))
-          .filter(m => (now - new Date(m.created_at)) > 60000 )
-        
+          .filter(m => (now - new Date(m.created_at)) > 60000)
+
 
         // Если выходим если таких нет
-        if (!filteredMessages || filteredMessages.length === 0) {return}
+        if (!filteredMessages || filteredMessages.length === 0) { return }
         else {
           // Если такие есить то перезапрашиваем фильтры и магазины
           fetchFiltersData();
           fetchShopData();
         }
-      } 
+      }
     }
     prevMessages.current = messages
   }, [messages])
@@ -158,10 +158,15 @@ export const Filters = ({
     activeBrand && localStorage.setItem('activeShop', JSON.stringify(activeBrand))
     let interval;
     if (activeBrand && !activeBrand.is_primary_collect) {
-      interval = setInterval(() => { fetchShopData() }, 30000)
+      interval = setInterval(() => {
+        // Проверять, нужно ли обновление
+        if (!shops || shops.length === 0) {
+          fetchShopData()
+        }
+      }, 30000)
     }
     return () => { interval && clearInterval(interval) }
-  }, [activeBrand, selectedRange]);
+  }, [activeBrand]);
 
   // это обект, который представляет опцию "все" ввиде магазина
   // const allShopOptionAsShopObject = {
@@ -231,7 +236,7 @@ export const Filters = ({
                   optionsData={i.groups.data}
                 />
               </div>}
-              {articleSelect &&<div className={styles.filters__inputWrapper}>
+              {articleSelect && <div className={styles.filters__inputWrapper}>
                 <MultiSelect
                   dispatch={dispatch}
                   filterActions={filterActions}
