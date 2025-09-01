@@ -23,203 +23,203 @@ export const COLUMNS = [
 export const ROWS = [
   {
     key: 'expected_marginality_data',
-    period: 'Прогноз. маржинальность, %',
+    period: 'Прогноз. маржинальность (%)',
     children: [
       {
         dataIndex: 'plan_marginality',
-        period: 'План. маржинальность, %',
+        period: 'План. маржинальность (%)',
       },
       {
         dataIndex: 'roi',
-        period: 'ROI, %',
+        period: 'ROI (%)',
       },
       {
         dataIndex: 'profit_per_one',
-        period: 'Прогноз. чистая прибыль на 1 ед., руб',
+        period: 'Прогноз. чистая прибыль на 1 ед. (руб)',
       },
       {
         dataIndex: 'net_profit',
-        period: 'Прогноз. чистая прибыль, руб',
+        period: 'Прогноз. чистая прибыль (руб)',
       },
       {
         dataIndex: 'drr_by_sales',
-        period: 'ДРР по продажам, %',
+        period: 'ДРР по продажам (%)',
       },
       {
         dataIndex: 'drr_by_orders',
-        period: 'ДРР по заказам, %',
+        period: 'ДРР по заказам (%)',
       },
       {
         dataIndex: 'orders_count',
-        period: 'Факт. заказы, шт',
+        period: 'Факт. заказы (шт)',
       },
       {
         dataIndex: 'orders_amount',
-        period: 'Факт. заказы, руб',
+        period: 'Факт. заказы (руб)',
       },
       {
         dataIndex: 'sales_count',
-        period: 'Прогноз. продажи, шт',
+        period: 'Прогноз. продажи (шт)',
       },
       {
         dataIndex: 'sales_spp_amount',
-        period: 'Прогноз. продажи по СПП, руб',
+        period: 'Прогноз. продажи до СПП (руб)',
       },
       {
         dataIndex: 'full_price',
-        period: 'Цена до СПП, руб',
+        period: 'Цена до СПП (руб)',
       },
       {
         dataIndex: 'price_spp',
-        period: 'Цена после СПП, руб',
+        period: 'Цена после СПП (руб)',
       },
       {
         dataIndex: 'discount',
-        period: 'Скидка МП, %',
+        period: 'Скидка МП (%)',
       },
       {
         dataIndex: 'buyout',
-        period: 'Процент выкупа, %',
+        period: 'Процент выкупа (%)',
       },
     ]
   },
   {
     key: 'rk_budget_data',
-    period: 'Бюджет РК, руб',
+    period: 'Бюджет РК (руб)',
     children: [
       {
         dataIndex: 'ctr',
-        period: 'CTR, %',
+        period: 'CTR (%)',
       },
       {
         dataIndex: 'cr',
-        period: 'CR, %',
+        period: 'CR (%)',
+      },
+      {
+        dataIndex: 'cpc',
+        period: 'CPC (руб)',
+        
+      },
+      {
+        dataIndex: 'cpm',
+        period: 'CPM (руб)',
       },
       {
         dataIndex: 'impressions',
-        period: 'Показы, шт',
+        period: 'Показы (шт)',
       },
       {
         dataIndex: 'clicks',
-        period: 'Клики, шт',
+        period: 'Клики (шт)',
       },
       {
         dataIndex: 'one_order_price',
-        period: 'Стоимость 1 заказа, руб',
+        period: 'Стоимость 1 заказа (руб)',
         
       },
       {
         dataIndex: 'one_sale_price',
-        period: 'Стоимость 1 продажи, руб',
-      },
-      {
-        dataIndex: 'cpc',
-        period: 'CPC, руб',
-        
-      },
-      {
-        dataIndex: 'cpm',
-        period: 'CPM, руб',
-      },
-    ]
-  },
-  {
-    key: 'ark_budget_data',
-    period: 'Бюджет РК (АРК), руб',
-    children: [
-      {
-        dataIndex: 'ctr',
-        period: 'CTR, %',
-      },
-      {
-        dataIndex: 'impressions',
-        period: 'Показы, шт',
-      },
-      {
-        dataIndex: 'clicks',
-        period: 'Клики, шт',
-      },
-      {
-        dataIndex: 'cpc',
-        period: 'CPC, руб',
-      },
-      {
-        dataIndex: 'cpm',
-        period: 'CPM, руб',
+        period: 'Стоимость 1 продажи (руб)',
       },
     ]
   },
   {
     key: 'auction_rk_budget_data',
-    period: 'Бюджет РК (Аукцион), руб',
+    period: 'Бюджет РК (Аукцион) (руб)',
     children: [
       {
         dataIndex: 'ctr',
-        period: 'CTR, %',
+        period: 'CTR (%)',
       },
       {
         dataIndex: 'impressions',
-        period: 'Показы, шт',
+        period: 'Показы (шт)',
       },
       {
         dataIndex: 'clicks',
-        period: 'Клики, шт',
+        period: 'Клики (шт)',
       },
       {
         dataIndex: 'cpc',
-        period: 'CPC, руб',
+        period: 'CPC (руб)',
       },
       {
         dataIndex: 'cpm',
-        period: 'CPM, руб',
+        period: 'CPM (руб)',
+      },
+    ]
+  },
+  {
+    key: 'ark_budget_data',
+    period: 'Бюджет РК (АРК) (руб)',
+    children: [
+      {
+        dataIndex: 'ctr',
+        period: 'CTR (%)',
+      },
+      {
+        dataIndex: 'impressions',
+        period: 'Показы (шт)',
+      },
+      {
+        dataIndex: 'clicks',
+        period: 'Клики (шт)',
+      },
+      {
+        dataIndex: 'cpc',
+        period: 'CPC (руб)',
+      },
+      {
+        dataIndex: 'cpm',
+        period: 'CPM (руб)',
       },
     ]
   },
   {
     key: 'transition_data',
-    period: 'Переходы, шт',
+    period: 'Переходы (шт)',
     children: [
       {
         dataIndex: 'cart_addition_count',
-        period: 'Добавление в корзину, шт',
+        period: 'Добавление в корзину (шт)',
       },
       {
         dataIndex: 'cart_addition_percentage',
-        period: 'Добавление в корзину, %',
+        period: 'Добавление в корзину (%)',
       },
       {
         dataIndex: 'order_addition_percentage',
-        period: 'Добавление в заказ, %',
+        period: 'Добавление в заказ (%)',
       },
     ]
   },
   {
     key: 'taxes_data',
-    period: 'Налоги, %',
+    period: 'Расходы и налоги (%)',
     children: [
       {
         dataIndex: 'tax_per_one',
-        period: 'Налоги на 1 ед., руб',
+        period: 'Налоги на 1 ед. (руб)',
       },
       {
         dataIndex: 'logistics_per_one',
-        period: 'Логистика на 1 ед., руб',
+        period: 'Логистика на 1 ед. (руб)',
       },
       {
         dataIndex: 'commission_acquiring_per_one',
-        period: 'Комиссия + экв. на 1 ед., руб',
+        period: 'Комиссия + экв. на 1 ед. (руб)',
       },
       {
         dataIndex: 'commission_acquiring_percentage',
-        period: 'Комиссия + экв., %',
+        period: 'Комиссия + экв. (%)',
       },
       {
         dataIndex: 'storage_per_one',
-        period: 'Хранение на 1 ед., руб',
+        period: 'Хранение на 1 ед. (руб)',
       },
       {
         dataIndex: 'cost_per_one',
-        period: 'Себестоимость на 1 ед., руб',
+        period: 'Себестоимость на 1 ед. (руб)',
       },
     ]
   },

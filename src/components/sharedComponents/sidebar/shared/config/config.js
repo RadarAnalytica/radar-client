@@ -89,6 +89,13 @@ export const menuConfig = [
                 isNew: false
             },
             {
+                id: 8,
+                url: '/rnp',
+                label: 'Рука на пульсе (РНП)',
+                isActive: true,
+                isNew: true,
+            },
+            {
                 id: 2,
                 url: '/main', //исправить
                 label: 'По неделям',
@@ -172,6 +179,7 @@ export const menuConfig = [
                 url: '/selfcost',
                 label: 'Себестоимость',
                 isActive: true,
+                hasTopBorder: true,
             },
             {
                 id: 5,
@@ -179,13 +187,6 @@ export const menuConfig = [
                 label: 'Группы товаров',
                 isActive: true,
                 isNew: false,
-            },
-            {
-                id: 6,
-                url: '/rnp',
-                label: 'Рука на пульсе',
-                isActive: true,
-                isNew: true,
             },
         ]
     },
