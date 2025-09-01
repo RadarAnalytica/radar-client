@@ -41,11 +41,10 @@ export const Filters = ({ open=true }) => {
 
   // 0. Получаем данные магазинов
   useEffect(() => {
-    if (!shops || shops.length === 0) {
-      // fetchShopData();
+    if ((!shops || shops.length === 0) && open) {
       fetchFiltersData();
     }
-  }, [filters, shops, open]);
+  }, [open]);
 
   // 1.1 - проверяем магазин в локал сторадже. Если находим, то устанавливаем его как выбранный, если нет, то берем первый в списке
   // 1.2 - если магазин уже установлен, но по нему еще не собраны данные (это проверяем в п2.2) - проверяем магазин после апдейта каждые 30 сек (см п2.2)
@@ -62,28 +61,6 @@ export const Filters = ({ open=true }) => {
     }
   }, [shops, open])
   //--------------------------------------------------------------------------------//
-
-
-  // обновляем раз в 30 секунд магазины если данные не собраны
-  useEffect(() => {
-    let interval;
-    if (activeBrand && !activeBrand.is_primary_collect) {
-      interval = setInterval(() => { fetchFiltersData() }, 30000)
-    }
-    return () => { interval && clearInterval(interval) }
-  }, [activeBrand, selectedRange]);
-
-  // это обект, который представляет опцию "все" ввиде магазина
-  // const allShopOptionAsShopObject = {
-  //   id: 0,
-  //   brand_name: "Все",
-  //   is_active: true,
-  //   is_primary_collect: shops?.some(_ => _.is_primary_collect),
-  //   is_valid: true,
-  // };
-
-  // это массив магазинов с добавлением опции "все"
-  //const shopArrayFormSelect = [allShopOptionAsShopObject, ...shops]
 
   return (
     <div className={styles.filters}>

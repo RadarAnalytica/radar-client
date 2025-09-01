@@ -88,9 +88,7 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku }) 
                 setLocalskuDataArticle(response);
                 setSkuLoading(false);
             } catch (error) {
-                if (error.message == 'Отмена запроса') {
-					setSkuLoading(true)
-				} else {
+				if (error.message !== 'Отмена запроса') {
                     console.error('updateskuDataArticle error', error);
                 }
             }
@@ -101,7 +99,7 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku }) 
         return () => {
             abortController.abort('Отмена запроса');
         };
-    }, [isAddSkuModalVisible, page, request]);
+    }, [isAddSkuModalVisible, page, request, shops, activeBrand]);
 
     useEffect(() => {
         return () => {
@@ -118,7 +116,7 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku }) 
             setPage(1)
         }
         setRequest((state) => !state);
-    }, [search, filters, activeBrand, shops])
+    }, [search, filters])
 
     return (
         <>

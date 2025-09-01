@@ -74,10 +74,10 @@ export const Filters = ({
   // 0. Получаем данные магазинов
   useEffect(() => {
     if (!shops || shops.length === 0) {
-      fetchShopData();
-      fetchFiltersData();
+        fetchShopData();
+        fetchFiltersData();
     }
-  }, [shops]);
+}, []);
 
 
   //Данные магазина [A-Za-z0-9]+ успешно собраны\. Результаты доступны на страницах сервиса
@@ -99,7 +99,7 @@ export const Filters = ({
         const now = Date.now();
         filteredMessages = filteredMessages
           .filter(m => /Данные магазина [A-Za-z0-9]+ успешно собраны\. Результаты доступны на страницах сервиса/.test(m.text))
-          .filter(m => (now - new Date(m.created_at)) > 60000 )
+          .filter(m => (now - new Date(m.created_at)) < 60000 )
         
 
         // Если выходим если таких нет
@@ -162,10 +162,15 @@ export const Filters = ({
     activeBrand && localStorage.setItem('activeShop', JSON.stringify(activeBrand))
     let interval;
     if (activeBrand && !activeBrand.is_primary_collect) {
-      interval = setInterval(() => { fetchShopData() }, 30000)
+        interval = setInterval(() => { 
+            // Проверять, нужно ли обновление
+            if (!shops || shops.length === 0) {
+                fetchShopData() 
+            }
+        }, 30000)
     }
     return () => { interval && clearInterval(interval) }
-  }, [activeBrand, selectedRange]);
+}, [activeBrand]);
 
   // это обект, который представляет опцию "все" ввиде магазина
   // const allShopOptionAsShopObject = {
