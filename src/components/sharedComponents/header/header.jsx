@@ -40,10 +40,6 @@ const Header = ({
         return () => { intervalId && clearInterval(intervalId); }
     }, [authToken, messages]);
 
-    useEffect(() => {
-        dispatch(fetchMessages(authToken));
-    }, []);
-
     // пропс для кнопки внутри меню
     const menuPopoverCloseHandler = () => {
         setIsMenuPopoverVisible(false);
