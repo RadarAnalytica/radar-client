@@ -133,7 +133,6 @@ function App() {
             <Route path='/subscription' element={<ProtectedRoute testPeriodProtected authGuardType="redirect"><Subscriptions /></ProtectedRoute>} />
             <Route path='/schedule' element={<ProtectedRoute expireProtected authGuardType="redirect"><Schedule /></ProtectedRoute>} />
             <Route path='/product/:id' element={<ProtectedRoute><StockAnalysisGlitter /></ProtectedRoute>} />
-
             <Route path='/report-profit-loss' element={<ProtectedRoute testPeriodProtected onboardProtected expireProtected routeRuName='Отчет о прибыли и убытках'><ReportProfitLoss /></ProtectedRoute>} />
             <Route path='/report-week' element={<ProtectedRoute testPeriodProtected expireProtected onboardProtected routeRuName='По неделям'><ReportWeek /></ProtectedRoute>} />
             <Route path='/operations-costs' element={<ProtectedRoute userRoleProtected testPeriodProtected expireProtected onboardProtected routeRuName='Операционные расходы'><OperationsCosts /></ProtectedRoute>} />

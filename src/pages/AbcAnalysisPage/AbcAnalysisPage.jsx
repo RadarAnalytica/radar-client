@@ -139,7 +139,7 @@ const AbcAnalysisPage = () => {
 		} else {
 			shops.length > 0 && setLoading(false);
 		}
-	}, [activeBrand, viewType, days, filters, page, sorting]);
+	}, [viewType, filters, page, sorting]);
 
 	useEffect(() => {
 		setPage(1)
@@ -149,21 +149,21 @@ const AbcAnalysisPage = () => {
 
 	// 2.1.1 Проверям изменился ли магазин при обновлении токена
 
-	useEffect(() => {
-		if (
-			activeBrand &&
-			activeBrand.is_primary_collect &&
-			activeBrand.is_primary_collect !== primaryCollect
-		) {
-			setPrimaryCollect(activeBrand.is_primary_collect);
-			updateDataAbcAnalysis(
-				viewType,
-				authToken,
-				days,
-				activeBrand.id.toString()
-			);
-		}
-	}, [authToken]);
+	// useEffect(() => {
+	// 	if (
+	// 		activeBrand &&
+	// 		activeBrand.is_primary_collect &&
+	// 		activeBrand.is_primary_collect !== primaryCollect
+	// 	) {
+	// 		setPrimaryCollect(activeBrand.is_primary_collect);
+	// 		updateDataAbcAnalysis(
+	// 			viewType,
+	// 			authToken,
+	// 			days,
+	// 			activeBrand.id.toString()
+	// 		);
+	// 	}
+	// }, [authToken]);
 
 	const handleUpdateAbcAnalysis = () => {
 		setTimeout(() => {
@@ -234,7 +234,7 @@ const AbcAnalysisPage = () => {
 			const currShop = shops.find((_) => _.id === activeBrand.id);
 			setShopStatus(currShop);
 		}
-	}, [activeBrand, shops, filters]);
+	}, [shops, filters]);
 
 	if (user?.subscription_status === 'expired') {
 		return <NoSubscriptionPage title={'ABC-анализ'} />;
