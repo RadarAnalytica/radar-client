@@ -106,7 +106,7 @@ const SkuFrequencyPage = () => {
                     </div>}
                 </div>
                 <TableWidget
-                    tableConfig={tableConfig}
+                    tableConfig={[...tableConfig]}
                     setTableConfig={setTableConfig}
                 />
                 <div style={{ height: 30, minHeight: 30 }}></div>

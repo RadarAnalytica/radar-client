@@ -17,18 +17,19 @@ import { actions as reqsMonitoringActions } from '../../../../redux/requestsMoni
 
 const getReplicatedArray = (array, fields) => {
     console.log(fields)
-    array.forEach(_ => {
-        if (_.children) {
-            _.children.forEach(child => {
+    let replicatedArray = array.map(_ => {
+        return {
+            ..._,
+            children: _?.children?.map(child => {
                 return {
                     ...child,
-                    hidden: !fields[child.dataIndex]
+                    hidden: child.fixed ? undefined : !fields[child.dataIndex]
                 }
             })
         }
     })
-    console.log(array)
-    return array
+    console.log(replicatedArray)
+    return replicatedArray
 }
 
 
@@ -75,19 +76,10 @@ const TableSettingsWidget = ({ tableConfig, setTableConfig }) => {
 
     const updateOptionsConfig = (fields) => {
         const updatedConfig = getReplicatedArray(tableConfig, fields)
-        // for (const key in fields) {
-        //     const index = currValues.findIndex(_ => _.dataIndex === key);
-        //     if (index !== -1) {
-        //         currValues[index] = {
-        //             ...currValues[index],
-        //             isActive: fields[key]
-        //         }
-        //     }
-        // }
-        // dispatch(reqsMonitoringActions.updateTableConfig(currValues))
-        // setIsModalOpen(false)
-        // setSearchState('')
-        // searchForm.resetFields()
+        setIsModalOpen(false)
+        searchForm.resetFields()
+        setSearchState('')
+        setTableConfig((prev) => updatedConfig)
     }
     useEffect(() => {
         if (!filter) {

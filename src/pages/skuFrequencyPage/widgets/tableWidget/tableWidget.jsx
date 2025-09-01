@@ -157,7 +157,7 @@ const TableWidget = ({ tableConfig, setTableConfig }) => {
                     }}
                     onColumnReorder={(newConfig) => {
                       console.log('onColumnReorder grouped', { newConfig })
-                      setTableConfig(newConfig)
+                      setTableConfig((prev) => newConfig)
                     }}
                     pagination={{
                       current: pagination.page,
