@@ -1546,8 +1546,10 @@ export const ServiceFunctions = {
 			return res.json();
 
 		} catch(error) {
-			console.error('getRnpProducts ', error);
-			throw new Error(error);
+			if (error !== 'Отмена запроса') {
+				console.error('getRnpProducts ', error);
+				throw new Error(error);
+			}
 		}
 	},
 	deleteRnpId: async(token, id) => {
