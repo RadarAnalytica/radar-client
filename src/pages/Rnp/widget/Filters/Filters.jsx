@@ -12,27 +12,19 @@ export const Filters = ({
   setLoading,
   shopSelect = true,
   timeSelect = true,
-  skuFrequency = false,
   brandSelect = true,
   articleSelect = true,
   groupSelect = true,
   categorySelect = true,
-  weekSelect = false,
-  weekOptions,
-  weekValue,
-  weekHandler,
-  monthSelect = false,
-  monthHandler,
-  monthValue,
-  tempPageCondition
 }) => {
 
   // ------ база ------//
   const { user, authToken } = useContext(AuthContext);
-  const dispatch = useAppDispatch()
-  const { activeBrand, selectedRange, filters, shops } = useAppSelector(store => store.filtersRnp)
-  const { messages } = useAppSelector((state) => state.messagesSlice);
-  const prevMessages = useRef()
+  const dispatch = useAppDispatch();
+  const { activeBrand, shops, filters } = useAppSelector(store => store.filtersRnp);
+  // const filters = useAppSelector((state) => state.filtersRnp);
+  // const { messages } = useAppSelector((state) => state.messagesSlice);
+  // const prevMessages = useRef()
   const filtersState = useAppSelector(store => store.filtersRnp)
   //const shops = useAppSelector((state) => state.shopsSlice.shops);
   //--------------------//
@@ -45,17 +37,6 @@ export const Filters = ({
   }
   //- -----------------------------------------//
 
-  // ------- Фетч массива магазинов -------------//
-  const fetchShopData = async () => {
-    try {
-      if (user.subscription_status !== null) {
-        dispatch(fetchShops(authToken));
-      }
-    } catch (error) {
-      console.error("Error fetching initial data:", error);
-    }
-  };
-  //---------------------------------------------//
   // ------- Фетч фильтров -------------//
   const fetchFiltersData = async () => {
     try {
@@ -66,11 +47,9 @@ export const Filters = ({
   };
   //---------------------------------------------//
 
-
   // 0. Получаем данные магазинов
   useEffect(() => {
     if (!shops || shops.length === 0) {
-      fetchShopData();
       fetchFiltersData();
     }
   }, []);

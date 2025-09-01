@@ -19,15 +19,17 @@ import DataCollectWarningBlock from '../../components/sharedComponents/dataColle
 import SelfCostWarningBlock from '../../components/sharedComponents/selfCostWraningBlock/selfCostWarningBlock';
 import { actions as rnpSelectedActions } from '../../redux/rnpSelected/rnpSelectedSlice'
 import ErrorModal from '../../components/sharedComponents/modals/errorModal/errorModal';
+import { fetchRnpFilters } from '../../redux/filtersRnp/filterRnpActions';
+import { actions as filterActions } from '../../redux/filtersRnp/filtersRnpSlice'
 
 export default function Rnp() {
-	const { authToken } = useContext(AuthContext);
+	const { user, authToken } = useContext(AuthContext);
 	const dispatch = useAppDispatch();
-	const { activeBrand, selectedRange } = useAppSelector(
+	const { activeBrand, selectedRange, shops } = useAppSelector(
 		(state) => state.filtersRnp
 	);
 	const filters = useAppSelector((state) => state.filtersRnp);
-	const { shops } = useAppSelector((state) => state.shopsSlice);
+	// const { shops } = useAppSelector((state) => state.shopsSlice);
 
 	const shopStatus = useMemo(() => {
 		if (!activeBrand || !shops) return null;
@@ -51,6 +53,58 @@ export default function Rnp() {
 	const rnpSelected = useAppSelector((state) => state.rnpSelected);
 
 	const initLoad = useRef(true);
+
+	const fetchFiltersData = async () => {
+		try {
+			dispatch(fetchRnpFilters(authToken))
+		} catch (error) {
+			console.error("Error fetching initial data:", error);
+		}
+	};
+
+	useEffect(() => {
+		if (!shops || shops.length === 0) {
+      // fetchShopData();
+			fetchFiltersData();
+    }
+	}, [shops])
+	
+	useEffect(() => {
+		if (shops && shops.length > 0 && !activeBrand) {
+			// достаем сохраненный магазин
+			const shopFromLocalStorage = localStorage.getItem('activeShop')
+			// если сохранненный магазин существует и у нас есть массив магазинов....
+			if (shopFromLocalStorage && shopFromLocalStorage !== 'null' && shopFromLocalStorage !== 'undefined') {
+				// парсим сохраненный магазин
+				const { id } = JSON.parse(shopFromLocalStorage);
+				// проверяем есть ли магазин в массиве (это на случай разных аккаунтов)
+				const isInShops = shops.some(_ => _.id === id);
+				// Если магазин есть в массиве (т.е. валиден для этого аккаунта) то...
+				if (isInShops) {
+					//....устанавливаем как текущий
+					dispatch(filterActions.setActiveShop(shops.find(_ => _.id === id)))
+					// Если нет, то...
+				} else {
+					// ...Обновляем локал - сохраняем туда первый из списка
+					localStorage.setItem('activeShop', JSON.stringify(shops[0]))
+					// ...устанавливаем текущим первый из списка
+					dispatch(filterActions.setActiveShop(shops[0]))
+				}
+			} else {
+				// ...Обновляем локал - сохраняем туда первый из списка
+				localStorage.setItem('activeShop', JSON.stringify(shops[0]))
+				// ...устанавливаем текущим первый из списка
+				dispatch(filterActions.setActiveShop(shops[0]))
+			}
+		}
+
+		if (shops && activeBrand && !activeBrand.is_primary_collect) {
+			const currentShop = shops.find(shop => shop.id === activeBrand.id)
+			if (currentShop?.is_primary_collect) {
+				dispatch(filterActions.setActiveShop(currentShop))
+			}
+		}
+	}, [shops])
 
 	const [loading, setLoading] = useState(true);
 	const [addSkuModalShow, setAddSkuModalShow] = useState(false);
@@ -303,55 +357,6 @@ export default function Rnp() {
 		if (!activeBrand && !activeBrand?.is_primary_collect){
 			return
 		}
-		// const { signal } = abortController;
-
-		// const updateSkuListByArticle = async () => {
-		// 	setLoading(true);
-		// 	try {
-		// 		const response = await ServiceFunctions.postRnpByArticle(
-		// 			authToken,
-		// 			selectedRange,
-		// 			activeBrand.id,
-		// 			filters,
-		// 			signal
-		// 		);
-		// 		dataToSkuList(response);
-		// 		if (initLoad.current) {
-		// 			initLoad.current = false;
-		// 			dispatch(rnpSelectedActions.setList(response?.data?.map((article) => article.article_data.wb_id)));
-		// 		}
-		// 		setLoading(false);
-		// 	} catch (error) {
-		// 		if (error.message == 'AbortError') {
-		// 			setLoading(true)
-		// 		} else {
-		// 			console.error('updateSkuListByArticle error', error)
-		// 			setLoading(false)
-		// 		}
-		// 	}
-		// };
-
-		// const updateSkuListSummary = async () => {
-		// 	setLoading(true);
-		// 	try {
-		// 		const response = await ServiceFunctions.postRnpSummary(
-		// 			authToken,
-		// 			selectedRange,
-		// 			activeBrand.id,
-		// 			filters,
-		// 			signal
-		// 		);
-		// 		dataToSkuTotalList(response);
-		// 		setLoading(false);
-		// 	} catch (error) {
-		// 		if (error.message == 'AbortError') {
-		// 			setLoading(true)
-		// 		} else {
-		// 			console.error('updateSkuListSummary error', error)
-		// 			setLoading(false)
-		// 		}
-		// 	}
-		// };
 
 		if (activeBrand && activeBrand.is_primary_collect) {
 			if (view === 'sku'){
@@ -410,10 +415,6 @@ export default function Rnp() {
 						</div>
 					</div>
 				)}
-
-				<div style={{display: 'none'}}>
-					<Filters />
-				</div>
 				
 				{!loading  && shopStatus && !shopStatus?.is_primary_collect && (
 					<>
