@@ -39,31 +39,6 @@ const TableWidget = ({ tableConfig, setTableConfig }) => {
     const containerRef = useRef(null) // реф скролл-контейнера (используется чтобы седить за позицией скрола)
     const { requestData, requestStatus, requestObject, formType, pagination } = useAppSelector(store => store.requestsMonitoring)
 
-
-
-    const updateTableConfig = (config, settings) => {
-        if (!settings || !config) {
-            return radarTableConfig
-        }
-        let newConfig = config;
-        newConfig = newConfig.map(col => ({
-            ...col,
-            children: col.children.map(child => {
-                const curr = settings.find(i => i.dataIndex === child.dataIndex);
-                return {
-                    ...child,
-                    hidden: !curr?.isActive
-                };
-            })
-        }))
-        newConfig = newConfig.map(_ => ({
-            ..._,
-            hidden: _?.children?.every(c => c?.hidden)
-        }))
-
-        return newConfig
-    };
-
     //задаем начальную дату
     useEffect(() => {
         if (requestObject && formType === 'complex') {
@@ -73,7 +48,7 @@ const TableWidget = ({ tableConfig, setTableConfig }) => {
             dispatch(fetchRequestsMonitoringDataEasy({ requestObject, requestData }))
         }
         if (containerRef?.current) {
-            console.log('scrollTo', { top: 0, behavior: 'smooth' })
+            //console.log('scrollTo', { top: 0, behavior: 'smooth' })
             containerRef.current.scrollTo({ top: 0, behavior: 'smooth' })
         }
     }, [requestObject])
@@ -109,7 +84,7 @@ const TableWidget = ({ tableConfig, setTableConfig }) => {
 
 
     const onResizeGroup = (columnKey, width) => {
-        console.log('Column resized:', columnKey, width);
+        //console.log('Column resized:', columnKey, width);
     
         // Обновляем конфигурацию колонок с группированной структурой
         const updateColumnWidth = (columns) => {
@@ -151,12 +126,12 @@ const TableWidget = ({ tableConfig, setTableConfig }) => {
                     stickyHeader
                     preset="radar-table-simple"
                     onSort={(sort_field, sort_order) => { 
-                        console.log('sorting', { sort_field, sort_order }) 
+                        //console.log('sorting', { sort_field, sort_order }) 
                         dispatch(reqsMonitoringActions.updatePagination({ page: 1 }))
                         dispatch(reqsMonitoringActions.updateRequestObject({ sorting: { sort_field, sort_order } }))
                     }}
                     onColumnReorder={(newConfig) => {
-                      console.log('onColumnReorder grouped', { newConfig })
+                      //console.log('onColumnReorder grouped', { newConfig })
                       setTableConfig((prev) => newConfig)
                     }}
                     pagination={{
@@ -164,10 +139,13 @@ const TableWidget = ({ tableConfig, setTableConfig }) => {
                       pageSize: pagination.limit,
                       total: pagination.total_pages,
                       onChange: (page, pageSize) => { 
-                        console.log('pagination', { page, pageSize }) 
+                        //console.log('pagination', { page, pageSize }) 
                         dispatch(reqsMonitoringActions.updatePagination({ page }))
                       },
                       showQuickJumper: true,
+                    }}
+                    paginationContainerStyle={{
+                        bottom: 0
                     }}
                 />
             </div>

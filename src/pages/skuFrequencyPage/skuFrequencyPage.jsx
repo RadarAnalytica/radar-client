@@ -20,7 +20,7 @@ import ErrorModal from '../../components/sharedComponents/modals/errorModal/erro
 
 
 const SkuFrequencyPage = () => {
-    const [tableConfig, setTableConfig] = useState(radarTableConfig)
+    const [tableConfig, setTableConfig] = useState()
     const { requestData, formType, requestObject, isLoadingForButton } = useAppSelector(store => store.requestsMonitoring)
     const [downloadStatus, setDownloadStatus] = useState({
         isLoading: false,
@@ -53,6 +53,56 @@ const SkuFrequencyPage = () => {
             dispatch(filterActions.setSkuFrequencyMode('Простой'))
         }
     }, [])
+
+    useEffect(() => {
+        let savedTableConfig = localStorage.getItem('MonitoringTableConfig')
+        console.log('savedTableConfig', savedTableConfig)
+        setTableConfig(radarTableConfig)
+        if (savedTableConfig) {
+            // savedTableConfig = JSON.parse(savedTableConfig)
+            // savedTableConfig = savedTableConfig.map(item => {
+            //     const initItem = radarTableConfig.find(i => i.key === item.key)
+
+            //     if (initItem) {
+            //         return {
+            //             ...item,
+            //             render: initItem.render,
+            //             children: initItem.children.map(child => {
+            //                 const initChild = initItem.children.find(i => i.dataIndex === child.dataIndex)
+            //                 if (initChild) {
+            //                     return {
+            //                         ...child,
+            //                         render: initChild.render
+            //                     }
+            //                 } else {
+            //                     return child
+            //                 }
+            //             })
+            //         }
+            //     } else {
+            //         return item
+            //     }
+            // })
+            // setTableConfig(savedTableConfig)
+        } else {
+            setTableConfig(radarTableConfig)
+        }
+    }, [])
+
+    useEffect(() => {
+        if (tableConfig) {
+            console.log('tableConfig', tableConfig)
+            const normalizedTableConfig = tableConfig.map(item => ({
+                ...item,
+                render: undefined,
+                children: item.children.map(child => ({
+                    ...child,
+                    render: undefined
+                }))
+            }))
+            localStorage.setItem('MonitoringTableConfig', JSON.stringify(normalizedTableConfig))
+        }
+    }, [tableConfig])
 
     return (
         <main className={styles.page}>
@@ -99,14 +149,14 @@ const SkuFrequencyPage = () => {
                             handleDownload={downloadHandler}
                             loading={downloadStatus.isLoading}
                         />
-                        <TableSettingsWidget
-                            tableConfig={tableConfig}
+                       {tableConfig && <TableSettingsWidget
+                            tableConfig={[...tableConfig]}
                             setTableConfig={setTableConfig}
-                        />
+                        />}
                     </div>}
                 </div>
                 <TableWidget
-                    tableConfig={[...tableConfig]}
+                    tableConfig={tableConfig}
                     setTableConfig={setTableConfig}
                 />
                 <div style={{ height: 30, minHeight: 30 }}></div>

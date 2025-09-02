@@ -12,14 +12,13 @@ import {
     Input,
 } from 'antd';
 import { useAppSelector, useAppDispatch } from '../../../../redux/hooks';
-import { actions as reqsMonitoringActions } from '../../../../redux/requestsMonitoring/requestsMonitoringSlice';
 
 
 const getReplicatedArray = (array, fields) => {
-    console.log(fields)
     let replicatedArray = array.map(_ => {
         return {
             ..._,
+            hidden: _.children?.every(child => !fields[child.dataIndex]),
             children: _?.children?.map(child => {
                 return {
                     ...child,
@@ -28,7 +27,6 @@ const getReplicatedArray = (array, fields) => {
             })
         }
     })
-    console.log(replicatedArray)
     return replicatedArray
 }
 
@@ -101,13 +99,13 @@ const TableSettingsWidget = ({ tableConfig, setTableConfig }) => {
         }
     }, [form, isModalOpen])
 
-    useEffect(() => {
-        let savedTableConfig = localStorage.getItem('rmTableConfig');
-        if (savedTableConfig) {
-            savedTableConfig = JSON.parse(savedTableConfig);
-            //dispatch(reqsMonitoringActions.updateTableConfig(savedTableConfig))
-        }
-    }, [])
+    // useEffect(() => {
+    //     let savedTableConfig = localStorage.getItem('rmTableConfig');
+    //     if (savedTableConfig) {
+    //         savedTableConfig = JSON.parse(savedTableConfig);
+    //         //dispatch(reqsMonitoringActions.updateTableConfig(savedTableConfig))
+    //     }
+    // }, [])
 
 
 
