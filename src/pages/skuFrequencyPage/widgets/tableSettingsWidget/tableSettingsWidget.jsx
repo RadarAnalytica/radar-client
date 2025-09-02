@@ -18,7 +18,13 @@ const getReplicatedArray = (array, fields) => {
     let replicatedArray = array.map(_ => {
         return {
             ..._,
-            hidden: _.children?.every(child => !fields[child.dataIndex]),
+            hidden: _.children?.every(child => {
+                if (child.fixe || fields[child.dataIndex] === undefined) {
+                    return undefined
+                } else {
+                    return !fields[child.dataIndex]
+                }
+            }),
             children: _?.children?.map(child => {
                 return {
                     ...child,
@@ -27,6 +33,7 @@ const getReplicatedArray = (array, fields) => {
             })
         }
     })
+    console.log('replicatedArray', replicatedArray)
     return replicatedArray
 }
 
@@ -34,11 +41,9 @@ const getReplicatedArray = (array, fields) => {
 
 
 const TableSettingsWidget = ({ tableConfig, setTableConfig }) => {
-    const dispatch = useAppDispatch()
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [checkAllButtonState, setCheckAllButtonState] = useState('Выбрать все')
     const [searchState, setSearchState] = useState('')
-    // const { tableConfig } = useAppSelector(store => store.requestsMonitoring)
     const [form] = Form.useForm()
     const [searchForm] = Form.useForm()
     const filter = Form.useWatch('filter', searchForm)
@@ -77,6 +82,15 @@ const TableSettingsWidget = ({ tableConfig, setTableConfig }) => {
         setIsModalOpen(false)
         searchForm.resetFields()
         setSearchState('')
+        const normalizedTableConfig = updatedConfig.map(item => ({
+            ...item,
+            render: undefined,
+            children: item.children.map(child => ({
+                ...child,
+                render: undefined
+            }))
+        }))
+        localStorage.setItem('MonitoringTableConfig', JSON.stringify(normalizedTableConfig))
         setTableConfig((prev) => updatedConfig)
     }
     useEffect(() => {
@@ -98,15 +112,6 @@ const TableSettingsWidget = ({ tableConfig, setTableConfig }) => {
             }
         }
     }, [form, isModalOpen])
-
-    // useEffect(() => {
-    //     let savedTableConfig = localStorage.getItem('rmTableConfig');
-    //     if (savedTableConfig) {
-    //         savedTableConfig = JSON.parse(savedTableConfig);
-    //         //dispatch(reqsMonitoringActions.updateTableConfig(savedTableConfig))
-    //     }
-    // }, [])
-
 
 
 
