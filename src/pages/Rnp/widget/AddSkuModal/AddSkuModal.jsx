@@ -66,9 +66,17 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku }) 
     }
 
     useEffect(() => {
-        if (!activeBrand && isAddSkuModalVisible){
+        if ( page !== 1 ){
+            setPage(1)
+        }
+        setRequest((state) => !state);
+    }, [search, filters, shopStatus])
+
+    useEffect(() => {
+        if (!activeBrand){
             return
         }
+
         const abortController = new AbortController();
         const { signal } = abortController;
 
@@ -99,25 +107,15 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku }) 
         return () => {
             abortController.abort('Отмена запроса');
         };
-    }, [isAddSkuModalVisible, page, request, shops]);
+    }, [page, request, shops, activeBrand]);
 
     useEffect(() => {
         return () => {
-            if (!isAddSkuModalVisible){
-                setPage(1);
-                setSearch(null);
-                dispatch(filterActions.setActiveShop(null));
-            }
+            setPage(1);
+            setSearch(null);
+            dispatch(filterActions.setActiveShop(null));
         }
-    }, [isAddSkuModalVisible])
-
-    useEffect(() => {
-        console.log('search, filters, activeBrand')
-        if ( page !== 1 ){
-            setPage(1)
-        }
-        setRequest((state) => !state);
-    }, [search, filters])
+    }, [])
 
     return (
         <>
