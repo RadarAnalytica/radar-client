@@ -23,9 +23,9 @@ export const Filters = ({
   const dispatch = useAppDispatch();
   const { activeBrand, shops, filters } = useAppSelector(store => store.filtersRnp);
   // const filters = useAppSelector((state) => state.filtersRnp);
-  // const { messages } = useAppSelector((state) => state.messagesSlice);
-  // const prevMessages = useRef()
   const filtersState = useAppSelector(store => store.filtersRnp)
+  const { messages } = useAppSelector((state) => state.messagesSlice);
+  const prevMessages = useRef()
   //const shops = useAppSelector((state) => state.shopsSlice.shops);
   //--------------------//
 
