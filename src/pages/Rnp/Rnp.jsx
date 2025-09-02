@@ -11,7 +11,7 @@ import { useAppSelector, useAppDispatch } from '../../redux/hooks';
 import { ServiceFunctions } from '../../service/serviceFunctions';
 import { Filters } from './widget/Filters/Filters';
 import { COLUMNS, ROWS, renderFunction } from './config';
-import { format } from 'date-fns';
+import { format, isToday } from 'date-fns';
 import { ru } from 'date-fns/locale';
 import SkuList from './widget/SkuList/SkuList';
 import ModalDeleteConfirm from '../../components/sharedComponents/ModalDeleteConfirm/ModalDeleteConfirm';
@@ -197,6 +197,7 @@ export default function Rnp() {
 				item.table.columns.push(column)
 			}
 			for (const dateData of article.by_date_data.reverse()) {
+				if (!isToday(dateData.date)){
 				item.table.columns.push({
 					key: dateData.date,
 					dataIndex: dateData.date,
@@ -204,6 +205,7 @@ export default function Rnp() {
 					width: 160,
 					render: renderFunction
 				});
+				}
 			}
 			// сборка суммарных значений
 			for (const row of ROWS) {
@@ -272,6 +274,7 @@ export default function Rnp() {
 				item.table.columns.push(column)
 			}
 			for (const dateData of article.by_date_data.reverse()) {
+				if (!isToday(dateData.date)){
 				item.table.columns.push({
 					key: dateData.date,
 					dataIndex: dateData.date,
@@ -279,6 +282,7 @@ export default function Rnp() {
 					width: 160,
 					render: renderFunction
 				});
+				}
 			}
 			// сборка суммарных значений
 			for (const row of ROWS) {
