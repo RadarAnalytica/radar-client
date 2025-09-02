@@ -67,22 +67,22 @@ export const ContactForm = () => {
     // сбрасываем статус запроса
     useEffect(() => {
         let timeout;
-
+    
         if (requestStatus.isError || requestStatus.isSuccess) {
-            if (requestStatus.isSuccess) {
-                form.resetFields()
+            if (requestStatus.isSuccess && form) {
+                form.resetFields();
             }
             timeout = setTimeout(() => {
-                setRequestStatus(initRequestStatusObject)
-            }, 2000)
+                setRequestStatus(initRequestStatusObject);
+            }, 2000);
         }
-
+    
         return () => {
             if (timeout) {
-                clearTimeout(timeout)
+                clearTimeout(timeout);
             }
-        }
-    }, [requestStatus])
+        };
+    }, [requestStatus, form])
 
     return (
         <ConfigProvider
@@ -210,7 +210,7 @@ export const ContactForm = () => {
                     <Checkbox
                     >
                         <div className={styles.form__text} style={{ marginLeft: 10 }}>
-                            Я соглашаюсь с <Link style={{ color: '#6083E7' }} to={`${URL}/offer`}>Договором публичной оферты </Link>и <Link style={{ color: '#6083E7' }} to={`${URL}/politics`}>Политикой конфиденциальности</Link>
+                            Я соглашаюсь с <Link style={{ color: '#6083E7' }} to={`${URL}/offer`} target='_blank'>Договором публичной оферты </Link>{' '}и{' '}<Link style={{ color: '#6083E7' }} to={`${URL}/politics`} target='_blank'>Политикой конфиденциальности</Link>
                         </div>
                     </Checkbox>
                 </Form.Item>
