@@ -405,7 +405,7 @@ export default function Rnp() {
 			<section className={styles.page__content}>
 				{/* header */}
 				<div className={styles.page__headerWrapper}>
-					<Header title="Рука на пульсе"></Header>
+					<Header title="Рука на пульсе (РНП)"></Header>
 				</div>
 
 				{loading && (

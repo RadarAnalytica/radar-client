@@ -62,6 +62,7 @@ import tr2 from '../../assets/plugs/trend/trend-2.svg'
 //p&l report
 //import pl1 from '../../assets/plugs/pl-report/opiu-1.svg'
 import pl2 from '../../assets/plugs/pl-report/opiu-2.svg'
+import rnp from '../../assets/plugs/rnp/rnp-1.png'
 
 
 const plugsConfig = {
@@ -83,6 +84,7 @@ const plugsConfig = {
     "trending-requests": [tr1, tr2],
     "report-profit-loss": [pl2],
     "supplier-analysis": [sku1, sku2, sku3, sku4, sku5],
+    "rnp": [rnp],
 }
 
 const NoSubscriptionPlugPage = ({ title, pathname }) => {
