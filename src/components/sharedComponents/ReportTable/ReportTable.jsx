@@ -14,8 +14,10 @@ export default function ReportTable({ loading, columns, data, rowSelection = fal
   }, []);
 
 	const tableScroll = useMemo(() => {
+		console.log('!tableContainerRef.current', !tableContainerRef.current)
+		console.log('tableContainerRef.current', tableContainerRef.current)
 		if (!tableContainerRef.current){
-			return ({ x: '100%', y: 400 })
+			return ({ x: 'max-content', y: 400 })
 		}
 		const container = tableContainerRef.current;
 		const {width, height} = container.getBoundingClientRect();
