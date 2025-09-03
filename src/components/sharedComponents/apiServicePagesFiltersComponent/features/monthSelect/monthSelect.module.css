@@ -30,6 +30,11 @@
   color: '#1A1A1A';
 }
 
+.calendarPopup {
+  background: rgba(0, 0, 0, .05);
+  border-radius: 8px;
+}
+
 .calendarPopup *{
   cursor: pointer;
 }
@@ -265,9 +270,11 @@
   width: 45%;
 }
 
+:global(.anticon-calendar) svg{
+  fill: rgb(140, 140, 140);
+}
 
-
-.captionWrapper {
+.aptionWrapper {
   display: flex;
   justify-content: space-between;
   align-items: center;
