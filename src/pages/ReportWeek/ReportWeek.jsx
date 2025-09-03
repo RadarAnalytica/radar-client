@@ -173,10 +173,8 @@ export default function ReportWeek() {
 			}
 		} catch (e) {
 			console.error(e);
+			setLoading(false);
 		} finally {
-			setTimeout(() => {
-				setLoading(false);
-			}, 500);
 		}
 	};
 
@@ -260,6 +258,7 @@ export default function ReportWeek() {
 
 		rows.unshift(summary);
 		setTableRows(rows);
+		setLoading(false);
 	};
 
 	useEffect(() => {
