@@ -33,7 +33,6 @@ const getReplicatedArray = (array, fields) => {
             })
         }
     })
-    console.log('replicatedArray', replicatedArray)
     return replicatedArray
 }
 

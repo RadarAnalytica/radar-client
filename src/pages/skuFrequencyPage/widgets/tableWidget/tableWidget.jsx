@@ -5,7 +5,6 @@ import { fetchRequestsMonitoringData, fetchRequestsMonitoringDataEasy } from '..
 import { actions as reqsMonitoringActions } from '../../../../redux/requestsMonitoring/requestsMonitoringSlice';
 import ErrorModal from '../../../../components/sharedComponents/modals/errorModal/errorModal';
 import { Table as RadarTable } from 'radar-ui';
-import 'radar-ui/dist/style.css';
 
 
 const TableWidget = ({ tableConfig, setTableConfig }) => {

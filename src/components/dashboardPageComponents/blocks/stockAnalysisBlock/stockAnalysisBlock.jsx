@@ -3,7 +3,6 @@ import styles from './stockAnalysisBlock.module.css'
 import { Link } from 'react-router-dom'
 import { stockAnalysisTableConfig } from './stockAnalysisBlockTableConfig'
 import { Table as RadarTable } from 'radar-ui';
-import 'radar-ui/dist/style.css';
 import { sortTableDataFunc } from '../../../../pages/apiServicePages/stockAnalysisPage/shared/utils/tableUtils';
 
 const StockAnalysisBlock = ({ data, loading }) => {
@@ -84,7 +83,7 @@ const StockAnalysisBlock = ({ data, loading }) => {
                     preset='radar-table-simple'
                     config={tableConfig}
                     resizeable
-                    stickyHeader
+                    // stickyHeader
                     onResize={onResizeGroup}
                     onSort={(sort_field, sort_order) => {
                         console.log('sorting', { sort_field, sort_order }) 

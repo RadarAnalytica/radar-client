@@ -170,4 +170,4 @@ export const stockAnalysisTableConfig = [
             {title: 'Данные Радар', dataIndex: 'dataRadar', units: 'шт', sortable: false, fixed: false, width: 200},
         ].map(_ => ({ ..._, render: _.render?.bind(_), key: _.dataIndex, minWidth: _.width }))
     },
-]
+].map(_ => ({ ..._, colSpan: _?.children?.length || 1 }))
