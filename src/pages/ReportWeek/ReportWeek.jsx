@@ -262,10 +262,11 @@ export default function ReportWeek() {
 	};
 
 	useEffect(() => {
-		if (activeBrand && shopStatus?.is_primary_collect) {
+		if (activeBrand && activeBrand.is_primary_collect) {
 			updateDataReportWeek();
-		} else {
-			shops.length > 0 && setLoading(false)
+		}
+		if (activeBrand && !activeBrand.is_primary_collect){
+			setLoading(false);
 		}
 	}, [selectedRange, filters, weekSelected, shops, shopStatus]);
 
