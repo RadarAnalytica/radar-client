@@ -167,6 +167,7 @@ export default function ReportWeek() {
 			return
 		}
 		setLoading(true);
+		setProgress(0);
 		const weekStart = weekSelectedFormat();
 		try {
 			if (activeBrand !== null && activeBrand !== undefined) {
