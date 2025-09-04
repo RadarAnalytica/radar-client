@@ -54,16 +54,16 @@ export const COLUMNS = [
 
 export const ROWS = [
 	{
-		key: 'realization',
-		title: 'Реализация',
+		key: 'sales',
+		title: 'Фактические продажи',
 	},
 	{
 		key: 'mp_discount',
 		title: 'Скидка за счет МП',
 	},
 	{
-		key: 'sales',
-		title: 'Фактические продажи',
+		key: 'realization',
+		title: 'Реализация',
 	},
 	{
 		key: 'direct_expenses',
@@ -74,33 +74,37 @@ export const ROWS = [
 				title: 'Себестоимость',
 			},
 			{
-				key: 'logistic',
-				title: 'Логистика',
-			},
-			{
-				key: 'commission',
-				title: 'Комиссия',
-			},
-			{
-				key: 'penalties',
-				title: 'Штрафы',
+				key: 'advert',
+				title: 'Внутренняя реклама',
 			},
 			{
 				key: 'storage',
 				title: 'Хранение',
 			},
 			{
-				key: 'advert',
-				title: 'Внутренняя реклама',
+				key: 'paid_acceptance',
+				title: 'Платная приемка',
 			},
+			{
+				key: 'commission',
+				title: 'Комиссия',
+			},
+			{
+				key: 'logistic',
+				title: 'Логистика',
+			},
+			
+			{
+				key: 'penalties',
+				title: 'Штрафы',
+			},
+			
+			
 			// {
 			// 	key: 'other_retentions',
 			// 	title: 'Прочие удержания',
 			// },
-			{
-				key: 'paid_acceptance',
-				title: 'Платная приемка',
-			},
+			
 		]
 	},
 	{
@@ -109,7 +113,7 @@ export const ROWS = [
 	},
 	{
 		key: 'gross_margin',
-		title: 'Валовая маржа',
+		title: 'Маржинальная прибыль',
 	},
 	// {
 	// 	key: 'operating_expenses',
@@ -121,7 +125,7 @@ export const ROWS = [
 	},
 	{
 		key: 'tax',
-		title: 'Налоги (кроме зарплатных)',
+		title: 'Налоги',
 	},
 	{
 		key: 'net_profit',

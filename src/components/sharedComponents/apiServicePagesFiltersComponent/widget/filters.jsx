@@ -1,14 +1,13 @@
 import React, { useContext, useEffect, useRef } from 'react';
 import AuthContext from '../../../../service/AuthContext';
 import styles from './filters.module.css'
-import { TimeSelect, PlainSelect, FrequencyModeSelect, ShopSelect, MultiSelect, WeekSelect, MonthSelect } from '../features'
+import { TimeSelect, PlainSelect, FrequencyModeSelect, ShopSelect, MultiSelect, WeekSelect, MonthSelect, TempTimeSelect } from '../features'
 import { useAppDispatch, useAppSelector } from '../../../../redux/hooks';
 import { actions as filterActions } from '../../../../redux/apiServicePagesFiltersState/apiServicePagesFilterState.slice'
 import { fetchShops } from '../../../../redux/shops/shopsActions';
 import { fetchFilters } from '../../../../redux/apiServicePagesFiltersState/filterActions';
 
 export const Filters = ({
-  setLoading,
   shopSelect = true,
   timeSelect = true,
   skuFrequency = false,
@@ -21,7 +20,9 @@ export const Filters = ({
   weekHandler,
   monthSelect = false,
   monthHandler,
-  monthValue
+  monthValue,
+  tempPageCondition,
+  isDataLoading
 }) => {
 
   // ------ база ------//
@@ -73,10 +74,10 @@ export const Filters = ({
   // 0. Получаем данные магазинов
   useEffect(() => {
     if (!shops || shops.length === 0) {
-      fetchShopData();
-      fetchFiltersData();
+        fetchShopData();
+        fetchFiltersData();
     }
-  }, [shops]);
+}, []);
 
 
   //Данные магазина [A-Za-z0-9]+ успешно собраны\. Результаты доступны на страницах сервиса
@@ -94,8 +95,13 @@ export const Filters = ({
       // Выходим если свежих нет
       if (!filteredMessages || filteredMessages.length === 0) {return}
       else {
-        // Если свежие есть, то ищем интересующее нас (про сбор данных магазина)
-        filteredMessages = filteredMessages.filter(m => /Данные магазина [A-Za-z0-9]+ успешно собраны\. Результаты доступны на страницах сервиса/.test(m.text))
+        // Если свежие есть, то ищем интересующее нас (про сбор данных магазина) и полученные меньше минуты назад
+        const now = Date.now();
+        filteredMessages = filteredMessages
+          .filter(m => /Данные магазина [A-Za-z0-9]+ успешно собраны\. Результаты доступны на страницах сервиса/.test(m.text))
+          .filter(m => (now - new Date(m.created_at)) < 60000 )
+        
+
         // Если выходим если таких нет
         if (!filteredMessages || filteredMessages.length === 0) {return}
         else {
@@ -156,10 +162,15 @@ export const Filters = ({
     activeBrand && localStorage.setItem('activeShop', JSON.stringify(activeBrand))
     let interval;
     if (activeBrand && !activeBrand.is_primary_collect) {
-      interval = setInterval(() => { fetchShopData() }, 30000)
+        interval = setInterval(() => { 
+            // Проверять, нужно ли обновление
+            if (!shops || shops.length === 0) {
+                fetchShopData() 
+            }
+        }, 30000)
     }
     return () => { interval && clearInterval(interval) }
-  }, [activeBrand, selectedRange]);
+}, [activeBrand]);
 
   // это обект, который представляет опцию "все" ввиде магазина
   // const allShopOptionAsShopObject = {
@@ -185,20 +196,26 @@ export const Filters = ({
               value={weekValue}
               optionsData={weekOptions}
               handler={weekHandler}
+              isDataLoading={isDataLoading}
             />
           </div>
         }
         {skuFrequency &&
-          <FrequencyModeSelect />
+          <FrequencyModeSelect isDataLoading={isDataLoading}/>
         }
         {shops && activeBrand && monthSelect &&
           <div className={styles.filters__inputWrapper}>
-            <MonthSelect monthHandler={monthHandler} value={monthValue}/>
+            <MonthSelect monthHandler={monthHandler} value={monthValue} isDataLoading={isDataLoading}/>
           </div>
         }
-        {timeSelect &&
+        {shops && timeSelect && tempPageCondition !== 'supplier' &&
           <div className={styles.filters__inputWrapper}>
-            <TimeSelect />
+            <TimeSelect isDataLoading={isDataLoading}/>
+          </div>
+        }
+        {timeSelect && tempPageCondition === 'supplier' &&
+          <div className={styles.filters__inputWrapper}>
+            <TempTimeSelect isDataLoading={isDataLoading}/>
           </div>
         }
         {shops && activeBrand && shopSelect &&
@@ -209,6 +226,7 @@ export const Filters = ({
               value={activeBrand.id}
               optionsData={shops}
               handler={shopChangeHandler}
+              isDataLoading={isDataLoading}
             />
           </div>
         }
@@ -224,6 +242,7 @@ export const Filters = ({
                   label={`${i.brands.ruLabel}:`}
                   value={filtersState[i.brands.stateKey]}
                   optionsData={i.brands.data}
+                  isDataLoading={isDataLoading}
                 />
               </div>}
               {articleSelect &&<div className={styles.filters__inputWrapper}>
@@ -235,6 +254,7 @@ export const Filters = ({
                   label={`${i.articles.ruLabel}:`}
                   value={filtersState[i.articles.stateKey]}
                   optionsData={filtersState?.activeBrandName?.some(_ => _.value === 'Все') ? i.articles.data : i.articles.data.filter(_ => filtersState?.activeBrandName?.some(b => _.brand === b.value))}
+                  isDataLoading={isDataLoading}
                 />
               </div>}
               {groupSelect && <div className={styles.filters__inputWrapper}>
@@ -246,6 +266,7 @@ export const Filters = ({
                   label={`${i.groups.ruLabel}:`}
                   value={filtersState[i.groups.stateKey]}
                   optionsData={i.groups.data}
+                  isDataLoading={isDataLoading}
                 />
               </div>}
               {/* <div className={styles.filters__inputWrapper}>

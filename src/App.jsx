@@ -7,10 +7,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { HelmetProvider } from 'react-helmet-async';
 import { ProductProvider } from "./service/ProductContext";
 
-const Contacts = React.lazy(() => import("./components/Contacts"));
 const StockAnalysisGlitter = React.lazy(() => import("./components/StockAnalysisGlitter"));
 const Subscriptions = React.lazy(() => import("./pages/Subscriptions"));
-const RequestMonitoringPage = React.lazy(() => import("./pages/RequestMonitoringPage"));
 const AiDescriptionGeneratorPage = React.lazy(() => import("./pages/AIDescriptionGeneratorPage"));
 const SeoPage = React.lazy(() => import("./pages/SeoPage"));
 const WeeklyReportPL = React.lazy(() => import("./pages/WeeklyReportPL"));
@@ -22,13 +20,14 @@ const ReportMain = React.lazy(() => import("./pages/ReportMain"));
 const PrimeCost = React.lazy(() => import("./pages/PrimeCost"));
 const ExternalExpensesPage = React.lazy(() => import("./pages/ExternalExpensesPage"));
 const ReportBuyBack = React.lazy(() => import("./pages/ReportBuyBack"));
-const AbcAnalysisPage = React.lazy(() => import("./pages/AbcAnalysisPage"));
+// const AbcAnalysisPage = React.lazy(() => import("./pages/AbcAnalysisPage"));
+const AbcAnalysisPage = React.lazy(() => import("./pages/AbcAnalysisPage/AbcAnalysisPage"));
 const Onboarding = React.lazy(() => import("./pages/Onboarding"));
 const ConfirmationPage = React.lazy(() => import("./pages/ConfirmationPage"));
 // const DashboardPage = React.lazy(() => import("./pages/DashboardPage"));
 const ResetPage = React.lazy(() => import("./pages/ResetPage"));
 const RequestResetLink = React.lazy(() => import("./pages/RequestResetLink"));
-const LinkedShops = React.lazy(() => import("./pages/LinkedShops"));
+//const LinkedShops = React.lazy(() => import("./pages/LinkedShops"));
 const OrdersMap = React.lazy(() => import("./pages/OrdersMap"));
 const Spasibo = React.lazy(() => import("./pages/Spasibo"));
 const Instructions = React.lazy(() => import("./pages/Instructions"));
@@ -36,13 +35,12 @@ const Instructions = React.lazy(() => import("./pages/Instructions"));
 const MainWidget = React.lazy(() => import("./pages/MainWidget"));
 const StubPage = React.lazy(() => import("./pages/StubPage"));
 const AfterPayment = React.lazy(() => import("./pages/AfterPayment"));
-const TariffsPage = React.lazy(() => import("./pages/TariffsPage"));
+const TariffsPage = React.lazy(() => import("./pages/tariffsPage/tariffsPage"));
 const Page404 = React.lazy(() => import("./pages/Page404"));
 //const AdminPanel = React.lazy(() => import("./pages/AdminPanel"));
 const UserInfo = React.lazy(() => import("./pages/UserInfo"));
 const WeeklyReportDashboard = React.lazy(() => import("./pages/WeeklyReportDashboard"));
 const Schedule = React.lazy(() => import("./pages/Schedule"));
-const StartPage = React.lazy(() => import("./pages/StartPage"));
 const UnitCalculatorPage = React.lazy(() => import("./pages/UnitCalculatorPage"));
 const UnitCalculatorPageDesktop = React.lazy(() => import("./pages/UnitCalculatorPageDesktop"));
 const DashboardPage = React.lazy(() => import("./pages/apiServicePages/dashboardPage/page/dashboardPage"));
@@ -63,6 +61,12 @@ const LinkedShopsPage = React.lazy(() => import("./pages/linkedShops/linkedShops
 const AdminDashboardPage = React.lazy(() => import("./pages/AdminPage/AdminDashboardPage"));
 const AdminReferalPage = React.lazy(() => import("./pages/AdminPage/AdminReferalPage"));
 const OperationsCosts = React.lazy(() => import("./pages/OperationsCosts/OperationsCosts"));
+const MainPage = React.lazy(() => import('./pages/homePage'))
+const ReferalPage = React.lazy(() => import("./pages/Referal"));
+const SupplierAnalysisPage = React.lazy(() => import("./pages/supplierAnalysisPage/supplierAnalysisPage"));
+const SupplierIdPage = React.lazy(() => import("./pages/supplierAnalysisPage/supplierIdPage"));
+const RestoreError = React.lazy(() => import("./pages/RestoreError"));
+const Rnp = React.lazy(() => import('./pages/Rnp'))
 import LoaderPage from "./pages/LoaderPage";
 import { ProtectedRoute } from "./RouteGuards";
 
@@ -86,14 +90,14 @@ function App() {
 
           <Routes>
             {/* dev */}
-            <Route path='/dev/after-payment' element={<ProtectedRoute userRoleProtected><AfterPayment devMode /></ProtectedRoute>} />
-            <Route path='/dev/linked-shops' element={<ProtectedRoute userRoleProtected><LinkedShopsPage /></ProtectedRoute>} />
+            <Route path='/dev/after-payment' element={<ProtectedRoute userRoleProtected><AfterPayment /></ProtectedRoute>} />
             {/* Admin */}
             <Route path='/blog' element={<ProtectedRoute userRoleProtected routeRuName='Админ панель / Блог'><BlogPage /></ProtectedRoute>} />
             <Route path='/admin-dashboard' element={<ProtectedRoute userRoleProtected routeRuName='Админ панель / Дашборд'><AdminDashboardPage /></ProtectedRoute>} />
             <Route path='/admin-referal' element={<ProtectedRoute userRoleProtected routeRuName='Админ панель / Реферальная программа'><AdminReferalPage /></ProtectedRoute>} />
             {/* Protected routes */}
-            <Route path='/sku-frequency' element={<ProtectedRoute underDevProtected testPeriodProtected expireProtected routeRuName='Частотность артикула'><RequestMonitoringPage /></ProtectedRoute>} />
+            <Route path='/supplier-analysis' element={<ProtectedRoute testPeriodProtected expireProtected routeRuName='Анализ поставщика'><SupplierAnalysisPage /></ProtectedRoute>} />
+            <Route path='/supplier-analysis/:id' element={<ProtectedRoute testPeriodProtected testPeriodGuardType='redirect' testPeriodRedirect='/supplier-analysis' expireProtected routeRuName='Анализ поставщика'><SupplierIdPage /></ProtectedRoute>} />
             <Route path='/monitoring' element={<ProtectedRoute testPeriodProtected expireProtected routeRuName='Поиск прибыльной ниши'><SkuFrequencyPage /></ProtectedRoute>} />
             <Route path='/monitoring/request' element={<ProtectedRoute testPeriodProtected expireProtected routeRuName='Поиск прибыльной ниши'><SkuFrequencyRequestPage /></ProtectedRoute>} />
             <Route path='/trend-analysis' element={<ProtectedRoute testPeriodProtected expireProtected routeRuName='Анализ трендовой динамики запросов'><TrendAnalysisQuery /></ProtectedRoute>} />
@@ -105,11 +109,11 @@ function App() {
             <Route path='/sku-analysis/:id' element={<ProtectedRoute testPeriodProtected testPeriodGuardType='redirect' testPeriodRedirect='/sku-analysis' expireProtected routeRuName='Анализ артикула'><SkuIdPage /></ProtectedRoute>} />
             <Route path='/dashboard' element={<ProtectedRoute testPeriodProtected expireProtected onboardProtected routeRuName='Сводка продаж'><DashboardPage /></ProtectedRoute>} />
             <Route path='/abc-data' element={<ProtectedRoute testPeriodProtected expireProtected onboardProtected routeRuName='ABC-анализ'><AbcAnalysisPage /></ProtectedRoute>} />
-            <Route path='/seo' element={<ProtectedRoute testPeriodProtected expireProtected routeRuName='Сравнение SEO'><SeoPage /></ProtectedRoute>} />
+            <Route path='/rank-analysis' element={<ProtectedRoute testPeriodProtected expireProtected routeRuName='Сравнение SEO'><SeoPage /></ProtectedRoute>} />
             <Route path='/ai-generator' element={<ProtectedRoute testPeriodProtected expireProtected routeRuName='Генерация описания AI'><AiDescriptionGeneratorPage /></ProtectedRoute>} />
             <Route path='/stock-analysis' element={<ProtectedRoute testPeriodProtected expireProtected onboardProtected routeRuName='Аналитика по товарам'><StockAnalysisPage /></ProtectedRoute>} />
             <Route path='/orders-map' element={<ProtectedRoute testPeriodProtected expireProtected onboardProtected routeRuName='География заказов и продаж'><OrdersMap /></ProtectedRoute>} />
-            <Route path='/linked-shops' element={<ProtectedRoute testPeriodProtected expireProtected onboardProtected routeRuName='Подключенные магазины'><LinkedShops /></ProtectedRoute>} />
+            <Route path='/linked-shops' element={<ProtectedRoute testPeriodProtected expireProtected onboardProtected routeRuName='Подключенные магазины'><LinkedShopsPage /></ProtectedRoute>} />
             <Route path='/report-main' element={<ProtectedRoute testPeriodProtected expireProtected routeRuName='Отчёт / Главная'><ReportMain /></ProtectedRoute>} />
             <Route path='/weeklyreport-dashboard' element={<ProtectedRoute expireProtected routeRuName='Отчёт / Дашборд'><WeeklyReportDashboard /></ProtectedRoute>} />
             <Route path='/weeklyreport-pl' element={<ProtectedRoute expireProtected routeRuName='Отчёт / P&L'><WeeklyReportPL /></ProtectedRoute>} />
@@ -120,8 +124,8 @@ function App() {
             <Route path='/prime-cost' element={<ProtectedRoute expireProtected routeRuName='Отчёт / Себестоимость'><PrimeCost /></ProtectedRoute>} />
             <Route path='/external-expenses' element={<ProtectedRoute expireProtected routeRuName='Отчёт / Внешние расходы'><ExternalExpensesPage /></ProtectedRoute>} />
             <Route path='/buy-back' element={<ProtectedRoute expireProtected routeRuName='Отчёт / Самовыкуп'><ReportBuyBack /></ProtectedRoute>} />
-            <Route path='/main' element={<ProtectedRoute><StartPage /></ProtectedRoute>} />
-            <Route path='/home' element={<ProtectedRoute><StartPage /></ProtectedRoute>} />
+            <Route path='/main' element={<ProtectedRoute><MainPage /></ProtectedRoute>} />
+            <Route path='/home' element={<ProtectedRoute><MainPage /></ProtectedRoute>} />
             <Route path='/instruction' element={<ProtectedRoute authGuardType="redirect"><Instructions /></ProtectedRoute>} />
             <Route path='/onboarding' element={<ProtectedRoute authGuardType="redirect" testPeriodProtected testPeriodGuardType="redirect" testPeriodRedirect="/linked-shops" expireProtected><Onboarding /></ProtectedRoute>} />
             <Route path='/user/:email' element={<ProtectedRoute authGuardType="redirect"><UserInfo /></ProtectedRoute>} />
@@ -129,9 +133,11 @@ function App() {
             <Route path='/subscription' element={<ProtectedRoute testPeriodProtected authGuardType="redirect"><Subscriptions /></ProtectedRoute>} />
             <Route path='/schedule' element={<ProtectedRoute expireProtected authGuardType="redirect"><Schedule /></ProtectedRoute>} />
             <Route path='/product/:id' element={<ProtectedRoute><StockAnalysisGlitter /></ProtectedRoute>} />
-            <Route path='/report-profit-loss' element={<ProtectedRoute testPeriodProtected expireProtected routeRuName='Отчет о прибылях и убытках'><ReportProfitLoss /></ProtectedRoute>} />
+            <Route path='/report-profit-loss' element={<ProtectedRoute testPeriodProtected onboardProtected expireProtected routeRuName='Отчет о прибыли и убытках'><ReportProfitLoss /></ProtectedRoute>} />
             <Route path='/report-week' element={<ProtectedRoute testPeriodProtected expireProtected onboardProtected routeRuName='По неделям'><ReportWeek /></ProtectedRoute>} />
-            <Route path='/operations-costs' element={<ProtectedRoute testPeriodProtected expireProtected onboardProtected routeRuName='Операционные расходы'><OperationsCosts /></ProtectedRoute>} />
+            <Route path='/operations-costs' element={<ProtectedRoute userRoleProtected testPeriodProtected expireProtected onboardProtected routeRuName='Операционные расходы'><OperationsCosts /></ProtectedRoute>} />
+            <Route path='/referal' element={<ProtectedRoute testPeriodProtected expireProtected onboardProtected routeRuName='Реферальная программа'><ReferalPage /></ProtectedRoute>} />
+            <Route path='/rnp' element={<ProtectedRoute testPeriodProtected expireProtected onboardProtected routeRuName='Рука на пульсе (РНП)'><Rnp /></ProtectedRoute>} />
             {/* Public routes */}
             <Route path='/calculate' element={<Suspense fallback={<LoaderPage />}>{deviceRegexp.test(userAgent) ? <UnitCalculatorPage /> : <UnitCalculatorPageDesktop />}</Suspense>} />
             <Route path='/stub' element={<Suspense fallback={<LoaderPage />}>{' '}<StubPage /></Suspense>} />
@@ -139,9 +145,9 @@ function App() {
             <Route path='/app' element={<Suspense fallback={<LoaderPage />}>{' '}<MainWidget /></Suspense>} />
             <Route path='/reset' element={<Suspense fallback={<LoaderPage />}>{' '}<RequestResetLink /></Suspense>} />
             <Route path='/restore/:email/:code' element={<Suspense fallback={<LoaderPage />}>{' '}<ResetPage /></Suspense>} />
+            <Route path='/restore-error' element={<Suspense fallback={<LoaderPage />}>{' '}<RestoreError /></Suspense>} />
             <Route path='/confirmation/:email/:code' element={<Suspense fallback={<LoaderPage />}>{' '}<ConfirmationPage /></Suspense>} />
-            <Route path='/contacts' element={<Suspense fallback={<LoaderPage />}>{' '}<Contacts /></Suspense>} />
-            <Route path='/after-payment' element={<Suspense fallback={<LoaderPage />}>{' '}<AfterPayment /></Suspense>} />
+            <Route path='/after-payment' element={<Suspense fallback={<LoaderPage />}>{' '}<AfterPayment devMode={false} /></Suspense>} />
             {/* 404 */}
             <Route path='*' element={<Page404 />} status={404} />
           </Routes>

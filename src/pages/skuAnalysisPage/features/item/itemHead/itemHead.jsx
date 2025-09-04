@@ -30,7 +30,7 @@ const ItemHead = () => {
 
     const { skuMainData, dataStatus } = useAppSelector(store => store.skuAnalysis);
 
-    if (!skuMainData && dataStatus.isLoading) {
+    if (dataStatus.isLoading) {
         return (
             <div className={styles.head}>
                 <div className={styles.loaderWrapper}>

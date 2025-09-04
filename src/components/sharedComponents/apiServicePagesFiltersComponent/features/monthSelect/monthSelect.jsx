@@ -8,7 +8,7 @@ dayjs.locale('ru');
 
 const { RangePicker } = DatePicker;
 
-export const MonthSelect = ({monthHandler, value}) => {
+export const MonthSelect = ({monthHandler, value, isDataLoading}) => {
 
     const monthRef = useRef(null);
 
@@ -39,6 +39,7 @@ export const MonthSelect = ({monthHandler, value}) => {
                             fontFamily: 'Mulish',
                             fontSize: 16,
                             activeBorderColor: '#5329FF',
+                            colorTextDisabled: '#000'
                         },
                         components: {
                             DatePicker: {
@@ -69,8 +70,10 @@ export const MonthSelect = ({monthHandler, value}) => {
                                 const maxDate = dayjs();
                                 return current && (current < minDate || current > maxDate);
                             }}
+                            maxDate={dayjs()}
                             value={initialValue}
                             getPopupContainer={() => monthRef.current}
+                            disabled={isDataLoading}
                         />
                     </div>
                 </ConfigProvider>

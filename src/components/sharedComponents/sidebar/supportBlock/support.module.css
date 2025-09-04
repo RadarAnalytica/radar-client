@@ -10,13 +10,13 @@
     align-items: center;
     gap: 16px;
     text-decoration: none;
-    transition: all .1s ease-out;
+    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
 }
 .support_hidden {
     width: 100%;
     height: auto;
     aspect-ratio: 1 / 1;
-    transition: all .1s ease-out;
+    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
 }
 .support_hidden .support__iconWrapper {
     width: 40px;
@@ -24,7 +24,7 @@
 }
 .support:hover {
     transform: translateY(-5px);
-    
+    transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
 }
 .support__iconWrapper {
     width: 48px;

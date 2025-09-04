@@ -1,0 +1,181 @@
+.widget {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.widget__header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    padding-right: 52px;
+}
+.widget__header_hidden {
+    display: none;
+}
+
+.widget__title {
+    margin: 0;
+    padding: 0;
+    font-family: Mulish;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    color: #1A1A1A;
+    max-width: 100%;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+/* .widget__tableWrapper {
+    position: relative;
+    width: 100%;
+    border-radius: 16px;
+    background: white;
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.08);
+    min-height: 250px;
+    max-height: 50dvh;
+    overflow: hidden;
+} */
+.widget__tableWrapper {
+    border-radius: 16px;
+    background: white;
+    padding: 16px 0 0 16px;
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.08);
+    position: relative;
+}
+
+:global(.ant-table) {
+    height: 100%;
+}
+
+/* TABLE */
+.widget__tableWrapper thead>tr>th {
+    border: none;
+}
+
+.widget__tableWrapper thead>tr>th:first-child {
+    border-bottom-left-radius: 20px;
+}
+
+.widget__tableWrapper thead>tr>th:last-child {
+    border-bottom-right-radius: 20px;
+}
+
+.widget__tableWrapper thead>tr>th {
+    height: 70px;
+}
+
+.widget__tableWrapper thead>tr>th>div {
+    gap: 8px;
+}
+
+.widget__tableWrapper thead>tr>th::before {
+    height: 100% !important;
+    background-color: #e8e8e8 !important;
+}
+
+.widget__tableWrapper .ant-table-column-title {
+    flex: auto !important;
+}
+
+
+
+
+/* GLOBAL */
+.widget__tableWrapper :global(.ant-table-column-has-sorters) {
+    margin-left: 10px;
+    margin-right: 10px;
+    user-select: none;
+    /* Стандартное свойство */
+    -webkit-user-select: none;
+    /* Для Safari */
+    -moz-user-select: none;
+    /* Для Firefox */
+    -ms-user-select: none;
+    /* Для IE/Edge */
+}
+
+
+.loaderWrapper {
+    width: 100%;
+    background: white;
+    box-shadow: 0px 0px 20px 0px #00000014;
+    border-radius: 16px;
+    padding: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    aspect-ratio: 4 / 1;
+}
+
+.dataExistLoader {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #FFFFFF85;
+    z-index: 1000;
+}
+
+.errorWrapper {
+    width: 100%;
+    height: 598px;
+    background: white;
+    box-shadow: 0px 0px 20px 0px #00000014;
+    border-radius: 16px;
+    padding: 16px;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    font-family: Mulish;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    color: #1A1A1A;
+}
+
+.errorWrapper__message {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* GLOBAL SCROLLBAR STYLES */
+.widget__tableWrapper :global(.ant-table-body::-webkit-scrollbar) {
+    width: 6px;
+    height: 6px;
+    border-radius: 6px;
+}
+
+.widget__tableWrapper :global(.ant-table-body::-webkit-scrollbar-thumb) {
+    background: #5329ff80;
+    border-radius: 6px;
+    transition: background-color 0.2s ease;
+}
+
+.widget__tableWrapper :global(.ant-table-body::-webkit-scrollbar-thumb:hover) {
+    background: #5329ff;
+}
+
+.widget__tableWrapper :global(.ant-table-body::-webkit-scrollbar-track) {
+    background: transparent;
+    height: 50%;
+    margin: 10px 20px;
+}
+
+/* Firefox scrollbar styles */
+.widget__tableWrapper :global(.ant-table-body) {
+    scrollbar-width: thin;
+    scrollbar-color: #5329ff80 transparent;
+}

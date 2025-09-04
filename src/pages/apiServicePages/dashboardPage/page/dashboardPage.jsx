@@ -28,25 +28,25 @@ import TurnoverBlock from '../../../../components/dashboardPageComponents/blocks
 import { mockGetDashBoard } from '../../../../service/mockServiceFunctions';
 import NoSubscriptionWarningBlock from '../../../../components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock'
 
-const WarningBlocks = React.memo(({ shopStatus, loading, activeBrand, updateDataDashBoard }) => {
-    if (!shopStatus) return null;
+// const WarningBlocks = React.memo(({ shopStatus, loading, activeBrand, updateDataDashBoard }) => {
+//     if (!shopStatus) return null;
 
-    return (
-        <>
-            {!shopStatus.is_self_cost_set && !loading && (
-                <SelfCostWarningBlock
-                    shopId={activeBrand.id}
-                    onUpdateDashboard={updateDataDashBoard}
-                />
-            )}
-            {!shopStatus.is_primary_collect && (
-                <DataCollectWarningBlock
-                    title='Ваши данные еще формируются и обрабатываются.'
-                />
-            )}
-        </>
-    );
-});
+//     return (
+//         <>
+//             {!shopStatus.is_self_cost_set && !loading && (
+//                 <SelfCostWarningBlock
+//                     shopId={activeBrand.id}
+//                     onUpdateDashboard={updateDataDashBoard}
+//                 />
+//             )}
+//             {!shopStatus.is_primary_collect && (
+//                 <DataCollectWarningBlock
+//                     title='Ваши данные еще формируются и обрабатываются.'
+//                 />
+//             )}
+//         </>
+//     );
+// });
 
 const MainContent = React.memo(({
     shopStatus,
@@ -151,7 +151,7 @@ const _DashboardPage = () => {
 
     const [pageState, setPageState] = useState({
         dataDashBoard: null,
-        loading: true,
+        loading: false,
         primaryCollect: null,
         shopStatus: null
     });
@@ -203,7 +203,7 @@ const _DashboardPage = () => {
             setPageState(prev => ({ ...prev, primaryCollect: activeBrand.is_primary_collect }));
             updateDataDashBoard(selectedRange, activeBrand.id, authToken);
         }
-    }, [activeBrand, selectedRange, filters, updateDataDashBoard]);
+    }, [filters]);
 
     return (
         <main className={styles.page}>
@@ -218,7 +218,7 @@ const _DashboardPage = () => {
 
                 {!shopStatus?.is_self_cost_set && !pageState.loading && (
                     <SelfCostWarningBlock
-                        shopId={activeBrand.id}
+                        shopId={activeBrand?.id}
                         onUpdateDashboard={updateDataDashBoard}
                     />
                 )}
@@ -234,7 +234,7 @@ const _DashboardPage = () => {
 
                 <div className={styles.page__controlsWrapper}>
                     <Filters
-                        setLoading={(loading) => setPageState(prev => ({ ...prev, loading }))}
+                        isDataLoading={pageState.loading}
                     />
 
                     <HowToLink
@@ -245,9 +245,7 @@ const _DashboardPage = () => {
                 </div>
 
                 {shopStatus && !shopStatus?.is_primary_collect && (
-                    <DataCollectWarningBlock
-                        title='Ваши данные еще формируются и обрабатываются.'
-                    />
+                    <DataCollectWarningBlock />
                 )}
 
                 <MainContent

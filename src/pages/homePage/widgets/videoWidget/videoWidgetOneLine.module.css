@@ -1,0 +1,137 @@
+.widget {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    padding: 0 0 20px;
+}
+
+
+.card {
+    width: 100%;
+    height: 100%;
+    height: 256px;
+    max-height: 256px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: white;
+    border-radius: 20px;
+    padding: 16px;
+    font-family: Mulish;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 140%;
+    letter-spacing: 0%;
+    overflow: hidden;
+    position: relative;
+    will-change: transform;
+    transform: scale(100%);
+    transition: transform 0.4s cubic-bezier(0.22, 1.15, 0.45, 0.95);
+    cursor: pointer;
+}
+
+.card img {
+    height: 100%;
+    object-fit: cover;
+}
+
+.card:hover {
+    transform: scaleY(102%) scaleX(101%);
+}
+
+
+
+
+.description {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-family: Mulish;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 140%;
+    letter-spacing: 0px;
+    padding-right: 30px;
+    padding-left: 8px;
+}
+
+.description__bullet {
+    width: max-content;
+    padding: 5px 12px;
+    border-radius: 6px;
+    border: 1px solid #E4DDFF;
+    font-family: Mulish;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 160%;
+    letter-spacing: 0%;
+    color: #5329FF
+}
+
+
+
+
+
+
+
+
+.modal__backdrop {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,.2);
+    z-index: 999;
+    transform: scale(0);
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal__backdrop_active {
+    transform: scale(1);
+}
+
+.modal {
+    width: 60%;
+    height: 75%;
+    max-height: 90%;
+    aspect-ratio: 4 / 3;
+    border-radius: 16px;
+    background-color: white;
+    position: relative;
+    will-change: transform;
+    transform: scale(0);
+    transition: transform .2s;
+    box-shadow: 0px 0px 20px 0px #00000014;
+}
+
+.modal_active {
+    transform: scale(1);
+    transition: transform .2s;
+}
+
+.modal__closeButton {
+    position: absolute;
+    top: 0;
+    right: -40px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+
+.frame {
+    will-change: transform;
+    transform: scale(0);
+    transition: transform .2s;
+}
+
+.frame_active {
+    transform: scale(1);
+    transition: transform .2s;
+}

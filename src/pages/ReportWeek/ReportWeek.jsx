@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import AuthContext from '../../service/AuthContext';
 import { useState, useEffect, useContext } from 'react';
 import MobilePlug from '../../components/sharedComponents/mobilePlug/mobilePlug';
@@ -7,10 +7,8 @@ import Header from '../../components/sharedComponents/header/header';
 import { ServiceFunctions } from '../../service/serviceFunctions';
 import { fileDownload } from '../../service/utils';
 import { Filters } from '../../components/sharedComponents/apiServicePagesFiltersComponent';
-
 import { ConfigProvider, Button, Popover } from 'antd';
 import styles from './ReportWeek.module.css';
-
 import ReportTable from '../../components/sharedComponents/ReportTable/ReportTable';
 import TableSettingModal from '../../components/sharedComponents/modals/tableSettingModal/TableSettingModal';
 import { useAppSelector } from '../../redux/hooks';
@@ -22,13 +20,13 @@ import {
 	endOfWeek,
 	getISOWeek,
 } from 'date-fns';
-import downloadIcon from '../images/Download.svg';
+// import downloadIcon from '../images/Download.svg';
 import DataCollectWarningBlock from '../../components/sharedComponents/dataCollectWarningBlock/dataCollectWarningBlock'
-
+import NoSubscriptionWarningBlock from '../../components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock';
 import { COLUMNS } from './columnsConfig';
 
 export default function ReportWeek() {
-	const { authToken } = useContext(AuthContext);
+	const { user, authToken } = useContext(AuthContext);
 	const { activeBrand, selectedRange } = useAppSelector(
 		(state) => state.filters
 	);
@@ -39,6 +37,24 @@ export default function ReportWeek() {
 	const [isPopoverOpen, setIsPopoverOpen] = useState(false);
 	const [isConfigOpen, setConfigOpen] = useState(false);
 	const [tableRows, setTableRows] = useState(null);
+	const [progress, setProgress] = useState(0);
+
+	useEffect(() => {
+		let interval = null;
+		if (loading) {
+			interval = setInterval(() => {
+				setProgress((state) => {
+					if (state > 90){
+						clearInterval(interval)
+						return state
+					}
+					return Math.ceil(state + (90 / 15))
+				})
+			}, 1000)
+		}
+		return () => clearInterval(interval)
+	}, [loading])
+
 
 	const weekOptions = useMemo(() => {
 		// шаблон для создания списка опций для фильтра
@@ -135,11 +151,7 @@ export default function ReportWeek() {
 	const weekSelectedHandler = (data) => {
 		let savedFilterWeek =
 			JSON.parse(localStorage.getItem('reportWeekFilterWeek')) || {};
-		// проверка на старую версию сохранения
-		// if (Array.isArray(savedFilterWeek)) {
-		// 	localStorage.removeItem('reportWeekFilterWeek');
-		// 	savedFilterWeek = {};
-		// }
+
 		savedFilterWeek[activeBrand.id] = data;
 		if (Object.keys(savedFilterWeek).length > 0) {
 			localStorage.setItem(
@@ -155,6 +167,7 @@ export default function ReportWeek() {
 			return
 		}
 		setLoading(true);
+		setProgress(0);
 		const weekStart = weekSelectedFormat();
 		try {
 			if (activeBrand !== null && activeBrand !== undefined) {
@@ -175,20 +188,21 @@ export default function ReportWeek() {
 					}
 				}
 
-				dataToTableData(weeks);
+				setProgress(100);
+				setTimeout(() => dataToTableData(weeks), 500);
 			}
 		} catch (e) {
 			console.error(e);
-		} finally {
-			setTimeout(() => {
-				setLoading(false);
-			}, 500);
+			setProgress(100);
+			setTimeout(() => dataToTableData(null), 500);
 		}
 	};
 
 	const dataToTableData = (weeks) => {
 		if (!weeks || weeks?.length === 0) {
 			setTableRows([]);
+			setProgress(null)
+			setLoading(false);
 			return;
 		}
 
@@ -266,21 +280,18 @@ export default function ReportWeek() {
 
 		rows.unshift(summary);
 		setTableRows(rows);
+		setProgress(null)
+		setLoading(false);
 	};
 
 	useEffect(() => {
-		if (activeBrand){
+		if (activeBrand && activeBrand.is_primary_collect) {
 			updateDataReportWeek();
 		}
-	}, [weekSelected]);
-
-	useEffect(() => {
-		// setWeekSelected(updateSavedFilterWeek());
-		// setPrimaryCollect(activeBrand?.is_primary_collect);
-		if (activeBrand && shopStatus?.is_primary_collect) {
-			updateDataReportWeek();
+		if (activeBrand && !activeBrand.is_primary_collect){
+			setLoading(false);
 		}
-	}, [activeBrand, selectedRange, filters]);
+	}, [selectedRange, filters, weekSelected, shops, shopStatus]);
 
 	const popoverHandler = (status) => {
 		setIsPopoverOpen(status);
@@ -351,7 +362,6 @@ export default function ReportWeek() {
 			setDownloadLoading(false)
 		}
 	};
-
 	return (
 		<main className={styles.page}>
 			<MobilePlug />
@@ -365,15 +375,7 @@ export default function ReportWeek() {
 				<div className={styles.page__headerWrapper}>
 					<Header title="По неделям"></Header>
 				</div>
-				{!loading && shopStatus && !shopStatus?.is_self_cost_set && (
-					<SelfCostWarningBlock />
-				)}
-				{!loading && !shopStatus?.is_primary_collect && (
-						<DataCollectWarningBlock
-								title='Ваши данные еще формируются и обрабатываются.'
-						/>
-				)}
-				<div className={styles.controls}>
+				{shops && (<div className={styles.controls}>
 					<div className={styles.filter}>
 						{weekSelected && <Filters
 							timeSelect={false}
@@ -385,6 +387,7 @@ export default function ReportWeek() {
 							weekValue={week}
 							weekOptions={weekOptions}
 							weekHandler={weekSelectedHandler}
+							isDataLoading={loading}
 						/>}
 					</div>
 					<div className={styles.btns}>
@@ -437,7 +440,7 @@ export default function ReportWeek() {
 								</Button>
 							</Popover>
 						</ConfigProvider>
-						<ConfigProvider
+						{/* <ConfigProvider
 							theme={{
 								token: {
 									colorBorder: '#00000033',
@@ -462,18 +465,33 @@ export default function ReportWeek() {
 							>
 								Скачать Excel
 							</Button>
-						</ConfigProvider>
+						</ConfigProvider> */}
 					</div>
-				</div>
-				{ shopStatus?.is_primary_collect && 
+				</div>)}
+				
+				{!loading && shops && user.subscription_status === null && (
+					<NoSubscriptionWarningBlock />
+				)}
+				{!loading && shops && user?.subscription_status && shopStatus?.is_primary_collect && !shopStatus?.is_self_cost_set && (
+					<SelfCostWarningBlock />
+				)}
+				{!loading && shops && user?.subscription_status && !shopStatus?.is_primary_collect && (
+						<DataCollectWarningBlock
+								title='Ваши данные еще формируются и обрабатываются.'
+						/>
+				)}
+				{/* { shopStatus?.is_primary_collect && */}
 					<div className={styles.container}>
 						<ReportTable
+							virtual={false}
 							loading={loading}
 							columns={tableColumns}
 							data={tableRows}
+							is_primary_collect={shopStatus?.is_primary_collect}
+							progress={progress}
 						/>
 					</div>
-				}
+				{/* } */}
 			</section>
 			{isConfigOpen && (
 				<TableSettingModal

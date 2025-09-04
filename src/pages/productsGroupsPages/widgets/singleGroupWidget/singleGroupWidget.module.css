@@ -134,7 +134,8 @@
     flex-shrink: 1;
 }
 .table__headerItem:last-of-type {
-   justify-content: flex-end;
+    max-width: 100px;
+    justify-content: flex-end;
 }
 
 .table__headerItemTitle {
@@ -193,6 +194,7 @@
 .table__rowItem:last-of-type {
     justify-content: flex-end;
     padding-right: 0;
+    max-width: 100px;
 }
 
 .table__rowTitle {
@@ -204,6 +206,11 @@
     color: #5329FF;
     margin: 0;
     padding: 0;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    text-overflow: ellipsis;
 }
 
 .table__rowImgWrapper {

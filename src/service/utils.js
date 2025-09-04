@@ -79,7 +79,7 @@ export function filterArraysNoData(obj, days) {
 // func that format any value to display (e.g, prices, percents...)
 export const formatPrice = (value, literal) => {
   // define a value to return
-  let formattedPriceString = '0' 
+  let formattedPriceString = '0'
   // checking if value exists
   if (value !== undefined && value !== null) {
     //in case if value is a string
@@ -102,6 +102,33 @@ export const formatPrice = (value, literal) => {
   }
   return formattedPriceString;
 };
+
+
+//Функция для склонения слова 'день' в зависимости от количества
+export const getDayDeclension = (quantity) => {
+  const num = parseInt(quantity);
+
+  // Получаем последние две цифры для правильного склонения
+  const lastTwoDigits = num % 100;
+  const lastDigit = num % 10;
+
+  // Специальные случаи для 11-14
+  if (lastTwoDigits >= 11 && lastTwoDigits <= 14) {
+    return `${quantity} дней`;
+  }
+
+  // Склонение по последней цифре
+  switch (lastDigit) {
+    case 1:
+      return `${quantity} день`;
+    case 2:
+    case 3:
+    case 4:
+      return `${quantity} дня`;
+    default:
+      return `${quantity} дней`;
+  }
+}
 
 export const formatDate = (date) => {
   const months = [

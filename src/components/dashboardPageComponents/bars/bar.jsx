@@ -1,8 +1,9 @@
 import styles from './bar.module.css'
 import { getIcon, getRateIcon, getRateStyle } from '../shared/barUtils';
 import { formatPrice } from '../../../service/utils';
+import { ConfigProvider, Tooltip } from 'antd';
 
-const Bar = ({ fixed = true, title, amount, amountInPercent, amountPerDay, quantity, quantityInPercent, quantityPerDay, buyOut, butOutInPercent, averageBill, averageBillInPercent, loading }) => {
+const Bar = ({ fixed = true, title, amount, amountInPercent, amountPerDay, quantity, quantityInPercent, quantityPerDay, buyOut, butOutInPercent, averageBill, averageBillInPercent, loading, hasTooltip, tooltipText }) => {
 
     if (loading) {
         return (
@@ -17,7 +18,30 @@ const Bar = ({ fixed = true, title, amount, amountInPercent, amountPerDay, quant
     return (
         <div className={fixed ? styles.bar : styles.bar_float}>
             <div className={styles.bar__iconWrapper}>{getIcon(title)}</div>
-            <p className={styles.bar__title}>{title}</p>
+            {!hasTooltip && <p className={styles.bar__title}>{title}</p>}
+            {hasTooltip &&
+                <div className={styles.bar__titleWrapper}>
+                    <p className={styles.bar__title}>{title}</p>
+                    <ConfigProvider
+                        theme={{
+                            token: {
+                                colorTextLightSolid: '#1A1A1A'
+                            }
+                        }}
+                    >
+                        <Tooltip
+                            arrow={false}
+                            color='white'
+                            title={tooltipText}
+                        >
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" className={styles.bar__tooltipIcon}>
+                                <rect x="0.75" y="0.75" width="18.5" height="18.5" rx="9.25" stroke="black" strokeOpacity="0.1" strokeWidth="1.5" />
+                                <path d="M9.064 15V7.958H10.338V15H9.064ZM8.952 6.418V5.046H10.464V6.418H8.952Z" fill="#1A1A1A" fillOpacity="0.5" />
+                            </svg>
+                        </Tooltip>
+                    </ConfigProvider>
+                </div>
+            }
 
             {fixed &&
                 <div className={styles.bar__dataWrapper}>
@@ -50,13 +74,13 @@ const Bar = ({ fixed = true, title, amount, amountInPercent, amountPerDay, quant
                 </div>
             }
 
-            {!fixed && averageBill !== undefined && averageBillInPercent !== undefined &&
+            {!fixed && averageBill !== undefined &&
                 <div className={styles.bar__floatData}>
                     <p className={styles.bar__mainData}>{formatPrice(averageBill, '₽')}</p>
-                    <div className={styles.bar__contentWrapper}>
+                    {/* <div className={styles.bar__contentWrapper}>
                         {getRateIcon(averageBillInPercent)}
                         <p className={getRateStyle(parseInt(averageBillInPercent), styles)}>{formatPrice(averageBillInPercent, '%')}</p>
-                    </div>
+                    </div> */}
                 </div>
             }
 

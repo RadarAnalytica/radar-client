@@ -92,6 +92,7 @@ const SkuIdPage = () => {
                             brandSelect={false}
                             articleSelect={false}
                             groupSelect={false}
+                            isDataLoading={dataStatus.isLoading}
                         />
                     </div>
                     <BarsWidget />

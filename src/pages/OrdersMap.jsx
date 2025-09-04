@@ -76,19 +76,19 @@ const OrdersMap = () => {
     setLoading(false)
   }
 
-  useEffect(() => {
-    if (activeBrand && activeBrand.is_primary_collect && activeBrand.is_primary_collect !== primaryCollect) {
-      setPrimaryCollect(activeBrand.is_primary_collect)
-      updateGeoData()
-    }
-  }, [authToken]);
+  // useEffect(() => {
+  //   if (activeBrand && activeBrand.is_primary_collect && activeBrand.is_primary_collect !== primaryCollect) {
+  //     setPrimaryCollect(activeBrand.is_primary_collect)
+  //     updateGeoData()
+  //   }
+  // }, [authToken]);
 
   useEffect(() => {
     setPrimaryCollect(activeBrand?.is_primary_collect)
     if (activeBrand?.is_primary_collect) {
       updateGeoData();
     }
-  }, [activeBrand, selectedRange, filters]);
+  }, [filters]);
 
 
 
@@ -717,6 +717,7 @@ const OrdersMap = () => {
           <div style={{ width: '100%' }} className="map-container dash-container container p-3">
             <Filters
               setLoading={setLoading}
+              isDataLoading={loading}
             />
           </div>
 

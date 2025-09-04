@@ -6,6 +6,7 @@ import { URL } from '../../../../service/config'
 import { ServiceFunctions } from '../../../../service/serviceFunctions'
 import { jwtDecode } from "jwt-decode";
 import AuthContext from '../../../../service/AuthContext'
+import { getDayDeclension } from '../../../../service/utils'
 
 const SubscriptionModal = ({ visible, visibilityHandler }) => {
 
@@ -117,8 +118,8 @@ const SubscriptionModal = ({ visible, visibilityHandler }) => {
       .replaceAll(':', '')}`;
 
     if (selectedPeriod === '1month') {
-      amountSubscribe = 2990;
-      firstAmount = newTrialExpired ? 2990 : 10;
+      amountSubscribe = 3990;
+      firstAmount = newTrialExpired ? 3990 : 10;
       periodSubscribe = 1;
       if (!!newTrialExpired) {
         startDateSubscribe.setMonth(
@@ -129,17 +130,25 @@ const SubscriptionModal = ({ visible, visibilityHandler }) => {
       }
     }
     if (selectedPeriod === '3month') {
-      amountSubscribe = 8073;
-      firstAmount = !subscriptionDiscount ? 8073 : 4485;
+      amountSubscribe = 10174;
+      firstAmount = 10174;
       periodSubscribe = 3;
       startDateSubscribe.setMonth(
         startDateSubscribe.getMonth() + periodSubscribe
       );
     }
     if (selectedPeriod === '6month') {
-      amountSubscribe = 10764;
-      firstAmount = !subscriptionDiscount ? 10764 : 5382;
+      amountSubscribe = 16758;
+      firstAmount = 16758;
       periodSubscribe = 6;
+      startDateSubscribe.setMonth(
+        startDateSubscribe.getMonth() + periodSubscribe
+      );
+    }
+    if (selectedPeriod === '12month') {
+      amountSubscribe = 23940;
+      firstAmount = 23940;
+      periodSubscribe = 12;
       startDateSubscribe.setMonth(
         startDateSubscribe.getMonth() + periodSubscribe
       );
@@ -345,7 +354,7 @@ const SubscriptionModal = ({ visible, visibilityHandler }) => {
           {/* lead block */}
           <div className={styles.modal__leadBlock}>
             <p className={styles.modal__leadText}>
-              Здесь вы можете активировать тестовый доступ на {user.test_days ? '7 дней' : '3 дня'}. Стоимость активации – 10₽
+              Здесь вы можете активировать тестовый доступ на {user.test_days ? getDayDeclension(user.test_days.toString()) : '3 дня'}. Стоимость активации – 10₽
             </p>
             <svg width="94" height="70" viewBox="0 0 94 70" fill="none" xmlns="http://www.w3.org/2000/svg">
               <rect x="9.99023" width="84.6472" height="55.2027" rx="8" transform="rotate(10.4261 9.99023 0)" fill="#1A1A1A" />

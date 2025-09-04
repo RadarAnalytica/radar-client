@@ -22,7 +22,7 @@ const StockAnalysisPage = () => {
     const [stockAnalysisData, setStockAnalysisData] = useState(); // это базовые данные для таблицы
     const [stockAnalysisFilteredData, setStockAnalysisFilteredData] = useState() // это данные для таблицы c учетом поиска
     const [hasSelfCostPrice, setHasSelfCostPrice] = useState(false);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
     const [primaryCollect, setPrimaryCollect] = useState(null)
     const [shopStatus, setShopStatus] = useState(null)
 
@@ -58,16 +58,15 @@ const StockAnalysisPage = () => {
         if (activeBrand && activeBrand.is_primary_collect) {
             fetchAnalysisData();
         }
-    }, [selectedRange, activeBrand, filters]);
+    }, [filters]);
 
-    // 2.1.1 Проверяем изменился ли выбранный магазин при обновлении токена
-
-    useEffect(() => {
-        if (activeBrand && activeBrand.is_primary_collect && activeBrand.is_primary_collect !== primaryCollect) {
-            setPrimaryCollect(activeBrand.is_primary_collect)
-            fetchAnalysisData()
-        }
-    }, [authToken]);
+    //2.1.1 Проверяем изменился ли выбранный магазин при обновлении токена
+    // useEffect(() => {
+    //     if (activeBrand && activeBrand.is_primary_collect && activeBrand.is_primary_collect !== primaryCollect) {
+    //         setPrimaryCollect(activeBrand.is_primary_collect)
+    //         fetchAnalysisData()
+    //     }
+    // }, [authToken]);
 
     useEffect(() => {
         if (activeBrand && activeBrand.id === 0 && shops) {
@@ -86,7 +85,7 @@ const StockAnalysisPage = () => {
             const currShop = shops.find(_ => _.id === activeBrand.id)
             setShopStatus(currShop)
         }
-    }, [activeBrand, shops, filters])
+    }, [shops, filters])
 
 
     return (
@@ -123,6 +122,7 @@ const StockAnalysisPage = () => {
                     <div>
                         <Filters
                             setLoading={setLoading}
+                            isDataLoading={loading}
                         />
                     </div>
                     {/* !FILTERS */}

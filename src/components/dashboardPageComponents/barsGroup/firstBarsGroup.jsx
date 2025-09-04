@@ -4,7 +4,6 @@ import { differenceInDays } from 'date-fns';
 import { useAppSelector } from '../../../redux/hooks';
 
 const FirstBarsGroup = ({ dataDashBoard, selectedRange, loading }) => {
-
     const { isSidebarHidden } = useAppSelector(store => store.utils)
 
     const daysRange = selectedRange.from && selectedRange.to ? differenceInDays(selectedRange.to, selectedRange.from, { unit: 'days' }) : selectedRange.period
@@ -29,6 +28,8 @@ const FirstBarsGroup = ({ dataDashBoard, selectedRange, loading }) => {
                 quantityPerDay={dataDashBoard?.saleCount / daysRange}
                 quantityInPercent={dataDashBoard?.saleCountCompare}
                 loading={loading}
+                hasTooltip
+                tooltipText='Количество проданных товаров (без возвратов)'
             />
             <Bar
                 title='Возвраты'
@@ -43,16 +44,24 @@ const FirstBarsGroup = ({ dataDashBoard, selectedRange, loading }) => {
             <div className={styles.group__wrapper}>
                 <Bar
                     fixed={false}
-                    title='Процент выкупа'
-                    buyOut={dataDashBoard?.buyoutPercent}
-                    butOutInPercent={dataDashBoard?.buyoutPercentCompare}
+                    title='WB Реализовал'
+                    averageBill={dataDashBoard?.taxInfo?.wbRealization}
                     loading={loading}
+                    hasTooltip
+                    tooltipText='Сумма реализации товара с учетом согласованной скидки продавца и СПП'
                 />
-                <Bar
+                {/* <Bar
                     fixed={false}
                     title='Средний чек'
                     averageBill={dataDashBoard?.averageBill}
                     averageBillInPercent={dataDashBoard?.averageBillCompare}
+                    loading={loading}
+                /> */}
+                <Bar
+                    fixed={false}
+                    title='Процент выкупа'
+                    buyOut={dataDashBoard?.buyoutPercent}
+                    butOutInPercent={dataDashBoard?.buyoutPercentCompare}
                     loading={loading}
                 />
             </div>

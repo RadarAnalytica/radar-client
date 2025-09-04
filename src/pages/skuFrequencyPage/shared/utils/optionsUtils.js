@@ -1,5 +1,4 @@
 const dynamicNormalizer = (dynamic, from, to) => {
-    console.log(dynamic)
     let result = {
         start: null,
         end: null
@@ -46,9 +45,17 @@ export const complexRequestObjectGenerator = (fields) => {
             start: fields.revenue_total_start || null,
             end: fields.revenue_total_end || null
         },
+        revenue_total_spp: { //Выручка
+            start: fields.revenue_total_spp_start || null,
+            end: fields.revenue_total_spp_end || null
+        },
         avg_price_total: { //Ср цена
             start: fields.avg_price_total_start || null,
             end: fields.avg_price_total_end || null
+        },
+        avg_price_total_spp: { //Ср цена
+            start: fields.avg_price_total_spp_start || null,
+            end: fields.avg_price_total_spp_end || null
         },
         goods_with_sales_percent_total: { //Процент товаров с продажами
             start: fields.goods_with_sales_percent_total_start || null,
@@ -131,9 +138,17 @@ export const complexRequestObjectGenerator = (fields) => {
             start: fields.revenue_300_start || null,
             end: fields.revenue_300_end || null
         },
+        revenue_300_spp: {
+            start: fields.revenue_300_spp_start || null,
+            end: fields.revenue_300_spp_end || null
+        },
         avg_revenue_300: {
             start: fields.avg_revenue_300_start || null,
             end: fields.avg_revenue_300_end || null
+        },
+        avg_revenue_300_spp: {
+            start: fields.avg_revenue_300_spp_start || null,
+            end: fields.avg_revenue_300_spp_end || null
         },
         lost_revenue_percent_300: {
             start: fields.lost_revenue_percent_300_start || null,
@@ -142,6 +157,10 @@ export const complexRequestObjectGenerator = (fields) => {
         avg_price_300: {
             start: fields.avg_price_300_start || null,
             end: fields.avg_price_300_end || null
+        },
+        avg_price_300_spp: {
+            start: fields.avg_price_300_spp_start || null,
+            end: fields.avg_price_300_spp_end || null
         },
         goods_with_sales_percent_300: {
             start: fields.goods_with_sales_percent_300_start || null,

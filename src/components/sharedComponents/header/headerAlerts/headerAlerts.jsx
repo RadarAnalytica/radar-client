@@ -24,6 +24,8 @@ const HeaderAlerts = ({ messages }) => {
     const { authToken } = useContext(AuthContext)
 
     const onDeleteMsg = async (messageId) => {
+
+
         try {
             await fetch(`${URL}/api/msg/${messageId}`, {
                 method: 'POST',
@@ -44,7 +46,7 @@ const HeaderAlerts = ({ messages }) => {
             {sortedMessages && sortedMessages.length > 0 && sortedMessages.map(m => {
                 const icon = m.type === 'note' ? OkMessage : m.type === 'recommendation' ? RecommendationMessge : m.type === 'warning' ? NoteMessge : RecommendationMessge;
                 return (
-                    <li key={m.id} className={styles.list__item}>
+                    <li key={m.id} id={`message_id_${m.id}`} className={styles.list__item}>
                         <div className={styles.list__itemHeader}>
                             <div className={styles.list__itemHeaderWrapper}>
                                 <img src={icon} alt='' />
@@ -54,7 +56,17 @@ const HeaderAlerts = ({ messages }) => {
                                 <p className={styles.list__text}>{moment(m.created_at).format('DD.MM.YYYY')}</p>
                                 <button
                                     className={styles.list__deleteButton}
-                                    onClick={() => { onDeleteMsg(m.id) }}
+                                    onClick={() => { 
+                                        const item = document.querySelector(`#message_id_${m.id}`)
+                                        if (item) {
+                                            //item.style.transition = 'max-height .3s'
+                                            item.style.opacity = '0'
+                                            item.style.maxHeight = '0px'
+                                           
+                                            
+                                        }
+                                        onDeleteMsg(m.id) 
+                                    }}
                                 >
                                     <img src={CloseIcon} alt='' />
                                 </button>

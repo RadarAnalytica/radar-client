@@ -1,25 +1,26 @@
-import { newIcons } from "../icons/icons"
+import { menuIcons } from "../icons/icons"
 
 export const menuConfig = [
     {
         id: 0,
         name: 'analysis',
         label: 'Анализ конкурентов',
-        icon: newIcons.analysis,
+        icon: menuIcons.analysis,
         children: [
             {
                 id: 1,
                 url: '/sku-analysis',
                 label: 'Анализ артикула',
                 isActive: true,
-                isNew: false
+                isNew: false,
             },
             {
                 id: 2,
                 url: '/supplier-analysis',
                 label: 'Анализ поставщика',
-                isActive: false,
-                isNew: false
+                isActive: true,
+                isNew: true,
+                features: ['popular']
             },
             {
                 id: 3,
@@ -32,7 +33,7 @@ export const menuConfig = [
                 id: 3,
                 url: '/sku-frequency',
                 label: 'Частотность артикула',
-                isActive: true,
+                isActive: false,
                 isNew: false
             },
             {
@@ -48,14 +49,15 @@ export const menuConfig = [
         id: 1,
         name: 'trends_analysis',
         label: 'Анализ ниши и трендов',
-        icon: newIcons.trends_analysis,
+        icon: menuIcons.trends_analysis,
         children: [
             {
                 id: 3,
                 url: '/monitoring',
                 label: 'Поиск прибыльной ниши',
                 isActive: true,
-                isNew: true
+                isNew: true,
+                features: ['popular']
             },
             {
                 id: 1,
@@ -77,7 +79,7 @@ export const menuConfig = [
         id: 2,
         name: 'finance',
         label: 'Мои финансы',
-        icon: newIcons.finance,
+        icon: menuIcons.finance,
         children: [
             {
                 id: 1,
@@ -85,6 +87,13 @@ export const menuConfig = [
                 label: 'Сводка продаж',
                 isActive: true,
                 isNew: false
+            },
+            {
+                id: 8,
+                url: '/rnp',
+                label: 'Рука на пульсе (РНП)',
+                isActive: true,
+                isNew: true,
             },
             {
                 id: 2,
@@ -101,18 +110,11 @@ export const menuConfig = [
                 isNew: false
             },
             {
-                id: 4,
-                url: '/report-main',
-                label: 'Оцифровка еженедельных отчетов (ручная)',
-                isActive: true,
-                isNew: false
-            },
-            {
                 id: 5,
-                url: '/main', 
+                url: '/operations-costs', 
                 label: 'Операционные расходы',
-                isActive: false,
-                isNew: false
+                isActive: true,
+                isNew: true
             },
             {
                 id: 6,
@@ -124,9 +126,24 @@ export const menuConfig = [
             {
                 id: 7,
                 url: '/report-profit-loss', 
-                label: 'Отчет о прибылях и убытках',
+                label: 'Отчет о прибыли и убытках',
                 isActive: true,
-                isNew: true
+                isNew: false
+            },
+            // {
+            //     id: 8,
+            //     url: '/operations-costs', 
+            //     label: 'Операционные расходы',
+            //     isActive: false,
+            //     isNew: false
+            // },
+            {
+                id: 4,
+                url: '/report-main',
+                label: 'Оцифровка еженедельных отчетов (ручная)',
+                hasTopBorder: true,
+                isActive: true,
+                isNew: false
             },
             {
                 id: 8,
@@ -141,7 +158,7 @@ export const menuConfig = [
         id: 3,
         name: 'goods',
         label: 'Мои товары',
-        icon: newIcons.goods,
+        icon: menuIcons.goods,
         children: [
             {
                 id: 1,
@@ -169,6 +186,7 @@ export const menuConfig = [
                 url: '/selfcost',
                 label: 'Себестоимость',
                 isActive: true,
+                hasTopBorder: true,
             },
             {
                 id: 5,
@@ -183,7 +201,7 @@ export const menuConfig = [
         id: 4,
         name: 'seo',
         label: 'SEO',
-        icon: newIcons.seo,
+        icon: menuIcons.seo,
         children: [
             {
                 id: 1,
@@ -194,7 +212,7 @@ export const menuConfig = [
             },
             {
                 id: 2,
-                url: '/seo',
+                url: '/rank-analysis',
                 label: 'Сравнение SEO с ТОПами',
                 isActive: true,
                 isNew: false
@@ -206,7 +224,7 @@ export const menuConfig = [
 export const adminConfig = {
     name: 'admin',
     label: 'Администрирование',
-    icon: newIcons.admin,
+    icon: menuIcons.admin,
     children: [
         {
             id: 1,
@@ -231,6 +249,3 @@ export const adminConfig = {
         },
     ]
 }
-
-
-

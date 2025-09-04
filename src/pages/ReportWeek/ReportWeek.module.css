@@ -48,7 +48,7 @@
 .container {
     flex-grow: 1;
     min-height: 450px;
-    max-height: calc(100% - 170px);
+    max-height: calc(100vh - 210px);
 }
 
 :global(.table__arrow){

@@ -16,22 +16,23 @@ export const editShop = createAsyncThunk("editShop", async (reqData) => {
             body: JSON.stringify({
                 brand_name: name,
                 token: shopToken,
-    
             })
         })
         if (!response.ok) {
-            setEditShopRequestStatus({...initRequestStatus, isLoading: false, isError: true, message: 'Не удалось обновить данные магазина'})
-            return
-            // console.error('Ошибка ответа сервера:', response.status, response.statusText);
-            // const errorData = await response.text();
-            // console.error('Данные ошибки:', errorData);
-            // throw new Error('Ошибка при редактировании магазина');
+            console.log('Response status:', response.status);
+            const errorText = await response.text();
+            console.log('Error response text:', errorText);
+            const message = errorText || 'Не удалось обновить данные магазина';
+            setEditShopRequestStatus({...initRequestStatus, isLoading: false, isError: true, message });
+            return;
         }
+        
         setEditShopRequestStatus({...initRequestStatus, isLoading: false, isSuccess: true, message: 'Магазин успешно обновлен'})
         const data = await response.json()
         return data
     
-    } catch {
+    } catch (e) {
+        console.log('e', e)
         setEditShopRequestStatus({...initRequestStatus, isLoading: false, isError: true, message: 'Не удалось обновить данные магазина'})
     }
 })

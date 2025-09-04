@@ -86,7 +86,36 @@ export const COLUMNS = [
 		render: summaryRender,
 	},
 	{
-		title: 'Выкупы, руб',
+		title: (<Flex gap={10} align='center'>
+			<span>Выкупы, руб</span>
+			<Tooltip title="Сумма проданных товаров с учетом согласованной скидки продавца">
+				<svg
+					width="20"
+					height="20"
+					viewBox="0 0 20 20"
+					fill="none"
+					xmlns="http://www.w3.org/2000/svg"
+					style={{flexShrink: 0}}
+				>
+					<rect
+						x="0.75"
+						y="0.75"
+						width="18.5"
+						height="18.5"
+						rx="9.25"
+						stroke="black"
+						strokeOpacity="0.1"
+						strokeWidth="1.5"
+					/>
+					<path
+						d="M9.064 15V7.958H10.338V15H9.064ZM8.952 6.418V5.046H10.464V6.418H8.952Z"
+						fill="#1A1A1A"
+						fillOpacity="0.5"
+					/>
+				</svg>
+			</Tooltip>
+		</Flex>),
+		// title: 'Выкупы, руб',
 		dataIndex: 'purchases_rub',
 		sorter: (a, b) => sorter(a, b, 'purchases'),
 		sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />,
@@ -99,7 +128,36 @@ export const COLUMNS = [
 		width: 240,
 	},
 	{
-		title: 'Выкупы, шт',
+		title: (<Flex gap={10} align='center'>
+			<span>Выкупы, шт</span>
+			<Tooltip title="Кол-во проданных товаров (с возвратами)">
+				<svg
+					width="20"
+					height="20"
+					viewBox="0 0 20 20"
+					fill="none"
+					xmlns="http://www.w3.org/2000/svg"
+					style={{flexShrink: 0}}
+				>
+					<rect
+						x="0.75"
+						y="0.75"
+						width="18.5"
+						height="18.5"
+						rx="9.25"
+						stroke="black"
+						strokeOpacity="0.1"
+						strokeWidth="1.5"
+					/>
+					<path
+						d="M9.064 15V7.958H10.338V15H9.064ZM8.952 6.418V5.046H10.464V6.418H8.952Z"
+						fill="#1A1A1A"
+						fillOpacity="0.5"
+					/>
+				</svg>
+			</Tooltip>
+		</Flex>),
+		// title: 'Выкупы, шт',
 		dataIndex: 'purchases_quantity',
 		sorter: (a, b) => sorter(a, b, 'purchases'),
 		sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />,
@@ -138,7 +196,36 @@ export const COLUMNS = [
 		width: 240,
 	},
 	{
-		title: 'Продажи',
+		title: (<Flex gap={10} align='center'>
+			<span>Продажи</span>
+			<Tooltip title="Кол-во проданных товаров (без возвратов)">
+				<svg
+					width="20"
+					height="20"
+					viewBox="0 0 20 20"
+					fill="none"
+					xmlns="http://www.w3.org/2000/svg"
+					style={{flexShrink: 0}}
+				>
+					<rect
+						x="0.75"
+						y="0.75"
+						width="18.5"
+						height="18.5"
+						rx="9.25"
+						stroke="black"
+						strokeOpacity="0.1"
+						strokeWidth="1.5"
+					/>
+					<path
+						d="M9.064 15V7.958H10.338V15H9.064ZM8.952 6.418V5.046H10.464V6.418H8.952Z"
+						fill="#1A1A1A"
+						fillOpacity="0.5"
+					/>
+				</svg>
+			</Tooltip>
+		</Flex>),
+		// title: 'Продажи',
 		dataIndex: 'sales',
 		sorter: (a, b) => sorter(a, b, 'sales'),
 		sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />,
@@ -151,7 +238,36 @@ export const COLUMNS = [
 		width: 240,
 	},
 	{
-		title: 'Выручка',
+		title: (<Flex gap={10} align='center'>
+			<span>Выручка</span>
+			<Tooltip title="Сумма проданных товаров по цене с учетом согласованной скидки и возвратов">
+				<svg
+					width="20"
+					height="20"
+					viewBox="0 0 20 20"
+					fill="none"
+					xmlns="http://www.w3.org/2000/svg"
+					style={{flexShrink: 0}}
+				>
+					<rect
+						x="0.75"
+						y="0.75"
+						width="18.5"
+						height="18.5"
+						rx="9.25"
+						stroke="black"
+						strokeOpacity="0.1"
+						strokeWidth="1.5"
+					/>
+					<path
+						d="M9.064 15V7.958H10.338V15H9.064ZM8.952 6.418V5.046H10.464V6.418H8.952Z"
+						fill="#1A1A1A"
+						fillOpacity="0.5"
+					/>
+				</svg>
+			</Tooltip>
+		</Flex>),
+		// title: 'Выручка',
 		dataIndex: 'gains',
 		sorter: (a, b) => sorter(a, b, 'gains'),
 		sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />,
@@ -530,7 +646,36 @@ export const COLUMNS = [
 	// 	width: 240,
 	// },
 	{
-		title: 'СПП + WB реализовал',
+		title: (<Flex gap={10} align='center'>
+			<span>СПП + WB реализовал</span>
+			<Tooltip title="Сумма реализации товара с учетом согласованной скидки продавца и СПП">
+				<svg
+					width="20"
+					height="20"
+					viewBox="0 0 20 20"
+					fill="none"
+					xmlns="http://www.w3.org/2000/svg"
+					style={{flexShrink: 0}}
+				>
+					<rect
+						x="0.75"
+						y="0.75"
+						width="18.5"
+						height="18.5"
+						rx="9.25"
+						stroke="black"
+						strokeOpacity="0.1"
+						strokeWidth="1.5"
+					/>
+					<path
+						d="M9.064 15V7.958H10.338V15H9.064ZM8.952 6.418V5.046H10.464V6.418H8.952Z"
+						fill="#1A1A1A"
+						fillOpacity="0.5"
+					/>
+				</svg>
+			</Tooltip>
+		</Flex>),
+		// title: 'СПП + WB реализовал',
 		dataIndex: 'sold_by_wb',
 		sorter: (a, b) => sorter(a, b, 'sold_by_wb'),
 		sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />,

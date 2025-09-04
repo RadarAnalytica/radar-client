@@ -7,6 +7,7 @@ import HeaderAlerts from './headerAlerts/headerAlerts';
 import AuthContext from '../../../service/AuthContext';
 import { useAppSelector, useAppDispatch } from '../../../redux/hooks';
 import { fetchMessages } from '../../../redux/messages/messagesSlice';
+import { VideoReview } from './videoReviewButton/videoReview';
 
 const popoverOptions = {
     arrow: false,
@@ -14,7 +15,12 @@ const popoverOptions = {
     placement: 'bottomLeft'
 }
 
-const Header = ({ title = 'Radar Analytica', titlePrefix, children }) => {
+const Header = ({
+    title = 'Radar Analytica',
+    titlePrefix,
+    children,
+    videoReviewLink
+}) => {
     const dispatch = useAppDispatch();
     const { user, logout, authToken } = useContext(AuthContext)
     // стейт видимости поповера меню
@@ -33,10 +39,6 @@ const Header = ({ title = 'Radar Analytica', titlePrefix, children }) => {
         }
         return () => { intervalId && clearInterval(intervalId); }
     }, [authToken, messages]);
-
-    useEffect(() => {
-        dispatch(fetchMessages(authToken));
-    }, []);
 
     // пропс для кнопки внутри меню
     const menuPopoverCloseHandler = () => {
@@ -59,6 +61,11 @@ const Header = ({ title = 'Radar Analytica', titlePrefix, children }) => {
                     </h1>
                     :
                     <>{title}</>
+                }
+                {videoReviewLink &&
+                    <VideoReview
+                        link={videoReviewLink}
+                    />
                 }
             </div>
             {children && children}

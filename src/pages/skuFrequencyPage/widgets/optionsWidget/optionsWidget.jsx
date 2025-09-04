@@ -304,7 +304,7 @@ const OptionsWidget = ({ resetTableConfig }) => {
                     <div className={styles.widget__body}>
                         <Form
                             className={`${styles.form} ${styles.form_complexForm}`}
-                            scrollToFirstError
+                            scrollToFirstError={{ behavior: 'smooth', block: 'center'}}
                             layout='vertical'
                             onFinish={complexFormSubmitHandler}
                             form={complexForm}

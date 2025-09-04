@@ -1,6 +1,7 @@
 .container {
   position: relative;
   height: 100%;
+  min-height: 450px;
   padding: 16px;
   background-color: #fff;
   border-radius: 16px;
@@ -8,6 +9,7 @@
 }
   
 .tableContainer {
+  position: relative;
   height: 100%;
   overflow: hidden;
 }
@@ -26,10 +28,11 @@
   width: 5px!important;
 }
 
-.tableContainer :global(.ant-table-tbody-virtual-holder){
-  /* max-height: 100%!important; */
-}
 /* 
+.tableContainer :global(.ant-table-tbody-virtual-holder){
+  max-height: 100%!important;
+}
+
 .tableContainer::-webkit-scrollbar {
   width: 3px;
   height: 3px;
@@ -48,9 +51,27 @@
     border-radius: 6px;
 } */
 
-.tableContainer :global(.ant-table) {
+.tableContainer :global(.ant-table),
+.tableContainer :global(.ant-table-body) {
   scrollbar-color: #5329ff80 transparent;
   scrollbar-width: thin;
+}
+
+.tableContainer :global(.ant-table-body)::-webkit-scrollbar {
+  width: 3px;
+  height: 3px;
+  border-radius: 6px;
+}
+  
+.tableContainer :global(.ant-table-body)::-webkit-scrollbar-track {
+  background: transparent;
+  height: 50%;
+  margin: 10px 20px;
+}
+  
+.tableContainer :global(.ant-table-body)::-webkit-scrollbar-thumb {
+  background: #5329ff80;
+  border-radius: 6px;
 }
 
 :global(.ant-table-sticky-scroll-bar){
@@ -129,4 +150,26 @@
 .summaryRow,
 .summaryRow :global(.ant-table-cell-fix-left){
   background-color: rgb(238 234 255);
+}
+
+.loading{
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 5;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #fff;
+}
+
+.loadingProgress{
+  margin-top: 60px;
+  width: 60vw;
+  max-width: 840px;
 }

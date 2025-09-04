@@ -118,6 +118,7 @@ const SelfCostPage = () => {
                         setLoading={setLoading}
                         timeSelect={false}
                         articleSelect={false}
+                        isDataLoading={dataStatus.isLoading}
                     />
                     <HowToLink
                         text='Инструкция по загрузке себестоимости'

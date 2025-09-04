@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import styles from './AdminReferalPage.module.css'
 import MobilePlug from '../../components/sharedComponents/mobilePlug/mobilePlug';
 import AuthContext from '../../service/AuthContext';
@@ -6,10 +6,12 @@ import Header from '../../components/sharedComponents/header/header'
 import Sidebar from '../../components/sharedComponents/sidebar/sidebar'
 import ErrorModal from '../../components/sharedComponents/modals/errorModal/errorModal';
 import { SearchWidget } from './widgets';
-import { Input, Button, ConfigProvider } from 'antd';
+import { Input, Button, ConfigProvider, Form, Table } from 'antd';
 import { formatPrice } from '../../service/utils';
 import SuccessModal from '../../components/sharedComponents/modals/successModal/successModal';
 import moment from 'moment';
+import { useLocation } from 'react-router-dom';
+import { URL } from '../../service/config';
 
 
 
@@ -20,7 +22,28 @@ const initStatus = {
     message: ''
 }
 
+const HISTORY_COLUMNS = [
+    { title: 'Дата', dataIndex: 'transaction_date', width: 100 },
+    { title: 'ID реферала', dataIndex: 'referral_id', width: 100 },
+    { title: 'Сумма', dataIndex: 'bonus_amount', width: 100 },
+    { title: 'Админ', dataIndex: 'admin_id', width: 100 },
+    { title: 'Тип', dataIndex: 'transaction_type', width: 100 },
+    { title: 'Вид', dataIndex: 'transaction_direction', width: 100 },
+]
+
+const USER_COLUMNS = [
+    { title: 'ID', dataIndex: 'id', width: 100 },
+    { title: 'Ссылка', dataIndex: 'referral_link', width: 100 },
+    { title: 'Количество', dataIndex: 'referral_count', width: 100 },
+    { title: 'Баланс', dataIndex: 'bonus_balance', width: 100 },
+]
+
 const fetchUserData = async (token, userId, setStatus, initStatus, setData) => {
+    if (!userId) {
+        setStatus({ ...initStatus, isError: true, message: 'Пожалуйста введите id пользователя' })
+        return
+    }
+
     setStatus({ ...initStatus, isLoading: true })
     try {
         let res = await fetch(`${URL}/api/admin/referral-system/${userId}/bonuses`, {
@@ -47,7 +70,7 @@ const fetchUserData = async (token, userId, setStatus, initStatus, setData) => {
 const accountRefill = async (token, reqData, setStatus, initStatus, setData, setSuccessRefill) => {
     setStatus({ ...initStatus, isLoading: true })
     try {
-        let res = await fetch(`${URL}/api/admin/service-analysis/`, {
+        let res = await fetch(`${URL}/api/admin/referral-system/bonus/`, {
             method: 'POST',
             headers: {
                 'Content-type': 'application/json',
@@ -60,7 +83,7 @@ const accountRefill = async (token, reqData, setStatus, initStatus, setData, set
             setStatus({ ...initStatus, isError: true, message: 'Не удалось получить данные' })
             return
         }
-        await fetchUserData(token, reqData.referrer, setStatus, initStatus, setData)
+        await fetchUserData(token, reqData.referrer_id, setStatus, initStatus, setData)
         setStatus(initStatus)
         setSuccessRefill(true)
     } catch {
@@ -70,20 +93,31 @@ const accountRefill = async (token, reqData, setStatus, initStatus, setData, set
 
 const AdminReferalPage = () => {
 
-    const { authToken } = useContext(AuthContext)
+    const { authToken, user } = useContext(AuthContext)
     const [status, setStatus] = useState(initStatus)
     const [data, setData] = useState()
-    const [inputValue, setInputValue] = useState('')
     const [searchInputValue, setSearchInputValue] = useState('')
     const [successRefill, setSuccessRefill] = useState(false)
+    const [form] = Form.useForm()
+    const location = useLocation();
+    const { id } = location.state || {};
 
-    const submitHandler = () => {
+    const submitHandler = (fields) => {
         const dataObject = {
-            referrer: searchInputValue,
-            amount: inputValue
+            ...fields,
+            "referrer_id": data.id,
+            "admin_id": user.id,
+            "transaction_date": moment().toISOString(),
         }
         accountRefill(authToken, dataObject, setStatus, initStatus, setData, setSuccessRefill)
     }
+
+    useEffect(() => {
+        if (id) {
+            setSearchInputValue(id)
+            fetchUserData(authToken, id, setStatus, initStatus, setData)
+        }
+    }, [id])
 
     return (
         <main className={styles.page}>
@@ -110,19 +144,16 @@ const AdminReferalPage = () => {
                     fetchUserData={fetchUserData}
                 />
 
-                {status.isSuccess &&
+                {data &&
                     <div className={styles.page__dataWrapper}>
                         <div className={styles.mainData}>
-                            <p className={styles.mainData__title}>Начислить бонусы</p>
+                            {/* <p className={styles.mainData__title}>Начислить бонусы</p> */}
                             <div className={styles.mainData__userBlock}>
-                                <div className={styles.mainData__row}>
-                                    <p className={styles.mainData__rowText}>userId</p>
-                                    <p className={styles.mainData__rowText}>{searchInputValue}</p>
-                                </div>
-                                {/* <div className={styles.mainData__row}>
-                                    <p className={styles.mainData__rowText}>email:</p>
-                                    <p className={styles.mainData__rowText}>x@xx.xx</p>
-                                </div> */}
+                                <Table
+                                    columns={USER_COLUMNS}
+                                    dataSource={[data]}
+                                    pagination={false}
+                                />
                             </div>
 
                             <ConfigProvider
@@ -133,35 +164,77 @@ const AdminReferalPage = () => {
                                     }
                                 }}
                             >
-                                <div className={styles.mainData__inputWrapper}>
-                                    <Input
-                                        placeholder='Введите сумму'
-                                        size='large'
-                                        value={inputValue}
-                                        onChange={(e) => setInputValue(e.target.value)}
-                                        type='number'
-                                    />
-                                    <Button
-                                        size='large'
-                                        type='primary'
-                                        onClick={submitHandler}
+                                <Form
+                                    form={form}
+                                    layout='vertical'
+                                    className={styles.form}
+                                    onFinish={submitHandler}
+                                >
+                                    <Form.Item
+                                        name='bonus_amount'
+                                        label='Сумма к начислению'
+                                        rules={[
+                                            { required: true }
+                                        ]}
                                     >
-                                        Начислить
-                                    </Button>
-
-                                </div>
+                                        <Input
+                                            placeholder='Введите сумму'
+                                            size='large'
+                                            type='number'
+                                        />
+                                    </Form.Item>
+                                    <Form.Item
+                                        name='referral_id'
+                                        label='ID реферала'
+                                        rules={[
+                                            { required: true }
+                                        ]}
+                                    >
+                                        <Input
+                                            placeholder='Введите id'
+                                            size='large'
+                                            type='number'
+                                        />
+                                    </Form.Item>
+                                    <Form.Item
+                                        name='description'
+                                        label='Комментарий'
+                                        className={`${styles.form__item} ${styles.form__item_wide}`}
+                                    // rules={[
+                                    //     {required: true}
+                                    // ]}
+                                    >
+                                        <Input.TextArea
+                                            placeholder='Напишите что-нибудь'
+                                            autosize={{
+                                                minRows: 3,
+                                                maxRows: 3
+                                            }}
+                                        />
+                                    </Form.Item>
+                                    <div className={styles.mainData__inputWrapper}>
+                                        <Button
+                                            htmlType='submit'
+                                            size='large'
+                                            type='primary'
+                                        >
+                                            Отправить
+                                        </Button>
+                                    </div>
+                                </Form>
                             </ConfigProvider>
                         </div>
 
                         <div className={styles.userHistoryData}>
                             <p className={styles.mainData__title}>История начислений</p>
                             <div className={styles.userHistoryData__userBlock}>
-                                {data && data.length > 0 && data.map((_, id) => (
-                                    <div className={styles.userHistoryData__row} key={id}>
-                                        <p className={styles.userHistoryData__rowText}>{moment(_.created_at).format('DD.MM.YYYY HH:mm')}</p>
-                                        <p className={styles.userHistoryData__rowText}>{formatPrice(_.amount, '₽')}</p>
-                                    </div>
-                                ))}
+                                {data &&
+                                    <Table
+                                        columns={HISTORY_COLUMNS}
+                                        dataSource={data.transactions?.transactions_data?.map(_ => _.transactions_history).flat()}
+                                        pagination={false}
+                                    />
+                                }
                             </div>
 
                         </div>
@@ -187,17 +260,14 @@ const AdminReferalPage = () => {
                 footer={null}
                 onOk={() => {
                     setSuccessRefill(false);
-                    setInputValue('')
                 }}
                 onClose={() => {
                     setSuccessRefill(false);
-                    setInputValue('')
                 }}
                 onCancel={() => {
                     setSuccessRefill(false);
-                    setInputValue('')
                 }}
-                message={`Успешно начислено ${inputValue} Р. ID пользователя: ${searchInputValue}`}
+                message={`Успешно начислено`}
             />
         </main>
 
