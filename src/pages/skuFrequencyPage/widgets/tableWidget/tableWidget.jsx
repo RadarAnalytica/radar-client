@@ -1,14 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react'
 import styles from './tableWidget.module.css'
-import { formatPrice } from '../../../../service/utils';
 import { useAppSelector, useAppDispatch } from '../../../../redux/hooks';
-import { Link } from 'react-router-dom';
-import { formatRateValue, sortTableDataFunc } from '../../shared';
 import { fetchRequestsMonitoringData, fetchRequestsMonitoringDataEasy } from '../../../../redux/requestsMonitoring/requestsMonitoringActions';
 import { actions as reqsMonitoringActions } from '../../../../redux/requestsMonitoring/requestsMonitoringSlice';
 import ErrorModal from '../../../../components/sharedComponents/modals/errorModal/errorModal';
-import { ConfigProvider, Pagination, Table } from 'antd'
-import { useNavigate } from 'react-router-dom';
+import { ConfigProvider, Table } from 'antd'
 import { newTableConfig } from '../../shared/configs/tableConfig';
 
 //инит стейт сортировки
@@ -39,10 +35,10 @@ const paginationTheme = {
 const TableWidget = ({ tableConfig, setTableConfig }) => {
     const dispatch = useAppDispatch()
     const containerRef = useRef(null) // реф скролл-контейнера (используется чтобы седить за позицией скрола)
-    const [scrollY, setScrollY] = useState(0);
-    const [scrollX, setScrollX] = useState(0);
+    // const [scrollY, setScrollY] = useState(0);
+    // const [scrollX, setScrollX] = useState(0);
     const { requestData, requestStatus, requestObject, formType, tableConfig: tableSettings, pagination } = useAppSelector(store => store.requestsMonitoring)
-
+    console.log('requestObject', requestObject)
     const updateTableConfig = (settings) => {
         let newConfig = tableConfig;
         newConfig = newConfig.map(col => ({
@@ -117,26 +113,26 @@ const TableWidget = ({ tableConfig, setTableConfig }) => {
 
 
 
-    useEffect(() => {
-        const updateHeight = () => {
-            if (containerRef?.current) {
-                // ref контейнера который занимает всю высоту
-                const container = containerRef.current;
+    // useEffect(() => {
+    //     const updateHeight = () => {
+    //         if (containerRef?.current) {
+    //             // ref контейнера который занимает всю высоту
+    //             const container = containerRef.current;
 
-                // расчет высоты шапки и добавление отступов контейнера
-                const headerHeight = container.querySelector('.ant-table-header')?.offsetHeight || 70;
-                const paddings = 32;
-                // расчет и сохранение высоты таблицы
-                const availableHeight = container.offsetHeight - headerHeight - paddings;
-                setScrollY(availableHeight);
-                // расчет ширины контейнера
-                setScrollX(container.offsetWidth - 32);
-            }
-        };
+    //             // расчет высоты шапки и добавление отступов контейнера
+    //             const headerHeight = container.querySelector('.ant-table-header')?.offsetHeight || 70;
+    //             const paddings = 32;
+    //             // расчет и сохранение высоты таблицы
+    //             const availableHeight = container.offsetHeight - headerHeight - paddings;
+    //             setScrollY(availableHeight);
+    //             // расчет ширины контейнера
+    //             setScrollX(container.offsetWidth - 32);
+    //         }
+    //     };
 
-        updateHeight();
+    //     updateHeight();
 
-    }, [newTableConfig, requestData])
+    // }, [newTableConfig, requestData])
 
     useEffect(() => {
         const tableBody = document.querySelector('.ant-table-tbody')
@@ -212,7 +208,8 @@ const TableWidget = ({ tableConfig, setTableConfig }) => {
     }, [requestData, pagination])
 
     const paginationHandler = (page) => {
-        dispatch(reqsMonitoringActions.updateRequestObject({ page: page }))
+        console.log('page', page)
+        dispatch(reqsMonitoringActions.updatePagination({ page: page }))
     }
 
     if (requestStatus.isLoading) {
@@ -263,16 +260,19 @@ const TableWidget = ({ tableConfig, setTableConfig }) => {
 
     }
 
-    const handleChange = (pagination, filters, sorterObj) => {
-        if (!sorterObj.order) {
-            dispatch(reqsMonitoringActions.updateRequestObject({ sorting: undefined }))
-            return
+    const handleChange = (pagination, filters, sorterObj, { action }) => {
+        if (action === 'sort') {
+            if (!sorterObj.order) {
+                dispatch(reqsMonitoringActions.updateRequestObject({ sorting: undefined }))
+                return
+            }
+            const obj = {
+                sort_field: sorterObj.field,
+                sort_order: sorterObj.order,
+            }
+            dispatch(reqsMonitoringActions.updateRequestObject({ sorting: obj, page: 1, limit: 25 }))
         }
-        const obj = {
-            sort_field: sorterObj.field,
-            sort_order: sorterObj.order,
-        }
-        dispatch(reqsMonitoringActions.updateRequestObject({ sorting: obj, page: 1, limit: 25 }))
+       
     };
 
     return requestData && newTableConfig && (
