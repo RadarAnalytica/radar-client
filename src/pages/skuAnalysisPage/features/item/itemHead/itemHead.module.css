@@ -10,6 +10,8 @@
     justify-content: flex-start;
     align-items: stretch;
     gap: 28px;
+    text-decoration: none;
+    position: relative;
 }
 
 .head__gallery {
@@ -99,6 +101,18 @@
     color: #8C8C8C;
     margin: 0;
     padding: 0;
+}
+
+.head__link {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    color: #1A1A1A;
+    transition: all .2s ease;
+}
+
+.head__link:hover {
+    color: #5329FF;
 }
 
 
