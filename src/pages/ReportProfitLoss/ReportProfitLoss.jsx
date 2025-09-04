@@ -82,7 +82,8 @@ export default function ReportProfitLoss() {
 	}
 
 	const dataToTableData = (response) => {
-		if (!response.data.length){
+		if (!response || response.data && response.data.length === 0){
+			setColumns(COLUMNS);
 			setData([])
 			return
 		}
@@ -203,13 +204,13 @@ export default function ReportProfitLoss() {
 					// monthRange
 					updateSavedMonthRange()
 				);
-
 				dataToTableData(response);
 				// setData(weeks);
 				// dataToTableData(weeks);
 			}
 		} catch (e) {
 			console.error(e);
+			dataToTableData(null);
 			setLoading(false);
 		}
 	};

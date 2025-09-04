@@ -37,6 +37,24 @@ export default function ReportWeek() {
 	const [isPopoverOpen, setIsPopoverOpen] = useState(false);
 	const [isConfigOpen, setConfigOpen] = useState(false);
 	const [tableRows, setTableRows] = useState(null);
+	const [progress, setProgress] = useState(0);
+
+	useEffect(() => {
+		let interval = null;
+		if (loading) {
+			interval = setInterval(() => {
+				setProgress((state) => {
+					if (state > 90){
+						clearInterval(interval)
+						return state
+					}
+					return Math.ceil(state + (90 / 15))
+				})
+			}, 1000)
+		}
+		return () => clearInterval(interval)
+	}, [loading])
+
 
 	const weekOptions = useMemo(() => {
 		// шаблон для создания списка опций для фильтра
@@ -169,18 +187,21 @@ export default function ReportWeek() {
 					}
 				}
 
-				dataToTableData(weeks);
+				setProgress(100);
+				setTimeout(() => dataToTableData(weeks), 500);
 			}
 		} catch (e) {
 			console.error(e);
-			setLoading(false);
-		} finally {
+			setProgress(100);
+			setTimeout(() => dataToTableData(null), 500);
 		}
 	};
 
 	const dataToTableData = (weeks) => {
 		if (!weeks || weeks?.length === 0) {
 			setTableRows([]);
+			setProgress(null)
+			setLoading(false);
 			return;
 		}
 
@@ -258,6 +279,7 @@ export default function ReportWeek() {
 
 		rows.unshift(summary);
 		setTableRows(rows);
+		setProgress(null)
 		setLoading(false);
 	};
 
@@ -465,6 +487,7 @@ export default function ReportWeek() {
 							columns={tableColumns}
 							data={tableRows}
 							is_primary_collect={shopStatus?.is_primary_collect}
+							progress={progress}
 						/>
 					</div>
 				{/* } */}
