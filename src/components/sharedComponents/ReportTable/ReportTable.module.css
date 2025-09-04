@@ -167,3 +167,9 @@
   align-items: center;
   background-color: #fff;
 }
+
+.loadingProgress{
+  margin-top: 60px;
+  width: 60vw;
+  max-width: 840px;
+}

@@ -1,8 +1,8 @@
-import { ConfigProvider, Table, Button } from 'antd';
-import { useRef, useMemo, useCallback } from 'react';
+import { ConfigProvider, Table, Button, Progress } from 'antd';
+import { useRef, useMemo, useCallback, useState } from 'react';
 import styles from './ReportTable.module.css';
 
-export default function ReportTable({ loading, columns, data, rowSelection = false, virtual=true, is_primary_collect }) {
+export default function ReportTable({ loading, columns, data, rowSelection = false, virtual=true, is_primary_collect, progress = null }) {
 	const tableContainerRef = useRef(null);
   const tableRef = useRef(null);
 
@@ -34,6 +34,15 @@ export default function ReportTable({ loading, columns, data, rowSelection = fal
 			<div className={styles.tableContainer}>
 				{loading && <div className={styles.loading}>
 						<span className='loader'></span>
+						{progress !== null && <div className={styles.loadingProgress}>
+							<Progress
+									percent={progress}
+									size='small'
+									showInfo={false}
+									strokeColor='#5329FF'
+									strokeLinecap={1}
+							/>
+						</div>}
 				</div>}
 				<ConfigProvider
 					renderEmpty={ () => (<div>Нет данных</div>)} 
