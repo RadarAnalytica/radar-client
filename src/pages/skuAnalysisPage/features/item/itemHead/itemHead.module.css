@@ -66,7 +66,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: flex-start;
-    gap: 20px;
+    gap: 16px;
 }
 
 .head__title {
@@ -113,6 +113,27 @@
 
 .head__link:hover {
     color: #5329FF;
+}
+
+.head__mainLink {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    background: #F6F4FF;
+    padding: 10px;
+    border-radius: 8px;
+    font-family: Mulish;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 160%;
+    letter-spacing: 0%;
+    color: #5329FF;
+
+    @media (max-width: 1500px) {
+        font-size: 14px;
+    }
 }
 
 
