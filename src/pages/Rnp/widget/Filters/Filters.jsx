@@ -113,8 +113,7 @@ export const Filters = ({
         filteredMessages = filteredMessages
           .filter(m => /Данные магазина [A-Za-z0-9]+ успешно собраны\. Результаты доступны на страницах сервиса/.test(m.text))
           .filter(m => (now - new Date(m.created_at)) < 60000 )
-        
-
+       
         // Если выходим если таких нет
         if (!!filteredMessages || filteredMessages.length > 0) {
           fetchFiltersData();
