@@ -253,6 +253,7 @@ export const TableWidget = React.memo(({ rawData, loading, tablePaginationState,
                                                                         className={styles.table__rowTitle} 
                                                                         style={{ textDecoration: 'none' }} 
                                                                         to={`/trend-analysis?query=${product[v.engName]}`}
+                                                                        target='_blank'
                                                                     >
                                                                         {product[v.engName]}
                                                                     </Link>
