@@ -1,6 +1,7 @@
 import styles from './itemHead.module.css'
 import { useAppSelector } from '../../../../../redux/hooks';
 import { formatPrice } from '../../../../../service/utils';
+import { Link } from 'react-router-dom';
 
 /** 
  * {
@@ -42,33 +43,42 @@ const ItemHead = () => {
 
     return (
         <>
-            {skuMainData && <div className={styles.head}>
-                <div className={styles.head__gallery}>
-                    {skuMainData?.photo_urls.map((i, id) => {
-                        if (id === 0) {
-                            return (
-                                <div className={styles.head__mainPhotoWrapper} key={id}>
-                                    <img src={i} alt='' width={138} height={182} className={styles.head__galleryMainImage} />
-                                </div>
-                            )
-                        } else {
+            {skuMainData &&
+                <div className={styles.head}>
+                    <div className={styles.head__gallery}>
+                        {skuMainData?.photo_urls.map((i, id) => {
+                            if (id === 0) {
+                                return (
+                                    <div className={styles.head__mainPhotoWrapper} key={id}>
+                                        <img src={i} alt='' width={138} height={182} className={styles.head__galleryMainImage} />
+                                    </div>
+                                )
+                            } else {
 
-                            return id < 4 && (
-                                <div className={styles.head__secPhotoWrapper} key={id}>
-                                    <img src={i} alt='' width={39} height={54} className={styles.head__galleryImage} />
-                                </div>)
-                        }
-                    })}
-                </div>
+                                return id < 4 && (
+                                    <div className={styles.head__secPhotoWrapper} key={id}>
+                                        <img src={i} alt='' width={39} height={54} className={styles.head__galleryImage} />
+                                    </div>)
+                            }
+                        })}
+                    </div>
 
-                <div className={styles.head__titleWrapper}>
-                    <p className={styles.head__title}>{skuMainData.wb_id_name}</p>
-                    <div className={styles.head__priceWrapper}>
-                        <p className={styles.head__text}>Цена реализации</p>
-                        <p className={styles.head__title}>{formatPrice(skuMainData.price, '₽')}</p>
+                    <div className={styles.head__titleWrapper}>
+                        <p className={styles.head__title}>{skuMainData.wb_id_name}</p>
+                        <div className={styles.head__priceWrapper}>
+                            <p className={styles.head__text}>Цена реализации</p>
+                            <p className={styles.head__title}>{formatPrice(skuMainData.price, '₽')}</p>
+                        </div>
+                        <Link
+                            to={skuMainData.supplier_url}
+                            target='_blank'
+                            className={styles.head__mainLink}
+                        >
+                           Посмотреть на WB
+                        </Link>
                     </div>
                 </div>
-            </div>}
+            }
         </>
     )
 }
