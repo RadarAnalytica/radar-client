@@ -131,6 +131,7 @@
     line-height: 160%;
     letter-spacing: 0%;
     color: #5329FF;
+    align-self: flex-end;
 
     @media (max-width: 1500px) {
         font-size: 14px;
