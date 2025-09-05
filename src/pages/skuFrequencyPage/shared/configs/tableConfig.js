@@ -1,7 +1,5 @@
 import { cellRender } from "./cellRender"
 
-
-
 export const radarTableConfig = [
     {
         title: '',
@@ -19,10 +17,9 @@ export const radarTableConfig = [
                 width: 370,
                 minWidth: 370,
                 sortable: true,
-                render: function (value) { return cellRender(value, this) },
                 hidden: false,
             },
-        ].map(_ => ({ ..._, render: _.render.bind(_), key: _.dataIndex }))
+        ].map(_ => ({ ..._, key: _.dataIndex }))
     },
     {
         title: 'Основные',
@@ -30,8 +27,11 @@ export const radarTableConfig = [
         key: 'm02',
         hidden: false,
         groupColor: 'white',
+        style: {
+            color: 'red !important'
+        },
         children: [
-            { title: 'Рейтинг качества ниши', dataIndex: 'niche_rating', width: 300, sortable: true, render: function (value) { return cellRender(value, this) }, hidden: false, tooltipText: 'Показатель рассчитывается исходя из значений выручки, коэффициента спроса, монопольности, рекламы, % выкупа и других параметров.' },
+            { title: 'Рейтинг качества ниши', dataIndex: 'niche_rating', width: 300, sortable: true, hidden: false, tooltipText: 'Показатель рассчитывается исходя из значений выручки, коэффициента спроса, монопольности, рекламы, % выкупа и других параметров.' },
             { title: 'Выручка (с СПП), ₽', dataIndex: 'revenue_total_spp', width: 240, units: '₽', sortable: true, hidden: false },
             { title: 'Выручка (без СПП), ₽', dataIndex: 'revenue_total', width: 240, units: '₽', sortable: true, hidden: false },
             { title: 'Ср. выручка в день, ₽', dataIndex: 'avg_daily_revenue', width: 240, units: '₽', sortable: true, hidden: false },
@@ -49,9 +49,7 @@ export const radarTableConfig = [
             { title: 'Частотность за 30 дней', dataIndex: 'frequency_30', width: 220, sortable: true, hidden: false },
             { title: 'Частотность за 60 дней', dataIndex: 'frequency_60', width: 220, sortable: true, hidden: false },
             { title: 'Частотность за 90 дней', dataIndex: 'frequency_90', width: 220, sortable: true, hidden: false },
-            // { title: '% выручки у ТОП-30 товаров, %', dataIndex: 'monopoly_percent', width: 220,  units: '%', sortable: true,  hidden: false },
-            //{title: 'Ср. кол-во оценок, %', dataIndex: 'avg_reviews', width: 220, units: '%', sortable: true,  hidden: false },
-        ].map(_ => ({ ..._, render: _.render?.bind(_), key: _.dataIndex, minWidth: _.width }))
+        ].map(_ => ({ ..._, key: _.dataIndex, minWidth: _.width }))
     },
     {
         title: 'Динамика популярности и роста запросов',
@@ -73,11 +71,8 @@ export const radarTableConfig = [
         groupColor: 'white',
         children: [
             { title: 'Процент выкупа, %', dataIndex: 'buyout_percent', width: 220, units: '%', sortable: true, hidden: false },
-            //{title: 'Частотность за 30 дней', dataIndex: 'frequency_30', width: 220, sortable: true,  hidden: false },
             { title: 'Монопольность, %', dataIndex: 'monopoly_percent', width: 300, units: '%', sortable: true, hidden: false, tooltipText: 'Процент выручки, приходящийся на ТОП-30 артикулов от всех артикулов на первой странице.' },
-            //{title: 'Кол-во артикулов по запросу, шт', dataIndex: 'goods_quantity', width: 220,  units: 'шт', sortable: true,  hidden: false },
             { title: 'Кол-во товаров в ТОП-1200 за 30 дней, шт', dataIndex: 'top_goods_quantity', width: 220, units: 'шт', sortable: true, hidden: false },
-            //{title: 'Комиссия FBO, %', dataIndex: 'fbo_commision', width: 220,  units: '%', sortable: true,  hidden: false },
         ].map(_ => ({ ..._, key: _.dataIndex, minWidth: _.width }))
     },
     {

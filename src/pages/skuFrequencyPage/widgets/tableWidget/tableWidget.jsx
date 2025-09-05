@@ -5,6 +5,7 @@ import { fetchRequestsMonitoringData, fetchRequestsMonitoringDataEasy } from '..
 import { actions as reqsMonitoringActions } from '../../../../redux/requestsMonitoring/requestsMonitoringSlice';
 import ErrorModal from '../../../../components/sharedComponents/modals/errorModal/errorModal';
 import { Table as RadarTable } from 'radar-ui';
+import { cellRender } from '../../shared/configs/cellRender';
 
 
 const TableWidget = ({ tableConfig, setTableConfig }) => {
@@ -83,15 +84,7 @@ const TableWidget = ({ tableConfig, setTableConfig }) => {
         // Обновляем состояние
         setTableConfig(prevConfig => {
             const updatedConfig = updateColumnWidth(prevConfig)
-            const normalizedTableConfig = updatedConfig.map(item => ({
-                ...item,
-                render: undefined,
-                children: item.children.map(child => ({
-                    ...child,
-                    render: undefined
-                }))
-            }))
-            localStorage.setItem('MonitoringTableConfig', JSON.stringify(normalizedTableConfig))
+            localStorage.setItem('MonitoringTableConfig', JSON.stringify(updatedConfig))
             return updatedConfig
         });
     };
@@ -110,21 +103,17 @@ const TableWidget = ({ tableConfig, setTableConfig }) => {
                     onResize={onResizeGroup}
                     stickyHeader
                     preset="radar-table-simple"
+                    customCellRender={{
+                        idx: ['niche_rating', 'query'],
+                        renderer: cellRender
+                    }}
                     onSort={(sort_field, sort_order) => {
                         //console.log('sorting', { sort_field, sort_order }) 
                         dispatch(reqsMonitoringActions.updatePagination({ page: 1 }))
                         dispatch(reqsMonitoringActions.updateRequestObject({ sorting: { sort_field, sort_order } }))
                     }}
                     onColumnReorder={(newConfig) => {
-                        const normalizedTableConfig = newConfig.map(item => ({
-                            ...item,
-                            render: undefined,
-                            children: item.children.map(child => ({
-                                ...child,
-                                render: undefined
-                            }))
-                        }))
-                        localStorage.setItem('MonitoringTableConfig', JSON.stringify(normalizedTableConfig))
+                        localStorage.setItem('MonitoringTableConfig', JSON.stringify(newConfig))
                         setTableConfig((prev) => newConfig)
                     }}
                     pagination={{
