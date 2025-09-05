@@ -82,7 +82,8 @@ export default function ReportProfitLoss() {
 	}
 
 	const dataToTableData = (response) => {
-		if (!response.data.length){
+		if (!response || response.data && response.data.length === 0){
+			setColumns(COLUMNS);
 			setData([])
 			return
 		}
@@ -186,6 +187,7 @@ export default function ReportProfitLoss() {
 			}
 		}
 
+		setLoading(false);
 		setColumns(columns);
 		setData(rows);
 	};
@@ -202,14 +204,13 @@ export default function ReportProfitLoss() {
 					// monthRange
 					updateSavedMonthRange()
 				);
-
 				dataToTableData(response);
 				// setData(weeks);
 				// dataToTableData(weeks);
 			}
 		} catch (e) {
 			console.error(e);
-		} finally {
+			dataToTableData(null);
 			setLoading(false);
 		}
 	};
@@ -217,8 +218,9 @@ export default function ReportProfitLoss() {
 	useEffect(() => {
 		if (activeBrand && activeBrand.is_primary_collect) {
 			updateDataReportProfitLoss();
-		} else {
-			shops.length > 0 && setLoading(false)
+		}
+		if (activeBrand && !activeBrand.is_primary_collect){
+			setLoading(false);
 		}
 	}, [monthRange, shopStatus, filters, selectedRange, shops]);
 
@@ -245,9 +247,6 @@ export default function ReportProfitLoss() {
 		);
 	}
 
-	console.log(activeBrand)
-	console.log(shopStatus)
-
 	useEffect(() => {
 		setMonthRange(updateSavedMonthRange())
 	}, [shopStatus])
@@ -268,13 +267,9 @@ export default function ReportProfitLoss() {
 				<div className={styles.controls}>
 					<Filters
 						timeSelect={false}
-						setLoading={setLoading}
 						monthSelect={true}
 						monthHandler={monthHandler}
 						monthValue={monthRange}
-						// brandSelect={false}
-						// articleSelect={false}
-						// groupSelect={false}
 						isDataLoading={loading}
 					/>
 				</div>

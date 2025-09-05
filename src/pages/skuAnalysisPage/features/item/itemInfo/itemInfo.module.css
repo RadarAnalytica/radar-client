@@ -65,6 +65,28 @@
     }
 }
 
+.info__wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.info__link {
+    font-family: Mulish;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    color: #8C8C8C;
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
+
+    @media (max-width: 1500px) {
+        font-size: 14px;
+    }
+}
 
 .loaderWrapper {
     width: 100%;

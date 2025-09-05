@@ -39,6 +39,7 @@ export const MonthSelect = ({monthHandler, value, isDataLoading}) => {
                             fontFamily: 'Mulish',
                             fontSize: 16,
                             activeBorderColor: '#5329FF',
+                            colorTextDisabled: '#000'
                         },
                         components: {
                             DatePicker: {
@@ -69,6 +70,7 @@ export const MonthSelect = ({monthHandler, value, isDataLoading}) => {
                                 const maxDate = dayjs();
                                 return current && (current < minDate || current > maxDate);
                             }}
+                            maxDate={dayjs()}
                             value={initialValue}
                             getPopupContainer={() => monthRef.current}
                             disabled={isDataLoading}

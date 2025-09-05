@@ -9,6 +9,7 @@
 }
   
 .tableContainer {
+  position: relative;
   height: 100%;
   overflow: hidden;
 }
@@ -152,9 +153,23 @@
 }
 
 .loading{
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 5;
+  width: 100%;
   height: 100%;
   display: flex;
   flex-flow: column;
   justify-content: center;
   align-items: center;
+  background-color: #fff;
+}
+
+.loadingProgress{
+  margin-top: 60px;
+  width: 60vw;
+  max-width: 840px;
 }
