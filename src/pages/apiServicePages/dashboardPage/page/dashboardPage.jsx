@@ -134,10 +134,10 @@ const MainContent = React.memo(({
                 />
             </div>
 
-            <StockAnalysisBlock
+            {/* <StockAnalysisBlock
                 data={dataDashBoard?.stockAnalysis}
                 loading={loading}
-            />
+            /> */}
 
             <AbcDataBlock
                 titles={['Группа А', 'Группа В', 'Группа С']}
