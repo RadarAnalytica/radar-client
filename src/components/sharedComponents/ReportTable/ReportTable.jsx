@@ -1,8 +1,8 @@
-import { ConfigProvider, Table, Button } from 'antd';
-import { useRef, useMemo, useCallback } from 'react';
+import { ConfigProvider, Table, Button, Progress } from 'antd';
+import { useRef, useMemo, useCallback, useState } from 'react';
 import styles from './ReportTable.module.css';
 
-export default function ReportTable({ loading, columns, data, rowSelection = false, virtual=true, is_primary_collect }) {
+export default function ReportTable({ loading, columns, data, rowSelection = false, virtual=true, is_primary_collect, progress = null }) {
 	const tableContainerRef = useRef(null);
   const tableRef = useRef(null);
 
@@ -15,18 +15,18 @@ export default function ReportTable({ loading, columns, data, rowSelection = fal
 
 	const tableScroll = useMemo(() => {
 		if (!tableContainerRef.current){
-			return ({ x: '100%', y: 400 })
+			return ({ x: 'max-content', y: 450 })
 		}
 		const container = tableContainerRef.current;
 		const {width, height} = container.getBoundingClientRect();
 		// расчет высоты относительно контента, высоты фильтров и отступов
-		const availableHeight = height - 210 > 350 ? height - 70 : 400;
+		const availableHeight = height - 210 > 450 ? height - 70 : 450;
 		return ({ x: width, y: availableHeight })
 	}, [loading])
 
 
 	if (!loading && !is_primary_collect){
-		return <div></div>
+		return <></>
 	}
 
 	return (
@@ -34,8 +34,16 @@ export default function ReportTable({ loading, columns, data, rowSelection = fal
 			<div className={styles.tableContainer}>
 				{loading && <div className={styles.loading}>
 						<span className='loader'></span>
+						{progress !== null && <div className={styles.loadingProgress}>
+							<Progress
+									percent={progress}
+									size='small'
+									showInfo={false}
+									strokeColor='#5329FF'
+									strokeLinecap={1}
+							/>
+						</div>}
 				</div>}
-				{!loading && 
 				<ConfigProvider
 					renderEmpty={ () => (<div>Нет данных</div>)} 
 					theme={{
@@ -89,7 +97,6 @@ export default function ReportTable({ loading, columns, data, rowSelection = fal
       			onScroll={handleBodyScroll}
 					></Table>
 				</ConfigProvider>
-				}
 			</div>
 		</div>
 	);

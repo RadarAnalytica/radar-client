@@ -69,16 +69,14 @@ const ItemInfo = () => {
                         <p className={styles.info__row}>
                             Доля товарных остатков относительно всех цветов <span className={styles.info__color_black}>{formatPrice(skuMainData.color_balance_percent, '%')}</span>
                         </p>
-                        <Link className={styles.info__row} to={skuMainData.supplier_url}>
+                        <Link className={styles.info__link} to={skuMainData.supplier_url} target='_blank'>
                             Продавец <span className={styles.info__color_purple}>{skuMainData.supplier_name}</span>
                         </Link>
-                        <Link className={styles.info__row} to={skuMainData.brand_url}>
-                            Бренд <span className={styles.info__color_purple}>{skuMainData.brand_name}</span>
+                        <Link className={styles.info__row} to={skuMainData.brand_url} target='_blank'>
+                            Бренд <span className={styles.info__color_purple}>{skuMainData.brand_name || "Не указан"}</span>
                         </Link>
-
-
-                        <Link to={skuMainData.wb_id_url} target='_blank' className={styles.info__mainLink}>Посмотреть на WB</Link>
-
+                        {/* <Link to={skuMainData.wb_id_url} target='_blank' className={styles.info__mainLink}>Анализировать поставщика</Link> */}
+                        <Link to={`/supplier-analysis/${skuMainData.supplier_url.split('https://www.wildberries.ru/seller/').pop()}`} target='_blank' className={styles.info__mainLink}>Анализировать поставщика</Link>
                     </div>
                 </div>
             }

@@ -209,7 +209,7 @@ const _DashboardPage = () => {
             setPageState(prev => ({ ...prev, primaryCollect: activeBrand.is_primary_collect }));
             updateDataDashBoard(selectedRange, activeBrand.id, authToken);
         }
-    }, [activeBrand, selectedRange, filters, updateDataDashBoard]);
+    }, [filters]);
 
     return (
         <main className={styles.page}>

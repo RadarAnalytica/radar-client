@@ -33,7 +33,7 @@ const requestsMonitoringSlice = createSlice({
             }
         },
         updateRequestObject: (state, action) => {
-
+            console.log('action', action.payload)
             return {
                 ...state,
                 requestObject: {
@@ -43,7 +43,6 @@ const requestsMonitoringSlice = createSlice({
             }
         },
         updatePagination: (state, action) => {
-            console.log('updatePagination', action.payload)
             return {
                 ...state,
                 requestObject: {

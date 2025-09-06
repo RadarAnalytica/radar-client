@@ -248,7 +248,15 @@ export const TableWidget = React.memo(({ rawData, loading, tablePaginationState,
                                                         return (
                                                             <div className={`${styles.table__rowItem} ${styles.table__rowItem_wide}`} key={id}>
                                                                 <div className={styles.table__mainTitleWrapper}>
-                                                                    <p className={styles.table__rowTitle}>{product[v.engName]}</p>
+                                                                    {/* <p className={styles.table__rowTitle}>{product[v.engName]}</p> */}
+                                                                    <Link 
+                                                                        className={styles.table__rowTitle} 
+                                                                        style={{ textDecoration: 'none' }} 
+                                                                        to={`/trend-analysis?query=${product[v.engName]}`}
+                                                                        target='_blank'
+                                                                    >
+                                                                        {product[v.engName]}
+                                                                    </Link>
                                                                     <div className={styles.table__actionsWrapper}>
                                                                         <Link to={`https://wildberries.ru/catalog/0/search.aspx?search=${product[v.engName]}`} target='_blank' className={styles.table__actionButton} title='Перейти к товару'>
                                                                             <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ width: '12px', height: '12px' }}>

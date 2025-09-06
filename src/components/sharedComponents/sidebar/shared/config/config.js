@@ -33,7 +33,7 @@ export const menuConfig = [
                 id: 3,
                 url: '/sku-frequency',
                 label: 'Частотность артикула',
-                isActive: true,
+                isActive: false,
                 isNew: false
             },
             {
@@ -89,6 +89,13 @@ export const menuConfig = [
                 isNew: false
             },
             {
+                id: 8,
+                url: '/rnp',
+                label: 'Рука на пульсе (РНП)',
+                isActive: true,
+                isNew: true,
+            },
+            {
                 id: 2,
                 url: '/main', //исправить
                 label: 'По неделям',
@@ -121,14 +128,14 @@ export const menuConfig = [
                 url: '/report-profit-loss', 
                 label: 'Отчет о прибыли и убытках',
                 isActive: true,
-                isNew: true
+                isNew: false
             },
             // {
             //     id: 8,
             //     url: '/operations-costs', 
             //     label: 'Операционные расходы',
             //     isActive: false,
-            //     isNew: true
+            //     isNew: false
             // },
             {
                 id: 4,
@@ -172,6 +179,7 @@ export const menuConfig = [
                 url: '/selfcost',
                 label: 'Себестоимость',
                 isActive: true,
+                hasTopBorder: true,
             },
             {
                 id: 5,
@@ -179,13 +187,6 @@ export const menuConfig = [
                 label: 'Группы товаров',
                 isActive: true,
                 isNew: false,
-            },
-            {
-                id: 6,
-                url: '/rnp',
-                label: 'Рука на пульсе',
-                isActive: true,
-                isNew: true,
             },
         ]
     },
@@ -241,6 +242,3 @@ export const adminConfig = {
         },
     ]
 }
-
-
-

@@ -12,7 +12,6 @@ const TableWidget = ({ tableConfig, setTableConfig }) => {
     const dispatch = useAppDispatch()
     const containerRef = useRef(null) // реф скролл-контейнера (используется чтобы седить за позицией скрола)
     const { requestData, requestStatus, requestObject, formType, pagination } = useAppSelector(store => store.requestsMonitoring)
-
     //задаем начальную дату
     useEffect(() => {
         if (requestObject && formType === 'complex') {

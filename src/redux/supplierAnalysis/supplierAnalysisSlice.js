@@ -285,21 +285,33 @@ const supplierAnalysisSlice = createSlice({
                 state.bySizesTableData.data = action.payload;
             })
             .addCase(fetchSupplierAnalysisByWharehousesComparsionData.fulfilled, (state, action) => {
+                let isAnyDataLoadingUpd = Object.keys(state).every(key => !state[key]?.isLoading)
+                state.isAnyDataLoading = !isAnyDataLoadingUpd;
                 state.byWharehousesComparsionData.data = action.payload;
             })
             .addCase(fetchSupplierAnalysisByIncomingOrdersComparsionData.fulfilled, (state, action) => {
+                let isAnyDataLoadingUpd = Object.keys(state).every(key => !state[key]?.isLoading)
+                state.isAnyDataLoading = !isAnyDataLoadingUpd;
                 state.byIncomingOrdersComparsionData.data = action.payload;
             })
             .addCase(fetchSupplierAnalysisByOrderedProductsComparsionData.fulfilled, (state, action) => {
+                let isAnyDataLoadingUpd = Object.keys(state).every(key => !state[key]?.isLoading)
+                state.isAnyDataLoading = !isAnyDataLoadingUpd;
                 state.byOrderedProductsComparsionData.data = action.payload;
             })
             .addCase(fetchSupplierAnalysisByAvgPricesComparsionData.fulfilled, (state, action) => {
+                let isAnyDataLoadingUpd = Object.keys(state).every(key => !state[key]?.isLoading)
+                state.isAnyDataLoading = !isAnyDataLoadingUpd;
                 state.byAvgPricesComparsionData.data = action.payload;
             })
             .addCase(fetchSupplierAnalysisByAvgDiscountsComparsionData.fulfilled, (state, action) => {
+                let isAnyDataLoadingUpd = Object.keys(state).every(key => !state[key]?.isLoading)
+                state.isAnyDataLoading = !isAnyDataLoadingUpd;
                 state.byAvgDiscountsComparsionData.data = action.payload;
             })
             .addCase(fetchSupplierAnalysisByStockSizeComparsionData.fulfilled, (state, action) => {
+                let isAnyDataLoadingUpd = Object.keys(state).every(key => !state[key]?.isLoading)
+                state.isAnyDataLoading = !isAnyDataLoadingUpd;
                 state.byStockSizeComparsionData.data = action.payload;
             })
     }

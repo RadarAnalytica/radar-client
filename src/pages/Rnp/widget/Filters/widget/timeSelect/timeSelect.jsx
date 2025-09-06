@@ -43,7 +43,7 @@ export const TimeSelect = () => {
     const [localSelectedRange, setLocalSelectedRange] = useState({ from: null, to: null });
     const [selectOptions, setSelectOptions] = useState([...predefinedRanges])
     const [selectValue, setSelectValue] = useState()
-    const today = new Date();
+    const today = new Date(Date.now() - 1000 * 60 * 60 * 24);
     const minDate = new Date(today);
     minDate.setDate(today.getDate() - 90);
 

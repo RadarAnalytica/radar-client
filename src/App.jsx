@@ -7,10 +7,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { HelmetProvider } from 'react-helmet-async';
 import { ProductProvider } from "./service/ProductContext";
 
-const Contacts = React.lazy(() => import("./components/Contacts"));
 const StockAnalysisGlitter = React.lazy(() => import("./components/StockAnalysisGlitter"));
 const Subscriptions = React.lazy(() => import("./pages/Subscriptions"));
-const RequestMonitoringPage = React.lazy(() => import("./pages/RequestMonitoringPage"));
 const AiDescriptionGeneratorPage = React.lazy(() => import("./pages/AIDescriptionGeneratorPage"));
 const SeoPage = React.lazy(() => import("./pages/SeoPage"));
 const WeeklyReportPL = React.lazy(() => import("./pages/WeeklyReportPL"));
@@ -37,7 +35,7 @@ const Instructions = React.lazy(() => import("./pages/Instructions"));
 const MainWidget = React.lazy(() => import("./pages/MainWidget"));
 const StubPage = React.lazy(() => import("./pages/StubPage"));
 const AfterPayment = React.lazy(() => import("./pages/AfterPayment"));
-const TariffsPage = React.lazy(() => import("./pages/TariffsPage"));
+const TariffsPage = React.lazy(() => import("./pages/tariffsPage/tariffsPage"));
 const Page404 = React.lazy(() => import("./pages/Page404"));
 //const AdminPanel = React.lazy(() => import("./pages/AdminPanel"));
 const UserInfo = React.lazy(() => import("./pages/UserInfo"));
@@ -92,7 +90,7 @@ function App() {
 
           <Routes>
             {/* dev */}
-            <Route path='/dev/after-payment' element={<ProtectedRoute userRoleProtected><AfterPayment devMode /></ProtectedRoute>} />
+            <Route path='/dev/after-payment' element={<ProtectedRoute userRoleProtected><AfterPayment /></ProtectedRoute>} />
             {/* Admin */}
             <Route path='/blog' element={<ProtectedRoute userRoleProtected routeRuName='Админ панель / Блог'><BlogPage /></ProtectedRoute>} />
             <Route path='/admin-dashboard' element={<ProtectedRoute userRoleProtected routeRuName='Админ панель / Дашборд'><AdminDashboardPage /></ProtectedRoute>} />
@@ -100,7 +98,6 @@ function App() {
             {/* Protected routes */}
             <Route path='/supplier-analysis' element={<ProtectedRoute testPeriodProtected expireProtected routeRuName='Анализ поставщика'><SupplierAnalysisPage /></ProtectedRoute>} />
             <Route path='/supplier-analysis/:id' element={<ProtectedRoute testPeriodProtected testPeriodGuardType='redirect' testPeriodRedirect='/supplier-analysis' expireProtected routeRuName='Анализ поставщика'><SupplierIdPage /></ProtectedRoute>} />
-            <Route path='/sku-frequency' element={<ProtectedRoute underDevProtected testPeriodProtected expireProtected routeRuName='Частотность артикула'><RequestMonitoringPage /></ProtectedRoute>} />
             <Route path='/monitoring' element={<ProtectedRoute testPeriodProtected expireProtected routeRuName='Поиск прибыльной ниши'><SkuFrequencyPage /></ProtectedRoute>} />
             <Route path='/monitoring/request' element={<ProtectedRoute testPeriodProtected expireProtected routeRuName='Поиск прибыльной ниши'><SkuFrequencyRequestPage /></ProtectedRoute>} />
             <Route path='/trend-analysis' element={<ProtectedRoute testPeriodProtected expireProtected routeRuName='Анализ трендовой динамики запросов'><TrendAnalysisQuery /></ProtectedRoute>} />
@@ -136,12 +133,11 @@ function App() {
             <Route path='/subscription' element={<ProtectedRoute testPeriodProtected authGuardType="redirect"><Subscriptions /></ProtectedRoute>} />
             <Route path='/schedule' element={<ProtectedRoute expireProtected authGuardType="redirect"><Schedule /></ProtectedRoute>} />
             <Route path='/product/:id' element={<ProtectedRoute><StockAnalysisGlitter /></ProtectedRoute>} />
-
             <Route path='/report-profit-loss' element={<ProtectedRoute testPeriodProtected onboardProtected expireProtected routeRuName='Отчет о прибыли и убытках'><ReportProfitLoss /></ProtectedRoute>} />
             <Route path='/report-week' element={<ProtectedRoute testPeriodProtected expireProtected onboardProtected routeRuName='По неделям'><ReportWeek /></ProtectedRoute>} />
             <Route path='/operations-costs' element={<ProtectedRoute userRoleProtected testPeriodProtected expireProtected onboardProtected routeRuName='Операционные расходы'><OperationsCosts /></ProtectedRoute>} />
             <Route path='/referal' element={<ProtectedRoute testPeriodProtected expireProtected onboardProtected routeRuName='Реферальная программа'><ReferalPage /></ProtectedRoute>} />
-            <Route path='/rnp' element={<ProtectedRoute testPeriodProtected expireProtected onboardProtected routeRuName='Рука на пульсе'><Rnp /></ProtectedRoute>} />
+            <Route path='/rnp' element={<ProtectedRoute testPeriodProtected expireProtected onboardProtected routeRuName='Рука на пульсе (РНП)'><Rnp /></ProtectedRoute>} />
             {/* Public routes */}
             <Route path='/calculate' element={<Suspense fallback={<LoaderPage />}>{deviceRegexp.test(userAgent) ? <UnitCalculatorPage /> : <UnitCalculatorPageDesktop />}</Suspense>} />
             <Route path='/stub' element={<Suspense fallback={<LoaderPage />}>{' '}<StubPage /></Suspense>} />
@@ -151,8 +147,7 @@ function App() {
             <Route path='/restore/:email/:code' element={<Suspense fallback={<LoaderPage />}>{' '}<ResetPage /></Suspense>} />
             <Route path='/restore-error' element={<Suspense fallback={<LoaderPage />}>{' '}<RestoreError /></Suspense>} />
             <Route path='/confirmation/:email/:code' element={<Suspense fallback={<LoaderPage />}>{' '}<ConfirmationPage /></Suspense>} />
-            <Route path='/contacts' element={<Suspense fallback={<LoaderPage />}>{' '}<Contacts /></Suspense>} />
-            <Route path='/after-payment' element={<Suspense fallback={<LoaderPage />}>{' '}<AfterPayment /></Suspense>} />
+            <Route path='/after-payment' element={<Suspense fallback={<LoaderPage />}>{' '}<AfterPayment devMode={false} /></Suspense>} />
             {/* 404 */}
             <Route path='*' element={<Page404 />} status={404} />
           </Routes>

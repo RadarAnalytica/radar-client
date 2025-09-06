@@ -11,7 +11,7 @@ import { useAppSelector, useAppDispatch } from '../../redux/hooks';
 import { ServiceFunctions } from '../../service/serviceFunctions';
 import { Filters } from './widget/Filters/Filters';
 import { COLUMNS, ROWS, renderFunction } from './config';
-import { format } from 'date-fns';
+import { format, isToday } from 'date-fns';
 import { ru } from 'date-fns/locale';
 import SkuList from './widget/SkuList/SkuList';
 import ModalDeleteConfirm from '../../components/sharedComponents/ModalDeleteConfirm/ModalDeleteConfirm';
@@ -19,15 +19,17 @@ import DataCollectWarningBlock from '../../components/sharedComponents/dataColle
 import SelfCostWarningBlock from '../../components/sharedComponents/selfCostWraningBlock/selfCostWarningBlock';
 import { actions as rnpSelectedActions } from '../../redux/rnpSelected/rnpSelectedSlice'
 import ErrorModal from '../../components/sharedComponents/modals/errorModal/errorModal';
+import { fetchRnpFilters } from '../../redux/filtersRnp/filterRnpActions';
+import { actions as filterActions } from '../../redux/filtersRnp/filtersRnpSlice'
 
 export default function Rnp() {
-	const { authToken } = useContext(AuthContext);
+	const { user, authToken } = useContext(AuthContext);
 	const dispatch = useAppDispatch();
-	const { activeBrand, selectedRange } = useAppSelector(
+	const { activeBrand, selectedRange, shops } = useAppSelector(
 		(state) => state.filtersRnp
 	);
 	const filters = useAppSelector((state) => state.filtersRnp);
-	const { shops } = useAppSelector((state) => state.shopsSlice);
+	// const { shops } = useAppSelector((state) => state.shopsSlice);
 
 	const shopStatus = useMemo(() => {
 		if (!activeBrand || !shops) return null;
@@ -52,16 +54,70 @@ export default function Rnp() {
 
 	const initLoad = useRef(true);
 
+	const fetchFiltersData = async () => {
+		try {
+			dispatch(fetchRnpFilters(authToken))
+		} catch (error) {
+			console.error("Error fetching initial data:", error);
+		}
+	};
+
+	useEffect(() => {
+		if (!shops || shops.length === 0) {
+      // fetchShopData();
+			fetchFiltersData();
+    }
+	}, [shops])
+	
+	useEffect(() => {
+		if (shops && shops.length > 0 && !activeBrand) {
+			// достаем сохраненный магазин
+			const shopFromLocalStorage = localStorage.getItem('activeShop')
+			// если сохранненный магазин существует и у нас есть массив магазинов....
+			if (shopFromLocalStorage && shopFromLocalStorage !== 'null' && shopFromLocalStorage !== 'undefined') {
+				// парсим сохраненный магазин
+				const { id } = JSON.parse(shopFromLocalStorage);
+				// проверяем есть ли магазин в массиве (это на случай разных аккаунтов)
+				const isInShops = shops.some(_ => _.id === id);
+				// Если магазин есть в массиве (т.е. валиден для этого аккаунта) то...
+				if (isInShops) {
+					//....устанавливаем как текущий
+					dispatch(filterActions.setActiveShop(shops.find(_ => _.id === id)))
+					// Если нет, то...
+				} else {
+					// ...Обновляем локал - сохраняем туда первый из списка
+					localStorage.setItem('activeShop', JSON.stringify(shops[0]))
+					// ...устанавливаем текущим первый из списка
+					dispatch(filterActions.setActiveShop(shops[0]))
+				}
+			} else {
+				// ...Обновляем локал - сохраняем туда первый из списка
+				localStorage.setItem('activeShop', JSON.stringify(shops[0]))
+				// ...устанавливаем текущим первый из списка
+				dispatch(filterActions.setActiveShop(shops[0]))
+			}
+		}
+
+		if (shops && activeBrand && !activeBrand.is_primary_collect) {
+			const currentShop = shops.find(shop => shop.id === activeBrand.id)
+			if (currentShop?.is_primary_collect) {
+				dispatch(filterActions.setActiveShop(currentShop))
+			}
+		}
+	}, [shops])
+
 	const [loading, setLoading] = useState(true);
 	const [addSkuModalShow, setAddSkuModalShow] = useState(false);
 	const [page, setPage] = useState(1);
-	const [paginationState, setPaginationState] = useState(null);
+	// const [paginationState, setPaginationState] = useState(null);
 	const [view, setView] = useState('sku');
 	const [skuDataByArticle, setSkuDataByArticle] = useState(null);
 	const [skuDataTotal, setSkuDataTotal] = useState(null)
 	const [deleteSkuId, setDeleteSkuId] = useState(null);
 	const [skuSelectedList, setSkuSelectedList] = useState([]);
 	const [error, setError] = useState(null);
+	const [expanded, setExpanded] = useState([]);
+	// const abortController = useMemo(() => new AbortController(), []);
 
 	const updateSkuListByArticle = async () => {
 		setLoading(true);
@@ -78,7 +134,6 @@ export default function Rnp() {
 				if (initLoad.current) {
 					initLoad.current = false;
 					dispatch(rnpSelectedActions.setList(response?.data?.map((article) => article.article_data.wb_id)));
-
 				}
 			}
 		} catch (error) {
@@ -117,6 +172,7 @@ export default function Rnp() {
 					authToken,
 					id
 				);
+				dispatch(rnpSelectedActions.setList(rnpSelected.filter((el) => el !== id)));
 			}
 		} catch (error) {
 			console.error('deleteSku error', error)
@@ -141,6 +197,7 @@ export default function Rnp() {
 				item.table.columns.push(column)
 			}
 			for (const dateData of article.by_date_data.reverse()) {
+				if (!isToday(dateData.date)){
 				item.table.columns.push({
 					key: dateData.date,
 					dataIndex: dateData.date,
@@ -148,6 +205,7 @@ export default function Rnp() {
 					width: 160,
 					render: renderFunction
 				});
+				}
 			}
 			// сборка суммарных значений
 			for (const row of ROWS) {
@@ -192,10 +250,10 @@ export default function Rnp() {
 
 		setSkuSelectedList(list.map((sku) => sku.article_data.wb_id));
 		setSkuDataByArticle(list);
-		setPaginationState({
-			total: response.total_count,
-			pageSize: response.per_page
-		})
+		// setPaginationState({
+		// 	total: response.total_count,
+		// 	pageSize: response.per_page
+		// })
 	};
 
 	const dataToSkuTotalList = (response) => {
@@ -216,6 +274,7 @@ export default function Rnp() {
 				item.table.columns.push(column)
 			}
 			for (const dateData of article.by_date_data.reverse()) {
+				if (!isToday(dateData.date)){
 				item.table.columns.push({
 					key: dateData.date,
 					dataIndex: dateData.date,
@@ -223,6 +282,7 @@ export default function Rnp() {
 					width: 160,
 					render: renderFunction
 				});
+				}
 			}
 			// сборка суммарных значений
 			for (const row of ROWS) {
@@ -298,17 +358,39 @@ export default function Rnp() {
 	}
 
 	useEffect(() => {
+		if (!activeBrand && !activeBrand?.is_primary_collect){
+			return
+		}
+
 		if (activeBrand && activeBrand.is_primary_collect) {
 			if (view === 'sku'){
 				updateSkuListByArticle();
-				return
+			} else {
+				updateSkuListSummary();
 			}
-			updateSkuListSummary();
 		}
+
 		if (activeBrand && !activeBrand?.is_primary_collect){
 			setLoading(false)
 		}
+
+		return () => {
+			// abortController.abort('AbortError');
+		};
 	}, [activeBrand, shopStatus, shops, filters, page, view, selectedRange]);
+
+	// useEffect(() => {
+	// 	if (activeBrand && activeBrand.is_primary_collect) {
+	// 		if (view === 'sku'){
+	// 			updateSkuListByArticle();
+	// 			return
+	// 		}
+	// 		updateSkuListSummary();
+	// 	}
+	// 	if (activeBrand && !activeBrand?.is_primary_collect){
+	// 		setLoading(false)
+	// 	}
+	// }, [activeBrand, shopStatus, shops, filters, page, view, selectedRange]);
 
 	const addSkuHandler = (list) => {
 		setAddSkuModalShow(false);
@@ -327,7 +409,7 @@ export default function Rnp() {
 			<section className={styles.page__content}>
 				{/* header */}
 				<div className={styles.page__headerWrapper}>
-					<Header title="Рука на пульсе"></Header>
+					<Header title="Рука на пульсе (РНП)"></Header>
 				</div>
 
 				{loading && (
@@ -337,10 +419,6 @@ export default function Rnp() {
 						</div>
 					</div>
 				)}
-
-				<div style={{display: 'none'}}>
-					<Filters />
-				</div>
 				
 				{!loading  && shopStatus && !shopStatus?.is_primary_collect && (
 					<>
@@ -359,6 +437,8 @@ export default function Rnp() {
 						skuDataByArticle={skuDataByArticle}
 						skuDataTotal={skuDataTotal}
 						setDeleteSkuId={setDeleteSkuId}
+						expanded={expanded}
+						setExpanded={setExpanded}
 						// page={page}
 						// setPage={setPage}
 						// paginationState={paginationState}

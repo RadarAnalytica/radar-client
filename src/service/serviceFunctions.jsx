@@ -1385,8 +1385,7 @@ export const ServiceFunctions = {
 			);
 			
 			if (res.status !== 200){
-				throw new Error('Ошибка запроса');
-				throw new Error('Ошибка запроса');
+				throw new Error('Ощибка запроса');
 			}
 	
 			return res.json();
@@ -1411,7 +1410,6 @@ export const ServiceFunctions = {
 			);
 			
 			if (res.status !== 200){
-				throw new Error('Ошибка запроса');
 				throw new Error('Ошибка запроса');
 			}
 	
@@ -1471,18 +1469,19 @@ export const ServiceFunctions = {
 			setIsLoading(false);
 		}
 	},
-	postRnpByArticle: async(token, selectedRange, shopId, filters, page) => {
+	postRnpByArticle: async(token, selectedRange, shopId, filters, signal) => {
 		try {
 			let body = getRnpRequestObject(filters, selectedRange, shopId);
 			const res = await fetch(
-				`${URL}/api/rnp/by_article?page=${page}&per_page=25`,
+				`${URL}/api/rnp/by_article?page=1&per_page=25`,
 				{
 					method: 'POST',
 					headers: {
 						'content-type': 'application/json',
 						authorization: 'JWT ' + token,
 					},
-					body: JSON.stringify(body)
+					body: JSON.stringify(body),
+					// signal
 				}
 			);
 			
@@ -1497,7 +1496,7 @@ export const ServiceFunctions = {
 			throw new Error(error);
 		}
 	},
-	postRnpSummary: async(token, selectedRange, shopId, filters) => {
+	postRnpSummary: async(token, selectedRange, shopId, filters, signal) => {
 		try {
 			let body = getRnpRequestObject(filters, selectedRange, shopId);
 			const res = await fetch(
@@ -1508,7 +1507,8 @@ export const ServiceFunctions = {
 						'content-type': 'application/json',
 						authorization: 'JWT ' + token,
 					},
-					body: JSON.stringify(body)
+					body: JSON.stringify(body),
+					// signal
 				}
 			);
 			
@@ -1523,7 +1523,7 @@ export const ServiceFunctions = {
 			throw new Error(error);
 		}
 	},
-	getRnpProducts: async(token, selectedRange, shopId, filters, page, search) => {
+	getRnpProducts: async(token, selectedRange, shopId, filters, page, search, signal) => {
 		try {
 			let body = getRnpRequestObject(filters, selectedRange, shopId);
 			const res = await fetch(
@@ -1534,7 +1534,8 @@ export const ServiceFunctions = {
 						'content-type': 'application/json',
 						authorization: 'JWT ' + token,
 					},
-					body: JSON.stringify(body)
+					body: JSON.stringify(body),
+					signal
 				}
 			);
 			
@@ -1545,7 +1546,9 @@ export const ServiceFunctions = {
 			return res.json();
 
 		} catch(error) {
-			console.error('getRnpProducts ', error);
+			if (error !== 'Отмена запроса') {
+				console.error('getRnpProducts ', error);
+			}
 			throw new Error(error);
 		}
 	},
