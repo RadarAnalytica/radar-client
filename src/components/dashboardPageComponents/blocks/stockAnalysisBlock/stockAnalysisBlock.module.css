@@ -1,3 +1,11 @@
+:global(.stockAnalysisBlockTableGroupCell) {
+    color: black !important;
+}
+:global(.stockAnalysisBlockTableGroupCell > div) {
+    background-color: white !important;
+    border-radius: 0 !important;
+}
+
 .block {
     width: 100%;
     background: white;

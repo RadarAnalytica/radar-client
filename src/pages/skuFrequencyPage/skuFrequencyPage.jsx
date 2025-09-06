@@ -28,7 +28,6 @@ const SkuFrequencyPage = () => {
         message: ''
     })
     const dispatch = useAppDispatch()
-    const tableSettings = useAppSelector(store => store.requestsMonitoring.tableConfig)
 
     const downloadHandler = async () => {
         const url = formType === 'complex' ? '/api/web-service/monitoring-oracle/get/download' : '/api/web-service/monitoring-oracle/easy/get/download'
@@ -56,38 +55,13 @@ const SkuFrequencyPage = () => {
 
     useEffect(() => {
         let savedTableConfig = localStorage.getItem('MonitoringTableConfig')
-        
+
         if (savedTableConfig) {
             try {
                 savedTableConfig = JSON.parse(savedTableConfig)
-                console.log('savedTableConfig', savedTableConfig)
-                
-                // Восстанавливаем сохраненную конфигурацию с функциями render
-                const restoredConfig = savedTableConfig.map(item => {
-                    const initItem = radarTableConfig.find(i => i.key === item.key)
-    
-                    if (initItem) {
-                        return {
-                            ...item,
-                            render: initItem.render,
-                            children: item.children.map(child => {
-                                const initChild = initItem.children.find(i => i.dataIndex === child.dataIndex)
-                                if (initChild) {
-                                    return {
-                                        ...child,
-                                        render: initChild.render
-                                    }
-                                } else {
-                                    return child
-                                }
-                            })
-                        }
-                    } else {
-                        return item
-                    }
-                })
-                
-                setTableConfig(restoredConfig)
+                setTableConfig(savedTableConfig)
+
+
             } catch (error) {
                 console.error('Error parsing saved table config:', error)
                 setTableConfig(radarTableConfig)
@@ -142,10 +116,12 @@ const SkuFrequencyPage = () => {
                             handleDownload={downloadHandler}
                             loading={downloadStatus.isLoading}
                         />
-                       {tableConfig && <TableSettingsWidget
-                            tableConfig={[...tableConfig]}
-                            setTableConfig={setTableConfig}
-                        />}
+                        {tableConfig &&
+                            <TableSettingsWidget
+                                tableConfig={[...tableConfig]}
+                                setTableConfig={setTableConfig}
+                            />
+                        }
                     </div>}
                 </div>
                 <TableWidget

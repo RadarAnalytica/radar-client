@@ -5,11 +5,6 @@ import { formatPrice } from '../../../../service/utils'
 
 export const cellRender = (value, record, index, dataIndex) => {
 
-console.log('value', value)
-console.log('record', record)
-console.log('index', index)
-console.log('dataIndex', dataIndex)
-
     if (dataIndex === 'query') {
         const url = `/monitoring/request?query=${encodeURIComponent(value)}`
         return (

@@ -1,3 +1,17 @@
+:global(.monitoringTableFirstCell .radar-table__drag-handle) {
+    display: none;
+}
+:global(.monitoringTableFirstLeafCell) {
+    border-radius: 0 !important;
+    border-bottom: 1px solid #E8E8E8 !important;
+}
+:global(.monitoringTableFirstLeafCell .radar-table__drag-handle) {
+    display: none;
+}
+:global(.monitoringTableLeafCell) {
+    border-bottom: 1px solid #E8E8E8 !important;
+}
+
 .widget {
     width: 100%;
     display: flex;

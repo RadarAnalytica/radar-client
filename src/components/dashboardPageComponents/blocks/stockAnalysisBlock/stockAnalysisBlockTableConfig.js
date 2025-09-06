@@ -6,11 +6,11 @@ export const stockAnalysisTableConfig = [
         fixed: true,
         groupColor: 'white',
         children: [
-            {title: 'Товар', dataIndex: 'productName', units: null, sortable: true, fixed: true, width: 260, render: () => {}},
+            {title: 'Товар', dataIndex: 'productName', units: null, sortable: true, fixed: true, width: 260},
             {title: 'Артикул', dataIndex: 'vendorСode', units: null, sortable: true, fixed: true, width: 200},
             {title: 'SKU', dataIndex: 'sku', units: null, sortable: true, fixed: true, width: 100},
             {title: 'Размер', dataIndex: 'size', units: null, sortable: true, fixed: true, width: 100},
-        ].map(_ => ({ ..._, render: _.render?.bind(_), key: _.dataIndex, minWidth: _.width }))
+        ].map(_ => ({ ..._, key: _.dataIndex, minWidth: _.width }))
     },
     {
         title: '',
@@ -170,4 +170,4 @@ export const stockAnalysisTableConfig = [
             {title: 'Данные Радар', dataIndex: 'dataRadar', units: 'шт', sortable: false, fixed: false, width: 200},
         ].map(_ => ({ ..._, render: _.render?.bind(_), key: _.dataIndex, minWidth: _.width }))
     },
-].map(_ => ({ ..._, colSpan: _?.children?.length || 1 }))
+].map(_ => ({ ..._, colSpan: _?.children?.length || 1, className: 'stockAnalysisBlockTableGroupCell' }))

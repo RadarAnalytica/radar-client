@@ -11,7 +11,6 @@ import {
     Button,
     Input,
 } from 'antd';
-import { useAppSelector, useAppDispatch } from '../../../../redux/hooks';
 
 
 const getReplicatedArray = (array, fields) => {
@@ -19,7 +18,7 @@ const getReplicatedArray = (array, fields) => {
         return {
             ..._,
             hidden: _.children?.every(child => {
-                if (child.fixe || fields[child.dataIndex] === undefined) {
+                if (child.fixed || fields[child.dataIndex] === undefined) {
                     return undefined
                 } else {
                     return !fields[child.dataIndex]
@@ -31,6 +30,13 @@ const getReplicatedArray = (array, fields) => {
                     hidden: child.fixed ? undefined : !fields[child.dataIndex]
                 }
             })
+        }
+    })
+
+    replicatedArray = replicatedArray.map(item => {
+        return {
+            ...item,
+            colSpan: item.children?.filter(child => !child.hidden)?.length || 1
         }
     })
     return replicatedArray
@@ -81,15 +87,7 @@ const TableSettingsWidget = ({ tableConfig, setTableConfig }) => {
         setIsModalOpen(false)
         searchForm.resetFields()
         setSearchState('')
-        const normalizedTableConfig = updatedConfig.map(item => ({
-            ...item,
-            render: undefined,
-            children: item.children.map(child => ({
-                ...child,
-                render: undefined
-            }))
-        }))
-        localStorage.setItem('MonitoringTableConfig', JSON.stringify(normalizedTableConfig))
+        localStorage.setItem('MonitoringTableConfig', JSON.stringify(updatedConfig))
         setTableConfig((prev) => updatedConfig)
     }
     useEffect(() => {
