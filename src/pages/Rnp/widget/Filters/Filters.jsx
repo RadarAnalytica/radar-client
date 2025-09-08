@@ -1,8 +1,7 @@
 import React, { useContext, useEffect, useRef } from 'react';
 import AuthContext from '../../../../service/AuthContext';
 import styles from './Filters.module.css';
-import { ShopSelect, MultiSelect } from '../../../../components/sharedComponents/apiServicePagesFiltersComponent/features';
-import { TimeSelect } from './widget/timeSelect/timeSelect';
+import { TimeSelect, ShopSelect, MultiSelect } from '../../../../components/sharedComponents/apiServicePagesFiltersComponent/features';
 import { useAppDispatch, useAppSelector } from '../../../../redux/hooks';
 import { actions as filterActions } from '../../../../redux/filtersRnp/filtersRnpSlice'
 import { fetchShops } from '../../../../redux/shops/shopsActions';
@@ -16,6 +15,7 @@ export const Filters = ({
   articleSelect = true,
   groupSelect = true,
   categorySelect = true,
+  isDataLoading
 }) => {
 
   // ------ база ------//
@@ -36,7 +36,19 @@ export const Filters = ({
     dispatch(filterActions.setActiveShop(selectedShop))
   }
   //- -----------------------------------------//
-
+  // ------- Фетч массива магазинов -------------//
+  const fetchShopData = async () => {
+    try {
+      if (user.subscription_status === null) {
+        dispatch(fetchShops('mockData'));
+      } else {
+        dispatch(fetchShops(authToken));
+      }
+    } catch (error) {
+      console.error("Error fetching initial data:", error);
+    }
+  };
+  //---------------------------------------------//
   // ------- Фетч фильтров -------------//
   const fetchFiltersData = async () => {
     try {
@@ -50,6 +62,7 @@ export const Filters = ({
   // 0. Получаем данные магазинов
   useEffect(() => {
     if (!shops || shops.length === 0) {
+      fetchShopData();
       fetchFiltersData();
     }
   }, []);
@@ -128,7 +141,7 @@ export const Filters = ({
       <div className={styles.filters__inputsMainWrapper}>
         {shops && timeSelect &&
           <div className={styles.filters__inputWrapper}>
-            <TimeSelect />
+            <TimeSelect isDataLoading={isDataLoading}/>
           </div>
         }
         {shops && activeBrand && shopSelect &&
@@ -139,6 +152,7 @@ export const Filters = ({
               value={activeBrand.id}
               optionsData={shops}
               handler={shopChangeHandler}
+              isDataLoading={isDataLoading}
             />
           </div>
         }
@@ -155,6 +169,7 @@ export const Filters = ({
                   label={`${i.brands.ruLabel}:`}
                   value={filtersState[i.brands.stateKey]}
                   optionsData={i.brands.data}
+                  isDataLoading={isDataLoading}
                 />
               </div>}
               {categorySelect && <div className={styles.filters__inputWrapper}>
@@ -166,6 +181,7 @@ export const Filters = ({
                   label={`${i.categories.ruLabel}:`}
                   value={filtersState[i.categories.stateKey]}
                   optionsData={i.categories.data}
+                  isDataLoading={isDataLoading}
                 />
               </div>}
               {groupSelect && <div className={styles.filters__inputWrapper}>
@@ -177,6 +193,7 @@ export const Filters = ({
                   label={`${i.groups.ruLabel}:`}
                   value={filtersState[i.groups.stateKey]}
                   optionsData={i.groups.data}
+                  isDataLoading={isDataLoading}
                 />
               </div>}
               {articleSelect && <div className={styles.filters__inputWrapper}>
@@ -188,6 +205,7 @@ export const Filters = ({
                   label={`${i.articles.ruLabel}:`}
                   value={filtersState[i.articles.stateKey]}
                   optionsData={filtersState?.activeBrandName?.some(_ => _.value === 'Все') ? i.articles.data : i.articles.data.filter(_ => filtersState?.activeBrandName?.some(b => _.brand === b.value))}
+                  isDataLoading={isDataLoading}
                 />
               </div>}
             </React.Fragment>
