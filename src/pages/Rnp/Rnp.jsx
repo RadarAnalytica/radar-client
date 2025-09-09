@@ -26,9 +26,8 @@ import { actions as filterActions } from '../../redux/filtersRnp/filtersRnpSlice
 export default function Rnp() {
 	const { user, authToken } = useContext(AuthContext);
 	const dispatch = useAppDispatch();
-	const { activeBrand, selectedRange } = useAppSelector(
-		(state) => state.filtersRnp
-	);
+	const { activeBrand } = useAppSelector( (state) => state.filtersRnp );
+	const { selectedRange } = useAppSelector( (state) => state.filters );
 	const filters = useAppSelector((state) => state.filtersRnp);
 	const { shops } = useAppSelector((state) => state.shopsSlice);
 
@@ -58,15 +57,12 @@ export default function Rnp() {
 	const [loading, setLoading] = useState(true);
 	const [addSkuModalShow, setAddSkuModalShow] = useState(false);
 	const [page, setPage] = useState(1);
-	// const [paginationState, setPaginationState] = useState(null);
 	const [view, setView] = useState('sku');
 	const [skuDataByArticle, setSkuDataByArticle] = useState(null);
 	const [skuDataTotal, setSkuDataTotal] = useState(null)
 	const [deleteSkuId, setDeleteSkuId] = useState(null);
-	const [skuSelectedList, setSkuSelectedList] = useState([]);
 	const [error, setError] = useState(null);
 	const [expanded, setExpanded] = useState([]);
-	// const abortController = useMemo(() => new AbortController(), []);
 
 	const updateSkuListByArticle = async () => {
 		setLoading(true);
@@ -118,7 +114,6 @@ export default function Rnp() {
 					authToken,
 					id
 				);
-				dispatch(rnpSelectedActions.setList(rnpSelected.filter((el) => el !== id)));
 			}
 		} catch (error) {
 			console.error('deleteSku error', error)
@@ -181,11 +176,9 @@ export default function Rnp() {
 				for (const row of item.table.rows) {
 					const dataRow = dateData.rnp_data;
 					row[date] = dataRow[row.key][row?.key?.slice(0, -5)];
-					// row[date] = article.article_data.wb_id
 					if (row.children) {
 						for (const childrenRow of row.children) {
 							childrenRow[date] = dataRow[row.key][childrenRow.dataIndex];
-							// childrenRow[date] = childrenRow.key
 						}
 					}
 				}
@@ -194,12 +187,7 @@ export default function Rnp() {
 			return item;
 		});
 
-		setSkuSelectedList(list.map((sku) => sku.article_data.wb_id));
 		setSkuDataByArticle(list);
-		// setPaginationState({
-		// 	total: response.total_count,
-		// 	pageSize: response.per_page
-		// })
 	};
 
 	const dataToSkuTotalList = (response) => {
@@ -319,23 +307,7 @@ export default function Rnp() {
 			setLoading(false)
 		}
 
-		return () => {
-			// abortController.abort('AbortError');
-		};
 	}, [activeBrand, shopStatus, shops, filters, page, view, selectedRange]);
-
-	// useEffect(() => {
-	// 	if (activeBrand && activeBrand.is_primary_collect) {
-	// 		if (view === 'sku'){
-	// 			updateSkuListByArticle();
-	// 			return
-	// 		}
-	// 		updateSkuListSummary();
-	// 	}
-	// 	if (activeBrand && !activeBrand?.is_primary_collect){
-	// 		setLoading(false)
-	// 	}
-	// }, [activeBrand, shopStatus, shops, filters, page, view, selectedRange]);
 
 	const addSkuHandler = (list) => {
 		setAddSkuModalShow(false);
@@ -488,7 +460,6 @@ export default function Rnp() {
 					setIsAddSkuModalVisible={setAddSkuModalShow}
 					addSku={addSkuHandler}
 					skuDataArticle={skuDataByArticle}
-					// skuList={skuSelectedList}
 				/>}
 
 				{deleteSkuId && <ModalDeleteConfirm
