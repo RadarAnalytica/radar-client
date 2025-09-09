@@ -4,7 +4,7 @@ import AddSkuModalFooter from './widget/addSkuModalFooter/addSkuModalFooter'
 import { Modal, Checkbox, ConfigProvider, Pagination, Flex, Tooltip } from 'antd';
 import AuthContext from '../../../../service/AuthContext';
 import { useAppSelector, useAppDispatch } from '../../../../redux/hooks';
-import { Filters } from './widget/addSkuModalFilters/Filters'
+import { RnpFilters } from '../RnpFilters/RnpFilters';
 import SkuItem from '../SkuItem/SkuItem';
 import { ServiceFunctions } from '../../../../service/serviceFunctions';
 import AddSkuModalSearch from './widget/addSkuModalSearch/AddSkuModalSearch';
@@ -143,7 +143,17 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku }) 
                     <div className={styles.modal__header}>
                         <p className={styles.modal__title}>Добавить артикулы</p>
                     </div>
-                    <div className={skuLoading ? styles.hide : styles.control}><Filters open={isAddSkuModalVisible} /></div>
+                    <div className={skuLoading ? styles.hide : styles.control}>
+                        <RnpFilters
+                            isDataLoading={skuLoading}
+                            slice={'filtersRnpAdd'}
+                            filterActions={filterActions}
+                            fetchFilters={fetchFiltersRnpAdd}
+                            timeSelect={false}
+                            open={isAddSkuModalVisible}
+                            clearLoad={false}
+                        />
+                    </div>
                     <div className={skuLoading ? styles.hide : styles.control}><AddSkuModalSearch skuLoading={skuLoading} submitSearch={setSearch} /></div>
                     {/* loader */}
                     <ConfigProvider

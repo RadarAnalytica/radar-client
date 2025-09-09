@@ -15,11 +15,12 @@ export const RnpFilters = ({
   articleSelect = true,
   groupSelect = true,
   categorySelect = true,
-  open=true,
+  open = true,
   slice,
   fetchFilters,
   filterActions,
-  isDataLoading
+  isDataLoading,
+  clearLoad = true
 }) => {
   // ------ база ------//
   const { user, authToken } = useContext(AuthContext);
@@ -64,7 +65,7 @@ export const RnpFilters = ({
 
   // 0. Получаем данные магазинов
   useEffect(() => {
-    if (!shops || shops.length === 0) {
+    if ((!shops || shops.length === 0) && open) {
       fetchShopData();
       fetchFiltersData();
     }
@@ -77,7 +78,7 @@ export const RnpFilters = ({
       // достаем сохраненный магазин
       const shopFromLocalStorage = localStorage.getItem('activeShop')
       // если сохранненный магазин существует и у нас есть массив магазинов....
-      if (shopFromLocalStorage && shopFromLocalStorage !== 'null' && shopFromLocalStorage !== 'undefined') {
+      if (shopFromLocalStorage && shopFromLocalStorage !== 'null' && shopFromLocalStorage !== 'undefined' && clearLoad) {
         // парсим сохраненный магазин
         const { id } = JSON.parse(shopFromLocalStorage);
         // проверяем есть ли магазин в массиве (это на случай разных аккаунтов)
