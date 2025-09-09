@@ -10,7 +10,7 @@ import AddSkuModal from './widget/AddSkuModal/AddSkuModal';
 import styles from './Rnp.module.css';
 import { useAppSelector, useAppDispatch } from '../../redux/hooks';
 import { ServiceFunctions } from '../../service/serviceFunctions';
-import { Filters } from './widget/Filters/Filters';
+import { RnpFilters } from './widget/RnpFilters/RnpFilters';
 import { COLUMNS, ROWS, renderFunction } from './config';
 import { format, isToday } from 'date-fns';
 import { ru } from 'date-fns/locale';
@@ -404,7 +404,14 @@ export default function Rnp() {
 					</Flex>
 				</ConfigProvider>)}
 
-				<div><Filters isDataLoading={loading} /></div>
+				<div>
+					<RnpFilters
+						isDataLoading={loading}
+						slice={'filtersRnp'}
+						filterActions={filterActions}
+						fetchFilters={fetchRnpFilters}
+					/>
+				</div>
 
 				{!loading && shopStatus && shopStatus?.is_primary_collect && !shopStatus.is_self_cost_set && (
 						<SelfCostWarningBlock
