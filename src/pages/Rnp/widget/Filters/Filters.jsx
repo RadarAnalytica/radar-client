@@ -136,6 +136,21 @@ export const Filters = ({
     prevMessages.current = messages
   }, [messages])
 
+  // обновляем раз в 30 секунд магазины если данные не собраны
+    useEffect(() => {
+      activeBrand && localStorage.setItem('activeShop', JSON.stringify(activeBrand))
+      let interval;
+      if (activeBrand && !activeBrand.is_primary_collect) {
+          interval = setInterval(() => { 
+              // Проверять, нужно ли обновление
+              if (!shops || shops.length === 0) {
+                  fetchShopData() 
+              }
+          }, 30000)
+      }
+      return () => { interval && clearInterval(interval) }
+  }, [activeBrand]);
+
   return (
     <div className={styles.filters}>
       <div className={styles.filters__inputsMainWrapper}>
