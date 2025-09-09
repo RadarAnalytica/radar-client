@@ -55,43 +55,6 @@ export default function Rnp() {
 
 	const initLoad = useRef(true);
 
-	useEffect(() => {
-		if (shops && shops.length > 0 && !activeBrand) {
-			// достаем сохраненный магазин
-			const shopFromLocalStorage = localStorage.getItem('activeShop')
-			// если сохранненный магазин существует и у нас есть массив магазинов....
-			if (shopFromLocalStorage && shopFromLocalStorage !== 'null' && shopFromLocalStorage !== 'undefined') {
-				// парсим сохраненный магазин
-				const { id } = JSON.parse(shopFromLocalStorage);
-				// проверяем есть ли магазин в массиве (это на случай разных аккаунтов)
-				const isInShops = shops.some(_ => _.id === id);
-				// Если магазин есть в массиве (т.е. валиден для этого аккаунта) то...
-				if (isInShops) {
-					//....устанавливаем как текущий
-					dispatch(filterActions.setActiveShop(shops.find(_ => _.id === id)))
-					// Если нет, то...
-				} else {
-					// ...Обновляем локал - сохраняем туда первый из списка
-					localStorage.setItem('activeShop', JSON.stringify(shops[0]))
-					// ...устанавливаем текущим первый из списка
-					dispatch(filterActions.setActiveShop(shops[0]))
-				}
-			} else {
-				// ...Обновляем локал - сохраняем туда первый из списка
-				localStorage.setItem('activeShop', JSON.stringify(shops[0]))
-				// ...устанавливаем текущим первый из списка
-				dispatch(filterActions.setActiveShop(shops[0]))
-			}
-		}
-
-		if (shops && activeBrand && !activeBrand.is_primary_collect) {
-			const currentShop = shops.find(shop => shop.id === activeBrand.id)
-			if (currentShop?.is_primary_collect) {
-				dispatch(filterActions.setActiveShop(currentShop))
-			}
-		}
-	}, [shops])
-
 	const [loading, setLoading] = useState(true);
 	const [addSkuModalShow, setAddSkuModalShow] = useState(false);
 	const [page, setPage] = useState(1);
@@ -470,6 +433,12 @@ export default function Rnp() {
 				</ConfigProvider>)}
 
 				<div><Filters isDataLoading={loading} /></div>
+
+				{!loading && shopStatus && shopStatus?.is_primary_collect && !shopStatus.is_self_cost_set && (
+						<SelfCostWarningBlock
+							shopId={activeBrand.id}
+						/>
+				)}
 
 				{loading && (
 					<div className={styles.loading}>
