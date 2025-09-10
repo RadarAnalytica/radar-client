@@ -14,6 +14,7 @@ import { setCustomNativeDragPreview } from "@atlaskit/pragmatic-drag-and-drop/el
 import { attachClosestEdge, extractClosestEdge, } from '@atlaskit/pragmatic-drag-and-drop-hitbox/closest-edge';
 // import { pointerOutsideOfPreview } from '@atlaskit/pragmatic-drag-and-drop/element/pointer-outside-of-preview';
 import { useAppSelector } from '../../../../redux/hooks';
+import { NoDataWidget } from '@/pages/productsGroupsPages/widgets';
 
 function SkuListItem({el, index, expanded, setExpanded, setDeleteSkuId, onReorder}) {
 	const ref = useRef(null);
@@ -166,7 +167,7 @@ function SkuListItem({el, index, expanded, setExpanded, setDeleteSkuId, onReorde
 	);
 }
 
-export default function SkuList({ view, expanded, setExpanded, setView, setAddSkuModalShow, skuDataByArticle, skuDataTotal, setDeleteSkuId, page, setPage, paginationState }) {
+export default function SkuList({ view, expanded, setExpanded, setView, setAddSkuModalShow, skuDataByArticle, skuDataTotal, setDeleteSkuId }) {
 	const { activeBrand } = useAppSelector(
 		(state) => state.filtersRnp
 	);
@@ -275,83 +276,6 @@ export default function SkuList({ view, expanded, setExpanded, setView, setAddSk
 					},
 					components: {
 						Button: {
-							paddingInlineLG: 20,
-							controlHeightLG: 45,
-							defaultShadow: false,
-							contentFontSize: 16,
-							fontWeight: 600,
-							defaultBorderColor: 'transparent',
-							defaultColor: 'rgba(26, 26, 26, 0.5)',
-							defaultBg: 'transparent',
-							defaultHoverBg: '#EEEAFF',
-							defaultHoverColor: '#1a1a1a',
-							defaultHoverBorderColor: 'transparent',
-							defaultActiveColor: 'rgba(26, 26, 26, 1)',
-							defaultActiveBg: '#EEEAFF',
-							defaultActiveBorderColor: '#EEEAFF',
-						},
-					},
-				}}
-			>
-				<Flex justify="space-between">
-					<Flex>
-						<Button
-							type={view === 'sku' ? 'primary' : 'default'}
-							size="large"
-							onClick={() => {
-								setView('sku');
-							}}
-						>
-							По артикулам
-						</Button>
-						<Button
-							type={view === 'total' ? 'primary' : 'default'}
-							size="large"
-							onClick={() => {
-								setView('total');
-							}}
-						>
-							Сводный
-						</Button>
-					</Flex>
-					<ConfigProvider
-						theme={{
-							token: {
-								colorPrimary: '#5329ff',
-								colorText: '#fff',
-							},
-							components: {
-								Button: {
-									primaryColor: '#fff',
-									paddingInlineLG: 16,
-									contentFontSizeLG: 16
-								},
-							},
-						}}
-					>
-						<Button
-							type="primary"
-							size="large"
-							onClick={setAddSkuModalShow}
-						>
-							Добавить артикул
-						</Button>
-					</ConfigProvider>
-				</Flex>
-			</ConfigProvider>
-			<div>
-				<Filters />
-			</div>
-			<ConfigProvider
-				theme={{
-					token: {
-						colorPrimary: '#EEEAFF',
-						colorTextLightSolid: '#1a1a1a',
-						fontSize: 16,
-						borderRadius: 8,
-					},
-					components: {
-						Button: {
 							paddingBlockLG: 10,
 							paddingInlineLG: 20,
 							controlHeightLG: 45,
@@ -388,52 +312,13 @@ export default function SkuList({ view, expanded, setExpanded, setView, setAddSk
 								}
 							})
 						}
-						{/* <ConfigProvider
-							theme={{
-									token: {
-											colorText: '#5329FF',
-											colorPrimary: '#5329FF',
-											colorBgTextHover: '#5329FF0D',
-											controlInteractiveSize: 20
-									},
-									components: {
-											Pagination: {
-													itemActiveBg: '#EEEAFF',
-													itemBg: '#F7F7F7',
-													itemColor: '#8C8C8C',
-											}
-									}
-							}}
-						>
-							<Pagination
-									locale={{
-											items_per_page: 'записей на странице',
-											jump_to: 'Перейти',
-											jump_to_confirm: 'подтвердить',
-											page: 'Страница',
-											prev_page: 'Предыдущая страница',
-											next_page: 'Следующая страница',
-											prev_5: 'Предыдущие 5 страниц',
-											next_5: 'Следующие 5 страниц',
-											prev_3: 'Предыдущие 3 страниц',
-											next_3: 'Следующие 3 страниц',
-									}}
-									defaultCurrent={1}
-									current={page}
-									onChange={setPage}
-									total={paginationState.total}
-									pageSize={paginationState.pageSize}
-									showSizeChanger={false}
-									hideOnSinglePage={true}
-							/>
-						</ConfigProvider> */}
-						{items?.length == 0 && <div className={`${styles.item_content} ${styles.item_empty}`}>Нет данных</div>}
+						{/* {items?.length == 0 && <div className={`${styles.item_content} ${styles.item_empty}`}>Нет данных</div>} */}
 					</div>
 				)}
 				{view === 'total' && (
 					<>
-						{skuDataTotal?.length == 0 && <div className={`${styles.item_content} ${styles.item_empty}`}>Нет данных</div>}
-						{skuDataTotal?.length != 0 && <div className={styles.item_content}>
+						{/* {skuDataTotal?.length == 0 && <div className={`${styles.item_content} ${styles.item_empty}`}>Нет данных</div>} */}
+						{skuDataTotal && <div className={styles.item_content}>
 							<SkuTable
 								// data={null}
 								data={skuDataTotal?.table?.rows}
@@ -444,6 +329,15 @@ export default function SkuList({ view, expanded, setExpanded, setView, setAddSk
 						</div>}
 					</>
 				)}
+				{((items?.length == 0 && view === 'sku') || (view === 'total' && skuDataTotal)) && 
+					<NoDataWidget
+						mainTitle='Здесь пока нет ни одного артикула'
+						mainText='Добавьте артикулы для отчета «Рука на пульсе»'
+						buttonTitle='Добавить'
+						action={() => setAddSkuModalShow(true)}
+						howLinkGroup={false}
+					/>
+				}
 			</ConfigProvider>
 		</>
 	);

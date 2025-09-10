@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useRef } from 'react';
 import AuthContext from '../../../../../../service/AuthContext';
 import styles from './Filters.module.css';
 import { ShopSelect, MultiSelect } from '../../../../../../components/sharedComponents/apiServicePagesFiltersComponent/features';
-import { TimeSelect } from './widget/timeSelect/timeSelect';
 import { useAppDispatch, useAppSelector } from '../../../../../../redux/hooks';
 import { actions as filterActions } from '../../../../../../redux/filtersRnpAdd/filtersRnpAddSlice'
 import { fetchShops } from '../../../../../../redux/shops/shopsActions';
@@ -10,7 +9,7 @@ import { fetchShops } from '../../../../../../redux/shops/shopsActions';
 import { fetchFiltersRnpAdd } from '../../../../../../redux/filtersRnpAdd/filtersRnpAddActions';
 import { setLoading } from '../../../../../../redux/loading/loadingSlice';
 
-export const Filters = ({ open=true }) => {
+export const Filters = ({ open = true }) => {
 
   // ------ база ------//
   const { authToken } = useContext(AuthContext);
@@ -43,9 +42,9 @@ export const Filters = ({ open=true }) => {
 
   // 0. Получаем данные магазинов
   useEffect(() => {
-    if ((!shops || shops.length === 0) && open) {
+    // if ((!shops || shops.length === 0) && open) {
       fetchFiltersData();
-    }
+    // }
   }, [open]);
 
   // 1.1 - проверяем магазин в локал сторадже. Если находим, то устанавливаем его как выбранный, если нет, то берем первый в списке
@@ -109,7 +108,7 @@ export const Filters = ({ open=true }) => {
             />
           </div>
         }
-        {filters && activeBrand && filters.map((i, id) => {
+        {shops && filters && activeBrand && filters.map((i, id) => {
 
           return activeBrand.id === i.shop.id && (
             <React.Fragment key={id}>

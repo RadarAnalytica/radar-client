@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import styles from './tableSettingsWidget.module.css'
 import {
     ConfigProvider,
@@ -11,20 +11,52 @@ import {
     Button,
     Input,
 } from 'antd';
-import { useAppSelector, useAppDispatch } from '../../../../redux/hooks';
-import { actions as reqsMonitoringActions } from '../../../../redux/requestsMonitoring/requestsMonitoringSlice';
+
+
+const getReplicatedArray = (array, fields) => {
+    let replicatedArray = array.map(_ => {
+        return {
+            ..._,
+            hidden: _.children?.every(child => {
+                if (child.fixed || fields[child.dataIndex] === undefined) {
+                    return undefined
+                } else {
+                    return !fields[child.dataIndex]
+                }
+            }),
+            children: _?.children?.map(child => {
+                return {
+                    ...child,
+                    hidden: child.fixed ? undefined : !fields[child.dataIndex]
+                }
+            })
+        }
+    })
+
+    replicatedArray = replicatedArray.map(item => {
+        return {
+            ...item,
+            colSpan: item.children?.filter(child => !child.hidden)?.length || 1
+        }
+    })
+    return replicatedArray
+}
 
 
 
-const TableSettingsWidget = () => {
-    const dispatch = useAppDispatch()
+
+const TableSettingsWidget = ({ tableConfig, setTableConfig }) => {
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [checkAllButtonState, setCheckAllButtonState] = useState('Выбрать все')
     const [searchState, setSearchState] = useState('')
-    const { tableConfig } = useAppSelector(store => store.requestsMonitoring)
     const [form] = Form.useForm()
     const [searchForm] = Form.useForm()
     const filter = Form.useWatch('filter', searchForm)
+
+    const getNormalizedArray = useCallback((array, searchState) => {
+        let normalizedArray = array.map(_ => _.children).flat().filter(_ => _.title?.toLowerCase().includes(searchState.toLowerCase()))
+        return normalizedArray
+    }, [tableConfig, searchState])
 
 
     const сheckAllHandler = () => {
@@ -51,20 +83,12 @@ const TableSettingsWidget = () => {
     }
 
     const updateOptionsConfig = (fields) => {
-        let currValues = [...tableConfig]
-        for (const key in fields) {
-            const index = currValues.findIndex(_ => _.dataIndex === key);
-            if (index !== -1) {
-                currValues[index] = {
-                    ...currValues[index],
-                    isActive: fields[key]
-                }
-            }
-        }
-        dispatch(reqsMonitoringActions.updateTableConfig(currValues))
+        const updatedConfig = getReplicatedArray(tableConfig, fields)
         setIsModalOpen(false)
-        setSearchState('')
         searchForm.resetFields()
+        setSearchState('')
+        localStorage.setItem('MonitoringTableConfig', JSON.stringify(updatedConfig))
+        setTableConfig((prev) => updatedConfig)
     }
     useEffect(() => {
         if (!filter) {
@@ -85,15 +109,6 @@ const TableSettingsWidget = () => {
             }
         }
     }, [form, isModalOpen])
-
-    useEffect(() => {
-        let savedTableConfig = localStorage.getItem('rmTableConfig');
-        if (savedTableConfig) {
-            savedTableConfig = JSON.parse(savedTableConfig);
-            dispatch(reqsMonitoringActions.updateTableConfig(savedTableConfig))
-        }
-    }, [])
-
 
 
 
@@ -281,19 +296,18 @@ const TableSettingsWidget = () => {
                             }}
                         >
                             <Flex gap={[16, 12]} vertical wrap className={styles.modal__list}>
-                                {tableConfig?.filter(_ => _.title?.toLowerCase().includes(searchState.toLowerCase())).map((el, i) => el.isFilterParam && (
+                                {getNormalizedArray(tableConfig, searchState).map((el, i) => !el.fixed && (
                                     <Col span={8} className={styles.item} key={i}>
                                         <Form.Item
                                             name={el?.dataIndex}
                                             valuePropName="checked"
                                             value={el?.dataIndex}
-                                            initialValue={el?.isActive}
+                                            initialValue={!el?.hidden}
                                         >
                                             <Checkbox >
                                                 <div
                                                     className={styles.modal__checkboxLabelWrapper} title={el.title}
                                                     onDoubleClick={(e) => e.preventDefault()}
-                                                //onClick={(e) => e.preventDefault()}
                                                 >{el.title}</div>
                                             </Checkbox>
                                         </Form.Item>

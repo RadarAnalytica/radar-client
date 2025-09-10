@@ -1,83 +1,17 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useRef, useEffect } from 'react'
 import styles from './tableWidget.module.css'
 import { useAppSelector, useAppDispatch } from '../../../../redux/hooks';
 import { fetchRequestsMonitoringData, fetchRequestsMonitoringDataEasy } from '../../../../redux/requestsMonitoring/requestsMonitoringActions';
 import { actions as reqsMonitoringActions } from '../../../../redux/requestsMonitoring/requestsMonitoringSlice';
 import ErrorModal from '../../../../components/sharedComponents/modals/errorModal/errorModal';
-import { ConfigProvider, Table } from 'antd'
-import { newTableConfig } from '../../shared/configs/tableConfig';
-
-//инит стейт сортировки
-const initSortState = {
-    sortedValue: undefined,
-    sortType: undefined,
-}
-
-const paginationTheme = {
-    token: {
-        colorText: '#5329FF',
-        lineWidth: 0,
-        colorPrimary: '#5329FF'
-    },
-    components: {
-        Pagination: {
-            itemActiveBg: '#EEEAFF',
-            itemBg: '#F7F7F7',
-            itemColor: '#8C8C8C',
-        }
-    }
-}
-
-
-
+import { Table as RadarTable } from 'radar-ui';
+import { cellRender } from '../../shared/configs/cellRender';
 
 
 const TableWidget = ({ tableConfig, setTableConfig }) => {
     const dispatch = useAppDispatch()
     const containerRef = useRef(null) // реф скролл-контейнера (используется чтобы седить за позицией скрола)
-    // const [scrollY, setScrollY] = useState(0);
-    // const [scrollX, setScrollX] = useState(0);
-    const { requestData, requestStatus, requestObject, formType, tableConfig: tableSettings, pagination } = useAppSelector(store => store.requestsMonitoring)
-    console.log('requestObject', requestObject)
-    const updateTableConfig = (settings) => {
-        let newConfig = tableConfig;
-        newConfig = newConfig.map(col => ({
-            ...col,
-            children: col.children.map(child => {
-                const curr = settings.find(i => i.dataIndex === child.dataIndex);
-                return {
-                    ...child,
-                    hidden: !curr?.isActive
-                };
-            })
-        }))
-        newConfig = newConfig.map(_ => ({
-            ..._,
-            hidden: _.children.every(c => c.hidden)
-        }))
-        setTableConfig(newConfig)
-    };
-    const updateTableConfigTest = (config, settings) => {
-        let newConfig = config;
-        newConfig = newConfig.map(col => ({
-            ...col,
-            children: col.children.map(child => {
-                const curr = settings.find(i => i.dataIndex === child.dataIndex);
-                return {
-                    ...child,
-                    hidden: !curr?.isActive
-                };
-            })
-        }))
-        newConfig = newConfig.map(_ => ({
-            ..._,
-            hidden: _?.children?.every(c => c?.hidden)
-        }))
-
-        return newConfig
-    };
-
-    //задаем начальную дату
+    const { requestData, requestStatus, requestObject, formType, pagination } = useAppSelector(store => store.requestsMonitoring)
     //задаем начальную дату
     useEffect(() => {
         if (requestObject && formType === 'complex') {
@@ -86,131 +20,14 @@ const TableWidget = ({ tableConfig, setTableConfig }) => {
         if (requestObject && formType === 'easy') {
             dispatch(fetchRequestsMonitoringDataEasy({ requestObject, requestData }))
         }
+        if (containerRef?.current) {
+            //console.log('scrollTo', { top: 0, behavior: 'smooth' })
+            containerRef.current.scrollTo({ top: 0, behavior: 'smooth' })
+        }
     }, [requestObject])
 
 
 
-
-
-    useEffect(() => {
-        if (requestData) {
-            const jumper = document.querySelector('.ant-pagination-options-quick-jumper')
-            const input = jumper?.querySelector('input')
-            if (jumper && input) {
-
-                input.style.backgroundColor = '#EEEAFF'
-                input.style.padding = '5px'
-                input.style.width = '32px'
-                jumper.textContent = 'Перейти на'
-                jumper.appendChild(input)
-                const suffix = document.createElement('span');
-                suffix.textContent = 'стр.'
-                jumper.appendChild(suffix)
-                jumper.style.color = 'black'
-            }
-        }
-    }, [requestData])
-
-
-
-    // useEffect(() => {
-    //     const updateHeight = () => {
-    //         if (containerRef?.current) {
-    //             // ref контейнера который занимает всю высоту
-    //             const container = containerRef.current;
-
-    //             // расчет высоты шапки и добавление отступов контейнера
-    //             const headerHeight = container.querySelector('.ant-table-header')?.offsetHeight || 70;
-    //             const paddings = 32;
-    //             // расчет и сохранение высоты таблицы
-    //             const availableHeight = container.offsetHeight - headerHeight - paddings;
-    //             setScrollY(availableHeight);
-    //             // расчет ширины контейнера
-    //             setScrollX(container.offsetWidth - 32);
-    //         }
-    //     };
-
-    //     updateHeight();
-
-    // }, [newTableConfig, requestData])
-
-    useEffect(() => {
-        const tableBody = document.querySelector('.ant-table-tbody')
-        const headerCell = document.querySelectorAll('.table__mainHeader')
-        const coloredHeaderCell = document.querySelectorAll('.table__mainHeader_colored')
-        //const firstCells = document.querySelectorAll('.first__cell')
-
-        if (headerCell && coloredHeaderCell) {
-            headerCell?.forEach(_ => _.style.color = '#1A1A1A')
-            coloredHeaderCell?.forEach(_ => _.style.color = '#1A1A1A')
-            //firstCells.forEach(_ => _.style.border = '1px solid black')
-            //headerCell.style.color = '#1A1A1A'
-            //coloredHeaderCell.color = '#1A1A1A'
-        }
-        if (tableBody) {
-            //tableBody.style.height = '50%';
-            //tableBody.style.minHeight = '100%';
-            tableBody.style.maxHeight = '80vh'
-            // tableBody.style.border = '1px solid red'
-        }
-
-    }, [requestData, tableSettings, tableConfig])
-
-    useEffect(() => {
-        updateTableConfig(tableSettings)
-    }, [tableSettings])
-
-    useEffect(() => {
-        updateTableConfig(tableSettings)
-    }, [])
-
-
-    //pagination styles
-    useEffect(() => {
-        const paginationNextButton = document.querySelectorAll('.ant-pagination-jump-next')
-        const paginationPrevButton = document.querySelectorAll('.ant-pagination-jump-prev')
-        const paginationSingleNextButton = document.querySelectorAll('.ant-pagination-next')
-        const paginationSinglePrevButton = document.querySelectorAll('.ant-pagination-prev')
-        const jumper = document.querySelectorAll('.ant-pagination-options-quick-jumper')
-
-
-        if (jumper) {
-            jumper.forEach(_ => {
-                const input = _?.querySelector('input')
-
-                if (input && _) {
-                    input.style.backgroundColor = '#EEEAFF'
-                    input.style.padding = '5px'
-                    input.style.width = '32px'
-                    _.textContent = 'Перейти на'
-                    _.appendChild(input)
-                    const suffix = document.createElement('span');
-                    suffix.textContent = 'стр'
-                    _.appendChild(suffix)
-                    _.style.color = 'black'
-                }
-            })
-
-        }
-
-        if (paginationNextButton) {
-            paginationNextButton.forEach(_ => _.setAttribute('title', 'Следующие 5 страниц'))
-        }
-        if (paginationSingleNextButton) {
-            paginationSingleNextButton.forEach(_ => _.setAttribute('title', 'Следующая страница'))
-        }
-        if (paginationSinglePrevButton) {
-            paginationSinglePrevButton.forEach(_ => _.setAttribute('title', 'Предыдущая страница'))
-        }
-        if (paginationPrevButton) {
-            paginationPrevButton.forEach(_ => _.setAttribute('title', 'Предыдущие 5 страниц'))
-        }
-    }, [requestData, pagination])
-
-    const paginationHandler = (page) => {
-        console.log('page', page)
-        dispatch(reqsMonitoringActions.updatePagination({ page: page }))
-    }
 
     if (requestStatus.isLoading) {
         return (
@@ -235,120 +52,83 @@ const TableWidget = ({ tableConfig, setTableConfig }) => {
         )
     }
 
-    const sortFunc = (config) => {
-        if (requestObject?.sorting) {
-            const { sort_field, sort_order } = requestObject.sorting
 
-            let sortedConfig = config.map(_ => {
-                return {
-                    ..._,
-                    children: _.children?.map((i) => { return { ...i, sortOrder: sort_field === i.dataIndex ? sort_order : null, columnKey: i.dataIndex, } }),
+
+
+
+    const onResizeGroup = (columnKey, width) => {
+        //console.log('Column resized:', columnKey, width);
+
+        // Обновляем конфигурацию колонок с группированной структурой
+        const updateColumnWidth = (columns) => {
+            return columns.map(col => {
+                // Если это группа с children
+                if (col.children && col.children.length > 0) {
+                    const updatedChildren = updateColumnWidth(col.children);
+
+                    // Всегда пересчитываем ширину группы на основе суммы ширин дочерних колонок
+                    const totalWidth = updatedChildren.reduce((sum, child) => sum + (child.width || child.minWidth || 200), 0);
+                    return { ...col, width: totalWidth, minWidth: totalWidth, children: updatedChildren };
                 }
 
-            })
-            return sortedConfig
-        } else {
-            let sortedConfig = config.map(_ => {
-                return {
-                    ..._,
-                    children: _.children?.map((i) => { return { ...i, sortOrder: null, columnKey: i.dataIndex, } }),
+                // Если это листовая колонка
+                if (col.key === columnKey) {
+                    return { ...col, width: width, minWidth: width };
                 }
 
-            })
-            return updateTableConfigTest(sortedConfig, tableSettings)
-        }
+                return col;
+            });
+        };
 
-    }
-
-    const handleChange = (pagination, filters, sorterObj, { action }) => {
-        if (action === 'sort') {
-            if (!sorterObj.order) {
-                dispatch(reqsMonitoringActions.updateRequestObject({ sorting: undefined }))
-                return
-            }
-            const obj = {
-                sort_field: sorterObj.field,
-                sort_order: sorterObj.order,
-            }
-            dispatch(reqsMonitoringActions.updateRequestObject({ sorting: obj, page: 1, limit: 25 }))
-        }
-       
+        // Обновляем состояние
+        setTableConfig(prevConfig => {
+            const updatedConfig = updateColumnWidth(prevConfig)
+            localStorage.setItem('MonitoringTableConfig', JSON.stringify(updatedConfig))
+            return updatedConfig
+        });
     };
 
-    return requestData && newTableConfig && (
+    return requestData && tableConfig && (
         <div className={styles.widget}>
             <div
                 className={styles.container}
                 ref={containerRef}
             >
-                <ConfigProvider
-                    renderEmpty={() => (<div>Нет данных</div>)}
-                    // renderEmpty={() => (<></>)}
-                    theme={{
-                        token: {
-                            colorText: '#5329FF',
-                            lineWidth: 0,
-                            colorPrimary: '#5329FF'
-                        },
-                        components: {
-                            Table: {
-                                headerColor: '#8c8c8c',
-                                headerBg: 'white',
-                                headerBorderRadius: 20,
-                                selectionColumnWidth: 32,
-                                cellFontSize: 16,
-                                borderColor: '#f0f0f0',
-                                cellPaddingInline: 16,
-                                //cellPaddingInline: 0,
-                                cellPaddingBlock: 17,
-                                //cellPaddingBlock: 0,
-                                //bodySortBg: '#f7f6fe',
-                                bodySortBg: '#f7f6fe',
-                                headerSortActiveBg: 'white',
-                                headerSortHoverBg: 'white !important',
-                                rowSelectedBg: '#f7f6fe',
-                                rowSelectedHoverBg: '#e7e1fe',
-                                colorText: '#1A1A1A',
-                                lineHeight: 1.2,
-                                fontWeightStrong: 500
-                            },
-                            Checkbox: {
-                                colorBorder: '#ccc',
-                                colorPrimary: '#5329ff',
-                                colorPrimaryBorder: '#5329ff',
-                                colorPrimaryHover: '#5329ff',
-                            },
-                            Pagination: {
-                                itemActiveBg: '#EEEAFF',
-                                itemBg: '#F7F7F7',
-                                itemColor: '#8C8C8C',
-                            }
-                        },
+                <RadarTable
+                    dataSource={requestData}
+                    config={tableConfig}
+                    resizeable
+                    draggableColumns
+                    onResize={onResizeGroup}
+                    stickyHeader
+                    preset="radar-table-simple"
+                    customCellRender={{
+                        idx: ['niche_rating', 'query'],
+                        renderer: cellRender
                     }}
-                >
-                    <Table
-                        rowKey={(record) => {return `${record.query}-${record.avg_daily_revenue}`}}
-                        key={JSON.stringify(pagination)}
-                        dataSource={requestData}
-                        columns={sortFunc(tableConfig)}
-                        pagination={{
-                            position: ['bottomLeft'],
-                            defaultCurrent: 1,
-                            current: pagination.page,
-                            onChange: paginationHandler,
-                            total: pagination.total_pages,
-                            pageSize: pagination.limit,
-                            showSizeChanger: false,
-                            showQuickJumper: true,
-                        }}
-                        rowSelection={false}
-                        showSorterTooltip={false}
-                        sticky={true}
-                        bordered
-                        onChange={handleChange}
-                        scroll={{ x: tableConfig?.reduce((acc, group) => acc + (group.children?.reduce((groupAcc, column) => groupAcc + (column.width || 0), 0) || 0), 0) + 16, y: `calc(90vh + 16px)`, scrollToFirstRowOnChange: true, }}
-                    />
-                </ConfigProvider>
+                    onSort={(sort_field, sort_order) => {
+                        //console.log('sorting', { sort_field, sort_order }) 
+                        dispatch(reqsMonitoringActions.updatePagination({ page: 1 }))
+                        dispatch(reqsMonitoringActions.updateRequestObject({ sorting: { sort_field, sort_order } }))
+                    }}
+                    onColumnReorder={(newConfig) => {
+                        localStorage.setItem('MonitoringTableConfig', JSON.stringify(newConfig))
+                        setTableConfig((prev) => newConfig)
+                    }}
+                    pagination={{
+                        current: pagination.page,
+                        pageSize: pagination.limit,
+                        total: pagination.total_pages,
+                        onChange: (page, pageSize) => {
+                            //console.log('pagination', { page, pageSize }) 
+                            dispatch(reqsMonitoringActions.updatePagination({ page }))
+                        },
+                        showQuickJumper: true,
+                    }}
+                    paginationContainerStyle={{
+                        bottom: 0
+                    }}
+                />
             </div>
         </div>
     )

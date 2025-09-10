@@ -4,7 +4,8 @@ import AddSkuModalFooter from './widget/addSkuModalFooter/addSkuModalFooter'
 import { Modal, Checkbox, ConfigProvider, Pagination, Flex, Tooltip } from 'antd';
 import AuthContext from '../../../../service/AuthContext';
 import { useAppSelector, useAppDispatch } from '../../../../redux/hooks';
-import { Filters } from './widget/addSkuModalFilters/Filters'
+// import { RnpFilters } from '../RnpFilters/RnpFilters';
+import { Filters } from './widget/filters/Filters';
 import SkuItem from '../SkuItem/SkuItem';
 import { ServiceFunctions } from '../../../../service/serviceFunctions';
 import AddSkuModalSearch from './widget/addSkuModalSearch/AddSkuModalSearch';
@@ -13,16 +14,14 @@ import ErrorModal from '../../../../components/sharedComponents/modals/errorModa
 import DataCollectWarningBlock from '../../../../components/sharedComponents/dataCollectWarningBlock/dataCollectWarningBlock';
 import { fetchFiltersRnpAdd } from '../../../../redux/filtersRnpAdd/filtersRnpAddActions';
 import { actions as filterActions } from '../../../../redux/filtersRnpAdd/filtersRnpAddSlice';
+import { actions as rnpSelectedActions } from '../../../../redux/rnpSelected/rnpSelectedSlice'
 
 const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku }) => {
     const dispatch = useAppDispatch();
     const { authToken } = useContext(AuthContext);
-    const { shops, activeBrand, selectedRange } = useAppSelector(
-        (state) => state.filtersRnpAdd
-    );
+    const { shops, activeBrand, selectedRange } = useAppSelector( (state) => state.filtersRnpAdd );
     const filters = useAppSelector((state) => state.filtersRnpAdd);
-
-    const skuList = useAppSelector((state) => state.rnpSelected)
+    const rnpSelected = useAppSelector((state) => state.rnpSelected);
 
     const shopStatus = useMemo(() => {
         if (!activeBrand || !shops) return null;
@@ -47,22 +46,23 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku }) 
     const [skuLoading, setSkuLoading] = useState(true);
     // const [skuInprogress, setSkuInprogress] = useState(false);
     const [localskuDataArticle, setLocalskuDataArticle] = useState([]);
-    const [skuSelected, setSkuSelected] = useState([...skuList]);
     const [search, setSearch] = useState(null);
     const [error, setError] = useState(null);
     const [request, setRequest] = useState(false);
+    const initLoad = useRef(true);
 
     const submitSkuDataArticle = () => {
-        addSku(skuSelected);
+        addSku(rnpSelected);
     }
 
     const selectSkuHandler = (value) => {
-        setSkuSelected((list) => {
-            if (list.includes(value)){
-                return list.filter((el) => el !== value)
-            }
-            return [...list, value]
-        })
+        let list = [];
+        if (rnpSelected.includes(value)){
+            list = rnpSelected.filter((el) => el !== value)
+        } else {
+            list = [...rnpSelected, value]
+        }
+        dispatch(rnpSelectedActions.setList(list));
     }
 
     useEffect(() => {
@@ -70,7 +70,7 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku }) 
             setPage(1)
         }
         setRequest((state) => !state);
-    }, [search, filters, shopStatus])
+    }, [search, filters])
 
     useEffect(() => {
         if (!activeBrand){
@@ -92,6 +92,10 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku }) 
                     search,
                     signal
                 );
+                if (initLoad.current || rnpSelected === null) {
+                    initLoad.current = false;
+					dispatch(rnpSelectedActions.setList(response.rnp_wb_ids));
+                }
 
                 setLocalskuDataArticle(response);
                 setSkuLoading(false);
@@ -140,7 +144,18 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku }) 
                     <div className={styles.modal__header}>
                         <p className={styles.modal__title}>Добавить артикулы</p>
                     </div>
-                    <div className={skuLoading ? styles.hide : styles.control}><Filters open={isAddSkuModalVisible} /></div>
+                    <div className=
+                    {skuLoading ? styles.hide : styles.control}>
+                        <Filters
+                            isDataLoading={skuLoading}
+                            slice={'filtersRnpAdd'}
+                            filterActions={filterActions}
+                            fetchFilters={fetchFiltersRnpAdd}
+                            timeSelect={false}
+                            open={isAddSkuModalVisible}
+                            // clearLoad={true}
+                        />
+                    </div>
                     <div className={skuLoading ? styles.hide : styles.control}><AddSkuModalSearch skuLoading={skuLoading} submitSearch={setSearch} /></div>
                     {/* loader */}
                     <ConfigProvider
@@ -174,22 +189,22 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku }) 
                         {!skuLoading && shopStatus && shopStatus?.is_primary_collect && localskuDataArticle && localskuDataArticle?.data?.length > 0 && (<div className={styles.modal__container}>
                             {localskuDataArticle?.data?.map((el, i) => (
                                 <Flex key={i} className={styles.item} gap={20}>
-                                    {(skuSelected.length >= 25 && !skuSelected.includes(el.wb_id)) && 
+                                    {(rnpSelected.length >= 25 && !rnpSelected.includes(el.wb_id)) && 
                                       <Tooltip title="Максимальное количество артикулов в РНП - 25" arrow={false}>
                                         <Checkbox
-                                            defaultChecked={skuSelected.includes(el.wb_id)}
+                                            defaultChecked={rnpSelected?.includes(el.wb_id)}
                                             data-value={el.wb_id}
                                             onChange={() => selectSkuHandler(el.wb_id)}
-                                            disabled={skuSelected.length >= 25 && !skuSelected.includes(el.wb_id)}
+                                            disabled={rnpSelected.length >= 25 && !rnpSelected.includes(el.wb_id)}
                                         />
                                       </Tooltip>
                                     }
-                                    {(skuSelected.length < 25 || skuSelected.includes(el.wb_id)) && 
+                                    {(rnpSelected.length < 25 || rnpSelected.includes(el.wb_id)) && 
                                         <Checkbox
-                                            defaultChecked={skuSelected.includes(el.wb_id)}
+                                            defaultChecked={rnpSelected?.includes(el.wb_id)}
                                             data-value={el.wb_id}
                                             onChange={() => selectSkuHandler(el.wb_id)}
-                                            disabled={skuSelected.length >= 25 && !skuSelected.includes(el.wb_id)}
+                                            disabled={rnpSelected.length >= 25 && !rnpSelected.includes(el.wb_id)}
                                         />
                                     }
                                     <SkuItem

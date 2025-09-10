@@ -3,7 +3,7 @@ import { act } from "react";
 
 const rnpSelectedSlice = createSlice({
   name: 'rnpSelected',
-  initialState: [],
+  initialState: null,
   reducers: {
     setList: (state, action) => {
       return action.payload

@@ -10,7 +10,7 @@ import { useAppSelector, useAppDispatch } from '../../redux/hooks'
 import DownloadButton from '../../components/DownloadButton'
 import { actions as reqActions } from '../../redux/requestsMonitoring/requestsMonitoringSlice'
 import { actions as filterActions } from '../../redux/apiServicePagesFiltersState/apiServicePagesFilterState.slice'
-import { newTableConfig } from './shared'
+import { radarTableConfig } from './shared'
 import HowToLink from '../../components/sharedComponents/howToLink/howToLink'
 import { ServiceFunctions } from '../../service/serviceFunctions'
 import { fileDownload } from '../../service/utils'
@@ -20,16 +20,14 @@ import ErrorModal from '../../components/sharedComponents/modals/errorModal/erro
 
 
 const SkuFrequencyPage = () => {
-    //const { skuFrequencyMode } = useAppSelector(store => store.filters)
-    const [ tableConfig, setTableConfig ] = useState(newTableConfig)
+    const [tableConfig, setTableConfig] = useState()
     const { requestData, formType, requestObject, isLoadingForButton } = useAppSelector(store => store.requestsMonitoring)
-    const [ downloadStatus, setDownloadStatus ] = useState({
+    const [downloadStatus, setDownloadStatus] = useState({
         isLoading: false,
         isError: false,
         message: ''
     })
     const dispatch = useAppDispatch()
-
 
     const downloadHandler = async () => {
         const url = formType === 'complex' ? '/api/web-service/monitoring-oracle/get/download' : '/api/web-service/monitoring-oracle/easy/get/download'
@@ -44,7 +42,7 @@ const SkuFrequencyPage = () => {
                 message: ''
             })
         }
-    }   
+    }
 
 
 
@@ -52,6 +50,24 @@ const SkuFrequencyPage = () => {
         return () => {
             dispatch(reqActions.resetState())
             dispatch(filterActions.setSkuFrequencyMode('Простой'))
+        }
+    }, [])
+
+    useEffect(() => {
+        let savedTableConfig = localStorage.getItem('MonitoringTableConfig')
+
+        if (savedTableConfig) {
+            try {
+                savedTableConfig = JSON.parse(savedTableConfig)
+                setTableConfig(savedTableConfig)
+
+
+            } catch (error) {
+                console.error('Error parsing saved table config:', error)
+                setTableConfig(radarTableConfig)
+            }
+        } else {
+            setTableConfig(radarTableConfig)
         }
     }, [])
 
@@ -67,15 +83,15 @@ const SkuFrequencyPage = () => {
                 {/* header */}
                 <div className={styles.page__mainWrapper}>
                     <div className={styles.page__headerWrapper}>
-                        <Header 
-                            title='Поиск прибыльной ниши' 
+                        <Header
+                            title='Поиск прибыльной ниши'
                             videoReviewLink='https://play.boomstream.com/4yHYrlLW?color=%23FFFFFF&size=cover&autostart=0&loop=1&title=0'
                         />
                     </div>
                     <HowtoWidget />
                     <div className={styles.page__filtersWrapper}>
                         <Filters
-                            setLoading={() => {}}
+                            setLoading={() => { }}
                             shopSelect={false}
                             skuFrequency={true}
                             brandSelect={false}
@@ -94,23 +110,25 @@ const SkuFrequencyPage = () => {
                         />
                     </div>
                     <OptionsWidget
-                        resetTableConfig={() => {
-                            //setTableConfig([...newTableConfig])
-                        }}
                     />
                     {requestData && <div className={styles.page__tableSettingsBlock}>
                         <DownloadButton
                             handleDownload={downloadHandler}
                             loading={downloadStatus.isLoading}
                         />
-                        <TableSettingsWidget />
+                        {tableConfig &&
+                            <TableSettingsWidget
+                                tableConfig={[...tableConfig]}
+                                setTableConfig={setTableConfig}
+                            />
+                        }
                     </div>}
                 </div>
                 <TableWidget
                     tableConfig={tableConfig}
                     setTableConfig={setTableConfig}
                 />
-                <div style={{ height: 30, minHeight: 30}}></div>
+                <div style={{ height: 30, minHeight: 30 }}></div>
             </div>
             {/* ---------------------- */}
             {/* Exel download error modal */}
