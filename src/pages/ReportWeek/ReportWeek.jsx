@@ -375,6 +375,11 @@ export default function ReportWeek() {
 				<div className={styles.page__headerWrapper}>
 					<Header title="По неделям"></Header>
 				</div>
+				
+				{!loading && shops && user?.subscription_status && shopStatus?.is_primary_collect && !shopStatus?.is_self_cost_set && (
+					<SelfCostWarningBlock />
+				)}
+
 				{shops && (<div className={styles.controls}>
 					<div className={styles.filter}>
 						{weekSelected && <Filters
@@ -472,9 +477,7 @@ export default function ReportWeek() {
 				{!loading && shops && user.subscription_status === null && (
 					<NoSubscriptionWarningBlock />
 				)}
-				{!loading && shops && user?.subscription_status && shopStatus?.is_primary_collect && !shopStatus?.is_self_cost_set && (
-					<SelfCostWarningBlock />
-				)}
+			
 				{!loading && shops && user?.subscription_status && !shopStatus?.is_primary_collect && (
 						<DataCollectWarningBlock
 								title='Ваши данные еще формируются и обрабатываются.'

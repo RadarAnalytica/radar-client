@@ -328,6 +328,12 @@ export default function Rnp() {
 					<Header title="Рука на пульсе (РНП)"></Header>
 				</div>
 
+				{!loading && shopStatus && shopStatus?.is_primary_collect && !shopStatus.is_self_cost_set && (
+						<SelfCostWarningBlock
+							shopId={activeBrand.id}
+						/>
+				)}
+
 				{!loading && ((skuDataTotal) || (skuDataByArticle?.length > 0)) && (<ConfigProvider
 					theme={{
 						token: {
@@ -411,12 +417,6 @@ export default function Rnp() {
 						fetchFilters={fetchRnpFilters}
 					/>
 				</div>
-
-				{!loading && shopStatus && shopStatus?.is_primary_collect && !shopStatus.is_self_cost_set && (
-						<SelfCostWarningBlock
-							shopId={activeBrand.id}
-						/>
-				)}
 
 				{loading && (
 					<div className={styles.loading}>

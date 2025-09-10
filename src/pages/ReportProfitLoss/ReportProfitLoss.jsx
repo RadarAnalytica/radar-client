@@ -264,6 +264,11 @@ export default function ReportProfitLoss() {
 				<div className={styles.page__headerWrapper}>
 					<Header title="Отчет о прибыли и убытках"></Header>
 				</div>
+
+				{!loading && shops && user?.subscription_status && shopStatus?.is_primary_collect && !shopStatus?.is_self_cost_set && (
+					<SelfCostWarningBlock />
+				)}
+
 				<div className={styles.controls}>
 					<Filters
 						timeSelect={false}
@@ -273,15 +278,15 @@ export default function ReportProfitLoss() {
 						isDataLoading={loading}
 					/>
 				</div>
+				
 				<div className={styles.how}>
 					<HowToLink text='Как использовать раздел' url='https://radar.usedocs.com/article/77557' target='_blank' />
 				</div>
+
 				{!loading && shops && user.subscription_status === null && (
 					<NoSubscriptionWarningBlock />
 				)}
-				{!loading && shops && user?.subscription_status && shopStatus?.is_primary_collect && !shopStatus?.is_self_cost_set && (
-					<SelfCostWarningBlock />
-				)}
+
 				{!loading && shops && user?.subscription_status && !shopStatus?.is_primary_collect && (
 						<DataCollectWarningBlock
 								title='Ваши данные еще формируются и обрабатываются.'
