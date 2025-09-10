@@ -94,7 +94,7 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku }) 
                 );
                 if (initLoad.current || rnpSelected === null) {
                     initLoad.current = false;
-					dispatch(rnpSelectedActions.setList(response.rnp_wb_ids));
+					dispatch(rnpSelectedActions.setList(response?.rnp_wb_ids || []));
                 }
 
                 setLocalskuDataArticle(response);
