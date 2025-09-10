@@ -171,7 +171,7 @@ export default function SkuList({ view, expanded, setExpanded, setView, setAddSk
 	const { activeBrand } = useAppSelector(
 		(state) => state.filtersRnp
 	);
-	const items = useMemo( () => skuDataByArticle, [skuDataByArticle]);
+	const items = useMemo( () => skuDataByArticle || [], [skuDataByArticle]);
 
 	const initOrder = useCallback(() => {
 		// сохранение порядка для id магазина
