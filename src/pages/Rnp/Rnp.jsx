@@ -18,7 +18,6 @@ import SkuList from './widget/SkuList/SkuList';
 import ModalDeleteConfirm from '../../components/sharedComponents/ModalDeleteConfirm/ModalDeleteConfirm';
 import DataCollectWarningBlock from '../../components/sharedComponents/dataCollectWarningBlock/dataCollectWarningBlock';
 import SelfCostWarningBlock from '../../components/sharedComponents/selfCostWraningBlock/selfCostWarningBlock';
-import { actions as rnpSelectedActions } from '../../redux/rnpSelected/rnpSelectedSlice'
 import ErrorModal from '../../components/sharedComponents/modals/errorModal/errorModal';
 import { fetchRnpFilters } from '../../redux/filtersRnp/filterRnpActions';
 import { actions as filterActions } from '../../redux/filtersRnp/filtersRnpSlice'
@@ -50,7 +49,7 @@ export default function Rnp() {
 		return shops.find((shop) => shop.id === activeBrand.id);
 	}, [activeBrand, shops]);
 
-	const rnpSelected = useAppSelector((state) => state.rnpSelected);
+	// const rnpSelected = useAppSelector((state) => state.rnpSelected);
 
 	const initLoad = useRef(true);
 
