@@ -1,7 +1,8 @@
 import React, { useContext, useEffect, useRef } from 'react';
 import AuthContext from '../../../../service/AuthContext';
 import styles from './RnpFilters.module.css';
-import { TimeSelect, ShopSelect, MultiSelect } from '../../../../components/sharedComponents/apiServicePagesFiltersComponent/features';
+import { ShopSelect, MultiSelect } from '../../../../components/sharedComponents/apiServicePagesFiltersComponent/features';
+import { TimeSelect } from './widget/timeSelect/timeSelect';
 import { useAppDispatch, useAppSelector } from '../../../../redux/hooks';
 import { actions as filterBaseActions } from '../../../../redux/apiServicePagesFiltersState/apiServicePagesFilterState.slice'
 
