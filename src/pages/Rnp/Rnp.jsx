@@ -306,7 +306,8 @@ export default function Rnp() {
 			setLoading(false)
 		}
 
-	}, [activeBrand, shopStatus, shops, filters, page, view, selectedRange]);
+	// }, [activeBrand, shopStatus, shops, filters, page, view, selectedRange]);
+	}, [filters, page, view, selectedRange]);
 
 	const addSkuHandler = (list) => {
 		setAddSkuModalShow(false);

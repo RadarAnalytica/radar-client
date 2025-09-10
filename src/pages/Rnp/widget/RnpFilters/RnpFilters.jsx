@@ -133,7 +133,7 @@ export const RnpFilters = ({
     if (shops && shops.length > 0) {
       const selectedRangeLocalStorage = localStorage.getItem('selectedRange');
       if (selectedRangeLocalStorage && selectedRangeLocalStorage !== 'null' && selectedRangeLocalStorage !== 'undefined') {
-        dispatch(filterActions.setPeriod(JSON.parse(selectedRangeLocalStorage)))
+        dispatch(filterBaseActions.setPeriod(JSON.parse(selectedRangeLocalStorage)))
       }
     }
   }, [shops])
@@ -169,7 +169,7 @@ export const RnpFilters = ({
   }, [messages])
 
   // обновляем раз в 30 секунд магазины если данные не собраны
-    useEffect(() => {
+  useEffect(() => {
       activeBrand && localStorage.setItem('activeShop', JSON.stringify(activeBrand))
       let interval;
       if (activeBrand && !activeBrand.is_primary_collect) {

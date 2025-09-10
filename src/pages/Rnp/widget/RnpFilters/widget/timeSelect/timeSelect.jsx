@@ -4,7 +4,6 @@ import 'react-day-picker/dist/style.css';
 import { ru } from 'date-fns/locale';
 import { format } from 'date-fns';
 import styles from './timeSelect.module.css';
-// import { SelectIcon } from '../../../shared'
 import { SelectIcon } from '@/components/sharedComponents/apiServicePagesFiltersComponent/shared';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { actions as filtersActions } from '@/redux/apiServicePagesFiltersState/apiServicePagesFilterState.slice';
