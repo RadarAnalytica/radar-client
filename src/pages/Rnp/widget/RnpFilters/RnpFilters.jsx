@@ -129,6 +129,13 @@ export const RnpFilters = ({
         dispatch(filterActions.setActiveShop(currentShop))
       }
     }
+
+    if (shops && shops.length > 0) {
+      const selectedRangeLocalStorage = localStorage.getItem('selectedRange');
+      if (selectedRangeLocalStorage && selectedRangeLocalStorage !== 'null' && selectedRangeLocalStorage !== 'undefined') {
+        dispatch(filterActions.setPeriod(JSON.parse(selectedRangeLocalStorage)))
+      }
+    }
   }, [shops])
   //--------------------------------------------------------------------------------//
 

@@ -77,6 +77,7 @@ export const TimeSelect = ({ isDataLoading }) => {
             setLocalSelectedRange(newRange);
             setSelectValue(0)
             dispatch(filtersActions.setPeriod(newRange))
+            localStorage.setItem('selectedRange', JSON.stringify(newRange))
             setIsCalendarOpen(false);
         }
     };
@@ -90,6 +91,7 @@ export const TimeSelect = ({ isDataLoading }) => {
             setSelectOptions(predefinedRanges)
             setLocalSelectedRange({ from: null, to: null })
             dispatch(filtersActions.setPeriod({ period: value }))
+            localStorage.setItem('selectedRange', JSON.stringify({ period: value }))
         } else {
             setLocalSelectedRange({ from: null, to: null })
             setIsCalendarOpen(true)
