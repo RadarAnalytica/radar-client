@@ -9,9 +9,7 @@ import { fetchShops } from '../../../../../../redux/shops/shopsActions';
 import { fetchFiltersRnpAdd } from '../../../../../../redux/filtersRnpAdd/filtersRnpAddActions';
 import { setLoading } from '../../../../../../redux/loading/loadingSlice';
 
-export const Filters = ({ open }) => {
-
-  console.log('filters', open)
+export const Filters = ({ open = true }) => {
 
   // ------ база ------//
   const { authToken } = useContext(AuthContext);
