@@ -1,13 +1,14 @@
 import React, { useContext, useEffect, useRef } from 'react';
 import AuthContext from '../../../../service/AuthContext';
-import styles from './Filters.module.css';
-import { TimeSelect, ShopSelect, MultiSelect } from '../../../../components/sharedComponents/apiServicePagesFiltersComponent/features';
+import styles from './RnpFilters.module.css';
+import { ShopSelect, MultiSelect } from '../../../../components/sharedComponents/apiServicePagesFiltersComponent/features';
+import { TimeSelect } from './widget/timeSelect/timeSelect';
 import { useAppDispatch, useAppSelector } from '../../../../redux/hooks';
-import { actions as filterActions } from '../../../../redux/filtersRnp/filtersRnpSlice'
-import { fetchShops } from '../../../../redux/shops/shopsActions';
-import { fetchRnpFilters } from '../../../../redux/filtersRnp/filterRnpActions';
+import { actions as filterBaseActions } from '../../../../redux/apiServicePagesFiltersState/apiServicePagesFilterState.slice'
 
-export const Filters = ({
+import { fetchShops } from '../../../../redux/shops/shopsActions';
+
+export const RnpFilters = ({
   setLoading,
   shopSelect = true,
   timeSelect = true,
@@ -15,15 +16,19 @@ export const Filters = ({
   articleSelect = true,
   groupSelect = true,
   categorySelect = true,
-  isDataLoading
+  open = true,
+  slice,
+  fetchFilters,
+  filterActions,
+  isDataLoading,
+  clearLoad = false
 }) => {
-
   // ------ база ------//
   const { user, authToken } = useContext(AuthContext);
   const dispatch = useAppDispatch();
-  const { activeBrand, shops, filters } = useAppSelector(store => store.filtersRnp);
+  const { activeBrand, shops, filters } = useAppSelector(store => store[slice]);
   // const filters = useAppSelector((state) => state.filtersRnp);
-  const filtersState = useAppSelector(store => store.filtersRnp)
+  const filtersState = useAppSelector(store => store[slice])
   const { messages } = useAppSelector((state) => state.messagesSlice);
   const prevMessages = useRef()
   //const shops = useAppSelector((state) => state.shopsSlice.shops);
@@ -33,7 +38,10 @@ export const Filters = ({
   // ---- хэндлер выбора магазина -----------//
   const shopChangeHandler = (value) => {
     const selectedShop = shops?.find(_ => _.id === value)
-    dispatch(filterActions.setActiveShop(selectedShop))
+    dispatch(filterActions.setActiveShop(selectedShop));
+    if (!clearLoad){
+      dispatch(filterBaseActions.setActiveShop(selectedShop))
+    }
   }
   //- -----------------------------------------//
   // ------- Фетч массива магазинов -------------//
@@ -52,7 +60,7 @@ export const Filters = ({
   // ------- Фетч фильтров -------------//
   const fetchFiltersData = async () => {
     try {
-      dispatch(fetchRnpFilters(authToken))
+      dispatch(fetchFilters(authToken))
     } catch (error) {
       console.error("Error fetching initial data:", error);
     }
@@ -61,7 +69,7 @@ export const Filters = ({
 
   // 0. Получаем данные магазинов
   useEffect(() => {
-    if (!shops || shops.length === 0) {
+    if ((!shops || shops.length === 0) || clearLoad) {
       fetchShopData();
       fetchFiltersData();
     }
@@ -70,7 +78,24 @@ export const Filters = ({
   // 1.1 - проверяем магазин в локал сторадже. Если находим, то устанавливаем его как выбранный, если нет, то берем первый в списке
   // 1.2 - если магазин уже установлен, но по нему еще не собраны данные (это проверяем в п2.2) - проверяем магазин после апдейта каждые 30 сек (см п2.2)
   useEffect(() => {
-    if (shops && shops.length > 0 && !activeBrand) {
+    if (clearLoad && shops && shops.length > 0) {
+      // ...устанавливаем текущим первый из списка
+      dispatch(filterActions.setActiveShop(shops[0]))
+      return
+    }
+
+    if (shops && shops.length > 0 && activeBrand) {
+      const shopFromLocalStorage = localStorage.getItem('activeShop')
+      if (shopFromLocalStorage && shopFromLocalStorage !== 'null' && shopFromLocalStorage !== 'undefined') {
+        const { id } = JSON.parse(shopFromLocalStorage);
+        if (id !== activeBrand.id){
+          dispatch(filterActions.setActiveShop(shops.find(_ => _.id === id)))
+        }
+      }
+      return
+    }
+
+    if (shops && shops.length > 0 && !activeBrand && !clearLoad) {
       // достаем сохраненный магазин
       const shopFromLocalStorage = localStorage.getItem('activeShop')
       // если сохранненный магазин существует и у нас есть массив магазинов....
@@ -102,6 +127,13 @@ export const Filters = ({
       const currentShop = shops.find(shop => shop.id === activeBrand.id)
       if (currentShop?.is_primary_collect) {
         dispatch(filterActions.setActiveShop(currentShop))
+      }
+    }
+
+    if (shops && shops.length > 0) {
+      const selectedRangeLocalStorage = localStorage.getItem('selectedRange');
+      if (selectedRangeLocalStorage && selectedRangeLocalStorage !== 'null' && selectedRangeLocalStorage !== 'undefined') {
+        dispatch(filterBaseActions.setPeriod(JSON.parse(selectedRangeLocalStorage)))
       }
     }
   }, [shops])
@@ -137,7 +169,7 @@ export const Filters = ({
   }, [messages])
 
   // обновляем раз в 30 секунд магазины если данные не собраны
-    useEffect(() => {
+  useEffect(() => {
       activeBrand && localStorage.setItem('activeShop', JSON.stringify(activeBrand))
       let interval;
       if (activeBrand && !activeBrand.is_primary_collect) {

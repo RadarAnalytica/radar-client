@@ -1,6 +1,7 @@
 import React, { useMemo, useRef } from 'react';
 import AuthContext from '../../service/AuthContext';
 import { useState, useEffect, useContext } from 'react';
+import { ConfigProvider, Flex, Button } from 'antd';
 import MobilePlug from '../../components/sharedComponents/mobilePlug/mobilePlug';
 import Sidebar from '../../components/sharedComponents/sidebar/sidebar';
 import Header from '../../components/sharedComponents/header/header';
@@ -9,7 +10,7 @@ import AddSkuModal from './widget/AddSkuModal/AddSkuModal';
 import styles from './Rnp.module.css';
 import { useAppSelector, useAppDispatch } from '../../redux/hooks';
 import { ServiceFunctions } from '../../service/serviceFunctions';
-import { Filters } from './widget/Filters/Filters';
+import { RnpFilters } from './widget/RnpFilters/RnpFilters';
 import { COLUMNS, ROWS, renderFunction } from './config';
 import { format, isToday } from 'date-fns';
 import { ru } from 'date-fns/locale';
@@ -17,7 +18,6 @@ import SkuList from './widget/SkuList/SkuList';
 import ModalDeleteConfirm from '../../components/sharedComponents/ModalDeleteConfirm/ModalDeleteConfirm';
 import DataCollectWarningBlock from '../../components/sharedComponents/dataCollectWarningBlock/dataCollectWarningBlock';
 import SelfCostWarningBlock from '../../components/sharedComponents/selfCostWraningBlock/selfCostWarningBlock';
-import { actions as rnpSelectedActions } from '../../redux/rnpSelected/rnpSelectedSlice'
 import ErrorModal from '../../components/sharedComponents/modals/errorModal/errorModal';
 import { fetchRnpFilters } from '../../redux/filtersRnp/filterRnpActions';
 import { actions as filterActions } from '../../redux/filtersRnp/filtersRnpSlice'
@@ -25,11 +25,10 @@ import { actions as filterActions } from '../../redux/filtersRnp/filtersRnpSlice
 export default function Rnp() {
 	const { user, authToken } = useContext(AuthContext);
 	const dispatch = useAppDispatch();
-	const { activeBrand, selectedRange, shops } = useAppSelector(
-		(state) => state.filtersRnp
-	);
+	const { activeBrand } = useAppSelector( (state) => state.filtersRnp );
+	const { selectedRange } = useAppSelector( (state) => state.filters );
 	const filters = useAppSelector((state) => state.filtersRnp);
-	// const { shops } = useAppSelector((state) => state.shopsSlice);
+	const { shops } = useAppSelector((state) => state.shopsSlice);
 
 	const shopStatus = useMemo(() => {
 		if (!activeBrand || !shops) return null;
@@ -50,74 +49,19 @@ export default function Rnp() {
 		return shops.find((shop) => shop.id === activeBrand.id);
 	}, [activeBrand, shops]);
 
-	const rnpSelected = useAppSelector((state) => state.rnpSelected);
+	// const rnpSelected = useAppSelector((state) => state.rnpSelected);
 
 	const initLoad = useRef(true);
-
-	const fetchFiltersData = async () => {
-		try {
-			dispatch(fetchRnpFilters(authToken))
-		} catch (error) {
-			console.error("Error fetching initial data:", error);
-		}
-	};
-
-	useEffect(() => {
-		if (!shops || shops.length === 0) {
-      // fetchShopData();
-			fetchFiltersData();
-    }
-	}, [shops])
-	
-	useEffect(() => {
-		if (shops && shops.length > 0 && !activeBrand) {
-			// достаем сохраненный магазин
-			const shopFromLocalStorage = localStorage.getItem('activeShop')
-			// если сохранненный магазин существует и у нас есть массив магазинов....
-			if (shopFromLocalStorage && shopFromLocalStorage !== 'null' && shopFromLocalStorage !== 'undefined') {
-				// парсим сохраненный магазин
-				const { id } = JSON.parse(shopFromLocalStorage);
-				// проверяем есть ли магазин в массиве (это на случай разных аккаунтов)
-				const isInShops = shops.some(_ => _.id === id);
-				// Если магазин есть в массиве (т.е. валиден для этого аккаунта) то...
-				if (isInShops) {
-					//....устанавливаем как текущий
-					dispatch(filterActions.setActiveShop(shops.find(_ => _.id === id)))
-					// Если нет, то...
-				} else {
-					// ...Обновляем локал - сохраняем туда первый из списка
-					localStorage.setItem('activeShop', JSON.stringify(shops[0]))
-					// ...устанавливаем текущим первый из списка
-					dispatch(filterActions.setActiveShop(shops[0]))
-				}
-			} else {
-				// ...Обновляем локал - сохраняем туда первый из списка
-				localStorage.setItem('activeShop', JSON.stringify(shops[0]))
-				// ...устанавливаем текущим первый из списка
-				dispatch(filterActions.setActiveShop(shops[0]))
-			}
-		}
-
-		if (shops && activeBrand && !activeBrand.is_primary_collect) {
-			const currentShop = shops.find(shop => shop.id === activeBrand.id)
-			if (currentShop?.is_primary_collect) {
-				dispatch(filterActions.setActiveShop(currentShop))
-			}
-		}
-	}, [shops])
 
 	const [loading, setLoading] = useState(true);
 	const [addSkuModalShow, setAddSkuModalShow] = useState(false);
 	const [page, setPage] = useState(1);
-	// const [paginationState, setPaginationState] = useState(null);
 	const [view, setView] = useState('sku');
 	const [skuDataByArticle, setSkuDataByArticle] = useState(null);
 	const [skuDataTotal, setSkuDataTotal] = useState(null)
 	const [deleteSkuId, setDeleteSkuId] = useState(null);
-	const [skuSelectedList, setSkuSelectedList] = useState([]);
 	const [error, setError] = useState(null);
 	const [expanded, setExpanded] = useState([]);
-	// const abortController = useMemo(() => new AbortController(), []);
 
 	const updateSkuListByArticle = async () => {
 		setLoading(true);
@@ -131,10 +75,6 @@ export default function Rnp() {
 					page
 				);
 				dataToSkuList(response);
-				if (initLoad.current) {
-					initLoad.current = false;
-					dispatch(rnpSelectedActions.setList(response?.data?.map((article) => article.article_data.wb_id)));
-				}
 			}
 		} catch (error) {
 			console.error('updateSkuListByArticle error', error)
@@ -157,7 +97,8 @@ export default function Rnp() {
 				dataToSkuTotalList(response);
 			}
 		} catch (error) {
-			console.error('updateSkuListSummary error', error)
+			console.error('updateSkuListSummary error', error);
+			setSkuDataTotal(null);
 		} finally {
 			setLoading(false);
 		}
@@ -172,7 +113,6 @@ export default function Rnp() {
 					authToken,
 					id
 				);
-				dispatch(rnpSelectedActions.setList(rnpSelected.filter((el) => el !== id)));
 			}
 		} catch (error) {
 			console.error('deleteSku error', error)
@@ -235,11 +175,9 @@ export default function Rnp() {
 				for (const row of item.table.rows) {
 					const dataRow = dateData.rnp_data;
 					row[date] = dataRow[row.key][row?.key?.slice(0, -5)];
-					// row[date] = article.article_data.wb_id
 					if (row.children) {
 						for (const childrenRow of row.children) {
 							childrenRow[date] = dataRow[row.key][childrenRow.dataIndex];
-							// childrenRow[date] = childrenRow.key
 						}
 					}
 				}
@@ -248,18 +186,13 @@ export default function Rnp() {
 			return item;
 		});
 
-		setSkuSelectedList(list.map((sku) => sku.article_data.wb_id));
 		setSkuDataByArticle(list);
-		// setPaginationState({
-		// 	total: response.total_count,
-		// 	pageSize: response.per_page
-		// })
 	};
 
 	const dataToSkuTotalList = (response) => {
 		const article = response.data;
 		if (article.length === 0){
-			setSkuDataTotal([]);
+			setSkuDataTotal(null);
 			return
 		}
 		const item = {
@@ -340,7 +273,6 @@ export default function Rnp() {
 					setError(response.detail);
 					return
 				}
-				dispatch(rnpSelectedActions.setList(porductIds));
 			}
 		} catch (error) {
 			console.error('addSkuList error', error)
@@ -374,23 +306,8 @@ export default function Rnp() {
 			setLoading(false)
 		}
 
-		return () => {
-			// abortController.abort('AbortError');
-		};
-	}, [activeBrand, shopStatus, shops, filters, page, view, selectedRange]);
-
-	// useEffect(() => {
-	// 	if (activeBrand && activeBrand.is_primary_collect) {
-	// 		if (view === 'sku'){
-	// 			updateSkuListByArticle();
-	// 			return
-	// 		}
-	// 		updateSkuListSummary();
-	// 	}
-	// 	if (activeBrand && !activeBrand?.is_primary_collect){
-	// 		setLoading(false)
-	// 	}
 	// }, [activeBrand, shopStatus, shops, filters, page, view, selectedRange]);
+	}, [filters, page, view, selectedRange]);
 
 	const addSkuHandler = (list) => {
 		setAddSkuModalShow(false);
@@ -412,6 +329,96 @@ export default function Rnp() {
 					<Header title="Рука на пульсе (РНП)"></Header>
 				</div>
 
+				{!loading && shopStatus && shopStatus?.is_primary_collect && !shopStatus.is_self_cost_set && (
+						<SelfCostWarningBlock
+							shopId={activeBrand.id}
+						/>
+				)}
+
+				{!loading && ((skuDataTotal) || (skuDataByArticle?.length > 0)) && (<ConfigProvider
+					theme={{
+						token: {
+							colorPrimary: '#EEEAFF',
+							colorTextLightSolid: '#1a1a1a',
+							fontSize: 16,
+							borderRadius: 8,
+						},
+						components: {
+							Button: {
+								paddingInlineLG: 20,
+								controlHeightLG: 45,
+								defaultShadow: false,
+								contentFontSize: 16,
+								fontWeight: 600,
+								defaultBorderColor: 'transparent',
+								defaultColor: 'rgba(26, 26, 26, 0.5)',
+								defaultBg: 'transparent',
+								defaultHoverBg: '#EEEAFF',
+								defaultHoverColor: '#1a1a1a',
+								defaultHoverBorderColor: 'transparent',
+								defaultActiveColor: 'rgba(26, 26, 26, 1)',
+								defaultActiveBg: '#EEEAFF',
+								defaultActiveBorderColor: '#EEEAFF',
+							},
+						},
+					}}
+				>
+					<Flex justify="space-between">
+						<Flex>
+							<Button
+								type={view === 'sku' ? 'primary' : 'default'}
+								size="large"
+								onClick={() => {
+									setView('sku');
+								}}
+							>
+								По артикулам
+							</Button>
+							<Button
+								type={view === 'total' ? 'primary' : 'default'}
+								size="large"
+								onClick={() => {
+									setView('total');
+								}}
+							>
+								Сводный
+							</Button>
+						</Flex>
+						<ConfigProvider
+							theme={{
+								token: {
+									colorPrimary: '#5329ff',
+									colorText: '#fff',
+								},
+								components: {
+									Button: {
+										primaryColor: '#fff',
+										paddingInlineLG: 16,
+										contentFontSizeLG: 16
+									},
+								},
+							}}
+						>
+							<Button
+								type="primary"
+								size="large"
+								onClick={setAddSkuModalShow}
+							>
+								Добавить артикул
+							</Button>
+						</ConfigProvider>
+					</Flex>
+				</ConfigProvider>)}
+
+				<div>
+					<RnpFilters
+						isDataLoading={loading}
+						slice={'filtersRnp'}
+						filterActions={filterActions}
+						fetchFilters={fetchRnpFilters}
+					/>
+				</div>
+
 				{loading && (
 					<div className={styles.loading}>
 						<div className={styles.loading__loader}>
@@ -422,14 +429,13 @@ export default function Rnp() {
 				
 				{!loading  && shopStatus && !shopStatus?.is_primary_collect && (
 					<>
-						<div><Filters /></div>
 						<DataCollectWarningBlock
 							title='Ваши данные еще формируются и обрабатываются.'
 						/>
 					</>
 				)}
 
-				{!loading && shopStatus && shopStatus?.is_primary_collect && rnpSelected?.length > 0 && (
+				{!loading && shopStatus && shopStatus?.is_primary_collect && (
 					<SkuList
 						view={view}
 						setView={viewHandler}
@@ -439,13 +445,14 @@ export default function Rnp() {
 						setDeleteSkuId={setDeleteSkuId}
 						expanded={expanded}
 						setExpanded={setExpanded}
+						loading={loading}
 						// page={page}
 						// setPage={setPage}
 						// paginationState={paginationState}
 					/>
 				)}
 
-				{!loading && skuDataByArticle?.length === 0 && rnpSelected?.length == 0 && 
+				{/* {!loading && skuDataByArticle?.length === 0 && 
 					<NoDataWidget
 						mainTitle='Здесь пока нет ни одного артикула'
 						mainText='Добавьте артикулы для отчета «Рука на пульсе»'
@@ -453,14 +460,13 @@ export default function Rnp() {
 						action={() => setAddSkuModalShow(true)}
 						howLinkGroup={false}
 					/>
-				}
+				} */}
 
 				{addSkuModalShow && <AddSkuModal
 					isAddSkuModalVisible={addSkuModalShow}
 					setIsAddSkuModalVisible={setAddSkuModalShow}
 					addSku={addSkuHandler}
 					skuDataArticle={skuDataByArticle}
-					skuList={skuSelectedList}
 				/>}
 
 				{deleteSkuId && <ModalDeleteConfirm

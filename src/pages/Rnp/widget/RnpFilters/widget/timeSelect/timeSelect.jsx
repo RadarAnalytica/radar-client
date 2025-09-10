@@ -4,12 +4,11 @@ import 'react-day-picker/dist/style.css';
 import { ru } from 'date-fns/locale';
 import { format } from 'date-fns';
 import styles from './timeSelect.module.css';
-import { SelectIcon } from '../../../../../../components/sharedComponents/apiServicePagesFiltersComponent/shared';
-import { useAppDispatch, useAppSelector } from '../../../../../../redux/hooks';
-import { actions as filterActions } from '../../../../../../redux/filtersRnp/filtersRnpSlice'
+import { SelectIcon } from '@/components/sharedComponents/apiServicePagesFiltersComponent/shared';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import { actions as filtersActions } from '@/redux/apiServicePagesFiltersState/apiServicePagesFilterState.slice';
 import { Select, ConfigProvider } from 'antd'
-import DatePickerCustomDropdown from '../../../../../../components/sharedComponents/apiServicePagesFiltersComponent/shared/datePickerCustomDropdown/datePickerCustomDropdown';
-// import DatePickerCustomDropdown from '../../shared/datePickerCustomDropdown/datePickerCustomDropdown';
+import DatePickerCustomDropdown from '@/components/sharedComponents/apiServicePagesFiltersComponent/shared/datePickerCustomDropdown/datePickerCustomDropdown';
 
 const predefinedRanges = [
     {
@@ -34,19 +33,18 @@ const predefinedRanges = [
     }
 ];
 
-export const TimeSelect = () => {
+export const TimeSelect = ({ isDataLoading }) => {
 
     const dispatch = useAppDispatch()
-    const { selectedRange } = useAppSelector(store => store.filtersRnp)
+    const { selectedRange } = useAppSelector(store => store.filters)
     const [isCalendarOpen, setIsCalendarOpen] = useState(false);
     const [month, setMonth] = useState(new Date());
     const [localSelectedRange, setLocalSelectedRange] = useState({ from: null, to: null });
     const [selectOptions, setSelectOptions] = useState([...predefinedRanges])
     const [selectValue, setSelectValue] = useState()
-    const today = new Date(Date.now() - 1000 * 60 * 60 * 24);
+    const today = new Date(Date.now() - (3600000 * 24));
     const minDate = new Date(today);
     minDate.setDate(today.getDate() - 90);
-
 
     const startMonth = new Date(today);
     startMonth.setDate(today.getDate() - 90);
@@ -77,7 +75,8 @@ export const TimeSelect = () => {
                 : { from: format(from, 'yyyy-MM-dd'), to: format(day, 'yyyy-MM-dd') };
             setLocalSelectedRange(newRange);
             setSelectValue(0)
-            dispatch(filterActions.setPeriod(newRange))
+            dispatch(filtersActions.setPeriod(newRange))
+            localStorage.setItem('selectedRange', JSON.stringify(newRange))
             setIsCalendarOpen(false);
         }
     };
@@ -90,7 +89,8 @@ export const TimeSelect = () => {
             setSelectValue(value)
             setSelectOptions(predefinedRanges)
             setLocalSelectedRange({ from: null, to: null })
-            dispatch(filterActions.setPeriod({ period: value }))
+            dispatch(filtersActions.setPeriod({ period: value }))
+            localStorage.setItem('selectedRange', JSON.stringify({ period: value }))
         } else {
             setLocalSelectedRange({ from: null, to: null })
             setIsCalendarOpen(true)
@@ -223,7 +223,7 @@ export const TimeSelect = () => {
                         }}
                         value={selectValue}
                         onSelect={timeSelectChangeHandler}
-                        disabled={isCalendarOpen}
+                        disabled={isCalendarOpen || isDataLoading}
                         placeholder={'опция'}
                     />
                 </ConfigProvider>

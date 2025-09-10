@@ -1,11 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { fetchRequestsMonitoringData, fetchRequestsMonitoringDataEasy } from './requestsMonitoringActions'
 import { optionsConfig } from "../../pages/skuFrequencyPage/shared";
-import { tableSettings } from "../../pages/skuFrequencyPage/shared/configs/tableConfig";
 
 const initialState = {
     optionsConfig: [...optionsConfig],
-    tableConfig: tableSettings,
     requestObject: undefined,
     requestStatus: {
         isLoading: false,
@@ -45,7 +43,6 @@ const requestsMonitoringSlice = createSlice({
             }
         },
         updatePagination: (state, action) => {
-            console.log('action.payload.page', action.payload.page)
             return {
                 ...state,
                 requestObject: {
@@ -73,16 +70,6 @@ const requestsMonitoringSlice = createSlice({
             optionsConfig: [...optionsConfig]
            }
         },
-        updateTableConfig: (state, action) => {
-            localStorage.setItem('rmTableConfig', JSON.stringify(action.payload))
-            state.tableConfig = JSON.parse(JSON.stringify(action.payload))
-        },
-        setDefaultTableConfig: (state) => {
-            return {
-                ...state,
-                //tableConfig: [...tableConfig]
-               }
-        },
         resetState: () => {
             return initialState
         }
@@ -97,7 +84,7 @@ const requestsMonitoringSlice = createSlice({
                 pagination: {
                     limit,
                     page,
-                    total_pages: limit * total_pages
+                    total_pages: total_pages
                 }
             }
               //  state.requestData = action.payload;
@@ -110,7 +97,7 @@ const requestsMonitoringSlice = createSlice({
                 pagination: {
                     limit,
                     page,
-                    total_pages: limit * total_pages
+                    total_pages: total_pages
                 }
             }
                // state.requestData = action.payload;

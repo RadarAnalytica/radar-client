@@ -1,32 +1,11 @@
 import styles from './cellRender.module.css'
 import { Link } from 'react-router-dom'
-import { Rate, ConfigProvider } from 'antd'
 import { formatPrice } from '../../../../service/utils'
 
 
+export const cellRender = (value, record, index, dataIndex) => {
 
-const getRateStarColor = (value) => {
-    let color = '#F93C65'
-
-    if (value > 2 && value <= 3) {
-        color = '#BDBDBD'
-    }
-    if (value > 3 && value <= 4) {
-        color = '#FEC53D'
-    }
-    if (value > 4 && value <= 5) {
-        color = '#00B69B'
-    }
-
-    return color
-}
-
-export const cellRender = (value, context) => {
-    //console.log('value', value)
-    //console.log('context', context)
-
-
-    if (context.dataIndex === 'query') {
+    if (dataIndex === 'query') {
         const url = `/monitoring/request?query=${encodeURIComponent(value)}`
         return (
             <Link
@@ -34,7 +13,7 @@ export const cellRender = (value, context) => {
                 to={url}
                 target='_blank'
                 title='Смотреть подробнее'
-                key={context.dataIndex}
+                key={dataIndex}
             >
                 <p className={styles.cell__title}>{value}</p>
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ width: '24px', height: '24px' }}>
@@ -45,12 +24,12 @@ export const cellRender = (value, context) => {
         )
     }
 
-    if (context.dataIndex === 'niche_rating') {
+    if (dataIndex === 'niche_rating') {
         let v = value + 1;
         return (
             <div
                 className={`${styles.cell} ${styles.cell_rate}`}
-                key={context.dataIndex}
+                key={dataIndex}
             >
                 {[1, 2, 3, 4, 5].map(_ => {
                     if (_ <= v) {
@@ -68,46 +47,7 @@ export const cellRender = (value, context) => {
 
                     }
                 })}
-                {/* <ConfigProvider
-                    theme={{
-                        components: {
-                            Rate: {
-                                starColor: '#5329FF'
-                            }
-                        }
-                    }}
-                >
-                    <Rate
-                        value={v}
-                        //allowHalf
-                        disabled
-                    />
-                </ConfigProvider> */}
             </div>
         )
     }
-
-
-    if (context.dataIndex === 'g30' || context.dataIndex === 'g60' || context.dataIndex === 'g90') {
-        return (
-            <div
-                className={styles.cell}
-                key={context.dataIndex}
-            >
-                <div className={styles.cell__wrapper}>
-                    {context.units ? formatPrice(value, context.units) : formatPrice(value, '')}
-                </div>
-            </div>
-        )
-    }
-
-    // default
-    return (
-        <div
-            className={styles.cell}
-            key={context.dataIndex}
-        >
-            {context.units ? formatPrice(value, context.units) : formatPrice(value, '')}
-        </div>
-    )
 }
