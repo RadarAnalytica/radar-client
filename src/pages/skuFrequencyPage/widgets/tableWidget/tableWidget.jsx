@@ -12,6 +12,7 @@ const TableWidget = ({ tableConfig, setTableConfig }) => {
     const dispatch = useAppDispatch()
     const containerRef = useRef(null) // реф скролл-контейнера (используется чтобы седить за позицией скрола)
     const { requestData, requestStatus, requestObject, formType, pagination } = useAppSelector(store => store.requestsMonitoring)
+    console.log(pagination)
     //задаем начальную дату
     useEffect(() => {
         if (requestObject && formType === 'complex') {
@@ -54,40 +55,40 @@ const TableWidget = ({ tableConfig, setTableConfig }) => {
 
 
 
-
-
     const onResizeGroup = (columnKey, width) => {
-        //console.log('Column resized:', columnKey, width);
-
+        console.log('Column resized:', columnKey, width);
+    
         // Обновляем конфигурацию колонок с группированной структурой
         const updateColumnWidth = (columns) => {
-            return columns.map(col => {
-                // Если это группа с children
-                if (col.children && col.children.length > 0) {
-                    const updatedChildren = updateColumnWidth(col.children);
-
-                    // Всегда пересчитываем ширину группы на основе суммы ширин дочерних колонок
-                    const totalWidth = updatedChildren.reduce((sum, child) => sum + (child.width || child.minWidth || 200), 0);
-                    return { ...col, width: totalWidth, minWidth: totalWidth, children: updatedChildren };
-                }
-
-                // Если это листовая колонка
-                if (col.key === columnKey) {
-                    return { ...col, width: width, minWidth: width };
-                }
-
-                return col;
-            });
+          return columns.map(col => {
+            // Если это группа с children
+            if (col.children && col.children.length > 0) {
+              const updatedChildren = updateColumnWidth(col.children);
+    
+              // Всегда пересчитываем ширину группы на основе суммы ширин дочерних колонок
+              const totalWidth = updatedChildren.reduce((sum, child) => {
+                if (child.hidden) return sum; // Пропускаем скрытые колонки
+                return sum + (child.width || child.minWidth || 200);
+              }, 0);
+              return { ...col, width: totalWidth, minWidth: totalWidth, children: updatedChildren };
+            }
+    
+            // Если это листовая колонка
+            if (col.key === columnKey) {
+              return { ...col, width: width, minWidth: width };
+            }
+    
+            return col;
+          });
         };
-
-        // Обновляем состояние
-        setTableConfig(prevConfig => {
+    
+         // Обновляем состояние
+         setTableConfig(prevConfig => {
             const updatedConfig = updateColumnWidth(prevConfig)
             localStorage.setItem('MonitoringTableConfig', JSON.stringify(updatedConfig))
             return updatedConfig
         });
-    };
-
+      };
     return requestData && tableConfig && (
         <div className={styles.widget}>
             <div
@@ -128,6 +129,7 @@ const TableWidget = ({ tableConfig, setTableConfig }) => {
                     paginationContainerStyle={{
                         bottom: 0
                     }}
+                    scrollContainerRef={containerRef}
                 />
             </div>
         </div>

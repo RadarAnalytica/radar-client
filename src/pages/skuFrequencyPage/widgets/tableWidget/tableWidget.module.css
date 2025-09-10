@@ -32,6 +32,10 @@
     position: relative;
     overflow-x: auto;
     max-height: 90vh;
+    /* Firefox scrollbar styles */
+    scrollbar-width: thin;
+    scrollbar-color: transparent transparent;
+    transition: scrollbar-color 0.3s ease;
 }
 
 
@@ -81,31 +85,34 @@
 }
 
 /* GLOBAL SCROLLBAR STYLES */
-.container :global(.ant-table-body::-webkit-scrollbar) {
+.container::-webkit-scrollbar {
     width: 6px;
     height: 6px;
     border-radius: 6px;
 }
 
-.container :global(.ant-table-body::-webkit-scrollbar-thumb) {
-    background: #5329ff80;
+.container::-webkit-scrollbar-thumb {
+    background: transparent;
     border-radius: 6px;
-    transition: background-color 0.2s ease;
+    transition: background-color 0.3s ease;
 }
 
-.container :global(.ant-table-body::-webkit-scrollbar-thumb:hover) {
-    background: #5329ff;
+.container:hover::-webkit-scrollbar-thumb {
+    background: #5329ff80;
 }
 
-.container :global(.ant-table-body::-webkit-scrollbar-track) {
+.container::-webkit-scrollbar-thumb:hover {
+    background: #5329ff !important;
+}
+
+.container::-webkit-scrollbar-track {
     background: transparent;
     height: 50%;
     margin: 10px 20px;
 }
 
-/* Firefox scrollbar styles */
-.container :global(.ant-table-body) {
-    scrollbar-width: thin;
+
+.container:hover {
     scrollbar-color: #5329ff80 transparent;
 }
 

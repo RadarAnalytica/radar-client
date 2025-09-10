@@ -30,6 +30,7 @@ body,
 html {
   height: 100%;
   scroll-behavior: smooth;
+  overflow: auto;
 }
 
 
@@ -48,6 +49,7 @@ input:-webkit-autofill:active {
 .App {
   min-height: 100vh;
   background-color: var(--main-bg);
+  overflow: hidden;
 }
 
 .top-menu {

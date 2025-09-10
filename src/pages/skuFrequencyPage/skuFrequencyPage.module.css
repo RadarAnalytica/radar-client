@@ -19,8 +19,7 @@
     gap: 20px;
     box-sizing: border-box;
     height: 100%;
-    overflow-y: scroll;
-    overflow-x: hidden;
+    overflow: auto;
 }
 .page__mainWrapper {
     width: 100%;

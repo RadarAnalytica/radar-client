@@ -84,7 +84,7 @@ const requestsMonitoringSlice = createSlice({
                 pagination: {
                     limit,
                     page,
-                    total_pages: limit * total_pages
+                    total_pages: total_pages
                 }
             }
               //  state.requestData = action.payload;
@@ -97,7 +97,7 @@ const requestsMonitoringSlice = createSlice({
                 pagination: {
                     limit,
                     page,
-                    total_pages: limit * total_pages
+                    total_pages: total_pages
                 }
             }
                // state.requestData = action.payload;
