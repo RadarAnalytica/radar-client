@@ -4,11 +4,11 @@ import 'react-day-picker/dist/style.css';
 import { ru } from 'date-fns/locale';
 import { format } from 'date-fns';
 import styles from './timeSelect.module.css';
-import { SelectIcon } from '../../shared'
-import { useAppDispatch, useAppSelector } from '../../../../../redux/hooks';
-import { actions as filtersActions } from '../../../../../redux/apiServicePagesFiltersState/apiServicePagesFilterState.slice';
+import { SelectIcon } from '@/components/sharedComponents/apiServicePagesFiltersComponent/shared';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import { actions as filtersActions } from '@/redux/apiServicePagesFiltersState/apiServicePagesFilterState.slice';
 import { Select, ConfigProvider } from 'antd'
-import DatePickerCustomDropdown from '../../shared/datePickerCustomDropdown/datePickerCustomDropdown';
+import DatePickerCustomDropdown from '@/components/sharedComponents/apiServicePagesFiltersComponent/shared/datePickerCustomDropdown/datePickerCustomDropdown';
 
 const predefinedRanges = [
     {
@@ -42,10 +42,9 @@ export const TimeSelect = ({ isDataLoading }) => {
     const [localSelectedRange, setLocalSelectedRange] = useState({ from: null, to: null });
     const [selectOptions, setSelectOptions] = useState([...predefinedRanges])
     const [selectValue, setSelectValue] = useState()
-    const today = new Date();
+    const today = new Date(Date.now() - (3600000 * 24));
     const minDate = new Date(today);
     minDate.setDate(today.getDate() - 90);
-
 
     const startMonth = new Date(today);
     startMonth.setDate(today.getDate() - 90);
