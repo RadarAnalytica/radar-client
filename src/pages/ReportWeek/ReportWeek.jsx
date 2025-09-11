@@ -375,8 +375,9 @@ export default function ReportWeek() {
 				<div className={styles.page__headerWrapper}>
 					<Header title="По неделям"></Header>
 				</div>
+
 				
-				{!loading && shops && user?.subscription_status && shopStatus?.is_primary_collect && !shopStatus?.is_self_cost_set && (
+				{!loading && shopStatus?.is_primary_collect && !shopStatus?.is_self_cost_set && (
 					<SelfCostWarningBlock />
 				)}
 
