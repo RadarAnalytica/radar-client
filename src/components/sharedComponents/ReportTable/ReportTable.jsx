@@ -101,25 +101,6 @@ export default function ReportTable({ loading, columns, data, rowSelection = fal
 					></Table>
 				</ConfigProvider>
 			</div>
-			<div className={styles.tableContainer}>
-				{loading && <div className={styles.loading}>
-						<span className='loader'></span>
-						{progress !== null && <div className={styles.loadingProgress}>
-							<Progress
-									percent={progress}
-									size='small'
-									showInfo={false}
-									strokeColor='#5329FF'
-									strokeLinecap={1}
-							/>
-						</div>}
-				</div>}
-				{/* <RadarTable
-					config={columns}
-					dataSource={data}
-					pagination={false}
-				/> */}
-			</div>
 		</div>
 	);
 }
