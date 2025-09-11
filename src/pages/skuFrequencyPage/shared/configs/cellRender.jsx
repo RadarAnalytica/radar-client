@@ -50,4 +50,13 @@ export const cellRender = (value, record, index, dataIndex) => {
             </div>
         )
     }
+
+    return (
+        <div
+                className={`${styles.cell} ${styles.cell_rate}`}
+                key={dataIndex}
+            >
+               {value}
+            </div>
+    )
 }
