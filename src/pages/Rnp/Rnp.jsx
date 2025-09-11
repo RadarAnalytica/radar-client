@@ -377,7 +377,7 @@ export default function Rnp() {
 								type={view === 'total' ? 'primary' : 'default'}
 								size="large"
 								onClick={() => {
-									setView('total');
+									viewHandler('total');
 								}}
 							>
 								Сводный
