@@ -1,5 +1,5 @@
 import AuthContext from '../../service/AuthContext';
-import { useState, useEffect, useContext, useMemo } from 'react';
+import { useState, useEffect, useContext, useMemo, useRef } from 'react';
 import MobilePlug from '../../components/sharedComponents/mobilePlug/mobilePlug';
 import Sidebar from '../../components/sharedComponents/sidebar/sidebar';
 import Header from '../../components/sharedComponents/header/header';
@@ -11,9 +11,10 @@ import ReportTable from '../../components/sharedComponents/ReportTable/ReportTab
 import { useAppSelector } from '../../redux/hooks';
 import { COSTS_COLUMNS, ARTICLES_COLUMNS } from './model/model';
 import ModalCreateCost from './widgets/modals/ModalCreateCost';
-import ModalCreateArticle from './widgets/modals/ModalCreateArticle';
+import ModalCreateExpenses from './widgets/modals/ModalCreateExpenses';
 import DataCollectWarningBlock from '../../components/sharedComponents/dataCollectWarningBlock/dataCollectWarningBlock';
 import { EditIcon, CopyIcon, DeleteIcon } from './shared/Icons';
+import { useAppDispatch } from '@/redux/hooks';
 
 export default function OperationsCosts() {
 
@@ -40,22 +41,20 @@ export default function OperationsCosts() {
 		return shops.find((shop) => shop.id === activeBrand.id);
 	}, [activeBrand, shops]);
 
+	const firstLoad = useRef(true);
 	const [loading, setLoading] = useState(true);
-	const [view, setView] = useState('costs'); // costs | articles
-	const [isPopoverOpen, setIsPopoverOpen] = useState(false);
-
-	const [articlesData]
+	const [view, setView] = useState('costs'); // costs | expenses
+	// const [isPopoverOpen, setIsPopoverOpen] = useState(false);
 
 	const [modalCreateCostOpen, setModalCreateCostOpen] = useState(false);
-	const [modalCreateArticleOpen, setModalCreateArticleOpen] = useState(false);
+	const [modalCreateExpensesOpen, setModalCreateExpensesOpen] = useState(false);
 
-	const [deleteId, setDeleteId] = useState(null);
-
-	const [costsSummary, setCostsSummary] = useState([]);
-	const [articlesSummary, setArticlesSummary] = useState([]);
+	const [deleteCostId, setDeleteCostId] = useState(null);
+	const [deleteArticleId, setDeleteArticleId] = useState(null);
 
 	const [costs, setCosts] = useState([
 		{
+			id: 1,
 			date: '2025-05-10',
 			sum: 12300,
 			article: 'Статья',
@@ -67,7 +66,7 @@ export default function OperationsCosts() {
 	]);
 	
 	const costsData = useMemo(() => {
-		const data = [...costs];
+		const data = costs.map((cost) => ({...cost, key: cost.id}));
 		const result = {
 			key: 'summary',
 			date: 'Итого',
@@ -82,21 +81,29 @@ export default function OperationsCosts() {
 		return data;
 	}, [costs]);
 
-	const [articles, setArticles] = useState([]);
+	const [expenses, setExpenses] = useState([]);
 
-	const articlesData = useMemo(() => 
-		(articles.map((el, i) => ({
-			key: i,
-			title: el.title
-	}))), [articles]);
+	// const expensesData = useMemo(() => expenses.map((el, i) => ({ key: i, ...el })
+	// ), [expenses]);
 
 	const updateAricles = async () => {
 		setLoading(true);
 		try {
 			const res = await ServiceFunctions.getOperationConstsArticles();
-			console.log(res)
-			
+			console.log(res);
+			setExpenses([
+				{
+					id: 1,
+					title: 'Статья1'
+				},
+				{
+					id: 2,
+					title: 'Статья2'
+				},
+			]);
 		} catch(error) {
+			console.error('updateAricles error', error);
+			setExpenses([]);
 			
 		} finally {
 			setLoading(false);
@@ -120,17 +127,26 @@ export default function OperationsCosts() {
 		if (!activeBrand && !activeBrand?.is_primary_collect ){
 			return
 		}
+
+		if (firstLoad.current) {
+			updateCosts();
+			updateAricles();
+			firstLoad.current = false;
+			return
+		}
+
 		if (view === 'costs'){
 			console.log('updateCosts');
 			updateCosts();
 		}
-		if (view === 'articles'){
+		
+		if (view === 'expenses'){
 			console.log('updateArticles');
 			updateAricles();
 		}
 	}, [ filters ])
 
-	const actionRender = (value, row) => {
+	const actionCostRender = (value, row) => {
 		if (row.key == 'summary') {
 			return '-';
 		}
@@ -152,12 +168,27 @@ export default function OperationsCosts() {
 		</Flex>)
 	}
 
+	const actionExpansesRender = (value, row) => {
+		return (<Flex justify="start" gap={20}>
+			<ConfigProvider>
+				<Button
+					type="text"
+					icon={EditIcon}
+				></Button>
+				<Button
+					type="text"
+					icon={DeleteIcon}
+				></Button>
+			</ConfigProvider>
+		</Flex>)
+	}
+
 	const modalCostHandlerClose = () => {
 		setModalCreateCostOpen(false);
 	};
 
 	const modalArticleHandlerClose = () => {
-		setModalCreateArticleOpen(false);
+		setModalCreateExpensesOpen(false);
 	};
 
 	const modalHandler = () => {
@@ -165,23 +196,23 @@ export default function OperationsCosts() {
 			setModalCreateCostOpen(true);
 			return;
 		}
-		setModalCreateArticleOpen(true);
+		setModalCreateExpensesOpen(true);
 	};
 
-	const addArticle = (article) => {
-		setArticles((articles) => {
-			articles.push(article);
-			return articles;
+	const addExpenses = (article) => {
+		setExpenses((expenses) => {
+			expenses.push(article);
+			return expenses;
 		});
 	};
 
-	const deleteHandler = () => {
-		if (view == 'costs') {
-			console.log('delete cost');
-		}
-		if (view == 'articles') {
-			console.log('delete article');
-		}
+	const deleteCostHandler = (id) => {
+		console.log('delete cost');
+		setDeleteCostId(null);
+	}
+	const deleteArticleHandler = (id) => {
+		console.log('delete article');
+		setDeleteArticleId(null);
 	}
 
 	return (
@@ -252,7 +283,7 @@ export default function OperationsCosts() {
 								<Button
 									size="large"
 									type={view === 'costs' ? 'default' : 'primary'}
-									onClick={() => { setView('articles'); }}
+									onClick={() => { setView('expenses'); }}
 								>
 									Статьи
 								</Button>
@@ -276,14 +307,14 @@ export default function OperationsCosts() {
 								}}
 							>
 								{view === 'costs' && (
-									<Popover
-										arrow={false}
-										content={'Как загрузить'}
-										// trigger="click"
-										open={isPopoverOpen}
-										placement="bottomRight"
-										// onOpenChange={popoverHandler}
-									>
+									// <Popover
+									// 	arrow={false}
+									// 	content={'Как загрузить'}
+									// 	// trigger="click"
+									// 	open={isPopoverOpen}
+									// 	placement="bottomRight"
+									// 	// onOpenChange={popoverHandler}
+									// >
 										<ConfigProvider
 											theme={{
 												components: {
@@ -327,7 +358,7 @@ export default function OperationsCosts() {
 												Как загрузить
 											</Button>
 										</ConfigProvider>
-									</Popover>
+									// </Popover>
 								)}
 
 								<Button
@@ -344,7 +375,6 @@ export default function OperationsCosts() {
 				)}
 				
 				<div className={styles.controls}>
-					{/* <div className={styles.filter}> */}
 						<Filters
 							shopSelect={false}
 							timeSelect={true}
@@ -359,8 +389,6 @@ export default function OperationsCosts() {
 							monthValue={null}
 							tempPageCondition={null}
 						/>
-					{/* </div> */}
-					{/* <div className={styles.btns}></div> */}
 				</div>
 				
 				{!loading && shops && shopStatus && !shopStatus?.is_primary_collect && (
@@ -373,33 +401,37 @@ export default function OperationsCosts() {
 							columns={
 								view === 'costs' ? COSTS_COLUMNS : ARTICLES_COLUMNS
 							}
-							data={view === 'costs' ? costsData : articlesData}
+							data={view === 'costs' ? costsData : expenses.map((expanse, i) => ({ key: i, ...expanse}))}
 							is_primary_collect={shopStatus?.is_primary_collect}
+							virtual={false}
 						/>
 				</div>}
-				{/* )} */}
+
 				{ modalCreateCostOpen && <ModalCreateCost
 					open={modalCreateCostOpen}
 					onCancel={modalCostHandlerClose}
-					createArticleOpen={setModalCreateArticleOpen}
-					shops={shops}
-					// brands={brands}
-					// sku={sku}
-					articles={articles}
+					createArticleOpen={setModalCreateExpensesOpen}
+					expenses={expenses}
 					zIndex={1000}
 				/> }
 
-				{ modalCreateArticleOpen && <ModalCreateArticle
-					open={modalCreateArticleOpen}
+				{ modalCreateExpensesOpen && <ModalCreateExpenses
+					open={modalCreateExpensesOpen}
 					onCancel={modalArticleHandlerClose}
-					onSubmit={addArticle}
+					onSubmit={addExpenses}
 					zIndex={1001}
 				/> }
 
-				{deleteId && <ModalDeleteConfirm
+				{deleteCostId && <ModalDeleteConfirm
+					title={'Вы уверены, что хотите удалить расход?'}
+					onCancel={() => setDeleteCostId(null)}
+					onOk={() => deleteCostHandler(deleteCostId)}
+				/>}
+
+				{deleteArticleId && <ModalDeleteConfirm
 					title={'Удалить данный артикул?'}
-					onCancel={() => setDeleteId(null)}
-					onOk={() => deleteHandler(deleteId)}
+					onCancel={() => deleteArticleId(null)}
+					onOk={() => deleteArticleHandler(deleteArticleId)}
 				/>}
 
 				{loading && <div className={styles.loading}>

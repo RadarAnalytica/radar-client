@@ -10,7 +10,7 @@ import { SelectIcon } from '../../../../components/sharedComponents/apiServicePa
 import styles from './modals.module.css';
 import { CloseIcon } from '../../shared/Icons';
 import { useState } from 'react';
-export default function ModalCreateArticle({
+export default function ModalCreateExpenses({
 	open = true,
 	onCancel,
 	onSubmit,

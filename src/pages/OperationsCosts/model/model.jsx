@@ -32,6 +32,22 @@ function actionRender(value, row) {
 			</Flex>)
 }
 
+
+function actionExpansesRender(value, row) {
+	return (<Flex justify="start" gap={20}>
+		<ConfigProvider>
+			<Button
+				type="text"
+				icon={EditIcon}
+			></Button>
+			<Button
+				type="text"
+				icon={DeleteIcon}
+			></Button>
+		</ConfigProvider>
+	</Flex>)
+}
+
 function arrowRender(value, literal) {
 	let status = 'table__arrow_static';
 	if (value > 0) {
@@ -120,10 +136,13 @@ export const COSTS_COLUMNS = [
 export const ARTICLES_COLUMNS = [
 	{
 		title: 'Статья расходов',
-		dataIndex: 'title'
+		dataIndex: 'title',
+		width: '50%'
 	},
 	{
 		title: 'Действия',
-		dataIndex: 'action'
+		dataIndex: 'action',
+		width: '50%',
+		render: actionExpansesRender
 	},
 ]
