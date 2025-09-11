@@ -167,7 +167,7 @@ function SkuListItem({el, index, expanded, setExpanded, setDeleteSkuId, onReorde
 	);
 }
 
-export default function SkuList({ view, expanded, setExpanded, setView, setAddSkuModalShow, skuDataByArticle, skuDataTotal, setDeleteSkuId }) {
+export default function SkuList({ view, expanded, setExpanded, setAddSkuModalShow, skuDataByArticle, skuDataTotal, setDeleteSkuId }) {
 	const { activeBrand } = useAppSelector(
 		(state) => state.filtersRnp
 	);
@@ -317,7 +317,6 @@ export default function SkuList({ view, expanded, setExpanded, setView, setAddSk
 				)}
 				{view === 'total' && (
 					<>
-						{/* {skuDataTotal?.length == 0 && <div className={`${styles.item_content} ${styles.item_empty}`}>Нет данных</div>} */}
 						{skuDataTotal && <div className={styles.item_content}>
 							<SkuTable
 								// data={null}
@@ -329,7 +328,7 @@ export default function SkuList({ view, expanded, setExpanded, setView, setAddSk
 						</div>}
 					</>
 				)}
-				{((items?.length == 0 && view === 'sku') || (view === 'total' && skuDataTotal)) && 
+				{((items?.length == 0 && view === 'sku') || (view === 'total' && !skuDataTotal)) && 
 					<NoDataWidget
 						mainTitle='Здесь пока нет ни одного артикула'
 						mainText='Добавьте артикулы для отчета «Рука на пульсе»'

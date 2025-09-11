@@ -334,8 +334,7 @@ export default function Rnp() {
 							shopId={activeBrand.id}
 						/>
 				)}
-
-				{!loading && ((skuDataTotal) || (skuDataByArticle?.length > 0)) && (<ConfigProvider
+				{!loading && ((skuDataByArticle?.length > 0 && view === 'sku') || (view === 'total' && skuDataTotal)) && (<ConfigProvider
 					theme={{
 						token: {
 							colorPrimary: '#EEEAFF',
@@ -369,7 +368,7 @@ export default function Rnp() {
 								type={view === 'sku' ? 'primary' : 'default'}
 								size="large"
 								onClick={() => {
-									setView('sku');
+									viewHandler('sku');
 								}}
 							>
 								По артикулам
@@ -378,7 +377,7 @@ export default function Rnp() {
 								type={view === 'total' ? 'primary' : 'default'}
 								size="large"
 								onClick={() => {
-									setView('total');
+									viewHandler('total');
 								}}
 							>
 								Сводный
