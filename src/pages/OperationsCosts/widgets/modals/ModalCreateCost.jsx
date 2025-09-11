@@ -1,31 +1,16 @@
-import {
-	ConfigProvider,
-	Modal,
-	Flex,
-	Button,
-	Tooltip,
-	Checkbox,
-	Radio,
-	Form,
-	Row,
-	Col,
-	Select,
-	Input,
-} from 'antd';
-import { SelectIcon } from '../../../../components/sharedComponents/apiServicePagesFiltersComponent/shared';
+import { ConfigProvider, Modal, Flex, Button, Tooltip, Checkbox, Radio, Form, Row, Col, Select, Input, } from 'antd';
+import { SelectIcon } from '@/components/sharedComponents/apiServicePagesFiltersComponent/shared';
 import styles from './modals.module.css';
-import { CloseIcon, InfoIcon } from '../Icons';
-import { TimeSelect } from '../../../../components/sharedComponents/apiServicePagesFiltersComponent/features/timeSelect/timeSelect';
-import { useState } from 'react';
+import { CloseIcon, InfoIcon } from '../../shared/Icons';
+import { TimeSelect } from '@/components/sharedComponents/apiServicePagesFiltersComponent/features/timeSelect/timeSelect';
+import { useState, useMemo } from 'react';
+import { useAppSelector } from '@/redux/hooks';
 // import ModalFooter from './ModalFooter';
 export default function ModalCreateCost({
 	open = true,
 	onCancel,
-	shops,
 	createArticleOpen,
-	articles,
-	brands,
-	sku,
+	expenses,
 	...props
 }) {
 	const Title = () => (
@@ -42,7 +27,7 @@ export default function ModalCreateCost({
 		>
 			<Flex
 				justify="flex-start"
-				align="center"
+				align="flex-end"
 				gap={16}
 				className={styles.modal__header}
 			>
@@ -56,8 +41,37 @@ export default function ModalCreateCost({
 			</Flex>
 		</ConfigProvider>
 	);
+	
+	const { shops, filters } = useAppSelector((state) => state.filters);
 
-	const [selection, setSelection] = useState('shop');
+	const allFilters = useMemo(() => {
+		// сборка данных для значения фильтра Все
+		return filters.find((el) => el.shop.id === 0)
+	}, [filters]);
+
+	const shopsList = useMemo(() => {
+		if (shops && shops.length > 0){
+			// сборка магазинов без сбора данных и магазин не Все
+			return shops.filter((shop) => (shop.id !== 0 && shop.is_primary_collect))
+		}
+		return [];
+	}, [shops]);
+
+	const brandsList = useMemo(() => {
+		if (allFilters && allFilters.brands){
+			return allFilters.brands.data
+		}
+		return [];
+	}, [allFilters]);
+	
+	const articlesList = useMemo(() => {
+		if (allFilters && allFilters.articles){
+			return allFilters.articles.data
+		}
+		return [];
+	}, [allFilters]);
+
+	const [selection, setSelection] = useState('shop'); // 'shop' | 'sku' | 'brand'
 
 	const icon = <SelectIcon />;
 
@@ -119,7 +133,9 @@ export default function ModalCreateCost({
 			>
 				<Form form={form} onFinish={onFinish} layout="vertical">
 					<h3 className={styles.modal__subtitle}>Тип операции</h3>
-					<Form.Item className={styles.modal__part}>
+					<Form.Item className={styles.modal__part} name='type'
+						// required={true}
+					>
 						<Radio.Group>
 							<Radio value="once"> Разовая </Radio>
 							<Radio value="plan"> Плановая </Radio>
@@ -127,7 +143,7 @@ export default function ModalCreateCost({
 					</Form.Item>
 					<Row className="" gutter={16}>
 						<Col span={12}>
-							<Form.Item label="Дата">
+							<Form.Item label="Дата" name='date'>
 								<Select
 									size="large"
 									variant="filled"
@@ -138,18 +154,22 @@ export default function ModalCreateCost({
 							</Form.Item>
 						</Col>
 						<Col span={12}>
-							<Form.Item label="Сумма, руб">
+							<Form.Item label="Сумма, руб" name='value'
+								// required={true}
+							>
 								<Input size="large" />
 							</Form.Item>
 						</Col>
 					</Row>
 					<div className={styles.modal__part}>
-						<Form.Item label="Статья">
+						<Form.Item label="Статья" name='article'
+							// required={true}
+						>
 							<Select
 								size="large"
 								placeholder="Выберите статью"
 								suffixIcon={icon}
-								options={articles.map((el, i) => ({
+								options={expenses.map((el, i) => ({
 									key: i,
 									value: el.title,
 									label: el.title,
@@ -171,10 +191,12 @@ export default function ModalCreateCost({
 						<h3 className={styles.modal__subtitle}>
 							Распределять на
 						</h3>
-						<Form.Item name="selection" onChange={(e) => {
+						<Form.Item name="selection" initialValue='shop' onChange={(e) => {
 							setSelection(e.target.value);
-						}}>
-							<Radio.Group defaultValue='shop'>
+						}}
+							// required={true}
+						>
+							<Radio.Group>
 								<Radio value="shop">Магазины</Radio>
 								<Radio value="sku">Артикулы</Radio>
 								<Radio value="brands">Бренды</Radio>
@@ -184,41 +206,44 @@ export default function ModalCreateCost({
 						{selection === 'shop' && <Form.Item name="shop">
 							<Select
 								size="large"
-								options={shops.map((el) => ({
+								options={shopsList.map((el) => ({
 									key: el.id,
 									value: el.id,
 									label: el.brand_name,
 									disabled: !el.is_active,
 								}))}
 								placeholder="Выберите магазины"
-								mode="multiple"
+								// showSearch
 								suffixIcon={icon}
+								// required={true}
 							/>
 						</Form.Item>}
 						{selection === 'sku' && <Form.Item name="sku">
 							<Select
 								size="large"
-								options={sku.map((el, i) => ({
+								options={articlesList.map((el, i) => ({
 									key: i,
 									value: el.value,
 									label: el.name,
 								}))}
 								placeholder="Выберите артикулы"
-								mode="multiple"
+								// showSearch
 								suffixIcon={icon}
+								// required={true}
 							/>
 						</Form.Item>}
 						{selection === 'brands' && <Form.Item name="brands">
 							<Select
 								size="large"
-								options={brands.map((el, i) => ({
+								options={brandsList.map((el, i) => ({
 									key: i,
 									value: el.value,
 									label: el.name,
 								}))}
 								placeholder="Выберите бренды"
-								mode="multiple"
+								// showSearch
 								suffixIcon={icon}
+								// required={true}
 							/>
 						</Form.Item>}
 					</div>

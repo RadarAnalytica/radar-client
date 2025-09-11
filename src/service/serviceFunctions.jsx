@@ -1629,6 +1629,28 @@ export const ServiceFunctions = {
 			console.error('getRnpFilters ', error);
 			throw new Error(error);
 		}
+	},
+	getOperationConstsArticles: async(token) => {
+		try {
+			const res = {
+				data: []
+			};
+			return res;
+		} catch(error) {
+			console.error('getOperationConstsArticles ', error);
+			throw new Error(error);
+		}
+	},
+	getOperationConstsCosts: async(token) => {
+		try {
+			const res = {
+				data: []
+			};
+			return res;
+		} catch(error) {
+			console.error('getOperationConstsArticles ', error);
+			throw new Error(error);
+		}
 	}
 };
 

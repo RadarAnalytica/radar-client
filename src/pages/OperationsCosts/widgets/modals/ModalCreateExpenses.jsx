@@ -8,12 +8,13 @@ import {
 } from 'antd';
 import { SelectIcon } from '../../../../components/sharedComponents/apiServicePagesFiltersComponent/shared';
 import styles from './modals.module.css';
-import { CloseIcon } from '../Icons';
+import { CloseIcon } from '../../shared/Icons';
 import { useState } from 'react';
-export default function ModalCreateArticle({
+export default function ModalCreateExpenses({
 	open = true,
 	onCancel,
 	onSubmit,
+	...props
 }) {
 
 	const [title, setTitle] = useState(null);

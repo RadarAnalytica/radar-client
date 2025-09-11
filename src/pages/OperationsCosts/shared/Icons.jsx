@@ -14,7 +14,7 @@ export const CloseIcon = () => (
 	</svg>
 );
 
-export const EditIcon = () => (
+export const EditIcon = (
 	<svg
 		width="25"
 		height="24"
@@ -35,7 +35,7 @@ export const EditIcon = () => (
 	</svg>
 );
 
-export const DeleteIcon = () => (
+export const DeleteIcon = (
 	<svg
 		width="24"
 		height="24"
@@ -63,7 +63,7 @@ export const DeleteIcon = () => (
 	</svg>
 );
 
-export const CopyIcon = () => (
+export const CopyIcon = (
 	<svg
 		width="24"
 		height="24"
