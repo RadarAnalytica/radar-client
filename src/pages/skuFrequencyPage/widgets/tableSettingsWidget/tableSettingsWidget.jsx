@@ -28,6 +28,7 @@ const getReplicatedArray = (array, fields) => {
                 return {
                     ...child,
                     hidden: child.fixed ? undefined : !fields[child.dataIndex]
+
                 }
             })
         }
@@ -36,7 +37,9 @@ const getReplicatedArray = (array, fields) => {
     replicatedArray = replicatedArray.map(item => {
         return {
             ...item,
-            colSpan: item.children?.filter(child => !child.hidden)?.length || 1
+            colSpan: item.children?.filter(child => !child.hidden)?.length || 1,
+            width: item.children?.filter(child => !child.hidden)?.reduce((acc, child) => acc + child.width, 0) || item.width,
+            minWidth: item.children?.filter(child => !child.hidden)?.reduce((acc, child) => acc + child.minWidth, 0) || item.minWidth
         }
     })
     return replicatedArray
