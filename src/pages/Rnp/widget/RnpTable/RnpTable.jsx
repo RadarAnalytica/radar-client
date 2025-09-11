@@ -1,7 +1,7 @@
 import { ConfigProvider, Table, Button } from 'antd';
-import styles from './SkuTable.module.css';
+import styles from './RnpTable.module.css';
 
-export default function SkuTable({ loading, columns, data }) {
+export default function RnpTable({ loading, columns, data }) {
 
 	return (
 		<div className={styles.container} >

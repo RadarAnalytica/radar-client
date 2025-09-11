@@ -6,7 +6,7 @@ import MobilePlug from '../../components/sharedComponents/mobilePlug/mobilePlug'
 import Sidebar from '../../components/sharedComponents/sidebar/sidebar';
 import Header from '../../components/sharedComponents/header/header';
 import { NoDataWidget } from '../productsGroupsPages/widgets';
-import AddSkuModal from './widget/AddSkuModal/AddSkuModal';
+import AddRnpModal from './widget/AddRnpModal/AddRnpModal';
 import styles from './Rnp.module.css';
 import { useAppSelector, useAppDispatch } from '../../redux/hooks';
 import { ServiceFunctions } from '../../service/serviceFunctions';
@@ -14,7 +14,7 @@ import { RnpFilters } from './widget/RnpFilters/RnpFilters';
 import { COLUMNS, ROWS, renderFunction } from './config';
 import { format, isToday } from 'date-fns';
 import { ru } from 'date-fns/locale';
-import SkuList from './widget/SkuList/SkuList';
+import RnpList from './widget/RnpList/RnpList';
 import ModalDeleteConfirm from '../../components/sharedComponents/ModalDeleteConfirm/ModalDeleteConfirm';
 import DataCollectWarningBlock from '../../components/sharedComponents/dataCollectWarningBlock/dataCollectWarningBlock';
 import SelfCostWarningBlock from '../../components/sharedComponents/selfCostWraningBlock/selfCostWarningBlock';
@@ -54,16 +54,16 @@ export default function Rnp() {
 	const initLoad = useRef(true);
 
 	const [loading, setLoading] = useState(true);
-	const [addSkuModalShow, setAddSkuModalShow] = useState(false);
+	const [addRnpModalShow, setAddRnpModalShow] = useState(false);
 	const [page, setPage] = useState(1);
-	const [view, setView] = useState('sku');
-	const [skuDataByArticle, setSkuDataByArticle] = useState(null);
-	const [skuDataTotal, setSkuDataTotal] = useState(null)
-	const [deleteSkuId, setDeleteSkuId] = useState(null);
+	const [view, setView] = useState('articles');
+	const [rnpDataByArticle, setRnpDataByArticle] = useState(null);
+	const [rnpDataTotal, setRnpDataTotal] = useState(null)
+	const [deleteRnpId, setDeleteRnpId] = useState(null);
 	const [error, setError] = useState(null);
 	const [expanded, setExpanded] = useState([]);
 
-	const updateSkuListByArticle = async () => {
+	const updateRnpListByArticle = async () => {
 		setLoading(true);
 		try {
 			if (!!activeBrand) {
@@ -74,16 +74,16 @@ export default function Rnp() {
 					filters,
 					page
 				);
-				dataToSkuList(response);
+				dataToRnpList(response);
 			}
 		} catch (error) {
-			console.error('updateSkuListByArticle error', error)
+			console.error('updateRnpListByArticle error', error)
 		} finally {
 			setLoading(false);
 		}
 	};
 
-	const updateSkuListSummary = async () => {
+	const updateRnpListSummary = async () => {
 		setLoading(true);
 		try {
 			if (!!activeBrand) {
@@ -94,18 +94,18 @@ export default function Rnp() {
 					filters,
 					page
 				);
-				dataToSkuTotalList(response);
+				dataToRnpTotalList(response);
 			}
 		} catch (error) {
-			console.error('updateSkuListSummary error', error);
-			setSkuDataTotal(null);
+			console.error('updateRnpListSummary error', error);
+			setRnpDataTotal(null);
 		} finally {
 			setLoading(false);
 		}
 	};
 
-	const deleteSku = async (id) => {
-		setDeleteSkuId(null);
+	const deleteRnp = async (id) => {
+		setDeleteRnpId(null);
 		setLoading(true);
 		try {
 			if (!!activeBrand) {
@@ -115,14 +115,14 @@ export default function Rnp() {
 				);
 			}
 		} catch (error) {
-			console.error('deleteSku error', error)
+			console.error('deleteRnp error', error)
 		} finally {
 			setPage(1);
-			updateSkuListByArticle();
+			updateRnpListByArticle();
 		}
 	}
 
-	const dataToSkuList = (response) => {
+	const dataToRnpList = (response) => {
 		const list = response.data.map((article, i) => {
 			// for (const article of response.data){
 			const item = {
@@ -186,13 +186,13 @@ export default function Rnp() {
 			return item;
 		});
 
-		setSkuDataByArticle(list);
+		setRnpDataByArticle(list);
 	};
 
-	const dataToSkuTotalList = (response) => {
+	const dataToRnpTotalList = (response) => {
 		const article = response.data;
 		if (article.length === 0){
-			setSkuDataTotal(null);
+			setRnpDataTotal(null);
 			return
 		}
 		const item = {
@@ -254,14 +254,14 @@ export default function Rnp() {
 					}
 				}
 			}
-		setSkuDataTotal(item);
+		setRnpDataTotal(item);
 	};
 
 	const deleteHandler = (value) => {
-		deleteSku(value)
+		deleteRnp(value)
 	}
 	
-	const addSkuList = async (porductIds) => {
+	const addRnpList = async (porductIds) => {
 		setLoading(true);
 		try {
 			if (!!activeBrand) {
@@ -275,10 +275,10 @@ export default function Rnp() {
 				}
 			}
 		} catch (error) {
-			console.error('addSkuList error', error)
+			console.error('addRnpList error', error)
 		} finally {
 			setPage(1);
-			updateSkuListByArticle();
+			updateRnpListByArticle();
 		}
 	};
 
@@ -295,10 +295,10 @@ export default function Rnp() {
 		}
 
 		if (activeBrand && activeBrand.is_primary_collect) {
-			if (view === 'sku'){
-				updateSkuListByArticle();
+			if (view === 'articles'){
+				updateRnpListByArticle();
 			} else {
-				updateSkuListSummary();
+				updateRnpListSummary();
 			}
 		}
 
@@ -309,9 +309,9 @@ export default function Rnp() {
 	// }, [activeBrand, shopStatus, shops, filters, page, view, selectedRange]);
 	}, [filters, page, view, selectedRange]);
 
-	const addSkuHandler = (list) => {
-		setAddSkuModalShow(false);
-		addSkuList(list);
+	const addRnpHandler = (list) => {
+		setAddRnpModalShow(false);
+		addRnpList(list);
 	}
 
 
@@ -334,7 +334,7 @@ export default function Rnp() {
 							shopId={activeBrand.id}
 						/>
 				)}
-				{!loading && ((skuDataByArticle?.length > 0 && view === 'sku') || (view === 'total' && skuDataTotal)) && (<ConfigProvider
+				{!loading && ((rnpDataByArticle?.length > 0 && view === 'articles') || (view === 'total' && rnpDataTotal)) && (<ConfigProvider
 					theme={{
 						token: {
 							colorPrimary: '#EEEAFF',
@@ -365,10 +365,10 @@ export default function Rnp() {
 					<Flex justify="space-between">
 						<Flex>
 							<Button
-								type={view === 'sku' ? 'primary' : 'default'}
+								type={view === 'articles' ? 'primary' : 'default'}
 								size="large"
 								onClick={() => {
-									viewHandler('sku');
+									viewHandler('articles');
 								}}
 							>
 								По артикулам
@@ -401,7 +401,7 @@ export default function Rnp() {
 							<Button
 								type="primary"
 								size="large"
-								onClick={setAddSkuModalShow}
+								onClick={setAddRnpModalShow}
 							>
 								Добавить артикул
 							</Button>
@@ -435,13 +435,13 @@ export default function Rnp() {
 				)}
 
 				{!loading && shopStatus && shopStatus?.is_primary_collect && (
-					<SkuList
+					<RnpList
 						view={view}
 						setView={viewHandler}
-						setAddSkuModalShow={setAddSkuModalShow}
-						skuDataByArticle={skuDataByArticle}
-						skuDataTotal={skuDataTotal}
-						setDeleteSkuId={setDeleteSkuId}
+						setAddRnpModalShow={setAddRnpModalShow}
+						rnpDataByArticle={rnpDataByArticle}
+						rnpDataTotal={rnpDataTotal}
+						setDeleteRnpId={setDeleteRnpId}
 						expanded={expanded}
 						setExpanded={setExpanded}
 						loading={loading}
@@ -451,27 +451,27 @@ export default function Rnp() {
 					/>
 				)}
 
-				{/* {!loading && skuDataByArticle?.length === 0 && 
+				{/* {!loading && rnpDataByArticle?.length === 0 && 
 					<NoDataWidget
 						mainTitle='Здесь пока нет ни одного артикула'
 						mainText='Добавьте артикулы для отчета «Рука на пульсе»'
 						buttonTitle='Добавить'
-						action={() => setAddSkuModalShow(true)}
+						action={() => setAddRnpModalShow(true)}
 						howLinkGroup={false}
 					/>
 				} */}
 
-				{addSkuModalShow && <AddSkuModal
-					isAddSkuModalVisible={addSkuModalShow}
-					setIsAddSkuModalVisible={setAddSkuModalShow}
-					addSku={addSkuHandler}
-					skuDataArticle={skuDataByArticle}
+				{addRnpModalShow && <AddRnpModal
+					isAddRnpModalVisible={addRnpModalShow}
+					setIsAddRnpModalVisible={setAddRnpModalShow}
+					addRnp={addRnpHandler}
+					rnpDataArticle={rnpDataByArticle}
 				/>}
 
-				{deleteSkuId && <ModalDeleteConfirm
+				{deleteRnpId && <ModalDeleteConfirm
 					title={'Удалить данный артикул?'}
-					onCancel={() => setDeleteSkuId(null)}
-					onOk={() => deleteHandler(deleteSkuId)}
+					onCancel={() => setDeleteRnpId(null)}
+					onOk={() => deleteHandler(deleteRnpId)}
 				/>}
 
 				<ErrorModal open={!!error} message={error} onCancel={() => setError(null)}/>

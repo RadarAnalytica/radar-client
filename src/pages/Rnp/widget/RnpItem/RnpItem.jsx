@@ -1,8 +1,8 @@
 import { Flex } from 'antd';
-import styles from './SkuItem.module.css';
+import styles from './RnpItem.module.css';
 import wb_icon from '../../../../assets/wbicon.svg';
 
-export default function SkuItem({ title, photo, sku, shop }) {
+export default function RnpItem({ title, photo, wb_id, shop }) {
 	return (
 		<Flex gap={20}>
 			<div className={styles.item__preview}>
@@ -24,13 +24,13 @@ export default function SkuItem({ title, photo, sku, shop }) {
 					{title}
 				</div>
 				<Flex gap={8} className={styles.item__info} align="center">
-					<a href={`https://www.wildberries.ru/catalog/${sku}/detail.aspx`} target='_blank' className={styles.item__link}>
+					<a href={`https://www.wildberries.ru/catalog/${wb_id}/detail.aspx`} target='_blank' className={styles.item__link}>
 						<Flex gap={8} className={styles.item__article}>
 							<img
 								src={wb_icon}
 								className={styles.item__article_icon}
 							/>
-							{sku}
+							{wb_id}
 						</Flex>
 					</a>
 					&bull;

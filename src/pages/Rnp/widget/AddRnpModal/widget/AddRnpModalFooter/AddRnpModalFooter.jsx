@@ -1,6 +1,6 @@
 import { Button, ConfigProvider, Flex } from 'antd'
 
-const AddSkuModalFooter = ({ setIsAddSkuModalVisible, isDataLoading, submitDisabled, addProducts }) => {
+const AddRnpModalFooter = ({ setIsAddRnpModalVisible, isDataLoading, submitDisabled, addProducts }) => {
 
     return (
         <Flex justify='end' gap={12}>
@@ -29,7 +29,7 @@ const AddSkuModalFooter = ({ setIsAddSkuModalVisible, isDataLoading, submitDisab
                 >
                     <Button
                         type='primary'
-                        onClick={() => setIsAddSkuModalVisible(false)}
+                        onClick={() => setIsAddRnpModalVisible(false)}
                     >
                         Отменить
                     </Button>
@@ -58,4 +58,4 @@ const AddSkuModalFooter = ({ setIsAddSkuModalVisible, isDataLoading, submitDisab
     )
 }
 
-export default AddSkuModalFooter
+export default AddRnpModalFooter

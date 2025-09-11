@@ -1,14 +1,14 @@
 import { useState, useEffect, useContext, useRef, useCallback, useMemo } from 'react';
-import styles from './addSkuModal.module.css'
-import AddSkuModalFooter from './widget/addSkuModalFooter/addSkuModalFooter'
+import styles from './addRnpModal.module.css'
+import AddRnpModalFooter from './widget/AddRnpModalFooter/AddRnpModalFooter'
 import { Modal, Checkbox, ConfigProvider, Pagination, Flex, Tooltip } from 'antd';
 import AuthContext from '../../../../service/AuthContext';
 import { useAppSelector, useAppDispatch } from '../../../../redux/hooks';
 // import { RnpFilters } from '../RnpFilters/RnpFilters';
-import { Filters } from './widget/filters/Filters';
-import SkuItem from '../SkuItem/SkuItem';
+import { Filters } from './widget/AddRnpFilters/AddRnpFilters';
+import RnpItem from '../RnpItem/RnpItem';
 import { ServiceFunctions } from '../../../../service/serviceFunctions';
-import AddSkuModalSearch from './widget/addSkuModalSearch/AddSkuModalSearch';
+import AddRnpModalSearch from './widget/AddRnpModalSearch/AddRnpModalSearch';
 import { close } from '../icons';
 import ErrorModal from '../../../../components/sharedComponents/modals/errorModal/errorModal';
 import DataCollectWarningBlock from '../../../../components/sharedComponents/dataCollectWarningBlock/dataCollectWarningBlock';
@@ -16,7 +16,7 @@ import { fetchFiltersRnpAdd } from '../../../../redux/filtersRnpAdd/filtersRnpAd
 import { actions as filterActions } from '../../../../redux/filtersRnpAdd/filtersRnpAddSlice';
 import { actions as rnpSelectedActions } from '../../../../redux/rnpSelected/rnpSelectedSlice'
 
-const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku }) => {
+const AddRnpModal = ({ isAddRnpModalVisible, setIsAddRnpModalVisible, addRnp }) => {
     const dispatch = useAppDispatch();
     const { authToken } = useContext(AuthContext);
     const { shops, activeBrand, selectedRange } = useAppSelector( (state) => state.filtersRnpAdd );
@@ -43,19 +43,19 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku }) 
     }, [activeBrand, shops]);
 
     const [page, setPage] = useState(1);
-    const [skuLoading, setSkuLoading] = useState(true);
-    // const [skuInprogress, setSkuInprogress] = useState(false);
-    const [localskuDataArticle, setLocalskuDataArticle] = useState([]);
+    const [loading, setLoading] = useState(true);
+    // const [rnpInprogress, setRnpInprogress] = useState(false);
+    const [localrnpDataArticle, setLocalrnpDataArticle] = useState([]);
     const [search, setSearch] = useState(null);
     const [error, setError] = useState(null);
     const [request, setRequest] = useState(false);
     const initLoad = useRef(true);
 
-    const submitSkuDataArticle = () => {
-        addSku(rnpSelected);
+    const submitRnpDataArticle = () => {
+        addRnp(rnpSelected);
     }
 
-    const selectSkuHandler = (value) => {
+    const selectRnpHandler = (value) => {
         let list = [];
         if (rnpSelected.includes(value)){
             list = rnpSelected.filter((el) => el !== value)
@@ -70,7 +70,7 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku }) 
             setPage(1)
         }
         setRequest((state) => !state);
-    }, [search, filters])
+    }, [search, filters, shops, activeBrand])
 
     useEffect(() => {
         if (!activeBrand){
@@ -81,7 +81,7 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku }) 
         const { signal } = abortController;
 
         const updateData = async () => {
-            setSkuLoading(true);
+            setLoading(true);
             try {
                 const response = await ServiceFunctions.getRnpProducts(
                     authToken,
@@ -97,11 +97,11 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku }) 
 					dispatch(rnpSelectedActions.setList(response?.rnp_wb_ids || []));
                 }
 
-                setLocalskuDataArticle(response);
-                setSkuLoading(false);
+                setLocalrnpDataArticle(response);
+                setLoading(false);
             } catch (error) {
 				if (error.message !== 'Отмена запроса') {
-                    console.error('updateskuDataArticle error', error);
+                    console.error('updaternpDataArticle error', error);
                 }
             }
         };
@@ -111,31 +111,31 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku }) 
         return () => {
             abortController.abort('Отмена запроса');
         };
-    }, [page, request, shops, activeBrand]);
+    }, [page, request]);
 
-    useEffect(() => {
-        return () => {
-            setPage(1);
-            setSearch(null);
-            dispatch(filterActions.setActiveShop(null));
-        }
-    }, [])
+    // useEffect(() => {
+    //     return () => {
+    //         setPage(1);
+    //         setSearch(null);
+    //         dispatch(filterActions.setActiveShop(null));
+    //     }
+    // }, [])
 
     return (
         <>
             <Modal
                 footer={
-                    <AddSkuModalFooter
-                        addProducts={submitSkuDataArticle}
-                        setIsAddSkuModalVisible={setIsAddSkuModalVisible}
-                        isDataLoading={skuLoading}
-                        submitDisabled={localskuDataArticle?.length === 0}
+                    <AddRnpModalFooter
+                        addProducts={submitRnpDataArticle}
+                        setIsAddRnpModalVisible={setIsAddRnpModalVisible}
+                        isDataLoading={loading}
+                        submitDisabled={localrnpDataArticle?.length === 0}
                     />
                 }
-                onOk={() => setIsAddSkuModalVisible(false)}
-                onCancel={() => setIsAddSkuModalVisible(false)}
-                onClose={() => setIsAddSkuModalVisible(false)}
-                open={isAddSkuModalVisible}
+                onOk={() => setIsAddRnpModalVisible(false)}
+                onCancel={() => setIsAddRnpModalVisible(false)}
+                onClose={() => setIsAddRnpModalVisible(false)}
+                open={isAddRnpModalVisible}
                 width={1200}
                 closeIcon={close}
                 centered
@@ -145,18 +145,18 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku }) 
                         <p className={styles.modal__title}>Добавить артикулы</p>
                     </div>
                     <div className=
-                    {skuLoading ? styles.hide : styles.control}>
+                    {loading ? styles.hide : styles.control}>
                         <Filters
-                            isDataLoading={skuLoading}
+                            isDataLoading={loading}
                             slice={'filtersRnpAdd'}
                             filterActions={filterActions}
                             fetchFilters={fetchFiltersRnpAdd}
                             timeSelect={false}
-                            open={isAddSkuModalVisible}
+                            open={isAddRnpModalVisible}
                             // clearLoad={true}
                         />
                     </div>
-                    <div className={skuLoading ? styles.hide : styles.control}><AddSkuModalSearch skuLoading={skuLoading} submitSearch={setSearch} /></div>
+                    <div className={loading ? styles.hide : styles.control}><AddRnpModalSearch loading={loading} submitSearch={setSearch} /></div>
                     {/* loader */}
                     <ConfigProvider
                         theme={{
@@ -175,9 +175,9 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku }) 
                             }
                         }}
                     >
-                        {skuLoading && <div className={styles.loading}><span className='loader'></span></div>}
+                        {loading && <div className={styles.loading}><span className='loader'></span></div>}
 
-                        {!skuLoading && shopStatus && !shopStatus?.is_primary_collect && (
+                        {!loading && shopStatus && !shopStatus?.is_primary_collect && (
                             <div className={styles.data_collect}>
                                 <DataCollectWarningBlock
                                     bigPreview={false}
@@ -185,16 +185,16 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku }) 
                             </div>
                         )}
 
-                        {!skuLoading && shopStatus && shopStatus?.is_primary_collect && localskuDataArticle && localskuDataArticle?.data?.length == 0 && (<div className={styles.empty}>Ничего не найдено</div>)}
-                        {!skuLoading && shopStatus && shopStatus?.is_primary_collect && localskuDataArticle && localskuDataArticle?.data?.length > 0 && (<div className={styles.modal__container}>
-                            {localskuDataArticle?.data?.map((el, i) => (
+                        {!loading && shopStatus && shopStatus?.is_primary_collect && localrnpDataArticle && localrnpDataArticle?.data?.length == 0 && (<div className={styles.empty}>Ничего не найдено</div>)}
+                        {!loading && shopStatus && shopStatus?.is_primary_collect && localrnpDataArticle && localrnpDataArticle?.data?.length > 0 && (<div className={styles.modal__container}>
+                            {localrnpDataArticle?.data?.map((el, i) => (
                                 <Flex key={i} className={styles.item} gap={20}>
                                     {(rnpSelected.length >= 25 && !rnpSelected.includes(el.wb_id)) && 
                                       <Tooltip title="Максимальное количество артикулов в РНП - 25" arrow={false}>
                                         <Checkbox
                                             defaultChecked={rnpSelected?.includes(el.wb_id)}
                                             data-value={el.wb_id}
-                                            onChange={() => selectSkuHandler(el.wb_id)}
+                                            onChange={() => selectRnpHandler(el.wb_id)}
                                             disabled={rnpSelected.length >= 25 && !rnpSelected.includes(el.wb_id)}
                                         />
                                       </Tooltip>
@@ -203,21 +203,21 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku }) 
                                         <Checkbox
                                             defaultChecked={rnpSelected?.includes(el.wb_id)}
                                             data-value={el.wb_id}
-                                            onChange={() => selectSkuHandler(el.wb_id)}
+                                            onChange={() => selectRnpHandler(el.wb_id)}
                                             disabled={rnpSelected.length >= 25 && !rnpSelected.includes(el.wb_id)}
                                         />
                                     }
-                                    <SkuItem
+                                    <RnpItem
                                         title={el.title}
                                         photo={el.photo}
-                                        sku={el.wb_id}
+                                        rnp={el.wb_id}
                                         shop={el.shop_name}
                                     />
                                 </Flex>
                             ))}
                         </div>)}
 
-                        {!skuLoading && shopStatus?.is_primary_collect && <Pagination
+                        {!loading && shopStatus?.is_primary_collect && <Pagination
                             locale={{
                                 items_per_page: 'записей на странице',
                                 jump_to: 'Перейти',
@@ -233,8 +233,8 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku }) 
                             defaultCurrent={1}
                             current={page}
                             onChange={setPage}
-                            total={localskuDataArticle?.total_count}
-                            pageSize={localskuDataArticle?.per_page}
+                            total={localrnpDataArticle?.total_count}
+                            pageSize={localrnpDataArticle?.per_page}
                             showSizeChanger={false}
                             hideOnSinglePage={true}
                         />}
@@ -246,4 +246,4 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku }) 
     )
 }
 
-export default AddSkuModal;
+export default AddRnpModal;
