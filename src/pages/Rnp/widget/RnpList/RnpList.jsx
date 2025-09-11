@@ -1,11 +1,8 @@
 import { useEffect, useState, useRef, useMemo, useCallback } from 'react';
 import { ConfigProvider, Button, Flex, Pagination } from 'antd';
-import SkuTable from '../SkuTable/SkuTable';
-import SkuItem from '../SkuItem/SkuItem';
-import styles from './SkuList.module.css';
-// import { Filters } from '../../../../components/sharedComponents/apiServicePagesFiltersComponent';
-import { Filters } from '../Filters/Filters';
-// import { useAppSelector } from '../../../../redux/hooks';
+import RnpTable from '../RnpTable/RnpTable';
+import RnpItem from '../RnpItem/RnpItem';
+import styles from './RnpList.module.css';
 import { grip, remove, expand } from '../icons';
 import { combine } from "@atlaskit/pragmatic-drag-and-drop/combine";
 import { monitorForElements, draggable, dropTargetForElements } from '@atlaskit/pragmatic-drag-and-drop/element/adapter';
@@ -16,7 +13,7 @@ import { attachClosestEdge, extractClosestEdge, } from '@atlaskit/pragmatic-drag
 import { useAppSelector } from '../../../../redux/hooks';
 import { NoDataWidget } from '@/pages/productsGroupsPages/widgets';
 
-function SkuListItem({el, index, expanded, setExpanded, setDeleteSkuId, onReorder}) {
+function RnpListItem({el, index, expanded, setExpanded, setDeleteRnpId, onReorder}) {
 	const ref = useRef(null);
 	const gripRef = useRef(null);
 	const [ closestEdge, setClosestEdge ] = useState(null);
@@ -128,16 +125,16 @@ function SkuListItem({el, index, expanded, setExpanded, setDeleteSkuId, onReorde
 							onClick={() => setExpanded([])}
 						/>
 						<div className={styles.item__product}>
-							<SkuItem
+							<RnpItem
 								title={el.article_data.title}
 								photo={el.article_data.photo}
-								sku={el.article_data.wb_id}
+								rnp={el.article_data.wb_id}
 								shop={el.article_data.shop_name}
 							/>
 						</div>
 						<Button
 							className={styles.item__button}
-							onClick={() => setDeleteSkuId(el.article_data.wb_id)}
+							onClick={() => setDeleteRnpId(el.article_data.wb_id)}
 							icon={remove}
 							title="Удалить артикул"
 						/>
@@ -153,7 +150,7 @@ function SkuListItem({el, index, expanded, setExpanded, setDeleteSkuId, onReorde
 				</header>
 				{expanded.includes(el.article_data.wb_id) && (
 					<div className={`${styles.item__table} ${styles.item}`}>
-						<SkuTable
+						<RnpTable
 							data={el.table.rows}
 							columns={el.table.columns}
 						/>
@@ -167,11 +164,11 @@ function SkuListItem({el, index, expanded, setExpanded, setDeleteSkuId, onReorde
 	);
 }
 
-export default function SkuList({ view, expanded, setExpanded, setView, setAddSkuModalShow, skuDataByArticle, skuDataTotal, setDeleteSkuId }) {
+export default function RnpList({ view, expanded, setExpanded, setAddRnpModalShow, rnpDataByArticle, rnpDataTotal, setDeleteRnpId }) {
 	const { activeBrand } = useAppSelector(
 		(state) => state.filtersRnp
 	);
-	const items = useMemo( () => skuDataByArticle || [], [skuDataByArticle]);
+	const items = useMemo( () => rnpDataByArticle || [], [rnpDataByArticle]);
 
 	const initOrder = useCallback(() => {
 		// сохранение порядка для id магазина
@@ -189,8 +186,8 @@ export default function SkuList({ view, expanded, setExpanded, setView, setAddSk
 				const listOrder = savedOrder[activeBrand.id]
 				const newItems = 
 					items
-						.filter((sku) => !listOrder.includes(sku.article_data.wb_id))
-						.map((sku) => sku.article_data.wb_id);
+						.filter((rnp) => !listOrder.includes(rnp.article_data.wb_id))
+						.map((rnp) => rnp.article_data.wb_id);
 				return [...listOrder, ...newItems]
 			}
 			return items.map((item) => item.article_data.wb_id)
@@ -295,18 +292,18 @@ export default function SkuList({ view, expanded, setExpanded, setView, setAddSk
 					},
 				}}
 			>
-				{view === 'sku' && (
+				{view === 'articles' && (
 					<div ref={ref}>
 						{items?.length > 0 && order.map((orderI, i) => {
-								const el = items.find((sku) => sku.article_data.wb_id === orderI)
+								const el = items.find((rnp) => rnp.article_data.wb_id === orderI)
 								if (el) {
-									return <SkuListItem
+									return <RnpListItem
 										key={i}
 										index={i}
 										el={el}
 										expanded={expanded}
 										setExpanded={setExpanded}
-										setDeleteSkuId={setDeleteSkuId}
+										setDeleteRnpId={setDeleteRnpId}
 										onReorder={handleReorder}
 									/>
 								}
@@ -317,24 +314,23 @@ export default function SkuList({ view, expanded, setExpanded, setView, setAddSk
 				)}
 				{view === 'total' && (
 					<>
-						{/* {skuDataTotal?.length == 0 && <div className={`${styles.item_content} ${styles.item_empty}`}>Нет данных</div>} */}
-						{skuDataTotal && <div className={styles.item_content}>
-							<SkuTable
+						{rnpDataTotal && <div className={styles.item_content}>
+							<RnpTable
 								// data={null}
-								data={skuDataTotal?.table?.rows}
+								data={rnpDataTotal?.table?.rows}
 								// columns={null}
-								columns={skuDataTotal?.table?.columns}
+								columns={rnpDataTotal?.table?.columns}
 								defaultExpandAllRows={true}
 							/>
 						</div>}
 					</>
 				)}
-				{((items?.length == 0 && view === 'sku') || (view === 'total' && skuDataTotal)) && 
+				{((view === 'articles' && items?.length == 0) || (view === 'total' && !rnpDataTotal)) && 
 					<NoDataWidget
 						mainTitle='Здесь пока нет ни одного артикула'
 						mainText='Добавьте артикулы для отчета «Рука на пульсе»'
 						buttonTitle='Добавить'
-						action={() => setAddSkuModalShow(true)}
+						action={() => setAddRnpModalShow(true)}
 						howLinkGroup={false}
 					/>
 				}

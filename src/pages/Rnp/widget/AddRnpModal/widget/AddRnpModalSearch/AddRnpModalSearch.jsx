@@ -1,10 +1,10 @@
 import { useEffect } from "react";
 import { ConfigProvider, Form, Flex, Input, Button } from "antd"
-import styles from "./AddSkuModalSearch.module.css"
+import styles from "./AddRnpModalSearch.module.css"
 import { search } from "../../../icons"
 
-function AddSkuModalSearch({
-  skuLoading,
+function AddRnpModalSearch({
+  loading,
   submitSearch
 }) {
   const [form] = Form.useForm();
@@ -72,7 +72,7 @@ function AddSkuModalSearch({
             type='primary'
             htmlType='submit'
             icon={search}
-            loading={skuLoading}
+            loading={loading}
           >
               Найти
           </Button>
@@ -82,4 +82,4 @@ function AddSkuModalSearch({
   )
 }
 
-export default AddSkuModalSearch
+export default AddRnpModalSearch
