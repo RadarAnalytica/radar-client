@@ -14,18 +14,15 @@ import {
 } from 'antd';
 import { SelectIcon } from '../../../../components/sharedComponents/apiServicePagesFiltersComponent/shared';
 import styles from './modals.module.css';
-import { CloseIcon, InfoIcon } from '../Icons';
+import { CloseIcon, InfoIcon } from '../../shared/Icons';
 import { TimeSelect } from '../../../../components/sharedComponents/apiServicePagesFiltersComponent/features/timeSelect/timeSelect';
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
+import { useAppSelector } from '@/redux/hooks';
 // import ModalFooter from './ModalFooter';
 export default function ModalCreateCost({
 	open = true,
 	onCancel,
-	shops,
 	createArticleOpen,
-	articles,
-	brands,
-	sku,
 	...props
 }) {
 	const Title = () => (
@@ -56,8 +53,40 @@ export default function ModalCreateCost({
 			</Flex>
 		</ConfigProvider>
 	);
+	
+	const { shops, filters } = useAppSelector((state) => state.filters);
 
-	const [selection, setSelection] = useState('shop');
+	const allFilters = useMemo(() => {
+		// сборка данных для значения фильтра Все
+		return filters.find((el) => el.shop.id === 0)
+	}, [filters]);
+
+	const shopsList = useMemo(() => {
+		if (shops && shops.length > 0){
+			// проверка на сбор данных в магазине и магазин не Все
+			return shops.filter((shop) => (shop.id !== 0 && shop.is_primary_collect))
+		}
+		return [];
+	}, [shops]);
+
+	const brandsList = useMemo(() => {
+		if (allFilters && allFilters.brands){
+			return allFilters.brands.data
+		}
+		return [];
+	}, [allFilters]);
+	
+	const articlesList = useMemo(() => {
+		if (allFilters && allFilters.articles){
+			return allFilters.articles.data
+		}
+		return [];
+	}, [allFilters]);
+
+	console.log('brands', brandsList)
+	console.log('articles', articlesList)
+	
+	const [selection, setSelection] = useState('shop'); // 'shop' | 'sku' | 'brand'
 
 	const icon = <SelectIcon />;
 
@@ -149,7 +178,7 @@ export default function ModalCreateCost({
 								size="large"
 								placeholder="Выберите статью"
 								suffixIcon={icon}
-								options={articles.map((el, i) => ({
+								options={articlesList.map((el, i) => ({
 									key: i,
 									value: el.title,
 									label: el.title,
@@ -184,7 +213,7 @@ export default function ModalCreateCost({
 						{selection === 'shop' && <Form.Item name="shop">
 							<Select
 								size="large"
-								options={shops.map((el) => ({
+								options={shopsList.map((el) => ({
 									key: el.id,
 									value: el.id,
 									label: el.brand_name,
@@ -198,7 +227,7 @@ export default function ModalCreateCost({
 						{selection === 'sku' && <Form.Item name="sku">
 							<Select
 								size="large"
-								options={sku.map((el, i) => ({
+								options={articlesList.map((el, i) => ({
 									key: i,
 									value: el.value,
 									label: el.name,
@@ -211,7 +240,7 @@ export default function ModalCreateCost({
 						{selection === 'brands' && <Form.Item name="brands">
 							<Select
 								size="large"
-								options={brands.map((el, i) => ({
+								options={brandsList.map((el, i) => ({
 									key: i,
 									value: el.value,
 									label: el.name,

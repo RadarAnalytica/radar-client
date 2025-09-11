@@ -60,7 +60,7 @@ const ReportProfitLoss = React.lazy(() => import("./pages/ReportProfitLoss/Repor
 const LinkedShopsPage = React.lazy(() => import("./pages/linkedShops/linkedShops"));
 const AdminDashboardPage = React.lazy(() => import("./pages/AdminPage/AdminDashboardPage"));
 const AdminReferalPage = React.lazy(() => import("./pages/AdminPage/AdminReferalPage"));
-const OperationsCosts = React.lazy(() => import("./pages/OperationsCosts/OperationsCosts"));
+const OperationsCosts = React.lazy(() => import("./pages/OperationsCosts"));
 const MainPage = React.lazy(() => import('./pages/homePage'))
 const ReferalPage = React.lazy(() => import("./pages/Referal"));
 const SupplierAnalysisPage = React.lazy(() => import("./pages/supplierAnalysisPage/supplierAnalysisPage"));

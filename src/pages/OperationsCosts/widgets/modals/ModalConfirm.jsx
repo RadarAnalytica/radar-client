@@ -14,7 +14,7 @@ import {
 } from 'antd';
 import { SelectIcon } from '../../../../components/sharedComponents/apiServicePagesFiltersComponent/shared';
 import styles from './modals.module.css';
-import { CloseIcon, InfoIcon } from '../Icons';
+import { CloseIcon, InfoIcon } from '../../shared/Icons';
 import { TimeSelect } from '../../../../components/sharedComponents/apiServicePagesFiltersComponent/features/timeSelect/timeSelect';
 import { useState } from 'react';
 // import ModalFooter from './ModalFooter';
