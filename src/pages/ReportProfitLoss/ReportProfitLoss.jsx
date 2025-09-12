@@ -291,7 +291,7 @@ export default function ReportProfitLoss() {
 								title='Ваши данные еще формируются и обрабатываются.'
 						/>
 				)}
-				<div className={styles.container}>
+				<div className={styles.container} style={{ minHeight: !shopStatus?.is_primary_collect ? '0' : '450px' }}>
 					<ReportTable
 						loading={loading}
 						columns={columns}

@@ -30,7 +30,7 @@ import { Link } from 'react-router-dom';
 const ItemHead = () => {
 
     const { skuMainData, dataStatus } = useAppSelector(store => store.skuAnalysis);
-
+    
     if (dataStatus.isLoading) {
         return (
             <div className={styles.head}>
@@ -70,7 +70,7 @@ const ItemHead = () => {
                             <p className={styles.head__title}>{formatPrice(skuMainData.price, '₽')}</p>
                         </div>
                         <Link
-                            to={skuMainData.supplier_url}
+                            to={skuMainData.wb_id_url}
                             target='_blank'
                             className={styles.head__mainLink}
                         >

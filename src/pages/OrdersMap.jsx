@@ -63,17 +63,24 @@ const OrdersMap = () => {
 
   const updateGeoData = async () => {
     setLoading(true)
-    if (activeBrand && selectedRange && authToken) {
-      let data = null;
-      if (user.subscription_status === null) {
-        data = await mockGetGeographyData(selectedRange);
-      } else {
-        data = await ServiceFunctions.getGeographyData(authToken, selectedRange, activeBrand.id, filters);
+    try {
+      if (activeBrand && selectedRange && authToken) {
+        let data = null;
+        if (user.subscription_status === null) {
+          data = await mockGetGeographyData(selectedRange);
+        } else {
+          data = await ServiceFunctions.getGeographyData(authToken, selectedRange, activeBrand.id, filters);
+        }
+        setGeoData(data);
       }
-      setGeoData(data);
+      setByRegions(true)
+      setLoading(false)
+    } catch (error) {
+      setLoading(false)
+    } finally {
+      setLoading(false)
     }
-    setByRegions(true)
-    setLoading(false)
+  
   }
 
   // useEffect(() => {
@@ -126,12 +133,7 @@ const OrdersMap = () => {
     const intervalId = setTimeout(() => {
 
       dispatch(fetchShops(authToken));
-      const updateGeoData = async () => {
-        const data = await ServiceFunctions.getGeographyData(authToken, selectedRange, activeBrand);
-        setGeoData(data);
-      }
       updateGeoData();
-      // dispatch(fetchGeographyData({ authToken, selectedRange, activeBrand }));
     }, timeToTarget);
 
     return () => {

@@ -474,18 +474,17 @@ export default function ReportWeek() {
 						</ConfigProvider> */}
 					</div>
 				</div>)}
-				
 				{!loading && shops && user.subscription_status === null && (
 					<NoSubscriptionWarningBlock />
 				)}
-			
+
 				{!loading && shops && user?.subscription_status && !shopStatus?.is_primary_collect && (
 						<DataCollectWarningBlock
 								title='Ваши данные еще формируются и обрабатываются.'
 						/>
 				)}
 				{/* { shopStatus?.is_primary_collect && */}
-					<div className={styles.container}>
+					<div className={styles.container} style={{ minHeight: !shopStatus?.is_primary_collect ? '0' : '450px' }}>
 						<ReportTable
 							virtual={false}
 							loading={loading}
