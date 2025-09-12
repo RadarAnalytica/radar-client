@@ -24,9 +24,10 @@
     flex-direction: column;
     justify-content: center;
     gap: 8px;
-    padding-left: 17px;
     text-decoration: none;
     color: #1A1A1A;
+    background-color: white;
+    padding-left: 17px;
 }
 
 .cell__query:hover {

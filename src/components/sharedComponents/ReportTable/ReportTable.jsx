@@ -1,5 +1,6 @@
 import { ConfigProvider, Table, Button, Progress } from 'antd';
 import { useRef, useMemo, useCallback, useState } from 'react';
+import { Table as RadarTable } from 'radar-ui';
 import styles from './ReportTable.module.css';
 
 export default function ReportTable({ loading, columns, data, rowSelection = false, virtual=true, is_primary_collect, progress = null }) {
@@ -28,6 +29,8 @@ export default function ReportTable({ loading, columns, data, rowSelection = fal
 	if (!loading && !is_primary_collect){
 		return <></>
 	}
+	console.log(JSON.stringify(data, null, 2));
+
 
 	return (
 		<div className={styles.container}  ref={tableContainerRef}>

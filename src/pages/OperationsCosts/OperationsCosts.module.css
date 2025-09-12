@@ -38,11 +38,11 @@
 /* Report */
 
 .controls{
-    display: flex;
+    /* display: flex;
     flex-flow: row nowrap;
     justify-content: space-between;
     align-items: end;
-    gap: 16px;
+    gap: 16px; */
 }
 
 .loading{
@@ -60,11 +60,11 @@
 
 .container {
     flex-grow: 1;
-    max-height: calc(100% - 169px);
+    /* max-height: calc(100vh - 169px); */
 }
 
 .tableContainer{
-    min-height: 150px;
+    min-height: 450px;
     max-height: 100%;
 }
 

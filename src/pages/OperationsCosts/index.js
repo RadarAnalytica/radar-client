@@ -1,3 +1,3 @@
-import ReportWeek from "./ReportWeek";
+import OperationsCosts from "./OperationsCosts";
 
-export default ReportWeek
+export default OperationsCosts

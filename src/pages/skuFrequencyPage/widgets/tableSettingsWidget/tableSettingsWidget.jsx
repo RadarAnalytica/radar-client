@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react'
+import { radarTableConfig } from '../../shared/configs/tableConfig'
 import styles from './tableSettingsWidget.module.css'
 import {
     ConfigProvider,
@@ -28,6 +29,7 @@ const getReplicatedArray = (array, fields) => {
                 return {
                     ...child,
                     hidden: child.fixed ? undefined : !fields[child.dataIndex]
+
                 }
             })
         }
@@ -36,7 +38,9 @@ const getReplicatedArray = (array, fields) => {
     replicatedArray = replicatedArray.map(item => {
         return {
             ...item,
-            colSpan: item.children?.filter(child => !child.hidden)?.length || 1
+            colSpan: item.children?.filter(child => !child.hidden)?.length || 1,
+            width: item.children?.filter(child => !child.hidden)?.reduce((acc, child) => acc + child.width, 0) || item.width,
+            minWidth: item.children?.filter(child => !child.hidden)?.reduce((acc, child) => acc + child.minWidth, 0) || item.minWidth
         }
     })
     return replicatedArray
@@ -49,6 +53,7 @@ const TableSettingsWidget = ({ tableConfig, setTableConfig }) => {
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [checkAllButtonState, setCheckAllButtonState] = useState('Выбрать все')
     const [searchState, setSearchState] = useState('')
+    const [renderList, setRenderList] = useState([])
     const [form] = Form.useForm()
     const [searchForm] = Form.useForm()
     const filter = Form.useWatch('filter', searchForm)
@@ -109,6 +114,10 @@ const TableSettingsWidget = ({ tableConfig, setTableConfig }) => {
             }
         }
     }, [form, isModalOpen])
+
+    useEffect(() => {
+        setRenderList(getNormalizedArray(tableConfig, searchState))
+    }, [tableConfig, searchState])
 
 
 
@@ -296,7 +305,7 @@ const TableSettingsWidget = ({ tableConfig, setTableConfig }) => {
                             }}
                         >
                             <Flex gap={[16, 12]} vertical wrap className={styles.modal__list}>
-                                {getNormalizedArray(tableConfig, searchState).map((el, i) => !el.fixed && (
+                                {renderList.map((el, i) => !el.fixed && (
                                     <Col span={8} className={styles.item} key={i}>
                                         <Form.Item
                                             name={el?.dataIndex}
@@ -320,6 +329,33 @@ const TableSettingsWidget = ({ tableConfig, setTableConfig }) => {
                                 align="end"
                                 className={styles.controls}
                             >
+                                <Button 
+                                    size="large"
+                                    type='text' 
+                                    onClick={() => {
+                                        console.log('radarTableConfig', radarTableConfig)
+                                        setTableConfig(JSON.parse(JSON.stringify(radarTableConfig)))
+                                        localStorage.setItem('MonitoringTableConfig', JSON.stringify(radarTableConfig))
+                                        form.resetFields()
+                                        setSearchState('')
+                                        searchForm.resetFields()
+                                        setIsModalOpen(false)
+                                        setRenderList((prev) => [...getNormalizedArray(radarTableConfig, searchState)])
+                                        const values = form.getFieldsValue()
+                                        const keysArr = Object.keys(values)
+                                        const type = keysArr.some(_ => !values[_]) ? 'select' : 'deselect'
+                                
+                                        if (type === 'select') {
+                                            keysArr.forEach(_ => {
+                                                form.setFieldValue(_, true)
+                                            })
+                                            setCheckAllButtonState('Снять все')
+                                        }
+                                    }}
+                                    style={{ color: '#F93C65'}}
+                                >
+                                    По умолчанию
+                                </Button>
                                 <Button size="large" onClick={() => { form.resetFields(); setSearchState(''); searchForm.resetFields(); setIsModalOpen(false) }}>
                                     Отменить
                                 </Button>

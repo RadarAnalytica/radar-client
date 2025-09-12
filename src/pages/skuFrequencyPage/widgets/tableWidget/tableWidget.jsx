@@ -99,7 +99,7 @@ const TableWidget = ({ tableConfig, setTableConfig }) => {
                     dataSource={requestData}
                     config={tableConfig}
                     resizeable
-                    draggableColumns
+                    //draggableColumns
                     onResize={onResizeGroup}
                     stickyHeader
                     preset="radar-table-simple"
@@ -130,6 +130,9 @@ const TableWidget = ({ tableConfig, setTableConfig }) => {
                         bottom: 0
                     }}
                     scrollContainerRef={containerRef}
+                    bodyCellWrapperStyle={{
+                        minHeight: '85px'
+                    }}
                 />
             </div>
         </div>
