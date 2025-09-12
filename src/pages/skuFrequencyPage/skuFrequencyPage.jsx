@@ -118,7 +118,7 @@ const SkuFrequencyPage = () => {
                         />
                         {tableConfig &&
                             <TableSettingsWidget
-                                tableConfig={[...tableConfig]}
+                                tableConfig={tableConfig}
                                 setTableConfig={setTableConfig}
                             />
                         }
