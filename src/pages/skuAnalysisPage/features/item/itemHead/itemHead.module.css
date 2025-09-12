@@ -136,6 +136,9 @@
     @media (max-width: 1500px) {
         font-size: 14px;
     }
+    @media (max-width: 1210px) {
+        padding: 8px 4px;
+    }
 }
 
 
