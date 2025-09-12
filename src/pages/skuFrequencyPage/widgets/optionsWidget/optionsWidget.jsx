@@ -53,7 +53,6 @@ const OptionsWidget = () => {
     }
 
     const complexFormSubmitHandler = (fields) => {
-        console.log('submit complex')
         const requestObject = complexRequestObjectGenerator(fields);
         dispatch(requestsMonitoringActions.setRequestObject({ data: requestObject, formType: 'complex' }))
     }
@@ -63,7 +62,6 @@ const OptionsWidget = () => {
             simpleForm.submit()
         }
         if (skuFrequencyMode === 'Продвинутый') {
-            console.log('Attempting to submit complex form')
 
             complexForm.validateFields()
                 .then(() => {
