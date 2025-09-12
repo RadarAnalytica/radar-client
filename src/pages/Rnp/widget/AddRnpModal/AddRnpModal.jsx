@@ -69,8 +69,12 @@ const AddRnpModal = ({ isAddRnpModalVisible, setIsAddRnpModalVisible, addRnp }) 
         if ( page !== 1 ){
             setPage(1)
         }
-        setRequest((state) => !state);
-    }, [search, filters, shops, activeBrand])
+        setRequest((state) => Date.now());
+    }, [search, filters])
+    
+    useEffect(() => {
+        setRequest((state) => Date.now());
+    }, [page])
 
     useEffect(() => {
         setRequest((state) => Date.now());
@@ -124,15 +128,7 @@ const AddRnpModal = ({ isAddRnpModalVisible, setIsAddRnpModalVisible, addRnp }) 
         return () => {
             abortController.abort('Отмена запроса');
         };
-    }, [page, request]);
-
-    // useEffect(() => {
-    //     return () => {
-    //         setPage(1);
-    //         setSearch(null);
-    //         dispatch(filterActions.setActiveShop(null));
-    //     }
-    // }, [])
+    }, [request]);
 
     return (
         <>
