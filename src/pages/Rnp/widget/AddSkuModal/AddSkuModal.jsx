@@ -19,9 +19,9 @@ import { actions as rnpSelectedActions } from '../../../../redux/rnpSelected/rnp
 const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku }) => {
     const dispatch = useAppDispatch();
     const { authToken } = useContext(AuthContext);
-    const { shops, activeBrand, selectedRange } = useAppSelector( (state) => state.filtersRnpAdd );
+    const { shops, activeBrand, selectedRange, activeBrandName, activeGroup, activeCategory } = useAppSelector( (state) => state.filtersRnpAdd );
     const filters = useAppSelector((state) => state.filtersRnpAdd);
-    const rnpSelected = useAppSelector((state) => state.rnpSelected);
+    const [ rnpSelected, setRnpSelected ] = useState(null);
 
     const shopStatus = useMemo(() => {
         if (!activeBrand || !shops) return null;
@@ -62,18 +62,29 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku }) 
         } else {
             list = [...rnpSelected, value]
         }
-        dispatch(rnpSelectedActions.setList(list));
+        setRnpSelected(list);
     }
 
     useEffect(() => {
         if ( page !== 1 ){
             setPage(1)
         }
-        setRequest((state) => !state);
+        setRequest((state) => Date.now());
     }, [search, filters])
+    
+    useEffect(() => {
+        setRequest((state) => Date.now());
+    }, [page])
 
     useEffect(() => {
-        if (!activeBrand){
+        if (!activeBrand || (
+            initLoad.current &&
+            activeBrand.id !== 0 &&
+            (filters.activeBrandName.some(_ => _.value === 'Все') ||
+            filters.activeArticle.some(_ => _.value === 'Все') ||
+            filters.activeGroup.some(_ => _.value === 'Все') ||
+            filters.activeCategory.some(_ => _.value === 'Все'))
+        )){
             return
         }
 
@@ -92,9 +103,11 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku }) 
                     search,
                     signal
                 );
-                if (initLoad.current || rnpSelected === null) {
+                if (initLoad.current) {
                     initLoad.current = false;
-					dispatch(rnpSelectedActions.setList(response?.rnp_wb_ids || []));
+                }
+                if (rnpSelected === null) {
+					setRnpSelected(response?.rnp_wb_ids || []);
                 }
 
                 setLocalRnpDataArticle(response);
@@ -111,15 +124,7 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku }) 
         return () => {
             abortController.abort('Отмена запроса');
         };
-    }, [page, request, shops, activeBrand]);
-
-    useEffect(() => {
-        return () => {
-            setPage(1);
-            setSearch(null);
-            dispatch(filterActions.setActiveShop(null));
-        }
-    }, [])
+    }, [request]);
 
     return (
         <>
