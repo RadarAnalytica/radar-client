@@ -30,13 +30,14 @@ const OptionsWidget = () => {
     const [simpleForm] = Form.useForm();
     const [complexForm] = Form.useForm();
     const { skuFrequencyMode } = useAppSelector(store => store.filters) // 'Простой' | 'Продвинутый'
-    const { optionsConfig, requestObject, isLoadingForButton } = useAppSelector(store => store.requestsMonitoring) // 'Простой' | 'Продвинутый'
+    const { optionsConfig, requestObject, isLoadingForButton } = useAppSelector(store => store.requestsMonitoring)
     const { isSidebarHidden } = useAppSelector((state) => state.utils);
     const prefered_items = Form.useWatch('prefered_items', complexForm)
     const [isBodyVisisble, setIsBodyVisible] = useState(true)
 
 
     const simpleFormSubmitHandler = (fields) => {
+        console.log('submit simple')
         const requestObject = {
             query: fields.query,
             avg_price_total: JSON.parse(fields.preferedProductPrice),
@@ -52,9 +53,9 @@ const OptionsWidget = () => {
     }
 
     const complexFormSubmitHandler = (fields) => {
+        console.log('submit complex')
         const requestObject = complexRequestObjectGenerator(fields);
         dispatch(requestsMonitoringActions.setRequestObject({ data: requestObject, formType: 'complex' }))
-        //resetTableConfig()
     }
 
     useEffect(() => {
@@ -62,9 +63,18 @@ const OptionsWidget = () => {
             simpleForm.submit()
         }
         if (skuFrequencyMode === 'Продвинутый') {
-            complexForm.submit()
+            console.log('Attempting to submit complex form')
+
+            complexForm.validateFields()
+                .then(() => {
+                    complexForm.submit()
+                })
+                .catch((errorInfo) => {
+                    const values = complexForm.getFieldsValue()
+                    complexFormSubmitHandler(values)
+                })
         }
-    }, [skuFrequencyMode])
+    }, [skuFrequencyMode, complexForm, simpleForm, isBodyVisisble])
 
     useEffect(() => {
         complexForm.setFieldValue('frequency_30_start', 6000)
@@ -76,9 +86,9 @@ const OptionsWidget = () => {
     return (
         <section className={styles.widget}>
             <div className={!isBodyVisisble ? `${styles.widget__header} ${styles.widget__header_noGap}` : styles.widget__header}>
-                <div 
-                    className={styles.widget__titleWrapper} 
-                    style={{ cursor: skuFrequencyMode === 'Продвинутый' ? 'pointer' : '' }} 
+                <div
+                    className={styles.widget__titleWrapper}
+                    style={{ cursor: skuFrequencyMode === 'Продвинутый' ? 'pointer' : '' }}
                     onClick={e => {
                         e.preventDefault();
                         e.stopPropagation();
@@ -304,7 +314,7 @@ const OptionsWidget = () => {
                     <div className={styles.widget__body}>
                         <Form
                             className={`${styles.form} ${styles.form_complexForm}`}
-                            scrollToFirstError={{ behavior: 'smooth', block: 'center'}}
+                            scrollToFirstError={{ behavior: 'smooth', block: 'center' }}
                             layout='vertical'
                             onFinish={complexFormSubmitHandler}
                             form={complexForm}
