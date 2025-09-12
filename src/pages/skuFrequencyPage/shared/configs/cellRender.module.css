@@ -27,6 +27,7 @@
     text-decoration: none;
     color: #1A1A1A;
     background-color: white;
+    padding-left: 17px;
 }
 
 .cell__query:hover {
