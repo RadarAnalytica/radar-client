@@ -19,7 +19,7 @@ export const radarTableConfig = [
                 hidden: false,
                 className: 'monitoringTableFirstLeafCell',
             },
-        ].map(_ => ({ ..._, key: _.dataIndex }))
+        ].map(_ => ({ ..._, key: _.dataIndex, maxWidth: _.width * 2 }))
     },
     {
         title: 'Основные',
@@ -49,7 +49,7 @@ export const radarTableConfig = [
             { title: 'Частотность за 30 дней', dataIndex: 'frequency_30', width: 220, sortable: true, hidden: false },
             { title: 'Частотность за 60 дней', dataIndex: 'frequency_60', width: 220, sortable: true, hidden: false },
             { title: 'Частотность за 90 дней', dataIndex: 'frequency_90', width: 220, sortable: true, hidden: false },
-        ].map(_ => ({ ..._, key: _.dataIndex, minWidth: _.width, className: 'monitoringTableLeafCell' }))
+        ].map(_ => ({ ..._, key: _.dataIndex, minWidth: _.width, className: 'monitoringTableLeafCell', maxWidth: _.width * 2 }))
     },
     {
         title: 'Динамика популярности и роста запросов',
@@ -65,7 +65,7 @@ export const radarTableConfig = [
             { title: 'Динамика запроса за 30 дней, %', dataIndex: 'g30', width: 220, units: '%', sortable: true, hidden: false },
             { title: 'Динамика запроса за 60 дней, %', dataIndex: 'g60', width: 220, units: '%', sortable: true, hidden: false },
             { title: 'Динамика запроса за 90 дней, %', dataIndex: 'g90', width: 220, units: '%', sortable: true, hidden: false },
-        ].map(_ => ({ ..._, key: _.dataIndex, minWidth: _.width, className: 'monitoringTableLeafCell' }))
+        ].map(_ => ({ ..._, key: _.dataIndex, minWidth: _.width, className: 'monitoringTableLeafCell', maxWidth: _.width * 2 }))
     },
     {
         title: 'Дополнительные параметры',
@@ -80,7 +80,7 @@ export const radarTableConfig = [
             { title: 'Процент выкупа, %', dataIndex: 'buyout_percent', width: 220, units: '%', sortable: true, hidden: false },
             { title: 'Монопольность, %', dataIndex: 'monopoly_percent', width: 300, units: '%', sortable: true, hidden: false, tooltipText: 'Процент выручки, приходящийся на ТОП-30 артикулов от всех артикулов на первой странице.' },
             { title: 'Кол-во товаров в ТОП-1200 за 30 дней, шт', dataIndex: 'top_goods_quantity', width: 220, units: 'шт', sortable: true, hidden: false },
-        ].map(_ => ({ ..._, key: _.dataIndex, minWidth: _.width, className: 'monitoringTableLeafCell' }))
+        ].map(_ => ({ ..._, key: _.dataIndex, minWidth: _.width, className: 'monitoringTableLeafCell', maxWidth: _.width * 2 }))
     },
     {
         title: 'У артикулов на первой странице',
@@ -95,7 +95,7 @@ export const radarTableConfig = [
             { title: 'Артикулов в рекламе, %', dataIndex: 'advert_percent', width: 220, units: '%', sortable: true, hidden: false, tooltipText: 'Расчетное среднее значение за 30 дней' },
             { title: 'Артикулов с внешним трафиком, %', dataIndex: 'external_advert_percent', width: 220, units: '%', sortable: true, hidden: false, tooltipText: 'Расчетное среднее значение за 30 дней' },
             { title: 'Среднее кол-во отзывов у артикулов (без учета внутренней рекламы WB), шт', dataIndex: 'avg_reviews', width: 220, units: 'шт', sortable: true, hidden: false },
-        ].map(_ => ({ ..._, key: _.dataIndex, minWidth: _.width, className: 'monitoringTableLeafCell' }))
+        ].map(_ => ({ ..._, key: _.dataIndex, minWidth: _.width, className: 'monitoringTableLeafCell', maxWidth: _.width * 2 }))
     },
     {
         title: 'У артикулов на первых 3-х страницах',
@@ -114,7 +114,7 @@ export const radarTableConfig = [
             { title: 'Средняя цена (с СПП), ₽', dataIndex: 'avg_price_300_spp', width: 240, units: '₽', sortable: true, hidden: false, comment: 'У артикулов на первых 3-х страницах' },
             { title: 'Средняя цена (без СПП), ₽', dataIndex: 'avg_price_300', width: 240, units: '₽', sortable: true, hidden: false, comment: 'У артикулов на первых 3-х страницах', tooltipText: 'Расчетное среднее значение за 30 дней' },
             { title: 'Артикулов с продажами, %', dataIndex: 'goods_with_sales_percent_300', width: 220, units: '%', sortable: true, hidden: false, tooltipText: 'Расчетное среднее значение за 30 дней' },
-        ].map(_ => ({ ..._, key: _.dataIndex, minWidth: _.width, className: 'monitoringTableLeafCell' }))
+        ].map(_ => ({ ..._, key: _.dataIndex, minWidth: _.width, className: 'monitoringTableLeafCell', maxWidth: _.width * 2 }))
     }
 ].map(_ => ({ ..._, colSpan: _?.children?.length || 1}))
 

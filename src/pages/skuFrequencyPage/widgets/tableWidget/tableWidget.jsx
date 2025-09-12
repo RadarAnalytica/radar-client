@@ -99,7 +99,7 @@ const TableWidget = ({ tableConfig, setTableConfig }) => {
                     dataSource={requestData}
                     config={tableConfig}
                     resizeable
-                    draggableColumns
+                    //draggableColumns
                     onResize={onResizeGroup}
                     stickyHeader
                     preset="radar-table-simple"
