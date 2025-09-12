@@ -29,27 +29,35 @@ const StockAnalysisPage = () => {
 
     const fetchAnalysisData = async () => {
         setLoading(true);
-        if (activeBrand) {
-            let data = null;
-            if (user.subscription_status === null) {
-                data = await mockGetAnalysisData(
-                    selectedRange,
-                    activeBrand.id
-                );
-            } else {
-                data = await ServiceFunctions.getAnalysisData(
-                    authToken,
-                    selectedRange,
-                    activeBrand.id,
-                    filters
-                );
+        try {
+            if (activeBrand) {
+                let data = null;
+                if (user.subscription_status === null) {
+                    data = await mockGetAnalysisData(
+                        selectedRange,
+                        activeBrand.id
+                    );
+                } else {
+                    data = await ServiceFunctions.getAnalysisData(
+                        authToken,
+                        selectedRange,
+                        activeBrand.id,
+                        filters
+                    );
+                }
+                setStockAnalysisData(data);
+                setStockAnalysisFilteredData(data)
+                setHasSelfCostPrice(data.every(_ => _.costPriceOne !== null))
             }
-            setStockAnalysisData(data);
-            setStockAnalysisFilteredData(data)
-            setHasSelfCostPrice(data.every(_ => _.costPriceOne !== null))
+
+            setLoading(false);
+
+        } catch (error) {
+            console.error(error)
+        } finally {
+            setLoading(false)
         }
 
-        setLoading(false);
     };
 
     // 2.1 Получаем данные по выбранному магазину и проверяем себестоимость

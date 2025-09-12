@@ -93,7 +93,7 @@ export const radarTableConfig = [
         },
         children: [
             { title: 'Артикулов в рекламе, %', dataIndex: 'advert_percent', width: 220, units: '%', sortable: true, hidden: false, tooltipText: 'Расчетное среднее значение за 30 дней' },
-            { title: 'Артикулов с внешним трафиком, %', dataIndex: 'external_advert_percent', width: 220, units: '%', sortable: true, hidden: false, tooltipText: 'Расчетное среднее значение за 30 дней' },
+            // { title: 'Артикулов с внешним трафиком, %', dataIndex: 'external_advert_percent', width: 220, units: '%', sortable: true, hidden: false, tooltipText: 'Расчетное среднее значение за 30 дней' },
             { title: 'Среднее кол-во отзывов у артикулов (без учета внутренней рекламы WB), шт', dataIndex: 'avg_reviews', width: 220, units: 'шт', sortable: true, hidden: false },
         ].map(_ => ({ ..._, key: _.dataIndex, minWidth: _.width, className: 'monitoringTableLeafCell', maxWidth: _.width * 2 }))
     },

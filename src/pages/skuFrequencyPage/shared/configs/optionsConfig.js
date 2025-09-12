@@ -30,7 +30,7 @@ export const sideOptionsConfig = [
         isWideLayout: true,
         options: [
             { label: '% артикулов в рекламе', name: 'advert_percent', isWide: false, units: '%'},
-            { label: '% артикулов с внешним трафиком', name: 'external_advert_percent', isWide: false, units: '%'},
+            // { label: '% артикулов с внешним трафиком', name: 'external_advert_percent', isWide: false, units: '%'},
             { label: 'Среднее кол-во отзывов у артикулов (без учета внутренней рекламы WB)', name: 'avg_reviews', isWide: true, units: 'шт'}
         ]
     },
