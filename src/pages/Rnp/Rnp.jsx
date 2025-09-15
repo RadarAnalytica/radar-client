@@ -57,7 +57,7 @@ export default function Rnp() {
 	const [addSkuModalShow, setAddSkuModalShow] = useState(false);
 	const [page, setPage] = useState(1);
 	const [view, setView] = useState('sku');
-	const [skuDataByArticle, setSkuDataByArticle] = useState(null);
+	const [rnpDataByArticle, setRnpDataByArticle] = useState(null);
 	const [skuDataTotal, setSkuDataTotal] = useState(null)
 	const [deleteSkuId, setDeleteSkuId] = useState(null);
 	const [error, setError] = useState(null);
@@ -186,7 +186,7 @@ export default function Rnp() {
 			return item;
 		});
 
-		setSkuDataByArticle(list);
+		setRnpDataByArticle(list);
 	};
 
 	const dataToSkuTotalList = (response) => {
@@ -439,7 +439,7 @@ export default function Rnp() {
 						view={view}
 						setView={viewHandler}
 						setAddSkuModalShow={setAddSkuModalShow}
-						skuDataByArticle={skuDataByArticle}
+						rnpDataByArticle={rnpDataByArticle}
 						skuDataTotal={skuDataTotal}
 						setDeleteSkuId={setDeleteSkuId}
 						expanded={expanded}
@@ -451,7 +451,7 @@ export default function Rnp() {
 					/>
 				)}
 
-				{/* {!loading && skuDataByArticle?.length === 0 && 
+				{/* {!loading && rnpDataByArticle?.length === 0 && 
 					<NoDataWidget
 						mainTitle='Здесь пока нет ни одного артикула'
 						mainText='Добавьте артикулы для отчета «Рука на пульсе»'
@@ -465,7 +465,7 @@ export default function Rnp() {
 					isAddSkuModalVisible={addSkuModalShow}
 					setIsAddSkuModalVisible={setAddSkuModalShow}
 					addSku={addSkuHandler}
-					skuDataArticle={skuDataByArticle}
+					skuDataArticle={rnpDataByArticle}
 				/>}
 
 				{deleteSkuId && <ModalDeleteConfirm
