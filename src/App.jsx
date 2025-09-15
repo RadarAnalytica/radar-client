@@ -35,6 +35,7 @@ const Instructions = React.lazy(() => import("./pages/Instructions"));
 const MainWidget = React.lazy(() => import("./pages/MainWidget"));
 const StubPage = React.lazy(() => import("./pages/StubPage"));
 const AfterPayment = React.lazy(() => import("./pages/AfterPayment"));
+const NewAfterPayment = React.lazy(() => import("./pages/afterPayment/AfterPayment"));
 const TariffsPage = React.lazy(() => import("./pages/tariffsPage/tariffsPage"));
 const Page404 = React.lazy(() => import("./pages/Page404"));
 //const AdminPanel = React.lazy(() => import("./pages/AdminPanel"));
@@ -90,7 +91,7 @@ function App() {
 
           <Routes>
             {/* dev */}
-            <Route path='/dev/after-payment' element={<ProtectedRoute userRoleProtected><AfterPayment devMode={true} /></ProtectedRoute>} />
+            <Route path='/dev/after-payment' element={<ProtectedRoute><NewAfterPayment devMode /></ProtectedRoute>} />
             {/* Admin */}
             <Route path='/blog' element={<ProtectedRoute userRoleProtected routeRuName='Админ панель / Блог'><BlogPage /></ProtectedRoute>} />
             <Route path='/admin-dashboard' element={<ProtectedRoute userRoleProtected routeRuName='Админ панель / Дашборд'><AdminDashboardPage /></ProtectedRoute>} />
@@ -147,7 +148,7 @@ function App() {
             <Route path='/restore/:email/:code' element={<Suspense fallback={<LoaderPage />}>{' '}<ResetPage /></Suspense>} />
             <Route path='/restore-error' element={<Suspense fallback={<LoaderPage />}>{' '}<RestoreError /></Suspense>} />
             <Route path='/confirmation/:email/:code' element={<Suspense fallback={<LoaderPage />}>{' '}<ConfirmationPage /></Suspense>} />
-            <Route path='/after-payment' element={<Suspense fallback={<LoaderPage />}>{' '}<AfterPayment devMode={false} /></Suspense>} />
+            <Route path='/after-payment' element={<Suspense fallback={<LoaderPage />}>{' '}<NewAfterPayment devMode={false} /></Suspense>} />
             {/* 404 */}
             <Route path='*' element={<Page404 />} status={404} />
           </Routes>
