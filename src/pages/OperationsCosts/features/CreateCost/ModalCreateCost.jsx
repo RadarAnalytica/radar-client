@@ -1,6 +1,6 @@
 import { ConfigProvider, Modal, Flex, Button, Tooltip, Checkbox, Radio, Form, Row, Col, Select, Input, } from 'antd';
 import { SelectIcon } from '@/components/sharedComponents/apiServicePagesFiltersComponent/shared';
-import styles from './modals.module.css';
+import styles from '../../shared/styles/modals.module.css';
 import { CloseIcon, InfoIcon } from '../../shared/Icons';
 import { TimeSelect } from '@/components/sharedComponents/apiServicePagesFiltersComponent/features/timeSelect/timeSelect';
 import { useState, useMemo } from 'react';

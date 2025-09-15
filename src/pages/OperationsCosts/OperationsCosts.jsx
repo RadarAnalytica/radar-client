@@ -1,20 +1,20 @@
-import AuthContext from '../../service/AuthContext';
 import { useState, useEffect, useContext, useMemo, useRef } from 'react';
-import MobilePlug from '../../components/sharedComponents/mobilePlug/mobilePlug';
-import Sidebar from '../../components/sharedComponents/sidebar/sidebar';
-import Header from '../../components/sharedComponents/header/header';
-import { ServiceFunctions } from '../../service/serviceFunctions';
-import { Filters } from '../../components/sharedComponents/apiServicePagesFiltersComponent';
 import { ConfigProvider, Button, Popover, Flex } from 'antd';
+import { useAppSelector } from '@/redux/hooks';
+import AuthContext from '@/service/AuthContext';
+import { ServiceFunctions } from '@/service/serviceFunctions';
+import MobilePlug from '@/components/sharedComponents/mobilePlug/mobilePlug';
+import Sidebar from '@/components/sharedComponents/sidebar/sidebar';
+import Header from '@/components/sharedComponents/header/header';
+import { Filters } from '@/components/sharedComponents/apiServicePagesFiltersComponent';
+import ReportTable from '@/components/sharedComponents/ReportTable/ReportTable';
+import DataCollectWarningBlock from '@/components/sharedComponents/dataCollectWarningBlock/dataCollectWarningBlock';
+import ModalDeleteConfirm from '@/components/sharedComponents/ModalDeleteConfirm';
 import styles from './OperationsCosts.module.css';
-import ReportTable from '../../components/sharedComponents/ReportTable/ReportTable';
-import { useAppSelector } from '../../redux/hooks';
-import { COSTS_COLUMNS, ARTICLES_COLUMNS } from './model/model';
-import ModalCreateCost from './widgets/modals/ModalCreateCost';
-import ModalCreateExpenses from './widgets/modals/ModalCreateExpenses';
-import DataCollectWarningBlock from '../../components/sharedComponents/dataCollectWarningBlock/dataCollectWarningBlock';
+import { COSTS_COLUMNS, ARTICLES_COLUMNS } from './config/config';
+import ModalCreateCost from './features/CreateCost/ModalCreateCost';
+import ModalCreateExpenses from './features/CreateExpense/ModalCreateExpenses';
 import { EditIcon, CopyIcon, DeleteIcon } from './shared/Icons';
-import { useAppDispatch } from '@/redux/hooks';
 
 export default function OperationsCosts() {
 
@@ -43,11 +43,11 @@ export default function OperationsCosts() {
 
 	const firstLoad = useRef(true);
 	const [loading, setLoading] = useState(true);
-	const [view, setView] = useState('costs'); // costs | expenses
+	const [view, setView] = useState('costs'); // costs | articles
 	// const [isPopoverOpen, setIsPopoverOpen] = useState(false);
 
 	const [modalCreateCostOpen, setModalCreateCostOpen] = useState(false);
-	const [modalCreateExpensesOpen, setModalCreateExpensesOpen] = useState(false);
+	const [modalCreateArticlesOpen, setModalCreateArticlesOpen] = useState(false);
 
 	const [deleteCostId, setDeleteCostId] = useState(null);
 	const [deleteArticleId, setDeleteArticleId] = useState(null);
@@ -65,7 +65,36 @@ export default function OperationsCosts() {
 		},
 	]);
 	
+	const actionCostsRender = (value, row) => {
+		if (row.key == 'summary') {
+			return '-';
+		}
+		return (<Flex justify="start" gap={20}>
+			<ConfigProvider>
+				<Button
+					type="text"
+					icon={EditIcon}
+					></Button>
+				<Button
+					type="text"
+					icon={CopyIcon}
+					></Button>
+				<Button
+					type="text"
+					icon={DeleteIcon}
+					onClick={() => setDeleteCostId(row.id)}
+				></Button>
+			</ConfigProvider>
+		</Flex>)
+	}
+
 	const costsData = useMemo(() => {
+		const columns = COSTS_COLUMNS.map((column, i) => {
+			if (column.dataIndex == 'action'){
+				column.render = actionCostsRender
+			}
+			return ({ ket: column.i, ...column })
+		})
 		const data = costs.map((cost) => ({...cost, key: cost.id}));
 		const result = {
 			key: 'summary',
@@ -78,20 +107,45 @@ export default function OperationsCosts() {
 			action: '-',
 		};
 		data.unshift(result);
-		return data;
+		return {data, columns};
 	}, [costs]);
 
-	const [expenses, setExpenses] = useState([]);
+	const [articles, setArticles] = useState([]);
 
-	// const expensesData = useMemo(() => expenses.map((el, i) => ({ key: i, ...el })
-	// ), [expenses]);
+	const actionArticlesRender = (value, row) => {
+		return (<Flex justify="start" gap={20}>
+			<ConfigProvider>
+				<Button
+					type="text"
+					icon={EditIcon}
+				></Button>
+				<Button
+					type="text"
+					icon={DeleteIcon}
+					onClick={() => setDeleteArticleId(row.id)}
+				></Button>
+			</ConfigProvider>
+		</Flex>)
+	}
+
+	const articlesData = useMemo(() => {
+		const columns = ARTICLES_COLUMNS.map((column, i) => {
+			if (column.dataIndex == 'action'){
+				column.render = actionArticlesRender
+			}
+			return ({ ket: column.i, ...column })
+		})
+		const data = articles.map((article) => ({...article, key: article.id}));
+
+		return {data, columns}
+	}, [articles]);
 
 	const updateAricles = async () => {
 		setLoading(true);
 		try {
 			const res = await ServiceFunctions.getOperationConstsArticles();
 			console.log(res);
-			setExpenses([
+			setArticles([
 				{
 					id: 1,
 					title: 'Статья1'
@@ -103,7 +157,7 @@ export default function OperationsCosts() {
 			]);
 		} catch(error) {
 			console.error('updateAricles error', error);
-			setExpenses([]);
+			setArticles([]);
 			
 		} finally {
 			setLoading(false);
@@ -140,55 +194,18 @@ export default function OperationsCosts() {
 			updateCosts();
 		}
 		
-		if (view === 'expenses'){
+		if (view === 'articles'){
 			console.log('updateArticles');
 			updateAricles();
 		}
 	}, [ filters ])
-
-	const actionCostRender = (value, row) => {
-		if (row.key == 'summary') {
-			return '-';
-		}
-		return (<Flex justify="start" gap={20}>
-			<ConfigProvider>
-				<Button
-					type="text"
-					icon={EditIcon}
-				></Button>
-				<Button
-					type="text"
-					icon={CopyIcon}
-				></Button>
-				<Button
-					type="text"
-					icon={DeleteIcon}
-				></Button>
-			</ConfigProvider>
-		</Flex>)
-	}
-
-	const actionExpansesRender = (value, row) => {
-		return (<Flex justify="start" gap={20}>
-			<ConfigProvider>
-				<Button
-					type="text"
-					icon={EditIcon}
-				></Button>
-				<Button
-					type="text"
-					icon={DeleteIcon}
-				></Button>
-			</ConfigProvider>
-		</Flex>)
-	}
 
 	const modalCostHandlerClose = () => {
 		setModalCreateCostOpen(false);
 	};
 
 	const modalArticleHandlerClose = () => {
-		setModalCreateExpensesOpen(false);
+		setModalCreateArticlesOpen(false);
 	};
 
 	const modalHandler = () => {
@@ -196,14 +213,11 @@ export default function OperationsCosts() {
 			setModalCreateCostOpen(true);
 			return;
 		}
-		setModalCreateExpensesOpen(true);
+		setModalCreateArticlesOpen(true);
 	};
 
 	const addExpenses = (article) => {
-		setExpenses((expenses) => {
-			expenses.push(article);
-			return expenses;
-		});
+		setExpenses((articles) => articles.push(article) );
 	};
 
 	const deleteCostHandler = (id) => {
@@ -283,7 +297,7 @@ export default function OperationsCosts() {
 								<Button
 									size="large"
 									type={view === 'costs' ? 'default' : 'primary'}
-									onClick={() => { setView('expenses'); }}
+									onClick={() => { setView('articles'); }}
 								>
 									Статьи
 								</Button>
@@ -399,9 +413,9 @@ export default function OperationsCosts() {
 						<ReportTable
 							loading={loading}
 							columns={
-								view === 'costs' ? COSTS_COLUMNS : ARTICLES_COLUMNS
+								view === 'costs' ? costsData.columns : articlesData.columns
 							}
-							data={view === 'costs' ? costsData : expenses.map((expanse, i) => ({ key: i, ...expanse}))}
+							data={view === 'costs' ? costsData.data : articlesData.data}
 							is_primary_collect={shopStatus?.is_primary_collect}
 							virtual={false}
 						/>
@@ -410,13 +424,13 @@ export default function OperationsCosts() {
 				{ modalCreateCostOpen && <ModalCreateCost
 					open={modalCreateCostOpen}
 					onCancel={modalCostHandlerClose}
-					createArticleOpen={setModalCreateExpensesOpen}
-					expenses={expenses}
+					createArticleOpen={setModalCreateArticlesOpen}
+					articles={articles}
 					zIndex={1000}
 				/> }
 
-				{ modalCreateExpensesOpen && <ModalCreateExpenses
-					open={modalCreateExpensesOpen}
+				{ modalCreateArticlesOpen && <ModalCreateExpenses
+					open={modalCreateArticlesOpen}
 					onCancel={modalArticleHandlerClose}
 					onSubmit={addExpenses}
 					zIndex={1001}
@@ -429,8 +443,8 @@ export default function OperationsCosts() {
 				/>}
 
 				{deleteArticleId && <ModalDeleteConfirm
-					title={'Удалить данный артикул?'}
-					onCancel={() => deleteArticleId(null)}
+					title={'Вы уверены, что хотите удалить статью?'}
+					onCancel={() => setDeleteArticleId(null)}
 					onOk={() => deleteArticleHandler(deleteArticleId)}
 				/>}
 

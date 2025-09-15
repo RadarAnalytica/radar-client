@@ -29,8 +29,6 @@ export default function ReportTable({ loading, columns, data, rowSelection = fal
 	if (!loading && !is_primary_collect){
 		return <></>
 	}
-	console.log(JSON.stringify(data, null, 2));
-
 
 	return (
 		<div className={styles.container}  ref={tableContainerRef}>

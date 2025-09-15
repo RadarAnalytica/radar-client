@@ -7,7 +7,7 @@ import {
 	Input,
 } from 'antd';
 import { SelectIcon } from '../../../../components/sharedComponents/apiServicePagesFiltersComponent/shared';
-import styles from './modals.module.css';
+import styles from '../../shared/styles/modals.module.css';
 import { CloseIcon } from '../../shared/Icons';
 import { useState } from 'react';
 export default function ModalCreateExpenses({
