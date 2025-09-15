@@ -2,7 +2,7 @@ import styles from './Footer.module.css'
 import { Link } from 'react-router-dom'
 
 
-export const ExternalFooter: React.FC = () => {
+export const ExternalFooter = () => {
 
     return (
         <footer className={styles.footer} id='footer'>

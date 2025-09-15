@@ -91,7 +91,7 @@ function App() {
 
           <Routes>
             {/* dev */}
-            <Route path='/dev/after-payment' element={<ProtectedRoute><NewAfterPayment /></ProtectedRoute>} />
+            <Route path='/dev/after-payment' element={<ProtectedRoute><NewAfterPayment devMode /></ProtectedRoute>} />
             {/* Admin */}
             <Route path='/blog' element={<ProtectedRoute userRoleProtected routeRuName='Админ панель / Блог'><BlogPage /></ProtectedRoute>} />
             <Route path='/admin-dashboard' element={<ProtectedRoute userRoleProtected routeRuName='Админ панель / Дашборд'><AdminDashboardPage /></ProtectedRoute>} />
@@ -148,7 +148,7 @@ function App() {
             <Route path='/restore/:email/:code' element={<Suspense fallback={<LoaderPage />}>{' '}<ResetPage /></Suspense>} />
             <Route path='/restore-error' element={<Suspense fallback={<LoaderPage />}>{' '}<RestoreError /></Suspense>} />
             <Route path='/confirmation/:email/:code' element={<Suspense fallback={<LoaderPage />}>{' '}<ConfirmationPage /></Suspense>} />
-            <Route path='/after-payment' element={<Suspense fallback={<LoaderPage />}>{' '}<AfterPayment devMode={false} /></Suspense>} />
+            <Route path='/after-payment' element={<Suspense fallback={<LoaderPage />}>{' '}<NewAfterPayment devMode={false} /></Suspense>} />
             {/* 404 */}
             <Route path='*' element={<Page404 />} status={404} />
           </Routes>

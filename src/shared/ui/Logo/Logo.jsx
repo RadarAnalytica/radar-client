@@ -1,12 +1,7 @@
 import { Link } from 'react-router-dom'
 import styles from './Logo.module.css'
 
-type TProps = {
-    text?: null | string | boolean,
-    responsive?: boolean
-}
-
-export const Logo: React.FC<TProps> = ({ text, responsive = true }) => {
+export const Logo= ({ text, responsive = true }) => {
 
     if (!text) {
         return (

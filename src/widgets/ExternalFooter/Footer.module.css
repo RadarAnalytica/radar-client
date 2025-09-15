@@ -51,7 +51,7 @@
     justify-content: space-between;
     align-items: center;
     border: none;
-    font-family: 'Manrope';
+    font-family: 'Manrope', 'Mulish', sans-serif;
     font-weight: 500;
     font-size: 16px;
     line-height: 140%;
@@ -102,7 +102,12 @@
     }
 }
 
-.footer__bottomList > li:hover {
+.footer__bottomList > li:hover > a {
     color: black;
     transition: all .3s ease;
+}
+.footer__bottomList > li > a {
+    text-decoration: none;
+    color: #8F8F8F;
+    font-family: 'Manrope', 'Mulish', sans-serif;
 }

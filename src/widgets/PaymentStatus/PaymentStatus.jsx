@@ -1,10 +1,8 @@
-import styles from './PaymentStatus.module.scss'
+import styles from './PaymentStatus.module.css'
 import classNames from 'classnames/bind'
-// import { Title, Text, Button } from '../../shared'
 import successImage from './success.png'
 import failImage from './fail.png'
 import { Link } from 'react-router-dom'
-const cx = classNames.bind(styles)
 
 const Success = () => {
     return (
@@ -27,7 +25,7 @@ const Fail = () => {
                 <p className={styles.widget__text}>Попробуйте вернуться и провести оплату еще раз</p>
                 <div className={styles.widget_buttonWrapper}>
                     <Link
-                        to='/'
+                        to='/main'
                         className={styles.widget__link}
                     >
                         Попробовать еще раз

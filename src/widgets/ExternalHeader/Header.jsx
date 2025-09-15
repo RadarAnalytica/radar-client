@@ -1,7 +1,5 @@
-// @ts-ignore
-import styles from './Header.module.scss'
-// @ts-ignore
-import { Logo } from '../../../_shared'
+import styles from './Header.module.css'
+import { Logo } from '../../shared/ui/Logo/Logo'
 
 
 

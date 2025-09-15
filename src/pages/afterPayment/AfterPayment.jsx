@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import './styles.css';
+// import './styles.css';
 import styles from './AfterPayment.module.css';
 import AuthContext from '../../service/AuthContext'
 import { URL } from '../../service/config';
@@ -9,24 +9,23 @@ import { ExternalHeader, ExternalFooter } from '../../widgets';
 
 
 // Типы для пропсов компонента
-interface AfterPaymentProps {
-  devMode?: boolean;
-}
+// interface AfterPaymentProps {
+//   devMode?: boolean;
+// }
 
 // Временная типизация для AuthContext
-interface AuthContextType {
-  authToken?: string;
-  user?: any;
-  [key: string]: any;
-}
+// interface AuthContextType {
+//   authToken?: string;
+//   user?: any;
+//   [key: string]: any;
+// }
 
-const AfterPayment: React.FC<AfterPaymentProps> = ({ devMode }) => {
-  const { authToken, user } = useContext(AuthContext as React.Context<AuthContextType>);
+const AfterPayment= ({ devMode }) => {
+  const { authToken, user } = useContext(AuthContext);
   const navigate = useNavigate();
   const location = useLocation();
   const [status, setStatus] = useState(location?.state?.paymentStatus && location?.state?.paymentStatus === 'success' ? true : false)
 
-  //const status = location?.state?.paymentStatus && location?.state?.paymentStatus === 'success' ? true : false;
 
   const refreshUserToken = async () => {
     try {
@@ -51,16 +50,12 @@ const AfterPayment: React.FC<AfterPaymentProps> = ({ devMode }) => {
   useEffect(() => {
     const timeout = setTimeout(() => {
       refreshUserToken().then((res) => {
-        !devMode && navigate('/main')
+        // !devMode && navigate('/main')
       })
     }, 5000);
 
     return () => { clearTimeout(timeout) }
   }, []);
-
-  const tryAgain = () => {
-    navigate('/main')
-  };
 
   return (
     <main className={styles.page}>
@@ -72,6 +67,9 @@ const AfterPayment: React.FC<AfterPaymentProps> = ({ devMode }) => {
         </div>
       </div>
       <ExternalFooter />
+      {devMode &&
+        <button className={styles.switcher} onClick={() => devMode && setStatus(!status)}>Switcher</button>
+      }
     </main>
   )
 };
