@@ -334,8 +334,7 @@ export default function Rnp() {
 							shopId={activeBrand.id}
 						/>
 				)}
-
-				{!loading && ((skuDataTotal) || (skuDataByArticle?.length > 0)) && (<ConfigProvider
+				{!loading && shopStatus?.is_primary_collect && ((rnpDataByArticle?.length > 0 && view === 'articles') || (view === 'total' && rnpDataTotal)) && (<ConfigProvider
 					theme={{
 						token: {
 							colorPrimary: '#EEEAFF',
