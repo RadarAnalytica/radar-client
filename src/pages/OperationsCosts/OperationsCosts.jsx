@@ -13,8 +13,8 @@ import ModalDeleteConfirm from '@/components/sharedComponents/ModalDeleteConfirm
 import styles from './OperationsCosts.module.css';
 import { COSTS_COLUMNS, ARTICLES_COLUMNS } from './config/config';
 import ModalCreateCost from './features/CreateCost/ModalCreateCost';
-import ModalCreateExpenses from './features/CreateExpense/ModalCreateExpenses';
-import { EditIcon, CopyIcon, DeleteIcon } from './shared/Icons';
+import CreateArticle from './features/CreateArticle/CreateArticle';
+import { EditIcon, CopyIcon, DeleteIcon, InfoIcon } from './shared/Icons';
 
 export default function OperationsCosts() {
 
@@ -43,7 +43,7 @@ export default function OperationsCosts() {
 
 	const firstLoad = useRef(true);
 	const [loading, setLoading] = useState(true);
-	const [view, setView] = useState('costs'); // costs | articles
+	const [view, setView] = useState('articles'); // costs | articles
 	// const [isPopoverOpen, setIsPopoverOpen] = useState(false);
 
 	const [modalCreateCostOpen, setModalCreateCostOpen] = useState(false);
@@ -52,18 +52,8 @@ export default function OperationsCosts() {
 	const [deleteCostId, setDeleteCostId] = useState(null);
 	const [deleteArticleId, setDeleteArticleId] = useState(null);
 
-	const [costs, setCosts] = useState([
-		{
-			id: 1,
-			date: '2025-05-10',
-			sum: 12300,
-			article: 'Статья',
-			sku: 123123123,
-			brand: 'Brand',
-			shop: 'Магазин',
-			action: 123,
-		},
-	]);
+	const [costEdit, setCostEdit] = useState(null);
+	const [costs, setCosts] = useState(null);
 	
 	const actionCostsRender = (value, row) => {
 		if (row.key == 'summary') {
@@ -93,13 +83,16 @@ export default function OperationsCosts() {
 			if (column.dataIndex == 'action'){
 				column.render = actionCostsRender
 			}
-			return ({ ket: column.i, ...column })
+			return ({ ...column, key: column.i })
 		})
-		const data = costs.map((cost) => ({...cost, key: cost.id}));
+		let data = [];
+		if (costs){
+			data = costs.map((cost) => ({...cost, key: cost.id}));
+		}
 		const result = {
 			key: 'summary',
 			date: 'Итого',
-			sum: costs.reduce((sum, el) => (sum += el.sum), 0),
+			sum: data.reduce((sum, el) => (sum += el.sum), 0),
 			article: '-',
 			sku: '-',
 			brand: '-',
@@ -110,7 +103,9 @@ export default function OperationsCosts() {
 		return {data, columns};
 	}, [costs]);
 
-	const [articles, setArticles] = useState([]);
+	const [articleEdit, setArticleEdit] = useState(null);
+	const [articles, setArticles] = useState(null);
+	const [articlesLoading, setArticlesLoading] = useState(false);
 
 	const actionArticlesRender = (value, row) => {
 		return (<Flex justify="start" gap={20}>
@@ -118,6 +113,10 @@ export default function OperationsCosts() {
 				<Button
 					type="text"
 					icon={EditIcon}
+					onClick={() => {
+						setArticleEdit((articles.find((article) => article.id === row.id)));
+						setModalCreateArticlesOpen(true)
+					}}
 				></Button>
 				<Button
 					type="text"
@@ -133,34 +132,31 @@ export default function OperationsCosts() {
 			if (column.dataIndex == 'action'){
 				column.render = actionArticlesRender
 			}
-			return ({ ket: column.i, ...column })
+			return ({ ...column, key: column.i })
 		})
-		const data = articles.map((article) => ({...article, key: article.id}));
-
+		let data = [];
+		if (articles){
+			data = articles.map((article) => ({...article, key: article.id}));
+		}
 		return {data, columns}
 	}, [articles]);
 
 	const updateAricles = async () => {
 		setLoading(true);
+		setArticlesLoading(true);
 		try {
 			const res = await ServiceFunctions.getOperationConstsArticles();
-			console.log(res);
-			setArticles([
-				{
-					id: 1,
-					title: 'Статья1'
-				},
-				{
-					id: 2,
-					title: 'Статья2'
-				},
-			]);
+			console.log('updateAricles', res);
+			setArticles(res.data);
 		} catch(error) {
 			console.error('updateAricles error', error);
 			setArticles([]);
-			
 		} finally {
-			setLoading(false);
+			console.log('updateAricles', !firstLoad.current)
+			setArticlesLoading(false);
+			// if (!firstLoad.current) {
+				setLoading(false);
+			// }
 		}
 	}
 
@@ -169,11 +165,15 @@ export default function OperationsCosts() {
 		try {
 			const res = await ServiceFunctions.getOperationConstsCosts();
 			console.log(res)
-			
+			setCosts(res.data)
 		} catch(error) {
-			
+			console.error('updateCosts error', error);
+			setCosts([]);
 		} finally {
-			setLoading(false);
+			console.log('updateCosts', !firstLoad.current)
+			// if (!firstLoad.current) {
+				setLoading(false);
+			// }
 		}
 	}
 
@@ -183,9 +183,15 @@ export default function OperationsCosts() {
 		}
 
 		if (firstLoad.current) {
-			updateCosts();
-			updateAricles();
-			firstLoad.current = false;
+			// new Promise
+			new Promise(resolve => {
+				updateCosts();
+				updateAricles();
+			})
+				.then(() => {
+					firstLoad.current = false;
+					setLoading(false);
+				});
 			return
 		}
 
@@ -206,6 +212,7 @@ export default function OperationsCosts() {
 
 	const modalArticleHandlerClose = () => {
 		setModalCreateArticlesOpen(false);
+		setArticleEdit(null);
 	};
 
 	const modalHandler = () => {
@@ -216,17 +223,91 @@ export default function OperationsCosts() {
 		setModalCreateArticlesOpen(true);
 	};
 
-	const addExpenses = (article) => {
-		setExpenses((articles) => articles.push(article) );
+	const createArticle = async (article) => {
+		setLoading(true);
+		setModalCreateArticlesOpen(false);
+		try {
+			const res = await ServiceFunctions.postOperationConstsCreateArticle();
+			console.log('createArticle', res);
+			// 
+			setArticles((list) => [...list, {...article, id: list.length + Math.ceil(Math.random() * 10)}])
+			// 
+		} catch(error) {
+			console.error('createArticle error', error);
+		} finally {
+			// if (!firstLoad.current) {
+				setLoading(false);
+			// }
+		}
+	}
+
+	const editArticle = async (article) => {
+		setLoading(true);
+		setModalCreateArticlesOpen(false);
+		try {
+			const res = await ServiceFunctions.aptchOperationConstsEditArticle();
+			console.log('editArticle', article);
+			// 
+			setArticles((list) => list.map((el) => {
+				if (el.id === article.id){
+					return article
+				}
+				return el
+			}))
+			// 
+		} catch(error) {
+			console.error('createArticle error', error);
+		} finally {
+			setArticleEdit(null);
+			// if (!firstLoad.current) {
+				setLoading(false);
+			// }
+		}
+	}
+
+	const handleArticle = (article) => {
+		setModalCreateArticlesOpen(false);
+		if (!!articleEdit){
+			console.log('editArticle')
+			editArticle(article);
+			return
+		}
+		console.log('createArticle')
+		createArticle(article);
+		// setExpenses((articles) => articles.push(article) );
+	};
+
+	const handleCost = (cost) => {
+		if (!!costEdit){
+			console.log('editCost')
+			editCost(cost);
+			return
+		}
+		console.log('createCost')
+		createCost(cost);
+		// setExpenses((articles) => articles.push(article) );
 	};
 
 	const deleteCostHandler = (id) => {
 		console.log('delete cost');
 		setDeleteCostId(null);
 	}
-	const deleteArticleHandler = (id) => {
+
+	const deleteArticleHandler = async (id) => {
 		console.log('delete article');
+		setLoading(true);
 		setDeleteArticleId(null);
+		try {
+			const res = await ServiceFunctions.deleteOperationConstsDeleteArticle();
+			// 
+			setArticles((list) => list.filter((el) => el.id !== id));
+			// 
+			console.log('deleteArticleHandler', res);
+		} catch(error) {
+			console.error('deleteArticleHandler error', error);
+		} finally {
+				setLoading(false);
+		}
 	}
 
 	return (
@@ -343,31 +424,7 @@ export default function OperationsCosts() {
 												type="text"
 												iconPosition="start"
 												size="large"
-												icon={
-													<svg
-														width="20"
-														height="20"
-														viewBox="0 0 20 20"
-														fill="none"
-														xmlns="http://www.w3.org/2000/svg"
-													>
-														<rect
-															x="0.75"
-															y="0.75"
-															width="18.5"
-															height="18.5"
-															rx="9.25"
-															stroke="black"
-															strokeOpacity="0.1"
-															strokeWidth="1.5"
-														/>
-														<path
-															d="M9.064 15V7.958H10.338V15H9.064ZM8.952 6.418V5.046H10.464V6.418H8.952Z"
-															fill="#1A1A1A"
-															fillOpacity="0.5"
-														/>
-													</svg>
-												}
+												icon={InfoIcon}
 											>
 												Как загрузить
 											</Button>
@@ -429,11 +486,12 @@ export default function OperationsCosts() {
 					zIndex={1000}
 				/> }
 
-				{ modalCreateArticlesOpen && <ModalCreateExpenses
+				{ modalCreateArticlesOpen && <CreateArticle
 					open={modalCreateArticlesOpen}
 					onCancel={modalArticleHandlerClose}
-					onSubmit={addExpenses}
+					onSubmit={handleArticle}
 					zIndex={1001}
+					data={articleEdit}
 				/> }
 
 				{deleteCostId && <ModalDeleteConfirm
