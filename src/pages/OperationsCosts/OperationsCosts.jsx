@@ -12,7 +12,7 @@ import DataCollectWarningBlock from '@/components/sharedComponents/dataCollectWa
 import ModalDeleteConfirm from '@/components/sharedComponents/ModalDeleteConfirm';
 import styles from './OperationsCosts.module.css';
 import { COSTS_COLUMNS, ARTICLES_COLUMNS } from './config/config';
-import ModalCreateCost from './features/CreateCost/ModalCreateCost';
+import CreateCost from './features/CreateCost/CreateCost';
 import CreateArticle from './features/CreateArticle/CreateArticle';
 import { EditIcon, CopyIcon, DeleteIcon, InfoIcon } from './shared/Icons';
 
@@ -43,16 +43,17 @@ export default function OperationsCosts() {
 
 	const firstLoad = useRef(true);
 	const [loading, setLoading] = useState(true);
-	const [view, setView] = useState('articles'); // costs | articles
+	const [view, setView] = useState('costs'); // costs | articles
 	// const [isPopoverOpen, setIsPopoverOpen] = useState(false);
 
-	const [modalCreateCostOpen, setModalCreateCostOpen] = useState(false);
+	const [createCostOpen, setCreateCostOpen] = useState(false);
 	const [modalCreateArticlesOpen, setModalCreateArticlesOpen] = useState(false);
 
 	const [deleteCostId, setDeleteCostId] = useState(null);
 	const [deleteArticleId, setDeleteArticleId] = useState(null);
 
 	const [costEdit, setCostEdit] = useState(null);
+	const [costCopy, setCostCopy] = useState(null);
 	const [costs, setCosts] = useState(null);
 	
 	const actionCostsRender = (value, row) => {
@@ -64,10 +65,18 @@ export default function OperationsCosts() {
 				<Button
 					type="text"
 					icon={EditIcon}
+					onClick={() => {
+						setCostEdit((costs.find((article) => article.id === row.id)));
+						setCreateCostOpen(true)
+					}}
 					></Button>
 				<Button
 					type="text"
 					icon={CopyIcon}
+					onClick={() => {
+						setCostCopy((costs.find((article) => article.id === row.id)));
+						setCreateCostOpen(true)
+					}}
 					></Button>
 				<Button
 					type="text"
@@ -207,7 +216,9 @@ export default function OperationsCosts() {
 	}, [ filters ])
 
 	const modalCostHandlerClose = () => {
-		setModalCreateCostOpen(false);
+		setCreateCostOpen(false);
+		setCostEdit(null);
+		setCostCopy(null);
 	};
 
 	const modalArticleHandlerClose = () => {
@@ -217,15 +228,15 @@ export default function OperationsCosts() {
 
 	const modalHandler = () => {
 		if (view === 'costs') {
-			setModalCreateCostOpen(true);
+			setCreateCostOpen(true);
 			return;
 		}
 		setModalCreateArticlesOpen(true);
 	};
 
 	const createArticle = async (article) => {
-		setLoading(true);
-		setModalCreateArticlesOpen(false);
+		setArticlesLoading(true);
+		// setModalCreateArticlesOpen(false);
 		try {
 			const res = await ServiceFunctions.postOperationConstsCreateArticle();
 			console.log('createArticle', res);
@@ -235,9 +246,8 @@ export default function OperationsCosts() {
 		} catch(error) {
 			console.error('createArticle error', error);
 		} finally {
-			// if (!firstLoad.current) {
-				setLoading(false);
-			// }
+			// setModalCreateArticlesOpen(false);
+			// setArticlesLoading(false);
 		}
 	}
 
@@ -266,7 +276,7 @@ export default function OperationsCosts() {
 	}
 
 	const handleArticle = (article) => {
-		setModalCreateArticlesOpen(false);
+		// setModalCreateArticlesOpen(false);
 		if (!!articleEdit){
 			console.log('editArticle')
 			editArticle(article);
@@ -288,15 +298,26 @@ export default function OperationsCosts() {
 		// setExpenses((articles) => articles.push(article) );
 	};
 
-	const deleteCostHandler = (id) => {
+	const deleteCostHandler = async (id) => {
 		console.log('delete cost');
-		setDeleteCostId(null);
+		setLoading(true);
+		try {
+			const res = await ServiceFunctions.deleteOperationConstsDeleteCost();
+			// 
+			setCosts((list) => list.filter((el) => el.id !== id));
+			// 
+			console.log('deleteCostHandler', res);
+		} catch(error) {
+			console.error('deleteCostHandler error', error);
+		} finally {
+			setDeleteCostId(null);
+			setLoading(false);
+		}
 	}
 
 	const deleteArticleHandler = async (id) => {
 		console.log('delete article');
 		setLoading(true);
-		setDeleteArticleId(null);
 		try {
 			const res = await ServiceFunctions.deleteOperationConstsDeleteArticle();
 			// 
@@ -306,7 +327,8 @@ export default function OperationsCosts() {
 		} catch(error) {
 			console.error('deleteArticleHandler error', error);
 		} finally {
-				setLoading(false);
+			setDeleteArticleId(null);
+			setLoading(false);
 		}
 	}
 
@@ -478,12 +500,13 @@ export default function OperationsCosts() {
 						/>
 				</div>}
 
-				{ modalCreateCostOpen && <ModalCreateCost
-					open={modalCreateCostOpen}
+				{ createCostOpen && <CreateCost
+					open={createCostOpen}
 					onCancel={modalCostHandlerClose}
 					createArticleOpen={setModalCreateArticlesOpen}
 					articles={articles}
 					zIndex={1000}
+					data={costEdit || costCopy}
 				/> }
 
 				{ modalCreateArticlesOpen && <CreateArticle
@@ -492,6 +515,8 @@ export default function OperationsCosts() {
 					onSubmit={handleArticle}
 					zIndex={1001}
 					data={articleEdit}
+					confirmLoading={articlesLoading}
+					loading={articlesLoading}
 				/> }
 
 				{deleteCostId && <ModalDeleteConfirm

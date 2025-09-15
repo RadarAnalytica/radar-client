@@ -8,10 +8,13 @@ export default function CreateArticle({
 	onCancel,
 	onSubmit,
 	data = null,
+	loading = false,
 	...props
 }) {
 
 	const [title, setTitle] = useState(data?.title);
+
+	console.log(props)
 
 	const onFinish = () => {
 		if (!!data) {
@@ -57,7 +60,7 @@ export default function CreateArticle({
 				className={styles.modal}
 				open={open}
 				centered={true}
-				closable={true}
+				closable={false}
 				closeIcon={<CloseIcon className={styles.close__icon} />}
 				title={
 					<h2 className={styles.modal__title}>
@@ -139,7 +142,7 @@ export default function CreateArticle({
 									type="primary"
 									size="large"
 									htmlType="submit"
-									// loading={true}
+									loading={loading}
 									disabled={!title?.trim()}
 								>
 									Добавить статью
