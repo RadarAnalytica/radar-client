@@ -1633,8 +1633,18 @@ export const ServiceFunctions = {
 	getOperationConstsArticles: async(token) => {
 		try {
 			const res = {
-				data: []
+				data: [
+				{
+					id: 1,
+					title: 'Статья1'
+				},
+				{
+					id: 2,
+					title: 'Статья2'
+				},
+			]
 			};
+			
 			return res;
 		} catch(error) {
 			console.error('getOperationConstsArticles ', error);
@@ -1644,13 +1654,76 @@ export const ServiceFunctions = {
 	getOperationConstsCosts: async(token) => {
 		try {
 			const res = {
-				data: []
+				data: [
+					{
+						id: 1,
+						date: '2025-05-10',
+						sum: 12300,
+						article: 'Расход1',
+						sku: null,
+						brand: null,
+						shop: 'Магазин',
+						type: 'once',
+					},
+					{
+						id: 2,
+						date: '2025-05-10',
+						sum: 300,
+						article: 'Расход2',
+						sku: null,
+						brand: 'AURA',
+						shop: null,
+						type: 'plan',
+					},
+					{
+						id: 3,
+						date: '2025-05-12',
+						sum: 1300,
+						article: 'Расход3',
+						sku: 123124,
+						brand: null,
+						shop: null,
+						type: 'once',
+					},
+				]
 			};
 			return res;
 		} catch(error) {
 			console.error('getOperationConstsArticles ', error);
 			throw new Error(error);
 		}
-	}
+	},
+	postOperationConstsCreateArticle: async() => {
+		try {
+			return true;
+		} catch(error) {
+			console.error('getOperationConstsArticles ', error);
+			throw new Error(error);
+		}
+	},
+	aptchOperationConstsEditArticle: async() => {
+		try {
+			return true;
+		} catch(error) {
+			console.error('aptchOperationConstsEditArticle ', error);
+			throw new Error(error);
+		}
+	},
+	deleteOperationConstsDeleteArticle: async() => {
+		try {
+			return true;
+		} catch(error) {
+			console.error('getOperationConstsArticles ', error);
+			throw new Error(error);
+		}
+	},
+	deleteOperationConstsDeleteCost: async() => {
+		try {
+			return true;
+		} catch(error) {
+			console.error('getOperationConstsArticles ', error);
+			throw new Error(error);
+		}
+	},
 };
 

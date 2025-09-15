@@ -1,5 +1,6 @@
 type CostItem = {
   key?: string,
+  id: number,
   date: string,
   description: string,
   sum: number,
@@ -7,4 +8,5 @@ type CostItem = {
   sku: string | number,
   brand: string,
   shop: string,
+  type: string // once | plan
 }

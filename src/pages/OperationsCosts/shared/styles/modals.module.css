@@ -26,6 +26,10 @@
   margin-bottom: 16px;
 }
 
+.modal__part :global(.ant-select-selection-search-input){
+  border-color: transparent!important;
+}
+
 .modal__subtitle {
   margin-bottom: 8px;
   font-weight: 700;
