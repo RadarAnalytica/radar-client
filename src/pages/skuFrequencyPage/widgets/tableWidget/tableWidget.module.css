@@ -32,59 +32,10 @@
     position: relative;
     overflow-x: auto;
     max-height: 90vh;
-    /* Firefox scrollbar styles */
     scrollbar-width: thin;
-    scrollbar-color: transparent transparent;
-    transition: scrollbar-color 0.3s ease;
+    scrollbar-color: #5329ff80 transparent;
 }
 
-
-
-/* TABLE */
-
-.container thead>tr>th:first-child {
-    border-bottom-left-radius: 20px;
-}
-
-.container thead>tr>th:last-child {
-    border-bottom-right-radius: 20px;
-}
-
-.container thead>tr>th {
-    height: 70px;
-}
-
-.container thead>tr>th>div {
-    gap: 8px;
-}
-
-.container thead>tr>th::before {
-    height: 100% !important;
-    /* background-color: #e8e8e8 !important; */
-}
-
-.container .ant-table-column-title {
-    flex: auto !important;
-}
-
-
-
-
-/* GLOBAL */
-.container :global(.ant-table-column-has-sorters) {
-    margin-left: 10px;
-    margin-right: 10px;
-    user-select: none;
-    /* Стандартное свойство */
-    -webkit-user-select: none;
-    /* Для Safari */
-    -moz-user-select: none;
-    /* Для Firefox */
-    -ms-user-select: none;
-    /* Для IE/Edge */
-}
-
-/* GLOBAL SCROLLBAR STYLES */
 .container::-webkit-scrollbar {
     width: 6px;
     height: 6px;
@@ -92,104 +43,13 @@
 }
 
 .container::-webkit-scrollbar-thumb {
-    background: transparent;
     border-radius: 6px;
-    transition: background-color 0.3s ease;
-}
-
-.container:hover::-webkit-scrollbar-thumb {
     background: #5329ff80;
-}
-
-.container::-webkit-scrollbar-thumb:hover {
-    background: #5329ff !important;
 }
 
 .container::-webkit-scrollbar-track {
     background: transparent;
     height: 50%;
     margin: 10px 20px;
-}
-
-
-.container:hover {
-    scrollbar-color: #5329ff80 transparent;
-}
-
-/* Стили для строк таблицы (не заголовка) - усиленная специфичность */
-.container :global(.ant-table-tbody > tr.ant-table-row) {
-    border-bottom: 1px solid #E8E8E8 !important;
-}
-
-/* Дополнительная специфичность для нижних границ */
-.container :global(.ant-table-tbody > tr.ant-table-row > td) {
-    border-bottom: 1px solid #E8E8E8 !important;
-}
-
-/* Убираем нижние границы у последней строки если нужно */
-.container :global(.ant-table-tbody > tr.ant-table-row:last-child > td) {
-    border-bottom: none !important;
-}
-
-/* Убираем границы у заголовка */
-.container :global(.ant-table-thead > tr > th) {
-    border-bottom: none !important;
-    border-right: none !important;
-    border-left: none !important;
-}
-
-/* Убираем границы между ячейками в заголовке */
-.container :global(.ant-table-thead > tr > th::before) {
-    display: none !important;
-}
-
-/* Убираем правую границу у последней ячейки заголовка */
-.container :global(.ant-table-thead > tr > th:last-child) {
-    border-right: none !important;
-}
-
-/* Убираем левую границу у первой ячейки заголовка */
-.container :global(.ant-table-thead > tr > th:first-child) {
-    border-left: none !important;
-}
-
-/* Убираем границы между ячейками в теле таблицы */
-.container :global(.ant-table-tbody > tr > td) {
-    border-right: none !important;
-    border-left: none !important;
-}
-
-/* Оставляем только нижнюю границу для строк */
-.container :global(.ant-table-tbody > tr > td:first-child) {
-    border-left: 1px solid #f0f0f0 !important;
-}
-
-.container :global(.ant-table-tbody > tr > td:last-child) {
-    border-right: 1px solid #f0f0f0 !important;
-}
-
-
-.container :global(.table__mainHeader) {
-    text-align: left !important;
-    font-family: Mulish;
-    font-weight: 700 !important;
-    font-style: Bold;
-    font-size: 18px;
-    line-height: 100%;
-    letter-spacing: 0%;
-
-}
-.container :global(.table__mainHeader_colored) {
-    text-align: left !important;
-    font-family: Mulish;
-    font-weight: 700 !important;
-    font-style: Bold;
-    font-size: 18px;
-    line-height: 100%;
-    letter-spacing: 0%;
-    background-color: #5329FF0D !important;
-}
-.container :global(.cell__red) {
-    background-color: #5329FF0D !important;
 }
 

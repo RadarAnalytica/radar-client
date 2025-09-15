@@ -43,12 +43,12 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku }) 
     }, [activeBrand, shops]);
 
     const [page, setPage] = useState(1);
-    const [skuLoading, setSkuLoading] = useState(true);
-    // const [skuInprogress, setSkuInprogress] = useState(false);
-    const [localskuDataArticle, setLocalskuDataArticle] = useState([]);
+    const [loading, setLoading] = useState(true);
+    // const [rnpInprogress, setRnpInprogress] = useState(false);
+    const [localRnpDataArticle, setLocalRnpDataArticle] = useState([]);
     const [search, setSearch] = useState(null);
     const [error, setError] = useState(null);
-    const [request, setRequest] = useState(false);
+    const [request, setRequest] = useState(null);
     const initLoad = useRef(true);
 
     const submitSkuDataArticle = () => {
@@ -97,8 +97,8 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku }) 
 					dispatch(rnpSelectedActions.setList(response?.rnp_wb_ids || []));
                 }
 
-                setLocalskuDataArticle(response);
-                setSkuLoading(false);
+                setLocalRnpDataArticle(response);
+                setLoading(false);
             } catch (error) {
 				if (error.message !== 'Отмена запроса') {
                     console.error('updateskuDataArticle error', error);
@@ -125,11 +125,11 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku }) 
         <>
             <Modal
                 footer={
-                    <AddSkuModalFooter
-                        addProducts={submitSkuDataArticle}
-                        setIsAddSkuModalVisible={setIsAddSkuModalVisible}
-                        isDataLoading={skuLoading}
-                        submitDisabled={localskuDataArticle?.length === 0}
+                    <AddRnpModalFooter
+                        addProducts={submitRnpDataArticle}
+                        setIsAddRnpModalVisible={setIsAddRnpModalVisible}
+                        isDataLoading={loading}
+                        submitDisabled={localRnpDataArticle?.length === 0}
                     />
                 }
                 onOk={() => setIsAddSkuModalVisible(false)}
@@ -185,9 +185,9 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku }) 
                             </div>
                         )}
 
-                        {!skuLoading && shopStatus && shopStatus?.is_primary_collect && localskuDataArticle && localskuDataArticle?.data?.length == 0 && (<div className={styles.empty}>Ничего не найдено</div>)}
-                        {!skuLoading && shopStatus && shopStatus?.is_primary_collect && localskuDataArticle && localskuDataArticle?.data?.length > 0 && (<div className={styles.modal__container}>
-                            {localskuDataArticle?.data?.map((el, i) => (
+                        {!loading && shopStatus && shopStatus?.is_primary_collect && localRnpDataArticle && localRnpDataArticle?.data?.length == 0 && (<div className={styles.empty}>Ничего не найдено</div>)}
+                        {!loading && shopStatus && shopStatus?.is_primary_collect && localRnpDataArticle && localRnpDataArticle?.data?.length > 0 && (<div className={styles.modal__container}>
+                            {localRnpDataArticle?.data?.map((el, i) => (
                                 <Flex key={i} className={styles.item} gap={20}>
                                     {(rnpSelected.length >= 25 && !rnpSelected.includes(el.wb_id)) && 
                                       <Tooltip title="Максимальное количество артикулов в РНП - 25" arrow={false}>
@@ -233,8 +233,8 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku }) 
                             defaultCurrent={1}
                             current={page}
                             onChange={setPage}
-                            total={localskuDataArticle?.total_count}
-                            pageSize={localskuDataArticle?.per_page}
+                            total={localRnpDataArticle?.total_count}
+                            pageSize={localRnpDataArticle?.per_page}
                             showSizeChanger={false}
                             hideOnSinglePage={true}
                         />}

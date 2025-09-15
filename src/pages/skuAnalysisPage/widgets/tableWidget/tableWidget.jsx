@@ -126,8 +126,8 @@ const TableWidget = ({ data, tableConfig, tinyRows = false }) => {
                                                 {v.isSortable &&
                                                     <div className={styles.sortControls}>
                                                         <button
-                                                            className={sortState.sortType === 'DESC' && sortState.sortedValue === v.engName ? `${styles.sortControls__button} ${styles.sortControls__button_active}` : styles.sortControls__button}
-                                                            id='DESC'
+                                                            className={sortState.sortType === 'ASC' && sortState.sortedValue === v.engName ? `${styles.sortControls__button} ${styles.sortControls__button_active}` : styles.sortControls__button}
+                                                            id='ASC'
                                                             onClick={(e) => sortButtonClickHandler(e, v.engName)}
                                                         >
                                                             <svg width="12" height="15" viewBox="0 0 12 15" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -135,8 +135,8 @@ const TableWidget = ({ data, tableConfig, tinyRows = false }) => {
                                                             </svg>
                                                         </button>
                                                         <button
-                                                            className={sortState.sortType === 'ASC' && sortState.sortedValue === v.engName ? `${styles.sortControls__button} ${styles.sortControls__button_active}` : styles.sortControls__button}
-                                                            id='ASC'
+                                                            className={sortState.sortType === 'DESC' && sortState.sortedValue === v.engName ? `${styles.sortControls__button} ${styles.sortControls__button_active}` : styles.sortControls__button}
+                                                            id='DESC'
                                                             onClick={(e) => sortButtonClickHandler(e, v.engName)}
                                                         >
                                                             <svg width="12" height="15" viewBox="0 0 12 15" fill="currentColor" xmlns="http://www.w3.org/2000/svg">

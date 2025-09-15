@@ -12,9 +12,10 @@ const TableWidget = ({ tableConfig, setTableConfig }) => {
     const dispatch = useAppDispatch()
     const containerRef = useRef(null) // реф скролл-контейнера (используется чтобы седить за позицией скрола)
     const { requestData, requestStatus, requestObject, formType, pagination } = useAppSelector(store => store.requestsMonitoring)
-    console.log(pagination)
     //задаем начальную дату
     useEffect(() => {
+        console.log('requestObject', requestObject)
+        console.log('formType', formType)
         if (requestObject && formType === 'complex') {
             dispatch(fetchRequestsMonitoringData({ requestObject, requestData }))
         }
@@ -25,7 +26,7 @@ const TableWidget = ({ tableConfig, setTableConfig }) => {
             //console.log('scrollTo', { top: 0, behavior: 'smooth' })
             containerRef.current.scrollTo({ top: 0, behavior: 'smooth' })
         }
-    }, [requestObject])
+    }, [requestObject, formType])
 
 
 
@@ -56,7 +57,6 @@ const TableWidget = ({ tableConfig, setTableConfig }) => {
 
 
     const onResizeGroup = (columnKey, width) => {
-        console.log('Column resized:', columnKey, width);
     
         // Обновляем конфигурацию колонок с группированной структурой
         const updateColumnWidth = (columns) => {
@@ -99,7 +99,7 @@ const TableWidget = ({ tableConfig, setTableConfig }) => {
                     dataSource={requestData}
                     config={tableConfig}
                     resizeable
-                    draggableColumns
+                    //draggableColumns
                     onResize={onResizeGroup}
                     stickyHeader
                     preset="radar-table-simple"
@@ -130,6 +130,9 @@ const TableWidget = ({ tableConfig, setTableConfig }) => {
                         bottom: 0
                     }}
                     scrollContainerRef={containerRef}
+                    bodyCellWrapperStyle={{
+                        minHeight: '85px'
+                    }}
                 />
             </div>
         </div>
