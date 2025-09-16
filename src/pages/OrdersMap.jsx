@@ -34,7 +34,7 @@ const OrdersMap = () => {
   const dispatch = useAppDispatch();
   const { user, authToken, logout } = useContext(AuthContext);
   const shops = useAppSelector((state) => state.shopsSlice.shops);
-  const { activeBrand, selectedRange } = useAppSelector(store => store.filters)
+  const { activeBrand, selectedRange, isFiltersLoaded, activeBrandName, activeArticle, activeGroup } = useAppSelector(store => store.filters)
   const filters = useAppSelector(store => store.filters)
 
   // const [geoData, setGeoData] = useState([]);
@@ -92,10 +92,10 @@ const OrdersMap = () => {
 
   useEffect(() => {
     setPrimaryCollect(activeBrand?.is_primary_collect)
-    if (activeBrand?.is_primary_collect) {
+    if (activeBrand && activeBrand.is_primary_collect && isFiltersLoaded) {
       updateGeoData();
     }
-  }, [filters]);
+  }, [activeBrand, selectedRange, isFiltersLoaded, activeBrandName, activeArticle, activeGroup]);
 
 
 
