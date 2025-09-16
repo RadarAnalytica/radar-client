@@ -3,7 +3,7 @@ import { useRef, useMemo, useCallback, useState } from 'react';
 import { Table as RadarTable } from 'radar-ui';
 import styles from './ReportTable.module.css';
 
-export default function ReportTable({ loading, columns, data, rowSelection = false, virtual=true, is_primary_collect, progress = null }) {
+export default function ReportTable({ loading, columns, data, rowSelection = false, virtual=true, is_primary_collect, is_self_cost_set, progress = null }) {
 	const tableContainerRef = useRef(null);
   const tableRef = useRef(null);
 
@@ -21,7 +21,7 @@ export default function ReportTable({ loading, columns, data, rowSelection = fal
 		const container = tableContainerRef.current;
 		const {width, height} = container.getBoundingClientRect();
 		// расчет высоты относительно контента, высоты фильтров и отступов
-		const availableHeight = height - 210 > 450 ? height - 70 : 450;
+		const availableHeight = height - 210 > 450 ? height - (!is_self_cost_set ? 320 : 110) : 450;
 		return ({ x: width, y: availableHeight })
 	}, [loading])
 
@@ -29,7 +29,6 @@ export default function ReportTable({ loading, columns, data, rowSelection = fal
 	if (!loading && !is_primary_collect){
 		return <></>
 	}
-	console.log(JSON.stringify(data, null, 2));
 
 
 	return (
