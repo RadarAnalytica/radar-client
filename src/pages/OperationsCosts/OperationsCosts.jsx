@@ -15,7 +15,6 @@ import { COSTS_COLUMNS, ARTICLES_COLUMNS } from './config/config';
 import CreateCost from './features/CreateCost/CreateCost';
 import CreateArticle from './features/CreateArticle/CreateArticle';
 import { EditIcon, CopyIcon, DeleteIcon, InfoIcon } from './shared/Icons';
-
 export default function OperationsCosts() {
 
 	const { authToken } = useContext(AuthContext);
@@ -481,6 +480,9 @@ export default function OperationsCosts() {
 							monthHandler={null}
 							monthValue={null}
 							tempPageCondition={null}
+							// operationCostsArticles={true}
+							// operationCostsArticlesData={[]}
+							// operationCostsArticlesHandler={}
 						/>
 				</div>
 				

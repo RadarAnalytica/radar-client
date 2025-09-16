@@ -3,8 +3,10 @@ import { SelectIcon } from '@/components/sharedComponents/apiServicePagesFilters
 import styles from '../../shared/styles/modals.module.css';
 import { CloseIcon, InfoIcon } from '../../shared/Icons';
 import { TimeSelect } from '@/components/sharedComponents/apiServicePagesFiltersComponent/features/timeSelect/timeSelect';
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useAppSelector } from '@/redux/hooks';
+import { DayPicker } from 'react-day-picker';
+import { ru } from 'date-fns/locale';
 // import ModalFooter from './ModalFooter';
 export default function CreateCost({
 	open = true,
@@ -85,6 +87,19 @@ export default function CreateCost({
 		return 'shop'
 	}); // 'shop' | 'sku' | 'brand'
 
+	const [openCalendar, setOpenCalendar] = useState(false);
+
+	const customRuLocale = {
+			...ru,
+			localize: {
+					...ru.localize,
+					month: (n, options) => {
+							const monthName = ru.localize.month(n, options);
+							return monthName.charAt(0).toUpperCase() + monthName.slice(1);
+					},
+			},
+	};
+
 	const icon = <SelectIcon />;
 
 	const [form] = Form.useForm();
@@ -97,6 +112,10 @@ export default function CreateCost({
 		onCancel();
 		form.resetFields();
 	};
+
+	const dateHandler = () => {
+		setOpenCalendar((state) => !state)
+	}
 
 	return (
 		<ConfigProvider
@@ -165,8 +184,35 @@ export default function CreateCost({
 									placeholder="Выберите дату"
 									suffixIcon={icon}
 									variant="filled"
+									onClick={dateHandler}
+									popupRender={() => {}}
+									optionRender={() => {}}
 								/>
 							</Form.Item>
+							<div className={`${styles.calendarPopup} ${openCalendar ? styles.visible : ''}`}>
+								{openCalendar &&
+									<DayPicker
+											// minDate={minDate}
+											maxDate={new Date()}
+											mode=""
+											// selected={localSelectedRange}
+											// month={month}
+											// onMonthChange={setMonth}
+											captionLayout="dropdown"
+											className={styles.customDayPicker}
+											locale={customRuLocale}
+											// onDayClick={handleDayClick}
+											// disabled={[
+													// { before: minDate },
+													// { after: maxDate },
+											// ]}
+											// startMonth={startMonth}
+											// endMonth={endMonth}
+											// components={{
+											// 		Dropdown: DatePickerCustomDropdown
+											// }}
+									/>}
+								</div>
 						</Col>
 						<Col span={12}>
 							<Form.Item
