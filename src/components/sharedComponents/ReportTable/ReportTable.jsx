@@ -1,12 +1,12 @@
 import { ConfigProvider, Table, Button, Progress } from 'antd';
-import { useRef, useMemo, useCallback, useState } from 'react';
+import { useRef, useState, useCallback, useEffect } from 'react';
 import { Table as RadarTable } from 'radar-ui';
 import styles from './ReportTable.module.css';
 
-export default function ReportTable({ loading, columns, data, rowSelection = false, virtual=true, is_primary_collect, is_self_cost_set, progress = null }) {
+export default function ReportTable({ loading, columns, data, rowSelection = false, virtual=true, is_primary_collect, is_self_cost_set = true, progress = null }) {
 	const tableContainerRef = useRef(null);
   const tableRef = useRef(null);
-
+	const [tableScroll, setTableScroll] = useState({ x: 'max-content', y: 344 });
   const handleBodyScroll = useCallback((e) => {
 		const header = tableRef.current?.nativeElement?.querySelector('.ant-table-header');
     if (header) {
@@ -14,24 +14,23 @@ export default function ReportTable({ loading, columns, data, rowSelection = fal
     }
   }, []);
 
-	const tableScroll = useMemo(() => {
-		if (!tableContainerRef.current){
-			return ({ x: 'max-content', y: 450 })
+	useEffect(() => {
+		if (!tableContainerRef.current || tableContainerRef.current.offsetHeight <= 450){
+			setTableScroll({ x: 'max-content', y: 344 })
 		}
 		const container = tableContainerRef.current;
-		const {width, height} = container.getBoundingClientRect();
-		// расчет высоты относительно контента, высоты фильтров и отступов
-		const availableHeight = height - 210 > 450 ? height - (!is_self_cost_set ? 320 : 110) : 450;
-		return ({ x: width, y: availableHeight })
+		const width = container.offsetWidth;
+		const height = container.offsetHeight;
+		const availableHeight = height - 106 - 5;
+		setTableScroll({ x: width, y: availableHeight })
 	}, [loading])
-
 
 	if (!loading && !is_primary_collect){
 		return <></>
 	}
 
 	return (
-		<div className={styles.container}  ref={tableContainerRef}>
+		<div className={styles.container} ref={tableContainerRef}>
 			<div className={styles.tableContainer}>
 				{loading && <div className={styles.loading}>
 						<span className='loader'></span>
