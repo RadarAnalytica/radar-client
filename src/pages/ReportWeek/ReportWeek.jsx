@@ -163,10 +163,10 @@ export default function ReportWeek() {
 	};
 
 	const updateDataReportWeek = async () => {
+        setLoading(true);
 		if (!weekSelected){
 			return
 		}
-		setLoading(true);
 		setProgress(0);
 		const weekStart = weekSelectedFormat();
 		try {
@@ -189,12 +189,13 @@ export default function ReportWeek() {
 				}
 
 				setProgress(100);
-				setTimeout(() => dataToTableData(weeks), 500);
+				await setTimeout(() => dataToTableData(weeks), 500);
+				// dataToTableData(weeks);
 			}
 		} catch (e) {
 			console.error(e);
 			setProgress(100);
-			setTimeout(() => dataToTableData(null), 500);
+			dataToTableData(null);
 		}
 	};
 
@@ -291,7 +292,7 @@ export default function ReportWeek() {
 		if (activeBrand && !activeBrand.is_primary_collect){
 			setLoading(false);
 		}
-	}, [selectedRange, filters, weekSelected, shops, shopStatus]);
+	}, [filters, weekSelected]);
 
 	const popoverHandler = (status) => {
 		setIsPopoverOpen(status);
@@ -484,13 +485,15 @@ export default function ReportWeek() {
 						/>
 				)}
 				{/* { shopStatus?.is_primary_collect && */}
-					<div className={styles.container} style={{ minHeight: !shopStatus?.is_primary_collect ? '0' : '450px' }}>
+					{/* <div className={styles.container} style={{ minHeight: !shopStatus?.is_primary_collect ? '0' : '450px' }}> */}
+					<div className={styles.container}>
 						<ReportTable
 							virtual={false}
 							loading={loading}
 							columns={tableColumns}
 							data={tableRows}
 							is_primary_collect={shopStatus?.is_primary_collect}
+							is_self_cost_set={shopStatus?.is_self_cost_set}
 							progress={progress}
 						/>
 					</div>
