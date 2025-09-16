@@ -80,9 +80,9 @@ const AddRnpModal = ({ isAddRnpModalVisible, setIsAddRnpModalVisible, addRnp }) 
         if (!activeBrand || (
             initLoad.current &&
             activeBrand.id !== 0 &&
-            (filters.activeBrandName.some(_ => _.value === 'Все') ||
-            filters.activeArticle.some(_ => _.value === 'Все') ||
-            filters.activeGroup.some(_ => _.value === 'Все') ||
+            (filters.activeBrandName.some(_ => _.value === 'Все') &&
+            filters.activeArticle.some(_ => _.value === 'Все') &&
+            filters.activeGroup.some(_ => _.value === 'Все') &&
             filters.activeCategory.some(_ => _.value === 'Все'))
         )){
             return

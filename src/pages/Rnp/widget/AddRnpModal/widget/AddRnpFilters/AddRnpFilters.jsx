@@ -55,6 +55,15 @@ export const Filters = ({ open = true }) => {
     if (shops && activeBrand && activeBrand.id !== 0) {
       dispatch(filterActions.setActiveShop(shops[0]))
     }
+
+    if (shops && activeBrand &&
+      (!filtersState.activeBrandName.some(_ => _.value === 'Все') &&
+      !filtersState.activeArticle.some(_ => _.value === 'Все') &&
+      !filtersState.activeGroup.some(_ => _.value === 'Все') &&
+      !filtersState.activeCategory.some(_ => _.value === 'Все'))
+    ) {
+      dispatch(filterActions.setActiveShop(shops[0]))
+    }
     
     // if (shops && activeBrand && !activeBrand.is_primary_collect) {
     //   const currentShop = shops.find(shop => shop.id === activeBrand.id)
