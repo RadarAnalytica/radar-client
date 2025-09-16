@@ -27,7 +27,7 @@ const SelfCostPage = () => {
     const [tableData, setTableData] = useState() // данные для рендера таблицы
     const [filteredTableData, setFilteredTableData] = useState() // данные для рендера таблицы
     const { authToken } = useContext(AuthContext)
-    const { activeBrand } = useAppSelector(store => store.filters)
+    const { activeBrand, selectedRange, isFiltersLoaded, activeBrandName, activeArticle, activeGroup } = useAppSelector((state) => state.filters);
     const filters = useAppSelector(store => store.filters)
     //const prevShop = useRef(activeBrand)
 
@@ -79,10 +79,10 @@ const SelfCostPage = () => {
 
     //задаем начальную дату
     useEffect(() => {
-        if (activeBrand && authToken) {
+        if (activeBrand && activeBrand.is_primary_collect && isFiltersLoaded) {
             getTableData(authToken, activeBrand.id, filters)
         }
-    }, [activeBrand, filters, getTableData, authToken])
+    }, [activeBrand, selectedRange, isFiltersLoaded, activeBrandName, activeArticle, activeGroup])
 
     useEffect(() => {
         let timeout;
