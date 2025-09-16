@@ -147,19 +147,19 @@ export const Filters = ({
       }
     }
 
-    if (shops && activeBrand && !activeBrand.is_primary_collect) {
-      const currentShop = shops.find(shop => shop.id === activeBrand.id)
-      if (currentShop?.is_primary_collect) {
-        dispatch(filterActions.setActiveShop(currentShop))
-      }
-    }
+    // if (shops && activeBrand && !activeBrand.is_primary_collect) {
+    //   const currentShop = shops.find(shop => shop.id === activeBrand.id)
+    //   if (currentShop?.is_primary_collect) {
+    //     dispatch(filterActions.setActiveShop(currentShop))
+    //   }
+    // }
 
-    if (shops && shops.length > 0) {
-      const selectedRangeLocalStorage = localStorage.getItem('selectedRange');
-      if (selectedRangeLocalStorage && selectedRangeLocalStorage !== 'null' && selectedRangeLocalStorage !== 'undefined') {
-        dispatch(filterActions.setPeriod(JSON.parse(selectedRangeLocalStorage)))
-      }
-    }
+    // if (shops && shops.length > 0) {
+    //   const selectedRangeLocalStorage = localStorage.getItem('selectedRange');
+    //   if (selectedRangeLocalStorage && selectedRangeLocalStorage !== 'null' && selectedRangeLocalStorage !== 'undefined') {
+    //     dispatch(filterActions.setPeriod(JSON.parse(selectedRangeLocalStorage)))
+    //   }
+    // }
   }, [shops])
   //--------------------------------------------------------------------------------//
 
