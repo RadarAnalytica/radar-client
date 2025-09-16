@@ -264,6 +264,7 @@ export default function ReportProfitLoss() {
 				<div className={styles.page__headerWrapper}>
 					<Header title="Отчет о прибыли и убытках"></Header>
 				</div>
+
 				{!loading && shopStatus?.is_primary_collect && !shopStatus?.is_self_cost_set && (
 					<SelfCostWarningBlock />
 				)}
@@ -291,15 +292,19 @@ export default function ReportProfitLoss() {
 								title='Ваши данные еще формируются и обрабатываются.'
 						/>
 				)}
-				<div className={styles.container} style={{ minHeight: !shopStatus?.is_primary_collect ? '0' : '450px' }}>
-					<ReportTable
-						loading={loading}
-						columns={columns}
-						data={data}
-						virtual={false}
-						is_primary_collect={activeBrand?.is_primary_collect}
-					></ReportTable>
-				</div>
+
+				{/* <div className={styles.container} style={{ minHeight: !shopStatus?.is_primary_collect ? '0' : '450px' }}> */}
+				{ shopStatus?.is_primary_collect &&
+					<div className={styles.container}>
+						<ReportTable
+							virtual={false}
+							loading={loading}
+							columns={columns}
+							data={data}
+							is_primary_collect={activeBrand?.is_primary_collect}
+						/>
+					</div>
+				}
 			</section>
 		</main>
 	);

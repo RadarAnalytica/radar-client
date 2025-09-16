@@ -74,6 +74,7 @@ export const MonthSelect = ({monthHandler, value, isDataLoading}) => {
                             value={initialValue}
                             getPopupContainer={() => monthRef.current}
                             disabled={isDataLoading}
+                            allowEmpty
                         />
                     </div>
                 </ConfigProvider>

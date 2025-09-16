@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import AuthContext from '../../service/AuthContext';
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, useContext, useLayoutEffect } from 'react';
 import MobilePlug from '../../components/sharedComponents/mobilePlug/mobilePlug';
 import Sidebar from '../../components/sharedComponents/sidebar/sidebar';
 import Header from '../../components/sharedComponents/header/header';
@@ -285,7 +285,7 @@ export default function ReportWeek() {
 		setLoading(false);
 	};
 
-	useEffect(() => {
+	useLayoutEffect(() => {
 		if (activeBrand && activeBrand.is_primary_collect) {
 			updateDataReportWeek();
 		}
@@ -377,7 +377,6 @@ export default function ReportWeek() {
 					<Header title="По неделям"></Header>
 				</div>
 
-				
 				{!loading && shopStatus?.is_primary_collect && !shopStatus?.is_self_cost_set && (
 					<SelfCostWarningBlock />
 				)}
@@ -475,6 +474,7 @@ export default function ReportWeek() {
 						</ConfigProvider> */}
 					</div>
 				</div>)}
+
 				{!loading && shops && user.subscription_status === null && (
 					<NoSubscriptionWarningBlock />
 				)}
@@ -484,8 +484,8 @@ export default function ReportWeek() {
 								title='Ваши данные еще формируются и обрабатываются.'
 						/>
 				)}
-				{/* { shopStatus?.is_primary_collect && */}
-					{/* <div className={styles.container} style={{ minHeight: !shopStatus?.is_primary_collect ? '0' : '450px' }}> */}
+				{/* <div className={styles.container} style={{ minHeight: !shopStatus?.is_primary_collect ? '0' : '450px' }}> */}
+				{ shopStatus?.is_primary_collect &&
 					<div className={styles.container}>
 						<ReportTable
 							virtual={false}
@@ -497,7 +497,7 @@ export default function ReportWeek() {
 							progress={progress}
 						/>
 					</div>
-				{/* } */}
+				}
 			</section>
 			{isConfigOpen && (
 				<TableSettingModal
