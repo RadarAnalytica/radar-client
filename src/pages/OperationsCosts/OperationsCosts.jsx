@@ -245,8 +245,8 @@ export default function OperationsCosts() {
 		} catch(error) {
 			console.error('createArticle error', error);
 		} finally {
-			// setModalCreateArticlesOpen(false);
-			// setArticlesLoading(false);
+			setModalCreateArticlesOpen(false);
+			setArticlesLoading(false);
 		}
 	}
 
