@@ -215,7 +215,7 @@ const AddRnpModal = ({ isAddRnpModalVisible, setIsAddRnpModalVisible, addRnp }) 
                                     <RnpItem
                                         title={el.title}
                                         photo={el.photo}
-                                        rnp={el.wb_id}
+                                        wb_id={el.wb_id}
                                         shop={el.shop_name}
                                     />
                                 </Flex>
