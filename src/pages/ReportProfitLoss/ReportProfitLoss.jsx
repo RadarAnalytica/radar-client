@@ -4,7 +4,7 @@ import { useState, useEffect, useContext, useMemo } from 'react';
 import MobilePlug from '../../components/sharedComponents/mobilePlug/mobilePlug';
 import Sidebar from '../../components/sharedComponents/sidebar/sidebar';
 import Header from '../../components/sharedComponents/header/header';
-import ReportTable from '../../components/sharedComponents/ReportTable/ReportTable';
+import TableWidget from '../../components/sharedComponents/ReportTable/newTableWidget';
 import SelfCostWarningBlock from '../../components/sharedComponents/selfCostWraningBlock/selfCostWarningBlock';
 import { ServiceFunctions } from '../../service/serviceFunctions';
 import { formatPrice } from '../../service/utils';
@@ -17,6 +17,8 @@ import { useAppSelector } from '../../redux/hooks';
 import HowToLink from '../../components/sharedComponents/howToLink/howToLink';
 import DataCollectWarningBlock from '../../components/sharedComponents/dataCollectWarningBlock/dataCollectWarningBlock'
 import NoSubscriptionWarningBlock from '../../components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock';
+
+
 export default function ReportProfitLoss() {
 	const { user, authToken } = useContext(AuthContext);
 	const { activeBrand, selectedRange } = useAppSelector( (state) => state.filters );
@@ -81,115 +83,126 @@ export default function ReportProfitLoss() {
 		);
 	}
 
-	const dataToTableData = (response) => {
-		if (!response || response.data && response.data.length === 0){
-			setColumns(COLUMNS);
-			setData([])
-			return
+	const getConfig = (data) => {
+		const configItemTemplate = {
+			//key: 'name',
+			//title: 'Name',
+			//dataIndex: 'name',
+			sortable: false,
+			fixed: false,
+			fixedLeft: 0,
+			width: 350,
+			minWidth: 350,
+			maxWidth: 700,
+			hidden: false,
+			style: {
+		
+			}
 		}
-		
-		const data = response.data.map((el) => el);
-		const columns = [...COLUMNS];
-		const rows = [...ROWS];
-		
-		// !!!!! перепроверить ключ operating_expenses
-		// if (data[0].data.operating_expenses?.length){
-		// 	const operating = rows.find((el) => el.key === 'operating_expenses');
-		// 	operating.children = [];
-		// 	data[0].data.operating_expenses.forEach((el, i) => {
-		// 		operating.children.push({
-		// 			key: `operating${i}`,
-		// 			title: el.name
-		// 		})
-		// 	})
-		// }
 
-		data.forEach((year) => {
-			// собираем все колонки на основе данных
-			columns.push({
-				title: year.year,
-				key: year.year,
-				dataIndex: year.year,
-				width: 350,
-				className: styles.summary,
-				render: renderColumn,
-			})
-			for (const month of year.months.reverse()) {
-				columns.push({
-					title: month.month_label,
-					key: month.month_label,
-					dataIndex: month.month_label,
-					width: 350,
-					render: renderColumn,
+		const config = [{
+			key: 'article',
+			title: 'Статья',
+			dataIndex: 'article',
+			sortable: false,
+			fixed: true,
+			fixedLeft: 0,
+			width: 400,
+			minWidth: 400,
+			maxWidth: 800,
+			hidden: false,
+		}];
+
+		data.forEach(item => {
+			config.push({
+				...configItemTemplate,
+				key: item.year,
+				title: item.year,
+				dataIndex: item.year,
+				groupColor: '#F7F7F7',
+				style: {
+					backgroundColor: '#F7F6FE'
+				}
+			});
+			if (item.months) {
+				[...item.months.reverse()].forEach(month => {
+					config.push({
+						...configItemTemplate,
+						key: month.month_label,
+						title: month.month_label,
+						dataIndex: month.month_label,
+					});
 				});
 			}
+			
+		});
 
-		})
+		return config;
+	}
 
-		// перебираем данные по годам
-		data.forEach((year) => {
-			for (const row of rows) {
-				// перебираем данные по собранному списку строк
-				for (const column of columns){
-					if (column.key == 'title'){
-						continue
-					}
-					
-					// определяем исходные данные 
-					const data = column.key === year.year ? year?.data : year.months.find((el) => el.month_label == column.key)?.data;
+	const getData = (data, metricsOrder) => {
 
-					if (!data){
-						continue
-					}
-
-					if (row.key == 'sales'){
-						row[column.key] = data[row.key]?.rub;
-						continue
-					}
-					
-					// проверка на данные в разделе Прямые расходы
-					if (row.key == 'direct_expenses'){
-						row.children.forEach((childrenRow) => {
-							if (data[row.key][childrenRow.key]){
-								childrenRow[column.key] = data[row.key][childrenRow.key]
-							}
-						})
-						row[column.key] = data[row.key]['total_expenses']
-						continue
-					}
-
-					// проверка на данные в разделе Операционные расходы
-					if (row.key == 'operating_expenses' && row.children){
-						row.children.forEach((childrenRow, i) => {
-							if (data[row.key][i]){
-								childrenRow[`operating${i}`] = {
-									rub: data[row.key][i].rub,
-									percent: data[row.key][i].percent
-								}
-							}
-						})
-					}
-
-					row[column.key] = data[row.key]
-
-				}
+		const tableData = [];
+		metricsOrder.forEach(metric => {
+			const { key, title, isChildren } = metric;
+			let rowObject = {
+				article: title
 			}
-		})
-
-		// проверка данных себестоимости и обнуление строки Чистая прибыль
-		if (!shopStatus?.is_self_cost_set){
-			const total = rows.find((el) => el.key === 'net_profit');
-			for (const key in total){
-				if (key == 'key' || key == 'title'){
-					continue
+			data.forEach(item => {
+				if (isChildren) {
+					rowObject[item.year] = item.data.direct_expenses[key];
+				} else {
+					rowObject[item.year] = item.data[key];
 				}
-				total[key] = 0
-			}
+
+				if (item.months) {
+					item.months.forEach(month => {
+						if (isChildren) {
+							rowObject[month.month_label] = month.data.direct_expenses[key];
+						} else {
+							rowObject[month.month_label] = month.data[key];
+						}
+					});
+				}
+				tableData.push(rowObject);
+			});
+		});
+
+		return tableData;
+	}
+
+	const dataToTableData = (response) => {
+		if (!response || !response.data || response.data.length === 0){
+			setColumns([]);
+			setData([]);
+			return;
 		}
 
+		const { data } = response;
+		
+		// Define the order of metrics (articles) as they should appear in the table
+		const metricsOrder = [
+			{ key: 'sales', title: 'Фактические продажи'},
+			{ key: 'mp_discount', title: 'Скидка за счет МП' },
+			{ key: 'realization', title: 'Реализация' },
+			// { key: 'direct_expenses', title: 'Прямые расходы' },
+			{ key: 'compensation', title: 'Компенсация' },
+			{ key: 'gross_margin', title: 'Маржинальная прибыль' },
+			{ key: 'operating_profit', title: 'Операционная прибыль (EBITDA)' },
+			{ key: 'tax', title: 'Налоги' },
+			{ key: 'net_profit', title: 'Чистая прибыль' },
+			{ key: 'cost', title: 'Себестоимость', isChildren: true },
+			{ key: 'advert', title: 'Внутренняя реклама', isChildren: true },
+			{ key: 'storage', title: 'Хранение', isChildren: true },
+			{ key: 'paid_acceptance', title: 'Платная приемка', isChildren: true },
+			{ key: 'commission', title: 'Комиссия', isChildren: true },
+			{ key: 'logistic', title: 'Логистика', isChildren: true },
+			{ key: 'penalties', title: 'Штрафы', isChildren: true }
+		];
+
 		setLoading(false);
-		setColumns(columns);
-		setData(rows);
+		setData(getData(data, metricsOrder));
+		setColumns(getConfig(data));
 	};
 
 	const updateDataReportProfitLoss = async () => {
@@ -293,13 +306,15 @@ export default function ReportProfitLoss() {
 						/>
 				)}
 				<div className={styles.container} style={{ minHeight: !shopStatus?.is_primary_collect ? '0' : '450px' }}>
-					<ReportTable
+					<TableWidget
 						loading={loading}
 						columns={columns}
 						data={data}
 						virtual={false}
 						is_primary_collect={activeBrand?.is_primary_collect}
-					></ReportTable>
+						//progress={progress}
+						setTableConfig={setColumns}
+					/>
 				</div>
 			</section>
 		</main>
