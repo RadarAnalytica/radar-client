@@ -3,9 +3,10 @@ import { SelectIcon } from '@/components/sharedComponents/apiServicePagesFilters
 import styles from '../../shared/styles/modals.module.css';
 import { CloseIcon, InfoIcon } from '../../shared/Icons';
 import { TimeSelect } from '@/components/sharedComponents/apiServicePagesFiltersComponent/features/timeSelect/timeSelect';
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect, useRef } from 'react';
 import { useAppSelector } from '@/redux/hooks';
 import { DayPicker } from 'react-day-picker';
+import { format } from 'date-fns';
 import { ru } from 'date-fns/locale';
 // import ModalFooter from './ModalFooter';
 export default function CreateCost({
@@ -44,8 +45,6 @@ export default function CreateCost({
 		</ConfigProvider>
 	);
 
-	console.log('CreateCost', data)
-	
 	const { shops, filters } = useAppSelector((state) => state.filters);
 
 	const allFilters = useMemo(() => {
@@ -74,8 +73,6 @@ export default function CreateCost({
 		}
 		return [];
 	}, [allFilters]);
-
-	const [description, setDescription] = useState(data?.description);
 
 	const [selection, setSelection] = useState(() => {
 		if (data?.sku) {
@@ -112,10 +109,45 @@ export default function CreateCost({
 		onCancel();
 		form.resetFields();
 	};
+	
+	const [date, setDate] = useState(data?.date || '10-10-2024');
+	const dateContainerRef = useRef(null);
+	const datePickerRef = useRef(null);
+	const today = new Date();
+	const minDate = new Date(today);
+	minDate.setDate(today.getDate() - 90);
 
 	const dateHandler = () => {
 		setOpenCalendar((state) => !state)
 	}
+
+	useEffect(() => {
+		const handleClickOutside = (event) => {
+			if (dateContainerRef.current && !dateContainerRef.current.contains(event.target)) {
+				setOpenCalendar(false);
+				// setLocalSelectedRange({ from: null, to: null })
+			}
+		};
+
+		document.addEventListener("mousedown", handleClickOutside);
+		return () => {
+			document.removeEventListener("mousedown", handleClickOutside);
+		};
+	}, []);
+
+	const handleDayClick = (day) => {
+		setDate(day);
+		setOpenCalendar(false);
+	}
+	const handleOnBlur = (event) => {
+		if (datePickerRef.current && !datePickerRef.current.contains(event.target)){
+			setOpenCalendar(false);
+		}
+	}
+
+	// const [sum, setSum] = useState(data?.sum || 0);
+	const [description, setDescription] = useState(data?.description || '');
+
 
 	return (
 		<ConfigProvider
@@ -175,33 +207,42 @@ export default function CreateCost({
 							<Radio value="plan">Плановая</Radio>
 						</Radio.Group>
 					</Form.Item>
-					<Row className="" gutter={16}>
-						<Col span={12}>
-							<Form.Item label="Дата" name='date' initialValue={data?.date}>
+					<Row className={styles.modal__part} gutter={16}>
+						<Col span={12} ref={dateContainerRef}>
+							<Form.Item label="Дата" name='date' initialValue={format(date, 'd.MM.yyyy')}>
 								<Select
 									size="large"
 									variant="filled"
 									placeholder="Выберите дату"
 									suffixIcon={icon}
 									variant="filled"
+									// value={date && format(date, 'd.MM.yyyy')}
+									// options={[
+									// 	{ value: 'sample', label: 'asd' },
+									// 	{ value: 'asd', label: 'asd2' }
+									// ]}
 									onClick={dateHandler}
-									popupRender={() => {}}
-									optionRender={() => {}}
+									onChange={(v) => console.log('onChange', v)}
+									disabled={openCalendar}
+									dropdownStyle={{ display: 'none' }}
 								/>
 							</Form.Item>
-							<div className={`${styles.calendarPopup} ${openCalendar ? styles.visible : ''}`}>
+							<div
+								ref={datePickerRef}
+								className={`${styles.calendarPopup} ${openCalendar ? styles.visible : ''}`}
+								>
 								{openCalendar &&
 									<DayPicker
 											// minDate={minDate}
 											maxDate={new Date()}
-											mode=""
-											// selected={localSelectedRange}
+											mode="single"
+											selected={date}
 											// month={month}
 											// onMonthChange={setMonth}
 											captionLayout="dropdown"
 											className={styles.customDayPicker}
 											locale={customRuLocale}
-											// onDayClick={handleDayClick}
+											onDayClick={handleDayClick}
 											// disabled={[
 													// { before: minDate },
 													// { after: maxDate },
@@ -212,16 +253,17 @@ export default function CreateCost({
 											// 		Dropdown: DatePickerCustomDropdown
 											// }}
 									/>}
-								</div>
+							</div>
 						</Col>
 						<Col span={12}>
 							<Form.Item
 								label="Сумма, руб"
 								name='value'
 								// required={true}
-								initialValue={data?.sum}
+								initialValue={data?.sum || 0}
+								// validateStatus='error'
 							>
-								<Input size="large" />
+								<Input size="large" type='number'/>
 							</Form.Item>
 						</Col>
 					</Row>
@@ -259,12 +301,17 @@ export default function CreateCost({
 							label="Описание"
 							name='description'
 							// required={true}
-							initialValue={data?.description}
+							initialValue={data?.description || description}
 						>
 							<Input.TextArea
 								size="large"
-								autoSize={{ minRows: 1, maxRows: 6 }}
+								autoSize={{ minRows: 1, maxRows: 3 }}
 								onInput={(e) => setDescription(e.target.value)}
+								maxLength={160}
+								status={description.length > 160 ? 'error' : ''}
+								count={{
+									max: 160
+								}}
 							/>
 						</Form.Item>
 					</div>
