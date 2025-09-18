@@ -30,7 +30,17 @@ const customCellRender = (value, record, index, dataIndex) => {
 	) {
 		return (
 			<div className={`${styles.customCell} ${styles.customCellChildren}`}>
-				<span className={styles.customCellValueText}>{value}</span>
+				<span className={styles.customCellValueText} style={{ color: 'rgba(0, 0, 0, .5)'}}>{value}</span>
+			</div>
+		)
+	}
+	if (dataIndex !== 'article' &&
+		(record.article === 'Себестоимость' || record.article === 'Внутренняя реклама' || record.article === 'Хранение' || record.article === 'Платная приемка' || record.article === 'Комиссия' || record.article === 'Логистика' || record.article === 'Штрафы')
+	) {
+		return (
+			<div className={styles.customCell}>
+				<span className={styles.customCellValueRub} style={{ color: 'rgba(0, 0, 0, .5)'}}>{formatPrice(value.rub, '₽')}</span>
+				<span className={styles.customCellValuePercent} style={{ color: 'rgba(0, 0, 0, .5)'}}>{formatPrice(value.percent, '%')}</span>
 			</div>
 		)
 	}
@@ -88,7 +98,7 @@ const TableWidget = ({ loading, columns, data, rowSelection = false, virtual = t
 	}
 
 	return (
-		<div className={styles.container}>
+		<div className={styles.container} style={{ height: loading ? 'calc(100vh - 210px)' : 'auto' }}>
 			<div className={styles.tableContainer} ref={tableContainerRef}>
 				{loading && <div className={styles.loading}>
 					<span className='loader'></span>
