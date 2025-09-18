@@ -3,7 +3,7 @@ import { useRef, useMemo, useCallback, useState } from 'react';
 import { Table as RadarTable } from 'radar-ui';
 import styles from './TableWidget.module.css';
 
-export default function TableWidget({ loading, columns, data, rowSelection = false, virtual = true, is_primary_collect, progress = null }) {
+export default function TableWidget({ loading, columns, data, rowSelection = false, virtual = true, is_primary_collect, progress = null, setTableColumns }) {
     const tableContainerRef = useRef(null);
 
 
@@ -27,7 +27,7 @@ export default function TableWidget({ loading, columns, data, rowSelection = fal
 			}
 			return col;
 		});
-		//setTableConfig(newConfig);
+		setTableColumns(newConfig);
 		document.removeEventListener('mousemove', mouseHandler);
 	}
 
@@ -36,7 +36,7 @@ export default function TableWidget({ loading, columns, data, rowSelection = fal
     }
 
     return (
-        <div className={styles.container}>
+        <div className={styles.container} style={{ height: loading ? 'calc(100vh - 210px)' : 'auto' }}>
             <div className={styles.tableContainer} ref={tableContainerRef}>
                 {loading && <div className={styles.loading}>
                     <span className='loader'></span>
@@ -59,10 +59,6 @@ export default function TableWidget({ loading, columns, data, rowSelection = fal
                         dataSource={data}
                         scrollContainerRef={tableContainerRef}
                         stickyHeader={true}
-                        customCellRender={{
-                            idx: [],
-                            renderer: customCellRender,
-                        }}
                         style={{ fontFamily: 'Mulish' }}
                         pagination={false}
                         paginationContainerStyle={{ display: 'none' }}

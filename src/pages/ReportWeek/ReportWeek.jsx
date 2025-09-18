@@ -24,6 +24,7 @@ import {
 import DataCollectWarningBlock from '../../components/sharedComponents/dataCollectWarningBlock/dataCollectWarningBlock'
 import NoSubscriptionWarningBlock from '../../components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock';
 import { COLUMNS } from './columnsConfig';
+import TableWidget from './widgets/TableWidget/TableWidget';
 
 export default function ReportWeek() {
 	const { user, authToken } = useContext(AuthContext);
@@ -38,6 +39,7 @@ export default function ReportWeek() {
 	const [isConfigOpen, setConfigOpen] = useState(false);
 	const [tableRows, setTableRows] = useState(null);
 	const [progress, setProgress] = useState(0);
+	const [tableColumns, setTableColumns] = useState(COLUMNS);
 
 	useEffect(() => {
 		let interval = null;
@@ -123,7 +125,7 @@ export default function ReportWeek() {
 		return COLUMNS;
 	}
 
-	const [tableColumns, setTableColumns] = useState(initTableColumns());
+	
 
 	const shopStatus = useMemo(() => {
 			if (!activeBrand || !shops) return null;
@@ -483,14 +485,14 @@ export default function ReportWeek() {
 						/>
 				)}
 				{/* { shopStatus?.is_primary_collect && */}
-					<div className={styles.container} style={{ minHeight: !shopStatus?.is_primary_collect ? '0' : '450px' }}>
-						<ReportTable
-							virtual={false}
+					<div className={styles.container}>
+						<TableWidget
 							loading={loading}
 							columns={tableColumns}
 							data={tableRows}
 							is_primary_collect={shopStatus?.is_primary_collect}
 							progress={progress}
+							setTableColumns={setTableColumns}
 						/>
 					</div>
 				{/* } */}

@@ -1,7 +1,6 @@
 .container {
     position: relative;
-    height: 100%;
-    min-height: 450px;
+    max-height: 90vh;
     padding: 16px;
     background-color: #fff;
     border-radius: 16px;
@@ -11,8 +10,25 @@
   .tableContainer {
     position: relative;
     height: 100%;
-    overflow: hidden;
+    overflow: auto;
   }
+
+  .tableContainer::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+    border-radius: 6px;
+}
+
+.tableContainer::-webkit-scrollbar-thumb {
+    border-radius: 6px;
+    background: #5329ff80;
+}
+
+.tableContainer::-webkit-scrollbar-track {
+    background: transparent;
+    height: 50%;
+    margin: 10px 20px;
+}
   
   .tableContainer :global(.ant-table-tbody-virtual-scrollbar-vertical .ant-table-tbody-virtual-scrollbar-thumb),
   .tableContainer :global(.ant-table-tbody-virtual-scrollbar-horizontal .ant-table-tbody-virtual-scrollbar-thumb){
