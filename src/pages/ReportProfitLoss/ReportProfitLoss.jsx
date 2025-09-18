@@ -164,8 +164,8 @@ export default function ReportProfitLoss() {
 						}
 					});
 				}
-				tableData.push(rowObject);
 			});
+			tableData.push(rowObject);
 		});
 
 		return tableData;
@@ -201,7 +201,7 @@ export default function ReportProfitLoss() {
 		];
 
 		setLoading(false);
-		setData(getData(data, metricsOrder));
+		setData([...getData(data, metricsOrder)]);
 		setColumns(getConfig(data));
 	};
 
