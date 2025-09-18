@@ -37,7 +37,6 @@ const OptionsWidget = () => {
 
 
     const simpleFormSubmitHandler = (fields) => {
-        console.log('submit simple')
         const requestObject = {
             query: fields.query,
             avg_price_total: JSON.parse(fields.preferedProductPrice),
@@ -326,6 +325,7 @@ const OptionsWidget = () => {
                                 dynamic_30_days: 'Изменение',
                                 dynamic_60_days: 'Изменение',
                                 dynamic_90_days: 'Изменение',
+
                             }}
                         >
                             <MainFieldset optionsConfig={optionsConfig} form={complexForm} />

@@ -212,6 +212,7 @@ export const Filters = ({
                   value={filtersState[i.groups.stateKey]}
                   optionsData={i.groups.data}
                   isDataLoading={isDataLoading}
+                  filterActions={{'1': '1'}}
                 />
               </div>}
               {/* <div className={styles.filters__inputWrapper}>
