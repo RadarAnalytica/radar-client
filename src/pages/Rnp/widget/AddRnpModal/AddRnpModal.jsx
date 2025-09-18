@@ -162,7 +162,9 @@ const AddRnpModal = ({ isAddRnpModalVisible, setIsAddRnpModalVisible, addRnp }) 
                             fetchFilters={fetchFiltersRnpAdd}
                             timeSelect={false}
                             open={isAddRnpModalVisible}
-                            // clearLoad={true}
+                            articleSelect={false}
+                            groupSelect={false}
+                            categorySelect={false}
                         />
                     </div>
                     <div className={loading ? styles.hide : styles.control}><AddRnpModalSearch loading={loading} submitSearch={setSearch} /></div>
