@@ -1,31 +1,27 @@
-import {
-	ConfigProvider,
-	Modal,
-	Flex,
-	Button,
-	Form,
-	Input,
-} from 'antd';
+import { ConfigProvider, Modal, Flex, Button, Form, Input, } from 'antd';
 import { SelectIcon } from '../../../../components/sharedComponents/apiServicePagesFiltersComponent/shared';
-import styles from './modals.module.css';
+import styles from '../../shared/styles/modals.module.css';
 import { CloseIcon } from '../../shared/Icons';
-import { useState } from 'react';
-export default function ModalCreateExpenses({
+import { useMemo, useState } from 'react';
+export default function CreateArticle({
 	open = true,
 	onCancel,
 	onSubmit,
+	data = null,
+	loading = false,
 	...props
 }) {
 
-	const [title, setTitle] = useState(null);
+	const [title, setTitle] = useState(data?.title);
 
-	const [form] = Form.useForm();
+	console.log(props)
 
 	const onFinish = () => {
+		if (!!data) {
+			onSubmit({...data, title: title.trim()});
+			return 
+		}
 		onSubmit({title: title.trim()});
-		onCancel();
-		setTitle(null)
-		form.resetFields();
 	};
 
 	return (
@@ -64,11 +60,11 @@ export default function ModalCreateExpenses({
 				className={styles.modal}
 				open={open}
 				centered={true}
-				closable={true}
+				closable={false}
 				closeIcon={<CloseIcon className={styles.close__icon} />}
 				title={
 					<h2 className={styles.modal__title}>
-						Добавление статьи расходов
+						{ !!data ? 'Редактирование статьи расходов' : 'Добавление статьи расходов' }
 					</h2>
 				}
 				footer={null}
@@ -76,8 +72,8 @@ export default function ModalCreateExpenses({
 				onCancel={onCancel}
 				props
 			>
-				<Form form={form} onFinish={onFinish} layout="vertical">
-					<Form.Item className={styles.modal__part} label="Название" name='title'>
+				<Form onFinish={onFinish} layout="vertical">
+					<Form.Item className={styles.modal__part} label="Название" name='title' initialValue={data?.title}>
 						<Input size="large" onChange={(e) => { setTitle(e.target.value) }}/>
 					</Form.Item>
 					<ConfigProvider
@@ -146,6 +142,7 @@ export default function ModalCreateExpenses({
 									type="primary"
 									size="large"
 									htmlType="submit"
+									loading={loading}
 									disabled={!title?.trim()}
 								>
 									Добавить статью

@@ -15,7 +15,7 @@ const dynamicNormalizer = (dynamic, from, to) => {
         console.log(parseInt(from) * -1)
         result = {
             start: (parseInt(from) * -1) || null,
-            end: (parseInt(to) * -1 )|| null
+            end: (parseInt(to) * -1) || null
         }
         return result;
     }
@@ -24,6 +24,21 @@ const dynamicNormalizer = (dynamic, from, to) => {
 
 
 export const complexRequestObjectGenerator = (fields) => {
+
+    let { months_grow, months_fall } = fields
+
+    if (!months_grow) {
+        months_grow = null
+    }
+    if (months_grow && Array.isArray(months_grow) && months_grow.length === 0) {
+        months_grow = null
+    }
+    if (!months_fall) {
+        months_fall = null
+    }
+    if (months_fall && Array.isArray(months_fall) && months_fall.length === 0) {
+        months_fall = null
+    }
 
 
     const requestObject = {
@@ -82,18 +97,8 @@ export const complexRequestObjectGenerator = (fields) => {
         g30: dynamicNormalizer(fields.dynamic_30_days, fields.dynamic_30_days_from, fields.dynamic_30_days_to),
         g60: dynamicNormalizer(fields.dynamic_60_days, fields.dynamic_60_days_from, fields.dynamic_60_days_to),
         g90: dynamicNormalizer(fields.dynamic_90_days, fields.dynamic_90_days_from, fields.dynamic_90_days_to),
-        // g30: {
-        //     start: fields.dynamic_30_days_from || null,
-        //     end: fields.dynamic_30_days_to || null
-        // },
-        // g60: {
-        //     start: fields.dynamic_60_days_to || null,
-        //     end: fields.dynamic_60_days_to || null
-        // },
-        // g90: {
-        //     start: fields.dynamic_90_days_to || null,
-        //     end: fields.dynamic_90_days_to || null
-        // },
+        months_grow: months_grow,
+        months_fall: months_fall,
 
         //subject options
         subjects: fields.prefered_items.length !== 0 ? fields.prefered_items : null,
@@ -166,7 +171,7 @@ export const complexRequestObjectGenerator = (fields) => {
             start: fields.goods_with_sales_percent_300_start || null,
             end: fields.goods_with_sales_percent_300_end || null
         },
-        
+
         // not in use
         // add_freq_per_good: {
         //     start: fields.add_freq_per_good_start || 0,
@@ -180,7 +185,7 @@ export const complexRequestObjectGenerator = (fields) => {
         //     start: fields.avg_30_days_revenue_start || 0,
         //     end: fields.avg_30_days_revenue_end || 0
         // },
-        
+
         // pagination state
         page: 1,
         limit: 25,

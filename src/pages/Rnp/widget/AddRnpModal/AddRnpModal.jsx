@@ -48,7 +48,7 @@ const AddRnpModal = ({ isAddRnpModalVisible, setIsAddRnpModalVisible, addRnp }) 
     const [localrnpDataArticle, setLocalrnpDataArticle] = useState([]);
     const [search, setSearch] = useState(null);
     const [error, setError] = useState(null);
-    const [request, setRequest] = useState(false);
+    const [request, setRequest] = useState(null);
     const initLoad = useRef(true);
 
     const submitRnpDataArticle = () => {
@@ -77,12 +77,16 @@ const AddRnpModal = ({ isAddRnpModalVisible, setIsAddRnpModalVisible, addRnp }) 
     }, [page])
 
     useEffect(() => {
+        setRequest((state) => Date.now());
+    }, [page])
+
+    useEffect(() => {
         if (!activeBrand || (
             initLoad.current &&
             activeBrand.id !== 0 &&
-            (filters.activeBrandName.some(_ => _.value === 'Все') ||
-            filters.activeArticle.some(_ => _.value === 'Все') ||
-            filters.activeGroup.some(_ => _.value === 'Все') ||
+            (filters.activeBrandName.some(_ => _.value === 'Все') &&
+            filters.activeArticle.some(_ => _.value === 'Все') &&
+            filters.activeGroup.some(_ => _.value === 'Все') &&
             filters.activeCategory.some(_ => _.value === 'Все'))
         )){
             return

@@ -1,21 +1,20 @@
-import AuthContext from '../../service/AuthContext';
 import { useState, useEffect, useContext, useMemo, useRef } from 'react';
-import MobilePlug from '../../components/sharedComponents/mobilePlug/mobilePlug';
-import Sidebar from '../../components/sharedComponents/sidebar/sidebar';
-import Header from '../../components/sharedComponents/header/header';
-import { ServiceFunctions } from '../../service/serviceFunctions';
-import { Filters } from '../../components/sharedComponents/apiServicePagesFiltersComponent';
 import { ConfigProvider, Button, Popover, Flex } from 'antd';
+import { useAppSelector } from '@/redux/hooks';
+import AuthContext from '@/service/AuthContext';
+import { ServiceFunctions } from '@/service/serviceFunctions';
+import MobilePlug from '@/components/sharedComponents/mobilePlug/mobilePlug';
+import Sidebar from '@/components/sharedComponents/sidebar/sidebar';
+import Header from '@/components/sharedComponents/header/header';
+import { Filters } from '@/components/sharedComponents/apiServicePagesFiltersComponent';
+import ReportTable from '@/components/sharedComponents/ReportTable/ReportTable';
+import DataCollectWarningBlock from '@/components/sharedComponents/dataCollectWarningBlock/dataCollectWarningBlock';
+import ModalDeleteConfirm from '@/components/sharedComponents/ModalDeleteConfirm';
 import styles from './OperationsCosts.module.css';
-import ReportTable from '../../components/sharedComponents/ReportTable/ReportTable';
-import { useAppSelector } from '../../redux/hooks';
-import { COSTS_COLUMNS, ARTICLES_COLUMNS } from './model/model';
-import ModalCreateCost from './widgets/modals/ModalCreateCost';
-import ModalCreateExpenses from './widgets/modals/ModalCreateExpenses';
-import DataCollectWarningBlock from '../../components/sharedComponents/dataCollectWarningBlock/dataCollectWarningBlock';
-import { EditIcon, CopyIcon, DeleteIcon } from './shared/Icons';
-import { useAppDispatch } from '@/redux/hooks';
-
+import { COSTS_COLUMNS, ARTICLES_COLUMNS } from './config/config';
+import CreateCost from './features/CreateCost/CreateCost';
+import CreateArticle from './features/CreateArticle/CreateArticle';
+import { EditIcon, CopyIcon, DeleteIcon, InfoIcon } from './shared/Icons';
 export default function OperationsCosts() {
 
 	const { authToken } = useContext(AuthContext);
@@ -43,34 +42,65 @@ export default function OperationsCosts() {
 
 	const firstLoad = useRef(true);
 	const [loading, setLoading] = useState(true);
-	const [view, setView] = useState('costs'); // costs | expenses
+	const [view, setView] = useState('costs'); // costs | articles
 	// const [isPopoverOpen, setIsPopoverOpen] = useState(false);
 
-	const [modalCreateCostOpen, setModalCreateCostOpen] = useState(false);
-	const [modalCreateExpensesOpen, setModalCreateExpensesOpen] = useState(false);
+	const [createCostOpen, setCreateCostOpen] = useState(false);
+	const [modalCreateArticlesOpen, setModalCreateArticlesOpen] = useState(false);
 
 	const [deleteCostId, setDeleteCostId] = useState(null);
 	const [deleteArticleId, setDeleteArticleId] = useState(null);
 
-	const [costs, setCosts] = useState([
-		{
-			id: 1,
-			date: '2025-05-10',
-			sum: 12300,
-			article: 'Статья',
-			sku: 123123123,
-			brand: 'Brand',
-			shop: 'Магазин',
-			action: 123,
-		},
-	]);
+	const [costEdit, setCostEdit] = useState(null);
+	const [costCopy, setCostCopy] = useState(null);
+	const [costs, setCosts] = useState(null);
 	
+	const actionCostsRender = (value, row) => {
+		if (row.key == 'summary') {
+			return '-';
+		}
+		return (<Flex justify="start" gap={20}>
+			<ConfigProvider>
+				<Button
+					type="text"
+					icon={EditIcon}
+					onClick={() => {
+						setCostEdit((costs.find((article) => article.id === row.id)));
+						setCreateCostOpen(true)
+					}}
+					></Button>
+				<Button
+					type="text"
+					icon={CopyIcon}
+					onClick={() => {
+						setCostCopy((costs.find((article) => article.id === row.id)));
+						setCreateCostOpen(true)
+					}}
+					></Button>
+				<Button
+					type="text"
+					icon={DeleteIcon}
+					onClick={() => setDeleteCostId(row.id)}
+				></Button>
+			</ConfigProvider>
+		</Flex>)
+	}
+
 	const costsData = useMemo(() => {
-		const data = costs.map((cost) => ({...cost, key: cost.id}));
+		const columns = COSTS_COLUMNS.map((column, i) => {
+			if (column.dataIndex == 'action'){
+				column.render = actionCostsRender
+			}
+			return ({ ...column, key: column.i })
+		})
+		let data = [];
+		if (costs){
+			data = costs.map((cost) => ({...cost, key: cost.id}));
+		}
 		const result = {
 			key: 'summary',
 			date: 'Итого',
-			sum: costs.reduce((sum, el) => (sum += el.sum), 0),
+			sum: data.reduce((sum, el) => (sum += el.sum), 0),
 			article: '-',
 			sku: '-',
 			brand: '-',
@@ -78,35 +108,63 @@ export default function OperationsCosts() {
 			action: '-',
 		};
 		data.unshift(result);
-		return data;
+		return {data, columns};
 	}, [costs]);
 
-	const [expenses, setExpenses] = useState([]);
+	const [articleEdit, setArticleEdit] = useState(null);
+	const [articles, setArticles] = useState(null);
+	const [articlesLoading, setArticlesLoading] = useState(false);
 
-	// const expensesData = useMemo(() => expenses.map((el, i) => ({ key: i, ...el })
-	// ), [expenses]);
+	const actionArticlesRender = (value, row) => {
+		return (<Flex justify="start" gap={20}>
+			<ConfigProvider>
+				<Button
+					type="text"
+					icon={EditIcon}
+					onClick={() => {
+						setArticleEdit((articles.find((article) => article.id === row.id)));
+						setModalCreateArticlesOpen(true)
+					}}
+				></Button>
+				<Button
+					type="text"
+					icon={DeleteIcon}
+					onClick={() => setDeleteArticleId(row.id)}
+				></Button>
+			</ConfigProvider>
+		</Flex>)
+	}
+
+	const articlesData = useMemo(() => {
+		const columns = ARTICLES_COLUMNS.map((column, i) => {
+			if (column.dataIndex == 'action'){
+				column.render = actionArticlesRender
+			}
+			return ({ ...column, key: column.i })
+		})
+		let data = [];
+		if (articles){
+			data = articles.map((article) => ({...article, key: article.id}));
+		}
+		return {data, columns}
+	}, [articles]);
 
 	const updateAricles = async () => {
 		setLoading(true);
+		setArticlesLoading(true);
 		try {
 			const res = await ServiceFunctions.getOperationConstsArticles();
-			console.log(res);
-			setExpenses([
-				{
-					id: 1,
-					title: 'Статья1'
-				},
-				{
-					id: 2,
-					title: 'Статья2'
-				},
-			]);
+			console.log('updateAricles', res);
+			setArticles(res.data);
 		} catch(error) {
 			console.error('updateAricles error', error);
-			setExpenses([]);
-			
+			setArticles([]);
 		} finally {
-			setLoading(false);
+			console.log('updateAricles', !firstLoad.current)
+			setArticlesLoading(false);
+			// if (!firstLoad.current) {
+				setLoading(false);
+			// }
 		}
 	}
 
@@ -115,11 +173,15 @@ export default function OperationsCosts() {
 		try {
 			const res = await ServiceFunctions.getOperationConstsCosts();
 			console.log(res)
-			
+			setCosts(res.data)
 		} catch(error) {
-			
+			console.error('updateCosts error', error);
+			setCosts([]);
 		} finally {
-			setLoading(false);
+			console.log('updateCosts', !firstLoad.current)
+			// if (!firstLoad.current) {
+				setLoading(false);
+			// }
 		}
 	}
 
@@ -129,9 +191,15 @@ export default function OperationsCosts() {
 		}
 
 		if (firstLoad.current) {
-			updateCosts();
-			updateAricles();
-			firstLoad.current = false;
+			// new Promise
+			new Promise(resolve => {
+				updateCosts();
+				updateAricles();
+			})
+				.then(() => {
+					firstLoad.current = false;
+					setLoading(false);
+				});
 			return
 		}
 
@@ -140,79 +208,127 @@ export default function OperationsCosts() {
 			updateCosts();
 		}
 		
-		if (view === 'expenses'){
+		if (view === 'articles'){
 			console.log('updateArticles');
 			updateAricles();
 		}
 	}, [ filters ])
 
-	const actionCostRender = (value, row) => {
-		if (row.key == 'summary') {
-			return '-';
-		}
-		return (<Flex justify="start" gap={20}>
-			<ConfigProvider>
-				<Button
-					type="text"
-					icon={EditIcon}
-				></Button>
-				<Button
-					type="text"
-					icon={CopyIcon}
-				></Button>
-				<Button
-					type="text"
-					icon={DeleteIcon}
-				></Button>
-			</ConfigProvider>
-		</Flex>)
-	}
-
-	const actionExpansesRender = (value, row) => {
-		return (<Flex justify="start" gap={20}>
-			<ConfigProvider>
-				<Button
-					type="text"
-					icon={EditIcon}
-				></Button>
-				<Button
-					type="text"
-					icon={DeleteIcon}
-				></Button>
-			</ConfigProvider>
-		</Flex>)
-	}
-
 	const modalCostHandlerClose = () => {
-		setModalCreateCostOpen(false);
+		setCreateCostOpen(false);
+		setCostEdit(null);
+		setCostCopy(null);
 	};
 
 	const modalArticleHandlerClose = () => {
-		setModalCreateExpensesOpen(false);
+		setModalCreateArticlesOpen(false);
+		setArticleEdit(null);
 	};
 
 	const modalHandler = () => {
 		if (view === 'costs') {
-			setModalCreateCostOpen(true);
+			setCreateCostOpen(true);
 			return;
 		}
-		setModalCreateExpensesOpen(true);
+		setModalCreateArticlesOpen(true);
 	};
 
-	const addExpenses = (article) => {
-		setExpenses((expenses) => {
-			expenses.push(article);
-			return expenses;
-		});
-	};
-
-	const deleteCostHandler = (id) => {
-		console.log('delete cost');
-		setDeleteCostId(null);
+	const createArticle = async (article) => {
+		setArticlesLoading(true);
+		// setModalCreateArticlesOpen(false);
+		try {
+			const res = await ServiceFunctions.postOperationConstsCreateArticle();
+			console.log('createArticle', res);
+			// 
+			setArticles((list) => [...list, {...article, id: list.length + Math.ceil(Math.random() * 10)}])
+			// 
+		} catch(error) {
+			console.error('createArticle error', error);
+		} finally {
+			setModalCreateArticlesOpen(false);
+			setArticlesLoading(false);
+		}
 	}
-	const deleteArticleHandler = (id) => {
+
+	const editArticle = async (article) => {
+		setLoading(true);
+		setModalCreateArticlesOpen(false);
+		try {
+			const res = await ServiceFunctions.aptchOperationConstsEditArticle();
+			console.log('editArticle', article);
+			// 
+			setArticles((list) => list.map((el) => {
+				if (el.id === article.id){
+					return article
+				}
+				return el
+			}))
+			// 
+		} catch(error) {
+			console.error('createArticle error', error);
+		} finally {
+			setArticleEdit(null);
+			// if (!firstLoad.current) {
+				setLoading(false);
+			// }
+		}
+	}
+
+	const handleArticle = (article) => {
+		// setModalCreateArticlesOpen(false);
+		if (!!articleEdit){
+			console.log('editArticle')
+			editArticle(article);
+			return
+		}
+		console.log('createArticle')
+		createArticle(article);
+		// setExpenses((articles) => articles.push(article) );
+	};
+
+	const handleCost = (cost) => {
+		if (!!costEdit){
+			console.log('editCost')
+			editCost(cost);
+			return
+		}
+		console.log('createCost')
+		createCost(cost);
+		// setExpenses((articles) => articles.push(article) );
+	};
+
+	const deleteCostHandler = async (id) => {
+		console.log('delete cost');
+		setLoading(true);
+		try {
+			const res = await ServiceFunctions.deleteOperationConstsDeleteCost();
+			// 
+			setCosts((list) => list.filter((el) => el.id !== id));
+			// 
+			console.log('deleteCostHandler', res);
+		} catch(error) {
+			console.error('deleteCostHandler error', error);
+		} finally {
+			setDeleteCostId(null);
+			setLoading(false);
+		}
+	}
+
+	const deleteArticleHandler = async (id) => {
 		console.log('delete article');
-		setDeleteArticleId(null);
+		setLoading(true);
+		try {
+			const res = await ServiceFunctions.deleteOperationConstsDeleteArticle();
+			// 
+			setArticles((list) => list.filter((el) => el.id !== id));
+			// 
+			console.log('deleteArticleHandler', res);
+		} catch(error) {
+			console.error('deleteArticleHandler error', error);
+		} finally {
+			setDeleteArticleId(null);
+			setLoading(false);
+		}
 	}
 
 	return (
@@ -283,7 +399,7 @@ export default function OperationsCosts() {
 								<Button
 									size="large"
 									type={view === 'costs' ? 'default' : 'primary'}
-									onClick={() => { setView('expenses'); }}
+									onClick={() => { setView('articles'); }}
 								>
 									Статьи
 								</Button>
@@ -329,31 +445,7 @@ export default function OperationsCosts() {
 												type="text"
 												iconPosition="start"
 												size="large"
-												icon={
-													<svg
-														width="20"
-														height="20"
-														viewBox="0 0 20 20"
-														fill="none"
-														xmlns="http://www.w3.org/2000/svg"
-													>
-														<rect
-															x="0.75"
-															y="0.75"
-															width="18.5"
-															height="18.5"
-															rx="9.25"
-															stroke="black"
-															strokeOpacity="0.1"
-															strokeWidth="1.5"
-														/>
-														<path
-															d="M9.064 15V7.958H10.338V15H9.064ZM8.952 6.418V5.046H10.464V6.418H8.952Z"
-															fill="#1A1A1A"
-															fillOpacity="0.5"
-														/>
-													</svg>
-												}
+												icon={InfoIcon}
 											>
 												Как загрузить
 											</Button>
@@ -388,6 +480,9 @@ export default function OperationsCosts() {
 							monthHandler={null}
 							monthValue={null}
 							tempPageCondition={null}
+							// operationCostsArticles={true}
+							// operationCostsArticlesData={[]}
+							// operationCostsArticlesHandler={}
 						/>
 				</div>
 				
@@ -399,27 +494,31 @@ export default function OperationsCosts() {
 						<ReportTable
 							loading={loading}
 							columns={
-								view === 'costs' ? COSTS_COLUMNS : ARTICLES_COLUMNS
+								view === 'costs' ? costsData.columns : articlesData.columns
 							}
-							data={view === 'costs' ? costsData : expenses.map((expanse, i) => ({ key: i, ...expanse}))}
+							data={view === 'costs' ? costsData.data : articlesData.data}
 							is_primary_collect={shopStatus?.is_primary_collect}
 							virtual={false}
 						/>
 				</div>}
 
-				{ modalCreateCostOpen && <ModalCreateCost
-					open={modalCreateCostOpen}
+				{ createCostOpen && <CreateCost
+					open={createCostOpen}
 					onCancel={modalCostHandlerClose}
-					createArticleOpen={setModalCreateExpensesOpen}
-					expenses={expenses}
+					createArticleOpen={setModalCreateArticlesOpen}
+					articles={articles}
 					zIndex={1000}
+					data={costEdit || costCopy}
 				/> }
 
-				{ modalCreateExpensesOpen && <ModalCreateExpenses
-					open={modalCreateExpensesOpen}
+				{ modalCreateArticlesOpen && <CreateArticle
+					open={modalCreateArticlesOpen}
 					onCancel={modalArticleHandlerClose}
-					onSubmit={addExpenses}
+					onSubmit={handleArticle}
 					zIndex={1001}
+					data={articleEdit}
+					confirmLoading={articlesLoading}
+					loading={articlesLoading}
 				/> }
 
 				{deleteCostId && <ModalDeleteConfirm
@@ -429,8 +528,8 @@ export default function OperationsCosts() {
 				/>}
 
 				{deleteArticleId && <ModalDeleteConfirm
-					title={'Удалить данный артикул?'}
-					onCancel={() => deleteArticleId(null)}
+					title={'Вы уверены, что хотите удалить статью?'}
+					onCancel={() => setDeleteArticleId(null)}
 					onOk={() => deleteArticleHandler(deleteArticleId)}
 				/>}
 

@@ -4,44 +4,7 @@ import { setLoading } from '../loading/loadingSlice';
 
 
 
-/**
- * "shops": [
-            {
-                "shop_data": {
-                    "id": 81,
-                    "brand_name": "Test (no collect)",
-                    "is_active": true,
-                    "is_valid": false,
-                    "is_primary_collect": true,
-                    "updated_at": "2024-10-18T03:28:29.901783"
-                },
-                "brands": [
-                    {
-                        "name": "Nike",
-                        "wb_id": [
-                            "NE23D-S982C/172",
-                            "NE23D-S982C/391",
-                            "NE23D-S982C/596",
-                            "NE23D-S982C/701",
-                            "NE23D-S982C/882",
-                            "NE23MD-S991C/354",
-                            "NE23MD-S991C/530",
-                            "NE23MD-S991C/596",
-                            "NE23MD-S991C/701",
-                            "NE23MD-S991C/882"
-                        ]
-                },
-                "groups": [
-                    {
-                        "id": 2,
-                        "name": "1"
-                    },
-                    {
-                        "id": 15,
-                        "name": "123"
-                    }
-                ]
- */
+
 const createFiltersDTO = (data) => {
   // 1 - создаем массив всех магазинов + опцию "Все магазины"
   const shops = [{ brand_name: 'Все', value: 'Все', id: 0, is_primary_collect: data.some(_ => _.shop_data.is_primary_collect), is_self_cost_set: !data.some(_ => !_.shop_data.is_self_cost_set) }, ...data.map(_ => ({ ..._.shop_data, value: _.shop_data.name }))]
@@ -132,7 +95,33 @@ const createFiltersDTO = (data) => {
     return newItem
   })]
 
-  return { shops, filtersData: DTO, initState: { activeBrandName: [{ value: 'Все' }], activeArticle: [{ value: 'Все' }], activeGroup: [{ id: 0, value: 'Все' }] } }
+
+  // поднимаем сохраненный период чтобы установить его по умолчанию
+  let savedSelectedRange = localStorage.getItem('selectedRange')
+  if (savedSelectedRange) {
+    savedSelectedRange = JSON.parse(savedSelectedRange)
+  } else {
+    savedSelectedRange = {
+      period: 30
+    }
+  }
+
+
+  // поднимаем сохраненный магазин чтобы установить его по умолчанию
+  let savedActiveBrand = localStorage.getItem('activeShop')
+  if (savedActiveBrand) {
+    savedActiveBrand = JSON.parse(savedActiveBrand)
+    // проверяем есть ли магазин в массиве (это на случай разных аккаунтов)
+    const isInShops = shops.some(_ => _.id === savedActiveBrand.id);
+    // Если магазин есть в массиве (т.е. валиден для этого аккаунта) то...
+    if (!isInShops) {
+      savedActiveBrand = shops[0]
+    }
+  } else {
+    savedActiveBrand = shops[0]
+  }
+
+  return { shops, filtersData: DTO, initState: { activeBrandName: [{ value: 'Все' }], activeArticle: [{ value: 'Все' }], activeGroup: [{ id: 0, value: 'Все' }], selectedRange: savedSelectedRange, activeBrand: savedActiveBrand } }
 }
 
 export const fetchFilters = createAsyncThunk(

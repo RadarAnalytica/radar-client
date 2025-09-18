@@ -38,6 +38,7 @@ const SupplierIdPage = () => {
     const dispatch = useAppDispatch()
     const mainSupplierData = useAppSelector(selectMainSupplierData)
     const isAnyDataLoading = useAppSelector(store => store.supplierAnalysis.isAnyDataLoading)
+    console.log(isAnyDataLoading)
     const params = useParams()
     const navigate = useNavigate()
 
