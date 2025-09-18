@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext, useMemo, useRef } from 'react';
-import { ConfigProvider, Button, Popover, Flex } from 'antd';
+import { ConfigProvider, Button, Popover, Flex, Tooltip } from 'antd';
 import { useAppSelector } from '@/redux/hooks';
 import AuthContext from '@/service/AuthContext';
 import { ServiceFunctions } from '@/service/serviceFunctions';
@@ -68,6 +68,7 @@ export default function OperationsCosts() {
 						setCostEdit((costs.find((article) => article.id === row.id)));
 						setCreateCostOpen(true)
 					}}
+					title='Изменить'
 					></Button>
 				<Button
 					type="text"
@@ -76,11 +77,13 @@ export default function OperationsCosts() {
 						setCostCopy((costs.find((article) => article.id === row.id)));
 						setCreateCostOpen(true)
 					}}
+					title='Копировать'
 					></Button>
 				<Button
 					type="text"
 					icon={DeleteIcon}
 					onClick={() => setDeleteCostId(row.id)}
+					title='Удалить'
 				></Button>
 			</ConfigProvider>
 		</Flex>)
@@ -125,11 +128,13 @@ export default function OperationsCosts() {
 						setArticleEdit((articles.find((article) => article.id === row.id)));
 						setModalCreateArticlesOpen(true)
 					}}
-				></Button>
+					title='Изменить'
+					></Button>
 				<Button
 					type="text"
 					icon={DeleteIcon}
 					onClick={() => setDeleteArticleId(row.id)}
+					title='Удалить'
 				></Button>
 			</ConfigProvider>
 		</Flex>)
@@ -423,6 +428,12 @@ export default function OperationsCosts() {
 								}}
 							>
 								{view === 'costs' && (
+									<Flex gap={10} align='center'>
+										<Tooltip title={'Как загрузить'}>
+											{InfoIcon}
+										</Tooltip>
+										Как загрузить
+									</Flex>
 									// <Popover
 									// 	arrow={false}
 									// 	content={'Как загрузить'}
@@ -431,25 +442,25 @@ export default function OperationsCosts() {
 									// 	placement="bottomRight"
 									// 	// onOpenChange={popoverHandler}
 									// >
-										<ConfigProvider
-											theme={{
-												components: {
-													Button: {
-														fontSize: 16,
-														fontWeight: 500,
-													},
-												},
-											}}
-										>
-											<Button
-												type="text"
-												iconPosition="start"
-												size="large"
-												icon={InfoIcon}
-											>
-												Как загрузить
-											</Button>
-										</ConfigProvider>
+										// <ConfigProvider
+										// 	theme={{
+										// 		components: {
+										// 			Button: {
+										// 				fontSize: 16,
+										// 				fontWeight: 500,
+										// 			},
+										// 		},
+										// 	}}
+										// >
+										// 	<Button
+										// 		type="text"
+										// 		iconPosition="start"
+										// 		size="large"
+										// 		icon={InfoIcon}
+										// 	>
+										// 		Как загрузить
+										// 	</Button>
+										// </ConfigProvider>
 									// </Popover>
 								)}
 
@@ -458,6 +469,7 @@ export default function OperationsCosts() {
 									iconPosition="start"
 									size="large"
 									onClick={modalHandler}
+									title={view === 'costs' ? 'Добавить расход' : 'Добавить статью'}
 								>
 									Добавить
 								</Button>
@@ -508,7 +520,10 @@ export default function OperationsCosts() {
 					createArticleOpen={setModalCreateArticlesOpen}
 					articles={articles}
 					zIndex={1000}
-					data={costEdit || costCopy}
+					edit={costEdit}
+					copy={costCopy}
+					// state={() => ('edit' && costEdit) || ('copy' && costCopy)}
+					// data={costEdit || costCopy}
 				/> }
 
 				{ modalCreateArticlesOpen && <CreateArticle
