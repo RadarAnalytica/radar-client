@@ -465,7 +465,7 @@ const DynamicFieldset = ({ form }) => {
 
                     <div className={styles.form__dynamicSelectBlock}>
                         <label className={styles.form__doubledLabel} style={{whiteSpace: 'nowrap'}}>
-                            Месяц роста запросов
+                            Месяцы роста запросов
                             <svg width="21" height="13" viewBox="0 0 21 13" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ margin: '0 0 3px 5px' }}>
                                 <path d="M14.2 0.543945L16.49 2.83395L11.61 7.71395L7.60995 3.71395L0.199951 11.1339L1.60995 12.5439L7.60995 6.54395L11.61 10.5439L17.91 4.25395L20.2 6.54395V0.543945H14.2Z" fill="#00B69B" />
                             </svg>
@@ -521,7 +521,7 @@ const DynamicFieldset = ({ form }) => {
                     </div>
                     <div className={styles.form__dynamicSelectBlock}>
                         <label className={styles.form__doubledLabel} style={{whiteSpace: 'nowrap'}}>
-                            Месяц спада запросов
+                            Месяцы спада запросов
                             <svg width="21" height="13" viewBox="0 0 21 13" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ margin: '0 0 3px 5px' }}>
                                 <path d="M14.5999 12.5439L16.8899 10.2539L12.0099 5.37395L8.00985 9.37395L0.599854 1.95395L2.00985 0.543945L8.00985 6.54395L12.0099 2.54395L18.3099 8.83395L20.5999 6.54395V12.5439H14.5999Z" fill="#F93C65" />
                             </svg>
