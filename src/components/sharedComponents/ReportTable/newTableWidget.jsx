@@ -6,6 +6,34 @@ import styles from './newTableWidget.module.css';
 
 
 const customCellRender = (value, record, index, dataIndex) => {
+
+
+	if (record.article === 'Прямые расходы') {
+		if (typeof value === 'object') {
+			return (
+				<div className={styles.customCell}>
+					<span className={styles.customCellValueRub}><b>{formatPrice(value.rub, '₽')}</b></span>
+					<span className={styles.customCellValuePercent}><b>{formatPrice(value.percent, '%')}</b></span>
+				</div>
+			)
+		}
+		return (
+			<div className={styles.customCell}>
+				<span className={styles.customCellValueText}><b>{value}</b></span>
+			</div>
+		)
+	}
+
+	if (
+		dataIndex === 'article' &&
+		(record.article === 'Себестоимость' || record.article === 'Внутренняя реклама' || record.article === 'Хранение' || record.article === 'Платная приемка' || record.article === 'Комиссия' || record.article === 'Логистика' || record.article === 'Штрафы')
+	) {
+		return (
+			<div className={`${styles.customCell} ${styles.customCellChildren}`}>
+				<span className={styles.customCellValueText}>{value}</span>
+			</div>
+		)
+	}
 	if (typeof value === 'object') {
 		return (
 			<div className={styles.customCell}>
@@ -30,29 +58,29 @@ const TableWidget = ({ loading, columns, data, rowSelection = false, virtual = t
 	const tableContainerRef = useRef(null);
 
 
-    const onResize = (columnKey, newWidth) => {
-        // console.log('onResize', { columnKey, newWidth });
-        const mouseHandler = (e) => {
-          e.preventDefault();
-          e.stopPropagation();
-        }
-    
-        document.addEventListener('mousemove', mouseHandler);
-        const newConfig = columns.map((col, index) => {
-          if (col.key === columnKey) {
-            if (index === columns.length - 1) {
-                tableContainerRef.current?.scrollTo({
-                left: tableContainerRef.current?.scrollWidth - tableContainerRef.current?.clientWidth,
-                behavior: 'smooth'
-              });
-            }
-            return { ...col, width: newWidth, minWidth: newWidth };
-          }
-          return col;
-        });
-        setTableConfig(newConfig);
-        document.removeEventListener('mousemove', mouseHandler);
-      }
+	const onResize = (columnKey, newWidth) => {
+		// console.log('onResize', { columnKey, newWidth });
+		const mouseHandler = (e) => {
+			e.preventDefault();
+			e.stopPropagation();
+		}
+
+		document.addEventListener('mousemove', mouseHandler);
+		const newConfig = columns.map((col, index) => {
+			if (col.key === columnKey) {
+				if (index === columns.length - 1) {
+					tableContainerRef.current?.scrollTo({
+						left: tableContainerRef.current?.scrollWidth - tableContainerRef.current?.clientWidth,
+						behavior: 'smooth'
+					});
+				}
+				return { ...col, width: newWidth, minWidth: newWidth };
+			}
+			return col;
+		});
+		setTableConfig(newConfig);
+		document.removeEventListener('mousemove', mouseHandler);
+	}
 
 
 	if (!loading && !is_primary_collect) {
@@ -88,9 +116,9 @@ const TableWidget = ({ loading, columns, data, rowSelection = false, virtual = t
 						renderer: customCellRender,
 					}}
 					style={{ fontFamily: 'Mulish' }}
-                    pagination={false}
-                    paginationContainerStyle={{ display: 'none' }}
-                    bodyRowClassName={styles.bodyRowSpecial}
+					pagination={false}
+					paginationContainerStyle={{ display: 'none' }}
+					bodyRowClassName={styles.bodyRowSpecial}
 				/>
 			</div>
 		</div>
