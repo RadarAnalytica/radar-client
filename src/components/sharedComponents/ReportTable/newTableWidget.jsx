@@ -38,7 +38,7 @@ const customCellRender = (value, record, index, dataIndex) => {
 		return (
 			<div className={styles.customCell}>
 				<span className={styles.customCellValueRub}>{formatPrice(value.rub, '₽')}</span>
-				<span className={styles.customCellValuePercent}>{formatPrice(value.percent, '%')}</span>
+				{record.article !== 'Фактические продажи' && <span className={styles.customCellValuePercent}>{formatPrice(value.percent, '%')}</span>}
 			</div>
 		)
 	}

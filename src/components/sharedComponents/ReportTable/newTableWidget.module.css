@@ -234,6 +234,6 @@
 
 
   .bodyRowSpecial:hover td div {
-    background-color: #F7F7F7 !important;
+    background-color: #FAFAFA !important;
     transition: all 0.2s ease;
   }
