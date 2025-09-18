@@ -102,6 +102,7 @@ const TableWidget = ({ loading, columns, data, rowSelection = false, virtual = t
 						/>
 					</div>}
 				</div>}
+				{!loading && 
 				<RadarTable
 					resizeable
 					onResize={onResize}
@@ -120,6 +121,7 @@ const TableWidget = ({ loading, columns, data, rowSelection = false, virtual = t
 					paginationContainerStyle={{ display: 'none' }}
 					bodyRowClassName={styles.bodyRowSpecial}
 				/>
+				}
 			</div>
 		</div>
 	);
