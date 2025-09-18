@@ -164,8 +164,8 @@ export default function ReportProfitLoss() {
 						}
 					});
 				}
-				tableData.push(rowObject);
 			});
+			tableData.push(rowObject);
 		});
 
 		return tableData;
@@ -185,12 +185,12 @@ export default function ReportProfitLoss() {
 			{ key: 'sales', title: 'Фактические продажи'},
 			{ key: 'mp_discount', title: 'Скидка за счет МП' },
 			{ key: 'realization', title: 'Реализация' },
-			// { key: 'direct_expenses', title: 'Прямые расходы' },
 			{ key: 'compensation', title: 'Компенсация' },
 			{ key: 'gross_margin', title: 'Маржинальная прибыль' },
 			{ key: 'operating_profit', title: 'Операционная прибыль (EBITDA)' },
 			{ key: 'tax', title: 'Налоги' },
 			{ key: 'net_profit', title: 'Чистая прибыль' },
+			{ key: 'total_expenses', title: 'Прямые расходы', isChildren: true },
 			{ key: 'cost', title: 'Себестоимость', isChildren: true },
 			{ key: 'advert', title: 'Внутренняя реклама', isChildren: true },
 			{ key: 'storage', title: 'Хранение', isChildren: true },
@@ -201,7 +201,7 @@ export default function ReportProfitLoss() {
 		];
 
 		setLoading(false);
-		setData(getData(data, metricsOrder));
+		setData([...getData(data, metricsOrder)]);
 		setColumns(getConfig(data));
 	};
 
