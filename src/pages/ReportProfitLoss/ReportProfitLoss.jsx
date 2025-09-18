@@ -21,7 +21,7 @@ import NoSubscriptionWarningBlock from '../../components/sharedComponents/noSubs
 
 export default function ReportProfitLoss() {
 	const { user, authToken } = useContext(AuthContext);
-	const { activeBrand, selectedRange } = useAppSelector( (state) => state.filters );
+	const { activeBrand, selectedRange } = useAppSelector((state) => state.filters);
 	const filters = useAppSelector((state) => state.filters);
 	const { shops } = useAppSelector((state) => state.shopsSlice);
 
@@ -31,18 +31,18 @@ export default function ReportProfitLoss() {
 
 	const shopStatus = useMemo(() => {
 		if (!activeBrand || !shops) return null;
-		
+
 		if (activeBrand.id === 0) {
-				return {
-						id: 0,
-						brand_name: 'Все',
-						is_active: shops.some(shop => shop.is_primary_collect),
-						is_valid: true,
-						is_primary_collect: shops.some(shop => shop.is_primary_collect),
-						is_self_cost_set: !shops.some(shop => !shop.is_self_cost_set)
-				};
+			return {
+				id: 0,
+				brand_name: 'Все',
+				is_active: shops.some(shop => shop.is_primary_collect),
+				is_valid: true,
+				is_primary_collect: shops.some(shop => shop.is_primary_collect),
+				is_self_cost_set: !shops.some(shop => !shop.is_self_cost_set)
+			};
 		}
-		
+
 		return shops.find(shop => shop.id === activeBrand.id);
 	}, [activeBrand, shops]);
 
@@ -52,7 +52,7 @@ export default function ReportProfitLoss() {
 	}), [])
 
 	const updateSavedMonthRange = () => {
-		if (!activeBrand){
+		if (!activeBrand) {
 			return
 		}
 		const savedMonthRange = localStorage.getItem('reportProfitLossMonth');
@@ -68,8 +68,8 @@ export default function ReportProfitLoss() {
 	const [monthRange, setMonthRange] = useState(updateSavedMonthRange());
 
 	function renderColumn(data) {
-		if (typeof data !== 'object'){
-			return(
+		if (typeof data !== 'object') {
+			return (
 				<div className={styles.cell}>{formatPrice(data, '₽')}</div>
 			)
 		}
@@ -96,7 +96,7 @@ export default function ReportProfitLoss() {
 			maxWidth: 700,
 			hidden: false,
 			style: {
-		
+
 			}
 		}
 
@@ -134,7 +134,7 @@ export default function ReportProfitLoss() {
 					});
 				});
 			}
-			
+
 		});
 
 		return config;
@@ -172,24 +172,19 @@ export default function ReportProfitLoss() {
 	}
 
 	const dataToTableData = (response) => {
-		if (!response || !response.data || response.data.length === 0){
+		if (!response || !response.data || response.data.length === 0) {
 			setColumns([]);
 			setData([]);
 			return;
 		}
 
 		const { data } = response;
-		
+
 		// Define the order of metrics (articles) as they should appear in the table
 		const metricsOrder = [
-			{ key: 'sales', title: 'Фактические продажи'},
+			{ key: 'sales', title: 'Фактические продажи' },
 			{ key: 'mp_discount', title: 'Скидка за счет МП' },
 			{ key: 'realization', title: 'Реализация' },
-			{ key: 'compensation', title: 'Компенсация' },
-			{ key: 'gross_margin', title: 'Маржинальная прибыль' },
-			{ key: 'operating_profit', title: 'Операционная прибыль (EBITDA)' },
-			{ key: 'tax', title: 'Налоги' },
-			{ key: 'net_profit', title: 'Чистая прибыль' },
 			{ key: 'total_expenses', title: 'Прямые расходы', isChildren: true },
 			{ key: 'cost', title: 'Себестоимость', isChildren: true },
 			{ key: 'advert', title: 'Внутренняя реклама', isChildren: true },
@@ -197,7 +192,12 @@ export default function ReportProfitLoss() {
 			{ key: 'paid_acceptance', title: 'Платная приемка', isChildren: true },
 			{ key: 'commission', title: 'Комиссия', isChildren: true },
 			{ key: 'logistic', title: 'Логистика', isChildren: true },
-			{ key: 'penalties', title: 'Штрафы', isChildren: true }
+			{ key: 'penalties', title: 'Штрафы', isChildren: true },
+			{ key: 'compensation', title: 'Компенсация' },
+			{ key: 'gross_margin', title: 'Маржинальная прибыль' },
+			{ key: 'operating_profit', title: 'Операционная прибыль (EBITDA)' },
+			{ key: 'tax', title: 'Налоги' },
+			{ key: 'net_profit', title: 'Чистая прибыль' },
 		];
 
 		setLoading(false);
@@ -232,21 +232,21 @@ export default function ReportProfitLoss() {
 		if (activeBrand && activeBrand.is_primary_collect) {
 			updateDataReportProfitLoss();
 		}
-		if (activeBrand && !activeBrand.is_primary_collect){
+		if (activeBrand && !activeBrand.is_primary_collect) {
 			setLoading(false);
 		}
 	}, [monthRange, filters]);
 
 	const monthHandler = (data) => {
 		let selectedRange = initialRange;
-		if (data){
+		if (data) {
 			const [start, end] = data;
 			selectedRange = {
 				month_from: dayjs(start).format('YYYY-MM'),
 				month_to: dayjs(end).format('YYYY-MM')
 			}
 		}
-		
+
 		setMonthRange(selectedRange);
 		saveMonthRange(selectedRange);
 	}
@@ -291,7 +291,7 @@ export default function ReportProfitLoss() {
 						isDataLoading={loading}
 					/>
 				</div>
-				
+
 				<div className={styles.how}>
 					<HowToLink text='Как использовать раздел' url='https://radar.usedocs.com/article/77557' target='_blank' />
 				</div>
@@ -301,21 +301,19 @@ export default function ReportProfitLoss() {
 				)}
 
 				{!loading && shops && user?.subscription_status && !shopStatus?.is_primary_collect && (
-						<DataCollectWarningBlock
-								title='Ваши данные еще формируются и обрабатываются.'
-						/>
-				)}
-				<div className={styles.container} style={{ minHeight: !shopStatus?.is_primary_collect ? '0' : '450px' }}>
-					<TableWidget
-						loading={loading}
-						columns={columns}
-						data={data}
-						virtual={false}
-						is_primary_collect={activeBrand?.is_primary_collect}
-						//progress={progress}
-						setTableConfig={setColumns}
+					<DataCollectWarningBlock
+						title='Ваши данные еще формируются и обрабатываются.'
 					/>
-				</div>
+				)}
+				<TableWidget
+					loading={loading}
+					columns={columns}
+					data={data}
+					virtual={false}
+					is_primary_collect={activeBrand?.is_primary_collect}
+					//progress={progress}
+					setTableConfig={setColumns}
+				/>
 			</section>
 		</main>
 	);
