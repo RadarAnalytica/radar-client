@@ -1,4 +1,4 @@
-import React, { useMemo, useRef } from 'react';
+import React, { useLayoutEffect, useMemo, useRef } from 'react';
 import AuthContext from '../../service/AuthContext';
 import { useState, useEffect, useContext } from 'react';
 import { ConfigProvider, Flex, Button } from 'antd';
@@ -289,7 +289,7 @@ export default function Rnp() {
 		}
 	}
 
-	useEffect(() => {
+	useLayoutEffect(() => {
 		if (!activeBrand && !activeBrand?.is_primary_collect){
 			return
 		}
@@ -415,6 +415,9 @@ export default function Rnp() {
 						slice={'filtersRnp'}
 						filterActions={filterActions}
 						fetchFilters={fetchRnpFilters}
+						articleSelect={false}
+						groupSelect={false}
+						categorySelect={false}
 					/>
 				</div>
 
