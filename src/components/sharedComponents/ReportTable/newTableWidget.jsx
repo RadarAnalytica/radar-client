@@ -38,7 +38,7 @@ const customCellRender = (value, record, index, dataIndex) => {
 		return (
 			<div className={styles.customCell}>
 				<span className={styles.customCellValueRub}>{formatPrice(value.rub, '₽')}</span>
-				<span className={styles.customCellValuePercent}>{formatPrice(value.percent, '%')}</span>
+				{record.article !== 'Фактические продажи' && <span className={styles.customCellValuePercent}>{formatPrice(value.percent, '%')}</span>}
 			</div>
 		)
 	}
@@ -102,6 +102,7 @@ const TableWidget = ({ loading, columns, data, rowSelection = false, virtual = t
 						/>
 					</div>}
 				</div>}
+				{!loading && 
 				<RadarTable
 					resizeable
 					onResize={onResize}
@@ -120,6 +121,7 @@ const TableWidget = ({ loading, columns, data, rowSelection = false, virtual = t
 					paginationContainerStyle={{ display: 'none' }}
 					bodyRowClassName={styles.bodyRowSpecial}
 				/>
+				}
 			</div>
 		</div>
 	);
