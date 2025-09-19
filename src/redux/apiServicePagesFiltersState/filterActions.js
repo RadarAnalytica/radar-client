@@ -1,7 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { URL } from '../../service/config';
 import { setLoading } from '../loading/loadingSlice';
-import { weeksList } from '@/service/utils';
+import { weeksList, getSavedActiveWeeks } from '@/service/utils';
 
 
 
@@ -136,17 +136,7 @@ const createFiltersDTO = (data) => {
   }
 
   // поднимаем сохраненный период по неделям, чтобы установить его по умолчанию
-  let savedActiveWeeks = localStorage.getItem('activeWeeks')
-  if (savedActiveWeeks) {
-    const data = JSON.parse(savedActiveWeeks);
-    if (savedActiveBrand.id in data) {
-      savedActiveWeeks = data[savedActiveBrand.id];
-      return
-    }
-    savedActiveWeeks = weeksListData.slice(0, 12)
-  } else {
-    savedActiveWeeks = weeksListData.slice(0, 12)
-  }
+  let savedActiveWeeks = getSavedActiveWeeks(savedActiveBrand.id)
 
 
   return { shops, filtersData: DTO, initState: { activeBrandName: [{ value: 'Все' }], activeArticle: [{ value: 'Все' }], activeGroup: [{ id: 0, value: 'Все' }], selectedRange: savedSelectedRange, activeBrand: savedActiveBrand, activeWeeks: savedActiveWeeks } }

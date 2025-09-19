@@ -6,6 +6,7 @@ import { useAppDispatch, useAppSelector } from '../../../../redux/hooks';
 import { actions as filterActions } from '../../../../redux/apiServicePagesFiltersState/apiServicePagesFilterState.slice'
 import { fetchShops } from '../../../../redux/shops/shopsActions';
 import { fetchFilters } from '../../../../redux/apiServicePagesFiltersState/filterActions';
+import { getSavedActiveWeeks } from '@/service/utils';
 
 export const Filters = ({
   shopSelect = true,
@@ -37,6 +38,8 @@ export const Filters = ({
   const shopChangeHandler = (value) => {
     const selectedShop = shops?.find(_ => _.id === value)
     dispatch(filterActions.setActiveShop(selectedShop))
+    // Подгрузка сохраненного массива недель для магазина
+    dispatch(filterActions.setActiveFilters({ stateKey: 'activeWeeks', data: getSavedActiveWeeks(value) }))
   }
   //- -----------------------------------------//
 

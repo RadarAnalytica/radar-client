@@ -162,6 +162,18 @@ export default function ReportWeek() {
 	// 	setWeekSelected(data);
 	// };
 
+	useEffect(() => {
+		if (!activeBrand){
+			return
+		}
+		let savedFilterWeek = JSON.parse(localStorage.getItem('activeWeeks')) || {};
+		savedFilterWeek[activeBrand.id] = activeWeeks;
+		localStorage.setItem(
+			'activeWeeks',
+			JSON.stringify(savedFilterWeek)
+		);
+	}, [activeWeeks])
+
 	const updateDataReportWeek = async () => {
 		setLoading(true);
 		setProgress(0);

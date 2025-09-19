@@ -726,3 +726,18 @@ export function weeksList() {
     };
     return weeks.map((el, i) => optionTemplate(el)).reverse();
 }
+
+export function getSavedActiveWeeks(id) {
+  const weeksListData = weeksList();
+  let savedActiveWeeks = localStorage.getItem('activeWeeks')
+  if (savedActiveWeeks) {
+    const data = JSON.parse(savedActiveWeeks);
+    if (id in data) {
+      return data[id]
+    }
+    savedActiveWeeks = weeksListData.slice(0, 12)
+  } else {
+    savedActiveWeeks = weeksListData.slice(0, 12)
+  }
+  return savedActiveWeeks
+}
