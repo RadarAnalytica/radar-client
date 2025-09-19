@@ -91,7 +91,7 @@ function App() {
 
           <Routes>
             {/* dev */}
-            <Route path='/dev/after-payment' element={<ProtectedRoute><NewAfterPayment devMode /></ProtectedRoute>} />
+            <Route path='/dev/after-payment'  element={<ProtectedRoute><NewAfterPayment devMode /></ProtectedRoute>} />
             {/* Admin */}
             <Route path='/blog' element={<ProtectedRoute userRoleProtected routeRuName='Админ панель / Блог'><BlogPage /></ProtectedRoute>} />
             <Route path='/admin-dashboard' element={<ProtectedRoute userRoleProtected routeRuName='Админ панель / Дашборд'><AdminDashboardPage /></ProtectedRoute>} />

@@ -21,7 +21,7 @@ const Fail = () => {
     return (
         <section className={`${styles.widget} ${styles.widget_fail}`}>
             <div className={styles.widget_textBlock}>
-                <h1 className={styles.widget__title}>Что-то пошло не так!</h1>
+                <h1 className={styles.widget__title}>Что-то пошло не&nbsp;так!</h1>
                 <p className={styles.widget__text}>Попробуйте вернуться и провести оплату еще раз</p>
                 <div className={styles.widget_buttonWrapper}>
                     <Link
