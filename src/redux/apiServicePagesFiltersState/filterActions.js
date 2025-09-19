@@ -1,13 +1,15 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { URL } from '../../service/config';
 import { setLoading } from '../loading/loadingSlice';
-import { actions as shopsActions } from '../shops/shopsSlice';
+import { weeksList, getSavedActiveWeeks } from '@/service/utils';import { actions as shopsActions } from '../shops/shopsSlice';
 
 
 
 
 
 const createFiltersDTO = (data, shopsData) => {
+  // 0 - собираем список недель для фильтра выбора недели
+  const weeksListData = weeksList();
   // 1 - создаем массив всех магазинов + опцию "Все магазины"
   let shops;
   if (shopsData) {
@@ -61,6 +63,12 @@ const createFiltersDTO = (data, shopsData) => {
       ruLabel: 'Группа товаров',
       enLabel: 'product_groups',
       data: allGroupsData
+    },
+    weeks: {
+      stateKey: 'activeWeeks',
+      ruLabel: 'Период',
+      enLabel: 'weeks',
+      data: weeksListData
     }
   }
 
@@ -97,6 +105,12 @@ const createFiltersDTO = (data, shopsData) => {
         ruLabel: 'Группа товаров',
         enLabel: 'product_groups',
         data: i.groups.map(_ => ({ ..._, value: _.name, key: _.id }))
+      },
+      weeks: {
+        stateKey: 'activeWeeks',
+        ruLabel: 'Период',
+        enLabel: 'weeks',
+        data: weeksListData
       }
     }
 
@@ -120,7 +134,7 @@ const createFiltersDTO = (data, shopsData) => {
   if (savedActiveBrand) {
     savedActiveBrand = JSON.parse(savedActiveBrand)
     // проверяем есть ли магазин в массиве (это на случай разных аккаунтов)
-     // для поиска нужен сложный индекс тк айди магазинов могут совпадать в разных аккаунтах
+    // для поиска нужен сложный индекс тк айди магазинов могут совпадать в разных аккаунтах
     const isInShops = shops.some(_ => String(_.id + _.brand_name) === String(savedActiveBrand.id + savedActiveBrand.brand_name));
     // Если магазин нет в массиве (т.е. валиден для этого аккаунта) то...
     if (!isInShops) {
@@ -132,7 +146,11 @@ const createFiltersDTO = (data, shopsData) => {
     savedActiveBrand = shops[0]
   }
 
-  return { shops, filtersData: DTO, initState: { activeBrandName: [{ value: 'Все' }], activeArticle: [{ value: 'Все' }], activeGroup: [{ id: 0, value: 'Все' }], selectedRange: savedSelectedRange, activeBrand: savedActiveBrand } }
+  // поднимаем сохраненный период по неделям, чтобы установить его по умолчанию
+  let savedActiveWeeks = getSavedActiveWeeks(savedActiveBrand.id)
+
+
+  return { shops, filtersData: DTO, initState: { activeBrandName: [{ value: 'Все' }], activeArticle: [{ value: 'Все' }], activeGroup: [{ id: 0, value: 'Все' }], selectedRange: savedSelectedRange, activeBrand: savedActiveBrand, activeWeeks: savedActiveWeeks } }
 }
 
 export const fetchFilters = createAsyncThunk(

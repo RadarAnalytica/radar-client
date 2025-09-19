@@ -1,6 +1,7 @@
 import Cookies from "js-cookie";
 import { jwtDecode } from 'jwt-decode';
 import { useState, useCallback, useEffect } from 'react';
+import { eachWeekOfInterval, format, formatISO, endOfWeek, getISOWeek, } from 'date-fns';
 import { URL } from "./config";
 
 export function filterArrays(obj, days) {
@@ -693,4 +694,50 @@ export const verticalDashedLinePlugin = {
   }
 }
 
+export function weeksList() {
 
+    // Выборка дат с 2024-01-29
+    const weeks = eachWeekOfInterval(
+        {
+            start: new Date(2024, 0, 29),
+            end: Date.now(),
+        },
+        {
+            weekStartsOn: 1,
+        }
+    );
+
+    // удаляем последнюю неделю
+    weeks.pop();
+
+    const optionTemplate = (date) => {
+        const weekValue = formatISO(date, { representation: 'date' });
+        const weekStart = format(date, 'dd.MM.yyyy');
+        const weekEnd = format(
+            endOfWeek(date, { weekStartsOn: 1 }),
+            'dd.MM.yyyy'
+        );
+        const weekNumber = getISOWeek(date);
+        return {
+            // key: weekNumber,
+            value: weekValue,
+            label: `${weekNumber} неделя (${weekStart} - ${weekEnd})`,
+        };
+    };
+    return weeks.map((el, i) => optionTemplate(el)).reverse();
+}
+
+export function getSavedActiveWeeks(id) {
+  const weeksListData = weeksList();
+  let savedActiveWeeks = localStorage.getItem('activeWeeks')
+  if (savedActiveWeeks) {
+    const data = JSON.parse(savedActiveWeeks);
+    if (id in data) {
+      return data[id]
+    }
+    savedActiveWeeks = weeksListData.slice(0, 12)
+  } else {
+    savedActiveWeeks = weeksListData.slice(0, 12)
+  }
+  return savedActiveWeeks
+}

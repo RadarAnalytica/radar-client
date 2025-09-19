@@ -28,7 +28,7 @@ import TableWidget from './widgets/TableWidget/TableWidget';
 
 export default function ReportWeek() {
 	const { user, authToken } = useContext(AuthContext);
-	const { activeBrand, selectedRange } = useAppSelector(
+	const { activeBrand, selectedRange, activeWeeks } = useAppSelector(
 		(state) => state.filters
 	);
 	const filters = useAppSelector((state) => state.filters);
@@ -99,20 +99,20 @@ export default function ReportWeek() {
 		return weeks.map((el, i) => optionTemplate(el)).reverse();
 	}, []);
 
-	const updateSavedFilterWeek = () => {
-		const savedFilterWeek = localStorage.getItem('reportWeekFilterWeek');
-		if (savedFilterWeek) {
-			const data = JSON.parse(savedFilterWeek);
-			if (activeBrand?.id in data) {
-				return (data[activeBrand.id]);
-			}
-		}
-		return (weekOptions.slice(0, 12));
-	};
+	// const updateSavedFilterWeek = () => {
+	// 	const savedFilterWeek = localStorage.getItem('reportWeekFilterWeek');
+	// 	if (savedFilterWeek) {
+	// 		const data = JSON.parse(savedFilterWeek);
+	// 		if (activeBrand?.id in data) {
+	// 			return (data[activeBrand.id]);
+	// 		}
+	// 	}
+	// 	return (weekOptions.slice(0, 12));
+	// };
 	
-	const [weekSelected, setWeekSelected] = useState(updateSavedFilterWeek());
+	// const [weekSelected, setWeekSelected] = useState(updateSavedFilterWeek());
 
-	const week = useMemo(() => updateSavedFilterWeek(), [activeBrand, weekSelected])
+	// const week = useMemo(() => updateSavedFilterWeek(), [activeBrand, weekSelected])
 
 	const initTableColumns = () => {
 		const savedColumnsWeek = localStorage.getItem('reportWeekColumns');
@@ -158,27 +158,36 @@ export default function ReportWeek() {
 		}
 	};
 
-	const weekSelectedHandler = (data) => {
-		let savedFilterWeek =
-			JSON.parse(localStorage.getItem('reportWeekFilterWeek')) || {};
+	// const weekSelectedHandler = (data) => {
+	// 	let savedFilterWeek =
+	// 		JSON.parse(localStorage.getItem('reportWeekFilterWeek')) || {};
 
-		savedFilterWeek[activeBrand.id] = data;
-		if (Object.keys(savedFilterWeek).length > 0) {
-			localStorage.setItem(
-				'reportWeekFilterWeek',
-				JSON.stringify(savedFilterWeek)
-			);
-		}
-		setWeekSelected(data);
-	};
+	// 	savedFilterWeek[activeBrand.id] = data;
+	// 	if (Object.keys(savedFilterWeek).length > 0) {
+	// 		localStorage.setItem(
+	// 			'reportWeekFilterWeek',
+	// 			JSON.stringify(savedFilterWeek)
+	// 		);
+	// 	}
+	// 	setWeekSelected(data);
+	// };
 
-	const updateDataReportWeek = async () => {
-        setLoading(true);
-		if (!weekSelected){
+	useEffect(() => {
+		if (!activeBrand){
 			return
 		}
+		let savedFilterWeek = JSON.parse(localStorage.getItem('activeWeeks')) || {};
+		savedFilterWeek[activeBrand.id] = activeWeeks;
+		localStorage.setItem(
+			'activeWeeks',
+			JSON.stringify(savedFilterWeek)
+		);
+	}, [activeWeeks])
+
+	const updateDataReportWeek = async () => {
+		setLoading(true);
 		setProgress(0);
-		const weekStart = weekSelectedFormat();
+		// const weekStart = weekSelectedFormat();
 		try {
 			if (activeBrand !== null && activeBrand !== undefined) {
 				const response = await ServiceFunctions.getReportWeek(
@@ -186,7 +195,7 @@ export default function ReportWeek() {
 					selectedRange,
 					activeBrand.id,
 					filters,
-					weekStart
+					activeWeeks
 				);
 
 				// Собираем общий массив неделей по всем годам из ответа
@@ -302,7 +311,7 @@ export default function ReportWeek() {
 		if (activeBrand && !activeBrand.is_primary_collect){
 			setLoading(false);
 		}
-	}, [filters, weekSelected]);
+	}, [filters]);
 
 	const popoverHandler = (status) => {
 		setIsPopoverOpen(status);
@@ -359,13 +368,12 @@ export default function ReportWeek() {
 	const handleDownload = async () => {
 		setDownloadLoading(true)
 		try {
-			const weekStart = weekSelectedFormat();
 			const fileBlob = await ServiceFunctions.getDownloadReportWeek(
 				authToken,
 				selectedRange,
 				activeBrand.id,
 				filters,
-				weekStart
+				activeWeeks
 			);
 			fileDownload(fileBlob, 'Отчет_по_неделям.xlsx');
 		} catch(e) {
@@ -394,18 +402,15 @@ export default function ReportWeek() {
 
 				{shops && (<div className={styles.controls}>
 					<div className={styles.filter}>
-						{weekSelected && <Filters
+						<Filters
 							timeSelect={false}
 							setLoading={setLoading}
 							// brandSelect={false}
 							// articleSelect={false}
 							// groupSelect={false}
 							weekSelect={true}
-							weekValue={week}
-							weekOptions={weekOptions}
-							weekHandler={weekSelectedHandler}
 							isDataLoading={loading}
-						/>}
+						/>
 					</div>
 					<div className={styles.btns}>
 						<ConfigProvider

@@ -1,12 +1,13 @@
 import React, { useContext, useEffect, useRef } from 'react';
 import AuthContext from '../../../../service/AuthContext';
 import styles from './filters.module.css'
-import { TimeSelect, PlainSelect, FrequencyModeSelect, ShopSelect, MultiSelect, WeekSelect, MonthSelect, TempTimeSelect } from '../features'
+import { TimeSelect, PlainSelect, FrequencyModeSelect, ShopSelect, MultiSelect, MonthSelect, TempTimeSelect } from '../features'
 import { useAppDispatch, useAppSelector } from '../../../../redux/hooks';
 import { actions as filterActions } from '../../../../redux/apiServicePagesFiltersState/apiServicePagesFilterState.slice'
 import { fetchShops } from '../../../../redux/shops/shopsActions';
 import { fetchFilters } from '../../../../redux/apiServicePagesFiltersState/filterActions';
 import { URL } from '../../../../service/config';
+import { getSavedActiveWeeks } from '@/service/utils';
 
 export const Filters = ({
   shopSelect = true,
@@ -16,9 +17,6 @@ export const Filters = ({
   articleSelect = true,
   groupSelect = true,
   weekSelect = false,
-  weekOptions,
-  weekValue,
-  weekHandler,
   monthSelect = false,
   monthHandler,
   monthValue,
@@ -41,6 +39,8 @@ export const Filters = ({
   const shopChangeHandler = (value) => {
     const selectedShop = shops?.find(_ => _.id === value)
     dispatch(filterActions.setActiveShop(selectedShop))
+    // Подгрузка сохраненного массива недель для магазина
+    dispatch(filterActions.setActiveFilters({ stateKey: 'activeWeeks', data: getSavedActiveWeeks(value) }))
   }
   //- -----------------------------------------//
 
@@ -152,16 +152,18 @@ export const Filters = ({
   return (
     <div className={styles.filters}>
       <div className={styles.filters__inputsMainWrapper}>
-        {activeBrand && weekSelect && weekOptions.length > 0 && <div className={styles.filters__inputWrapper}>
-          <WeekSelect
-            selectId='week'
-            label='Период:'
-            value={weekValue}
-            optionsData={weekOptions}
-            handler={weekHandler}
-            isDataLoading={isDataLoading}
-          />
-        </div>
+        {activeBrand && weekSelect && <div className={styles.filters__inputWrapper}>
+            <MultiSelect
+              dispatch={dispatch}
+              filterActions={filterActions}
+              params={filters.find((el) => el.shop.id === activeBrand.id).weeks}
+              selectId={filters.find((el) => el.shop.id === activeBrand.id).weeks.enLabel}
+              label={`${filters.find((el) => el.shop.id === activeBrand.id).weeks.ruLabel}:`}
+              value={filtersState.activeWeeks}
+              optionsData={filters.find((el) => el.shop.id === activeBrand.id).weeks.data}
+              isDataLoading={isDataLoading}
+            />
+          </div>
         }
         {skuFrequency &&
           <FrequencyModeSelect isDataLoading={isDataLoading} />

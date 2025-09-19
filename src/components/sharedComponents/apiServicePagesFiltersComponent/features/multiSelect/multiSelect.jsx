@@ -220,9 +220,12 @@ export const MultiSelect = (
                         maxTagPlaceholder={omittedValues => (
                             <>
                                 {omittedValues.length > 1 && <p className={styles.plainSelect__multiLabel}>Выбрано: {omittedValues.length}</p>}
-                                {omittedValues.length === 1 &&
+                                {omittedValues.length === 1 && params.stateKey !== 'activeWeeks' &&
                                     <p className={styles.plainSelect__multiLabel} title={omittedValues[0].value}>{omittedValues[0].value}</p>
                                 }
+                                {omittedValues.length === 1 && params.stateKey === 'activeWeeks' &&
+                                   <p className={styles.plainSelect__multiLabel} title={omittedValues[0].label}>{omittedValues[0].label}</p>}
+                                
                             </>
                         )}
                         menuItemSelectedIcon={<span style={{ background: '#5329FF', width: 4, height: 4, borderRadius: '50% 50%' }}></span>}
