@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useRef } from 'react';
 import AuthContext from '../../../../service/AuthContext';
 import styles from './filters.module.css'
-import { TimeSelect, PlainSelect, FrequencyModeSelect, ShopSelect, MultiSelect, WeekSelect, MonthSelect, TempTimeSelect } from '../features'
+import { TimeSelect, PlainSelect, FrequencyModeSelect, ShopSelect, MultiSelect, MonthSelect, TempTimeSelect } from '../features'
 import { useAppDispatch, useAppSelector } from '../../../../redux/hooks';
 import { actions as filterActions } from '../../../../redux/apiServicePagesFiltersState/apiServicePagesFilterState.slice'
 import { fetchShops } from '../../../../redux/shops/shopsActions';
@@ -15,9 +15,6 @@ export const Filters = ({
   articleSelect = true,
   groupSelect = true,
   weekSelect = false,
-  weekOptions,
-  weekValue,
-  weekHandler,
   monthSelect = false,
   monthHandler,
   monthValue,
@@ -134,13 +131,15 @@ export const Filters = ({
   return (
     <div className={styles.filters}>
       <div className={styles.filters__inputsMainWrapper}>
-        {activeBrand && weekSelect && weekOptions.length > 0 && <div className={styles.filters__inputWrapper}>
-            <WeekSelect
-              selectId='week'
-              label='Период:'
-              value={weekValue}
-              optionsData={weekOptions}
-              handler={weekHandler}
+        {activeBrand && weekSelect && <div className={styles.filters__inputWrapper}>
+            <MultiSelect
+              dispatch={dispatch}
+              filterActions={filterActions}
+              params={filters.find((el) => el.shop.id === activeBrand.id).weeks}
+              selectId={filters.find((el) => el.shop.id === activeBrand.id).weeks.enLabel}
+              label={`${filters.find((el) => el.shop.id === activeBrand.id).weeks.ruLabel}:`}
+              value={filtersState.activeWeeks}
+              optionsData={filters.find((el) => el.shop.id === activeBrand.id).weeks.data}
               isDataLoading={isDataLoading}
             />
           </div>

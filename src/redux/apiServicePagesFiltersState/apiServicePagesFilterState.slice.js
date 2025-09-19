@@ -68,6 +68,13 @@ const apiServicePagesFilterStateSlice = createSlice({
                 }
             }
             
+            if (stateKey === 'activeWeeks') {
+                return {
+                    ...state,
+                    [stateKey]: data,
+                }
+            }
+            
             return {
                 ...state,
                 [stateKey]: data

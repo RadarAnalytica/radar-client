@@ -1,11 +1,13 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { URL } from '../../service/config';
 import { setLoading } from '../loading/loadingSlice';
-
+import { weeksList } from '@/service/utils';
 
 
 
 const createFiltersDTO = (data) => {
+  // 0 - собираем список недель для фильтра выбора недели
+  const weeksListData = weeksList();
   // 1 - создаем массив всех магазинов + опцию "Все магазины"
   const shops = [{ brand_name: 'Все', value: 'Все', id: 0, is_primary_collect: data.some(_ => _.shop_data.is_primary_collect), is_self_cost_set: !data.some(_ => !_.shop_data.is_self_cost_set) }, ...data.map(_ => ({ ..._.shop_data, value: _.shop_data.name }))]
   // 2 - Трансформируем дату для опции "все магазины"
@@ -53,6 +55,12 @@ const createFiltersDTO = (data) => {
       ruLabel: 'Группа товаров',
       enLabel: 'product_groups',
       data: allGroupsData
+    },
+    weeks: {
+      stateKey: 'activeWeeks',
+      ruLabel: 'Период',
+      enLabel: 'weeks',
+      data: weeksListData
     }
   }
 
@@ -89,6 +97,12 @@ const createFiltersDTO = (data) => {
         ruLabel: 'Группа товаров',
         enLabel: 'product_groups',
         data: i.groups.map(_ => ({ ..._, value: _.name, key: _.id }))
+      },
+      weeks: {
+        stateKey: 'activeWeeks',
+        ruLabel: 'Период',
+        enLabel: 'weeks',
+        data: weeksListData
       }
     }
 
@@ -121,7 +135,21 @@ const createFiltersDTO = (data) => {
     savedActiveBrand = shops[0]
   }
 
-  return { shops, filtersData: DTO, initState: { activeBrandName: [{ value: 'Все' }], activeArticle: [{ value: 'Все' }], activeGroup: [{ id: 0, value: 'Все' }], selectedRange: savedSelectedRange, activeBrand: savedActiveBrand } }
+  // поднимаем сохраненный период по неделям, чтобы установить его по умолчанию
+  let savedActiveWeeks = localStorage.getItem('activeWeeks')
+  if (savedActiveWeeks) {
+    const data = JSON.parse(savedActiveWeeks);
+    if (savedActiveBrand.id in data) {
+      savedActiveWeeks = data[savedActiveBrand.id];
+      return
+    }
+    savedActiveWeeks = weeksListData.slice(0, 12)
+  } else {
+    savedActiveWeeks = weeksListData.slice(0, 12)
+  }
+
+
+  return { shops, filtersData: DTO, initState: { activeBrandName: [{ value: 'Все' }], activeArticle: [{ value: 'Все' }], activeGroup: [{ id: 0, value: 'Все' }], selectedRange: savedSelectedRange, activeBrand: savedActiveBrand, activeWeeks: savedActiveWeeks } }
 }
 
 export const fetchFilters = createAsyncThunk(
