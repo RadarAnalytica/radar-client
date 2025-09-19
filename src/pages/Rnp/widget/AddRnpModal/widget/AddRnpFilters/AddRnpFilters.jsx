@@ -7,7 +7,12 @@ import { actions as filterActions } from '@/redux/filtersRnpAdd/filtersRnpAddSli
 import { fetchShops } from '@/redux/shops/shopsActions';
 import { fetchFiltersRnpAdd } from '@/redux/filtersRnpAdd/filtersRnpAddActions';
 
-export const Filters = ({ open = true }) => {
+export const Filters = ({
+  open = true,
+  articleSelect = true,
+  groupSelect = true,
+  categorySelect = true,
+}) => {
 
   // ------ база ------//
   const { authToken } = useContext(AuthContext);
@@ -55,7 +60,6 @@ export const Filters = ({ open = true }) => {
     if (shops && activeBrand && activeBrand.id !== 0) {
       dispatch(filterActions.setActiveShop(shops[0]))
     }
-
     if (shops && activeBrand &&
       (!filtersState.activeBrandName.some(_ => _.value === 'Все') &&
       !filtersState.activeArticle.some(_ => _.value === 'Все') &&
@@ -134,7 +138,7 @@ export const Filters = ({ open = true }) => {
                   optionsData={i.brands.data}
                 />
               </div>
-              <div className={styles.filters__inputWrapper}>
+              {categorySelect && <div className={styles.filters__inputWrapper}>
                 <MultiSelect
                   dispatch={dispatch}
                   filterActions={filterActions}
@@ -144,8 +148,8 @@ export const Filters = ({ open = true }) => {
                   value={filtersState[i.categories.stateKey]}
                   optionsData={i.categories.data}
                 />
-              </div>
-              <div className={styles.filters__inputWrapper}>
+              </div>}
+              {groupSelect && <div className={styles.filters__inputWrapper}>
                 <MultiSelect
                   dispatch={dispatch}
                   filterActions={filterActions}
@@ -155,8 +159,8 @@ export const Filters = ({ open = true }) => {
                   value={filtersState[i.groups.stateKey]}
                   optionsData={i.groups.data}
                 />
-              </div>
-              <div className={styles.filters__inputWrapper}>
+              </div>}
+              {articleSelect && <div className={styles.filters__inputWrapper}>
                 <MultiSelect
                   dispatch={dispatch}
                   filterActions={filterActions}
@@ -166,7 +170,7 @@ export const Filters = ({ open = true }) => {
                   value={filtersState[i.articles.stateKey]}
                   optionsData={filtersState?.activeBrandName?.some(_ => _.value === 'Все') ? i.articles.data : i.articles.data.filter(_ => filtersState?.activeBrandName?.some(b => _.brand === b.value))}
                 />
-              </div>
+              </div>}
             </React.Fragment>
           )
         })}

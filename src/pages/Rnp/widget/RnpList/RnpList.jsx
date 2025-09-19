@@ -128,7 +128,7 @@ function RnpListItem({el, index, expanded, setExpanded, setDeleteRnpId, onReorde
 							<RnpItem
 								title={el.article_data.title}
 								photo={el.article_data.photo}
-								rnp={el.article_data.wb_id}
+								wb_id={el.article_data.wb_id}
 								shop={el.article_data.shop_name}
 							/>
 						</div>

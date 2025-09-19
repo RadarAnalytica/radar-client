@@ -278,7 +278,7 @@ export default function ReportProfitLoss() {
 					<Header title="Отчет о прибыли и убытках"></Header>
 				</div>
 
-				{!loading && shops && user?.subscription_status && shopStatus?.is_primary_collect && !shopStatus?.is_self_cost_set && (
+				{!loading && shopStatus?.is_primary_collect && !shopStatus?.is_self_cost_set && (
 					<SelfCostWarningBlock />
 				)}
 

@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import AuthContext from '../../service/AuthContext';
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, useContext, useLayoutEffect } from 'react';
 import MobilePlug from '../../components/sharedComponents/mobilePlug/mobilePlug';
 import Sidebar from '../../components/sharedComponents/sidebar/sidebar';
 import Header from '../../components/sharedComponents/header/header';
@@ -173,10 +173,10 @@ export default function ReportWeek() {
 	};
 
 	const updateDataReportWeek = async () => {
+        setLoading(true);
 		if (!weekSelected){
 			return
 		}
-		setLoading(true);
 		setProgress(0);
 		const weekStart = weekSelectedFormat();
 		try {
@@ -199,12 +199,13 @@ export default function ReportWeek() {
 				}
 
 				setProgress(100);
-				setTimeout(() => dataToTableData(weeks), 500);
+				await setTimeout(() => dataToTableData(weeks), 500);
+				// dataToTableData(weeks);
 			}
 		} catch (e) {
 			console.error(e);
 			setProgress(100);
-			setTimeout(() => dataToTableData(null), 500);
+			dataToTableData(null);
 		}
 	};
 
@@ -294,14 +295,14 @@ export default function ReportWeek() {
 		setLoading(false);
 	};
 
-	useEffect(() => {
+	useLayoutEffect(() => {
 		if (activeBrand && activeBrand.is_primary_collect) {
 			updateDataReportWeek();
 		}
 		if (activeBrand && !activeBrand.is_primary_collect){
 			setLoading(false);
 		}
-	}, [selectedRange, filters, weekSelected, shops, shopStatus]);
+	}, [filters, weekSelected]);
 
 	const popoverHandler = (status) => {
 		setIsPopoverOpen(status);
@@ -386,8 +387,8 @@ export default function ReportWeek() {
 				<div className={styles.page__headerWrapper}>
 					<Header title="По неделям"></Header>
 				</div>
-				
-				{!loading && shops && user?.subscription_status && shopStatus?.is_primary_collect && !shopStatus?.is_self_cost_set && (
+
+				{!loading && shopStatus?.is_primary_collect && !shopStatus?.is_self_cost_set && (
 					<SelfCostWarningBlock />
 				)}
 
@@ -484,6 +485,7 @@ export default function ReportWeek() {
 						</ConfigProvider> */}
 					</div>
 				</div>)}
+
 				{!loading && shops && user.subscription_status === null && (
 					<NoSubscriptionWarningBlock />
 				)}
@@ -500,11 +502,12 @@ export default function ReportWeek() {
 							columns={tableColumns}
 							data={tableRows}
 							is_primary_collect={shopStatus?.is_primary_collect}
+							is_self_cost_set={shopStatus?.is_self_cost_set}
 							progress={progress}
 							setTableColumns={setTableColumns}
 						/>
 					</div>
-				{/* } */}
+				}
 			</section>
 			{isConfigOpen && (
 				<TableSettingModal

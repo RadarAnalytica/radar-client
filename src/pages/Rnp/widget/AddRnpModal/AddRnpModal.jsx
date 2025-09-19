@@ -69,8 +69,12 @@ const AddRnpModal = ({ isAddRnpModalVisible, setIsAddRnpModalVisible, addRnp }) 
         if ( page !== 1 ){
             setPage(1)
         }
-        setRequest((state) => !state);
-    }, [search, filters, shops, activeBrand])
+        setRequest((state) => Date.now());
+    }, [search, filters])
+    
+    useEffect(() => {
+        setRequest((state) => Date.now());
+    }, [page])
 
     useEffect(() => {
         setRequest((state) => Date.now());
@@ -124,15 +128,7 @@ const AddRnpModal = ({ isAddRnpModalVisible, setIsAddRnpModalVisible, addRnp }) 
         return () => {
             abortController.abort('Отмена запроса');
         };
-    }, [page, request]);
-
-    // useEffect(() => {
-    //     return () => {
-    //         setPage(1);
-    //         setSearch(null);
-    //         dispatch(filterActions.setActiveShop(null));
-    //     }
-    // }, [])
+    }, [request]);
 
     return (
         <>
@@ -166,7 +162,9 @@ const AddRnpModal = ({ isAddRnpModalVisible, setIsAddRnpModalVisible, addRnp }) 
                             fetchFilters={fetchFiltersRnpAdd}
                             timeSelect={false}
                             open={isAddRnpModalVisible}
-                            // clearLoad={true}
+                            articleSelect={false}
+                            groupSelect={false}
+                            categorySelect={false}
                         />
                     </div>
                     <div className={loading ? styles.hide : styles.control}><AddRnpModalSearch loading={loading} submitSearch={setSearch} /></div>
@@ -223,7 +221,7 @@ const AddRnpModal = ({ isAddRnpModalVisible, setIsAddRnpModalVisible, addRnp }) 
                                     <RnpItem
                                         title={el.title}
                                         photo={el.photo}
-                                        rnp={el.wb_id}
+                                        wb_id={el.wb_id}
                                         shop={el.shop_name}
                                     />
                                 </Flex>
