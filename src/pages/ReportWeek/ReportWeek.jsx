@@ -506,6 +506,8 @@ export default function ReportWeek() {
 							setTableColumns={setTableColumns}
 						/>
 					</div>
+
+					
 			</section>
 			{isConfigOpen && (
 				<TableSettingModal
