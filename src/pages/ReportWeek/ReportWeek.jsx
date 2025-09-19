@@ -24,6 +24,7 @@ import {
 import DataCollectWarningBlock from '../../components/sharedComponents/dataCollectWarningBlock/dataCollectWarningBlock'
 import NoSubscriptionWarningBlock from '../../components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock';
 import { COLUMNS } from './columnsConfig';
+import TableWidget from './widgets/TableWidget/TableWidget';
 
 export default function ReportWeek() {
 	const { user, authToken } = useContext(AuthContext);
@@ -38,6 +39,7 @@ export default function ReportWeek() {
 	const [isConfigOpen, setConfigOpen] = useState(false);
 	const [tableRows, setTableRows] = useState(null);
 	const [progress, setProgress] = useState(0);
+	const [tableColumns, setTableColumns] = useState(COLUMNS);
 
 	useEffect(() => {
 		let interval = null;
@@ -54,6 +56,14 @@ export default function ReportWeek() {
 		}
 		return () => clearInterval(interval)
 	}, [loading])
+
+	useEffect(() => {
+		localStorage.removeItem('reportWeekColumns');
+		const savedTableColumns = localStorage.getItem('reportWeekTableConfig')
+		if (savedTableColumns) {
+			setTableColumns(JSON.parse(savedTableColumns))
+		}
+	}, [])
 
 
 	const weekOptions = useMemo(() => {
@@ -123,7 +133,7 @@ export default function ReportWeek() {
 		return COLUMNS;
 	}
 
-	const [tableColumns, setTableColumns] = useState(initTableColumns());
+	
 
 	const shopStatus = useMemo(() => {
 			if (!activeBrand || !shops) return null;
@@ -299,12 +309,13 @@ export default function ReportWeek() {
 	};
 
 	const tableColumnsHandler = (columns) => {
-		localStorage.setItem('reportWeekColumns', JSON.stringify(columns.map(column => column.dataIndex)));
+		//localStorage.setItem('reportWeekColumns', JSON.stringify(columns.map(column => column.dataIndex)));
 		setTableColumns(columns)
 	}
 
 	const configClear = () => {
 		tableColumnsHandler(COLUMNS);
+		localStorage.setItem('reportWeekTableConfig', JSON.stringify(COLUMNS))
 		setIsPopoverOpen(false);
 	};
 
@@ -484,17 +495,16 @@ export default function ReportWeek() {
 								title='Ваши данные еще формируются и обрабатываются.'
 						/>
 				)}
-				{/* <div className={styles.container} style={{ minHeight: !shopStatus?.is_primary_collect ? '0' : '450px' }}> */}
-				{ shopStatus?.is_primary_collect &&
+				{/* { shopStatus?.is_primary_collect && */}
 					<div className={styles.container}>
-						<ReportTable
-							virtual={false}
+						<TableWidget
 							loading={loading}
 							columns={tableColumns}
 							data={tableRows}
 							is_primary_collect={shopStatus?.is_primary_collect}
 							is_self_cost_set={shopStatus?.is_self_cost_set}
 							progress={progress}
+							setTableColumns={setTableColumns}
 						/>
 					</div>
 				}
