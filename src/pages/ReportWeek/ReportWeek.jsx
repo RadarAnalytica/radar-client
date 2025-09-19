@@ -502,12 +502,10 @@ export default function ReportWeek() {
 							columns={tableColumns}
 							data={tableRows}
 							is_primary_collect={shopStatus?.is_primary_collect}
-							is_self_cost_set={shopStatus?.is_self_cost_set}
 							progress={progress}
 							setTableColumns={setTableColumns}
 						/>
 					</div>
-				}
 			</section>
 			{isConfigOpen && (
 				<TableSettingModal
