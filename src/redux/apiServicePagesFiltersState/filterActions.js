@@ -13,7 +13,11 @@ const createFiltersDTO = (data, shopsData) => {
   // 1 - создаем массив всех магазинов + опцию "Все магазины"
   let shops;
   if (shopsData) {
-    shops = [{ brand_name: 'Все', value: 'Все', id: 0, is_primary_collect: shopsData?.some(_ => _?.is_primary_collect), is_self_cost_set: !shopsData?.some(_ => !_?.is_self_cost_set) }, ...shopsData?.map(_ => ({ ..._, value: _.brand_name }))]
+    shops = [{ brand_name: 'Все', value: 'Все', id: 0, is_primary_collect: shopsData?.some(_ => _?.is_primary_collect), is_self_cost_set: !shopsData?.some(_ => !_?.is_self_cost_set) },
+      // сделаль Артем, фильтрация по is_valid и дальше map как был)
+      ...shopsData?.filter((shop) => shop.is_valid).map(_ => ({ ..._, value: _.brand_name }))
+      // 
+    ]
   } else {
     shops = [{ brand_name: 'Все', value: 'Все', id: 0, is_primary_collect: data?.some(_ => _.shop_data.is_primary_collect), is_self_cost_set: !data?.some(_ => !_.shop_data.is_self_cost_set) }, ...data?.map(_ => ({ ..._.shop_data, value: _.shop_data.brand_name }))]
   }
