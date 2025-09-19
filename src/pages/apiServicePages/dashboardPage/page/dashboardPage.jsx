@@ -151,6 +151,7 @@ const MainContent = React.memo(({
 const _DashboardPage = () => {
     const { user, authToken } = useContext(AuthContext)
     const { activeBrand, selectedRange, isFiltersLoaded, activeBrandName, activeArticle, activeGroup } = useAppSelector((state) => state.filters);
+    console.log('activeBrand', activeBrand);
     const { shops } = useAppSelector((state) => state.shopsSlice);
     const filters = useAppSelector((state) => state.filters);
     const { isSidebarHidden } = useAppSelector((state) => state.utils);
@@ -222,7 +223,7 @@ const _DashboardPage = () => {
                     <Header title='Сводка продаж' />
                 </div>
 
-                {!shopStatus?.is_self_cost_set && !pageState.loading && (
+                {activeBrand && !activeBrand.is_self_cost_set && (
                     <SelfCostWarningBlock
                         shopId={activeBrand?.id}
                         onUpdateDashboard={updateDataDashBoard}
@@ -250,7 +251,7 @@ const _DashboardPage = () => {
                     />
                 </div>
 
-                {shopStatus && !shopStatus?.is_primary_collect && (
+                {activeBrand && !activeBrand.is_primary_collect && (
                     <DataCollectWarningBlock />
                 )}
 

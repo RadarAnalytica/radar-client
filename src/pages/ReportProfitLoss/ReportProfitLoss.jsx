@@ -225,6 +225,8 @@ export default function ReportProfitLoss() {
 			console.error(e);
 			dataToTableData(null);
 			setLoading(false);
+		} finally {
+			setLoading(false);
 		}
 	};
 
