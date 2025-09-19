@@ -723,6 +723,20 @@ const OrdersMap = () => {
             />
           </div>
 
+          {loading &&
+          <div className='map-container dash-container container p-3'
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              height: '100%',
+              width: '100%',
+            }}
+          >
+            <span className='loader'></span>
+          </div>
+          }
+
           {activeBrand && activeBrand.is_primary_collect && !loading && (
             <div className='map-container dash-container container p-3'>
               <RadioGroup
