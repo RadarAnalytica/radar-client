@@ -23,12 +23,9 @@ export default function TableSettingModal({
 	footer = null
 }) {
 	const [shownColumns, setShownColumns] = useState(tableColumns);
-	const [checked, setChecked] = useState(tableColumns.map((el) => el.dataIndex));
 
 	// const checkAll = useMemo(() => checked.length == shownColumns.length, [shownColumns])
 
-	const checkAll = checked.length == tableColumns.length
-	const indeterminateAll = checked.length > 0 && checked.length < shownColumns.length
 
 
 	const [form] = useForm();
@@ -57,7 +54,7 @@ export default function TableSettingModal({
 
 	function сheckAllHandler(type) {
 		const data = form.getFieldsValue()
-		
+
 		setShownColumns(shownColumns.map(_ => {
 			return { ..._, hidden: type === 'select' ? false : true }
 		}))
@@ -72,7 +69,10 @@ export default function TableSettingModal({
 		for (const week in data) {
 			data[week] && result.push(Number(week))
 		}
-		setChecked(result)
+		setShownColumns(shownColumns.map(_ => {
+			return { ..._, hidden: !data[_.dataIndex] }
+		}))
+
 	}
 
 	return (
@@ -223,9 +223,13 @@ export default function TableSettingModal({
 					</Button> */}
 				</Flex>}
 				<div className={styles.check_all}>
-					<Button type='link' size='small' onClick={() => {
-						const type = shownColumns.some((el) => el.hidden) ? 'select' : 'deselect'
-						сheckAllHandler(type)
+					<Button
+						key={JSON.stringify(shownColumns)}
+						type='link'
+						size='small'
+						onClick={() => {
+							const type = shownColumns.some((el) => el.hidden) ? 'select' : 'deselect'
+							сheckAllHandler(type)
 						}}>
 						{shownColumns.some((el) => el.hidden) ? 'Выбрать все' : 'Снять все'}
 					</Button>

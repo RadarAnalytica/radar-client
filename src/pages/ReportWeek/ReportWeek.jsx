@@ -224,69 +224,47 @@ export default function ReportWeek() {
 		rows = rows.map((el, i) => {
 			let row = {
 				key: i,
-				// key: el.week,
 				week_label: el.week_label,
 			};
-			for (const key in el.data) {
-				row[key] = el.data[key];
-			}
+			Object.keys(el.data).forEach(key => {
+				if (typeof el.data[key] === 'object') {
+					Object.keys(el.data[key]).forEach(k => {
+						row[`${key}_${k}`] = el.data[key][k];
+					})
 
-			// кастомные значения таблицы из данных
-			row = {
-				...row,
-				sales: el.data.revenue.quantity,
-				gains: el.data.revenue.rub,
-				cost_price: {
-					rub: el.data.cost_price,
-					percent: el.data.cost_price_percent,
-				},
-				compensation_defects_rub: el.data.compensation_defects.rub,
-				compensation_defects_quantity:
-					el.data.compensation_defects.quantity,
-				compensation_damage_quantity:
-					el.data.compensation_damage.quantity,
-				external_expenses: {
-					rub: el.data.external_expenses,
-					percent: el.data.expenses_percent,
-				},
-				purchases_rub: el.data.purchases.rub,
-				purchases_quantity: el.data.purchases.quantity,
-				return_rub: el.data.return.rub,
-				return_quantity: el.data.return.quantity,
-				logistics_straight: el.data.logistics_straight.rub,
-				logistics_reverse: el.data.logistics_reverse.rub,
-			};
+				} else {
+					row[key] = el.data[key];
+				}
+			})
 			return row;
 		});
 
-		for (const row of rows) {
-			for (const key in row) {
-				const summaryValue =
-					typeof row[key] === 'object' ? row[key]?.rub : row[key];
+
+		rows.forEach(row => {
+			Object.keys(row).forEach(key => {
 				if (!summary[key]) {
-					summary[key] = Number(summaryValue);
+					summary[key] = row[key];
 				} else {
-					summary[key] += Number(summaryValue);
+					summary[key] += row[key];
 				}
-			}
-		}
+			})
+		})
+		
 
 		// приcвоение расчетных значений
 		summary = {
 			...summary,
 			key: 'summary',
 			week_label: 'Итого за период',
-			drr: (summary.advert_amount / summary.gains) * 100,
-			// wb_retentions_amount: summary.wb_retentions_amount + summary.storage + summary.penalties + summary.wb_commission,
+			drr: (summary.advert_amount / summary.revenue_rub) * 100,
 			avg_spp: summary.avg_spp / rows.length,
-			// purchases_rub: summary.purchases_rub / summary.purchases_quantity,
 			return_on_investment: summary.return_on_investment / rows.length,
 			marginality: summary.marginality / rows.length,
 			purchase_percent: summary.purchase_percent / rows.length,
-			logistics_per_product: summary.logistics_total / summary.sales,
-			cost_price_per_one: summary.cost_price / summary.sales,
-			profit_per_one: summary.profit / summary.sales,
-			avg_check: summary.gains / summary.sales,
+			logistics_per_product: summary.logistics_total_rub / summary.revenue_quantity,
+			cost_price_per_one: summary.cost_price / summary.revenue_quantity,
+			profit_per_one: summary.profit / summary.revenue_quantity,
+			avg_check: summary.revenue_rub / summary.revenue_quantity,
 		};
 
 		rows.unshift(summary);
