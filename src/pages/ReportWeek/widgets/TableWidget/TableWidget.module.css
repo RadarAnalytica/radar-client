@@ -1,4 +1,21 @@
-.container {
+  .bodyRowSpecial:hover td div {
+    background-color: #FAFAFA !important;
+    transition: all 0.2s ease;
+  }
+
+  .bodyRowSpecial:first-of-type td div {
+    background-color: #EFECFE !important;
+  }
+
+
+  .summaryCell {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .container {
     position: relative;
     max-height: 90vh;
     padding: 16px;
@@ -6,7 +23,7 @@
     border-radius: 16px;
     box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.08);
   }
-    
+
   .tableContainer {
     position: relative;
     height: 100%;
@@ -17,33 +34,33 @@
     width: 6px;
     height: 6px;
     border-radius: 6px;
-}
+  }
 
-.tableContainer::-webkit-scrollbar-thumb {
+  .tableContainer::-webkit-scrollbar-thumb {
     border-radius: 6px;
     background: #5329ff80;
-}
+  }
 
-.tableContainer::-webkit-scrollbar-track {
+  .tableContainer::-webkit-scrollbar-track {
     background: transparent;
     height: 50%;
     margin: 10px 20px;
-}
-  
+  }
+
   .tableContainer :global(.ant-table-tbody-virtual-scrollbar-vertical .ant-table-tbody-virtual-scrollbar-thumb),
-  .tableContainer :global(.ant-table-tbody-virtual-scrollbar-horizontal .ant-table-tbody-virtual-scrollbar-thumb){
-    border-radius: 6px!important;
-    background: #5329ff80!important;
+  .tableContainer :global(.ant-table-tbody-virtual-scrollbar-horizontal .ant-table-tbody-virtual-scrollbar-thumb) {
+    border-radius: 6px !important;
+    background: #5329ff80 !important;
   }
-  
-  .tableContainer :global(.ant-table-tbody-virtual-scrollbar-horizontal .ant-table-tbody-virtual-scrollbar-thumb){
-    height: 5px!important;
+
+  .tableContainer :global(.ant-table-tbody-virtual-scrollbar-horizontal .ant-table-tbody-virtual-scrollbar-thumb) {
+    height: 5px !important;
   }
-  
-  .tableContainer :global(.ant-table-tbody-virtual-scrollbar-vertical .ant-table-tbody-virtual-scrollbar-thumb){
-    width: 5px!important;
+
+  .tableContainer :global(.ant-table-tbody-virtual-scrollbar-vertical .ant-table-tbody-virtual-scrollbar-thumb) {
+    width: 5px !important;
   }
-  
+
   /* 
   .tableContainer :global(.ant-table-tbody-virtual-holder){
     max-height: 100%!important;
@@ -66,80 +83,80 @@
       background: #5329ff80;
       border-radius: 6px;
   } */
-  
+
   .tableContainer :global(.ant-table),
   .tableContainer :global(.ant-table-body) {
     scrollbar-color: #5329ff80 transparent;
     scrollbar-width: thin;
   }
-  
+
   .tableContainer :global(.ant-table-body)::-webkit-scrollbar {
     width: 3px;
     height: 3px;
     border-radius: 6px;
   }
-    
+
   .tableContainer :global(.ant-table-body)::-webkit-scrollbar-track {
     background: transparent;
     height: 50%;
     margin: 10px 20px;
   }
-    
+
   .tableContainer :global(.ant-table-body)::-webkit-scrollbar-thumb {
     background: #5329ff80;
     border-radius: 6px;
   }
-  
-  :global(.ant-table-sticky-scroll-bar){
-    background-color: #5329ff80!important;
+
+  :global(.ant-table-sticky-scroll-bar) {
+    background-color: #5329ff80 !important;
   }
-  
+
   .tableContainer thead>tr>th {
     border: none;
   }
-  
+
   .tableContainer thead>tr>th:first-child {
     border-bottom-left-radius: 20px;
   }
-  
+
   .tableContainer thead>tr>th:last-child {
     border-bottom-right-radius: 20px;
   }
-  
+
   .tableContainer thead>tr>th {
     height: 70px;
   }
-  
+
   .tableContainer thead>tr>th>div {
     gap: 8px;
   }
-  
+
   .tableContainer thead>tr>th::before {
     height: 100% !important;
     background-color: #e8e8e8 !important;
   }
-  
+
   .tableContainer .ant-table-column-title {
     flex: auto !important;
   }
-  
+
   .expandBtn {
     margin-right: 12px;
     height: 18px;
   }
-  
-  .expandIcon{
+
+  .expandIcon {
     width: 14px;
   }
-  
-  .expandIconExpanded{
+
+  .expandIconExpanded {
     transform: rotate(180deg);
   }
-  
-  .expandRow{
+
+  .expandRow {
     opacity: 0.5;
   }
-  
+
   /* :global(.ant-table-container),
   :global(.ant-table-header), 
   :global(.ant-table-body) {
@@ -148,27 +165,31 @@
     overscroll-behavior: none;   /* Отключает эффекты overscroll *
     -webkit-overflow-scrolling: auto; /* Для Safari *
   } */
-  
-  .sortIcons{
+
+  .sortIcons {
     margin-left: 10px;
     margin-right: 10px;
   }
-  
-  :global(.ant-table-column-has-sorters){
+
+  :global(.ant-table-column-has-sorters) {
     margin-left: 10px;
     margin-right: 10px;
-    user-select: none; /* Стандартное свойство */
-    -webkit-user-select: none; /* Для Safari */
-    -moz-user-select: none; /* Для Firefox */
-    -ms-user-select: none; /* Для IE/Edge */
+    user-select: none;
+    /* Стандартное свойство */
+    -webkit-user-select: none;
+    /* Для Safari */
+    -moz-user-select: none;
+    /* Для Firefox */
+    -ms-user-select: none;
+    /* Для IE/Edge */
   }
-  
+
   .summaryRow,
-  .summaryRow :global(.ant-table-cell-fix-left){
+  .summaryRow :global(.ant-table-cell-fix-left) {
     background-color: rgb(238 234 255);
   }
-  
-  .loading{
+
+  .loading {
     position: absolute;
     top: 0;
     bottom: 0;
@@ -183,8 +204,8 @@
     align-items: center;
     background-color: #fff;
   }
-  
-  .loadingProgress{
+
+  .loadingProgress {
     margin-top: 60px;
     width: 60vw;
     max-width: 840px;

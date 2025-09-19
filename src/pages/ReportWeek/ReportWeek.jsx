@@ -57,6 +57,14 @@ export default function ReportWeek() {
 		return () => clearInterval(interval)
 	}, [loading])
 
+	useEffect(() => {
+		localStorage.removeItem('reportWeekColumns');
+		const savedTableColumns = localStorage.getItem('reportWeekTableConfig')
+		if (savedTableColumns) {
+			setTableColumns(JSON.parse(savedTableColumns))
+		}
+	}, [])
+
 
 	const weekOptions = useMemo(() => {
 		// шаблон для создания списка опций для фильтра
@@ -300,12 +308,13 @@ export default function ReportWeek() {
 	};
 
 	const tableColumnsHandler = (columns) => {
-		localStorage.setItem('reportWeekColumns', JSON.stringify(columns.map(column => column.dataIndex)));
+		//localStorage.setItem('reportWeekColumns', JSON.stringify(columns.map(column => column.dataIndex)));
 		setTableColumns(columns)
 	}
 
 	const configClear = () => {
 		tableColumnsHandler(COLUMNS);
+		localStorage.setItem('reportWeekTableConfig', JSON.stringify(COLUMNS))
 		setIsPopoverOpen(false);
 	};
 
