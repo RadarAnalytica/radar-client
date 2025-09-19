@@ -50,7 +50,7 @@ const AfterPayment= ({ devMode }) => {
   useEffect(() => {
     const timeout = setTimeout(() => {
       refreshUserToken().then((res) => {
-        // !devMode && navigate('/main')
+      !devMode && navigate('/main')
       })
     }, 5000);
 
