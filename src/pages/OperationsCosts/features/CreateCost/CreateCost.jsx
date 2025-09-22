@@ -126,9 +126,10 @@ export default function CreateCost({
 	};
 	
 	// const [date, setDate] = useState(data?.date || '10-10-2024');
-	const [frequency, setFrequency] = useState(null);
-	const [type, setType] = useState(data?.type || 'once');
-	const [date, setDate] = useState(data?.date);
+	const [frequency, setFrequency] = useState('week');
+	// const [type, setType] = useState(data?.type || 'once');
+	const [date, setDate] = useState(data?.date || format(new Date(), 'MM-d-yyyy'));
+	// 2025-09-15
 	const dateContainerRef = useRef(null);
 	const datePickerRef = useRef(null);
 	const today = new Date();
@@ -154,6 +155,7 @@ export default function CreateCost({
 	}, []);
 
 	const handleDayClick = (day) => {
+		console.log('handleDayClick', day)
 		setDate(format(day, 'MM-d-yyyy'));
 		setOpenCalendar(false);
 	}
@@ -164,6 +166,9 @@ export default function CreateCost({
 	}
 	// const [sum, setSum] = useState(data?.sum || 0);
 	const [description, setDescription] = useState(data?.description || '');
+
+
+	const typeValue = Form.useWatch('type', form);
 
 	return (
 		<ConfigProvider
@@ -183,6 +188,7 @@ export default function CreateCost({
 						labelFontSize: 16,
 						labelColor: '#1a1a1a',
 						labelColonMarginInlineEnd: 10,
+						labelRequiredMarkColor: '#000'
 					},
 					Button: {
 						paddingInline: 0,
@@ -200,7 +206,8 @@ export default function CreateCost({
 		>
 			<Modal
 				className={styles.modal}
-				open={open}
+				// open={open}
+				open={true}
 				centered={true}
 				closable={true}
 				// closeIcon={<CloseIcon className={styles.close__icon} />}
@@ -215,9 +222,8 @@ export default function CreateCost({
 					<Form.Item
 						className={styles.modal__part}
 						name='type'
-						// required={true}
-						initialValue={type}
-						onChange={(e) => setType(e.target.value)}
+						initialValue={data?.type || 'once'}
+						// onChange={(e) => setType(e.target.value)}
 					>
 						<Radio.Group>
 							<Radio value="once">Разовая</Radio>
@@ -226,20 +232,27 @@ export default function CreateCost({
 					</Form.Item>
 					<Row className={styles.modal__part} gutter={16}>
 						<Col span={12} ref={dateContainerRef}>
-							<Form.Item label="Дата" name='date' initialValue={date && format(new Date(date), 'd.MM.yyyy')}>
+							<Form.Item
+								label="Дата"
+								name='date'
+								// initialValue={format(new Date(date), 'dd.MM.yyyy')}
+								rules={[
+									{ required: true, message: 'Пожалуйста, выберите дату!' }
+								]}
+							>
 								<Select
 									size="large"
-									variant="filled"
 									placeholder="Выберите дату"
 									suffixIcon={icon}
 									variant="filled"
 									// value={date && format(date, 'd.MM.yyyy')}
-									value={date}
-									// options={[
-										// { value: date, label: date && format(date, 'd.MM.yyyy') },
-									// ]}
+									value={format(new Date(), 'MM-d-yyyy')}
+									// value={date}
+									options={[
+										{ value: format(new Date(), 'MM-d-yyyy'), label: date && format(date, 'dd.MM.yyyy') },
+									]}
 									onClick={dateHandler}
-									onChange={(v) => console.log('onChange', v)}
+									// onChange={(v) => console.log('onChange', v)}
 									disabled={openCalendar}
 									dropdownStyle={{ display: 'none' }}
 								/>
@@ -273,6 +286,7 @@ export default function CreateCost({
 									/>
 							</div>
 						</Col>
+						{/*
 						<Col span={12}>
 							<Form.Item
 								label="Сумма, руб"
@@ -280,25 +294,35 @@ export default function CreateCost({
 								// required={true}
 								initialValue={data?.sum}
 								// validateStatus='error'
+								rules={[
+									{ required: true, message: 'Пожалуйста, введите сумму расхода!' }
+								]}
 							>
-								{/* убрать изменения при скролле колесиком */}
-								{/* disabled добавить */}
-								{/* ! обязательные поля */}
-								{/* ! логика копирования */}
-								{/* формат дней недели */}
-								{/* варианты расходов */}
-								{/* проверить точку и запятую */}
-								<Input size="large" type='number'/>
+								<Input
+									size="large"
+									type='number'
+									min={0}
+									onWheel={(e) => e.currentTarget.blur()}
+								/>
 							</Form.Item>
 						</Col>
+						{*/}
 					</Row>
-					{type === 'plan' && <Row className={styles.modal__part} gutter={16}>
+					{/*
+					{typeValue === 'plan' && <Row className={styles.modal__part} gutter={16}>
 						<Col span={12} ref={dateContainerRef}>
-							<Form.Item label="Частота расхода" name='frequency'>
+							<Form.Item
+								label="Частота расхода"
+								name='frequency'
+								rules={[
+									{ required: true, message: 'Пожалуйста, выберите значение!' }
+								]}
+							>
 								<Select
 									size="large"
 									placeholder="Частота расхода"
 									suffixIcon={icon}
+									defaultValue={frequency}
 									options={[
 										{ value: 'week', label: 'Каждую неделю' },
 										{ value: 'month', label: 'Каждый месяц' },
@@ -311,29 +335,37 @@ export default function CreateCost({
 						{frequency === 'month' && <Col span={12}>
 							<Form.Item
 								label="Число или день"
-								name='value'
+								name='month'
 								// required={true}
-								initialValue={data?.sum}
+								initialValue={data?.month}
 								// validateStatus='error'
 							>
-								{/* убрать изменения при скролле колесиком */}
-								{/* disabled добавить */}
-								{/* ! обязательные поля */}
-								{/* ! логика копирования */}
-								{/* формат дней недели */}
-								{/* варианты расходов */}
-								{/* проверить точку и запятую */}
-								<Input size="large" type='number' placeholder='Число от 1 до 28'/>
+								{// убрать изменения при скролле колесиком }
+								{// disabled добавить }
+								{// ! обязательные поля }
+								{// ! логика копирования }
+								{// формат дней недели }
+								{// варианты расходов }
+								{// проверить точку и запятую }
+								<Input
+									size="large"
+									type='number'
+									min={0}
+									placeholder='Число от 1 до 28'
+									onWheel={(e) => e.currentTarget.blur()}
+								/>
 							</Form.Item>
 						</Col>}
 
 						{frequency === 'week' && <Col span={12}>
 							<Form.Item
 								label="День недели"
-								name='weekDay'
+								name='week'
 								// required={true}
-								initialValue={data?.sum}
-								// validateStatus='error'
+								initialValue={data?.week}
+								rules={[
+									{ required: true, message: 'Пожалуйста, выберите значение!' }
+								]}
 							>
 								<Select
 									size="large"
@@ -353,12 +385,16 @@ export default function CreateCost({
 							</Form.Item>
 						</Col>}
 					</Row>}
+*/}
+{/*
 					<div className={styles.modal__part}>
 						<Form.Item
 							label="Статья"
 							name='article'
 							initialValue={data?.article}
-							// required={true}
+							rules={[
+									{ required: true, message: 'Пожалуйста, выберите значение!' }
+								]}
 						>
 							<Select
 								size="large"
@@ -389,16 +425,16 @@ export default function CreateCost({
 							name='description'
 							// required={true}
 							initialValue={data?.description || description}
+							rules={[
+								{ required: true, message: 'Пожалуйста, введите значение!', min: 0 },
+								{ message: 'Описание не должно быть больше 150 символов!', max: 150 }
+							]}
 						>
 							<Input.TextArea
 								size="large"
 								autoSize={{ minRows: 1, maxRows: 3 }}
-								onInput={(e) => setDescription(e.target.value)}
-								maxLength={150}
-								status={description.length > 150 ? 'error' : ''}
-								count={{
-									max: 160
-								}}
+								// onInput={(e) => setDescription(e.target.value)}
+								// maxLength={150}
 							/>
 						</Form.Item>
 					</div>
@@ -421,7 +457,14 @@ export default function CreateCost({
 							</Radio.Group>
 						</Form.Item>
 
-						{selection === 'shop' && <Form.Item name="shop" initialValue={data?.shop}>
+						{selection === 'shop' && 
+							<Form.Item
+								name="shop"
+								initialValue={data?.shop}
+								rules={[
+									{ required: true, message: 'ОПожалуйста, выберите значение!' }
+								]}
+							>
 							<Select
 								size="large"
 								options={shopsList.map((el) => ({
@@ -433,10 +476,16 @@ export default function CreateCost({
 								placeholder="Выберите магазины"
 								showSearch
 								suffixIcon={icon}
-								// required={true}
 							/>
 						</Form.Item>}
-						{selection === 'sku' && <Form.Item name="sku">
+						{selection === 'sku' && 
+							<Form.Item
+								name="sku"
+								initialValue={data?.sku}
+								rules={[
+									{ required: true, message: 'ОПожалуйста, выберите значение!' }
+								]}
+							>
 							<Select
 								size="large"
 								options={articlesList.map((el, i) => ({
@@ -447,10 +496,16 @@ export default function CreateCost({
 								placeholder="Выберите артикулы"
 								showSearch
 								suffixIcon={icon}
-								// required={true}
 							/>
 						</Form.Item>}
-						{selection === 'brand' && <Form.Item name="brands" initialValue={data?.brand}>
+						{selection === 'brand' && 
+						<Form.Item
+							name="brands"
+							initialValue={data?.brand}
+							rules={[
+								{ required: true, message: 'ОПожалуйста, выберите значение!' }
+							]}
+						>
 							<Select
 								size="large"
 								options={brandsList.map((el, i) => ({
@@ -461,11 +516,10 @@ export default function CreateCost({
 								placeholder="Выберите бренды"
 								showSearch
 								suffixIcon={icon}
-								// required={true}
 							/>
 						</Form.Item>}
 					</div>
-
+*/}
 					<ConfigProvider
 						theme={{
 							components: {

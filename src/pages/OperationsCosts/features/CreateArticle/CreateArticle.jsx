@@ -73,7 +73,16 @@ export default function CreateArticle({
 				props
 			>
 				<Form onFinish={onFinish} layout="vertical">
-					<Form.Item className={styles.modal__part} label="Название" name='title' initialValue={data?.title}>
+					<Form.Item
+						className={styles.modal__part}
+						label="Название"
+						name='title'
+						initialValue={data?.title}
+						rules={[
+							{ required: true, message: 'Пожалуйста, введите значение!', min: 0 },
+							{ message: 'Название не должно быть больше 30 символов!', max: 30}
+						]}
+					>
 						<Input size="large" onChange={(e) => { setTitle(e.target.value) }}/>
 					</Form.Item>
 					<ConfigProvider
