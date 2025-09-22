@@ -105,7 +105,7 @@ export const COLUMNS = [
 	{title: 'Доплаты',dataIndex: 'additional_payments',sortable: true,width: 240,minWidth: 240,units: '₽',},
 	{title: 'Хранение',dataIndex: 'storage_rub',sortable: true,width: 240,minWidth: 240,units: '₽',},
 	{title: 'Реклама',dataIndex: 'advert_amount',sortable: true,width: 240,minWidth: 240,units: '₽',},
-	{title: 'ДРР',dataIndex: 'drr',sortable: true,width: 240,minWidth: 240,tooltipText: 'ДРР',units: '%',},
+	{title: 'ДРР',dataIndex: 'drr',sortable: true,width: 240,minWidth: 240,units: '%',},
 	{title: 'Платная приёмка',dataIndex: 'acceptance_rub',sortable: true,width: 300,minWidth: 300,units: '₽',},
 	{title: 'Все удержания WB',dataIndex: 'wb_retentions_amount',sortable: true,width: 300,minWidth: 300,units: '₽',},
 	{title: 'СПП + WB реализовал',dataIndex: 'sold_by_wb',sortable: true,width: 340,minWidth: 340,tooltipText: 'Сумма реализации товара с учетом согласованной скидки продавца и СПП',units: '₽',},
