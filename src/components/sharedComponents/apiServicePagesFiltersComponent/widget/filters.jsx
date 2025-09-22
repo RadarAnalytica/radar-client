@@ -18,8 +18,6 @@ export const Filters = ({
   groupSelect = true,
   weekSelect = false,
   monthSelect = false,
-  monthHandler,
-  monthValue,
   tempPageCondition,
   isDataLoading
 }) => {
@@ -39,8 +37,6 @@ export const Filters = ({
   const shopChangeHandler = (value) => {
     const selectedShop = shops?.find(_ => _.id === value)
     dispatch(filterActions.setActiveShop(selectedShop))
-    // Подгрузка сохраненного массива недель для магазина
-    dispatch(filterActions.setActiveFilters({ stateKey: 'activeWeeks', data: getSavedActiveWeeks(value) }))
   }
   //- -----------------------------------------//
 
@@ -152,7 +148,8 @@ export const Filters = ({
   return (
     <div className={styles.filters}>
       <div className={styles.filters__inputsMainWrapper}>
-        {activeBrand && weekSelect && <div className={styles.filters__inputWrapper}>
+        {shops && activeBrand && weekSelect && 
+          <div className={styles.filters__inputWrapper}>
             <MultiSelect
               dispatch={dispatch}
               filterActions={filterActions}
@@ -170,10 +167,16 @@ export const Filters = ({
         }
         {shops && activeBrand && monthSelect &&
           <div className={styles.filters__inputWrapper}>
-            <MonthSelect monthHandler={monthHandler} value={monthValue} isDataLoading={isDataLoading} />
+            <MonthSelect
+              dispatch={dispatch}
+              filterActions={filterActions}
+              selectId={filters.find((el) => el.shop.id === activeBrand.id).months.enLabel}
+              label={`${filters.find((el) => el.shop.id === activeBrand.id).months.ruLabel}:`}
+              value={filtersState.activeMonths}
+              isDataLoading={isDataLoading} />
           </div>
         }
-        {shops && timeSelect && tempPageCondition !== 'supplier' &&
+        {shops && activeBrand && timeSelect && tempPageCondition !== 'supplier' &&
           <div className={styles.filters__inputWrapper}>
             <TimeSelect isDataLoading={isDataLoading} />
           </div>

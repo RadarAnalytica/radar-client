@@ -1,11 +1,15 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { fetchFilters } from "./filterActions";
+import { getSavedActiveWeeks, getSavedActiveMonths } from '@/service/utils';import { actions as shopsActions } from '../shops/shopsSlice';
+import { act } from "react";
 
 const initialState = {
     activeBrand: undefined,
     activeBrandName: undefined,
     activeArticle: undefined,
     activeGroup: undefined,
+    activeWeeks: undefined,
+    activeMonths: undefined,
     skuFrequencyMode: 'Простой', // 'Простой' | 'Продвинутый'
     shops: undefined,
     selectedRange: {
@@ -28,6 +32,8 @@ const apiServicePagesFilterStateSlice = createSlice({
                 activeBrandName: [{value: 'Все'}],
                 activeArticle: [{value: 'Все'}],
                 activeGroup: [{id: 0, value: 'Все'}],
+                activeWeeks: getSavedActiveWeeks(action.payload.id),
+                activeMonths: getSavedActiveMonths(action.payload.id),
             }
         },
         setPeriod: (state, action) => {
@@ -69,6 +75,13 @@ const apiServicePagesFilterStateSlice = createSlice({
             }
             
             if (stateKey === 'activeWeeks') {
+                return {
+                    ...state,
+                    [stateKey]: data,
+                }
+            }
+
+            if (stateKey === 'activeMonths') {
                 return {
                     ...state,
                     [stateKey]: data,
