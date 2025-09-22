@@ -99,7 +99,7 @@ export const COLUMNS = [
 	{title: 'Логистика на единицу',dataIndex: 'logistics_per_product',sortable: true,width: 300,minWidth: 300,units: '₽'},
 	{title: 'Компенсации брака',dataIndex: 'compensation_defects_rub',sortable: true,width: 350,minWidth: 350,units: '₽',},
 	{title: 'Кол-во брака',dataIndex: 'compensation_defects_quantity',sortable: true,width: 240,minWidth: 240,units: 'шт',},
-	{title: 'Компенсации ущерба',dataIndex: 'compensation_damage',sortable: true,width: 350,minWidth: 350,units: '₽',},
+	{title: 'Компенсации ущерба',dataIndex: 'compensation_damage_rub',sortable: true,width: 350,minWidth: 350,units: '₽',},
 	{title: 'Кол-во ущерба',dataIndex: 'compensation_damage_quantity',sortable: true,width: 240,minWidth: 240,units: 'шт',},
 	{title: 'Штрафы',dataIndex: 'penalties',sortable: true,width: 240,minWidth: 240,units: '₽',},
 	{title: 'Доплаты',dataIndex: 'additional_payments',sortable: true,width: 240,minWidth: 240,units: '₽',},

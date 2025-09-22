@@ -249,6 +249,7 @@ export default function ReportWeek() {
 		});
 
 
+
 		rows.forEach(row => {
 			Object.keys(row).forEach(key => {
 				if (!summary[key]) {
@@ -275,6 +276,8 @@ export default function ReportWeek() {
 			profit_per_one: summary.profit / summary.revenue_quantity,
 			avg_check: summary.revenue_rub / summary.revenue_quantity,
 		};
+
+
 
 		rows.unshift(summary);
 		setTableRows(rows);
