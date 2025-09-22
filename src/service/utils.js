@@ -3,6 +3,7 @@ import { jwtDecode } from 'jwt-decode';
 import { useState, useCallback, useEffect } from 'react';
 import { eachWeekOfInterval, format, formatISO, endOfWeek, getISOWeek, } from 'date-fns';
 import { URL } from "./config";
+import dayjs from 'dayjs';
 
 export function filterArrays(obj, days) {
   for (let key in obj) {
@@ -740,4 +741,23 @@ export function getSavedActiveWeeks(id) {
     savedActiveWeeks = weeksListData.slice(0, 12)
   }
   return savedActiveWeeks
+}
+
+export const initialMonths = {
+    month_to: dayjs().format('YYYY-MM'),
+    month_from: dayjs().startOf('year').format('YYYY-MM')
+}
+
+export function getSavedActiveMonths(id) {
+  let savedActiveMonths = localStorage.getItem('activeMonths')
+  if (savedActiveMonths) {
+    const data = JSON.parse(savedActiveMonths);
+    if (id in data) {
+      return data[id]
+    }
+    savedActiveMonths = initialMonths
+  } else {
+    savedActiveMonths = initialMonths
+  }
+  return savedActiveMonths
 }

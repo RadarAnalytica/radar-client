@@ -1,8 +1,8 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { URL } from '../../service/config';
 import { setLoading } from '../loading/loadingSlice';
-import { weeksList, getSavedActiveWeeks } from '@/service/utils';import { actions as shopsActions } from '../shops/shopsSlice';
-
+import { weeksList, getSavedActiveWeeks, getSavedActiveMonths } from '@/service/utils';
+import { actions as shopsActions } from '../shops/shopsSlice';
 
 
 
@@ -73,6 +73,11 @@ const createFiltersDTO = (data, shopsData) => {
       ruLabel: 'Период',
       enLabel: 'weeks',
       data: weeksListData
+    },
+    months: {
+      stateKey: 'activeMonths',
+      ruLabel: 'Период',
+      enLabel: 'months'
     }
   }
 
@@ -115,6 +120,11 @@ const createFiltersDTO = (data, shopsData) => {
         ruLabel: 'Период',
         enLabel: 'weeks',
         data: weeksListData
+      },
+      months: {
+        stateKey: 'activeMonths',
+        ruLabel: 'Период',
+        enLabel: 'months'
       }
     }
 
@@ -152,9 +162,12 @@ const createFiltersDTO = (data, shopsData) => {
 
   // поднимаем сохраненный период по неделям, чтобы установить его по умолчанию
   let savedActiveWeeks = getSavedActiveWeeks(savedActiveBrand.id)
+  
+  // поднимаем сохраненный период по месяцам, чтобы установить его по умолчанию
+  let savedActiveMonths = getSavedActiveMonths(savedActiveBrand.id)
 
 
-  return { shops, filtersData: DTO, initState: { activeBrandName: [{ value: 'Все' }], activeArticle: [{ value: 'Все' }], activeGroup: [{ id: 0, value: 'Все' }], selectedRange: savedSelectedRange, activeBrand: savedActiveBrand, activeWeeks: savedActiveWeeks } }
+  return { shops, filtersData: DTO, initState: { activeBrandName: [{ value: 'Все' }], activeArticle: [{ value: 'Все' }], activeGroup: [{ id: 0, value: 'Все' }], selectedRange: savedSelectedRange, activeBrand: savedActiveBrand, activeWeeks: savedActiveWeeks, activeMonths: savedActiveMonths } }
 }
 
 export const fetchFilters = createAsyncThunk(
