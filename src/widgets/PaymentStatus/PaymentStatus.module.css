@@ -73,7 +73,7 @@
         max-width: 490px;
     }
 
-    @media (max-width: 1440px) {
+    @media (max-width: 1380px) {
         max-width: 410px;
     }
 
@@ -168,7 +168,7 @@
     background-color: #6083E7;
     padding: 20px 24px;
 
-    @media (max-width: 1440px) {
+    @media (max-width: 1380px) {
         font-size: 16px;
     }
     @media (max-width: 1050px) {
