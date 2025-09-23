@@ -71,6 +71,10 @@ const Rnp = React.lazy(() => import('./pages/Rnp'))
 import LoaderPage from "./pages/LoaderPage";
 import { ProtectedRoute } from "./RouteGuards";
 
+// During migration, allow missing props on ProtectedRoute
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+
 /**
  * --------------------------------------
  * 1. To connect a protected route - just wrap it with ProtectedRoute component (mind the props! - instruction is inside)
@@ -150,7 +154,7 @@ function App() {
             <Route path='/confirmation/:email/:code' element={<Suspense fallback={<LoaderPage />}>{' '}<ConfirmationPage /></Suspense>} />
             <Route path='/after-payment' element={<Suspense fallback={<LoaderPage />}>{' '}<NewAfterPayment devMode={false} /></Suspense>} />
             {/* 404 */}
-            <Route path='*' element={<Page404 />} status={404} />
+            <Route path='*' element={<Page404 />} />
           </Routes>
         </HelmetProvider>
       </ProductProvider>

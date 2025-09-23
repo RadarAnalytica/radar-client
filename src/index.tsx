@@ -4,7 +4,7 @@ import App from './App';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import AuthContext, { AuthProvider } from './service/AuthContext';
 import { Provider } from 'react-redux';
-import { store } from '../src/redux/store';
+import { store } from './redux/store';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
