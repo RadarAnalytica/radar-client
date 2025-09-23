@@ -120,9 +120,10 @@ export default function ReportProfitLoss() {
 				key: item.year,
 				title: item.year,
 				dataIndex: item.year,
-				groupColor: '#F7F7F7',
+				groupColor: 'white',
 				style: {
-					backgroundColor: '#F7F6FE'
+					backgroundColor: '#F7F6FE',
+					borderRight: '1px solid #E8E8E8',
 				}
 			});
 			if (item.months) {
