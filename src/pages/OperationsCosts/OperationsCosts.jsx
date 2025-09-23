@@ -57,7 +57,7 @@ export default function OperationsCosts() {
 	
 	const actionCostsRender = (value, row) => {
 		if (row.key == 'summary') {
-			return '-';
+			return null;
 		}
 		return (<Flex justify="start" gap={20}>
 			<ConfigProvider>
@@ -104,6 +104,7 @@ export default function OperationsCosts() {
 			key: 'summary',
 			date: 'Итого',
 			sum: data.reduce((sum, el) => (sum += el.sum), 0),
+			description: '-',
 			article: '-',
 			sku: '-',
 			brand: '-',
@@ -113,6 +114,8 @@ export default function OperationsCosts() {
 		data.unshift(result);
 		return {data, columns};
 	}, [costs]);
+
+	console.log('costsData', costsData)
 
 	const [articleEdit, setArticleEdit] = useState(null);
 	const [articles, setArticles] = useState(null);
@@ -374,7 +377,7 @@ export default function OperationsCosts() {
 										controlHeightLG: 43,
 										paddingInlineLG: 20,
 										paddingBlockLG: 8,
-										fontSize: 18,
+										contentFontSizeLG: 18,
 										primaryColor: '#1a1a1a',
 										colorPrimaryHover: 'rgba(83, 41, 255, 0.1)',
 										colorPrimaryActive:
@@ -480,7 +483,7 @@ export default function OperationsCosts() {
 				
 				<div className={styles.controls}>
 						<Filters
-							shopSelect={false}
+							shopSelect={true}
 							timeSelect={true}
 							isDataLoading={loading}
 							skuFrequency={false}

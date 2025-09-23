@@ -210,46 +210,57 @@ export default function CreateCost({
 				open={true}
 				centered={true}
 				closable={true}
-				// closeIcon={<CloseIcon className={styles.close__icon} />}
+				closeIcon={<CloseIcon className={styles.close__icon} />}
 				title={<Title state={state}/>}
 				footer={null}
 				width={600}
 				onCancel={onCancel}
 				props
 			>
-				<Form form={form} onFinish={onFinish} layout="vertical">
+				<Form
+					form={form}
+					onFinish={onFinish}
+					layout="vertical"
+					// initialValues={data}
+				>
 					<h3 className={styles.modal__subtitle}>Тип операции</h3>
-					<Form.Item
-						className={styles.modal__part}
-						name='type'
-						initialValue={data?.type || 'once'}
-						// onChange={(e) => setType(e.target.value)}
-					>
-						<Radio.Group>
-							<Radio value="once">Разовая</Radio>
-							<Radio value="plan">Плановая</Radio>
-						</Radio.Group>
-					</Form.Item>
+					<ConfigProvider
+						theme={{
+							token: {
+								fontSize: 16
+							}
+						}}>
+							<Form.Item
+								className={styles.modal__part}
+								name='type'
+								initialValue={data?.type || 'once'}
+							>
+								<Radio.Group>
+									<Radio value="once">Разовая</Radio>
+									<Radio value="plan">Плановая</Radio>
+								</Radio.Group>
+							</Form.Item>
+					</ConfigProvider>
 					<Row className={styles.modal__part} gutter={16}>
 						<Col span={12} ref={dateContainerRef}>
 							<Form.Item
 								label="Дата"
 								name='date'
-								// initialValue={format(new Date(date), 'dd.MM.yyyy')}
+								initialValue={format(new Date(date), 'dd.MM.yyyy')}
 								rules={[
 									{ required: true, message: 'Пожалуйста, выберите дату!' }
 								]}
 							>
 								<Select
+									name='date'
 									size="large"
 									placeholder="Выберите дату"
 									suffixIcon={icon}
 									variant="filled"
-									// value={date && format(date, 'd.MM.yyyy')}
-									value={format(new Date(), 'MM-d-yyyy')}
-									// value={date}
+									value={format(new Date(date), 'MM-d-yyyy')}
 									options={[
-										{ value: format(new Date(), 'MM-d-yyyy'), label: date && format(date, 'dd.MM.yyyy') },
+										// { value: format(new Date(date), 'MM-d-yyyy'), label: date && format(date, 'dd.MM.yyyy') },
+										// { value: format(new Date(Date.now() + 36000), 'MM-d-yyyy'), label: '1' + date && format(new Date(Date.now() + 36000), 'dd.MM.yyyy') },
 									]}
 									onClick={dateHandler}
 									// onChange={(v) => console.log('onChange', v)}
@@ -286,7 +297,6 @@ export default function CreateCost({
 									/>
 							</div>
 						</Col>
-						{/*
 						<Col span={12}>
 							<Form.Item
 								label="Сумма, руб"
@@ -306,9 +316,7 @@ export default function CreateCost({
 								/>
 							</Form.Item>
 						</Col>
-						{*/}
 					</Row>
-					{/*
 					{typeValue === 'plan' && <Row className={styles.modal__part} gutter={16}>
 						<Col span={12} ref={dateContainerRef}>
 							<Form.Item
@@ -340,13 +348,13 @@ export default function CreateCost({
 								initialValue={data?.month}
 								// validateStatus='error'
 							>
-								{// убрать изменения при скролле колесиком }
-								{// disabled добавить }
-								{// ! обязательные поля }
-								{// ! логика копирования }
-								{// формат дней недели }
-								{// варианты расходов }
-								{// проверить точку и запятую }
+								{/* убрать изменения при скролле колесиком */}
+								{/* disabled добавить */}
+								{/* ! обязательные поля */}
+								{/* ! логика копирования */}
+								{/* формат дней недели */}
+								{/* варианты расходов */}
+								{/* проверить точку и запятую */}
 								<Input
 									size="large"
 									type='number'
@@ -385,8 +393,6 @@ export default function CreateCost({
 							</Form.Item>
 						</Col>}
 					</Row>}
-*/}
-{/*
 					<div className={styles.modal__part}>
 						<Form.Item
 							label="Статья"
@@ -450,11 +456,19 @@ export default function CreateCost({
 							}}
 							// required={true}
 						>
-							<Radio.Group>
-								<Radio value="shop">Магазины</Radio>
-								<Radio value="sku">Артикулы</Radio>
-								<Radio value="brand">Бренды</Radio>
-							</Radio.Group>
+							<ConfigProvider
+								theme={{
+									token: {
+										fontSize: 16
+									}
+								}}>
+								<Radio.Group>
+									<Radio value="shop">Магазины</Radio>
+									<Radio value="sku">Артикулы</Radio>
+									<Radio value="brand">Бренды</Radio>
+								</Radio.Group>
+							</ConfigProvider>
+
 						</Form.Item>
 
 						{selection === 'shop' && 
@@ -519,7 +533,6 @@ export default function CreateCost({
 							/>
 						</Form.Item>}
 					</div>
-*/}
 					<ConfigProvider
 						theme={{
 							components: {
@@ -540,8 +553,6 @@ export default function CreateCost({
 									},
 									components: {
 										Button: {
-											controlHeightLG: 43,
-											paddingInlineLG: 12,
 											primaryColor: '#5329FF',
 											colorPrimaryHover:
 												'rgba(83, 41, 255, 0.1)',
@@ -571,13 +582,10 @@ export default function CreateCost({
 									},
 									components: {
 										Button: {
-											controlHeightLG: 43,
-											paddingInlineLG: 12,
+											defaultShadow: '',
 											primaryColor: '#FFF',
-											colorPrimaryHover:
-												'rgba(83, 41, 255, 0.1)',
-
-											defaultShadow: false,
+											controlHeightLG: 45,
+											fontWeight: 600,
 										},
 									},
 								}}

@@ -4,7 +4,8 @@ import { Tooltip, Flex, Button, ConfigProvider } from 'antd';
 import { format } from 'date-fns';
 import { EditIcon, CopyIcon, DeleteIcon } from '../shared/Icons';
 
-function summaryRender(value, row) {
+function summaryRender(value, row, i) {
+	console.log('row', row)
 	if (row.key == 'summary') {
 		return value;
 	}
@@ -30,6 +31,7 @@ export const COSTS_COLUMNS = [
 		title: 'Описание',
 		dataIndex: 'description',
 		key: 'description',
+		render: columnRender,
 		width: `${100 / 8}%`
 	},
 	{
