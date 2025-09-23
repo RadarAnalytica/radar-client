@@ -1,7 +1,7 @@
 .container {
     position: relative;
     max-height: 90vh;
-    padding: 16px;
+    padding: 8px;
     background-color: #fff;
     border-radius: 16px;
     box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.08);
@@ -14,9 +14,9 @@
   }
 
   .tableContainer::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
-    border-radius: 6px;
+    width: 3px;
+    height: 3px;
+    border-radius: 3px;
 }
 
 .tableContainer::-webkit-scrollbar-thumb {
@@ -30,99 +30,7 @@
     margin: 10px 20px;
 }
   
-  .tableContainer :global(.ant-table-tbody-virtual-scrollbar-vertical .ant-table-tbody-virtual-scrollbar-thumb),
-  .tableContainer :global(.ant-table-tbody-virtual-scrollbar-horizontal .ant-table-tbody-virtual-scrollbar-thumb){
-    border-radius: 6px!important;
-    background: #5329ff80!important;
-  }
-  
-  .tableContainer :global(.ant-table-tbody-virtual-scrollbar-horizontal .ant-table-tbody-virtual-scrollbar-thumb){
-    height: 5px!important;
-  }
-  
-  .tableContainer :global(.ant-table-tbody-virtual-scrollbar-vertical .ant-table-tbody-virtual-scrollbar-thumb){
-    width: 5px!important;
-  }
-  
-  /* 
-  .tableContainer :global(.ant-table-tbody-virtual-holder){
-    max-height: 100%!important;
-  }
-  
-  .tableContainer::-webkit-scrollbar {
-    width: 3px;
-    height: 3px;
-    border-radius: 6px!important;
-    opacity: 1;
-  }
-  
-  .tableContainer::-webkit-scrollbar-track {
-      background: transparent;
-      height: 50%;
-      margin: 10px 20px;
-  }
-  
-  .tableContainer::-webkit-scrollbar-thumb {
-      background: #5329ff80;
-      border-radius: 6px;
-  } */
-  
-  .tableContainer :global(.ant-table),
-  .tableContainer :global(.ant-table-body) {
-    scrollbar-color: #5329ff80 transparent;
-    scrollbar-width: thin;
-  }
-  
-  .tableContainer :global(.ant-table-body)::-webkit-scrollbar {
-    width: 3px;
-    height: 3px;
-    border-radius: 6px;
-  }
-    
-  .tableContainer :global(.ant-table-body)::-webkit-scrollbar-track {
-    background: transparent;
-    height: 50%;
-    margin: 10px 20px;
-  }
-    
-  .tableContainer :global(.ant-table-body)::-webkit-scrollbar-thumb {
-    background: #5329ff80;
-    border-radius: 6px;
-  }
-  
-  :global(.ant-table-sticky-scroll-bar){
-    background-color: #5329ff80!important;
-  }
-  
-  .tableContainer thead>tr>th {
-    border: none;
-  }
-  
-  .tableContainer thead>tr>th:first-child {
-    border-bottom-left-radius: 20px;
-  }
-  
-  .tableContainer thead>tr>th:last-child {
-    border-bottom-right-radius: 20px;
-  }
-  
-  .tableContainer thead>tr>th {
-    height: 70px;
-  }
-  
-  .tableContainer thead>tr>th>div {
-    gap: 8px;
-  }
-  
-  .tableContainer thead>tr>th::before {
-    height: 100% !important;
-    background-color: #e8e8e8 !important;
-  }
-  
-  .tableContainer .ant-table-column-title {
-    flex: auto !important;
-  }
-  
+
   .expandBtn {
     margin-right: 12px;
     height: 18px;
@@ -154,20 +62,6 @@
     margin-right: 10px;
   }
   
-  :global(.ant-table-column-has-sorters){
-    margin-left: 10px;
-    margin-right: 10px;
-    user-select: none; /* Стандартное свойство */
-    -webkit-user-select: none; /* Для Safari */
-    -moz-user-select: none; /* Для Firefox */
-    -ms-user-select: none; /* Для IE/Edge */
-  }
-  
-  .summaryRow,
-  .summaryRow :global(.ant-table-cell-fix-left){
-    background-color: rgb(238 234 255);
-  }
-  
   .loading{
     position: absolute;
     inset: 0;
@@ -192,8 +86,7 @@
     justify-content: space-between;
     align-items: center;
     gap: 17px;
-    min-height: 20px;
-    max-height: 20px;
+    padding: 6px 0px;
     height: 20px;
   }
   .customCellChildren {
@@ -202,28 +95,47 @@
   
   .customCellValueRub {
     font-weight: 700;
-    font-family: Mulish;
-    font-size: 16px;
+    font-family: Manrope, Mulish;
+    font-size: 14px;
     line-height: 100%;
     letter-spacing: 0%;
     color: #1A1A1A;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    display: -webkit-box !important;
+    -webkit-box-orient: vertical !important;
+    -webkit-line-clamp: 1 !important;
+  }
+
+  :global(.radar-table-default__body-cell-wrapper):has(.customCell[data-year-attribute="profitLossYearCell"]) {
+    border-right: 1px solid #E8E8E8;
   }
   
   .customCellValuePercent {
     font-weight: 500;
-    font-family: Mulish;
-    font-size: 16px;
+    font-family: Manrope, Mulish;
+    font-size: 14px;
     line-height: 100%;
     letter-spacing: 0%;
     color: #1A1A1A;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    display: -webkit-box !important;
+    -webkit-box-orient: vertical !important;
+    -webkit-line-clamp: 1 !important;
   }
   .customCellValueText {
     font-weight: 500;
-    font-family: Mulish;
-    font-size: 16px;
+    font-family: Manrope, Mulish;
+    font-size: 14px;
     line-height: 100%;
     letter-spacing: 0%;
     color: #1A1A1A;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    display: -webkit-box !important;
+    -webkit-box-orient: vertical !important;
+    -webkit-line-clamp: 1 !important;
   }
 
 
