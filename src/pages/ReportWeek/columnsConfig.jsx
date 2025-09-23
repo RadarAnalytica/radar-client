@@ -122,4 +122,7 @@ export const COLUMNS = [
 	maxWidth: _.width * 2,
 	key: _.dataIndex,
 	units: _.dataIndex !== 'week_label' && !_.units ? ' ' : _.units,
+	style: {
+		fontFamily: 'Manrope, Mulish, Arial, sans-serif'
+	}
 }))

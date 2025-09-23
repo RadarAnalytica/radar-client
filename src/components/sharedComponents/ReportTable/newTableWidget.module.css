@@ -11,6 +11,9 @@
     position: relative;
     height: 100%;
     overflow: auto;
+    /* Firefox scrollbar */
+    scrollbar-width: thin;
+    scrollbar-color: #5329ff80 transparent;
   }
 
   .tableContainer::-webkit-scrollbar {

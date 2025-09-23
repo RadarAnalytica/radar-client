@@ -5,6 +5,21 @@
 
   .bodyRowSpecial:first-of-type td div {
     background-color: #EFECFE !important;
+    font-family: Manrope, Mulish, Arial, sans-serif !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    display: -webkit-box !important;
+    -webkit-box-orient: vertical !important;
+    -webkit-line-clamp: 1 !important;
+    white-space: nowrap !important;
+  }
+
+  .bodyRowSpecial:first-of-type td div > div {
+    display: flex !important;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    white-space: nowrap !important;
   }
 
 
@@ -18,7 +33,7 @@
   .container {
     position: relative;
     max-height: 90vh;
-    padding: 16px;
+    padding: 8px;
     background-color: #fff;
     border-radius: 16px;
     box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.08);
@@ -30,6 +45,9 @@
     height: 100%;
     max-height: calc(90vh - 32px);
     overflow: auto;
+     /* Firefox scrollbar */
+     scrollbar-width: thin;
+     scrollbar-color: #5329ff80 transparent;
   }
 
   .tableContainer::-webkit-scrollbar {
@@ -47,99 +65,6 @@
     background: transparent;
     height: 50%;
     margin: 10px 20px;
-  }
-
-  .tableContainer :global(.ant-table-tbody-virtual-scrollbar-vertical .ant-table-tbody-virtual-scrollbar-thumb),
-  .tableContainer :global(.ant-table-tbody-virtual-scrollbar-horizontal .ant-table-tbody-virtual-scrollbar-thumb) {
-    border-radius: 6px !important;
-    background: #5329ff80 !important;
-  }
-
-  .tableContainer :global(.ant-table-tbody-virtual-scrollbar-horizontal .ant-table-tbody-virtual-scrollbar-thumb) {
-    height: 5px !important;
-  }
-
-  .tableContainer :global(.ant-table-tbody-virtual-scrollbar-vertical .ant-table-tbody-virtual-scrollbar-thumb) {
-    width: 5px !important;
-  }
-
-  /* 
-  .tableContainer :global(.ant-table-tbody-virtual-holder){
-    max-height: 100%!important;
-  }
-  
-  .tableContainer::-webkit-scrollbar {
-    width: 3px;
-    height: 3px;
-    border-radius: 6px!important;
-    opacity: 1;
-  }
-  
-  .tableContainer::-webkit-scrollbar-track {
-      background: transparent;
-      height: 50%;
-      margin: 10px 20px;
-  }
-  
-  .tableContainer::-webkit-scrollbar-thumb {
-      background: #5329ff80;
-      border-radius: 6px;
-  } */
-
-  .tableContainer :global(.ant-table),
-  .tableContainer :global(.ant-table-body) {
-    scrollbar-color: #5329ff80 transparent;
-    scrollbar-width: thin;
-  }
-
-  .tableContainer :global(.ant-table-body)::-webkit-scrollbar {
-    width: 3px;
-    height: 3px;
-    border-radius: 6px;
-  }
-
-  .tableContainer :global(.ant-table-body)::-webkit-scrollbar-track {
-    background: transparent;
-    height: 50%;
-    margin: 10px 20px;
-  }
-
-  .tableContainer :global(.ant-table-body)::-webkit-scrollbar-thumb {
-    background: #5329ff80;
-    border-radius: 6px;
-  }
-
-  :global(.ant-table-sticky-scroll-bar) {
-    background-color: #5329ff80 !important;
-  }
-
-  .tableContainer thead>tr>th {
-    border: none;
-  }
-
-  .tableContainer thead>tr>th:first-child {
-    border-bottom-left-radius: 20px;
-  }
-
-  .tableContainer thead>tr>th:last-child {
-    border-bottom-right-radius: 20px;
-  }
-
-  .tableContainer thead>tr>th {
-    height: 70px;
-  }
-
-  .tableContainer thead>tr>th>div {
-    gap: 8px;
-  }
-
-  .tableContainer thead>tr>th::before {
-    height: 100% !important;
-    background-color: #e8e8e8 !important;
-  }
-
-  .tableContainer .ant-table-column-title {
-    flex: auto !important;
   }
 
   .expandBtn {
@@ -173,24 +98,6 @@
     margin-right: 10px;
   }
 
-  :global(.ant-table-column-has-sorters) {
-    margin-left: 10px;
-    margin-right: 10px;
-    user-select: none;
-    /* Стандартное свойство */
-    -webkit-user-select: none;
-    /* Для Safari */
-    -moz-user-select: none;
-    /* Для Firefox */
-    -ms-user-select: none;
-    /* Для IE/Edge */
-  }
-
-  .summaryRow,
-  .summaryRow :global(.ant-table-cell-fix-left) {
-    background-color: rgb(238 234 255);
-  }
-
   .loading {
     position: absolute;
     top: 0;
@@ -211,4 +118,18 @@
     margin-top: 60px;
     width: 60vw;
     max-width: 840px;
+  }
+
+
+  .headerCellWrapperCustomClass > div > span {
+    font-family: Manrope, Mulish, Arial, sans-serif !important;
+  }
+  .bodyCellWrapperCustomClass {
+    font-family: Manrope, Mulish, Arial, sans-serif !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    display: -webkit-box !important;
+    -webkit-box-orient: vertical !important;
+    -webkit-line-clamp: 1 !important;
+    white-space: nowrap !important;
   }

@@ -118,11 +118,13 @@ export default function TableWidget({ loading, columns, data, rowSelection = fal
                         }}
                         scrollContainerRef={tableContainerRef}
                         stickyHeader={true}
-                        style={{ fontFamily: 'Mulish' }}
+                        style={{ fontFamily: 'Manrope' }}
                         pagination={false}
                         paginationContainerStyle={{ display: 'none' }}
                         bodyRowClassName={styles.bodyRowSpecial}
                         onSort={(sort_field, sort_order) => setSortState({ sort_field, sort_order })}
+                        headerCellWrapperClassName={styles.headerCellWrapperCustomClass}
+                        bodyCellWrapperClassName={styles.bodyCellWrapperCustomClass}
                     />
                 }
             </div>
