@@ -92,9 +92,9 @@ export default function ReportProfitLoss() {
 			sortable: false,
 			fixed: false,
 			fixedLeft: 0,
-			width: 350,
-			minWidth: 350,
-			maxWidth: 700,
+			width: 210,
+			minWidth: 210,
+			maxWidth: 420,
 			hidden: false,
 			style: {
 
@@ -108,9 +108,9 @@ export default function ReportProfitLoss() {
 			sortable: false,
 			fixed: true,
 			fixedLeft: 0,
-			width: 400,
-			minWidth: 400,
-			maxWidth: 800,
+			width: 200,
+			minWidth: 200,
+			maxWidth: 400,
 			hidden: false,
 		}];
 
