@@ -22,7 +22,7 @@ import { startOfYear, format } from "date-fns";
 
 export default function ReportProfitLoss() {
 	const { user, authToken } = useContext(AuthContext);
-	const { activeBrand, selectedRange, activeMonths } = useAppSelector((state) => state.filters);
+	const { activeBrand, selectedRange, activeMonths, activeBrandName, activeArticle, activeGroup, isFiltersLoaded } = useAppSelector((state) => state.filters);
 	const filters = useAppSelector((state) => state.filters);
 	const { shops } = useAppSelector((state) => state.shopsSlice);
 
@@ -228,13 +228,13 @@ export default function ReportProfitLoss() {
 	};
 
 	useEffect(() => {
-		if (activeBrand && activeBrand.is_primary_collect) {
+		if (activeBrand && activeBrand.is_primary_collect && isFiltersLoaded) {
 			updateDataReportProfitLoss();
 		}
-		if (activeBrand && !activeBrand.is_primary_collect) {
+		if (activeBrand && !activeBrand.is_primary_collect && isFiltersLoaded) {
 			setLoading(false);
 		}
-	}, [filters]);
+	}, [activeBrand, selectedRange, activeMonths, activeBrandName, activeArticle, activeGroup, isFiltersLoaded]);
 
 	// const monthHandler = (data) => {
 	// 	let selectedRange = initialRange;

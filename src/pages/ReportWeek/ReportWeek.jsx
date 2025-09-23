@@ -28,7 +28,7 @@ import TableWidget from './widgets/TableWidget/TableWidget';
 
 export default function ReportWeek() {
 	const { user, authToken } = useContext(AuthContext);
-	const { activeBrand, selectedRange, activeWeeks } = useAppSelector(
+	const { activeBrand, selectedRange, activeBrandName, activeArticle, activeGroup, activeWeeks, isFiltersLoaded } = useAppSelector(
 		(state) => state.filters
 	);
 	const filters = useAppSelector((state) => state.filters);
@@ -152,11 +152,11 @@ export default function ReportWeek() {
 			return shops.find(shop => shop.id === activeBrand.id);
 	}, [activeBrand, shops]);
 
-	const weekSelectedFormat = () => {
-		if (!week?.find((el) => el.value === 'Все')) {
-			return week.map((el) => el.value);
-		}
-	};
+	// const weekSelectedFormat = () => {
+	// 	if (!week?.find((el) => el.value === 'Все')) {
+	// 		return week.map((el) => el.value);
+	// 	}
+	// };
 
 	// const weekSelectedHandler = (data) => {
 	// 	let savedFilterWeek =
@@ -286,13 +286,13 @@ export default function ReportWeek() {
 	};
 
 	useLayoutEffect(() => {
-		if (activeBrand && activeBrand.is_primary_collect) {
+		if (activeBrand && activeBrand.is_primary_collect && isFiltersLoaded) {
 			updateDataReportWeek();
 		}
-		if (activeBrand && !activeBrand.is_primary_collect){
+		if (activeBrand && !activeBrand.is_primary_collect && isFiltersLoaded){
 			setLoading(false);
 		}
-	}, [filters]);
+	}, [activeBrand, selectedRange, activeBrandName, activeArticle, activeGroup, activeWeeks, isFiltersLoaded]);
 
 	const popoverHandler = (status) => {
 		setIsPopoverOpen(status);
