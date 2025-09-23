@@ -81,6 +81,10 @@
     width: 60vw;
     max-width: 840px;
   }
+
+  :global(.radar-table-default__body-cell-wrapper):has(.customCell[data-year-attribute="profitLossYearCell"]) {
+    border-right: 1px solid #E8E8E8;
+  }
   
   
   .customCell {
@@ -110,9 +114,11 @@
     -webkit-line-clamp: 1 !important;
   }
 
-  :global(.radar-table-default__body-cell-wrapper):has(.customCell[data-year-attribute="profitLossYearCell"]) {
-    border-right: 1px solid #E8E8E8;
+  .customCellValueRub b {
+    font-family: Manrope, Mulish;
   }
+
+
   
   .customCellValuePercent {
     font-weight: 500;
@@ -127,6 +133,11 @@
     -webkit-box-orient: vertical !important;
     -webkit-line-clamp: 1 !important;
   }
+
+  .customCellValuePercent b {
+    font-family: Manrope, Mulish;
+  }
+
   .customCellValueText {
     font-weight: 500;
     font-family: Manrope, Mulish;
@@ -139,6 +150,10 @@
     display: -webkit-box !important;
     -webkit-box-orient: vertical !important;
     -webkit-line-clamp: 1 !important;
+  }
+
+  .customCellValueText b {
+    font-family: Manrope, Mulish;
   }
 
 
