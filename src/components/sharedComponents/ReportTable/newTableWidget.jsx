@@ -4,22 +4,28 @@ import { Table as RadarTable } from 'radar-ui';
 import { formatPrice } from '../../../service/utils';
 import styles from './newTableWidget.module.css';
 
+const years = ['2020', '2021', '2022', '2023', '2024', '2025', '2026', '2027', '2028', '2029', '2030']
+
 
 const customCellRender = (value, record, index, dataIndex) => {
 
+	let yearAttribute = ''
+	if (years.some(year => year.toString() === dataIndex.toString())) {
+		yearAttribute = 'profitLossYearCell'
+	}
 
 	if (record.article === 'Прямые расходы') {
 		if (typeof value === 'object') {
 			return (
-				<div className={styles.customCell}>
-					<span className={styles.customCellValueRub}><b>{formatPrice(value.rub, '₽')}</b></span>
-					<span className={styles.customCellValuePercent}><b>{formatPrice(value.percent, '%')}</b></span>
+				<div className={styles.customCell} data-year-attribute={yearAttribute}>
+					<span className={styles.customCellValueRub} title={formatPrice(value.rub, '₽')}><b>{formatPrice(value.rub, '₽')}</b></span>
+					<span className={styles.customCellValuePercent} title={formatPrice(value.percent, '%')}><b>{formatPrice(value.percent, '%')}</b></span>
 				</div>
 			)
 		}
 		return (
-			<div className={styles.customCell}>
-				<span className={styles.customCellValueText}><b>{value}</b></span>
+			<div className={styles.customCell} data-year-attribute={yearAttribute}>
+				<span className={styles.customCellValueText} title={value}><b>{value}</b></span>
 			</div>
 		)
 	}
@@ -29,8 +35,8 @@ const customCellRender = (value, record, index, dataIndex) => {
 		(record.article === 'Себестоимость' || record.article === 'Внутренняя реклама' || record.article === 'Хранение' || record.article === 'Платная приемка' || record.article === 'Комиссия' || record.article === 'Логистика' || record.article === 'Штрафы')
 	) {
 		return (
-			<div className={`${styles.customCell} ${styles.customCellChildren}`}>
-				<span className={styles.customCellValueText} style={{ color: 'rgba(0, 0, 0, .5)'}}>{value}</span>
+			<div className={`${styles.customCell} ${styles.customCellChildren}`} data-year-attribute={yearAttribute}>
+				<span className={styles.customCellValueText} style={{ color: 'rgba(0, 0, 0, .5)'}} title={value}>{value}</span>
 			</div>
 		)
 	}
@@ -38,23 +44,23 @@ const customCellRender = (value, record, index, dataIndex) => {
 		(record.article === 'Себестоимость' || record.article === 'Внутренняя реклама' || record.article === 'Хранение' || record.article === 'Платная приемка' || record.article === 'Комиссия' || record.article === 'Логистика' || record.article === 'Штрафы')
 	) {
 		return (
-			<div className={styles.customCell}>
-				<span className={styles.customCellValueRub} style={{ color: 'rgba(0, 0, 0, .5)'}}>{formatPrice(value.rub, '₽')}</span>
-				<span className={styles.customCellValuePercent} style={{ color: 'rgba(0, 0, 0, .5)'}}>{formatPrice(value.percent, '%')}</span>
+			<div className={styles.customCell} data-year-attribute={yearAttribute}>
+				<span className={styles.customCellValueRub} style={{ color: 'rgba(0, 0, 0, .5)'}} title={formatPrice(value.rub, '₽')}>{formatPrice(value.rub, '₽')}</span>
+				<span className={styles.customCellValuePercent} style={{ color: 'rgba(0, 0, 0, .5)'}} title={formatPrice(value.percent, '%')}>{formatPrice(value.percent, '%')}</span>
 			</div>
 		)
 	}
 	if (typeof value === 'object') {
 		return (
-			<div className={styles.customCell}>
-				<span className={styles.customCellValueRub}>{formatPrice(value.rub, '₽')}</span>
-				{record.article !== 'Фактические продажи' && <span className={styles.customCellValuePercent}>{formatPrice(value.percent, '%')}</span>}
+			<div className={styles.customCell} data-year-attribute={yearAttribute}>
+				<span className={styles.customCellValueRub} title={formatPrice(value.rub, '₽')}>{formatPrice(value.rub, '₽')}</span>
+				{record.article !== 'Фактические продажи' && <span className={styles.customCellValuePercent} title={formatPrice(value.percent, '%')}>{formatPrice(value.percent, '%')}</span>}
 			</div>
 		)
 	}
 	return (
-		<div className={styles.customCell}>
-			<span className={styles.customCellValueText}>{value}</span>
+		<div className={styles.customCell} data-year-attribute={yearAttribute}>
+			<span className={styles.customCellValueText} title={value}>{value}</span>
 		</div>
 	)
 

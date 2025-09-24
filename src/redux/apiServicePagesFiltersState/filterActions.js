@@ -1,13 +1,27 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { URL } from '../../service/config';
 import { setLoading } from '../loading/loadingSlice';
+import { weeksList, getSavedActiveWeeks, getSavedActiveMonths } from '@/service/utils';
+import { actions as shopsActions } from '../shops/shopsSlice';
 
 
 
 
-const createFiltersDTO = (data) => {
+const createFiltersDTO = (data, shopsData) => {
+  // 0 - собираем список недель для фильтра выбора недели
+  const weeksListData = weeksList();
   // 1 - создаем массив всех магазинов + опцию "Все магазины"
-  const shops = [{ brand_name: 'Все', value: 'Все', id: 0, is_primary_collect: data.some(_ => _.shop_data.is_primary_collect), is_self_cost_set: !data.some(_ => !_.shop_data.is_self_cost_set) }, ...data.map(_ => ({ ..._.shop_data, value: _.shop_data.name }))]
+  let shops;
+  if (shopsData) {
+    shops = [{ brand_name: 'Все', value: 'Все', id: 0, is_primary_collect: shopsData?.some(_ => _?.is_primary_collect), is_self_cost_set: !shopsData?.some(_ => !_?.is_self_cost_set) },
+      // сделаль Артем, фильтрация по is_valid и дальше map как был)
+      ...shopsData?.filter((shop) => shop.is_valid).map(_ => ({ ..._, value: _.brand_name }))
+      // 
+    ]
+  } else {
+    shops = [{ brand_name: 'Все', value: 'Все', id: 0, is_primary_collect: data?.some(_ => _.shop_data.is_primary_collect), is_self_cost_set: !data?.some(_ => !_.shop_data.is_self_cost_set) }, ...data?.map(_ => ({ ..._.shop_data, value: _.shop_data.brand_name }))]
+  }
+
   // 2 - Трансформируем дату для опции "все магазины"
   // 2.1 - выцепляем все бренды по всем магазинам
   // 2.2 - выцепляем все артикулы всех брендов по всем магазинам
@@ -53,6 +67,17 @@ const createFiltersDTO = (data) => {
       ruLabel: 'Группа товаров',
       enLabel: 'product_groups',
       data: allGroupsData
+    },
+    weeks: {
+      stateKey: 'activeWeeks',
+      ruLabel: 'Период',
+      enLabel: 'weeks',
+      data: weeksListData
+    },
+    months: {
+      stateKey: 'activeMonths',
+      ruLabel: 'Период',
+      enLabel: 'months'
     }
   }
 
@@ -89,6 +114,17 @@ const createFiltersDTO = (data) => {
         ruLabel: 'Группа товаров',
         enLabel: 'product_groups',
         data: i.groups.map(_ => ({ ..._, value: _.name, key: _.id }))
+      },
+      weeks: {
+        stateKey: 'activeWeeks',
+        ruLabel: 'Период',
+        enLabel: 'weeks',
+        data: weeksListData
+      },
+      months: {
+        stateKey: 'activeMonths',
+        ruLabel: 'Период',
+        enLabel: 'months'
       }
     }
 
@@ -112,21 +148,37 @@ const createFiltersDTO = (data) => {
   if (savedActiveBrand) {
     savedActiveBrand = JSON.parse(savedActiveBrand)
     // проверяем есть ли магазин в массиве (это на случай разных аккаунтов)
-    const isInShops = shops.some(_ => _.id === savedActiveBrand.id);
-    // Если магазин есть в массиве (т.е. валиден для этого аккаунта) то...
+    // для поиска нужен сложный индекс тк айди магазинов могут совпадать в разных аккаунтах
+    const isInShops = shops.some(_ => String(_.id + _.brand_name) === String(savedActiveBrand.id + savedActiveBrand.brand_name));
+    // Если магазин нет в массиве (т.е. валиден для этого аккаунта) то...
     if (!isInShops) {
       savedActiveBrand = shops[0]
+    } else {
+      savedActiveBrand = shops.find(_ => String(_.id + _.brand_name) === String(savedActiveBrand.id + savedActiveBrand.brand_name))
     }
   } else {
     savedActiveBrand = shops[0]
   }
 
-  return { shops, filtersData: DTO, initState: { activeBrandName: [{ value: 'Все' }], activeArticle: [{ value: 'Все' }], activeGroup: [{ id: 0, value: 'Все' }], selectedRange: savedSelectedRange, activeBrand: savedActiveBrand } }
+  // поднимаем сохраненный период по неделям, чтобы установить его по умолчанию
+  let savedActiveWeeks = getSavedActiveWeeks(savedActiveBrand.id)
+  
+  // поднимаем сохраненный период по месяцам, чтобы установить его по умолчанию
+  let savedActiveMonths = getSavedActiveMonths(savedActiveBrand.id)
+
+
+  return { shops, filtersData: DTO, initState: { activeBrandName: [{ value: 'Все' }], activeArticle: [{ value: 'Все' }], activeGroup: [{ id: 0, value: 'Все' }], selectedRange: savedSelectedRange, activeBrand: savedActiveBrand, activeWeeks: savedActiveWeeks, activeMonths: savedActiveMonths } }
 }
 
 export const fetchFilters = createAsyncThunk(
   'filters',
-  async (token, { dispatch }) => {
+  async (requestObject, { dispatch }) => {
+    const {authToken, shopsData} = requestObject;
+
+    if (shopsData) {
+      dispatch(shopsActions.setShops(shopsData));
+    }
+
     try {
       //dispatch(setLoading(true));
 
@@ -135,12 +187,12 @@ export const fetchFilters = createAsyncThunk(
         method: 'GET',
         headers: {
           'content-type': 'application/json',
-          authorization: 'JWT ' + token,
+          authorization: 'JWT ' + authToken,
         },
       });
       data = await res.json();
       if (data?.data?.shops) {
-        return createFiltersDTO(data.data.shops);
+        return createFiltersDTO(data.data.shops, shopsData);
       }
 
     } catch (e) {

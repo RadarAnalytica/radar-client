@@ -13,7 +13,11 @@ const initialState = {
 const shopsSlice = createSlice({
     name: 'shopsSlice',
     initialState,
-    reducers: {},
+    reducers: {
+        setShops: (state, action) => {
+            state.shops = action.payload;
+        }
+    },
     extraReducers: (bulder) => {
         bulder
             .addCase(fetchShops.fulfilled, (state, action) => {
@@ -37,4 +41,5 @@ export const shopClicked = (shop) => ({
     payload: shop,
 });
 
+export const { actions } = shopsSlice;
 export default shopsSlice.reducer;

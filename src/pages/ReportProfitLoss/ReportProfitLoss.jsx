@@ -17,11 +17,12 @@ import { useAppSelector } from '../../redux/hooks';
 import HowToLink from '../../components/sharedComponents/howToLink/howToLink';
 import DataCollectWarningBlock from '../../components/sharedComponents/dataCollectWarningBlock/dataCollectWarningBlock'
 import NoSubscriptionWarningBlock from '../../components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock';
+import { startOfYear, format } from "date-fns";
 
 
 export default function ReportProfitLoss() {
 	const { user, authToken } = useContext(AuthContext);
-	const { activeBrand, selectedRange } = useAppSelector((state) => state.filters);
+	const { activeBrand, selectedRange, activeMonths, activeBrandName, activeArticle, activeGroup, isFiltersLoaded } = useAppSelector((state) => state.filters);
 	const filters = useAppSelector((state) => state.filters);
 	const { shops } = useAppSelector((state) => state.shopsSlice);
 
@@ -46,26 +47,26 @@ export default function ReportProfitLoss() {
 		return shops.find(shop => shop.id === activeBrand.id);
 	}, [activeBrand, shops]);
 
-	const initialRange = useMemo(() => ({
-		month_to: dayjs().format('YYYY-MM'),
-		month_from: dayjs().startOf('year').format('YYYY-MM')
-	}), [])
+	// const initialRange = useMemo(() => ({
+	// 	month_to: dayjs().format('YYYY-MM'),
+	// 	month_from: dayjs().startOf('year').format('YYYY-MM')
+	// }), [])
 
-	const updateSavedMonthRange = () => {
-		if (!activeBrand) {
-			return
-		}
-		const savedMonthRange = localStorage.getItem('reportProfitLossMonth');
-		if (savedMonthRange) {
-			const data = JSON.parse(savedMonthRange);
-			if (activeBrand.id in data) {
-				return data[activeBrand.id]
-			}
-		}
-		return initialRange
-	};
+	// const updateSavedMonthRange = () => {
+	// 	if (!activeBrand) {
+	// 		return
+	// 	}
+	// 	const savedMonthRange = localStorage.getItem('reportProfitLossMonth');
+	// 	if (savedMonthRange) {
+	// 		const data = JSON.parse(savedMonthRange);
+	// 		if (activeBrand.id in data) {
+	// 			return data[activeBrand.id]
+	// 		}
+	// 	}
+	// 	return initialRange
+	// };
 
-	const [monthRange, setMonthRange] = useState(updateSavedMonthRange());
+	// const [monthRange, setMonthRange] = useState(updateSavedMonthRange());
 
 	function renderColumn(data) {
 		if (typeof data !== 'object') {
@@ -91,9 +92,9 @@ export default function ReportProfitLoss() {
 			sortable: false,
 			fixed: false,
 			fixedLeft: 0,
-			width: 350,
-			minWidth: 350,
-			maxWidth: 700,
+			width: 210,
+			minWidth: 210,
+			maxWidth: 420,
 			hidden: false,
 			style: {
 
@@ -107,9 +108,9 @@ export default function ReportProfitLoss() {
 			sortable: false,
 			fixed: true,
 			fixedLeft: 0,
-			width: 400,
-			minWidth: 400,
-			maxWidth: 800,
+			width: 200,
+			minWidth: 200,
+			maxWidth: 400,
 			hidden: false,
 		}];
 
@@ -119,9 +120,10 @@ export default function ReportProfitLoss() {
 				key: item.year,
 				title: item.year,
 				dataIndex: item.year,
-				groupColor: '#F7F7F7',
+				groupColor: 'white',
 				style: {
-					backgroundColor: '#F7F6FE'
+					backgroundColor: '#F7F6FE',
+					borderRight: '1px solid #E8E8E8',
 				}
 			});
 			if (item.months) {
@@ -208,61 +210,66 @@ export default function ReportProfitLoss() {
 	const updateDataReportProfitLoss = async () => {
 		setLoading(true);
 		try {
-			if (activeBrand !== null && activeBrand !== undefined && monthRange) {
-				const response = await ServiceFunctions.getReportProfitLoss(
-					authToken,
-					selectedRange,
-					activeBrand.id,
-					filters,
-					// monthRange
-					updateSavedMonthRange()
-				);
-				dataToTableData(response);
-				// setData(weeks);
-				// dataToTableData(weeks);
-			}
+			const response = await ServiceFunctions.getReportProfitLoss(
+				authToken,
+				selectedRange,
+				activeBrand.id,
+				filters,
+				activeMonths
+			);
+			dataToTableData(response);
 		} catch (e) {
 			console.error(e);
 			dataToTableData(null);
+			setLoading(false);
+		} finally {
 			setLoading(false);
 		}
 	};
 
 	useEffect(() => {
-		if (activeBrand && activeBrand.is_primary_collect) {
+		if (activeBrand && activeBrand.is_primary_collect && isFiltersLoaded) {
 			updateDataReportProfitLoss();
 		}
-		if (activeBrand && !activeBrand.is_primary_collect) {
+		if (activeBrand && !activeBrand.is_primary_collect && isFiltersLoaded) {
 			setLoading(false);
 		}
-	}, [monthRange, filters]);
+	}, [activeBrand, selectedRange, activeMonths, activeBrandName, activeArticle, activeGroup, isFiltersLoaded]);
 
-	const monthHandler = (data) => {
-		let selectedRange = initialRange;
-		if (data) {
-			const [start, end] = data;
-			selectedRange = {
-				month_from: dayjs(start).format('YYYY-MM'),
-				month_to: dayjs(end).format('YYYY-MM')
-			}
-		}
+	// const monthHandler = (data) => {
+	// 	let selectedRange = initialRange;
+	// 	if (data) {
+	// 		const [start, end] = data;
+	// 		selectedRange = {
+	// 			month_from: dayjs(start).format('YYYY-MM'),
+	// 			month_to: dayjs(end).format('YYYY-MM')
+	// 		}
+	// 	}
 
-		setMonthRange(selectedRange);
-		saveMonthRange(selectedRange);
-	}
+	// 	setMonthRange(selectedRange);
+	// 	saveMonthRange(selectedRange);
+	// }
 
-	const saveMonthRange = (range) => {
-		const savedMonthRange = JSON.parse(localStorage.getItem('reportProfitLossMonth')) || {};
-		savedMonthRange[activeBrand.id] = range;
-		localStorage.setItem(
-			'reportProfitLossMonth',
-			JSON.stringify(savedMonthRange)
-		);
-	}
+	// const saveMonthRange = (range) => {
+	// 	const savedMonthRange = JSON.parse(localStorage.getItem('reportProfitLossMonth')) || {};
+	// 	savedMonthRange[activeBrand.id] = range;
+	// 	localStorage.setItem(
+	// 		'reportProfitLossMonth',
+	// 		JSON.stringify(savedMonthRange)
+	// 	);
+	// }
 
 	useEffect(() => {
-		setMonthRange(updateSavedMonthRange())
-	}, [shopStatus])
+		if (!activeBrand){
+			return
+		}
+		let savedFilterMonths = JSON.parse(localStorage.getItem('activeMonths')) || {};
+		savedFilterMonths[activeBrand.id] = activeMonths;
+		localStorage.setItem(
+			'activeMonths',
+			JSON.stringify(savedFilterMonths)
+		);
+	}, [activeMonths])
 
 	return (
 		<main className={styles.page}>
@@ -286,8 +293,6 @@ export default function ReportProfitLoss() {
 					<Filters
 						timeSelect={false}
 						monthSelect={true}
-						monthHandler={monthHandler}
-						monthValue={monthRange}
 						isDataLoading={loading}
 					/>
 				</div>

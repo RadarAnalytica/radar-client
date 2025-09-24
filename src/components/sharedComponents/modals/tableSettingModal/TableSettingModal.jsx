@@ -22,13 +22,10 @@ export default function TableSettingModal({
 	filter = true,
 	footer = null
 }) {
-	const [shownColumns, setShownColumns] = useState(columnsList);
-	const [checked, setChecked] = useState(tableColumns.map((el) => el.dataIndex));
-		
+	const [shownColumns, setShownColumns] = useState(tableColumns);
+
 	// const checkAll = useMemo(() => checked.length == shownColumns.length, [shownColumns])
-	
-	const checkAll = checked.length == columnsList.length
-	const indeterminateAll = checked.length > 0 && checked.length < shownColumns.length
+
 
 
 	const [form] = useForm();
@@ -36,55 +33,46 @@ export default function TableSettingModal({
 	function filterColumns(data) {
 		const value = data.filter.trim();
 		if (!value) {
-			setShownColumns(columnsList);
+			setShownColumns(tableColumns);
 			return
 		}
 		setShownColumns(() => (
-			columnsList.filter((el) => {
+			tableColumns.filter((el) => {
 				return el.title.toLowerCase().includes(value);
 			})
 		));
 	}
 
 	function onFinish(data) {
-		if (data.length == 0) {
-			closeModal();
-			return;
-		}
-		const columns = columnsList.reduce((res, el) => {
-			if (
-				el.dataIndex in data && data[el.dataIndex] || 
-				( Object.keys(data).length !== columnsList.length && tableColumns.find((column) => column.dataIndex === el.dataIndex))
-			){
-				res.push(el);
-			}
-			return res;
-		}, []);
-		
-		setTableColumns(columns);
-
-		closeModal();
+		const newTableColumns = tableColumns.map(_ => {
+			return { ..._, hidden: !data[_.dataIndex] }
+		})
+		setTableColumns(newTableColumns)
+		localStorage.setItem('reportWeekTableConfig', JSON.stringify(newTableColumns))
+		closeModal()
 	}
 
-	function сheckAllHandler(){
+	function сheckAllHandler(type) {
 		const data = form.getFieldsValue()
+
+		setShownColumns(shownColumns.map(_ => {
+			return { ..._, hidden: type === 'select' ? false : true }
+		}))
 		for (const check in data) {
-      form.setFieldValue(check, shownColumns.length > checked.length ? true : false)
-    }
-		if (checked.length == shownColumns.length){
-			setChecked([])
-		} else {
-			setChecked(shownColumns.map((el) => el.dataIndex))
+			form.setFieldValue(check, type === 'select' ? true : false)
 		}
 	}
 
-	function checkChangeHandler(){
+	function checkChangeHandler() {
 		const data = form.getFieldsValue()
-    let result = [];
-    for (const week in data){
-      data[week] && result.push(Number(week))
-    }
-		setChecked(result)
+		let result = [];
+		for (const week in data) {
+			data[week] && result.push(Number(week))
+		}
+		setShownColumns(shownColumns.map(_ => {
+			return { ..._, hidden: !data[_.dataIndex] }
+		}))
+
 	}
 
 	return (
@@ -176,8 +164,8 @@ export default function TableSettingModal({
 			>
 				{filter && <Flex className={styles.filter} gap={8}>
 					<Form
-						className={styles.form} 
-						onFinish={filterColumns} 
+						className={styles.form}
+						onFinish={filterColumns}
 					>
 						<Flex gap={8}>
 							<Form.Item className={styles.input} name="filter">
@@ -200,7 +188,7 @@ export default function TableSettingModal({
 											</svg>
 										),
 									}}
-									onClear={() => setShownColumns(columnsList)}
+									onClear={() => setShownColumns(tableColumns)}
 								/>
 							</Form.Item>
 
@@ -235,8 +223,15 @@ export default function TableSettingModal({
 					</Button> */}
 				</Flex>}
 				<div className={styles.check_all}>
-					<Button type='link' size='small' onClick={сheckAllHandler}>
-						{shownColumns.every( (el) => checked.includes(el.dataIndex)) ? 'Снять все' : 'Выбрать все'}
+					<Button
+						key={JSON.stringify(shownColumns)}
+						type='link'
+						size='small'
+						onClick={() => {
+							const type = shownColumns.some((el) => el.hidden) ? 'select' : 'deselect'
+							сheckAllHandler(type)
+						}}>
+						{shownColumns.some((el) => el.hidden) ? 'Выбрать все' : 'Снять все'}
 					</Button>
 					{/* <Checkbox
 						className={styles.item}
@@ -255,9 +250,7 @@ export default function TableSettingModal({
 									name={el.dataIndex}
 									valuePropName="checked"
 									value={el.dataIndex}
-									initialValue={checked.includes(
-											el.dataIndex
-									)}
+									initialValue={!el.hidden}
 									onChange={checkChangeHandler}
 								>
 									<Checkbox >
