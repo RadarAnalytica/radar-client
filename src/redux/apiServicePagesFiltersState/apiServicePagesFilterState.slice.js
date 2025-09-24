@@ -10,6 +10,7 @@ const initialState = {
     activeGroup: undefined,
     activeWeeks: undefined,
     activeMonths: undefined,
+    activeCategory: undefined,
     skuFrequencyMode: 'Простой', // 'Простой' | 'Продвинутый'
     shops: undefined,
     selectedRange: {

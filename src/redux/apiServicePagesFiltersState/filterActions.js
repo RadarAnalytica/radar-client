@@ -14,9 +14,7 @@ const createFiltersDTO = (data, shopsData) => {
   let shops;
   if (shopsData) {
     shops = [{ brand_name: 'Все', value: 'Все', id: 0, is_primary_collect: shopsData?.some(_ => _?.is_primary_collect), is_self_cost_set: !shopsData?.some(_ => !_?.is_self_cost_set) },
-      // сделаль Артем, фильтрация по is_valid и дальше map как был)
-      ...shopsData?.filter((shop) => shop.is_valid).map(_ => ({ ..._, value: _.brand_name }))
-      // 
+    ...shopsData?.map(_ => ({ ..._, value: _.brand_name }))
     ]
   } else {
     shops = [{ brand_name: 'Все', value: 'Все', id: 0, is_primary_collect: data?.some(_ => _.shop_data.is_primary_collect), is_self_cost_set: !data?.some(_ => !_.shop_data.is_self_cost_set) }, ...data?.map(_ => ({ ..._.shop_data, value: _.shop_data.brand_name }))]
@@ -29,21 +27,27 @@ const createFiltersDTO = (data, shopsData) => {
   const allBransdData = []
   const allArticlesData = []
   const allGroupsData = []
+  const allCategoriesData = []
   data.forEach((_, id) => {
-    _.groups.forEach(g => {
+    _.groups?.forEach(g => {
       allGroupsData.push({ ...g, value: g.name, key: g.id })
     })
-    _.brands.forEach((b, barndId) => {
-      if (_.shop_data.is_primary_collect) {
-        allBransdData.push({
-          name: b.name ? b.name : `Без названия&${_.shop_data.id}`,
-          value: b.name ? b.name : `Без названия (${_.shop_data.brand_name})`,
-        })
-      }
-      b.wb_id.forEach(a => {
-        if (_.shop_data.is_primary_collect) {
-          allArticlesData.push({ name: a, value: a, brand: b.name ? b.name : `Без названия (${_.shop_data.brand_name})` })
+    _.categories?.forEach(c => {
+      allCategoriesData.push({ ...c, value: c.name, key: c.id })
+      c.brand?.forEach((b, barndId) => {
+        const isBrandInList = allBransdData.some(_ => _.name === b.name)
+        if (_.shop_data.is_primary_collect && !isBrandInList) {
+          allBransdData.push({
+            name: b.name ? b.name : `Без названия&${_.shop_data.id}`,
+            value: b.name ? b.name : `Без названия (${_.shop_data.brand_name})`,
+            category: c.name
+          })
         }
+        b.wb_id?.forEach(a => {
+          if (_.shop_data.is_primary_collect) {
+            allArticlesData.push({ name: a, value: a, brand: b.name ? b.name : `Без названия (${_.shop_data.brand_name})`, category: c.name })
+          }
+        })
       })
     })
   })
@@ -78,17 +82,36 @@ const createFiltersDTO = (data, shopsData) => {
       stateKey: 'activeMonths',
       ruLabel: 'Период',
       enLabel: 'months'
+    },
+    categories: {
+      stateKey: 'activeCategory',
+      ruLabel: 'Категория',
+      enLabel: 'categories',
+      data: allCategoriesData
     }
   }
 
   // формируем итоговый массив для всех данных
   const DTO = [allShopsOption, ...data?.map(i => {
     let articlesData = []
-    i.brands.forEach((item, bId) => {
-
-      const items = item.wb_id.map(_ => ({ name: _, value: _, brand: item.name ? item.name : `Без названия (${i.shop_data.brand_name})` }))
-      articlesData = [...articlesData, ...items]
+    let categoriesData = []
+    let brandsData = []
+    i.categories?.forEach(c => {
+      categoriesData.push({ ...c, value: c.name, key: c.id })
+      c.brand?.forEach((item, bId) => {
+        const isBrandInList = brandsData.some(_ => _.name === item.name)
+        if (!isBrandInList) {
+          brandsData.push({
+            name: item.name ? item.name : `Без названия&${i.shop_data.id}`,
+            value: item.name ? item.name : `Без названия (${i.shop_data.brand_name})`,
+            category: c.name
+          })
+        }
+        const items = item.wb_id.map(_ => ({ name: _, value: _, brand: item.name ? item.name : `Без названия (${i.shop_data.brand_name})`, category: c.name }))
+        articlesData = [...articlesData, ...items]
+      })
     })
+
     let newItem = {
       shop: {
         ...i.shop_data,
@@ -98,10 +121,7 @@ const createFiltersDTO = (data, shopsData) => {
         stateKey: 'activeBrandName',
         ruLabel: 'Бренд',
         enLabel: 'brands',
-        data: i.brands?.map((_, id) => ({
-          name: _.name ? _.name : `Без названия&${i.shop_data.id}`,
-          value: _.name ? _.name : `Без названия (${i.shop_data.brand_name})`,
-        })),
+        data: brandsData
       },
       articles: {
         stateKey: 'activeArticle',
@@ -125,11 +145,19 @@ const createFiltersDTO = (data, shopsData) => {
         stateKey: 'activeMonths',
         ruLabel: 'Период',
         enLabel: 'months'
+      },
+      categories: {
+        stateKey: 'activeCategory',
+        ruLabel: 'Категория',
+        enLabel: 'categories',
+        data: categoriesData
       }
     }
 
     return newItem
   })]
+
+  console.log('DTO', DTO)
 
 
   // поднимаем сохраненный период чтобы установить его по умолчанию
@@ -162,18 +190,31 @@ const createFiltersDTO = (data, shopsData) => {
 
   // поднимаем сохраненный период по неделям, чтобы установить его по умолчанию
   let savedActiveWeeks = getSavedActiveWeeks(savedActiveBrand.id)
-  
+
   // поднимаем сохраненный период по месяцам, чтобы установить его по умолчанию
   let savedActiveMonths = getSavedActiveMonths(savedActiveBrand.id)
 
 
-  return { shops, filtersData: DTO, initState: { activeBrandName: [{ value: 'Все' }], activeArticle: [{ value: 'Все' }], activeGroup: [{ id: 0, value: 'Все' }], selectedRange: savedSelectedRange, activeBrand: savedActiveBrand, activeWeeks: savedActiveWeeks, activeMonths: savedActiveMonths } }
+  return {
+    shops,
+    filtersData: DTO,
+    initState: {
+      activeBrandName: [{ value: 'Все' }],
+      activeArticle: [{ value: 'Все' }],
+      activeGroup: [{ id: 0, value: 'Все' }],
+      activeCategory: [{ id: 0, value: 'Все' }],
+      selectedRange: savedSelectedRange,
+      activeBrand: savedActiveBrand,
+      activeWeeks: savedActiveWeeks,
+      activeMonths: savedActiveMonths
+    }
+  }
 }
 
 export const fetchFilters = createAsyncThunk(
   'filters',
   async (requestObject, { dispatch }) => {
-    const {authToken, shopsData} = requestObject;
+    const { authToken, shopsData } = requestObject;
 
     if (shopsData) {
       dispatch(shopsActions.setShops(shopsData));
@@ -183,7 +224,7 @@ export const fetchFilters = createAsyncThunk(
       //dispatch(setLoading(true));
 
       let data = null;
-      const res = await fetch(`${URL}/api/common/filters`, {
+      const res = await fetch(`${URL}/api/common/filters_new`, {
         method: 'GET',
         headers: {
           'content-type': 'application/json',
@@ -202,3 +243,56 @@ export const fetchFilters = createAsyncThunk(
     }
   }
 );
+
+
+/**
+ * "shop_data": {
+                    "id": 238,
+                    "brand_name": "мелкая076",
+                    "is_active": true,
+                    "is_valid": true,
+                    "is_primary_collect": true,
+                    "updated_at": "2025-09-24T08:16:30.103512"
+                },
+                "categories": [
+                    {
+                        "id": 11,
+                        "name": "Брюки",
+                        "brand": [
+                            {
+                                "name": "GrenadeFleur",
+                                "wb_id": [
+                                    "167/синийремень"
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "id": 162,
+                        "name": "Пижамы",
+                        "brand": [
+                            {
+                                "name": "GrenadeFleur",
+                                "wb_id": [
+                                    "1142/бордовый",
+                                    "1142/светло-фиолетовый",
+                                    "1142/темно-синий",
+                                    "1142/черный",
+                                    "1142/черныйцветы",
+                                    "6800/барби",
+                                    "6800/бежевыйлист",
+                                    "6800/бордо",
+                                    "6800/зеленаявишня",
+                                    "6800/леопард",
+                                    "6800/синзвезды",
+                                    "6800/синий",
+                                    "6800/синяявишня",
+                                    "6800/черная",
+                                    "6800/чернаявишня",
+                                    "6800/черно-полосатый"
+                                ]
+                            }
+                        ]
+                    }
+                ]
+ */
