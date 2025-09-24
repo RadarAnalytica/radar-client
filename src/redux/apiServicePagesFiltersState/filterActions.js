@@ -8,17 +8,24 @@ import { actions as shopsActions } from '../shops/shopsSlice';
 
 
 const createFiltersDTO = (data, shopsData) => {
-  // 0 - собираем список недель для фильтра выбора недели
+  // 0 - собираем список недель для фильтр  а выбора недели
   const weeksListData = weeksList();
   // 1 - создаем массив всех магазинов + опцию "Все магазины"
-  let shops;
-  if (shopsData) {
-    shops = [{ brand_name: 'Все', value: 'Все', id: 0, is_primary_collect: shopsData?.some(_ => _?.is_primary_collect), is_self_cost_set: !shopsData?.some(_ => !_?.is_self_cost_set) },
-    ...shopsData?.map(_ => ({ ..._, value: _.brand_name }))
-    ]
-  } else {
-    shops = [{ brand_name: 'Все', value: 'Все', id: 0, is_primary_collect: data?.some(_ => _.shop_data.is_primary_collect), is_self_cost_set: !data?.some(_ => !_.shop_data.is_self_cost_set) }, ...data?.map(_ => ({ ..._.shop_data, value: _.shop_data.brand_name }))]
-  }
+  const shops = [
+    {
+      brand_name: 'Все',
+      value: 'Все',
+      id: 0,
+      is_primary_collect: data?.some(_ => _.shop_data.is_primary_collect),
+      is_self_cost_set: shopsData?.filter(_ => _.is_valid).length > 0 ? shopsData?.filter(_ => _.is_valid).every(_ => _.is_self_cost_set) : false,
+    },
+    ...data?.map(_ => ({
+      ..._.shop_data,
+      value: _.shop_data.brand_name,
+      is_self_cost_set: shopsData?.find(s => s.id === _.shop_data.id) ? shopsData?.find(s => s.id === _.shop_data.id).is_self_cost_set : false,
+    }))
+  ]
+
 
   // 2 - Трансформируем дату для опции "все магазины"
   // 2.1 - выцепляем все бренды по всем магазинам
@@ -157,7 +164,6 @@ const createFiltersDTO = (data, shopsData) => {
     return newItem
   })]
 
-  console.log('DTO', DTO)
 
 
   // поднимаем сохраненный период чтобы установить его по умолчанию
@@ -233,7 +239,7 @@ export const fetchFilters = createAsyncThunk(
       });
       data = await res.json();
       if (data?.data?.shops) {
-        return createFiltersDTO(data.data.shops, undefined);
+        return createFiltersDTO(data.data.shops, shopsData);
       }
 
     } catch (e) {

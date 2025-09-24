@@ -150,9 +150,7 @@ const MainContent = React.memo(({
 
 const _DashboardPage = () => {
     const { user, authToken } = useContext(AuthContext)
-    const { activeBrand, selectedRange, isFiltersLoaded, activeBrandName, activeArticle, activeGroup } = useAppSelector((state) => state.filters);
-    console.log('activeBrand', activeBrand);
-    const { shops } = useAppSelector((state) => state.shopsSlice);
+    const { activeBrand, selectedRange, isFiltersLoaded, activeBrandName, activeArticle, activeGroup, shops } = useAppSelector((state) => state.filters);
     const filters = useAppSelector((state) => state.filters);
     const { isSidebarHidden } = useAppSelector((state) => state.utils);
 
