@@ -306,7 +306,7 @@ export default function CreateCost({
 								label="Сумма, руб"
 								name='value'
 								// required={true}
-								initialValue={data?.sum}
+								initialValue={data?.value}
 								// validateStatus='error'
 								rules={[
 									{ required: true, message: 'Пожалуйста, введите сумму расхода!' }

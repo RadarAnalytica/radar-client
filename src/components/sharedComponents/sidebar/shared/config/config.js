@@ -110,13 +110,6 @@ export const menuConfig = [
                 isNew: false
             },
             {
-                id: 5,
-                url: '/operations-costs', 
-                label: 'Операционные расходы',
-                isActive: true,
-                isNew: true
-            },
-            {
                 id: 6,
                 url: '/report-week',
                 label: 'Отчет по неделям',
@@ -130,13 +123,6 @@ export const menuConfig = [
                 isActive: true,
                 isNew: false
             },
-            // {
-            //     id: 8,
-            //     url: '/operations-costs', 
-            //     label: 'Операционные расходы',
-            //     isActive: false,
-            //     isNew: false
-            // },
             {
                 id: 4,
                 url: '/report-main',
@@ -147,7 +133,7 @@ export const menuConfig = [
             },
             {
                 id: 8,
-                url: '/operations-costs', 
+                url: '/operating-expenses', 
                 label: 'Операционные расходы',
                 isActive: true,
                 isNew: true

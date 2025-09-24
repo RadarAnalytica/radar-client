@@ -10,12 +10,12 @@ import { Filters } from '@/components/sharedComponents/apiServicePagesFiltersCom
 import ReportTable from '@/components/sharedComponents/ReportTable/ReportTable';
 import DataCollectWarningBlock from '@/components/sharedComponents/dataCollectWarningBlock/dataCollectWarningBlock';
 import ModalDeleteConfirm from '@/components/sharedComponents/ModalDeleteConfirm';
-import styles from './OperationsCosts.module.css';
+import styles from './OperatingExpenses.module.css';
 import { COSTS_COLUMNS, ARTICLES_COLUMNS } from './config/config';
 import CreateCost from './features/CreateCost/CreateCost';
 import CreateArticle from './features/CreateArticle/CreateArticle';
 import { EditIcon, CopyIcon, DeleteIcon, InfoIcon } from './shared/Icons';
-export default function OperationsCosts() {
+export default function OperatingExpenses() {
 
 	const { authToken } = useContext(AuthContext);
 	const { activeBrand, selectedRange } = useAppSelector( (state) => state.filters );

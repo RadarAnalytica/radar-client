@@ -1636,11 +1636,11 @@ export const ServiceFunctions = {
 				data: [
 				{
 					id: 1,
-					title: 'Статья1'
+					name: 'Статья1'
 				},
 				{
 					id: 2,
-					title: 'Статья2'
+					name: 'Статья2'
 				},
 			]
 			};
@@ -1658,9 +1658,9 @@ export const ServiceFunctions = {
 					{
 						id: 1,
 						date: '2025-05-10',
-						sum: 12300,
+						value: 12300,
 						description: null,
-						article: 'Расход1',
+						expense_categories: ['Статья1', 'Статья2'],
 						sku: null,
 						brand: null,
 						shop: 'Магазин',
@@ -1669,9 +1669,9 @@ export const ServiceFunctions = {
 					{
 						id: 2,
 						date: '2025-05-10',
-						sum: 300,
+						value: 300,
 						description: null,
-						article: 'Расход2',
+						expense_categories: ['Статья1', 'Статья2'],
 						sku: null,
 						brand: 'AURA',
 						shop: null,
@@ -1680,9 +1680,9 @@ export const ServiceFunctions = {
 					{
 						id: 3,
 						date: '2025-05-12',
-						sum: 1300,
+						value: 1300,
 						description: null,
-						article: 'Расход3',
+						expense_categories: ['Статья1', 'Статья2'],
 						sku: 123124,
 						brand: null,
 						shop: null,
