@@ -102,7 +102,6 @@
   
   .customCellValueRub {
     font-weight: 700;
-    font-family: Manrope, Mulish;
     font-size: 14px;
     line-height: 100%;
     letter-spacing: 0%;
@@ -112,17 +111,12 @@
     display: -webkit-box !important;
     -webkit-box-orient: vertical !important;
     -webkit-line-clamp: 1 !important;
-  }
-
-  .customCellValueRub b {
-    font-family: Manrope, Mulish;
   }
 
 
   
   .customCellValuePercent {
     font-weight: 500;
-    font-family: Manrope, Mulish;
     font-size: 14px;
     line-height: 100%;
     letter-spacing: 0%;
@@ -134,13 +128,9 @@
     -webkit-line-clamp: 1 !important;
   }
 
-  .customCellValuePercent b {
-    font-family: Manrope, Mulish;
-  }
 
   .customCellValueText {
     font-weight: 500;
-    font-family: Manrope, Mulish;
     font-size: 14px;
     line-height: 100%;
     letter-spacing: 0%;
@@ -150,10 +140,6 @@
     display: -webkit-box !important;
     -webkit-box-orient: vertical !important;
     -webkit-line-clamp: 1 !important;
-  }
-
-  .customCellValueText b {
-    font-family: Manrope, Mulish;
   }
 
 
