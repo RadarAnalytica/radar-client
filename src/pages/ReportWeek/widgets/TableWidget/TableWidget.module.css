@@ -5,7 +5,6 @@
 
   .bodyRowSpecial:first-of-type td div {
     background-color: #EFECFE !important;
-    font-family: Manrope, Mulish, Arial, sans-serif !important;
     overflow: hidden !important;
     text-overflow: ellipsis !important;
     display: -webkit-box !important;
@@ -121,11 +120,7 @@
   }
 
 
-  .headerCellWrapperCustomClass > div > span {
-    font-family: Manrope, Mulish, Arial, sans-serif !important;
-  }
   .bodyCellWrapperCustomClass {
-    font-family: Manrope, Mulish, Arial, sans-serif !important;
     overflow: hidden !important;
     text-overflow: ellipsis !important;
     display: -webkit-box !important;
