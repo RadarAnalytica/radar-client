@@ -17,18 +17,19 @@ const FiltersProvider = ({ children }: { children: React.ReactNode }) => {
 
     const getFiltersData = async () => {
         try {
-            let shopsResponse = await fetch(`${URL}/api/shop/all`, {
-                method: 'GET',
-                headers: {
-                    'content-type': 'application/json',
-                    authorization: user.subscription_status === null ? 'JWT ' + 'mockData' : 'JWT ' + authToken,
-                }
-            })
+            // let shopsResponse = await fetch(`${URL}/api/shop/all`, {
+            //     method: 'GET',
+            //     headers: {
+            //         'content-type': 'application/json',
+            //         authorization: user.subscription_status === null ? 'JWT ' + 'mockData' : 'JWT ' + authToken,
+            //     }
+            // })
             //let shopsResponse = null
             // @ts-ignore
             dispatch(fetchFilters({
                 authToken,
-                shopsData: shopsResponse?.ok ? await shopsResponse.json() : null
+                //shopsData: shopsResponse?.ok ? await shopsResponse.json() : null
+                shopsData: null
             }))
         } catch (error) {
             console.error("Error fetching initial data:", error);

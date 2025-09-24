@@ -233,7 +233,7 @@ export const fetchFilters = createAsyncThunk(
       });
       data = await res.json();
       if (data?.data?.shops) {
-        return createFiltersDTO(data.data.shops, shopsData);
+        return createFiltersDTO(data.data.shops, undefined);
       }
 
     } catch (e) {
