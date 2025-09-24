@@ -117,6 +117,7 @@ export default function CreateCost({
 	const [form] = Form.useForm();
 
 	const onFinish = (values) => {
+		values.date = date;
 		console.log('onFinish', values);
 	};
 
@@ -134,7 +135,11 @@ export default function CreateCost({
 	const datePickerRef = useRef(null);
 	const today = new Date();
 	const minDate = new Date(today);
+	const maxDate = new Date(today);
 	minDate.setDate(today.getDate() - 90);
+	maxDate.setDate(today.getDate() + 90);
+	console.log('today', today)
+	console.log('minDate', minDate)
 
 	const dateHandler = () => {
 		setOpenCalendar((state) => !state)
@@ -257,29 +262,27 @@ export default function CreateCost({
 									placeholder="Выберите дату"
 									suffixIcon={icon}
 									variant="filled"
-									value={format(new Date(date), 'MM-d-yyyy')}
-									options={[
-										// { value: format(new Date(date), 'MM-d-yyyy'), label: date && format(date, 'dd.MM.yyyy') },
-										// { value: format(new Date(Date.now() + 36000), 'MM-d-yyyy'), label: '1' + date && format(new Date(Date.now() + 36000), 'dd.MM.yyyy') },
-									]}
+									value={format(new Date(date), 'dd.MM.yyyy')}
 									onClick={dateHandler}
-									// onChange={(v) => console.log('onChange', v)}
 									disabled={openCalendar}
 									dropdownStyle={{ display: 'none' }}
+									style={{display: 'block'}}
 								/>
-							</Form.Item>
-							<div
-								ref={datePickerRef}
-								className={`${styles.calendarPopup} ${openCalendar ? styles.visible : ''}`}
-								>
-									<DayPicker
+								<div
+									ref={datePickerRef}
+									className={`${styles.calendarPopup} ${openCalendar ? styles.visible : ''}`}
+									>
+										<DayPicker
 											minDate={minDate}
 											maxDate={new Date()}
 											fromDate={minDate}
 											toDate={new Date()}
+											disabled={[
+												{ before: minDate },
+												{ after: new Date() },
+											]}
 											mode="single"
 											selected={date}
-											// month={month}
 											// onMonthChange={setMonth}
 											captionLayout="dropdown"
 											className={styles.customDayPicker}
@@ -295,7 +298,8 @@ export default function CreateCost({
 											// 		Dropdown: DatePickerCustomDropdown
 											// }}
 									/>
-							</div>
+								</div>
+							</Form.Item>
 						</Col>
 						<Col span={12}>
 							<Form.Item
@@ -396,7 +400,7 @@ export default function CreateCost({
 					<div className={styles.modal__part}>
 						<Form.Item
 							label="Статья"
-							name='article'
+							name='expense_categories'
 							initialValue={data?.article}
 							rules={[
 									{ required: true, message: 'Пожалуйста, выберите значение!' }
@@ -412,6 +416,7 @@ export default function CreateCost({
 									label: el.title,
 								}))}
 								showSearch
+								mode="multiple"
 							/>
 						</Form.Item>
 						<Flex justify="flex-end">
@@ -464,8 +469,8 @@ export default function CreateCost({
 								}}>
 								<Radio.Group>
 									<Radio value="shop">Магазины</Radio>
-									<Radio value="sku">Артикулы</Radio>
-									<Radio value="brand">Бренды</Radio>
+									<Radio value="vendor_code">Артикулы</Radio>
+									<Radio value="brand_name">Бренды</Radio>
 								</Radio.Group>
 							</ConfigProvider>
 
@@ -492,12 +497,12 @@ export default function CreateCost({
 								suffixIcon={icon}
 							/>
 						</Form.Item>}
-						{selection === 'sku' && 
+						{selection === 'vendor_code' && 
 							<Form.Item
-								name="sku"
-								initialValue={data?.sku}
+								name="vendor_code"
+								initialValue={data?.vendor_code}
 								rules={[
-									{ required: true, message: 'ОПожалуйста, выберите значение!' }
+									{ required: true, message: 'Пожалуйста, выберите значение!' }
 								]}
 							>
 							<Select
@@ -512,10 +517,10 @@ export default function CreateCost({
 								suffixIcon={icon}
 							/>
 						</Form.Item>}
-						{selection === 'brand' && 
+						{selection === 'brand_name' && 
 						<Form.Item
-							name="brands"
-							initialValue={data?.brand}
+							name="brand_name"
+							initialValue={data?.brand_name}
 							rules={[
 								{ required: true, message: 'ОПожалуйста, выберите значение!' }
 							]}
