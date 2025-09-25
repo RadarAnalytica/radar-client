@@ -18,11 +18,11 @@ import ruRU from 'antd/locale/ru_RU'
 import { COLUMNS } from './widgets/table/config';
 
 const AbcAnalysisPage = () => {
-	const { activeBrand, selectedRange, isFiltersLoaded, activeBrandName, activeArticle, activeGroup } = useAppSelector(
+	const { activeBrand, selectedRange, isFiltersLoaded, activeBrandName, activeArticle, activeGroup, shops } = useAppSelector(
 		(store) => store.filters
 	);
 	const filters = useAppSelector((store) => store.filters);
-	const shops = useAppSelector((state) => state.shopsSlice.shops);
+	//const shops = useAppSelector((state) => state.shopsSlice.shops);
 	const { user, authToken } = useContext(AuthContext);
 	const dispatch = useAppDispatch();
 	const [dataAbcAnalysis, setDataAbcAnalysis] = useState(null);
@@ -275,7 +275,7 @@ const AbcAnalysisPage = () => {
 				</div>
 
 				{/* SELF-COST WARNING */}
-				{!loading && shops && shopStatus?.is_primary_collect && !shopStatus.is_self_cost_set && (
+				{!loading && shops && activeBrand?.is_primary_collect && !activeBrand.is_self_cost_set && (
 						<SelfCostWarningBlock
 							shopId={activeBrand.id}
 							onUpdateDashboard={handleUpdateAbcAnalysis} //

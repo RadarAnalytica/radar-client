@@ -39,8 +39,6 @@ const FiltersProvider = ({ children }: { children: React.ReactNode }) => {
     // Получаем данные магазинов
     useEffect(() => {
         if (!shops || shops.length === 0) {
-            //fetchShopData();
-            //fetchFiltersData();
             getFiltersData()
         }
     }, []);
