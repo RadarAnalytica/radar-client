@@ -75,21 +75,7 @@ declare global {
 
 export {};
 
-// Temporary shims for gradual TS migration
-declare module '@/RouteGuards' {
-  import React from 'react';
-  export const ProtectedRoute: React.ComponentType<any>;
-}
-
-declare module './RouteGuards' {
-  import React from 'react';
-  export const ProtectedRoute: React.ComponentType<any>;
-}
-
-declare module '../RouteGuards' {
-  import React from 'react';
-  export const ProtectedRoute: React.ComponentType<any>;
-}
+// Temporary shims for gradual TS migration - removed as RouteGuards is now typed
 
 // Allow optional "status" prop on react-router Route during migration
 declare module 'react-router-dom' {
