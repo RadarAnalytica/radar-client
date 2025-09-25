@@ -1,5 +1,7 @@
 import { Children } from "react";
 import { formatPrice } from '../../service/utils';
+import { SortIcon } from '@/components/sharedComponents/ReportTable/ReportTable';
+import { ConfigProvider, Tooltip } from 'antd';
 
 export const renderFunction = (value) => (formatPrice(value))
 
@@ -9,7 +11,32 @@ export const COLUMNS = [
     dataIndex: 'period',
     width: 380,
     fixed: true,
-    render: (value, record) => (record.children) ? <strong>{value}</strong> : value
+    render: (value, record) => {
+      if (record.key === 'transition_data'){
+        return (<>
+          <strong>{value}</strong>
+          <ConfigProvider
+            theme={{
+                components: {
+                    Tooltip: {
+                        colorBgSpotlight: '#ffffff',
+                        colorTextLightSolid: '#000000',
+                        colorBorder: '#d9d9d9'
+                    }
+                }
+            }}
+          >
+            <Tooltip title='Отображены только значения из аналитики рекламных кампаний'>
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" style={{marginLeft: 20, cursor: 'pointer'}}>
+                    <rect x="0.75" y="0.75" width="18.5" height="18.5" rx="9.25" stroke="black" strokeOpacity="0.1" strokeWidth="1.5" />
+                    <path d="M9.064 15V7.958H10.338V15H9.064ZM8.952 6.418V5.046H10.464V6.418H8.952Z" fill="#1A1A1A" fillOpacity="0.5" />
+                </svg>
+            </Tooltip>
+          </ConfigProvider>
+        </>);
+      }
+      return (record.children) ? <strong>{value}</strong> : value
+    }
   },
   {
     title: 'Итого',
