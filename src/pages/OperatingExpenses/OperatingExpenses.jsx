@@ -115,8 +115,6 @@ export default function OperatingExpenses() {
 		return {data, columns};
 	}, [costs]);
 
-	console.log('costsData', costsData)
-
 	const [articleEdit, setArticleEdit] = useState(null);
 	const [articles, setArticles] = useState(null);
 	const [articlesLoading, setArticlesLoading] = useState(false);
@@ -157,11 +155,11 @@ export default function OperatingExpenses() {
 		return {data, columns}
 	}, [articles]);
 
-	const updateAricles = async () => {
+	const updateCategories = async () => {
 		setLoading(true);
 		setArticlesLoading(true);
 		try {
-			const res = await ServiceFunctions.getOperationConstsArticles();
+			const res = await ServiceFunctions.getOperatingExpensesCategoryGetAll(authToken);
 			console.log('updateAricles', res);
 			setArticles(res.data);
 		} catch(error) {
@@ -176,10 +174,10 @@ export default function OperatingExpenses() {
 		}
 	}
 
-	const updateCosts = async () => {
+	const updateExpenses = async () => {
 		setLoading(true);
 		try {
-			const res = await ServiceFunctions.getOperationConstsCosts();
+			const res = await ServiceFunctions.getAllOperatingExpensesExpense(authToken);
 			console.log(res)
 			setCosts(res.data)
 		} catch(error) {
@@ -201,8 +199,8 @@ export default function OperatingExpenses() {
 		if (firstLoad.current) {
 			// new Promise
 			new Promise(resolve => {
-				updateCosts();
-				updateAricles();
+				updateCategories();
+				updateExpenses();
 			})
 				.then(() => {
 					firstLoad.current = false;
@@ -213,12 +211,12 @@ export default function OperatingExpenses() {
 
 		if (view === 'costs'){
 			console.log('updateCosts');
-			updateCosts();
+			updateExpenses();
 		}
 		
 		if (view === 'articles'){
 			console.log('updateArticles');
-			updateAricles();
+			updateCategories();
 		}
 	}, [ filters ])
 
@@ -241,17 +239,18 @@ export default function OperatingExpenses() {
 		setModalCreateArticlesOpen(true);
 	};
 
-	const createArticle = async (article) => {
+	const createCategory = async (category) => {
 		setArticlesLoading(true);
+		console.log('createCategory', category)
 		// setModalCreateArticlesOpen(false);
 		try {
-			const res = await ServiceFunctions.postOperationConstsCreateArticle();
-			console.log('createArticle', res);
+			const res = await ServiceFunctions.postOperatingExpensesCategoryCreate(authToken, category);
+			console.log('createCategory', res);
 			// 
 			setArticles((list) => [...list, {...article, id: list.length + Math.ceil(Math.random() * 10)}])
 			// 
 		} catch(error) {
-			console.error('createArticle error', error);
+			console.error('createCategory error', error);
 		} finally {
 			setModalCreateArticlesOpen(false);
 			setArticlesLoading(false);
@@ -262,7 +261,7 @@ export default function OperatingExpenses() {
 		setLoading(true);
 		setModalCreateArticlesOpen(false);
 		try {
-			const res = await ServiceFunctions.aptchOperationConstsEditArticle();
+			const res = await ServiceFunctions.patchOperatingExpensesCategory();
 			console.log('editArticle', article);
 			// 
 			setArticles((list) => list.map((el) => {
@@ -282,15 +281,15 @@ export default function OperatingExpenses() {
 		}
 	}
 
-	const handleArticle = (article) => {
+	const handleCategory = (category) => {
 		// setModalCreateArticlesOpen(false);
 		if (!!articleEdit){
 			console.log('editArticle')
-			editArticle(article);
+			editArticle(category);
 			return
 		}
 		console.log('createArticle')
-		createArticle(article);
+		createCategory(category);
 		// setExpenses((articles) => articles.push(article) );
 	};
 
@@ -309,7 +308,7 @@ export default function OperatingExpenses() {
 		console.log('delete cost');
 		setLoading(true);
 		try {
-			const res = await ServiceFunctions.deleteOperationConstsDeleteCost();
+			const res = await ServiceFunctions.deleteOperatingExpensesExpense();
 			// 
 			setCosts((list) => list.filter((el) => el.id !== id));
 			// 
@@ -326,7 +325,7 @@ export default function OperatingExpenses() {
 		console.log('delete article');
 		setLoading(true);
 		try {
-			const res = await ServiceFunctions.deleteOperationConstsDeleteArticle();
+			const res = await ServiceFunctions.deleteOperatingExpensesCategory();
 			// 
 			setArticles((list) => list.filter((el) => el.id !== id));
 			// 
@@ -532,7 +531,7 @@ export default function OperatingExpenses() {
 				{ modalCreateArticlesOpen && <CreateArticle
 					open={modalCreateArticlesOpen}
 					onCancel={modalArticleHandlerClose}
-					onSubmit={handleArticle}
+					onSubmit={handleCategory}
 					zIndex={1001}
 					data={articleEdit}
 					confirmLoading={articlesLoading}
