@@ -1,4 +1,4 @@
-import { useContext, Suspense } from 'react';
+import React, { useContext, Suspense, ReactNode } from 'react';
 import AuthContext from './service/AuthContext';
 import { Navigate, useLocation } from 'react-router-dom';
 import MainPage from './pages/MainPage';
@@ -9,6 +9,8 @@ import { useNavigate } from 'react-router-dom';
 import UnderDevelopmentPlugPage from './pages/underDevelopmentPlugPage/underDevelopmentPlugPage';
 import NoSubscriptionPlugPage from './pages/noSubscriptionPlugPage/noSubscriptionPlugPage';
 import NoSubscriptionPage from './pages/NoSubscriptionPage';
+
+
 
 /**
  * -----------------------------------------------
@@ -30,97 +32,138 @@ import NoSubscriptionPage from './pages/NoSubscriptionPage';
  * ----------------------------- Mike Starina ----
  */
 
+type GuardType = 'redirect' | 'fallback';
+type SubscriptionType = 'Smart' | string;
+type UserRole = 'admin' | string;
+
+interface FallbackProps {
+  title?: string;
+  pathname?: string;
+  [key: string]: any;
+}
+
+type FallbackComponent = (props?: any) => ReactNode;
+
+interface ProtectedRouteProps {
+  children: ReactNode;
+  routeRuName?: string; // required for expire level
+  authGuardType?: GuardType;
+  expireGuardType?: GuardType;
+  onboardGuardType?: GuardType;
+  userRoleGuardType?: GuardType;
+  subscriptionGuardType?: GuardType;
+  testPeriodGuardType?: GuardType;
+  underDevGuardType?: GuardType;
+  testPeriodProtected?: boolean;
+  testPeriodFallback?: FallbackComponent;
+  testPeriodRedirect?: string;
+  underDevProtected?: boolean;
+  underDevFallback?: FallbackComponent;
+  underDevRedirect?: string;
+  authProtected?: boolean;
+  authFallback?: FallbackComponent;
+  authRedirect?: string;
+  expireProtected?: boolean;
+  expireFallback?: FallbackComponent;
+  expireRedirect?: string;
+  onboardProtected?: boolean;
+  onboardFallback?: FallbackComponent;
+  onboardRedirect?: string;
+  userRoleProtected?: boolean;
+  userRoleFallback?: FallbackComponent;
+  userRoleRedirect?: string;
+  subscriptionProtected?: boolean;
+  subscriptionFallback?: FallbackComponent;
+  subscriptionRedirect?: string;
+  subscription?: SubscriptionType;
+  role?: UserRole;
+}
 
 // Protection config
-const config = {
-    subscriptionTypeProtected: {
-      Smart: [], // subscription type whitelist: string[], eg ['/yourroute', ...]
-      /** ... */
-    },
-    authGuardType: 'redirect', // 'redirect' | 'fallback'
-    expireGuardType: 'fallback', // 'redirect' | 'fallback'
-    onboardGuardType: 'redirect', // 'redirect' | 'fallback'
-    userRoleGuardType: 'redirect', // 'redirect' | 'fallback'
-    subscriptionGuardType: 'redirect', // 'redirect' | 'fallback'
-    testPeriodGuardType: 'fallback', // 'redirect' | 'fallback'
+const config: Partial<ProtectedRouteProps> = {
+    authGuardType: 'redirect',
+    expireGuardType: 'fallback',
+    onboardGuardType: 'redirect',
+    userRoleGuardType: 'redirect',
+    subscriptionGuardType: 'redirect',
+    testPeriodGuardType: 'fallback',
     underDevGuardType: 'fallback',
     underDevProtected: false,
     underDevRedirect: '/main',
-    underDevFallback: (props) => (<UnderDevelopmentPlugPage {...props} />),
-    authProtected: true, // default protection level is auth
-    authFallback: (props) => (<MainPage {...props} />), // (props: any) => ReactNode
-    authRedirect: `/signin`, // any url
+    underDevFallback: () => (<UnderDevelopmentPlugPage />),
+    authProtected: true,
+    authFallback: () => (<MainPage />),
+    authRedirect: `/signin`,
     testPeriodProtected: false,
-    testPeriodFallback: (props) => (<NoSubscriptionPlugPage {...props} />),
+    testPeriodFallback: (props: any) => (<NoSubscriptionPlugPage {...props} />),
     testPeriodRedirect: '/tariffs',
-    expireProtected: false, // boolean
-    expireFallback: (props) => (<NoSubscriptionPage {...props} />),
+    expireProtected: false,
+    expireFallback: (props: any) => (<NoSubscriptionPage {...props} />),
     expireRedirect: '/tariffs',
     onboardProtected: false,
-    onboardFallback: (props) => (<MainPage {...props} />),
+    onboardFallback: () => (<MainPage />),
     onboardRedirect: '/onboarding',
     userRoleProtected: false,
-    userRoleFallback: (props) => (<MainPage {...props} />),
+    userRoleFallback: () => (<MainPage />),
     userRoleRedirect: '/main',
     subscriptionProtected: false,
-    subscriptionFallback: (props) => (<MainPage {...props} />),
+    subscriptionFallback: () => (<MainPage />),
     subscriptionRedirect: '/tariffs',
-    subscription: 'Smart', // subscription type
-    role: 'admin', // role type
-
+    subscription: 'Smart',
+    role: 'admin',
 }
 
-export const ProtectedRoute = ({
+export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   children,
-  routeRuName, // use it as props for <NoSubscriptionPage /> --- required for expire level
-  authGuardType = config.authGuardType,
-  expireGuardType = config.expireGuardType,
-  onboardGuardType = config.onboardGuardType,
-  userRoleGuardType = config.userRoleGuardType,
-  subscriptionGuardType = config.subscriptionGuardType,
-  testPeriodGuardType = config.testPeriodGuardType,
-  testPeriodProtected = config.testPeriodProtected,
-  testPeriodFallback = config.testPeriodFallback,
-  testPeriodRedirect = config.testPeriodRedirect,
-  underDevGuardType = config.underDevGuardType,
-  underDevProtected = config.underDevProtected,
-  underDevFallback = config.underDevFallback,
-  underDevRedirect = config.underDevRedirect,
-  authProtected = config.authProtected,
-  authFallback = config.authFallback,
-  authRedirect = config.authRedirect,
-  expireProtected = config.expireProtected,
-  expireFallback = config.expireFallback,
-  expireRedirect = config.expireRedirect,
-  onboardProtected = config.onboardProtected,
-  onboardFallback = config.onboardFallback,
-  onboardRedirect = config.onboardRedirect,
-  userRoleProtected = config.userRoleProtected,
-  userRoleFallback = config.userRoleFallback,
-  userRoleRedirect = config.userRoleRedirect,
-  subscriptionProtected = config.subscriptionProtected,
-  subscriptionFallback = config.subscriptionFallback,
-  subscriptionRedirect = config.subscriptionRedirect,
-  subscription = config.subscription,
-  role = config.role,
+  routeRuName,
+  authGuardType = config.authGuardType!,
+  expireGuardType = config.expireGuardType!,
+  onboardGuardType = config.onboardGuardType!,
+  userRoleGuardType = config.userRoleGuardType!,
+  subscriptionGuardType = config.subscriptionGuardType!,
+  testPeriodGuardType = config.testPeriodGuardType!,
+  testPeriodProtected = config.testPeriodProtected!,
+  testPeriodFallback = config.testPeriodFallback!,
+  testPeriodRedirect = config.testPeriodRedirect!,
+  underDevGuardType = config.underDevGuardType!,
+  underDevProtected = config.underDevProtected!,
+  underDevFallback = config.underDevFallback!,
+  underDevRedirect = config.underDevRedirect!,
+  authProtected = config.authProtected!,
+  authFallback = config.authFallback!,
+  authRedirect = config.authRedirect!,
+  expireProtected = config.expireProtected!,
+  expireFallback = config.expireFallback!,
+  expireRedirect = config.expireRedirect!,
+  onboardProtected = config.onboardProtected!,
+  onboardFallback = config.onboardFallback!,
+  onboardRedirect = config.onboardRedirect!,
+  userRoleProtected = config.userRoleProtected!,
+  userRoleFallback = config.userRoleFallback!,
+  userRoleRedirect = config.userRoleRedirect!,
+  subscriptionProtected = config.subscriptionProtected!,
+  subscriptionFallback = config.subscriptionFallback!,
+  subscriptionRedirect = config.subscriptionRedirect!,
+  subscription = config.subscription!,
+  role = config.role!,
 }) => {
   const { user } = useContext(AuthContext);
   const { pathname } = useLocation()
   const navigate = useNavigate()
-  const isCalculateEntryUrl = sessionStorage.getItem('isCalculateEntryUrl'); // это устанавливается в калькуляторе. Необходимо для коррекного редиректа не авторизованного юзера
+  const isCalculateEntryUrl = sessionStorage.getItem('isCalculateEntryUrl');
 
   // -------this is test user object for dev purposes ------//
 
-  // let user = {
-  //   email: "modinsv@yandex.ru",
-  //   id: 2,
-  //   is_confirmed: true,
-  //   is_onboarded: false,
-  //   is_report_downloaded: true,
-  //   is_test_used: true,
-  //   role: "admin",
-  //   subscription_status: null
-  // }
+//   let user = {
+//     email: "modinsv@yandex.ru",
+//     id: 2,
+//     is_confirmed: true,
+//     is_onboarded: false,
+//     is_report_downloaded: true,
+//     is_test_used: true,
+//     role: "admin",
+//     subscription_status: null
+//   }
 
  //const user = undefined
 
@@ -130,13 +173,12 @@ export const ProtectedRoute = ({
 3& smart + !onboardig
  */
 
-
-
   //------- 0. Under development protection ----------//
   if (underDevProtected && process.env.NODE_ENV === 'production') {
     switch(underDevGuardType) {
       case 'redirect': {
-        return navigate(underDevRedirect)
+        navigate(underDevRedirect)
+        return null;
       }
       case 'fallback': {
         return (
@@ -149,16 +191,17 @@ export const ProtectedRoute = ({
     return (underDevFallback())
   }
 
-
   //------- 1. Auth protection (checking is user exists) ----------//
   if (authProtected && !user) {
     switch(authGuardType) {
       case 'redirect': {
         if (isCalculateEntryUrl === '1') {
           sessionStorage.removeItem('isCalculateEntryUrl')
-          return (window.location.replace(`${URL}/signup`))
+          window.location.replace(`${URL}/signup`)
+          return null;
         } else {
-          return (window.location.replace(`${URL}${authRedirect}`))
+          window.location.replace(`${URL}${authRedirect}`)
+          return null;
         }
       }
       case 'fallback': {
@@ -169,26 +212,12 @@ export const ProtectedRoute = ({
         )
       }
     }
-    return (window.location.replace(`${URL}${authRedirect}`))
+    window.location.replace(`${URL}${authRedirect}`)
+    return null;
   }
 
   // ---------2. Test period protection ------//
   if (testPeriodProtected && user && user.subscription_status === null) {
-    
-    // ---------2.1 Mock data protection ------//
-    // const mockPages = ['Сводка продаж', 'ABC-анализ', 'География заказов и продаж', 'Аналитика по товарам']
-    // if (user && user.subscription_status === null && mockPages.includes(routeRuName)) {
-    //   return ( 
-    //     <Suspense fallback={<LoaderPage />}>
-    //       <Helmet>
-    //         <title>Radar Analityca</title>
-    //         <meta name="description" content={routeRuName} />
-    //       </Helmet>
-    //       { children }
-    //     </Suspense>
-    //   )
-    // }
-    
      switch(testPeriodGuardType) {
        case 'redirect': {
          return (<Navigate to={testPeriodRedirect} />)
@@ -203,7 +232,6 @@ export const ProtectedRoute = ({
     }
 
     return (<Navigate to={testPeriodRedirect} replace />)
-  
   }
   
   // ---------3. Subscription expiration protection (checking subscription) -------//
@@ -230,22 +258,16 @@ export const ProtectedRoute = ({
           return (<Navigate to={onboardRedirect} />)
         }
         case 'fallback': {
-          return (
-            <Suspense fallback={<LoaderPage />}>
-              {onboardFallback()}
-            </Suspense>
-          )
+        return (
+          <Suspense fallback={<LoaderPage />}>
+            {onboardFallback()}
+          </Suspense>
+        )
         }
       }
       
       return (<Navigate to={onboardRedirect} replace />)
-    
   }
-
-
-
-
-
 
   // ----------5. User role protection ------------//
   if (userRoleProtected && user && role && user.role !== role) {
@@ -254,11 +276,11 @@ export const ProtectedRoute = ({
           return (<Navigate to={userRoleRedirect} />)
         }
         case 'fallback': {
-          return (
-            <Suspense fallback={<LoaderPage />}>
-              {userRoleFallback()}
-            </Suspense>
-          )
+        return (
+          <Suspense fallback={<LoaderPage />}>
+            {userRoleFallback()}
+          </Suspense>
+        )
         }
       }
 
@@ -267,15 +289,6 @@ export const ProtectedRoute = ({
 
   // ---------- 6. Subscription protection (for different types of subscription) ------------//
   if (subscriptionProtected && user && user.subscription_status !== subscription) {
-    /***
-     * 
-     * 
-     * 
-     *  here will be logic (checking the whitelist of routes from config) when different subscriptions type will be activated
-     * 
-     * 
-     * 
-     */
     switch(subscriptionGuardType) {
       case 'redirect': {
         return (<Navigate to={subscriptionRedirect} />)
