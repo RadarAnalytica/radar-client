@@ -1,10 +1,10 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { URL } from '../../service/config';
 import { setLoading } from '../loading/loadingSlice';
-
 import { mockGetAllShops } from '../../service/mockServiceFunctions';
+import type { Shop } from './shopsSlice';
 
-export const fetchShops = createAsyncThunk(
+export const fetchShops = createAsyncThunk<Shop[], string>(
   'shops',
   async (token, { dispatch }) => {
     try {
@@ -32,9 +32,9 @@ export const fetchShops = createAsyncThunk(
   }
 );
 
-export const fetchMockShops = createAsyncThunk(
+export const fetchMockShops = createAsyncThunk<Shop[], void>(
   'shops',
-  async ({ dispatch }) => {
+  async (_, { dispatch }) => {
     try {
       dispatch(setLoading(true));
       const data = mockGetAllShops();
