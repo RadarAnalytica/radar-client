@@ -13,13 +13,13 @@ import ModalDeleteConfirm from '@/components/sharedComponents/ModalDeleteConfirm
 import styles from './OperatingExpenses.module.css';
 import { COSTS_COLUMNS, ARTICLES_COLUMNS } from './config/config';
 import CreateCost from './features/CreateCost/CreateCost';
-import CreateArticle from './features/CreateArticle/CreateArticle';
+import CreateCategory from './features/CreateCategory/CreateCategory';
 import { EditIcon, CopyIcon, DeleteIcon, InfoIcon } from './shared/Icons';
 export default function OperatingExpenses() {
 
 	const { authToken } = useContext(AuthContext);
 	const { activeBrand, selectedRange } = useAppSelector( (state) => state.filters );
-	const filters = useAppSelector((state) => state.filters)
+	// const filters = useAppSelector((state) => state.filters)
 	const { shops } = useAppSelector((state) => state.shopsSlice);
 	const shopStatus = useMemo(() => {
 		if (!activeBrand || !shops) return null;
@@ -42,14 +42,14 @@ export default function OperatingExpenses() {
 
 	const firstLoad = useRef(true);
 	const [loading, setLoading] = useState(true);
-	const [view, setView] = useState('costs'); // costs | articles
+	const [view, setView] = useState('costs'); // costs | category
 	// const [isPopoverOpen, setIsPopoverOpen] = useState(false);
 
 	const [createCostOpen, setCreateCostOpen] = useState(false);
-	const [modalCreateArticlesOpen, setModalCreateArticlesOpen] = useState(false);
+	const [modalCreateCategoryOpen, setModalCreateCategoryOpen] = useState(false);
 
 	const [deleteCostId, setDeleteCostId] = useState(null);
-	const [deleteArticleId, setDeleteArticleId] = useState(null);
+	const [deleteCategoryId, setDeleteCategoryId] = useState(null);
 
 	const [costEdit, setCostEdit] = useState(null);
 	const [costCopy, setCostCopy] = useState(null);
@@ -115,9 +115,9 @@ export default function OperatingExpenses() {
 		return {data, columns};
 	}, [costs]);
 
-	const [articleEdit, setArticleEdit] = useState(null);
-	const [articles, setArticles] = useState(null);
-	const [articlesLoading, setArticlesLoading] = useState(false);
+	const [categoryEdit, setCategoryEdit] = useState(null);
+	const [category, setCategory] = useState(null);
+	const [categoryLoading, setCategoryLoading] = useState(false);
 
 	const actionArticlesRender = (value, row) => {
 		return (<Flex justify="start" gap={20}>
@@ -126,22 +126,22 @@ export default function OperatingExpenses() {
 					type="text"
 					icon={EditIcon}
 					onClick={() => {
-						setArticleEdit((articles.find((article) => article.id === row.id)));
-						setModalCreateArticlesOpen(true)
+						setCategoryEdit((category.find((article) => article.id === row.id)));
+						setModalCreateCategoryOpen(true)
 					}}
 					title='Изменить'
 					></Button>
 				<Button
 					type="text"
 					icon={DeleteIcon}
-					onClick={() => setDeleteArticleId(row.id)}
+					onClick={() => setDeleteCategoryId(row.id)}
 					title='Удалить'
 				></Button>
 			</ConfigProvider>
 		</Flex>)
 	}
 
-	const articlesData = useMemo(() => {
+	const categoryData = useMemo(() => {
 		const columns = ARTICLES_COLUMNS.map((column, i) => {
 			if (column.dataIndex == 'action'){
 				column.render = actionArticlesRender
@@ -149,25 +149,41 @@ export default function OperatingExpenses() {
 			return ({ ...column, key: column.i })
 		})
 		let data = [];
-		if (articles){
-			data = articles.map((article) => ({...article, key: article.id}));
+		if (category){
+			data = category.map((article) => ({...article, key: article.id}));
 		}
 		return {data, columns}
-	}, [articles]);
+	}, [category]);
 
 	const updateCategories = async () => {
 		setLoading(true);
-		setArticlesLoading(true);
+		setCategoryLoading(true);
 		try {
 			const res = await ServiceFunctions.getOperatingExpensesCategoryGetAll(authToken);
-			console.log('updateAricles', res);
-			setArticles(res.data);
+			console.log('updateCategories', res);
+			setCategory(res.data);
 		} catch(error) {
-			console.error('updateAricles error', error);
-			setArticles([]);
+			console.error('updateCategories error', error);
+			setCategory([]);
 		} finally {
-			console.log('updateAricles', !firstLoad.current)
-			setArticlesLoading(false);
+			setCategoryLoading(false);
+			if (!firstLoad.current) {
+				setLoading(false);
+			}
+		}
+	}
+
+	const updatePeriodicExpenses = async () => {
+		setLoading(true);
+		try {
+			const res = await ServiceFunctions.getAllOperatingExpensesExpense(authToken);
+			console.log(res)
+			setCosts(res.data)
+		} catch(error) {
+			console.error('updateExpenses error', error);
+			setCosts([]);
+		} finally {
+			console.log('updateExpenses', !firstLoad.current)
 			// if (!firstLoad.current) {
 				setLoading(false);
 			// }
@@ -181,10 +197,10 @@ export default function OperatingExpenses() {
 			console.log(res)
 			setCosts(res.data)
 		} catch(error) {
-			console.error('updateCosts error', error);
+			console.error('updateExpenses error', error);
 			setCosts([]);
 		} finally {
-			console.log('updateCosts', !firstLoad.current)
+			console.log('updateExpenses', !firstLoad.current)
 			// if (!firstLoad.current) {
 				setLoading(false);
 			// }
@@ -203,6 +219,7 @@ export default function OperatingExpenses() {
 				updateExpenses();
 			})
 				.then(() => {
+					console.log('promise ')
 					firstLoad.current = false;
 					setLoading(false);
 				});
@@ -214,11 +231,11 @@ export default function OperatingExpenses() {
 			updateExpenses();
 		}
 		
-		if (view === 'articles'){
+		if (view === 'category'){
 			console.log('updateArticles');
 			updateCategories();
 		}
-	}, [ filters ])
+	}, [ activeBrand, selectedRange ])
 
 	const modalCostHandlerClose = () => {
 		setCreateCostOpen(false);
@@ -227,8 +244,8 @@ export default function OperatingExpenses() {
 	};
 
 	const modalArticleHandlerClose = () => {
-		setModalCreateArticlesOpen(false);
-		setArticleEdit(null);
+		setModalCreateCategoryOpen(false);
+		setCategoryEdit(null);
 	};
 
 	const modalHandler = () => {
@@ -236,35 +253,35 @@ export default function OperatingExpenses() {
 			setCreateCostOpen(true);
 			return;
 		}
-		setModalCreateArticlesOpen(true);
+		setModalCreateCategoryOpen(true);
 	};
 
 	const createCategory = async (category) => {
-		setArticlesLoading(true);
+		setCategoryLoading(true);
 		console.log('createCategory', category)
-		// setModalCreateArticlesOpen(false);
+		// setModalCreateCategoryOpen(false);
 		try {
 			const res = await ServiceFunctions.postOperatingExpensesCategoryCreate(authToken, category);
 			console.log('createCategory', res);
 			// 
-			setArticles((list) => [...list, {...article, id: list.length + Math.ceil(Math.random() * 10)}])
+			setCategory((list) => [...list, {...article, id: list.length + Math.ceil(Math.random() * 10)}])
 			// 
 		} catch(error) {
 			console.error('createCategory error', error);
 		} finally {
-			setModalCreateArticlesOpen(false);
-			setArticlesLoading(false);
+			setModalCreateCategoryOpen(false);
+			setCategoryLoading(false);
 		}
 	}
 
-	const editArticle = async (article) => {
+	const editCategory = async (article) => {
 		setLoading(true);
-		setModalCreateArticlesOpen(false);
+		setModalCreateCategoryOpen(false);
 		try {
 			const res = await ServiceFunctions.patchOperatingExpensesCategory();
-			console.log('editArticle', article);
+			console.log('editCategory', article);
 			// 
-			setArticles((list) => list.map((el) => {
+			setCategory((list) => list.map((el) => {
 				if (el.id === article.id){
 					return article
 				}
@@ -274,7 +291,7 @@ export default function OperatingExpenses() {
 		} catch(error) {
 			console.error('createArticle error', error);
 		} finally {
-			setArticleEdit(null);
+			setCategoryEdit(null);
 			// if (!firstLoad.current) {
 				setLoading(false);
 			// }
@@ -282,15 +299,15 @@ export default function OperatingExpenses() {
 	}
 
 	const handleCategory = (category) => {
-		// setModalCreateArticlesOpen(false);
-		if (!!articleEdit){
+		// setModalCreateCategoryOpen(false);
+		if (!!categoryEdit){
 			console.log('editArticle')
-			editArticle(category);
+			editCategory(category);
 			return
 		}
 		console.log('createArticle')
 		createCategory(category);
-		// setExpenses((articles) => articles.push(article) );
+		// setExpenses((category) => category.push(article) );
 	};
 
 	const handleCost = (cost) => {
@@ -301,7 +318,7 @@ export default function OperatingExpenses() {
 		}
 		console.log('createCost')
 		createCost(cost);
-		// setExpenses((articles) => articles.push(article) );
+		// setExpenses((category) => category.push(article) );
 	};
 
 	const deleteCostHandler = async (id) => {
@@ -327,13 +344,13 @@ export default function OperatingExpenses() {
 		try {
 			const res = await ServiceFunctions.deleteOperatingExpensesCategory();
 			// 
-			setArticles((list) => list.filter((el) => el.id !== id));
+			setCategory((list) => list.filter((el) => el.id !== id));
 			// 
 			console.log('deleteArticleHandler', res);
 		} catch(error) {
 			console.error('deleteArticleHandler error', error);
 		} finally {
-			setDeleteArticleId(null);
+			setDeleteCategoryId(null);
 			setLoading(false);
 		}
 	}
@@ -406,7 +423,7 @@ export default function OperatingExpenses() {
 								<Button
 									size="large"
 									type={view === 'costs' ? 'default' : 'primary'}
-									onClick={() => { setView('articles'); }}
+									onClick={() => { setView('category'); }}
 								>
 									Статьи
 								</Button>
@@ -508,9 +525,9 @@ export default function OperatingExpenses() {
 						<ReportTable
 							loading={loading}
 							columns={
-								view === 'costs' ? costsData.columns : articlesData.columns
+								view === 'costs' ? costsData.columns : categoryData.columns
 							}
-							data={view === 'costs' ? costsData.data : articlesData.data}
+							data={view === 'costs' ? costsData.data : categoryData.data}
 							is_primary_collect={shopStatus?.is_primary_collect}
 							virtual={false}
 						/>
@@ -519,8 +536,8 @@ export default function OperatingExpenses() {
 				{ createCostOpen && <CreateCost
 					open={createCostOpen}
 					onCancel={modalCostHandlerClose}
-					createArticleOpen={setModalCreateArticlesOpen}
-					articles={articles}
+					createArticleOpen={setModalCreateCategoryOpen}
+					category={category}
 					zIndex={1000}
 					edit={costEdit}
 					copy={costCopy}
@@ -528,14 +545,14 @@ export default function OperatingExpenses() {
 					// data={costEdit || costCopy}
 				/> }
 
-				{ modalCreateArticlesOpen && <CreateArticle
-					open={modalCreateArticlesOpen}
+				{ modalCreateCategoryOpen && <CreateCategory
+					open={modalCreateCategoryOpen}
 					onCancel={modalArticleHandlerClose}
 					onSubmit={handleCategory}
 					zIndex={1001}
-					data={articleEdit}
-					confirmLoading={articlesLoading}
-					loading={articlesLoading}
+					data={categoryEdit}
+					confirmLoading={categoryLoading}
+					loading={categoryLoading}
 				/> }
 
 				{deleteCostId && <ModalDeleteConfirm
@@ -544,10 +561,10 @@ export default function OperatingExpenses() {
 					onOk={() => deleteCostHandler(deleteCostId)}
 				/>}
 
-				{deleteArticleId && <ModalDeleteConfirm
+				{deleteCategoryId && <ModalDeleteConfirm
 					title={'Вы уверены, что хотите удалить статью?'}
-					onCancel={() => setDeleteArticleId(null)}
-					onOk={() => deleteArticleHandler(deleteArticleId)}
+					onCancel={() => setDeleteCategoryId(null)}
+					onOk={() => deleteArticleHandler(deleteCategoryId)}
 				/>}
 
 				{loading && <div className={styles.loading}>

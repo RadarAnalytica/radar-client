@@ -3,7 +3,8 @@ import { SelectIcon } from '../../../../components/sharedComponents/apiServicePa
 import styles from '../../shared/styles/modals.module.css';
 import { CloseIcon } from '../../shared/Icons';
 import { useMemo, useState } from 'react';
-export default function CreateArticle({
+
+export default function CreateCategory({
 	open = true,
 	onCancel,
 	onSubmit,
@@ -12,14 +13,9 @@ export default function CreateArticle({
 	...props
 }) {
 
-	// const [name, setName] = useState(data?.title);
-
-	console.log(props)
 	const [form] = Form.useForm();
 	const name = Form.useWatch('name', form);
-console.log('name', name)
 	const onFinish = (form) => {
-		console.log('form', form)
 		// if (!!data) {
 		// 	onSubmit({name: form.name.trim()});
 		// 	return 

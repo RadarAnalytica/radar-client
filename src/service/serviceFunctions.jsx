@@ -1849,5 +1849,6 @@ export const ServiceFunctions = {
 			throw new Error(error);
 		}
 	},
+	// api/operating-expenses/periodic-expense/get
 };
 
