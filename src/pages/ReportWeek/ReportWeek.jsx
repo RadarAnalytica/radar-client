@@ -28,11 +28,11 @@ import TableWidget from './widgets/TableWidget/TableWidget';
 
 export default function ReportWeek() {
 	const { user, authToken } = useContext(AuthContext);
-	const { activeBrand, selectedRange, activeBrandName, activeArticle, activeGroup, activeWeeks, isFiltersLoaded } = useAppSelector(
+	const { activeBrand, selectedRange, activeBrandName, activeArticle, activeGroup, activeWeeks, isFiltersLoaded, shops } = useAppSelector(
 		(state) => state.filters
 	);
 	const filters = useAppSelector((state) => state.filters);
-	const { shops } = useAppSelector((state) => state.shopsSlice);
+	//const { shops } = useAppSelector((state) => state.shopsSlice);
 	const [loading, setLoading] = useState(true);
 	const [downloadLoading, setDownloadLoading] = useState(false);
 	const [isPopoverOpen, setIsPopoverOpen] = useState(false);
@@ -377,7 +377,7 @@ export default function ReportWeek() {
 					<Header title="По неделям"></Header>
 				</div>
 
-				{!loading && shopStatus?.is_primary_collect && !shopStatus?.is_self_cost_set && (
+				{!loading && activeBrand?.is_primary_collect && !activeBrand?.is_self_cost_set && (
 					<SelfCostWarningBlock />
 				)}
 

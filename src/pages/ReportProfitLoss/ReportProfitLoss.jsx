@@ -22,9 +22,9 @@ import { startOfYear, format } from "date-fns";
 
 export default function ReportProfitLoss() {
 	const { user, authToken } = useContext(AuthContext);
-	const { activeBrand, selectedRange, activeMonths, activeBrandName, activeArticle, activeGroup, isFiltersLoaded } = useAppSelector((state) => state.filters);
+	const { activeBrand, selectedRange, activeMonths, activeBrandName, activeArticle, activeGroup, isFiltersLoaded, shops } = useAppSelector((state) => state.filters);
 	const filters = useAppSelector((state) => state.filters);
-	const { shops } = useAppSelector((state) => state.shopsSlice);
+	//const { shops } = useAppSelector((state) => state.shopsSlice);
 
 	const [loading, setLoading] = useState(true);
 	const [columns, setColumns] = useState([]);
@@ -285,7 +285,7 @@ export default function ReportProfitLoss() {
 					<Header title="Отчет о прибыли и убытках"></Header>
 				</div>
 
-				{!loading && shopStatus?.is_primary_collect && !shopStatus?.is_self_cost_set && (
+				{!loading && activeBrand?.is_primary_collect && !activeBrand?.is_self_cost_set && (
 					<SelfCostWarningBlock />
 				)}
 

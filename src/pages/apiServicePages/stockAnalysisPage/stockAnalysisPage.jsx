@@ -15,8 +15,8 @@ import NoSubscriptionWarningBlock from '../../../components/sharedComponents/noS
 
 const StockAnalysisPage = () => {
     const { user, authToken } = useContext(AuthContext)
-    const { activeBrand, selectedRange, isFiltersLoaded, activeBrandName, activeArticle, activeGroup } = useAppSelector((state) => state.filters);
-    const { shops } = useAppSelector((state) => state.shopsSlice);
+    const { activeBrand, selectedRange, isFiltersLoaded, activeBrandName, activeArticle, activeGroup, shops } = useAppSelector((state) => state.filters);
+    //const { shops } = useAppSelector((state) => state.shopsSlice);
     const filters = useAppSelector((state) => state.filters);
     const [stockAnalysisData, setStockAnalysisData] = useState(); // это базовые данные для таблицы
     const [stockAnalysisFilteredData, setStockAnalysisFilteredData] = useState() // это данные для таблицы c учетом поиска
@@ -104,8 +104,8 @@ const StockAnalysisPage = () => {
                     </div>
                     {/* SELF-COST WARNING */}
                     {
-                        shopStatus &&
-                        !shopStatus.is_self_cost_set &&
+                        activeBrand &&
+                        !activeBrand.is_self_cost_set &&
                         !loading &&
                         <div>
                             <SelfCostWarningBlock
