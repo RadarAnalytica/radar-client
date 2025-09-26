@@ -13,11 +13,14 @@ export default function CreateCost({
 	open = true,
 	onCancel,
 	createArticleOpen,
-	articles,
-	data,
+	category,
+	edit,
+	copy,
+	// data,
+	state = null,
 	...props
 }) {
-	const Title = () => (
+	const Title = ({state}) => (
 		<ConfigProvider
 			theme={{
 				components: {
@@ -35,15 +38,25 @@ export default function CreateCost({
 				gap={16}
 				className={styles.modal__header}
 			>
-				<h2 className={styles.modal__title}>Добавление расхода</h2>
-				<Tooltip title={'Как это работает'}>
-					<Flex gap={10}>
-						{InfoIcon} Как это работает
-					</Flex>
-				</Tooltip>
+				<h2 className={styles.modal__title}>
+					{edit && 'Редактирование расхода'}
+					{copy && 'Копирование расхода'}
+					{!edit && !copy && 'Добавление расхода'}
+				</h2>
+				<Flex gap={10} align='center'>
+					<Tooltip title={'Как это работает'}>
+						{InfoIcon}
+					</Tooltip>
+					Как это работает
+				</Flex>
 			</Flex>
 		</ConfigProvider>
 	);
+
+	useEffect(() => {
+		document.body.classList.add('red')
+		return () => document.body.classList.remove('red')
+	}, [])
 
 	const { shops, filters } = useAppSelector((state) => state.filters);
 
@@ -74,15 +87,17 @@ export default function CreateCost({
 		return [];
 	}, [allFilters]);
 
+	const data = edit || copy || null;
+
 	const [selection, setSelection] = useState(() => {
-		if (data?.sku) {
-			return 'sku'
+		if (data?.vendor_code) {
+			return 'vendor_code'
 		}
-		if (data?.brand) {
-			return 'brand'
+		if (data?.brand_name) {
+			return 'brand_name'
 		}
 		return 'shop'
-	}); // 'shop' | 'sku' | 'brand'
+	}); // 'shop' | 'vendor_code' | 'brand_name'
 
 	const [openCalendar, setOpenCalendar] = useState(false);
 
@@ -102,6 +117,7 @@ export default function CreateCost({
 	const [form] = Form.useForm();
 
 	const onFinish = (values) => {
+		values.date = date;
 		console.log('onFinish', values);
 	};
 
@@ -110,12 +126,20 @@ export default function CreateCost({
 		form.resetFields();
 	};
 	
-	const [date, setDate] = useState(data?.date || '10-10-2024');
+	// const [date, setDate] = useState(data?.date || '10-10-2024');
+	const [frequency, setFrequency] = useState('week');
+	// const [type, setType] = useState(data?.type || 'once');
+	const [date, setDate] = useState(data?.date || format(new Date(), 'MM-d-yyyy'));
+	// 2025-09-15
 	const dateContainerRef = useRef(null);
 	const datePickerRef = useRef(null);
 	const today = new Date();
 	const minDate = new Date(today);
+	const maxDate = new Date(today);
 	minDate.setDate(today.getDate() - 90);
+	maxDate.setDate(today.getDate() + 90);
+	console.log('today', today)
+	console.log('minDate', minDate)
 
 	const dateHandler = () => {
 		setOpenCalendar((state) => !state)
@@ -136,7 +160,8 @@ export default function CreateCost({
 	}, []);
 
 	const handleDayClick = (day) => {
-		setDate(day);
+		console.log('handleDayClick', day)
+		setDate(format(day, 'MM-d-yyyy'));
 		setOpenCalendar(false);
 	}
 	const handleOnBlur = (event) => {
@@ -144,10 +169,11 @@ export default function CreateCost({
 			setOpenCalendar(false);
 		}
 	}
-
 	// const [sum, setSum] = useState(data?.sum || 0);
 	const [description, setDescription] = useState(data?.description || '');
 
+
+	const typeValue = Form.useWatch('type', form);
 
 	return (
 		<ConfigProvider
@@ -167,6 +193,7 @@ export default function CreateCost({
 						labelFontSize: 16,
 						labelColor: '#1a1a1a',
 						labelColonMarginInlineEnd: 10,
+						labelRequiredMarkColor: '#000'
 					},
 					Button: {
 						paddingInline: 0,
@@ -184,60 +211,78 @@ export default function CreateCost({
 		>
 			<Modal
 				className={styles.modal}
-				open={open}
+				// open={open}
+				open={true}
 				centered={true}
 				closable={true}
-				// closeIcon={<CloseIcon className={styles.close__icon} />}
-				title={<Title />}
+				closeIcon={<CloseIcon className={styles.close__icon} />}
+				title={<Title state={state}/>}
 				footer={null}
 				width={600}
 				onCancel={onCancel}
 				props
 			>
-				<Form form={form} onFinish={onFinish} layout="vertical">
+				<Form
+					form={form}
+					onFinish={onFinish}
+					layout="vertical"
+					// initialValues={data}
+				>
 					<h3 className={styles.modal__subtitle}>Тип операции</h3>
-					<Form.Item
-						className={styles.modal__part}
-						name='type'
-						// required={true}
-						initialValue={data?.type || 'once'}
-					>
-						<Radio.Group>
-							<Radio value="once">Разовая</Radio>
-							<Radio value="plan">Плановая</Radio>
-						</Radio.Group>
-					</Form.Item>
+					<ConfigProvider
+						theme={{
+							token: {
+								fontSize: 16
+							}
+						}}>
+							<Form.Item
+								className={styles.modal__part}
+								name='type'
+								initialValue={data?.type || 'once'}
+							>
+								<Radio.Group>
+									<Radio value="once">Разовая</Radio>
+									<Radio value="plan">Плановая</Radio>
+								</Radio.Group>
+							</Form.Item>
+					</ConfigProvider>
 					<Row className={styles.modal__part} gutter={16}>
 						<Col span={12} ref={dateContainerRef}>
-							<Form.Item label="Дата" name='date' initialValue={format(date, 'd.MM.yyyy')}>
+							<Form.Item
+								label="Дата"
+								name='date'
+								initialValue={format(new Date(date), 'dd.MM.yyyy')}
+								rules={[
+									{ required: true, message: 'Пожалуйста, выберите дату!' }
+								]}
+							>
 								<Select
+									name='date'
 									size="large"
-									variant="filled"
 									placeholder="Выберите дату"
 									suffixIcon={icon}
 									variant="filled"
-									// value={date && format(date, 'd.MM.yyyy')}
-									// options={[
-									// 	{ value: 'sample', label: 'asd' },
-									// 	{ value: 'asd', label: 'asd2' }
-									// ]}
+									value={format(new Date(date), 'dd.MM.yyyy')}
 									onClick={dateHandler}
-									onChange={(v) => console.log('onChange', v)}
 									disabled={openCalendar}
 									dropdownStyle={{ display: 'none' }}
+									style={{display: 'block'}}
 								/>
-							</Form.Item>
-							<div
-								ref={datePickerRef}
-								className={`${styles.calendarPopup} ${openCalendar ? styles.visible : ''}`}
-								>
-								{openCalendar &&
-									<DayPicker
-											// minDate={minDate}
+								<div
+									ref={datePickerRef}
+									className={`${styles.calendarPopup} ${openCalendar ? styles.visible : ''}`}
+									>
+										<DayPicker
+											minDate={minDate}
 											maxDate={new Date()}
+											fromDate={minDate}
+											toDate={new Date()}
+											disabled={[
+												{ before: minDate },
+												{ after: new Date() },
+											]}
 											mode="single"
 											selected={date}
-											// month={month}
 											// onMonthChange={setMonth}
 											captionLayout="dropdown"
 											className={styles.customDayPicker}
@@ -252,48 +297,144 @@ export default function CreateCost({
 											// components={{
 											// 		Dropdown: DatePickerCustomDropdown
 											// }}
-									/>}
-							</div>
+									/>
+								</div>
+							</Form.Item>
 						</Col>
 						<Col span={12}>
 							<Form.Item
 								label="Сумма, руб"
 								name='value'
 								// required={true}
-								initialValue={data?.sum || 0}
+								initialValue={data?.value}
 								// validateStatus='error'
+								rules={[
+									{ required: true, message: 'Пожалуйста, введите сумму расхода!' }
+								]}
 							>
-								<Input size="large" type='number'/>
+								<Input
+									size="large"
+									type='number'
+									min={0}
+									onWheel={(e) => e.currentTarget.blur()}
+								/>
 							</Form.Item>
 						</Col>
 					</Row>
+					{typeValue === 'plan' && <Row className={styles.modal__part} gutter={16}>
+						<Col span={12} ref={dateContainerRef}>
+							<Form.Item
+								label="Частота расхода"
+								name='frequency'
+								rules={[
+									{ required: true, message: 'Пожалуйста, выберите значение!' }
+								]}
+							>
+								<Select
+									size="large"
+									placeholder="Частота расхода"
+									suffixIcon={icon}
+									defaultValue={frequency}
+									options={[
+										{ value: 'week', label: 'Каждую неделю' },
+										{ value: 'month', label: 'Каждый месяц' },
+									]}
+									onChange={setFrequency}
+								/>
+							</Form.Item>
+						</Col>
+
+						{frequency === 'month' && <Col span={12}>
+							<Form.Item
+								label="Число или день"
+								name='month'
+								// required={true}
+								initialValue={data?.month}
+								// validateStatus='error'
+							>
+								{/* убрать изменения при скролле колесиком */}
+								{/* disabled добавить */}
+								{/* ! обязательные поля */}
+								{/* ! логика копирования */}
+								{/* формат дней недели */}
+								{/* варианты расходов */}
+								{/* проверить точку и запятую */}
+								<Input
+									size="large"
+									type='number'
+									min={0}
+									placeholder='Число от 1 до 28'
+									onWheel={(e) => e.currentTarget.blur()}
+								/>
+							</Form.Item>
+						</Col>}
+
+						{frequency === 'week' && <Col span={12}>
+							<Form.Item
+								label="День недели"
+								name='week'
+								// required={true}
+								initialValue={data?.week}
+								rules={[
+									{ required: true, message: 'Пожалуйста, выберите значение!' }
+								]}
+							>
+								<Select
+									size="large"
+									placeholder="Выберите день"
+									suffixIcon={icon}
+									options={[
+										{ value: 0, label: 'Понедельник' },
+										{ value: 1, label: 'Вторник' },
+										{ value: 2, label: 'Среда' },
+										{ value: 3, label: 'Четверг' },
+										{ value: 4, label: 'Пятница' },
+										{ value: 5, label: 'Суббота' },
+										{ value: 6, label: 'Воскресенье' },
+									]}
+									onChange={setFrequency}
+								/>
+							</Form.Item>
+						</Col>}
+					</Row>}
 					<div className={styles.modal__part}>
 						<Form.Item
 							label="Статья"
-							name='article'
-							initialValue={data?.article}
-							// required={true}
+							name='expense_categories'
+							initialValue={data?.category}
+							rules={[
+									{ required: true, message: 'Пожалуйста, выберите значение!' }
+								]}
 						>
 							<Select
 								size="large"
 								placeholder="Выберите статью"
 								suffixIcon={icon}
-								options={articles.map((el, i) => ({
-									key: i,
-									value: el.title,
-									label: el.title,
+								options={category.map((el, i) => ({
+									key: el.id,
+									value: el.id,
+									label: el.name,
 								}))}
+								showSearch
+								mode="multiple"
 							/>
 						</Form.Item>
 						<Flex justify="flex-end">
-							<Button
-								type="link"
-								onClick={() => {
-									createArticleOpen(true);
-								}}
-							>
-								Добавить статью
-							</Button>
+							<ConfigProvider
+								theme={{
+									token: {
+										fontSize: 16
+									}
+								}}>
+									<Button
+										type="link"
+										onClick={() => {
+											createArticleOpen(true);
+										}}
+									>
+										Добавить статью
+									</Button>
+							</ConfigProvider>
 						</Flex>
 					</div>
 					<div className={styles.modal__part}>
@@ -302,16 +443,16 @@ export default function CreateCost({
 							name='description'
 							// required={true}
 							initialValue={data?.description || description}
+							rules={[
+								{ required: true, message: 'Пожалуйста, введите значение!', min: 0 },
+								{ message: 'Описание не должно быть больше 150 символов!', max: 150 }
+							]}
 						>
 							<Input.TextArea
 								size="large"
 								autoSize={{ minRows: 1, maxRows: 3 }}
-								onInput={(e) => setDescription(e.target.value)}
-								maxLength={160}
-								status={description.length > 160 ? 'error' : ''}
-								count={{
-									max: 160
-								}}
+								// onInput={(e) => setDescription(e.target.value)}
+								// maxLength={150}
 							/>
 						</Form.Item>
 					</div>
@@ -319,22 +460,35 @@ export default function CreateCost({
 						<h3 className={styles.modal__subtitle}>
 							Распределять на
 						</h3>
-						<Form.Item
-							name="selection"
-							initialValue={selection}
-							onChange={(e) => {
-								setSelection(e.target.value);
-							}}
-							// required={true}
-						>
-							<Radio.Group>
-								<Radio value="shop">Магазины</Radio>
-								<Radio value="sku">Артикулы</Radio>
-								<Radio value="brand">Бренды</Radio>
-							</Radio.Group>
-						</Form.Item>
-
-						{selection === 'shop' && <Form.Item name="shop" initialValue={data?.shop}>
+						<ConfigProvider
+						theme={{
+							token: {
+								fontSize: 16
+							}
+						}}>
+							<Form.Item
+								name="selection"
+								initialValue={selection}
+								onChange={(e) => {
+									setSelection(e.target.value);
+								}}
+								// required={true}
+							>
+								<Radio.Group>
+									<Radio value="shop">Магазины</Radio>
+									<Radio value="vendor_code">Артикулы</Radio>
+									<Radio value="brand_name">Бренды</Radio>
+								</Radio.Group>
+							</Form.Item>
+						</ConfigProvider>
+						{selection === 'shop' && 
+							<Form.Item
+								name="shop"
+								initialValue={data?.shop}
+								rules={[
+									{ required: true, message: 'ОПожалуйста, выберите значение!' }
+								]}
+							>
 							<Select
 								size="large"
 								options={shopsList.map((el) => ({
@@ -346,10 +500,16 @@ export default function CreateCost({
 								placeholder="Выберите магазины"
 								showSearch
 								suffixIcon={icon}
-								// required={true}
 							/>
 						</Form.Item>}
-						{selection === 'sku' && <Form.Item name="sku">
+						{selection === 'vendor_code' && 
+							<Form.Item
+								name="vendor_code"
+								initialValue={data?.vendor_code}
+								rules={[
+									{ required: true, message: 'Пожалуйста, выберите значение!' }
+								]}
+							>
 							<Select
 								size="large"
 								options={articlesList.map((el, i) => ({
@@ -360,10 +520,16 @@ export default function CreateCost({
 								placeholder="Выберите артикулы"
 								showSearch
 								suffixIcon={icon}
-								// required={true}
 							/>
 						</Form.Item>}
-						{selection === 'brand' && <Form.Item name="brands" initialValue={data?.brand}>
+						{selection === 'brand_name' && 
+						<Form.Item
+							name="brand_name"
+							initialValue={data?.brand_name}
+							rules={[
+								{ required: true, message: 'ОПожалуйста, выберите значение!' }
+							]}
+						>
 							<Select
 								size="large"
 								options={brandsList.map((el, i) => ({
@@ -374,11 +540,9 @@ export default function CreateCost({
 								placeholder="Выберите бренды"
 								showSearch
 								suffixIcon={icon}
-								// required={true}
 							/>
 						</Form.Item>}
 					</div>
-
 					<ConfigProvider
 						theme={{
 							components: {
@@ -399,8 +563,6 @@ export default function CreateCost({
 									},
 									components: {
 										Button: {
-											controlHeightLG: 43,
-											paddingInlineLG: 12,
 											primaryColor: '#5329FF',
 											colorPrimaryHover:
 												'rgba(83, 41, 255, 0.1)',
@@ -430,13 +592,10 @@ export default function CreateCost({
 									},
 									components: {
 										Button: {
-											controlHeightLG: 43,
-											paddingInlineLG: 12,
+											defaultShadow: '',
 											primaryColor: '#FFF',
-											colorPrimaryHover:
-												'rgba(83, 41, 255, 0.1)',
-
-											defaultShadow: false,
+											controlHeightLG: 45,
+											fontWeight: 600,
 										},
 									},
 								}}

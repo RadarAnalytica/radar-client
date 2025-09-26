@@ -1615,36 +1615,148 @@ export const ServiceFunctions = {
 			throw new Error(error);
 		}
 	},
-	getOperationConstsArticles: async(token) => {
+	getOperatingExpensesCategoryGet: async(token, id) => {
 		try {
-			const res = {
-				data: [
+			const res = await fetch(
+				`${URL}/api/operating-expenses/category/get`,
 				{
-					id: 1,
-					title: 'Статья1'
-				},
-				{
-					id: 2,
-					title: 'Статья2'
-				},
-			]
-			};
+					method: 'GET',
+					headers: {
+						'content-type': 'application/json',
+						authorization: 'JWT ' + token,
+					}
+				}
+			);
 			
-			return res;
+			if (res.status !== 200){
+				throw new Error('Ошибка запроса');
+			}
+	
+			return res.json();
 		} catch(error) {
-			console.error('getOperationConstsArticles ', error);
+			console.error('getOperatingExpensesCategory ', error);
 			throw new Error(error);
 		}
 	},
-	getOperationConstsCosts: async(token) => {
+	getOperatingExpensesCategoryGetAll: async(token) => {
+		try {
+			const res = await fetch(
+				`${URL}/api/operating-expenses/category/get-all?page=1&limit=100`,
+				{
+					method: 'GET',
+					headers: {
+						'content-type': 'application/json',
+						authorization: 'JWT ' + token,
+					}
+				}
+			);
+			
+			if (res.status !== 200){
+				throw new Error('Ошибка запроса');
+			}
+	
+			return res.json();
+			/*
+			const res = {
+				data: [
+					{
+						id: 1,
+						name: 'Статья1'
+					},
+					{
+						id: 2,
+						name: 'Статья2'
+					},
+				]
+			};
+			
+			return res;
+			*/
+
+		} catch(error) {
+			console.error('getOperatingExpensesCategoryGetAll ', error);
+			throw new Error(error);
+		}
+	},
+	postOperatingExpensesCategoryCreate: async(token, category) => {
+		try {
+			const res = await fetch(
+				`${URL}/api/operating-expenses/category/create`,
+				{
+					method: 'POST',
+					headers: {
+						'content-type': 'application/json',
+						authorization: 'JWT ' + token,
+					},
+					body: JSON.stringify(category)
+				}
+			);
+			
+			if (!res.ok) {
+				throw new Error('Ошибка запроса');
+			}
+	
+			return res.json();
+		} catch(error) {
+			console.error('postOperatingExpensesCategoryCreate ', error);
+			throw new Error(error);
+		}
+	},
+	patchOperatingExpensesCategory: async(token, category) => {
+		try {
+			const res = await fetch(
+				`${URL}/api/operating-expenses/category/update`,
+				{
+					method: 'PATCH',
+					headers: {
+						'content-type': 'application/json',
+						authorization: 'JWT ' + token,
+					},
+					body: JSON.stringify(category)
+				}
+			);
+			
+			if (!res.ok) {
+				throw new Error('Ошибка запроса');
+			}
+	
+			return res.json();
+		} catch(error) {
+			console.error('aptchOperationConstsEditArticle ', error);
+			throw new Error(error);
+		}
+	},
+	deleteOperatingExpensesCategory: async(token, id) => {
+		try {
+			const res = await fetch(
+				`${URL}/api/operating-expenses/category/delete?category_id=${id}`,
+				{
+					method: 'DELETE',
+					headers: {
+						'content-type': 'application/json',
+						authorization: 'JWT ' + token,
+					},
+				}
+			);
+			if (!res.ok) {
+				throw new Error('Ошибка запроса');
+			}
+
+		} catch(error) {
+			console.error('deleteOperatingExpensesCategory ', error);
+			throw new Error(error);
+		}
+	},
+	getOperatingExpensesExpense: async(token) => {
 		try {
 			const res = {
 				data: [
 					{
 						id: 1,
 						date: '2025-05-10',
-						sum: 12300,
-						article: 'Расход1',
+						value: 12300,
+						description: null,
+						expense_categories: ['Статья1', 'Статья2'],
 						sku: null,
 						brand: null,
 						shop: 'Магазин',
@@ -1653,8 +1765,9 @@ export const ServiceFunctions = {
 					{
 						id: 2,
 						date: '2025-05-10',
-						sum: 300,
-						article: 'Расход2',
+						value: 300,
+						description: null,
+						expense_categories: ['Статья1', 'Статья2'],
 						sku: null,
 						brand: 'AURA',
 						shop: null,
@@ -1663,8 +1776,9 @@ export const ServiceFunctions = {
 					{
 						id: 3,
 						date: '2025-05-12',
-						sum: 1300,
-						article: 'Расход3',
+						value: 1300,
+						description: null,
+						expense_categories: ['Статья1', 'Статья2'],
 						sku: 123124,
 						brand: null,
 						shop: null,
@@ -1678,7 +1792,70 @@ export const ServiceFunctions = {
 			throw new Error(error);
 		}
 	},
-	postOperationConstsCreateArticle: async() => {
+	getOperatingExpensesExpenseGetAll: async(token) => {
+		try {
+			const res = await fetch(
+				`${URL}/api/operating-expenses/expense/get-all?page=1&limit=100`,
+				{
+					method: 'GET',
+					headers: {
+						'content-type': 'application/json',
+						authorization: 'JWT ' + token,
+					}
+				}
+			);
+			
+			if (res.status !== 200){
+				throw new Error('Ошибка запроса');
+			}
+	
+			return res.json();
+			/*
+			const res = {
+				data: [
+					{
+						id: 1,
+						date: '2025-05-10',
+						value: 12300,
+						description: null,
+						expense_categories: ['Статья1', 'Статья2'],
+						sku: null,
+						brand: null,
+						shop: 'Магазин',
+						type: 'once',
+					},
+					{
+						id: 2,
+						date: '2025-05-10',
+						value: 300,
+						description: null,
+						expense_categories: ['Статья1', 'Статья2'],
+						sku: null,
+						brand: 'AURA',
+						shop: null,
+						type: 'plan',
+					},
+					{
+						id: 3,
+						date: '2025-05-12',
+						value: 1300,
+						description: null,
+						expense_categories: ['Статья1', 'Статья2'],
+						sku: 123124,
+						brand: null,
+						shop: null,
+						type: 'once',
+					},
+				]
+			};
+			return res;
+			*/
+		} catch(error) {
+			console.error('getAllOperatingExpensesExpense ', error);
+			throw new Error(error);
+		}
+	},
+	deleteOperatingExpensesExpense: async(token) => {
 		try {
 			return true;
 		} catch(error) {
@@ -1686,29 +1863,6 @@ export const ServiceFunctions = {
 			throw new Error(error);
 		}
 	},
-	aptchOperationConstsEditArticle: async() => {
-		try {
-			return true;
-		} catch(error) {
-			console.error('aptchOperationConstsEditArticle ', error);
-			throw new Error(error);
-		}
-	},
-	deleteOperationConstsDeleteArticle: async() => {
-		try {
-			return true;
-		} catch(error) {
-			console.error('getOperationConstsArticles ', error);
-			throw new Error(error);
-		}
-	},
-	deleteOperationConstsDeleteCost: async() => {
-		try {
-			return true;
-		} catch(error) {
-			console.error('getOperationConstsArticles ', error);
-			throw new Error(error);
-		}
-	},
+	// api/operating-expenses/periodic-expense/get
 };
 

@@ -4,7 +4,8 @@ import { Tooltip, Flex, Button, ConfigProvider } from 'antd';
 import { format } from 'date-fns';
 import { EditIcon, CopyIcon, DeleteIcon } from '../shared/Icons';
 
-function summaryRender(value, row) {
+function summaryRender(value, row, i) {
+	console.log('row', row)
 	if (row.key == 'summary') {
 		return value;
 	}
@@ -16,6 +17,13 @@ function columnRender(value, row) {
 		return value;
 	}
 	return value ? value : '-';
+}
+
+function columnExpensesRender(value, row) {
+	if (row.key == 'summary') {
+		return value;
+	}
+	return value?.length ? value.join(', ') : '-';
 }
 
 export const COSTS_COLUMNS = [
@@ -30,33 +38,35 @@ export const COSTS_COLUMNS = [
 		title: 'Описание',
 		dataIndex: 'description',
 		key: 'description',
+		render: columnRender,
 		width: `${100 / 8}%`
 	},
 	{
 		title: 'Сумма, руб',
-		dataIndex: 'sum',
-		key: 'sum',
+		dataIndex: 'value',
+		key: 'value',
 		render: (value) => formatPrice(value),
 		width: `${100 / 8}%`
 	},
 	{
 		title: 'Статья расходов',
-		dataIndex: 'article',
-		key: 'article',
-		render: columnRender,
+		dataIndex: 'expense_categories',
+		key: 'expense_categories',
+		// render: columnRender,
+		render: columnExpensesRender,
 		width: `${100 / 8}%`
 	},
 	{
 		title: 'Артикул',
-		dataIndex: 'sku',
-		key: 'sku',
+		dataIndex: 'vendor_code',
+		key: 'vendor_code',
 		render: columnRender,
 		width: `${100 / 8}%`
 	},
 	{
 		title: 'Бренд',
-		dataIndex: 'brand',
-		key: 'brand',
+		dataIndex: 'brand_name',
+		key: 'brand_name',
 		render: columnRender,
 		width: `${100 / 8}%`
 	},
@@ -75,11 +85,11 @@ export const COSTS_COLUMNS = [
 	},
 ];
 
-export const ARTICLES_COLUMNS = [
+export const CATEGORY_COLUMNS = [
 	{
 		title: 'Статья расходов',
-		dataIndex: 'title',
-		key: 'title',
+		dataIndex: 'name',
+		key: 'name',
 		width: '50%'
 	},
 	{

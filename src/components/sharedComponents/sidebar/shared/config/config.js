@@ -130,13 +130,6 @@ export const menuConfig = [
                 isActive: true,
                 isNew: false
             },
-            // {
-            //     id: 8,
-            //     url: '/operations-costs', 
-            //     label: 'Операционные расходы',
-            //     isActive: false,
-            //     isNew: false
-            // },
             {
                 id: 4,
                 url: '/report-main',
@@ -147,7 +140,7 @@ export const menuConfig = [
             },
             {
                 id: 8,
-                url: '/operations-costs', 
+                url: '/operating-expenses', 
                 label: 'Операционные расходы',
                 isActive: true,
                 isNew: true
