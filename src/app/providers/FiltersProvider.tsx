@@ -21,7 +21,7 @@ const FiltersProvider = ({ children }: { children: React.ReactNode }) => {
                 method: 'GET',
                 headers: {
                     'content-type': 'application/json',
-                    authorization: user.subscription_status === null ? 'JWT ' + 'mockData' : 'JWT ' + authToken,
+                    authorization: user?.subscription_status === null ? 'JWT ' + 'mockData' : 'JWT ' + authToken,
                 }
             })
             //let shopsResponse = null
@@ -32,7 +32,9 @@ const FiltersProvider = ({ children }: { children: React.ReactNode }) => {
                 //shopsData: null
             }))
         } catch (error) {
-            console.error("Error fetching initial data:", error);
+            if (typeof error === 'string') {
+                console.error("Error fetching initial data:", error);
+            }
         }
     }
 

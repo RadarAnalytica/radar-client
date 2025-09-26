@@ -34,13 +34,15 @@ export const AuthProvider = ({ children }) => {
 
   const [user, setUser] = useState(decode(value));
 
-  if (value && value !== prevToken) {
-    setAuthToken(value);
-    setUser(decode(value));
-  } else {
-    console.log('user', user)
-    console.log('No token found');
-  }
+  useEffect(() => {
+    if (value && value !== prevToken) {
+      setAuthToken(value);
+      setUser(decode(value));
+    } else {
+      console.log('user', user)
+      console.log('No token found');
+    }
+  }, [value]);
 
   // To delete the cookie:
   // deleteCookie();

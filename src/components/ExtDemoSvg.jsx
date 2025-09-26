@@ -680,7 +680,7 @@ const ExtDemoSvg = () => {
             d='M1184.22 214.607L1184.22 377.25'
             stroke='#8C8C8C'
             strokeWidth='1.17857'
-            stroke-dasharray='4.71 4.71'
+            strokeDasharray='4.71 4.71'
           />
           <circle
             cx='1184.22'
