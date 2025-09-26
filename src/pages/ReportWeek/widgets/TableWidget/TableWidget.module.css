@@ -1,0 +1,130 @@
+  .bodyRowSpecial:hover td div {
+    background-color: #FAFAFA !important;
+    transition: all 0.2s ease;
+  }
+
+  .bodyRowSpecial:first-of-type td div {
+    background-color: #EFECFE !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    display: -webkit-box !important;
+    -webkit-box-orient: vertical !important;
+    -webkit-line-clamp: 1 !important;
+    white-space: nowrap !important;
+  }
+
+  .bodyRowSpecial:first-of-type td div > div {
+    display: flex !important;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    white-space: nowrap !important;
+  }
+
+
+  .summaryCell {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .container {
+    position: relative;
+    max-height: 90vh;
+    padding: 8px;
+    background-color: #fff;
+    border-radius: 16px;
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+  }
+
+  .tableContainer {
+    position: relative;
+    height: 100%;
+    max-height: calc(90vh - 32px);
+    overflow: auto;
+     /* Firefox scrollbar */
+     scrollbar-width: thin;
+     scrollbar-color: #5329ff80 transparent;
+  }
+
+  .tableContainer::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+    border-radius: 6px;
+  }
+
+  .tableContainer::-webkit-scrollbar-thumb {
+    border-radius: 6px;
+    background: #5329ff80;
+  }
+
+  .tableContainer::-webkit-scrollbar-track {
+    background: transparent;
+    height: 50%;
+    margin: 10px 20px;
+  }
+
+  .expandBtn {
+    margin-right: 12px;
+    height: 18px;
+  }
+
+  .expandIcon {
+    width: 14px;
+  }
+
+  .expandIconExpanded {
+    transform: rotate(180deg);
+  }
+
+  .expandRow {
+    opacity: 0.5;
+  }
+
+  /* :global(.ant-table-container),
+  :global(.ant-table-header), 
+  :global(.ant-table-body) {
+    scroll-behavior: auto !important;
+    scroll-behavior: auto;       /* Отключает плавный скролл *
+    overscroll-behavior: none;   /* Отключает эффекты overscroll *
+    -webkit-overflow-scrolling: auto; /* Для Safari *
+  } */
+
+  .sortIcons {
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+
+  .loading {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 5;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #fff;
+  }
+
+  .loadingProgress {
+    margin-top: 60px;
+    width: 60vw;
+    max-width: 840px;
+  }
+
+
+  .bodyCellWrapperCustomClass {
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    display: -webkit-box !important;
+    -webkit-box-orient: vertical !important;
+    -webkit-line-clamp: 1 !important;
+    white-space: nowrap !important;
+  }

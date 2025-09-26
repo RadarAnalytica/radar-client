@@ -14,10 +14,9 @@ import { mockGetAnalysisData } from '../../../service/mockServiceFunctions';
 import NoSubscriptionWarningBlock from '../../../components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock'
 
 const StockAnalysisPage = () => {
-
     const { user, authToken } = useContext(AuthContext)
-    const { activeBrand, selectedRange } = useAppSelector((state) => state.filters);
-    const { shops } = useAppSelector((state) => state.shopsSlice);
+    const { activeBrand, selectedRange, isFiltersLoaded, activeBrandName, activeArticle, activeGroup, shops } = useAppSelector((state) => state.filters);
+    //const { shops } = useAppSelector((state) => state.shopsSlice);
     const filters = useAppSelector((state) => state.filters);
     const [stockAnalysisData, setStockAnalysisData] = useState(); // это базовые данные для таблицы
     const [stockAnalysisFilteredData, setStockAnalysisFilteredData] = useState() // это данные для таблицы c учетом поиска
@@ -63,18 +62,11 @@ const StockAnalysisPage = () => {
     // 2.1 Получаем данные по выбранному магазину и проверяем себестоимость
     useEffect(() => {
         setPrimaryCollect(activeBrand?.is_primary_collect)
-        if (activeBrand && activeBrand.is_primary_collect) {
+        if (activeBrand && activeBrand.is_primary_collect && isFiltersLoaded) {
             fetchAnalysisData();
         }
-    }, [filters]);
+    }, [activeBrand, selectedRange, isFiltersLoaded, activeBrandName, activeArticle, activeGroup]);
 
-    //2.1.1 Проверяем изменился ли выбранный магазин при обновлении токена
-    // useEffect(() => {
-    //     if (activeBrand && activeBrand.is_primary_collect && activeBrand.is_primary_collect !== primaryCollect) {
-    //         setPrimaryCollect(activeBrand.is_primary_collect)
-    //         fetchAnalysisData()
-    //     }
-    // }, [authToken]);
 
     useEffect(() => {
         if (activeBrand && activeBrand.id === 0 && shops) {
@@ -112,8 +104,8 @@ const StockAnalysisPage = () => {
                     </div>
                     {/* SELF-COST WARNING */}
                     {
-                        shopStatus &&
-                        !shopStatus.is_self_cost_set &&
+                        activeBrand &&
+                        !activeBrand.is_self_cost_set &&
                         !loading &&
                         <div>
                             <SelfCostWarningBlock

@@ -1212,31 +1212,13 @@ export const ServiceFunctions = {
 		}
 	},
 
-	reportWeekBrands: (COLUMNS) => {
-		try {
-			let tableData = new Array(10).fill(0).map((el, i) => {
-				let res = { key: i };
-				for (const col of COLUMNS) {
-					res[col.dataIndex] = Math.ceil((Math.random() * 10) + i);
-				}
-				return res
-			})
-
-			return tableData;
-
-			// if (!response.ok) {
-			//   throw new Error(`Ошибка запроса: ${response.status}`);
-			// }
-
-			// return await response.json();
-		} catch (error) {
-			console.error('Ошибка при обновлении данных:', error);
-		}
-	},
-
-	getReportWeek: async (token, selectedRange, shopId, filters, weekStart) => {
+	getReportWeek: async (token, selectedRange, shopId, filters, activeWeeks) => {
 		const body = getRequestObject(filters, selectedRange, shopId)
-		body.week_starts = weekStart
+		body.week_starts = [];
+
+		if (!activeWeeks.find((week) => week.value === 'Все')){
+			body.week_starts = activeWeeks.map((week) => week.value)
+		}
 
 		const res = await fetch(
 			`${URL}/api/periodic_reports/weekly_report`,
@@ -1256,9 +1238,12 @@ export const ServiceFunctions = {
 	},
 
 	getDownloadReportWeek: async (token, selectedRange, shopId, filters, weekStart) => {
-		const body = getRequestObject(filters, selectedRange, shopId)
-
-		body.week_starts = weekStart
+		const body = getRequestObject(filters, null, shopId)
+		body.week_starts = [];
+		
+		if (!activeWeeks.find((week) => week.value === 'Все')){
+			body.week_starts = activeWeeks.map((week) => week.value)
+		}
 
 		const res = await fetch(
 			`${URL}/api/periodic_reports/weekly_report/download`,

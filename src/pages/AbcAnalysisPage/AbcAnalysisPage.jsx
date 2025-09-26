@@ -18,11 +18,11 @@ import ruRU from 'antd/locale/ru_RU'
 import { COLUMNS } from './widgets/table/config';
 
 const AbcAnalysisPage = () => {
-	const { activeBrand, selectedRange: days } = useAppSelector(
+	const { activeBrand, selectedRange, isFiltersLoaded, activeBrandName, activeArticle, activeGroup, shops } = useAppSelector(
 		(store) => store.filters
 	);
 	const filters = useAppSelector((store) => store.filters);
-	const shops = useAppSelector((state) => state.shopsSlice.shops);
+	//const shops = useAppSelector((state) => state.shopsSlice.shops);
 	const { user, authToken } = useContext(AuthContext);
 	const dispatch = useAppDispatch();
 	const [dataAbcAnalysis, setDataAbcAnalysis] = useState(null);
@@ -49,19 +49,19 @@ const AbcAnalysisPage = () => {
 	const updateDataAbcAnalysis = async (
 		viewType,
 		authToken,
-		days,
+		selectedRange,
 		activeBrand
 	) => {
     try {
       setLoading(true);
 			let data = null;
 			if (user.subscription_status === null) {
-				data = await mockGetAbcData(viewType, days);
+				data = await mockGetAbcData(viewType, selectedRange);
 			} else {
 				data = await ServiceFunctions.getAbcData(
 					viewType,
 					authToken,
-					days,
+					selectedRange,
 					activeBrand,
 					filters,
 					page,
@@ -128,22 +128,22 @@ const AbcAnalysisPage = () => {
 
 	useEffect(() => {
 		setPrimaryCollect(activeBrand?.is_primary_collect);
-		if (activeBrand?.is_primary_collect && viewType && days && authToken) {
+		if (activeBrand && activeBrand.is_primary_collect && viewType && isFiltersLoaded) {
 			updateDataAbcAnalysis(
 				viewType,
 				authToken,
-				days,
+				selectedRange,
 				activeBrand.id.toString()
 			);
 			return
 		} else {
 			shops.length > 0 && setLoading(false);
 		}
-	}, [viewType, filters, page, sorting]);
+	}, [viewType, page, sorting, activeBrand, selectedRange, isFiltersLoaded, activeBrandName, activeArticle, activeGroup]);
 
 	useEffect(() => {
 		setPage(1)
-	}, [filters])
+	}, [activeBrand, selectedRange, isFiltersLoaded, activeBrandName, activeArticle, activeGroup])
 
 	//---------------------------------------------------------------------------------------//
 
@@ -159,7 +159,7 @@ const AbcAnalysisPage = () => {
 	// 		updateDataAbcAnalysis(
 	// 			viewType,
 	// 			authToken,
-	// 			days,
+	// 			selectedRange,
 	// 			activeBrand.id.toString()
 	// 		);
 	// 	}
@@ -173,7 +173,7 @@ const AbcAnalysisPage = () => {
 
 	const updateAbcAnalysisCaller = async () => {
 		if (activeBrand !== undefined) {
-			updateDataAbcAnalysis(viewType, days, activeBrand, authToken);
+			updateDataAbcAnalysis(viewType, selectedRange, activeBrand, authToken);
 		}
 	};
 
@@ -209,13 +209,13 @@ const AbcAnalysisPage = () => {
 		const timeToTarget = targetTime.getTime() - Date.now();
 
 		const intervalId = setTimeout(() => {
-			updateDataAbcAnalysis(viewType, authToken, days, activeBrand);
+			updateDataAbcAnalysis(viewType, authToken, selectedRange, activeBrand);
 		}, timeToTarget);
 
 		return () => {
 			clearTimeout(intervalId);
 		};
-	}, [dispatch, viewType, authToken, days, activeBrand]);
+	}, [dispatch, viewType, authToken, selectedRange, activeBrand]);
 
 	useEffect(() => {
 		if (activeBrand && activeBrand.id === 0 && shops) {
@@ -275,7 +275,7 @@ const AbcAnalysisPage = () => {
 				</div>
 
 				{/* SELF-COST WARNING */}
-				{!loading && shops && shopStatus?.is_primary_collect && !shopStatus.is_self_cost_set && (
+				{!loading && shops && activeBrand?.is_primary_collect && !activeBrand.is_self_cost_set && (
 						<SelfCostWarningBlock
 							shopId={activeBrand.id}
 							onUpdateDashboard={handleUpdateAbcAnalysis} //

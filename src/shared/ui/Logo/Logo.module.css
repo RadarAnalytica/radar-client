@@ -1,0 +1,50 @@
+.logo {
+    width: 158px;
+    height: 58px;
+    transform: scale(1);
+    -webkit-transform: scale(1);
+    transition: transform 0.4s cubic-bezier(0.22, 1.15, 0.45, 0.95);
+}
+
+.logo:hover {
+    transform: scale(1.05);
+    -webkit-transform: scale(1.05);
+}
+
+.logo__container {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+
+    @media (max-width: 480px) {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+.logo__text {
+    margin: 0;
+    padding: 0;
+    font-family: var(--font-mulish);
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 130%;
+    max-width: 290px;
+}
+
+.logo_adaptive {
+    @media (max-width: 1440px) {
+        width: 136px;
+        height: 48px;
+    }
+
+    @media (max-width: 1050px) {
+        width: 146px;
+        height: 54px;
+    }
+
+    @media (max-width: 600px) {
+        width: 98px;
+        height: 36px;
+    }
+}

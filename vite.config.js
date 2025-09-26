@@ -43,18 +43,4 @@ export default defineConfig({
       filter: /\.(js|mjs|json|css|html)$/i, // files to compress
     })
   ],
-  esbuild: {
-    loader: 'jsx',
-    include: /src\/.*\.jsx?$/,
-    exclude: [],
-  },
-  // build: {
-  //   rollupOptions: {
-  //     output: {
-  //       manualChunks: {
-  //         'onboarding': ['./src/pages/Onboarding']
-  //       }
-  //     }
-  //   }
-  // }
 })

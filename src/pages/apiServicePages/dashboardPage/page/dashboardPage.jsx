@@ -150,8 +150,7 @@ const MainContent = React.memo(({
 
 const _DashboardPage = () => {
     const { user, authToken } = useContext(AuthContext)
-    const { activeBrand, selectedRange } = useAppSelector((state) => state.filters);
-    const { shops } = useAppSelector((state) => state.shopsSlice);
+    const { activeBrand, selectedRange, isFiltersLoaded, activeBrandName, activeArticle, activeGroup, shops } = useAppSelector((state) => state.filters);
     const filters = useAppSelector((state) => state.filters);
     const { isSidebarHidden } = useAppSelector((state) => state.utils);
 
@@ -162,7 +161,7 @@ const _DashboardPage = () => {
         shopStatus: null
     });
 
-    const updateDataDashBoard = useCallback(async (selectedRange, activeBrand, authToken) => {
+    const updateDataDashBoard = async (selectedRange, activeBrand, authToken) => {
         setPageState(prev => ({ ...prev, loading: true }));
         try {
             if (activeBrand !== null && activeBrand !== undefined) {
@@ -185,7 +184,7 @@ const _DashboardPage = () => {
         } finally {
             setPageState(prev => ({ ...prev, loading: false }));
         }
-    }, [user.subscription_status, filters]);
+    }
 
     const shopStatus = useMemo(() => {
         if (!activeBrand || !shops) return null;
@@ -205,11 +204,11 @@ const _DashboardPage = () => {
     }, [activeBrand, shops]);
 
     useEffect(() => {
-        if (activeBrand?.is_primary_collect) {
+        if (activeBrand && activeBrand.is_primary_collect && isFiltersLoaded) {
             setPageState(prev => ({ ...prev, primaryCollect: activeBrand.is_primary_collect }));
             updateDataDashBoard(selectedRange, activeBrand.id, authToken);
         }
-    }, [filters]);
+    }, [activeBrand, selectedRange, isFiltersLoaded, activeBrandName, activeArticle, activeGroup]);
 
     return (
         <main className={styles.page}>
@@ -222,7 +221,7 @@ const _DashboardPage = () => {
                     <Header title='Сводка продаж' />
                 </div>
 
-                {!shopStatus?.is_self_cost_set && !pageState.loading && (
+                {activeBrand && !activeBrand.is_self_cost_set && (
                     <SelfCostWarningBlock
                         shopId={activeBrand?.id}
                         onUpdateDashboard={updateDataDashBoard}
@@ -250,7 +249,7 @@ const _DashboardPage = () => {
                     />
                 </div>
 
-                {shopStatus && !shopStatus?.is_primary_collect && (
+                {activeBrand && !activeBrand.is_primary_collect && (
                     <DataCollectWarningBlock />
                 )}
 

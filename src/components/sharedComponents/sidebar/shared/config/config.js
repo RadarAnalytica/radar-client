@@ -110,6 +110,13 @@ export const menuConfig = [
                 isNew: false
             },
             {
+                id: 5,
+                url: '/operations-costs', 
+                label: 'Операционные расходы',
+                isActive: false,
+                isNew: true
+            },
+            {
                 id: 6,
                 url: '/report-week',
                 label: 'Отчет по неделям',

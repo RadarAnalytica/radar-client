@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import AuthContext from '../../service/AuthContext';
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, useContext, useLayoutEffect } from 'react';
 import MobilePlug from '../../components/sharedComponents/mobilePlug/mobilePlug';
 import Sidebar from '../../components/sharedComponents/sidebar/sidebar';
 import Header from '../../components/sharedComponents/header/header';
@@ -24,20 +24,22 @@ import {
 import DataCollectWarningBlock from '../../components/sharedComponents/dataCollectWarningBlock/dataCollectWarningBlock'
 import NoSubscriptionWarningBlock from '../../components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock';
 import { COLUMNS } from './columnsConfig';
+import TableWidget from './widgets/TableWidget/TableWidget';
 
 export default function ReportWeek() {
 	const { user, authToken } = useContext(AuthContext);
-	const { activeBrand, selectedRange } = useAppSelector(
+	const { activeBrand, selectedRange, activeBrandName, activeArticle, activeGroup, activeWeeks, isFiltersLoaded, shops } = useAppSelector(
 		(state) => state.filters
 	);
 	const filters = useAppSelector((state) => state.filters);
-	const { shops } = useAppSelector((state) => state.shopsSlice);
+	//const { shops } = useAppSelector((state) => state.shopsSlice);
 	const [loading, setLoading] = useState(true);
 	const [downloadLoading, setDownloadLoading] = useState(false);
 	const [isPopoverOpen, setIsPopoverOpen] = useState(false);
 	const [isConfigOpen, setConfigOpen] = useState(false);
 	const [tableRows, setTableRows] = useState(null);
 	const [progress, setProgress] = useState(0);
+	const [tableColumns, setTableColumns] = useState(COLUMNS);
 
 	useEffect(() => {
 		let interval = null;
@@ -54,6 +56,14 @@ export default function ReportWeek() {
 		}
 		return () => clearInterval(interval)
 	}, [loading])
+
+	useEffect(() => {
+		localStorage.removeItem('reportWeekColumns');
+		const savedTableColumns = localStorage.getItem('reportWeekTableConfig')
+		if (savedTableColumns) {
+			setTableColumns(JSON.parse(savedTableColumns))
+		}
+	}, [])
 
 
 	const weekOptions = useMemo(() => {
@@ -89,20 +99,20 @@ export default function ReportWeek() {
 		return weeks.map((el, i) => optionTemplate(el)).reverse();
 	}, []);
 
-	const updateSavedFilterWeek = () => {
-		const savedFilterWeek = localStorage.getItem('reportWeekFilterWeek');
-		if (savedFilterWeek) {
-			const data = JSON.parse(savedFilterWeek);
-			if (activeBrand?.id in data) {
-				return (data[activeBrand.id]);
-			}
-		}
-		return (weekOptions.slice(0, 12));
-	};
+	// const updateSavedFilterWeek = () => {
+	// 	const savedFilterWeek = localStorage.getItem('reportWeekFilterWeek');
+	// 	if (savedFilterWeek) {
+	// 		const data = JSON.parse(savedFilterWeek);
+	// 		if (activeBrand?.id in data) {
+	// 			return (data[activeBrand.id]);
+	// 		}
+	// 	}
+	// 	return (weekOptions.slice(0, 12));
+	// };
 	
-	const [weekSelected, setWeekSelected] = useState(updateSavedFilterWeek());
+	// const [weekSelected, setWeekSelected] = useState(updateSavedFilterWeek());
 
-	const week = useMemo(() => updateSavedFilterWeek(), [activeBrand, weekSelected])
+	// const week = useMemo(() => updateSavedFilterWeek(), [activeBrand, weekSelected])
 
 	const initTableColumns = () => {
 		const savedColumnsWeek = localStorage.getItem('reportWeekColumns');
@@ -123,7 +133,7 @@ export default function ReportWeek() {
 		return COLUMNS;
 	}
 
-	const [tableColumns, setTableColumns] = useState(initTableColumns());
+	
 
 	const shopStatus = useMemo(() => {
 			if (!activeBrand || !shops) return null;
@@ -142,33 +152,42 @@ export default function ReportWeek() {
 			return shops.find(shop => shop.id === activeBrand.id);
 	}, [activeBrand, shops]);
 
-	const weekSelectedFormat = () => {
-		if (!week?.find((el) => el.value === 'Все')) {
-			return week.map((el) => el.value);
-		}
-	};
+	// const weekSelectedFormat = () => {
+	// 	if (!week?.find((el) => el.value === 'Все')) {
+	// 		return week.map((el) => el.value);
+	// 	}
+	// };
 
-	const weekSelectedHandler = (data) => {
-		let savedFilterWeek =
-			JSON.parse(localStorage.getItem('reportWeekFilterWeek')) || {};
+	// const weekSelectedHandler = (data) => {
+	// 	let savedFilterWeek =
+	// 		JSON.parse(localStorage.getItem('reportWeekFilterWeek')) || {};
 
-		savedFilterWeek[activeBrand.id] = data;
-		if (Object.keys(savedFilterWeek).length > 0) {
-			localStorage.setItem(
-				'reportWeekFilterWeek',
-				JSON.stringify(savedFilterWeek)
-			);
-		}
-		setWeekSelected(data);
-	};
+	// 	savedFilterWeek[activeBrand.id] = data;
+	// 	if (Object.keys(savedFilterWeek).length > 0) {
+	// 		localStorage.setItem(
+	// 			'reportWeekFilterWeek',
+	// 			JSON.stringify(savedFilterWeek)
+	// 		);
+	// 	}
+	// 	setWeekSelected(data);
+	// };
 
-	const updateDataReportWeek = async () => {
-		if (!weekSelected){
+	useEffect(() => {
+		if (!activeBrand){
 			return
 		}
+		let savedFilterWeek = JSON.parse(localStorage.getItem('activeWeeks')) || {};
+		savedFilterWeek[activeBrand.id] = activeWeeks;
+		localStorage.setItem(
+			'activeWeeks',
+			JSON.stringify(savedFilterWeek)
+		);
+	}, [activeWeeks])
+
+	const updateDataReportWeek = async () => {
 		setLoading(true);
 		setProgress(0);
-		const weekStart = weekSelectedFormat();
+		// const weekStart = weekSelectedFormat();
 		try {
 			if (activeBrand !== null && activeBrand !== undefined) {
 				const response = await ServiceFunctions.getReportWeek(
@@ -176,7 +195,7 @@ export default function ReportWeek() {
 					selectedRange,
 					activeBrand.id,
 					filters,
-					weekStart
+					activeWeeks
 				);
 
 				// Собираем общий массив неделей по всем годам из ответа
@@ -189,12 +208,13 @@ export default function ReportWeek() {
 				}
 
 				setProgress(100);
-				setTimeout(() => dataToTableData(weeks), 500);
+				await setTimeout(() => dataToTableData(weeks), 500);
+				// dataToTableData(weeks);
 			}
 		} catch (e) {
 			console.error(e);
 			setProgress(100);
-			setTimeout(() => dataToTableData(null), 500);
+			dataToTableData(null);
 		}
 	};
 
@@ -213,70 +233,51 @@ export default function ReportWeek() {
 		rows = rows.map((el, i) => {
 			let row = {
 				key: i,
-				// key: el.week,
 				week_label: el.week_label,
 			};
-			for (const key in el.data) {
-				row[key] = el.data[key];
-			}
+			Object.keys(el.data).forEach(key => {
+				if (typeof el.data[key] === 'object') {
+					Object.keys(el.data[key]).forEach(k => {
+						row[`${key}_${k}`] = el.data[key][k];
+					})
 
-			// кастомные значения таблицы из данных
-			row = {
-				...row,
-				sales: el.data.revenue.quantity,
-				gains: el.data.revenue.rub,
-				cost_price: {
-					rub: el.data.cost_price,
-					percent: el.data.cost_price_percent,
-				},
-				compensation_defects_rub: el.data.compensation_defects.rub,
-				compensation_defects_quantity:
-					el.data.compensation_defects.quantity,
-				compensation_damage_quantity:
-					el.data.compensation_damage.quantity,
-				external_expenses: {
-					rub: el.data.external_expenses,
-					percent: el.data.expenses_percent,
-				},
-				purchases_rub: el.data.purchases.rub,
-				purchases_quantity: el.data.purchases.quantity,
-				return_rub: el.data.return.rub,
-				return_quantity: el.data.return.quantity,
-				logistics_straight: el.data.logistics_straight.rub,
-				logistics_reverse: el.data.logistics_reverse.rub,
-			};
+				} else {
+					row[key] = el.data[key];
+				}
+			})
 			return row;
 		});
 
-		for (const row of rows) {
-			for (const key in row) {
-				const summaryValue =
-					typeof row[key] === 'object' ? row[key]?.rub : row[key];
+
+
+		rows.forEach(row => {
+			Object.keys(row).forEach(key => {
 				if (!summary[key]) {
-					summary[key] = Number(summaryValue);
+					summary[key] = row[key];
 				} else {
-					summary[key] += Number(summaryValue);
+					summary[key] += row[key];
 				}
-			}
-		}
+			})
+		})
+		
 
 		// приcвоение расчетных значений
 		summary = {
 			...summary,
 			key: 'summary',
 			week_label: 'Итого за период',
-			drr: (summary.advert_amount / summary.gains) * 100,
-			// wb_retentions_amount: summary.wb_retentions_amount + summary.storage + summary.penalties + summary.wb_commission,
+			drr: (summary.advert_amount / summary.revenue_rub) * 100,
 			avg_spp: summary.avg_spp / rows.length,
-			// purchases_rub: summary.purchases_rub / summary.purchases_quantity,
 			return_on_investment: summary.return_on_investment / rows.length,
 			marginality: summary.marginality / rows.length,
 			purchase_percent: summary.purchase_percent / rows.length,
-			logistics_per_product: summary.logistics_total / summary.sales,
-			cost_price_per_one: summary.cost_price / summary.sales,
-			profit_per_one: summary.profit / summary.sales,
-			avg_check: summary.gains / summary.sales,
+			logistics_per_product: summary.logistics_total_rub / summary.revenue_quantity,
+			cost_price_per_one: summary.cost_price / summary.revenue_quantity,
+			profit_per_one: summary.profit / summary.revenue_quantity,
+			avg_check: summary.revenue_rub / summary.revenue_quantity,
 		};
+
+
 
 		rows.unshift(summary);
 		setTableRows(rows);
@@ -284,26 +285,27 @@ export default function ReportWeek() {
 		setLoading(false);
 	};
 
-	useEffect(() => {
-		if (activeBrand && activeBrand.is_primary_collect) {
+	useLayoutEffect(() => {
+		if (activeBrand && activeBrand.is_primary_collect && isFiltersLoaded) {
 			updateDataReportWeek();
 		}
-		if (activeBrand && !activeBrand.is_primary_collect){
+		if (activeBrand && !activeBrand.is_primary_collect && isFiltersLoaded){
 			setLoading(false);
 		}
-	}, [selectedRange, filters, weekSelected, shops, shopStatus]);
+	}, [activeBrand, selectedRange, activeBrandName, activeArticle, activeGroup, activeWeeks, isFiltersLoaded]);
 
 	const popoverHandler = (status) => {
 		setIsPopoverOpen(status);
 	};
 
 	const tableColumnsHandler = (columns) => {
-		localStorage.setItem('reportWeekColumns', JSON.stringify(columns.map(column => column.dataIndex)));
+		//localStorage.setItem('reportWeekColumns', JSON.stringify(columns.map(column => column.dataIndex)));
 		setTableColumns(columns)
 	}
 
 	const configClear = () => {
 		tableColumnsHandler(COLUMNS);
+		localStorage.setItem('reportWeekTableConfig', JSON.stringify(COLUMNS))
 		setIsPopoverOpen(false);
 	};
 
@@ -347,13 +349,12 @@ export default function ReportWeek() {
 	const handleDownload = async () => {
 		setDownloadLoading(true)
 		try {
-			const weekStart = weekSelectedFormat();
 			const fileBlob = await ServiceFunctions.getDownloadReportWeek(
 				authToken,
 				selectedRange,
 				activeBrand.id,
 				filters,
-				weekStart
+				activeWeeks
 			);
 			fileDownload(fileBlob, 'Отчет_по_неделям.xlsx');
 		} catch(e) {
@@ -375,25 +376,22 @@ export default function ReportWeek() {
 				<div className={styles.page__headerWrapper}>
 					<Header title="По неделям"></Header>
 				</div>
-				
-				{!loading && shops && user?.subscription_status && shopStatus?.is_primary_collect && !shopStatus?.is_self_cost_set && (
+
+				{!loading && activeBrand?.is_primary_collect && !activeBrand?.is_self_cost_set && (
 					<SelfCostWarningBlock />
 				)}
 
 				{shops && (<div className={styles.controls}>
 					<div className={styles.filter}>
-						{weekSelected && <Filters
+						<Filters
 							timeSelect={false}
 							setLoading={setLoading}
 							// brandSelect={false}
 							// articleSelect={false}
 							// groupSelect={false}
 							weekSelect={true}
-							weekValue={week}
-							weekOptions={weekOptions}
-							weekHandler={weekSelectedHandler}
 							isDataLoading={loading}
-						/>}
+						/>
 					</div>
 					<div className={styles.btns}>
 						<ConfigProvider
@@ -473,6 +471,7 @@ export default function ReportWeek() {
 						</ConfigProvider> */}
 					</div>
 				</div>)}
+
 				{!loading && shops && user.subscription_status === null && (
 					<NoSubscriptionWarningBlock />
 				)}
@@ -483,17 +482,18 @@ export default function ReportWeek() {
 						/>
 				)}
 				{/* { shopStatus?.is_primary_collect && */}
-					<div className={styles.container} style={{ minHeight: !shopStatus?.is_primary_collect ? '0' : '450px' }}>
-						<ReportTable
-							virtual={false}
+					<div className={styles.container}>
+						<TableWidget
 							loading={loading}
 							columns={tableColumns}
 							data={tableRows}
 							is_primary_collect={shopStatus?.is_primary_collect}
 							progress={progress}
+							setTableColumns={setTableColumns}
 						/>
 					</div>
-				{/* } */}
+
+					
 			</section>
 			{isConfigOpen && (
 				<TableSettingModal

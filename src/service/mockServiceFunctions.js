@@ -9,6 +9,7 @@ const mockShops = [
 		updated_at: '2025-04-23 08:16:45.163873',
 		is_valid: true,
 		is_primary_collect: true,
+		is_self_cost_set: true,
 	},
 	// {
 	// 	brand_name: 'ИП',

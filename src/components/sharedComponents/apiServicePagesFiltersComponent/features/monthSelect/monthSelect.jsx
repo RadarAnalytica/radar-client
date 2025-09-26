@@ -3,12 +3,18 @@ import styles from './monthSelect.module.css';
 import { ConfigProvider, DatePicker } from 'antd'
 import locale from 'antd/locale/ru_RU';
 import dayjs from 'dayjs';
-import 'dayjs/locale/ru';
-dayjs.locale('ru');
+import { initialMonths } from '@/service/utils';
 
 const { RangePicker } = DatePicker;
 
-export const MonthSelect = ({monthHandler, value, isDataLoading}) => {
+export const MonthSelect = ({
+    dispatch,
+    filterActions,
+    selectId,
+    label,
+    value,
+    monthHandler,
+    isDataLoading}) => {
 
     const monthRef = useRef(null);
 
@@ -22,10 +28,22 @@ export const MonthSelect = ({monthHandler, value, isDataLoading}) => {
         return []
     }, [value])
 
+    const onChangeHandler = (data) => {
+        let selectedMonths = initialMonths;
+        if (data) {
+            const [start, end] = data;
+            selectedMonths = {
+                month_from: dayjs(start).format('YYYY-MM'),
+                month_to: dayjs(end).format('YYYY-MM')
+            }
+        }
+        dispatch(filterActions.setActiveFilters({ stateKey: 'activeMonths', data: selectedMonths }))
+    }
+
     return (
         <div className={styles.calendarContainer} ref={monthRef}>
-            <label className={styles.label} htmlFor="month">
-                Период:
+            <label className={styles.label} htmlFor={selectId}>
+                {label}
             </label>
             <div className={styles.mainSelectWrapper}>
                 <ConfigProvider
@@ -63,8 +81,12 @@ export const MonthSelect = ({monthHandler, value, isDataLoading}) => {
                             size='large'
                             picker='month'
                             format={'MM.YYYY'}
-                            onChange={monthHandler}
-                            disabledTime={{start: dayjs('2024-02'), end: dayjs()}}
+                            onChange={onChangeHandler}
+                            disabledTime={{
+                                // Начальная дата
+                                start: dayjs('2024-02'),
+                                end: dayjs()
+                            }}
                             disabledDate={(current) => {
                                 const minDate = dayjs('2024-02');
                                 const maxDate = dayjs();
@@ -72,8 +94,10 @@ export const MonthSelect = ({monthHandler, value, isDataLoading}) => {
                             }}
                             maxDate={dayjs()}
                             value={initialValue}
+                            id={selectId}
                             getPopupContainer={() => monthRef.current}
                             disabled={isDataLoading}
+                            allowEmpty
                         />
                     </div>
                 </ConfigProvider>
