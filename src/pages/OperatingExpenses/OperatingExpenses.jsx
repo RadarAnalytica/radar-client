@@ -102,7 +102,7 @@ export default function OperatingExpenses() {
 		}
 		const result = {
 			key: 'summary',
-			date: 'Итого',
+			date: 'Итого:',
 			value: data.reduce((sum, el) => (sum += el.sum), 0) || '-',
 			description: '-',
 			expense_categories: '-',

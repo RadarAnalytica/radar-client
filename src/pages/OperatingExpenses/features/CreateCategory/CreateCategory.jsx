@@ -59,7 +59,7 @@ export default function CreateCategory({
 				className={styles.modal}
 				open={open}
 				centered={true}
-				closable={false}
+				closable={true}
 				closeIcon={<CloseIcon className={styles.close__icon} />}
 				title={
 					<h2 className={styles.modal__title}>

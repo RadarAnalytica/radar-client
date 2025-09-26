@@ -420,14 +420,21 @@ export default function CreateCost({
 							/>
 						</Form.Item>
 						<Flex justify="flex-end">
-							<Button
-								type="link"
-								onClick={() => {
-									createArticleOpen(true);
-								}}
-							>
-								Добавить статью
-							</Button>
+							<ConfigProvider
+								theme={{
+									token: {
+										fontSize: 16
+									}
+								}}>
+									<Button
+										type="link"
+										onClick={() => {
+											createArticleOpen(true);
+										}}
+									>
+										Добавить статью
+									</Button>
+							</ConfigProvider>
 						</Flex>
 					</div>
 					<div className={styles.modal__part}>
