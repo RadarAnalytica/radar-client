@@ -11,7 +11,7 @@ import ReportTable from '@/components/sharedComponents/ReportTable/ReportTable';
 import DataCollectWarningBlock from '@/components/sharedComponents/dataCollectWarningBlock/dataCollectWarningBlock';
 import ModalDeleteConfirm from '@/components/sharedComponents/ModalDeleteConfirm';
 import styles from './OperatingExpenses.module.css';
-import { COSTS_COLUMNS, ARTICLES_COLUMNS } from './config/config';
+import { COSTS_COLUMNS, CATEGORY_COLUMNS } from './config/config';
 import CreateCost from './features/CreateCost/CreateCost';
 import CreateCategory from './features/CreateCategory/CreateCategory';
 import { EditIcon, CopyIcon, DeleteIcon, InfoIcon } from './shared/Icons';
@@ -103,11 +103,11 @@ export default function OperatingExpenses() {
 		const result = {
 			key: 'summary',
 			date: 'Итого',
-			sum: data.reduce((sum, el) => (sum += el.sum), 0),
+			value: data.reduce((sum, el) => (sum += el.sum), 0) || '-',
 			description: '-',
-			article: '-',
-			sku: '-',
-			brand: '-',
+			expense_categories: '-',
+			vendor_code: '-',
+			brand_name: '-',
 			shop: '-',
 			action: '-',
 		};
@@ -119,7 +119,7 @@ export default function OperatingExpenses() {
 	const [category, setCategory] = useState(null);
 	const [categoryLoading, setCategoryLoading] = useState(false);
 
-	const actionArticlesRender = (value, row) => {
+	const actionCategoryRender = (value, row) => {
 		return (<Flex justify="start" gap={20}>
 			<ConfigProvider>
 				<Button
@@ -142,9 +142,9 @@ export default function OperatingExpenses() {
 	}
 
 	const categoryData = useMemo(() => {
-		const columns = ARTICLES_COLUMNS.map((column, i) => {
+		const columns = CATEGORY_COLUMNS.map((column, i) => {
 			if (column.dataIndex == 'action'){
-				column.render = actionArticlesRender
+				column.render = actionCategoryRender
 			}
 			return ({ ...column, key: column.i })
 		})
@@ -160,10 +160,10 @@ export default function OperatingExpenses() {
 		setCategoryLoading(true);
 		try {
 			const res = await ServiceFunctions.getOperatingExpensesCategoryGetAll(authToken);
-			console.log('updateCategories', res);
+			// console.log('updateCategories', res);
 			setCategory(res.data);
 		} catch(error) {
-			console.error('updateCategories error', error);
+			// console.error('updateCategories error', error);
 			setCategory([]);
 		} finally {
 			setCategoryLoading(false);
@@ -193,7 +193,7 @@ export default function OperatingExpenses() {
 	const updateExpenses = async () => {
 		setLoading(true);
 		try {
-			const res = await ServiceFunctions.getAllOperatingExpensesExpense(authToken);
+			const res = await ServiceFunctions.getOperatingExpensesExpenseGetAll(authToken);
 			console.log(res)
 			setCosts(res.data)
 		} catch(error) {
@@ -243,7 +243,7 @@ export default function OperatingExpenses() {
 		setCostCopy(null);
 	};
 
-	const modalArticleHandlerClose = () => {
+	const modalCategoryHandlerClose = () => {
 		setModalCreateCategoryOpen(false);
 		setCategoryEdit(null);
 	};
@@ -258,13 +258,13 @@ export default function OperatingExpenses() {
 
 	const createCategory = async (category) => {
 		setCategoryLoading(true);
-		console.log('createCategory', category)
+		// console.log('createCategory', category)
 		// setModalCreateCategoryOpen(false);
 		try {
 			const res = await ServiceFunctions.postOperatingExpensesCategoryCreate(authToken, category);
-			console.log('createCategory', res);
+			// console.log('createCategory', res);
 			// 
-			setCategory((list) => [...list, {...article, id: list.length + Math.ceil(Math.random() * 10)}])
+			setCategory((list) => [...list, res])
 			// 
 		} catch(error) {
 			console.error('createCategory error', error);
@@ -274,16 +274,15 @@ export default function OperatingExpenses() {
 		}
 	}
 
-	const editCategory = async (article) => {
+	const editCategory = async (category) => {
 		setLoading(true);
 		setModalCreateCategoryOpen(false);
 		try {
-			const res = await ServiceFunctions.patchOperatingExpensesCategory();
-			console.log('editCategory', article);
+			const res = await ServiceFunctions.patchOperatingExpensesCategory(authToken, category);
 			// 
 			setCategory((list) => list.map((el) => {
-				if (el.id === article.id){
-					return article
+				if (el.id === category.id){
+					return category
 				}
 				return el
 			}))
@@ -301,8 +300,9 @@ export default function OperatingExpenses() {
 	const handleCategory = (category) => {
 		// setModalCreateCategoryOpen(false);
 		if (!!categoryEdit){
-			console.log('editArticle')
-			editCategory(category);
+			console.log('editCategory')
+			const editedCategory = {...categoryEdit, ...category}
+			editCategory(editedCategory);
 			return
 		}
 		console.log('createArticle')
@@ -338,17 +338,17 @@ export default function OperatingExpenses() {
 		}
 	}
 
-	const deleteArticleHandler = async (id) => {
-		console.log('delete article');
+	const deleteCategoryHandler = async (id) => {
+		console.log('deleteCategoryHandler');
 		setLoading(true);
 		try {
-			const res = await ServiceFunctions.deleteOperatingExpensesCategory();
+			const res = await ServiceFunctions.deleteOperatingExpensesCategory(authToken, id);
 			// 
+			console.log('id', id)
 			setCategory((list) => list.filter((el) => el.id !== id));
 			// 
-			console.log('deleteArticleHandler', res);
 		} catch(error) {
-			console.error('deleteArticleHandler error', error);
+			console.error('deleteCategoryHandler error', error);
 		} finally {
 			setDeleteCategoryId(null);
 			setLoading(false);
@@ -547,7 +547,7 @@ export default function OperatingExpenses() {
 
 				{ modalCreateCategoryOpen && <CreateCategory
 					open={modalCreateCategoryOpen}
-					onCancel={modalArticleHandlerClose}
+					onCancel={modalCategoryHandlerClose}
 					onSubmit={handleCategory}
 					zIndex={1001}
 					data={categoryEdit}
@@ -564,7 +564,7 @@ export default function OperatingExpenses() {
 				{deleteCategoryId && <ModalDeleteConfirm
 					title={'Вы уверены, что хотите удалить статью?'}
 					onCancel={() => setDeleteCategoryId(null)}
-					onOk={() => deleteArticleHandler(deleteCategoryId)}
+					onOk={() => deleteCategoryHandler(deleteCategoryId)}
 				/>}
 
 				{loading && <div className={styles.loading}>

@@ -1655,7 +1655,6 @@ export const ServiceFunctions = {
 	},
 	getOperatingExpensesCategoryGetAll: async(token) => {
 		try {
-			/*
 			const res = await fetch(
 				`${URL}/api/operating-expenses/category/get-all?page=1&limit=100`,
 				{
@@ -1672,7 +1671,7 @@ export const ServiceFunctions = {
 			}
 	
 			return res.json();
-			*/
+			/*
 			const res = {
 				data: [
 					{
@@ -1687,9 +1686,10 @@ export const ServiceFunctions = {
 			};
 			
 			return res;
+			*/
 
 		} catch(error) {
-			console.error('getAllOperatingExpensesCategory ', error);
+			console.error('getOperatingExpensesCategoryGetAll ', error);
 			throw new Error(error);
 		}
 	},
@@ -1707,7 +1707,7 @@ export const ServiceFunctions = {
 				}
 			);
 			
-			if (res.status !== 200){
+			if (!res.ok) {
 				throw new Error('Ошибка запроса');
 			}
 	
@@ -1717,19 +1717,48 @@ export const ServiceFunctions = {
 			throw new Error(error);
 		}
 	},
-	patchOperatingExpensesCategory: async(token) => {
+	patchOperatingExpensesCategory: async(token, category) => {
 		try {
-			return true;
+			const res = await fetch(
+				`${URL}/api/operating-expenses/category/update`,
+				{
+					method: 'PATCH',
+					headers: {
+						'content-type': 'application/json',
+						authorization: 'JWT ' + token,
+					},
+					body: JSON.stringify(category)
+				}
+			);
+			
+			if (!res.ok) {
+				throw new Error('Ошибка запроса');
+			}
+	
+			return res.json();
 		} catch(error) {
 			console.error('aptchOperationConstsEditArticle ', error);
 			throw new Error(error);
 		}
 	},
-	deleteOperatingExpensesCategory: async(token) => {
+	deleteOperatingExpensesCategory: async(token, id) => {
 		try {
-			return true;
+			const res = await fetch(
+				`${URL}/api/operating-expenses/category/delete?category_id=${id}`,
+				{
+					method: 'DELETE',
+					headers: {
+						'content-type': 'application/json',
+						authorization: 'JWT ' + token,
+					},
+				}
+			);
+			if (!res.ok) {
+				throw new Error('Ошибка запроса');
+			}
+
 		} catch(error) {
-			console.error('getOperationConstsArticles ', error);
+			console.error('deleteOperatingExpensesCategory ', error);
 			throw new Error(error);
 		}
 	},
@@ -1778,9 +1807,8 @@ export const ServiceFunctions = {
 			throw new Error(error);
 		}
 	},
-	getAllOperatingExpensesExpense: async(token) => {
+	getOperatingExpensesExpenseGetAll: async(token) => {
 		try {
-			/*
 			const res = await fetch(
 				`${URL}/api/operating-expenses/expense/get-all?page=1&limit=100`,
 				{
@@ -1797,7 +1825,7 @@ export const ServiceFunctions = {
 			}
 	
 			return res.json();
-			*/
+			/*
 			const res = {
 				data: [
 					{
@@ -1836,6 +1864,7 @@ export const ServiceFunctions = {
 				]
 			};
 			return res;
+			*/
 		} catch(error) {
 			console.error('getAllOperatingExpensesExpense ', error);
 			throw new Error(error);

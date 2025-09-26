@@ -13,7 +13,7 @@ export default function CreateCost({
 	open = true,
 	onCancel,
 	createArticleOpen,
-	articles,
+	category,
 	edit,
 	copy,
 	// data,
@@ -90,14 +90,14 @@ export default function CreateCost({
 	const data = edit || copy || null;
 
 	const [selection, setSelection] = useState(() => {
-		if (data?.sku) {
-			return 'sku'
+		if (data?.vendor_code) {
+			return 'vendor_code'
 		}
-		if (data?.brand) {
-			return 'brand'
+		if (data?.brand_name) {
+			return 'brand_name'
 		}
 		return 'shop'
-	}); // 'shop' | 'sku' | 'brand'
+	}); // 'shop' | 'vendor_code' | 'brand_name'
 
 	const [openCalendar, setOpenCalendar] = useState(false);
 
@@ -401,7 +401,7 @@ export default function CreateCost({
 						<Form.Item
 							label="Статья"
 							name='expense_categories'
-							initialValue={data?.article}
+							initialValue={data?.category}
 							rules={[
 									{ required: true, message: 'Пожалуйста, выберите значение!' }
 								]}
@@ -410,10 +410,10 @@ export default function CreateCost({
 								size="large"
 								placeholder="Выберите статью"
 								suffixIcon={icon}
-								options={articles.map((el, i) => ({
-									key: i,
-									value: el.title,
-									label: el.title,
+								options={category.map((el, i) => ({
+									key: el.id,
+									value: el.id,
+									label: el.name,
 								}))}
 								showSearch
 								mode="multiple"
@@ -453,29 +453,27 @@ export default function CreateCost({
 						<h3 className={styles.modal__subtitle}>
 							Распределять на
 						</h3>
-						<Form.Item
-							name="selection"
-							initialValue={selection}
-							onChange={(e) => {
-								setSelection(e.target.value);
-							}}
-							// required={true}
-						>
-							<ConfigProvider
-								theme={{
-									token: {
-										fontSize: 16
-									}
-								}}>
+						<ConfigProvider
+						theme={{
+							token: {
+								fontSize: 16
+							}
+						}}>
+							<Form.Item
+								name="selection"
+								initialValue={selection}
+								onChange={(e) => {
+									setSelection(e.target.value);
+								}}
+								// required={true}
+							>
 								<Radio.Group>
 									<Radio value="shop">Магазины</Radio>
 									<Radio value="vendor_code">Артикулы</Radio>
 									<Radio value="brand_name">Бренды</Radio>
 								</Radio.Group>
-							</ConfigProvider>
-
-						</Form.Item>
-
+							</Form.Item>
+						</ConfigProvider>
 						{selection === 'shop' && 
 							<Form.Item
 								name="shop"

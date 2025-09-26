@@ -85,7 +85,7 @@ export const COSTS_COLUMNS = [
 	},
 ];
 
-export const ARTICLES_COLUMNS = [
+export const CATEGORY_COLUMNS = [
 	{
 		title: 'Статья расходов',
 		dataIndex: 'name',
