@@ -9,14 +9,15 @@ import { DayPicker } from 'react-day-picker';
 import { format } from 'date-fns';
 import { ru } from 'date-fns/locale';
 // import ModalFooter from './ModalFooter';
-export default function CreateCost({
+export default function CreateExpense({
 	open = true,
 	onCancel,
-	createArticleOpen,
+	setModalCreateCategoryOpen,
 	category,
 	edit,
 	copy,
-	// data,
+	create,
+	handle,
 	state = null,
 	...props
 }) {
@@ -119,6 +120,7 @@ export default function CreateCost({
 	const onFinish = (values) => {
 		values.date = date;
 		console.log('onFinish', values);
+		handle(values)
 	};
 
 	const cancelHandler = () => {
@@ -129,7 +131,8 @@ export default function CreateCost({
 	// const [date, setDate] = useState(data?.date || '10-10-2024');
 	const [frequency, setFrequency] = useState('week');
 	// const [type, setType] = useState(data?.type || 'once');
-	const [date, setDate] = useState(data?.date || format(new Date(), 'MM-d-yyyy'));
+	const [date, setDate] = useState(data?.date || format(new Date(), 'yyyy-MM-d'));
+
 	// 2025-09-15
 	const dateContainerRef = useRef(null);
 	const datePickerRef = useRef(null);
@@ -138,8 +141,6 @@ export default function CreateCost({
 	const maxDate = new Date(today);
 	minDate.setDate(today.getDate() - 90);
 	maxDate.setDate(today.getDate() + 90);
-	console.log('today', today)
-	console.log('minDate', minDate)
 
 	const dateHandler = () => {
 		setOpenCalendar((state) => !state)
@@ -161,9 +162,10 @@ export default function CreateCost({
 
 	const handleDayClick = (day) => {
 		console.log('handleDayClick', day)
-		setDate(format(day, 'MM-d-yyyy'));
+		setDate(format(day, 'yyyy-MM-d'));
 		setOpenCalendar(false);
 	}
+
 	const handleOnBlur = (event) => {
 		if (datePickerRef.current && !datePickerRef.current.contains(event.target)){
 			setOpenCalendar(false);
@@ -177,7 +179,6 @@ export default function CreateCost({
 
 	return (
 		<ConfigProvider
-			renderEmpty={() => <div>Нет данных</div>}
 			theme={{
 				token: {
 					borderRadiusSM: 24,
@@ -211,7 +212,6 @@ export default function CreateCost({
 		>
 			<Modal
 				className={styles.modal}
-				// open={open}
 				open={true}
 				centered={true}
 				closable={true}
@@ -352,13 +352,7 @@ export default function CreateCost({
 								initialValue={data?.month}
 								// validateStatus='error'
 							>
-								{/* убрать изменения при скролле колесиком */}
-								{/* disabled добавить */}
-								{/* ! обязательные поля */}
-								{/* ! логика копирования */}
-								{/* формат дней недели */}
-								{/* варианты расходов */}
-								{/* проверить точку и запятую */}
+						
 								<Input
 									size="large"
 									type='number'
@@ -429,7 +423,7 @@ export default function CreateCost({
 									<Button
 										type="link"
 										onClick={() => {
-											createArticleOpen(true);
+											setModalCreateCategoryOpen(true);
 										}}
 									>
 										Добавить статью
@@ -530,7 +524,7 @@ export default function CreateCost({
 								{ required: true, message: 'ОПожалуйста, выберите значение!' }
 							]}
 						>
-							<Select
+							<Select 
 								size="large"
 								options={brandsList.map((el, i) => ({
 									key: i,

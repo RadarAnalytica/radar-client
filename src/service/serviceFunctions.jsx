@@ -1805,7 +1805,7 @@ export const ServiceFunctions = {
 				}
 			);
 			
-			if (res.status !== 200){
+			if (!res.ok){
 				throw new Error('Ошибка запроса');
 			}
 	
@@ -1855,14 +1855,51 @@ export const ServiceFunctions = {
 			throw new Error(error);
 		}
 	},
-	deleteOperatingExpensesExpense: async(token) => {
+	postOperatingExpensesExpenseCreate: async(token, expense) => {
 		try {
-			return true;
+			const res = await fetch(
+				`${URL}/api/operating-expenses/expense/create`,
+				{
+					method: 'POST',
+					headers: {
+						'content-type': 'application/json',
+						authorization: 'JWT ' + token,
+					},
+					body: JSON.stringify(expense)
+				}
+			);
+			
+			if (!res.ok) {
+				throw new Error('Ошибка запроса');
+			}
+	
+			return res.json();
 		} catch(error) {
-			console.error('getOperationConstsArticles ', error);
+			console.error('postOperatingExpensesExpenseCreate ', error);
 			throw new Error(error);
 		}
 	},
-	// api/operating-expenses/periodic-expense/get
+	deleteOperatingExpensesExpenseDelete: async(token, id) => {
+		try {
+			// operating-expenses/expense/delete?expense_id
+			const res = await fetch(
+				`${URL}/api/operating-expenses/expense/delete?expense_id=${id}`,
+				{
+					method: 'DELETE',
+					headers: {
+						'content-type': 'application/json',
+						authorization: 'JWT ' + token,
+					},
+				}
+			);
+			if (!res.ok) {
+				throw new Error('Ошибка запроса');
+			}
+
+		} catch(error) {
+			console.error('deleteOperatingExpensesCategory ', error);
+			throw new Error(error);
+		}
+	},
 };
 
