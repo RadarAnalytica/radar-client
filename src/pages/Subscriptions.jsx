@@ -15,10 +15,11 @@ import Modal from "react-bootstrap/Modal";
 import MobilePlug from "../components/sharedComponents/mobilePlug/mobilePlug";
 import Sidebar from "../components/sharedComponents/sidebar/sidebar";
 import Header from "../components/sharedComponents/header/header";
+import { getDayDeclension } from "../service/utils";
 
 const Subscriptions = () => {
   const navigate = useNavigate();
-  const { authToken } = useContext(AuthContext);
+  const { authToken, user } = useContext(AuthContext);
   const [subscriptions, setSubscriptions] = useState([]);
   const [keepSubscriptionId, setKeepSubscriptionId] = useState(null);
   const [openModal, setOpenModal] = useState(false);
@@ -42,11 +43,11 @@ const Subscriptions = () => {
   useEffect(() => {
     const checkSubscriptions = async () => {
       const data = await fetchSubscriptions();
-      if (data.length === 0) {
-       navigate('/tariffs');
+      if (data.length === 0 && user.test_days_left) {
+        navigate('/tariffs');
       }
     };
-  
+
     checkSubscriptions();
   }, []);
 
@@ -151,11 +152,11 @@ const Subscriptions = () => {
     <div className="sub-page">
       <MobilePlug />
       <div style={{ height: '100vh' }}>
-            <Sidebar />
-        </div>
+        <Sidebar />
+      </div>
       {/* <SideNav /> */}
-      <div className="sub-page-content" style={{ padding: '0 32px'}}>
-        <div style={{margin: '20px 0'}}>
+      <div className="sub-page-content" style={{ padding: '0 32px' }}>
+        <div style={{ margin: '20px 0' }}>
           <Header title={"Моя подписка"} />
         </div>
         {/* <TopNav title={"Моя подписка"} /> */}
@@ -166,11 +167,11 @@ const Subscriptions = () => {
             const activeWidth = item.active ? 120 : 140;
             const toggleText = item.active
               ? rejectSubscription({
-                  subscriptionId: item.id,
-                })
+                subscriptionId: item.id,
+              })
               : restoreSubscription({
-                  subscriptionId: item.id,
-                });
+                subscriptionId: item.id,
+              });
             const paymentDateEndString = item.validity_period
             const paymentDateValue = new Date(Date.parse(paymentDateEndString))
             paymentDateValue.setDate(paymentDateValue.getDate() + 1)
@@ -178,7 +179,7 @@ const Subscriptions = () => {
 
             const activeTillPeriodValue = new Date(Date.parse(paymentDateEndString))
             const activeTillPeriod = `${activeTillPeriodValue.getDate()} ${months[activeTillPeriodValue.getMonth()]}`
-            
+
             // const paymentDateValue = moment(item.validity_period)
             // const paymentDate = paymentDateValue.locale("ru")
             //   .add(1, "days")
@@ -215,6 +216,30 @@ const Subscriptions = () => {
               </div>
             );
           })}
+
+          {/* тестовый период */}
+          {user.test_days_left &&
+            <div className="sub-card">
+              <div className="sub-card-row">
+                <div className="sub-card-content-wrap">
+                  <img src={TestSub} alt="subImg" />
+                  <div className="sub-card-content">
+                    <span className="sub-card-content-title">
+                      тестовый период
+                    </span>
+                    <span className="sub-card-content-text">
+                      Осталось {getDayDeclension(user.test_days_left.toString())}
+                    </span>
+                  </div>
+                </div>
+
+                <StatusInfo
+                  title="Активен"
+                  fill="#00B69B"
+                  width={120}
+                />
+              </div>
+            </div>}
         </div>
       </div>
       <Modal

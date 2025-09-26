@@ -8,6 +8,8 @@ import AuthContext from '../../../service/AuthContext';
 import { useAppSelector, useAppDispatch } from '../../../redux/hooks';
 import { fetchMessages } from '../../../redux/messages/messagesSlice';
 import { VideoReview } from './videoReviewButton/videoReview';
+import { StatusBanner } from '../../../shared';
+import { getDayDeclension } from '../../../service/utils';
 
 const popoverOptions = {
     arrow: false,
@@ -50,51 +52,67 @@ const Header = ({
     };
 
     return (
-        <header className={styles.header}>
-            <div className={styles.header__titleBlock}>
-                {typeof title === 'string' ?
-                    <h1 className={styles.header__title}>
-                        {titlePrefix &&
-                            <span className={styles.header__titlePrefix}>{titlePrefix}{' / '}</span>
-                        }
-                        {title}
-                    </h1>
-                    :
-                    <>{title}</>
+        <div className={styles.headerWrapper}>
+            {user && user.test_days &&
+            <StatusBanner
+                icon={
+                    <svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect y="0.5" width="16" height="16" rx="8" fill="#5329FF" />
+                        <path d="M5 8.1073L7.53846 10.5L11 6.5" stroke="white" strokeWidth="1.5" strokeLinecap="round" />
+                    </svg>
                 }
-                {videoReviewLink &&
-                    <VideoReview
-                        link={videoReviewLink}
-                    />
+                title={
+                    <p className={styles.header__statusBannerTitle}>
+                        <span>Ваш тестовый период активен.</span> До окончания осталось {getDayDeclension(user.test_days.toString())}
+                    </p>
                 }
-            </div>
-            {children && children}
-            {user &&
-                <div className={styles.header__menu}>
-                    <Popover
-                        {...popoverOptions}
-                        className={styles.header__popover}
-                        content={<HeaderAlerts messages={messages} />}
-                    >
-                        <>
-                            <Icon type='alert' counter={messages?.length} />
-                        </>
-                    </Popover>
-
-                    <Popover
-                        {...popoverOptions}
-                        content={<HeaderMenu popoverCloseHandler={menuPopoverCloseHandler} logout={logout} />}
-                        open={isMenuPopoverVisible}
-                        onOpenChange={menuPopoverOpenHandler}
-                        className={styles.header__popover}
-                    >
-                        <>
-                            <Icon type='menu' />
-                        </>
-                    </Popover>
+            />}
+            <header className={styles.header}>
+                <div className={styles.header__titleBlock}>
+                    {typeof title === 'string' ?
+                        <h1 className={styles.header__title}>
+                            {titlePrefix &&
+                                <span className={styles.header__titlePrefix}>{titlePrefix}{' / '}</span>
+                            }
+                            {title}
+                        </h1>
+                        :
+                        <>{title}</>
+                    }
+                    {videoReviewLink &&
+                        <VideoReview
+                            link={videoReviewLink}
+                        />
+                    }
                 </div>
-            }
-        </header>
+                {children && children}
+                {user &&
+                    <div className={styles.header__menu}>
+                        <Popover
+                            {...popoverOptions}
+                            className={styles.header__popover}
+                            content={<HeaderAlerts messages={messages} />}
+                        >
+                            <>
+                                <Icon type='alert' counter={messages?.length} />
+                            </>
+                        </Popover>
+
+                        <Popover
+                            {...popoverOptions}
+                            content={<HeaderMenu popoverCloseHandler={menuPopoverCloseHandler} logout={logout} />}
+                            open={isMenuPopoverVisible}
+                            onOpenChange={menuPopoverOpenHandler}
+                            className={styles.header__popover}
+                        >
+                            <>
+                                <Icon type='menu' />
+                            </>
+                        </Popover>
+                    </div>
+                }
+            </header>
+        </div>
     )
 
 }
