@@ -2,6 +2,7 @@ import { URL } from './config';
 import { formatFromIsoDate, rangeApiFormat } from './utils'
 import { store } from '../redux/store'
 import moment from 'moment';
+import { fetchApi } from './fetchApi';
 
 export const getRequestObject = (filters, selectedRange, shopId) => {
 	let requestObject = {
@@ -217,10 +218,9 @@ export const ServiceFunctions = {
 	// },
 
 	getDashBoard: async (token, selectedRange, idShop, filters) => {
-
 		//let rangeParams = rangeApiFormat(selectedRange);
 		const body = getRequestObject(filters, selectedRange, idShop)
-		const res = await fetch(
+		const res = await fetchApi(
 			`${URL}/api/dashboard/`,
 			{
 				method: 'POST',
@@ -238,9 +238,9 @@ export const ServiceFunctions = {
 		}
 
 		const data = await res.json();
-
 		return data;
 	},
+	
 	getSelfCostData: async (token, idShop, filters) => {
 		const body = getRequestObject(filters, undefined, idShop)
 		const res = await fetch(
