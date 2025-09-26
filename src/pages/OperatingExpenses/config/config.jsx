@@ -5,11 +5,18 @@ import { format } from 'date-fns';
 import { EditIcon, CopyIcon, DeleteIcon } from '../shared/Icons';
 
 function summaryRender(value, row, i) {
-	console.log('row', row)
 	if (row.key == 'summary') {
 		return value;
 	}
 	return format(new Date(value), 'd.MM.yyyy');
+}
+
+function valueRender(value) {
+	console.log('valueRender', value)
+	if (!value){
+		return '-'
+	}
+	return formatPrice(value)
 }
 
 function columnRender(value, row) {
@@ -23,10 +30,11 @@ function columnExpensesRender(value, row) {
 	if (row.key == 'summary') {
 		return value;
 	}
-	return value?.length ? value.join(', ') : '-';
+	return value;
+	// return value?.length ? value.join(', ') : '-';
 }
 
-export const COSTS_COLUMNS = [
+export const EXPENSE_COLUMNS = [
 	{
 		title: 'Дата',
 		dataIndex: 'date',
@@ -45,7 +53,7 @@ export const COSTS_COLUMNS = [
 		title: 'Сумма, руб',
 		dataIndex: 'value',
 		key: 'value',
-		render: (value) => formatPrice(value),
+		render: valueRender,
 		width: `${100 / 8}%`
 	},
 	{

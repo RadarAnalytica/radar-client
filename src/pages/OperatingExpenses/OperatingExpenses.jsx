@@ -11,8 +11,8 @@ import ReportTable from '@/components/sharedComponents/ReportTable/ReportTable';
 import DataCollectWarningBlock from '@/components/sharedComponents/dataCollectWarningBlock/dataCollectWarningBlock';
 import ModalDeleteConfirm from '@/components/sharedComponents/ModalDeleteConfirm';
 import styles from './OperatingExpenses.module.css';
-import { COSTS_COLUMNS, CATEGORY_COLUMNS } from './config/config';
-import CreateCost from './features/CreateCost/CreateCost';
+import { EXPENSE_COLUMNS, CATEGORY_COLUMNS } from './config/config';
+import CreateExpense from './features/CreateExpense/CreateExpense';
 import CreateCategory from './features/CreateCategory/CreateCategory';
 import { EditIcon, CopyIcon, DeleteIcon, InfoIcon } from './shared/Icons';
 export default function OperatingExpenses() {
@@ -42,20 +42,20 @@ export default function OperatingExpenses() {
 
 	const firstLoad = useRef(true);
 	const [loading, setLoading] = useState(true);
-	const [view, setView] = useState('costs'); // costs | category
+	const [view, setView] = useState('expense'); // costs | category
 	// const [isPopoverOpen, setIsPopoverOpen] = useState(false);
 
-	const [createCostOpen, setCreateCostOpen] = useState(false);
+	const [modalCreateExpenseOpen, setModalCreateExpenseOpen] = useState(false);
 	const [modalCreateCategoryOpen, setModalCreateCategoryOpen] = useState(false);
 
-	const [deleteCostId, setDeleteCostId] = useState(null);
+	const [deleteExpenseId, setDeleteExpenseId] = useState(null);
 	const [deleteCategoryId, setDeleteCategoryId] = useState(null);
 
-	const [costEdit, setCostEdit] = useState(null);
-	const [costCopy, setCostCopy] = useState(null);
-	const [costs, setCosts] = useState(null);
+	const [expense, setExpense] = useState([]);
+	const [expenseEdit, setExpenseEdit] = useState(null);
+	const [expenseCopy, setExpenseCopy] = useState(null);
 	
-	const actionCostsRender = (value, row) => {
+	const actionExpenseRender = (value, row) => {
 		if (row.key == 'summary') {
 			return null;
 		}
@@ -65,8 +65,8 @@ export default function OperatingExpenses() {
 					type="text"
 					icon={EditIcon}
 					onClick={() => {
-						setCostEdit((costs.find((article) => article.id === row.id)));
-						setCreateCostOpen(true)
+						setExpenseEdit((costs.find((article) => article.id === row.id)));
+						setModalCreateExpenseOpen(true)
 					}}
 					title='Изменить'
 					></Button>
@@ -74,36 +74,38 @@ export default function OperatingExpenses() {
 					type="text"
 					icon={CopyIcon}
 					onClick={() => {
-						setCostCopy((costs.find((article) => article.id === row.id)));
-						setCreateCostOpen(true)
+						setExpenseCopy((costs.find((article) => article.id === row.id)));
+						setModalCreateExpenseOpen(true)
 					}}
 					title='Копировать'
 					></Button>
 				<Button
 					type="text"
 					icon={DeleteIcon}
-					onClick={() => setDeleteCostId(row.id)}
+					onClick={() => setDeleteExpenseId(row.id)}
 					title='Удалить'
 				></Button>
 			</ConfigProvider>
 		</Flex>)
 	}
 
-	const costsData = useMemo(() => {
-		const columns = COSTS_COLUMNS.map((column, i) => {
+	const expenseData = useMemo(() => {
+		const columns = EXPENSE_COLUMNS.map((column, i) => {
 			if (column.dataIndex == 'action'){
-				column.render = actionCostsRender
+				column.render = actionExpenseRender
 			}
 			return ({ ...column, key: column.i })
 		})
-		let data = [];
-		if (costs){
-			data = costs.map((cost) => ({...cost, key: cost.id}));
-		}
+
+		let data = expense?.map((item) => ({
+			...item,
+			expense_categories: item.expense_categories.map((el) => el.name).join(', ')
+		}));
+
 		const result = {
 			key: 'summary',
 			date: 'Итого:',
-			value: data.reduce((sum, el) => (sum += el.sum), 0) || '-',
+			value: data.reduce((value, el) => (value += el.value), 0) || '-',
 			description: '-',
 			expense_categories: '-',
 			vendor_code: '-',
@@ -113,10 +115,10 @@ export default function OperatingExpenses() {
 		};
 		data.unshift(result);
 		return {data, columns};
-	}, [costs]);
+	}, [expense]);
 
 	const [categoryEdit, setCategoryEdit] = useState(null);
-	const [category, setCategory] = useState(null);
+	const [category, setCategory] = useState([]);
 	const [categoryLoading, setCategoryLoading] = useState(false);
 
 	const actionCategoryRender = (value, row) => {
@@ -178,10 +180,10 @@ export default function OperatingExpenses() {
 		try {
 			const res = await ServiceFunctions.getAllOperatingExpensesExpense(authToken);
 			console.log(res)
-			setCosts(res.data)
+			setExpense(res.data)
 		} catch(error) {
 			console.error('updateExpenses error', error);
-			setCosts([]);
+			setExpense([]);
 		} finally {
 			console.log('updateExpenses', !firstLoad.current)
 			// if (!firstLoad.current) {
@@ -195,15 +197,16 @@ export default function OperatingExpenses() {
 		try {
 			const res = await ServiceFunctions.getOperatingExpensesExpenseGetAll(authToken);
 			console.log(res)
-			setCosts(res.data)
+			setExpense(res.data)
+			return
 		} catch(error) {
 			console.error('updateExpenses error', error);
-			setCosts([]);
+			setExpense([]);
 		} finally {
 			console.log('updateExpenses', !firstLoad.current)
-			// if (!firstLoad.current) {
+			if (!firstLoad.current) {
 				setLoading(false);
-			// }
+			}
 		}
 	}
 
@@ -213,12 +216,9 @@ export default function OperatingExpenses() {
 		}
 
 		if (firstLoad.current) {
-			// new Promise
-			new Promise(resolve => {
-				updateCategories();
+			updateCategories().then(() => {
 				updateExpenses();
-			})
-				.then(() => {
+			}).then(() => {
 					console.log('promise ')
 					firstLoad.current = false;
 					setLoading(false);
@@ -226,7 +226,7 @@ export default function OperatingExpenses() {
 			return
 		}
 
-		if (view === 'costs'){
+		if (view === 'expense'){
 			console.log('updateCosts');
 			updateExpenses();
 		}
@@ -237,10 +237,10 @@ export default function OperatingExpenses() {
 		}
 	}, [ activeBrand, selectedRange ])
 
-	const modalCostHandlerClose = () => {
-		setCreateCostOpen(false);
-		setCostEdit(null);
-		setCostCopy(null);
+	const modalExpenseHandlerClose = () => {
+		setModalCreateExpenseOpen(false);
+		setExpenseEdit(null);
+		setExpenseCopy(null);
 	};
 
 	const modalCategoryHandlerClose = () => {
@@ -249,8 +249,8 @@ export default function OperatingExpenses() {
 	};
 
 	const modalHandler = () => {
-		if (view === 'costs') {
-			setCreateCostOpen(true);
+		if (view === 'expense') {
+			setModalCreateExpenseOpen(true);
 			return;
 		}
 		setModalCreateCategoryOpen(true);
@@ -298,42 +298,74 @@ export default function OperatingExpenses() {
 	}
 
 	const handleCategory = (category) => {
-		// setModalCreateCategoryOpen(false);
+		setModalCreateCategoryOpen(false);
 		if (!!categoryEdit){
 			console.log('editCategory')
 			const editedCategory = {...categoryEdit, ...category}
 			editCategory(editedCategory);
 			return
 		}
-		console.log('createArticle')
 		createCategory(category);
 		// setExpenses((category) => category.push(article) );
 	};
 
-	const handleCost = (cost) => {
-		if (!!costEdit){
-			console.log('editCost')
-			editCost(cost);
+	const handleExpanse = (expense) => {
+		console.log('handleExpanse', expense)
+		if (!!expenseEdit){
+			editExpanse(expense);
 			return
 		}
-		console.log('createCost')
-		createCost(cost);
+		createExpense(expense);
 		// setExpenses((category) => category.push(article) );
 	};
 
-	const deleteCostHandler = async (id) => {
+	const createExpense = async (expense) => {
+		setCategoryLoading(true);
+		// console.log('createCategory', category)
+		// setModalCreateCategoryOpen(false);
+		console.log('createExpense', expense)
+		try {
+			const res = await ServiceFunctions.postOperatingExpensesExpenseCreate(authToken, expense);
+			// console.log('createCategory', res);
+			// 
+			setExpense((list) => [...list, res])
+			// 
+		} catch(error) {
+			console.error('createCategory error', error);
+		} finally {
+			setModalCreateExpenseOpen(false);
+			setCategoryLoading(false);
+		}
+	}
+
+	const deleteExpense = async (id) => {
+		setLoading(true);
+		try {
+			const res = await ServiceFunctions.deleteOperatingExpensesExpenseDelete(authToken, id);
+			// 
+			setExpense((list) => list.filter((el) => el.id !== id));
+			// 
+		} catch(error) {
+			console.error('deleteExpense error', error);
+		} finally {
+			setDeleteExpenseId(null);
+			setLoading(false);
+		}
+	}
+	
+	const deletePeriodicExpense = async (id) => {
 		console.log('delete cost');
 		setLoading(true);
 		try {
 			const res = await ServiceFunctions.deleteOperatingExpensesExpense();
 			// 
-			setCosts((list) => list.filter((el) => el.id !== id));
+			setExpense((list) => list.filter((el) => el.id !== id));
 			// 
-			console.log('deleteCostHandler', res);
+			console.log('deleteExpense', res);
 		} catch(error) {
-			console.error('deleteCostHandler error', error);
+			console.error('deleteExpense error', error);
 		} finally {
-			setDeleteCostId(null);
+			setDeleteExpenseId(null);
 			setLoading(false);
 		}
 	}
@@ -415,14 +447,14 @@ export default function OperatingExpenses() {
 							<Flex align="center" justify="flex-start">
 								<Button
 									size="large"
-									type={view === 'costs' ? 'primary' : 'default'}
-									onClick={() => { setView('costs'); }}
+									type={view === 'expense' ? 'primary' : 'default'}
+									onClick={() => { setView('expense'); }}
 								>
 									Расходы
 								</Button>
 								<Button
 									size="large"
-									type={view === 'costs' ? 'default' : 'primary'}
+									type={view === 'expense' ? 'default' : 'primary'}
 									onClick={() => { setView('category'); }}
 								>
 									Статьи
@@ -446,7 +478,7 @@ export default function OperatingExpenses() {
 									},
 								}}
 							>
-								{view === 'costs' && (
+								{view === 'expense' && (
 									<Flex gap={10} align='center'>
 										<Tooltip title={'Как загрузить'}>
 											{InfoIcon}
@@ -488,7 +520,7 @@ export default function OperatingExpenses() {
 									iconPosition="start"
 									size="large"
 									onClick={modalHandler}
-									title={view === 'costs' ? 'Добавить расход' : 'Добавить статью'}
+									title={view === 'expense' ? 'Добавить расход' : 'Добавить статью'}
 								>
 									Добавить
 								</Button>
@@ -525,24 +557,25 @@ export default function OperatingExpenses() {
 						<ReportTable
 							loading={loading}
 							columns={
-								view === 'costs' ? costsData.columns : categoryData.columns
+								view === 'expense' ? expenseData.columns : categoryData.columns
 							}
-							data={view === 'costs' ? costsData.data : categoryData.data}
+							data={view === 'expense' ? expenseData.data : categoryData.data}
 							is_primary_collect={shopStatus?.is_primary_collect}
 							virtual={false}
 						/>
 				</div>}
 
-				{ createCostOpen && <CreateCost
-					open={createCostOpen}
-					onCancel={modalCostHandlerClose}
-					createArticleOpen={setModalCreateCategoryOpen}
+				{ modalCreateExpenseOpen && <CreateExpense
+					open={modalCreateExpenseOpen}
+					onCancel={modalExpenseHandlerClose}
+					setModalCreateCategoryOpen={setModalCreateCategoryOpen}
 					category={category}
 					zIndex={1000}
-					edit={costEdit}
-					copy={costCopy}
-					// state={() => ('edit' && costEdit) || ('copy' && costCopy)}
-					// data={costEdit || costCopy}
+					edit={expenseEdit}
+					copy={expenseCopy}
+					handle={handleExpanse}
+					state={() => ('edit' && expenseEdit) || ('copy' && expenseCopy)}
+					data={expenseEdit || expenseCopy}
 				/> }
 
 				{ modalCreateCategoryOpen && <CreateCategory
@@ -555,10 +588,10 @@ export default function OperatingExpenses() {
 					loading={categoryLoading}
 				/> }
 
-				{deleteCostId && <ModalDeleteConfirm
+				{deleteExpenseId && <ModalDeleteConfirm
 					title={'Вы уверены, что хотите удалить расход?'}
-					onCancel={() => setDeleteCostId(null)}
-					onOk={() => deleteCostHandler(deleteCostId)}
+					onCancel={() => setDeleteExpenseId(null)}
+					onOk={() => deleteExpense(deleteExpenseId)}
 				/>}
 
 				{deleteCategoryId && <ModalDeleteConfirm
