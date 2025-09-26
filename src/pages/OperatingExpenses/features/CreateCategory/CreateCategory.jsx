@@ -4,7 +4,7 @@ import styles from '../../shared/styles/modals.module.css';
 import { CloseIcon } from '../../shared/Icons';
 import { useMemo, useState } from 'react';
 
-export default function CreateCategory({
+export default function ModalCreateCategory({
 	open = true,
 	onCancel,
 	onSubmit,

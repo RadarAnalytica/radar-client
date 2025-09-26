@@ -8,8 +8,8 @@ import { useAppSelector } from '@/redux/hooks';
 import { DayPicker } from 'react-day-picker';
 import { format } from 'date-fns';
 import { ru } from 'date-fns/locale';
-// import ModalFooter from './ModalFooter';
-export default function CreateExpense({
+
+export default function ModalCreateExpense({
 	open = true,
 	onCancel,
 	setModalCreateCategoryOpen,

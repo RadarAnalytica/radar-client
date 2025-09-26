@@ -12,8 +12,8 @@ import DataCollectWarningBlock from '@/components/sharedComponents/dataCollectWa
 import ModalDeleteConfirm from '@/components/sharedComponents/ModalDeleteConfirm';
 import styles from './OperatingExpenses.module.css';
 import { EXPENSE_COLUMNS, CATEGORY_COLUMNS } from './config/config';
-import CreateExpense from './features/CreateExpense/CreateExpense';
-import CreateCategory from './features/CreateCategory/CreateCategory';
+import ModalCreateExpense from './features/CreateExpense/CreateExpense';
+import ModalCreateCategory from './features/CreateCategory/CreateCategory';
 import { EditIcon, CopyIcon, DeleteIcon, InfoIcon } from './shared/Icons';
 export default function OperatingExpenses() {
 
@@ -65,7 +65,7 @@ export default function OperatingExpenses() {
 					type="text"
 					icon={EditIcon}
 					onClick={() => {
-						setExpenseEdit((costs.find((article) => article.id === row.id)));
+						setExpenseEdit((expense.find((item) => item.id === row.id)));
 						setModalCreateExpenseOpen(true)
 					}}
 					title='Изменить'
@@ -74,7 +74,7 @@ export default function OperatingExpenses() {
 					type="text"
 					icon={CopyIcon}
 					onClick={() => {
-						setExpenseCopy((costs.find((article) => article.id === row.id)));
+						setExpenseCopy((expense.find((item) => item.id === row.id)));
 						setModalCreateExpenseOpen(true)
 					}}
 					title='Копировать'
@@ -565,7 +565,7 @@ export default function OperatingExpenses() {
 						/>
 				</div>}
 
-				{ modalCreateExpenseOpen && <CreateExpense
+				{ modalCreateExpenseOpen && <ModalCreateExpense
 					open={modalCreateExpenseOpen}
 					onCancel={modalExpenseHandlerClose}
 					setModalCreateCategoryOpen={setModalCreateCategoryOpen}
@@ -578,7 +578,7 @@ export default function OperatingExpenses() {
 					data={expenseEdit || expenseCopy}
 				/> }
 
-				{ modalCreateCategoryOpen && <CreateCategory
+				{ modalCreateCategoryOpen && <ModalCreateCategory
 					open={modalCreateCategoryOpen}
 					onCancel={modalCategoryHandlerClose}
 					onSubmit={handleCategory}
