@@ -3,6 +3,7 @@ import { URL } from '../../service/config';
 import { setLoading } from '../loading/loadingSlice';
 import { weeksList, getSavedActiveWeeks, getSavedActiveMonths } from '@/service/utils';
 import { actions as shopsActions } from '../shops/shopsSlice';
+import { fetchApi } from '../../service/fetchApi';
 
 
 
@@ -221,8 +222,10 @@ export const fetchFilters = createAsyncThunk(
   'filters',
   async (requestObject, { dispatch }) => {
     const { authToken, shopsData } = requestObject;
+    console.log('fetchFilters: Request object:', requestObject);
 
     if (shopsData) {
+      console.log('fetchFilters: Setting shops data:', shopsData);
       dispatch(shopsActions.setShops(shopsData));
     }
 
@@ -230,7 +233,8 @@ export const fetchFilters = createAsyncThunk(
       //dispatch(setLoading(true));
 
       let data = null;
-      const res = await fetch(`${URL}/api/common/filters_new`, {
+      console.log('fetchFilters: Fetching filters...');
+      const res = await fetchApi('/api/common/filters_new', {
         method: 'GET',
         headers: {
           'content-type': 'application/json',
@@ -238,11 +242,23 @@ export const fetchFilters = createAsyncThunk(
         },
       });
       data = await res.json();
+      console.log('fetchFilters: Filters data:', data);
+      
+      // Для демо-данных структура отличается
       if (data?.data?.shops) {
-        return createFiltersDTO(data.data.shops, shopsData);
+        const result = createFiltersDTO(data.data.shops, shopsData);
+        console.log('fetchFilters: Created DTO:', result);
+        return result;
+      }
+      
+      // Если это демо-данные (структура filtersData)
+      if (data?.filtersData) {
+        console.log('fetchFilters: Using demo data structure');
+        return data;
       }
 
     } catch (e) {
+      console.error('fetchFilters: Error:', e);
       throw e;
     } finally {
       //dispatch(setLoading(false));

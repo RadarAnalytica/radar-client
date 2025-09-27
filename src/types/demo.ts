@@ -76,36 +76,65 @@ export interface AbcProductData {
   profit: number;
 }
 
-// Stock Analysis типы
-export interface StockAnalysisDemoData {
-  products: StockProductData[];
-  summary: {
-    totalProducts: number;
-    totalRevenue: number;
-    averageGrowth: number;
-    topPerformer: string;
-  };
-  filters: {
-    categories: string[];
-    brands: string[];
-    priceRanges: string[];
-  };
-}
-
 export interface StockProductData {
-  id: string;
-  name: string;
+  productName: string;
+  brandName: string;
+  vendorСode: string;
+  barCode: string;
+  saleSum: number;
+  quantity: number;
+  lessReturns: number;
+  costGoodsSold: number;
+  sold_cost: number;
+  returnsSum: number;
+  returnsQuantity: number;
+  returnsCostSold: number;
+  return_cost: number;
+  costPriceOne: number;
+  product_cost: number;
+  costOfProductStockToday: number;
+  product_cost_stock: number;
+  toClient: number;
+  to_client_sum: number;
+  fromClient: number;
+  from_client_sum: number;
+  commissionWB: number;
+  fines: number;
+  additionalPayment: number;
+  serviceExpenses: number;
+  toPayoff: number;
+  marginalProfit: number;
+  averageProfit: number;
+  profitabilityOfProductsSold: number;
+  marginal: number;
+  annualReturnOnInventory: number;
+  lostRevenue: number;
+  basic: number;
+  maxDiscount: number;
+  minDiscountPrice: number;
+  orderQuantity: number;
+  orderSum: number;
+  purchased: number;
+  notPurchased: number;
+  purchasedPercent: number;
+  completed: number;
+  orderCountDay: number;
+  saleCountDay: number;
+  dataRadar: number;
+  dataWB: number;
+  photo: string;
+  nmID: number;
   sku: string;
+  size: string;
   category: string;
-  brand: string;
-  price: number;
-  revenue: number;
-  growth: number;
-  profit: number;
-  stock: number;
-  sales: number;
-  rating: number;
-  reviews: number;
+  costPrice: number;
+  cost_price: number;
+  basePrice: number;
+  discount: number;
+  minPrice: number;
+  is_self_cost: boolean;
+  byRevenue: string;
+  byProfit: string;
 }
 
 // Reports типы

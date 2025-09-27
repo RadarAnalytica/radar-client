@@ -530,7 +530,7 @@ export const ServiceFunctions = {
 	getAnalysisData: async (token, selectedRange, shop, filters) => {
 		//let rangeParams = rangeApiFormat(selectedRange);
 		const body = getRequestObject(filters, selectedRange, shop)
-		const res = await fetch(`${URL}/api/prod_analytic/`, {
+		const res = await fetchApi('/api/prod_analytic', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
@@ -538,6 +538,7 @@ export const ServiceFunctions = {
 			},
 			body: JSON.stringify(body)
 		});
+
 		const data = await res.json();
 		return data;
 	},

@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux';
 import AuthContext from '@/service/AuthContext';
 import { fetchFilters } from '@/redux/apiServicePagesFiltersState/filterActions';
 import { URL } from '@/service/config';
+import { fetchApi } from '@/service/fetchApi';
 import type { RootState, AppDispatch } from '@/redux/store.types';
 
 const FiltersProvider = ({ children }: { children: React.ReactNode }) => {
@@ -17,24 +18,30 @@ const FiltersProvider = ({ children }: { children: React.ReactNode }) => {
 
     const getFiltersData = async () => {
         try {
-            let shopsResponse = await fetch(`${URL}/api/shop/all`, {
+            let shopsResponse = await fetchApi('/api/shop/all', {
                 method: 'GET',
                 headers: {
                     'content-type': 'application/json',
                     authorization: user?.subscription_status === null ? 'JWT ' + 'mockData' : 'JWT ' + authToken,
                 }
             })
-            //let shopsResponse = null
+            console.log('FiltersProvider: Shops response:', shopsResponse);
+            
+            let shopsData = null;
+            if (shopsResponse?.ok) {
+                shopsData = await shopsResponse.json();
+                console.log('FiltersProvider: Shops data:', shopsData);
+            }
+            
+            console.log('FiltersProvider: Dispatching fetchFilters...');
             // @ts-ignore
             dispatch(fetchFilters({
                 authToken,
-                shopsData: shopsResponse?.ok ? await shopsResponse.json() : null
+                shopsData
                 //shopsData: null
             }))
         } catch (error) {
-            if (typeof error === 'string') {
-                console.error("Error fetching initial data:", error);
-            }
+            console.error("FiltersProvider: Error fetching initial data:", error);
         }
     }
 

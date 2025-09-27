@@ -96,16 +96,16 @@ const apiServicePagesFilterStateSlice = createSlice({
         }
     },
     extraReducers: (bulder) => {
-        bulder
-            .addCase(fetchFilters.fulfilled, (state, action) => {
-                return {
-                    ...state,
-                    filters: action.payload.filtersData,
-                    shops: action.payload.shops,
-                    ...action.payload.initState,
-                    isFiltersLoaded: true
-                }
-            })
+        bulder.addCase(fetchFilters.fulfilled, (state, action) => {
+            const newState = {
+                ...state,
+                filters: action.payload?.filtersData,
+                shops: action.payload?.shops,
+                ...action.payload?.initState,
+                isFiltersLoaded: true
+            };
+            return newState;
+        });
     }
 })
 
