@@ -16,20 +16,18 @@ export const MultiSelect = (
         isDataLoading
     }
 ) => {
-    const [searchState, setSearchState] = useState('')
-    const [selectState, setSelectState] = useState([])
-    const prevSelectState = useRef(null)
-    const icon = <SelectIcon />
+    const [searchState, setSearchState] = useState('');
+    const [selectState, setSelectState] = useState([]);
+    const prevSelectState = useRef(null);
+    const icon = <SelectIcon />;
 
     const renderPopup = (menu) => {
-        let action
+        let action;
         if (selectState.filter(_ => _.value !== 'Все').length < optionsData.length && !searchState) {
-            action = () => { setSelectState(optionsData.filter(_ => _.value !== 'Все')) }
+            action = () => { setSelectState(optionsData.filter(_ => _.value !== 'Все')) };
+        } else if (selectState.filter(_ => _.value !== 'Все').length === optionsData.length) {
+            action = () => { setSelectState([{ value: 'Все' }]) };
         }
-        if (selectState.filter(_ => _.value !== 'Все').length === optionsData.length) {
-            action = () => { setSelectState([{ value: 'Все' }]) }
-        }
-
 
         if (selectId === 'product_groups' && (!optionsData || optionsData.length === 0)) {
             return (
@@ -46,7 +44,8 @@ export const MultiSelect = (
                             Создать
                         </Link>
                     </div>
-                </>)
+                </>
+            )
         }
 
         return (
@@ -88,7 +87,8 @@ export const MultiSelect = (
                         {selectState.filter(_ => _.value !== 'Все').length === optionsData.length && 'Снять все'}
                     </Button>}
                 </ConfigProvider>
-            </>)
+            </>
+        )
     }
 
     const tagRender = props => {
@@ -97,6 +97,7 @@ export const MultiSelect = (
             event.preventDefault();
             event.stopPropagation();
         };
+        
         return (
             <Tag
                 color={value}
@@ -111,42 +112,33 @@ export const MultiSelect = (
     };
 
     const selectHandler = value => {
-        const isAllOptionIndex = value.findIndex(_ => _ === 'Все')
+        const isAllOptionIndex = value.findIndex(_ => _ === 'Все');
         if ((isAllOptionIndex !== -1 && isAllOptionIndex === value.length - 1) || value.length === 0) {
-            //const current = params.data.find(_ => _.value === 'Все');
-            setSelectState([{ value: 'Все', id: 0 }])
-            //dispatch(filterActions.setActiveFilters({ stateKey: i.articles.stateKey, data: [current] }))
-            return
+            const current = params.data.find(_ => _.value === 'Все');
+            setSelectState([current || { value: 'Все', id: 0 }]);
+            return;
         }
         if (isAllOptionIndex !== -1 && isAllOptionIndex !== value.length - 1) {
-            const valueArr = []
+            const valueArr = [];
             value.forEach(v => {
                 const el = params.data.find(_ => _.value === v);
                 el && el.value !== 'Все' && valueArr.push(el)
-            })
-            setSelectState(valueArr)
-            //dispatch(filterActions.setActiveFilters({ stateKey: i.articles.stateKey, data: valueArr }))
-            return
+            });
+            setSelectState(valueArr);
+            return;
         }
-        const valueArr = []
+        const valueArr = [];
         value.forEach(v => {
             const el = params.data.find(_ => _.value === v);
             el && valueArr.push(el)
-        })
-        //const current = i.articles.data.find(_ => _.value === value);
-        setSelectState(valueArr)
-        //dispatch(filterActions.setActiveFilters({ stateKey: i.articles.stateKey, data: valueArr }))
+        });
+        setSelectState(valueArr);
     }
 
     useEffect(() => {
-        if (Array.isArray(value)) {
-            setSelectState(value)
-            prevSelectState.current = value
-        } else {
-            setSelectState([value])
-            prevSelectState.current = [value]
-        }
-
+        const state = Array.isArray(value) ? value : [value];
+        setSelectState(state);
+        prevSelectState.current = state;
     }, [value])
 
     return (
@@ -205,6 +197,11 @@ export const MultiSelect = (
                             if (!open) {
                                 setSearchState('')
                                 if (JSON.stringify(prevSelectState.current) === JSON.stringify(selectState)) return
+                                console.log('MultiSelect: Dispatching filter change:', {
+                                    stateKey: params.stateKey,
+                                    data: selectState,
+                                    prevState: prevSelectState.current
+                                });
                                 dispatch(filterActions.setActiveFilters({ stateKey: params.stateKey, data: selectState }))
                                 prevSelectState.current = selectState
                                 // if (selectState.length === optionsData.length) {

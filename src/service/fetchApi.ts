@@ -55,8 +55,6 @@ export const fetchApi = async (url: string, options: RequestInit = {}) => {
     const demoService = DemoDataService.getInstance();
     const demoData = demoService.getDataForEndpoint(url);
 
-    console.log('Demo data for', url, ':', demoData);
-
     if (demoData?.data) {
       return createMockResponse(demoData.data);
     }

@@ -18,16 +18,14 @@ export const DemoDataProvider: React.FC<DemoDataProviderProps> = ({ children }) 
   // Проверяем статус подписки при изменении пользователя
   useEffect(() => {
     if (user) {
-      const isDemo = user.subscription_status === null;
+      const isDemo = user?.subscription_status === null;
       setIsDemoMode(isDemo);
       setShowDemoBanner(isDemo);
       
       if (isDemo) {
-        // Загружаем демо-данные при входе в демо-режим
-        loadDemoData();
+        loadDemoData(); // Загружаем демо-данные при входе в демо-режим
       } else {
-        // Очищаем демо-данные при выходе из демо-режима
-        setDemoData(null);
+        setDemoData(null); // Очищаем демо-данные при выходе из демо-режима
       }
     } else {
       setIsDemoMode(false);
@@ -91,6 +89,7 @@ export const DemoDataProvider: React.FC<DemoDataProviderProps> = ({ children }) 
 export const useDemoMode = (): DemoModeContextType => {
   const context = useContext(DemoModeContext);
   if (context === undefined) {
+    console.error('useDemoMode: Context is undefined, throwing error');
     throw new Error('useDemoMode must be used within a DemoDataProvider');
   }
   return context;

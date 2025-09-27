@@ -1,6 +1,5 @@
 import type { 
   DemoData, 
-  DashboardDemoData, 
   AbcAnalysisDemoData, 
   StockProductData,
   ReportsDemoData,
@@ -11,6 +10,7 @@ import type {
 } from '../types/demo';
 
 import stockAnalysis from '../mock/stock-analysis.json';
+import dashboardData from '../mock/dashboard.json';
 
 export class DemoDataService {
   private static instance: DemoDataService;
@@ -52,8 +52,6 @@ export class DemoDataService {
 
   // Получить данные для конкретного эндпоинта
   public getDataForEndpoint(endpoint: string, params?: any, data?: DemoData): any {
-    console.log('DemoDataService: Getting data for endpoint:', endpoint);
-    
     // Маппинг эндпоинтов на данные
     const endpointMap: Record<string, () => any> = {
       '/api/dashboard': () => this.getDashboardData(),
@@ -72,7 +70,6 @@ export class DemoDataService {
     const dataGetter = endpointMap[endpoint];
     if (dataGetter) {
       const result = this.createApiResponse(dataGetter());
-      console.log('DemoDataService: Returning data for', endpoint, ':', result);
       return result;
     }
 
@@ -96,24 +93,8 @@ export class DemoDataService {
   }
 
   // Dashboard данные
-  private async getDashboardData(): Promise<DashboardDemoData> {
-    return {
-      metrics: {
-        revenue: 1250000,
-        orders: 1250,
-        profit: 180000,
-        growth: 15.5,
-        conversion: 3.2,
-        averageOrder: 1000
-      },
-      charts: {
-        revenueChart: this.generateChartData('revenue'),
-        ordersChart: this.generateChartData('orders'),
-        profitChart: this.generateChartData('profit')
-      },
-      topProducts: this.generateTopProducts(),
-      recentOrders: this.generateRecentOrders()
-    };
+  private async getDashboardData(): Promise<any> {
+    return dashboardData;
   }
 
   // ABC Analysis данные
@@ -158,8 +139,57 @@ export class DemoDataService {
   // Stock Analysis данные
   private getStockAnalysisData(): StockProductData[] {
     const products = stockAnalysis as StockProductData[];
-    // меняем данные
+
+    
+
     return products;
+  }
+
+  // Применение фильтров к данным
+  private applyFilters(products: StockProductData[], filters: any): StockProductData[] {
+    let filteredProducts = [...products];
+    
+    console.log('applyFilters: Starting with', filteredProducts.length, 'products');
+    
+    // Фильтрация по брендам
+    if (filters.activeBrandName && Array.isArray(filters.activeBrandName) && !filters.activeBrandName.some((item: any) => item.value === 'Все')) {
+      const selectedBrands = filters.activeBrandName.map((item: any) => item.name || item.value);
+      console.log('Filtering by brands:', selectedBrands);
+      filteredProducts = filteredProducts.filter(product => 
+        selectedBrands.includes(product.brandName)
+      );
+    }
+    
+    // Фильтрация по артикулам (SKU)
+    if (filters.activeArticle && Array.isArray(filters.activeArticle) && !filters.activeArticle.some((item: any) => item.value === 'Все')) {
+      const selectedArticles = filters.activeArticle.map((item: any) => item.value);
+      console.log('Filtering by articles:', selectedArticles);
+      filteredProducts = filteredProducts.filter(product => 
+        selectedArticles.includes(product.sku)
+      );
+    }
+    
+    // Фильтрация по группам товаров
+    if (filters.activeGroup && Array.isArray(filters.activeGroup) && !filters.activeGroup.some((item: any) => item.value === 'Все')) {
+      const selectedGroups = filters.activeGroup.map((item: any) => item.name || item.value);
+      console.log('Filtering by groups:', selectedGroups);
+      // Для демо-данных используем категории как группы
+      filteredProducts = filteredProducts.filter(product => 
+        selectedGroups.some(group => product.category.includes(group))
+      );
+    }
+    
+    // Фильтрация по категориям
+    if (filters.activeCategory && Array.isArray(filters.activeCategory) && !filters.activeCategory.some((item: any) => item.value === 'Все')) {
+      const selectedCategories = filters.activeCategory.map((item: any) => item.name || item.value);
+      console.log('Filtering by categories:', selectedCategories);
+      filteredProducts = filteredProducts.filter(product => 
+        selectedCategories.includes(product.category)
+      );
+    }
+    
+    console.log('applyFilters: Filtered to', filteredProducts.length, 'products');
+    return filteredProducts;
   }
 
   // Reports данные
@@ -523,7 +553,6 @@ export class DemoDataService {
         value: 'Демо магазин'
       }
     ];
-    console.log('getDemoShops: Returning shops:', shops);
     return shops;
   }
 }

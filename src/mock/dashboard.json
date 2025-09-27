@@ -1,0 +1,206 @@
+{
+    "orderCountList": [
+        299
+    ],
+    "orderAmountList": [
+        89629.04
+    ],
+    "saleCountList": [
+        187
+    ],
+    "saleAmountList": [
+        63781.2
+    ],
+    "orderCount": 299,
+    "orderAmount": 104071.72,
+    "saleCount": 185,
+    "saleAmount": 64392.2,
+    "orderCountCompare": "38%",
+    "orderAmountCompare": "52%",
+    "saleCountCompare": "3%",
+    "saleAmountCompare": "13%",
+    "buyoutPercent": 98.9,
+    "buyoutPercentCompare": "-1%",
+    "costPriceAmount": 0,
+    "costPriceAmountCompare": "0%",
+    "costPriceCount": 185,
+    "returnCount": 2,
+    "returnCountCompare": "0%",
+    "returnAmount": 611,
+    "returnAmountCompare": "0%",
+    "averageBill": 348,
+    "averageBillCompare": "10%",
+    "penalty": 0,
+    "additional": 0,
+    "commissionWB": 0,
+    "commissionWBCompare": "0%",
+    "logistics": 0,
+    "logisticsCompare": "0%",
+    "proceeds": 64392.2,
+    "proceedsCompare": "13%",
+    "marginalProfit": 64392.2,
+    "marginalProfitCompare": "13%",
+    "lostSalesCount": 0,
+    "lostSalesAmount": 0,
+    "grossProfit": 64392.2,
+    "grossProfitCompare": "13%",
+    "operatingProfit": 64392.2,
+    "operatingProfitCompare": "13%",
+    "netProfit": 57952.98,
+    "netProfitCompare": "13%",
+    "averageProfit": 57952.98,
+    "averageProfitCompare": "0%",
+    "tax": 6439.22,
+    "taxCompare": "13%",
+    "fbs": {
+        "count": 0,
+        "retail_amount": 0,
+        "cost_amount": 0
+    },
+    "fbo": {
+        "count": 3398,
+        "retail_amount": 2449669,
+        "cost_amount": 0
+    },
+    "toClient": {
+        "count": 1788,
+        "retail_amount": 1168392,
+        "cost_amount": 0
+    },
+    "fromClient": {
+        "count": 295,
+        "retail_amount": 232823,
+        "cost_amount": 0
+    },
+    "advertAmount": 0,
+    "advertAmountCompare": "0%",
+    "advertPercent": 0,
+    "advertPercentCompare": "0%",
+    "commissionWBPercent": 0,
+    "commissionWBPercentCompare": "0%",
+    "logisticsPercent": 0,
+    "logisticsPercentCompare": "0%",
+    "roi": 0,
+    "grossProfitAbility": 0,
+    "operatingProfitAbility": 100,
+    "ABCAnalysis": {
+        "amountA": 51505.89,
+        "countA": 120,
+        "amountPercentA": 79.99,
+        "countPercentA": 64.86,
+        "amountB": 9557.69,
+        "countB": 44,
+        "amountPercentB": 14.84,
+        "countPercentB": 23.78,
+        "amountC": 3328.62,
+        "countC": 21,
+        "amountPercentC": 5.17,
+        "countPercentC": 11.35
+    },
+    "storageData": 0,
+    "storageDataCompare": "0%",
+    "self_buy": 0,
+    "incorrect_attachments": 0,
+    "goods_labeling": 0,
+    "characteristics_change": 0,
+    "acceptance": 0,
+    "marginalityRoiChart": [
+        {
+            "date": "2025-09-25",
+            "roi": 0,
+            "marginality": 90
+        }
+    ],
+    "salesAndProfit": [
+        {
+            "date": "2025-09-25",
+            "sales": 64392.2,
+            "profit": 57952.98
+        }
+    ],
+    "structure": {
+        "retentions": 0,
+        "external_expenses": 0,
+        "tax": 10,
+        "profit": 90,
+        "costPrice": 0
+    },
+    "taxInfo": {
+        "wbRealization": 64392.2,
+        "taxBase": 64392.2,
+        "taxRate": 10,
+        "taxType": "УСН Д-Р",
+        "taxAmount": 6439.22
+    },
+    "revenueByWarehouse": [
+        {
+            "name": "Астана Карагандинское шоссе",
+            "revenue": 180.09
+        },
+        {
+            "name": "Владимир",
+            "revenue": 337.4
+        },
+        {
+            "name": "Екатеринбург - Испытателей 14г МП",
+            "revenue": 41938.99
+        },
+        {
+            "name": "Екатеринбург - Перспективный 12 МП",
+            "revenue": 8789.02
+        },
+        {
+            "name": "Казань",
+            "revenue": 679.93
+        },
+        {
+            "name": "Коледино",
+            "revenue": 2291.19
+        },
+        {
+            "name": "Котовск",
+            "revenue": 332.54
+        },
+        {
+            "name": "Невинномысск",
+            "revenue": 1548.63
+        },
+        {
+            "name": "Подольск",
+            "revenue": 380.26
+        },
+        {
+            "name": "Рязань (Тюшевское)",
+            "revenue": 529.02
+        },
+        {
+            "name": "Самара (Новосемейкино)",
+            "revenue": 409.21
+        },
+        {
+            "name": "Сарапул",
+            "revenue": 180.15
+        },
+        {
+            "name": "Тула",
+            "revenue": 3195.97
+        },
+        {
+            "name": "Электросталь",
+            "revenue": 6683.42
+        }
+    ],
+    "is_self_cost": false,
+    "turnover": 19,
+    "ebitda": 64392.2,
+    "ebitda_compare": "13%",
+    "ebitda_margin": 100,
+    "ebitda_margin_compare": "0%",
+    "wb_realization": 64392.2,
+    "tax_amount": 6439.22,
+    "paid_acceptance": 0,
+    "compensation": 0,
+    "logistic_per_one": 0,
+    "profit_per_one": 313.26,
+    "profit_per_one_compare": "10%"
+}
