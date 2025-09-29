@@ -53,20 +53,21 @@ const Header = ({
 
     return (
         <div className={styles.headerWrapper}>
-            {user && user.test_days &&
-            <StatusBanner
-                icon={
-                    <svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <rect y="0.5" width="16" height="16" rx="8" fill="#5329FF" />
-                        <path d="M5 8.1073L7.53846 10.5L11 6.5" stroke="white" strokeWidth="1.5" strokeLinecap="round" />
-                    </svg>
-                }
-                title={
-                    <p className={styles.header__statusBannerTitle}>
-                        <span>Ваш тестовый период активен.</span> До окончания осталось {getDayDeclension(user.test_days.toString())}
-                    </p>
-                }
-            />}
+            {user && user.test_days_left !== undefined && user.test_days_left !== null && user.test_days_left >= 0 &&
+                <StatusBanner
+                    icon={
+                        <svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect y="0.5" width="16" height="16" rx="8" fill="#5329FF" />
+                            <path d="M5 8.1073L7.53846 10.5L11 6.5" stroke="white" strokeWidth="1.5" strokeLinecap="round" />
+                        </svg>
+                    }
+                    title={
+                        <p className={styles.header__statusBannerTitle}>
+                            <span>Ваш тестовый период активен.</span> До окончания осталось {getDayDeclension(user.test_days.toString())}
+                        </p>
+                    }
+                />
+            }
             <header className={styles.header}>
                 <div className={styles.header__titleBlock}>
                     {typeof title === 'string' ?

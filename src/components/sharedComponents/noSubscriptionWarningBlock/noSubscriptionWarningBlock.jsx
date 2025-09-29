@@ -5,6 +5,7 @@ import AuthContext from '../../../service/AuthContext';
 import { getDayDeclension } from '../../../service/utils';
 import { URL } from '../../../service/config';
 import { Button, ConfigProvider } from 'antd';
+import ErrorModal from '../modals/errorModal/errorModal';
 
 
 const INIT_REQUEST_STATUS = {
@@ -117,6 +118,14 @@ const NoSubscriptionWarningBlock = () => {
                 visible={isModalVisible}
                 visibilityHandler={setIsModalVisible}
             /> */}
+            <ErrorModal
+                footer={null}
+                open={requestStatus.isError}
+                onOk={() => setRequestStatus({ ...INIT_REQUEST_STATUS })}
+                onClose={() => setRequestStatus({ ...INIT_REQUEST_STATUS })}
+                onCancel={() => setRequestStatus({ ...INIT_REQUEST_STATUS })}
+                message={requestStatus.message}
+            />
         </div>
     )
 }
