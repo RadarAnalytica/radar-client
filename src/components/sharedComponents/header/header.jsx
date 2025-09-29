@@ -63,7 +63,7 @@ const Header = ({
                     }
                     title={
                         <p className={styles.header__statusBannerTitle}>
-                            <span>Ваш тестовый период активен.</span> До окончания осталось {getDayDeclension(user.test_days.toString())}
+                            <span>Ваш тестовый период активен.</span> До окончания осталось {getDayDeclension(user.test_days_left.toString())}
                         </p>
                     }
                 />
