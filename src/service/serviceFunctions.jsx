@@ -1444,10 +1444,11 @@ export const ServiceFunctions = {
 			}
 
 			res = await res.json()
+			console.log(res)
 			setIsLoading(false);
 			res = res.map(_ => ({
 				..._,
-				display_name: _?.trademark || _?.full_name
+				display_name: `${_?.trademark} (${_?.name})`
 			}))
 			return res
 		} catch {
