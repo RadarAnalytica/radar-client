@@ -1,14 +1,18 @@
 import type { 
   DemoData, 
-  DashboardDemoData, 
   AbcAnalysisDemoData, 
-  StockAnalysisDemoData, 
+  StockProductData,
   ReportsDemoData,
   OrdersMapDemoData,
   SupplierAnalysisDemoData,
   DemoApiResponse,
   DemoConfig
 } from '../types/demo';
+
+import stockAnalysis from '../mock/stock-analysis.json';
+import dashboardData from '../mock/dashboard.json';
+
+import { store } from '@/redux/store';
 
 export class DemoDataService {
   private static instance: DemoDataService;
@@ -50,14 +54,13 @@ export class DemoDataService {
 
   // Получить данные для конкретного эндпоинта
   public getDataForEndpoint(endpoint: string, params?: any, data?: DemoData): any {
-    const demoData = data || this.demoData;
-    if (!demoData) return null;
-
     // Маппинг эндпоинтов на данные
     const endpointMap: Record<string, () => any> = {
       '/api/dashboard': () => this.getDashboardData(),
       '/api/abc-analysis': () => this.getAbcAnalysisData(),
-      '/api/stock-analysis': () => this.getStockAnalysisData(),
+      '/api/prod_analytic': () => this.getStockAnalysisData(),
+      '/api/common/filters_new': () => this.getDemoFilters(),
+      '/api/shop/all': () => this.getDemoShops(),
       '/api/reports/pl': () => this.getPlReportData(),
       '/api/reports/monthly': () => this.getMonthlyReportData(),
       '/api/reports/goods': () => this.getGoodsReportData(),
@@ -68,9 +71,11 @@ export class DemoDataService {
 
     const dataGetter = endpointMap[endpoint];
     if (dataGetter) {
-      return this.createApiResponse(dataGetter());
+      const result = this.createApiResponse(dataGetter());
+      return result;
     }
 
+    console.log('DemoDataService: No handler found for endpoint:', endpoint);
     return null;
   }
 
@@ -90,24 +95,8 @@ export class DemoDataService {
   }
 
   // Dashboard данные
-  private async getDashboardData(): Promise<DashboardDemoData> {
-    return {
-      metrics: {
-        revenue: 1250000,
-        orders: 1250,
-        profit: 180000,
-        growth: 15.5,
-        conversion: 3.2,
-        averageOrder: 1000
-      },
-      charts: {
-        revenueChart: this.generateChartData('revenue'),
-        ordersChart: this.generateChartData('orders'),
-        profitChart: this.generateChartData('profit')
-      },
-      topProducts: this.generateTopProducts(),
-      recentOrders: this.generateRecentOrders()
-    };
+  private async getDashboardData(): Promise<any> {
+    return dashboardData;
   }
 
   // ABC Analysis данные
@@ -150,21 +139,58 @@ export class DemoDataService {
   }
 
   // Stock Analysis данные
-  private async getStockAnalysisData(): Promise<StockAnalysisDemoData> {
-    return {
-      products: this.generateStockProducts(),
-      summary: {
-        totalProducts: 150,
-        totalRevenue: 2500000,
-        averageGrowth: 12.5,
-        topPerformer: 'Товар #1'
-      },
-      filters: {
-        categories: ['Электроника', 'Одежда', 'Дом и сад', 'Спорт'],
-        brands: ['Brand A', 'Brand B', 'Brand C', 'Brand D'],
-        priceRanges: ['0-1000', '1000-5000', '5000-10000', '10000+']
-      }
-    };
+  private getStockAnalysisData(): StockProductData[] {
+    const products = stockAnalysis as StockProductData[];
+    const filters = store.getState().filters;
+
+    return this.applyFilters(products, filters);
+  }
+
+  // Применение фильтров к данным
+  private applyFilters(products: StockProductData[], filters: any): StockProductData[] {
+    let filteredProducts = [...products];
+    
+    console.log('applyFilters: Starting with', filteredProducts.length, 'products');
+    
+    // Фильтрация по брендам
+    if (filters.activeBrandName && Array.isArray(filters.activeBrandName) && !filters.activeBrandName.some((item: any) => item.value === 'Все')) {
+      const selectedBrands = filters.activeBrandName.map((item: any) => item.name || item.value);
+      console.log('Filtering by brands:', selectedBrands);
+      filteredProducts = filteredProducts.filter(product => 
+        selectedBrands.includes(product.brandName)
+      );
+    }
+    
+    // Фильтрация по артикулам (SKU)
+    if (filters.activeArticle && Array.isArray(filters.activeArticle) && !filters.activeArticle.some((item: any) => item.value === 'Все')) {
+      const selectedArticles = filters.activeArticle.map((item: any) => item.value);
+      console.log('Filtering by articles:', selectedArticles);
+      filteredProducts = filteredProducts.filter(product => 
+        selectedArticles.includes(product.sku)
+      );
+    }
+    
+    // Фильтрация по группам товаров
+    if (filters.activeGroup && Array.isArray(filters.activeGroup) && !filters.activeGroup.some((item: any) => item.value === 'Все')) {
+      const selectedGroups = filters.activeGroup.map((item: any) => item.name || item.value);
+      console.log('Filtering by groups:', selectedGroups);
+      // Для демо-данных используем категории как группы
+      filteredProducts = filteredProducts.filter(product => 
+        selectedGroups.some(group => product.category.includes(group))
+      );
+    }
+    
+    // Фильтрация по категориям
+    if (filters.activeCategory && Array.isArray(filters.activeCategory) && !filters.activeCategory.some((item: any) => item.value === 'Все')) {
+      const selectedCategories = filters.activeCategory.map((item: any) => item.name || item.value);
+      console.log('Filtering by categories:', selectedCategories);
+      filteredProducts = filteredProducts.filter(product => 
+        selectedCategories.includes(product.category)
+      );
+    }
+    
+    console.log('applyFilters: Filtered to', filteredProducts.length, 'products');
+    return filteredProducts;
   }
 
   // Reports данные
@@ -302,24 +328,6 @@ export class DemoDataService {
     }));
   }
 
-  private generateStockProducts() {
-    return Array.from({ length: 15 }, (_, i) => ({
-      id: `stock-product-${i + 1}`,
-      name: `Товар на складе ${i + 1}`,
-      sku: `STOCK-${i + 1}`,
-      category: ['Электроника', 'Одежда', 'Дом'][i % 3],
-      brand: ['Brand A', 'Brand B', 'Brand C'][i % 3],
-      price: Math.floor(Math.random() * 5000) + 500,
-      revenue: Math.floor(Math.random() * 200000) + 10000,
-      growth: Math.floor(Math.random() * 100) - 20,
-      profit: Math.floor(Math.random() * 100000) + 5000,
-      stock: Math.floor(Math.random() * 100) + 10,
-      sales: Math.floor(Math.random() * 1000) + 100,
-      rating: Math.floor(Math.random() * 2) + 3,
-      reviews: Math.floor(Math.random() * 500) + 50
-    }));
-  }
-
   private generateExpenses() {
     return Array.from({ length: 10 }, (_, i) => ({
       id: `expense-${i + 1}`,
@@ -405,5 +413,147 @@ export class DemoDataService {
   // Очистка данных
   public clearDemoData(): void {
     this.demoData = null;
+  }
+
+  // Демо-фильтры на основе данных из stock-analysis.json
+  private getDemoFilters() {
+    const products = stockAnalysis as StockProductData[];
+    
+    // Извлекаем уникальные категории и бренды
+    const categories = [...new Set(products.map(product => product.category))];
+    const brands = [...new Set(products.map(product => product.brandName))];
+    
+    // Создаем демо-магазин
+    const demoShop = {
+      id: 1,
+      brand_name: 'Демо магазин',
+      name: 'Демо магазин',
+      is_active: true,
+      is_valid: true,
+      is_primary_collect: true,
+      is_self_cost_set: true,
+      value: 'Демо магазин'
+    };
+
+    // Создаем структуру фильтров аналогично реальным данным
+    const shops = [demoShop];
+    
+    const brandsData = brands.map((brand, index) => ({
+      name: brand,
+      value: brand,
+      category: categories[index % categories.length]
+    }));
+
+    const categoriesData = categories.map((category, index) => ({
+      id: index + 1,
+      name: category,
+      brand: brandsData.filter(brand => brand.category === category)
+    }));
+
+    // Создаем артикулы на основе SKU из данных
+    const articlesData = products.map(product => ({
+      name: product.sku,
+      value: product.sku,
+      brand: product.brandName,
+      category: product.category
+    }));
+
+    // Создаем группы товаров
+    const groupsData = [
+      { id: 1, name: 'Ювелирные изделия', value: 'Ювелирные изделия', key: 1 },
+      { id: 2, name: 'Аксессуары', value: 'Аксессуары', key: 2 }
+    ];
+
+    // Создаем недели (периоды)
+    const weeksListData = [
+      { name: 'Последние 7 дней', value: 7, key: 7 },
+      { name: 'Последние 14 дней', value: 14, key: 14 },
+      { name: 'Последние 30 дней', value: 30, key: 30 },
+      { name: 'Последние 90 дней', value: 90, key: 90 }
+    ];
+
+    // Создаем месяцы
+    const monthsData = [
+      { name: 'Январь', value: 1, key: 1 },
+      { name: 'Февраль', value: 2, key: 2 },
+      { name: 'Март', value: 3, key: 3 },
+      { name: 'Апрель', value: 4, key: 4 },
+      { name: 'Май', value: 5, key: 5 },
+      { name: 'Июнь', value: 6, key: 6 }
+    ];
+
+    const filtersData = [
+      {
+        shop: demoShop,
+        brands: {
+          stateKey: 'activeBrandName',
+          ruLabel: 'Бренд',
+          enLabel: 'brands',
+          data: brandsData
+        },
+        articles: {
+          stateKey: 'activeArticle',
+          ruLabel: 'Артикул',
+          enLabel: 'articles',
+          data: articlesData
+        },
+        groups: {
+          stateKey: 'activeGroup',
+          ruLabel: 'Группа товаров',
+          enLabel: 'product_groups',
+          data: groupsData
+        },
+        weeks: {
+          stateKey: 'activeWeeks',
+          ruLabel: 'Период',
+          enLabel: 'weeks',
+          data: weeksListData
+        },
+        months: {
+          stateKey: 'activeMonths',
+          ruLabel: 'Период',
+          enLabel: 'months',
+          data: monthsData
+        },
+        categories: {
+          stateKey: 'activeCategory',
+          ruLabel: 'Категория',
+          enLabel: 'categories',
+          data: categoriesData
+        }
+      }
+    ];
+
+    return {
+      filtersData,
+      shops,
+      initState: {
+        activeBrandName: [{ value: 'Все' }],
+        activeArticle: [{ value: 'Все' }],
+        activeGroup: [{ id: 0, value: 'Все' }],
+        activeCategory: [{ id: 0, value: 'Все' }],
+        selectedRange: { period: 30 },
+        activeBrand: demoShop,
+        activeWeeks: [{ name: 'Последние 30 дней', value: 30, key: 30 }],
+        activeMonths: [{ name: 'Июнь', value: 6, key: 6 }]
+      }
+    };
+  }
+
+  // Демо-магазины
+  private getDemoShops() {
+    const shops = [
+      {
+        id: 1,
+        brand_name: 'Демо магазин',
+        name: 'Демо магазин',
+        is_active: true,
+        is_valid: true,
+        is_primary_collect: true,
+        is_self_cost_set: true,
+        value: 'Демо магазин'
+      }
+    ];
+    return shops;
   }
 }

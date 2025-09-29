@@ -3,6 +3,7 @@ import { URL } from '../../service/config';
 import { setLoading } from '../loading/loadingSlice';
 import { weeksList, getSavedActiveWeeks, getSavedActiveMonths } from '@/service/utils';
 import { actions as shopsActions } from '../shops/shopsSlice';
+import { fetchApi } from '../../service/fetchApi';
 
 
 
@@ -230,7 +231,7 @@ export const fetchFilters = createAsyncThunk(
       //dispatch(setLoading(true));
 
       let data = null;
-      const res = await fetch(`${URL}/api/common/filters_new`, {
+      const res = await fetchApi('/api/common/filters_new', {
         method: 'GET',
         headers: {
           'content-type': 'application/json',
@@ -238,11 +239,20 @@ export const fetchFilters = createAsyncThunk(
         },
       });
       data = await res.json();
+      
+      // Для демо-данных структура отличается
       if (data?.data?.shops) {
-        return createFiltersDTO(data.data.shops, shopsData);
+        const result = createFiltersDTO(data.data.shops, shopsData);
+        return result;
+      }
+      
+      // Если это демо-данные (структура filtersData)
+      if (data?.filtersData) {
+        return data;
       }
 
     } catch (e) {
+      console.error('fetchFilters: Error:', e);
       throw e;
     } finally {
       //dispatch(setLoading(false));

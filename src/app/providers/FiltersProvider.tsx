@@ -3,38 +3,42 @@ import { useAppSelector } from '@/redux/hooks';
 import { useDispatch } from 'react-redux';
 import AuthContext from '@/service/AuthContext';
 import { fetchFilters } from '@/redux/apiServicePagesFiltersState/filterActions';
-import { URL } from '@/service/config';
+// import { URL } from '@/service/config';
+import { fetchApi } from '@/service/fetchApi';
 import type { RootState, AppDispatch } from '@/redux/store.types';
 
 const FiltersProvider = ({ children }: { children: React.ReactNode }) => {
 
     const { user, authToken } = useContext(AuthContext);
-    const dispatch = useDispatch<AppDispatch>()
-    const { activeBrand, shops } = useAppSelector((store: RootState) => store.filters)
+    const dispatch = useDispatch<AppDispatch>();
+    const { activeBrand, shops } = useAppSelector((store: RootState) => store.filters);
     const { messages } = useAppSelector((state: RootState) => state.messagesSlice);
-    const prevMessages = useRef<any[] | null>(null)
+    const prevMessages = useRef<any[] | null>(null);
 
 
     const getFiltersData = async () => {
         try {
-            let shopsResponse = await fetch(`${URL}/api/shop/all`, {
+            let shopsResponse = await fetchApi('/api/shop/all', {
                 method: 'GET',
                 headers: {
                     'content-type': 'application/json',
                     authorization: user?.subscription_status === null ? 'JWT ' + 'mockData' : 'JWT ' + authToken,
                 }
-            })
-            //let shopsResponse = null
+            });
+            
+            let shopsData = null;
+            if (shopsResponse?.ok) {
+                shopsData = await shopsResponse.json();
+            }
+            
             // @ts-ignore
             dispatch(fetchFilters({
                 authToken,
-                shopsData: shopsResponse?.ok ? await shopsResponse.json() : null
+                shopsData
                 //shopsData: null
-            }))
+            }));
         } catch (error) {
-            if (typeof error === 'string') {
-                console.error("Error fetching initial data:", error);
-            }
+            console.error("FiltersProvider: Error fetching initial data:", error);
         }
     }
 

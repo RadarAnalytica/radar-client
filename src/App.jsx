@@ -114,11 +114,11 @@ function App() {
                 <Route path='/selfcost' element={<ProtectedRoute testPeriodProtected expireProtected routeRuName='Себестоимость товаров'><SelfCostPage /></ProtectedRoute>} />
                 <Route path='/sku-analysis' element={<ProtectedRoute testPeriodProtected expireProtected routeRuName='Анализ артикула'><SkuAnalysisPage /></ProtectedRoute>} />
                 <Route path='/sku-analysis/:id' element={<ProtectedRoute testPeriodProtected testPeriodGuardType='redirect' testPeriodRedirect='/sku-analysis' expireProtected routeRuName='Анализ артикула'><SkuIdPage /></ProtectedRoute>} />
-                <Route path='/dashboard' element={<ProtectedRoute testPeriodProtected expireProtected onboardProtected routeRuName='Сводка продаж'><DashboardPage /></ProtectedRoute>} />
+                <Route path='/dashboard' element={<ProtectedRoute expireProtected onboardProtected routeRuName='Сводка продаж'><DashboardPage /></ProtectedRoute>} />
                 <Route path='/abc-data' element={<ProtectedRoute testPeriodProtected expireProtected onboardProtected routeRuName='ABC-анализ'><AbcAnalysisPage /></ProtectedRoute>} />
                 <Route path='/rank-analysis' element={<ProtectedRoute testPeriodProtected expireProtected routeRuName='Сравнение SEO'><SeoPage /></ProtectedRoute>} />
                 <Route path='/ai-generator' element={<ProtectedRoute testPeriodProtected expireProtected routeRuName='Генерация описания AI'><AiDescriptionGeneratorPage /></ProtectedRoute>} />
-                <Route path='/stock-analysis' element={<ProtectedRoute testPeriodProtected expireProtected onboardProtected routeRuName='Аналитика по товарам'><StockAnalysisPage /></ProtectedRoute>} />
+                <Route path='/stock-analysis' element={<ProtectedRoute expireProtected onboardProtected routeRuName='Аналитика по товарам'><StockAnalysisPage /></ProtectedRoute>} />
                 <Route path='/orders-map' element={<ProtectedRoute testPeriodProtected expireProtected onboardProtected routeRuName='География заказов и продаж'><OrdersMap /></ProtectedRoute>} />
                 <Route path='/linked-shops' element={<ProtectedRoute testPeriodProtected expireProtected onboardProtected routeRuName='Подключенные магазины'><LinkedShopsPage /></ProtectedRoute>} />
                 <Route path='/report-main' element={<ProtectedRoute testPeriodProtected expireProtected routeRuName='Отчёт / Главная'><ReportMain /></ProtectedRoute>} />

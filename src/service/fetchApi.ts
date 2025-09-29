@@ -49,14 +49,14 @@ const createMockResponse = (data: any) => {
 // Основная функция обертки над fetch
 export const fetchApi = async (url: string, options: RequestInit = {}) => {
   const user = getCurrentUser();
-  
+
   // Проверяем, находится ли пользователь в демо-режиме
   if (user?.subscription_status === null) {
     const demoService = DemoDataService.getInstance();
     const demoData = demoService.getDataForEndpoint(url);
-    
-    if (demoData) {
-      return createMockResponse(demoData);
+
+    if (demoData?.data) {
+      return createMockResponse(demoData.data);
     }
     
     // Если нет демо-данных для этого эндпоинта, возвращаем ошибку

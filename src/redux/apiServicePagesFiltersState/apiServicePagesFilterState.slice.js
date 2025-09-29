@@ -20,8 +20,6 @@ const initialState = {
     isFiltersLoaded: false
 }
 
-
-
 const apiServicePagesFilterStateSlice = createSlice({
     name: 'filters',
     initialState,
@@ -51,6 +49,7 @@ const apiServicePagesFilterStateSlice = createSlice({
         },
         setActiveFilters: (state, action) => {
             const { stateKey, data } = action.payload;
+            console.log('Redux slice: setActiveFilters called:', { stateKey, data });
             if (stateKey === 'activeBrandName') {
                 return {
                     ...state,
@@ -96,16 +95,16 @@ const apiServicePagesFilterStateSlice = createSlice({
         }
     },
     extraReducers: (bulder) => {
-        bulder
-            .addCase(fetchFilters.fulfilled, (state, action) => {
-                return {
-                    ...state,
-                    filters: action.payload.filtersData,
-                    shops: action.payload.shops,
-                    ...action.payload.initState,
-                    isFiltersLoaded: true
-                }
-            })
+        bulder.addCase(fetchFilters.fulfilled, (state, action) => {
+            const newState = {
+                ...state,
+                filters: action.payload?.filtersData,
+                shops: action.payload?.shops,
+                ...action.payload?.initState,
+                isFiltersLoaded: true
+            };
+            return newState;
+        });
     }
 })
 
