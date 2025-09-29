@@ -44,8 +44,6 @@ import { mockGetDashBoard, mockGetChartDetailData } from '../service/mockService
 const DashboardPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-
-
   const navigate = useNavigate();
   const { activeBrand, selectedRange } = useAppSelector((state) => state.filters);
   const { user, authToken, logout } = useContext(AuthContext);
@@ -91,7 +89,7 @@ const DashboardPage = () => {
     const updateChartDetailData = async () => {
       setIsDetailChartDataLoading(true)
       let data = null;
-      if (user.subscription_status === null) {;
+      if (user.subscription_status === null) {
         data = await mockGetChartDetailData(selectedRangeDetail);
       } else {
         data = await ServiceFunctions.getChartDetailData(
