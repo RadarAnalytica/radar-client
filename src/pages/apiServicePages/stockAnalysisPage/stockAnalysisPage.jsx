@@ -71,6 +71,8 @@ const StockAnalysisPage = () => {
             const currShop = shops.find(_ => _.id === activeBrand.id);
             setShopStatus(currShop);
         }
+
+        fetchAnalysisData();
     }, [shops, filters]);
 
     return (

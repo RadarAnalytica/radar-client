@@ -12,6 +12,8 @@ import type {
 import stockAnalysis from '../mock/stock-analysis.json';
 import dashboardData from '../mock/dashboard.json';
 
+import { store } from '@/redux/store';
+
 export class DemoDataService {
   private static instance: DemoDataService;
   private demoData: DemoData | null = null;
@@ -139,10 +141,9 @@ export class DemoDataService {
   // Stock Analysis данные
   private getStockAnalysisData(): StockProductData[] {
     const products = stockAnalysis as StockProductData[];
+    const filters = store.getState().filters;
 
-    
-
-    return products;
+    return this.applyFilters(products, filters);
   }
 
   // Применение фильтров к данным

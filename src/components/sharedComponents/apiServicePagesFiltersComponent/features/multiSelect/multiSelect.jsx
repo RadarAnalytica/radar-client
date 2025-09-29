@@ -195,15 +195,15 @@ export const MultiSelect = (
                         dropdownRender={renderPopup}
                         onDropdownVisibleChange={(open) => {
                             if (!open) {
-                                setSearchState('')
-                                if (JSON.stringify(prevSelectState.current) === JSON.stringify(selectState)) return
+                                setSearchState('');
+                                if (JSON.stringify(prevSelectState.current) === JSON.stringify(selectState)) return;
                                 console.log('MultiSelect: Dispatching filter change:', {
                                     stateKey: params.stateKey,
                                     data: selectState,
                                     prevState: prevSelectState.current
                                 });
-                                dispatch(filterActions.setActiveFilters({ stateKey: params.stateKey, data: selectState }))
-                                prevSelectState.current = selectState
+                                dispatch(filterActions.setActiveFilters({ stateKey: params.stateKey, data: selectState }));
+                                prevSelectState.current = selectState;
                                 // if (selectState.length === optionsData.length) {
                                 //     setSelectState([{value: 'Все', id: 0}])
                                 //     dispatch(filterActions.setActiveFilters({ stateKey: params.stateKey, data: [{value: 'Все', id: 0}] }))
