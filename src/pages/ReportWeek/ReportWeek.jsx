@@ -1,18 +1,18 @@
 import { useMemo } from 'react';
-import AuthContext from '../../service/AuthContext';
+import AuthContext from '@/service/AuthContext';
 import { useState, useEffect, useContext, useLayoutEffect } from 'react';
-import MobilePlug from '../../components/sharedComponents/mobilePlug/mobilePlug';
-import Sidebar from '../../components/sharedComponents/sidebar/sidebar';
-import Header from '../../components/sharedComponents/header/header';
-import { ServiceFunctions } from '../../service/serviceFunctions';
-import { fileDownload } from '../../service/utils';
-import { Filters } from '../../components/sharedComponents/apiServicePagesFiltersComponent';
+import MobilePlug from '@/components/sharedComponents/mobilePlug/mobilePlug';
+import Sidebar from '@/components/sharedComponents/sidebar/sidebar';
+import Header from '@/components/sharedComponents/header/header';
+import { ServiceFunctions } from '@/service/serviceFunctions';
+import { fileDownload } from '@/service/utils';
+import { Filters } from '@/components/sharedComponents/apiServicePagesFiltersComponent';
 import { ConfigProvider, Button, Popover } from 'antd';
 import styles from './ReportWeek.module.css';
-import ReportTable from '../../components/sharedComponents/ReportTable/ReportTable';
-import TableSettingModal from '../../components/sharedComponents/modals/tableSettingModal/TableSettingModal';
-import { useAppSelector } from '../../redux/hooks';
-import SelfCostWarningBlock from '../../components/sharedComponents/selfCostWraningBlock/selfCostWarningBlock';
+import ReportTable from '@/components/sharedComponents/ReportTable/ReportTable';
+import TableSettingModal from '@/components/sharedComponents/modals/tableSettingModal/TableSettingModal';
+import { useAppSelector } from '@/redux/hooks';
+import SelfCostWarningBlock from '@/components/sharedComponents/selfCostWraningBlock/selfCostWarningBlock';
 import {
 	eachWeekOfInterval,
 	format,
@@ -21,13 +21,15 @@ import {
 	getISOWeek,
 } from 'date-fns';
 // import downloadIcon from '../images/Download.svg';
-import DataCollectWarningBlock from '../../components/sharedComponents/dataCollectWarningBlock/dataCollectWarningBlock'
-import NoSubscriptionWarningBlock from '../../components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock';
+import DataCollectWarningBlock from '@/components/sharedComponents/dataCollectWarningBlock/dataCollectWarningBlock'
+import NoSubscriptionWarningBlock from '@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock';
 import { COLUMNS } from './columnsConfig';
 import TableWidget from './widgets/TableWidget/TableWidget';
+import { useDemoMode } from '@/app/providers/DemoDataProvider';
 
 export default function ReportWeek() {
 	const { user, authToken } = useContext(AuthContext);
+	const { isDemoMode } = useDemoMode();
 	const { activeBrand, selectedRange, activeBrandName, activeArticle, activeGroup, activeWeeks, isFiltersLoaded } = useAppSelector(
 		(state) => state.filters
 	);
@@ -55,16 +57,15 @@ export default function ReportWeek() {
 			}, 1000)
 		}
 		return () => clearInterval(interval)
-	}, [loading])
+	}, [loading]);
 
 	useEffect(() => {
 		localStorage.removeItem('reportWeekColumns');
-		const savedTableColumns = localStorage.getItem('reportWeekTableConfig')
+		const savedTableColumns = localStorage.getItem('reportWeekTableConfig');
 		if (savedTableColumns) {
-			setTableColumns(JSON.parse(savedTableColumns))
+			setTableColumns(JSON.parse(savedTableColumns));
 		}
-	}, [])
-
+	}, []);
 
 	const weekOptions = useMemo(() => {
 		// шаблон для создания списка опций для фильтра
@@ -99,21 +100,6 @@ export default function ReportWeek() {
 		return weeks.map((el, i) => optionTemplate(el)).reverse();
 	}, []);
 
-	// const updateSavedFilterWeek = () => {
-	// 	const savedFilterWeek = localStorage.getItem('reportWeekFilterWeek');
-	// 	if (savedFilterWeek) {
-	// 		const data = JSON.parse(savedFilterWeek);
-	// 		if (activeBrand?.id in data) {
-	// 			return (data[activeBrand.id]);
-	// 		}
-	// 	}
-	// 	return (weekOptions.slice(0, 12));
-	// };
-	
-	// const [weekSelected, setWeekSelected] = useState(updateSavedFilterWeek());
-
-	// const week = useMemo(() => updateSavedFilterWeek(), [activeBrand, weekSelected])
-
 	const initTableColumns = () => {
 		const savedColumnsWeek = localStorage.getItem('reportWeekColumns');
 		if (savedColumnsWeek) {
@@ -133,44 +119,22 @@ export default function ReportWeek() {
 		return COLUMNS;
 	}
 
-	
-
 	const shopStatus = useMemo(() => {
 			if (!activeBrand || !shops) return null;
 			
 			if (activeBrand.id === 0) {
 					return {
-							id: 0,
-							brand_name: 'Все',
-							is_active: shops.some(shop => shop.is_primary_collect),
-							is_valid: true,
-							is_primary_collect: shops.some(shop => shop.is_primary_collect),
-							is_self_cost_set: !shops.some(shop => !shop.is_self_cost_set)
+						id: 0,
+						brand_name: 'Все',
+						is_active: shops.some(shop => shop.is_primary_collect),
+						is_valid: true,
+						is_primary_collect: shops.some(shop => shop.is_primary_collect),
+						is_self_cost_set: !shops.some(shop => !shop.is_self_cost_set)
 					};
 			}
 			
 			return shops.find(shop => shop.id === activeBrand.id);
 	}, [activeBrand, shops]);
-
-	// const weekSelectedFormat = () => {
-	// 	if (!week?.find((el) => el.value === 'Все')) {
-	// 		return week.map((el) => el.value);
-	// 	}
-	// };
-
-	// const weekSelectedHandler = (data) => {
-	// 	let savedFilterWeek =
-	// 		JSON.parse(localStorage.getItem('reportWeekFilterWeek')) || {};
-
-	// 	savedFilterWeek[activeBrand.id] = data;
-	// 	if (Object.keys(savedFilterWeek).length > 0) {
-	// 		localStorage.setItem(
-	// 			'reportWeekFilterWeek',
-	// 			JSON.stringify(savedFilterWeek)
-	// 		);
-	// 	}
-	// 	setWeekSelected(data);
-	// };
 
 	useEffect(() => {
 		if (!activeBrand){
@@ -182,12 +146,11 @@ export default function ReportWeek() {
 			'activeWeeks',
 			JSON.stringify(savedFilterWeek)
 		);
-	}, [activeWeeks])
+	}, [activeWeeks]);
 
 	const updateDataReportWeek = async () => {
 		setLoading(true);
 		setProgress(0);
-		// const weekStart = weekSelectedFormat();
 		try {
 			if (activeBrand !== null && activeBrand !== undefined) {
 				const response = await ServiceFunctions.getReportWeek(
@@ -209,7 +172,6 @@ export default function ReportWeek() {
 
 				setProgress(100);
 				await setTimeout(() => dataToTableData(weeks), 500);
-				// dataToTableData(weeks);
 			}
 		} catch (e) {
 			console.error(e);
@@ -248,8 +210,6 @@ export default function ReportWeek() {
 			return row;
 		});
 
-
-
 		rows.forEach(row => {
 			Object.keys(row).forEach(key => {
 				if (!summary[key]) {
@@ -259,7 +219,6 @@ export default function ReportWeek() {
 				}
 			})
 		})
-		
 
 		// приcвоение расчетных значений
 		summary = {
@@ -276,8 +235,6 @@ export default function ReportWeek() {
 			profit_per_one: summary.profit / summary.revenue_quantity,
 			avg_check: summary.revenue_rub / summary.revenue_quantity,
 		};
-
-
 
 		rows.unshift(summary);
 		setTableRows(rows);
@@ -299,7 +256,6 @@ export default function ReportWeek() {
 	};
 
 	const tableColumnsHandler = (columns) => {
-		//localStorage.setItem('reportWeekColumns', JSON.stringify(columns.map(column => column.dataIndex)));
 		setTableColumns(columns)
 	}
 
@@ -363,6 +319,7 @@ export default function ReportWeek() {
 			setDownloadLoading(false)
 		}
 	};
+
 	return (
 		<main className={styles.page}>
 			<MobilePlug />
@@ -370,6 +327,7 @@ export default function ReportWeek() {
 			<section className={styles.page__sideNavWrapper}>
 				<Sidebar />
 			</section>
+
 			{/* ------ CONTENT ------ */}
 			<section className={styles.page__content}>
 				{/* header */}
@@ -381,14 +339,15 @@ export default function ReportWeek() {
 					<SelfCostWarningBlock />
 				)}
 
+				{isDemoMode && (
+					<NoSubscriptionWarningBlock />
+				)}
+
 				{shops && (<div className={styles.controls}>
 					<div className={styles.filter}>
 						<Filters
 							timeSelect={false}
 							setLoading={setLoading}
-							// brandSelect={false}
-							// articleSelect={false}
-							// groupSelect={false}
 							weekSelect={true}
 							isDataLoading={loading}
 						/>
@@ -443,58 +402,28 @@ export default function ReportWeek() {
 								</Button>
 							</Popover>
 						</ConfigProvider>
-						{/* <ConfigProvider
-							theme={{
-								token: {
-									colorBorder: '#00000033',
-									colorPrimary: '#5329FF',
-								},
-								components: {
-									Button: {
-										paddingInlineLG: 9.5,
-										defaultShadow: false,
-										controlHeightLG: 45,
-									},
-								},
-							}}
-						>
-							<Button
-								type="primary"
-								iconPosition="start"
-								size="large"
-								onClick={handleDownload}
-								loading={downloadLoading}
-								icon={<img src={downloadIcon} />}
-							>
-								Скачать Excel
-							</Button>
-						</ConfigProvider> */}
 					</div>
 				</div>)}
 
-				{!loading && shops && user.subscription_status === null && (
-					<NoSubscriptionWarningBlock />
-				)}
-
 				{!loading && shops && user?.subscription_status && !shopStatus?.is_primary_collect && (
-						<DataCollectWarningBlock
-								title='Ваши данные еще формируются и обрабатываются.'
-						/>
+					<DataCollectWarningBlock
+						title='Ваши данные еще формируются и обрабатываются.'
+					/>
 				)}
-				{/* { shopStatus?.is_primary_collect && */}
-					<div className={styles.container}>
-						<TableWidget
-							loading={loading}
-							columns={tableColumns}
-							data={tableRows}
-							is_primary_collect={shopStatus?.is_primary_collect}
-							progress={progress}
-							setTableColumns={setTableColumns}
-						/>
-					</div>
 
-					
+				{/* { shopStatus?.is_primary_collect && */}
+				<div className={styles.container}>
+					<TableWidget
+						loading={loading}
+						columns={tableColumns}
+						data={tableRows}
+						is_primary_collect={shopStatus?.is_primary_collect}
+						progress={progress}
+						setTableColumns={setTableColumns}
+					/>
+				</div>
 			</section>
+
 			{isConfigOpen && (
 				<TableSettingModal
 					isModalOpen={isConfigOpen}

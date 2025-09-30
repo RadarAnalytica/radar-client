@@ -5,12 +5,16 @@ import type {
   ReportsDemoData,
   OrdersMapDemoData,
   SupplierAnalysisDemoData,
+  WeeklyReportDemoData,
+  WeeklyReportYear,
+  WeeklyReportWeek,
   DemoApiResponse,
   DemoConfig
 } from '../types/demo';
 
 import stockAnalysis from '../mock/stock-analysis.json';
 import dashboardData from '../mock/dashboard.json';
+import weeklyReportData from '../mock/weekly-report.json';
 
 import { store } from '@/redux/store';
 
@@ -38,15 +42,16 @@ export class DemoDataService {
   }
 
   // Получить все демо-данные
-  public async getAllDemoData(): Promise<DemoData> {
+  public getAllDemoData(): DemoData {
     if (!this.demoData) {
       this.demoData = {
-        dashboard: await this.getDashboardData(),
-        abcAnalysis: await this.getAbcAnalysisData(),
-        stockAnalysis: await this.getStockAnalysisData(),
-        reports: await this.getReportsData(),
-        ordersMap: await this.getOrdersMapData(),
-        supplierAnalysis: await this.getSupplierAnalysisData()
+        dashboard: this.getDashboardData(),
+        abcAnalysis: this.getAbcAnalysisData(),
+        stockAnalysis: this.getStockAnalysisData(),
+        reports: this.getReportsData(),
+        ordersMap: this.getOrdersMapData(),
+        supplierAnalysis: this.getSupplierAnalysisData(),
+        weeklyReport: this.getWeeklyReportData()
       };
     }
     return this.demoData;
@@ -59,6 +64,7 @@ export class DemoDataService {
       '/api/dashboard': () => this.getDashboardData(),
       '/api/abc-analysis': () => this.getAbcAnalysisData(),
       '/api/prod_analytic': () => this.getStockAnalysisData(),
+      '/api/periodic_reports/weekly_report': () => this.getWeeklyReportData(),
       '/api/common/filters_new': () => this.getDemoFilters(),
       '/api/shop/all': () => this.getDemoShops(),
       '/api/reports/pl': () => this.getPlReportData(),
@@ -95,12 +101,40 @@ export class DemoDataService {
   }
 
   // Dashboard данные
-  private async getDashboardData(): Promise<any> {
-    return dashboardData;
+  private getDashboardData(): any {
+    let data = { ...dashboardData };
+
+    const filters = store.getState().filters;
+    let days = filters.selectedRange.period;
+    if (filters.selectedRange?.from && filters.selectedRange?.to) {
+      days = Math.round((Number(new Date(filters.selectedRange.to)) - Number(new Date(filters.selectedRange.from))) / 3600 / 24 / 1000);
+    }
+
+    data.orderCountList = data.orderCountList.slice(0, days);
+    data.orderAmountList = data.orderAmountList.slice(0, days);
+    data.saleCountList = data.saleCountList.slice(0, days);
+    data.saleAmountList = data.saleAmountList.slice(0, days);
+    data.marginalityRoiChart = data.marginalityRoiChart.slice(0, days);
+    data.salesAndProfit = data.salesAndProfit.slice(0, days);
+
+    const denominator = Math.round(90 / days);
+    data.orderAmount = data.orderAmount / denominator;
+    data.saleAmount = data.saleAmount / denominator;
+    data.orderCount = data.orderCount / denominator;
+    data.saleCount = data.saleCount / denominator;
+    data.returnAmount = data.returnAmount / denominator;
+    data.returnCount = data.returnCount / denominator;
+    data.averageBill = data.averageBill / denominator;
+    data.penalty = data.penalty / denominator;
+    data.additional = data.additional / denominator;
+    data.commissionWB = data.commissionWB / denominator;
+    data.logistics = data.logistics / denominator;
+
+    return data;
   }
 
   // ABC Analysis данные
-  private async getAbcAnalysisData(): Promise<AbcAnalysisDemoData> {
+  private getAbcAnalysisData(): AbcAnalysisDemoData {
     return {
       categories: {
         A: {
@@ -149,13 +183,19 @@ export class DemoDataService {
   // Применение фильтров к данным
   private applyFilters(products: StockProductData[], filters: any): StockProductData[] {
     let filteredProducts = [...products];
-    
-    console.log('applyFilters: Starting with', filteredProducts.length, 'products');
+
+    // Фильтрация по периоду
+    if (filters.selectedRange) {
+      let days = filters.selectedRange.period;
+      if (filters.selectedRange.from && filters.selectedRange.to) {
+        days = Math.round((Number(new Date(filters.selectedRange.to)) - Number(new Date(filters.selectedRange.from))) / 3600 / 24 / 1000);
+      }
+      filteredProducts = filteredProducts.slice(0, Math.round(days / 2));
+    }
     
     // Фильтрация по брендам
     if (filters.activeBrandName && Array.isArray(filters.activeBrandName) && !filters.activeBrandName.some((item: any) => item.value === 'Все')) {
       const selectedBrands = filters.activeBrandName.map((item: any) => item.name || item.value);
-      console.log('Filtering by brands:', selectedBrands);
       filteredProducts = filteredProducts.filter(product => 
         selectedBrands.includes(product.brandName)
       );
@@ -164,7 +204,6 @@ export class DemoDataService {
     // Фильтрация по артикулам (SKU)
     if (filters.activeArticle && Array.isArray(filters.activeArticle) && !filters.activeArticle.some((item: any) => item.value === 'Все')) {
       const selectedArticles = filters.activeArticle.map((item: any) => item.value);
-      console.log('Filtering by articles:', selectedArticles);
       filteredProducts = filteredProducts.filter(product => 
         selectedArticles.includes(product.sku)
       );
@@ -173,8 +212,6 @@ export class DemoDataService {
     // Фильтрация по группам товаров
     if (filters.activeGroup && Array.isArray(filters.activeGroup) && !filters.activeGroup.some((item: any) => item.value === 'Все')) {
       const selectedGroups = filters.activeGroup.map((item: any) => item.name || item.value);
-      console.log('Filtering by groups:', selectedGroups);
-      // Для демо-данных используем категории как группы
       filteredProducts = filteredProducts.filter(product => 
         selectedGroups.some(group => product.category.includes(group))
       );
@@ -183,28 +220,26 @@ export class DemoDataService {
     // Фильтрация по категориям
     if (filters.activeCategory && Array.isArray(filters.activeCategory) && !filters.activeCategory.some((item: any) => item.value === 'Все')) {
       const selectedCategories = filters.activeCategory.map((item: any) => item.name || item.value);
-      console.log('Filtering by categories:', selectedCategories);
       filteredProducts = filteredProducts.filter(product => 
         selectedCategories.includes(product.category)
       );
     }
     
-    console.log('applyFilters: Filtered to', filteredProducts.length, 'products');
     return filteredProducts;
   }
 
   // Reports данные
-  private async getReportsData(): Promise<ReportsDemoData> {
+  private getReportsData(): ReportsDemoData {
     return {
-      plReport: await this.getPlReportData(),
-      monthlyReport: await this.getMonthlyReportData(),
-      goodsReport: await this.getGoodsReportData(),
-      penaltiesReport: await this.getPenaltiesReportData()
+      plReport: this.getPlReportData(),
+      monthlyReport: this.getMonthlyReportData(),
+      goodsReport: this.getGoodsReportData(),
+      penaltiesReport: this.getPenaltiesReportData()
     };
   }
 
   // P&L Report данные
-  private async getPlReportData() {
+  private getPlReportData() {
     return {
       revenue: 1250000,
       costs: 800000,
@@ -221,7 +256,7 @@ export class DemoDataService {
   }
 
   // Monthly Report данные
-  private async getMonthlyReportData() {
+  private getMonthlyReportData() {
     return {
       months: this.generateMonthlyData(),
       summary: {
@@ -234,7 +269,7 @@ export class DemoDataService {
   }
 
   // Goods Report данные
-  private async getGoodsReportData() {
+  private getGoodsReportData() {
     return {
       products: this.generateGoodsProducts(),
       summary: {
@@ -246,7 +281,7 @@ export class DemoDataService {
   }
 
   // Penalties Report данные
-  private async getPenaltiesReportData() {
+  private getPenaltiesReportData() {
     return {
       penalties: this.generatePenalties(),
       summary: {
@@ -258,7 +293,7 @@ export class DemoDataService {
   }
 
   // Orders Map данные
-  private async getOrdersMapData(): Promise<OrdersMapDemoData> {
+  private getOrdersMapData(): OrdersMapDemoData {
     return {
       regions: this.generateRegions(),
       summary: {
@@ -271,7 +306,7 @@ export class DemoDataService {
   }
 
   // Supplier Analysis данные
-  private async getSupplierAnalysisData(): Promise<SupplierAnalysisDemoData> {
+  private getSupplierAnalysisData(): SupplierAnalysisDemoData {
     return {
       suppliers: this.generateSuppliers(),
       summary: {
@@ -555,5 +590,95 @@ export class DemoDataService {
       }
     ];
     return shops;
+  }
+
+  // Weekly Report данные
+  private getWeeklyReportData(): WeeklyReportDemoData {
+    const weeklyData = weeklyReportData as any[];
+    let dynamicWeeklyData = this.generateDynamicWeeklyData(weeklyData);
+    
+    const filters = store.getState().filters;
+    const days = filters.activeWeeks?.slice().sort((a, b) => b.value - a.value)[0]?.value;
+
+    if (days <= 7) {
+      dynamicWeeklyData = dynamicWeeklyData.slice(0, 1);
+    } else if (days <= 14) {
+      dynamicWeeklyData = dynamicWeeklyData.slice(0, 2);
+    } else if (days <= 30) {
+      dynamicWeeklyData = dynamicWeeklyData.slice(0, 4);
+    }
+
+    return { 
+      data: [{weeks: dynamicWeeklyData, year: 2025}], 
+      messsage: 'Success',
+    };
+  }
+
+  // Генерация динамических week_label для последних 10 недель
+  private generateDynamicWeeklyData(originalData: any[]): any[] {
+    const currentDate = new Date();
+    const dynamicData = [];
+    
+    // Генерируем данные для последних 10 недель
+    for (let i = 0; i < 10; i++) {
+      const weekStartDate = new Date(currentDate);
+      weekStartDate.setDate(currentDate.getDate() - (i * 7) - (currentDate.getDay() === 0 ? 6 : currentDate.getDay() - 1));
+      
+      const weekEndDate = new Date(weekStartDate);
+      weekEndDate.setDate(weekStartDate.getDate() + 6);
+      
+      // Получаем номер недели года
+      const weekNumber = this.getWeekNumber(weekStartDate);
+      const startDateStr = this.formatDate(weekStartDate);
+      const endDateStr = this.formatDate(weekEndDate);
+      const weekLabel = `${weekNumber} неделя (${startDateStr} - ${endDateStr})`;
+      
+      // Берем данные из оригинального массива или генерируем новые
+      const originalWeekData = originalData[i] || originalData[0];
+      
+      dynamicData.push({
+        ...originalWeekData,
+        week: weekNumber,
+        week_label: weekLabel
+      });
+    }
+    
+    return dynamicData;
+  }
+
+  // Получение номера недели в году
+  private getWeekNumber(date: Date): number {
+    const startOfYear = new Date(date.getFullYear(), 0, 1);
+    const days = Math.floor((date.getTime() - startOfYear.getTime()) / (24 * 60 * 60 * 1000));
+    return Math.ceil((days + startOfYear.getDay() + 1) / 7);
+  }
+
+  // Форматирование даты в формат DD.MM.YYYY
+  private formatDate(date: Date): string {
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const year = date.getFullYear();
+    return `${day}.${month}.${year}`;
+  }
+
+  // Применение фильтров к weekly report данным
+  private applyWeeklyFilters(weeklyData: WeeklyReportWeek[], filters: any): WeeklyReportDemoData {
+    let filteredData = [...weeklyData];
+    
+    console.log('applyWeeklyFilters: Starting with', filteredData.length, 'weeks');
+    
+    // Фильтрация по выбранным неделям
+    if (filters.activeWeeks && Array.isArray(filters.activeWeeks) && !filters.activeWeeks.some((item: any) => item.value === 'Все')) {
+      const selectedWeeks = filters.activeWeeks.map((item: any) => item.value);
+      console.log('Filtering by weeks:', selectedWeeks);
+      
+      filteredData = filteredData.filter(week => selectedWeeks.includes(week.week));
+    }
+    
+    console.log('applyWeeklyFilters: Filtered to', filteredData.length, 'weeks');
+    return { 
+      data: [{weeks: filteredData, year: 2025}], 
+      messsage: 'Success' 
+    };
   }
 }

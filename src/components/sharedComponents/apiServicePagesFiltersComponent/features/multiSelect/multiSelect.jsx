@@ -183,10 +183,10 @@ export const MultiSelect = (
                         tagRender={tagRender}
                         suffixIcon={icon}
                         className={styles.plainSelect__select}
-                        options={optionsData.filter((_) => _.value.toLowerCase().includes(searchState.toLowerCase())).map((option, id) => ({
-                            ...option,
-                            key: option.id || option.value
-                        }))}
+                        options={optionsData
+                            .filter((_) => typeof _.value === 'string' ? _.value.toLowerCase().includes(searchState.toLowerCase()) : true)
+                            .map((option, id) => ({ ...option, key: option.id || option.value}))
+                        }
                         value={(Array.isArray(selectState) ? selectState : [])}
                         id={selectId}
                         //onChange={handler}
@@ -204,14 +204,6 @@ export const MultiSelect = (
                                 });
                                 dispatch(filterActions.setActiveFilters({ stateKey: params.stateKey, data: selectState }));
                                 prevSelectState.current = selectState;
-                                // if (selectState.length === optionsData.length) {
-                                //     setSelectState([{value: 'Все', id: 0}])
-                                //     dispatch(filterActions.setActiveFilters({ stateKey: params.stateKey, data: [{value: 'Все', id: 0}] }))
-                                //     prevSelectState.current = [{value: 'Все', id: 0}]
-                                // } else {
-                                //     dispatch(filterActions.setActiveFilters({ stateKey: params.stateKey, data: selectState }))
-                                //     prevSelectState.current = selectState
-                                // }
                             }
                         }}
                         maxTagPlaceholder={omittedValues => (

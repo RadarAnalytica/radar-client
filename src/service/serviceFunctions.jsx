@@ -220,8 +220,9 @@ export const ServiceFunctions = {
 	getDashBoard: async (token, selectedRange, idShop, filters) => {
 		//let rangeParams = rangeApiFormat(selectedRange);
 		const body = getRequestObject(filters, selectedRange, idShop)
+		
 		const res = await fetchApi(
-			`${URL}/api/dashboard/`,
+			'/api/dashboard',
 			{
 				method: 'POST',
 				headers: {
@@ -559,8 +560,7 @@ export const ServiceFunctions = {
 	},
 
 	getChartDetailData: async (token, selectedRange, shop) => {
-		let rangeParams = rangeApiFormat(selectedRange);
-
+		const rangeParams = rangeApiFormat(selectedRange);
 		const res = await fetch(
 			`${URL}/api/dashboard/hourly?shops=${shop}&${rangeParams}`,
 			{
@@ -572,6 +572,7 @@ export const ServiceFunctions = {
 				},
 			}
 		);
+
 		const data = await res.json();
 		return data;
 	},
@@ -1220,8 +1221,8 @@ export const ServiceFunctions = {
 			body.week_starts = activeWeeks.map((week) => week.value)
 		}
 
-		const res = await fetch(
-			`${URL}/api/periodic_reports/weekly_report`,
+		const res = await fetchApi(
+			`/api/periodic_reports/weekly_report`,
 			{
 				method: 'POST',
 				headers: {
