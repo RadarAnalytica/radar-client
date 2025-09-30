@@ -166,7 +166,7 @@ function RnpListItem({el, index, expanded, setExpanded, setDeleteRnpId, onReorde
 
 export default function RnpList({ view, expanded, setExpanded, setAddRnpModalShow, rnpDataByArticle, rnpDataTotal, setDeleteRnpId }) {
 	const { activeBrand } = useAppSelector(
-		(state) => state.filtersRnp
+		(state) => state.filters
 	);
 	const items = useMemo( () => rnpDataByArticle || [], [rnpDataByArticle]);
 
