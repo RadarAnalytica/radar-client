@@ -43,7 +43,7 @@ const Subscriptions = () => {
   useEffect(() => {
     const checkSubscriptions = async () => {
       const data = await fetchSubscriptions();
-      if (data.length === 0 && user.test_days_left) {
+      if (data.length === 0 && (user.test_days_left === null || user.test_days_left === undefined || user.test_days_left < 0)) {
         navigate('/tariffs');
       }
     };
