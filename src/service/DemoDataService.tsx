@@ -105,7 +105,7 @@ export class DemoDataService {
     let data = { ...dashboardData };
 
     const filters = store.getState().filters;
-    let days = filters.selectedRange.period;
+    let days = filters.selectedRange?.period;
     if (filters.selectedRange?.from && filters.selectedRange?.to) {
       days = Math.round((Number(new Date(filters.selectedRange.to)) - Number(new Date(filters.selectedRange.from))) / 3600 / 24 / 1000);
     }
@@ -117,18 +117,35 @@ export class DemoDataService {
     data.marginalityRoiChart = data.marginalityRoiChart.slice(0, days);
     data.salesAndProfit = data.salesAndProfit.slice(0, days);
 
-    const denominator = Math.round(90 / days);
+    const denominator = 90 / days;
     data.orderAmount = data.orderAmount / denominator;
     data.saleAmount = data.saleAmount / denominator;
     data.orderCount = data.orderCount / denominator;
-    data.saleCount = data.saleCount / denominator;
+    data.saleCount = Math.round(data.saleCount / denominator);
     data.returnAmount = data.returnAmount / denominator;
-    data.returnCount = data.returnCount / denominator;
+    data.returnCount = Math.round(data.returnCount / denominator);
     data.averageBill = data.averageBill / denominator;
     data.penalty = data.penalty / denominator;
     data.additional = data.additional / denominator;
     data.commissionWB = data.commissionWB / denominator;
     data.logistics = data.logistics / denominator;
+    data.taxInfo.wbRealization = data.taxInfo.wbRealization / denominator;
+    data.taxInfo.taxBase = data.taxInfo.taxBase / denominator;
+    data.taxInfo.taxAmount = data.taxInfo.taxAmount / denominator;
+    data.buyoutPercent = data.buyoutPercent / denominator;
+    data.costPriceAmount = data.costPriceAmount / denominator;
+    data.costPriceCount = data.costPriceCount / denominator;
+    data.proceeds = data.proceeds / denominator;
+    data.marginalProfit = data.marginalProfit / denominator;
+    data.grossProfit = data.grossProfit / denominator;
+    data.operatingProfit = data.operatingProfit / denominator;
+    data.ABCAnalysis.amountA = data.ABCAnalysis.amountA / denominator;
+    data.ABCAnalysis.countA = data.ABCAnalysis.countA / denominator;
+    data.ABCAnalysis.amountB = data.ABCAnalysis.amountB / denominator;
+    data.ABCAnalysis.countB = data.ABCAnalysis.countB / denominator;
+    data.ABCAnalysis.amountC = data.ABCAnalysis.amountC / denominator;
+    data.ABCAnalysis.countC = data.ABCAnalysis.countC / denominator;
+    data.storageData = data.storageData / denominator;
 
     return data;
   }
