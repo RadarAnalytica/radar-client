@@ -218,7 +218,7 @@ const Subscriptions = () => {
           })}
 
           {/* тестовый период */}
-          {user.test_days_left &&
+          {user && user.test_days_left !== null && user.test_days_left !== undefined && user.test_days_left >= 0 &&
             <div className="sub-card">
               <div className="sub-card-row">
                 <div className="sub-card-content-wrap">

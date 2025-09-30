@@ -21,7 +21,7 @@ const FiltersProvider = ({ children }: { children: React.ReactNode }) => {
                 method: 'GET',
                 headers: {
                     'content-type': 'application/json',
-                    authorization: user.subscription_status === null ? 'JWT ' + 'mockData' : 'JWT ' + authToken,
+                    authorization: 'JWT ' + authToken,
                 }
             })
             //let shopsResponse = null

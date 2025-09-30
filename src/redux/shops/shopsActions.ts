@@ -11,18 +11,14 @@ export const fetchShops = createAsyncThunk<Shop[], string>(
       dispatch(setLoading(true));
 
       let data = null;
-      if (token === 'mockData'){
-        data = mockGetAllShops();
-      } else {
-        const res = await fetch(`${URL}/api/shop/all`, {
-          method: 'GET',
-          headers: {
-            'content-type': 'application/json',
-            authorization: 'JWT ' + token,
-          },
-        });
-        data = await res.json();
-      }
+      const res = await fetch(`${URL}/api/shop/all`, {
+        method: 'GET',
+        headers: {
+          'content-type': 'application/json',
+          authorization: 'JWT ' + token,
+        },
+      });
+      data = await res.json();
       return data;
     } catch (e) {
       throw e;
