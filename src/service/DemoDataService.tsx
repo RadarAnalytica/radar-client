@@ -6,15 +6,18 @@ import type {
   OrdersMapDemoData,
   SupplierAnalysisDemoData,
   WeeklyReportDemoData,
-  WeeklyReportYear,
   WeeklyReportWeek,
   DemoApiResponse,
-  DemoConfig
+  DemoConfig,
+  PlReportDemoData
 } from '../types/demo';
 
 import stockAnalysis from '../mock/stock-analysis.json';
 import dashboardData from '../mock/dashboard.json';
 import weeklyReportData from '../mock/weekly-report.json';
+import rnpByArticleData from '../mock/rnp-article.json';
+import rnpSummaryData from '../mock/rnp-summary.json';
+import rnpProductsData from '../mock/rnp-products.json';
 
 import { store } from '@/redux/store';
 
@@ -59,6 +62,13 @@ export class DemoDataService {
 
   // Получить данные для конкретного эндпоинта
   public getDataForEndpoint(endpoint: string, params?: any, data?: DemoData): any {
+    endpoint = endpoint.split('?')[0];
+
+    if (!endpoint) {
+      console.error('DemoDataService: No endpoint provided');
+      return null;
+    }
+
     // Маппинг эндпоинтов на данные
     const endpointMap: Record<string, () => any> = {
       '/api/dashboard': () => this.getDashboardData(),
@@ -73,6 +83,10 @@ export class DemoDataService {
       '/api/reports/penalties': () => this.getPenaltiesReportData(),
       '/api/orders-map': () => this.getOrdersMapData(),
       '/api/supplier-analysis': () => this.getSupplierAnalysisData(),
+      '/api/rnp/by_article': () => this.getRnpByArticleData(),
+      '/api/rnp/summary': () => this.getRnpSummaryData(),
+      '/api/rnp/products': () => this.getRnpProductsData(),
+      '/api/profit_loss/report': () => this.getPlReportData(),
     };
 
     const dataGetter = endpointMap[endpoint];
@@ -81,7 +95,7 @@ export class DemoDataService {
       return result;
     }
 
-    console.log('DemoDataService: No handler found for endpoint:', endpoint);
+    console.error('DemoDataService: No handler found for endpoint:', endpoint);
     return null;
   }
 
@@ -150,6 +164,51 @@ export class DemoDataService {
     return data;
   }
 
+  private getRnpByArticleData(): any {
+    const data = rnpByArticleData;
+
+    const filters = store.getState().filters;
+    let days = filters.selectedRange?.period || 30;
+    if (filters.selectedRange?.from && filters.selectedRange?.to) {
+      days = Math.floor((Number(new Date(filters.selectedRange.to)) - Number(new Date(filters.selectedRange.from))) / 3600 / 24 / 1000) + 1;
+    }
+
+    // Обновляем даты в by_date_data массиве для каждого элемента
+    const updatedData = data.map((item: any) => {
+      if (Array.isArray(item.by_date_data)) {
+        item.by_date_data = item.by_date_data.slice(-days);
+        const diffDays = filters.selectedRange?.to ? new Date().getDate() - new Date(filters.selectedRange?.to).getDate() : 0;
+
+        const updatedByDateData = item.by_date_data.map((dateItem: any, index: number) => {
+          // Генерируем дату от вчерашнего или последнего выбранного дня и назад
+          const date = new Date();
+          date.setDate(date.getDate() - index - diffDays);
+          
+          return { ...dateItem, date: date.toISOString() };
+        });
+        
+        return { ...item, by_date_data: updatedByDateData };
+      }
+
+      return item;
+    });
+
+    return { 
+      data: updatedData, 
+      page: 1, 
+      per_page: 25, 
+      total_count: updatedData.length,
+    };
+  }
+
+  private getRnpSummaryData(): any {
+    return { data: rnpSummaryData };
+  }
+
+  private getRnpProductsData(): any {
+    return rnpProductsData;
+  }
+
   // ABC Analysis данные
   private getAbcAnalysisData(): AbcAnalysisDemoData {
     return {
@@ -204,8 +263,8 @@ export class DemoDataService {
     // Фильтрация по периоду
     if (filters.selectedRange) {
       let days = filters.selectedRange.period;
-      if (filters.selectedRange.from && filters.selectedRange.to) {
-        days = Math.round((Number(new Date(filters.selectedRange.to)) - Number(new Date(filters.selectedRange.from))) / 3600 / 24 / 1000);
+      if ('from' in filters.selectedRange && 'to' in filters.selectedRange && filters.selectedRange.from && filters.selectedRange.to) {
+        days = Math.round((Number(new Date(filters.selectedRange.to as string)) - Number(new Date(filters.selectedRange.from as string))) / 3600 / 24 / 1000);
       }
       filteredProducts = filteredProducts.slice(0, Math.round(days / 2));
     }
@@ -256,26 +315,264 @@ export class DemoDataService {
   }
 
   // P&L Report данные
-  private getPlReportData() {
+  private getPlReportData(): PlReportDemoData {
+    const filters = store.getState().filters;
+    
+    // Генерируем данные на основе фильтров
+    const generatedData = this.generatePlReportData(filters);
+    return { data: generatedData };
+  }
+
+  // Генератор данных для P&L отчета
+  private generatePlReportData(filters: any) {
+    const monthFrom = filters?.activeMonths?.month_from;
+    const monthTo = filters?.activeMonths?.month_to;
+    const now = new Date();
+    
+    let startYear = Number(now.getFullYear());
+    let startMonth = Number(now.getMonth()) + 1;
+    let endYear = startYear;
+    let endMonth = startMonth;
+    
+    // Парсим фильтры если они есть
+    if (monthFrom) {
+      const [year, month] = monthFrom.split('-').map(Number);
+      startYear = year;
+      startMonth = month;
+    }
+    
+    if (monthTo) {
+      const [year, month] = monthTo.split('-').map(Number);
+      endYear = year;
+      endMonth = month;
+    }
+    
+    // Генерируем месяцы для периода
+    const months = this.generateMonthsForPeriod(startYear, startMonth, endYear, endMonth);
+    
+    // Генерируем данные за год
+    const yearData = this.generateYearPlData(startYear);
+    
+    // Генерируем данные по месяцам
+    const monthsData = months.map(monthInfo => this.generateMonthPlData(monthInfo));
+    
+    return [{
+      year: startYear,
+      data: yearData,
+      months: monthsData
+    }];
+  }
+
+  // Генерация списка месяцев для указанного периода
+  private generateMonthsForPeriod(startYear: number, startMonth: number, endYear: number, endMonth: number) {
+    const months = [];
+    const monthNames = [
+      'Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь',
+      'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'
+    ];
+    
+    let currentYear = startYear;
+    let currentMonth = startMonth;
+    
+    while (currentYear < endYear || (currentYear === endYear && currentMonth <= endMonth)) {
+      months.push({
+        year: currentYear,
+        month: currentMonth,
+        label: `${monthNames[currentMonth - 1]} ${currentYear}`
+      });
+      
+      currentMonth++;
+      if (currentMonth > 12) {
+        currentMonth = 1;
+        currentYear++;
+      }
+    }
+    
+    return months;
+  }
+
+  // Генерация данных за год
+  private generateYearPlData(year: number) {
     return {
-      revenue: 1250000,
-      costs: 800000,
-      profit: 450000,
-      margin: 36,
-      expenses: this.generateExpenses(),
-      summary: {
-        totalRevenue: 1250000,
-        totalCosts: 800000,
-        netProfit: 450000,
-        profitMargin: 36
+      realization: {
+        rub: this.generateRandomAmount(100000000, 150000000),
+        percent: this.generateRandomPercent(65, 75)
+      },
+      mp_discount: {
+        rub: this.generateRandomAmount(30000000, 50000000),
+        percent: this.generateRandomPercent(20, 30)
+      },
+      sales: {
+        rub: this.generateRandomAmount(140000000, 200000000),
+        percent: 100
+      },
+      direct_expenses: {
+        cost: {
+          rub: this.generateRandomAmount(500000, 1000000),
+          percent: this.generateRandomPercent(0.3, 0.7)
+        },
+        logistic: {
+          rub: this.generateRandomAmount(15000000, 20000000),
+          percent: this.generateRandomPercent(10, 15)
+        },
+        commission: {
+          rub: this.generateRandomAmount(30000000, 40000000),
+          percent: this.generateRandomPercent(20, 25)
+        },
+        penalties: {
+          rub: this.generateRandomAmount(50000, 100000),
+          percent: this.generateRandomPercent(0.02, 0.1)
+        },
+        storage: {
+          rub: this.generateRandomAmount(500000, 1500000),
+          percent: this.generateRandomPercent(0.3, 1.0)
+        },
+        advert: {
+          rub: this.generateRandomAmount(60000000, 80000000),
+          percent: this.generateRandomPercent(40, 50)
+        },
+        other_retentions: {
+          rub: this.generateRandomAmount(60000000, 80000000),
+          percent: this.generateRandomPercent(40, 50)
+        },
+        paid_acceptance: {
+          rub: this.generateRandomAmount(100000, 300000),
+          percent: this.generateRandomPercent(0.05, 0.2)
+        },
+        total_expenses: {
+          rub: this.generateRandomAmount(120000000, 160000000),
+          percent: this.generateRandomPercent(80, 90)
+        }
+      },
+      compensation: {
+        rub: this.generateRandomAmount(50000, 150000),
+        percent: this.generateRandomPercent(0.03, 0.1)
+      },
+      gross_margin: {
+        rub: this.generateRandomAmount(130000000, 190000000),
+        percent: this.generateRandomPercent(90, 98)
+      },
+      operating_expenses: null,
+      operating_profit: {
+        rub: this.generateRandomAmount(15000000, 35000000),
+        percent: this.generateRandomPercent(10, 20)
+      },
+      ebitda: {
+        rub: this.generateRandomAmount(15000000, 35000000),
+        percent: this.generateRandomPercent(10, 20)
+      },
+      ebitda_margin: this.generateRandomPercent(10, 20),
+      tax: {
+        rub: this.generateRandomAmount(3000000, 6000000),
+        percent: this.generateRandomPercent(2, 4)
+      },
+      net_profit: {
+        rub: this.generateRandomAmount(50000000, 80000000),
+        percent: this.generateRandomPercent(30, 50)
       }
     };
+  }
+
+  // Генерация данных за месяц
+  private generateMonthPlData(monthInfo: { year: number; month: number; label: string }) {
+    const baseMultiplier = this.generateRandomPercent(0.7, 1.3); // Вариация по месяцам
+    
+    return {
+      month_label: monthInfo.label,
+      data: {
+        realization: {
+          rub: this.generateRandomAmount(8000000, 20000000) * baseMultiplier,
+          percent: this.generateRandomPercent(60, 80)
+        },
+        mp_discount: {
+          rub: this.generateRandomAmount(2000000, 6000000) * baseMultiplier,
+          percent: this.generateRandomPercent(15, 35)
+        },
+        sales: {
+          rub: this.generateRandomAmount(12000000, 25000000) * baseMultiplier,
+          percent: 100
+        },
+        direct_expenses: {
+          cost: {
+            rub: this.generateRandomAmount(50000, 150000) * baseMultiplier,
+            percent: this.generateRandomPercent(0.3, 0.8)
+          },
+          logistic: {
+            rub: this.generateRandomAmount(1000000, 2500000) * baseMultiplier,
+            percent: this.generateRandomPercent(8, 15)
+          },
+          commission: {
+            rub: this.generateRandomAmount(2500000, 5000000) * baseMultiplier,
+            percent: this.generateRandomPercent(15, 30)
+          },
+          penalties: {
+            rub: this.generateRandomAmount(1000, 20000) * baseMultiplier,
+            percent: this.generateRandomPercent(0.01, 0.15)
+          },
+          storage: {
+            rub: this.generateRandomAmount(50000, 200000) * baseMultiplier,
+            percent: this.generateRandomPercent(0.3, 1.5)
+          },
+          advert: {
+            rub: this.generateRandomAmount(5000000, 15000000) * baseMultiplier,
+            percent: this.generateRandomPercent(30, 80)
+          },
+          other_retentions: {
+            rub: this.generateRandomAmount(5000000, 15000000) * baseMultiplier,
+            percent: this.generateRandomPercent(30, 80)
+          },
+          paid_acceptance: {
+            rub: this.generateRandomAmount(10000, 80000) * baseMultiplier,
+            percent: this.generateRandomPercent(0.05, 0.5)
+          },
+          total_expenses: {
+            rub: this.generateRandomAmount(10000000, 20000000) * baseMultiplier,
+            percent: this.generateRandomPercent(70, 120)
+          }
+        },
+        compensation: {
+          rub: this.generateRandomAmount(5000, 50000) * baseMultiplier,
+          percent: this.generateRandomPercent(0.01, 0.3)
+        },
+        gross_margin: {
+          rub: this.generateRandomAmount(11000000, 24000000) * baseMultiplier,
+          percent: this.generateRandomPercent(85, 98)
+        },
+        operating_expenses: null,
+        operating_profit: {
+          rub: this.generateRandomAmount(-5000000, 15000000) * baseMultiplier,
+          percent: this.generateRandomPercent(-40, 70)
+        },
+        ebitda: {
+          rub: this.generateRandomAmount(-5000000, 15000000) * baseMultiplier,
+          percent: this.generateRandomPercent(-40, 70)
+        },
+        ebitda_margin: this.generateRandomPercent(-40, 70),
+        tax: {
+          rub: this.generateRandomAmount(200000, 800000) * baseMultiplier,
+          percent: this.generateRandomPercent(1.5, 4)
+        },
+        net_profit: {
+          rub: this.generateRandomAmount(3000000, 12000000) * baseMultiplier,
+          percent: this.generateRandomPercent(20, 60)
+        }
+      }
+    };
+  }
+
+  // Вспомогательные методы для генерации случайных значений
+  private generateRandomAmount(min: number, max: number): number {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+
+  private generateRandomPercent(min: number, max: number): number {
+    return Math.round((Math.random() * (max - min) + min) * 100) / 100;
   }
 
   // Monthly Report данные
   private getMonthlyReportData() {
     return {
-      months: this.generateMonthlyData(),
+      months: this.generateMonthsForPeriod(2025, 1, 2025, 12),
       summary: {
         totalRevenue: 15000000,
         averageGrowth: 8.5,
@@ -334,39 +631,6 @@ export class DemoDataService {
     };
   }
 
-  // Генераторы данных
-  private generateChartData(type: string) {
-    const months = ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн', 'Июл', 'Авг', 'Сен', 'Окт', 'Ноя', 'Дек'];
-    return months.map((month, index) => ({
-      date: month,
-      value: Math.floor(Math.random() * 100000) + 50000,
-      label: `${month} ${type}`
-    }));
-  }
-
-  private generateTopProducts() {
-    return Array.from({ length: 5 }, (_, i) => ({
-      id: `product-${i + 1}`,
-      name: `Товар ${i + 1}`,
-      sku: `SKU-${i + 1}`,
-      revenue: Math.floor(Math.random() * 100000) + 50000,
-      growth: Math.floor(Math.random() * 50) + 10,
-      profit: Math.floor(Math.random() * 50000) + 10000,
-      category: ['Электроника', 'Одежда', 'Дом'][i % 3]
-    }));
-  }
-
-  private generateRecentOrders() {
-    return Array.from({ length: 5 }, (_, i) => ({
-      id: `order-${i + 1}`,
-      date: new Date(Date.now() - i * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
-      customer: `Клиент ${i + 1}`,
-      amount: Math.floor(Math.random() * 10000) + 1000,
-      status: ['Выполнен', 'В обработке', 'Отправлен'][i % 3],
-      products: [`Товар ${i + 1}`, `Товар ${i + 2}`]
-    }));
-  }
-
   private generateAbcProducts() {
     return Array.from({ length: 20 }, (_, i) => ({
       id: `abc-product-${i + 1}`,
@@ -377,26 +641,6 @@ export class DemoDataService {
       category: ['A', 'B', 'C'][i % 3] as 'A' | 'B' | 'C',
       growth: Math.floor(Math.random() * 100) - 20,
       profit: Math.floor(Math.random() * 50000) + 5000
-    }));
-  }
-
-  private generateExpenses() {
-    return Array.from({ length: 10 }, (_, i) => ({
-      id: `expense-${i + 1}`,
-      name: `Расход ${i + 1}`,
-      amount: Math.floor(Math.random() * 50000) + 1000,
-      category: ['Маркетинг', 'Логистика', 'Административные'][i % 3],
-      date: new Date(Date.now() - i * 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
-    }));
-  }
-
-  private generateMonthlyData() {
-    const months = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'];
-    return months.map((month, index) => ({
-      month,
-      revenue: Math.floor(Math.random() * 200000) + 100000,
-      profit: Math.floor(Math.random() * 100000) + 50000,
-      growth: Math.floor(Math.random() * 30) - 10
     }));
   }
 
@@ -469,12 +713,6 @@ export class DemoDataService {
 
   // Демо-фильтры на основе данных из stock-analysis.json
   private getDemoFilters() {
-    const products = stockAnalysis as StockProductData[];
-    
-    // Извлекаем уникальные категории и бренды
-    const categories = [...new Set(products.map(product => product.category))];
-    const brands = [...new Set(products.map(product => product.brandName))];
-    
     // Создаем демо-магазин
     const demoShop = {
       id: 1,
@@ -489,32 +727,6 @@ export class DemoDataService {
 
     // Создаем структуру фильтров аналогично реальным данным
     const shops = [demoShop];
-    
-    const brandsData = brands.map((brand, index) => ({
-      name: brand,
-      value: brand,
-      category: categories[index % categories.length]
-    }));
-
-    const categoriesData = categories.map((category, index) => ({
-      id: index + 1,
-      name: category,
-      brand: brandsData.filter(brand => brand.category === category)
-    }));
-
-    // Создаем артикулы на основе SKU из данных
-    const articlesData = products.map(product => ({
-      name: product.sku,
-      value: product.sku,
-      brand: product.brandName,
-      category: product.category
-    }));
-
-    // Создаем группы товаров
-    const groupsData = [
-      { id: 1, name: 'Ювелирные изделия', value: 'Ювелирные изделия', key: 1 },
-      { id: 2, name: 'Аксессуары', value: 'Аксессуары', key: 2 }
-    ];
 
     // Создаем недели (периоды)
     const weeksListData = [
@@ -541,19 +753,19 @@ export class DemoDataService {
           stateKey: 'activeBrandName',
           ruLabel: 'Бренд',
           enLabel: 'brands',
-          data: brandsData
+          data: [{ name: 'Демо-бренд', value: 'Демо-бренд', id: 1 }]
         },
         articles: {
           stateKey: 'activeArticle',
           ruLabel: 'Артикул',
           enLabel: 'articles',
-          data: articlesData
+          data: [{ name: 'Демо-артикул', value: 'Демо-артикул', id: 1, brand: 'Демо-бренд', category: 'Демо-категория' }]
         },
         groups: {
           stateKey: 'activeGroup',
           ruLabel: 'Группа товаров',
           enLabel: 'product_groups',
-          data: groupsData
+          data: [{ name: 'Демо-группа', value: 'Демо-группа', id: 1 }]
         },
         weeks: {
           stateKey: 'activeWeeks',
@@ -571,7 +783,7 @@ export class DemoDataService {
           stateKey: 'activeCategory',
           ruLabel: 'Категория',
           enLabel: 'categories',
-          data: categoriesData
+          data: [{ name: 'Демо-категория', value: 'Демо-категория', id: 1 }]
         }
       }
     ];
@@ -682,17 +894,12 @@ export class DemoDataService {
   private applyWeeklyFilters(weeklyData: WeeklyReportWeek[], filters: any): WeeklyReportDemoData {
     let filteredData = [...weeklyData];
     
-    console.log('applyWeeklyFilters: Starting with', filteredData.length, 'weeks');
-    
     // Фильтрация по выбранным неделям
     if (filters.activeWeeks && Array.isArray(filters.activeWeeks) && !filters.activeWeeks.some((item: any) => item.value === 'Все')) {
       const selectedWeeks = filters.activeWeeks.map((item: any) => item.value);
-      console.log('Filtering by weeks:', selectedWeeks);
-      
       filteredData = filteredData.filter(week => selectedWeeks.includes(week.week));
     }
     
-    console.log('applyWeeklyFilters: Filtered to', filteredData.length, 'weeks');
     return { 
       data: [{weeks: filteredData, year: 2025}], 
       messsage: 'Success' 

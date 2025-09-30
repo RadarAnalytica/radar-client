@@ -1,30 +1,33 @@
-import React, { useLayoutEffect, useMemo, useRef } from 'react';
-import AuthContext from '../../service/AuthContext';
+import React, { useMemo, useRef } from 'react';
+import AuthContext from '@/service/AuthContext';
 import { useState, useEffect, useContext } from 'react';
 import { ConfigProvider, Flex, Button } from 'antd';
-import MobilePlug from '../../components/sharedComponents/mobilePlug/mobilePlug';
-import Sidebar from '../../components/sharedComponents/sidebar/sidebar';
-import Header from '../../components/sharedComponents/header/header';
-import { NoDataWidget } from '../productsGroupsPages/widgets';
+import MobilePlug from '@/components/sharedComponents/mobilePlug/mobilePlug';
+import Sidebar from '@/components/sharedComponents/sidebar/sidebar';
+import Header from '@/components/sharedComponents/header/header';
+// import { NoDataWidget } from '../productsGroupsPages/widgets';
 import AddRnpModal from './widget/AddRnpModal/AddRnpModal';
 import styles from './Rnp.module.css';
-import { useAppSelector, useAppDispatch } from '../../redux/hooks';
-import { ServiceFunctions } from '../../service/serviceFunctions';
+import { useAppSelector, useAppDispatch } from '@/redux/hooks';
+import { ServiceFunctions } from '@/service/serviceFunctions';
 import { RnpFilters } from './widget/RnpFilters/RnpFilters';
 import { COLUMNS, ROWS, renderFunction } from './config';
 import { format, isToday } from 'date-fns';
 import { ru } from 'date-fns/locale';
 import RnpList from './widget/RnpList/RnpList';
-import ModalDeleteConfirm from '../../components/sharedComponents/ModalDeleteConfirm/ModalDeleteConfirm';
-import DataCollectWarningBlock from '../../components/sharedComponents/dataCollectWarningBlock/dataCollectWarningBlock';
-import SelfCostWarningBlock from '../../components/sharedComponents/selfCostWraningBlock/selfCostWarningBlock';
-import ErrorModal from '../../components/sharedComponents/modals/errorModal/errorModal';
-import { fetchRnpFilters } from '../../redux/filtersRnp/filterRnpActions';
-import { actions as filterActions } from '../../redux/filtersRnp/filtersRnpSlice'
+import ModalDeleteConfirm from '@/components/sharedComponents/ModalDeleteConfirm/ModalDeleteConfirm';
+import DataCollectWarningBlock from '@/components/sharedComponents/dataCollectWarningBlock/dataCollectWarningBlock';
+import SelfCostWarningBlock from '@/components/sharedComponents/selfCostWraningBlock/selfCostWarningBlock';
+import ErrorModal from '@/components/sharedComponents/modals/errorModal/errorModal';
+import { fetchRnpFilters } from '@/redux/filtersRnp/filterRnpActions';
+import { actions as filterActions } from '@/redux/filtersRnp/filtersRnpSlice'
+import { useDemoMode } from '@/app/providers/DemoDataProvider';
+import NoSubscriptionWarningBlock
+  from "@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock";
 
 export default function Rnp() {
-	const { user, authToken } = useContext(AuthContext);
-	const dispatch = useAppDispatch();
+	const { authToken } = useContext(AuthContext);
+	const { isDemoMode } = useDemoMode();
 	const { activeBrand } = useAppSelector( (state) => state.filtersRnp );
 	const { selectedRange } = useAppSelector( (state) => state.filters );
 	const filters = useAppSelector((state) => state.filtersRnp);
@@ -48,10 +51,6 @@ export default function Rnp() {
 
 		return shops.find((shop) => shop.id === activeBrand.id);
 	}, [activeBrand, shops]);
-
-	// const rnpSelected = useAppSelector((state) => state.rnpSelected);
-
-	const initLoad = useRef(true);
 
 	const [loading, setLoading] = useState(true);
 	const [addRnpModalShow, setAddRnpModalShow] = useState(false);
@@ -269,9 +268,9 @@ export default function Rnp() {
 					authToken,
 					porductIds
 				);
+
 				if (response.detail){
 					setError(response.detail);
-					return
 				}
 			}
 		} catch (error) {
@@ -289,12 +288,13 @@ export default function Rnp() {
 		}
 	}
 
-	useLayoutEffect(() => {
+	useEffect(() => {
 		if (!activeBrand && !activeBrand?.is_primary_collect){
 			return
 		}
 
-		if (activeBrand && activeBrand.is_primary_collect) {
+		// if (activeBrand && activeBrand.is_primary_collect) {
+		if (activeBrand) {
 			if (view === 'articles'){
 				updateRnpListByArticle();
 			} else {
@@ -302,7 +302,7 @@ export default function Rnp() {
 			}
 		}
 
-		if (activeBrand && !activeBrand?.is_primary_collect){
+		if (activeBrand && !activeBrand?.is_primary_collect) {
 			setLoading(false)
 		}
 
@@ -318,22 +318,24 @@ export default function Rnp() {
 	return (
 		<main className={styles.page}>
 			<MobilePlug />
-			{/* ------ SIDE BAR ------ */}
+
 			<section className={styles.page__sideNavWrapper}>
 				<Sidebar />
 			</section>
-			{/* ------ CONTENT ------ */}
+
 			<section className={styles.page__content}>
-				{/* header */}
-				<div className={styles.page__headerWrapper}>
+  				<div className={styles.page__headerWrapper}>
 					<Header title="Рука на пульсе (РНП)"></Header>
 				</div>
 
-				{!loading && shopStatus && shopStatus?.is_primary_collect && !shopStatus.is_self_cost_set && (
-						<SelfCostWarningBlock
-							shopId={activeBrand.id}
-						/>
+				{!loading && activeBrand && !activeBrand.is_self_cost_set && (
+					<SelfCostWarningBlock shopId={activeBrand.id} />
 				)}
+
+				{!loading && isDemoMode && (
+					<NoSubscriptionWarningBlock />
+				)}
+
 				{!loading && ((rnpDataByArticle?.length > 0 && view === 'articles') || (view === 'total' && rnpDataTotal)) && (<ConfigProvider
 					theme={{
 						token: {
@@ -430,11 +432,7 @@ export default function Rnp() {
 				)}
 				
 				{!loading  && shopStatus && !shopStatus?.is_primary_collect && (
-					<>
-						<DataCollectWarningBlock
-							title='Ваши данные еще формируются и обрабатываются.'
-						/>
-					</>
+          <DataCollectWarningBlock title='Ваши данные еще формируются и обрабатываются.' />
 				)}
 
 				{!loading && shopStatus && shopStatus?.is_primary_collect && (

@@ -25,9 +25,10 @@ import RevenueStructChartBlock from '@/components/dashboardPageComponents/blocks
 import TaxTableBlock from '@/components/dashboardPageComponents/blocks/taxTableBlock/taxTableBlock'
 import HowToLink from '@/components/sharedComponents/howToLink/howToLink'
 import TurnoverBlock from '@/components/dashboardPageComponents/blocks/turnoverBlock/turnoverBlock'
-import { mockGetDashBoard } from '@/service/mockServiceFunctions';
-import StockAnalysisBlock from '@/components/dashboardPageComponents/blocks/stockAnalysisBlock/stockAnalysisBlock'
+// import { mockGetDashBoard } from '@/service/mockServiceFunctions';
+// import StockAnalysisBlock from '@/components/dashboardPageComponents/blocks/stockAnalysisBlock/stockAnalysisBlock'
 import NoSubscriptionWarningBlock from '@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock'
+import { useDemoMode } from "@/app/providers";
 
 
 const MainContent = React.memo(({
@@ -130,7 +131,8 @@ const MainContent = React.memo(({
 });
 
 const _DashboardPage = () => {
-    const { user, authToken } = useContext(AuthContext)
+    const { authToken } = useContext(AuthContext);
+    const { isDemoMode } = useDemoMode();
     const { activeBrand, selectedRange, isFiltersLoaded, activeBrandName, activeArticle, activeGroup, shops } = useAppSelector((state) => state.filters);
     const filters = useAppSelector((state) => state.filters);
     const { isSidebarHidden } = useAppSelector((state) => state.utils);
@@ -188,9 +190,11 @@ const _DashboardPage = () => {
     return (
         <main className={styles.page}>
             <MobilePlug />
+
             <section className={styles.page__sideNavWrapper}>
                 <Sidebar />
             </section>
+
             <section className={styles.page__content}>
                 <div className={styles.page__headerWrapper}>
                     <Header title='Сводка продаж' />
@@ -210,7 +214,7 @@ const _DashboardPage = () => {
                     updateDataDashBoard={updateDataDashBoard}
                 /> */}
 
-                {user.subscription_status === null && <NoSubscriptionWarningBlock />}
+                {isDemoMode && <NoSubscriptionWarningBlock />}
 
                 <div className={styles.page__controlsWrapper}>
                     <Filters
@@ -241,7 +245,7 @@ const _DashboardPage = () => {
                 />
             </section>
         </main>
-    )
+    );
 }
 
 const DashboardPage = React.memo(_DashboardPage);

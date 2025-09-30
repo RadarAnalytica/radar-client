@@ -60,7 +60,7 @@
 },
 {
     "productName": "Кольцо \"Элегант\" с фианитом, 18 размер",
-    "brandName": "Jewelry Master",
+    "brandName": "Демо-бренд",
     "vendorСode": "22222222",
     "barCode": "2020202020202",
     "saleSum": 450,
@@ -108,7 +108,7 @@
     "nmID": 216352001,
     "sku": "2222222222222",
     "size": "18",
-    "category": "Ювелирные изделия",
+    "category": "Демо-группа",
     "costPrice": 90,
     "cost_price": 90,
     "basePrice": 750,
@@ -120,7 +120,7 @@
 },
 {
     "productName": "Серьги \"Звездочка\" серебряные, позолота",
-    "brandName": "Silver Star",
+    "brandName": "Демо-бренд",
     "vendorСode": "33333333",
     "barCode": "3030303030303",
     "saleSum": 320,

@@ -1,0 +1,1985 @@
+{
+    "summary_data": {
+        "expected_marginality_data": {
+            "expected_marginality": 54.88,
+            "plan_marginality": 54.88,
+            "roi": 134.92,
+            "profit_per_one": 1863,
+            "net_profit": 924110,
+            "drr_by_sales": 2.07,
+            "drr_by_orders": 0.8,
+            "orders_amount": 4375866,
+            "orders_count": 1289,
+            "sales_count": 496,
+            "sales_spp_amount": 1367986,
+            "full_price": 2571,
+            "price_spp": 2299,
+            "discount": 10.58,
+            "buyout": 31.75
+        },
+        "rk_budget_data": {
+            "ctr": 6.09,
+            "impressions": 245936,
+            "clicks": 14976,
+            "cpc": 2.33,
+            "cpm": 141.72,
+            "rk_budget": 34853.28,
+            "cr": 0.05,
+            "one_order_price": 27.04,
+            "one_sale_price": 70.27
+        },
+        "ark_budget_data": {
+            "ctr": 6.19,
+            "impressions": 203265,
+            "clicks": 12581,
+            "cpc": 1.94,
+            "cpm": 119.98,
+            "ark_budget": 24388.01
+        },
+        "auction_rk_budget_data": {
+            "ctr": 5.61,
+            "impressions": 42671,
+            "clicks": 2395,
+            "cpc": 4.37,
+            "cpm": 245.25,
+            "auction_rk_budget": 10465.27
+        },
+        "transition_data": {
+            "transition": 14976,
+            "cart_addition_count": 406,
+            "cart_addition_percentage": 2.71,
+            "order_addition_percentage": 30.05
+        },
+        "taxes_data": {
+            "taxes": 6,
+            "tax_per_one": 120,
+            "logistics_per_one": 334,
+            "commission_acquiring_per_one": 1067,
+            "commission_acquiring_percentage": 31.43,
+            "storage_per_one": 12,
+            "cost_per_one": 12
+        }
+    },
+    "by_date_data": [
+        {
+            "date": "2025-09-01T00:00:00",
+            "rnp_data": {
+                "expected_marginality_data": {
+                    "expected_marginality": 56.1,
+                    "plan_marginality": 56.1,
+                    "roi": 144.67,
+                    "profit_per_one": 2143,
+                    "net_profit": 60000,
+                    "drr_by_sales": 0.34,
+                    "drr_by_orders": 0.16,
+                    "orders_amount": 233152,
+                    "orders_count": 69,
+                    "sales_count": 28,
+                    "sales_spp_amount": 87438,
+                    "full_price": 3123,
+                    "price_spp": 2481,
+                    "discount": 20.55,
+                    "buyout": 37.84
+                },
+                "rk_budget_data": {
+                    "ctr": 7.49,
+                    "impressions": 1923,
+                    "clicks": 144,
+                    "cpc": 2.51,
+                    "cpm": 188.25,
+                    "rk_budget": 362.01,
+                    "cr": 0.26,
+                    "one_order_price": 5.25,
+                    "one_sale_price": 12.93
+                },
+                "ark_budget_data": {
+                    "ctr": 7.46,
+                    "impressions": 1918,
+                    "clicks": 143,
+                    "cpc": 2.52,
+                    "cpm": 188.12,
+                    "ark_budget": 360.81
+                },
+                "auction_rk_budget_data": {
+                    "ctr": 20,
+                    "impressions": 5,
+                    "clicks": 1,
+                    "cpc": 1.2,
+                    "cpm": 240,
+                    "auction_rk_budget": 1.2
+                },
+                "transition_data": {
+                    "transition": 144,
+                    "cart_addition_count": 5,
+                    "cart_addition_percentage": 3.47,
+                    "order_addition_percentage": 100
+                },
+                "taxes_data": {
+                    "taxes": 6,
+                    "tax_per_one": 139,
+                    "logistics_per_one": 265,
+                    "commission_acquiring_per_one": 1221,
+                    "commission_acquiring_percentage": 31.97,
+                    "storage_per_one": 14,
+                    "cost_per_one": 16
+                }
+            }
+        },
+        {
+            "date": "2025-09-02T00:00:00",
+            "rnp_data": {
+                "expected_marginality_data": {
+                    "expected_marginality": 55.54,
+                    "plan_marginality": 55.54,
+                    "roi": 140.36,
+                    "profit_per_one": 1896,
+                    "net_profit": 34132,
+                    "drr_by_sales": 6.16,
+                    "drr_by_orders": 1.7,
+                    "orders_amount": 223015,
+                    "orders_count": 66,
+                    "sales_count": 18,
+                    "sales_spp_amount": 53420,
+                    "full_price": 2968,
+                    "price_spp": 2439,
+                    "discount": 17.83,
+                    "buyout": 39.13
+                },
+                "rk_budget_data": {
+                    "ctr": 5,
+                    "impressions": 20341,
+                    "clicks": 1017,
+                    "cpc": 3.72,
+                    "cpm": 186.02,
+                    "rk_budget": 3783.83,
+                    "cr": 0.09,
+                    "one_order_price": 57.33,
+                    "one_sale_price": 210.21
+                },
+                "ark_budget_data": {
+                    "ctr": 5.11,
+                    "impressions": 14884,
+                    "clicks": 760,
+                    "cpc": 2.97,
+                    "cpm": 151.89,
+                    "ark_budget": 2260.72
+                },
+                "auction_rk_budget_data": {
+                    "ctr": 4.71,
+                    "impressions": 5457,
+                    "clicks": 257,
+                    "cpc": 5.93,
+                    "cpm": 279.11,
+                    "auction_rk_budget": 1523.11
+                },
+                "transition_data": {
+                    "transition": 1017,
+                    "cart_addition_count": 39,
+                    "cart_addition_percentage": 3.83,
+                    "order_addition_percentage": 48.72
+                },
+                "taxes_data": {
+                    "taxes": 6,
+                    "tax_per_one": 123,
+                    "logistics_per_one": 257,
+                    "commission_acquiring_per_one": 1082,
+                    "commission_acquiring_percentage": 31.7,
+                    "storage_per_one": 21,
+                    "cost_per_one": 16
+                }
+            }
+        },
+        {
+            "date": "2025-09-03T00:00:00",
+            "rnp_data": {
+                "expected_marginality_data": {
+                    "expected_marginality": 51.81,
+                    "plan_marginality": 51.81,
+                    "roi": 118.82,
+                    "profit_per_one": 1567,
+                    "net_profit": 23504,
+                    "drr_by_sales": 11.06,
+                    "drr_by_orders": 2.06,
+                    "orders_amount": 243289,
+                    "orders_count": 72,
+                    "sales_count": 15,
+                    "sales_spp_amount": 44984,
+                    "full_price": 2999,
+                    "price_spp": 1969,
+                    "discount": 34.33,
+                    "buyout": 28.85
+                },
+                "rk_budget_data": {
+                    "ctr": 5.99,
+                    "impressions": 30089,
+                    "clicks": 1803,
+                    "cpc": 2.78,
+                    "cpm": 166.77,
+                    "rk_budget": 5017.95,
+                    "cr": 0.04,
+                    "one_order_price": 69.69,
+                    "one_sale_price": 334.53
+                },
+                "ark_budget_data": {
+                    "ctr": 6.34,
+                    "impressions": 18616,
+                    "clicks": 1181,
+                    "cpc": 1.83,
+                    "cpm": 116.26,
+                    "ark_budget": 2164.33
+                },
+                "auction_rk_budget_data": {
+                    "ctr": 5.42,
+                    "impressions": 11473,
+                    "clicks": 622,
+                    "cpc": 4.59,
+                    "cpm": 248.72,
+                    "auction_rk_budget": 2853.62
+                },
+                "transition_data": {
+                    "transition": 1803,
+                    "cart_addition_count": 59,
+                    "cart_addition_percentage": 3.27,
+                    "order_addition_percentage": 22.03
+                },
+                "taxes_data": {
+                    "taxes": 6,
+                    "tax_per_one": 101,
+                    "logistics_per_one": 365,
+                    "commission_acquiring_per_one": 944,
+                    "commission_acquiring_percentage": 31.2,
+                    "storage_per_one": 26,
+                    "cost_per_one": 16
+                }
+            }
+        },
+        {
+            "date": "2025-09-04T00:00:00",
+            "rnp_data": {
+                "expected_marginality_data": {
+                    "expected_marginality": 52.94,
+                    "plan_marginality": 52.94,
+                    "roi": 125,
+                    "profit_per_one": 1720,
+                    "net_profit": 39567,
+                    "drr_by_sales": 5.07,
+                    "drr_by_orders": 2,
+                    "orders_amount": 189225,
+                    "orders_count": 56,
+                    "sales_count": 23,
+                    "sales_spp_amount": 73097,
+                    "full_price": 3178,
+                    "price_spp": 2462,
+                    "discount": 22.54,
+                    "buyout": 29.11
+                },
+                "rk_budget_data": {
+                    "ctr": 5.17,
+                    "impressions": 19563,
+                    "clicks": 1012,
+                    "cpc": 3.74,
+                    "cpm": 193.56,
+                    "rk_budget": 3786.67,
+                    "cr": 0.06,
+                    "one_order_price": 67.62,
+                    "one_sale_price": 164.64
+                },
+                "ark_budget_data": {
+                    "ctr": 4.52,
+                    "impressions": 7770,
+                    "clicks": 351,
+                    "cpc": 2.59,
+                    "cpm": 116.99,
+                    "ark_budget": 908.99
+                },
+                "auction_rk_budget_data": {
+                    "ctr": 5.61,
+                    "impressions": 11793,
+                    "clicks": 661,
+                    "cpc": 4.35,
+                    "cpm": 244.02,
+                    "auction_rk_budget": 2877.68
+                },
+                "transition_data": {
+                    "transition": 1012,
+                    "cart_addition_count": 23,
+                    "cart_addition_percentage": 2.27,
+                    "order_addition_percentage": 47.83
+                },
+                "taxes_data": {
+                    "taxes": 6,
+                    "tax_per_one": 111,
+                    "logistics_per_one": 371,
+                    "commission_acquiring_per_one": 1012,
+                    "commission_acquiring_percentage": 31.15,
+                    "storage_per_one": 17,
+                    "cost_per_one": 15
+                }
+            }
+        },
+        {
+            "date": "2025-09-05T00:00:00",
+            "rnp_data": {
+                "expected_marginality_data": {
+                    "expected_marginality": 53.66,
+                    "plan_marginality": 53.66,
+                    "roi": 129.42,
+                    "profit_per_one": 2083,
+                    "net_profit": 35419,
+                    "drr_by_sales": 5.46,
+                    "drr_by_orders": 1.44,
+                    "orders_amount": 250047,
+                    "orders_count": 74,
+                    "sales_count": 17,
+                    "sales_spp_amount": 52180,
+                    "full_price": 3069,
+                    "price_spp": 2432,
+                    "discount": 20.75,
+                    "buyout": 28.81
+                },
+                "rk_budget_data": {
+                    "ctr": 6.18,
+                    "impressions": 27255,
+                    "clicks": 1684,
+                    "cpc": 2.14,
+                    "cpm": 132.29,
+                    "rk_budget": 3605.45,
+                    "cr": 0.04,
+                    "one_order_price": 48.72,
+                    "one_sale_price": 212.09
+                },
+                "ark_budget_data": {
+                    "ctr": 6.35,
+                    "impressions": 17776,
+                    "clicks": 1128,
+                    "cpc": 1.51,
+                    "cpm": 95.97,
+                    "ark_budget": 1706.02
+                },
+                "auction_rk_budget_data": {
+                    "ctr": 5.87,
+                    "impressions": 9479,
+                    "clicks": 556,
+                    "cpc": 3.42,
+                    "cpm": 200.38,
+                    "auction_rk_budget": 1899.43
+                },
+                "transition_data": {
+                    "transition": 1684,
+                    "cart_addition_count": 26,
+                    "cart_addition_percentage": 1.54,
+                    "order_addition_percentage": 38.46
+                },
+                "taxes_data": {
+                    "taxes": 6,
+                    "tax_per_one": 135,
+                    "logistics_per_one": 379,
+                    "commission_acquiring_per_one": 1233,
+                    "commission_acquiring_percentage": 31.76,
+                    "storage_per_one": 22,
+                    "cost_per_one": 16
+                }
+            }
+        },
+        {
+            "date": "2025-09-06T00:00:00",
+            "rnp_data": {
+                "expected_marginality_data": {
+                    "expected_marginality": 54.91,
+                    "plan_marginality": 54.91,
+                    "roi": 136.59,
+                    "profit_per_one": 2053,
+                    "net_profit": 26685,
+                    "drr_by_sales": 3.9,
+                    "drr_by_orders": 1,
+                    "orders_amount": 189225,
+                    "orders_count": 56,
+                    "sales_count": 13,
+                    "sales_spp_amount": 45476,
+                    "full_price": 3498,
+                    "price_spp": 2634,
+                    "discount": 24.71,
+                    "buyout": 32.5
+                },
+                "rk_budget_data": {
+                    "ctr": 6.86,
+                    "impressions": 14959,
+                    "clicks": 1026,
+                    "cpc": 1.85,
+                    "cpm": 126.79,
+                    "rk_budget": 1896.72,
+                    "cr": 0.05,
+                    "one_order_price": 33.87,
+                    "one_sale_price": 145.9
+                },
+                "ark_budget_data": {
+                    "ctr": 6.89,
+                    "impressions": 12320,
+                    "clicks": 849,
+                    "cpc": 1.41,
+                    "cpm": 97.25,
+                    "ark_budget": 1198.06
+                },
+                "auction_rk_budget_data": {
+                    "ctr": 6.71,
+                    "impressions": 2639,
+                    "clicks": 177,
+                    "cpc": 3.95,
+                    "cpm": 264.74,
+                    "auction_rk_budget": 698.66
+                },
+                "transition_data": {
+                    "transition": 1026,
+                    "cart_addition_count": 26,
+                    "cart_addition_percentage": 2.53,
+                    "order_addition_percentage": 26.92
+                },
+                "taxes_data": {
+                    "taxes": 6,
+                    "tax_per_one": 133,
+                    "logistics_per_one": 314,
+                    "commission_acquiring_per_one": 1177,
+                    "commission_acquiring_percentage": 31.49,
+                    "storage_per_one": 29,
+                    "cost_per_one": 16
+                }
+            }
+        },
+        {
+            "date": "2025-09-07T00:00:00",
+            "rnp_data": {
+                "expected_marginality_data": {
+                    "expected_marginality": 51.29,
+                    "plan_marginality": 51.29,
+                    "roi": 116.37,
+                    "profit_per_one": 1756,
+                    "net_profit": 26336,
+                    "drr_by_sales": 4.62,
+                    "drr_by_orders": 1.02,
+                    "orders_amount": 233152,
+                    "orders_count": 69,
+                    "sales_count": 15,
+                    "sales_spp_amount": 50733,
+                    "full_price": 3382,
+                    "price_spp": 2466,
+                    "discount": 27.09,
+                    "buyout": 25.42
+                },
+                "rk_budget_data": {
+                    "ctr": 6.38,
+                    "impressions": 22549,
+                    "clicks": 1438,
+                    "cpc": 1.65,
+                    "cpm": 105.24,
+                    "rk_budget": 2373.14,
+                    "cr": 0.01,
+                    "one_order_price": 34.39,
+                    "one_sale_price": 158.21
+                },
+                "ark_budget_data": {
+                    "ctr": 6.36,
+                    "impressions": 22366,
+                    "clicks": 1422,
+                    "cpc": 1.64,
+                    "cpm": 104.47,
+                    "ark_budget": 2336.54
+                },
+                "auction_rk_budget_data": {
+                    "ctr": 8.74,
+                    "impressions": 183,
+                    "clicks": 16,
+                    "cpc": 2.29,
+                    "cpm": 200,
+                    "auction_rk_budget": 36.6
+                },
+                "transition_data": {
+                    "transition": 1438,
+                    "cart_addition_count": 24,
+                    "cart_addition_percentage": 1.67,
+                    "order_addition_percentage": 12.5
+                },
+                "taxes_data": {
+                    "taxes": 6,
+                    "tax_per_one": 113,
+                    "logistics_per_one": 430,
+                    "commission_acquiring_per_one": 1078,
+                    "commission_acquiring_percentage": 31.5,
+                    "storage_per_one": 25,
+                    "cost_per_one": 15
+                }
+            }
+        },
+        {
+            "date": "2025-09-08T00:00:00",
+            "rnp_data": {
+                "expected_marginality_data": {
+                    "expected_marginality": 53.06,
+                    "plan_marginality": 53.06,
+                    "roi": 125.36,
+                    "profit_per_one": 1388,
+                    "net_profit": 24989,
+                    "drr_by_sales": 2.12,
+                    "drr_by_orders": 0.45,
+                    "orders_amount": 223015,
+                    "orders_count": 66,
+                    "sales_count": 18,
+                    "sales_spp_amount": 54434,
+                    "full_price": 3024,
+                    "price_spp": 2085,
+                    "discount": 31.04,
+                    "buyout": 34.62
+                },
+                "rk_budget_data": {
+                    "ctr": 6.32,
+                    "impressions": 9564,
+                    "clicks": 604,
+                    "cpc": 1.65,
+                    "cpm": 104.26,
+                    "rk_budget": 997.11,
+                    "cr": 0.08,
+                    "one_order_price": 15.11,
+                    "one_sale_price": 55.4
+                },
+                "ark_budget_data": {
+                    "ctr": 6.3,
+                    "impressions": 9466,
+                    "clicks": 596,
+                    "cpc": 1.64,
+                    "cpm": 103.27,
+                    "ark_budget": 977.54
+                },
+                "auction_rk_budget_data": {
+                    "ctr": 8.16,
+                    "impressions": 98,
+                    "clicks": 8,
+                    "cpc": 2.45,
+                    "cpm": 199.69,
+                    "auction_rk_budget": 19.57
+                },
+                "transition_data": {
+                    "transition": 604,
+                    "cart_addition_count": 14,
+                    "cart_addition_percentage": 2.32,
+                    "order_addition_percentage": 57.14
+                },
+                "taxes_data": {
+                    "taxes": 6,
+                    "tax_per_one": 89,
+                    "logistics_per_one": 302,
+                    "commission_acquiring_per_one": 818,
+                    "commission_acquiring_percentage": 31.27,
+                    "storage_per_one": 21,
+                    "cost_per_one": 44
+                }
+            }
+        },
+        {
+            "date": "2025-09-09T00:00:00",
+            "rnp_data": {
+                "expected_marginality_data": {
+                    "expected_marginality": 49.72,
+                    "plan_marginality": 49.72,
+                    "roi": 108.85,
+                    "profit_per_one": 1697,
+                    "net_profit": 27151,
+                    "drr_by_sales": 3.68,
+                    "drr_by_orders": 1.24,
+                    "orders_amount": 162193,
+                    "orders_count": 48,
+                    "sales_count": 16,
+                    "sales_spp_amount": 47408,
+                    "full_price": 2963,
+                    "price_spp": 2157,
+                    "discount": 27.19,
+                    "buyout": 23.88
+                },
+                "rk_budget_data": {
+                    "ctr": 6.2,
+                    "impressions": 17771,
+                    "clicks": 1101,
+                    "cpc": 1.82,
+                    "cpm": 113,
+                    "rk_budget": 2008.08,
+                    "cr": 0.06,
+                    "one_order_price": 41.84,
+                    "one_sale_price": 125.51
+                },
+                "ark_budget_data": {
+                    "ctr": 6.19,
+                    "impressions": 17736,
+                    "clicks": 1097,
+                    "cpc": 1.82,
+                    "cpm": 112.86,
+                    "ark_budget": 2001.61
+                },
+                "auction_rk_budget_data": {
+                    "ctr": 11.43,
+                    "impressions": 35,
+                    "clicks": 4,
+                    "cpc": 1.62,
+                    "cpm": 184.86,
+                    "auction_rk_budget": 6.47
+                },
+                "transition_data": {
+                    "transition": 1101,
+                    "cart_addition_count": 30,
+                    "cart_addition_percentage": 2.72,
+                    "order_addition_percentage": 33.33
+                },
+                "taxes_data": {
+                    "taxes": 6,
+                    "tax_per_one": 110,
+                    "logistics_per_one": 463,
+                    "commission_acquiring_per_one": 1089,
+                    "commission_acquiring_percentage": 31.92,
+                    "storage_per_one": 24,
+                    "cost_per_one": 44
+                }
+            }
+        },
+        {
+            "date": "2025-09-10T00:00:00",
+            "rnp_data": {
+                "expected_marginality_data": {
+                    "expected_marginality": 54.44,
+                    "plan_marginality": 54.44,
+                    "roi": 133.79,
+                    "profit_per_one": 1792,
+                    "net_profit": 41210,
+                    "drr_by_sales": 4.37,
+                    "drr_by_orders": 1.92,
+                    "orders_amount": 172330,
+                    "orders_count": 51,
+                    "sales_count": 23,
+                    "sales_spp_amount": 71001,
+                    "full_price": 3087,
+                    "price_spp": 2189,
+                    "discount": 29.1,
+                    "buyout": 35.38
+                },
+                "rk_budget_data": {
+                    "ctr": 5.58,
+                    "impressions": 25611,
+                    "clicks": 1429,
+                    "cpc": 2.32,
+                    "cpm": 129.31,
+                    "rk_budget": 3311.75,
+                    "cr": 0.04,
+                    "one_order_price": 64.94,
+                    "one_sale_price": 143.99
+                },
+                "ark_budget_data": {
+                    "ctr": 5.57,
+                    "impressions": 25596,
+                    "clicks": 1426,
+                    "cpc": 2.32,
+                    "cpm": 129.26,
+                    "ark_budget": 3308.64
+                },
+                "auction_rk_budget_data": {
+                    "ctr": 20,
+                    "impressions": 15,
+                    "clicks": 3,
+                    "cpc": 1.04,
+                    "cpm": 207.33,
+                    "auction_rk_budget": 3.11
+                },
+                "transition_data": {
+                    "transition": 1429,
+                    "cart_addition_count": 35,
+                    "cart_addition_percentage": 2.45,
+                    "order_addition_percentage": 25.71
+                },
+                "taxes_data": {
+                    "taxes": 6,
+                    "tax_per_one": 116,
+                    "logistics_per_one": 304,
+                    "commission_acquiring_per_one": 1044,
+                    "commission_acquiring_percentage": 31.72,
+                    "storage_per_one": 16,
+                    "cost_per_one": 44
+                }
+            }
+        },
+        {
+            "date": "2025-09-11T00:00:00",
+            "rnp_data": {
+                "expected_marginality_data": {
+                    "expected_marginality": 53.76,
+                    "plan_marginality": 53.76,
+                    "roi": 129.79,
+                    "profit_per_one": 1751,
+                    "net_profit": 36776,
+                    "drr_by_sales": 2.13,
+                    "drr_by_orders": 0.85,
+                    "orders_amount": 172330,
+                    "orders_count": 51,
+                    "sales_count": 21,
+                    "sales_spp_amount": 62338,
+                    "full_price": 2968,
+                    "price_spp": 2191,
+                    "discount": 26.2,
+                    "buyout": 31.82
+                },
+                "rk_budget_data": {
+                    "ctr": 6.53,
+                    "impressions": 12688,
+                    "clicks": 828,
+                    "cpc": 1.76,
+                    "cpm": 114.78,
+                    "rk_budget": 1456.27,
+                    "cr": 0.06,
+                    "one_order_price": 28.55,
+                    "one_sale_price": 69.35
+                },
+                "ark_budget_data": {
+                    "ctr": 6.54,
+                    "impressions": 12664,
+                    "clicks": 828,
+                    "cpc": 1.75,
+                    "cpm": 114.62,
+                    "ark_budget": 1451.61
+                },
+                "auction_rk_budget_data": {
+                    "ctr": 0,
+                    "impressions": 24,
+                    "clicks": 0,
+                    "cpc": 0,
+                    "cpm": 194.17,
+                    "auction_rk_budget": 4.66
+                },
+                "transition_data": {
+                    "transition": 828,
+                    "cart_addition_count": 18,
+                    "cart_addition_percentage": 2.17,
+                    "order_addition_percentage": 44.44
+                },
+                "taxes_data": {
+                    "taxes": 6,
+                    "tax_per_one": 113,
+                    "logistics_per_one": 323,
+                    "commission_acquiring_per_one": 1036,
+                    "commission_acquiring_percentage": 31.79,
+                    "storage_per_one": 18,
+                    "cost_per_one": 44
+                }
+            }
+        },
+        {
+            "date": "2025-09-12T00:00:00",
+            "rnp_data": {
+                "expected_marginality_data": {
+                    "expected_marginality": 49.51,
+                    "plan_marginality": 49.51,
+                    "roi": 107.4,
+                    "profit_per_one": 1671,
+                    "net_profit": 25064,
+                    "drr_by_sales": 1.91,
+                    "drr_by_orders": 0.58,
+                    "orders_amount": 165572,
+                    "orders_count": 49,
+                    "sales_count": 15,
+                    "sales_spp_amount": 47507,
+                    "full_price": 3167,
+                    "price_spp": 2359,
+                    "discount": 25.5,
+                    "buyout": 22.06
+                },
+                "rk_budget_data": {
+                    "ctr": 7.49,
+                    "impressions": 8116,
+                    "clicks": 608,
+                    "cpc": 1.59,
+                    "cpm": 119.1,
+                    "rk_budget": 966.63,
+                    "cr": 0.04,
+                    "one_order_price": 19.73,
+                    "one_sale_price": 64.44
+                },
+                "ark_budget_data": {
+                    "ctr": 7.5,
+                    "impressions": 8093,
+                    "clicks": 607,
+                    "cpc": 1.59,
+                    "cpm": 118.89,
+                    "ark_budget": 962.16
+                },
+                "auction_rk_budget_data": {
+                    "ctr": 4.35,
+                    "impressions": 23,
+                    "clicks": 1,
+                    "cpc": 4.47,
+                    "cpm": 194.35,
+                    "auction_rk_budget": 4.47
+                },
+                "transition_data": {
+                    "transition": 608,
+                    "cart_addition_count": 21,
+                    "cart_addition_percentage": 3.45,
+                    "order_addition_percentage": 14.29
+                },
+                "taxes_data": {
+                    "taxes": 6,
+                    "tax_per_one": 108,
+                    "logistics_per_one": 493,
+                    "commission_acquiring_per_one": 1064,
+                    "commission_acquiring_percentage": 31.51,
+                    "storage_per_one": 25,
+                    "cost_per_one": 44
+                }
+            }
+        },
+        {
+            "date": "2025-09-13T00:00:00",
+            "rnp_data": {
+                "expected_marginality_data": {
+                    "expected_marginality": 56.6,
+                    "plan_marginality": 56.6,
+                    "roi": 147.16,
+                    "profit_per_one": 2048,
+                    "net_profit": 43001,
+                    "drr_by_sales": 2.44,
+                    "drr_by_orders": 1.28,
+                    "orders_amount": 145297,
+                    "orders_count": 43,
+                    "sales_count": 21,
+                    "sales_spp_amount": 65172,
+                    "full_price": 3103,
+                    "price_spp": 2309,
+                    "discount": 25.6,
+                    "buyout": 39.62
+                },
+                "rk_budget_data": {
+                    "ctr": 6.73,
+                    "impressions": 14705,
+                    "clicks": 990,
+                    "cpc": 1.88,
+                    "cpm": 126.24,
+                    "rk_budget": 1856.42,
+                    "cr": 0.04,
+                    "one_order_price": 43.17,
+                    "one_sale_price": 88.4
+                },
+                "ark_budget_data": {
+                    "ctr": 6.73,
+                    "impressions": 14701,
+                    "clicks": 990,
+                    "cpc": 1.87,
+                    "cpm": 126.22,
+                    "ark_budget": 1855.53
+                },
+                "auction_rk_budget_data": {
+                    "ctr": 0,
+                    "impressions": 4,
+                    "clicks": 0,
+                    "cpc": 0,
+                    "cpm": 222.5,
+                    "auction_rk_budget": 0.89
+                },
+                "transition_data": {
+                    "transition": 990,
+                    "cart_addition_count": 21,
+                    "cart_addition_percentage": 2.12,
+                    "order_addition_percentage": 28.57
+                },
+                "taxes_data": {
+                    "taxes": 6,
+                    "tax_per_one": 132,
+                    "logistics_per_one": 250,
+                    "commission_acquiring_per_one": 1146,
+                    "commission_acquiring_percentage": 31.67,
+                    "storage_per_one": 18,
+                    "cost_per_one": 44
+                }
+            }
+        },
+        {
+            "date": "2025-09-14T00:00:00",
+            "rnp_data": {
+                "expected_marginality_data": {
+                    "expected_marginality": 48.7,
+                    "plan_marginality": 48.7,
+                    "roi": 103.97,
+                    "profit_per_one": 1318,
+                    "net_profit": 17131,
+                    "drr_by_sales": 3.23,
+                    "drr_by_orders": 0.66,
+                    "orders_amount": 172330,
+                    "orders_count": 51,
+                    "sales_count": 13,
+                    "sales_spp_amount": 36376,
+                    "full_price": 2798,
+                    "price_spp": 2097,
+                    "discount": 25.04,
+                    "buyout": 25.49
+                },
+                "rk_budget_data": {
+                    "ctr": 6.84,
+                    "impressions": 9615,
+                    "clicks": 658,
+                    "cpc": 1.73,
+                    "cpm": 118.27,
+                    "rk_budget": 1137.14,
+                    "cr": 0.06,
+                    "one_order_price": 22.3,
+                    "one_sale_price": 87.47
+                },
+                "ark_budget_data": {
+                    "ctr": 6.84,
+                    "impressions": 9604,
+                    "clicks": 657,
+                    "cpc": 1.73,
+                    "cpm": 118.19,
+                    "ark_budget": 1135.06
+                },
+                "auction_rk_budget_data": {
+                    "ctr": 9.09,
+                    "impressions": 11,
+                    "clicks": 1,
+                    "cpc": 2.08,
+                    "cpm": 189.09,
+                    "auction_rk_budget": 2.08
+                },
+                "transition_data": {
+                    "transition": 658,
+                    "cart_addition_count": 32,
+                    "cart_addition_percentage": 4.86,
+                    "order_addition_percentage": 18.75
+                },
+                "taxes_data": {
+                    "taxes": 6,
+                    "tax_per_one": 84,
+                    "logistics_per_one": 435,
+                    "commission_acquiring_per_one": 837,
+                    "commission_acquiring_percentage": 30.92,
+                    "storage_per_one": 29,
+                    "cost_per_one": 44
+                }
+            }
+        },
+        {
+            "date": "2025-09-15T00:00:00",
+            "rnp_data": {
+                "expected_marginality_data": {
+                    "expected_marginality": 50.92,
+                    "plan_marginality": 50.92,
+                    "roi": 114.37,
+                    "profit_per_one": 1621,
+                    "net_profit": 29187,
+                    "drr_by_sales": 0.68,
+                    "drr_by_orders": 0.26,
+                    "orders_amount": 152056,
+                    "orders_count": 45,
+                    "sales_count": 18,
+                    "sales_spp_amount": 57274,
+                    "full_price": 3182,
+                    "price_spp": 2217,
+                    "discount": 30.31,
+                    "buyout": 25
+                },
+                "rk_budget_data": {
+                    "ctr": 6.03,
+                    "impressions": 3051,
+                    "clicks": 184,
+                    "cpc": 2.11,
+                    "cpm": 127.23,
+                    "rk_budget": 388.18,
+                    "cr": 0.1,
+                    "one_order_price": 8.63,
+                    "one_sale_price": 21.57
+                },
+                "ark_budget_data": {
+                    "ctr": 6.01,
+                    "impressions": 3047,
+                    "clicks": 183,
+                    "cpc": 2.12,
+                    "cpm": 127.15,
+                    "ark_budget": 387.42
+                },
+                "auction_rk_budget_data": {
+                    "ctr": 25,
+                    "impressions": 4,
+                    "clicks": 1,
+                    "cpc": 0.76,
+                    "cpm": 190,
+                    "auction_rk_budget": 0.76
+                },
+                "transition_data": {
+                    "transition": 184,
+                    "cart_addition_count": 13,
+                    "cart_addition_percentage": 7.07,
+                    "order_addition_percentage": 23.08
+                },
+                "taxes_data": {
+                    "taxes": 6,
+                    "tax_per_one": 104,
+                    "logistics_per_one": 433,
+                    "commission_acquiring_per_one": 1005,
+                    "commission_acquiring_percentage": 31.56,
+                    "storage_per_one": 21,
+                    "cost_per_one": 10
+                }
+            }
+        },
+        {
+            "date": "2025-09-16T00:00:00",
+            "rnp_data": {
+                "expected_marginality_data": {
+                    "expected_marginality": 56.38,
+                    "plan_marginality": 56.38,
+                    "roi": 145.38,
+                    "profit_per_one": 1799,
+                    "net_profit": 34173,
+                    "drr_by_sales": 0,
+                    "drr_by_orders": 0,
+                    "orders_amount": 185846,
+                    "orders_count": 55,
+                    "sales_count": 19,
+                    "sales_spp_amount": 56580,
+                    "full_price": 2978,
+                    "price_spp": 2084,
+                    "discount": 30.02,
+                    "buyout": 37.25
+                },
+                "rk_budget_data": {
+                    "ctr": 0,
+                    "impressions": 0,
+                    "clicks": 0,
+                    "cpc": 0,
+                    "cpm": 0,
+                    "rk_budget": 0,
+                    "cr": 0,
+                    "one_order_price": 0,
+                    "one_sale_price": 0
+                },
+                "ark_budget_data": {
+                    "ctr": 0,
+                    "impressions": 0,
+                    "clicks": 0,
+                    "cpc": 0,
+                    "cpm": 0,
+                    "ark_budget": 0
+                },
+                "auction_rk_budget_data": {
+                    "ctr": 0,
+                    "impressions": 0,
+                    "clicks": 0,
+                    "cpc": 0,
+                    "cpm": 0,
+                    "auction_rk_budget": 0
+                },
+                "transition_data": {
+                    "transition": 0,
+                    "cart_addition_count": 0,
+                    "cart_addition_percentage": 0,
+                    "order_addition_percentage": 0
+                },
+                "taxes_data": {
+                    "taxes": 6,
+                    "tax_per_one": 115,
+                    "logistics_per_one": 273,
+                    "commission_acquiring_per_one": 1004,
+                    "commission_acquiring_percentage": 31.48,
+                    "storage_per_one": 0,
+                    "cost_per_one": 10
+                }
+            }
+        },
+        {
+            "date": "2025-09-17T00:00:00",
+            "rnp_data": {
+                "expected_marginality_data": {
+                    "expected_marginality": 50.64,
+                    "plan_marginality": 50.64,
+                    "roi": 113.03,
+                    "profit_per_one": 1507,
+                    "net_profit": 22598,
+                    "drr_by_sales": 0,
+                    "drr_by_orders": 0,
+                    "orders_amount": 155435,
+                    "orders_count": 46,
+                    "sales_count": 15,
+                    "sales_spp_amount": 49665,
+                    "full_price": 3311,
+                    "price_spp": 2399,
+                    "discount": 27.54,
+                    "buyout": 25.86
+                },
+                "rk_budget_data": {
+                    "ctr": 0,
+                    "impressions": 0,
+                    "clicks": 0,
+                    "cpc": 0,
+                    "cpm": 0,
+                    "rk_budget": 0,
+                    "cr": 0,
+                    "one_order_price": 0,
+                    "one_sale_price": 0
+                },
+                "ark_budget_data": {
+                    "ctr": 0,
+                    "impressions": 0,
+                    "clicks": 0,
+                    "cpc": 0,
+                    "cpm": 0,
+                    "ark_budget": 0
+                },
+                "auction_rk_budget_data": {
+                    "ctr": 0,
+                    "impressions": 0,
+                    "clicks": 0,
+                    "cpc": 0,
+                    "cpm": 0,
+                    "auction_rk_budget": 0
+                },
+                "transition_data": {
+                    "transition": 0,
+                    "cart_addition_count": 0,
+                    "cart_addition_percentage": 0,
+                    "order_addition_percentage": 0
+                },
+                "taxes_data": {
+                    "taxes": 6,
+                    "tax_per_one": 96,
+                    "logistics_per_one": 427,
+                    "commission_acquiring_per_one": 943,
+                    "commission_acquiring_percentage": 31.72,
+                    "storage_per_one": 0,
+                    "cost_per_one": 10
+                }
+            }
+        },
+        {
+            "date": "2025-09-18T00:00:00",
+            "rnp_data": {
+                "expected_marginality_data": {
+                    "expected_marginality": 54.04,
+                    "plan_marginality": 54.04,
+                    "roi": 131.29,
+                    "profit_per_one": 1795,
+                    "net_profit": 34113,
+                    "drr_by_sales": 0,
+                    "drr_by_orders": 0,
+                    "orders_amount": 155435,
+                    "orders_count": 46,
+                    "sales_count": 19,
+                    "sales_spp_amount": 63599,
+                    "full_price": 3347,
+                    "price_spp": 2405,
+                    "discount": 28.16,
+                    "buyout": 30.65
+                },
+                "rk_budget_data": {
+                    "ctr": 0,
+                    "impressions": 0,
+                    "clicks": 0,
+                    "cpc": 0,
+                    "cpm": 0,
+                    "rk_budget": 0,
+                    "cr": 0,
+                    "one_order_price": 0,
+                    "one_sale_price": 0
+                },
+                "ark_budget_data": {
+                    "ctr": 0,
+                    "impressions": 0,
+                    "clicks": 0,
+                    "cpc": 0,
+                    "cpm": 0,
+                    "ark_budget": 0
+                },
+                "auction_rk_budget_data": {
+                    "ctr": 0,
+                    "impressions": 0,
+                    "clicks": 0,
+                    "cpc": 0,
+                    "cpm": 0,
+                    "auction_rk_budget": 0
+                },
+                "transition_data": {
+                    "transition": 0,
+                    "cart_addition_count": 0,
+                    "cart_addition_percentage": 0,
+                    "order_addition_percentage": 0
+                },
+                "taxes_data": {
+                    "taxes": 6,
+                    "tax_per_one": 115,
+                    "logistics_per_one": 356,
+                    "commission_acquiring_per_one": 1055,
+                    "commission_acquiring_percentage": 31.76,
+                    "storage_per_one": 0,
+                    "cost_per_one": 10
+                }
+            }
+        },
+        {
+            "date": "2025-09-19T00:00:00",
+            "rnp_data": {
+                "expected_marginality_data": {
+                    "expected_marginality": 58.77,
+                    "plan_marginality": 58.77,
+                    "roi": 162.49,
+                    "profit_per_one": 1625,
+                    "net_profit": 35745,
+                    "drr_by_sales": 0,
+                    "drr_by_orders": 0,
+                    "orders_amount": 67580,
+                    "orders_count": 20,
+                    "sales_count": 22,
+                    "sales_spp_amount": 62812,
+                    "full_price": 2855,
+                    "price_spp": 2037,
+                    "discount": 28.65,
+                    "buyout": 57.89
+                },
+                "rk_budget_data": {
+                    "ctr": 0,
+                    "impressions": 0,
+                    "clicks": 0,
+                    "cpc": 0,
+                    "cpm": 0,
+                    "rk_budget": 0,
+                    "cr": 0,
+                    "one_order_price": 0,
+                    "one_sale_price": 0
+                },
+                "ark_budget_data": {
+                    "ctr": 0,
+                    "impressions": 0,
+                    "clicks": 0,
+                    "cpc": 0,
+                    "cpm": 0,
+                    "ark_budget": 0
+                },
+                "auction_rk_budget_data": {
+                    "ctr": 0,
+                    "impressions": 0,
+                    "clicks": 0,
+                    "cpc": 0,
+                    "cpm": 0,
+                    "auction_rk_budget": 0
+                },
+                "transition_data": {
+                    "transition": 0,
+                    "cart_addition_count": 0,
+                    "cart_addition_percentage": 0,
+                    "order_addition_percentage": 0
+                },
+                "taxes_data": {
+                    "taxes": 6,
+                    "tax_per_one": 104,
+                    "logistics_per_one": 155,
+                    "commission_acquiring_per_one": 880,
+                    "commission_acquiring_percentage": 31.84,
+                    "storage_per_one": 0,
+                    "cost_per_one": 10
+                }
+            }
+        },
+        {
+            "date": "2025-09-20T00:00:00",
+            "rnp_data": {
+                "expected_marginality_data": {
+                    "expected_marginality": 50.46,
+                    "plan_marginality": 50.46,
+                    "roi": 112.29,
+                    "profit_per_one": 2127,
+                    "net_profit": 19143,
+                    "drr_by_sales": 0,
+                    "drr_by_orders": 0,
+                    "orders_amount": 118265,
+                    "orders_count": 35,
+                    "sales_count": 9,
+                    "sales_spp_amount": 28137,
+                    "full_price": 3126,
+                    "price_spp": 2269,
+                    "discount": 27.43,
+                    "buyout": 18.37
+                },
+                "rk_budget_data": {
+                    "ctr": 0,
+                    "impressions": 0,
+                    "clicks": 0,
+                    "cpc": 0,
+                    "cpm": 0,
+                    "rk_budget": 0,
+                    "cr": 0,
+                    "one_order_price": 0,
+                    "one_sale_price": 0
+                },
+                "ark_budget_data": {
+                    "ctr": 0,
+                    "impressions": 0,
+                    "clicks": 0,
+                    "cpc": 0,
+                    "cpm": 0,
+                    "ark_budget": 0
+                },
+                "auction_rk_budget_data": {
+                    "ctr": 0,
+                    "impressions": 0,
+                    "clicks": 0,
+                    "cpc": 0,
+                    "cpm": 0,
+                    "auction_rk_budget": 0
+                },
+                "transition_data": {
+                    "transition": 0,
+                    "cart_addition_count": 0,
+                    "cart_addition_percentage": 0,
+                    "order_addition_percentage": 0
+                },
+                "taxes_data": {
+                    "taxes": 6,
+                    "tax_per_one": 136,
+                    "logistics_per_one": 592,
+                    "commission_acquiring_per_one": 1358,
+                    "commission_acquiring_percentage": 32.22,
+                    "storage_per_one": 0,
+                    "cost_per_one": 10
+                }
+            }
+        },
+        {
+            "date": "2025-09-21T00:00:00",
+            "rnp_data": {
+                "expected_marginality_data": {
+                    "expected_marginality": 56.03,
+                    "plan_marginality": 56.03,
+                    "roi": 143.18,
+                    "profit_per_one": 1711,
+                    "net_profit": 37633,
+                    "drr_by_sales": 0,
+                    "drr_by_orders": 0,
+                    "orders_amount": 118265,
+                    "orders_count": 35,
+                    "sales_count": 22,
+                    "sales_spp_amount": 67845,
+                    "full_price": 3084,
+                    "price_spp": 2216,
+                    "discount": 28.15,
+                    "buyout": 36.67
+                },
+                "rk_budget_data": {
+                    "ctr": 0,
+                    "impressions": 0,
+                    "clicks": 0,
+                    "cpc": 0,
+                    "cpm": 0,
+                    "rk_budget": 0,
+                    "cr": 0,
+                    "one_order_price": 0,
+                    "one_sale_price": 0
+                },
+                "ark_budget_data": {
+                    "ctr": 0,
+                    "impressions": 0,
+                    "clicks": 0,
+                    "cpc": 0,
+                    "cpm": 0,
+                    "ark_budget": 0
+                },
+                "auction_rk_budget_data": {
+                    "ctr": 0,
+                    "impressions": 0,
+                    "clicks": 0,
+                    "cpc": 0,
+                    "cpm": 0,
+                    "auction_rk_budget": 0
+                },
+                "transition_data": {
+                    "transition": 0,
+                    "cart_addition_count": 0,
+                    "cart_addition_percentage": 0,
+                    "order_addition_percentage": 0
+                },
+                "taxes_data": {
+                    "taxes": 6,
+                    "tax_per_one": 109,
+                    "logistics_per_one": 274,
+                    "commission_acquiring_per_one": 957,
+                    "commission_acquiring_percentage": 31.34,
+                    "storage_per_one": 0,
+                    "cost_per_one": 10
+                }
+            }
+        },
+        {
+            "date": "2025-09-22T00:00:00",
+            "rnp_data": {
+                "expected_marginality_data": {
+                    "expected_marginality": 54.3,
+                    "plan_marginality": 54.3,
+                    "roi": 132.88,
+                    "profit_per_one": 1974,
+                    "net_profit": 27635,
+                    "drr_by_sales": 0,
+                    "drr_by_orders": 0,
+                    "orders_amount": 128402,
+                    "orders_count": 38,
+                    "sales_count": 14,
+                    "sales_spp_amount": 47434,
+                    "full_price": 3388,
+                    "price_spp": 2537,
+                    "discount": 25.13,
+                    "buyout": 29.79
+                },
+                "rk_budget_data": {
+                    "ctr": 0,
+                    "impressions": 0,
+                    "clicks": 0,
+                    "cpc": 0,
+                    "cpm": 0,
+                    "rk_budget": 0,
+                    "cr": 0,
+                    "one_order_price": 0,
+                    "one_sale_price": 0
+                },
+                "ark_budget_data": {
+                    "ctr": 0,
+                    "impressions": 0,
+                    "clicks": 0,
+                    "cpc": 0,
+                    "cpm": 0,
+                    "ark_budget": 0
+                },
+                "auction_rk_budget_data": {
+                    "ctr": 0,
+                    "impressions": 0,
+                    "clicks": 0,
+                    "cpc": 0,
+                    "cpm": 0,
+                    "auction_rk_budget": 0
+                },
+                "transition_data": {
+                    "transition": 0,
+                    "cart_addition_count": 0,
+                    "cart_addition_percentage": 0,
+                    "order_addition_percentage": 0
+                },
+                "taxes_data": {
+                    "taxes": 6,
+                    "tax_per_one": 126,
+                    "logistics_per_one": 375,
+                    "commission_acquiring_per_one": 1160,
+                    "commission_acquiring_percentage": 31.92,
+                    "storage_per_one": 0,
+                    "cost_per_one": 0
+                }
+            }
+        },
+        {
+            "date": "2025-09-23T00:00:00",
+            "rnp_data": {
+                "expected_marginality_data": {
+                    "expected_marginality": 58.1,
+                    "plan_marginality": 58.1,
+                    "roi": 157.27,
+                    "profit_per_one": 2499,
+                    "net_profit": 29990,
+                    "drr_by_sales": 0,
+                    "drr_by_orders": 0,
+                    "orders_amount": 101370,
+                    "orders_count": 30,
+                    "sales_count": 12,
+                    "sales_spp_amount": 44715,
+                    "full_price": 3726,
+                    "price_spp": 2694,
+                    "discount": 27.7,
+                    "buyout": 36.36
+                },
+                "rk_budget_data": {
+                    "ctr": 0,
+                    "impressions": 0,
+                    "clicks": 0,
+                    "cpc": 0,
+                    "cpm": 0,
+                    "rk_budget": 0,
+                    "cr": 0,
+                    "one_order_price": 0,
+                    "one_sale_price": 0
+                },
+                "ark_budget_data": {
+                    "ctr": 0,
+                    "impressions": 0,
+                    "clicks": 0,
+                    "cpc": 0,
+                    "cpm": 0,
+                    "ark_budget": 0
+                },
+                "auction_rk_budget_data": {
+                    "ctr": 0,
+                    "impressions": 0,
+                    "clicks": 0,
+                    "cpc": 0,
+                    "cpm": 0,
+                    "auction_rk_budget": 0
+                },
+                "transition_data": {
+                    "transition": 0,
+                    "cart_addition_count": 0,
+                    "cart_addition_percentage": 0,
+                    "order_addition_percentage": 0
+                },
+                "taxes_data": {
+                    "taxes": 6,
+                    "tax_per_one": 160,
+                    "logistics_per_one": 271,
+                    "commission_acquiring_per_one": 1371,
+                    "commission_acquiring_percentage": 31.88,
+                    "storage_per_one": 0,
+                    "cost_per_one": 0
+                }
+            }
+        },
+        {
+            "date": "2025-09-24T00:00:00",
+            "rnp_data": {
+                "expected_marginality_data": {
+                    "expected_marginality": 53.34,
+                    "plan_marginality": 53.34,
+                    "roi": 126.48,
+                    "profit_per_one": 1649,
+                    "net_profit": 26382,
+                    "drr_by_sales": 0,
+                    "drr_by_orders": 0,
+                    "orders_amount": 74338,
+                    "orders_count": 22,
+                    "sales_count": 16,
+                    "sales_spp_amount": 50804,
+                    "full_price": 3175,
+                    "price_spp": 2153,
+                    "discount": 32.19,
+                    "buyout": 31.37
+                },
+                "rk_budget_data": {
+                    "ctr": 0,
+                    "impressions": 0,
+                    "clicks": 0,
+                    "cpc": 0,
+                    "cpm": 0,
+                    "rk_budget": 0,
+                    "cr": 0,
+                    "one_order_price": 0,
+                    "one_sale_price": 0
+                },
+                "ark_budget_data": {
+                    "ctr": 0,
+                    "impressions": 0,
+                    "clicks": 0,
+                    "cpc": 0,
+                    "cpm": 0,
+                    "ark_budget": 0
+                },
+                "auction_rk_budget_data": {
+                    "ctr": 0,
+                    "impressions": 0,
+                    "clicks": 0,
+                    "cpc": 0,
+                    "cpm": 0,
+                    "auction_rk_budget": 0
+                },
+                "transition_data": {
+                    "transition": 0,
+                    "cart_addition_count": 0,
+                    "cart_addition_percentage": 0,
+                    "order_addition_percentage": 0
+                },
+                "taxes_data": {
+                    "taxes": 6,
+                    "tax_per_one": 105,
+                    "logistics_per_one": 358,
+                    "commission_acquiring_per_one": 980,
+                    "commission_acquiring_percentage": 31.69,
+                    "storage_per_one": 0,
+                    "cost_per_one": 0
+                }
+            }
+        },
+        {
+            "date": "2025-09-25T00:00:00",
+            "rnp_data": {
+                "expected_marginality_data": {
+                    "expected_marginality": 56.96,
+                    "plan_marginality": 56.96,
+                    "roi": 149.45,
+                    "profit_per_one": 2212,
+                    "net_profit": 50866,
+                    "drr_by_sales": 2.13,
+                    "drr_by_orders": 2.69,
+                    "orders_amount": 70959,
+                    "orders_count": 21,
+                    "sales_count": 23,
+                    "sales_spp_amount": 67666,
+                    "full_price": 2942,
+                    "price_spp": 2077,
+                    "discount": 29.39,
+                    "buyout": 39.66
+                },
+                "rk_budget_data": {
+                    "ctr": 5.53,
+                    "impressions": 8136,
+                    "clicks": 450,
+                    "cpc": 4.24,
+                    "cpm": 234.26,
+                    "rk_budget": 1905.93,
+                    "cr": 0.01,
+                    "one_order_price": 90.76,
+                    "one_sale_price": 82.87
+                },
+                "ark_budget_data": {
+                    "ctr": 5.41,
+                    "impressions": 6708,
+                    "clicks": 363,
+                    "cpc": 3.78,
+                    "cpm": 204.68,
+                    "ark_budget": 1372.97
+                },
+                "auction_rk_budget_data": {
+                    "ctr": 6.09,
+                    "impressions": 1428,
+                    "clicks": 87,
+                    "cpc": 6.13,
+                    "cpm": 373.22,
+                    "auction_rk_budget": 532.96
+                },
+                "transition_data": {
+                    "transition": 450,
+                    "cart_addition_count": 20,
+                    "cart_addition_percentage": 4.44,
+                    "order_addition_percentage": 5
+                },
+                "taxes_data": {
+                    "taxes": 6,
+                    "tax_per_one": 141,
+                    "logistics_per_one": 272,
+                    "commission_acquiring_per_one": 1242,
+                    "commission_acquiring_percentage": 31.98,
+                    "storage_per_one": 16,
+                    "cost_per_one": 0
+                }
+            }
+        },
+        {
+            "date": "2025-09-26T00:00:00",
+            "rnp_data": {
+                "expected_marginality_data": {
+                    "expected_marginality": 52.88,
+                    "plan_marginality": 52.88,
+                    "roi": 124.71,
+                    "profit_per_one": 2018,
+                    "net_profit": 28249,
+                    "drr_by_sales": 0,
+                    "drr_by_orders": 0,
+                    "orders_amount": 27032,
+                    "orders_count": 8,
+                    "sales_count": 14,
+                    "sales_spp_amount": 46132,
+                    "full_price": 3295,
+                    "price_spp": 2293,
+                    "discount": 30.42,
+                    "buyout": 26.42
+                },
+                "rk_budget_data": {
+                    "ctr": 0,
+                    "impressions": 0,
+                    "clicks": 0,
+                    "cpc": 0,
+                    "cpm": 0,
+                    "rk_budget": 0,
+                    "cr": 0,
+                    "one_order_price": 0,
+                    "one_sale_price": 0
+                },
+                "ark_budget_data": {
+                    "ctr": 0,
+                    "impressions": 0,
+                    "clicks": 0,
+                    "cpc": 0,
+                    "cpm": 0,
+                    "ark_budget": 0
+                },
+                "auction_rk_budget_data": {
+                    "ctr": 0,
+                    "impressions": 0,
+                    "clicks": 0,
+                    "cpc": 0,
+                    "cpm": 0,
+                    "auction_rk_budget": 0
+                },
+                "transition_data": {
+                    "transition": 0,
+                    "cart_addition_count": 0,
+                    "cart_addition_percentage": 0,
+                    "order_addition_percentage": 0
+                },
+                "taxes_data": {
+                    "taxes": 6,
+                    "tax_per_one": 129,
+                    "logistics_per_one": 454,
+                    "commission_acquiring_per_one": 1216,
+                    "commission_acquiring_percentage": 31.85,
+                    "storage_per_one": 0,
+                    "cost_per_one": 0
+                }
+            }
+        },
+        {
+            "date": "2025-09-27T00:00:00",
+            "rnp_data": {
+                "expected_marginality_data": {
+                    "expected_marginality": 50.95,
+                    "plan_marginality": 50.95,
+                    "roi": 114.03,
+                    "profit_per_one": 1718,
+                    "net_profit": 15465,
+                    "drr_by_sales": 0,
+                    "drr_by_orders": 0,
+                    "orders_amount": 13516,
+                    "orders_count": 4,
+                    "sales_count": 9,
+                    "sales_spp_amount": 30537,
+                    "full_price": 3393,
+                    "price_spp": 2291,
+                    "discount": 32.47,
+                    "buyout": 23.68
+                },
+                "rk_budget_data": {
+                    "ctr": 0,
+                    "impressions": 0,
+                    "clicks": 0,
+                    "cpc": 0,
+                    "cpm": 0,
+                    "rk_budget": 0,
+                    "cr": 0,
+                    "one_order_price": 0,
+                    "one_sale_price": 0
+                },
+                "ark_budget_data": {
+                    "ctr": 0,
+                    "impressions": 0,
+                    "clicks": 0,
+                    "cpc": 0,
+                    "cpm": 0,
+                    "ark_budget": 0
+                },
+                "auction_rk_budget_data": {
+                    "ctr": 0,
+                    "impressions": 0,
+                    "clicks": 0,
+                    "cpc": 0,
+                    "cpm": 0,
+                    "auction_rk_budget": 0
+                },
+                "transition_data": {
+                    "transition": 0,
+                    "cart_addition_count": 0,
+                    "cart_addition_percentage": 0,
+                    "order_addition_percentage": 0
+                },
+                "taxes_data": {
+                    "taxes": 6,
+                    "tax_per_one": 110,
+                    "logistics_per_one": 482,
+                    "commission_acquiring_per_one": 1063,
+                    "commission_acquiring_percentage": 31.52,
+                    "storage_per_one": 0,
+                    "cost_per_one": 0
+                }
+            }
+        },
+        {
+            "date": "2025-09-28T00:00:00",
+            "rnp_data": {
+                "expected_marginality_data": {
+                    "expected_marginality": 56.57,
+                    "plan_marginality": 56.57,
+                    "roi": 146.85,
+                    "profit_per_one": 2366,
+                    "net_profit": 40218,
+                    "drr_by_sales": 0,
+                    "drr_by_orders": 0,
+                    "orders_amount": 0,
+                    "orders_count": 0,
+                    "sales_count": 17,
+                    "sales_spp_amount": 55613,
+                    "full_price": 3271,
+                    "price_spp": 2292,
+                    "discount": 29.95,
+                    "buyout": 34.69
+                },
+                "rk_budget_data": {
+                    "ctr": 0,
+                    "impressions": 0,
+                    "clicks": 0,
+                    "cpc": 0,
+                    "cpm": 0,
+                    "rk_budget": 0,
+                    "cr": 0,
+                    "one_order_price": 0,
+                    "one_sale_price": 0
+                },
+                "ark_budget_data": {
+                    "ctr": 0,
+                    "impressions": 0,
+                    "clicks": 0,
+                    "cpc": 0,
+                    "cpm": 0,
+                    "ark_budget": 0
+                },
+                "auction_rk_budget_data": {
+                    "ctr": 0,
+                    "impressions": 0,
+                    "clicks": 0,
+                    "cpc": 0,
+                    "cpm": 0,
+                    "auction_rk_budget": 0
+                },
+                "transition_data": {
+                    "transition": 0,
+                    "cart_addition_count": 0,
+                    "cart_addition_percentage": 0,
+                    "order_addition_percentage": 0
+                },
+                "taxes_data": {
+                    "taxes": 6,
+                    "tax_per_one": 151,
+                    "logistics_per_one": 336,
+                    "commission_acquiring_per_one": 1329,
+                    "commission_acquiring_percentage": 31.78,
+                    "storage_per_one": 0,
+                    "cost_per_one": 0
+                }
+            }
+        },
+        {
+            "date": "2025-09-29T00:00:00",
+            "rnp_data": {
+                "expected_marginality_data": {
+                    "expected_marginality": 93.41,
+                    "plan_marginality": 93.41,
+                    "roi": 492.94,
+                    "profit_per_one": 2886,
+                    "net_profit": 31749,
+                    "drr_by_sales": 0,
+                    "drr_by_orders": 0,
+                    "orders_amount": 212878,
+                    "orders_count": 63,
+                    "sales_count": 11,
+                    "sales_spp_amount": -152390.86,
+                    "full_price": -13853.71,
+                    "price_spp": 2430,
+                    "discount": 0,
+                    "buyout": 91.67
+                },
+                "rk_budget_data": {
+                    "ctr": 0,
+                    "impressions": 0,
+                    "clicks": 0,
+                    "cpc": 0,
+                    "cpm": 0,
+                    "rk_budget": 0,
+                    "cr": 0,
+                    "one_order_price": 0,
+                    "one_sale_price": 0
+                },
+                "ark_budget_data": {
+                    "ctr": 0,
+                    "impressions": 0,
+                    "clicks": 0,
+                    "cpc": 0,
+                    "cpm": 0,
+                    "ark_budget": 0
+                },
+                "auction_rk_budget_data": {
+                    "ctr": 0,
+                    "impressions": 0,
+                    "clicks": 0,
+                    "cpc": 0,
+                    "cpm": 0,
+                    "auction_rk_budget": 0
+                },
+                "transition_data": {
+                    "transition": 0,
+                    "cart_addition_count": 0,
+                    "cart_addition_percentage": 0,
+                    "order_addition_percentage": 0
+                },
+                "taxes_data": {
+                    "taxes": 6,
+                    "tax_per_one": 185,
+                    "logistics_per_one": 0,
+                    "commission_acquiring_per_one": 614,
+                    "commission_acquiring_percentage": 19.86,
+                    "storage_per_one": 0,
+                    "cost_per_one": 23
+                }
+            }
+        },
+        {
+            "date": "2025-09-30T00:00:00",
+            "rnp_data": {
+                "expected_marginality_data": {
+                    "expected_marginality": 93.34,
+                    "plan_marginality": 93.34,
+                    "roi": 371.04,
+                    "profit_per_one": 2111,
+                    "net_profit": 14780,
+                    "drr_by_sales": 0,
+                    "drr_by_orders": 0,
+                    "orders_amount": 57443,
+                    "orders_count": 17,
+                    "sales_count": 7,
+                    "sales_spp_amount": -59136,
+                    "full_price": -8448,
+                    "price_spp": 2251,
+                    "discount": 0,
+                    "buyout": 100
+                },
+                "rk_budget_data": {
+                    "ctr": 0,
+                    "impressions": 0,
+                    "clicks": 0,
+                    "cpc": 0,
+                    "cpm": 0,
+                    "rk_budget": 0,
+                    "cr": 0,
+                    "one_order_price": 0,
+                    "one_sale_price": 0
+                },
+                "ark_budget_data": {
+                    "ctr": 0,
+                    "impressions": 0,
+                    "clicks": 0,
+                    "cpc": 0,
+                    "cpm": 0,
+                    "ark_budget": 0
+                },
+                "auction_rk_budget_data": {
+                    "ctr": 0,
+                    "impressions": 0,
+                    "clicks": 0,
+                    "cpc": 0,
+                    "cpm": 0,
+                    "auction_rk_budget": 0
+                },
+                "transition_data": {
+                    "transition": 0,
+                    "cart_addition_count": 0,
+                    "cart_addition_percentage": 0,
+                    "order_addition_percentage": 0
+                },
+                "taxes_data": {
+                    "taxes": 6,
+                    "tax_per_one": 136,
+                    "logistics_per_one": 0,
+                    "commission_acquiring_per_one": 588,
+                    "commission_acquiring_percentage": 26,
+                    "storage_per_one": 0,
+                    "cost_per_one": 13
+                }
+            }
+        }
+    ]
+}

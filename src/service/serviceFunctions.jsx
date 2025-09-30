@@ -1341,8 +1341,8 @@ export const ServiceFunctions = {
 		body.month_from = monthRange?.month_from || null;
 		body.month_to = monthRange?.month_to || null;
 
-		const res = await fetch(
-			`${URL}/api/profit_loss/report`,
+		const res = await fetchApi(
+			'/api/profit_loss/report',
 			{
 				method: 'POST',
 				headers: {
@@ -1458,10 +1458,10 @@ export const ServiceFunctions = {
 	postRnpByArticle: async(token, selectedRange, shopId, filters, signal) => {
 		try {
 			let body = getRnpRequestObject(filters, selectedRange, shopId);
-			const res = await fetch(
-				`${URL}/api/rnp/by_article?page=1&per_page=25`,
+			const res = await fetchApi(
+				'/api/rnp/by_article?page=1&per_page=25',
 				{
-					method: 'POST',
+					method: 'POST', // метод по идее должен быть get
 					headers: {
 						'content-type': 'application/json',
 						authorization: 'JWT ' + token,
@@ -1485,8 +1485,8 @@ export const ServiceFunctions = {
 	postRnpSummary: async(token, selectedRange, shopId, filters, signal) => {
 		try {
 			let body = getRnpRequestObject(filters, selectedRange, shopId);
-			const res = await fetch(
-				`${URL}/api/rnp/summary`,
+			const res = await fetchApi(
+				'/api/rnp/summary',
 				{
 					method: 'POST',
 					headers: {
@@ -1512,8 +1512,8 @@ export const ServiceFunctions = {
 	getRnpProducts: async(token, selectedRange, shopId, filters, page, search, signal) => {
 		try {
 			let body = getRnpRequestObject(filters, selectedRange, shopId);
-			const res = await fetch(
-				`${URL}/api/rnp/products?page=${page}&per_page=25${!!search ? `&search=${search}` : ''}` ,
+			const res = await fetchApi(
+				`/api/rnp/products?page=${page}&per_page=25${!!search ? `&search=${search}` : ''}` ,
 				{
 					method: 'POST',
 					headers: {

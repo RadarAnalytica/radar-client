@@ -1,0 +1,223 @@
+{
+    "data": [
+        {
+            "product_id": 49869,
+            "shop_name": "Магазин",
+            "title": "Крышки для консервирования светлана",
+            "wb_id": 71991625,
+            "barcode": "2026965389620",
+            "photo": "https://basket-04.wbbasket.ru/vol719/part71991/71991625/images/c246x328/1.webp",
+            "vendor_code": "svetlanaovoshi",
+            "is_selected": false
+        },
+        {
+            "product_id": 49504,
+            "shop_name": "мелкая076",
+            "title": "Раздельный купальник большие размеры",
+            "wb_id": 90396094,
+            "barcode": "2035515293720",
+            "photo": "https://basket-05.wbbasket.ru/vol903/part90396/90396094/images/c246x328/1.webp",
+            "vendor_code": "8003/белыйссиним",
+            "is_selected": false
+        },
+        {
+            "product_id": 49472,
+            "shop_name": "мелкая076",
+            "title": "Раздельный купальник танкини большие размеры и шорты",
+            "wb_id": 90396099,
+            "barcode": "2035515293829",
+            "photo": "https://basket-05.wbbasket.ru/vol903/part90396/90396099/images/c246x328/1.webp",
+            "vendor_code": "8003/розовый",
+            "is_selected": false
+        },
+        {
+            "product_id": 49481,
+            "shop_name": "мелкая076",
+            "title": "Брюки классические офисные",
+            "wb_id": 94999449,
+            "barcode": "2041409973739",
+            "photo": "https://basket-05.wbbasket.ru/vol949/part94999/94999449/images/c246x328/1.webp",
+            "vendor_code": "167/синийремень",
+            "is_selected": false
+        },
+        {
+            "product_id": 65195,
+            "shop_name": "Ула",
+            "title": "Лонгслив",
+            "wb_id": 128858148,
+            "barcode": "4603091002975",
+            "photo": "https://basket-09.wbbasket.ru/vol1288/part128858/128858148/images/c246x328/1.webp",
+            "vendor_code": "D-041/черный",
+            "is_selected": false
+        },
+        {
+            "product_id": 64943,
+            "shop_name": "Ула",
+            "title": "Лонгслив сетка прозрачный облегающий",
+            "wb_id": 137777968,
+            "barcode": "4610319184160",
+            "photo": "https://basket-10.wbbasket.ru/vol1377/part137777/137777968/images/c246x328/1.webp",
+            "vendor_code": "T-061/черный",
+            "is_selected": false
+        },
+        {
+            "product_id": 65215,
+            "shop_name": "Ула",
+            "title": "Платье вечернее мини с сеткой",
+            "wb_id": 137780159,
+            "barcode": "4610319182906",
+            "photo": "https://basket-10.wbbasket.ru/vol1377/part137780/137780159/images/c246x328/1.webp",
+            "vendor_code": "D-051/черный",
+            "is_selected": false
+        },
+        {
+            "product_id": 49527,
+            "shop_name": "мелкая076",
+            "title": "Пижама шелковая в полоску",
+            "wb_id": 138193977,
+            "barcode": "2037242063553",
+            "photo": "https://basket-10.wbbasket.ru/vol1381/part138193/138193977/images/c246x328/1.webp",
+            "vendor_code": "1142/темно-синий",
+            "is_selected": false
+        },
+        {
+            "product_id": 49532,
+            "shop_name": "мелкая076",
+            "title": "Пижама шелковая с большими штанами",
+            "wb_id": 138194113,
+            "barcode": "2037242078137",
+            "photo": "https://basket-10.wbbasket.ru/vol1381/part138194/138194113/images/c246x328/1.webp",
+            "vendor_code": "1142/светло-фиолетовый",
+            "is_selected": false
+        },
+        {
+            "product_id": 49735,
+            "shop_name": "Магазин",
+            "title": "Стеклянная кастрюля прозрачная с крышкой 4,5л 24см",
+            "wb_id": 140473437,
+            "barcode": "2037299792673",
+            "photo": "https://basket-10.wbbasket.ru/vol1404/part140473/140473437/images/c246x328/1.webp",
+            "vendor_code": "CRF-8",
+            "is_selected": false
+        },
+        {
+            "product_id": 49856,
+            "shop_name": "Магазин",
+            "title": "Контейнер стеклянный с крышкой 520мл",
+            "wb_id": 140538693,
+            "barcode": "2037301483414",
+            "photo": "https://basket-10.wbbasket.ru/vol1405/part140538/140538693/images/c246x328/1.webp",
+            "vendor_code": "BMC520S",
+            "is_selected": false
+        },
+        {
+            "product_id": 49855,
+            "shop_name": "Магазин",
+            "title": "Контейнер стеклянный с крышкой 800мл",
+            "wb_id": 140539205,
+            "barcode": "2037301489591",
+            "photo": "https://basket-10.wbbasket.ru/vol1405/part140539/140539205/images/c246x328/1.webp",
+            "vendor_code": "BMC800S",
+            "is_selected": false
+        },
+        {
+            "product_id": 49854,
+            "shop_name": "Магазин",
+            "title": "Контейнер стеклянный с крышкой 400мл",
+            "wb_id": 140726325,
+            "barcode": "2037306052257",
+            "photo": "https://basket-10.wbbasket.ru/vol1407/part140726/140726325/images/c246x328/1.webp",
+            "vendor_code": "BMC400R",
+            "is_selected": false
+        },
+        {
+            "product_id": 49853,
+            "shop_name": "Магазин",
+            "title": "Контейнер стеклянный с крышкой 630мл",
+            "wb_id": 140732491,
+            "barcode": "2037306391967",
+            "photo": "https://basket-10.wbbasket.ru/vol1407/part140732/140732491/images/c246x328/1.webp",
+            "vendor_code": "BMC630R",
+            "is_selected": false
+        },
+        {
+            "product_id": 49558,
+            "shop_name": "Магазин",
+            "title": "Форма для запекания стеклянная с крышкой",
+            "wb_id": 142895806,
+            "barcode": "2037367531920",
+            "photo": "https://basket-10.wbbasket.ru/vol1428/part142895/142895806/images/c246x328/1.webp",
+            "vendor_code": "59052",
+            "is_selected": false
+        },
+        {
+            "product_id": 49656,
+            "shop_name": "Магазин",
+            "title": "Форма для запекания стеклянная с крышкой",
+            "wb_id": 144411826,
+            "barcode": "2037410130780",
+            "photo": "https://basket-10.wbbasket.ru/vol1444/part144411/144411826/images/c246x328/1.webp",
+            "vendor_code": "59034 PLS",
+            "is_selected": false
+        },
+        {
+            "product_id": 49850,
+            "shop_name": "Магазин",
+            "title": "Контейнер стеклянный с крышкой 1230мл",
+            "wb_id": 145913460,
+            "barcode": "2037453353269",
+            "photo": "https://basket-10.wbbasket.ru/vol1459/part145913/145913460/images/c246x328/1.webp",
+            "vendor_code": "BMC1230S",
+            "is_selected": false
+        },
+        {
+            "product_id": 49655,
+            "shop_name": "Магазин",
+            "title": "Стеклянная форма для запекания с крышкой",
+            "wb_id": 146450846,
+            "barcode": "2037467700776",
+            "photo": "https://basket-10.wbbasket.ru/vol1464/part146450/146450846/images/c246x328/1.webp",
+            "vendor_code": "59023",
+            "is_selected": false
+        },
+        {
+            "product_id": 49568,
+            "shop_name": "Магазин",
+            "title": "Форма для запекания в духовке стекло с крышкой",
+            "wb_id": 146453187,
+            "barcode": "2037467751150",
+            "photo": "https://basket-10.wbbasket.ru/vol1464/part146453/146453187/images/c246x328/1.webp",
+            "vendor_code": "59019",
+            "is_selected": false
+        }
+    ],
+    "total_count": 579,
+    "page": 1,
+    "per_page": 25,
+    "rnp_wb_ids": [
+        439572491,
+        327739022,
+        326903694,
+        413639573,
+        224671002,
+        268486172,
+        222751389,
+        394513445,
+        360233510,
+        221031209,
+        322361671,
+        259490377,
+        268470092,
+        231851858,
+        210430042,
+        224668926,
+        216748127,
+        202947555,
+        394536036,
+        326905188,
+        327727211,
+        412369904,
+        387795700,
+        221032446
+    ]
+}

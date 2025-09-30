@@ -147,17 +147,43 @@ export interface ReportsDemoData {
 }
 
 export interface PlReportDemoData {
-  revenue: number;
-  costs: number;
-  profit: number;
-  margin: number;
-  expenses: ExpenseDemoData[];
-  summary: {
-    totalRevenue: number;
-    totalCosts: number;
-    netProfit: number;
-    profitMargin: number;
+  data: PlReportData[];
+}
+
+export interface PlReportData {
+  year: number;
+  data: PlReportYearData;
+  months: PlReportMonthData[];
+}
+
+export interface PlReportYearData {
+  realization: { rub: number; percent: number };
+  mp_discount: { rub: number; percent: number };
+  sales: { rub: number; percent: number };
+  direct_expenses: {
+    cost: { rub: number; percent: number };
+    logistic: { rub: number; percent: number };
+    commission: { rub: number; percent: number };
+    penalties: { rub: number; percent: number };
+    storage: { rub: number; percent: number };
+    advert: { rub: number; percent: number };
+    other_retentions: { rub: number; percent: number };
+    paid_acceptance: { rub: number; percent: number };
+    total_expenses: { rub: number; percent: number };
   };
+  compensation: { rub: number; percent: number };
+  gross_margin: { rub: number; percent: number };
+  operating_expenses: null;
+  operating_profit: { rub: number; percent: number };
+  ebitda: { rub: number; percent: number };
+  ebitda_margin: number;
+  tax: { rub: number; percent: number };
+  net_profit: { rub: number; percent: number };
+}
+
+export interface PlReportMonthData {
+  month_label: string;
+  data: PlReportYearData;
 }
 
 export interface MonthlyReportDemoData {

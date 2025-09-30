@@ -1,4 +1,5 @@
 import { DemoDataService } from './DemoDataService';
+import { URL } from './config';
 
 // Получение текущего пользователя из контекста
 const getCurrentUser = () => {
@@ -47,13 +48,13 @@ const createMockResponse = (data: any) => {
 };
 
 // Основная функция обертки над fetch
-export const fetchApi = async (url: string, options: RequestInit = {}) => {
+export const fetchApi = async (endpoint: string, options: RequestInit = {}) => {
   const user = getCurrentUser();
-  
+
   // Проверяем, находится ли пользователь в демо-режиме
   if (user?.subscription_status === null) {
     const demoService = DemoDataService.getInstance();
-    const demoData = demoService.getDataForEndpoint(url);
+    const demoData = demoService.getDataForEndpoint(endpoint);
 
     if (demoData?.data) {
       return createMockResponse(demoData.data);
@@ -68,5 +69,5 @@ export const fetchApi = async (url: string, options: RequestInit = {}) => {
   }
   
   // Выполняем реальный запрос
-  return fetch(url, options);
+  return fetch(`${URL}${endpoint}`, options);
 };

@@ -1,27 +1,29 @@
 import React from 'react';
-import AuthContext from '../../service/AuthContext';
+import AuthContext from '@/service/AuthContext';
 import { useState, useEffect, useContext, useMemo } from 'react';
-import MobilePlug from '../../components/sharedComponents/mobilePlug/mobilePlug';
-import Sidebar from '../../components/sharedComponents/sidebar/sidebar';
-import Header from '../../components/sharedComponents/header/header';
-import TableWidget from '../../components/sharedComponents/ReportTable/newTableWidget';
-import SelfCostWarningBlock from '../../components/sharedComponents/selfCostWraningBlock/selfCostWarningBlock';
-import { ServiceFunctions } from '../../service/serviceFunctions';
-import { formatPrice } from '../../service/utils';
+import MobilePlug from '@/components/sharedComponents/mobilePlug/mobilePlug';
+import Sidebar from '@/components/sharedComponents/sidebar/sidebar';
+import Header from '@/components/sharedComponents/header/header';
+import TableWidget from '@/components/sharedComponents/ReportTable/newTableWidget';
+import SelfCostWarningBlock from '@/components/sharedComponents/selfCostWraningBlock/selfCostWarningBlock';
+import { ServiceFunctions } from '@/service/serviceFunctions';
+import { formatPrice } from '@/service/utils';
 import { Flex } from 'antd';
 import styles from './ReportProfitLoss.module.css';
-import { Filters } from '../../components/sharedComponents/apiServicePagesFiltersComponent';
+import { Filters } from '@/components/sharedComponents/apiServicePagesFiltersComponent';
 import dayjs from 'dayjs';
 import { COLUMNS, ROWS } from './config';
-import { useAppSelector } from '../../redux/hooks';
-import HowToLink from '../../components/sharedComponents/howToLink/howToLink';
-import DataCollectWarningBlock from '../../components/sharedComponents/dataCollectWarningBlock/dataCollectWarningBlock'
-import NoSubscriptionWarningBlock from '../../components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock';
+import { useAppSelector } from '@/redux/hooks';
+import HowToLink from '@/components/sharedComponents/howToLink/howToLink';
+import DataCollectWarningBlock from '@/components/sharedComponents/dataCollectWarningBlock/dataCollectWarningBlock'
+import NoSubscriptionWarningBlock from '@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock';
 import { startOfYear, format } from "date-fns";
+import { useDemoMode } from '@/app/providers/DemoDataProvider';
 
 
 export default function ReportProfitLoss() {
 	const { user, authToken } = useContext(AuthContext);
+	const { isDemoMode } = useDemoMode();
 	const { activeBrand, selectedRange, activeMonths, activeBrandName, activeArticle, activeGroup, isFiltersLoaded } = useAppSelector((state) => state.filters);
 	const filters = useAppSelector((state) => state.filters);
 	const { shops } = useAppSelector((state) => state.shopsSlice);
@@ -289,6 +291,14 @@ export default function ReportProfitLoss() {
 					<SelfCostWarningBlock />
 				)}
 
+				<div className={styles.how}>
+					<HowToLink text='Как использовать раздел' url='https://radar.usedocs.com/article/77557' target='_blank' />
+				</div>
+
+				{!loading && isDemoMode && (
+					<NoSubscriptionWarningBlock />
+				)}
+
 				<div className={styles.controls}>
 					<Filters
 						timeSelect={false}
@@ -296,14 +306,6 @@ export default function ReportProfitLoss() {
 						isDataLoading={loading}
 					/>
 				</div>
-
-				<div className={styles.how}>
-					<HowToLink text='Как использовать раздел' url='https://radar.usedocs.com/article/77557' target='_blank' />
-				</div>
-
-				{!loading && shops && user.subscription_status === null && (
-					<NoSubscriptionWarningBlock />
-				)}
 
 				{!loading && shops && user?.subscription_status && !shopStatus?.is_primary_collect && (
 					<DataCollectWarningBlock
