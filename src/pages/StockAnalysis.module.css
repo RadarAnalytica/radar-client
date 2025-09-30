@@ -18,8 +18,8 @@
     gap: 20px;
     box-sizing: border-box;
     height: 100%;
-    overflow-y: scroll;
-    
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 .page__sideNavWrapper {
     height: 100%;

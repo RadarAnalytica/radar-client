@@ -6,33 +6,28 @@ import {
 } from 'react';
 import { URL } from './config';
 import { jwtDecode } from 'jwt-decode';
-import { useNavigate } from 'react-router-dom';
-import { useCookie } from '../service/utils';
+import { useCookie } from './utils';
 
-const AuthContext = createContext();
+const AuthContext = createContext(null);
 
 export default AuthContext;
 
 export const AuthProvider = ({ children }) => {
   const decode = (token) => {
     try {
-      if (!!token) {
+      if (token) {
         return jwtDecode(token);
       }
-      return;
     } catch (error) {
       console.error('Error decoding token:', error);
       // deleteCookie('radar');
-      return null;
     }
   };
 
   const [value, deleteCookie] = useCookie('radar');
   const [authToken, setAuthToken] = useState();
-
-  let prevToken = authToken;
-
   const [user, setUser] = useState(decode(value));
+  let prevToken = authToken;
 
   useEffect(() => {
     if (value && value !== prevToken) {
@@ -50,11 +45,11 @@ export const AuthProvider = ({ children }) => {
 
   // console.log('decodedValue', decodedValue);
 
-  const updateUser = (user) => {
-    this.setState((prevState) => ({ user }));
-  };
-
-  const navigate = useNavigate();
+  // const updateUser = (user) => {
+  //   this.setState((prevState) => ({ user }));
+  // };
+  //
+  // const navigate = useNavigate();
   const login = async (email, password, setError, setShow) => {
     if (!password || !email) {
       setError('Введите корректное значение для всех полей');
@@ -138,8 +133,6 @@ export const AuthProvider = ({ children }) => {
     document.cookie = `radar=;max-age=-1;expires=Thu, 01 Jan 1970 00:00:00 GMT;domain=.${window.location.hostname}`;
     // Delete cookie using the hook's deleteCookie function
     deleteCookie();
-    
-    
 
     setAuthToken(null);
     setUser(null);

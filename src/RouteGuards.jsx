@@ -1,11 +1,10 @@
-import { useContext, Suspense } from 'react';
+import { Suspense, useContext } from 'react';
 import AuthContext from './service/AuthContext';
-import { Navigate, useLocation } from 'react-router-dom';
+import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import MainPage from './pages/MainPage';
 import LoaderPage from './pages/LoaderPage';
 import { URL } from './service/config';
 import { Helmet } from 'react-helmet-async';
-import { useNavigate } from 'react-router-dom';
 import UnderDevelopmentPlugPage from './pages/underDevelopmentPlugPage/underDevelopmentPlugPage';
 import NoSubscriptionPlugPage from './pages/noSubscriptionPlugPage/noSubscriptionPlugPage';
 import NoSubscriptionPage from './pages/NoSubscriptionPage';
@@ -29,8 +28,6 @@ import NoSubscriptionPage from './pages/NoSubscriptionPage';
  *  --- feel free to dm me for any questions -------
  * ----------------------------- Mike Starina ----
  */
-
-
 // Protection config
 const config = {
     subscriptionTypeProtected: {
@@ -105,12 +102,11 @@ export const ProtectedRoute = ({
   role = config.role,
 }) => {
   const { user } = useContext(AuthContext);
-  const { pathname } = useLocation()
-  const navigate = useNavigate()
+  const { pathname } = useLocation();
+  const navigate = useNavigate();
   const isCalculateEntryUrl = sessionStorage.getItem('isCalculateEntryUrl'); // это устанавливается в калькуляторе. Необходимо для коррекного редиректа не авторизованного юзера
 
   // -------this is test user object for dev purposes ------//
-
   // let user = {
   //   email: "modinsv@yandex.ru",
   //   id: 2,
@@ -123,20 +119,17 @@ export const ProtectedRoute = ({
   // }
 
  //const user = undefined
-
 /**
-1. null
-2. expired
-3& smart + !onboardig
+  1. null
+  2. expired
+  3& smart + !onboardig
  */
-
-
 
   //------- 0. Under development protection ----------//
   if (underDevProtected && process.env.NODE_ENV === 'production') {
     switch(underDevGuardType) {
       case 'redirect': {
-        return navigate(underDevRedirect)
+        return navigate(underDevRedirect);
       }
       case 'fallback': {
         return (
@@ -146,35 +139,35 @@ export const ProtectedRoute = ({
         )
       }
     }
-    return (underDevFallback())
+    return (underDevFallback());
   }
 
 
   //------- 1. Auth protection (checking is user exists) ----------//
   if (authProtected && !user) {
-    switch(authGuardType) {
+    switch (authGuardType) {
       case 'redirect': {
         if (isCalculateEntryUrl === '1') {
           sessionStorage.removeItem('isCalculateEntryUrl')
-          return (window.location.replace(`${URL}/signup`))
+          return window.location.replace(`${URL}/signup`);
         } else {
-          return (window.location.replace(`${URL}${authRedirect}`))
+          return window.location.replace(`${URL}${authRedirect}`);
         }
       }
       case 'fallback': {
         return (
-          <Suspense fallback={<LoaderPage />}>
+          <Suspense fallback={<LoaderPage/>}>
             {authFallback()}
           </Suspense>
         )
       }
     }
-    return (window.location.replace(`${URL}${authRedirect}`))
+
+    return window.location.replace(`${URL}${authRedirect}`);
   }
 
   // ---------2. Test period protection ------//
   if (testPeriodProtected && user && user.subscription_status === null) {
-    
     // ---------2.1 Mock data protection ------//
     // const mockPages = ['Сводка продаж', 'ABC-анализ', 'География заказов и продаж', 'Аналитика по товарам']
     // if (user && user.subscription_status === null && mockPages.includes(routeRuName)) {
@@ -188,22 +181,21 @@ export const ProtectedRoute = ({
     //     </Suspense>
     //   )
     // }
-    
-     switch(testPeriodGuardType) {
-       case 'redirect': {
-         return (<Navigate to={testPeriodRedirect} />)
-        }
-        case 'fallback': {
-          return (
-            <Suspense fallback={<LoaderPage />}>
+
+    switch (testPeriodGuardType) {
+      case 'redirect': {
+        return (<Navigate to={testPeriodRedirect}/>)
+      }
+      case 'fallback': {
+        return (
+          <Suspense fallback={<LoaderPage/>}>
             {testPeriodFallback({title: routeRuName, pathname: pathname.substring(1)})}
           </Suspense>
         )
       }
     }
 
-    return (<Navigate to={testPeriodRedirect} replace />)
-  
+    return <Navigate to={testPeriodRedirect} replace />;
   }
   
   // ---------3. Subscription expiration protection (checking subscription) -------//
@@ -220,7 +212,7 @@ export const ProtectedRoute = ({
         )
       }
     }
-    return (<Navigate to={expireRedirect} replace />)
+    return <Navigate to={expireRedirect} replace />;
 }
 
     // ---------4. Onboarding protection (user should be onboarded) ------//
@@ -238,43 +230,31 @@ export const ProtectedRoute = ({
         }
       }
       
-      return (<Navigate to={onboardRedirect} replace />)
-    
+      return <Navigate to={onboardRedirect} replace />;
   }
-
-
-
-
-
 
   // ----------5. User role protection ------------//
   if (userRoleProtected && user && role && user.role !== role) {
-    switch(userRoleGuardType) {
-        case 'redirect': {
-          return (<Navigate to={userRoleRedirect} />)
-        }
-        case 'fallback': {
-          return (
-            <Suspense fallback={<LoaderPage />}>
-              {userRoleFallback()}
-            </Suspense>
-          )
-        }
+    switch (userRoleGuardType) {
+      case 'redirect': {
+        return (<Navigate to={userRoleRedirect}/>)
       }
+      case 'fallback': {
+        return (
+          <Suspense fallback={<LoaderPage/>}>
+            {userRoleFallback()}
+          </Suspense>
+        )
+      }
+    }
 
-      return (<Navigate to={userRoleRedirect} replace />)
+    return <Navigate to={userRoleRedirect} replace/>;
   }
 
   // ---------- 6. Subscription protection (for different types of subscription) ------------//
   if (subscriptionProtected && user && user.subscription_status !== subscription) {
     /***
-     * 
-     * 
-     * 
      *  here will be logic (checking the whitelist of routes from config) when different subscriptions type will be activated
-     * 
-     * 
-     * 
      */
     switch(subscriptionGuardType) {
       case 'redirect': {
@@ -293,13 +273,13 @@ export const ProtectedRoute = ({
   }
 
   // ----default ----------//
-  return ( 
-    <Suspense fallback={<LoaderPage />}>
+  return (
+    <Suspense fallback={<LoaderPage/>}>
       <Helmet>
         <title>Radar Analityca</title>
-        <meta name="description" content={routeRuName} />
+        <meta name="description" content={routeRuName}/>
       </Helmet>
-      { children }
+      {children}
     </Suspense>
   )
 }

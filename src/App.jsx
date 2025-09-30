@@ -6,6 +6,10 @@ import { Suspense } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { HelmetProvider } from 'react-helmet-async';
 import { ProductProvider } from "./service/ProductContext";
+import LoaderPage from "./pages/LoaderPage";
+import { ProtectedRoute } from "./RouteGuards";
+import { FiltersProvider } from "./app/index";
+import { DemoDataProvider } from "./app/providers/DemoDataProvider";
 
 const StockAnalysisGlitter = React.lazy(() => import("./components/StockAnalysisGlitter"));
 const Subscriptions = React.lazy(() => import("./pages/Subscriptions"));
@@ -67,11 +71,7 @@ const ReferalPage = React.lazy(() => import("./pages/Referal"));
 const SupplierAnalysisPage = React.lazy(() => import("./pages/supplierAnalysisPage/supplierAnalysisPage"));
 const SupplierIdPage = React.lazy(() => import("./pages/supplierAnalysisPage/supplierIdPage"));
 const RestoreError = React.lazy(() => import("./pages/RestoreError"));
-const Rnp = React.lazy(() => import('./pages/Rnp'))
-import LoaderPage from "./pages/LoaderPage";
-import { ProtectedRoute } from "./RouteGuards";
-import { FiltersProvider } from "./app/index";
-import { DemoDataProvider } from "./app/providers/DemoDataProvider";
+const Rnp = React.lazy(() => import('./pages/Rnp'));
 
 // During migration, allow missing props on ProtectedRoute
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -85,10 +85,9 @@ import { DemoDataProvider } from "./app/providers/DemoDataProvider";
  */
 
 function App() {
-
   // нужно для определения какую страницу калькулятора показывать
   const { userAgent } = navigator;
-  const deviceRegexp = /android|iphone|kindle|ipad/i
+  const deviceRegexp = /android|iphone|kindle|ipad/i;
 
   return (
     <AuthProvider>
