@@ -4,14 +4,10 @@ import './styles.css';
 import Map from '../components/Map';
 import OrderMapPieChart from '../containers/orderMap/OrderMapPieChart';
 import OrderMapTable from '../containers/orderMap/OrderMapTable';
-import OrderTableExtended from '../containers/orderMap/OrderTableExtended';
 import AuthContext from '../service/AuthContext';
 import { formatPrice } from '../service/utils';
-import SelfCostWarning from '../components/SelfCostWarning';
-import DataCollectionNotification from '../components/DataCollectionNotification';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { fetchShops } from '../redux/shops/shopsActions';
-import { fetchGeographyData } from '../redux/geoData/geoDataActions';
 import { useLocation, useNavigate } from "react-router-dom";
 import NoSubscriptionPage from './NoSubscriptionPage';
 import RadioGroup from '../components/RadioGroup';
@@ -58,9 +54,6 @@ const OrdersMap = () => {
     { value: 'region', label: 'По регионам' },
     { value: 'store', label: 'По складам' },
   ];
-
-
-
   const updateGeoData = async () => {
     setLoading(true)
     try {
@@ -80,15 +73,7 @@ const OrdersMap = () => {
     } finally {
       setLoading(false)
     }
-  
   }
-
-  // useEffect(() => {
-  //   if (activeBrand && activeBrand.is_primary_collect && activeBrand.is_primary_collect !== primaryCollect) {
-  //     setPrimaryCollect(activeBrand.is_primary_collect)
-  //     updateGeoData()
-  //   }
-  // }, [authToken]);
 
   useEffect(() => {
     setPrimaryCollect(activeBrand?.is_primary_collect)
@@ -96,9 +81,6 @@ const OrdersMap = () => {
       updateGeoData();
     }
   }, [activeBrand, selectedRange, isFiltersLoaded, activeBrandName, activeArticle, activeGroup]);
-
-
-
 
   useEffect(() => {
     if (shops?.length === 0 && !firstLoading) {
@@ -141,22 +123,13 @@ const OrdersMap = () => {
     };
   }, [dispatch, activeBrand, selectedRange, authToken]);
 
-  // useEffect(() => {
-  // if (authToken !== authTokenRef.current) {
-  //dispatch(fetchShops(authToken));
-  // }
-  // }, [dispatch]);
-
-
   const checkIdQueryParam = () => {
     const searchParams = new URLSearchParams(location.search);
     const idQueryParam = searchParams.get('id');
+
     if (idQueryParam && parseInt(idQueryParam) !== user.id) {
       logout();
       navigate('/signin');
-
-    } else {
-      return;
     }
   };
 
@@ -165,20 +138,6 @@ const OrdersMap = () => {
       checkIdQueryParam();
     }
   }, [location.search]);
-
-  // const changePeriod = () => {
-  //     setLoading(true)
-  //     if (user && activeBrand) {
-  //         ServiceFunctions.getGeoData(user.id, activeBrand, selectedRange).then(data => setData(data))
-  //     }
-  // }
-
-  // useEffect(() => {
-  //     changePeriod()
-  // }, [selectedRange, activeBrand])
-
-  // const orders = data && data?.orders && data?.orders.data ? data?.orders.data : [];
-  // const sales = data && data?.sales && data?.sales.data ? data?.sales.data : [];
 
   const ordersByWarehouses = data ? data?.ordersByWarehouse : [];
   const salesByWarehouses = data ? data?.salesByWarehouse : [];
@@ -926,11 +885,7 @@ const OrdersMap = () => {
           )}
 
           {activeBrand && !activeBrand.is_primary_collect && !loading &&
-
             <div style={{ width: '100%', padding: '0 20px' }}>
-              {/* <DataCollectionNotification
-              title={'Ваши данные еще формируются и обрабатываются.'}
-            /> */}
               <DataCollectWarningBlock
                 title='Ваши данные еще формируются и обрабатываются.'
               />
@@ -939,18 +894,6 @@ const OrdersMap = () => {
         </section>
         {/* ---------------------- */}
       </main>
-
-      // <div className='orders-map'>
-      //   <MobilePlug />
-      // <SideNav />
-      //   <div className='orders-map-content pb-3'>
-      //     <div style={{ width: '100%'}} className="container dash-container">
-      //       <TopNav title={'География заказов и продаж'} mikeStarinaStaticProp />
-      //     </div>
-
-
-      //   </div>
-      // </div>
     )
   );
 };

@@ -2,30 +2,21 @@ import React, { useState, useContext, useEffect } from 'react';
 import styles from './addGroupModal.module.css'
 import { Modal, Input, ConfigProvider, Button, Select } from 'antd';
 import { useNavigate } from 'react-router-dom';
-import { URL } from '../../../../../service/config';
-import AuthContext from '../../../../../service/AuthContext';
-import { useAppSelector } from '../../../../../redux/hooks';
-import { useAppDispatch } from '../../../../../redux/hooks';
-import { fetchShops } from '../../../../../redux/shops/shopsActions';
-import { actions as filterActions } from '../../../../../redux/apiServicePagesFiltersState/apiServicePagesFilterState.slice';
-import { fetchFilters } from '../../../../../redux/apiServicePagesFiltersState/filterActions';
-
-const initDataFetchingStatus = {
-    isLoading: false,
-    isError: false,
-    isSuccess: false,
-    message: ''
-}
+import AuthContext from '@/service/AuthContext';
+import { useAppSelector } from '@/redux/hooks';
+import { useAppDispatch } from '@/redux/hooks';
+import { fetchShops } from '@/redux/shops/shopsActions';
+import { actions as filterActions } from '@/redux/apiServicePagesFiltersState/apiServicePagesFilterState.slice';
+import { fetchFilters } from '@/redux/apiServicePagesFiltersState/filterActions';
+import { fetchApi } from "@/service/fetchApi";
 
 const AddGroupModal = ({ isAddGroupModalVisible, setIsAddGroupModalVisible, dataFetchingStatus, initDataFetchingStatus, setDataFetchingStatus }) => {
-    const { authToken, user } = useContext(AuthContext)
+    const { authToken, user } = useContext(AuthContext);
     const { activeBrand } = useAppSelector((state) => state.filters);
     const { shops } = useAppSelector((state) => state.shopsSlice);
-    //const [dataFetchingStatus, setDataFetchingStatus] = useState(initDataFetchingStatus)
-    const [inputValue, setInputValue] = useState('')
-    const dispatch = useAppDispatch()
-    const navigate = useNavigate()
-
+    const [inputValue, setInputValue] = useState('');
+    const dispatch = useAppDispatch();
+    const navigate = useNavigate();
 
     const createGroup = async () => {
         setDataFetchingStatus({ ...initDataFetchingStatus, isLoading: true })
@@ -37,27 +28,40 @@ const AddGroupModal = ({ isAddGroupModalVisible, setIsAddGroupModalVisible, data
             product_ids: []
         }
         try {
-            const res = await fetch(`${URL}/api/product/product_groups`, {
+            const res = await fetchApi(`/api/product/product_groups`, {
                 method: 'POST',
                 headers: {
                     'content-type': 'application/json',
                     'authorization': 'JWT ' + authToken
                 },
                 body: JSON.stringify(requestObject)
-            })
+            });
 
             if (!res.ok) {
-                const parsedData = await res.json()
-                setDataFetchingStatus({ ...initDataFetchingStatus, isError: true, message: parsedData?.detail || 'Что-то пошло не так :(' })
+                const parsedData = await res.json();
+                setDataFetchingStatus({
+                  ...initDataFetchingStatus,
+                  isError: true,
+                  message: parsedData?.detail || 'Что-то пошло не так :('
+                });
                 return;
             }
 
-            const parsedData = await res.json()
-            setDataFetchingStatus(initDataFetchingStatus)
-            dispatch(fetchFilters(authToken))
-            navigate(`/groups/${parsedData.data.id}`)
-        } catch {
-            setDataFetchingStatus({ ...initDataFetchingStatus, isError: true, message: 'Что-то пошло не так :(' })
+            const parsedData = await res.json();
+            setDataFetchingStatus(initDataFetchingStatus);
+            dispatch(fetchFilters(authToken));
+            setIsAddGroupModalVisible(false);
+
+            if (parsedData.data?.id) {
+              navigate(`/groups/${parsedData.data.id}`);
+            }
+        } catch (e) {
+            console.error('Error:', e);
+            setDataFetchingStatus({
+              ...initDataFetchingStatus,
+              isError: true,
+              message: 'Что-то пошло не так :('
+            });
         }
     }
 

@@ -1,17 +1,16 @@
-import React, { useState, useEffect, useContext, useRef, useMemo, useCallback } from 'react'
-import styles from './selfCostPage.module.css'
-import Header from '../../components/sharedComponents/header/header'
-import Sidebar from '../../components/sharedComponents/sidebar/sidebar'
-import MobilePlug from '../../components/sharedComponents/mobilePlug/mobilePlug'
-import { Filters } from '../../components/sharedComponents/apiServicePagesFiltersComponent'
-import HowToLink from '../../components/sharedComponents/howToLink/howToLink'
-import { SelfCostTableWidget, SearchWidget } from './widgets'
-import AuthContext from '../../service/AuthContext'
-import ErrorModal from '../../components/sharedComponents/modals/errorModal/errorModal'
-import { useAppSelector } from '../../redux/hooks'
-import { URL } from '../../service/config'
-import DataCollectWarningBlock from '../../components/sharedComponents/dataCollectWarningBlock/dataCollectWarningBlock'
-import { ServiceFunctions } from '../../service/serviceFunctions'
+import React, { useState, useEffect, useContext, useRef, useMemo, useCallback } from 'react';
+import styles from './selfCostPage.module.css';
+import Header from '@/components/sharedComponents/header/header';
+import Sidebar from '@/components/sharedComponents/sidebar/sidebar';
+import MobilePlug from '@/components/sharedComponents/mobilePlug/mobilePlug';
+import { Filters } from '@/components/sharedComponents/apiServicePagesFiltersComponent';
+import HowToLink from '@/components/sharedComponents/howToLink/howToLink';
+import { SelfCostTableWidget, SearchWidget } from './widgets';
+import AuthContext from '@/service/AuthContext';
+import ErrorModal from '@/components/sharedComponents/modals/errorModal/errorModal';
+import { useAppSelector } from '@/redux/hooks';
+import DataCollectWarningBlock from '@/components/sharedComponents/dataCollectWarningBlock/dataCollectWarningBlock';
+import { ServiceFunctions } from '@/service/serviceFunctions';
 
 const initDataStatus = {
     isError: false,
@@ -32,10 +31,10 @@ const SelfCostPage = () => {
     //const prevShop = useRef(activeBrand)
 
     const getTableData = useCallback(async (authToken, shopId, filters) => {
-        setDataStatus({ ...initDataStatus, isLoading: true })
-        const res = await ServiceFunctions.getSelfCostData(authToken, shopId, filters)
+        setDataStatus({ ...initDataStatus, isLoading: true });
+        const res = await ServiceFunctions.getSelfCostData(authToken, shopId, filters);
         if (!res.ok) {
-            setDataStatus({ ...initDataStatus, isError: true, message: 'Что-то пошло не так :( Попробуйте оновить страницу' })
+            setDataStatus({ ...initDataStatus, isError: true, message: 'Что-то пошло не так :( Попробуйте оновить страницу' });
             return;
         }
 

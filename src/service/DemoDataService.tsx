@@ -18,6 +18,11 @@ import weeklyReportData from '../mock/weekly-report.json';
 import rnpByArticleData from '../mock/rnp-article.json';
 import rnpSummaryData from '../mock/rnp-summary.json';
 import rnpProductsData from '../mock/rnp-products.json';
+import geoData from '../mock/geo.json';
+import abcDataProceeds from '../mock/abc-data-proceeds.json';
+import abcDataProfit from '../mock/abc-data-profit.json';
+import selfCostsData from '../mock/selfcost.json';
+import productGroupsData from '../mock/product-groups.json';
 
 import { store } from '@/redux/store';
 
@@ -69,7 +74,24 @@ export class DemoDataService {
       return null;
     }
 
-    // Маппинг эндпоинтов на данные
+    // Пробуем точное совпадение
+    const exactMatch = this.getExactMatch(endpoint);
+    if (exactMatch) {
+      return exactMatch;
+    }
+
+    // Пробуем совпадение по паттерну для URL с динамическими параметрами
+    const patternMatch = this.getPatternMatch(endpoint);
+    if (patternMatch) {
+      return patternMatch;
+    }
+
+    console.error('DemoDataService: No handler found for endpoint:', endpoint);
+    return null;
+  }
+
+  // Точное совпадение эндпоинтов
+  private getExactMatch(endpoint: string): any {
     const endpointMap: Record<string, () => any> = {
       '/api/dashboard': () => this.getDashboardData(),
       '/api/abc-analysis': () => this.getAbcAnalysisData(),
@@ -87,16 +109,62 @@ export class DemoDataService {
       '/api/rnp/summary': () => this.getRnpSummaryData(),
       '/api/rnp/products': () => this.getRnpProductsData(),
       '/api/profit_loss/report': () => this.getPlReportData(),
+      '/api/geo/': () => this.getGeoData(),
+      '/api/abc_data/proceeds': () => this.getAbcDataProceeds(),
+      '/api/abc_data/profit': () => this.getAbcDataProfit(),
+      '/api/product/self-costs/list': () => this.getSelfCostsData(),
+      '/api/product/product_groups': () => this.getProductGroupsData(),
+      '/api/product/self-costs': () => ({ message: "Success" }),
     };
 
     const dataGetter = endpointMap[endpoint];
     if (dataGetter) {
-      const result = this.createApiResponse(dataGetter());
-      return result;
+      return this.createApiResponse(dataGetter());
     }
 
-    console.error('DemoDataService: No handler found for endpoint:', endpoint);
     return null;
+  }
+
+  // Совпадение по паттерну для URL с параметрами
+  private getPatternMatch(endpoint: string): any {
+    // Паттерн для /api/product/product_groups/{id}
+    const productGroupsIdMatch = endpoint.match(/^\/api\/product\/product_groups\/(\d+)$/);
+    if (productGroupsIdMatch) {
+      const productGroupId = productGroupsIdMatch[1];
+      return this.createApiResponse({
+        data: this.getProductGroupById(productGroupId)
+      });
+    }
+
+    // Можно добавить другие паттерны здесь
+    // Например:
+    // const productIdMatch = endpoint.match(/^\/api\/product\/(\d+)$/);
+    // if (productIdMatch) {
+    //   const productId = productIdMatch[1];
+    //   return this.createApiResponse(this.getProductById(productId));
+    // }
+
+    return null;
+  }
+
+  private getProductGroupById(id: string): any {
+    return {
+      id: parseInt(id),
+      name: `Группа товаров ${id}`,
+      description: `Описание группы товаров ${id}`,
+      products: [
+        {
+          "id": 49216,
+          "photo": "https://basket-13.wbbasket.ru/vol1984/part198498/198498591/images/c246x328/1.webp",
+          "article": "М-БР-01-Ч",
+          "brand": "Демо-бренд",
+          "shop": "Демо-магазин",
+          "tech_size": "48 (176-182)"
+        }
+      ],
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString()
+    };
   }
 
   // Создать API ответ в формате демо-режима
@@ -114,15 +182,56 @@ export class DemoDataService {
     };
   }
 
-  // Dashboard данные
-  private getDashboardData(): any {
-    let data = { ...dashboardData };
-
+  private getFilterDays(): number {
     const filters = store.getState().filters;
     let days = filters.selectedRange?.period;
     if (filters.selectedRange?.from && filters.selectedRange?.to) {
       days = Math.round((Number(new Date(filters.selectedRange.to)) - Number(new Date(filters.selectedRange.from))) / 3600 / 24 / 1000);
     }
+    return days;
+  }
+
+  private getGeoData(): any {
+    const data = geoData;
+    const days = this.getFilterDays();
+    const denominator = 90 / days;
+
+    data.geo_data.map(item => {
+      item.percent = item.percent / denominator;
+      item.comparePercent = item.comparePercent / denominator;
+      item.percentOrder = item.percentOrder / denominator;
+      item.comparePercentOrder = item.comparePercentOrder / denominator;
+      item.orderCount = item.orderCount / denominator;
+      item.orderAmount = item.orderAmount / denominator;
+      item.saleCount = item.saleCount / denominator;
+      item.saleAmount = item.saleAmount / denominator;
+      return item;
+    });
+
+    return { data };
+  }
+
+  private getAbcDataProceeds(): any {
+    return abcDataProceeds;
+  }
+
+  private getAbcDataProfit(): any {
+    return abcDataProfit;
+  }
+
+  private getSelfCostsData(): any { 
+    return { data: selfCostsData };
+  }
+
+  private getProductGroupsData(): any {
+    return { data: productGroupsData };
+  }
+
+  // Dashboard данные
+  private getDashboardData(): any {
+    const data = { ...dashboardData };
+    const days = this.getFilterDays();
+    const denominator = 90 / days;
 
     data.orderCountList = data.orderCountList.slice(0, days);
     data.orderAmountList = data.orderAmountList.slice(0, days);
@@ -130,8 +239,7 @@ export class DemoDataService {
     data.saleAmountList = data.saleAmountList.slice(0, days);
     data.marginalityRoiChart = data.marginalityRoiChart.slice(0, days);
     data.salesAndProfit = data.salesAndProfit.slice(0, days);
-
-    const denominator = 90 / days;
+    
     data.orderAmount = data.orderAmount / denominator;
     data.saleAmount = data.saleAmount / denominator;
     data.orderCount = data.orderCount / denominator;

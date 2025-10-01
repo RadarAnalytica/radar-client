@@ -1,0 +1,3632 @@
+{
+  "stock_data": [
+    {
+      "stockName": "Тула",
+      "percent": 20.28,
+      "comparePercent": -6.54,
+      "percentOrder": 18,
+      "comparePercentOrder": -10.95,
+      "orderCount": 6594,
+      "orderAmount": 11528173.97,
+      "saleCount": 3678,
+      "saleAmount": 5649012.83,
+      "saleDetails": [
+        {
+          "district": "Центральный федеральный округ",
+          "amount": 2979005,
+          "stock_percent": 52.7,
+          "common_percent": 10.7
+        },
+        {
+          "district": "Южный федеральный округ",
+          "amount": 597519,
+          "stock_percent": 10.6,
+          "common_percent": 2.1
+        },
+        {
+          "district": "Приволжский федеральный округ",
+          "amount": 581211,
+          "stock_percent": 10.3,
+          "common_percent": 2.1
+        },
+        {
+          "district": " Другой округ",
+          "amount": 485062.22,
+          "stock_percent": 8.6,
+          "common_percent": 1.7
+        },
+        {
+          "district": "Северо-Западный федеральный округ",
+          "amount": 424863.25,
+          "stock_percent": 7.5,
+          "common_percent": 1.5
+        },
+        {
+          "district": "Уральский федеральный округ",
+          "amount": 172002,
+          "stock_percent": 3,
+          "common_percent": 0.6
+        },
+        {
+          "district": "Сибирский федеральный округ",
+          "amount": 153259.36,
+          "stock_percent": 2.7,
+          "common_percent": 0.6
+        },
+        {
+          "district": "Дальневосточный федеральный округ",
+          "amount": 140604,
+          "stock_percent": 2.5,
+          "common_percent": 0.5
+        },
+        {
+          "district": "Северо-Кавказский федеральный округ",
+          "amount": 115487,
+          "stock_percent": 2,
+          "common_percent": 0.4
+        }
+      ],
+      "orderDetails": [
+        {
+          "district": "Центральный федеральный округ",
+          "amount": 6618525,
+          "stock_percent": 57.4,
+          "common_percent": 10.8
+        },
+        {
+          "district": "Южный федеральный округ",
+          "amount": 1344417,
+          "stock_percent": 11.7,
+          "common_percent": 2.2
+        },
+        {
+          "district": "Приволжский федеральный округ",
+          "amount": 1252851,
+          "stock_percent": 10.9,
+          "common_percent": 2
+        },
+        {
+          "district": "Северо-Западный федеральный округ",
+          "amount": 923484,
+          "stock_percent": 8,
+          "common_percent": 1.5
+        },
+        {
+          "district": " Другой округ",
+          "amount": 333222.61,
+          "stock_percent": 2.9,
+          "common_percent": 0.5
+        },
+        {
+          "district": "Северо-Кавказский федеральный округ",
+          "amount": 309859,
+          "stock_percent": 2.7,
+          "common_percent": 0.5
+        },
+        {
+          "district": "Уральский федеральный округ",
+          "amount": 305274,
+          "stock_percent": 2.6,
+          "common_percent": 0.5
+        },
+        {
+          "district": "Сибирский федеральный округ",
+          "amount": 266082.36,
+          "stock_percent": 2.3,
+          "common_percent": 0.4
+        },
+        {
+          "district": "Дальневосточный федеральный округ",
+          "amount": 174459,
+          "stock_percent": 1.5,
+          "common_percent": 0.3
+        }
+      ]
+    },
+    {
+      "stockName": "Коледино",
+      "percent": 19.98,
+      "comparePercent": 37.97,
+      "percentOrder": 18,
+      "comparePercentOrder": 17,
+      "orderCount": 6504,
+      "orderAmount": 11347382.64,
+      "saleCount": 3671,
+      "saleAmount": 5567112.09,
+      "saleDetails": [
+        {
+          "district": "Центральный федеральный округ",
+          "amount": 3346811.13,
+          "stock_percent": 60.1,
+          "common_percent": 12
+        },
+        {
+          "district": "Северо-Западный федеральный округ",
+          "amount": 677782.91,
+          "stock_percent": 12.2,
+          "common_percent": 2.4
+        },
+        {
+          "district": "Дальневосточный федеральный округ",
+          "amount": 374558,
+          "stock_percent": 6.7,
+          "common_percent": 1.3
+        },
+        {
+          "district": "Сибирский федеральный округ",
+          "amount": 364671.24,
+          "stock_percent": 6.6,
+          "common_percent": 1.3
+        },
+        {
+          "district": "Приволжский федеральный округ",
+          "amount": 303585,
+          "stock_percent": 5.5,
+          "common_percent": 1.1
+        },
+        {
+          "district": "Уральский федеральный округ",
+          "amount": 217889.92,
+          "stock_percent": 3.9,
+          "common_percent": 0.8
+        },
+        {
+          "district": " Другой округ",
+          "amount": 147975.89,
+          "stock_percent": 2.7,
+          "common_percent": 0.5
+        },
+        {
+          "district": "Южный федеральный округ",
+          "amount": 112590,
+          "stock_percent": 2,
+          "common_percent": 0.4
+        },
+        {
+          "district": "Северо-Кавказский федеральный округ",
+          "amount": 21248,
+          "stock_percent": 0.4,
+          "common_percent": 0.1
+        }
+      ],
+      "orderDetails": [
+        {
+          "district": "Центральный федеральный округ",
+          "amount": 7337069.13,
+          "stock_percent": 64.7,
+          "common_percent": 12
+        },
+        {
+          "district": "Северо-Западный федеральный округ",
+          "amount": 1384102.91,
+          "stock_percent": 12.2,
+          "common_percent": 2.3
+        },
+        {
+          "district": "Дальневосточный федеральный округ",
+          "amount": 668571,
+          "stock_percent": 5.9,
+          "common_percent": 1.1
+        },
+        {
+          "district": "Приволжский федеральный округ",
+          "amount": 571475,
+          "stock_percent": 5,
+          "common_percent": 0.9
+        },
+        {
+          "district": "Сибирский федеральный округ",
+          "amount": 540912.24,
+          "stock_percent": 4.8,
+          "common_percent": 0.9
+        },
+        {
+          "district": "Уральский федеральный округ",
+          "amount": 366336,
+          "stock_percent": 3.2,
+          "common_percent": 0.6
+        },
+        {
+          "district": "Южный федеральный округ",
+          "amount": 290850,
+          "stock_percent": 2.6,
+          "common_percent": 0.5
+        },
+        {
+          "district": " Другой округ",
+          "amount": 97685.36,
+          "stock_percent": 0.9,
+          "common_percent": 0.2
+        },
+        {
+          "district": "Северо-Кавказский федеральный округ",
+          "amount": 90381,
+          "stock_percent": 0.8,
+          "common_percent": 0.1
+        }
+      ]
+    },
+    {
+      "stockName": "Электросталь",
+      "percent": 14.24,
+      "comparePercent": -37.04,
+      "percentOrder": 16,
+      "comparePercentOrder": -28.59,
+      "orderCount": 5537,
+      "orderAmount": 10355313.69,
+      "saleCount": 2505,
+      "saleAmount": 3966402.29,
+      "saleDetails": [
+        {
+          "district": "Центральный федеральный округ",
+          "amount": 1206290,
+          "stock_percent": 30.4,
+          "common_percent": 4.3
+        },
+        {
+          "district": "Приволжский федеральный округ",
+          "amount": 750138,
+          "stock_percent": 18.9,
+          "common_percent": 2.7
+        },
+        {
+          "district": "Северо-Западный федеральный округ",
+          "amount": 566621,
+          "stock_percent": 14.3,
+          "common_percent": 2
+        },
+        {
+          "district": "Сибирский федеральный округ",
+          "amount": 388187,
+          "stock_percent": 9.8,
+          "common_percent": 1.4
+        },
+        {
+          "district": "Дальневосточный федеральный округ",
+          "amount": 337218,
+          "stock_percent": 8.5,
+          "common_percent": 1.2
+        },
+        {
+          "district": "Уральский федеральный округ",
+          "amount": 294447,
+          "stock_percent": 7.4,
+          "common_percent": 1.1
+        },
+        {
+          "district": "Южный федеральный округ",
+          "amount": 192978,
+          "stock_percent": 4.9,
+          "common_percent": 0.7
+        },
+        {
+          "district": " Другой округ",
+          "amount": 184346.29,
+          "stock_percent": 4.6,
+          "common_percent": 0.7
+        },
+        {
+          "district": "Северо-Кавказский федеральный округ",
+          "amount": 46177,
+          "stock_percent": 1.2,
+          "common_percent": 0.2
+        }
+      ],
+      "orderDetails": [
+        {
+          "district": "Центральный федеральный округ",
+          "amount": 3590779.02,
+          "stock_percent": 34.7,
+          "common_percent": 5.9
+        },
+        {
+          "district": "Приволжский федеральный округ",
+          "amount": 2094244,
+          "stock_percent": 20.2,
+          "common_percent": 3.4
+        },
+        {
+          "district": "Северо-Западный федеральный округ",
+          "amount": 1697747,
+          "stock_percent": 16.4,
+          "common_percent": 2.8
+        },
+        {
+          "district": "Сибирский федеральный округ",
+          "amount": 856240,
+          "stock_percent": 8.3,
+          "common_percent": 1.4
+        },
+        {
+          "district": "Уральский федеральный округ",
+          "amount": 802163,
+          "stock_percent": 7.7,
+          "common_percent": 1.3
+        },
+        {
+          "district": "Дальневосточный федеральный округ",
+          "amount": 570329,
+          "stock_percent": 5.5,
+          "common_percent": 0.9
+        },
+        {
+          "district": "Южный федеральный округ",
+          "amount": 492327,
+          "stock_percent": 4.8,
+          "common_percent": 0.8
+        },
+        {
+          "district": "Северо-Кавказский федеральный округ",
+          "amount": 134316,
+          "stock_percent": 1.3,
+          "common_percent": 0.2
+        },
+        {
+          "district": " Другой округ",
+          "amount": 117168.67,
+          "stock_percent": 1.1,
+          "common_percent": 0.2
+        }
+      ]
+    },
+    {
+      "stockName": "Краснодар",
+      "percent": 12.7,
+      "comparePercent": -29.88,
+      "percentOrder": 11,
+      "comparePercentOrder": -15.28,
+      "orderCount": 4156,
+      "orderAmount": 7311341.39,
+      "saleCount": 2319,
+      "saleAmount": 3536930.13,
+      "saleDetails": [
+        {
+          "district": "Южный федеральный округ",
+          "amount": 2291704,
+          "stock_percent": 64.8,
+          "common_percent": 8.2
+        },
+        {
+          "district": "Северо-Кавказский федеральный округ",
+          "amount": 436023,
+          "stock_percent": 12.3,
+          "common_percent": 1.6
+        },
+        {
+          "district": "Центральный федеральный округ",
+          "amount": 252576.62,
+          "stock_percent": 7.1,
+          "common_percent": 0.9
+        },
+        {
+          "district": "Приволжский федеральный округ",
+          "amount": 132541,
+          "stock_percent": 3.7,
+          "common_percent": 0.5
+        },
+        {
+          "district": " Другой округ",
+          "amount": 96015.51,
+          "stock_percent": 2.7,
+          "common_percent": 0.3
+        },
+        {
+          "district": "Дальневосточный федеральный округ",
+          "amount": 95135,
+          "stock_percent": 2.7,
+          "common_percent": 0.3
+        },
+        {
+          "district": "Уральский федеральный округ",
+          "amount": 87744,
+          "stock_percent": 2.5,
+          "common_percent": 0.3
+        },
+        {
+          "district": "Сибирский федеральный округ",
+          "amount": 78028,
+          "stock_percent": 2.2,
+          "common_percent": 0.3
+        },
+        {
+          "district": "Северо-Западный федеральный округ",
+          "amount": 67163,
+          "stock_percent": 1.9,
+          "common_percent": 0.2
+        }
+      ],
+      "orderDetails": [
+        {
+          "district": "Южный федеральный округ",
+          "amount": 5045513,
+          "stock_percent": 69,
+          "common_percent": 8.2
+        },
+        {
+          "district": "Северо-Кавказский федеральный округ",
+          "amount": 997944,
+          "stock_percent": 13.6,
+          "common_percent": 1.6
+        },
+        {
+          "district": "Центральный федеральный округ",
+          "amount": 469158.62,
+          "stock_percent": 6.4,
+          "common_percent": 0.8
+        },
+        {
+          "district": "Приволжский федеральный округ",
+          "amount": 231659,
+          "stock_percent": 3.2,
+          "common_percent": 0.4
+        },
+        {
+          "district": "Сибирский федеральный округ",
+          "amount": 134103,
+          "stock_percent": 1.8,
+          "common_percent": 0.2
+        },
+        {
+          "district": "Северо-Западный федеральный округ",
+          "amount": 133366,
+          "stock_percent": 1.8,
+          "common_percent": 0.2
+        },
+        {
+          "district": "Уральский федеральный округ",
+          "amount": 129616,
+          "stock_percent": 1.8,
+          "common_percent": 0.2
+        },
+        {
+          "district": "Дальневосточный федеральный округ",
+          "amount": 95242,
+          "stock_percent": 1.3,
+          "common_percent": 0.2
+        },
+        {
+          "district": " Другой округ",
+          "amount": 74739.77,
+          "stock_percent": 1,
+          "common_percent": 0.1
+        }
+      ]
+    },
+    {
+      "stockName": "Казань",
+      "percent": 7.53,
+      "comparePercent": 2.72,
+      "percentOrder": 7.02,
+      "comparePercentOrder": -16.39,
+      "orderCount": 2222,
+      "orderAmount": 4300514.11,
+      "saleCount": 1306,
+      "saleAmount": 2098849.79,
+      "saleDetails": [
+        {
+          "district": "Приволжский федеральный округ",
+          "amount": 887452,
+          "stock_percent": 42.3,
+          "common_percent": 3.2
+        },
+        {
+          "district": "Сибирский федеральный округ",
+          "amount": 418241,
+          "stock_percent": 19.9,
+          "common_percent": 1.5
+        },
+        {
+          "district": "Уральский федеральный округ",
+          "amount": 413323,
+          "stock_percent": 19.7,
+          "common_percent": 1.5
+        },
+        {
+          "district": "Дальневосточный федеральный округ",
+          "amount": 108199,
+          "stock_percent": 5.2,
+          "common_percent": 0.4
+        },
+        {
+          "district": "Центральный федеральный округ",
+          "amount": 93207.96,
+          "stock_percent": 4.4,
+          "common_percent": 0.3
+        },
+        {
+          "district": " Другой округ",
+          "amount": 81805.83,
+          "stock_percent": 3.9,
+          "common_percent": 0.3
+        },
+        {
+          "district": "Северо-Западный федеральный округ",
+          "amount": 54472,
+          "stock_percent": 2.6,
+          "common_percent": 0.2
+        },
+        {
+          "district": "Южный федеральный округ",
+          "amount": 29615,
+          "stock_percent": 1.4,
+          "common_percent": 0.1
+        },
+        {
+          "district": "Северо-Кавказский федеральный округ",
+          "amount": 12534,
+          "stock_percent": 0.6,
+          "common_percent": 0
+        }
+      ],
+      "orderDetails": [
+        {
+          "district": "Приволжский федеральный округ",
+          "amount": 1891292,
+          "stock_percent": 44,
+          "common_percent": 3.1
+        },
+        {
+          "district": "Сибирский федеральный округ",
+          "amount": 802936,
+          "stock_percent": 18.7,
+          "common_percent": 1.3
+        },
+        {
+          "district": "Уральский федеральный округ",
+          "amount": 764878,
+          "stock_percent": 17.8,
+          "common_percent": 1.2
+        },
+        {
+          "district": "Центральный федеральный округ",
+          "amount": 271601.96,
+          "stock_percent": 6.3,
+          "common_percent": 0.4
+        },
+        {
+          "district": "Дальневосточный федеральный округ",
+          "amount": 212674,
+          "stock_percent": 4.9,
+          "common_percent": 0.3
+        },
+        {
+          "district": "Северо-Западный федеральный округ",
+          "amount": 154145,
+          "stock_percent": 3.6,
+          "common_percent": 0.3
+        },
+        {
+          "district": "Южный федеральный округ",
+          "amount": 135231,
+          "stock_percent": 3.1,
+          "common_percent": 0.2
+        },
+        {
+          "district": " Другой округ",
+          "amount": 42753.15,
+          "stock_percent": 1,
+          "common_percent": 0.1
+        },
+        {
+          "district": "Северо-Кавказский федеральный округ",
+          "amount": 25003,
+          "stock_percent": 0.6,
+          "common_percent": 0
+        }
+      ]
+    },
+    {
+      "stockName": "Самара (Новосемейкино)",
+      "percent": 6.83,
+      "comparePercent": 63.83,
+      "percentOrder": 6.72,
+      "comparePercentOrder": 39,
+      "orderCount": 2422,
+      "orderAmount": 4120346.98,
+      "saleCount": 1267,
+      "saleAmount": 1903596.77,
+      "saleDetails": [
+        {
+          "district": "Приволжский федеральный округ",
+          "amount": 625227,
+          "stock_percent": 32.8,
+          "common_percent": 2.2
+        },
+        {
+          "district": "Сибирский федеральный округ",
+          "amount": 507650,
+          "stock_percent": 26.7,
+          "common_percent": 1.8
+        },
+        {
+          "district": "Уральский федеральный округ",
+          "amount": 421238,
+          "stock_percent": 22.1,
+          "common_percent": 1.5
+        },
+        {
+          "district": "Центральный федеральный округ",
+          "amount": 112801,
+          "stock_percent": 5.9,
+          "common_percent": 0.4
+        },
+        {
+          "district": "Дальневосточный федеральный округ",
+          "amount": 86566,
+          "stock_percent": 4.5,
+          "common_percent": 0.3
+        },
+        {
+          "district": " Другой округ",
+          "amount": 84249.77,
+          "stock_percent": 4.4,
+          "common_percent": 0.3
+        },
+        {
+          "district": "Южный федеральный округ",
+          "amount": 34135,
+          "stock_percent": 1.8,
+          "common_percent": 0.1
+        },
+        {
+          "district": "Северо-Западный федеральный округ",
+          "amount": 28854,
+          "stock_percent": 1.5,
+          "common_percent": 0.1
+        },
+        {
+          "district": "Северо-Кавказский федеральный округ",
+          "amount": 2876,
+          "stock_percent": 0.2,
+          "common_percent": 0
+        }
+      ],
+      "orderDetails": [
+        {
+          "district": "Приволжский федеральный округ",
+          "amount": 1490907,
+          "stock_percent": 36.2,
+          "common_percent": 2.4
+        },
+        {
+          "district": "Сибирский федеральный округ",
+          "amount": 1075306,
+          "stock_percent": 26.1,
+          "common_percent": 1.8
+        },
+        {
+          "district": "Уральский федеральный округ",
+          "amount": 876032,
+          "stock_percent": 21.3,
+          "common_percent": 1.4
+        },
+        {
+          "district": "Центральный федеральный округ",
+          "amount": 251893,
+          "stock_percent": 6.1,
+          "common_percent": 0.4
+        },
+        {
+          "district": "Дальневосточный федеральный округ",
+          "amount": 216143,
+          "stock_percent": 5.2,
+          "common_percent": 0.4
+        },
+        {
+          "district": "Южный федеральный округ",
+          "amount": 78616,
+          "stock_percent": 1.9,
+          "common_percent": 0.1
+        },
+        {
+          "district": "Северо-Западный федеральный округ",
+          "amount": 61213,
+          "stock_percent": 1.5,
+          "common_percent": 0.1
+        },
+        {
+          "district": " Другой округ",
+          "amount": 59116.98,
+          "stock_percent": 1.4,
+          "common_percent": 0.1
+        },
+        {
+          "district": "Северо-Кавказский федеральный округ",
+          "amount": 11120,
+          "stock_percent": 0.3,
+          "common_percent": 0
+        }
+      ]
+    },
+    {
+      "stockName": "Невинномысск",
+      "percent": 5.83,
+      "comparePercent": 71.13,
+      "percentOrder": 5.06,
+      "comparePercentOrder": 79,
+      "orderCount": 1673,
+      "orderAmount": 3102674.5,
+      "saleCount": 970,
+      "saleAmount": 1624656.49,
+      "saleDetails": [
+        {
+          "district": "Южный федеральный округ",
+          "amount": 771447,
+          "stock_percent": 47.5,
+          "common_percent": 2.8
+        },
+        {
+          "district": "Северо-Кавказский федеральный округ",
+          "amount": 524855,
+          "stock_percent": 32.3,
+          "common_percent": 1.9
+        },
+        {
+          "district": "Центральный федеральный округ",
+          "amount": 107275,
+          "stock_percent": 6.6,
+          "common_percent": 0.4
+        },
+        {
+          "district": " Другой округ",
+          "amount": 58260.49,
+          "stock_percent": 3.6,
+          "common_percent": 0.2
+        },
+        {
+          "district": "Приволжский федеральный округ",
+          "amount": 47330,
+          "stock_percent": 2.9,
+          "common_percent": 0.2
+        },
+        {
+          "district": "Северо-Западный федеральный округ",
+          "amount": 35716,
+          "stock_percent": 2.2,
+          "common_percent": 0.1
+        },
+        {
+          "district": "Уральский федеральный округ",
+          "amount": 33383,
+          "stock_percent": 2.1,
+          "common_percent": 0.1
+        },
+        {
+          "district": "Сибирский федеральный округ",
+          "amount": 27190,
+          "stock_percent": 1.7,
+          "common_percent": 0.1
+        },
+        {
+          "district": "Дальневосточный федеральный округ",
+          "amount": 19200,
+          "stock_percent": 1.2,
+          "common_percent": 0.1
+        }
+      ],
+      "orderDetails": [
+        {
+          "district": "Южный федеральный округ",
+          "amount": 1529649,
+          "stock_percent": 49.3,
+          "common_percent": 2.5
+        },
+        {
+          "district": "Северо-Кавказский федеральный округ",
+          "amount": 1050768,
+          "stock_percent": 33.9,
+          "common_percent": 1.7
+        },
+        {
+          "district": "Центральный федеральный округ",
+          "amount": 211096,
+          "stock_percent": 6.8,
+          "common_percent": 0.3
+        },
+        {
+          "district": "Приволжский федеральный округ",
+          "amount": 92771,
+          "stock_percent": 3,
+          "common_percent": 0.2
+        },
+        {
+          "district": "Уральский федеральный округ",
+          "amount": 61486,
+          "stock_percent": 2,
+          "common_percent": 0.1
+        },
+        {
+          "district": "Северо-Западный федеральный округ",
+          "amount": 51831,
+          "stock_percent": 1.7,
+          "common_percent": 0.1
+        },
+        {
+          "district": "Сибирский федеральный округ",
+          "amount": 42372,
+          "stock_percent": 1.4,
+          "common_percent": 0.1
+        },
+        {
+          "district": " Другой округ",
+          "amount": 37294.5,
+          "stock_percent": 1.2,
+          "common_percent": 0.1
+        },
+        {
+          "district": "Дальневосточный федеральный округ",
+          "amount": 25407,
+          "stock_percent": 0.8,
+          "common_percent": 0
+        }
+      ]
+    },
+    {
+      "stockName": "Котовск",
+      "percent": 3.7,
+      "comparePercent": 109.55,
+      "percentOrder": 3.83,
+      "comparePercentOrder": 118,
+      "orderCount": 1148,
+      "orderAmount": 2349476,
+      "saleCount": 616,
+      "saleAmount": 1029404.49,
+      "saleDetails": [
+        {
+          "district": "Центральный федеральный округ",
+          "amount": 379783,
+          "stock_percent": 36.9,
+          "common_percent": 1.4
+        },
+        {
+          "district": "Приволжский федеральный округ",
+          "amount": 159120,
+          "stock_percent": 15.5,
+          "common_percent": 0.6
+        },
+        {
+          "district": "Южный федеральный округ",
+          "amount": 131529,
+          "stock_percent": 12.8,
+          "common_percent": 0.5
+        },
+        {
+          "district": "Сибирский федеральный округ",
+          "amount": 121051,
+          "stock_percent": 11.8,
+          "common_percent": 0.4
+        },
+        {
+          "district": "Северо-Западный федеральный округ",
+          "amount": 66749,
+          "stock_percent": 6.5,
+          "common_percent": 0.2
+        },
+        {
+          "district": "Дальневосточный федеральный округ",
+          "amount": 62911,
+          "stock_percent": 6.1,
+          "common_percent": 0.2
+        },
+        {
+          "district": "Уральский федеральный округ",
+          "amount": 53880,
+          "stock_percent": 5.2,
+          "common_percent": 0.2
+        },
+        {
+          "district": " Другой округ",
+          "amount": 42172.49,
+          "stock_percent": 4.1,
+          "common_percent": 0.2
+        },
+        {
+          "district": "Северо-Кавказский федеральный округ",
+          "amount": 12209,
+          "stock_percent": 1.2,
+          "common_percent": 0
+        }
+      ],
+      "orderDetails": [
+        {
+          "district": "Центральный федеральный округ",
+          "amount": 899233,
+          "stock_percent": 38.3,
+          "common_percent": 1.5
+        },
+        {
+          "district": "Приволжский федеральный округ",
+          "amount": 393160,
+          "stock_percent": 16.7,
+          "common_percent": 0.6
+        },
+        {
+          "district": "Южный федеральный округ",
+          "amount": 366408,
+          "stock_percent": 15.6,
+          "common_percent": 0.6
+        },
+        {
+          "district": "Сибирский федеральный округ",
+          "amount": 208385,
+          "stock_percent": 8.9,
+          "common_percent": 0.3
+        },
+        {
+          "district": "Северо-Западный федеральный округ",
+          "amount": 173021,
+          "stock_percent": 7.4,
+          "common_percent": 0.3
+        },
+        {
+          "district": "Дальневосточный федеральный округ",
+          "amount": 106016,
+          "stock_percent": 4.5,
+          "common_percent": 0.2
+        },
+        {
+          "district": "Уральский федеральный округ",
+          "amount": 105056,
+          "stock_percent": 4.5,
+          "common_percent": 0.2
+        },
+        {
+          "district": "Северо-Кавказский федеральный округ",
+          "amount": 85573,
+          "stock_percent": 3.6,
+          "common_percent": 0.1
+        },
+        {
+          "district": " Другой округ",
+          "amount": 12624,
+          "stock_percent": 0.5,
+          "common_percent": 0
+        }
+      ]
+    },
+    {
+      "stockName": "Рязань (Тюшевское)",
+      "percent": 2.52,
+      "comparePercent": 57.04,
+      "percentOrder": 3.4,
+      "comparePercentOrder": 62,
+      "orderCount": 1007,
+      "orderAmount": 2082950.14,
+      "saleCount": 389,
+      "saleAmount": 702756.39,
+      "saleDetails": [
+        {
+          "district": "Центральный федеральный округ",
+          "amount": 235273,
+          "stock_percent": 33.5,
+          "common_percent": 0.8
+        },
+        {
+          "district": "Приволжский федеральный округ",
+          "amount": 96205,
+          "stock_percent": 13.7,
+          "common_percent": 0.3
+        },
+        {
+          "district": "Южный федеральный округ",
+          "amount": 87813,
+          "stock_percent": 12.5,
+          "common_percent": 0.3
+        },
+        {
+          "district": "Сибирский федеральный округ",
+          "amount": 82105,
+          "stock_percent": 11.7,
+          "common_percent": 0.3
+        },
+        {
+          "district": "Дальневосточный федеральный округ",
+          "amount": 46392,
+          "stock_percent": 6.6,
+          "common_percent": 0.2
+        },
+        {
+          "district": "Северо-Кавказский федеральный округ",
+          "amount": 45993,
+          "stock_percent": 6.5,
+          "common_percent": 0.2
+        },
+        {
+          "district": "Уральский федеральный округ",
+          "amount": 45600,
+          "stock_percent": 6.5,
+          "common_percent": 0.2
+        },
+        {
+          "district": "Северо-Западный федеральный округ",
+          "amount": 33289,
+          "stock_percent": 4.7,
+          "common_percent": 0.1
+        },
+        {
+          "district": " Другой округ",
+          "amount": 30086.39,
+          "stock_percent": 4.3,
+          "common_percent": 0.1
+        }
+      ],
+      "orderDetails": [
+        {
+          "district": "Центральный федеральный округ",
+          "amount": 692305,
+          "stock_percent": 33.2,
+          "common_percent": 1.1
+        },
+        {
+          "district": "Приволжский федеральный округ",
+          "amount": 343196,
+          "stock_percent": 16.5,
+          "common_percent": 0.6
+        },
+        {
+          "district": "Южный федеральный округ",
+          "amount": 315780,
+          "stock_percent": 15.2,
+          "common_percent": 0.5
+        },
+        {
+          "district": "Сибирский федеральный округ",
+          "amount": 193202,
+          "stock_percent": 9.3,
+          "common_percent": 0.3
+        },
+        {
+          "district": "Уральский федеральный округ",
+          "amount": 152836,
+          "stock_percent": 7.3,
+          "common_percent": 0.2
+        },
+        {
+          "district": "Северо-Кавказский федеральный округ",
+          "amount": 150666,
+          "stock_percent": 7.2,
+          "common_percent": 0.2
+        },
+        {
+          "district": "Дальневосточный федеральный округ",
+          "amount": 123243,
+          "stock_percent": 5.9,
+          "common_percent": 0.2
+        },
+        {
+          "district": "Северо-Западный федеральный округ",
+          "amount": 94997,
+          "stock_percent": 4.6,
+          "common_percent": 0.2
+        },
+        {
+          "district": " Другой округ",
+          "amount": 16725.14,
+          "stock_percent": 0.8,
+          "common_percent": 0
+        }
+      ]
+    },
+    {
+      "stockName": "Санкт-Петербург Уткина Заводь",
+      "percent": 1.15,
+      "comparePercent": 42.58,
+      "percentOrder": 1.05,
+      "comparePercentOrder": -8.21,
+      "orderCount": 377,
+      "orderAmount": 644239.58,
+      "saleCount": 219,
+      "saleAmount": 320726,
+      "saleDetails": [
+        {
+          "district": "Северо-Западный федеральный округ",
+          "amount": 273740,
+          "stock_percent": 85.4,
+          "common_percent": 1
+        },
+        {
+          "district": "Центральный федеральный округ",
+          "amount": 20410,
+          "stock_percent": 6.4,
+          "common_percent": 0.1
+        },
+        {
+          "district": "Сибирский федеральный округ",
+          "amount": 8314,
+          "stock_percent": 2.6,
+          "common_percent": 0
+        },
+        {
+          "district": "Уральский федеральный округ",
+          "amount": 7522,
+          "stock_percent": 2.3,
+          "common_percent": 0
+        },
+        {
+          "district": "Приволжский федеральный округ",
+          "amount": 5976,
+          "stock_percent": 1.9,
+          "common_percent": 0
+        },
+        {
+          "district": "Дальневосточный федеральный округ",
+          "amount": 2436,
+          "stock_percent": 0.8,
+          "common_percent": 0
+        },
+        {
+          "district": "Северо-Кавказский федеральный округ",
+          "amount": 1522,
+          "stock_percent": 0.5,
+          "common_percent": 0
+        },
+        {
+          "district": "Южный федеральный округ",
+          "amount": 806,
+          "stock_percent": 0.3,
+          "common_percent": 0
+        },
+        {
+          "district": " Другой округ",
+          "amount": 0,
+          "stock_percent": 0,
+          "common_percent": 0
+        }
+      ],
+      "orderDetails": [
+        {
+          "district": "Северо-Западный федеральный округ",
+          "amount": 536348,
+          "stock_percent": 83.3,
+          "common_percent": 0.9
+        },
+        {
+          "district": "Центральный федеральный округ",
+          "amount": 45307,
+          "stock_percent": 7,
+          "common_percent": 0.1
+        },
+        {
+          "district": "Приволжский федеральный округ",
+          "amount": 15019,
+          "stock_percent": 2.3,
+          "common_percent": 0
+        },
+        {
+          "district": "Сибирский федеральный округ",
+          "amount": 12226,
+          "stock_percent": 1.9,
+          "common_percent": 0
+        },
+        {
+          "district": "Уральский федеральный округ",
+          "amount": 11423,
+          "stock_percent": 1.8,
+          "common_percent": 0
+        },
+        {
+          "district": "Южный федеральный округ",
+          "amount": 10231,
+          "stock_percent": 1.6,
+          "common_percent": 0
+        },
+        {
+          "district": "Северо-Кавказский федеральный округ",
+          "amount": 8089,
+          "stock_percent": 1.3,
+          "common_percent": 0
+        },
+        {
+          "district": "Дальневосточный федеральный округ",
+          "amount": 3653,
+          "stock_percent": 0.6,
+          "common_percent": 0
+        },
+        {
+          "district": " Другой округ",
+          "amount": 1943.58,
+          "stock_percent": 0.3,
+          "common_percent": 0
+        }
+      ]
+    },
+    {
+      "stockName": "Сарапул",
+      "percent": 0.88,
+      "comparePercent": 100,
+      "percentOrder": 1.43,
+      "comparePercentOrder": 42116,
+      "orderCount": 414,
+      "orderAmount": 879431.64,
+      "saleCount": 136,
+      "saleAmount": 246149.25,
+      "saleDetails": [
+        {
+          "district": "Приволжский федеральный округ",
+          "amount": 72835,
+          "stock_percent": 29.6,
+          "common_percent": 0.3
+        },
+        {
+          "district": "Сибирский федеральный округ",
+          "amount": 71698,
+          "stock_percent": 29.1,
+          "common_percent": 0.3
+        },
+        {
+          "district": "Уральский федеральный округ",
+          "amount": 43632,
+          "stock_percent": 17.7,
+          "common_percent": 0.2
+        },
+        {
+          "district": "Центральный федеральный округ",
+          "amount": 17587,
+          "stock_percent": 7.1,
+          "common_percent": 0.1
+        },
+        {
+          "district": "Дальневосточный федеральный округ",
+          "amount": 17132,
+          "stock_percent": 7,
+          "common_percent": 0.1
+        },
+        {
+          "district": "Северо-Западный федеральный округ",
+          "amount": 9260,
+          "stock_percent": 3.8,
+          "common_percent": 0
+        },
+        {
+          "district": "Южный федеральный округ",
+          "amount": 9119,
+          "stock_percent": 3.7,
+          "common_percent": 0
+        },
+        {
+          "district": " Другой округ",
+          "amount": 2704.25,
+          "stock_percent": 1.1,
+          "common_percent": 0
+        },
+        {
+          "district": "Северо-Кавказский федеральный округ",
+          "amount": 2182,
+          "stock_percent": 0.9,
+          "common_percent": 0
+        }
+      ],
+      "orderDetails": [
+        {
+          "district": "Сибирский федеральный округ",
+          "amount": 240503,
+          "stock_percent": 27.3,
+          "common_percent": 0.4
+        },
+        {
+          "district": "Приволжский федеральный округ",
+          "amount": 231834,
+          "stock_percent": 26.4,
+          "common_percent": 0.4
+        },
+        {
+          "district": "Уральский федеральный округ",
+          "amount": 168666,
+          "stock_percent": 19.2,
+          "common_percent": 0.3
+        },
+        {
+          "district": "Центральный федеральный округ",
+          "amount": 87925,
+          "stock_percent": 10,
+          "common_percent": 0.1
+        },
+        {
+          "district": "Дальневосточный федеральный округ",
+          "amount": 53382,
+          "stock_percent": 6.1,
+          "common_percent": 0.1
+        },
+        {
+          "district": "Южный федеральный округ",
+          "amount": 42333,
+          "stock_percent": 4.8,
+          "common_percent": 0.1
+        },
+        {
+          "district": "Северо-Западный федеральный округ",
+          "amount": 36161,
+          "stock_percent": 4.1,
+          "common_percent": 0.1
+        },
+        {
+          "district": "Северо-Кавказский федеральный округ",
+          "amount": 16542,
+          "stock_percent": 1.9,
+          "common_percent": 0
+        },
+        {
+          "district": " Другой округ",
+          "amount": 2085.64,
+          "stock_percent": 0.2,
+          "common_percent": 0
+        }
+      ]
+    },
+    {
+      "stockName": "Волгоград",
+      "percent": 0.84,
+      "comparePercent": -38.24,
+      "percentOrder": 1.13,
+      "comparePercentOrder": -15.18,
+      "orderCount": 349,
+      "orderAmount": 694353.76,
+      "saleCount": 132,
+      "saleAmount": 232799.1,
+      "saleDetails": [
+        {
+          "district": "Южный федеральный округ",
+          "amount": 99347,
+          "stock_percent": 42.7,
+          "common_percent": 0.4
+        },
+        {
+          "district": "Приволжский федеральный округ",
+          "amount": 37267,
+          "stock_percent": 16,
+          "common_percent": 0.1
+        },
+        {
+          "district": "Центральный федеральный округ",
+          "amount": 25299,
+          "stock_percent": 10.9,
+          "common_percent": 0.1
+        },
+        {
+          "district": "Северо-Кавказский федеральный округ",
+          "amount": 23802,
+          "stock_percent": 10.2,
+          "common_percent": 0.1
+        },
+        {
+          "district": " Другой округ",
+          "amount": 21326.1,
+          "stock_percent": 9.2,
+          "common_percent": 0.1
+        },
+        {
+          "district": "Северо-Западный федеральный округ",
+          "amount": 9858,
+          "stock_percent": 4.2,
+          "common_percent": 0
+        },
+        {
+          "district": "Сибирский федеральный округ",
+          "amount": 9055,
+          "stock_percent": 3.9,
+          "common_percent": 0
+        },
+        {
+          "district": "Дальневосточный федеральный округ",
+          "amount": 5212,
+          "stock_percent": 2.2,
+          "common_percent": 0
+        },
+        {
+          "district": "Уральский федеральный округ",
+          "amount": 1633,
+          "stock_percent": 0.7,
+          "common_percent": 0
+        }
+      ],
+      "orderDetails": [
+        {
+          "district": "Южный федеральный округ",
+          "amount": 351168,
+          "stock_percent": 50.6,
+          "common_percent": 0.6
+        },
+        {
+          "district": "Приволжский федеральный округ",
+          "amount": 107382,
+          "stock_percent": 15.5,
+          "common_percent": 0.2
+        },
+        {
+          "district": "Северо-Кавказский федеральный округ",
+          "amount": 97723,
+          "stock_percent": 14.1,
+          "common_percent": 0.2
+        },
+        {
+          "district": "Центральный федеральный округ",
+          "amount": 67713,
+          "stock_percent": 9.8,
+          "common_percent": 0.1
+        },
+        {
+          "district": "Сибирский федеральный округ",
+          "amount": 19863,
+          "stock_percent": 2.9,
+          "common_percent": 0
+        },
+        {
+          "district": "Дальневосточный федеральный округ",
+          "amount": 17821,
+          "stock_percent": 2.6,
+          "common_percent": 0
+        },
+        {
+          "district": "Северо-Западный федеральный округ",
+          "amount": 17018,
+          "stock_percent": 2.5,
+          "common_percent": 0
+        },
+        {
+          "district": " Другой округ",
+          "amount": 11292.76,
+          "stock_percent": 1.6,
+          "common_percent": 0
+        },
+        {
+          "district": "Уральский федеральный округ",
+          "amount": 4373,
+          "stock_percent": 0.6,
+          "common_percent": 0
+        }
+      ]
+    },
+    {
+      "stockName": "Екатеринбург - Перспективный 12",
+      "percent": 0.76,
+      "comparePercent": 100,
+      "percentOrder": 1.02,
+      "comparePercentOrder": 100,
+      "orderCount": 310,
+      "orderAmount": 622598.61,
+      "saleCount": 119,
+      "saleAmount": 212308.31,
+      "saleDetails": [
+        {
+          "district": "Уральский федеральный округ",
+          "amount": 82480,
+          "stock_percent": 38.8,
+          "common_percent": 0.3
+        },
+        {
+          "district": "Сибирский федеральный округ",
+          "amount": 58111,
+          "stock_percent": 27.4,
+          "common_percent": 0.2
+        },
+        {
+          "district": " Другой округ",
+          "amount": 21298.31,
+          "stock_percent": 10,
+          "common_percent": 0.1
+        },
+        {
+          "district": "Приволжский федеральный округ",
+          "amount": 19003,
+          "stock_percent": 9,
+          "common_percent": 0.1
+        },
+        {
+          "district": "Дальневосточный федеральный округ",
+          "amount": 13943,
+          "stock_percent": 6.6,
+          "common_percent": 0.1
+        },
+        {
+          "district": "Центральный федеральный округ",
+          "amount": 11291,
+          "stock_percent": 5.3,
+          "common_percent": 0
+        },
+        {
+          "district": "Северо-Западный федеральный округ",
+          "amount": 4080,
+          "stock_percent": 1.9,
+          "common_percent": 0
+        },
+        {
+          "district": "Южный федеральный округ",
+          "amount": 2102,
+          "stock_percent": 1,
+          "common_percent": 0
+        }
+      ],
+      "orderDetails": [
+        {
+          "district": "Уральский федеральный округ",
+          "amount": 240117,
+          "stock_percent": 38.6,
+          "common_percent": 0.4
+        },
+        {
+          "district": "Сибирский федеральный округ",
+          "amount": 194013,
+          "stock_percent": 31.2,
+          "common_percent": 0.3
+        },
+        {
+          "district": "Приволжский федеральный округ",
+          "amount": 79110,
+          "stock_percent": 12.7,
+          "common_percent": 0.1
+        },
+        {
+          "district": "Дальневосточный федеральный округ",
+          "amount": 43651,
+          "stock_percent": 7,
+          "common_percent": 0.1
+        },
+        {
+          "district": "Центральный федеральный округ",
+          "amount": 27895,
+          "stock_percent": 4.5,
+          "common_percent": 0
+        },
+        {
+          "district": " Другой округ",
+          "amount": 18943.61,
+          "stock_percent": 3,
+          "common_percent": 0
+        },
+        {
+          "district": "Южный федеральный округ",
+          "amount": 8987,
+          "stock_percent": 1.4,
+          "common_percent": 0
+        },
+        {
+          "district": "Северо-Западный федеральный округ",
+          "amount": 7583,
+          "stock_percent": 1.2,
+          "common_percent": 0
+        },
+        {
+          "district": "Северо-Кавказский федеральный округ",
+          "amount": 2299,
+          "stock_percent": 0.4,
+          "common_percent": 0
+        }
+      ]
+    },
+    {
+      "stockName": "Чашниково",
+      "percent": 0.41,
+      "comparePercent": 43.58,
+      "percentOrder": 0.54,
+      "comparePercentOrder": 46,
+      "orderCount": 167,
+      "orderAmount": 333162.73,
+      "saleCount": 65,
+      "saleAmount": 114341.48,
+      "saleDetails": [
+        {
+          "district": "Северо-Западный федеральный округ",
+          "amount": 44596,
+          "stock_percent": 39,
+          "common_percent": 0.2
+        },
+        {
+          "district": "Центральный федеральный округ",
+          "amount": 26011,
+          "stock_percent": 22.7,
+          "common_percent": 0.1
+        },
+        {
+          "district": "Дальневосточный федеральный округ",
+          "amount": 25359,
+          "stock_percent": 22.2,
+          "common_percent": 0.1
+        },
+        {
+          "district": "Уральский федеральный округ",
+          "amount": 6573,
+          "stock_percent": 5.7,
+          "common_percent": 0
+        },
+        {
+          "district": "Северо-Кавказский федеральный округ",
+          "amount": 4918,
+          "stock_percent": 4.3,
+          "common_percent": 0
+        },
+        {
+          "district": " Другой округ",
+          "amount": 3711.48,
+          "stock_percent": 3.2,
+          "common_percent": 0
+        },
+        {
+          "district": "Сибирский федеральный округ",
+          "amount": 3173,
+          "stock_percent": 2.8,
+          "common_percent": 0
+        }
+      ],
+      "orderDetails": [
+        {
+          "district": "Северо-Западный федеральный округ",
+          "amount": 129706,
+          "stock_percent": 38.9,
+          "common_percent": 0.2
+        },
+        {
+          "district": "Центральный федеральный округ",
+          "amount": 87713,
+          "stock_percent": 26.3,
+          "common_percent": 0.1
+        },
+        {
+          "district": "Дальневосточный федеральный округ",
+          "amount": 49516,
+          "stock_percent": 14.9,
+          "common_percent": 0.1
+        },
+        {
+          "district": "Сибирский федеральный округ",
+          "amount": 23975,
+          "stock_percent": 7.2,
+          "common_percent": 0
+        },
+        {
+          "district": "Уральский федеральный округ",
+          "amount": 16194,
+          "stock_percent": 4.9,
+          "common_percent": 0
+        },
+        {
+          "district": " Другой округ",
+          "amount": 7777.73,
+          "stock_percent": 2.3,
+          "common_percent": 0
+        },
+        {
+          "district": "Северо-Кавказский федеральный округ",
+          "amount": 6211,
+          "stock_percent": 1.9,
+          "common_percent": 0
+        },
+        {
+          "district": "Южный федеральный округ",
+          "amount": 6095,
+          "stock_percent": 1.8,
+          "common_percent": 0
+        },
+        {
+          "district": "Приволжский федеральный округ",
+          "amount": 5975,
+          "stock_percent": 1.8,
+          "common_percent": 0
+        }
+      ]
+    },
+    {
+      "stockName": "Новосибирск",
+      "percent": 0.37,
+      "comparePercent": -22.81,
+      "percentOrder": 0.58,
+      "comparePercentOrder": 11,
+      "orderCount": 177,
+      "orderAmount": 353191.38,
+      "saleCount": 67,
+      "saleAmount": 102229.95,
+      "saleDetails": [
+        {
+          "district": "Сибирский федеральный округ",
+          "amount": 40305,
+          "stock_percent": 39.4,
+          "common_percent": 0.1
+        },
+        {
+          "district": "Дальневосточный федеральный округ",
+          "amount": 22585,
+          "stock_percent": 22.1,
+          "common_percent": 0.1
+        },
+        {
+          "district": " Другой округ",
+          "amount": 13142.95,
+          "stock_percent": 12.9,
+          "common_percent": 0
+        },
+        {
+          "district": "Уральский федеральный округ",
+          "amount": 7623,
+          "stock_percent": 7.5,
+          "common_percent": 0
+        },
+        {
+          "district": "Центральный федеральный округ",
+          "amount": 6824,
+          "stock_percent": 6.7,
+          "common_percent": 0
+        },
+        {
+          "district": "Приволжский федеральный округ",
+          "amount": 4853,
+          "stock_percent": 4.7,
+          "common_percent": 0
+        },
+        {
+          "district": "Северо-Западный федеральный округ",
+          "amount": 4342,
+          "stock_percent": 4.2,
+          "common_percent": 0
+        },
+        {
+          "district": "Северо-Кавказский федеральный округ",
+          "amount": 2555,
+          "stock_percent": 2.5,
+          "common_percent": 0
+        }
+      ],
+      "orderDetails": [
+        {
+          "district": "Сибирский федеральный округ",
+          "amount": 178256,
+          "stock_percent": 50.5,
+          "common_percent": 0.3
+        },
+        {
+          "district": "Дальневосточный федеральный округ",
+          "amount": 75346,
+          "stock_percent": 21.3,
+          "common_percent": 0.1
+        },
+        {
+          "district": "Уральский федеральный округ",
+          "amount": 46678,
+          "stock_percent": 13.2,
+          "common_percent": 0.1
+        },
+        {
+          "district": "Центральный федеральный округ",
+          "amount": 19245,
+          "stock_percent": 5.4,
+          "common_percent": 0
+        },
+        {
+          "district": "Приволжский федеральный округ",
+          "amount": 11548,
+          "stock_percent": 3.3,
+          "common_percent": 0
+        },
+        {
+          "district": " Другой округ",
+          "amount": 8282.38,
+          "stock_percent": 2.3,
+          "common_percent": 0
+        },
+        {
+          "district": "Южный федеральный округ",
+          "amount": 6827,
+          "stock_percent": 1.9,
+          "common_percent": 0
+        },
+        {
+          "district": "Северо-Западный федеральный округ",
+          "amount": 4401,
+          "stock_percent": 1.2,
+          "common_percent": 0
+        },
+        {
+          "district": "Северо-Кавказский федеральный округ",
+          "amount": 2608,
+          "stock_percent": 0.7,
+          "common_percent": 0
+        }
+      ]
+    },
+    {
+      "stockName": "Владимир",
+      "percent": 0.36,
+      "comparePercent": 712.86,
+      "percentOrder": 0.41,
+      "comparePercentOrder": 504,
+      "orderCount": 122,
+      "orderAmount": 248326.19,
+      "saleCount": 51,
+      "saleAmount": 99643.33,
+      "saleDetails": [
+        {
+          "district": "Центральный федеральный округ",
+          "amount": 31710,
+          "stock_percent": 31.8,
+          "common_percent": 0.1
+        },
+        {
+          "district": "Приволжский федеральный округ",
+          "amount": 17077,
+          "stock_percent": 17.1,
+          "common_percent": 0.1
+        },
+        {
+          "district": "Дальневосточный федеральный округ",
+          "amount": 15286,
+          "stock_percent": 15.3,
+          "common_percent": 0.1
+        },
+        {
+          "district": "Северо-Западный федеральный округ",
+          "amount": 11825,
+          "stock_percent": 11.9,
+          "common_percent": 0
+        },
+        {
+          "district": "Сибирский федеральный округ",
+          "amount": 10560,
+          "stock_percent": 10.6,
+          "common_percent": 0
+        },
+        {
+          "district": "Уральский федеральный округ",
+          "amount": 6975,
+          "stock_percent": 7,
+          "common_percent": 0
+        },
+        {
+          "district": " Другой округ",
+          "amount": 3637.33,
+          "stock_percent": 3.7,
+          "common_percent": 0
+        },
+        {
+          "district": "Южный федеральный округ",
+          "amount": 2573,
+          "stock_percent": 2.6,
+          "common_percent": 0
+        }
+      ],
+      "orderDetails": [
+        {
+          "district": "Центральный федеральный округ",
+          "amount": 78144,
+          "stock_percent": 31.5,
+          "common_percent": 0.1
+        },
+        {
+          "district": "Приволжский федеральный округ",
+          "amount": 47626,
+          "stock_percent": 19.2,
+          "common_percent": 0.1
+        },
+        {
+          "district": "Дальневосточный федеральный округ",
+          "amount": 35717,
+          "stock_percent": 14.4,
+          "common_percent": 0.1
+        },
+        {
+          "district": "Северо-Западный федеральный округ",
+          "amount": 27340,
+          "stock_percent": 11,
+          "common_percent": 0
+        },
+        {
+          "district": "Уральский федеральный округ",
+          "amount": 25785,
+          "stock_percent": 10.4,
+          "common_percent": 0
+        },
+        {
+          "district": "Сибирский федеральный округ",
+          "amount": 22729,
+          "stock_percent": 9.2,
+          "common_percent": 0
+        },
+        {
+          "district": "Южный федеральный округ",
+          "amount": 6545,
+          "stock_percent": 2.6,
+          "common_percent": 0
+        },
+        {
+          "district": " Другой округ",
+          "amount": 4440.19,
+          "stock_percent": 1.8,
+          "common_percent": 0
+        }
+      ]
+    },
+    {
+      "stockName": "Астана Карагандинское шоссе",
+      "percent": 0.33,
+      "comparePercent": 8.1,
+      "percentOrder": 0.33,
+      "comparePercentOrder": -9.91,
+      "orderCount": 89,
+      "orderAmount": 205064.13,
+      "saleCount": 52,
+      "saleAmount": 92437.16,
+      "saleDetails": [
+        {
+          "district": "Сибирский федеральный округ",
+          "amount": 39193,
+          "stock_percent": 42.4,
+          "common_percent": 0.1
+        },
+        {
+          "district": " Другой округ",
+          "amount": 19202.16,
+          "stock_percent": 20.8,
+          "common_percent": 0.1
+        },
+        {
+          "district": "Уральский федеральный округ",
+          "amount": 19166,
+          "stock_percent": 20.7,
+          "common_percent": 0.1
+        },
+        {
+          "district": "Дальневосточный федеральный округ",
+          "amount": 9777,
+          "stock_percent": 10.6,
+          "common_percent": 0
+        },
+        {
+          "district": "Центральный федеральный округ",
+          "amount": 2449,
+          "stock_percent": 2.6,
+          "common_percent": 0
+        },
+        {
+          "district": "Приволжский федеральный округ",
+          "amount": 1329,
+          "stock_percent": 1.4,
+          "common_percent": 0
+        },
+        {
+          "district": "Южный федеральный округ",
+          "amount": 1321,
+          "stock_percent": 1.4,
+          "common_percent": 0
+        }
+      ],
+      "orderDetails": [
+        {
+          "district": "Сибирский федеральный округ",
+          "amount": 101784,
+          "stock_percent": 49.6,
+          "common_percent": 0.2
+        },
+        {
+          "district": "Уральский федеральный округ",
+          "amount": 33624,
+          "stock_percent": 16.4,
+          "common_percent": 0.1
+        },
+        {
+          "district": "Дальневосточный федеральный округ",
+          "amount": 33066,
+          "stock_percent": 16.1,
+          "common_percent": 0.1
+        },
+        {
+          "district": "Центральный федеральный округ",
+          "amount": 11994,
+          "stock_percent": 5.8,
+          "common_percent": 0
+        },
+        {
+          "district": " Другой округ",
+          "amount": 11026.13,
+          "stock_percent": 5.4,
+          "common_percent": 0
+        },
+        {
+          "district": "Южный федеральный округ",
+          "amount": 6760,
+          "stock_percent": 3.3,
+          "common_percent": 0
+        },
+        {
+          "district": "Приволжский федеральный округ",
+          "amount": 3852,
+          "stock_percent": 1.9,
+          "common_percent": 0
+        },
+        {
+          "district": "Северо-Кавказский федеральный округ",
+          "amount": 2958,
+          "stock_percent": 1.4,
+          "common_percent": 0
+        }
+      ]
+    },
+    {
+      "stockName": "Екатеринбург - Испытателей 14г",
+      "percent": 0.32,
+      "comparePercent": -47.13,
+      "percentOrder": 0.45,
+      "comparePercentOrder": -34.22,
+      "orderCount": 152,
+      "orderAmount": 278840.91,
+      "saleCount": 67,
+      "saleAmount": 89733.72,
+      "saleDetails": [
+        {
+          "district": "Уральский федеральный округ",
+          "amount": 39728,
+          "stock_percent": 44.3,
+          "common_percent": 0.1
+        },
+        {
+          "district": "Сибирский федеральный округ",
+          "amount": 21298,
+          "stock_percent": 23.7,
+          "common_percent": 0.1
+        },
+        {
+          "district": "Дальневосточный федеральный округ",
+          "amount": 7872,
+          "stock_percent": 8.8,
+          "common_percent": 0
+        },
+        {
+          "district": " Другой округ",
+          "amount": 7772.72,
+          "stock_percent": 8.7,
+          "common_percent": 0
+        },
+        {
+          "district": "Приволжский федеральный округ",
+          "amount": 7772,
+          "stock_percent": 8.7,
+          "common_percent": 0
+        },
+        {
+          "district": "Центральный федеральный округ",
+          "amount": 2830,
+          "stock_percent": 3.2,
+          "common_percent": 0
+        },
+        {
+          "district": "Южный федеральный округ",
+          "amount": 2461,
+          "stock_percent": 2.7,
+          "common_percent": 0
+        }
+      ],
+      "orderDetails": [
+        {
+          "district": "Уральский федеральный округ",
+          "amount": 122336,
+          "stock_percent": 43.9,
+          "common_percent": 0.2
+        },
+        {
+          "district": "Сибирский федеральный округ",
+          "amount": 78227,
+          "stock_percent": 28.1,
+          "common_percent": 0.1
+        },
+        {
+          "district": "Приволжский федеральный округ",
+          "amount": 34482,
+          "stock_percent": 12.4,
+          "common_percent": 0.1
+        },
+        {
+          "district": "Центральный федеральный округ",
+          "amount": 18792,
+          "stock_percent": 6.7,
+          "common_percent": 0
+        },
+        {
+          "district": "Дальневосточный федеральный округ",
+          "amount": 15092,
+          "stock_percent": 5.4,
+          "common_percent": 0
+        },
+        {
+          "district": "Северо-Кавказский федеральный округ",
+          "amount": 3711,
+          "stock_percent": 1.3,
+          "common_percent": 0
+        },
+        {
+          "district": "Северо-Западный федеральный округ",
+          "amount": 2538,
+          "stock_percent": 0.9,
+          "common_percent": 0
+        },
+        {
+          "district": "Южный федеральный округ",
+          "amount": 2534,
+          "stock_percent": 0.9,
+          "common_percent": 0
+        },
+        {
+          "district": " Другой округ",
+          "amount": 1128.91,
+          "stock_percent": 0.4,
+          "common_percent": 0
+        }
+      ]
+    },
+    {
+      "stockName": "Белая дача",
+      "percent": 0.2,
+      "comparePercent": 32.27,
+      "percentOrder": 0.18,
+      "comparePercentOrder": -24.18,
+      "orderCount": 60,
+      "orderAmount": 109786.89,
+      "saleCount": 33,
+      "saleAmount": 56447.78,
+      "saleDetails": [
+        {
+          "district": "Центральный федеральный округ",
+          "amount": 15016,
+          "stock_percent": 26.6,
+          "common_percent": 0.1
+        },
+        {
+          "district": "Приволжский федеральный округ",
+          "amount": 7998,
+          "stock_percent": 14.2,
+          "common_percent": 0
+        },
+        {
+          "district": " Другой округ",
+          "amount": 7212.78,
+          "stock_percent": 12.8,
+          "common_percent": 0
+        },
+        {
+          "district": "Сибирский федеральный округ",
+          "amount": 7093,
+          "stock_percent": 12.6,
+          "common_percent": 0
+        },
+        {
+          "district": "Дальневосточный федеральный округ",
+          "amount": 5770,
+          "stock_percent": 10.2,
+          "common_percent": 0
+        },
+        {
+          "district": "Южный федеральный округ",
+          "amount": 4938,
+          "stock_percent": 8.7,
+          "common_percent": 0
+        },
+        {
+          "district": "Уральский федеральный округ",
+          "amount": 4720,
+          "stock_percent": 8.4,
+          "common_percent": 0
+        },
+        {
+          "district": "Северо-Западный федеральный округ",
+          "amount": 3700,
+          "stock_percent": 6.6,
+          "common_percent": 0
+        }
+      ],
+      "orderDetails": [
+        {
+          "district": "Центральный федеральный округ",
+          "amount": 35065,
+          "stock_percent": 31.9,
+          "common_percent": 0.1
+        },
+        {
+          "district": "Дальневосточный федеральный округ",
+          "amount": 19030,
+          "stock_percent": 17.3,
+          "common_percent": 0
+        },
+        {
+          "district": "Уральский федеральный округ",
+          "amount": 13406,
+          "stock_percent": 12.2,
+          "common_percent": 0
+        },
+        {
+          "district": "Южный федеральный округ",
+          "amount": 12371,
+          "stock_percent": 11.3,
+          "common_percent": 0
+        },
+        {
+          "district": "Приволжский федеральный округ",
+          "amount": 11173,
+          "stock_percent": 10.2,
+          "common_percent": 0
+        },
+        {
+          "district": " Другой округ",
+          "amount": 8451.89,
+          "stock_percent": 7.7,
+          "common_percent": 0
+        },
+        {
+          "district": "Сибирский федеральный округ",
+          "amount": 6181,
+          "stock_percent": 5.6,
+          "common_percent": 0
+        },
+        {
+          "district": "Северо-Западный федеральный округ",
+          "amount": 4109,
+          "stock_percent": 3.7,
+          "common_percent": 0
+        }
+      ]
+    },
+    {
+      "stockName": "Воронеж",
+      "percent": 0.13,
+      "comparePercent": 100,
+      "percentOrder": 0.17,
+      "comparePercentOrder": 100,
+      "orderCount": 52,
+      "orderAmount": 102200.87,
+      "saleCount": 20,
+      "saleAmount": 37497.87,
+      "saleDetails": [
+        {
+          "district": "Центральный федеральный округ",
+          "amount": 21022,
+          "stock_percent": 56.1,
+          "common_percent": 0.1
+        },
+        {
+          "district": "Южный федеральный округ",
+          "amount": 8445,
+          "stock_percent": 22.5,
+          "common_percent": 0
+        },
+        {
+          "district": "Приволжский федеральный округ",
+          "amount": 2429,
+          "stock_percent": 6.5,
+          "common_percent": 0
+        },
+        {
+          "district": "Уральский федеральный округ",
+          "amount": 2378,
+          "stock_percent": 6.3,
+          "common_percent": 0
+        },
+        {
+          "district": "Северо-Кавказский федеральный округ",
+          "amount": 1847,
+          "stock_percent": 4.9,
+          "common_percent": 0
+        },
+        {
+          "district": " Другой округ",
+          "amount": 1376.87,
+          "stock_percent": 3.7,
+          "common_percent": 0
+        }
+      ],
+      "orderDetails": [
+        {
+          "district": "Центральный федеральный округ",
+          "amount": 42112,
+          "stock_percent": 41.2,
+          "common_percent": 0.1
+        },
+        {
+          "district": "Южный федеральный округ",
+          "amount": 35831,
+          "stock_percent": 35.1,
+          "common_percent": 0.1
+        },
+        {
+          "district": "Дальневосточный федеральный округ",
+          "amount": 6257,
+          "stock_percent": 6.1,
+          "common_percent": 0
+        },
+        {
+          "district": "Северо-Кавказский федеральный округ",
+          "amount": 5929,
+          "stock_percent": 5.8,
+          "common_percent": 0
+        },
+        {
+          "district": "Сибирский федеральный округ",
+          "amount": 2882,
+          "stock_percent": 2.8,
+          "common_percent": 0
+        },
+        {
+          "district": "Северо-Западный федеральный округ",
+          "amount": 2691,
+          "stock_percent": 2.6,
+          "common_percent": 0
+        },
+        {
+          "district": "Уральский федеральный округ",
+          "amount": 2643,
+          "stock_percent": 2.6,
+          "common_percent": 0
+        },
+        {
+          "district": "Приволжский федеральный округ",
+          "amount": 2479,
+          "stock_percent": 2.4,
+          "common_percent": 0
+        },
+        {
+          "district": " Другой округ",
+          "amount": 1376.87,
+          "stock_percent": 1.3,
+          "common_percent": 0
+        }
+      ]
+    },
+    {
+      "stockName": "Атакент",
+      "percent": 0.1,
+      "comparePercent": 64.52,
+      "percentOrder": 0.08,
+      "comparePercentOrder": -25.31,
+      "orderCount": 28,
+      "orderAmount": 48717.56,
+      "saleCount": 19,
+      "saleAmount": 27034.1,
+      "saleDetails": [
+        {
+          "district": " Другой округ",
+          "amount": 13256.1,
+          "stock_percent": 49,
+          "common_percent": 0
+        },
+        {
+          "district": "Сибирский федеральный округ",
+          "amount": 8529,
+          "stock_percent": 31.5,
+          "common_percent": 0
+        },
+        {
+          "district": "Дальневосточный федеральный округ",
+          "amount": 5249,
+          "stock_percent": 19.4,
+          "common_percent": 0
+        }
+      ],
+      "orderDetails": [
+        {
+          "district": "Дальневосточный федеральный округ",
+          "amount": 16165,
+          "stock_percent": 33.2,
+          "common_percent": 0
+        },
+        {
+          "district": "Сибирский федеральный округ",
+          "amount": 14912,
+          "stock_percent": 30.6,
+          "common_percent": 0
+        },
+        {
+          "district": " Другой округ",
+          "amount": 10975.56,
+          "stock_percent": 22.5,
+          "common_percent": 0
+        },
+        {
+          "district": "Северо-Кавказский федеральный округ",
+          "amount": 2757,
+          "stock_percent": 5.7,
+          "common_percent": 0
+        },
+        {
+          "district": "Центральный федеральный округ",
+          "amount": 2189,
+          "stock_percent": 4.5,
+          "common_percent": 0
+        },
+        {
+          "district": "Южный федеральный округ",
+          "amount": 1719,
+          "stock_percent": 3.5,
+          "common_percent": 0
+        }
+      ]
+    },
+    {
+      "stockName": "Виртуальный Краснодар",
+      "percent": 0.09,
+      "comparePercent": 52.77,
+      "percentOrder": 0.06,
+      "comparePercentOrder": 70,
+      "orderCount": 27,
+      "orderAmount": 37888,
+      "saleCount": 17,
+      "saleAmount": 24047,
+      "saleDetails": [
+        {
+          "district": "Южный федеральный округ",
+          "amount": 24047,
+          "stock_percent": 100,
+          "common_percent": 0.1
+        }
+      ],
+      "orderDetails": [
+        {
+          "district": "Южный федеральный округ",
+          "amount": 37888,
+          "stock_percent": 100,
+          "common_percent": 0.1
+        }
+      ]
+    },
+    {
+      "stockName": "Подольск",
+      "percent": 0.08,
+      "comparePercent": -61.68,
+      "percentOrder": 0.1,
+      "comparePercentOrder": -69.52,
+      "orderCount": 43,
+      "orderAmount": 64227,
+      "saleCount": 17,
+      "saleAmount": 21034.69,
+      "saleDetails": [
+        {
+          "district": "Центральный федеральный округ",
+          "amount": 9866,
+          "stock_percent": 46.9,
+          "common_percent": 0
+        },
+        {
+          "district": "Южный федеральный округ",
+          "amount": 5404,
+          "stock_percent": 25.7,
+          "common_percent": 0
+        },
+        {
+          "district": "Северо-Западный федеральный округ",
+          "amount": 3736.69,
+          "stock_percent": 17.8,
+          "common_percent": 0
+        },
+        {
+          "district": "Дальневосточный федеральный округ",
+          "amount": 1383,
+          "stock_percent": 6.6,
+          "common_percent": 0
+        },
+        {
+          "district": "Сибирский федеральный округ",
+          "amount": 645,
+          "stock_percent": 3.1,
+          "common_percent": 0
+        }
+      ],
+      "orderDetails": [
+        {
+          "district": "Центральный федеральный округ",
+          "amount": 41487,
+          "stock_percent": 64.6,
+          "common_percent": 0.1
+        },
+        {
+          "district": "Северо-Западный федеральный округ",
+          "amount": 7946,
+          "stock_percent": 12.4,
+          "common_percent": 0
+        },
+        {
+          "district": "Южный федеральный округ",
+          "amount": 6840,
+          "stock_percent": 10.6,
+          "common_percent": 0
+        },
+        {
+          "district": "Дальневосточный федеральный округ",
+          "amount": 4370,
+          "stock_percent": 6.8,
+          "common_percent": 0
+        },
+        {
+          "district": "Приволжский федеральный округ",
+          "amount": 2925,
+          "stock_percent": 4.6,
+          "common_percent": 0
+        },
+        {
+          "district": "Сибирский федеральный округ",
+          "amount": 659,
+          "stock_percent": 1,
+          "common_percent": 0
+        }
+      ]
+    },
+    {
+      "stockName": "СЦ Ереван",
+      "percent": 0.07,
+      "comparePercent": 103.77,
+      "percentOrder": 0.04,
+      "comparePercentOrder": 35,
+      "orderCount": 13,
+      "orderAmount": 22090.46,
+      "saleCount": 10,
+      "saleAmount": 20074.35,
+      "saleDetails": [
+        {
+          "district": " Другой округ",
+          "amount": 14384.35,
+          "stock_percent": 71.7,
+          "common_percent": 0.1
+        },
+        {
+          "district": "Приволжский федеральный округ",
+          "amount": 4003,
+          "stock_percent": 19.9,
+          "common_percent": 0
+        },
+        {
+          "district": "Южный федеральный округ",
+          "amount": 1687,
+          "stock_percent": 8.4,
+          "common_percent": 0
+        }
+      ],
+      "orderDetails": [
+        {
+          "district": " Другой округ",
+          "amount": 11680.46,
+          "stock_percent": 52.9,
+          "common_percent": 0
+        },
+        {
+          "district": "Приволжский федеральный округ",
+          "amount": 3637,
+          "stock_percent": 16.5,
+          "common_percent": 0
+        },
+        {
+          "district": "Северо-Западный федеральный округ",
+          "amount": 2540,
+          "stock_percent": 11.5,
+          "common_percent": 0
+        },
+        {
+          "district": "Южный федеральный округ",
+          "amount": 1722,
+          "stock_percent": 7.8,
+          "common_percent": 0
+        },
+        {
+          "district": "Сибирский федеральный округ",
+          "amount": 1300,
+          "stock_percent": 5.9,
+          "common_percent": 0
+        },
+        {
+          "district": "Дальневосточный федеральный округ",
+          "amount": 1211,
+          "stock_percent": 5.5,
+          "common_percent": 0
+        }
+      ]
+    },
+    {
+      "stockName": "Краснодар МП",
+      "percent": 0.07,
+      "comparePercent": -58.12,
+      "percentOrder": 0.05,
+      "comparePercentOrder": -54.11,
+      "orderCount": 24,
+      "orderAmount": 30559,
+      "saleCount": 12,
+      "saleAmount": 19990,
+      "saleDetails": [
+        {
+          "district": "Центральный федеральный округ",
+          "amount": 6773,
+          "stock_percent": 33.9,
+          "common_percent": 0
+        },
+        {
+          "district": "Приволжский федеральный округ",
+          "amount": 6219,
+          "stock_percent": 31.1,
+          "common_percent": 0
+        },
+        {
+          "district": "Южный федеральный округ",
+          "amount": 5848,
+          "stock_percent": 29.3,
+          "common_percent": 0
+        },
+        {
+          "district": "Сибирский федеральный округ",
+          "amount": 1150,
+          "stock_percent": 5.8,
+          "common_percent": 0
+        }
+      ],
+      "orderDetails": [
+        {
+          "district": "Приволжский федеральный округ",
+          "amount": 9440,
+          "stock_percent": 30.9,
+          "common_percent": 0
+        },
+        {
+          "district": "Южный федеральный округ",
+          "amount": 7763,
+          "stock_percent": 25.4,
+          "common_percent": 0
+        },
+        {
+          "district": "Центральный федеральный округ",
+          "amount": 7138,
+          "stock_percent": 23.4,
+          "common_percent": 0
+        },
+        {
+          "district": "Северо-Западный федеральный округ",
+          "amount": 2608,
+          "stock_percent": 8.5,
+          "common_percent": 0
+        },
+        {
+          "district": "Дальневосточный федеральный округ",
+          "amount": 1670,
+          "stock_percent": 5.5,
+          "common_percent": 0
+        },
+        {
+          "district": "Сибирский федеральный округ",
+          "amount": 1162,
+          "stock_percent": 3.8,
+          "common_percent": 0
+        },
+        {
+          "district": "Уральский федеральный округ",
+          "amount": 778,
+          "stock_percent": 2.5,
+          "common_percent": 0
+        }
+      ]
+    },
+    {
+      "stockName": "Калининград",
+      "percent": 0.05,
+      "comparePercent": 400.77,
+      "percentOrder": 0.04,
+      "comparePercentOrder": 154,
+      "orderCount": 12,
+      "orderAmount": 21951,
+      "saleCount": 7,
+      "saleAmount": 14138,
+      "saleDetails": [
+        {
+          "district": "Северо-Западный федеральный округ",
+          "amount": 14138,
+          "stock_percent": 100,
+          "common_percent": 0.1
+        }
+      ],
+      "orderDetails": [
+        {
+          "district": "Северо-Западный федеральный округ",
+          "amount": 21951,
+          "stock_percent": 100,
+          "common_percent": 0
+        }
+      ]
+    },
+    {
+      "stockName": "СЦ Барнаул",
+      "percent": 0.05,
+      "comparePercent": 100,
+      "percentOrder": 0.03,
+      "comparePercentOrder": 100,
+      "orderCount": 14,
+      "orderAmount": 20123.18,
+      "saleCount": 8,
+      "saleAmount": 12670.18,
+      "saleDetails": [
+        {
+          "district": "Сибирский федеральный округ",
+          "amount": 6154,
+          "stock_percent": 48.6,
+          "common_percent": 0
+        },
+        {
+          "district": "Центральный федеральный округ",
+          "amount": 2537,
+          "stock_percent": 20,
+          "common_percent": 0
+        },
+        {
+          "district": "Дальневосточный федеральный округ",
+          "amount": 2422,
+          "stock_percent": 19.1,
+          "common_percent": 0
+        },
+        {
+          "district": " Другой округ",
+          "amount": 1557.18,
+          "stock_percent": 12.3,
+          "common_percent": 0
+        }
+      ],
+      "orderDetails": [
+        {
+          "district": "Сибирский федеральный округ",
+          "amount": 12493,
+          "stock_percent": 62.1,
+          "common_percent": 0
+        },
+        {
+          "district": "Дальневосточный федеральный округ",
+          "amount": 3430,
+          "stock_percent": 17,
+          "common_percent": 0
+        },
+        {
+          "district": "Центральный федеральный округ",
+          "amount": 2643,
+          "stock_percent": 13.1,
+          "common_percent": 0
+        },
+        {
+          "district": " Другой округ",
+          "amount": 1557.18,
+          "stock_percent": 7.7,
+          "common_percent": 0
+        }
+      ]
+    },
+    {
+      "stockName": "Обухово",
+      "percent": 0.03,
+      "comparePercent": 100,
+      "percentOrder": 0.05,
+      "comparePercentOrder": 2009,
+      "orderCount": 15,
+      "orderAmount": 27720,
+      "saleCount": 5,
+      "saleAmount": 8001,
+      "saleDetails": [
+        {
+          "district": "Центральный федеральный округ",
+          "amount": 3098,
+          "stock_percent": 38.7,
+          "common_percent": 0
+        },
+        {
+          "district": "Приволжский федеральный округ",
+          "amount": 2222,
+          "stock_percent": 27.8,
+          "common_percent": 0
+        },
+        {
+          "district": "Северо-Западный федеральный округ",
+          "amount": 1384,
+          "stock_percent": 17.3,
+          "common_percent": 0
+        },
+        {
+          "district": "Сибирский федеральный округ",
+          "amount": 1297,
+          "stock_percent": 16.2,
+          "common_percent": 0
+        }
+      ],
+      "orderDetails": [
+        {
+          "district": "Центральный федеральный округ",
+          "amount": 7678,
+          "stock_percent": 27.7,
+          "common_percent": 0
+        },
+        {
+          "district": "Северо-Западный федеральный округ",
+          "amount": 7447,
+          "stock_percent": 26.9,
+          "common_percent": 0
+        },
+        {
+          "district": "Дальневосточный федеральный округ",
+          "amount": 6515,
+          "stock_percent": 23.5,
+          "common_percent": 0
+        },
+        {
+          "district": "Уральский федеральный округ",
+          "amount": 2488,
+          "stock_percent": 9,
+          "common_percent": 0
+        },
+        {
+          "district": "Приволжский федеральный округ",
+          "amount": 2268,
+          "stock_percent": 8.2,
+          "common_percent": 0
+        },
+        {
+          "district": "Сибирский федеральный округ",
+          "amount": 1324,
+          "stock_percent": 4.8,
+          "common_percent": 0
+        }
+      ]
+    },
+    {
+      "stockName": "Актобе",
+      "percent": 0.02,
+      "comparePercent": 100,
+      "percentOrder": 0.04,
+      "comparePercentOrder": 100,
+      "orderCount": 10,
+      "orderAmount": 21862.23,
+      "saleCount": 4,
+      "saleAmount": 5712.32,
+      "saleDetails": [
+        {
+          "district": " Другой округ",
+          "amount": 4240.32,
+          "stock_percent": 74.2,
+          "common_percent": 0
+        },
+        {
+          "district": "Сибирский федеральный округ",
+          "amount": 1472,
+          "stock_percent": 25.8,
+          "common_percent": 0
+        }
+      ],
+      "orderDetails": [
+        {
+          "district": "Сибирский федеральный округ",
+          "amount": 11101,
+          "stock_percent": 50.8,
+          "common_percent": 0
+        },
+        {
+          "district": " Другой округ",
+          "amount": 5531.23,
+          "stock_percent": 25.3,
+          "common_percent": 0
+        },
+        {
+          "district": "Северо-Западный федеральный округ",
+          "amount": 3235,
+          "stock_percent": 14.8,
+          "common_percent": 0
+        },
+        {
+          "district": "Приволжский федеральный округ",
+          "amount": 1995,
+          "stock_percent": 9.1,
+          "common_percent": 0
+        }
+      ]
+    },
+    {
+      "stockName": "Виртуальный Новосибирск",
+      "percent": 0.01,
+      "comparePercent": 97.58,
+      "percentOrder": 0.01,
+      "comparePercentOrder": 236,
+      "orderCount": 3,
+      "orderAmount": 4645,
+      "saleCount": 2,
+      "saleAmount": 3023,
+      "saleDetails": [
+        {
+          "district": "Сибирский федеральный округ",
+          "amount": 3023,
+          "stock_percent": 100,
+          "common_percent": 0
+        }
+      ],
+      "orderDetails": [
+        {
+          "district": "Сибирский федеральный округ",
+          "amount": 4645,
+          "stock_percent": 100,
+          "common_percent": 0
+        }
+      ]
+    },
+    {
+      "stockName": "СЦ Вологда 2",
+      "percent": 0.01,
+      "comparePercent": 100,
+      "percentOrder": 0,
+      "comparePercentOrder": 100,
+      "orderCount": 1,
+      "orderAmount": 2962,
+      "saleCount": 1,
+      "saleAmount": 2962,
+      "saleDetails": [
+        {
+          "district": "Дальневосточный федеральный округ",
+          "amount": 2962,
+          "stock_percent": 100,
+          "common_percent": 0
+        }
+      ],
+      "orderDetails": [
+        {
+          "district": "Дальневосточный федеральный округ",
+          "amount": 2962,
+          "stock_percent": 100,
+          "common_percent": 0
+        }
+      ]
+    },
+    {
+      "stockName": "Виртуальный Калининград",
+      "percent": 0.01,
+      "comparePercent": 100,
+      "percentOrder": 0,
+      "comparePercentOrder": 100,
+      "orderCount": 1,
+      "orderAmount": 2775,
+      "saleCount": 1,
+      "saleAmount": 2775,
+      "saleDetails": [
+        {
+          "district": "Северо-Западный федеральный округ",
+          "amount": 2775,
+          "stock_percent": 100,
+          "common_percent": 0
+        }
+      ],
+      "orderDetails": [
+        {
+          "district": "Северо-Западный федеральный округ",
+          "amount": 2775,
+          "stock_percent": 100,
+          "common_percent": 0
+        }
+      ]
+    },
+    {
+      "stockName": "Виртуальный Крым",
+      "percent": 0.01,
+      "comparePercent": -70.41,
+      "percentOrder": 0.01,
+      "comparePercentOrder": -48.64,
+      "orderCount": 3,
+      "orderAmount": 3178,
+      "saleCount": 2,
+      "saleAmount": 1994,
+      "saleDetails": [
+        {
+          "district": "Южный федеральный округ",
+          "amount": 1994,
+          "stock_percent": 100,
+          "common_percent": 0
+        }
+      ],
+      "orderDetails": [
+        {
+          "district": "Южный федеральный округ",
+          "amount": 3178,
+          "stock_percent": 100,
+          "common_percent": 0
+        }
+      ]
+    },
+    {
+      "stockName": "Виртуальный Москва Радумля",
+      "percent": 0.01,
+      "comparePercent": -25.71,
+      "percentOrder": 0,
+      "comparePercentOrder": -16.57,
+      "orderCount": 1,
+      "orderAmount": 1738,
+      "saleCount": 1,
+      "saleAmount": 1685,
+      "saleDetails": [
+        {
+          "district": "Центральный федеральный округ",
+          "amount": 1685,
+          "stock_percent": 100,
+          "common_percent": 0
+        }
+      ],
+      "orderDetails": [
+        {
+          "district": "Центральный федеральный округ",
+          "amount": 1738,
+          "stock_percent": 100,
+          "common_percent": 0
+        }
+      ]
+    },
+    {
+      "stockName": "Виртуальный Омск",
+      "percent": 0.01,
+      "comparePercent": 99.41,
+      "percentOrder": 0.01,
+      "comparePercentOrder": 384,
+      "orderCount": 3,
+      "orderAmount": 3741,
+      "saleCount": 1,
+      "saleAmount": 1654,
+      "saleDetails": [
+        {
+          "district": "Сибирский федеральный округ",
+          "amount": 1654,
+          "stock_percent": 100,
+          "common_percent": 0
+        }
+      ],
+      "orderDetails": [
+        {
+          "district": "Сибирский федеральный округ",
+          "amount": 3741,
+          "stock_percent": 100,
+          "common_percent": 0
+        }
+      ]
+    },
+    {
+      "stockName": "Виртуальный Кемерово",
+      "percent": 0.01,
+      "comparePercent": -35.77,
+      "percentOrder": 0,
+      "comparePercentOrder": -29.58,
+      "orderCount": 1,
+      "orderAmount": 1603,
+      "saleCount": 1,
+      "saleAmount": 1570,
+      "saleDetails": [
+        {
+          "district": "Сибирский федеральный округ",
+          "amount": 1570,
+          "stock_percent": 100,
+          "common_percent": 0
+        }
+      ],
+      "orderDetails": [
+        {
+          "district": "Сибирский федеральный округ",
+          "amount": 1603,
+          "stock_percent": 100,
+          "common_percent": 0
+        }
+      ]
+    },
+    {
+      "stockName": "Виртуальный Москва Вешки",
+      "percent": 0.01,
+      "comparePercent": 47.18,
+      "percentOrder": 0,
+      "comparePercentOrder": 59,
+      "orderCount": 1,
+      "orderAmount": 1540,
+      "saleCount": 1,
+      "saleAmount": 1524,
+      "saleDetails": [
+        {
+          "district": "Центральный федеральный округ",
+          "amount": 1524,
+          "stock_percent": 100,
+          "common_percent": 0
+        }
+      ],
+      "orderDetails": [
+        {
+          "district": "Центральный федеральный округ",
+          "amount": 1540,
+          "stock_percent": 100,
+          "common_percent": 0
+        }
+      ]
+    },
+    {
+      "stockName": "Виртуальный Братск",
+      "percent": 0.01,
+      "comparePercent": -38.61,
+      "percentOrder": 0,
+      "comparePercentOrder": -33.73,
+      "orderCount": 1,
+      "orderAmount": 1551,
+      "saleCount": 1,
+      "saleAmount": 1519,
+      "saleDetails": [
+        {
+          "district": "Сибирский федеральный округ",
+          "amount": 1519,
+          "stock_percent": 100,
+          "common_percent": 0
+        }
+      ],
+      "orderDetails": [
+        {
+          "district": "Сибирский федеральный округ",
+          "amount": 1551,
+          "stock_percent": 100,
+          "common_percent": 0
+        }
+      ]
+    },
+    {
+      "stockName": "Виртуальный Томск",
+      "percent": 0.01,
+      "comparePercent": 100,
+      "percentOrder": 0,
+      "comparePercentOrder": 100,
+      "orderCount": 1,
+      "orderAmount": 1474,
+      "saleCount": 1,
+      "saleAmount": 1400,
+      "saleDetails": [
+        {
+          "district": "Сибирский федеральный округ",
+          "amount": 1400,
+          "stock_percent": 100,
+          "common_percent": 0
+        }
+      ],
+      "orderDetails": [
+        {
+          "district": "Сибирский федеральный округ",
+          "amount": 1474,
+          "stock_percent": 100,
+          "common_percent": 0
+        }
+      ]
+    },
+    {
+      "stockName": "Виртуальный Брянск",
+      "percent": 0,
+      "comparePercent": 100,
+      "percentOrder": 0,
+      "comparePercentOrder": 100,
+      "orderCount": 1,
+      "orderAmount": 1408,
+      "saleCount": 1,
+      "saleAmount": 1379,
+      "saleDetails": [
+        {
+          "district": "Центральный федеральный округ",
+          "amount": 1379,
+          "stock_percent": 100,
+          "common_percent": 0
+        }
+      ],
+      "orderDetails": [
+        {
+          "district": "Центральный федеральный округ",
+          "amount": 1408,
+          "stock_percent": 100,
+          "common_percent": 0
+        }
+      ]
+    },
+    {
+      "stockName": "Виртуальный Уфа",
+      "percent": 0,
+      "comparePercent": -45.29,
+      "percentOrder": 0,
+      "comparePercentOrder": -34.1,
+      "orderCount": 2,
+      "orderAmount": 1428,
+      "saleCount": 1,
+      "saleAmount": 625,
+      "saleDetails": [
+        {
+          "district": "Приволжский федеральный округ",
+          "amount": 625,
+          "stock_percent": 100,
+          "common_percent": 0
+        }
+      ],
+      "orderDetails": [
+        {
+          "district": "Приволжский федеральный округ",
+          "amount": 1428,
+          "stock_percent": 100,
+          "common_percent": 0
+        }
+      ]
+    },
+    {
+      "stockName": "Виртуальный Ижевск",
+      "percent": 0,
+      "comparePercent": -38.39,
+      "percentOrder": 0,
+      "comparePercentOrder": -33.16,
+      "orderCount": 1,
+      "orderAmount": 597,
+      "saleCount": 1,
+      "saleAmount": 591,
+      "saleDetails": [
+        {
+          "district": "Приволжский федеральный округ",
+          "amount": 591,
+          "stock_percent": 100,
+          "common_percent": 0
+        }
+      ],
+      "orderDetails": [
+        {
+          "district": "Приволжский федеральный округ",
+          "amount": 597,
+          "stock_percent": 100,
+          "common_percent": 0
+        }
+      ]
+    },
+    {
+      "stockName": "Виртуальный Магадан",
+      "percent": 0,
+      "comparePercent": -100,
+      "percentOrder": 0,
+      "comparePercentOrder": 100,
+      "orderCount": 0,
+      "orderAmount": 0,
+      "saleCount": 0,
+      "saleAmount": 0,
+      "saleDetails": [],
+      "orderDetails": []
+    },
+    {
+      "stockName": "Виртуальный Махачкала",
+      "percent": 0,
+      "comparePercent": -100,
+      "percentOrder": 0,
+      "comparePercentOrder": -100,
+      "orderCount": 0,
+      "orderAmount": 0,
+      "saleCount": 0,
+      "saleAmount": 0,
+      "saleDetails": [],
+      "orderDetails": []
+    },
+    {
+      "stockName": "Виртуальный Барнаул",
+      "percent": 0,
+      "comparePercent": 100,
+      "percentOrder": 0,
+      "comparePercentOrder": 100,
+      "orderCount": 1,
+      "orderAmount": 1707,
+      "saleCount": 0,
+      "saleAmount": 0,
+      "saleDetails": [],
+      "orderDetails": [
+        {
+          "district": "Сибирский федеральный округ",
+          "amount": 1707,
+          "stock_percent": 100,
+          "common_percent": 0
+        }
+      ]
+    },
+    {
+      "stockName": "Виртуальный Москва Видное",
+      "percent": 0,
+      "comparePercent": -100,
+      "percentOrder": 0,
+      "comparePercentOrder": -100,
+      "orderCount": 0,
+      "orderAmount": 0,
+      "saleCount": 0,
+      "saleAmount": 0,
+      "saleDetails": [],
+      "orderDetails": []
+    },
+    {
+      "stockName": "Виртуальный Курск",
+      "percent": 0,
+      "comparePercent": 100,
+      "percentOrder": 0,
+      "comparePercentOrder": -100,
+      "orderCount": 0,
+      "orderAmount": 0,
+      "saleCount": 0,
+      "saleAmount": 0,
+      "saleDetails": [],
+      "orderDetails": []
+    },
+    {
+      "stockName": "Виртуальный Москва Коледино",
+      "percent": 0,
+      "comparePercent": 100,
+      "percentOrder": 0,
+      "comparePercentOrder": 100,
+      "orderCount": 1,
+      "orderAmount": 339,
+      "saleCount": 0,
+      "saleAmount": 0,
+      "saleDetails": [],
+      "orderDetails": [
+        {
+          "district": "Центральный федеральный округ",
+          "amount": 339,
+          "stock_percent": 100,
+          "common_percent": 0
+        }
+      ]
+    },
+    {
+      "stockName": "Виртуальный Грозный",
+      "percent": 0,
+      "comparePercent": 100,
+      "percentOrder": 0,
+      "comparePercentOrder": -100,
+      "orderCount": 0,
+      "orderAmount": 0,
+      "saleCount": 0,
+      "saleAmount": 0,
+      "saleDetails": [],
+      "orderDetails": []
+    },
+    {
+      "stockName": "Виртуальный Елизово",
+      "percent": 0,
+      "comparePercent": -100,
+      "percentOrder": 0,
+      "comparePercentOrder": -100,
+      "orderCount": 0,
+      "orderAmount": 0,
+      "saleCount": 0,
+      "saleAmount": 0,
+      "saleDetails": [],
+      "orderDetails": []
+    },
+    {
+      "stockName": "СЦ Хабаровск",
+      "percent": 0,
+      "comparePercent": 100,
+      "percentOrder": 0,
+      "comparePercentOrder": 100,
+      "orderCount": 1,
+      "orderAmount": 1624,
+      "saleCount": 0,
+      "saleAmount": 0,
+      "saleDetails": [],
+      "orderDetails": [
+        {
+          "district": "Южный федеральный округ",
+          "amount": 1624,
+          "stock_percent": 100,
+          "common_percent": 0
+        }
+      ]
+    },
+    {
+      "stockName": "Виртуальный Челябинск",
+      "percent": 0,
+      "comparePercent": -100,
+      "percentOrder": 0,
+      "comparePercentOrder": -100,
+      "orderCount": 0,
+      "orderAmount": 0,
+      "saleCount": 0,
+      "saleAmount": 0,
+      "saleDetails": [],
+      "orderDetails": []
+    },
+    {
+      "stockName": "Виртуальный Смоленск",
+      "percent": 0,
+      "comparePercent": -100,
+      "percentOrder": 0,
+      "comparePercentOrder": -100,
+      "orderCount": 0,
+      "orderAmount": 0,
+      "saleCount": 0,
+      "saleAmount": 0,
+      "saleDetails": [],
+      "orderDetails": []
+    },
+    {
+      "stockName": "Виртуальный Комсомольск-на-Амуре",
+      "percent": 0,
+      "comparePercent": -100,
+      "percentOrder": 0,
+      "comparePercentOrder": -100,
+      "orderCount": 0,
+      "orderAmount": 0,
+      "saleCount": 0,
+      "saleAmount": 0,
+      "saleDetails": [],
+      "orderDetails": []
+    },
+    {
+      "stockName": "Виртуальный Самара",
+      "percent": 0,
+      "comparePercent": -100,
+      "percentOrder": 0,
+      "comparePercentOrder": -50.36,
+      "orderCount": 1,
+      "orderAmount": 1628,
+      "saleCount": 0,
+      "saleAmount": 0,
+      "saleDetails": [],
+      "orderDetails": [
+        {
+          "district": "Приволжский федеральный округ",
+          "amount": 1628,
+          "stock_percent": 100,
+          "common_percent": 0
+        }
+      ]
+    },
+    {
+      "stockName": "Виртуальный Ханты-Мансийск",
+      "percent": 0,
+      "comparePercent": -100,
+      "percentOrder": 0,
+      "comparePercentOrder": -100,
+      "orderCount": 0,
+      "orderAmount": 0,
+      "saleCount": 0,
+      "saleAmount": 0,
+      "saleDetails": [],
+      "orderDetails": []
+    },
+    {
+      "stockName": "СЦ Адыгея",
+      "percent": 0,
+      "comparePercent": -100,
+      "percentOrder": 0,
+      "comparePercentOrder": -100,
+      "orderCount": 0,
+      "orderAmount": 0,
+      "saleCount": 0,
+      "saleAmount": 0,
+      "saleDetails": [],
+      "orderDetails": []
+    },
+    {
+      "stockName": "Виртуальный Нижний Тагил",
+      "percent": 0,
+      "comparePercent": -100,
+      "percentOrder": 0,
+      "comparePercentOrder": -100,
+      "orderCount": 0,
+      "orderAmount": 0,
+      "saleCount": 0,
+      "saleAmount": 0,
+      "saleDetails": [],
+      "orderDetails": []
+    },
+    {
+      "stockName": "Виртуальный Красноярск",
+      "percent": 0,
+      "comparePercent": -100,
+      "percentOrder": 0,
+      "comparePercentOrder": -62.89,
+      "orderCount": 1,
+      "orderAmount": 1593,
+      "saleCount": 0,
+      "saleAmount": 0,
+      "saleDetails": [],
+      "orderDetails": [
+        {
+          "district": "Сибирский федеральный округ",
+          "amount": 1593,
+          "stock_percent": 100,
+          "common_percent": 0
+        }
+      ]
+    },
+    {
+      "stockName": "Виртуальный Оренбург",
+      "percent": 0,
+      "comparePercent": 100,
+      "percentOrder": 0,
+      "comparePercentOrder": -100,
+      "orderCount": 0,
+      "orderAmount": 0,
+      "saleCount": 0,
+      "saleAmount": 0,
+      "saleDetails": [],
+      "orderDetails": []
+    }
+  ],
+  "geo_data": [
+    {
+      "districtName": "Центральный федеральный округ",
+      "percent": 32,
+      "comparePercent": 1.49,
+      "percentOrder": 34,
+      "comparePercentOrder": 6.41,
+      "orderCount": 11608,
+      "orderAmount": 20929725.73,
+      "saleCount": 5822,
+      "saleAmount": 8920333.71
+    },
+    {
+      "districtName": "Южный федеральный округ",
+      "percent": 15,
+      "comparePercent": 6.67,
+      "percentOrder": 16,
+      "comparePercentOrder": 14,
+      "orderCount": 5659,
+      "orderAmount": 10149207,
+      "saleCount": 2873,
+      "saleAmount": 4419422
+    },
+    {
+      "districtName": "Приволжский федеральный округ",
+      "percent": 13,
+      "comparePercent": -1.73,
+      "percentOrder": 14,
+      "comparePercentOrder": -3.17,
+      "orderCount": 4828,
+      "orderAmount": 8935953,
+      "saleCount": 2428,
+      "saleAmount": 3773008
+    },
+    {
+      "districtName": "Сибирский федеральный округ",
+      "percent": 8.75,
+      "comparePercent": -18.45,
+      "percentOrder": 8.25,
+      "comparePercentOrder": -18.83,
+      "orderCount": 2797,
+      "orderAmount": 5059442.6,
+      "saleCount": 1508,
+      "saleAmount": 2437595.6
+    },
+    {
+      "districtName": "Северо-Западный федеральный округ",
+      "percent": 8.4,
+      "comparePercent": 0.93,
+      "percentOrder": 8.96,
+      "comparePercentOrder": 4.05,
+      "orderCount": 3134,
+      "orderAmount": 5490303.91,
+      "saleCount": 1556,
+      "saleAmount": 2338944.85
+    },
+    {
+      "districtName": "Уральский федеральный округ",
+      "percent": 7.04,
+      "comparePercent": -8.5,
+      "percentOrder": 6.94,
+      "comparePercentOrder": -10.38,
+      "orderCount": 2316,
+      "orderAmount": 4252188,
+      "saleCount": 1212,
+      "saleAmount": 1961936.92
+    },
+    {
+      "districtName": "Дальневосточный федеральный округ",
+      "percent": 5.05,
+      "comparePercent": -0.36,
+      "percentOrder": 4.21,
+      "comparePercentOrder": -6.76,
+      "orderCount": 1346,
+      "orderAmount": 2580938,
+      "saleCount": 811,
+      "saleAmount": 1408171
+    },
+    {
+      "districtName": " Другой округ",
+      "percent": 4.83,
+      "comparePercent": 20,
+      "percentOrder": 1.46,
+      "comparePercentOrder": -63.59,
+      "orderCount": 511,
+      "orderAmount": 897824.3,
+      "saleCount": 838,
+      "saleAmount": 1344797.78
+    },
+    {
+      "districtName": "Северо-Кавказский федеральный округ",
+      "percent": 4.5,
+      "comparePercent": 13,
+      "percentOrder": 4.9,
+      "comparePercentOrder": 44,
+      "orderCount": 1544,
+      "orderAmount": 3004457,
+      "saleCount": 748,
+      "saleAmount": 1254228
+    }
+  ]
+}

@@ -8,6 +8,7 @@ import { URL } from '../../../../service/config';
 import AuthContext from '../../../../service/AuthContext';
 import { useAppDispatch } from '../../../../redux/hooks';
 import { fetchFilters } from '../../../../redux/apiServicePagesFiltersState/filterActions';
+import { fetchApi } from "@/service/fetchApi";
 
 
 
@@ -55,7 +56,7 @@ const SingleGroupWidget = ({
             product_ids: updatedTableData.map(_ => _.id)
         }
         try {
-            const res = await fetch(`${URL}/api/product/product_groups/${groupId}`, {
+            const res = await fetchApi(`/api/product/product_groups/${groupId}`, {
                 method: 'PATCH',
                 headers: {
                     'content-type': 'application/json',

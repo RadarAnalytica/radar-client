@@ -244,8 +244,8 @@ export const ServiceFunctions = {
 	
 	getSelfCostData: async (token, idShop, filters) => {
 		const body = getRequestObject(filters, undefined, idShop)
-		const res = await fetch(
-			`${URL}/api/product/self-costs/list`,
+		const res = await fetchApi(
+			'/api/product/self-costs/list',
 			{
 				method: 'POST',
 				headers: {
@@ -311,7 +311,7 @@ export const ServiceFunctions = {
 	getGeographyData: async (token, selectedRange, idShop, filters) => {
 		//let rangeParams = rangeApiFormat(selectedRange);
 		const body = getRequestObject(filters, selectedRange, idShop)
-		const res = await fetch(`${URL}/api/geo/`, {
+		const res = await fetchApi('/api/geo/', {
 			method: 'POST',
 			headers: {
 				'content-type': 'application/json',
@@ -323,11 +323,28 @@ export const ServiceFunctions = {
 		return data;
 	},
 
+  getProductGroupsList: async (token) => {
+    const res = await fetchApi('/api/product/product_groups', {
+      method: 'GET',
+      headers: {
+        'content-type': 'application/json',
+        'authorization': 'JWT ' + token
+      },
+    });
+
+    if (res.status !== 200) {
+      throw new Error(`Ошибка запроса: ${res.status}`);
+    }
+
+    const data = await res.json();
+    return data;
+  },
+
 	getAbcData: async (viewType, token, selectedRange, idShop, filters, page, sorting) => {
 		//let rangeParams = rangeApiFormat(day);
 		const body = getRequestObject(filters, selectedRange, idShop)
-		const res = await fetch(
-			`${URL}/api/abc_data/${viewType}?page=${page}&per_page=100&sorting=${sorting}`,
+		const res = await fetchApi(
+			`/api/abc_data/${viewType}?page=${page}&per_page=100&sorting=${sorting}`,
 			{
 				method: 'POST',
 				headers: {

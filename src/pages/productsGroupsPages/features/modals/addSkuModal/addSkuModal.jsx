@@ -8,6 +8,7 @@ import { URL } from '../../../../../service/config';
 import AuthContext from '../../../../../service/AuthContext';
 import { fetchFilters } from '../../../../../redux/apiServicePagesFiltersState/filterActions';
 import { useAppDispatch } from '../../../../../redux/hooks';
+import { fetchApi } from "@/service/fetchApi";
 
 const getFilteredData = (query, data) => {
     let filteredData = data;
@@ -81,7 +82,7 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, groupData,
     const getProductsList = async (authToken, groupId) => {
         !tableData && setDataFetchingStatus({ ...initDataFetchingStatus, isLoading: true })
         try {
-            const res = await fetch(`${URL}/api/product/product_groups/${groupId}/products`, {
+            const res = await fetchApi(`/api/product/product_groups/${groupId}/products`, {
                 headers: {
                     'content-type': 'application/json',
                     'authorization': 'JWT ' + authToken,
@@ -95,14 +96,17 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, groupData,
                 return;
             }
             const parsedRes = await res.json();
-            setTableData(parsedRes.data.products.sort((a, b) => a.article.localeCompare(b.article)))
-            setInitData(parsedRes.data.products.sort((a, b) => a.article.localeCompare(b.article)))
-            setPaginationState({ ...paginationState, total: parsedRes.data.products.length })
-            setCheckedList(parsedRes.data.products.filter(_ => _.in_group).map(_ => _.id))
-            //setGroupData(parsedRes.data)
-            setDataFetchingStatus(initDataFetchingStatus)
+            setTableData(parsedRes.data?.products.sort((a, b) => a.article.localeCompare(b.article)));
+            setInitData(parsedRes.data?.products.sort((a, b) => a.article.localeCompare(b.article)));
+            setPaginationState({ ...paginationState, total: parsedRes.data?.products.length });
+            setCheckedList(parsedRes.data?.products.filter(_ => _.in_group).map(_ => _.id));
+            setDataFetchingStatus(initDataFetchingStatus);
         } catch {
-            setDataFetchingStatus({ ...initDataFetchingStatus, isError: true, message: 'Что-то пошло не так :(' })
+            setDataFetchingStatus({
+              ...initDataFetchingStatus,
+              isError: true,
+              message: 'Что-то пошло не так :('
+            });
         }
     }
 
