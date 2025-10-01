@@ -153,6 +153,8 @@ function RnpListItem({el, index, expanded, setExpanded, setDeleteRnpId, onReorde
 						<RnpTable
 							data={el.table.rows}
 							columns={el.table.columns}
+							data2={el.table.datasource}
+							columns2={el.table.columns_new}
 						/>
 					</div>
 					)}

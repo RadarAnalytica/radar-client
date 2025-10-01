@@ -1,67 +1,83 @@
+import React, { useRef } from 'react';
 import { ConfigProvider, Table, Button } from 'antd';
 import { Table as RadarTable } from 'radar-ui';
 import styles from './RnpTable.module.css';
 
-export default function RnpTable({ loading, columns, data }) {
+export default function RnpTable({ loading, columns, data, columns2, data2 }) {
+	const containerRef = useRef(null);
 
 	return (
 		<div className={styles.container} >
 			<div className={styles.tableContainer}>
 				{loading && <div className={styles.loading}>
-						<span className='loader'></span>
+					<span className='loader'></span>
 				</div>}
-				{!loading && 
-				<ConfigProvider
-					renderEmpty={ () => (<div>Нет данных</div>)} 
-					theme={{
-						components: {
-							Table: {
-								headerColor: '#8c8c8c',
-								headerBg: '#f7f6fe',
-								headerBorderRadius: 20,
-								selectionColumnWidth: 32,
-								cellFontSize: 16,
-								borderColor: '#e8e8e8',
-								cellPaddingInline: 16,
-								cellPaddingBlock: 17,
-								bodySortBg: '#f7f6fe',
-								headerSortActiveBg: '#e7e1fe',
-								headerSortHoverBg: '#e7e1fe',
-								rowSelectedBg: '#f7f6fe',
-								rowSelectedHoverBg: '#e7e1fe',
-								colorText: '#1A1A1A',
-								lineHeight: 1.2,
-								fontWeightStrong: 500
+				{/* {!loading &&
+					<ConfigProvider
+						renderEmpty={() => (<div>Нет данных</div>)}
+						theme={{
+							components: {
+								Table: {
+									headerColor: '#8c8c8c',
+									headerBg: '#f7f6fe',
+									headerBorderRadius: 20,
+									selectionColumnWidth: 32,
+									cellFontSize: 16,
+									borderColor: '#e8e8e8',
+									cellPaddingInline: 16,
+									cellPaddingBlock: 17,
+									bodySortBg: '#f7f6fe',
+									headerSortActiveBg: '#e7e1fe',
+									headerSortHoverBg: '#e7e1fe',
+									rowSelectedBg: '#f7f6fe',
+									rowSelectedHoverBg: '#e7e1fe',
+									colorText: '#1A1A1A',
+									lineHeight: 1.2,
+									fontWeightStrong: 500
+								},
+								Checkbox: {
+									colorBorder: '#ccc',
+									colorPrimary: '#5329ff',
+									colorPrimaryBorder: '#5329ff',
+									colorPrimaryHover: '#5329ff',
+								},
 							},
-							Checkbox: {
-								colorBorder: '#ccc',
-								colorPrimary: '#5329ff',
-								colorPrimaryBorder: '#5329ff',
-								colorPrimaryHover: '#5329ff',
-							},
-						},
-					}}
-				>
-					<Table
-						columns={columns}
-						dataSource={data}
-						pagination={false}
-						sticky={true}
-						rowClassName={(record) => {
-							return record.key === 'summary' ? styles.summaryRow : '';
 						}}
-						expandable={{
-							defaultExpandAllRows: true,
-							expandIcon: ExpandIcon,
-							rowExpandable: (row) => row.children,
-							expandedRowClassName: styles.expandRow,
-							expandRowByClick: true
-						}}
-						scroll={ { x: 'max-content' }}
-					></Table>
-				</ConfigProvider>
-				}
+					>
+						<Table
+							columns={columns}
+							dataSource={data}
+							pagination={false}
+							sticky={true}
+							rowClassName={(record) => {
+								return record.key === 'summary' ? styles.summaryRow : '';
+							}}
+							expandable={{
+								defaultExpandAllRows: true,
+								expandIcon: ExpandIcon,
+								rowExpandable: (row) => row.children,
+								expandedRowClassName: styles.expandRow,
+								expandRowByClick: true
+							}}
+							scroll={{ x: 'max-content' }}
+						></Table>
+					</ConfigProvider>
+				} */}
 			</div>
+			{!loading &&
+				<div className={styles.tableContainer} ref={containerRef}>
+					<RadarTable
+						dataSource={data2}
+						pagination={false}
+						treeMode
+						indentSize={20}
+						stickyHeader={-16}
+						scrollContainerRef={containerRef}
+						config={columns2}
+						preset="radar-table-default"
+					/>
+				</div>
+			}
 		</div>
 	);
 }
@@ -69,7 +85,7 @@ export default function RnpTable({ loading, columns, data }) {
 function ExpandIcon({ expanded, onExpand, record }) {
 	const canExpand = !!record?.children && record?.children?.length > 0;
 	// const canExpand = false;
-	return canExpand && 
+	return canExpand &&
 		<ConfigProvider
 			theme={{
 				token: {
@@ -90,7 +106,7 @@ function ExpandIcon({ expanded, onExpand, record }) {
 				className={styles.expandBtn}
 				type="text"
 				icon={<svg className={`${styles.expandIcon} ${expanded ? styles.expandIconExpanded : ''}`} viewBox="0 0 14 9" fill="none" xmlns="http://www.w3.org/2000/svg">
-					<path d="M1 1L7 7L13 1" stroke='currentColor' strokeWidth="2" strokeLinecap="round"/>
+					<path d="M1 1L7 7L13 1" stroke='currentColor' strokeWidth="2" strokeLinecap="round" />
 				</svg>}
 			/>
 		</ConfigProvider>
@@ -123,4 +139,4 @@ function SortIcon({ sortOrder }) {
 	);
 }
 
-export {ExpandIcon, SortIcon}
+export { ExpandIcon, SortIcon }

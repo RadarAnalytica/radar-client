@@ -130,7 +130,7 @@ export default function Rnp() {
 			const item = {
 				table: {
 					columns_new: tableConfig,
-					datasource: [],
+					datasource: tableData,
 					columns: [],
 					rows: [],
 				},
