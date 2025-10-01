@@ -5,7 +5,6 @@ import styles from './RnpTable.module.css';
 
 export default function RnpTable({ loading, columns, data, columns2, data2 }) {
 	const containerRef = useRef(null);
-
 	return (
 		<div className={styles.container} >
 			<div className={styles.tableContainer}>
@@ -69,8 +68,9 @@ export default function RnpTable({ loading, columns, data, columns2, data2 }) {
 					<RadarTable
 						dataSource={data2}
 						pagination={false}
+						defaultExpandedRowKeys={[JSON.stringify(data2[0])]}
 						treeMode
-						indentSize={20}
+						indentSize={40}
 						stickyHeader={-16}
 						scrollContainerRef={containerRef}
 						config={columns2}
