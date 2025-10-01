@@ -224,3 +224,64 @@ export const ROWS = [
     ]
   },
 ];
+
+/**
+ * 
+ *const configItemTemplate = {
+			//key: 'name',
+			//title: 'Name',
+			//dataIndex: 'name',
+			sortable: false,
+			fixed: false,
+			fixedLeft: 0,
+			width: 210,
+			minWidth: 210,
+			maxWidth: 420,
+			hidden: false,
+			style: {
+
+			}
+		}
+
+		const config = [{
+			key: 'article',
+			title: 'Статья',
+			dataIndex: 'article',
+			sortable: false,
+			fixed: true,
+			fixedLeft: 0,
+			width: 220,
+			minWidth: 220,
+			maxWidth: 440,
+			hidden: false,
+		}];
+ */
+
+
+export const getTableConfig = (initialData) => {
+  console.log('initialData', initialData)
+  const tableConfig = [
+    {
+      title: 'Период',
+      key: 'period',
+      dataIndex: 'period',
+      width: 220,
+      minWidth: 220,
+      maxWidth: 440,
+      fixed: true,
+      fixedLeft: 0,
+    },
+    {
+      title: 'Итого',
+      dataIndex: 'sum',
+      key: 'sum',
+      width: 160,
+      minWidth: 160,
+      maxWidth: 320,
+    },
+  ];
+
+
+
+  return tableConfig;
+}

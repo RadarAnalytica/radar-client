@@ -1,4 +1,5 @@
 import { ConfigProvider, Table, Button } from 'antd';
+import { Table as RadarTable } from 'radar-ui';
 import styles from './RnpTable.module.css';
 
 export default function RnpTable({ loading, columns, data }) {
