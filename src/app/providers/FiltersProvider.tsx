@@ -21,7 +21,7 @@ const FiltersProvider = ({ children }: { children: React.ReactNode }) => {
                 method: 'GET',
                 headers: {
                     'content-type': 'application/json',
-                    authorization: user.subscription_status === null ? 'JWT ' + 'mockData' : 'JWT ' + authToken,
+                    authorization: 'JWT ' + authToken,
                 }
             })
             //let shopsResponse = null
@@ -38,9 +38,7 @@ const FiltersProvider = ({ children }: { children: React.ReactNode }) => {
 
     // Получаем данные магазинов
     useEffect(() => {
-        if (!shops || shops.length === 0) {
-            //fetchShopData();
-            //fetchFiltersData();
+        if ((!shops || shops.length === 0)) {
             getFiltersData()
         }
     }, []);
@@ -71,8 +69,6 @@ const FiltersProvider = ({ children }: { children: React.ReactNode }) => {
                 if (!filteredMessages || filteredMessages.length === 0) { return }
                 else {
                     // Если такие есить то перезапрашиваем фильтры и магазины
-                    //fetchFiltersData();
-                    //fetchShopData();
                     getFiltersData()
                 }
             }
@@ -83,11 +79,9 @@ const FiltersProvider = ({ children }: { children: React.ReactNode }) => {
     // обновляем раз в 30 секунд магазины если данные не собраны
     useEffect(() => {
         activeBrand && localStorage.setItem('activeShop', JSON.stringify(activeBrand))
-        let interval;
+        let interval: NodeJS.Timeout;
         if (activeBrand && !activeBrand.is_primary_collect) {
             interval = setInterval(() => {
-                //fetchShopData()
-                //fetchFiltersData();
                 getFiltersData()
             }, 30000)
         }

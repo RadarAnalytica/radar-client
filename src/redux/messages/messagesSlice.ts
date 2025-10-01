@@ -1,11 +1,25 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { URL } from '../../service/config';
 import axios from 'axios';
-import { createAsyncThunk } from '@reduxjs/toolkit';
+
+// Types based on API response structure
+export interface Message {
+    id: number;
+    title: string;
+    text: string;
+    type: 'note' | 'recommendation';
+    created_at: string;
+}
+
+interface MessagesState {
+    messages: Message[] | undefined;
+    isLoading: boolean;
+    error: string | null;
+}
 
 export const fetchMessages = createAsyncThunk(
     'messages',
-    async (token) => {
+    async (token: string) => {
         try {
             const response = await axios.get(`${URL}/api/msg/`, {
             // const response = await axios.get(`${URL}/api/msg`, {
@@ -28,7 +42,7 @@ export const fetchMessages = createAsyncThunk(
     }
 );
 
-const initialState = {
+const initialState: MessagesState = {
     messages: undefined,
     isLoading: false,
     error: null,

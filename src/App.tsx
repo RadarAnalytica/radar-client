@@ -61,7 +61,7 @@ const ReportProfitLoss = React.lazy(() => import("./pages/ReportProfitLoss/Repor
 const LinkedShopsPage = React.lazy(() => import("./pages/linkedShops/linkedShops"));
 const AdminDashboardPage = React.lazy(() => import("./pages/AdminPage/AdminDashboardPage"));
 const AdminReferalPage = React.lazy(() => import("./pages/AdminPage/AdminReferalPage"));
-const OperationsCosts = React.lazy(() => import("./pages/OperationsCosts"));
+const OperatingExpenses = React.lazy(() => import("./pages/OperatingExpenses"));
 const MainPage = React.lazy(() => import('./pages/homePage'))
 const ReferalPage = React.lazy(() => import("./pages/Referal"));
 const SupplierAnalysisPage = React.lazy(() => import("./pages/supplierAnalysisPage/supplierAnalysisPage"));
@@ -142,7 +142,7 @@ function App() {
               <Route path='/product/:id' element={<ProtectedRoute><StockAnalysisGlitter /></ProtectedRoute>} />
               <Route path='/report-profit-loss' element={<ProtectedRoute testPeriodProtected onboardProtected expireProtected routeRuName='Отчет о прибыли и убытках'><ReportProfitLoss /></ProtectedRoute>} />
               <Route path='/report-week' element={<ProtectedRoute testPeriodProtected expireProtected onboardProtected routeRuName='По неделям'><ReportWeek /></ProtectedRoute>} />
-              <Route path='/operations-costs' element={<ProtectedRoute testPeriodProtected expireProtected onboardProtected routeRuName='Операционные расходы'><OperationsCosts /></ProtectedRoute>} />
+              <Route path='/operating-expenses' element={<ProtectedRoute testPeriodProtected expireProtected onboardProtected routeRuName='Операционные расходы'><OperatingExpenses /></ProtectedRoute>} />
               <Route path='/referal' element={<ProtectedRoute testPeriodProtected expireProtected onboardProtected routeRuName='Реферальная программа'><ReferalPage /></ProtectedRoute>} />
               <Route path='/rnp' element={<ProtectedRoute testPeriodProtected expireProtected onboardProtected routeRuName='Рука на пульсе (РНП)'><Rnp /></ProtectedRoute>} />
               {/* Public routes */}

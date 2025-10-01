@@ -1,12 +1,61 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import styles from './nuSubscriptionWarningBlock.module.css'
-import SubscriptionModal from '../modals/subscriptionModal/subscriptionModal';
+// import SubscriptionModal from '../modals/subscriptionModal/subscriptionModal';
 import AuthContext from '../../../service/AuthContext';
 import { getDayDeclension } from '../../../service/utils';
+import { URL } from '../../../service/config';
+import { Button, ConfigProvider } from 'antd';
+import ErrorModal from '../modals/errorModal/errorModal';
+
+
+const INIT_REQUEST_STATUS = {
+    isLoading: false,
+    isSuccess: false,
+    isError: false,
+    message: ''
+}
 
 const NoSubscriptionWarningBlock = () => {
-    const { user } = useContext(AuthContext)
-    const [ isModalVisible, setIsModalVisible ] = useState(false)
+    const { user, authToken } = useContext(AuthContext)
+    const [requestStatus, setRequestStatus] = useState(INIT_REQUEST_STATUS)
+    // const [isModalVisible, setIsModalVisible] = useState(false)
+
+    const testPeriodActivation = async () => {
+        setRequestStatus({ ...INIT_REQUEST_STATUS, isLoading: true })
+        try {
+            let response = await fetch(`${URL}/api/user/subscription`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    authorization: 'JWT ' + authToken,
+                },
+                body: JSON.stringify({
+                    ...user,
+                    test: true
+                })
+            })
+
+            if (!response.ok) {
+                setRequestStatus({ ...INIT_REQUEST_STATUS, isError: true, message: 'Не удалось активировать тестовый период' })
+                return
+            }
+
+            setRequestStatus({ ...INIT_REQUEST_STATUS, isSuccess: true, message: 'Тестовый период активирован' })
+            return
+
+        } catch (error) {
+            console.error(error);
+            setRequestStatus({ ...INIT_REQUEST_STATUS, isError: true, message: error.message })
+        }
+    }
+
+    useEffect(() => {
+        if (requestStatus.isSuccess) {
+            setTimeout(() => {
+                setRequestStatus({ ...INIT_REQUEST_STATUS })
+            }, 2000)
+        }
+    }, [requestStatus.isSuccess])
 
     return (
         <div className={styles.block}>
@@ -21,7 +70,7 @@ const NoSubscriptionWarningBlock = () => {
                 </div>
 
                 <p className={styles.block__text}>
-                    На этой странице представлены <b>тестовые данные</b>, чтобы вы могли познакомиться с интерфейсом и <b>оценить глубину аналитики.</b>
+                    <b>У вас еще нет активной подписки,</b> а в сервисе представлены лишь тестовые данные для демонстрации функционала.
                 </p>
 
                 <div className={styles.block__columnFooter}>
@@ -42,17 +91,42 @@ const NoSubscriptionWarningBlock = () => {
                     Чтобы подключить свой магазин и работать уже <b>с реальными данными, активируйте тестовый период.</b> <span>У вас будет {user.test_days ? getDayDeclension(user.test_days.toString()) : '3 дня'}, чтобы изучить функционал сервиса и убедиться в его удобстве.</span> Желаем удачи!
                 </p>
 
-                <button className={styles.block__actionButton} onClick={() => setIsModalVisible(true)}>
-                    Активировать тестовый период – {user.test_days ? getDayDeclension(user.test_days.toString()) : '3 дня'}
-                </button>
+                <ConfigProvider
+                    theme={{
+                        token: {
+                            colorPrimary: '#5329FF',
+                        }
+                    }}
+                >
+                    <Button
+                        className={styles.block__actionButton}
+                        onClick={testPeriodActivation}
+                        size='large'
+                        type='primary'
+                        style={{
+                            height: 64
+                        }}
+                        loading={requestStatus.isLoading}
+                    >
+                        {!requestStatus.isSuccess && `Активировать тестовый период – ${user.test_days ? getDayDeclension(user.test_days.toString()) : '3 дня'}`}
+                        {requestStatus.isSuccess && requestStatus.message}
+                    </Button>
+                </ConfigProvider>
             </div>
 
-            <SubscriptionModal
+            {/* <SubscriptionModal
                 visible={isModalVisible}
                 visibilityHandler={setIsModalVisible}
+            /> */}
+            <ErrorModal
+                footer={null}
+                open={requestStatus.isError}
+                onOk={() => setRequestStatus({ ...INIT_REQUEST_STATUS })}
+                onClose={() => setRequestStatus({ ...INIT_REQUEST_STATUS })}
+                onCancel={() => setRequestStatus({ ...INIT_REQUEST_STATUS })}
+                message={requestStatus.message}
             />
         </div>
     )
 }
-
-export default NoSubscriptionWarningBlock;
+export default NoSubscriptionWarningBlock

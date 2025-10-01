@@ -329,7 +329,7 @@ export default function Rnp() {
 					<Header title="Рука на пульсе (РНП)"></Header>
 				</div>
 
-				{!loading && shopStatus && shopStatus?.is_primary_collect && !shopStatus.is_self_cost_set && (
+				{!loading && shopStatus && shopStatus.is_valid && shopStatus?.is_primary_collect && !shopStatus.is_self_cost_set && (
 						<SelfCostWarningBlock
 							shopId={activeBrand.id}
 						/>
