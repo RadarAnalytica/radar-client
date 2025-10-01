@@ -259,25 +259,26 @@ export const ServiceFunctions = {
 	},
 
 	getDashboardTurnoverData: async (token, selectedRange, idShop, filters) => {
-		let rangeParams = rangeApiFormat(selectedRange);
-		const body = getRequestObject(filters, selectedRange, idShop)
+		// let rangeParams = rangeApiFormat(selectedRange);
+		const body = getRequestObject(filters, selectedRange, idShop);
 		try {
-			const res = await fetch(`${URL}/api/dashboard/turnover`, {
+			const res = await fetchApi('/api/dashboard/turnover', {
 				method: 'POST',
 				headers: {
 					'content-type': 'application/json',
 					'authorization': 'JWT ' + token,
 				},
 				body: JSON.stringify(body)
-			})
+			});
 
 			if (!res.ok) {
-				const parsed = await res.json()
+				const parsed = await res.json();
 				localStorage.removeItem('activeShop');
 				throw new Error(parsed.detail || 'Invalid shop data');
 			}
-			const parsed = await res.json()
-			return parsed.items
+
+			const parsed = await res.json();
+			return parsed.items;
 
 		} catch {
 			throw new Error('Something went wrong');

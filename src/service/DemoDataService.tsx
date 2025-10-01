@@ -1,3 +1,4 @@
+import { eachWeekOfInterval, format, formatISO, endOfWeek, getISOWeek } from 'date-fns';
 import type { 
   DemoData, 
   AbcAnalysisDemoData, 
@@ -23,6 +24,7 @@ import abcDataProceeds from '../mock/abc-data-proceeds.json';
 import abcDataProfit from '../mock/abc-data-profit.json';
 import selfCostsData from '../mock/selfcost.json';
 import productGroupsData from '../mock/product-groups.json';
+import turnOverData from '../mock/turnover.json';
 
 import { store } from '@/redux/store';
 
@@ -114,6 +116,7 @@ export class DemoDataService {
       '/api/abc_data/profit': () => this.getAbcDataProfit(),
       '/api/product/self-costs/list': () => this.getSelfCostsData(),
       '/api/product/product_groups': () => this.getProductGroupsData(),
+      '/api/dashboard/turnover': () => this.getTurnOverData(),
       '/api/product/self-costs': () => ({ message: "Success" }),
     };
 
@@ -135,14 +138,6 @@ export class DemoDataService {
         data: this.getProductGroupById(productGroupId)
       });
     }
-
-    // Можно добавить другие паттерны здесь
-    // Например:
-    // const productIdMatch = endpoint.match(/^\/api\/product\/(\d+)$/);
-    // if (productIdMatch) {
-    //   const productId = productIdMatch[1];
-    //   return this.createApiResponse(this.getProductById(productId));
-    // }
 
     return null;
   }
@@ -211,6 +206,10 @@ export class DemoDataService {
     return { data };
   }
 
+  private getTurnOverData(): any {
+    return turnOverData;
+  }
+
   private getAbcDataProceeds(): any {
     return abcDataProceeds;
   }
@@ -276,10 +275,7 @@ export class DemoDataService {
     const data = rnpByArticleData;
 
     const filters = store.getState().filters;
-    let days = filters.selectedRange?.period || 30;
-    if (filters.selectedRange?.from && filters.selectedRange?.to) {
-      days = Math.floor((Number(new Date(filters.selectedRange.to)) - Number(new Date(filters.selectedRange.from))) / 3600 / 24 / 1000) + 1;
-    }
+    const days = this.getFilterDays();
 
     // Обновляем даты в by_date_data массиве для каждого элемента
     const updatedData = data.map((item: any) => {
@@ -819,6 +815,41 @@ export class DemoDataService {
     this.demoData = null;
   }
 
+  // Генерация опций недель для ReportWeek (аналогично weekOptions в компоненте)
+  private generateWeekOptions() {
+    const optionTemplate = (date: Date) => {
+      const weekValue = formatISO(date, { representation: 'date' });
+      const weekStart = format(date, 'dd.MM.yyyy');
+      const weekEnd = format(
+        endOfWeek(date, { weekStartsOn: 1 }),
+        'dd.MM.yyyy'
+      );
+      const weekNumber = getISOWeek(date);
+      return {
+        key: date.getTime(),
+        value: weekValue,
+        label: `${weekNumber} неделя (${weekStart} - ${weekEnd})`,
+      };
+    };
+
+    // Выборка дат с 2025-01-29
+    const weeks = eachWeekOfInterval(
+      {
+        start: new Date(2025, 0, 1),
+        end: Date.now(),
+      },
+      {
+        weekStartsOn: 1,
+      }
+    );
+    weeks.pop();
+
+    return weeks
+      .sort((a: Date, b: Date) => a.getTime() - b.getTime())
+      .map((el: Date) => optionTemplate(el))
+      .reverse();
+  }
+
   // Демо-фильтры на основе данных из stock-analysis.json
   private getDemoFilters() {
     // Создаем демо-магазин
@@ -836,13 +867,20 @@ export class DemoDataService {
     // Создаем структуру фильтров аналогично реальным данным
     const shops = [demoShop];
 
-    // Создаем недели (периоды)
-    const weeksListData = [
-      { name: 'Последние 7 дней', value: 7, key: 7 },
-      { name: 'Последние 14 дней', value: 14, key: 14 },
-      { name: 'Последние 30 дней', value: 30, key: 30 },
-      { name: 'Последние 90 дней', value: 90, key: 90 }
-    ];
+    // Проверяем, находимся ли мы на странице ReportWeek
+    const isReportWeekPage = window.location.pathname.includes('/report-week');
+    
+    let weeksListData;
+    if (isReportWeekPage) {
+      weeksListData = this.generateWeekOptions();
+    } else {
+      weeksListData = [
+        { name: 'Последние 7 дней', value: 7, key: 7 },
+        { name: 'Последние 14 дней', value: 14, key: 14 },
+        { name: 'Последние 30 дней', value: 30, key: 30 },
+        { name: 'Последние 90 дней', value: 90, key: 90 },
+      ];
+    }
 
     // Создаем месяцы
     const monthsData = [
@@ -932,23 +970,159 @@ export class DemoDataService {
   // Weekly Report данные
   private getWeeklyReportData(): WeeklyReportDemoData {
     const weeklyData = weeklyReportData as any[];
-    let dynamicWeeklyData = this.generateDynamicWeeklyData(weeklyData);
-    
+    const baseData = weeklyData[0]; // Берем базовые данные для генерации
     const filters = store.getState().filters;
-    const days = filters.activeWeeks?.slice().sort((a, b) => b.value - a.value)[0]?.value;
+    let activeWeeks = filters.activeWeeks || [];
 
-    if (days <= 7) {
-      dynamicWeeklyData = dynamicWeeklyData.slice(0, 1);
-    } else if (days <= 14) {
-      dynamicWeeklyData = dynamicWeeklyData.slice(0, 2);
-    } else if (days <= 30) {
-      dynamicWeeklyData = dynamicWeeklyData.slice(0, 4);
+    if (activeWeeks.length === 0) {
+      return { 
+        data: [{weeks: [], year: new Date().getFullYear()}], 
+        messsage: 'Success',
+      };
     }
+  
+    // Получаем текущую дату и вычисляем количество недель от начала года
+    const currentDate = new Date();
+    const currentWeekNumber = this.getWeekNumber(currentDate);
+    
+    // Генерируем данные только для выбранных недель
+    const dynamicWeeklyData = [];
 
+    if (typeof activeWeeks === 'string') {
+      activeWeeks = [{ value: activeWeeks }];
+    }
+    
+    for (const selectedWeek of activeWeeks) {
+      // Парсим дату из value (формат "2025-09-22")
+      const weekDate = new Date(selectedWeek.value);
+      const weekNumber = this.getWeekNumber(weekDate);
+      
+      // Проверяем, что неделя не в будущем
+      if (weekNumber <= currentWeekNumber) {
+        const weekStartDate = this.getDateFromWeekNumber(weekDate.getFullYear(), weekNumber);
+        const weekEndDate = new Date(weekStartDate);
+        weekEndDate.setDate(weekStartDate.getDate() + 6);
+        
+        const startDateStr = this.formatDate(weekStartDate);
+        const endDateStr = this.formatDate(weekEndDate);
+        const weekLabel = `${weekNumber} неделя (${startDateStr} - ${endDateStr})`;
+        
+        // Генерируем случайные данные на основе базовых данных
+        const generatedData = this.generateRandomWeeklyData(baseData, weekNumber, currentWeekNumber);
+        
+        dynamicWeeklyData.push({
+          week: weekNumber,
+          week_label: weekLabel,
+          data: generatedData
+        });
+      }
+    }
+    
+    // Сортируем по номеру недели (от большей к меньшей)
+    dynamicWeeklyData.sort((a, b) => b.week - a.week);
+    
     return { 
-      data: [{weeks: dynamicWeeklyData, year: 2025}], 
+      data: [{weeks: dynamicWeeklyData, year: currentDate.getFullYear()}], 
       messsage: 'Success',
     };
+  }
+
+  // Генерация случайных данных для недели на основе базовых данных
+  private generateRandomWeeklyData(baseData: any, weekNumber: number, currentWeek: number): any {
+    // Функция для генерации случайного числа в диапазоне
+    const randomInRange = (min: number, max: number) => Math.random() * (max - min) + min;
+    
+    // Функция для генерации случайного числа с вариацией от базового значения
+    const randomVariation = (baseValue: number, variationPercent: number = 0.3) => {
+      const variation = baseValue * variationPercent;
+      return Math.max(0, baseValue + randomInRange(-variation, variation));
+    };
+    
+    // Чем дальше от текущей недели, тем больше вариация
+    const weeksDiff = currentWeek - weekNumber;
+    const variationMultiplier = 1 + (weeksDiff * 0.1);
+    
+    return {
+      revenue: {
+        rub: Math.round(randomVariation(baseData.data.revenue.rub, 0.2 * variationMultiplier)),
+        quantity: Math.round(randomVariation(baseData.data.revenue.quantity, 0.15 * variationMultiplier))
+      },
+      purchases: {
+        rub: Math.round(randomVariation(baseData.data.purchases.rub, 0.25 * variationMultiplier)),
+        quantity: Math.round(randomVariation(baseData.data.purchases.quantity, 0.2 * variationMultiplier))
+      },
+      return: {
+        rub: Math.round(randomVariation(baseData.data.return.rub, 0.3 * variationMultiplier)),
+        quantity: Math.round(randomVariation(baseData.data.return.quantity, 0.25 * variationMultiplier))
+      },
+      avg_check: Math.round(randomVariation(baseData.data.avg_check, 0.1 * variationMultiplier) * 100) / 100,
+      purchase_percent: Math.round(randomVariation(baseData.data.purchase_percent, 0.15 * variationMultiplier) * 100) / 100,
+      avg_spp: Math.round(randomVariation(baseData.data.avg_spp, 0.2 * variationMultiplier) * 100) / 100,
+      cost_price: Math.round(randomVariation(baseData.data.cost_price, 0.3 * variationMultiplier)),
+      cost_price_percent: Math.round(randomVariation(baseData.data.cost_price_percent, 0.2 * variationMultiplier) * 100) / 100,
+      cost_price_per_one: Math.round(randomVariation(baseData.data.cost_price_per_one, 0.25 * variationMultiplier) * 100) / 100,
+      deliveries: Math.round(randomVariation(baseData.data.deliveries, 0.2 * variationMultiplier)),
+      payment: Math.round(randomVariation(baseData.data.payment, 0.2 * variationMultiplier) * 100) / 100,
+      profit: Math.round(randomVariation(baseData.data.profit, 0.25 * variationMultiplier) * 100) / 100,
+      profit_per_one: Math.round(randomVariation(baseData.data.profit_per_one, 0.2 * variationMultiplier) * 100) / 100,
+      marginality: Math.round(randomVariation(baseData.data.marginality, 0.15 * variationMultiplier) * 100) / 100,
+      return_on_investment: Math.round(randomVariation(baseData.data.return_on_investment, 0.2 * variationMultiplier) * 100) / 100,
+      wb_commission: {
+        rub: Math.round(randomVariation(baseData.data.wb_commission.rub, 0.15 * variationMultiplier) * 100) / 100,
+        percent: Math.round(randomVariation(baseData.data.wb_commission.percent, 0.1 * variationMultiplier) * 100) / 100
+      },
+      acquiring: {
+        rub: Math.round(randomVariation(baseData.data.acquiring.rub, 0.2 * variationMultiplier) * 100) / 100,
+        percent: Math.round(randomVariation(baseData.data.acquiring.percent, 0.15 * variationMultiplier) * 100) / 100
+      },
+      logistics_straight: {
+        rub: Math.round(randomVariation(baseData.data.logistics_straight.rub, 0.2 * variationMultiplier) * 100) / 100,
+        percent: Math.round(randomVariation(baseData.data.logistics_straight.percent, 0.15 * variationMultiplier) * 100) / 100
+      },
+      logistics_reverse: {
+        rub: Math.round(randomVariation(baseData.data.logistics_reverse.rub, 0.25 * variationMultiplier) * 100) / 100,
+        percent: Math.round(randomVariation(baseData.data.logistics_reverse.percent, 0.2 * variationMultiplier) * 100) / 100
+      },
+      logistics_per_product: Math.round(randomVariation(baseData.data.logistics_per_product, 0.2 * variationMultiplier) * 100) / 100,
+      logistics_total: {
+        rub: Math.round(randomVariation(baseData.data.logistics_total.rub, 0.2 * variationMultiplier) * 100) / 100,
+        percent: Math.round(randomVariation(baseData.data.logistics_total.percent, 0.15 * variationMultiplier) * 100) / 100
+      },
+      // Генерируем все avg_spp_rub_percent поля
+      ...this.generateAvgSppPercentFields(baseData, variationMultiplier)
+    };
+  }
+
+  // Генерация полей avg_spp_rub_percent (1-100)
+  private generateAvgSppPercentFields(baseData: any, variationMultiplier: number): any {
+    const fields: any = {};
+    const baseValue = baseData.data.avg_spp_rub_percent || 0;
+    
+    for (let i = 1; i <= 100; i++) {
+      const fieldName = `avg_spp_rub_percent_${i}`;
+      const randomVariation = (baseValue: number, variationPercent: number) => {
+        const variation = baseValue * variationPercent;
+        return Math.max(0, baseValue + (Math.random() * variation * 2 - variation));
+      };
+      
+      fields[fieldName] = Math.round(randomVariation(baseValue, 0.3 * variationMultiplier) * 100) / 100;
+    }
+    
+    return fields;
+  }
+
+  // Получение даты начала недели по номеру недели в году
+  private getDateFromWeekNumber(year: number, weekNumber: number): Date {
+    const jan1 = new Date(year, 0, 1);
+    const daysToAdd = (weekNumber - 1) * 7;
+    const weekStart = new Date(jan1.getTime() + daysToAdd * 24 * 60 * 60 * 1000);
+    
+    // Корректируем на понедельник
+    const dayOfWeek = weekStart.getDay();
+    const daysToMonday = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
+    weekStart.setDate(weekStart.getDate() + daysToMonday);
+    
+    return weekStart;
   }
 
   // Генерация динамических week_label для последних 10 недель
@@ -996,21 +1170,5 @@ export class DemoDataService {
     const month = (date.getMonth() + 1).toString().padStart(2, '0');
     const year = date.getFullYear();
     return `${day}.${month}.${year}`;
-  }
-
-  // Применение фильтров к weekly report данным
-  private applyWeeklyFilters(weeklyData: WeeklyReportWeek[], filters: any): WeeklyReportDemoData {
-    let filteredData = [...weeklyData];
-    
-    // Фильтрация по выбранным неделям
-    if (filters.activeWeeks && Array.isArray(filters.activeWeeks) && !filters.activeWeeks.some((item: any) => item.value === 'Все')) {
-      const selectedWeeks = filters.activeWeeks.map((item: any) => item.value);
-      filteredData = filteredData.filter(week => selectedWeeks.includes(week.week));
-    }
-    
-    return { 
-      data: [{weeks: filteredData, year: 2025}], 
-      messsage: 'Success' 
-    };
   }
 }

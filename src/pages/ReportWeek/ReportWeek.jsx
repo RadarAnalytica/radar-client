@@ -11,7 +11,8 @@ import { ConfigProvider, Button, Popover } from 'antd';
 import styles from './ReportWeek.module.css';
 import ReportTable from '@/components/sharedComponents/ReportTable/ReportTable';
 import TableSettingModal from '@/components/sharedComponents/modals/tableSettingModal/TableSettingModal';
-import { useAppSelector } from '@/redux/hooks';
+import { useAppSelector, useAppDispatch } from '@/redux/hooks';
+import { actions as filterActions } from '@/redux/apiServicePagesFiltersState/apiServicePagesFilterState.slice';
 import SelfCostWarningBlock from '@/components/sharedComponents/selfCostWraningBlock/selfCostWarningBlock';
 import {
 	eachWeekOfInterval,
@@ -30,6 +31,7 @@ import { useDemoMode } from '@/app/providers/DemoDataProvider';
 export default function ReportWeek() {
 	const { user, authToken } = useContext(AuthContext);
 	const { isDemoMode } = useDemoMode();
+	const dispatch = useAppDispatch();
 	const { activeBrand, selectedRange, activeBrandName, activeArticle, activeGroup, activeWeeks, isFiltersLoaded } = useAppSelector(
 		(state) => state.filters
 	);
@@ -147,6 +149,15 @@ export default function ReportWeek() {
 			JSON.stringify(savedFilterWeek)
 		);
 	}, [activeWeeks]);
+
+	useEffect(() => {
+		if (isDemoMode && weekOptions && weekOptions.length > 0) {
+			dispatch(filterActions.setActiveFilters({
+				stateKey: 'activeWeeks',
+				data: weekOptions[0].value
+			}));
+		}
+	}, [isDemoMode, weekOptions]);
 
 	const updateDataReportWeek = async () => {
 		setLoading(true);

@@ -35,12 +35,11 @@ import {
 } from '../../redux/supplierAnalysis/supplierAnalysisSelectors'
 
 const SupplierIdPage = () => {
-    const dispatch = useAppDispatch()
-    const mainSupplierData = useAppSelector(selectMainSupplierData)
-    const isAnyDataLoading = useAppSelector(store => store.supplierAnalysis.isAnyDataLoading)
-    console.log(isAnyDataLoading)
-    const params = useParams()
-    const navigate = useNavigate()
+    const dispatch = useAppDispatch();
+    const mainSupplierData = useAppSelector(selectMainSupplierData);
+    const isAnyDataLoading = useAppSelector(store => store.supplierAnalysis.isAnyDataLoading);
+    const params = useParams();
+    const navigate = useNavigate();
 
     //Проверяем наличие базовых данных поставщика и запрашиваем их если их нет
     useEffect(() => {

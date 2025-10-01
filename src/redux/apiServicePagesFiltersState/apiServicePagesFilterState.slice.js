@@ -48,6 +48,7 @@ const apiServicePagesFilterStateSlice = createSlice({
             }
         },
         setActiveFilters: (state, action) => {
+            console.log('action.payload', state);
             const { stateKey, data } = action.payload;
             console.log('Redux slice: setActiveFilters called:', { stateKey, data });
             if (stateKey === 'activeBrandName') {
