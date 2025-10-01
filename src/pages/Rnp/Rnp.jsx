@@ -11,7 +11,7 @@ import styles from './Rnp.module.css';
 import { useAppSelector, useAppDispatch } from '../../redux/hooks';
 import { ServiceFunctions } from '../../service/serviceFunctions';
 import { RnpFilters } from './widget/RnpFilters/RnpFilters';
-import { COLUMNS, ROWS, renderFunction, getTableConfig } from './config';
+import { COLUMNS, ROWS, renderFunction, getTableConfig, getTableData } from './config';
 import { format, isToday } from 'date-fns';
 import { ru } from 'date-fns/locale';
 import RnpList from './widget/RnpList/RnpList';
@@ -123,11 +123,14 @@ export default function Rnp() {
 	}
 
 	const dataToRnpList = (response) => {
-		const tableConfig = getTableConfig(response.data);
+
 		const list = response.data.map((article, i) => {
-			// for (const article of response.data){
+			const tableConfig = getTableConfig(article);
+			const tableData = getTableData(article);
 			const item = {
 				table: {
+					columns_new: tableConfig,
+					datasource: [],
 					columns: [],
 					rows: [],
 				},

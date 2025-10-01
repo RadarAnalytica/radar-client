@@ -1,5 +1,10 @@
 import { Children } from "react";
 import { formatPrice } from '../../service/utils';
+import moment from 'moment';
+import 'moment/dist/locale/ru';
+
+moment.locale('ru');
+
 
 export const renderFunction = (value) => (formatPrice(value))
 
@@ -98,7 +103,7 @@ export const ROWS = [
       {
         dataIndex: 'cpc',
         period: 'CPC (руб)',
-        
+
       },
       {
         dataIndex: 'cpm',
@@ -115,7 +120,7 @@ export const ROWS = [
       {
         dataIndex: 'one_order_price',
         period: 'Стоимость 1 заказа (руб)',
-        
+
       },
       {
         dataIndex: 'one_sale_price',
@@ -228,38 +233,55 @@ export const ROWS = [
 /**
  * 
  *const configItemTemplate = {
-			//key: 'name',
-			//title: 'Name',
-			//dataIndex: 'name',
-			sortable: false,
-			fixed: false,
-			fixedLeft: 0,
-			width: 210,
-			minWidth: 210,
-			maxWidth: 420,
-			hidden: false,
-			style: {
+      //key: 'name',
+      //title: 'Name',
+      //dataIndex: 'name',
+      sortable: false,
+      fixed: false,
+      fixedLeft: 0,
+      width: 210,
+      minWidth: 210,
+      maxWidth: 420,
+      hidden: false,
+      style: {
 
-			}
-		}
+      }
+    }
 
-		const config = [{
-			key: 'article',
-			title: 'Статья',
-			dataIndex: 'article',
-			sortable: false,
-			fixed: true,
-			fixedLeft: 0,
-			width: 220,
-			minWidth: 220,
-			maxWidth: 440,
-			hidden: false,
-		}];
+    const config = [{
+      key: 'article',
+      title: 'Статья',
+      dataIndex: 'article',
+      sortable: false,
+      fixed: true,
+      fixedLeft: 0,
+      width: 220,
+      minWidth: 220,
+      maxWidth: 440,
+      hidden: false,
+    }];
  */
+
+let configItemTemplate = {
+  //key: 'name',
+  //title: 'Name',
+  //dataIndex: 'name',
+  sortable: false,
+  fixed: false,
+  fixedLeft: 0,
+  width: 210,
+  minWidth: 210,
+  maxWidth: 420,
+  hidden: false,
+  style: {
+
+  }
+}
 
 
 export const getTableConfig = (initialData) => {
-  console.log('initialData', initialData)
+
+  
   const tableConfig = [
     {
       title: 'Период',
@@ -273,15 +295,34 @@ export const getTableConfig = (initialData) => {
     },
     {
       title: 'Итого',
-      dataIndex: 'sum',
-      key: 'sum',
+      key: 'summary',
+      dataIndex: 'summary',
       width: 160,
       minWidth: 160,
       maxWidth: 320,
     },
   ];
-
-
-
+  initialData.by_date_data?.forEach(_ => {
+    const formattedDate = moment(_.date).format('D MMMM');
+    tableConfig.push({
+      title: formattedDate,
+      key: formattedDate,
+      dataIndex: formattedDate,
+      ...configItemTemplate,
+    })
+  })
   return tableConfig;
+}
+
+
+const initRowsTableConfig = [
+  {}
+]
+
+
+export const getTableData = (initialData) => {
+  console.log('initialData', initialData)
+  const tableData = [];
+
+  return tableData;
 }
