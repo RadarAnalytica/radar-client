@@ -7,9 +7,10 @@ const AddRnpModalFooter = ({ setIsAddRnpModalVisible, isDataLoading, submitDisab
             <ConfigProvider
                 theme={{
                     token: {
-                        fontSize: 16,
+                        fontSize: 14,
                         borderRadius: 8,
-                        controlHeight: 45
+                        controlHeight: 46,
+                        fontWeight: 600,
                     },
                     components: {
                         Button: {

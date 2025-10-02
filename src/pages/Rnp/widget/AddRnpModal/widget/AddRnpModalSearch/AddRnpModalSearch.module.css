@@ -4,3 +4,8 @@
 .search__input{
   flex-grow: 1;
 }
+
+.search__button svg {
+  height: 16px;
+  width: 16px;
+}
