@@ -269,10 +269,11 @@ let configItemTemplate = {
   sortable: false,
   fixed: false,
   fixedLeft: 0,
-  width: 210,
-  minWidth: 210,
-  maxWidth: 420,
+  width: 120,
+  minWidth: 120,
+  maxWidth: 240,
   hidden: false,
+  units: ' ',
   style: {
 
   }
@@ -340,9 +341,9 @@ export const getTableConfig = (initialData) => {
       title: 'Период',
       key: 'period',
       dataIndex: 'period',
-      width: 220,
-      minWidth: 220,
-      maxWidth: 440,
+      width: 250,
+      minWidth: 250,
+      maxWidth: 500,
       fixed: true,
       fixedLeft: 0,
     },
@@ -350,9 +351,10 @@ export const getTableConfig = (initialData) => {
       title: 'Итого',
       key: 'summary',
       dataIndex: 'summary',
-      width: 160,
-      minWidth: 160,
-      maxWidth: 320,
+      width: 100,
+      minWidth: 100,
+      maxWidth: 200,
+      units: ' '
     },
   ];
   initialData.by_date_data?.sort((a, b) => new Date(b.date) - new Date(a.date)).forEach(_ => {
@@ -404,9 +406,18 @@ export const getTableData = (initialData) => {
   })
 
   const tableDataWithChildren = tableData.map(_ => {
+    const filteredChildren = childrenData.filter(c => c.parentKey === _.key)
     return {
       ..._,
-      children: childrenData.filter(c => c.parentKey === _.key),
+      children: filteredChildren.map((c, index) => {
+        if (index === filteredChildren.length - 1) {
+          return {
+            ...c,
+            isLastChild: true
+          }
+        }
+        return c
+      }),
     }
   })
   return tableDataWithChildren;

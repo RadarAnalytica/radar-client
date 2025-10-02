@@ -4,163 +4,77 @@
   /* min-height: 450px; */
   overflow: hidden
 }
-  
+
 .tableContainer {
+  position: relative;
   height: 100%;
   width: 100%;
   overflow: auto;
-}
-
-.tableContainer :global(.ant-table-tbody-virtual-scrollbar-vertical .ant-table-tbody-virtual-scrollbar-thumb),
-.tableContainer :global(.ant-table-tbody-virtual-scrollbar-horizontal .ant-table-tbody-virtual-scrollbar-thumb){
-  border-radius: 6px!important;
-  background: #5329ff80!important;
-}
-
-.tableContainer :global(.ant-table-tbody-virtual-scrollbar-horizontal .ant-table-tbody-virtual-scrollbar-thumb){
-  height: 5px!important;
-}
-
-.tableContainer :global(.ant-table-tbody-virtual-scrollbar-vertical .ant-table-tbody-virtual-scrollbar-thumb){
-  width: 5px!important;
-}
-
-/* 
-.tableContainer :global(.ant-table-tbody-virtual-holder){
-  max-height: 100%!important;
+  /* Firefox scrollbar */
+  scrollbar-width: thin;
+  scrollbar-color: #5329ff80 transparent;
 }
 
 .tableContainer::-webkit-scrollbar {
   width: 3px;
   height: 3px;
-  border-radius: 6px!important;
-  opacity: 1;
-}
-
-.tableContainer::-webkit-scrollbar-track {
-    background: transparent;
-    height: 50%;
-    margin: 10px 20px;
+  border-radius: 3px;
 }
 
 .tableContainer::-webkit-scrollbar-thumb {
-    background: #5329ff80;
-    border-radius: 6px;
-} */
-
-.tableContainer :global(.ant-table),
-.tableContainer :global(.ant-table-body) {
-  scrollbar-color: #5329ff80 transparent;
-  scrollbar-width: thin;
-}
-
-.tableContainer :global(.ant-table-body)::-webkit-scrollbar {
-  width: 3px;
-  height: 3px;
   border-radius: 6px;
+  background: #5329ff80;
 }
-  
-.tableContainer :global(.ant-table-body)::-webkit-scrollbar-track {
+
+.tableContainer::-webkit-scrollbar-track {
   background: transparent;
   height: 50%;
   margin: 10px 20px;
 }
-  
-.tableContainer :global(.ant-table-body)::-webkit-scrollbar-thumb {
-  background: #5329ff80;
-  border-radius: 6px;
-}
 
-:global(.ant-table-sticky-scroll-bar){
-  background-color: #5329ff80!important;
-}
-
-.tableContainer thead>tr>th {
-  border: none;
-}
-
-.tableContainer thead>tr>th:first-child {
-  border-bottom-left-radius: 20px;
-}
-
-.tableContainer thead>tr>th:last-child {
-  border-bottom-right-radius: 20px;
-}
-
-.tableContainer thead>tr>th {
-  height: 70px;
-}
-
-.tableContainer thead>tr>th>div {
-  gap: 8px;
-}
-
-.tableContainer thead>tr>th::before {
-  height: 100% !important;
-  background-color: #e8e8e8 !important;
-}
-
-.tableContainer .ant-table-column-title {
-  flex: auto !important;
-}
-
-.tableContainer :global(.ant-table-sticky-holder) {
-  top: -30px!important;
-}
-
-.expandBtn {
-  margin-right: 12px;
-  vertical-align: middle;
-}
-.expandBtn :global(.ant-btn-icon){
-  line-height: 0;
-  color: #8C8C8C;
-}
-
-.expandIcon{
-  width: 14px;
-}
-
-.expandIconExpanded{
-  transform: rotate(180deg);
-}
-
-.expandRow{
-  /* opacity: 0.5; */
-}
-
-/* :global(.ant-table-container),
-:global(.ant-table-header), 
-:global(.ant-table-body) {
-  scroll-behavior: auto !important;
-  scroll-behavior: auto;       /* Отключает плавный скролл *
-  overscroll-behavior: none;   /* Отключает эффекты overscroll *
-  -webkit-overflow-scrolling: auto; /* Для Safari *
-} */
-
-.sortIcons{
-  margin-left: 10px;
-  margin-right: 10px;
-}
-
-:global(.ant-table-column-has-sorters){
-  margin-left: 10px;
-  margin-right: 10px;
-  user-select: none; /* Стандартное свойство */
-  -webkit-user-select: none; /* Для Safari */
-  -moz-user-select: none; /* Для Firefox */
-  -ms-user-select: none; /* Для IE/Edge */
-}
-
-.summaryRow,
-.summaryRow :global(.ant-table-cell-fix-left){
-  background-color: rgb(238 234 255);
-}
-
-.loading{
+.loading {
   height: 100%;
   display: flex;
   flex-flow: column;
   justify-content: center;
   align-items: center;
+}
+
+.bodyRowSpecial:hover td div {
+  background-color: #FAFAFA !important;
+  transition: all 0.2s ease;
+}
+
+
+.headerCellWrapperCustomClassName {
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  display: -webkit-box !important;
+  -webkit-box-orient: vertical !important;
+  -webkit-line-clamp: 1 !important;
+}
+
+.customCellBold {
+  width: 100%;
+  height: 100%;
+  font-weight: 700;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  display: -webkit-box !important;
+  -webkit-box-orient: vertical !important;
+  -webkit-line-clamp: 1 !important;
+}
+.customCell {
+  width: 100%;
+  height: 100%;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  display: -webkit-box !important;
+  -webkit-box-orient: vertical !important;
+  -webkit-line-clamp: 1 !important;
+}
+
+
+:global(.radar-table-default__body-row):has(div > .customCell[data-rnp-is-last-child="lastChild"]) > td > div {
+  border-bottom: 1px solid #E8E8E8 !important;
 }
