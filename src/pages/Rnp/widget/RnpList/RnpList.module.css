@@ -1,5 +1,5 @@
 .item {
-  padding: 10px 0;
+  padding: 0;
 }
 
 .item_content {
@@ -56,9 +56,65 @@
   background-color: tomato;
 }
 
+/* Drop-зоны между карточками */
+.drop_zone {
+  height: 10px;
+  margin: 5px 0;
+  border-radius: 5px;
+  transition: all 0.2s ease;
+  position: relative;
+  opacity: 0;
+}
+
+.drop_zone:hover {
+  background-color: rgba(83, 41, 255, 0.05);
+}
+
+/* Видимые drop-зоны при drag */
+.drop_zone_visible {
+  opacity: 1;
+  height: 50px;
+  background-color: rgba(83, 41, 255, 0.08);
+  border: 1px dashed rgba(83, 41, 255, 0.3);
+  border-radius: 12px;
+  margin: 8px 0;
+}
+
+/* Активная drop-зона при наведении */
+.drop_zone_active {
+  height: 80px;
+  background-color: rgba(83, 41, 255, 0.15);
+  border: 2px dashed #5329ff;
+  border-radius: 16px;
+  margin: 10px 0;
+  animation: dropZonePulse 1.5s ease-in-out infinite;
+  opacity: 1;
+}
+
+.drop_zone_content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: #5329ff;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+@keyframes dropZonePulse {
+  0%, 100% {
+    opacity: 0.8;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.02);
+  }
+}
+
+/* Старые стили edge (можно удалить) */
 .edge_top,
 .edge_bottom{
-  position: absolute;
   position: absolute;
   left: 0;
   width: 100%;
@@ -83,3 +139,63 @@
 .copy{
   cursor: copy;
 }
+
+/* Эффекты для карточек при drag */
+.item.dragging {
+  opacity: 0.6;
+  transform: scale(0.98);
+  transition: all 0.2s ease;
+}
+
+/* Глобальные стили при drag */
+:global(body.drag_active) {
+  user-select: none;
+}
+
+:global(body.drag_active) .item:not(.dragging) {
+  opacity: 0.7;
+}
+
+/* Контейнер списка для edge drop-зон */
+.list_container {
+  position: relative;
+  min-height: 100vh;
+}
+
+/* Edge drop-зоны (верх и низ viewport) */
+.edge_drop_zone {
+  position: fixed;
+  left: 0;
+  right: 0;
+  height: 180px; /* Увеличено в 3 раза (было 60px) */
+  z-index: 1000;
+  opacity: 0; /* Полностью невидимы */
+  transition: all 0.2s ease;
+  pointer-events: none;
+}
+
+.edge_drop_zone_top {
+  top: 0;
+}
+
+.edge_drop_zone_bottom {
+  bottom: 0;
+}
+
+/* Видимые edge drop-зоны при drag (невидимые) */
+.edge_drop_zone_visible {
+  opacity: 0; /* Остаются невидимыми */
+  pointer-events: all; /* Но функциональными */
+}
+
+/* Активные edge drop-зоны при наведении (невидимые) */
+.edge_drop_zone_active {
+  opacity: 0; /* Остаются невидимыми */
+  pointer-events: all; /* Но функциональными */
+}
+
+.edge_drop_zone_content {
+  display: none; /* Полностью скрываем контент */
+}
+
+/* Анимация edgeDropZonePulse удалена, так как зоны теперь невидимые */
