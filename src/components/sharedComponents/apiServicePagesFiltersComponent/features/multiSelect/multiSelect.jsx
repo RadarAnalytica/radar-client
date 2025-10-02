@@ -197,11 +197,7 @@ export const MultiSelect = (
                             if (!open) {
                                 setSearchState('');
                                 if (JSON.stringify(prevSelectState.current) === JSON.stringify(selectState)) return;
-                                console.log('MultiSelect: Dispatching filter change:', {
-                                    stateKey: params.stateKey,
-                                    data: selectState,
-                                    prevState: prevSelectState.current
-                                });
+
                                 dispatch(filterActions.setActiveFilters({ stateKey: params.stateKey, data: selectState }));
                                 prevSelectState.current = selectState;
                             }

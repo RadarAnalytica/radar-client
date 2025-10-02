@@ -255,7 +255,7 @@ export class DemoDataService {
 
   // Dashboard данные
   private getDashboardData(): any {
-    const data = { ...dashboardData };
+    const data = this.getOriginalJson(dashboardData);
     const days = this.getFilterDays();
     const denominator = 90 / days;
 
@@ -266,7 +266,7 @@ export class DemoDataService {
     data.marginalityRoiChart = data.marginalityRoiChart.slice(0, days);
     data.salesAndProfit = data.salesAndProfit.slice(0, days);
     
-    data.orderAmount = data.orderAmount / denominator;
+    data.orderAmount = Math.round(data.orderAmount / denominator);
     data.saleAmount = data.saleAmount / denominator;
     data.orderCount = data.orderCount / denominator;
     data.saleCount = Math.round(data.saleCount / denominator);
@@ -378,15 +378,13 @@ export class DemoDataService {
 
   // P&L Report данные
   private getPlReportData(): PlReportDemoData {
-    const filters = store.getState().filters;
-    
-    // Генерируем данные на основе фильтров
-    const generatedData = this.generatePlReportData(filters);
+    const generatedData = this.generatePlReportData();
     return { data: generatedData };
   }
 
   // Генератор данных для P&L отчета
-  private generatePlReportData(filters: any) {
+  private generatePlReportData() {
+    const filters = store.getState().filters;
     const monthFrom = filters?.activeMonths?.month_from;
     const monthTo = filters?.activeMonths?.month_to;
     const now = new Date();
@@ -833,7 +831,6 @@ export class DemoDataService {
     }
     
     for (const selectedWeek of activeWeeks) {
-      // Парсим дату из value (формат "2025-09-22")
       const weekDate = new Date(selectedWeek.value);
       const weekNumber = this.getWeekNumber(weekDate);
       

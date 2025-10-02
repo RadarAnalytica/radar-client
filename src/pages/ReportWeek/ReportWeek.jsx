@@ -27,7 +27,6 @@ import NoSubscriptionWarningBlock from '@/components/sharedComponents/noSubscrip
 import { COLUMNS } from './columnsConfig';
 import TableWidget from './widgets/TableWidget/TableWidget';
 import { useDemoMode } from '@/app/providers/DemoDataProvider';
-
 export default function ReportWeek() {
 	const { user, authToken } = useContext(AuthContext);
 	const { isDemoMode } = useDemoMode();
