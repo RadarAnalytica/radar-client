@@ -25,22 +25,18 @@ import abcDataProfit from '../mock/abc-data-profit.json';
 import selfCostsData from '../mock/selfcost.json';
 import productGroupsData from '../mock/product-groups.json';
 import turnOverData from '../mock/turnover.json';
+import easyMonitoringData from '../mock/easy-monitoring.json';
+import monitoringData from '../mock/monitoring.json';
+import trendingQueries from '../mock/trending-request.json';
+import trendingQueriesMonth from '../mock/trend-analysis-month.json';
+import trendingQueriesDay from '../mock/trend-analysis-day.json';
+import ceoComparisonRaw from '../mock/ceo-comparison.json';
+import descriptionGeneratorKeywords from '../mock/description-generator-keywords.json';
 
 import { store } from '@/redux/store';
 
 export class DemoDataService {
   private static instance: DemoDataService;
-  private demoData: DemoData | null = null;
-  private config: DemoConfig = {
-    showBanner: true,
-    showWatermark: true,
-    limitData: true,
-    maxItems: 10,
-    timeRange: {
-      start: '2024-01-01',
-      end: '2024-12-31'
-    }
-  };
 
   private constructor() {}
 
@@ -51,24 +47,8 @@ export class DemoDataService {
     return DemoDataService.instance;
   }
 
-  // Получить все демо-данные
-  public getAllDemoData(): DemoData {
-    if (!this.demoData) {
-      this.demoData = {
-        dashboard: this.getDashboardData(),
-        abcAnalysis: this.getAbcAnalysisData(),
-        stockAnalysis: this.getStockAnalysisData(),
-        reports: this.getReportsData(),
-        ordersMap: this.getOrdersMapData(),
-        supplierAnalysis: this.getSupplierAnalysisData(),
-        weeklyReport: this.getWeeklyReportData()
-      };
-    }
-    return this.demoData;
-  }
-
   // Получить данные для конкретного эндпоинта
-  public getDataForEndpoint(endpoint: string, params?: any, data?: DemoData): any {
+  public getDataForEndpoint(endpoint: string, params?: any): any {
     endpoint = endpoint.split('?')[0];
 
     if (!endpoint) {
@@ -96,16 +76,10 @@ export class DemoDataService {
   private getExactMatch(endpoint: string): any {
     const endpointMap: Record<string, () => any> = {
       '/api/dashboard': () => this.getDashboardData(),
-      '/api/abc-analysis': () => this.getAbcAnalysisData(),
       '/api/prod_analytic': () => this.getStockAnalysisData(),
       '/api/periodic_reports/weekly_report': () => this.getWeeklyReportData(),
       '/api/common/filters_new': () => this.getDemoFilters(),
       '/api/shop/all': () => this.getDemoShops(),
-      '/api/reports/pl': () => this.getPlReportData(),
-      '/api/reports/monthly': () => this.getMonthlyReportData(),
-      '/api/reports/goods': () => this.getGoodsReportData(),
-      '/api/reports/penalties': () => this.getPenaltiesReportData(),
-      '/api/orders-map': () => this.getOrdersMapData(),
       '/api/supplier-analysis': () => this.getSupplierAnalysisData(),
       '/api/rnp/by_article': () => this.getRnpByArticleData(),
       '/api/rnp/summary': () => this.getRnpSummaryData(),
@@ -117,6 +91,13 @@ export class DemoDataService {
       '/api/product/self-costs/list': () => this.getSelfCostsData(),
       '/api/product/product_groups': () => this.getProductGroupsData(),
       '/api/dashboard/turnover': () => this.getTurnOverData(),
+      '/api/ceo-comparison/raw': () => this.getCeoComparisonRaw(),
+      '/api/description-generator/keywords': () => this.getDescriptionGeneratorKeywords(),
+      'https://radarmarket.ru/api/web-service/monitoring-oracle/easy/get': () => this.getEasyMonitoringData(),
+      'https://radarmarket.ru/api/web-service/monitoring-oracle/get': () => this.getMonitoringData(),
+      'https://radarmarket.ru/api/web-service/trending-queries/get': () => this.getTrendingQueries(),
+      'https://radarmarket.ru/api/analytic/query-dynamics/month': () => this.getTrendingAnalysisMonth(),
+      'https://radarmarket.ru/api/analytic/query-dynamics/day': () => this.getTrendingAnalysisDay(),
       '/api/product/self-costs': () => ({ message: "Success" }),
     };
 
@@ -187,7 +168,7 @@ export class DemoDataService {
   }
 
   private getGeoData(): any {
-    const data = geoData;
+    const data = this.getOriginalJson(geoData);
     const days = this.getFilterDays();
     const denominator = 90 / days;
 
@@ -196,14 +177,24 @@ export class DemoDataService {
       item.comparePercent = item.comparePercent / denominator;
       item.percentOrder = item.percentOrder / denominator;
       item.comparePercentOrder = item.comparePercentOrder / denominator;
-      item.orderCount = item.orderCount / denominator;
-      item.orderAmount = item.orderAmount / denominator;
-      item.saleCount = item.saleCount / denominator;
-      item.saleAmount = item.saleAmount / denominator;
-      return item;
+      item.orderCount = Math.round(item.orderCount / denominator);
+      item.orderAmount = Math.round(item.orderAmount / denominator);
+      item.saleCount = Math.round(item.saleCount / denominator);
+      item.saleAmount = Math.round(item.saleAmount / denominator);
     });
 
-    return { data };
+    data.stock_data.map(item => {
+      item.percent = item.percent / denominator;
+      item.comparePercent = item.comparePercent / denominator;
+      item.percentOrder = item.percentOrder / denominator;
+      item.comparePercentOrder = item.comparePercentOrder / denominator;
+      item.orderCount = Math.round(item.orderCount / denominator);
+      item.orderAmount = Math.round(item.orderAmount / denominator);
+      item.saleCount = Math.round(item.saleCount / denominator);
+      item.saleAmount = Math.round(item.saleAmount / denominator);
+    });
+
+    return data;
   }
 
   private getTurnOverData(): any {
@@ -211,7 +202,15 @@ export class DemoDataService {
   }
 
   private getAbcDataProceeds(): any {
-    return abcDataProceeds;
+    const data = this.getOriginalJson(abcDataProceeds);
+    const days = this.getFilterDays();
+    const denominator = 90 / days;
+
+    data.results.map(item => {
+      item.amount = item.amount / denominator;
+    });
+    
+    return data;
   }
 
   private getAbcDataProfit(): any {
@@ -224,6 +223,34 @@ export class DemoDataService {
 
   private getProductGroupsData(): any {
     return { data: productGroupsData };
+  }
+
+  private getEasyMonitoringData(): any {
+    return easyMonitoringData;
+  }
+
+  private getMonitoringData(): any {
+    return monitoringData;
+  }
+
+  private getTrendingQueries(): any {
+    return trendingQueries;
+  }
+
+  private getTrendingAnalysisMonth(): any {
+    return trendingQueriesMonth;
+  }
+
+  private getTrendingAnalysisDay(): any {
+    return trendingQueriesDay;
+  }
+
+  private getCeoComparisonRaw(): any {
+    return ceoComparisonRaw;
+  }
+
+  private getDescriptionGeneratorKeywords(): any {
+    return descriptionGeneratorKeywords;
   }
 
   // Dashboard данные
@@ -273,7 +300,6 @@ export class DemoDataService {
 
   private getRnpByArticleData(): any {
     const data = rnpByArticleData;
-
     const filters = store.getState().filters;
     const days = this.getFilterDays();
 
@@ -306,116 +332,48 @@ export class DemoDataService {
   }
 
   private getRnpSummaryData(): any {
-    return { data: rnpSummaryData };
+    let data = {...rnpSummaryData};
+    const filters = store.getState().filters;
+    const days = this.getFilterDays();
+
+    // Обновляем даты в by_date_data массиве для каждого элемента
+    if (Array.isArray(data.by_date_data)) {
+      data.by_date_data = data.by_date_data.slice(-days);
+      const diffDays = filters.selectedRange?.to ? new Date().getDate() - new Date(filters.selectedRange?.to).getDate() : 0;
+
+      const updatedByDateData = data.by_date_data.map((dateItem: any, index: number) => {
+        // Генерируем дату от вчерашнего или последнего выбранного дня и назад
+        const date = new Date();
+        date.setDate(date.getDate() - index - diffDays);
+
+        return { ...dateItem, date: date.toISOString() };
+      });
+
+      data = { ...data, by_date_data: updatedByDateData };
+    }
+
+    return { data };
   }
 
   private getRnpProductsData(): any {
     return rnpProductsData;
   }
 
-  // ABC Analysis данные
-  private getAbcAnalysisData(): AbcAnalysisDemoData {
-    return {
-      categories: {
-        A: {
-          name: 'Категория A',
-          revenue: 750000,
-          percentage: 60,
-          productCount: 15,
-          color: '#28a745'
-        },
-        B: {
-          name: 'Категория B',
-          revenue: 375000,
-          percentage: 30,
-          productCount: 25,
-          color: '#ffc107'
-        },
-        C: {
-          name: 'Категория C',
-          revenue: 125000,
-          percentage: 10,
-          productCount: 40,
-          color: '#dc3545'
-        }
-      },
-      products: this.generateAbcProducts(),
-      summary: {
-        totalRevenue: 1250000,
-        totalProducts: 80,
-        categoryDistribution: {
-          A: 60,
-          B: 30,
-          C: 10
-        }
-      }
-    };
-  }
-
   // Stock Analysis данные
   private getStockAnalysisData(): StockProductData[] {
-    const products = stockAnalysis as StockProductData[];
-    const filters = store.getState().filters;
+    const products = this.getOriginalJson(stockAnalysis) as StockProductData[];
+    const days = this.getFilterDays();
+    const denominator = 90 / days;
 
-    return this.applyFilters(products, filters);
-  }
+    products.map(item => {
+      item.saleSum = item.saleSum / denominator;
+      item.quantity = item.quantity / denominator;
+      item.lessReturns = item.lessReturns / denominator;
+      item.costGoodsSold = item.costGoodsSold / denominator;
+      item.returnsSum = item.returnsSum / denominator;
+    });
 
-  // Применение фильтров к данным
-  private applyFilters(products: StockProductData[], filters: any): StockProductData[] {
-    let filteredProducts = [...products];
-
-    // Фильтрация по периоду
-    if (filters.selectedRange) {
-      let days = filters.selectedRange.period;
-      if ('from' in filters.selectedRange && 'to' in filters.selectedRange && filters.selectedRange.from && filters.selectedRange.to) {
-        days = Math.round((Number(new Date(filters.selectedRange.to as string)) - Number(new Date(filters.selectedRange.from as string))) / 3600 / 24 / 1000);
-      }
-      filteredProducts = filteredProducts.slice(0, Math.round(days / 2));
-    }
-    
-    // Фильтрация по брендам
-    if (filters.activeBrandName && Array.isArray(filters.activeBrandName) && !filters.activeBrandName.some((item: any) => item.value === 'Все')) {
-      const selectedBrands = filters.activeBrandName.map((item: any) => item.name || item.value);
-      filteredProducts = filteredProducts.filter(product => 
-        selectedBrands.includes(product.brandName)
-      );
-    }
-    
-    // Фильтрация по артикулам (SKU)
-    if (filters.activeArticle && Array.isArray(filters.activeArticle) && !filters.activeArticle.some((item: any) => item.value === 'Все')) {
-      const selectedArticles = filters.activeArticle.map((item: any) => item.value);
-      filteredProducts = filteredProducts.filter(product => 
-        selectedArticles.includes(product.sku)
-      );
-    }
-    
-    // Фильтрация по группам товаров
-    if (filters.activeGroup && Array.isArray(filters.activeGroup) && !filters.activeGroup.some((item: any) => item.value === 'Все')) {
-      const selectedGroups = filters.activeGroup.map((item: any) => item.name || item.value);
-      filteredProducts = filteredProducts.filter(product => 
-        selectedGroups.some(group => product.category.includes(group))
-      );
-    }
-    
-    // Фильтрация по категориям
-    if (filters.activeCategory && Array.isArray(filters.activeCategory) && !filters.activeCategory.some((item: any) => item.value === 'Все')) {
-      const selectedCategories = filters.activeCategory.map((item: any) => item.name || item.value);
-      filteredProducts = filteredProducts.filter(product => 
-        selectedCategories.includes(product.category)
-      );
-    }
-    
-    return filteredProducts;
-  }
-
-  // Reports данные
-  private getReportsData(): ReportsDemoData {
-    return {
-      plReport: this.getPlReportData(),
-      monthlyReport: this.getMonthlyReportData(),
-      goodsReport: this.getGoodsReportData(),
-      penaltiesReport: this.getPenaltiesReportData()
-    };
+    return products;
   }
 
   // P&L Report данные
@@ -673,56 +631,6 @@ export class DemoDataService {
     return Math.round((Math.random() * (max - min) + min) * 100) / 100;
   }
 
-  // Monthly Report данные
-  private getMonthlyReportData() {
-    return {
-      months: this.generateMonthsForPeriod(2025, 1, 2025, 12),
-      summary: {
-        totalRevenue: 15000000,
-        averageGrowth: 8.5,
-        bestMonth: 'Декабрь',
-        worstMonth: 'Январь'
-      }
-    };
-  }
-
-  // Goods Report данные
-  private getGoodsReportData() {
-    return {
-      products: this.generateGoodsProducts(),
-      summary: {
-        totalProducts: 200,
-        totalRevenue: 5000000,
-        averagePrice: 2500
-      }
-    };
-  }
-
-  // Penalties Report данные
-  private getPenaltiesReportData() {
-    return {
-      penalties: this.generatePenalties(),
-      summary: {
-        totalPenalties: 25,
-        totalAmount: 150000,
-        averagePenalty: 6000
-      }
-    };
-  }
-
-  // Orders Map данные
-  private getOrdersMapData(): OrdersMapDemoData {
-    return {
-      regions: this.generateRegions(),
-      summary: {
-        totalOrders: 5000,
-        totalRevenue: 5000000,
-        averageOrderValue: 1000
-      },
-      mapData: this.generateMapPoints()
-    };
-  }
-
   // Supplier Analysis данные
   private getSupplierAnalysisData(): SupplierAnalysisDemoData {
     return {
@@ -735,60 +643,6 @@ export class DemoDataService {
     };
   }
 
-  private generateAbcProducts() {
-    return Array.from({ length: 20 }, (_, i) => ({
-      id: `abc-product-${i + 1}`,
-      name: `Товар ABC ${i + 1}`,
-      sku: `ABC-${i + 1}`,
-      revenue: Math.floor(Math.random() * 100000) + 10000,
-      percentage: Math.floor(Math.random() * 20) + 1,
-      category: ['A', 'B', 'C'][i % 3] as 'A' | 'B' | 'C',
-      growth: Math.floor(Math.random() * 100) - 20,
-      profit: Math.floor(Math.random() * 50000) + 5000
-    }));
-  }
-
-  private generateGoodsProducts() {
-    return Array.from({ length: 20 }, (_, i) => ({
-      id: `goods-product-${i + 1}`,
-      name: `Товар для отчета ${i + 1}`,
-      sku: `GOODS-${i + 1}`,
-      revenue: Math.floor(Math.random() * 100000) + 10000,
-      sales: Math.floor(Math.random() * 1000) + 100,
-      price: Math.floor(Math.random() * 5000) + 500
-    }));
-  }
-
-  private generatePenalties() {
-    return Array.from({ length: 10 }, (_, i) => ({
-      id: `penalty-${i + 1}`,
-      reason: `Причина штрафа ${i + 1}`,
-      amount: Math.floor(Math.random() * 50000) + 1000,
-      date: new Date(Date.now() - i * 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
-      status: ['Активный', 'Оспорен', 'Оплачен'][i % 3]
-    }));
-  }
-
-  private generateRegions() {
-    return [
-      { name: 'Москва', orders: 2000, revenue: 2000000, growth: 15 },
-      { name: 'СПб', orders: 1500, revenue: 1500000, growth: 12 },
-      { name: 'Екатеринбург', orders: 800, revenue: 800000, growth: 8 },
-      { name: 'Новосибирск', orders: 600, revenue: 600000, growth: 10 },
-      { name: 'Казань', orders: 400, revenue: 400000, growth: 5 }
-    ];
-  }
-
-  private generateMapPoints() {
-    return [
-      { lat: 55.7558, lng: 37.6176, orders: 2000, revenue: 2000000, city: 'Москва' },
-      { lat: 59.9311, lng: 30.3609, orders: 1500, revenue: 1500000, city: 'СПб' },
-      { lat: 56.8431, lng: 60.6454, orders: 800, revenue: 800000, city: 'Екатеринбург' },
-      { lat: 55.0084, lng: 82.9357, orders: 600, revenue: 600000, city: 'Новосибирск' },
-      { lat: 55.8304, lng: 49.0661, orders: 400, revenue: 400000, city: 'Казань' }
-    ];
-  }
-
   private generateSuppliers() {
     return Array.from({ length: 15 }, (_, i) => ({
       id: `supplier-${i + 1}`,
@@ -799,20 +653,6 @@ export class DemoDataService {
       products: Math.floor(Math.random() * 50) + 5,
       location: ['Москва', 'СПб', 'Екатеринбург', 'Новосибирск'][i % 4]
     }));
-  }
-
-  // Конфигурация
-  public updateConfig(newConfig: Partial<DemoConfig>): void {
-    this.config = { ...this.config, ...newConfig };
-  }
-
-  public getConfig(): DemoConfig {
-    return this.config;
-  }
-
-  // Очистка данных
-  public clearDemoData(): void {
-    this.demoData = null;
   }
 
   // Генерация опций недель для ReportWeek (аналогично weekOptions в компоненте)
@@ -1125,38 +965,6 @@ export class DemoDataService {
     return weekStart;
   }
 
-  // Генерация динамических week_label для последних 10 недель
-  private generateDynamicWeeklyData(originalData: any[]): any[] {
-    const currentDate = new Date();
-    const dynamicData = [];
-    
-    // Генерируем данные для последних 10 недель
-    for (let i = 0; i < 10; i++) {
-      const weekStartDate = new Date(currentDate);
-      weekStartDate.setDate(currentDate.getDate() - (i * 7) - (currentDate.getDay() === 0 ? 6 : currentDate.getDay() - 1));
-      
-      const weekEndDate = new Date(weekStartDate);
-      weekEndDate.setDate(weekStartDate.getDate() + 6);
-      
-      // Получаем номер недели года
-      const weekNumber = this.getWeekNumber(weekStartDate);
-      const startDateStr = this.formatDate(weekStartDate);
-      const endDateStr = this.formatDate(weekEndDate);
-      const weekLabel = `${weekNumber} неделя (${startDateStr} - ${endDateStr})`;
-      
-      // Берем данные из оригинального массива или генерируем новые
-      const originalWeekData = originalData[i] || originalData[0];
-      
-      dynamicData.push({
-        ...originalWeekData,
-        week: weekNumber,
-        week_label: weekLabel
-      });
-    }
-    
-    return dynamicData;
-  }
-
   // Получение номера недели в году
   private getWeekNumber(date: Date): number {
     const startOfYear = new Date(date.getFullYear(), 0, 1);
@@ -1170,5 +978,9 @@ export class DemoDataService {
     const month = (date.getMonth() + 1).toString().padStart(2, '0');
     const year = date.getFullYear();
     return `${day}.${month}.${year}`;
+  }
+
+  private getOriginalJson(json: any) {
+    return JSON.parse(JSON.stringify(json));
   }
 }

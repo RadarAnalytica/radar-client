@@ -5,30 +5,32 @@ import Map from '../components/Map';
 import OrderMapPieChart from '../containers/orderMap/OrderMapPieChart';
 import OrderMapTable from '../containers/orderMap/OrderMapTable';
 import AuthContext from '../service/AuthContext';
-import { formatPrice } from '../service/utils';
-import { useAppDispatch, useAppSelector } from '../redux/hooks';
-import { fetchShops } from '../redux/shops/shopsActions';
+import { formatPrice } from '@/service/utils';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import { fetchShops } from '@/redux/shops/shopsActions';
 import { useLocation, useNavigate } from "react-router-dom";
 import NoSubscriptionPage from './NoSubscriptionPage';
-import RadioGroup from '../components/RadioGroup';
-import OrderSalesPieCharts from '../components/OrderSalesPieCharts';
-import StockDataRow from '../components/StockDataRow';
-import green from '../assets/greenarrow.png';
-import red from '../assets/redarrow.png';
-import { ServiceFunctions } from '../service/serviceFunctions';
-import { Filters } from '../components/sharedComponents/apiServicePagesFiltersComponent';
-import MobilePlug from '../components/sharedComponents/mobilePlug/mobilePlug';
-import Sidebar from '../components/sharedComponents/sidebar/sidebar';
-import Header from '../components/sharedComponents/header/header';
-import { mockGetGeographyData } from '../service/mockServiceFunctions'
-import DataCollectWarningBlock from '../components/sharedComponents/dataCollectWarningBlock/dataCollectWarningBlock';
-import NoSubscriptionWarningBlock from '../components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock'
+import RadioGroup from '@/components/RadioGroup';
+import OrderSalesPieCharts from '@/components/OrderSalesPieCharts';
+import StockDataRow from '@/components/StockDataRow';
+import green from '@/assets/greenarrow.png';
+import red from '@/assets/redarrow.png';
+import { ServiceFunctions } from '@/service/serviceFunctions';
+import { Filters } from '@/components/sharedComponents/apiServicePagesFiltersComponent';
+import MobilePlug from '@/components/sharedComponents/mobilePlug/mobilePlug';
+import Sidebar from '@/components/sharedComponents/sidebar/sidebar';
+import Header from '@/components/sharedComponents/header/header';
+import { mockGetGeographyData } from '@/service/mockServiceFunctions'
+import DataCollectWarningBlock from '@/components/sharedComponents/dataCollectWarningBlock/dataCollectWarningBlock';
+import NoSubscriptionWarningBlock from '@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock'
+import { useDemoMode } from "@/app/providers";
 
 const OrdersMap = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { user, authToken, logout } = useContext(AuthContext);
+  const { isDemoMode } = useDemoMode();
   const shops = useAppSelector((state) => state.shopsSlice.shops);
   const { activeBrand, selectedRange, isFiltersLoaded, activeBrandName, activeArticle, activeGroup } = useAppSelector(store => store.filters)
   const filters = useAppSelector(store => store.filters)
@@ -45,9 +47,9 @@ const OrdersMap = () => {
   const [data, setData] = useState();
   const [loading, setLoading] = useState(false); // лоадер для загрузки данных
   const [isVisible, setIsVisible] = useState(true);
-  const prevselectedRange = useRef(selectedRange);
-  const prevActiveBrand = useRef(activeBrand);
-  const authTokenRef = useRef(authToken);
+  // const prevselectedRange = useRef(selectedRange);
+  // const prevActiveBrand = useRef(activeBrand);
+  // const authTokenRef = useRef(authToken);
   const [primaryCollect, setPrimaryCollect] = useState(null)
 
   const radioOptions = [
@@ -58,12 +60,7 @@ const OrdersMap = () => {
     setLoading(true)
     try {
       if (activeBrand && selectedRange && authToken) {
-        let data = null;
-        if (user.subscription_status === null) {
-          data = await mockGetGeographyData(selectedRange);
-        } else {
-          data = await ServiceFunctions.getGeographyData(authToken, selectedRange, activeBrand.id, filters);
-        }
+        const data = await ServiceFunctions.getGeographyData(authToken, selectedRange, activeBrand.id, filters);
         setGeoData(data);
       }
       setByRegions(true)
@@ -377,8 +374,10 @@ const OrdersMap = () => {
     }
   }
 
-  let map = document.getElementById('order-map');
-  map ? map.addEventListener('mouseover', findGTagName) : console.log();
+  const map = document.getElementById('order-map');
+  if (map) {
+    map.addEventListener('mouseover', findGTagName);
+  }
 
   const [tooltipData, setTooltipData] = useState();
   useEffect(() => {
@@ -591,10 +590,10 @@ const OrdersMap = () => {
     // },
   ];
 
-  const orderCount = geoData?.geo_data?.map((el) => el.orderCount);
-  const orderAmount = geoData?.geo_data?.map((el) => el.orderAmount);
-  const saleCount = geoData?.geo_data?.map((el) => el.saleCount);
-  const saleAmount = geoData?.geo_data?.map((el) => el.saleAmount);
+  // const orderCount = geoData?.geo_data?.map((el) => el.orderCount);
+  // const orderAmount = geoData?.geo_data?.map((el) => el.orderAmount);
+  // const saleCount = geoData?.geo_data?.map((el) => el.saleCount);
+  // const saleAmount = geoData?.geo_data?.map((el) => el.saleAmount);
 
   const orderCountStock = geoData?.stock_data?.map((el) => el.orderCount);
   const orderAmountStock = geoData?.stock_data?.map((el) => el.orderAmount);
@@ -647,7 +646,7 @@ const OrdersMap = () => {
 
   if (user?.subscription_status === 'expired') {
     return <NoSubscriptionPage title={'География заказов и продаж'} />
-  };
+  }
 
   // if (!shops || shops.length === 0) {
   //   return null; // or a loading indicator
@@ -657,23 +656,19 @@ const OrdersMap = () => {
     isVisible && (
       <main className={styles.page}>
         <MobilePlug />
-        {/* ------ SIDE BAR ------ */}
+
         <section className={styles.page__sideNavWrapper}>
           <Sidebar />
         </section>
-        {/* ------ CONTENT ------ */}
+
         <section className={styles.page__content}>
-          {/* header */}
           <div className={styles.page__headerWrapper}>
             <div style={{ width: '100%' }} className="map-container dash-container container p-3">
               <Header title='География заказов и продаж' />
             </div>
           </div>
-          {/* !header */}
 
-          {/* DEMO BLOCK */}
-          {user.subscription_status === null && <NoSubscriptionWarningBlock />}
-          {/* !DEMO BLOCK */}
+          {isDemoMode && <NoSubscriptionWarningBlock />}
 
           <div style={{ width: '100%' }} className="map-container dash-container container p-3">
             <Filters
@@ -683,17 +678,17 @@ const OrdersMap = () => {
           </div>
 
           {loading &&
-          <div className='map-container dash-container container p-3'
-            style={{
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              height: '100%',
-              width: '100%',
-            }}
-          >
-            <span className='loader'></span>
-          </div>
+            <div className='map-container dash-container container p-3'
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                height: '100%',
+                width: '100%',
+              }}
+            >
+              <span className='loader'></span>
+            </div>
           }
 
           {activeBrand && activeBrand.is_primary_collect && !loading && (

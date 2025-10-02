@@ -22,11 +22,7 @@ import Sidebar from '../components/sharedComponents/sidebar/sidebar';
 import Header from '../components/sharedComponents/header/header';
 import ErrorModal from '../components/sharedComponents/modals/errorModal/errorModal';
 import { Input, Form, Button, ConfigProvider } from 'antd';
-
-
-
-
-
+import { useDemoMode } from "@/app/providers";
 
 function declineGeneration(count) {
   const lastTwo = count % 100;
@@ -64,7 +60,7 @@ const AiDescriptionGeneratorPage = () => {
     setCompetitorsLinks,
     removeAllKeywords,
   } = useContext(ProductContext);
-
+  const { isDemoMode } = useDemoMode();
 
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingNext, setIsLoadingNext] = useState(false);
@@ -80,17 +76,16 @@ const AiDescriptionGeneratorPage = () => {
   const { user, authToken } = useContext(AuthContext);
   const [description, setDescription] = useState();
   const [showModalError, setShowModalError] = useState(false);
-  const [dataUpdated, setDataUpdated] = useState(false);
+  //const [dataUpdated, setDataUpdated] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
   const [isButtonVisible, setIsButtonVisible] = useState(true);
   const [isModalOpenNewGen, setIsModalOpenNewGen] = useState(false);
   const [amountGenerations, setAmountGenerations] = useState('');
-  const [idGenerator, setIdGenerator] = useState(null);
+  //const [idGenerator, setIdGenerator] = useState(null);
   const [modalIsShowKeywordsFile, setModalisShowKeywordsFile] = useState(false);
   const [file, setFile] = useState();
   const [isFileUpload, setIsFileUpload] = useState();
-  const [form] = Form.useForm()
-
+  const [form] = Form.useForm();
 
   const handleNewGenerator = () => {
     setIsModalOpenNewGen(true);
@@ -109,13 +104,13 @@ const AiDescriptionGeneratorPage = () => {
       // setLoading(false);
     }
   };
+
   useEffect(() => {
     getGenerationsAmount(); // Call the function when the component is mounted
   }, [isModalOpenNewGen]);
 
   const handleShowModalError = () => setShowModalError(true);
   const handleCloseModalError = () => setShowModalError(false);
-
 
   // -------------------first step request----------------------------//
   const updateAiDescriptionGeneratorKeyword = async (
@@ -132,18 +127,11 @@ const AiDescriptionGeneratorPage = () => {
         competitorsLinks
       );
 
-      if (!res.ok) {
-        setErrorMessage('Что-то пошло не так! Попробуйте еще раз');
-        handleShowModalError();
-        return
-      }
-
-      res = await res.json()
       // Проверка на отсутствие данных
       if (!res || res.length === 0) {
         setErrorMessage('Не правильная ссылка или артикул.');
         handleShowModalError();
-        return
+        return;
       }
 
       const result = res;
@@ -321,11 +309,14 @@ const AiDescriptionGeneratorPage = () => {
     }
   };
 
-
-
-
   // --------------------- steptwo submit --------------------------//
   const openModal = async () => {
+    if (isDemoMode) {
+      setIsModalOpen(true);
+      setDescription('Платье женское - это идеальный выбор для современных женщин, которые ценят стиль и комфорт. Наше платье женское облегающее в талии подчеркнет вашу фигуру и добавит уверенности в себе. Оно подойдет для различных мероприятий, будь то коктейльная вечеринка или повседневная прогулка. Это платье женское отлично сочетается с легкими летними нарядами, добавляя нотку женственности и элегантности в ваш образ. Если вы ищете платье мини или стильное платье с кокетливыми бретельками, наше платье станет замечательным выбором. Наше платье представлено в разнообразных стилях, включая коктейльные модели и вечерние платья. Благодаря удобному крою и качественным материалам, оно станет любимым элементом вашего гардероба, обеспечивая вам комфорт и стиль в любой ситуации. Платье женское коктейльное – это не только отличное дополнение к вашему образу, но и возможность продемонстрировать вашу индивидуальность и утонченный вкус. Летние женские платья – это обязательный элемент гардероба в теплое время года, и наше платье непременно понравится вам своей легкостью и женственностью. Для тех, кто предпочитает приталенные модели, наше платье женское облегающее станет настоящим открытием. Оно идеально подойдет для создания романтичного образа, подчеркивая вашу фигуру и привлекая внимание. Базовое женское платье может стать основой для множества модных комбинаций, добавляя стиль и шарм вашему наряду. Выбирайте платье, которое соответствует вашему настроению и стилю – от сексуальных решений до более классических вариантов. Платье мини женское вечернее – это прекрасный выбор для создания яркого и запоминающегося образа на любых мероприятиях. Благодаря разнообразию доступных цветов, наша коллекция платьев позволит вам найти идеальное решение для любого случая. Бордовое платье – это синоним элегантности и утонченности, которое подойдет для особенных случаев или повседневной носки. Женское платье на бретельках подчеркнет вашу женственность и легкость образа, добавляя нотку романтики в ваш стиль. Кроме того, обтягивающее платье создаст эффектный силуэт, подчеркивая линию талии и привлекая восхищенные взгляды. Наш ассортимент также включает мини платья, которые идеально дополнят летние образы и сделают вас звездой любой вечеринки. Викторина стиля начинается здесь – выбирайте платье, которое улучшит ваш гардероб и подчеркнет ваш уникальный стиль. Стильное женское платье, созданное для уверенных в себе женщин, станет неотъемлемой частью вашего образа, даря вам комфорт и уверенность в любой ситуации.');
+      return;
+    }
+
     const { productName, productDescription } = form.getFieldsValue()
     if (productDescription.length < 30) {
       setErrorMessage('Краткое описание должно содержать минимум 30 символов.');
@@ -339,12 +330,6 @@ const AiDescriptionGeneratorPage = () => {
       return;
     }
 
-    // await updateAiDescriptionGenerator(
-    //   authToken,
-    //   productName,
-    //   shortDescription,
-    //   keywords
-    // );
     await updateAiDescriptionGenerator(
       authToken,
       productName,

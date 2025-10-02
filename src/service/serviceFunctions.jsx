@@ -320,6 +320,7 @@ export const ServiceFunctions = {
 			},
 			body: JSON.stringify(body)
 		});
+
 		const data = await res.json();
 		return data;
 	},
@@ -383,12 +384,13 @@ export const ServiceFunctions = {
 				sorting: sort,
 			}),
 		});
+
 		const data = await res.json();
 		return data;
 	},
-	postAiDescriptionGeneratorKeywords: async (token, competitorsLinks) => {
 
-		const res = await fetch(`${URL}/api/description-generator/keywords`, {
+	postAiDescriptionGeneratorKeywords: async (token, competitorsLinks) => {
+		const res = await fetchApi('/api/description-generator/keywords', {
 			method: 'POST',
 			headers: {
 				'content-type': 'application/json',
@@ -397,9 +399,12 @@ export const ServiceFunctions = {
 
 			body: JSON.stringify(competitorsLinks),
 		});
-		// const data = await res.json();
-		// return data;
-		return res;
+
+    if (!res.ok) {
+      throw new Error('Что-то пошло не так! Попробуйте еще раз');
+    }
+
+    return await res.json();
 	},
 
 	postAiDescriptionGenerator: async (
@@ -473,7 +478,7 @@ export const ServiceFunctions = {
 	},
 
 	postSeoLinks: async (token, seoLinks) => {
-		const res = await fetch(`${URL}/api/ceo-comparison/raw`, {
+		const res = await fetchApi('/api/ceo-comparison/raw', {
 			method: 'POST',
 			headers: {
 				'content-type': 'application/json',
@@ -481,6 +486,7 @@ export const ServiceFunctions = {
 			},
 			body: JSON.stringify(seoLinks),
 		});
+
 		const data = await res.json();
 		return data;
 	},
@@ -793,26 +799,27 @@ export const ServiceFunctions = {
 			isLoading: false,
 			isError: false,
 			message: ''
-		}
-		setStatus({...initStatus, isLoading: true})
+		};
+		setStatus({...initStatus, isLoading: true});
 		try {
-			let res = await fetch(`https://radarmarket.ru${url}`, {
+			let res = await fetchApi(`https://radarmarket.ru${url}`, {
 				method: 'POST',
 				headers: {
 					'content-type': 'application/json'
 				},
 				body: JSON.stringify(body)
-			})
+			});
+
 			if (!res.ok) {
-				setStatus({...initStatus, isError: true, message: 'Не удалось скачать файл1'})
-				return
-			} else {
-				res = await res.blob()
-				return res
+				setStatus({...initStatus, isError: true, message: 'Не удалось скачать файл1'});
+        return;
 			}
-			
+
+      res = await res.blob();
+      return res;
+
 		} catch {
-			setStatus({...initStatus, isError: true, message: 'Не удалось скачать файл2'})
+			setStatus({...initStatus, isError: true, message: 'Не удалось скачать файл2'});
 		}
 	},
 
@@ -1235,7 +1242,7 @@ export const ServiceFunctions = {
 		const body = getRequestObject(filters, selectedRange, shopId)
 		body.week_starts = [];
 
-		if (!activeWeeks.find((week) => week.value === 'Все')){
+		if (Array.isArray(activeWeeks) && !activeWeeks.find((week) => week.value === 'Все')){
 			body.week_starts = activeWeeks.map((week) => week.value)
 		}
 
@@ -1308,18 +1315,14 @@ export const ServiceFunctions = {
 		}
 	},
 
-	getTrendAnalysisQuery: async (
-		query,
-		timeFrame,
-		selectedRange,
-	) => {
+	getTrendAnalysisQuery: async (query, timeFrame, selectedRange) => {
 		let url = `https://radarmarket.ru/api/analytic/query-dynamics/${timeFrame}?query_string=${encodeURIComponent(query)}`;
-		if (timeFrame == 'day') {
+
+    if (timeFrame === 'day') {
 			url += '&' + rangeApiFormat(selectedRange)
 		}
-		const res = await fetch(
-			url,
-			{
+
+		const res = await fetch(url, {
 				method: 'GET',
 				headers: {
 					'content-type': 'application/json',
@@ -1327,8 +1330,11 @@ export const ServiceFunctions = {
 			}
 		);
 
-		const data = await res.json();
+    if (!res.ok) {
+      throw new Error(`Ошибка запроса: ${res.status}`);
+    }
 
+		const data = await res.json();
 		return data;
 	},
 

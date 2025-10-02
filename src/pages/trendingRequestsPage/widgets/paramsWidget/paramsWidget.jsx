@@ -4,52 +4,33 @@ import { DatePicker } from '../../features'
 import styles from './paramsWidget.module.css'
 import moment from 'moment'
 import { ApiService } from '../../shared'
-import { useAppSelector } from '../../../../redux/hooks'
-import HowToLink from '../../../../components/sharedComponents/howToLink/howToLink'
+import { useAppSelector } from '@/redux/hooks'
+import HowToLink from '@/components/sharedComponents/howToLink/howToLink'
 import { HowtoWidget } from '../howtoWidget/howtoWidget'
-
+import { useDemoMode } from "@/app/providers";
 
 const dynamicOptions = [
     { value: 'Рост' },
     { value: 'Падение' },
-]
+];
 
-const validateDynamicValues = (type, from, to) => {
-    const parsedFrom = parseInt(from)
-    const parsedTo = parseInt(to)
-    if ((from && !to) || (!to && from)) {
-        return true
-    }
-    if (from && to) {
-        switch (type) {
-            case 'Рост': return parsedTo > parsedFrom
-            case 'Падение': return parsedFrom > parsedTo
-        }
-    }
-
-    return false
-}
-
-const getDynamicNormilizedValue = (type, value, periodType) => {
-    let normilizedValue = 0;
-    if (!value) {
-        switch (type) {
-            case 'Рост':
-                return periodType === 'start' ? 0 : 10000000
-            case 'Падение':
-                return periodType === 'end' ? 0 : - 10000000
-            default:
-                return normilizedValue
-        }
-    };
-    if (type === 'Рост') {
-        normilizedValue = parseInt(value)
-    }
-    if (type === 'Падение') {
-        normilizedValue = parseInt(value) * -1
-    }
-    return normilizedValue;
-}
+// const getDynamicNormilizedValue = (type, value, periodType) => {
+//     let normilizedValue = 0;
+//     if (!value) {
+//         switch (type) {
+//             case 'Рост':    return periodType === 'start' ? 0 : 10000000;
+//             case 'Падение': return periodType === 'end' ? 0 : - 10000000;
+//             default:        return normilizedValue;
+//         }
+//     }
+//     if (type === 'Рост') {
+//         normilizedValue = parseInt(value);
+//     }
+//     if (type === 'Падение') {
+//         normilizedValue = parseInt(value) * -1;
+//     }
+//     return normilizedValue;
+// }
 
 const dynamicNormalizer = (dynamic, from, to) => {
     let result = {
@@ -72,12 +53,12 @@ const dynamicNormalizer = (dynamic, from, to) => {
         }
         return result;
     }
-    return result
+    return result;
 }
 
-
 export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, setRequestStatus, requestStatus, isParamsVisible, setIsParamsVisible, setSortState, initSortState }) => {
-    const [selectedDate, setSelectedDate] = useState(moment().subtract(30, 'days').format('DD.MM.YYYY'))
+  const { isDemoMode } = useDemoMode();
+  const [selectedDate, setSelectedDate] = useState(moment().subtract(30, 'days').format('DD.MM.YYYY'))
     const [searchState, setSearchState] = useState('')
     const [ isExampleDataSet, setIsExampleDataSet ] = useState(false)
     const [preferedItemsData, setPreferedItemsData] = useState([])
@@ -106,10 +87,7 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
         } catch (error) {
             console.error('Error fetching preferred items:', error);
         }
-    }, [])
-
-
-
+    }, []);
 
     const dynamic_30_days = Form.useWatch('dynamic_30_days', form)
     const dynamic_60_days = Form.useWatch('dynamic_60_days', form)
@@ -165,7 +143,7 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
             limit: 25
         })
         setSortState(initSortState)
-    }, [selectedDate, setRequestState])
+    }, [selectedDate, setRequestState]);
 
     const setExampleData = () => {
         setSelectedDate(moment().subtract(3, 'days').format('DD.MM.YYYY'))
@@ -175,8 +153,7 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
         form.setFieldValue('frequency_30_days_from', 6000)
         setIsExampleDataSet(true)
         setIsParamsVisible(true)
-    }
-
+    };
 
     // Прямой запрос, не удалять. Старина М, 06.06.25
     // const getPreferedItems = async () => {
@@ -198,6 +175,12 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
     //         setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось получить список предметов. Попробуйте перезагрузить страницу.' })
     //     }
     // }
+
+    useEffect(() => {
+      if (isDemoMode) {
+        setExampleData();
+      }
+    }, [isDemoMode]);
 
     useEffect(() => {
         if (preferedItemsData.length === 0 && !requestStatus.isLoading) {
@@ -342,7 +325,7 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                 selectorBg: 'transparent'
             }
         }
-    }), [])
+    }), []);
 
     return (
         <>

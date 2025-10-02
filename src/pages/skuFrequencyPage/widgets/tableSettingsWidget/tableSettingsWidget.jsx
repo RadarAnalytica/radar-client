@@ -61,9 +61,7 @@ const TableSettingsWidget = ({ tableConfig, setTableConfig }) => {
     const getNormalizedArray = useCallback((array, searchState) => {
         let normalizedArray = array.map(_ => _.children).flat().filter(_ => _.title?.toLowerCase().includes(searchState.toLowerCase()))
         return normalizedArray
-    }, [tableConfig, searchState])
-
-
+    }, [tableConfig, searchState]);
     const сheckAllHandler = () => {
         const values = form.getFieldsValue()
         const keysArr = Object.keys(values)
@@ -81,11 +79,11 @@ const TableSettingsWidget = ({ tableConfig, setTableConfig }) => {
             })
             setCheckAllButtonState('Выбрать все')
         }
-    }
+    };
 
     const searchHandler = (fields) => {
         setSearchState(fields.filter.trim())
-    }
+    };
 
     const updateOptionsConfig = (fields) => {
         const updatedConfig = getReplicatedArray(tableConfig, fields)
@@ -94,13 +92,13 @@ const TableSettingsWidget = ({ tableConfig, setTableConfig }) => {
         setSearchState('')
         localStorage.setItem('MonitoringTableConfig', JSON.stringify(updatedConfig))
         setTableConfig((prev) => updatedConfig)
-    }
+    };
+
     useEffect(() => {
         if (!filter) {
             searchForm.submit()
         }
-    }, [filter])
-
+    }, [filter]);
 
     useEffect(() => {
         if (isModalOpen) {
@@ -113,13 +111,11 @@ const TableSettingsWidget = ({ tableConfig, setTableConfig }) => {
                 setCheckAllButtonState('Снять все')
             }
         }
-    }, [form, isModalOpen])
+    }, [form, isModalOpen]);
 
     useEffect(() => {
         setRenderList(getNormalizedArray(tableConfig, searchState))
-    }, [tableConfig, searchState])
-
-
+    }, [tableConfig, searchState]);
 
     return (
         <>
@@ -372,7 +368,7 @@ const TableSettingsWidget = ({ tableConfig, setTableConfig }) => {
                 </Modal>
             </ConfigProvider>
         </>
-    )
+    );
 }
 
 export default TableSettingsWidget
