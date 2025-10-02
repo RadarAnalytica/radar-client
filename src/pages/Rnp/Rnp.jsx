@@ -352,11 +352,11 @@ export default function Rnp() {
 						},
 						components: {
 							Button: {
-								paddingInlineLG: 20,
-								controlHeightLG: 45,
+								paddingInlineLG: 12,
+								controlHeightLG: 38,
 								defaultShadow: false,
 								contentFontSize: 16,
-								fontWeight: 600,
+								fontWeight: 500,
 								defaultBorderColor: 'transparent',
 								defaultColor: 'rgba(26, 26, 26, 0.5)',
 								defaultBg: 'transparent',
@@ -371,25 +371,25 @@ export default function Rnp() {
 					}}
 				>
 					<Flex justify="space-between">
-						<Flex>
-							<Button
-								type={view === 'articles' ? 'primary' : 'default'}
-								size="large"
+						<Flex gap={4} align="center">
+							<button
+								className={view === 'articles' ? `${styles.segmented__button} ${styles.segmented__button_active}` : styles.segmented__button}
 								onClick={() => {
 									viewHandler('articles');
 								}}
+								style={{ fontWeight: 500, fontSize: 14 }}
 							>
 								По артикулам
-							</Button>
-							<Button
-								type={view === 'total' ? 'primary' : 'default'}
-								size="large"
+							</button>
+							<button
+								className={view === 'total' ? `${styles.segmented__button} ${styles.segmented__button_active}` : styles.segmented__button}
 								onClick={() => {
 									viewHandler('total');
 								}}
+								style={{ fontWeight: 500, fontSize: 14 }}
 							>
 								Сводный
-							</Button>
+							</button>
 						</Flex>
 						<ConfigProvider
 							theme={{
@@ -410,7 +410,12 @@ export default function Rnp() {
 								type="primary"
 								size="large"
 								onClick={setAddRnpModalShow}
+								style={{ fontWeight: 600, fontSize: 14 }}
 							>
+								<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+									<path d="M9 1V9M9 17V9M9 9H1H17" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+								</svg>
+
 								Добавить артикул
 							</Button>
 						</ConfigProvider>

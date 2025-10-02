@@ -44,7 +44,7 @@ function EdgeDropZone({ position, isActive, isDragging, onDrop }) {
 	}, [position, onDrop]);
 
 	return (
-		<div 
+		<div
 			ref={ref}
 			className={`${styles.edge_drop_zone} ${styles[`edge_drop_zone_${position}`]} ${isDragging ? styles.edge_drop_zone_visible : ''} ${isActive ? styles.edge_drop_zone_active : ''}`}
 		>
@@ -66,7 +66,7 @@ function DropZone({ index, isActive, isDragging, draggedIndex, onDrop }) {
 	// 1. Нет активного drag
 	// 2. Это зона над перетаскиваемой карточкой (index === draggedIndex)
 	// 3. Это зона под перетаскиваемой карточкой (index === draggedIndex + 1)
-	const shouldBeVisible = isDragging && draggedIndex !== null && 
+	const shouldBeVisible = isDragging && draggedIndex !== null &&
 		index !== draggedIndex && index !== draggedIndex + 1;
 
 	useEffect(() => {
@@ -96,7 +96,7 @@ function DropZone({ index, isActive, isDragging, draggedIndex, onDrop }) {
 	}, [index, onDrop]);
 
 	return (
-		<div 
+		<div
 			ref={ref}
 			className={`${styles.drop_zone} ${shouldBeVisible ? styles.drop_zone_visible : ''} ${isActive ? styles.drop_zone_active : ''}`}
 		>
@@ -109,16 +109,16 @@ function DropZone({ index, isActive, isDragging, draggedIndex, onDrop }) {
 	);
 }
 
-function RnpListItem({el, index, expanded, setExpanded, setDeleteRnpId, onReorder, isDragging}) {
+function RnpListItem({ el, index, expanded, setExpanded, setDeleteRnpId, onReorder, isDragging }) {
 	const ref = useRef(null);
 	const gripRef = useRef(null);
-	const [ closestEdge, setClosestEdge ] = useState(null);
+	const [closestEdge, setClosestEdge] = useState(null);
 
 	const expandHandler = (value) => {
 		setTimeout(() => {
-			ref.current.scrollIntoView({ behavior: "smooth"});
+			ref.current.scrollIntoView({ behavior: "smooth" });
 		}, 150)
-		if (expanded.includes(value)){
+		if (expanded.includes(value)) {
 			setExpanded([]);
 		} else {
 			setExpanded([value]);
@@ -128,7 +128,7 @@ function RnpListItem({el, index, expanded, setExpanded, setDeleteRnpId, onReorde
 	useEffect(() => {
 		if (!ref.current) return;
 
-    const element = ref.current;
+		const element = ref.current;
 
 		const id = el.article_data.wb_id;
 		const data = {
@@ -165,9 +165,9 @@ function RnpListItem({el, index, expanded, setExpanded, setDeleteRnpId, onReorde
 
 		return combine(
 			draggable({
-      	element: element,
+				element: element,
 				dragHandle: gripRef.current,
-      	getInitialData: () => data,
+				getInitialData: () => data,
 			}),
 			dropTargetForElements({
 				element,
@@ -192,19 +192,19 @@ function RnpListItem({el, index, expanded, setExpanded, setDeleteRnpId, onReorde
 				},
 				// onGenerateDragPreview: ({ nativeSetDragImage }) => {
 				// setCustomNativeDragPreview({
-        //   nativeSetDragImage,
-        //   render({ container }) {
+				//   nativeSetDragImage,
+				//   render({ container }) {
 				// 		const preview = document.createElement('div');
 				// 		preview.className = styles.preview;
 				// 		preview.innerHTML = `<b>data.article_data.title}</b> {data.article_data.wb_id}`;
 				// 		container.append(preview)
 				// 		console.log(container);
-        //   },
-        // });
+				//   },
+				// });
 				// },
 			})
 		)
-  }, [el, onReorder]);
+	}, [el, onReorder]);
 
 	return (
 		<div className={`${styles.item} ${isDragging ? styles.dragging : ''}`} ref={ref}>
@@ -235,11 +235,10 @@ function RnpListItem({el, index, expanded, setExpanded, setDeleteRnpId, onReorde
 							title="Удалить артикул"
 						/>
 						<Button
-							className={`${styles.item__button} ${
-								expanded.includes(el.article_data.wb_id) &&
+							className={`${styles.item__button} ${expanded.includes(el.article_data.wb_id) &&
 								styles.item__button_expand
-							}`}
-							onClick={() => expandHandler(el.article_data.wb_id) }
+								}`}
+							onClick={() => expandHandler(el.article_data.wb_id)}
 							icon={expand}
 						></Button>
 					</Flex>
@@ -253,7 +252,7 @@ function RnpListItem({el, index, expanded, setExpanded, setDeleteRnpId, onReorde
 							columns2={el.table.columns_new}
 						/>
 					</div>
-					)}
+				)}
 				{closestEdge === 'bottom' && (
 					<div className={styles.edge_bottom}></div>
 				)}
@@ -266,23 +265,23 @@ export default function RnpList({ view, expanded, setExpanded, setAddRnpModalSho
 	const { activeBrand } = useAppSelector(
 		(state) => state.filtersRnp
 	);
-	const items = useMemo( () => rnpDataByArticle || [], [rnpDataByArticle]);
+	const items = useMemo(() => rnpDataByArticle || [], [rnpDataByArticle]);
 
 	const initOrder = useCallback(() => {
 		// сохранение порядка для id магазина
-		let savedOrder = localStorage.getItem( 'rnpOrder' );
+		let savedOrder = localStorage.getItem('rnpOrder');
 		if (savedOrder) {
 			try {
 				savedOrder = JSON.parse(savedOrder);
 			} catch {
 				savedOrder = {}
 			}
-			if (Array.isArray(savedOrder)){
+			if (Array.isArray(savedOrder)) {
 				savedOrder = {};
 			}
-			if (activeBrand.id in savedOrder){
+			if (activeBrand.id in savedOrder) {
 				const listOrder = savedOrder[activeBrand.id]
-				const newItems = 
+				const newItems =
 					items
 						.filter((rnp) => !listOrder.includes(rnp.article_data.wb_id))
 						.map((rnp) => rnp.article_data.wb_id);
@@ -304,32 +303,32 @@ export default function RnpList({ view, expanded, setExpanded, setAddRnpModalSho
 	// const [expanded, setExpanded] = useState([]);
 
 	const handleReorder = (draggedId, targetId) => {
-    const draggedIndex = order.findIndex(i => i === draggedId);
-    const targetIndex = order.findIndex(i => i === targetId);
-    
-    if (draggedIndex !== -1 && targetIndex !== -1 && draggedIndex !== targetIndex) {
-      const newOrder = [...order];
-      const [removed] = newOrder.splice(draggedIndex, 1);
-      newOrder.splice(targetIndex, 0, removed);
-      setOrder(newOrder);
-    }
-  };
+		const draggedIndex = order.findIndex(i => i === draggedId);
+		const targetIndex = order.findIndex(i => i === targetId);
+
+		if (draggedIndex !== -1 && targetIndex !== -1 && draggedIndex !== targetIndex) {
+			const newOrder = [...order];
+			const [removed] = newOrder.splice(draggedIndex, 1);
+			newOrder.splice(targetIndex, 0, removed);
+			setOrder(newOrder);
+		}
+	};
 
 	// Обработчик для drop-зон
 	const handleDropZoneDrop = (draggedId, dropZoneIndex) => {
 		const draggedIndex = order.findIndex(i => i === draggedId);
-		
+
 		if (draggedIndex !== -1) {
 			const newOrder = [...order];
 			const [removed] = newOrder.splice(draggedIndex, 1);
-			
+
 			// Если перетаскиваем в зону после перетаскиваемой карточки, 
 			// нужно учесть что мы уже удалили один элемент
 			let targetIndex = dropZoneIndex;
 			if (dropZoneIndex > draggedIndex) {
 				targetIndex = dropZoneIndex - 1;
 			}
-			
+
 			newOrder.splice(targetIndex, 0, removed);
 			setOrder(newOrder);
 		}
@@ -338,108 +337,108 @@ export default function RnpList({ view, expanded, setExpanded, setAddRnpModalSho
 	// Обработчик для edge drop-зон (верх/низ)
 	const handleEdgeDropZoneDrop = (draggedId, position) => {
 		const draggedIndex = order.findIndex(i => i === draggedId);
-		
+
 		if (draggedIndex !== -1) {
 			const newOrder = [...order];
 			const [removed] = newOrder.splice(draggedIndex, 1);
-			
+
 			// Размещаем в начало или конец списка
 			if (position === 'top') {
 				newOrder.unshift(removed); // В начало
 			} else {
 				newOrder.push(removed); // В конец
 			}
-			
+
 			setOrder(newOrder);
 		}
 	};
 
 	useEffect(() => {
-		if (!ref.current){
+		if (!ref.current) {
 			return
 		}
 		const element = ref.current;
-			return monitorForElements({
-				element,
-				onDragStart({ source }) {
-					setExpanded([]);
-					// Определяем индекс перетаскиваемой карточки
-					const draggedId = source.data.id;
-					const draggedIndex = order.findIndex(i => i === draggedId);
-					setDraggedIndex(draggedIndex);
-					// Показываем drop-зоны при начале drag
-					setIsDragging(true);
-					setActiveDropZone(null);
-					setActiveEdgeDropZone(null);
-				},
-				onDrag({ location }) {
-					// Подсвечиваем активную drop-зону при наведении
-					const dropTargets = location.current.dropTargets;
-					if (dropTargets.length > 0) {
-						const dropZone = dropTargets.find(target => target.data.dropZoneIndex !== undefined);
-						const edgeDropZone = dropTargets.find(target => target.data.edgeDropZone !== undefined);
-						
-						if (dropZone) {
-							setActiveDropZone(dropZone.data.dropZoneIndex);
-							setActiveEdgeDropZone(null);
-						} else if (edgeDropZone) {
-							setActiveEdgeDropZone(edgeDropZone.data.edgeDropZone);
-							setActiveDropZone(null);
-						} else {
-							setActiveDropZone(null);
-							setActiveEdgeDropZone(null);
-						}
+		return monitorForElements({
+			element,
+			onDragStart({ source }) {
+				setExpanded([]);
+				// Определяем индекс перетаскиваемой карточки
+				const draggedId = source.data.id;
+				const draggedIndex = order.findIndex(i => i === draggedId);
+				setDraggedIndex(draggedIndex);
+				// Показываем drop-зоны при начале drag
+				setIsDragging(true);
+				setActiveDropZone(null);
+				setActiveEdgeDropZone(null);
+			},
+			onDrag({ location }) {
+				// Подсвечиваем активную drop-зону при наведении
+				const dropTargets = location.current.dropTargets;
+				if (dropTargets.length > 0) {
+					const dropZone = dropTargets.find(target => target.data.dropZoneIndex !== undefined);
+					const edgeDropZone = dropTargets.find(target => target.data.edgeDropZone !== undefined);
+
+					if (dropZone) {
+						setActiveDropZone(dropZone.data.dropZoneIndex);
+						setActiveEdgeDropZone(null);
+					} else if (edgeDropZone) {
+						setActiveEdgeDropZone(edgeDropZone.data.edgeDropZone);
+						setActiveDropZone(null);
 					} else {
 						setActiveDropZone(null);
 						setActiveEdgeDropZone(null);
 					}
-				},
-				onDrop({ location, source }) {
-					// Скрываем drop-зоны после drop
-					setIsDragging(false);
+				} else {
 					setActiveDropZone(null);
 					setActiveEdgeDropZone(null);
-					setDraggedIndex(null);
+				}
+			},
+			onDrop({ location, source }) {
+				// Скрываем drop-зоны после drop
+				setIsDragging(false);
+				setActiveDropZone(null);
+				setActiveEdgeDropZone(null);
+				setDraggedIndex(null);
 
-					const target = location.current.dropTargets[0];
-					if (!target) {
-						return;
-					}
+				const target = location.current.dropTargets[0];
+				if (!target) {
+					return;
+				}
 
-					const draggedId = source.data.id;
-					
-					// Проверяем тип drop-зоны
-					if (target.data.dropZoneIndex !== undefined) {
-						handleDropZoneDrop(draggedId, target.data.dropZoneIndex);
-					} else if (target.data.edgeDropZone !== undefined) {
-						handleEdgeDropZoneDrop(draggedId, target.data.edgeDropZone);
-					} else {
-						const targetId = target.data.id;
-						if (draggedId && targetId && draggedId !== targetId) {
-							handleReorder(draggedId, targetId);
-						}
+				const draggedId = source.data.id;
+
+				// Проверяем тип drop-зоны
+				if (target.data.dropZoneIndex !== undefined) {
+					handleDropZoneDrop(draggedId, target.data.dropZoneIndex);
+				} else if (target.data.edgeDropZone !== undefined) {
+					handleEdgeDropZoneDrop(draggedId, target.data.edgeDropZone);
+				} else {
+					const targetId = target.data.id;
+					if (draggedId && targetId && draggedId !== targetId) {
+						handleReorder(draggedId, targetId);
 					}
-				},
-				onDragEnd() {
-					// Скрываем drop-зоны при завершении drag
-					setIsDragging(false);
-					setActiveDropZone(null);
-					setActiveEdgeDropZone(null);
-					setDraggedIndex(null);
-				},
-			});
+				}
+			},
+			onDragEnd() {
+				// Скрываем drop-зоны при завершении drag
+				setIsDragging(false);
+				setActiveDropZone(null);
+				setActiveEdgeDropZone(null);
+				setDraggedIndex(null);
+			},
+		});
 	}, [items, order, handleReorder]);
 
 
 	useEffect(() => {
 		let savedOrder = localStorage.getItem('rnpOrder');
-		if (savedOrder){
-			try {	
+		if (savedOrder) {
+			try {
 				savedOrder = JSON.parse(savedOrder);
 			} catch {
 				savedOrder = {};
 			}
-			if (Array.isArray(savedOrder)){
+			if (Array.isArray(savedOrder)) {
 				savedOrder = {};
 			}
 			savedOrder[activeBrand.id] = order;
@@ -447,7 +446,7 @@ export default function RnpList({ view, expanded, setExpanded, setAddRnpModalSho
 			savedOrder = {};
 			savedOrder[activeBrand.id] = order;
 		}
-		localStorage.setItem( 'rnpOrder', JSON.stringify(savedOrder) );
+		localStorage.setItem('rnpOrder', JSON.stringify(savedOrder));
 	}, [order])
 
 	return (
@@ -484,42 +483,42 @@ export default function RnpList({ view, expanded, setExpanded, setAddRnpModalSho
 				{view === 'articles' && (
 					<div ref={ref} className={styles.list_container}>
 						{/* Edge drop-зоны в верху и внизу */}
-						<EdgeDropZone 
+						<EdgeDropZone
 							position="top"
 							isActive={activeEdgeDropZone === 'top'}
 							isDragging={isDragging}
 							onDrop={handleEdgeDropZoneDrop}
 						/>
 						{items?.length > 0 && order.map((orderI, i) => {
-								const el = items.find((rnp) => rnp.article_data.wb_id === orderI)
-								if (el) {
-									return (
-										<React.Fragment key={i}>
-											{/* Drop-зона перед каждой карточкой */}
-											<DropZone 
-												index={i}
-												isActive={activeDropZone === i}
-												isDragging={isDragging}
-												draggedIndex={draggedIndex}
-												onDrop={handleDropZoneDrop}
-											/>
-											<RnpListItem
-												index={i}
-												el={el}
-												expanded={expanded}
-												setExpanded={setExpanded}
-												setDeleteRnpId={setDeleteRnpId}
-												onReorder={handleReorder}
-												isDragging={isDragging}
-											/>
-										</React.Fragment>
-									)
-								}
-							})
+							const el = items.find((rnp) => rnp.article_data.wb_id === orderI)
+							if (el) {
+								return (
+									<React.Fragment key={i}>
+										{/* Drop-зона перед каждой карточкой */}
+										<DropZone
+											index={i}
+											isActive={activeDropZone === i}
+											isDragging={isDragging}
+											draggedIndex={draggedIndex}
+											onDrop={handleDropZoneDrop}
+										/>
+										<RnpListItem
+											index={i}
+											el={el}
+											expanded={expanded}
+											setExpanded={setExpanded}
+											setDeleteRnpId={setDeleteRnpId}
+											onReorder={handleReorder}
+											isDragging={isDragging}
+										/>
+									</React.Fragment>
+								)
+							}
+						})
 						}
 						{/* Drop-зона после последней карточки */}
 						{items?.length > 0 && (
-							<DropZone 
+							<DropZone
 								index={order.length}
 								isActive={activeDropZone === order.length}
 								isDragging={isDragging}
@@ -528,7 +527,7 @@ export default function RnpList({ view, expanded, setExpanded, setAddRnpModalSho
 							/>
 						)}
 						{/* Edge drop-зона внизу */}
-						<EdgeDropZone 
+						<EdgeDropZone
 							position="bottom"
 							isActive={activeEdgeDropZone === 'bottom'}
 							isDragging={isDragging}
@@ -552,7 +551,7 @@ export default function RnpList({ view, expanded, setExpanded, setAddRnpModalSho
 						</div>}
 					</>
 				)}
-				{((view === 'articles' && items?.length == 0) || (view === 'total' && !rnpDataTotal)) && 
+				{((view === 'articles' && items?.length == 0) || (view === 'total' && !rnpDataTotal)) &&
 					<NoDataWidget
 						mainTitle='Здесь пока нет ни одного артикула'
 						mainText='Добавьте артикулы для отчета «Рука на пульсе»'

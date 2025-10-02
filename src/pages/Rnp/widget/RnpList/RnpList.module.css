@@ -159,7 +159,6 @@
 /* Контейнер списка для edge drop-зон */
 .list_container {
   position: relative;
-  min-height: 100vh;
 }
 
 /* Edge drop-зоны (верх и низ viewport) */

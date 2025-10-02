@@ -95,3 +95,32 @@
 .item__button_expand :global(.ant-btn-icon){
   transform: rotate(180deg);
 }
+
+
+.segmented__button {
+  border: none;
+  border-radius: 8px;
+  height: 38px;
+  padding: 0 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #1A1A1A80;
+  background-color: transparent;
+  transition: all 0.3s ease;
+}
+
+.segmented__button:hover {
+  background-color: #5329FF1A;
+  color: #1A1A1A;
+  opacity: .35;
+}
+
+.segmented__button_active {
+  background-color: #5329FF1A;
+  color: #1A1A1A;
+}
+
+.segmented__button_active:hover {
+  opacity: 1 !important;
+}
