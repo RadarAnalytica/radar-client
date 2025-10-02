@@ -50,6 +50,13 @@ const FiltersProvider = ({ children }: { children: React.ReactNode }) => {
         }
     }, []);
 
+    // Отслеживаем изменения authToken
+    useEffect(() => {
+        if (authToken && (!shops || shops.length === 0)) {
+            getFiltersData();
+        }
+    }, [authToken]);
+
     //Данные магазина [A-Za-z0-9]+ успешно собраны\. Результаты доступны на страницах сервиса
     useEffect(() => {
         // Если это первая пачка сообщений, то данные актуальны и мы просто записываем сообщения для последующего сравнения

@@ -57,7 +57,7 @@ export const AuthProvider = ({ children }) => {
     }
 
     try {
-      const response = await fetch(URL + '/api/user/signin', {
+      const response = await fetch(`${URL}/api/user/login`, {
         method: 'POST',
         headers: {
           'content-type': 'application/json',
