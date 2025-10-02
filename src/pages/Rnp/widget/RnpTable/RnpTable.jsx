@@ -1,125 +1,91 @@
+import React, { useRef, useState, useEffect } from 'react';
 import { ConfigProvider, Table, Button } from 'antd';
+import { Table as RadarTable } from 'radar-ui';
+import { formatPrice } from '../../../../service/utils';
 import styles from './RnpTable.module.css';
 
-export default function RnpTable({ loading, columns, data }) {
+const customCellRender = (value, record, index, dataIndex) => {
+
+	if (dataIndex === 'summary') {
+		return <div className={styles.customCellBold}>{formatPrice(value, '')}</div>
+	}
+	if (dataIndex === 'period' && record.isParent) {
+		return <div className={styles.customCellBold}>{value}</div>
+	}
+	if (dataIndex === 'period' && !record.isParent) {
+		return <div className={styles.customCell} data-rnp-is-last-child={record.isLastChild ? 'lastChild' : ''}>{value}</div>
+	}
+	return (
+		<div className={styles.customCell}>{value}</div>
+	);
+}
+
+export default function RnpTable({ loading, columns, data, columns2, data2 }) {
+	// table config
+	const [tableConfig, setTableConfig] = useState()
+	// ref of scroll container
+	const containerRef = useRef(null);
+
+	// resize handler for radar table
+	const onResize = (columnKey, newWidth) => {
+		const newConfig = tableConfig.map((col, index) => {
+			if (col.key === columnKey) {
+				if (index === tableConfig.length - 1) {
+					containerRef.current?.scrollTo({
+						left: containerRef.current?.scrollWidth - containerRef.current?.clientWidth,
+						behavior: 'smooth'
+					});
+				}
+				return { ...col, width: newWidth, minWidth: newWidth };
+			}
+			return col;
+		});
+		setTableConfig(newConfig);
+	}
+
+	// update table config when columns2 changes
+	useEffect(() => {
+		setTableConfig(columns2)
+	}, [columns2])
 
 	return (
 		<div className={styles.container} >
 			<div className={styles.tableContainer}>
 				{loading && <div className={styles.loading}>
-						<span className='loader'></span>
+					<span className='loader'></span>
 				</div>}
-				{!loading && 
-				<ConfigProvider
-					renderEmpty={ () => (<div>Нет данных</div>)} 
-					theme={{
-						components: {
-							Table: {
-								headerColor: '#8c8c8c',
-								headerBg: '#f7f6fe',
-								headerBorderRadius: 20,
-								selectionColumnWidth: 32,
-								cellFontSize: 16,
-								borderColor: '#e8e8e8',
-								cellPaddingInline: 16,
-								cellPaddingBlock: 17,
-								bodySortBg: '#f7f6fe',
-								headerSortActiveBg: '#e7e1fe',
-								headerSortHoverBg: '#e7e1fe',
-								rowSelectedBg: '#f7f6fe',
-								rowSelectedHoverBg: '#e7e1fe',
-								colorText: '#1A1A1A',
-								lineHeight: 1.2,
-								fontWeightStrong: 500
-							},
-							Checkbox: {
-								colorBorder: '#ccc',
-								colorPrimary: '#5329ff',
-								colorPrimaryBorder: '#5329ff',
-								colorPrimaryHover: '#5329ff',
-							},
-						},
-					}}
-				>
-					<Table
-						columns={columns}
-						dataSource={data}
-						pagination={false}
-						sticky={true}
-						rowClassName={(record) => {
-							return record.key === 'summary' ? styles.summaryRow : '';
-						}}
-						expandable={{
-							defaultExpandAllRows: true,
-							expandIcon: ExpandIcon,
-							rowExpandable: (row) => row.children,
-							expandedRowClassName: styles.expandRow,
-							expandRowByClick: true
-						}}
-						scroll={ { x: 'max-content' }}
-					></Table>
-				</ConfigProvider>
-				}
 			</div>
+			{!loading && tableConfig &&
+				<div className={styles.tableContainer} ref={containerRef}>
+					<RadarTable
+						dataSource={data2}
+						config={tableConfig}
+
+						treeMode
+						indentSize={45}
+						defaultExpandedRowKeys={[JSON.stringify(data2[0])]}
+
+						resizeable
+						onResize={onResize}
+
+						pagination={false}
+						paginationContainerStyle={{ display: 'none' }}
+						
+						stickyHeader={true}
+						scrollContainerRef={containerRef}
+
+						preset="radar-table-default"
+						bodyRowClassName={styles.bodyRowSpecial}
+						bodyCellWrapperStyle={{ borderBottom: 'none' }}
+						headerCellWrapperClassName={styles.headerCellWrapperCustomClassName}
+
+						customCellRender={{
+							idx: ['summary', 'period'],
+							renderer: customCellRender,
+						}}
+					/>
+				</div>
+			}
 		</div>
 	);
 }
-
-function ExpandIcon({ expanded, onExpand, record }) {
-	const canExpand = !!record?.children && record?.children?.length > 0;
-	// const canExpand = false;
-	return canExpand && 
-		<ConfigProvider
-			theme={{
-				token: {
-					Button: {
-						paddingBlockLg: 5,
-						paddingInlineLG: 5,
-						textHoverBg: 'transparent',
-						defaultColor: '#8C8C8C',
-						colorBgTextActive: 'transprent',
-						controlHeight: 25,
-						contentLineHeight: 0,
-						onlyIconSize: 25
-					}
-				}
-			}}
-		>
-			<Button
-				className={styles.expandBtn}
-				type="text"
-				icon={<svg className={`${styles.expandIcon} ${expanded ? styles.expandIconExpanded : ''}`} viewBox="0 0 14 9" fill="none" xmlns="http://www.w3.org/2000/svg">
-					<path d="M1 1L7 7L13 1" stroke='currentColor' strokeWidth="2" strokeLinecap="round"/>
-				</svg>}
-			/>
-		</ConfigProvider>
-};
-
-function SortIcon({ sortOrder }) {
-	return (
-		<svg
-			width="24"
-			height="16"
-			viewBox="0 0 24 16"
-			fill="none"
-			xmlns="http://www.w3.org/2000/svg"
-			// style={{ marginLeft: 10, marginRight: 10 }}
-			className={styles.sortIcons}
-		>
-			<path
-				fillRule="evenodd"
-				clipRule="evenodd"
-				d="M4.99264 0.46967C5.28553 0.176777 5.76041 0.176777 6.0533 0.46967L10.8263 5.24264C11.1192 5.53553 11.1192 6.01041 10.8263 6.3033C10.5334 6.59619 10.0585 6.59619 9.76561 6.3033L6.27297 2.81066V14.5H4.77297V2.81066L1.28033 6.3033C0.987437 6.59619 0.512563 6.59619 0.21967 6.3033C-0.0732234 6.01041 -0.0732234 5.53553 0.21967 5.24264L4.99264 0.46967Z"
-				fill={sortOrder === 'ascend' || sortOrder === 'asc' ? '#5329FF' : 'currentColor'}
-			/>
-			<path
-				fillRule="evenodd"
-				clipRule="evenodd"
-				d="M16.773 13.1893V1.5H18.273V13.1893L21.7656 9.6967C22.0585 9.40381 22.5334 9.40381 22.8263 9.6967C23.1192 9.98959 23.1192 10.4645 22.8263 10.7574L18.0533 15.5303C17.7604 15.8232 17.2855 15.8232 16.9926 15.5303L12.2197 10.7574C11.9268 10.4645 11.9268 9.98959 12.2197 9.6967C12.5126 9.40381 12.9874 9.40381 13.2803 9.6967L16.773 13.1893Z"
-				fill={sortOrder === 'descend' || sortOrder === 'desc' ? '#5329FF' : 'currentColor'}
-			/>
-		</svg>
-	);
-}
-
-export {ExpandIcon, SortIcon}

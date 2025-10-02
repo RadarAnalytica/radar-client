@@ -153,6 +153,8 @@ function RnpListItem({el, index, expanded, setExpanded, setDeleteRnpId, onReorde
 						<RnpTable
 							data={el.table.rows}
 							columns={el.table.columns}
+							data2={el.table.datasource}
+							columns2={el.table.columns_new}
 						/>
 					</div>
 					)}
@@ -318,6 +320,8 @@ export default function RnpList({ view, expanded, setExpanded, setAddRnpModalSho
 							<RnpTable
 								// data={null}
 								data={rnpDataTotal?.table?.rows}
+								data2={rnpDataTotal?.table?.datasource}
+								columns2={rnpDataTotal?.table?.columns_new}
 								// columns={null}
 								columns={rnpDataTotal?.table?.columns}
 								defaultExpandAllRows={true}
