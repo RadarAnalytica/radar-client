@@ -21,6 +21,7 @@ import SelfCostWarningBlock from '../../components/sharedComponents/selfCostWran
 import ErrorModal from '../../components/sharedComponents/modals/errorModal/errorModal';
 import { fetchRnpFilters } from '../../redux/filtersRnp/filterRnpActions';
 import { actions as filterActions } from '../../redux/filtersRnp/filtersRnpSlice'
+import HowToLink from '../../components/sharedComponents/howToLink/howToLink';
 
 export default function Rnp() {
 	const { user, authToken } = useContext(AuthContext);
@@ -422,7 +423,7 @@ export default function Rnp() {
 					</Flex>
 				</ConfigProvider>)}
 
-				<div>
+				<div className={styles.page__filtersWrapper}>
 					<RnpFilters
 						isDataLoading={loading}
 						slice={'filtersRnp'}
@@ -431,6 +432,11 @@ export default function Rnp() {
 						articleSelect={false}
 						groupSelect={false}
 						categorySelect={false}
+					/>
+					<HowToLink
+						text='Как использовать?'
+						target='_blank'
+						url='https://radar.usedocs.com/article/79433'
 					/>
 				</div>
 

@@ -124,3 +124,10 @@
 .segmented__button_active:hover {
   opacity: 1 !important;
 }
+
+.page__filtersWrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 20px;
+}

@@ -109,7 +109,7 @@ function DropZone({ index, isActive, isDragging, draggedIndex, onDrop }) {
 	);
 }
 
-function RnpListItem({ el, index, expanded, setExpanded, setDeleteRnpId, onReorder, isDragging }) {
+function RnpListItem({ el, index, expanded, setExpanded, setDeleteRnpId, onReorder, isDragging, isFirst }) {
 	const ref = useRef(null);
 	const gripRef = useRef(null);
 	const [closestEdge, setClosestEdge] = useState(null);
@@ -205,6 +205,14 @@ function RnpListItem({ el, index, expanded, setExpanded, setDeleteRnpId, onReord
 			})
 		)
 	}, [el, onReorder]);
+
+	useEffect(() => {
+		if (isFirst) {
+			setExpanded([el.article_data.wb_id]);
+		}
+	}, [isFirst]);
+
+
 
 	return (
 		<div className={`${styles.item} ${isDragging ? styles.dragging : ''}`} ref={ref}>
@@ -449,6 +457,9 @@ export default function RnpList({ view, expanded, setExpanded, setAddRnpModalSho
 		localStorage.setItem('rnpOrder', JSON.stringify(savedOrder));
 	}, [order])
 
+
+	let counter = 0;
+
 	return (
 		<>
 			<ConfigProvider
@@ -490,8 +501,9 @@ export default function RnpList({ view, expanded, setExpanded, setAddRnpModalSho
 							onDrop={handleEdgeDropZoneDrop}
 						/>
 						{items?.length > 0 && order.map((orderI, i) => {
-							const el = items.find((rnp) => rnp.article_data.wb_id === orderI)
+							const el = items.find((rnp, index) => rnp.article_data.wb_id === orderI)
 							if (el) {
+								counter++
 								return (
 									<React.Fragment key={i}>
 										{/* Drop-зона перед каждой карточкой */}
@@ -510,10 +522,12 @@ export default function RnpList({ view, expanded, setExpanded, setAddRnpModalSho
 											setDeleteRnpId={setDeleteRnpId}
 											onReorder={handleReorder}
 											isDragging={isDragging}
+											isFirst={counter === 1}
 										/>
 									</React.Fragment>
 								)
 							}
+							
 						})
 						}
 						{/* Drop-зона после последней карточки */}

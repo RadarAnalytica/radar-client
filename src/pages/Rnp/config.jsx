@@ -359,12 +359,16 @@ export const getTableConfig = (initialData) => {
   ];
   initialData.by_date_data?.sort((a, b) => new Date(b.date) - new Date(a.date)).forEach(_ => {
     const formattedDate = moment(_.date).format('D MMMM');
-    tableConfig.push({
-      title: formattedDate,
-      key: formattedDate,
-      dataIndex: formattedDate,
-      ...configItemTemplate,
-    })
+    const isToday = moment(_.date).isSame(moment(), 'day');
+    
+    if (!isToday) {
+      tableConfig.push({
+        title: formattedDate,
+        key: formattedDate,
+        dataIndex: formattedDate,
+        ...configItemTemplate,
+      })
+    }
   })
   return tableConfig;
 }
