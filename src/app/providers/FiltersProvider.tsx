@@ -9,42 +9,43 @@ import type { RootState, AppDispatch } from '@/redux/store.types';
 
 const FiltersProvider = ({ children }: { children: React.ReactNode }) => {
 
-    const { user, authToken } = useContext(AuthContext);
+    const { authToken } = useContext(AuthContext);
     const dispatch = useDispatch<AppDispatch>();
     const { activeBrand, shops } = useAppSelector((store: RootState) => store.filters);
     const { messages } = useAppSelector((state: RootState) => state.messagesSlice);
     const prevMessages = useRef<any[] | null>(null);
 
+  const getFiltersData = async () => {
+    if (!authToken) return;
 
-    const getFiltersData = async () => {
-        try {
-            let shopsResponse = await fetchApi('/api/shop/all', {
-                method: 'GET',
-                headers: {
-                    'content-type': 'application/json',
-                    authorization: 'JWT ' + authToken,
-                }
-            });
-
-            let shopsData = null;
-            if (shopsResponse?.ok) {
-                shopsData = await shopsResponse.json();
-            }
-
-            // @ts-ignore
-            dispatch(fetchFilters({
-                authToken,
-                shopsData
-                //shopsData: null
-            }));
-        } catch (error) {
-            console.error("FiltersProvider: Error fetching initial data:", error);
+    try {
+      let shopsResponse = await fetchApi('/api/shop/all', {
+        method: 'GET',
+        headers: {
+          'content-type': 'application/json',
+          authorization: 'JWT ' + authToken,
         }
+      });
+
+      let shopsData = null;
+      if (shopsResponse?.ok) {
+        shopsData = await shopsResponse.json();
+      }
+
+      // @ts-ignore
+      dispatch(fetchFilters({
+        authToken,
+        shopsData
+        //shopsData: null
+      }));
+    } catch (error) {
+      console.error("FiltersProvider: Error fetching initial data:", error);
     }
+  }
 
     // Получаем данные магазинов
     useEffect(() => {
-        if ((!shops || shops.length === 0)) {
+        if (!shops || shops.length === 0) {
             getFiltersData()
         }
     }, []);

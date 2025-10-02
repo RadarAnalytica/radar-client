@@ -26,9 +26,8 @@ import NoSubscriptionWarningBlock
   from "@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock";
 
 export default function Rnp() {
-	const { user, authToken } = useContext(AuthContext);
+	const { authToken } = useContext(AuthContext);
   const { isDemoMode } = useDemoMode();
-  const dispatch = useAppDispatch();
 	const { activeBrand } = useAppSelector((state) => state.filtersRnp);
 	const { selectedRange } = useAppSelector((state) => state.filters);
 	const filters = useAppSelector((state) => state.filtersRnp);
@@ -43,9 +42,7 @@ export default function Rnp() {
 				brand_name: 'Все',
 				is_active: shops.some((shop) => shop.is_primary_collect),
 				is_valid: true,
-				is_primary_collect: shops.some(
-					(shop) => shop.is_primary_collect
-				),
+				is_primary_collect: isDemoMode || shops.some(shop => shop.is_primary_collect),
 				is_self_cost_set: !shops.some((shop) => !shop.is_self_cost_set),
 			};
 		}
@@ -212,7 +209,7 @@ export default function Rnp() {
 		};
 		// сборка колонок по датам из ответа
 		for (const column of COLUMNS) {
-			item.table.columns.push(column)
+			item.table.columns.push(column);
 		}
 		for (const dateData of article.by_date_data.reverse()) {
 			if (!isToday(dateData.date)) {
@@ -320,7 +317,6 @@ export default function Rnp() {
 		setAddRnpModalShow(false);
 		addRnpList(list);
 	}
-
 
 	return (
 		<main className={styles.page}>
@@ -455,9 +451,9 @@ export default function Rnp() {
 						expanded={expanded}
 						setExpanded={setExpanded}
 						loading={loading}
-					// page={page}
-					// setPage={setPage}
-					// paginationState={paginationState}
+            // page={page}
+            // setPage={setPage}
+            // paginationState={paginationState}
 					/>
 				)}
 

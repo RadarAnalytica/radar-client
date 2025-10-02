@@ -42,7 +42,7 @@ const AbcAnalysisPage = () => {
 		// расчет высоты относительно контента, высоты фильтров и отступов
 		const availableHeight = height - 230 > 350 ? height - 230 : 400;
 		return ({ x: '100%', y: availableHeight })
-	}, [dataAbcAnalysis])
+	}, [dataAbcAnalysis]);
 
 	const updateDataAbcAnalysis = async (
 		viewType,
@@ -124,7 +124,7 @@ const AbcAnalysisPage = () => {
 				activeBrand.id.toString()
 			);
 		} else {
-			shops.length > 0 && setLoading(false);
+			setLoading(false);
 		}
 	}, [viewType, page, sorting, activeBrand, selectedRange, isFiltersLoaded, activeBrandName, activeArticle, activeGroup]);
 

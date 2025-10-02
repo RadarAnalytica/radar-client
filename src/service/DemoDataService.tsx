@@ -1,15 +1,9 @@
 import { eachWeekOfInterval, format, formatISO, endOfWeek, getISOWeek } from 'date-fns';
-import type { 
-  DemoData, 
-  AbcAnalysisDemoData, 
+import type {
   StockProductData,
-  ReportsDemoData,
-  OrdersMapDemoData,
   SupplierAnalysisDemoData,
   WeeklyReportDemoData,
-  WeeklyReportWeek,
   DemoApiResponse,
-  DemoConfig,
   PlReportDemoData
 } from '../types/demo';
 

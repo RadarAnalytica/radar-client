@@ -67,7 +67,7 @@ export const fetchApi = async (endpoint: string, options: RequestInit = {}) => {
       isDemo: true
     });
   }
-  
+
   // Выполняем реальный запрос
   return fetch(`${URL}${endpoint}`, options);
 };

@@ -231,8 +231,6 @@ export const fetchFilters = createAsyncThunk(
 
     try {
       //dispatch(setLoading(true));
-
-      let data = null;
       const res = await fetchApi('/api/common/filters_new', {
         method: 'GET',
         headers: {
@@ -240,19 +238,19 @@ export const fetchFilters = createAsyncThunk(
           authorization: 'JWT ' + authToken,
         },
       });
-      data = await res.json();
+      const data = await res.json();
       
       // Для демо-данных структура отличается
       if (data?.data?.shops) {
-        const result = createFiltersDTO(data.data.shops, shopsData);
-        return result;
+        return createFiltersDTO(data.data.shops, shopsData);
       }
       
-      // Если это демо-данные (структура filtersData)
+      // Если это демо-данные - структура filtersData
       if (data?.filtersData) {
         return data;
       }
 
+      return null;
     } catch (e) {
       console.error('fetchFilters: Error:', e);
       throw e;

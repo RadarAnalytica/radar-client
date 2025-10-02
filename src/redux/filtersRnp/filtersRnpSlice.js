@@ -14,8 +14,6 @@ const initialState = {
     filters: undefined
 }
 
-
-
 const filtersRnpSlice = createSlice({
     name: 'filtersRnp',
     initialState,

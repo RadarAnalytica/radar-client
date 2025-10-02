@@ -11,15 +11,14 @@ import { formatPrice } from '@/service/utils';
 import { Flex } from 'antd';
 import styles from './ReportProfitLoss.module.css';
 import { Filters } from '@/components/sharedComponents/apiServicePagesFiltersComponent';
-import dayjs from 'dayjs';
-import { COLUMNS, ROWS } from './config';
+//import dayjs from 'dayjs';
+//import { COLUMNS, ROWS } from './config';
 import { useAppSelector } from '@/redux/hooks';
 import HowToLink from '@/components/sharedComponents/howToLink/howToLink';
 import DataCollectWarningBlock from '@/components/sharedComponents/dataCollectWarningBlock/dataCollectWarningBlock'
 import NoSubscriptionWarningBlock from '@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock';
-import { startOfYear, format } from "date-fns";
+//import { startOfYear, format } from "date-fns";
 import { useDemoMode } from '@/app/providers/DemoDataProvider';
-
 
 export default function ReportProfitLoss() {
 	const { user, authToken } = useContext(AuthContext);
@@ -48,8 +47,6 @@ export default function ReportProfitLoss() {
 
 		return shops.find(shop => shop.id === activeBrand.id);
 	}, [activeBrand, shops]);
-
-
 
 	function renderColumn(data) {
 		if (typeof data !== 'object') {
