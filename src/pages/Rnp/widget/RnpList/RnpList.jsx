@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef, useMemo, useCallback } from 'react';
+import React, { useEffect, useState, useRef, useMemo, useCallback } from 'react';
 import { ConfigProvider, Button, Flex, Pagination } from 'antd';
 import RnpTable from '../RnpTable/RnpTable';
 import RnpItem from '../RnpItem/RnpItem';
@@ -13,7 +13,103 @@ import { attachClosestEdge, extractClosestEdge, } from '@atlaskit/pragmatic-drag
 import { useAppSelector } from '../../../../redux/hooks';
 import { NoDataWidget } from '@/pages/productsGroupsPages/widgets';
 
-function RnpListItem({el, index, expanded, setExpanded, setDeleteRnpId, onReorder}) {
+// Компонент edge drop-зон (верх и низ viewport)
+function EdgeDropZone({ position, isActive, isDragging, onDrop }) {
+	const ref = useRef(null);
+
+	useEffect(() => {
+		if (!ref.current) return;
+
+		const element = ref.current;
+
+		return dropTargetForElements({
+			element,
+			getData() {
+				return { edgeDropZone: position }; // 'top' или 'bottom'
+			},
+			onDragEnter() {
+				document.body.classList.remove(styles.no_drop);
+				document.body.classList.add(styles.copy);
+			},
+			onDragLeave() {
+				document.body.classList.remove(styles.copy);
+				document.body.classList.add(styles.no_drop);
+			},
+			onDrop({ source }) {
+				document.body.classList.remove(styles.no_drop);
+				document.body.classList.remove(styles.copy);
+				onDrop(source.data.id, position);
+			},
+		});
+	}, [position, onDrop]);
+
+	return (
+		<div 
+			ref={ref}
+			className={`${styles.edge_drop_zone} ${styles[`edge_drop_zone_${position}`]} ${isDragging ? styles.edge_drop_zone_visible : ''} ${isActive ? styles.edge_drop_zone_active : ''}`}
+		>
+			{(isDragging || isActive) && (
+				<div className={styles.edge_drop_zone_content}>
+					{position === 'top' ? '⬆️ В начало списка' : '⬇️ В конец списка'}
+				</div>
+			)}
+		</div>
+	);
+}
+
+// Компонент drop-зоны между карточками
+function DropZone({ index, isActive, isDragging, draggedIndex, onDrop }) {
+	const ref = useRef(null);
+
+	// Определяем, должна ли зона быть видимой
+	// Зона НЕ должна быть видимой если:
+	// 1. Нет активного drag
+	// 2. Это зона над перетаскиваемой карточкой (index === draggedIndex)
+	// 3. Это зона под перетаскиваемой карточкой (index === draggedIndex + 1)
+	const shouldBeVisible = isDragging && draggedIndex !== null && 
+		index !== draggedIndex && index !== draggedIndex + 1;
+
+	useEffect(() => {
+		if (!ref.current) return;
+
+		const element = ref.current;
+
+		return dropTargetForElements({
+			element,
+			getData() {
+				return { dropZoneIndex: index };
+			},
+			onDragEnter() {
+				document.body.classList.remove(styles.no_drop);
+				document.body.classList.add(styles.copy);
+			},
+			onDragLeave() {
+				document.body.classList.remove(styles.copy);
+				document.body.classList.add(styles.no_drop);
+			},
+			onDrop({ source }) {
+				document.body.classList.remove(styles.no_drop);
+				document.body.classList.remove(styles.copy);
+				onDrop(source.data.id, index);
+			},
+		});
+	}, [index, onDrop]);
+
+	return (
+		<div 
+			ref={ref}
+			className={`${styles.drop_zone} ${shouldBeVisible ? styles.drop_zone_visible : ''} ${isActive ? styles.drop_zone_active : ''}`}
+		>
+			{(shouldBeVisible || isActive) && (
+				<div className={styles.drop_zone_content}>
+					Перетащите карточку сюда
+				</div>
+			)}
+		</div>
+	);
+}
+
+function RnpListItem({el, index, expanded, setExpanded, setDeleteRnpId, onReorder, isDragging}) {
 	const ref = useRef(null);
 	const gripRef = useRef(null);
 	const [ closestEdge, setClosestEdge ] = useState(null);
@@ -111,7 +207,7 @@ function RnpListItem({el, index, expanded, setExpanded, setDeleteRnpId, onReorde
   }, [el, onReorder]);
 
 	return (
-		<div className={styles.item} ref={ref}>
+		<div className={`${styles.item} ${isDragging ? styles.dragging : ''}`} ref={ref}>
 			<div className={styles.item_content}>
 				{closestEdge === 'top' && (
 					<div className={styles.edge_top}></div>
@@ -200,6 +296,10 @@ export default function RnpList({ view, expanded, setExpanded, setAddRnpModalSho
 
 	const [order, setOrder] = useState(initOrder)
 	const ref = useRef(null);
+	const [activeDropZone, setActiveDropZone] = useState(null);
+	const [activeEdgeDropZone, setActiveEdgeDropZone] = useState(null);
+	const [isDragging, setIsDragging] = useState(false);
+	const [draggedIndex, setDraggedIndex] = useState(null);
 
 	// const [expanded, setExpanded] = useState([]);
 
@@ -215,6 +315,45 @@ export default function RnpList({ view, expanded, setExpanded, setAddRnpModalSho
     }
   };
 
+	// Обработчик для drop-зон
+	const handleDropZoneDrop = (draggedId, dropZoneIndex) => {
+		const draggedIndex = order.findIndex(i => i === draggedId);
+		
+		if (draggedIndex !== -1) {
+			const newOrder = [...order];
+			const [removed] = newOrder.splice(draggedIndex, 1);
+			
+			// Если перетаскиваем в зону после перетаскиваемой карточки, 
+			// нужно учесть что мы уже удалили один элемент
+			let targetIndex = dropZoneIndex;
+			if (dropZoneIndex > draggedIndex) {
+				targetIndex = dropZoneIndex - 1;
+			}
+			
+			newOrder.splice(targetIndex, 0, removed);
+			setOrder(newOrder);
+		}
+	};
+
+	// Обработчик для edge drop-зон (верх/низ)
+	const handleEdgeDropZoneDrop = (draggedId, position) => {
+		const draggedIndex = order.findIndex(i => i === draggedId);
+		
+		if (draggedIndex !== -1) {
+			const newOrder = [...order];
+			const [removed] = newOrder.splice(draggedIndex, 1);
+			
+			// Размещаем в начало или конец списка
+			if (position === 'top') {
+				newOrder.unshift(removed); // В начало
+			} else {
+				newOrder.push(removed); // В конец
+			}
+			
+			setOrder(newOrder);
+		}
+	};
+
 	useEffect(() => {
 		if (!ref.current){
 			return
@@ -222,23 +361,71 @@ export default function RnpList({ view, expanded, setExpanded, setAddRnpModalSho
 		const element = ref.current;
 			return monitorForElements({
 				element,
-				onDragStart() {
+				onDragStart({ source }) {
 					setExpanded([]);
+					// Определяем индекс перетаскиваемой карточки
+					const draggedId = source.data.id;
+					const draggedIndex = order.findIndex(i => i === draggedId);
+					setDraggedIndex(draggedIndex);
+					// Показываем drop-зоны при начале drag
+					setIsDragging(true);
+					setActiveDropZone(null);
+					setActiveEdgeDropZone(null);
+				},
+				onDrag({ location }) {
+					// Подсвечиваем активную drop-зону при наведении
+					const dropTargets = location.current.dropTargets;
+					if (dropTargets.length > 0) {
+						const dropZone = dropTargets.find(target => target.data.dropZoneIndex !== undefined);
+						const edgeDropZone = dropTargets.find(target => target.data.edgeDropZone !== undefined);
+						
+						if (dropZone) {
+							setActiveDropZone(dropZone.data.dropZoneIndex);
+							setActiveEdgeDropZone(null);
+						} else if (edgeDropZone) {
+							setActiveEdgeDropZone(edgeDropZone.data.edgeDropZone);
+							setActiveDropZone(null);
+						} else {
+							setActiveDropZone(null);
+							setActiveEdgeDropZone(null);
+						}
+					} else {
+						setActiveDropZone(null);
+						setActiveEdgeDropZone(null);
+					}
 				},
 				onDrop({ location, source }) {
+					// Скрываем drop-зоны после drop
+					setIsDragging(false);
+					setActiveDropZone(null);
+					setActiveEdgeDropZone(null);
+					setDraggedIndex(null);
 
 					const target = location.current.dropTargets[0];
 					if (!target) {
-							return;
+						return;
 					}
 
 					const draggedId = source.data.id;
-					const targetId = target.data.id;
-
-					if (draggedId && targetId && draggedId !== targetId) {
-						handleReorder(draggedId, targetId);
+					
+					// Проверяем тип drop-зоны
+					if (target.data.dropZoneIndex !== undefined) {
+						handleDropZoneDrop(draggedId, target.data.dropZoneIndex);
+					} else if (target.data.edgeDropZone !== undefined) {
+						handleEdgeDropZoneDrop(draggedId, target.data.edgeDropZone);
+					} else {
+						const targetId = target.data.id;
+						if (draggedId && targetId && draggedId !== targetId) {
+							handleReorder(draggedId, targetId);
+						}
 					}
-
+				},
+				onDragEnd() {
+					// Скрываем drop-зоны при завершении drag
+					setIsDragging(false);
+					setActiveDropZone(null);
+					setActiveEdgeDropZone(null);
+					setDraggedIndex(null);
 				},
 			});
 	}, [items, order, handleReorder]);
@@ -295,22 +482,58 @@ export default function RnpList({ view, expanded, setExpanded, setAddRnpModalSho
 				}}
 			>
 				{view === 'articles' && (
-					<div ref={ref}>
+					<div ref={ref} className={styles.list_container}>
+						{/* Edge drop-зоны в верху и внизу */}
+						<EdgeDropZone 
+							position="top"
+							isActive={activeEdgeDropZone === 'top'}
+							isDragging={isDragging}
+							onDrop={handleEdgeDropZoneDrop}
+						/>
 						{items?.length > 0 && order.map((orderI, i) => {
 								const el = items.find((rnp) => rnp.article_data.wb_id === orderI)
 								if (el) {
-									return <RnpListItem
-										key={i}
-										index={i}
-										el={el}
-										expanded={expanded}
-										setExpanded={setExpanded}
-										setDeleteRnpId={setDeleteRnpId}
-										onReorder={handleReorder}
-									/>
+									return (
+										<React.Fragment key={i}>
+											{/* Drop-зона перед каждой карточкой */}
+											<DropZone 
+												index={i}
+												isActive={activeDropZone === i}
+												isDragging={isDragging}
+												draggedIndex={draggedIndex}
+												onDrop={handleDropZoneDrop}
+											/>
+											<RnpListItem
+												index={i}
+												el={el}
+												expanded={expanded}
+												setExpanded={setExpanded}
+												setDeleteRnpId={setDeleteRnpId}
+												onReorder={handleReorder}
+												isDragging={isDragging}
+											/>
+										</React.Fragment>
+									)
 								}
 							})
 						}
+						{/* Drop-зона после последней карточки */}
+						{items?.length > 0 && (
+							<DropZone 
+								index={order.length}
+								isActive={activeDropZone === order.length}
+								isDragging={isDragging}
+								draggedIndex={draggedIndex}
+								onDrop={handleDropZoneDrop}
+							/>
+						)}
+						{/* Edge drop-зона внизу */}
+						<EdgeDropZone 
+							position="bottom"
+							isActive={activeEdgeDropZone === 'bottom'}
+							isDragging={isDragging}
+							onDrop={handleEdgeDropZoneDrop}
+						/>
 						{/* {items?.length == 0 && <div className={`${styles.item_content} ${styles.item_empty}`}>Нет данных</div>} */}
 					</div>
 				)}
