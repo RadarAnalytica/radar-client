@@ -6,6 +6,7 @@ import { addShop } from '../../../../service/api/api';
 import { useAppDispatch } from '../../../../redux/hooks';
 import { fetchFilters } from '../../../../redux/apiServicePagesFiltersState/filterActions';
 import { fetchShops } from '../../../../redux/shops/shopsActions';
+import { URL } from '../../../../service/config';
 
 const initRequestStatus = {
     isLoading: false,
@@ -19,6 +20,28 @@ export const AddShopWidget = ({ authToken, setStatusBarState }) => {
     const [isModalVisible, setIsModalVisible] = useState(false)
     const [ addShopRequestStatus, setAddShopRequestStatus ] = useState(initRequestStatus)
     const [form] = Form.useForm()
+
+
+    const getFiltersData = async () => {
+        try {
+            let shopsResponse = await fetch(`${URL}/api/shop/all`, {
+                method: 'GET',
+                headers: {
+                    'content-type': 'application/json',
+                    authorization: 'JWT ' + authToken,
+                }
+            })
+            //let shopsResponse = null
+            // @ts-ignore
+            dispatch(fetchFilters({
+                authToken,
+                shopsData: shopsResponse?.ok ? await shopsResponse.json() : null
+                //shopsData: null
+            }))
+        } catch (error) {
+            console.error("Error fetching initial data:", error);
+        }
+    }
 
     const addShopHandler = async (fields) => {
         const addShopData = {
@@ -44,8 +67,7 @@ export const AddShopWidget = ({ authToken, setStatusBarState }) => {
         if (addShopRequestStatus.isSuccess) {
             form.resetFields()
             setIsModalVisible(false)
-            dispatch(fetchFilters(authToken))
-            dispatch(fetchShops(authToken))
+            getFiltersData()
             setStatusBarState({
                 isActive: true,
                 type: 'Success',

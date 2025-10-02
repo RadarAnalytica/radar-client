@@ -68,11 +68,7 @@ const AddGroupModal = ({ isAddGroupModalVisible, setIsAddGroupModalVisible, data
     // ------- Фетч массива магазинов -------------//
     const fetchShopData = async () => {
         try {
-            if (user.subscription_status === null) {
-                dispatch(fetchShops('mockData'));
-            } else {
-                dispatch(fetchShops(authToken));
-            }
+            dispatch(fetchShops(authToken));
         } catch (error) {
             console.error("Error fetching initial data:", error);
         }
@@ -113,20 +109,20 @@ const AddGroupModal = ({ isAddGroupModalVisible, setIsAddGroupModalVisible, data
                 </div>
                 <div className={styles.modal__inputWrapper}>
                     <label className={styles.modal__inputLabel}>Название</label>
-                     <ConfigProvider
+                    <ConfigProvider
                         theme={{
                             token: {
                                 colorPrimary: '#d9d9d9'
                             }
                         }}
                     >
-                    <Input
-                        size='large'
-                        className={styles.modal__input}
-                        placeholder='Введите название'
-                        value={inputValue}
-                        onChange={(e) => setInputValue(e.target.value)}
-                    />
+                        <Input
+                            size='large'
+                            className={styles.modal__input}
+                            placeholder='Введите название'
+                            value={inputValue}
+                            onChange={(e) => setInputValue(e.target.value)}
+                        />
                     </ConfigProvider>
                 </div>
                 <div className={styles.modal__inputWrapper}>

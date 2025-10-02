@@ -60,7 +60,8 @@
 
 .container {
     flex-grow: 1;
-    /* max-height: calc(100vh - 169px); */
+    /* min-height: 900px; */
+    height: auto;
 }
 
 .tableContainer{

@@ -19,6 +19,7 @@
     padding: 18px 32px;
     flex-shrink: 1;
 }
+
 .header__title {
     font-family: Mulish;
     font-weight: 700;
@@ -31,9 +32,11 @@
     text-wrap: nowrap;
     text-overflow: ellipsis;
 }
+
 .header__titlePrefix {
     color: silver
 }
+
 .header__menu {
     width: auto;
     padding: 18px 32px;
@@ -52,4 +55,28 @@
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
+}
+
+.headerWrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+
+.header__statusBannerTitle {
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 140%;
+    letter-spacing: 0%;
+    margin: 0;
+    padding: 0;
+}
+
+.header__statusBannerTitle span {
+    font-weight: 600;
+    color: #5329FF;
 }

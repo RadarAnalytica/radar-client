@@ -3,7 +3,8 @@ import { SelectIcon } from '../../../../components/sharedComponents/apiServicePa
 import styles from '../../shared/styles/modals.module.css';
 import { CloseIcon } from '../../shared/Icons';
 import { useMemo, useState } from 'react';
-export default function CreateArticle({
+
+export default function ModalCreateCategory({
 	open = true,
 	onCancel,
 	onSubmit,
@@ -12,16 +13,14 @@ export default function CreateArticle({
 	...props
 }) {
 
-	const [title, setTitle] = useState(data?.title);
-
-	console.log(props)
-
-	const onFinish = () => {
-		if (!!data) {
-			onSubmit({...data, title: title.trim()});
-			return 
-		}
-		onSubmit({title: title.trim()});
+	const [form] = Form.useForm();
+	const name = Form.useWatch('name', form);
+	const onFinish = (form) => {
+		// if (!!data) {
+		// 	onSubmit({name: form.name.trim()});
+		// 	return 
+		// }
+		onSubmit({name: form.name.trim()});
 	};
 
 	return (
@@ -60,7 +59,7 @@ export default function CreateArticle({
 				className={styles.modal}
 				open={open}
 				centered={true}
-				closable={false}
+				closable={true}
 				closeIcon={<CloseIcon className={styles.close__icon} />}
 				title={
 					<h2 className={styles.modal__title}>
@@ -72,9 +71,21 @@ export default function CreateArticle({
 				onCancel={onCancel}
 				props
 			>
-				<Form onFinish={onFinish} layout="vertical">
-					<Form.Item className={styles.modal__part} label="Название" name='title' initialValue={data?.title}>
-						<Input size="large" onChange={(e) => { setTitle(e.target.value) }}/>
+				<Form form={form} onFinish={onFinish} layout="vertical">
+					<Form.Item
+						className={styles.modal__part}
+						label="Название"
+						name='name'
+						initialValue={data?.name}
+						rules={[
+							{ required: true, message: 'Пожалуйста, введите значение!', min: 0 },
+							{ message: 'Название не должно быть больше 30 символов!', max: 30}
+						]}
+					>
+						<Input
+							size="large"
+							// onChange={(e) => { setName(e.target.value) }}
+						/>
 					</Form.Item>
 					<ConfigProvider
 						theme={{
@@ -130,10 +141,7 @@ export default function CreateArticle({
 											controlHeightLG: 43,
 											paddingInlineLG: 12,
 											primaryColor: '#FFF',
-											colorPrimaryHover:
-												'rgba(83, 41, 255, 0.1)',
-
-											defaultShadow: false,
+											defaultShadow: 'none',
 										},
 									},
 								}}
@@ -143,7 +151,7 @@ export default function CreateArticle({
 									size="large"
 									htmlType="submit"
 									loading={loading}
-									disabled={!title?.trim()}
+									disabled={!name?.trim()}
 								>
 									Добавить статью
 								</Button>

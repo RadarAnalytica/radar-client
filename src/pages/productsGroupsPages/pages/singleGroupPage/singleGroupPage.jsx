@@ -53,11 +53,7 @@ const SingleGroupPage = () => {
     // ------- Фетч массива магазинов -------------//
     const fetchShopData = async () => {
         try {
-            if (user.subscription_status === null) {
-                dispatch(fetchShops('mockData'));
-            } else {
-                dispatch(fetchShops(authToken));
-            }
+            dispatch(fetchShops(authToken));
         } catch (error) {
             console.error("Error fetching initial data:", error);
         }

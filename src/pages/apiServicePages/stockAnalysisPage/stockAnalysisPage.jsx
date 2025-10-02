@@ -17,8 +17,8 @@ import { useDemoMode } from '@/app/providers/DemoDataProvider';
 const StockAnalysisPage = () => {
     const { user, authToken } = useContext(AuthContext);
     const { isDemoMode } = useDemoMode();
-    const { activeBrand, selectedRange, isFiltersLoaded, activeBrandName, activeArticle, activeGroup } = useAppSelector((state) => state.filters);
-    const { shops } = useAppSelector((state) => state.shopsSlice);
+    const { activeBrand, selectedRange, isFiltersLoaded, activeBrandName, activeArticle, activeGroup, shops } = useAppSelector((state) => state.filters);
+    // const { shops } = useAppSelector((state) => state.shopsSlice);
     const filters = useAppSelector((state) => state.filters);
     const [stockAnalysisData, setStockAnalysisData] = useState([]); // это базовые данные для таблицы
     const [stockAnalysisFilteredData, setStockAnalysisFilteredData] = useState(); // это данные для таблицы c учетом поиска
@@ -40,7 +40,7 @@ const StockAnalysisPage = () => {
             setStockAnalysisData(data);
             setStockAnalysisFilteredData(data);
             setHasSelfCostPrice(data.every(_ => _.costPriceOne !== null));
-        
+
         } catch (error) {
             console.error(error);
         } finally {
@@ -92,8 +92,8 @@ const StockAnalysisPage = () => {
 
                     {/* SELF-COST WARNING */}
                     {
-                        shopStatus &&
-                        !shopStatus.is_self_cost_set &&
+                        activeBrand &&
+                        !activeBrand.is_self_cost_set &&
                         !loading &&
                         <div>
                             <SelfCostWarningBlock
@@ -120,7 +120,7 @@ const StockAnalysisPage = () => {
                             title='Ваши данные еще формируются и обрабатываются.'
                         />
                     }
-                    
+
                     {/* SEARCH WIDGET */}
                     {shopStatus && shopStatus.is_primary_collect &&
                         <SearchWidget

@@ -43,17 +43,18 @@ const createFiltersDTO = (data, shopsData) => {
     _.categories?.forEach(c => {
       allCategoriesData.push({ ...c, value: c.name, key: c.id })
       c.brand?.forEach((b, barndId) => {
-        const isBrandInList = allBransdData.some(_ => _.name === b.name)
+        const brandObject ={
+          name: b.name ? b.name : `Без названия&${_.shop_data.id}`,
+          value: b.name ? b.name : `Без названия (${_.shop_data.brand_name})`,
+          category: c.name
+        }
+        const isBrandInList = allBransdData.some(_ => _.name === brandObject.name)
         if (_.shop_data.is_primary_collect && !isBrandInList) {
-          allBransdData.push({
-            name: b.name ? b.name : `Без названия&${_.shop_data.id}`,
-            value: b.name ? b.name : `Без названия (${_.shop_data.brand_name})`,
-            category: c.name
-          })
+          allBransdData.push(brandObject)
         }
         b.wb_id?.forEach(a => {
           if (_.shop_data.is_primary_collect) {
-            allArticlesData.push({ name: a, value: a, brand: b.name ? b.name : `Без названия (${_.shop_data.brand_name})`, category: c.name })
+            allArticlesData.push({ name: a, value: a, brand: b.name ? b.name : brandObject.value, category: c.name })
           }
         })
       })
@@ -107,15 +108,16 @@ const createFiltersDTO = (data, shopsData) => {
     i.categories?.forEach(c => {
       categoriesData.push({ ...c, value: c.name, key: c.id })
       c.brand?.forEach((item, bId) => {
-        const isBrandInList = brandsData.some(_ => _.name === item.name)
-        if (!isBrandInList) {
-          brandsData.push({
-            name: item.name ? item.name : `Без названия&${i.shop_data.id}`,
-            value: item.name ? item.name : `Без названия (${i.shop_data.brand_name})`,
-            category: c.name
-          })
+        const brandObject ={
+          name: item.name ? item.name : `Без названия&${i.shop_data.id}`,
+          value: item.name ? item.name : `Без названия (${i.shop_data.brand_name})`,
+          category: c.name
         }
-        const items = item.wb_id.map(_ => ({ name: _, value: _, brand: item.name ? item.name : `Без названия (${i.shop_data.brand_name})`, category: c.name }))
+        const isBrandInList = brandsData.some(_ => _.name === brandObject.name)
+        if (!isBrandInList) {
+          brandsData.push(brandObject)
+        }
+        const items = item.wb_id.map(_ => ({ name: _, value: _, brand: item.name ? item.name : brandObject.value, category: c.name }))
         articlesData = [...articlesData, ...items]
       })
     })
