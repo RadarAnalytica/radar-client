@@ -14,9 +14,9 @@
   font-size: 18px;
 }
 
-.item + .item {
-  /* margin-top: 20px; */
-}
+/* .item + .item {
+  margin-top: 20px;
+} */
 
 .item__product{
   flex-grow: 1;
@@ -58,9 +58,9 @@
 
 /* Drop-зоны между карточками */
 .drop_zone {
-  height: 10px;
-  margin: 5px 0;
-  border-radius: 5px;
+  height: 20px;
+  margin: 1px 0;
+  border-radius: 1px;
   transition: all 0.2s ease;
   position: relative;
   opacity: 0;
@@ -70,17 +70,17 @@
   background-color: rgba(83, 41, 255, 0.05);
 }
 
-/* Видимые drop-зоны при drag */
+/* Видимые drop-зоны при drag - остаются 2px по умолчанию */
 .drop_zone_visible {
   opacity: 1;
-  height: 50px;
+  height: 20px;
   background-color: rgba(83, 41, 255, 0.08);
   border: 1px dashed rgba(83, 41, 255, 0.3);
   border-radius: 12px;
-  margin: 8px 0;
+  margin: 2px 0;
 }
 
-/* Активная drop-зона при наведении */
+/* Активная drop-зона при наведении - расширяется только при hover */
 .drop_zone_active {
   height: 80px;
   background-color: rgba(83, 41, 255, 0.15);
@@ -89,6 +89,15 @@
   margin: 10px 0;
   animation: dropZonePulse 1.5s ease-in-out infinite;
   opacity: 1;
+}
+
+/* Расширение дропзон при наведении карточки */
+.drop_zone_visible:hover {
+  height: 50px;
+  background-color: rgba(83, 41, 255, 0.12);
+  border: 1px dashed rgba(83, 41, 255, 0.5);
+  border-radius: 12px;
+  margin: 8px 0;
 }
 
 .drop_zone_content {
@@ -115,21 +124,7 @@
 /* Старые стили edge (можно удалить) */
 .edge_top,
 .edge_bottom{
-  position: absolute;
-  left: 0;
-  width: 100%;
-  height: 4px;
-  background-color: #5329ff;
-  border-radius: 2px;
-  opacity: 0.5;
-}
-
-.edge_top{
-  top: -11px;
-}
-
-.edge_bottom{
-  bottom: -13px;
+  display: none; /* Скрываем фиолетовые линии */
 }
 
 .no_drop{
@@ -169,7 +164,7 @@
   position: fixed;
   left: 0;
   right: 0;
-  height: 180px; /* Увеличено в 3 раза (было 60px) */
+  height: 180px;
   z-index: 1000;
   opacity: 0; /* Полностью невидимы */
   transition: all 0.2s ease;
@@ -194,6 +189,14 @@
 .edge_drop_zone_active {
   opacity: 0; /* Остаются невидимыми */
   pointer-events: all; /* Но функциональными */
+}
+
+/* Расширение edge дропзон при наведении */
+.edge_drop_zone_visible:hover {
+  height: 60px;
+  background-color: rgba(83, 41, 255, 0.08);
+  border: 1px dashed rgba(83, 41, 255, 0.3);
+  border-radius: 8px;
 }
 
 .edge_drop_zone_content {
