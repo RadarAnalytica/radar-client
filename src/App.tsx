@@ -10,6 +10,7 @@ import LoaderPage from "./pages/LoaderPage";
 import { ProtectedRoute } from "./RouteGuards";
 import { FiltersProvider } from "./app/index";
 import { DemoDataProvider } from "./app/providers/DemoDataProvider";
+import ErrorBoundary from "./components/sharedComponents/ErrorBoundary/ErrorBoundary";
 
 const StockAnalysisGlitter = React.lazy(() => import("./components/StockAnalysisGlitter"));
 const Subscriptions = React.lazy(() => import("./pages/Subscriptions"));
@@ -90,12 +91,13 @@ function App() {
   const deviceRegexp = /android|iphone|kindle|ipad/i;
 
   return (
-    <AuthProvider>
-      <ProductProvider>
-        <FiltersProvider>
-          <DemoDataProvider>
-            <HelmetProvider>
-              <Routes>
+    <ErrorBoundary>
+      <AuthProvider>
+        <ProductProvider>
+          <FiltersProvider>
+            <DemoDataProvider>
+              <HelmetProvider>
+                <Routes>
                 {/* dev */}
                 <Route path='/dev/after-payment' element={<ProtectedRoute><NewAfterPayment devMode /></ProtectedRoute>} />
                 {/* Admin */}
@@ -157,12 +159,13 @@ function App() {
                 <Route path='/after-payment' element={<Suspense fallback={<LoaderPage />}>{' '}<NewAfterPayment devMode={false} /></Suspense>} />
                 {/* 404 */}
                 <Route path='*' element={<Page404 />} />
-              </Routes>
-            </HelmetProvider>
-          </DemoDataProvider>
-        </FiltersProvider>
-      </ProductProvider>
-    </AuthProvider>
+                </Routes>
+              </HelmetProvider>
+            </DemoDataProvider>
+          </FiltersProvider>
+        </ProductProvider>
+      </AuthProvider>
+    </ErrorBoundary>
   )
 }
 
