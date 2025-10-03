@@ -22,19 +22,19 @@ export const FrequencyModeSelect = ({ isDataLoading }) => {
                     renderEmpty={ () => (<div>Нет данных</div>)} 
                     theme={{
                         token: {
-                            colorBgContainer: '#EAEAF1',
-                            colorBorder: 'transparent',
+                            colorBgContainer: 'white',
+                            colorBorder: '#5329FF1A',
                             borderRadius: 8,
                             fontFamily: 'Mulish',
-                            fontSize: 16,
+                            fontSize: 14,
                         },
                         components: {
                             Select: {
-                                activeBorderColor: 'transparent',
+                                activeBorderColor: '#5329FF1A',
                                 activeOutlineColor: 'transparent',
-                                hoverBorderColor: 'transparent',
+                                hoverBorderColor: '#5329FF1A',
                                 optionActiveBg: 'transparent',
-                                optionFontSize: 16,
+                                optionFontSize: 14,
                                 optionSelectedBg: 'transparent',
                                 optionSelectedColor: '#5329FF',
                             }

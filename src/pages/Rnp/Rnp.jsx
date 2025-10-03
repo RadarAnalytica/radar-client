@@ -19,6 +19,7 @@ import ModalDeleteConfirm from '../../components/sharedComponents/ModalDeleteCon
 import DataCollectWarningBlock from '../../components/sharedComponents/dataCollectWarningBlock/dataCollectWarningBlock';
 import SelfCostWarningBlock from '../../components/sharedComponents/selfCostWraningBlock/selfCostWarningBlock';
 import ErrorModal from '../../components/sharedComponents/modals/errorModal/errorModal';
+import { Filters } from '@/components/sharedComponents/apiServicePagesFiltersComponent';
 import { fetchRnpFilters } from '../../redux/filtersRnp/filterRnpActions';
 import { actions as filterActions } from '../../redux/filtersRnp/filtersRnpSlice'
 import HowToLink from '../../components/sharedComponents/howToLink/howToLink';
@@ -26,29 +27,8 @@ import HowToLink from '../../components/sharedComponents/howToLink/howToLink';
 export default function Rnp() {
 	const { user, authToken } = useContext(AuthContext);
 	const dispatch = useAppDispatch();
-	const { activeBrand } = useAppSelector((state) => state.filtersRnp);
-	const { selectedRange } = useAppSelector((state) => state.filters);
-	const filters = useAppSelector((state) => state.filtersRnp);
-	const { shops } = useAppSelector((state) => state.shopsSlice);
-
-	const shopStatus = useMemo(() => {
-		if (!activeBrand || !shops) return null;
-
-		if (activeBrand.id === 0) {
-			return {
-				id: 0,
-				brand_name: 'Все',
-				is_active: shops.some((shop) => shop.is_primary_collect),
-				is_valid: true,
-				is_primary_collect: shops.some(
-					(shop) => shop.is_primary_collect
-				),
-				is_self_cost_set: !shops.some((shop) => !shop.is_self_cost_set),
-			};
-		}
-
-		return shops.find((shop) => shop.id === activeBrand.id);
-	}, [activeBrand, shops]);
+	const { selectedRange, activeBrand, shops } = useAppSelector((state) => state.filters);
+	const filters = useAppSelector((state) => state.filters);
 
 	// const rnpSelected = useAppSelector((state) => state.rnpSelected);
 
@@ -315,7 +295,7 @@ export default function Rnp() {
 			setLoading(false)
 		}
 
-		// }, [activeBrand, shopStatus, shops, filters, page, view, selectedRange]);
+		// }, [activeBrand, activeBrand, shops, filters, page, view, selectedRange]);
 	}, [filters, page, view, selectedRange]);
 
 	const addRnpHandler = (list) => {
@@ -338,7 +318,7 @@ export default function Rnp() {
 					<Header title="Рука на пульсе (РНП)"></Header>
 				</div>
 
-				{!loading && shopStatus && shopStatus.is_valid && shopStatus?.is_primary_collect && !shopStatus.is_self_cost_set && (
+				{!loading && activeBrand && activeBrand.is_valid && activeBrand?.is_primary_collect && !activeBrand.is_self_cost_set && (
 					<SelfCostWarningBlock
 						shopId={activeBrand.id}
 					/>
@@ -424,11 +404,8 @@ export default function Rnp() {
 				</ConfigProvider>)}
 
 				<div className={styles.page__filtersWrapper}>
-					<RnpFilters
+					<Filters
 						isDataLoading={loading}
-						slice={'filtersRnp'}
-						filterActions={filterActions}
-						fetchFilters={fetchRnpFilters}
 						articleSelect={false}
 						groupSelect={false}
 						categorySelect={false}
@@ -448,7 +425,7 @@ export default function Rnp() {
 					</div>
 				)}
 
-				{!loading && shopStatus && !shopStatus?.is_primary_collect && (
+				{!loading && activeBrand && !activeBrand?.is_primary_collect && (
 					<>
 						<DataCollectWarningBlock
 							title='Ваши данные еще формируются и обрабатываются.'
@@ -456,7 +433,7 @@ export default function Rnp() {
 					</>
 				)}
 
-				{!loading && shopStatus && shopStatus?.is_primary_collect && (
+				{!loading && activeBrand && activeBrand?.is_primary_collect && (
 					<RnpList
 						view={view}
 						setView={viewHandler}

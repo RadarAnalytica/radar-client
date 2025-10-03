@@ -10,7 +10,7 @@
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
-  gap: 10px;
+  gap: 8px;
   flex-grow: 1;
   min-width: 190px;
   max-width: 240px;
@@ -24,7 +24,7 @@
 .label {
   font-family: Mulish;
   font-weight: 500;
-  font-size: 16px;
+  font-size: 12px;
   line-height: 100%;
   letter-spacing: 0%;
   color: '#1A1A1A';
