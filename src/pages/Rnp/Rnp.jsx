@@ -24,6 +24,8 @@ import { fetchRnpFilters } from '../../redux/filtersRnp/filterRnpActions';
 import { actions as filterActions } from '../../redux/filtersRnp/filtersRnpSlice';
 import { useDemoMode } from '@/app/providers/DemoDataProvider';
 import HowToLink from '../../components/sharedComponents/howToLink/howToLink';
+import NoSubscriptionWarningBlock
+  from "@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock";
 
 export default function Rnp() {
 	const { user, authToken } = useContext(AuthContext);
