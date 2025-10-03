@@ -222,7 +222,7 @@ export const ServiceFunctions = {
 		const body = getRequestObject(filters, selectedRange, idShop)
 		
 		const res = await fetchApi(
-			'/api/dashboard',
+			'/api/dashboard/',
 			{
 				method: 'POST',
 				headers: {
