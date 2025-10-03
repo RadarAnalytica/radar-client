@@ -63,7 +63,7 @@ export default function RnpTable({ loading, columns, data, columns2, data2 }) {
 
 						treeMode
 						indentSize={45}
-						defaultExpandedRowKeys={[JSON.stringify(data2[0])]}
+						defaultExpandedRowKeys={data2.map((item) => JSON.stringify(item))}
 
 						resizeable
 						onResize={onResize}

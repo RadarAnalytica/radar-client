@@ -144,7 +144,7 @@ const AddRnpModal = ({ isAddRnpModalVisible, setIsAddRnpModalVisible, addRnp }) 
                 onCancel={() => setIsAddRnpModalVisible(false)}
                 onClose={() => setIsAddRnpModalVisible(false)}
                 open={isAddRnpModalVisible}
-                width={1200}
+                width={960}
                 closeIcon={close}
                 centered
             >

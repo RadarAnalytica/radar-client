@@ -15,40 +15,23 @@ import { COLUMNS, ROWS, renderFunction, getTableConfig, getTableData } from './c
 import { format, isToday } from 'date-fns';
 import { ru } from 'date-fns/locale';
 import RnpList from './widget/RnpList/RnpList';
-import ModalDeleteConfirm from '@/components/sharedComponents/ModalDeleteConfirm/ModalDeleteConfirm';
-import DataCollectWarningBlock from '@/components/sharedComponents/dataCollectWarningBlock/dataCollectWarningBlock';
-import SelfCostWarningBlock from '@/components/sharedComponents/selfCostWraningBlock/selfCostWarningBlock';
-import ErrorModal from '@/components/sharedComponents/modals/errorModal/errorModal';
-import { fetchRnpFilters } from '@/redux/filtersRnp/filterRnpActions';
-import { actions as filterActions } from '@/redux/filtersRnp/filtersRnpSlice'
+import ModalDeleteConfirm from '../../components/sharedComponents/ModalDeleteConfirm/ModalDeleteConfirm';
+import DataCollectWarningBlock from '../../components/sharedComponents/dataCollectWarningBlock/dataCollectWarningBlock';
+import SelfCostWarningBlock from '../../components/sharedComponents/selfCostWraningBlock/selfCostWarningBlock';
+import ErrorModal from '../../components/sharedComponents/modals/errorModal/errorModal';
+import { Filters } from '@/components/sharedComponents/apiServicePagesFiltersComponent';
+import { fetchRnpFilters } from '../../redux/filtersRnp/filterRnpActions';
+import { actions as filterActions } from '../../redux/filtersRnp/filtersRnpSlice';
 import { useDemoMode } from '@/app/providers/DemoDataProvider';
-import NoSubscriptionWarningBlock
-  from "@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock";
+import HowToLink from '../../components/sharedComponents/howToLink/howToLink';
 
 export default function Rnp() {
-	const { authToken } = useContext(AuthContext);
+	const { user, authToken } = useContext(AuthContext);
   const { isDemoMode } = useDemoMode();
-	const { activeBrand } = useAppSelector((state) => state.filtersRnp);
-	const { selectedRange } = useAppSelector((state) => state.filters);
-	const filters = useAppSelector((state) => state.filtersRnp);
-	const { shops } = useAppSelector((state) => state.shopsSlice);
+	const { selectedRange, activeBrand, shops } = useAppSelector((state) => state.filters);
+	const filters = useAppSelector((state) => state.filters);
 
-	const shopStatus = useMemo(() => {
-		if (!activeBrand || !shops) return null;
-
-		if (activeBrand.id === 0) {
-			return {
-				id: 0,
-				brand_name: 'Все',
-				is_active: shops.some((shop) => shop.is_primary_collect),
-				is_valid: true,
-				is_primary_collect: isDemoMode || shops.some(shop => shop.is_primary_collect),
-				is_self_cost_set: !shops.some((shop) => !shop.is_self_cost_set),
-			};
-		}
-
-		return shops.find((shop) => shop.id === activeBrand.id);
-	}, [activeBrand, shops]);
+  const initLoad = useRef(true);
 
 	const [loading, setLoading] = useState(true);
 	const [addRnpModalShow, setAddRnpModalShow] = useState(false);
@@ -310,7 +293,7 @@ export default function Rnp() {
 			setLoading(false);
 		}
 
-		// }, [activeBrand, shopStatus, shops, filters, page, view, selectedRange]);
+		// }, [activeBrand, activeBrand, shops, filters, page, view, selectedRange]);
 	}, [filters, page, view, selectedRange]);
 
 	const addRnpHandler = (list) => {
@@ -331,7 +314,7 @@ export default function Rnp() {
 					<Header title="Рука на пульсе (РНП)"></Header>
 				</div>
 
-				{!loading && shopStatus && shopStatus.is_valid && shopStatus?.is_primary_collect && !shopStatus.is_self_cost_set && (
+				{!loading && activeBrand && activeBrand.is_valid && activeBrand?.is_primary_collect && !activeBrand.is_self_cost_set && (
 					<SelfCostWarningBlock
 						shopId={activeBrand.id}
 					/>
@@ -351,11 +334,11 @@ export default function Rnp() {
 						},
 						components: {
 							Button: {
-								paddingInlineLG: 20,
-								controlHeightLG: 45,
+								paddingInlineLG: 12,
+								controlHeightLG: 38,
 								defaultShadow: false,
 								contentFontSize: 16,
-								fontWeight: 600,
+								fontWeight: 500,
 								defaultBorderColor: 'transparent',
 								defaultColor: 'rgba(26, 26, 26, 0.5)',
 								defaultBg: 'transparent',
@@ -370,25 +353,25 @@ export default function Rnp() {
 					}}
 				>
 					<Flex justify="space-between">
-						<Flex>
-							<Button
-								type={view === 'articles' ? 'primary' : 'default'}
-								size="large"
+						<Flex gap={4} align="center">
+							<button
+								className={view === 'articles' ? `${styles.segmented__button} ${styles.segmented__button_active}` : styles.segmented__button}
 								onClick={() => {
 									viewHandler('articles');
 								}}
+								style={{ fontWeight: 500, fontSize: 14 }}
 							>
 								По артикулам
-							</Button>
-							<Button
-								type={view === 'total' ? 'primary' : 'default'}
-								size="large"
+							</button>
+							<button
+								className={view === 'total' ? `${styles.segmented__button} ${styles.segmented__button_active}` : styles.segmented__button}
 								onClick={() => {
 									viewHandler('total');
 								}}
+								style={{ fontWeight: 500, fontSize: 14 }}
 							>
 								Сводный
-							</Button>
+							</button>
 						</Flex>
 						<ConfigProvider
 							theme={{
@@ -409,22 +392,29 @@ export default function Rnp() {
 								type="primary"
 								size="large"
 								onClick={setAddRnpModalShow}
+								style={{ fontWeight: 600, fontSize: 14 }}
 							>
+								<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+									<path d="M9 1V9M9 17V9M9 9H1H17" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+								</svg>
+
 								Добавить артикул
 							</Button>
 						</ConfigProvider>
 					</Flex>
 				</ConfigProvider>)}
 
-				<div>
-					<RnpFilters
+				<div className={styles.page__filtersWrapper}>
+					<Filters
 						isDataLoading={loading}
-						slice={'filtersRnp'}
-						filterActions={filterActions}
-						fetchFilters={fetchRnpFilters}
 						articleSelect={false}
 						groupSelect={false}
 						categorySelect={false}
+					/>
+					<HowToLink
+						text='Как использовать?'
+						target='_blank'
+						url='https://radar.usedocs.com/article/79433'
 					/>
 				</div>
 
@@ -435,12 +425,14 @@ export default function Rnp() {
 						</div>
 					</div>
 				)}
-				
-				{!loading  && shopStatus && !shopStatus?.is_primary_collect && (
-          <DataCollectWarningBlock title='Ваши данные еще формируются и обрабатываются.' />
+
+				{!loading && activeBrand && !activeBrand?.is_primary_collect && (
+          <DataCollectWarningBlock
+            title='Ваши данные еще формируются и обрабатываются.'
+          />
 				)}
 
-				{!loading && shopStatus && shopStatus?.is_primary_collect && (
+				{!loading && activeBrand && activeBrand?.is_primary_collect && (
 					<RnpList
 						view={view}
 						setView={viewHandler}

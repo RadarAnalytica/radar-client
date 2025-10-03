@@ -1,14 +1,14 @@
 .block {
     width: 100%;
     /* box-shadow: 0px 0px 20px 0px #00000014; */
-    padding: 16px 16px 32px;
+    padding: 16px;
     border-radius: 8px;
     background: white;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
-    gap: 16px;
+    gap: 8px;
 }
 
 .block__titleWrapper {
@@ -21,7 +21,7 @@
 .block__title {
     font-family: 'Mulish';
     font-weight: 700;
-    font-size: 16px;
+    font-size: 14px;
     line-height: 1;
     color: #1A1A1A;
     margin: 0;
@@ -30,7 +30,7 @@
 .block__text {
     font-family: 'Mulish';
     font-weight: 400;
-    font-size: 16px;
+    font-size: 14px;
     line-height: 1.5;
     color: #1A1A1A;
     margin: 0;
@@ -40,7 +40,7 @@
 .block__addButton {
     font-family: 'Mulish';
     font-weight: 700;
-    font-size: 16px;
+    font-size: 14px;
     line-height: 1;
     color: #5329FF;
     margin: 0;

@@ -77,11 +77,11 @@ export const MultiSelect = (
                     }}
                 >
                     {!searchState && <Button
-                        style={{ width: '100%' }}
                         type='primary'
                         size='large'
                         onClick={action}
                         disabled={optionsData.length === 0}
+                        style={{ fontSize: 14, width: '100%' }}
                     >
                         {selectState.filter(_ => _.value !== 'Все').length < optionsData.length && 'Выбрать все'}
                         {selectState.filter(_ => _.value !== 'Все').length === optionsData.length && 'Снять все'}
@@ -104,7 +104,7 @@ export const MultiSelect = (
                 //onMouseDown={onPreventMouseDown}
                 closable={false}
                 onClose={onClose}
-                style={{ background: 'transparent', color: 'black', fontSize: '18px', display: 'flex', alignItems: 'center' }}
+                style={{ background: 'transparent', color: 'black', fontSize: '15px', display: 'flex', alignItems: 'center', border: 'none' }}
             >
                 {label}
             </Tag>
@@ -154,19 +154,19 @@ export const MultiSelect = (
                     renderEmpty={() => (<div style={{ cursor: 'default' }}>{selectId === 'product_groups' ? 'Нет групп' : 'Нет данных'}</div>)}
                     theme={{
                         token: {
-                            colorBgContainer: '#EAEAF1',
-                            colorBorder: 'transparent',
+                            colorBgContainer: 'white',
+                            colorBorder: '#5329FF1A',
                             borderRadius: 8,
                             fontFamily: 'Mulish',
-                            fontSize: 16,
+                            fontSize: 14,
                         },
                         components: {
                             Select: {
-                                activeBorderColor: 'transparent',
+                                activeBorderColor: '#5329FF1A',
                                 activeOutlineColor: 'transparent',
-                                hoverBorderColor: 'transparent',
+                                hoverBorderColor: '#5329FF1A',
                                 optionActiveBg: 'transparent',
-                                optionFontSize: 16,
+                                optionFontSize: 14,
                                 optionSelectedBg: 'transparent',
                                 optionSelectedColor: '#5329FF',
                             }
