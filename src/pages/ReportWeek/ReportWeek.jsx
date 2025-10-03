@@ -27,6 +27,8 @@ import NoSubscriptionWarningBlock from '@/components/sharedComponents/noSubscrip
 import { COLUMNS } from './columnsConfig';
 import TableWidget from './widgets/TableWidget/TableWidget';
 import { useDemoMode } from '@/app/providers/DemoDataProvider';
+import { fetchFilters } from '@/redux/apiServicePagesFiltersState/filterActions';
+
 export default function ReportWeek() {
 	const { user, authToken } = useContext(AuthContext);
 	const { isDemoMode } = useDemoMode();
@@ -151,12 +153,16 @@ export default function ReportWeek() {
 
 	useEffect(() => {
 		if (isDemoMode && weekOptions && weekOptions.length > 0) {
-			dispatch(filterActions.setActiveFilters({
-				stateKey: 'activeWeeks',
-				data: weekOptions[0].value
-			}));
+			dispatch(fetchFilters(authToken));
 		}
 	}, [isDemoMode, weekOptions]);
+
+	useEffect(() => {
+		dispatch(filterActions.setActiveFilters({
+			stateKey: 'activeWeeks',
+			data: weekOptions[0].value
+		}));
+	}, [filters.filters]);
 
 	const updateDataReportWeek = async () => {
 		setLoading(true);

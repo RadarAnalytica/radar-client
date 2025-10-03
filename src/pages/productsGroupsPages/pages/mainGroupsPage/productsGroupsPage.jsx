@@ -9,6 +9,9 @@ import AuthContext from '@/service/AuthContext';
 import ErrorModal from '@/components/sharedComponents/modals/errorModal/errorModal';
 import { useAppSelector } from '@/redux/hooks';
 import { ServiceFunctions } from '@/service/serviceFunctions';
+import { useDemoMode } from "@/app/providers";
+import NoSubscriptionWarningBlock
+  from "@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock";
 
 const initDataFetchingStatus = {
     isLoading: false,
@@ -22,30 +25,13 @@ const initAlertState = {
     message: '',
 }
 const ProductGroupsPage = () => {
-    const { authToken } = useContext(AuthContext)
-    const [isAddGroupModalVisible, setIsAddGroupModalVisible] = useState(false)
+    const { authToken } = useContext(AuthContext);
+    const { isDemoMode } = useDemoMode();
+    const [isAddGroupModalVisible, setIsAddGroupModalVisible] = useState(false);
     const [alertState, setAlertState] = useState(initAlertState);
-    const [dataFetchingStatus, setDataFetchingStatus] = useState(initDataFetchingStatus)
-    const [groupsMainData, setGroupsMainData] = useState([])
+    const [dataFetchingStatus, setDataFetchingStatus] = useState(initDataFetchingStatus);
+    const [groupsMainData, setGroupsMainData] = useState([]);
     const { shops } = useAppSelector((state) => state.shopsSlice);
-    // const { activeBrand } = useAppSelector( (state) => state.filters );
-    
-    // const shopStatus = useMemo(() => {
-		// if (!activeBrand || !shops) return null;
-    //
-    //     if (activeBrand.id === 0) {
-    //         return {
-    //             id: 0,
-    //             brand_name: 'Все',
-    //             is_active: shops.some(shop => shop.is_primary_collect),
-    //             is_valid: true,
-    //             is_primary_collect: shops.some(shop => shop.is_primary_collect),
-    //             is_self_cost_set: !shops.some(shop => !shop.is_self_cost_set)
-    //         };
-    //     }
-    //
-    //     return shops.find(shop => shop.id === activeBrand.id);
-    // }, [shops]);
 
     const getGroupsData = async (authToken) => {
         groupsMainData.length === 0 && setDataFetchingStatus({ ...initDataFetchingStatus, isLoading: true });
@@ -81,6 +67,8 @@ const ProductGroupsPage = () => {
                 <div className={styles.page__headerWrapper}>
                     <Header title='Группы товаров' />
                 </div>
+
+                {isDemoMode && <NoSubscriptionWarningBlock />}
 
                 {dataFetchingStatus.isLoading &&
                     <div className={styles.page__loaderWrapper}>

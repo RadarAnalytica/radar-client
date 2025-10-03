@@ -32,24 +32,15 @@ const OrdersMap = () => {
   const { user, authToken, logout } = useContext(AuthContext);
   const { isDemoMode } = useDemoMode();
   const shops = useAppSelector((state) => state.shopsSlice.shops);
-  const { activeBrand, selectedRange, isFiltersLoaded, activeBrandName, activeArticle, activeGroup } = useAppSelector(store => store.filters)
-  const filters = useAppSelector(store => store.filters)
-
-  // const [geoData, setGeoData] = useState([]);
-  // const { geoData, loading, error } = useAppSelector(
-  // (state) => state.geoDataSlice
-  // );
+  const { activeBrand, selectedRange, isFiltersLoaded, activeBrandName, activeArticle, activeGroup } = useAppSelector(store => store.filters);
+  const filters = useAppSelector(store => store.filters);
   const [geoData, setGeoData] = useState([])
-
   const [byRegions, setByRegions] = useState(true);
   const [_, setActiveBrand] = useState(null);
   const [firstLoading, setFirstLoading] = useState(true);
   const [data, setData] = useState();
   const [loading, setLoading] = useState(false); // лоадер для загрузки данных
   const [isVisible, setIsVisible] = useState(true);
-  // const prevselectedRange = useRef(selectedRange);
-  // const prevActiveBrand = useRef(activeBrand);
-  // const authTokenRef = useRef(authToken);
   const [primaryCollect, setPrimaryCollect] = useState(null)
 
   const radioOptions = [
@@ -63,12 +54,10 @@ const OrdersMap = () => {
         const data = await ServiceFunctions.getGeographyData(authToken, selectedRange, activeBrand.id, filters);
         setGeoData(data);
       }
-      setByRegions(true)
-      setLoading(false)
     } catch (error) {
-      setLoading(false)
+      console.log(error);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
   }
 
@@ -696,7 +685,7 @@ const OrdersMap = () => {
               <RadioGroup
                 options={radioOptions}
                 name='mapView'
-                defaultValue='region'
+                defaultValue={byRegions ? 'region' : 'store'}
                 onChange={handleRadioChange}
               />
 

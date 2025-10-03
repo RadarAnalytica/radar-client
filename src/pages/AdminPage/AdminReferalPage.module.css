@@ -3,11 +3,10 @@
 .page {
     background-color: #F7F6FE;
     height: 100vh;
-    overflow: hidden;
+    overflow: auto;
     width: 100%;
     display: flex;
     box-sizing: border-box;
-    overflow-x: scroll;
     min-width: 1200px;
 }
 

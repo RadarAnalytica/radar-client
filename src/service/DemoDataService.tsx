@@ -114,6 +114,15 @@ export class DemoDataService {
       });
     }
 
+    // Паттерн для /api/product/product_groups/{id}/products
+    const productGroupsIdProductsMatch = endpoint.match(/^\/api\/product\/product_groups\/(\d+)\/products$/);
+    if (productGroupsIdProductsMatch) {
+      const productGroupProductsId = productGroupsIdProductsMatch[1];
+      return this.createApiResponse({
+        data: this.getProductGroupById(productGroupProductsId)
+      });
+    }
+
     return null;
   }
 
@@ -133,7 +142,7 @@ export class DemoDataService {
         }
       ],
       created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString()
+      updated_at: new Date().toISOString(),
     };
   }
 
@@ -208,7 +217,15 @@ export class DemoDataService {
   }
 
   private getAbcDataProfit(): any {
-    return abcDataProfit;
+    const data = this.getOriginalJson(abcDataProfit);
+    const days = this.getFilterDays();
+    const denominator = 90 / days;
+
+    data.results.map(item => {
+      item.amount = item.amount / denominator;
+    });
+    
+    return data;
   }
 
   private getSelfCostsData(): any { 
@@ -259,6 +276,26 @@ export class DemoDataService {
     data.saleAmountList = data.saleAmountList.slice(0, days);
     data.marginalityRoiChart = data.marginalityRoiChart.slice(0, days);
     data.salesAndProfit = data.salesAndProfit.slice(0, days);
+
+    // Обновляем даты в marginalityRoiChart и salesAndProfit начиная от сегодня и назад
+    const today = new Date();
+    data.marginalityRoiChart = data.marginalityRoiChart.map((item: any, index: number) => {
+      const date = new Date(today);
+      date.setDate(date.getDate() - (days - 1 - index));
+      return {
+        ...item,
+        date: date.toISOString().split('T')[0] // Формат YYYY-MM-DD
+      };
+    });
+
+    data.salesAndProfit = data.salesAndProfit.map((item: any, index: number) => {
+      const date = new Date(today);
+      date.setDate(date.getDate() - (days - 1 - index));
+      return {
+        ...item,
+        date: date.toISOString().split('T')[0] // Формат YYYY-MM-DD
+      };
+    });
     
     data.orderAmount = Math.round(data.orderAmount / denominator);
     data.saleAmount = data.saleAmount / denominator;
@@ -293,9 +330,10 @@ export class DemoDataService {
   }
 
   private getRnpByArticleData(): any {
-    const data = rnpByArticleData;
+    const data = this.getOriginalJson(rnpByArticleData);
     const filters = store.getState().filters;
     const days = this.getFilterDays();
+    const denominator = 90 / days;
 
     // Обновляем даты в by_date_data массиве для каждого элемента
     const updatedData = data.map((item: any) => {
@@ -307,10 +345,10 @@ export class DemoDataService {
           // Генерируем дату от вчерашнего или последнего выбранного дня и назад
           const date = new Date();
           date.setDate(date.getDate() - index - diffDays);
-          
+
           return { ...dateItem, date: date.toISOString() };
         });
-        
+
         return { ...item, by_date_data: updatedByDateData };
       }
 
@@ -401,127 +439,129 @@ export class DemoDataService {
       endMonth = month;
     }
     
-    // Генерируем месяцы для периода
-    const months = this.generateMonthsForPeriod(startYear, startMonth, endYear, endMonth);
+    const result = [];
     
-    // Генерируем данные за год
-    const yearData = this.generateYearPlData(startYear);
-    
-    // Генерируем данные по месяцам
-    const monthsData = months.map(monthInfo => this.generateMonthPlData(monthInfo));
-    
-    return [{
-      year: startYear,
-      data: yearData,
-      months: monthsData
-    }];
+    // Генерируем данные по годам
+    for (let year = startYear; year <= endYear; year++) {
+      // Определяем диапазон месяцев для текущего года
+      const yearStartMonth = (year === startYear) ? startMonth : 1;
+      const yearEndMonth = (year === endYear) ? endMonth : 12;
+
+      // Генерируем месяцы для текущего года
+      const monthsData = this.generateMonthsForYear(year, yearStartMonth, yearEndMonth);
+      const monthsDataWithData = monthsData.map((month) => this.generateMonthPlData(month));
+
+      // Добавляем колонку года с сумарными данными
+      result.push({
+        year: year,
+        data: this.generateYearPlData(),
+        months: monthsDataWithData,
+      });
+    }
+
+    console.log(result);
+
+    return result;
   }
 
-  // Генерация списка месяцев для указанного периода
-  private generateMonthsForPeriod(startYear: number, startMonth: number, endYear: number, endMonth: number) {
+  // Генерация списка месяцев для указанного года
+  private generateMonthsForYear(year: number, startMonth: number, endMonth: number) {
     const months = [];
     const monthNames = [
       'Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь',
       'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'
     ];
     
-    let currentYear = startYear;
-    let currentMonth = startMonth;
-    
-    while (currentYear < endYear || (currentYear === endYear && currentMonth <= endMonth)) {
+    for (let month = startMonth; month <= endMonth; month++) {
       months.push({
-        year: currentYear,
-        month: currentMonth,
-        label: `${monthNames[currentMonth - 1]} ${currentYear}`
+        year: year,
+        month: month,
+        label: `${monthNames[month - 1]} ${year}`
       });
-      
-      currentMonth++;
-      if (currentMonth > 12) {
-        currentMonth = 1;
-        currentYear++;
-      }
     }
     
     return months;
   }
 
   // Генерация данных за год
-  private generateYearPlData(year: number) {
+  private generateYearPlData() {
+    const baseMultiplier = this.generateRandomPercent(1, 1.5);
+
     return {
       realization: {
-        rub: this.generateRandomAmount(100000000, 150000000),
+        rub: this.generateRandomAmount(100000000, 150000000) * baseMultiplier,
         percent: this.generateRandomPercent(65, 75)
       },
       mp_discount: {
-        rub: this.generateRandomAmount(30000000, 50000000),
+        rub: this.generateRandomAmount(30000000, 50000000) * baseMultiplier,
         percent: this.generateRandomPercent(20, 30)
       },
       sales: {
-        rub: this.generateRandomAmount(140000000, 200000000),
+        rub: this.generateRandomAmount(140000000, 200000000) * baseMultiplier,
         percent: 100
       },
       direct_expenses: {
         cost: {
-          rub: this.generateRandomAmount(500000, 1000000),
+          rub: this.generateRandomAmount(500000, 1000000) * baseMultiplier,
           percent: this.generateRandomPercent(0.3, 0.7)
         },
         logistic: {
-          rub: this.generateRandomAmount(15000000, 20000000),
+          rub: this.generateRandomAmount(15000000, 20000000) * baseMultiplier,
           percent: this.generateRandomPercent(10, 15)
         },
         commission: {
-          rub: this.generateRandomAmount(30000000, 40000000),
+          rub: this.generateRandomAmount(30000000, 40000000) * baseMultiplier,
           percent: this.generateRandomPercent(20, 25)
         },
         penalties: {
-          rub: this.generateRandomAmount(50000, 100000),
+          rub: this.generateRandomAmount(50000, 100000) * baseMultiplier,
           percent: this.generateRandomPercent(0.02, 0.1)
         },
         storage: {
-          rub: this.generateRandomAmount(500000, 1500000),
+          rub: this.generateRandomAmount(500000, 1500000) * baseMultiplier,
           percent: this.generateRandomPercent(0.3, 1.0)
         },
         advert: {
-          rub: this.generateRandomAmount(60000000, 80000000),
+          rub: this.generateRandomAmount(60000000, 80000000) * baseMultiplier,
           percent: this.generateRandomPercent(40, 50)
         },
         other_retentions: {
-          rub: this.generateRandomAmount(60000000, 80000000),
+          rub: this.generateRandomAmount(60000000, 80000000) * baseMultiplier,
           percent: this.generateRandomPercent(40, 50)
         },
         paid_acceptance: {
-          rub: this.generateRandomAmount(100000, 300000),
+          rub: this.generateRandomAmount(100000, 300000) * baseMultiplier,
           percent: this.generateRandomPercent(0.05, 0.2)
         },
         total_expenses: {
-          rub: this.generateRandomAmount(120000000, 160000000),
+          rub: this.generateRandomAmount(120000000, 160000000) * baseMultiplier,
           percent: this.generateRandomPercent(80, 90)
         }
       },
       compensation: {
-        rub: this.generateRandomAmount(50000, 150000),
+        rub: this.generateRandomAmount(50000, 150000) * baseMultiplier,
         percent: this.generateRandomPercent(0.03, 0.1)
       },
       gross_margin: {
-        rub: this.generateRandomAmount(130000000, 190000000),
+        rub: this.generateRandomAmount(130000000, 190000000) * baseMultiplier,
         percent: this.generateRandomPercent(90, 98)
       },
       operating_expenses: null,
       operating_profit: {
-        rub: this.generateRandomAmount(15000000, 35000000),
+        rub: this.generateRandomAmount(15000000, 35000000) * baseMultiplier,
         percent: this.generateRandomPercent(10, 20)
       },
       ebitda: {
-        rub: this.generateRandomAmount(15000000, 35000000),
+        rub: this.generateRandomAmount(15000000, 35000000) * baseMultiplier,
         percent: this.generateRandomPercent(10, 20)
       },
       ebitda_margin: this.generateRandomPercent(10, 20),
       tax: {
-        rub: this.generateRandomAmount(3000000, 6000000),
+        rub: this.generateRandomAmount(3000000, 6000000) * baseMultiplier,
         percent: this.generateRandomPercent(2, 4)
       },
       net_profit: {
-        rub: this.generateRandomAmount(50000000, 80000000),
+        rub: this.generateRandomAmount(50000000, 80000000) * baseMultiplier,
         percent: this.generateRandomPercent(30, 50)
       }
     };
@@ -529,85 +569,85 @@ export class DemoDataService {
 
   // Генерация данных за месяц
   private generateMonthPlData(monthInfo: { year: number; month: number; label: string }) {
-    const baseMultiplier = this.generateRandomPercent(0.7, 1.3); // Вариация по месяцам
+    const baseMultiplier = this.generateRandomPercent(0.1, 0.6); // Вариация по месяцам
     
     return {
       month_label: monthInfo.label,
       data: {
         realization: {
-          rub: this.generateRandomAmount(8000000, 20000000) * baseMultiplier,
+          rub: this.generateRandomAmount(80000, 200000) * baseMultiplier,
           percent: this.generateRandomPercent(60, 80)
         },
         mp_discount: {
-          rub: this.generateRandomAmount(2000000, 6000000) * baseMultiplier,
+          rub: this.generateRandomAmount(20000, 60000) * baseMultiplier,
           percent: this.generateRandomPercent(15, 35)
         },
         sales: {
-          rub: this.generateRandomAmount(12000000, 25000000) * baseMultiplier,
+          rub: this.generateRandomAmount(120000, 250000) * baseMultiplier,
           percent: 100
         },
         direct_expenses: {
           cost: {
-            rub: this.generateRandomAmount(50000, 150000) * baseMultiplier,
+            rub: this.generateRandomAmount(500, 1500) * baseMultiplier,
             percent: this.generateRandomPercent(0.3, 0.8)
           },
           logistic: {
-            rub: this.generateRandomAmount(1000000, 2500000) * baseMultiplier,
+            rub: this.generateRandomAmount(10000, 25000) * baseMultiplier,
             percent: this.generateRandomPercent(8, 15)
           },
           commission: {
-            rub: this.generateRandomAmount(2500000, 5000000) * baseMultiplier,
+            rub: this.generateRandomAmount(25000, 50000) * baseMultiplier,
             percent: this.generateRandomPercent(15, 30)
           },
           penalties: {
-            rub: this.generateRandomAmount(1000, 20000) * baseMultiplier,
+            rub: this.generateRandomAmount(100, 2000) * baseMultiplier,
             percent: this.generateRandomPercent(0.01, 0.15)
           },
           storage: {
-            rub: this.generateRandomAmount(50000, 200000) * baseMultiplier,
+            rub: this.generateRandomAmount(500, 2000) * baseMultiplier,
             percent: this.generateRandomPercent(0.3, 1.5)
           },
           advert: {
-            rub: this.generateRandomAmount(5000000, 15000000) * baseMultiplier,
+            rub: this.generateRandomAmount(50000, 150000) * baseMultiplier,
             percent: this.generateRandomPercent(30, 80)
           },
           other_retentions: {
-            rub: this.generateRandomAmount(5000000, 15000000) * baseMultiplier,
+            rub: this.generateRandomAmount(50000, 150000) * baseMultiplier,
             percent: this.generateRandomPercent(30, 80)
           },
           paid_acceptance: {
-            rub: this.generateRandomAmount(10000, 80000) * baseMultiplier,
+            rub: this.generateRandomAmount(100, 800) * baseMultiplier,
             percent: this.generateRandomPercent(0.05, 0.5)
           },
           total_expenses: {
-            rub: this.generateRandomAmount(10000000, 20000000) * baseMultiplier,
+            rub: this.generateRandomAmount(100000, 200000) * baseMultiplier,
             percent: this.generateRandomPercent(70, 120)
           }
         },
         compensation: {
-          rub: this.generateRandomAmount(5000, 50000) * baseMultiplier,
+          rub: this.generateRandomAmount(500, 5000) * baseMultiplier,
           percent: this.generateRandomPercent(0.01, 0.3)
         },
         gross_margin: {
-          rub: this.generateRandomAmount(11000000, 24000000) * baseMultiplier,
+          rub: this.generateRandomAmount(110000, 240000) * baseMultiplier,
           percent: this.generateRandomPercent(85, 98)
         },
         operating_expenses: null,
         operating_profit: {
-          rub: this.generateRandomAmount(-5000000, 15000000) * baseMultiplier,
+          rub: this.generateRandomAmount(-50000, 150000) * baseMultiplier,
           percent: this.generateRandomPercent(-40, 70)
         },
         ebitda: {
-          rub: this.generateRandomAmount(-5000000, 15000000) * baseMultiplier,
+          rub: this.generateRandomAmount(-50000, 150000) * baseMultiplier,
           percent: this.generateRandomPercent(-40, 70)
         },
         ebitda_margin: this.generateRandomPercent(-40, 70),
         tax: {
-          rub: this.generateRandomAmount(200000, 800000) * baseMultiplier,
+          rub: this.generateRandomAmount(2000, 8000) * baseMultiplier,
           percent: this.generateRandomPercent(1.5, 4)
         },
         net_profit: {
-          rub: this.generateRandomAmount(3000000, 12000000) * baseMultiplier,
+          rub: this.generateRandomAmount(30000, 120000) * baseMultiplier,
           percent: this.generateRandomPercent(20, 60)
         }
       }

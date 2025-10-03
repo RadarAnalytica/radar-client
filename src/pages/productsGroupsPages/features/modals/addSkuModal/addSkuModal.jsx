@@ -32,7 +32,6 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, groupData,
     const { authToken } = useContext(AuthContext)
     const [tableData, setTableData] = useState()
     const [initData, setInitData] = useState()
-    const [isDataLoading, setIsDataLoading] = useState(false)
     const [checkedList, setCheckedList] = useState([]);
     const [searchInputValue, setSearchInputValue] = useState('')
     const [paginationState, setPaginationState] = useState({ current: 1, total: 50, pageSize: 50 });
@@ -40,16 +39,10 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, groupData,
     const checkAll = tableData && tableData.length === checkedList.length;
     const indeterminate = tableData && checkedList.length > 0 && checkedList.length < tableData.length;
 
-
     const onCheckboxChange = (e) => {
         const { value, checked } = e.target;
         if (checked) {
-            setCheckedList([...checkedList, value])
-            // if (searchInputValue && checkedListRef?.current && checkedListRef?.current.some(_ => _ === value)) {
-            //     let newSavedList = checkedListRef.current;
-            //     const index = newSavedList.findIndex(_ => _ === value);
-            //     checkedListRef.current = newSavedList.splice(index, 1)
-            // }
+            setCheckedList([...checkedList, value]);
         } else {
             const index = checkedList.findIndex(_ => _ === value)
             const newList = checkedList
@@ -88,11 +81,15 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, groupData,
                     'authorization': 'JWT ' + authToken,
                     'cache': 'no-store'
                 },
-            })
+            });
 
             if (!res.ok) {
-                const parsedData = await res.json()
-                setDataFetchingStatus({ ...initDataFetchingStatus, isError: true, message: parsedData?.detail || 'Что-то пошло не так :(' })
+                const parsedData = await res.json();
+                setDataFetchingStatus({
+                  ...initDataFetchingStatus,
+                  isError: true,
+                  message: parsedData?.detail || 'Что-то пошло не так :('
+                });
                 return;
             }
             const parsedRes = await res.json();
@@ -129,7 +126,7 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, groupData,
         }
 
         try {
-            const res = await fetch(`${URL}/api/product/product_groups/${groupData.id}`, {
+            const res = await fetchApi(`/api/product/product_groups/${groupData.id}`, {
                 method: 'PATCH',
                 headers: {
                     'content-type': 'application/json',

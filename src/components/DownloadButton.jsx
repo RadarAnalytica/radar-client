@@ -1,23 +1,12 @@
 import React from 'react';
-import downloadIcon from '../pages/images/Download.svg';
 import { Button, ConfigProvider } from 'antd';
+import { useDemoMode } from "@/app/providers";
 
-const DownloadButton = ({ handleDownload, loading, styles }) => {
+const DownloadButton = ({ handleDownload, loading }) => {
+  const { isDemoMode } = useDemoMode();
+
   return (
     <>
-      {/* <button
-        className={styles ? styles : `download-button ${isLoading ? 'disabled' : ''}`}
-        disabled={isLoading}
-        onClick={() => !isLoading && handleDownload()}
-        style={{ cursor: isLoading ? 'not-allowed' : 'pointer', border: 'none' }}
-      >
-        {!isLoading ? (
-          <img src={downloadIcon} />
-        ) : (
-          <span className='small-loader'></span>
-        )}
-        Скачать Excel
-      </button> */}
       <ConfigProvider
         wave={{ disabled: true }}
         theme={{
@@ -37,6 +26,8 @@ const DownloadButton = ({ handleDownload, loading, styles }) => {
           size='large'
           loading={loading}
           onClick={() => !loading && handleDownload()}
+          disabled={isDemoMode}
+          title={isDemoMode ? 'Скачивание доступно после активации подписки' : 'Скачать таблицу в виде Excel-файла'}
           style={{ fontWeight: 600, height: 45, padding: 6 }}
         >
             <svg width="18" height="17" viewBox="0 0 18 17" fill="none" xmlns="http://www.w3.org/2000/svg">

@@ -397,9 +397,8 @@ export default function Rnp() {
 								style={{ fontWeight: 600, fontSize: 14 }}
 							>
 								<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-									<path d="M9 1V9M9 17V9M9 9H1H17" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+									<path d="M9 1V9M9 17V9M9 9H1H17" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
 								</svg>
-
 								Добавить артикул
 							</Button>
 						</ConfigProvider>

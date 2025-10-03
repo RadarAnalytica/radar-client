@@ -162,7 +162,7 @@ export default function TrendAnalysisQuery() {
 			<aside className={styles.page__sideNavWrapper}>
 				<Sidebar />
 			</aside>
-      
+
 			<section className={styles.page__content}>
 				<div className={styles.page__headerWrapper}>
 					<Header title="Анализ трендовой динамики запросов"></Header>

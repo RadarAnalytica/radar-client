@@ -11,6 +11,9 @@ import ErrorModal from '@/components/sharedComponents/modals/errorModal/errorMod
 import { useAppSelector } from '@/redux/hooks';
 import DataCollectWarningBlock from '@/components/sharedComponents/dataCollectWarningBlock/dataCollectWarningBlock';
 import { ServiceFunctions } from '@/service/serviceFunctions';
+import { useDemoMode } from "@/app/providers";
+import NoSubscriptionWarningBlock
+  from "@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock";
 
 const initDataStatus = {
     isError: false,
@@ -19,6 +22,7 @@ const initDataStatus = {
 }
 
 const SelfCostPage = () => {
+    const { isDemoMode } = useDemoMode();
     const [searchInputValue, setSearchInputValue] = useState('')
     const [isSuccess, setIsSuccess] = useState(false);
     const [dataStatus, setDataStatus] = useState(initDataStatus)
@@ -101,16 +105,17 @@ const SelfCostPage = () => {
     return (
         <main className={styles.page}>
             <MobilePlug />
-            {/* ------ SIDE BAR ------ */}
+
             <section className={styles.page__sideNavWrapper}>
                 <Sidebar />
             </section>
-            {/* ------ CONTENT ------ */}
+
             <section className={styles.page__content}>
-                {/* header */}
                 <div className={styles.page__headerWrapper}>
                     <Header title='Себестоимость' />
                 </div>
+
+                {isDemoMode && <NoSubscriptionWarningBlock />}
 
                 <div className={styles.page__filtersWrapper}>
                     <Filters

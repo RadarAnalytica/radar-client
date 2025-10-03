@@ -8,20 +8,22 @@ import { Filters } from '@/components/sharedComponents/apiServicePagesFiltersCom
 import MobilePlug from '@/components/sharedComponents/mobilePlug/mobilePlug';
 import Header from '@/components/sharedComponents/header/header';
 import Sidebar from '@/components/sharedComponents/sidebar/sidebar';
-import { mockGetAbcData } from '@/service/mockServiceFunctions';
 import SelfCostWarningBlock from '@/components/sharedComponents/selfCostWraningBlock/selfCostWarningBlock';
 import DataCollectWarningBlock from '@/components/sharedComponents/dataCollectWarningBlock/dataCollectWarningBlock';
 import { ConfigProvider, Table, Button, Flex } from 'antd';
 import ruRU from 'antd/locale/ru_RU'
 import { COLUMNS } from './widgets/table/config';
+import { useDemoMode } from "@/app/providers";
+import NoSubscriptionWarningBlock
+  from "@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock";
 
 const AbcAnalysisPage = () => {
 	const { activeBrand, selectedRange, isFiltersLoaded, activeBrandName, activeArticle, activeGroup, shops } = useAppSelector(
 		(store) => store.filters
 	);
 	const filters = useAppSelector((store) => store.filters);
-	//const shops = useAppSelector((state) => state.shopsSlice.shops);
 	const { user, authToken } = useContext(AuthContext);
+  const { isDemoMode } = useDemoMode();
 	const dispatch = useAppDispatch();
 	const [dataAbcAnalysis, setDataAbcAnalysis] = useState(null);
 	const [isNeedCost, setIsNeedCost] = useState([]);
@@ -243,20 +245,20 @@ const AbcAnalysisPage = () => {
 	}
 
 	return (
-		// isVisible && (
 		<main className={styles.page}>
 			<MobilePlug />
-			{/* ------ SIDE BAR ------ */}
+
 			<section className={styles.page__sideNavWrapper}>
 				<Sidebar />
 			</section>
-			{/* ------ CONTENT ------ */}
+
 			<section className={styles.page__content}>
-				{/* header */}
 				<div className={styles.page__headerWrapper}>
 					<Header title="ABC-анализ" />
 				</div>
-				{/* !header */}
+
+        {isDemoMode && <NoSubscriptionWarningBlock />}
+
 				<div>
 					<Filters setLoading={setLoading} isDataLoading={loading} />
 				</div>

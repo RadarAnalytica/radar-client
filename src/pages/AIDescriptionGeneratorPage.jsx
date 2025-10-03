@@ -45,9 +45,6 @@ function declineGeneration(count) {
 
 const AiDescriptionGeneratorPage = () => {
   const {
-    productName,
-    productDescription,
-    competitorsLinks,
     setProductName,
     setShortDescription,
     keywords,
@@ -467,16 +464,18 @@ const AiDescriptionGeneratorPage = () => {
                     {amountGenerations === 1 ? 'генерация' : 'генераций'} */}
                   </span>
                 </p>
-                <div className={styles.topNavAdd} onClick={handleNewGenerator}>
-                  Добавить генерации
-                </div>
+                {!isDemoMode &&
+                  <div className={styles.topNavAdd} onClick={handleNewGenerator}>
+                    Добавить генерации
+                  </div>
+                }
               </div>
             </div>
           </Header>
         </div>
 
         {isDemoMode && (
-					  <NoSubscriptionWarningBlock className="mb-3" />
+          <NoSubscriptionWarningBlock className="mb-3" />
         )}
 
         {isModalOpenNewGen && (

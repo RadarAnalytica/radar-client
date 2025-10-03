@@ -10,7 +10,6 @@ import styles from './singleGroupPage.module.css'
 import AuthContext from '@/service/AuthContext';
 import ErrorModal from '@/components/sharedComponents/modals/errorModal/errorModal';
 import { useParams } from 'react-router-dom';
-import { URL } from '@/service/config';
 import { useAppSelector, useAppDispatch } from '@/redux/hooks';
 import { fetchShops } from '@/redux/shops/shopsActions';
 import { fetchFilters } from '@/redux/apiServicePagesFiltersState/filterActions';
@@ -72,7 +71,7 @@ const SingleGroupPage = () => {
             });
 
             if (!res.ok) {
-                const parsedData = await res.json()
+                const parsedData = await res.json();
                 setDataFetchingStatus({
                   ...initDataFetchingStatus,
                   isError: true,
