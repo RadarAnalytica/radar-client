@@ -44,7 +44,7 @@ export default function Rnp() {
 	const [rnpDataTotal, setRnpDataTotal] = useState(null)
 	const [deleteRnpId, setDeleteRnpId] = useState(null);
 	const [error, setError] = useState(null);
-	const [expanded, setExpanded] = useState([]);
+	const [expanded, setExpanded] = useState('');
 
 	const updateRnpListByArticle = async () => {
 		setLoading(true);
@@ -143,7 +143,7 @@ export default function Rnp() {
 			},
 			article_data: article.article_data,
 		};
-		
+
 		setRnpDataTotal(item);
 	};
 
@@ -221,14 +221,18 @@ export default function Rnp() {
 
 
 	useEffect(() => {
-		let EXPANDED_STATE = JSON.parse(localStorage.getItem('RNP_EXPANDED_STATE'));
-		if (EXPANDED_STATE && rnpDataByArticle?.length > 0) {
-			const isInCurrentList = rnpDataByArticle.some((el) => el.article_data.wb_id === EXPANDED_STATE);
-			let updatedExpandedState;
-			if (!isInCurrentList) {
-				EXPANDED_STATE = rnpDataByArticle[0].article_data.wb_id;
+		if (rnpDataByArticle) {
+			let EXPANDED_STATE = JSON.parse(localStorage.getItem('RNP_EXPANDED_STATE'));
+			if (EXPANDED_STATE && rnpDataByArticle?.length > 0) {
+				const isInCurrentList = rnpDataByArticle.some((el) => el.article_data.wb_id === EXPANDED_STATE);
+				let updatedExpandedState;
+				if (!isInCurrentList) {
+					EXPANDED_STATE = rnpDataByArticle[0].article_data.wb_id;
+				}
+				setExpanded(EXPANDED_STATE);
+				return
 			}
-			setExpanded(EXPANDED_STATE);
+			setExpanded(rnpDataByArticle[0].article_data.wb_id);
 		}
 	}, [rnpDataByArticle])
 

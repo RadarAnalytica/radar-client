@@ -428,16 +428,18 @@ export default function RnpList({ view, expanded, setExpanded, setAddRnpModalSho
 	useEffect(() => {
 		// удаляем старые данные из localStorage
 		localStorage.removeItem('rnpOrder');
-		let SAVED_ORDER = localStorage.getItem('SAVED_ORDER');
-		if (SAVED_ORDER) {
-			try {
-				SAVED_ORDER = JSON.parse(SAVED_ORDER);
-			} catch {
-				SAVED_ORDER = rnpDataByArticle.map((el) => el.article_data.wb_id);
+		if (rnpDataByArticle) {
+			let SAVED_ORDER = localStorage.getItem('SAVED_ORDER');
+			if (SAVED_ORDER) {
+				try {
+					SAVED_ORDER = JSON.parse(SAVED_ORDER);
+				} catch {
+					SAVED_ORDER = rnpDataByArticle.map((el) => el.article_data.wb_id);
+				}
+				setOrder(SAVED_ORDER);
+			} else {
+				setOrder(rnpDataByArticle.map((el) => el.article_data.wb_id));
 			}
-			setOrder(SAVED_ORDER);
-		} else {
-			setOrder(rnpDataByArticle.map((el) => el.article_data.wb_id));
 		}
 	}, [rnpDataByArticle])
 
