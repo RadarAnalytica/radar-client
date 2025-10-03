@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styles from './skuFrequencyPage.module.css'
 import Header from '@/components/sharedComponents/header/header'
 import Sidebar from '@/components/sharedComponents/sidebar/sidebar'
@@ -14,8 +14,12 @@ import HowToLink from '@/components/sharedComponents/howToLink/howToLink'
 import { ServiceFunctions } from '@/service/serviceFunctions'
 import { fileDownload } from '@/service/utils'
 import ErrorModal from '@/components/sharedComponents/modals/errorModal/errorModal'
+import { useDemoMode } from "@/app/providers";
+import NoSubscriptionWarningBlock
+  from "@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock";
 
 const SkuFrequencyPage = () => {
+    const { isDemoMode } = useDemoMode();
     const [tableConfig, setTableConfig] = useState();
     const { requestData, formType, requestObject, isLoadingForButton } = useAppSelector(store => store.requestsMonitoring);
     const [downloadStatus, setDownloadStatus] = useState({
@@ -79,6 +83,8 @@ const SkuFrequencyPage = () => {
                             videoReviewLink='https://play.boomstream.com/4yHYrlLW?color=%23FFFFFF&size=cover&autostart=0&loop=1&title=0'
                         />
                     </div>
+
+                    {isDemoMode && <NoSubscriptionWarningBlock />}
 
                     <HowtoWidget />
 

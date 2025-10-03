@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useMemo } from 'react'
+import React, { useState, useEffect, useCallback, useMemo } from 'react'
 import styles from './trendingRequests.module.css'
 import Header from '@/components/sharedComponents/header/header'
 import Sidebar from '@/components/sharedComponents/sidebar/sidebar'
@@ -6,6 +6,9 @@ import MobilePlug from '@/components/sharedComponents/mobilePlug/mobilePlug'
 import { ParamsWidget, TableWidget } from './widgets'
 import ErrorModal from '@/components/sharedComponents/modals/errorModal/errorModal'
 import { fetchApi } from "@/service/fetchApi";
+import { useDemoMode } from "@/app/providers";
+import NoSubscriptionWarningBlock
+  from "@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock";
 
 const initRequestStatus = {
     isError: false,
@@ -21,6 +24,7 @@ const initSortState = {
 };
 
 const TrendingRequestsPage = () => {
+    const { isDemoMode } = useDemoMode();
     const [isParamsVisible, setIsParamsVisible] = useState(true);
     const [requestState, setRequestState] = useState();
     const [tableData, setTableData] = useState();
@@ -84,11 +88,9 @@ const TrendingRequestsPage = () => {
                             videoReviewLink='https://play.boomstream.com/JDw00KbS?size=cover&color=%23ffffff&autostart=0&loop=1&title=0&volume=50'
                         />
                     </div>
-                    {/* <div className={styles.page__howtoBlock}>
-                        <HowtoWidget
-                            setRequestState={setRequestState}
-                        />
-                    </div> */}
+
+                    {isDemoMode && <NoSubscriptionWarningBlock />}
+
                     <div className={styles.page__widgetWrapper}>
                         <ParamsWidget
                             isParamsVisible={isParamsVisible}

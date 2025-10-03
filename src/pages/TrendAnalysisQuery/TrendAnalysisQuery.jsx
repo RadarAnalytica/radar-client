@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Filters } from '@/components/sharedComponents/apiServicePagesFiltersComponent';
 import MobilePlug from '@/components/sharedComponents/mobilePlug/mobilePlug';
 import Sidebar from '@/components/sharedComponents/sidebar/sidebar';
@@ -10,6 +10,8 @@ import TrendAnalysisQueryChart from './widget/TrendAnalysisQueryChart';
 import { ServiceFunctions } from '@/service/serviceFunctions';
 import { formatPrice, fileDownload } from '@/service/utils';
 import { useDemoMode } from "@/app/providers";
+import NoSubscriptionWarningBlock
+  from "@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock";
 
 export default function TrendAnalysisQuery() {
   const { isDemoMode } = useDemoMode();
@@ -65,12 +67,18 @@ export default function TrendAnalysisQuery() {
   const formQuery = Form.useWatch('query', form);
 
 	const submitQuery = (data) => {
-		if (!data?.query?.trim()) return;
-
-		const query = isDemoMode ? 'платье женское' : data.query.trim();
+    const query = isDemoMode ? 'платье женское' : data?.query?.trim();
+		if (!query) return;
 		setQuery(query);
 		setTimeFrame('month');
 	};
+
+  useEffect(() => {
+    if (isDemoMode) {
+      form.setFieldValue('query', 'платье женское');
+      submitQuery();
+    }
+  }, [isDemoMode]);
 
 	useEffect(() => {
 		updateData();
@@ -112,10 +120,6 @@ export default function TrendAnalysisQuery() {
 			return;
 		}
 		setLoading(true);
-		// Обновление ссылки с поисковым запросом
-		// const url = new URL(location);
-		// url.searchParams.set('query', query)
-		// window.history.pushState({visited: query}, '', url);
 
 		try {
 				const response = await ServiceFunctions.getTrendAnalysisQuery(
@@ -123,8 +127,6 @@ export default function TrendAnalysisQuery() {
 					timeFrame,
 					selectedRange,
 				);
-
-      console.log('updateData', response);
 
       mapResponseToData(response)
 		} catch (e) {
@@ -156,16 +158,18 @@ export default function TrendAnalysisQuery() {
 	return (
 		<main className={styles.page}>
 			<MobilePlug />
-			{/* ------ SIDE BAR ------ */}
+
 			<aside className={styles.page__sideNavWrapper}>
 				<Sidebar />
 			</aside>
-			{/* ------ CONTENT ------ */}
+      
 			<section className={styles.page__content}>
-				{/* header */}
 				<div className={styles.page__headerWrapper}>
 					<Header title="Анализ трендовой динамики запросов"></Header>
 				</div>
+
+        {isDemoMode && <NoSubscriptionWarningBlock />}
+
 				<ConfigProvider
 					theme={{
 						token: {

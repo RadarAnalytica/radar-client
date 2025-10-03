@@ -12,22 +12,21 @@ import { fetchSkuAnalysisMainChartData, fetchSkuAnalysisSkuData, fetchSkuAnalysi
 import { actions as skuAnalysisActions } from '../../redux/skuAnalysis/skuAnalysisSlice'
 import { ConfigProvider, Segmented } from 'antd'
 import { mainTableConfig, byColorTableConfig, byWarehouseTableConfig, bySizeTableConfig } from './shared'
-import DownloadButton from '../../components/DownloadButton'
 import ErrorModal from '../../components/sharedComponents/modals/errorModal/errorModal'
-
+import { useDemoMode } from "@/app/providers";
+import NoSubscriptionWarningBlock
+  from "@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock";
 
 const segments = ['По цветам', 'По складам', 'По размерам']
-
 const SkuIdPage = () => {
-    const dispatch = useAppDispatch()
-    const { selectedRange } = useAppSelector(store => store.filters)
-    const { dataStatus, skuMainTableData, skuByColorTableData, skuByWarehouseTableData, skuBySizeTableData } = useAppSelector(store => store.skuAnalysis)
-    const [loading, setLoading] = useState(false)
-    const [tabsState, setTabsState] = useState(segments[0])
-    const params = useParams()
-    const navigate = useNavigate()
-
-
+    const dispatch = useAppDispatch();
+    const { isDemoMode } = useDemoMode();
+    const { selectedRange } = useAppSelector(store => store.filters);
+    const { dataStatus, skuMainTableData, skuByColorTableData, skuByWarehouseTableData, skuBySizeTableData } = useAppSelector(store => store.skuAnalysis);
+    const [loading, setLoading] = useState(false);
+    const [tabsState, setTabsState] = useState(segments[0]);
+    const params = useParams();
+    const navigate = useNavigate();
 
     useEffect(() => {
         const loadSkuAnalysisData = async () => {
@@ -62,14 +61,13 @@ const SkuIdPage = () => {
     return (
         <main className={styles.page}>
             <MobilePlug />
-            {/* ------ SIDE BAR ------ */}
+
             <section className={styles.page__sideNavWrapper}>
                 <Sidebar />
             </section>
-            {/* ------ CONTENT ------ */}
+
             <section className={styles.page__content}>
                 <div className={styles.page__additionalWrapper}>
-                    {/* header */}
                     <div className={styles.page__headerWrapper}>
                         <Header
                             title={
@@ -82,7 +80,8 @@ const SkuIdPage = () => {
                             }
                         />
                     </div>
-                    {/* !header */}
+
+                    {isDemoMode && <NoSubscriptionWarningBlock />}
 
                     <ItemWidget />
                     <div>
@@ -98,8 +97,6 @@ const SkuIdPage = () => {
                     <BarsWidget />
                     <MainChartWidget id={params?.id} />
                 </div>
-
-
 
                 <div className={styles.page__tableWrapper}>
                     <TableWidget

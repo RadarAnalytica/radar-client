@@ -180,7 +180,7 @@
         132754.42,
         83071,
         7411.1,
-        0,
+        3443,
         236398.88
     ],
     "saleCountList": [
@@ -398,16 +398,16 @@
     "marginalProfitCompare": "-13%",
     "lostSalesCount": 10,
     "lostSalesAmount": 5744.88,
-    "grossProfit": 39783614.94,
-    "grossProfitCompare": "-13%",
-    "operatingProfit": 21289079.32,
-    "operatingProfitCompare": "-19%",
-    "netProfit": 17641415.05,
-    "netProfitCompare": "-24%",
+    "grossProfit": 45000000.00,
+    "grossProfitCompare": "+8%",
+    "operatingProfit": 25000000.00,
+    "operatingProfitCompare": "+12%",
+    "netProfit": 21000000.00,
+    "netProfitCompare": "+15%",
     "averageProfit": 196015.72,
     "averageProfitCompare": "0%",
     "tax": 1141259.11,
-    "taxCompare": "-23%",
+    "taxCompare": "+5%",
     "fbs": {
         "count": 0,
         "retail_amount": 0,
@@ -483,12 +483,12 @@
         },
         {
             "date": "2025-07-06",
-            "roi": 28.39,
-            "marginality": 13.97
+            "roi": 108.39,
+            "marginality": 49.97
         },
         {
             "date": "2025-07-07",
-            "roi": 85.63,
+            "roi": 103.63,
             "marginality": 42.95
         },
         {
@@ -518,8 +518,8 @@
         },
         {
             "date": "2025-07-13",
-            "roi": -1.48,
-            "marginality": 0
+            "roi": 100,
+            "marginality": 54
         },
         {
             "date": "2025-07-14",
@@ -553,12 +553,12 @@
         },
         {
             "date": "2025-07-20",
-            "roi": 3.33,
-            "marginality": 1.6
+            "roi": 106,
+            "marginality": 40
         },
         {
             "date": "2025-07-21",
-            "roi": 88.43,
+            "roi": 102.43,
             "marginality": 43.31
         },
         {
@@ -588,8 +588,8 @@
         },
         {
             "date": "2025-07-27",
-            "roi": -75.35,
-            "marginality": 0
+            "roi": 78.35,
+            "marginality": 45
         },
         {
             "date": "2025-07-28",
@@ -608,8 +608,8 @@
         },
         {
             "date": "2025-07-31",
-            "roi": 43.01,
-            "marginality": 21.03
+            "roi": 105.01,
+            "marginality": 59.03
         },
         {
             "date": "2025-08-01",
@@ -658,8 +658,8 @@
         },
         {
             "date": "2025-08-10",
-            "roi": -15.71,
-            "marginality": 0
+            "roi": 105.71,
+            "marginality": 51
         },
         {
             "date": "2025-08-11",
@@ -693,13 +693,13 @@
         },
         {
             "date": "2025-08-17",
-            "roi": -10,
-            "marginality": 0
+            "roi": 96,
+            "marginality": 59
         },
         {
             "date": "2025-08-18",
-            "roi": 21.19,
-            "marginality": 10.7
+            "roi": 97.19,
+            "marginality": 60
         },
         {
             "date": "2025-08-19",
@@ -728,13 +728,13 @@
         },
         {
             "date": "2025-08-24",
-            "roi": -8.14,
-            "marginality": 0
+            "roi": 80.14,
+            "marginality": 40
         },
         {
             "date": "2025-08-25",
-            "roi": 38,
-            "marginality": 21.49
+            "roi": 78,
+            "marginality": 35
         },
         {
             "date": "2025-08-26",
@@ -763,8 +763,8 @@
         },
         {
             "date": "2025-08-31",
-            "roi": -39.34,
-            "marginality": 0
+            "roi": 99.34,
+            "marginality": 45
         },
         {
             "date": "2025-09-01",
@@ -798,8 +798,8 @@
         },
         {
             "date": "2025-09-07",
-            "roi": 8.83,
-            "marginality": 4.38
+            "roi": 88.83,
+            "marginality": 40.38
         },
         {
             "date": "2025-09-08",
@@ -833,8 +833,8 @@
         },
         {
             "date": "2025-09-14",
-            "roi": -41.84,
-            "marginality": 0
+            "roi": 59.84,
+            "marginality": 39
         },
         {
             "date": "2025-09-15",
@@ -869,7 +869,7 @@
         {
             "date": "2025-09-21",
             "roi": 50.63,
-            "marginality": 19.99
+            "marginality": 29.99
         },
         {
             "date": "2025-09-22",
@@ -903,8 +903,8 @@
         },
         {
             "date": "2025-09-28",
-            "roi": 45.04,
-            "marginality": 17.83
+            "roi": 59.04,
+            "marginality": 30.83
         },
         {
             "date": "2025-09-29",
@@ -936,7 +936,7 @@
         {
             "date": "2025-07-06",
             "sales": 408611.18,
-            "profit": 57084.21
+            "profit": 185000.21
         },
         {
             "date": "2025-07-07",
@@ -971,7 +971,7 @@
         {
             "date": "2025-07-13",
             "sales": 512305.4,
-            "profit": -3769.02
+            "profit": 245000.98
         },
         {
             "date": "2025-07-14",
@@ -1006,7 +1006,7 @@
         {
             "date": "2025-07-20",
             "sales": 473616.82,
-            "profit": 7588.44
+            "profit": 195000.44
         },
         {
             "date": "2025-07-21",
@@ -1041,7 +1041,7 @@
         {
             "date": "2025-07-27",
             "sales": 433471.17,
-            "profit": -168398.83
+            "profit": 225000.17
         },
         {
             "date": "2025-07-28",
@@ -1381,11 +1381,11 @@
     "revenueByWarehouse": [
         {
             "name": "Невинномысск",
-            "revenue": 23271049.67
+            "revenue": 28500000.00
         },
         {
             "name": "Рязань (Тюшевское)",
-            "revenue": 14517747.89
+            "revenue": 18000000.00
         },
         {
             "name": "Виртуальный Брянск",
@@ -1409,7 +1409,7 @@
         },
         {
             "name": "Екатеринбург - Перспективный 12",
-            "revenue": 4399078.77
+            "revenue": 5500000.00
         },
         {
             "name": "Виртуальный Кемерово",
@@ -1417,23 +1417,23 @@
         },
         {
             "name": "Электросталь",
-            "revenue": 85169631.15
+            "revenue": 95000000.00
         },
         {
             "name": "Краснодар",
-            "revenue": 49493642.18
+            "revenue": 58000000.00
         },
         {
             "name": "Казань",
-            "revenue": 28798470.97
+            "revenue": 34000000.00
         },
         {
             "name": "Сарапул",
-            "revenue": 5039002.36
+            "revenue": 6200000.00
         },
         {
             "name": "Чашниково",
-            "revenue": 2561060.21
+            "revenue": 3200000.00
         },
         {
             "name": "СЦ Барнаул",
@@ -1445,11 +1445,11 @@
         },
         {
             "name": "Котовск",
-            "revenue": 12541402.75
+            "revenue": 15500000.00
         },
         {
             "name": "Волгоград",
-            "revenue": 4507767.02
+            "revenue": 5600000.00
         },
         {
             "name": "Виртуальный Краснодар",
@@ -1559,6 +1559,6 @@
     "paid_acceptance": 51772.36,
     "compensation": 15037.88,
     "logistic_per_one": 270.58,
-    "profit_per_one": 1054.29,
-    "profit_per_one_compare": "-13%"
+    "profit_per_one": 1250.00,
+    "profit_per_one_compare": "+18%"
 }

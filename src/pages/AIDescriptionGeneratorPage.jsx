@@ -5,24 +5,23 @@ import close from './images/AiMinusIcon.svg';
 import open from './images/AiPlusIcon.svg';
 import closebtn from '../assets/closebtn.png';
 import closeBtnModal from './images/closeBtnModal.svg';
-import { ServiceFunctions } from '../service/serviceFunctions';
+import { ServiceFunctions } from '@/service/serviceFunctions';
 import AuthContext from '../service/AuthContext';
 import Modal from 'react-bootstrap/Modal';
 import AiDescriptionGeneratorTariffs from '../components/AiDescriptionGeneratorTariffs';
 import { redirect } from 'react-router-dom';
-import { ProductContext } from '../service/ProductContext';
+import { ProductContext } from '@/service/ProductContext';
 import AddKeyImg from './images/addkeyword.svg';
-import {
-  saveFileClickHandler,
-} from '../service/fileService';
-import DragDropFile from '../components/DragAndDropFiles';
+import { saveFileClickHandler } from '@/service/fileService';
+import DragDropFile from '@/components/DragAndDropFiles';
 import NoSubscriptionPage from './NoSubscriptionPage';
-import MobilePlug from '../components/sharedComponents/mobilePlug/mobilePlug';
-import Sidebar from '../components/sharedComponents/sidebar/sidebar';
-import Header from '../components/sharedComponents/header/header';
-import ErrorModal from '../components/sharedComponents/modals/errorModal/errorModal';
+import MobilePlug from '@/components/sharedComponents/mobilePlug/mobilePlug';
+import Sidebar from '@/components/sharedComponents/sidebar/sidebar';
+import Header from '@/components/sharedComponents/header/header';
+import ErrorModal from '@/components/sharedComponents/modals/errorModal/errorModal';
 import { Input, Form, Button, ConfigProvider } from 'antd';
 import { useDemoMode } from "@/app/providers";
+import NoSubscriptionWarningBlock from '@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock';
 
 function declineGeneration(count) {
   const lastTwo = count % 100;
@@ -47,8 +46,9 @@ function declineGeneration(count) {
 const AiDescriptionGeneratorPage = () => {
   const {
     productName,
+    productDescription,
+    competitorsLinks,
     setProductName,
-    shortDescription,
     setShortDescription,
     keywords,
     addKeyword,
@@ -56,7 +56,6 @@ const AiDescriptionGeneratorPage = () => {
     removeKeyword,
     inputValue,
     setInputValue,
-    competitorsLinks,
     setCompetitorsLinks,
     removeAllKeywords,
   } = useContext(ProductContext);
@@ -66,22 +65,14 @@ const AiDescriptionGeneratorPage = () => {
   const [isLoadingNext, setIsLoadingNext] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [isVisible, setIsVisible] = useState(true);
-  //const [keywords, setKeywords] = useState([]);
-  //const [inputValue, setInputValue] = useState('');
   const [nextStep, setNextStep] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  //const [productName, setProductName] = useState('')
-  //const [shortDescription, setShortDescription] = useState('')
-  //const [competitorsLinks, setCompetitorsLinks] = useState('')
   const { user, authToken } = useContext(AuthContext);
   const [description, setDescription] = useState();
   const [showModalError, setShowModalError] = useState(false);
-  //const [dataUpdated, setDataUpdated] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
-  const [isButtonVisible, setIsButtonVisible] = useState(true);
   const [isModalOpenNewGen, setIsModalOpenNewGen] = useState(false);
   const [amountGenerations, setAmountGenerations] = useState('');
-  //const [idGenerator, setIdGenerator] = useState(null);
   const [modalIsShowKeywordsFile, setModalisShowKeywordsFile] = useState(false);
   const [file, setFile] = useState();
   const [isFileUpload, setIsFileUpload] = useState();
@@ -92,7 +83,6 @@ const AiDescriptionGeneratorPage = () => {
   };
 
   const getGenerationsAmount = async () => {
-    // setLoading(true);
     try {
       const data = await ServiceFunctions.getUserGenerationsAmount(authToken);
       if (data.toString()) {
@@ -100,14 +90,24 @@ const AiDescriptionGeneratorPage = () => {
       }
     } catch (e) {
       console.error(e);
-    } finally {
-      // setLoading(false);
     }
   };
 
   useEffect(() => {
-    getGenerationsAmount(); // Call the function when the component is mounted
-  }, [isModalOpenNewGen]);
+    if (isDemoMode) {
+      setAmountGenerations('5');
+      setProductName('Платье женское');
+      setShortDescription('Платье женское вечернее на бретельках');
+      setCompetitorsLinks(['https://www.wildberries.ru/catalog/263767988']);
+      form.setFieldsValue({
+        productName: 'Платье женское',
+        productDescription: 'Платье женское вечернее на бретельках',
+        competitorLinks: 'https://www.wildberries.ru/catalog/263767988',
+      });
+    } else {
+      getGenerationsAmount();
+    }
+  }, [isModalOpenNewGen, isDemoMode]);
 
   const handleShowModalError = () => setShowModalError(true);
   const handleCloseModalError = () => setShowModalError(false);
@@ -119,7 +119,6 @@ const AiDescriptionGeneratorPage = () => {
   ) => {
     setIsLoading(true);
     setIsLoadingNext(true);
-    setIsButtonVisible(false);
     setErrorMessage('');
     try {
       let res = await ServiceFunctions.postAiDescriptionGeneratorKeywords(
@@ -158,7 +157,6 @@ const AiDescriptionGeneratorPage = () => {
     } finally {
       setIsLoading(false);
       setIsLoadingNext(false);
-      setIsButtonVisible(true);
     }
   };
   // ----------------------------------------------------------------//
@@ -175,14 +173,13 @@ const AiDescriptionGeneratorPage = () => {
       setIsModalOpen(true);
 
       const savedId = localStorage.getItem('generatedId');
-      if (!savedId || savedId === null) {
+      if (!savedId) {
         let res = await ServiceFunctions.postAiDescriptionGenerator(
           token,
           productName,
           shortDescription,
           keywords
         );
-        console.log('id', res)
 
         if (!res.ok) {
           setErrorMessage('Что-то пошло не так!');
@@ -222,7 +219,7 @@ const AiDescriptionGeneratorPage = () => {
   const fetchUserGenerationsData = async (token, setDescription) => {
     const savedId = localStorage.getItem('generatedId');
 
-    if (!savedId || savedId === null) {
+    if (!savedId) {
       console.error('No ID found in local storage.');
       setIsLoading(false);
       setErrorMessage('Что-то пошло не так!');
@@ -234,7 +231,7 @@ const AiDescriptionGeneratorPage = () => {
 
     const intervalId = setInterval(async () => {
 
-      if (!savedId || savedId === null) {
+      if (!savedId) {
         console.error('No ID found in local storage.');
         setIsLoading(false);
         setErrorMessage('Что-то пошло не так!');
@@ -268,30 +265,15 @@ const AiDescriptionGeneratorPage = () => {
     }, 1000); // Check every 1 second
   };
 
-  // const handleNextStep = async () => {
-  //   if (!!!productName || !!!shortDescription || competitorsLinks.length === 0) {
-  //     setErrorMessage('Пожалуйста, заполните все поля!');
-  //     handleShowModalError();
-  //     return;
-  //   }
-
-  //   const linksArray = competitorsLinks
-  //     .split('\n')
-  //     .map((link) => link.trim())
-  //     .filter((link) => link !== '');
-  //   if (linksArray.length != 0 && linksArray.length < 6) {
-  //     await updateAiDescriptionGeneratorKeyword(authToken, linksArray);
-  //   } else {
-  //     setErrorMessage('Введите до 5 ссылок на карточки товаров конкурентов');
-  //     handleShowModalError();
-  //   }
-  // };
-
-
   const stepOneFormSubmit = async (fields) => {
-    const linksArray = fields?.competitorLinks?.split('\n').map((link) => link.trim()).filter((link) => link !== '');
+    const linksArray = fields?.competitorLinks
+      ?.split('\n')
+      .map((link) => link.trim())
+      .filter((link) => link !== '');
 
-    linksArray && linksArray.length > 0 && await updateAiDescriptionGeneratorKeyword(authToken, linksArray);
+    if (linksArray?.length) {
+      await updateAiDescriptionGeneratorKeyword(authToken, linksArray);
+    }
   }
 
 
@@ -356,7 +338,6 @@ const AiDescriptionGeneratorPage = () => {
     setCompetitorsLinks('');
     setNextStep(false);
     setIsModalOpen(false);
-    setIsButtonVisible(true);
     getGenerationsAmount()
   };
   const onCloseNew = () => {
@@ -366,7 +347,6 @@ const AiDescriptionGeneratorPage = () => {
     setCompetitorsLinks('');
     setNextStep(false);
     setIsModalOpen(false);
-    setIsButtonVisible(true);
     getGenerationsAmount()
   };
   // Function to handle adding keywords
@@ -376,20 +356,6 @@ const AiDescriptionGeneratorPage = () => {
       addKeywords(inputValue.trim());
       setInputValue('');
     }
-  };
-  //Function to get ProductName
-  const getProductName = (e) => {
-    setProductName(e.target.value);
-  };
-
-  //Function to get shortDescription
-  const getShortDescription = (e) => {
-    setShortDescription(e.target.value);
-  };
-
-  //Function to get cometitorsLinks
-  const getCompetitorsLinks = (e) => {
-    setCompetitorsLinks(e.target.value);
   };
 
   // Function to handle removing keywords
@@ -407,7 +373,6 @@ const AiDescriptionGeneratorPage = () => {
     if (keywords.length > 0) {
       // If there are already keywords, set next step to true
       setNextStep(true);
-      setIsButtonVisible(false);
     }
   }, [keywords, setNextStep]);
 
@@ -475,9 +440,11 @@ const AiDescriptionGeneratorPage = () => {
   return (
     <div className='dashboard-page'>
       <MobilePlug />
+
       <div style={{ height: '100vh' }}>
         <Sidebar />
       </div>
+      
       <div className={`${styles.generatorPage} dashboard-content pb-3 `} style={{ padding: '0 32px' }}>
         <div style={{ width: '100%', padding: '0', margin: '20px 0' }}>
           <Header
@@ -507,12 +474,18 @@ const AiDescriptionGeneratorPage = () => {
             </div>
           </Header>
         </div>
+
+        {isDemoMode && (
+					  <NoSubscriptionWarningBlock className="mb-3" />
+        )}
+
         {isModalOpenNewGen && (
           <AiDescriptionGeneratorTariffs
             redirect={redirect}
             setIsModalOpenNewGen={setIsModalOpenNewGen}
           />
         )}
+
         <div className={`${styles.generatorHeader} dash-container container`}>
           <div className={styles.generatorTitleWrapperMain}>
             <div className={styles.generatorTitleWrapper}>
@@ -530,6 +503,7 @@ const AiDescriptionGeneratorPage = () => {
               />
             </div>
           </div>
+
           {isVisible && (
             <div className={styles.generatorParagsWrapper}>
               <div className={styles.generatorParag}>
@@ -544,20 +518,6 @@ const AiDescriptionGeneratorPage = () => {
             </div>
           )}
         </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
         {/* FORM */}
         <div className={styles.page__blocksWrapper}>
@@ -681,11 +641,6 @@ const AiDescriptionGeneratorPage = () => {
             </ConfigProvider>
           </div>
 
-
-
-
-
-
           {/* loader */}
           {isLoadingNext && (
             <div
@@ -700,11 +655,6 @@ const AiDescriptionGeneratorPage = () => {
               <span className='loader'></span>
             </div>
           )}
-
-
-
-
-
 
           {/* step two */}
           {nextStep && !isLoadingNext && (
@@ -790,124 +740,8 @@ const AiDescriptionGeneratorPage = () => {
             </div>
           )}
         </div>
-
-
-        {/* <div className={`${styles.stepsWrapper} dash-container`}> */}
-        {/* <div className={styles.formContainer}>
-            <div className={styles.stepIndicator}>
-              <span>1 шаг</span>
-            </div>
-            <div className={styles.aboutParag}>О товаре</div>
-
-            <div>Название товара</div>
-            <input
-              type='text'
-              id='productName'
-              placeholder='Шорты Jony Jenson'
-              className={styles.inputField}
-              value={productName}
-              onChange={getProductName}
-            />
-
-            <label htmlFor='productDescription'>Короткое описание товара</label>
-            <textarea
-              id='productDescription'
-              placeholder='Шорты женские кожаные короткие'
-              className={styles.textArea}
-              value={shortDescription}
-              onChange={getShortDescription}
-            ></textarea>
-
-            <label htmlFor='competitorLinks'>
-              Вставьте до 5 ссылок на карточки товаров конкурентов. Каждую
-              ссылку вводите с новой строки
-            </label>
-            <textarea
-              id='competitorLinks'
-              placeholder={`https://www.wildberries.ru/catalog/177307535\nhttps://www.wildberries.ru/catalog/177307899\nhttps://www.wildberries.ru/catalog/177337832`}
-              className={styles.textArea}
-              value={competitorsLinks}
-              onChange={getCompetitorsLinks}
-            ></textarea>
-
-            {isButtonVisible && (
-              <button className={styles.submitBtn} onClick={handleNextStep}>
-                Далее
-              </button>
-            )}
-          </div> */}
-        {/* {isLoadingNext ? (
-            <div
-              className='d-flex flex-column align-items-center justify-content-center'
-              style={{
-                height: '100%',
-                paddingTop: '25%',
-                paddingLeft: '5%',
-                width: '45%',
-              }}
-            >
-              <span className='loader'></span>
-            </div>
-          ) : (
-            nextStep && (
-              <div className={styles.formContainerR}>
-                <div className={styles.stepIndicator}>
-                  <span>2 шаг</span>
-                </div>
-                <div className={styles.aboutParag}>Ключевые слова</div>
-
-                <div className={styles.addKeywordFileWrapper}>
-                  <div>Добавить ключевое слово</div>
-                  <div
-                    className={styles.addKeywordButtonWrapper}
-                    onClick={handleAddKeywordFile}
-                  >
-                    <div className={styles.addKeywordButtonWrapperImg}>
-                      <img src={AddKeyImg} />
-                    </div>
-                    <div className={styles.addKeywordButtonWrapperText}>
-                      Загрузить ключевые слова
-                    </div>
-                  </div>
-                </div>
-                <form className={styles.inputWrapperR}>
-                  <input
-                    type='text'
-                    placeholder='Пример: Ключевое слово'
-                    value={inputValue}
-                    onChange={(e) => setInputValue(e.target.value)}
-                    className={styles.inputFieldR}
-                  />
-                  <button
-                    className={styles.addButtonR}
-                    onClick={handleAddKeyword}
-                  >
-                    Добавить
-                  </button>
-                </form>
-
-                <div className={styles.keywordList}>
-                  {keywords.map((keyword, index) => (
-                    <div key={index} className={styles.keyword}>
-                      <div>{keyword}</div>
-                      <div
-                        className={styles.removeKeyword}
-                        onClick={() => handleRemoveKeyword(keyword)}
-                      >
-                        <img className={styles.closeBtn} src={closebtn} />
-                      </div>
-                    </div>
-                  ))}
-                </div>
-
-                <button className={styles.submitBtn} onClick={openModal}>
-                  Сгенерировать описание
-                </button>
-              </div>
-            )
-          )} */}
-        {/* </div> */}
       </div>
+
       {isModalOpen && (
         <div className={styles.modalOverlay}>
           <div className={styles.modalContent}>
@@ -953,10 +787,10 @@ const AiDescriptionGeneratorPage = () => {
               </button>
             </div>
             {/* {isTooltipVisible && (
-                          <div className={styles.tooltip}>
-                              Скопировано!
-                          </div>
-                      )} */}
+                <div className={styles.tooltip}>
+                    Скопировано!
+                </div>
+            )} */}
           </div>
         </div>
       )}

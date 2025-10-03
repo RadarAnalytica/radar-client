@@ -179,30 +179,29 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
     useEffect(() => {
       if (isDemoMode) {
         setExampleData();
+        submitHandler(form.getFieldsValue());
       }
     }, [isDemoMode]);
 
     useEffect(() => {
         if (preferedItemsData.length === 0 && !requestStatus.isLoading) {
-            getPreferedItemsTest()
-            //getPreferedItems()
+            getPreferedItemsTest();
         }
-    }, [preferedItemsData])
+    }, [preferedItemsData]);
 
     useEffect(() => {
         if (dynamic_30_days || dynamic_60_days || dynamic_90_days) {
-            form.validateFields(['dynamic_30_days', 'dynamic_60_days', 'dynamic_90_days'])
+            form.validateFields(['dynamic_30_days', 'dynamic_60_days', 'dynamic_90_days']);
         }
-    }, [dynamic_30_days, dynamic_60_days, dynamic_90_days])
+    }, [dynamic_30_days, dynamic_60_days, dynamic_90_days]);
 
     useEffect(() => {
         let timeout;
         if (isExampleDataSet) {
-            timeout = setTimeout(() => {setIsExampleDataSet(false)}, 3000)
+            timeout = setTimeout(() => {setIsExampleDataSet(false)}, 3000);
         }
-
-        return () => {timeout && clearTimeout(timeout)}
-    }, [isExampleDataSet])
+        return () => timeout && clearTimeout(timeout);
+    }, [isExampleDataSet]);
 
     useEffect(() => {
         if (
@@ -229,7 +228,7 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
         dynamic_60_days_to,
         dynamic_90_days_from,
         dynamic_90_days_to
-    ])
+    ]);
 
     const tagRender = useCallback(props => {
         const { label, value, closable, onClose } = props;
@@ -245,13 +244,14 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                 <p className={styles.form__multiLabel} title={label.props.children.toString().replace(',', '')}>{label}</p>
             </Tag>
         );
-    }, [])
+    }, []);
 
     const renderPopup = useCallback((menu) => {
         let action;
         const acc = preferedItemsData?.reduce((total, item) => {
             return total + item.children.length
-        }, 0)
+        }, 0);
+
         if (prefered_items?.length < acc) {
             action = () => {
                 let allDataArr = []
@@ -262,8 +262,9 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                 form.setFieldValue('prefered_items', [...allDataArr])
             }
         }
+
         if (prefered_items?.length === acc) {
-            action = () => { form.setFieldValue('prefered_items', []) }
+            action = () => form.setFieldValue('prefered_items', []);
         }
 
         return (

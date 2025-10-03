@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import styles from './SeoPage.module.css';
 import InfoSeoPlate from '../components/InfoSeoPlate';
 import SeoCompaire from '../components/SeoCompaire';
@@ -8,15 +8,19 @@ import { Helmet } from 'react-helmet-async';
 import Sidebar from '../components/sharedComponents/sidebar/sidebar';
 import MobilePlug from '../components/sharedComponents/mobilePlug/mobilePlug';
 import Header from '../components/sharedComponents/header/header';
+import NoSubscriptionWarningBlock from '@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock';
+import { useDemoMode } from "@/app/providers";  
 
 const SeoPage = () => {
-  const [compaireData, setCompaireData] = useState({});
-  const [linksToSend, setLinksToSend] = useState({});
   const { user } = useContext(AuthContext);
 
   if (user?.subscription_status === 'expired') {
     return <NoSubscriptionPage title={'Сравнение SEO'} />;
   }
+
+  const [compaireData, setCompaireData] = useState({});
+  const [linksToSend, setLinksToSend] = useState({});
+  const isDemoMode = useDemoMode();
 
   return (
     <div className={styles.pageWrapper}>
@@ -43,6 +47,10 @@ const SeoPage = () => {
             )}
           </Header>
         </div>
+
+        {isDemoMode && (
+					  <NoSubscriptionWarningBlock className="mb-3" />
+        )}
 
         <div className='container dash-container'>
           {Object.keys(compaireData).length <= 0 && (
