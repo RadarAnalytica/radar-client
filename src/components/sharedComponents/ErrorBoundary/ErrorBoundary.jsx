@@ -51,12 +51,12 @@ class ErrorBoundary extends React.Component {
               Если проблема повторяется, обратитесь в нашу поддержку:
             </p>
             <a 
-              href="https://t.me/SpyRadar_bot" 
+              href="https://t.me/radar_analytica_support" 
               target="_blank" 
               rel="noopener noreferrer"
               className={styles.errorBoundary__telegramLink}
             >
-              @SpyRadar_bot
+              @radar_analytica_support
             </a>
           </div>
         </div>
