@@ -159,6 +159,9 @@
 /* Контейнер списка для edge drop-зон */
 .list_container {
   position: relative;
+  /* max-height: calc(100vh - 200px); 
+  overflow-y: auto;
+  scroll-behavior: smooth; */
 }
 
 /* Edge drop-зоны (верх и низ viewport) */
@@ -197,4 +200,17 @@
   display: none; /* Полностью скрываем контент */
 }
 
-/* Анимация edgeDropZonePulse удалена, так как зоны теперь невидимые */
+
+.loading_container {
+  position: absolute;
+  top: 20px;
+  bottom: 20px;
+  left: 0;
+  right: 0;
+  background-color: rgba(255,255,255,.75);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  border-radius: 16px;
+}

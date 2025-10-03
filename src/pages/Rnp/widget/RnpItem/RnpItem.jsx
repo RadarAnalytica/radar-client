@@ -21,9 +21,10 @@ export default function RnpItem({ title, photo, wb_id, shop }) {
 					/>}
 			</div>
 			<div className={styles.item__description}>
-				<div className={styles.item__title}>
+				{<div className={styles.item__title}>
 					{title}
-				</div>
+				</div>}
+
 				<Flex gap={8} className={styles.item__info} align="center">
 					<a href={`https://www.wildberries.ru/catalog/${wb_id}/detail.aspx`} target='_blank' className={styles.item__link}>
 						<Flex gap={8} align="center" className={styles.item__article}>

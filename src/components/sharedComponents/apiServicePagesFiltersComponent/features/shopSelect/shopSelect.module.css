@@ -13,6 +13,7 @@
     flex-grow: 1;
     min-width: 190px;
     max-width: 240px;
+    font-size: 14px !important;
 }
 
 .plainSelect__label {

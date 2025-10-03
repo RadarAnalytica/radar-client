@@ -177,7 +177,7 @@ export const TempTimeSelect = ({ isDataLoading }) => {
                             colorBorder: '#5329FF1A',
                             borderRadius: 8,
                             fontFamily: 'Mulish',
-                            fontSize: 14
+                            fontSize: 12
                         },
                         components: {
                             Select: {
