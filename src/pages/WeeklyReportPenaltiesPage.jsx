@@ -46,30 +46,12 @@ const WeeklyReportPenaltiesPage = () => {
         <div style={{ width: '100%', padding: '20px 0' }} className="container dash-container">
           <Header title={'Штрафы'} titlePrefix={'Отчёт'} />
         </div>
-        {user.is_report_downloaded ? (
-          <>
-            <div className='container dash-container'>
-              <NewFilterGroup pageIdent='penalty' filtersData={penaltyFilters} isLoading={isFiltersLoading} getData={handleApplyFilters} />
-            </div>
-            <div className='container dash-container'>
-              <LogisticsTable data={penaltiesData} loading={loading} />
-            </div>
-          </>
-        ) : (
-          <>
-            <div className='container dash-container'>
-              <DemonstrationSection />
-            </div>
-            <span className={styles.responsiveImageWrapper}>
-              <img
-                src={plFake}
-                alt='fakePL'
-                className={styles.responsiveImage}
-              />
-              <span></span>
-            </span>
-          </>
-        )}
+        <div className='container dash-container'>
+          <NewFilterGroup pageIdent='penalty' filtersData={penaltyFilters} isLoading={isFiltersLoading} getData={handleApplyFilters} />
+        </div>
+        <div className='container dash-container'>
+          <LogisticsTable data={penaltiesData} loading={loading} />
+        </div>
         <BottomNavigation />
       </div>
     </div>

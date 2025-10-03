@@ -2,24 +2,23 @@ import { useState, useEffect, useContext, useRef, useCallback, useMemo } from 'r
 import styles from './addRnpModal.module.css'
 import AddRnpModalFooter from './widget/AddRnpModalFooter/AddRnpModalFooter'
 import { Modal, Checkbox, ConfigProvider, Pagination, Flex, Tooltip } from 'antd';
-import AuthContext from '../../../../service/AuthContext';
-import { useAppSelector, useAppDispatch } from '../../../../redux/hooks';
-// import { RnpFilters } from '../RnpFilters/RnpFilters';
+import AuthContext from '@/service/AuthContext';
+import { useAppSelector } from '@/redux/hooks';
 import { Filters } from './widget/AddRnpFilters/AddRnpFilters';
 import RnpItem from '../RnpItem/RnpItem';
-import { ServiceFunctions } from '../../../../service/serviceFunctions';
+import { ServiceFunctions } from '@/service/serviceFunctions';
 import AddRnpModalSearch from './widget/AddRnpModalSearch/AddRnpModalSearch';
 import { close } from '../icons';
-import ErrorModal from '../../../../components/sharedComponents/modals/errorModal/errorModal';
-import DataCollectWarningBlock from '../../../../components/sharedComponents/dataCollectWarningBlock/dataCollectWarningBlock';
-import { fetchFiltersRnpAdd } from '../../../../redux/filtersRnpAdd/filtersRnpAddActions';
-import { actions as filterActions } from '../../../../redux/filtersRnpAdd/filtersRnpAddSlice';
-import { actions as rnpSelectedActions } from '../../../../redux/rnpSelected/rnpSelectedSlice'
+import ErrorModal from '@/components/sharedComponents/modals/errorModal/errorModal';
+import DataCollectWarningBlock from '@/components/sharedComponents/dataCollectWarningBlock/dataCollectWarningBlock';
+import { fetchFiltersRnpAdd } from '@/redux/filtersRnpAdd/filtersRnpAddActions';
+import { actions as filterActions } from '@/redux/filtersRnpAdd/filtersRnpAddSlice';
+import { useDemoMode } from "@/app/providers";
 
 const AddRnpModal = ({ isAddRnpModalVisible, setIsAddRnpModalVisible, addRnp }) => {
-    const dispatch = useAppDispatch();
     const { authToken } = useContext(AuthContext);
-    const { shops, activeBrand, selectedRange, activeBrandName, activeGroup, activeCategory } = useAppSelector( (state) => state.filtersRnpAdd );
+    const { isDemoMode } = useDemoMode();
+    const { shops, activeBrand, selectedRange } = useAppSelector( (state) => state.filtersRnpAdd );
     const filters = useAppSelector((state) => state.filtersRnpAdd);
     const [ rnpSelected, setRnpSelected ] = useState(null);
 
@@ -88,8 +87,8 @@ const AddRnpModal = ({ isAddRnpModalVisible, setIsAddRnpModalVisible, addRnp }) 
             filters.activeArticle.some(_ => _.value === 'Все') &&
             filters.activeGroup.some(_ => _.value === 'Все') &&
             filters.activeCategory.some(_ => _.value === 'Все'))
-        )){
-            return
+        )) {
+            return;
         }
 
         const abortController = new AbortController();
@@ -188,7 +187,7 @@ const AddRnpModal = ({ isAddRnpModalVisible, setIsAddRnpModalVisible, addRnp }) 
                     >
                         {loading && <div className={styles.loading}><span className='loader'></span></div>}
 
-                        {!loading && shopStatus && !shopStatus?.is_primary_collect && (
+                        {!loading && !isDemoMode && shopStatus && !shopStatus?.is_primary_collect && (
                             <div className={styles.data_collect}>
                                 <DataCollectWarningBlock
                                     bigPreview={false}
@@ -196,8 +195,10 @@ const AddRnpModal = ({ isAddRnpModalVisible, setIsAddRnpModalVisible, addRnp }) 
                             </div>
                         )}
 
-                        {!loading && shopStatus && shopStatus?.is_primary_collect && localrnpDataArticle && localrnpDataArticle?.data?.length == 0 && (<div className={styles.empty}>Ничего не найдено</div>)}
-                        {!loading && shopStatus && shopStatus?.is_primary_collect && localrnpDataArticle && localrnpDataArticle?.data?.length > 0 && (<div className={styles.modal__container}>
+                        {/* shopStatus && shopStatus?.is_primary_collect */}
+
+                        {!loading && shopStatus && localrnpDataArticle && localrnpDataArticle?.data?.length == 0 && (<div className={styles.empty}>Ничего не найдено</div>)}
+                        {!loading && shopStatus && localrnpDataArticle && localrnpDataArticle?.data?.length > 0 && (<div className={styles.modal__container}>
                             {localrnpDataArticle?.data?.map((el, i) => (
                                 <Flex key={i} className={styles.item} gap={20}>
                                     {(rnpSelected.length >= 25 && !rnpSelected.includes(el.wb_id)) && 

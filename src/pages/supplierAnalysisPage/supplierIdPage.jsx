@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import styles from './supplierIdPage.module.css'
-import Header from '../../components/sharedComponents/header/header'
-import Sidebar from '../../components/sharedComponents/sidebar/sidebar'
-import MobilePlug from '../../components/sharedComponents/mobilePlug/mobilePlug'
+import Header from '@/components/sharedComponents/header/header'
+import Sidebar from '@/components/sharedComponents/sidebar/sidebar'
+import MobilePlug from '@/components/sharedComponents/mobilePlug/mobilePlug'
 import { BarsWidget, MainChartWidget, TableWidget, StockChartWidget } from './widgets'
-import { Filters } from '../../components/sharedComponents/apiServicePagesFiltersComponent'
-import Breadcrumbs from '../../components/sharedComponents/header/headerBreadcrumbs/breadcrumbs'
+import { Filters } from '@/components/sharedComponents/apiServicePagesFiltersComponent'
+import Breadcrumbs from '@/components/sharedComponents/header/headerBreadcrumbs/breadcrumbs'
 import { useParams, useNavigate } from 'react-router-dom'
-import { useAppDispatch, useAppSelector } from '../../redux/hooks'
+import { useAppDispatch, useAppSelector } from '@/redux/hooks'
 import { mainTableConfig, goodsTableConfig, salesTableConfig, ordersStructByWarehousesTableConfig, ordersStructBySizesTableConfig } from './shared'
 import { GoodsTableCustomHeader, OrdersTableCustomHeader, StockChartCustomHeader } from './entities'
 import {
@@ -25,22 +25,25 @@ import {
     fetchSupplierAnalysisByAvgPricesComparsionData,
     fetchSupplierAnalysisByAvgDiscountsComparsionData,
     fetchSupplierAnalysisByStockSizeComparsionData
-} from '../../redux/supplierAnalysis/supplierAnalysisActions'
-import { ServiceFunctions } from '../../service/serviceFunctions'
-import { actions as supplierActions } from '../../redux/supplierAnalysis/supplierAnalysisSlice'
+} from '@/redux/supplierAnalysis/supplierAnalysisActions'
+import { ServiceFunctions } from '@/service/serviceFunctions'
+import { actions as supplierActions } from '@/redux/supplierAnalysis/supplierAnalysisSlice'
 import {
     selectMainSupplierData,
     selectStockChartTab,
     selectOrdersStructureTab
-} from '../../redux/supplierAnalysis/supplierAnalysisSelectors'
+} from '@/redux/supplierAnalysis/supplierAnalysisSelectors'
+import NoSubscriptionWarningBlock
+  from "@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock";
+import { useDemoMode } from "@/app/providers";
 
 const SupplierIdPage = () => {
-    const dispatch = useAppDispatch()
-    const mainSupplierData = useAppSelector(selectMainSupplierData)
-    const isAnyDataLoading = useAppSelector(store => store.supplierAnalysis.isAnyDataLoading)
-    console.log(isAnyDataLoading)
-    const params = useParams()
-    const navigate = useNavigate()
+    const { isDemoMode } = useDemoMode();
+    const dispatch = useAppDispatch();
+    const mainSupplierData = useAppSelector(selectMainSupplierData);
+    const isAnyDataLoading = useAppSelector(store => store.supplierAnalysis.isAnyDataLoading);
+    const params = useParams();
+    const navigate = useNavigate();
 
     //Проверяем наличие базовых данных поставщика и запрашиваем их если их нет
     useEffect(() => {
@@ -90,14 +93,13 @@ const SupplierIdPage = () => {
     return (
         <main className={styles.page}>
             <MobilePlug />
-            {/* ------ SIDE BAR ------ */}
+
             <section className={styles.page__sideNavWrapper}>
                 <Sidebar />
             </section>
-            {/* ------ CONTENT ------ */}
+
             <section className={styles.page__content}>
                 <div className={styles.page__additionalWrapper}>
-                    {/* header */}
                     <div className={styles.page__headerWrapper}>
                         <Header
                             title={
@@ -110,7 +112,9 @@ const SupplierIdPage = () => {
                             }
                         />
                     </div>
-                    {/* !header */}
+
+                    {isDemoMode && <NoSubscriptionWarningBlock />}
+
                     <BarsWidget
                         dataHandler={fetchSupplierAnalysisMetaData}
                         dataType='metaData'

@@ -2,8 +2,7 @@ import React from 'react';
 import {formatPrice} from '../service/utils';
 
 export const useCalculateMaxCellWidths = (tableData) => {
-
-    return React.useMemo(() => {  
+  return React.useMemo(() => {
     const cellWidths = {
       purchaseCell: 0,
       returnCell: 0,

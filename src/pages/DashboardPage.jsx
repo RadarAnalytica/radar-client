@@ -44,8 +44,6 @@ import { mockGetDashBoard, mockGetChartDetailData } from '../service/mockService
 const DashboardPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-
-
   const navigate = useNavigate();
   const { activeBrand, selectedRange } = useAppSelector((state) => state.filters);
   const { user, authToken, logout } = useContext(AuthContext);
@@ -91,7 +89,7 @@ const DashboardPage = () => {
     const updateChartDetailData = async () => {
       setIsDetailChartDataLoading(true)
       let data = null;
-      if (user.subscription_status === null) {;
+      if (user.subscription_status === null) {
         data = await mockGetChartDetailData(selectedRangeDetail);
       } else {
         data = await ServiceFunctions.getChartDetailData(
@@ -301,19 +299,7 @@ const DashboardPage = () => {
   const updateDataDashBoard = async (selectedRange, activeBrand, authToken) => {
     setLoading(true);
     try {
-      // const controlValue = shops.filter(el => el.id === activeBrand.id).length
-      // if (shops.length > 0 && controlValue !== 1 && activeBrand?.id !== 0) {
-      //   localStorage.removeItem('activeShop')
-      //   window.location.reload()
-      // }
-
       if (activeBrand !== 'null' && activeBrand !== 'undefined') {
-
-        // const data = await ServiceFunctions.getDashBoard(
-        //   authToken,
-        //   selectedRange,
-        //   activeBrand
-        // );
 
         const data = await mockGetDashBoard(
           selectedRange,
@@ -352,11 +338,10 @@ const DashboardPage = () => {
   const checkIdQueryParam = () => {
     const searchParams = new URLSearchParams(location.search);
     const idQueryParam = searchParams.get('id');
+
     if (idQueryParam && parseInt(idQueryParam) !== user.id) {
       logout();
       navigate('/signin');
-    } else {
-      return;
     }
   };
 
@@ -424,19 +409,19 @@ const DashboardPage = () => {
 
   }, [selectedRange, wbData]);
 
-  const tax =
-    state && state.initialCostsAndTax ? state.initialCostsAndTax.tax : 0;
-
-  const stockAndCostsMatch =
-    wbData &&
-      wbData.stocks &&
-      state &&
-      state.initialCostsAndTax &&
-      state.initialCostsAndTax.data
-      ? wbData.stocks.data?.map((item) =>
-        state.initialCostsAndTax.data.find((el) => el.nmID === item.nmId)
-      )
-      : [];
+  // const tax =
+  //   state && state.initialCostsAndTax ? state.initialCostsAndTax.tax : 0;
+  //
+  // const stockAndCostsMatch =
+  //   wbData &&
+  //     wbData.stocks &&
+  //     state &&
+  //     state.initialCostsAndTax &&
+  //     state.initialCostsAndTax.data
+  //     ? wbData.stocks.data?.map((item) =>
+  //       state.initialCostsAndTax.data.find((el) => el.nmID === item.nmId)
+  //     )
+  //     : [];
 
   // const fbo =
   //   stockAndCostsMatch?.length && wbData && wbData.stocks
@@ -580,17 +565,17 @@ const DashboardPage = () => {
     // },
   ];
 
-  const salesSelfCost =
-    sales && sales
-      ? sales.reduce(
-        (acc, el) =>
-          acc +
-          (state?.initialCostsAndTax?.data?.find(
-            (item) => item.nmID === el.nmId
-          )?.initialCosts || 0),
-        0
-      )
-      : 0;
+  // const salesSelfCost =
+  //   sales && sales
+  //     ? sales.reduce(
+  //       (acc, el) =>
+  //         acc +
+  //         (state?.initialCostsAndTax?.data?.find(
+  //           (item) => item.nmID === el.nmId
+  //         )?.initialCosts || 0),
+  //       0
+  //     )
+  //     : 0;
 
   const profitabilityData = [
     {

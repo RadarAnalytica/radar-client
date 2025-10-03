@@ -12,6 +12,7 @@ import { getSaveButtonStatus, getRowSaveButtonStatus, getAddDateButtonStatus, ge
 import ErrorModal from "../../../../components/sharedComponents/modals/errorModal/errorModal";
 import { fetchShops } from "../../../../redux/shops/shopsActions";
 import { useAppDispatch } from "../../../../redux/hooks";
+import { fetchApi } from "@/service/fetchApi";
 
 
 const dataFetchingStatus = {
@@ -69,7 +70,7 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
         }
 
         try {
-            const res = await fetch(`${URL}/api/product/self-costs`, {
+            const res = await fetchApi('/api/product/self-costs', {
                 method: 'POST',
                 headers: {
                     'content-type': 'application/json',
@@ -115,7 +116,7 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
         }
 
         try {
-            const res = await fetch(`${URL}/api/product/self-costs`, {
+            const res = await fetchApi('/api/product/self-costs', {
                 method: 'PATCH',
                 headers: {
                     'content-type': 'application/json',

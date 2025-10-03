@@ -4,52 +4,33 @@ import { DatePicker } from '../../features'
 import styles from './paramsWidget.module.css'
 import moment from 'moment'
 import { ApiService } from '../../shared'
-import { useAppSelector } from '../../../../redux/hooks'
-import HowToLink from '../../../../components/sharedComponents/howToLink/howToLink'
+import { useAppSelector } from '@/redux/hooks'
+import HowToLink from '@/components/sharedComponents/howToLink/howToLink'
 import { HowtoWidget } from '../howtoWidget/howtoWidget'
-
+import { useDemoMode } from "@/app/providers";
 
 const dynamicOptions = [
     { value: 'Рост' },
     { value: 'Падение' },
-]
+];
 
-const validateDynamicValues = (type, from, to) => {
-    const parsedFrom = parseInt(from)
-    const parsedTo = parseInt(to)
-    if ((from && !to) || (!to && from)) {
-        return true
-    }
-    if (from && to) {
-        switch (type) {
-            case 'Рост': return parsedTo > parsedFrom
-            case 'Падение': return parsedFrom > parsedTo
-        }
-    }
-
-    return false
-}
-
-const getDynamicNormilizedValue = (type, value, periodType) => {
-    let normilizedValue = 0;
-    if (!value) {
-        switch (type) {
-            case 'Рост':
-                return periodType === 'start' ? 0 : 10000000
-            case 'Падение':
-                return periodType === 'end' ? 0 : - 10000000
-            default:
-                return normilizedValue
-        }
-    };
-    if (type === 'Рост') {
-        normilizedValue = parseInt(value)
-    }
-    if (type === 'Падение') {
-        normilizedValue = parseInt(value) * -1
-    }
-    return normilizedValue;
-}
+// const getDynamicNormilizedValue = (type, value, periodType) => {
+//     let normilizedValue = 0;
+//     if (!value) {
+//         switch (type) {
+//             case 'Рост':    return periodType === 'start' ? 0 : 10000000;
+//             case 'Падение': return periodType === 'end' ? 0 : - 10000000;
+//             default:        return normilizedValue;
+//         }
+//     }
+//     if (type === 'Рост') {
+//         normilizedValue = parseInt(value);
+//     }
+//     if (type === 'Падение') {
+//         normilizedValue = parseInt(value) * -1;
+//     }
+//     return normilizedValue;
+// }
 
 const dynamicNormalizer = (dynamic, from, to) => {
     let result = {
@@ -72,12 +53,12 @@ const dynamicNormalizer = (dynamic, from, to) => {
         }
         return result;
     }
-    return result
+    return result;
 }
 
-
 export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, setRequestStatus, requestStatus, isParamsVisible, setIsParamsVisible, setSortState, initSortState }) => {
-    const [selectedDate, setSelectedDate] = useState(moment().subtract(30, 'days').format('DD.MM.YYYY'))
+  const { isDemoMode } = useDemoMode();
+  const [selectedDate, setSelectedDate] = useState(moment().subtract(30, 'days').format('DD.MM.YYYY'))
     const [searchState, setSearchState] = useState('')
     const [ isExampleDataSet, setIsExampleDataSet ] = useState(false)
     const [preferedItemsData, setPreferedItemsData] = useState([])
@@ -106,10 +87,7 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
         } catch (error) {
             console.error('Error fetching preferred items:', error);
         }
-    }, [])
-
-
-
+    }, []);
 
     const dynamic_30_days = Form.useWatch('dynamic_30_days', form)
     const dynamic_60_days = Form.useWatch('dynamic_60_days', form)
@@ -165,7 +143,7 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
             limit: 25
         })
         setSortState(initSortState)
-    }, [selectedDate, setRequestState])
+    }, [selectedDate, setRequestState]);
 
     const setExampleData = () => {
         setSelectedDate(moment().subtract(3, 'days').format('DD.MM.YYYY'))
@@ -175,8 +153,7 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
         form.setFieldValue('frequency_30_days_from', 6000)
         setIsExampleDataSet(true)
         setIsParamsVisible(true)
-    }
-
+    };
 
     // Прямой запрос, не удалять. Старина М, 06.06.25
     // const getPreferedItems = async () => {
@@ -200,26 +177,31 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
     // }
 
     useEffect(() => {
+      if (isDemoMode) {
+        setExampleData();
+        submitHandler(form.getFieldsValue());
+      }
+    }, [isDemoMode]);
+
+    useEffect(() => {
         if (preferedItemsData.length === 0 && !requestStatus.isLoading) {
-            getPreferedItemsTest()
-            //getPreferedItems()
+            getPreferedItemsTest();
         }
-    }, [preferedItemsData])
+    }, [preferedItemsData]);
 
     useEffect(() => {
         if (dynamic_30_days || dynamic_60_days || dynamic_90_days) {
-            form.validateFields(['dynamic_30_days', 'dynamic_60_days', 'dynamic_90_days'])
+            form.validateFields(['dynamic_30_days', 'dynamic_60_days', 'dynamic_90_days']);
         }
-    }, [dynamic_30_days, dynamic_60_days, dynamic_90_days])
+    }, [dynamic_30_days, dynamic_60_days, dynamic_90_days]);
 
     useEffect(() => {
         let timeout;
         if (isExampleDataSet) {
-            timeout = setTimeout(() => {setIsExampleDataSet(false)}, 3000)
+            timeout = setTimeout(() => {setIsExampleDataSet(false)}, 3000);
         }
-
-        return () => {timeout && clearTimeout(timeout)}
-    }, [isExampleDataSet])
+        return () => timeout && clearTimeout(timeout);
+    }, [isExampleDataSet]);
 
     useEffect(() => {
         if (
@@ -246,7 +228,7 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
         dynamic_60_days_to,
         dynamic_90_days_from,
         dynamic_90_days_to
-    ])
+    ]);
 
     const tagRender = useCallback(props => {
         const { label, value, closable, onClose } = props;
@@ -262,13 +244,14 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                 <p className={styles.form__multiLabel} title={label.props.children.toString().replace(',', '')}>{label}</p>
             </Tag>
         );
-    }, [])
+    }, []);
 
     const renderPopup = useCallback((menu) => {
         let action;
         const acc = preferedItemsData?.reduce((total, item) => {
             return total + item.children.length
-        }, 0)
+        }, 0);
+
         if (prefered_items?.length < acc) {
             action = () => {
                 let allDataArr = []
@@ -279,8 +262,9 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                 form.setFieldValue('prefered_items', [...allDataArr])
             }
         }
+
         if (prefered_items?.length === acc) {
-            action = () => { form.setFieldValue('prefered_items', []) }
+            action = () => form.setFieldValue('prefered_items', []);
         }
 
         return (
@@ -342,7 +326,7 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                 selectorBg: 'transparent'
             }
         }
-    }), [])
+    }), []);
 
     return (
         <>

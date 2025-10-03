@@ -1,0 +1,257 @@
+{
+  "page": 1,
+  "limit": 25,
+  "total_pages": 188,
+  "queries": [
+    {
+      "query": "джинсы женские",
+      "subject": "Джинсы",
+      "frequency": 2471582,
+      "goods_quantity": 70905,
+      "freq_per_good": 35,
+      "g30": 17,
+      "g60": 100,
+      "g90": 7
+    },
+    {
+      "query": "куртка демисезонная женская",
+      "subject": "Куртки",
+      "frequency": 2157464,
+      "goods_quantity": 102170,
+      "freq_per_good": 21,
+      "g30": 127,
+      "g60": 574,
+      "g90": 294
+    },
+    {
+      "query": "лонгслив женский",
+      "subject": "Лонгсливы",
+      "frequency": 1828269,
+      "goods_quantity": 72070,
+      "freq_per_good": 25,
+      "g30": 42,
+      "g60": 214,
+      "g90": 51
+    },
+    {
+      "query": "куртка осенняя женская",
+      "subject": "Куртки",
+      "frequency": 1702405,
+      "goods_quantity": 105425,
+      "freq_per_good": 16,
+      "g30": 110,
+      "g60": 1754,
+      "g90": 3505
+    },
+    {
+      "query": "свитер женский",
+      "subject": "Свитеры",
+      "frequency": 1496248,
+      "goods_quantity": 95306,
+      "freq_per_good": 16,
+      "g30": 109,
+      "g60": 697,
+      "g90": 623
+    },
+    {
+      "query": "ботинки женские демисезонные",
+      "subject": "Ботинки",
+      "frequency": 1398021,
+      "goods_quantity": 78880,
+      "freq_per_good": 18,
+      "g30": 147,
+      "g60": 827,
+      "g90": 599
+    },
+    {
+      "query": "кофта женская",
+      "subject": "Кофты",
+      "frequency": 1253215,
+      "goods_quantity": 111196,
+      "freq_per_good": 11,
+      "g30": 51,
+      "g60": 225,
+      "g90": 71
+    },
+    {
+      "query": "кардиган женский",
+      "subject": "Кардиганы",
+      "frequency": 1231561,
+      "goods_quantity": 39981,
+      "freq_per_good": 31,
+      "g30": 6,
+      "g60": 229,
+      "g90": 123
+    },
+    {
+      "query": "iphone 16 pro max",
+      "subject": "Смартфоны",
+      "frequency": 1167817,
+      "goods_quantity": 1412,
+      "freq_per_good": 827,
+      "g30": 3,
+      "g60": 105,
+      "g90": 199
+    },
+    {
+      "query": "костюм спортивный женский",
+      "subject": "Костюмы спортивные",
+      "frequency": 1126246,
+      "goods_quantity": 68300,
+      "freq_per_good": 16,
+      "g30": 33,
+      "g60": 159,
+      "g90": 18
+    },
+    {
+      "query": "куртка зимняя женская",
+      "subject": "Куртки",
+      "frequency": 1109106,
+      "goods_quantity": 102505,
+      "freq_per_good": 11,
+      "g30": 120,
+      "g60": 337,
+      "g90": 625
+    },
+    {
+      "query": "брюки женские",
+      "subject": "Брюки",
+      "frequency": 1078227,
+      "goods_quantity": 162412,
+      "freq_per_good": 7,
+      "g30": 6,
+      "g60": 148,
+      "g90": 33
+    },
+    {
+      "query": "пальто женское весна-осень",
+      "subject": "Пальто",
+      "frequency": 1052130,
+      "goods_quantity": 42852,
+      "freq_per_good": 25,
+      "g30": 78,
+      "g60": 512,
+      "g90": 360
+    },
+    {
+      "query": "жилетка женская осенне-весенние",
+      "subject": "Жилеты",
+      "frequency": 1038636,
+      "goods_quantity": 33407,
+      "freq_per_good": 31,
+      "g30": 98,
+      "g60": 630,
+      "g90": 72
+    },
+    {
+      "query": "лоферы женские",
+      "subject": "Лоферы",
+      "frequency": 964559,
+      "goods_quantity": 87198,
+      "freq_per_good": 11,
+      "g30": -26,
+      "g60": 159,
+      "g90": 30
+    },
+    {
+      "query": "свитшот женский",
+      "subject": "Свитшоты",
+      "frequency": 787648,
+      "goods_quantity": 43393,
+      "freq_per_good": 18,
+      "g30": 22,
+      "g60": 225,
+      "g90": 79
+    },
+    {
+      "query": "сапоги женские демисезонные",
+      "subject": "Сапоги",
+      "frequency": 757300,
+      "goods_quantity": 45439,
+      "freq_per_good": 17,
+      "g30": 193,
+      "g60": 831,
+      "g90": 592
+    },
+    {
+      "query": "джемпер женский",
+      "subject": "Джемперы",
+      "frequency": 747680,
+      "goods_quantity": 110636,
+      "freq_per_good": 7,
+      "g30": 74,
+      "g60": 530,
+      "g90": 249
+    },
+    {
+      "query": "пижама женская со штанами",
+      "subject": "Пижамы",
+      "frequency": 717091,
+      "goods_quantity": 30370,
+      "freq_per_good": 24,
+      "g30": 62,
+      "g60": 120,
+      "g90": 81
+    },
+    {
+      "query": "водолазка женская",
+      "subject": "Водолазки",
+      "frequency": 712956,
+      "goods_quantity": 28625,
+      "freq_per_good": 25,
+      "g30": 81,
+      "g60": 640,
+      "g90": 329
+    },
+    {
+      "query": "костюм женский брючный",
+      "subject": "Костюмы",
+      "frequency": 708521,
+      "goods_quantity": 105136,
+      "freq_per_good": 7,
+      "g30": 16,
+      "g60": 156,
+      "g90": 3
+    },
+    {
+      "query": "iphone 17 pro max",
+      "subject": "Смартфоны",
+      "frequency": 704564,
+      "goods_quantity": 6823,
+      "freq_per_good": 103,
+      "g30": 2135,
+      "g60": 1556,
+      "g90": 1488
+    },
+    {
+      "query": "iphone 17",
+      "subject": "Смартфоны",
+      "frequency": 688361,
+      "goods_quantity": 7885,
+      "freq_per_good": 87,
+      "g30": 2350,
+      "g60": 1351,
+      "g90": 1124
+    },
+    {
+      "query": "худи женское",
+      "subject": "Худи",
+      "frequency": 663067,
+      "goods_quantity": 80914,
+      "freq_per_good": 8,
+      "g30": 30,
+      "g60": 175,
+      "g90": 66
+    },
+    {
+      "query": "худи",
+      "subject": "Худи",
+      "frequency": 656798,
+      "goods_quantity": 106019,
+      "freq_per_good": 6,
+      "g30": 21,
+      "g60": 133,
+      "g90": 63
+    }
+  ]
+}

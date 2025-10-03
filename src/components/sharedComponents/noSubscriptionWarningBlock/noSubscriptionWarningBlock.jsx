@@ -1,6 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
 import styles from './nuSubscriptionWarningBlock.module.css'
-// import SubscriptionModal from '../modals/subscriptionModal/subscriptionModal';
 import AuthContext from '../../../service/AuthContext';
 import { getDayDeclension } from '../../../service/utils';
 import { URL } from '../../../service/config';
@@ -15,7 +14,7 @@ const INIT_REQUEST_STATUS = {
     message: ''
 }
 
-const NoSubscriptionWarningBlock = () => {
+const NoSubscriptionWarningBlock = ({ className = '' }) => {
     const { user, authToken } = useContext(AuthContext)
     const [requestStatus, setRequestStatus] = useState(INIT_REQUEST_STATUS)
     // const [isModalVisible, setIsModalVisible] = useState(false)
@@ -58,7 +57,7 @@ const NoSubscriptionWarningBlock = () => {
     }, [requestStatus.isSuccess])
 
     return (
-        <div className={styles.block}>
+        <div className={`${styles.block} ${className}`}>
             <div className={styles.block__column}>
                 <div className={styles.block__titleWrapper}>
                     <div className={styles.block__iconWrapper}>

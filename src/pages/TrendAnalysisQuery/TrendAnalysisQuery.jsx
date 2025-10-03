@@ -1,24 +1,21 @@
-// base
-import AuthContext from '../../service/AuthContext';
-import { useState, useEffect, useContext } from 'react';
-import { Filters } from '../../components/sharedComponents/apiServicePagesFiltersComponent';
-import MobilePlug from '../../components/sharedComponents/mobilePlug/mobilePlug';
-import Sidebar from '../../components/sharedComponents/sidebar/sidebar';
-import Header from '../../components/sharedComponents/header/header';
+import React, { useState, useEffect } from 'react';
+import { Filters } from '@/components/sharedComponents/apiServicePagesFiltersComponent';
+import MobilePlug from '@/components/sharedComponents/mobilePlug/mobilePlug';
+import Sidebar from '@/components/sharedComponents/sidebar/sidebar';
+import Header from '@/components/sharedComponents/header/header';
 import styles from './TrendAnalysisQuery.module.css';
-import { useAppSelector } from '../../redux/hooks';
-
-// page
+import { useAppSelector } from '@/redux/hooks';
 import { ConfigProvider, Form, Input, Button, Flex, Table } from 'antd';
 import TrendAnalysisQueryChart from './widget/TrendAnalysisQueryChart';
-import { ServiceFunctions } from '../../service/serviceFunctions';
-import { differenceInDays } from 'date-fns';
-import { formatPrice, fileDownload } from '../../service/utils';
+import { ServiceFunctions } from '@/service/serviceFunctions';
+import { formatPrice, fileDownload } from '@/service/utils';
+import { useDemoMode } from "@/app/providers";
+import NoSubscriptionWarningBlock
+  from "@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock";
 
 export default function TrendAnalysisQuery() {
-	const { selectedRange } = useAppSelector(
-		(state) => state.filters
-	);
+  const { isDemoMode } = useDemoMode();
+	const { selectedRange } = useAppSelector(state => state.filters);
 	const [loading, setLoading] = useState(false);
 	const [timeFrame, setTimeFrame] = useState('month');
 	const [data, setData] = useState(null);
@@ -63,59 +60,59 @@ export default function TrendAnalysisQuery() {
 	}
 	
 	useEffect(() => {
-		updateHistoryState()
-	}, [query])
+		updateHistoryState();
+	}, [query]);
 
 	const [form] = Form.useForm();
-
   const formQuery = Form.useWatch('query', form);
 
 	const submitQuery = (data) => {
-		// проверка на пустоту
-		if (data.query && !data.query.trim()){
-			return
-		}
-		const query = data.query.trim();
-
+    const query = isDemoMode ? 'платье женское' : data?.query?.trim();
+		if (!query) return;
 		setQuery(query);
 		setTimeFrame('month');
 	};
+
+  useEffect(() => {
+    if (isDemoMode) {
+      form.setFieldValue('query', 'платье женское');
+      submitQuery();
+    }
+  }, [isDemoMode]);
 
 	useEffect(() => {
 		updateData();
 	}, [query, timeFrame, selectedRange]);
 
 	const mapResponseToData = (response) => {
-
 		const data = response[query];
-
-		const labels = data.map((el) => Object.keys(el)[0].split(' ').reverse().join(' '))
-		const values = data.map((el) => Object.values(el)[0])
+		const labels = data.map((el) => Object.keys(el)[0].split(' ').reverse().join(' '));
+		const values = data.map((el) => Object.values(el)[0]);
 
 		const dataResult = {
 			chart: {
 				labels: labels,
 				data: values
 			}
-		}
+		};
 
 		dataResult.table = data.map((el, i) => ({
 			key: i,
 			timeFrame: labels[i],
 			quantity: values[i],
-		})).reverse()
+		})).reverse();
 
 		setData(dataResult);
 	}
 
 	const checkQuery = (query) => {
 		if (!query){
-			return true
+			return true;
 		}
 		if (query?.trim()){
-			return query.trim().length == 0;
+			return query.trim().length === 0;
 		}
-		return true
+		return true;
 	}
 
 	const updateData = async () => {
@@ -123,10 +120,6 @@ export default function TrendAnalysisQuery() {
 			return;
 		}
 		setLoading(true);
-		// Обновление ссылки с поисковым запросом
-		// const url = new URL(location);
-		// url.searchParams.set('query', query)
-		// window.history.pushState({visited: query}, '', url);
 
 		try {
 				const response = await ServiceFunctions.getTrendAnalysisQuery(
@@ -135,7 +128,7 @@ export default function TrendAnalysisQuery() {
 					selectedRange,
 				);
 
-				mapResponseToData(response)
+      mapResponseToData(response)
 		} catch (e) {
 			console.error(e);
 			setData([]);
@@ -165,16 +158,18 @@ export default function TrendAnalysisQuery() {
 	return (
 		<main className={styles.page}>
 			<MobilePlug />
-			{/* ------ SIDE BAR ------ */}
+
 			<aside className={styles.page__sideNavWrapper}>
 				<Sidebar />
 			</aside>
-			{/* ------ CONTENT ------ */}
+
 			<section className={styles.page__content}>
-				{/* header */}
 				<div className={styles.page__headerWrapper}>
 					<Header title="Анализ трендовой динамики запросов"></Header>
 				</div>
+
+        {isDemoMode && <NoSubscriptionWarningBlock />}
+
 				<ConfigProvider
 					theme={{
 						token: {

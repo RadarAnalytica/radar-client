@@ -1,11 +1,10 @@
 import React, { useContext, Suspense, ReactNode } from 'react';
 import AuthContext from './service/AuthContext';
-import { Navigate, useLocation } from 'react-router-dom';
+import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import MainPage from './pages/MainPage';
 import LoaderPage from './pages/LoaderPage';
 import { URL } from './service/config';
 import { Helmet } from 'react-helmet-async';
-import { useNavigate } from 'react-router-dom';
 import UnderDevelopmentPlugPage from './pages/underDevelopmentPlugPage/underDevelopmentPlugPage';
 import NoSubscriptionPlugPage from './pages/noSubscriptionPlugPage/noSubscriptionPlugPage';
 import NoSubscriptionPage from './pages/NoSubscriptionPage';
@@ -166,11 +165,10 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
 //   }
 
  //const user = undefined
-
 /**
-1. null
-2. expired
-3& smart + !onboardig
+  1. null
+  2. expired
+  3& smart + !onboardig
  */
 
   //------- 0. Under development protection ----------//
@@ -188,12 +186,12 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
         )
       }
     }
-    return (underDevFallback())
+    return (underDevFallback());
   }
 
   //------- 1. Auth protection (checking is user exists) ----------//
   if (authProtected && !user) {
-    switch(authGuardType) {
+    switch (authGuardType) {
       case 'redirect': {
         if (isCalculateEntryUrl === '1') {
           sessionStorage.removeItem('isCalculateEntryUrl')
@@ -206,7 +204,7 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
       }
       case 'fallback': {
         return (
-          <Suspense fallback={<LoaderPage />}>
+          <Suspense fallback={<LoaderPage/>}>
             {authFallback()}
           </Suspense>
         )
@@ -248,7 +246,7 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
         )
       }
     }
-    return (<Navigate to={expireRedirect} replace />)
+    return <Navigate to={expireRedirect} replace />;
 }
 
     // ---------4. Onboarding protection (user should be onboarded) ------//
@@ -284,11 +282,14 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
         }
       }
 
-      return (<Navigate to={userRoleRedirect} replace />)
+    return <Navigate to={userRoleRedirect} replace/>;
   }
 
   // ---------- 6. Subscription protection (for different types of subscription) ------------//
   if (subscriptionProtected && user && user.subscription_status !== subscription) {
+    /***
+     *  here will be logic (checking the whitelist of routes from config) when different subscriptions type will be activated
+     */
     switch(subscriptionGuardType) {
       case 'redirect': {
         return (<Navigate to={subscriptionRedirect} />)
@@ -306,13 +307,13 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   }
 
   // ----default ----------//
-  return ( 
-    <Suspense fallback={<LoaderPage />}>
+  return (
+    <Suspense fallback={<LoaderPage/>}>
       <Helmet>
         <title>Radar Analityca</title>
-        <meta name="description" content={routeRuName} />
+        <meta name="description" content={routeRuName}/>
       </Helmet>
-      { children }
+      {children}
     </Suspense>
   )
 }

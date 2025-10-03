@@ -1,18 +1,22 @@
 import React, { useState, useContext, useEffect } from 'react';
 import styles from './groupsMainWidget.module.css'
-import HowToLink from '../../../../components/sharedComponents/howToLink/howToLink';
+import HowToLink from '@/components/sharedComponents/howToLink/howToLink';
 import { groupsMainTableConfig, buttonIcons } from '../../shared';
 import { Checkbox, ConfigProvider, message } from 'antd';
-import { formatPrice } from '../../../../service/utils';
 import { Link } from 'react-router-dom';
-import AuthContext from '../../../../service/AuthContext';
-import { URL } from '../../../../service/config';
+import AuthContext from '@/service/AuthContext';
 import { GroupEditModal, ConfirmationModal } from '../../features';
-import { useAppDispatch } from '../../../../redux/hooks';
-import { fetchFilters } from '../../../../redux/apiServicePagesFiltersState/filterActions';
+import { useAppDispatch } from '@/redux/hooks';
+import { fetchFilters } from '@/redux/apiServicePagesFiltersState/filterActions';
+import { fetchApi } from "@/service/fetchApi";
 
-const initConfirmationState = { open: false, title: '', message: '', mainAction: '', returnAction: '', actionTitle: '' }
-
+const initConfirmationState = {
+  open: false, title: '',
+  message: '',
+  mainAction: '',
+  returnAction: '',
+  actionTitle: '',
+};
 
 const GroupsMainWidget = ({ setIsAddGroupModalVisible, groupsMainData, getGroupsData, setDataFetchingStatus, initDataFetchingStatus, dataFetchingStatus, setAlertState }) => {
     const { authToken } = useContext(AuthContext)
@@ -40,7 +44,8 @@ const GroupsMainWidget = ({ setIsAddGroupModalVisible, groupsMainData, getGroups
     const deleteGroup = async (authToken, groupId) => {
         setDataFetchingStatus({ ...initDataFetchingStatus, isLoading: true })
         try {
-            const res = await fetch(`${URL}/api/product/product_groups/${groupId}`, {
+            // TODO: перенести метод в ServiceFunctions
+            const res = await fetchApi(`/api/product/product_groups/${groupId}`, {
                 method: 'DELETE',
                 headers: {
                     'content-type': 'application/json',
@@ -49,18 +54,26 @@ const GroupsMainWidget = ({ setIsAddGroupModalVisible, groupsMainData, getGroups
             })
 
             if (!res.ok) {
-                const parsedData = await res.json()
-                setDataFetchingStatus({ ...initDataFetchingStatus, isError: true, message: parsedData?.detail || 'Что-то пошло не так :(' })
+                const parsedData = await res.json();
+                setDataFetchingStatus({
+                  ...initDataFetchingStatus,
+                  isError: true,
+                  message: parsedData?.detail || 'Что-то пошло не так :('
+                });
                 return;
             }
-            setAlertState({isVisible: true, message: 'Группа успешно удалена'})
-            dispatch(fetchFilters(authToken))
-            getGroupsData(authToken)
-        } catch {
-            setDataFetchingStatus({ ...initDataFetchingStatus, isError: true, message: 'Что-то пошло не так :(' })
+            setAlertState({isVisible: true, message: 'Группа успешно удалена'});
+            dispatch(fetchFilters(authToken));
+            getGroupsData(authToken);
+        } catch (e) {
+            console.error('Error:', e);
+            setDataFetchingStatus({
+              ...initDataFetchingStatus,
+              isError: true,
+              message: 'Что-то пошло не так :('
+            });
         }
     }
-
 
     const onCheckAllChange = e => {
         setCheckedList(e.target.checked ? tableData.map(_ => _.group) : []);
