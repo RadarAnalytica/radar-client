@@ -104,7 +104,7 @@ export const MultiSelect = (
                 //onMouseDown={onPreventMouseDown}
                 closable={false}
                 onClose={onClose}
-                style={{ background: 'transparent', color: 'black', fontSize: '15px', display: 'flex', alignItems: 'center', border: 'none' }}
+                style={{ background: 'transparent', color: 'black', fontSize: '14px', display: 'flex', alignItems: 'center', border: 'none' }}
             >
                 {label}
             </Tag>
@@ -158,7 +158,7 @@ export const MultiSelect = (
                             colorBorder: '#5329FF1A',
                             borderRadius: 8,
                             fontFamily: 'Mulish',
-                            fontSize: 14,
+                            fontSize: 12,
                         },
                         components: {
                             Select: {

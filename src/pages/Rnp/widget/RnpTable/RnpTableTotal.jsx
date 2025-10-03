@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { ConfigProvider, Table, Button, Tooltip } from 'antd';
-import { Table as RadarTable, Tooltip as RadarTooltip } from 'radar-ui';
+import { Table as RadarTable } from 'radar-ui';
 import { formatPrice } from '../../../../service/utils';
 import styles from './RnpTable.module.css';
 
@@ -39,7 +39,7 @@ const customCellRender = (value, record, index, dataIndex) => {
 	);
 }
 
-export default function RnpTable({ loading, columns, data, columns2, data2, expanded, el }) {
+export default function RnpTableTotal({ loading, columns, data, columns2, data2, expanded, el }) {
 	// table config
 	const [tableConfig, setTableConfig] = useState()
 	const [expandedRowKeys, setExpandedRowKeys] = useState([])
@@ -72,20 +72,14 @@ export default function RnpTable({ loading, columns, data, columns2, data2, expa
 	useEffect(() => {
 		if (!data2 || data2.length === 0) return;
 
-		const currentId = el?.article_data?.wb_id;
-		if (!currentId) return;
-
 		// Пытаемся загрузить сохраненное состояние
-		const savedState = localStorage.getItem('RNP_EXPANDED_TABLE_ROWS_STATE');
-
+		const savedState = localStorage.getItem('RNP_EXPANDED_TOTAL_TABLE_ROWS_STATE');
+		
 		if (savedState) {
 			try {
 				const parsedState = JSON.parse(savedState);
-				// Если это состояние для текущего элемента, используем его
-				if (parsedState.id === currentId && Array.isArray(parsedState.keys)) {
-					setExpandedRowKeys(parsedState.keys);
-					return;
-				}
+				setExpandedRowKeys(parsedState);
+				return
 			} catch (error) {
 				console.error('Ошибка при парсинге сохраненного состояния:', error);
 			}
@@ -94,22 +88,13 @@ export default function RnpTable({ loading, columns, data, columns2, data2, expa
 		// Если нет сохраненного состояния или это другой элемент, раскрываем все строки
 		const allKeys = data2.map((item) => item.id);
 		setExpandedRowKeys(allKeys);
-		localStorage.setItem('RNP_EXPANDED_TABLE_ROWS_STATE', JSON.stringify({ id: el.article_data.wb_id, keys: allKeys }))
-	}, [data2, el?.article_data?.wb_id])
+		localStorage.setItem('RNP_EXPANDED_TOTAL_TABLE_ROWS_STATE', JSON.stringify(allKeys))
+	}, [data2])
 
 	// Сохранение состояния при изменении раскрытых строк
 	const handleExpandedRowsChange = (keys) => {
 		setExpandedRowKeys(keys);
-
-		// Сохраняем состояние в localStorage
-		const currentId = el?.article_data?.wb_id;
-		if (currentId) {
-			const stateToSave = {
-				id: currentId,
-				keys: keys
-			};
-			localStorage.setItem('RNP_EXPANDED_TABLE_ROWS_STATE', JSON.stringify(stateToSave));
-		}
+		localStorage.setItem('RNP_EXPANDED_TOTAL_TABLE_ROWS_STATE', JSON.stringify(keys));
 	}
 
 	return (
@@ -123,7 +108,7 @@ export default function RnpTable({ loading, columns, data, columns2, data2, expa
 				<div className={styles.tableContainer} ref={containerRef}>
 					<RadarTable
 						rowKey={(record) => record.id}
-
+					
 						dataSource={data2}
 						config={tableConfig}
 
@@ -137,7 +122,7 @@ export default function RnpTable({ loading, columns, data, columns2, data2, expa
 
 						pagination={false}
 						paginationContainerStyle={{ display: 'none' }}
-
+						
 						stickyHeader={true}
 						scrollContainerRef={containerRef}
 

@@ -6,12 +6,14 @@ import styles from './RnpList.module.css';
 import { grip, remove, expand } from '../icons';
 import { combine } from "@atlaskit/pragmatic-drag-and-drop/combine";
 import { monitorForElements, draggable, dropTargetForElements } from '@atlaskit/pragmatic-drag-and-drop/element/adapter';
+import { autoScrollForElements } from '@atlaskit/pragmatic-drag-and-drop-auto-scroll/dist/esm/entry-point/element';
 // import { reorder } from '@atlaskit/pragmatic-drag-and-drop/reorder';
 import { setCustomNativeDragPreview } from "@atlaskit/pragmatic-drag-and-drop/element/set-custom-native-drag-preview";
 import { attachClosestEdge, extractClosestEdge, } from '@atlaskit/pragmatic-drag-and-drop-hitbox/closest-edge';
 // import { pointerOutsideOfPreview } from '@atlaskit/pragmatic-drag-and-drop/element/pointer-outside-of-preview';
 import { useAppSelector } from '../../../../redux/hooks';
 import { NoDataWidget } from '@/pages/productsGroupsPages/widgets';
+import RnpTableTotal from '../RnpTable/RnpTableTotal';
 
 // Компонент edge drop-зон (верх и низ viewport)
 function EdgeDropZone({ position, isActive, isDragging, onDrop }) {
@@ -22,25 +24,28 @@ function EdgeDropZone({ position, isActive, isDragging, onDrop }) {
 
 		const element = ref.current;
 
-		return dropTargetForElements({
-			element,
-			getData() {
-				return { edgeDropZone: position }; // 'top' или 'bottom'
-			},
-			onDragEnter() {
-				document.body.classList.remove(styles.no_drop);
-				document.body.classList.add(styles.copy);
-			},
-			onDragLeave() {
-				document.body.classList.remove(styles.copy);
-				document.body.classList.add(styles.no_drop);
-			},
-			onDrop({ source }) {
-				document.body.classList.remove(styles.no_drop);
-				document.body.classList.remove(styles.copy);
-				onDrop(source.data.id, position);
-			},
-		});
+		return combine(
+			dropTargetForElements({
+				element,
+				getData() {
+					return { edgeDropZone: position }; // 'top' или 'bottom'
+				},
+				onDragEnter() {
+					document.body.classList.remove(styles.no_drop);
+					document.body.classList.add(styles.copy);
+				},
+				onDragLeave() {
+					document.body.classList.remove(styles.copy);
+					document.body.classList.add(styles.no_drop);
+				},
+				onDrop({ source }) {
+					document.body.classList.remove(styles.no_drop);
+					document.body.classList.remove(styles.copy);
+					onDrop(source.data.id, position);
+				},
+			}),
+			// Убираем автоскролл из EdgeDropZone - он должен быть только на контейнере
+		);
 	}, [position, onDrop]);
 
 	return (
@@ -74,25 +79,28 @@ function DropZone({ index, isActive, isDragging, draggedIndex, onDrop }) {
 
 		const element = ref.current;
 
-		return dropTargetForElements({
-			element,
-			getData() {
-				return { dropZoneIndex: index };
-			},
-			onDragEnter() {
-				document.body.classList.remove(styles.no_drop);
-				document.body.classList.add(styles.copy);
-			},
-			onDragLeave() {
-				document.body.classList.remove(styles.copy);
-				document.body.classList.add(styles.no_drop);
-			},
-			onDrop({ source }) {
-				document.body.classList.remove(styles.no_drop);
-				document.body.classList.remove(styles.copy);
-				onDrop(source.data.id, index);
-			},
-		});
+		return combine(
+			dropTargetForElements({
+				element,
+				getData() {
+					return { dropZoneIndex: index };
+				},
+				onDragEnter() {
+					document.body.classList.remove(styles.no_drop);
+					document.body.classList.add(styles.copy);
+				},
+				onDragLeave() {
+					document.body.classList.remove(styles.copy);
+					document.body.classList.add(styles.no_drop);
+				},
+				onDrop({ source }) {
+					document.body.classList.remove(styles.no_drop);
+					document.body.classList.remove(styles.copy);
+					onDrop(source.data.id, index);
+				},
+			}),
+			// Убираем автоскролл из DropZone - он должен быть только на контейнере
+		);
 	}, [index, onDrop]);
 
 	return (
@@ -109,20 +117,23 @@ function DropZone({ index, isActive, isDragging, draggedIndex, onDrop }) {
 	);
 }
 
-function RnpListItem({ el, index, expanded, setExpanded, setDeleteRnpId, onReorder, isDragging, isFirst }) {
+function RnpListItem({ el, index, expanded, setExpanded, setDeleteRnpId, onReorder, isDragging }) {
 	const ref = useRef(null);
 	const gripRef = useRef(null);
 	const [closestEdge, setClosestEdge] = useState(null);
 
 	const expandHandler = (value) => {
-		setTimeout(() => {
+		const timeout = setTimeout(() => {
 			ref.current.scrollIntoView({ behavior: "smooth" });
 		}, 150)
-		if (expanded.includes(value)) {
-			setExpanded([]);
-		} else {
-			setExpanded([value]);
+		let newExpanded = null;
+		if (expanded !== value) {
+			newExpanded = value;
 		}
+		setExpanded(newExpanded);
+		localStorage.setItem('RNP_EXPANDED_STATE', JSON.stringify(newExpanded));
+
+		return () => clearTimeout(timeout);
 	};
 
 	useEffect(() => {
@@ -190,27 +201,10 @@ function RnpListItem({ el, index, expanded, setExpanded, setDeleteRnpId, onReord
 					document.body.classList.remove(styles.copy)
 					setClosestEdge(null);
 				},
-				// onGenerateDragPreview: ({ nativeSetDragImage }) => {
-				// setCustomNativeDragPreview({
-				//   nativeSetDragImage,
-				//   render({ container }) {
-				// 		const preview = document.createElement('div');
-				// 		preview.className = styles.preview;
-				// 		preview.innerHTML = `<b>data.article_data.title}</b> {data.article_data.wb_id}`;
-				// 		container.append(preview)
-				// 		console.log(container);
-				//   },
-				// });
-				// },
-			})
+			}),
+			// Убираем автоскролл из RnpListItem - он должен быть только на контейнере
 		)
 	}, [el, onReorder]);
-
-	useEffect(() => {
-		if (isFirst) {
-			setExpanded([el.article_data.wb_id]);
-		}
-	}, [isFirst]);
 
 
 
@@ -230,7 +224,11 @@ function RnpListItem({ el, index, expanded, setExpanded, setDeleteRnpId, onReord
 						/>
 						<div className={styles.item__product}>
 							<RnpItem
-								title={el.article_data.title}
+								title={
+									<span onClick={() => expandHandler(el.article_data.wb_id)} style={{ cursor: 'pointer' }}>
+										{el.article_data.title}
+									</span>
+								}
 								photo={el.article_data.photo}
 								wb_id={el.article_data.wb_id}
 								shop={el.article_data.shop_name}
@@ -243,7 +241,7 @@ function RnpListItem({ el, index, expanded, setExpanded, setDeleteRnpId, onReord
 							title="Удалить артикул"
 						/>
 						<Button
-							className={`${styles.item__button} ${expanded.includes(el.article_data.wb_id) &&
+							className={`${styles.item__button} ${expanded === el.article_data.wb_id &&
 								styles.item__button_expand
 								}`}
 							onClick={() => expandHandler(el.article_data.wb_id)}
@@ -251,13 +249,15 @@ function RnpListItem({ el, index, expanded, setExpanded, setDeleteRnpId, onReord
 						></Button>
 					</Flex>
 				</header>
-				{expanded.includes(el.article_data.wb_id) && (
+				{expanded === el.article_data.wb_id && (
 					<div className={`${styles.item__table} ${styles.item}`}>
 						<RnpTable
 							data={el.table.rows}
 							columns={el.table.columns}
 							data2={el.table.datasource}
 							columns2={el.table.columns_new}
+							expanded={expanded}
+							el={el}
 						/>
 					</div>
 				)}
@@ -269,37 +269,23 @@ function RnpListItem({ el, index, expanded, setExpanded, setDeleteRnpId, onReord
 	);
 }
 
-export default function RnpList({ view, expanded, setExpanded, setAddRnpModalShow, rnpDataByArticle, rnpDataTotal, setDeleteRnpId }) {
+const sortItemsByOrder = (items, order) => {
+	// Создаем Map для быстрого поиска элементов по wb_id
+	const itemsMap = new Map();
+	items.forEach(item => {
+		itemsMap.set(item.article_data.wb_id, item);
+	});
+
+	// Сортируем согласно порядку в order
+	return order?.map(orderId => itemsMap.get(orderId)).filter(Boolean);
+};
+
+export default function RnpList({ view, expanded, setExpanded, setAddRnpModalShow, rnpDataByArticle, rnpDataTotal, setDeleteRnpId, loading }) {
 	const { activeBrand } = useAppSelector((state) => state.filters);
 	const items = useMemo(() => rnpDataByArticle || [], [rnpDataByArticle]);
+	const [order, setOrder] = useState(null);
 
-	const initOrder = useCallback(() => {
-		// сохранение порядка для id магазина
-		let savedOrder = localStorage.getItem('rnpOrder');
-		if (savedOrder) {
-			try {
-				savedOrder = JSON.parse(savedOrder);
-			} catch {
-				savedOrder = {}
-			}
-			if (Array.isArray(savedOrder)) {
-				savedOrder = {};
-			}
-			if (activeBrand.id in savedOrder) {
-				const listOrder = savedOrder[activeBrand.id]
-				const newItems =
-					items
-						.filter((rnp) => !listOrder.includes(rnp.article_data.wb_id))
-						.map((rnp) => rnp.article_data.wb_id);
-				return [...listOrder, ...newItems]
-			}
-			return items.map((item) => item.article_data.wb_id)
 
-		}
-		return items.map((el) => el.article_data.wb_id)
-	}, [items])
-
-	const [order, setOrder] = useState(initOrder)
 	const ref = useRef(null);
 	const [activeDropZone, setActiveDropZone] = useState(null);
 	const [activeEdgeDropZone, setActiveEdgeDropZone] = useState(null);
@@ -317,6 +303,7 @@ export default function RnpList({ view, expanded, setExpanded, setAddRnpModalSho
 			const [removed] = newOrder.splice(draggedIndex, 1);
 			newOrder.splice(targetIndex, 0, removed);
 			setOrder(newOrder);
+			localStorage.setItem('SAVED_ORDER', JSON.stringify(newOrder));
 		}
 	};
 
@@ -337,6 +324,7 @@ export default function RnpList({ view, expanded, setExpanded, setAddRnpModalSho
 
 			newOrder.splice(targetIndex, 0, removed);
 			setOrder(newOrder);
+			localStorage.setItem('SAVED_ORDER', JSON.stringify(newOrder));
 		}
 	};
 
@@ -356,6 +344,7 @@ export default function RnpList({ view, expanded, setExpanded, setAddRnpModalSho
 			}
 
 			setOrder(newOrder);
+			localStorage.setItem('SAVED_ORDER', JSON.stringify(newOrder));
 		}
 	};
 
@@ -437,26 +426,20 @@ export default function RnpList({ view, expanded, setExpanded, setAddRnpModalSho
 
 
 	useEffect(() => {
-		let savedOrder = localStorage.getItem('rnpOrder');
-		if (savedOrder) {
+		// удаляем старые данные из localStorage
+		localStorage.removeItem('rnpOrder');
+		let SAVED_ORDER = localStorage.getItem('SAVED_ORDER');
+		if (SAVED_ORDER) {
 			try {
-				savedOrder = JSON.parse(savedOrder);
+				SAVED_ORDER = JSON.parse(SAVED_ORDER);
 			} catch {
-				savedOrder = {};
+				SAVED_ORDER = rnpDataByArticle.map((el) => el.article_data.wb_id);
 			}
-			if (Array.isArray(savedOrder)) {
-				savedOrder = {};
-			}
-			savedOrder[activeBrand.id] = order;
+			setOrder(SAVED_ORDER);
 		} else {
-			savedOrder = {};
-			savedOrder[activeBrand.id] = order;
+			setOrder(rnpDataByArticle.map((el) => el.article_data.wb_id));
 		}
-		localStorage.setItem('rnpOrder', JSON.stringify(savedOrder));
-	}, [order])
-
-
-	let counter = 0;
+	}, [rnpDataByArticle])
 
 	return (
 		<>
@@ -491,6 +474,9 @@ export default function RnpList({ view, expanded, setExpanded, setAddRnpModalSho
 			>
 				{view === 'articles' && (
 					<div ref={ref} className={styles.list_container}>
+						{loading && <div className={styles.loading_container}>
+							<span className='loader'></span>
+						</div>}
 						{/* Edge drop-зоны в верху и внизу */}
 						<EdgeDropZone
 							position="top"
@@ -498,10 +484,11 @@ export default function RnpList({ view, expanded, setExpanded, setAddRnpModalSho
 							isDragging={isDragging}
 							onDrop={handleEdgeDropZoneDrop}
 						/>
-						{items?.length > 0 && order.map((orderI, i) => {
-							const el = items.find((rnp, index) => rnp.article_data.wb_id === orderI)
-							if (el) {
-								counter++
+						{order && items?.length > 0 &&
+							sortItemsByOrder(items, order).map((el, i) => {
+								// if (i === 0 && expanded?.length === 0) {
+								// 	setExpanded([el.article_data.wb_id]);
+								// }
 								return (
 									<React.Fragment key={i}>
 										{/* Drop-зона перед каждой карточкой */}
@@ -520,16 +507,14 @@ export default function RnpList({ view, expanded, setExpanded, setAddRnpModalSho
 											setDeleteRnpId={setDeleteRnpId}
 											onReorder={handleReorder}
 											isDragging={isDragging}
-											isFirst={counter === 1}
 										/>
 									</React.Fragment>
 								)
-							}
-							
-						})
+
+							})
 						}
 						{/* Drop-зона после последней карточки */}
-						{items?.length > 0 && (
+						{order && items?.length > 0 && (
 							<DropZone
 								index={order.length}
 								isActive={activeDropZone === order.length}
@@ -551,7 +536,10 @@ export default function RnpList({ view, expanded, setExpanded, setAddRnpModalSho
 				{view === 'total' && (
 					<>
 						{rnpDataTotal && <div className={styles.item_content}>
-							<RnpTable
+							{loading && <div className={styles.loading_container}>
+								<span className='loader'></span>
+							</div>}
+							<RnpTableTotal
 								// data={null}
 								data={rnpDataTotal?.table?.rows}
 								data2={rnpDataTotal?.table?.datasource}
