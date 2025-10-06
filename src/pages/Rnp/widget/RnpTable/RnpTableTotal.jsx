@@ -32,7 +32,7 @@ const customCellRender = (value, record, index, dataIndex) => {
 		</div>
 	}
 	if (dataIndex === 'period' && !record.isParent) {
-		return <div className={styles.customCell} data-rnp-is-last-child={record.isLastChild ? 'lastChild' : ''}>{value}</div>
+		return <div className={`${styles.customCell} ${styles.customCellIdent}`} data-rnp-is-last-child={record.isLastChild ? 'lastChild' : ''}>{value}</div>
 	}
 	return (
 		<div className={styles.customCell}>{value}</div>
