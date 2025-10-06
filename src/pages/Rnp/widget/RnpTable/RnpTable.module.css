@@ -42,7 +42,7 @@
 
 .bodyRowSpecial:hover td div {
   background-color: #FAFAFA !important;
-  transition: all 0.2s ease;
+  transition: background-color 0.2s ease;
 }
 
 
@@ -72,22 +72,25 @@
   align-items: center;
   gap: 10px;
 }
-.customCell {
-  width: 100%;
-  height: 100%;
-  overflow: hidden !important;
-  text-overflow: ellipsis !important;
-  display: -webkit-box !important;
-  -webkit-box-orient: vertical !important;
-  -webkit-line-clamp: 1 !important;
-}
+  .customCell {
+    width: 100%;
+    height: 100%;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    display: -webkit-box !important;
+    -webkit-box-orient: vertical !important;
+    -webkit-line-clamp: 1 !important;
+  }
+  .customCellIdent {
+    padding-left: 30px;
+  }
 
 
 :global(.radar-table-default__body-row):has(div > .customCell[data-rnp-is-last-child="lastChild"]) > td > div {
   border-bottom: 1px solid #E8E8E8 !important;
 }
 
-/* Родительская строка в состоянии СВЕРНУТО (aria-expanded=false) */
+
 :global(.radar-table__body-row--parent:has(button.radar-table__expander-btn[aria-expanded="false"]) > td > .radar-table__body-cell-wrapper) {
   border-bottom: 1px solid #E8E8E8 !important;
 }
