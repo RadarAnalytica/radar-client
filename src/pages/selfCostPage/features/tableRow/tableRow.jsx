@@ -84,20 +84,25 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
                 setDataStatus({ ...initDataStatus, isError: true, message: parsedData.detail || 'Что-то пошло не так :(' })
                 return;
             }
-            const parsedData = await res.json()
+            const parsedData = await res.json();
             let newTableData = tableData;
             const index = newTableData.findIndex(_ => _.product === parsedData.product);
-            newTableData[index] = parsedData
-            const isAllProductsHasSelfCost = !newTableData.some(_ => _.cost === null )
+            newTableData[index] = parsedData;
+            const isAllProductsHasSelfCost = !newTableData.some(_ => _.cost === null );
 
             if (isAllProductsHasSelfCost) {
-                dispatch(fetchShops(authToken))
+                dispatch(fetchShops(authToken));
             }
-            setTableData(newTableData)
-            setDataStatus({ ...initDataStatus })
-            setIsSuccess(true)
-        } catch {
-            setDataStatus({ ...initDataStatus, isError: true, message: 'Что-то пошло не так :(' })
+            setTableData(newTableData);
+            setDataStatus({ ...initDataStatus });
+            setIsSuccess(true);
+        } catch (e) {
+            console.error('Error', e);
+            setDataStatus({ 
+                ...initDataStatus, 
+                isError: true, 
+                message: 'Что-то пошло не так :(' 
+            });
         }
     }, [product, authToken, initDataStatus, setDataStatus, setTableData, tableData, setIsSuccess]);
 
