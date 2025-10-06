@@ -126,7 +126,7 @@ function RnpListItem({ el, index, expanded, setExpanded, setDeleteRnpId, onReord
 		const timeout = setTimeout(() => {
 			ref.current.scrollIntoView({ behavior: "smooth" });
 		}, 150)
-		let newExpanded = null;
+		let newExpanded = 'collapsed';
 		if (expanded !== value) {
 			newExpanded = value;
 		}
