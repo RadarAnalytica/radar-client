@@ -554,7 +554,7 @@ export const ServiceFunctions = {
 
 	getAnalysisData: async (token, selectedRange, shop, filters) => {
 		const body = getRequestObject(filters, selectedRange, shop)
-		const res = await fetchApi('/api/prod_analytic', {
+		const res = await fetchApi('/api/prod_analytic/', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
