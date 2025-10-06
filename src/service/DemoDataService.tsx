@@ -70,7 +70,7 @@ export class DemoDataService {
   private getExactMatch(endpoint: string): any {
     const endpointMap: Record<string, () => any> = {
       '/api/dashboard/': () => this.getDashboardData(),
-      '/api/prod_analytic': () => this.getStockAnalysisData(),
+      '/api/prod_analytic/': () => this.getStockAnalysisData(),
       '/api/periodic_reports/weekly_report': () => this.getWeeklyReportData(),
       '/api/common/filters_new': () => this.getDemoFilters(),
       '/api/shop/all': () => this.getDemoShops(),
