@@ -210,10 +210,10 @@
   bottom: 20px;
   left: 0;
   right: 0;
-  background-color: rgba(255,255,255,.75);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 1000;
   border-radius: 16px;
+  backdrop-filter: grayscale(75%);
 }
