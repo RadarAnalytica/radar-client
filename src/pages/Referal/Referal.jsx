@@ -12,10 +12,12 @@ import { format } from 'date-fns';
 import ruRU from 'antd/locale/ru_RU';
 import SuccessModal from '../../components/sharedComponents/modals/successModal/successModal';
 import ErrorModal from '../../components/sharedComponents/modals/errorModal/errorModal';
+import { useDemoMode } from "@/app/providers";
+import NoSubscriptionWarningBlock from '@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock';
 
 export default function ReferalPage() {
 	const { authToken } = useContext(AuthContext);
-
+	const { isDemoMode } = useDemoMode();
 	const [loading, setLoading] = useState(true);
 	const [data, setData] = useState(null);
 	const [page, setPage] = useState(1);
@@ -111,11 +113,11 @@ export default function ReferalPage() {
 	return (
 		<main className={styles.page}>
 			<MobilePlug />
-			{/* ------ SIDE BAR ------ */}
+
 			<section className={styles.page__sideNavWrapper}>
 				<Sidebar />
 			</section>
-			{/* ------ CONTENT ------ */}
+
 			<ConfigProvider
 				locale={ruRU}
 				renderEmpty={ () => (<div>Нет начислений</div>)} 
@@ -168,10 +170,11 @@ export default function ReferalPage() {
 				}}
 			>
 				<section className={styles.page__content}>
-					{/* header */}
 					<div className={styles.page__headerWrapper}>
 						<Header title="Реферальная программа"></Header>
 					</div>
+
+					{isDemoMode && <NoSubscriptionWarningBlock />}
 
 					{loading && (
 						<div className={styles.loading}>

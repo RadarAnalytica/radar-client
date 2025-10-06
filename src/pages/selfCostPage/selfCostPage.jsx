@@ -19,7 +19,7 @@ const initDataStatus = {
     isError: false,
     isLoading: false,
     message: ''
-}
+};
 
 const SelfCostPage = () => {
     const { isDemoMode } = useDemoMode();
@@ -171,7 +171,6 @@ const SelfCostPage = () => {
                 </svg>
                 Себестоимость установлена
             </div>}
-
 
             <ErrorModal
                 footer={null}

@@ -24,9 +24,12 @@ import { Filters } from '@/components/sharedComponents/apiServicePagesFiltersCom
 import { fetchRnpFilters } from '../../redux/filtersRnp/filterRnpActions';
 import { actions as filterActions } from '../../redux/filtersRnp/filtersRnpSlice'
 import HowToLink from '../../components/sharedComponents/howToLink/howToLink';
+import { useDemoMode } from "@/app/providers";
+import NoSubscriptionWarningBlock from '@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock';
 
 export default function Rnp() {
 	const { user, authToken } = useContext(AuthContext);
+	const { isDemoMode } = useDemoMode();
 	const dispatch = useAppDispatch();
 	const { selectedRange, activeBrand, shops } = useAppSelector((state) => state.filters);
 	const filters = useAppSelector((state) => state.filters);
@@ -248,16 +251,17 @@ export default function Rnp() {
 	return (
 		<main className={styles.page}>
 			<MobilePlug />
-			{/* ------ SIDE BAR ------ */}
+
 			<section className={styles.page__sideNavWrapper}>
 				<Sidebar />
 			</section>
-			{/* ------ CONTENT ------ */}
+
 			<section ref={pageContentRef} className={styles.page__content}>
-				{/* header */}
 				<div className={styles.page__headerWrapper}>
 					<Header title="Рука на пульсе (РНП)"></Header>
 				</div>
+
+				{isDemoMode && <NoSubscriptionWarningBlock />}
 
 				{!loading && activeBrand && activeBrand.is_valid && activeBrand?.is_primary_collect && !activeBrand.is_self_cost_set && (
 					<SelfCostWarningBlock
