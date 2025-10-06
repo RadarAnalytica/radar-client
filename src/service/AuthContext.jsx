@@ -136,7 +136,7 @@ export const AuthProvider = ({ children }) => {
 
     setAuthToken(null);
     setUser(null);
-    window.location.replace(URL);
+    window.location.replace(user?.email === 'demo@radar.ru' ? `${URL}/signup` : URL);
   };
 
   // Offcanvas functions

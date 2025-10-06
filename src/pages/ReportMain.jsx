@@ -24,10 +24,13 @@ import Sidebar from '../components/sharedComponents/sidebar/sidebar';
 import HowToLink from '../components/sharedComponents/howToLink/howToLink';
 import ModalDeleteConfirm from "../components/sharedComponents/ModalDeleteConfirm"
 import Header from '../components/sharedComponents/header/header';
-
+import NoSubscriptionWarningBlock from '../components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock';
 import { Tooltip } from "antd";
+import { useDemoMode } from "@/app/providers";
+import DemonstrationSection from '../components/DemonstrationSection';
 
 const ReportMain = () => {
+  const { isDemoMode } = useDemoMode();
   const { user, authToken } = useContext(AuthContext);
   const fileInputRef = useRef(null);
   const [selectedFile, setSelectedFile] = useState(null);
@@ -48,6 +51,7 @@ const ReportMain = () => {
       console.error('Error fetching data:', error);
     }
   };
+
   useEffect(() => {
     getListOfReports();
   }, []);
@@ -149,6 +153,19 @@ const ReportMain = () => {
         <div style={{ width: '100%', padding: '20px 0' }} className="container dash-container">
           <Header title={'Главная'} titlePrefix={'Отчёт'} />
         </div>
+
+        {isDemoMode && 
+          <div className='mb-3'>
+            <NoSubscriptionWarningBlock />
+          </div>
+        }
+
+        {!user.is_report_downloaded &&
+          <div className='mb-3'>
+            <DemonstrationSection />
+          </div>
+        }
+
         <div className='container dash-container'>
           <div className={styles.instructionWrapper}>
             <div className={styles.instructionTop}>
@@ -311,9 +328,6 @@ const ReportMain = () => {
           </div>
         </div>
         <div className='container dash-container'>
-
-
-
           {/* file uploader */}
           <div
             className={styles.uploadContainer}

@@ -2,6 +2,7 @@
 
 export interface DemoModeContextType {
   isDemoMode: boolean;
+  isDemoUser: boolean;
   showDemoBanner: boolean;
   getDemoDataForEndpoint: (endpoint: string, params?: any) => any;
   switchToDemo: () => void;

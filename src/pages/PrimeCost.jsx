@@ -13,10 +13,13 @@ import Sidebar from '../components/sharedComponents/sidebar/sidebar';
 import Header from '../components/sharedComponents/header/header';
 import ErrorModal from '../components/sharedComponents/modals/errorModal/errorModal';
 import SuccessModal from '../components/sharedComponents/modals/successModal/successModal';
+import NoSubscriptionWarningBlock from '../components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock';
+import { useDemoMode } from "@/app/providers";
 
 const PrimeCost = () => {
   const [file, setFile] = useState();
-  const { authToken } = useContext(AuthContext);
+  const {isDemoMode} = useDemoMode();
+  const { authToken, user } = useContext(AuthContext);
   const [show, setShow] = useState(false);
   const [costPriceShow, setCostPriceShow] = useState(false);
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
@@ -79,14 +82,24 @@ const PrimeCost = () => {
   return (
     <div className='dashboard-page'>
       <MobilePlug />
+
       <div style={{ height: '100vh', zIndex: 999 }}>
         <Sidebar />
       </div>
-      {/* <SideNav /> */}
+
       <div className='dashboard-content pb-3' style={{ padding: '0 32px' }}>
         <div style={{ width: '100%', padding: '20px 0' }} className="container dash-container">
           <Header title={'Себестоимость'} titlePrefix={'Отчёт'} />
         </div>
+
+        {isDemoMode && 
+          <NoSubscriptionWarningBlock />
+        }
+
+        {!user.is_report_downloaded &&
+          <DemonstrationSection />
+        }
+
         <div className='container dash-container'>
           <div className={styles.primeCost}>
             <div className={styles.primeCostBox}>
@@ -112,8 +125,10 @@ const PrimeCost = () => {
             </div>
           </div>
         </div>
+
         <BottomNavigation />
       </div>
+      
       <Modal
         show={costPriceShow}
         onHide={handleCostPriceClose}

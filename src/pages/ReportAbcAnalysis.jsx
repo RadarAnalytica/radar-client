@@ -14,7 +14,11 @@ import { formatPrice } from '@/service/utils';
 import MobilePlug from '../components/sharedComponents/mobilePlug/mobilePlug';
 import Sidebar from '../components/sharedComponents/sidebar/sidebar';
 import Header from '../components/sharedComponents/header/header';
+import NoSubscriptionWarningBlock from '../components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock';
+import { useDemoMode } from "@/app/providers";
+
 const ReportAbcAnalysis = () => {
+  const {isDemoMode} = useDemoMode();
   const [isRevenueLoading, setIsRevenueLoading] = useState(false);
   const dispatch = useDispatch();
   const { abcFilters, isFiltersLoading } = useSelector((state) => state?.abcFiltersSlice);
@@ -73,6 +77,20 @@ const ReportAbcAnalysis = () => {
         <div style={{ width: '100%', padding: '20px 0' }} className="container dash-container">
           <Header title={'ABC-анализ'} titlePrefix={'Отчёт'} />
         </div>
+
+
+        {isDemoMode && 
+          <div className='mb-1'>
+            <NoSubscriptionWarningBlock />
+          </div>
+        }
+
+        {!user.is_report_downloaded &&
+          <div className='mb-1'>
+            <DemonstrationSection />
+          </div>
+        }
+
         <div className='container dash-container'>
           <NewFilterGroup pageIdent='abc' filtersData={abcFilters} isLoading={isFiltersLoading} getData={applyFilters}/>
         </div>

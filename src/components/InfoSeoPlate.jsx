@@ -8,7 +8,7 @@ import AuthContext from '../service/AuthContext';
 import { ServiceFunctions } from '../service/serviceFunctions';
 import Modal from 'react-bootstrap/Modal';
 import warningIcon from '../assets/warning.png';
-import { useDemoMode } from "@/app/providers";  
+import { useDemoMode } from "@/app/providers";
 
 const InfoSeoPlate = ({ setCompaireData, setLinksToSend }) => {
   const { authToken } = useContext(AuthContext);

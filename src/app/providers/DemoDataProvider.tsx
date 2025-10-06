@@ -12,6 +12,7 @@ interface DemoDataProviderProps {
 export const DemoDataProvider: React.FC<DemoDataProviderProps> = ({ children }) => {
   const { user } = useContext(AuthContext);
   const [isDemoMode, setIsDemoMode] = useState<boolean>(false);
+  const [isDemoUser, setIsDemoUser] = useState<boolean>(false);
   const [showDemoBanner, setShowDemoBanner] = useState<boolean>(false);
 
   // Проверяем статус подписки при изменении пользователя
@@ -20,9 +21,11 @@ export const DemoDataProvider: React.FC<DemoDataProviderProps> = ({ children }) 
       const isDemo = user?.subscription_status === null;
       setIsDemoMode(isDemo);
       setShowDemoBanner(isDemo);
+      setIsDemoUser(user?.email === 'demo@radar.ru');
     } else {
       setIsDemoMode(false);
       setShowDemoBanner(false);
+      setIsDemoUser(false);
     }
   }, [user]);
 
@@ -51,6 +54,7 @@ export const DemoDataProvider: React.FC<DemoDataProviderProps> = ({ children }) 
 
   const contextValue: DemoModeContextType = {
     isDemoMode,
+    isDemoUser,
     showDemoBanner,
     getDemoDataForEndpoint,
     switchToDemo,
