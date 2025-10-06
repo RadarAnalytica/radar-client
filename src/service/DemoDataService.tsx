@@ -344,9 +344,11 @@ export class DemoDataService {
           item.by_date_data = [...item.by_date_data, ...item.by_date_data, ...item.by_date_data];
         }
 
-        item.by_date_data = item.by_date_data.slice(-days - 1);
-        const diffDays = filters.selectedRange?.to ? new Date().getDate() - new Date(filters.selectedRange?.to).getDate() : 0;
-
+        item.by_date_data = item.by_date_data.slice(-(days + 1));
+        const diffDays = filters?.selectedRange?.to 
+          ? Math.round((Number(new Date()) - Number(new Date(filters.selectedRange.to))) / 86400000) 
+          : 0;
+        
         const updatedByDateData = item.by_date_data.map((dateItem: any, index: number) => {
           // Генерируем дату от вчерашнего или последнего выбранного дня и назад
           const date = new Date();
@@ -380,8 +382,10 @@ export class DemoDataService {
         data.by_date_data = [...data.by_date_data, ...data.by_date_data, ...data.by_date_data];
       }
 
-      data.by_date_data = data.by_date_data.slice(-days - 1);
-      const diffDays = filters.selectedRange?.to ? new Date().getDate() - new Date(filters.selectedRange?.to).getDate() : 0;
+      data.by_date_data = data.by_date_data.slice(-(days + 1));
+      const diffDays = filters?.selectedRange?.to 
+          ? Math.round((Number(new Date()) - Number(new Date(filters.selectedRange.to))) / 86400000) 
+          : 0;
 
       const updatedByDateData = data.by_date_data.map((dateItem: any, index: number) => {
         // Генерируем дату от вчерашнего или последнего выбранного дня и назад
