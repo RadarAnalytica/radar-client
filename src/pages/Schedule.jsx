@@ -15,9 +15,12 @@ import NewFilterGroup from '../components/finReport/FilterGroup'
 import MobilePlug from '../components/sharedComponents/mobilePlug/mobilePlug';
 import Sidebar from '../components/sharedComponents/sidebar/sidebar';
 import Header from '../components/sharedComponents/header/header';
+import NoSubscriptionWarningBlock from '../components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock';
+import { useDemoMode } from "@/app/providers";
 
 const Schedule = () => {
   const { authToken, user } = useContext(AuthContext);
+  const {isDemoMode} = useDemoMode();
   const dispatch = useDispatch();
   const { chartsFilters, isFiltersLoading } = useSelector((state) => state?.chartsFiltersSlice);
   const [isChartsLoading, setIsChartsLoading] = useState(false);
@@ -372,6 +375,18 @@ const Schedule = () => {
         <div style={{ width: '100%', padding: '20px 0' }} className="container dash-container">
           <Header title={'Графики'} titlePrefix={'Отчёт'} />
         </div>
+
+        {isDemoMode && 
+          <div className='mb-1'>
+            <NoSubscriptionWarningBlock />
+          </div>
+        }
+
+        {!user.is_report_downloaded &&
+          <div className='mb-1'>
+            <DemonstrationSection />
+          </div>
+        }
 
         <div className='container dash-container'>
           <NewFilterGroup pageIdent='charts' filtersData={chartsFilters} isLoading={isFiltersLoading} getData={updateScheduleChartData} />

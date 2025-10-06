@@ -31,9 +31,9 @@ class ErrorBoundary extends React.Component {
       // Рендерим fallback UI
       return (
         <div className={styles.errorBoundary}>
-          <Link to='/main' className={styles.errorBoundary__mainLink}>
-            <img src={logo} alt='' />
-          </Link>
+          <a href='/main' className={styles.errorBoundary__mainLink}>
+            <img src={logo} alt='На главную' />
+          </a>
           <p className={styles.errorBoundary__title}>
             Произошла ошибка в приложении
             <span> «Радар–Аналитика»</span>

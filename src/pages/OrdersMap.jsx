@@ -41,7 +41,7 @@ const OrdersMap = () => {
   const [data, setData] = useState();
   const [loading, setLoading] = useState(false); // лоадер для загрузки данных
   const [isVisible, setIsVisible] = useState(true);
-  const [primaryCollect, setPrimaryCollect] = useState(null)
+  const [primaryCollect, setPrimaryCollect] = useState(null);
 
   const radioOptions = [
     { value: 'region', label: 'По регионам' },
@@ -59,10 +59,10 @@ const OrdersMap = () => {
     } finally {
       setLoading(false);
     }
-  }
+  };
 
   useEffect(() => {
-    setPrimaryCollect(activeBrand?.is_primary_collect)
+    setPrimaryCollect(activeBrand?.is_primary_collect);
     if (activeBrand && activeBrand.is_primary_collect && isFiltersLoaded) {
       updateGeoData();
     }

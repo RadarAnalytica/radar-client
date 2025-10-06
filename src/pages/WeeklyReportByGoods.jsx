@@ -9,8 +9,12 @@ import NewFilterGroup from '../components/finReport/FilterGroup'
 import MobilePlug from '../components/sharedComponents/mobilePlug/mobilePlug';
 import Sidebar from '../components/sharedComponents/sidebar/sidebar';
 import Header from '../components/sharedComponents/header/header';
+import NoSubscriptionWarningBlock from '../components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock';
+import DemonstrationSection from '../components/DemonstrationSection';
+import { useDemoMode } from "@/app/providers";
 
 const WeeklyReportByGoods = () => {
+  const {isDemoMode} = useDemoMode();
   const { authToken, user } = useContext(AuthContext);
   const dispatch = useDispatch();
   const { weeklyData, loading, error } = useSelector(state => state.reportByGoodsSlice);
@@ -37,17 +41,32 @@ const WeeklyReportByGoods = () => {
   return (
     <div className='dashboard-page'>
       <MobilePlug />
+
       <div style={{ height: '100vh', zIndex: 999 }}>
         <Sidebar />
       </div>
-      {/* <SideNav /> */}
+
       <div className='dashboard-content pb-3' style={{ padding: '0 32px' }}>
         <div style={{ width: '100%', padding: '20px 0' }} className="container dash-container">
           <Header title={'По товарам'} titlePrefix={'Отчёт'} />
         </div>
+
+        {isDemoMode && 
+          <div className='mb-1'>
+            <NoSubscriptionWarningBlock />
+          </div>
+        }
+
+        {!user.is_report_downloaded &&
+          <div className='mb-1'>
+            <DemonstrationSection />
+          </div>
+        }
+
         <div className='container dash-container'>
           <NewFilterGroup pageIdent='goods' filtersData={byGoodsFilters} isLoading={isFiltersLoading} getData={handleFetchReport} />
         </div>
+
         <div className='container dash-container'>
           {!isLoading
             ? <TableByGoods data={weeklyData} />
@@ -68,6 +87,7 @@ const WeeklyReportByGoods = () => {
             </div>
           }
         </div>
+        
         <BottomNavigation />
       </div>
     </div>
