@@ -69,5 +69,6 @@ export const fetchApi = async (endpoint: string, options: RequestInit = {}) => {
   }
 
   // Выполняем реальный запрос
-  return fetch(`${URL}${endpoint}`, options);
+  const fullUrl = endpoint.startsWith('https://') ? endpoint : `${URL}${endpoint}`;
+  return fetch(fullUrl, options);
 };
