@@ -1619,8 +1619,8 @@ export const ServiceFunctions = {
 	},
 	getRnpFilters: async(token) => {
 		try {
-			const res = await fetch(
-				`${URL}/api/rnp/filters`,
+			const res = await fetchApi(
+				`/api/rnp/filters`,
 				{
 					method: 'GET',
 					headers: {

@@ -339,6 +339,8 @@ export default function TrendAnalysisQuery() {
 										}
 										loading={downloadLoading}
 										onClick={handleDownload}
+										disabled={isDemoMode}
+										title={isDemoMode ? 'Скачивание доступно после активации подписки' : 'Скачать таблицу в виде Excel-файла'}
 									>
 										Скачать Excel
 									</Button>

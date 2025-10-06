@@ -26,6 +26,7 @@ import trendingQueriesMonth from '../mock/trend-analysis-month.json';
 import trendingQueriesDay from '../mock/trend-analysis-day.json';
 import ceoComparisonRaw from '../mock/ceo-comparison.json';
 import descriptionGeneratorKeywords from '../mock/description-generator-keywords.json';
+import rnpFiltersData from '../mock/rnp-filters.json';
 
 import { store } from '@/redux/store';
 
@@ -78,6 +79,7 @@ export class DemoDataService {
       '/api/rnp/by_article': () => this.getRnpByArticleData(),
       '/api/rnp/summary': () => this.getRnpSummaryData(),
       '/api/rnp/products': () => this.getRnpProductsData(),
+      '/api/rnp/filters': () => this.getRnpFiltersData(),
       '/api/profit_loss/report': () => this.getPlReportData(),
       '/api/geo/': () => this.getGeoData(),
       '/api/abc_data/proceeds': () => this.getAbcDataProceeds(),
@@ -92,7 +94,7 @@ export class DemoDataService {
       'https://radarmarket.ru/api/web-service/trending-queries/get': () => this.getTrendingQueries(),
       'https://radarmarket.ru/api/analytic/query-dynamics/month': () => this.getTrendingAnalysisMonth(),
       'https://radarmarket.ru/api/analytic/query-dynamics/day': () => this.getTrendingAnalysisDay(),
-      '/api/product/self-costs': () => ({ message: "Success" }),
+      '/api/product/self-costs': () => ({ message: "Success", updated_items: [{ product: 'Демо', cost: 100, fulfillment: 100 }] }),
     };
 
     const dataGetter = endpointMap[endpoint];
@@ -138,7 +140,8 @@ export class DemoDataService {
           "article": "М-БР-01-Ч",
           "brand": "Демо-бренд",
           "shop": "Демо-магазин",
-          "tech_size": "48 (176-182)"
+          "tech_size": "48 (176-182)",
+          "in_group": true,
         }
       ],
       created_at: new Date().toISOString(),
@@ -269,6 +272,7 @@ export class DemoDataService {
     const data = this.getOriginalJson(dashboardData);
     const days = this.getFilterDays();
     const denominator = 90 / days;
+    const dayTo = store.getState().filters?.selectedRange?.to || new Date().toISOString().split('T')[0];
 
     data.orderCountList = data.orderCountList.slice(0, days);
     data.orderAmountList = data.orderAmountList.slice(0, days);
@@ -278,9 +282,8 @@ export class DemoDataService {
     data.salesAndProfit = data.salesAndProfit.slice(0, days);
 
     // Обновляем даты в marginalityRoiChart и salesAndProfit начиная от сегодня и назад
-    const today = new Date();
     data.marginalityRoiChart = data.marginalityRoiChart.map((item: any, index: number) => {
-      const date = new Date(today);
+      const date = new Date(dayTo);
       date.setDate(date.getDate() - (days - 1 - index));
       return {
         ...item,
@@ -289,7 +292,7 @@ export class DemoDataService {
     });
 
     data.salesAndProfit = data.salesAndProfit.map((item: any, index: number) => {
-      const date = new Date(today);
+      const date = new Date(dayTo);
       date.setDate(date.getDate() - (days - 1 - index));
       return {
         ...item,
@@ -333,12 +336,15 @@ export class DemoDataService {
     const data = this.getOriginalJson(rnpByArticleData);
     const filters = store.getState().filters;
     const days = this.getFilterDays();
-    const denominator = 90 / days;
 
     // Обновляем даты в by_date_data массиве для каждого элемента
     const updatedData = data.map((item: any) => {
       if (Array.isArray(item.by_date_data)) {
-        item.by_date_data = item.by_date_data.slice(-days);
+        if (days > 30) {
+          item.by_date_data = [...item.by_date_data, ...item.by_date_data, ...item.by_date_data];
+        }
+
+        item.by_date_data = item.by_date_data.slice(-days - 1);
         const diffDays = filters.selectedRange?.to ? new Date().getDate() - new Date(filters.selectedRange?.to).getDate() : 0;
 
         const updatedByDateData = item.by_date_data.map((dateItem: any, index: number) => {
@@ -364,13 +370,17 @@ export class DemoDataService {
   }
 
   private getRnpSummaryData(): any {
-    let data = {...rnpSummaryData};
+    let data = this.getOriginalJson(rnpSummaryData);
     const filters = store.getState().filters;
     const days = this.getFilterDays();
 
     // Обновляем даты в by_date_data массиве для каждого элемента
     if (Array.isArray(data.by_date_data)) {
-      data.by_date_data = data.by_date_data.slice(-days);
+      if (days > 30) {
+        data.by_date_data = [...data.by_date_data, ...data.by_date_data, ...data.by_date_data];
+      }
+
+      data.by_date_data = data.by_date_data.slice(-days - 1);
       const diffDays = filters.selectedRange?.to ? new Date().getDate() - new Date(filters.selectedRange?.to).getDate() : 0;
 
       const updatedByDateData = data.by_date_data.map((dateItem: any, index: number) => {
@@ -389,6 +399,10 @@ export class DemoDataService {
 
   private getRnpProductsData(): any {
     return rnpProductsData;
+  }
+
+  private getRnpFiltersData(): any {
+    return { data: rnpFiltersData };
   }
 
   // Stock Analysis данные
@@ -442,7 +456,7 @@ export class DemoDataService {
     const result = [];
     
     // Генерируем данные по годам
-    for (let year = startYear; year <= endYear; year++) {
+    for (let year = endYear; year >= startYear; year--) {
       // Определяем диапазон месяцев для текущего года
       const yearStartMonth = (year === startYear) ? startMonth : 1;
       const yearEndMonth = (year === endYear) ? endMonth : 12;
@@ -458,8 +472,6 @@ export class DemoDataService {
         months: monthsDataWithData,
       });
     }
-
-    console.log(result);
 
     return result;
   }
@@ -489,79 +501,79 @@ export class DemoDataService {
 
     return {
       realization: {
-        rub: this.generateRandomAmount(100000000, 150000000) * baseMultiplier,
+        rub: this.generateRandomAmount(1200000000, 1800000000) * baseMultiplier,
         percent: this.generateRandomPercent(65, 75)
       },
       mp_discount: {
-        rub: this.generateRandomAmount(30000000, 50000000) * baseMultiplier,
+        rub: this.generateRandomAmount(360000000, 600000000) * baseMultiplier,
         percent: this.generateRandomPercent(20, 30)
       },
       sales: {
-        rub: this.generateRandomAmount(140000000, 200000000) * baseMultiplier,
+        rub: this.generateRandomAmount(1680000000, 2400000000) * baseMultiplier,
         percent: 100
       },
       direct_expenses: {
         cost: {
-          rub: this.generateRandomAmount(500000, 1000000) * baseMultiplier,
+          rub: this.generateRandomAmount(6000000, 12000000) * baseMultiplier,
           percent: this.generateRandomPercent(0.3, 0.7)
         },
         logistic: {
-          rub: this.generateRandomAmount(15000000, 20000000) * baseMultiplier,
+          rub: this.generateRandomAmount(180000000, 240000000) * baseMultiplier,
           percent: this.generateRandomPercent(10, 15)
         },
         commission: {
-          rub: this.generateRandomAmount(30000000, 40000000) * baseMultiplier,
+          rub: this.generateRandomAmount(360000000, 480000000) * baseMultiplier,
           percent: this.generateRandomPercent(20, 25)
         },
         penalties: {
-          rub: this.generateRandomAmount(50000, 100000) * baseMultiplier,
+          rub: this.generateRandomAmount(600000, 1200000) * baseMultiplier,
           percent: this.generateRandomPercent(0.02, 0.1)
         },
         storage: {
-          rub: this.generateRandomAmount(500000, 1500000) * baseMultiplier,
+          rub: this.generateRandomAmount(6000000, 18000000) * baseMultiplier,
           percent: this.generateRandomPercent(0.3, 1.0)
         },
         advert: {
-          rub: this.generateRandomAmount(60000000, 80000000) * baseMultiplier,
+          rub: this.generateRandomAmount(720000000, 960000000) * baseMultiplier,
           percent: this.generateRandomPercent(40, 50)
         },
         other_retentions: {
-          rub: this.generateRandomAmount(60000000, 80000000) * baseMultiplier,
+          rub: this.generateRandomAmount(720000000, 960000000) * baseMultiplier,
           percent: this.generateRandomPercent(40, 50)
         },
         paid_acceptance: {
-          rub: this.generateRandomAmount(100000, 300000) * baseMultiplier,
+          rub: this.generateRandomAmount(1200000, 3600000) * baseMultiplier,
           percent: this.generateRandomPercent(0.05, 0.2)
         },
         total_expenses: {
-          rub: this.generateRandomAmount(120000000, 160000000) * baseMultiplier,
+          rub: this.generateRandomAmount(1440000000, 1920000000) * baseMultiplier,
           percent: this.generateRandomPercent(80, 90)
         }
       },
       compensation: {
-        rub: this.generateRandomAmount(50000, 150000) * baseMultiplier,
+        rub: this.generateRandomAmount(600000, 1800000) * baseMultiplier,
         percent: this.generateRandomPercent(0.03, 0.1)
       },
       gross_margin: {
-        rub: this.generateRandomAmount(130000000, 190000000) * baseMultiplier,
+        rub: this.generateRandomAmount(1560000000, 2280000000) * baseMultiplier,
         percent: this.generateRandomPercent(90, 98)
       },
       operating_expenses: null,
       operating_profit: {
-        rub: this.generateRandomAmount(15000000, 35000000) * baseMultiplier,
+        rub: this.generateRandomAmount(180000000, 420000000) * baseMultiplier,
         percent: this.generateRandomPercent(10, 20)
       },
       ebitda: {
-        rub: this.generateRandomAmount(15000000, 35000000) * baseMultiplier,
+        rub: this.generateRandomAmount(180000000, 420000000) * baseMultiplier,
         percent: this.generateRandomPercent(10, 20)
       },
       ebitda_margin: this.generateRandomPercent(10, 20),
       tax: {
-        rub: this.generateRandomAmount(3000000, 6000000) * baseMultiplier,
+        rub: this.generateRandomAmount(36000000, 72000000) * baseMultiplier,
         percent: this.generateRandomPercent(2, 4)
       },
       net_profit: {
-        rub: this.generateRandomAmount(50000000, 80000000) * baseMultiplier,
+        rub: this.generateRandomAmount(600000000, 960000000) * baseMultiplier,
         percent: this.generateRandomPercent(30, 50)
       }
     };
@@ -863,11 +875,12 @@ export class DemoDataService {
     if (typeof activeWeeks === 'string') {
       activeWeeks = [{ value: activeWeeks }];
     }
-    
+
     for (const selectedWeek of activeWeeks) {
       const weekDate = new Date(selectedWeek.value);
-      const weekNumber = this.getWeekNumber(weekDate);
-      
+      weekDate.setDate(weekDate.getDate() + 7); // берем по последнему дню недели
+      const weekNumber = this.getWeekNumber(weekDate) - 1;
+
       // Проверяем, что неделя не в будущем
       if (weekNumber <= currentWeekNumber) {
         const weekStartDate = this.getDateFromWeekNumber(weekDate.getFullYear(), weekNumber);
@@ -998,7 +1011,7 @@ export class DemoDataService {
 
   // Получение номера недели в году
   private getWeekNumber(date: Date): number {
-    const startOfYear = new Date(date.getFullYear(), 0, 1);
+    const startOfYear = new Date(date.getFullYear(), 0, 0);
     const days = Math.floor((date.getTime() - startOfYear.getTime()) / (24 * 60 * 60 * 1000));
     return Math.ceil((days + startOfYear.getDay() + 1) / 7);
   }

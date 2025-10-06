@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { URL } from '../../service/config';
+import { fetchApi } from '@/service/fetchApi';
 
 export const createFiltersDTO = (data) => {
   // 1 - создаем массив всех магазинов + опцию "Все магазины"
@@ -174,7 +174,7 @@ export const fetchRnpFilters = createAsyncThunk(
   async (token, { dispatch }) => {
     try {
       let data = null;
-      const res = await fetch(`${URL}/api/rnp/filters`, {
+      const res = await fetchApi('/api/rnp/filters', {
         method: 'GET',
         headers: {
           'content-type': 'application/json',

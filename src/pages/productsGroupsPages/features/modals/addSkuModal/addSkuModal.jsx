@@ -27,15 +27,15 @@ const getFilteredData = (query, data) => {
 }
 
 const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, groupData, getGroupData, initDataFetchingStatus, setDataFetchingStatus, dataFetchingStatus, shops, setAlertState }) => {
-    let checkedListRef = useRef(null)
-    const scrollContainerRef = useRef(null)
-    const { authToken } = useContext(AuthContext)
-    const [tableData, setTableData] = useState()
-    const [initData, setInitData] = useState()
+    let checkedListRef = useRef(null);
+    const scrollContainerRef = useRef(null);
+    const { authToken } = useContext(AuthContext);
+    const [tableData, setTableData] = useState();
+    const [initData, setInitData] = useState();
     const [checkedList, setCheckedList] = useState([]);
-    const [searchInputValue, setSearchInputValue] = useState('')
+    const [searchInputValue, setSearchInputValue] = useState('');
     const [paginationState, setPaginationState] = useState({ current: 1, total: 50, pageSize: 50 });
-    const dispatch = useAppDispatch()
+    const dispatch = useAppDispatch();
     const checkAll = tableData && tableData.length === checkedList.length;
     const indeterminate = tableData && checkedList.length > 0 && checkedList.length < tableData.length;
 
@@ -44,17 +44,17 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, groupData,
         if (checked) {
             setCheckedList([...checkedList, value]);
         } else {
-            const index = checkedList.findIndex(_ => _ === value)
-            const newList = checkedList
-            newList.splice(index, 1)
+            const index = checkedList.findIndex(_ => _ === value);
+            const newList = checkedList;
+            newList.splice(index, 1);
 
             if (searchInputValue && checkedListRef?.current && checkedListRef?.current.some(_ => _ === value)) {
                 let newSavedList = checkedListRef.current;
                 const index = newSavedList.findIndex(_ => _ === value);
-                newSavedList.splice(index, 1)
-                checkedListRef.current = newSavedList
+                newSavedList.splice(index, 1);
+                checkedListRef.current = newSavedList;
             }
-            setCheckedList([...newList])
+            setCheckedList([...newList]);
         }
     };
 
@@ -96,6 +96,7 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, groupData,
             setTableData(parsedRes.data?.products.sort((a, b) => a.article.localeCompare(b.article)));
             setInitData(parsedRes.data?.products.sort((a, b) => a.article.localeCompare(b.article)));
             setPaginationState({ ...paginationState, total: parsedRes.data?.products.length });
+            console.log(parsedRes.data?.products);
             setCheckedList(parsedRes.data?.products.filter(_ => _.in_group).map(_ => _.id));
             setDataFetchingStatus(initDataFetchingStatus);
         } catch {
@@ -267,7 +268,6 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, groupData,
                                     {tableData && addSkuTableConfig.values.map((v, id) => {
                                         /* Рендерим айтем заголовка таблицы с кнопками сортировки (если они нужны) */
                                         return (
-
                                             <div className={v.hasSearch ? styles.table__headerItem_wide : styles.table__headerItem} key={id}>
 
                                                 {v.hasSelect &&

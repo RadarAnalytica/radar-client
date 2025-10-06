@@ -1,13 +1,13 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { URL } from '../../service/config';
 import { createFiltersDTO } from '../filtersRnp/filterRnpActions';
+import { fetchApi } from '@/service/fetchApi';
 
 export const fetchFiltersRnpAdd = createAsyncThunk(
   'filtersRnpAdd',
   async (token, { dispatch }) => {
     try {
       let data = null;
-      const res = await fetch(`${URL}/api/rnp/filters`, {
+      const res = await fetchApi('/api/rnp/filters', {
         method: 'GET',
         headers: {
           'content-type': 'application/json',

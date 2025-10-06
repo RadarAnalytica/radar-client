@@ -8,6 +8,7 @@ class ErrorBoundary extends React.Component {
   constructor(props) {
     super(props);
     this.state = { hasError: false, error: null, errorInfo: null };
+    this.enabled = true; // ручное включение/отключение ErrorBoundary
   }
 
   static getDerivedStateFromError(error) {
@@ -26,7 +27,7 @@ class ErrorBoundary extends React.Component {
   }
 
   render() {
-    if (this.state.hasError) {
+    if (this.state.hasError && this.enabled) {
       // Рендерим fallback UI
       return (
         <div className={styles.errorBoundary}>

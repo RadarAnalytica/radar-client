@@ -123,31 +123,40 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
                     'authorization': 'JWT ' + authToken
                 },
                 body: JSON.stringify(object)
-            })
+            });
 
             if (!res.ok) {
-                const parsedData = await res.json()
-                setDataStatus({ ...initDataStatus, isError: true, message: parsedData.detail || 'Что-то пошло не так :(' })
+                const parsedData = await res.json();
+                setDataStatus({ 
+                    ...initDataStatus, 
+                    isError: true, 
+                    message: parsedData.detail || 'Что-то пошло не так :(' 
+                });
                 return;
             }
 
-            setHistoryItemsToDelete([])
+            setHistoryItemsToDelete([]);
             if (!shouldUpdateDefaultParams) {
-                const parsedData = await res.json()
+                const parsedData = await res.json();
                 let newTableData = tableData;
-                const updatedCurrentProduct = parsedData.updated_items[0]
+                const updatedCurrentProduct = parsedData.updated_items[0];
                 const index = newTableData.findIndex(_ => _.product === updatedCurrentProduct.product);
-                newTableData[index] = updatedCurrentProduct
-                setTableData(newTableData)
-                setDataStatus({ ...initDataStatus })
-                setIsSuccess(true)
+                newTableData[index] = updatedCurrentProduct;
+                setTableData(newTableData);
+                setDataStatus({ ...initDataStatus });
+                setIsSuccess(true);
             }
 
             if (shouldUpdateDefaultParams) {
-                await updateDefaultParams()
+                await updateDefaultParams();
             }
-        } catch {
-            setDataStatus({ ...initDataStatus, isError: true, message: 'Что-то1 пошло не так :(' })
+        } catch (e) {
+            console.log('e', e);
+            setDataStatus({ 
+                ...initDataStatus, 
+                isError: true, 
+                message: 'Что-то1 пошло не так :(' 
+            });
         }
     }, [product, historyItemsToDelete, authToken, initDataStatus, setDataStatus, setTableData, tableData, setIsSuccess, updateDefaultParams]);
 

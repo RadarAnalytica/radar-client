@@ -33,10 +33,10 @@ export const AuthProvider = ({ children }) => {
     if (value && value !== prevToken) {
       setAuthToken(value);
       setUser(decode(value));
-    } else {
-      console.log('user', user)
-      console.log('No token found');
     }
+
+    console.log('user', user);
+    
   }, [value]);
 
   // To delete the cookie:

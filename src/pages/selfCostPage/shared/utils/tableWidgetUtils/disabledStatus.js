@@ -88,9 +88,8 @@ export const getRowSaveButtonForLastHistoryParamsStatus = (product, compare, isO
     if (!currentObject?.cost) { status = true; return status };
     // 3 - значения не изменились
     if (currentObject?.cost === compareObject?.cost && currentObject?.fulfillment === compareObject?.fulfillment) { status = true; return status };
-     // 4 - отсутсвует фф, но изначально он был задан
-     console.log(currentObject?.fulfillment)
-     if (currentObject.cost && currentObject?.fulfillment === '' && (compareObject.fulfillment || compareObject.fulfillment === 0)) { status = true; return status };
+    // 4 - отсутсвует фф, но изначально он был задан
+    if (currentObject.cost && currentObject?.fulfillment === '' && (compareObject.fulfillment || compareObject.fulfillment === 0)) { status = true; return status };
 
     // во всех остальных случаех кнопка активна
     return status;
