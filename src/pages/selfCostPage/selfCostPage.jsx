@@ -130,13 +130,13 @@ const SelfCostPage = () => {
                         target='_blank'
                     />
                 </div>
-                {/* DATA COLLECT WARNING */}
+                
                 {activeBrand && !activeBrand.is_primary_collect &&
                     <DataCollectWarningBlock
                         title='Ваши данные еще формируются и обрабатываются.'
                     />
                 }
-                {/* !DATA COLLECT WARNING */}
+
                 {activeBrand && activeBrand.is_primary_collect &&
                     <>
                         <div className={styles.page__searchWrapper}>

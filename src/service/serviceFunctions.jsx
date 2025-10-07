@@ -106,117 +106,6 @@ export const ServiceFunctions = {
 		return data;
 	},
 
-	// getDataCollection: async (id, days, brandName) => {
-	//   const res = await fetch(
-	//     `${URL}/api/data-collection/${id}?days=${days}&brandName=${brandName}`,
-	//     {
-	//       method: "GET",
-	//       headers: {
-	//         "content-type": "application/json",
-	//       },
-	//     }
-	//   );
-
-	//   const data = await res.json();
-	//   return data;
-	// },
-
-	// getFilteredCollection: async (id, days, brandName) => {
-	//   const res = await fetch(
-	//     `${URL}/api/data-collection/filtered/${id}?days=${days}&brandName=${brandName}`,
-	//     {
-	//       method: "GET",
-	//       headers: {
-	//         "content-type": "application/json",
-	//       },
-	//     }
-	//   );
-
-	//   const data = await res.json();
-	//   return data;
-	// },
-
-	// getBrandNames: async (token) => {
-	//   const res = await fetch('https://radar-analytica.ru/api/shop/all', {
-	//     method: "GET",
-	//     headers: {
-	//       "content-type": "application/json",
-	//       "authorization": "JWT " + token,
-	//     },
-	//   });
-
-	//   const data = await res.json();
-	//   return data;
-	// },
-
-	// getBrandNames: async (id) => {
-	//     const res = await fetch(`${URL}/api/data-collection/names/${id}`, {
-	//         method: 'GET',
-	//         headers: {
-	//             'content-type': 'application/json'
-	//         },
-	//     })
-
-	//     const data = await res.json()
-	//     return data
-	// },
-
-	// getOrders: async (id, brandName) => {
-	//   const res = await fetch(`${URL}/api/orders/${id}?brandName=${brandName}`, {
-	//     method: "GET",
-	//     headers: {
-	//       "content-type": "application/json",
-	//     },
-	//   });
-
-	//   const data = await res.json();
-	//   return data;
-	// },
-
-	// getSales: async (id, brandName) => {
-	//   const res = await fetch(`${URL}/api/sales/${id}?brandName=${brandName}`, {
-	//     method: "GET",
-	//     headers: {
-	//       "content-type": "application/json",
-	//     },
-	//   });
-
-	//   const data = await res.json();
-	//   return data;
-	// },
-
-	// getGeoData: async (id, brandName, days) => {
-	//   const res = await fetch(
-	//     `${URL}/api/data-collection/geo/${id}?brandName=${brandName}&days=${days}`,
-	//     {
-	//       method: "GET",
-	//       headers: {
-	//         "content-type": "application/json",
-	//       },
-	//     }
-	//   );
-
-	//   const data = await res.json();
-	//   return data;
-	// },
-
-	// updateTax: async (id, brandName, obj) => {
-	//   const res = await fetch(
-	//     `${URL}/api/data-collection/tax/${id}?brandName=${brandName}`,
-	//     {
-	//       method: "POST",
-	//       headers: {
-	//         "content-type": "application/json",
-	//       },
-	//       body: JSON.stringify(obj),
-	//     }
-	//   );
-
-	//   console.log(obj);
-	//   const data = await res.json();
-	//   return data;
-	// },
-
 	getDashBoard: async (token, selectedRange, idShop, filters) => {
 		//let rangeParams = rangeApiFormat(selectedRange);
 		const body = getRequestObject(filters, selectedRange, idShop)
@@ -702,65 +591,65 @@ export const ServiceFunctions = {
 	},
 
 	scheduleFilterChartData: async (token) => {
-		const storeFilterData = store.getState().chartsFiltersSlice.chartsFilters
+		const storeFilterData = store.getState().chartsFiltersSlice?.chartsFilters;
 
 		if (Object.keys(storeFilterData).length === 0) {
-			return {}
+			return {};
 		}
 
-		const brandFilterData = storeFilterData.brand
-		const wbIdFilterData = storeFilterData.wbId
-		const groupFilterData = storeFilterData.group
-		const yearFilterData = storeFilterData.year
-		const monthFilterData = storeFilterData.month
-		const weekFilterData = storeFilterData.week
+		const brandFilterData = storeFilterData.brand;
+		const wbIdFilterData = storeFilterData.wbId;
+		const groupFilterData = storeFilterData.group;
+		const yearFilterData = storeFilterData.year;
+		const monthFilterData = storeFilterData.month;
+		const weekFilterData = storeFilterData.week;
 
-		const groupFilter = []
-		const brandFilter = []
-		const wbIdFilter = []
-		const yearFilter = []
-		const monthFilter = []
-		const weekFilter = []
+		const groupFilter = [];
+		const brandFilter = [];
+		const wbIdFilter = [];
+		const yearFilter = [];
+		const monthFilter = [];
+		const weekFilter = [];
 
 		if (!!groupFilterData && Object.keys(groupFilterData).length > 0) {
 			for (let _key of Object.keys(groupFilterData)) {
 				if (!!groupFilterData[_key]) {
-					groupFilter.push(_key)
+					groupFilter.push(_key);
 				}
 			}
 		}
 		if (!!brandFilterData && Object.keys(brandFilterData).length > 0) {
 			for (let _key of Object.keys(brandFilterData)) {
 				if (!!brandFilterData[_key]) {
-					brandFilter.push(_key)
+					brandFilter.push(_key);
 				}
 			}
 		}
 		if (!!wbIdFilterData && Object.keys(wbIdFilterData).length > 0) {
 			for (let _key of Object.keys(wbIdFilterData)) {
 				if (!!wbIdFilterData[_key]) {
-					wbIdFilter.push(_key)
+					wbIdFilter.push(_key);
 				}
 			}
 		}
 		if (!!yearFilterData && Object.keys(yearFilterData).length > 0) {
 			for (let _key of Object.keys(yearFilterData)) {
 				if (!!yearFilterData[_key]) {
-					yearFilter.push(_key)
+					yearFilter.push(_key);
 				}
 			}
 		}
 		if (!!monthFilterData && Object.keys(monthFilterData).length > 0) {
 			for (let _key of Object.keys(monthFilterData)) {
 				if (!!monthFilterData[_key]) {
-					monthFilter.push(_key)
+					monthFilter.push(_key);
 				}
 			}
 		}
 		if (!!weekFilterData && Object.keys(weekFilterData).length > 0) {
 			for (let _key of Object.keys(weekFilterData)) {
 				if (!!weekFilterData[_key]) {
-					weekFilter.push(_key)
+					weekFilter.push(_key);
 				}
 			}
 		}
@@ -774,7 +663,7 @@ export const ServiceFunctions = {
 				months: monthFilter,
 				weekdays: weekFilter,
 			},
-		}
+		};
 
 		const response = await fetch(`${URL}/api/report/get-charts`, {
 			method: 'POST',
@@ -791,7 +680,7 @@ export const ServiceFunctions = {
 
 		const data = await response.json();
 
-		return { data, filter }
+		return { data, filter };
 	},
 
 	getTrendingRequestExelFile: async (body, url, setStatus) => {

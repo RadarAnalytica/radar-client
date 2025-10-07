@@ -1,13 +1,14 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchChartsFilters } from '@/redux/reportCharts/chartsFiltersActions';
+import { fetchChartsFilters } from '../redux/reportCharts/chartsFiltersActions';
 import styles from './Schedule.module.css';
 import { useState, useEffect, useContext, useMemo, useCallback } from 'react';
+import BigChart from '../components/BigChart';
 import ScheduleBigChart from '../components/ScheduleBigChart';
 import ScheduleProfitabilityBigChart from '../components/ScheduleProfitabilityChart';
 import StructureRevenue from '../components/StructureRevenue';
 import RevenueStorageChart from '../components/RevenueStorageChart';
 import BottomNavigation from '../components/BottomNavigation';
-import { ServiceFunctions } from '@/service/serviceFunctions';
+import { ServiceFunctions } from '../service/serviceFunctions';
 import AuthContext from '../service/AuthContext';
 import DemonstrationSection from '../components/DemonstrationSection';
 import plFake from '../pages/images/schedule-fake.png';
@@ -19,10 +20,12 @@ import NoSubscriptionWarningBlock from '../components/sharedComponents/noSubscri
 import { useDemoMode } from "@/app/providers";
 
 const Schedule = () => {
-  const { authToken, user } = useContext(AuthContext);
   const {isDemoMode} = useDemoMode();
+  const { authToken, user } = useContext(AuthContext);
   const dispatch = useDispatch();
   const { chartsFilters, isFiltersLoading } = useSelector((state) => state?.chartsFiltersSlice);
+
+  const [isLoading, setIsLoading] = useState(false);
   const [isChartsLoading, setIsChartsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [maxWarehouse, setMaxWarehouse] = useState(0);
@@ -88,6 +91,15 @@ const Schedule = () => {
   const [minDataRevenue, setMinDataRevenue] = useState(10000);
   const [maxDataRevenue, setMaxDataRevenue] = useState(50000);
   const [stepSizeRevenue, setStepSizeRevenue] = useState(10000);
+  //data for filters
+  const [isOpenFilters, setIsOpenFilters] = useState(false);
+  const [allSelectedProducts, setAllSelectedProducts] = useState(true);
+  const [allSelectedArticles, setAllSelectedArticles] = useState(true);
+  const [allSelectedGroups, setAllSelectedGroups] = useState(true);
+  const [allSelectedWeeks, setAllSelectedWeeks] = useState(true);
+  const [allSelectedMonths, setAllSelectedMonths] = useState(true);
+  const [allSelectedYears, setAllSelectedYears] = useState(true);
+  const [allSelectedBrands, setAllSelectedBrands] = useState(true);
 
   const [selectedBrands, setSelectedBrands] = useState({});
 
@@ -175,6 +187,8 @@ const Schedule = () => {
   ]);
   const rowHeight = 30;
   const maxVisibleRows = 5;
+  const containerHeight = Math.min(maxRows, maxVisibleRows) * rowHeight;
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -183,6 +197,58 @@ const Schedule = () => {
     };
     fetchData();
   }, []);
+
+
+  const updateFilterFields = async () => {
+    setIsLoading(true);
+    try {
+      const data = await ServiceFunctions.scheduleFilterFields(authToken);
+      const transformedFilters = transformFilters(data);
+
+      const setterKeyMap = {
+        selectedBrands: 'setSelectedBrands',
+        selectedYears: 'setSelectedYears',
+        selectedMonths: 'setSelectedMonths',
+        selectedArticles: 'setSelectedArticles',
+        selectedGroups: 'setSelectedGroups',
+        selectedWeeks: 'setSelectedWeeks',
+      };
+
+      const setters = {
+        selectedYears: setSelectedYears,
+        selectedMonths: setSelectedMonths,
+        selectedArticles: setSelectedArticles,
+        selectedBrands: setSelectedBrands,
+        selectedGroups: setSelectedGroups,
+        selectedWeeks: setSelectedWeeks,
+      };
+
+      filterKeys.forEach((key) => {
+        const transformedValue = transformedFilters[setterKeyMap[key]];
+        const storedValue = localStorage.getItem(key);
+        const parsedStoredValue = storedValue ? JSON.parse(storedValue) : {};
+
+        if (transformedValue) {
+          // Filter out keys from parsedStoredValue that are not in transformedValue
+          const filteredStoredValue = Object.keys(parsedStoredValue).reduce((acc, k) => {
+            if (transformedValue.hasOwnProperty(k)) {
+              acc[k] = parsedStoredValue[k];
+            }
+            return acc;
+          }, {});
+
+          // Merge transformedValue and filteredStoredValue
+          setters[key]({ ...transformedValue, ...filteredStoredValue });
+        } else if (Object.keys(parsedStoredValue).length > 0) {
+          setters[key]({});
+        }
+      });
+    } catch (error) {
+      console.error('Ошибка при загрузке данных:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const calculateSize = (min, max) => {
     let range = Math.abs(max - min);
@@ -210,6 +276,7 @@ const Schedule = () => {
       Декабрь: "Дек",
     };
 
+
     const { years, months, weekdays } = filter.date_sale_filter;
 
     let revenueArray = [];
@@ -226,6 +293,7 @@ const Schedule = () => {
       const currentYearData = rawData[year];
       // обходим месяца
       for (const month in currentYearData) {
+
         // Также как и года проверяем статус фильтров месяцев. Если он включен и текущий месяц выбран, то работаем с ним.
         if (months.length !== 0 && !months.some(_ => monthNames[parseInt(_) - 1] === month)) continue
         const currentMonthData = currentYearData[month]
@@ -235,6 +303,16 @@ const Schedule = () => {
         // Обязательно добавляем год к лейблу месяца
         const monthLabel = monthNameMap[month] ? `${monthNameMap[month]} ${year}` : `${month} ${year}`
         labelsArray.push(monthLabel);
+        // if (currentMonthData.total_month_revenue > 0 || currentMonthData.total_month_profit > 0) {
+        //   // Подготавливаем массивы данных для графика
+        //   revenueArray.push(currentMonthData.total_month_revenue || 0);
+        //   profitArray.push(currentMonthData.total_month_profit || 0);
+        //   // Обязательно добавляем год к лейблу месяца
+        //   const monthLabel = monthNameMap[month] ? `${monthNameMap[month]} ${year}` : `${month} ${year}`
+        //   labelsArray.push(monthLabel);
+        // }
+
+        // ЗДЕСЬ БУДЕТ ЧТО-ТО С НЕДЕЛЯМИ
       }
     }
 
@@ -254,7 +332,10 @@ const Schedule = () => {
     setBigChartLabels(labelsArray);
   };
 
+
   const roiAndMarginality = (data, filter) => {
+
+
     const monthNames = [
       "Январь", "Февраль", "Март", "Апрель", "Май", "Июнь",
       "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"
@@ -274,6 +355,7 @@ const Schedule = () => {
       Ноябрь: "Ноя",
       Декабрь: "Дек",
     };
+
 
     const { years, months, weekdays } = filter.date_sale_filter;
     const roiArray = [];
@@ -305,6 +387,17 @@ const Schedule = () => {
         marginalityLow.push(currentMonthData.min_month_marginality || 0);
         const monthLabel = monthNameMap[month] ? `${monthNameMap[month]} ${year}` : `${month} ${year}`
         marginChartLabels.push(monthLabel);
+        // if (currentMonthData.average_month_roi > 0 || currentMonthData.max_month_marginality > 0 || currentMonthData.min_month_marginality > 0) {
+        //   // Подготавливаем массивы данных для графика
+        //   roiArray.push(currentMonthData.average_month_roi || 0);
+        //   marginalityHigh.push(currentMonthData.max_month_marginality || 0);
+        //   marginalityLow.push(currentMonthData.min_month_marginality || 0);
+        //   const monthLabel = monthNameMap[month] ? `${monthNameMap[month]} ${year}` : `${month} ${year}`
+        //   marginChartLabels.push(monthLabel);
+        // }
+
+
+        // ЗДЕСЬ БУДЕТ ЧТО-ТО С НЕДЕЛЯМИ
       }
     }
 
@@ -322,7 +415,9 @@ const Schedule = () => {
     setDataProfitPlus(marginalityHigh);
     setDataProfitability(roiArray);
     setMarginChartLabels(marginChartLabels)
+
   };
+
 
   const updateScheduleChartData = useCallback(async () => {
     setIsChartsLoading(true);
@@ -363,6 +458,144 @@ const Schedule = () => {
     }
   }, [authToken, isFiltersLoading]);
 
+  const toggleCheckboxBrands = (brand) => {
+    setSelectedBrands((prevState) => ({
+      ...prevState,
+      [brand]: !prevState[brand],
+    }));
+  };
+  const toggleCheckboxYear = (year) => {
+    setSelectedYears((prevState) => ({
+      ...prevState,
+      [year]: !prevState[year],
+    }));
+  };
+  const toggleCheckboxMonth = (month) => {
+    setSelectedMonths((prevState) => ({
+      ...prevState,
+      [month]: !prevState[month],
+    }));
+  };
+  const toggleCheckboxWeek = (week) => {
+    setSelectedWeeks((prevState) => ({
+      ...prevState,
+      [week]: !prevState[week],
+    }));
+  };
+  const toggleCheckboxGroup = (group) => {
+    setSelectedGroups((prevState) => ({
+      ...prevState,
+      [group]: !prevState[group],
+    }));
+  };
+  const toggleCheckboxArticle = (article) => {
+    setSelectedArticles((prevState) => ({
+      ...prevState,
+      [article]: !prevState[article],
+    }));
+  };
+  const toggleCheckboxProduct = (product) => {
+    setSelectedProducts((prevState) => ({
+      ...prevState,
+      [product]: !prevState[product],
+    }));
+  };
+
+  const handleBrand = () => {
+    const currentBrands = selectedBrands ?? {};
+    const newSelectedBrands = {};
+    const newAllSelected = !allSelectedBrands;
+
+    Object.keys(currentBrands).forEach((brand) => {
+      newSelectedBrands[brand] = newAllSelected;
+    });
+    setSelectedBrands(newSelectedBrands);
+    setAllSelectedBrands(newAllSelected);
+  };
+
+
+
+  const handleYear = () => {
+    const currentYears = selectedYears ?? {};
+    const newSelectedYears = {};
+    const newAllSelected = !allSelectedYears;
+
+    Object.keys(currentYears).forEach((year) => {
+      newSelectedYears[year] = newAllSelected;
+    });
+
+    setSelectedYears(newSelectedYears);
+    setAllSelectedYears(newAllSelected);
+  };
+
+
+  const handleMonth = () => {
+    const currentMonths = selectedMonths ?? {};
+    const newSelectedMonths = {};
+    const newAllSelected = !allSelectedMonths;
+
+    Object.keys(currentMonths).forEach((month) => {
+      newSelectedMonths[month] = newAllSelected;
+    });
+
+    setSelectedMonths(newSelectedMonths);
+    setAllSelectedMonths(newAllSelected);
+  };
+
+
+  const handleWeek = () => {
+    const currentWeeks = selectedWeeks ?? {};
+    const newSelectedWeeks = {};
+    const newAllSelected = !allSelectedWeeks;
+
+    Object.keys(currentWeeks).forEach((product) => {
+      newSelectedWeeks[product] = newAllSelected;
+    });
+
+    setSelectedWeeks(newSelectedWeeks);
+    setAllSelectedWeeks(newAllSelected);
+  };
+
+
+  const handleGroup = () => {
+    const currentGroups = selectedGroups ?? {};
+    const newSelectedGroups = {};
+    const newAllSelected = !allSelectedGroups;
+
+    Object.keys(currentGroups).forEach((product) => {
+      newSelectedGroups[product] = newAllSelected;
+    });
+
+    setSelectedGroups(newSelectedGroups);
+    setAllSelectedGroups(newAllSelected);
+  };
+
+  const handleArticle = () => {
+    const currentArticles = selectedArticles ?? {};
+    const newSelectedArticles = {};
+    const newAllSelected = !allSelectedArticles;
+
+    Object.keys(currentArticles).forEach((product) => {
+      newSelectedArticles[product] = newAllSelected;
+    });
+
+    setSelectedArticles(newSelectedArticles);
+    setAllSelectedArticles(newAllSelected);
+  };
+
+
+  const handleProduct = () => {
+    const newSelectedProducts = {};
+    const newAllSelected = !allSelectedProducts;
+
+    Object.keys(selectedProducts).forEach((product) => {
+      newSelectedProducts[product] = newAllSelected;
+    });
+
+    setSelectedProducts(newSelectedProducts);
+    setAllSelectedProducts(newAllSelected);
+  };
+
   return (
     <div className='dashboard-page'>
       <MobilePlug />
@@ -375,7 +608,7 @@ const Schedule = () => {
         <div style={{ width: '100%', padding: '20px 0' }} className="container dash-container">
           <Header title={'Графики'} titlePrefix={'Отчёт'} />
         </div>
-
+        
         {isDemoMode && 
           <div className='mb-1'>
             <NoSubscriptionWarningBlock />
@@ -391,7 +624,6 @@ const Schedule = () => {
         <div className='container dash-container'>
           <NewFilterGroup pageIdent='charts' filtersData={chartsFilters} isLoading={isFiltersLoading} getData={updateScheduleChartData} />
         </div>
-
         <div className={styles.ScheduleBody}>
           <ScheduleBigChart
             dataRevenue={dataRevenue}
@@ -408,13 +640,16 @@ const Schedule = () => {
               dataProfitMinus={dataProfitMinus}
               isLoading={isChartsLoading}
               dataProfitPlus={dataProfitPlus}
+              //labels={bigChartLabels}
               labels={marginChartLabels}
               minValue={minProfitability}
               maxValue={maxProfitability}
               step={stepProfitability}
             />}
         </div>
-        <div className={`${styles.ScheduleFooter}`}>
+        <div
+          className={`${styles.ScheduleFooter}`}
+        >
           <StructureRevenue
             dataStructureRevenue={dataStructureRevenue}
             isLoading={isChartsLoading}
@@ -426,6 +661,7 @@ const Schedule = () => {
             max={maxWarehouse}
           />
         </div>
+
         <BottomNavigation />
       </div>
     </div>
