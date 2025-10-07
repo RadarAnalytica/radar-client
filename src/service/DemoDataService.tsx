@@ -89,12 +89,13 @@ export class DemoDataService {
       '/api/dashboard/turnover': () => this.getTurnOverData(),
       '/api/ceo-comparison/raw': () => this.getCeoComparisonRaw(),
       '/api/description-generator/keywords': () => this.getDescriptionGeneratorKeywords(),
+      '/api/user/subscription/all': () => this.getSubscriptionsData(),
+      '/api/product/self-costs': () => ({ message: "Success", updated_items: [{ product: 'Демо', cost: 100, fulfillment: 100 }] }),
       'https://radarmarket.ru/api/web-service/monitoring-oracle/easy/get': () => this.getEasyMonitoringData(),
       'https://radarmarket.ru/api/web-service/monitoring-oracle/get': () => this.getMonitoringData(),
       'https://radarmarket.ru/api/web-service/trending-queries/get': () => this.getTrendingQueries(),
       'https://radarmarket.ru/api/analytic/query-dynamics/month': () => this.getTrendingAnalysisMonth(),
       'https://radarmarket.ru/api/analytic/query-dynamics/day': () => this.getTrendingAnalysisDay(),
-      '/api/product/self-costs': () => ({ message: "Success", updated_items: [{ product: 'Демо', cost: 100, fulfillment: 100 }] }),
     };
 
     const dataGetter = endpointMap[endpoint];
@@ -265,6 +266,29 @@ export class DemoDataService {
 
   private getDescriptionGeneratorKeywords(): any {
     return descriptionGeneratorKeywords;
+  }
+
+  private getSubscriptionsData(): any {
+    const now = new Date();
+    const threeMonthsLater = now;
+    const oneYearLater = now;
+    threeMonthsLater.setMonth(threeMonthsLater.getMonth() + 3);
+    oneYearLater.setFullYear(oneYearLater.getFullYear() + 1);
+    
+    return [
+      {
+          "id": 1,
+          "name": "Демо подписка",
+          "active": false,
+          "validity_period": threeMonthsLater.toISOString()
+      },
+      {
+          "id": 2,
+          "name": "Демо подписка",
+          "active": true,
+          "validity_period": oneYearLater.toISOString()
+      }
+    ];
   }
 
   // Dashboard данные
