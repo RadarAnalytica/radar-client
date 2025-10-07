@@ -37,8 +37,8 @@ const TaxTableBlock = ({ dataDashBoard, loading, updateDashboard }) => {
 
     useEffect(() => {
         if (dataDashBoard) {
-            setTaxType(dataDashBoard.taxInfo.taxType)
-            setTaxRate(dataDashBoard.taxInfo.taxRate)
+            setTaxType(dataDashBoard.taxInfo?.taxType);
+            setTaxRate(dataDashBoard.taxInfo?.taxRate);
         }
     }, [dataDashBoard])
 

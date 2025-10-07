@@ -63,8 +63,6 @@ const SelfCostTableWidget = ({
         )
     }
 
-
-
     return (
         <div className={styles.widget}>
             <div className={styles.widget__container}>

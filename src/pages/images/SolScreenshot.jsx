@@ -691,7 +691,7 @@ const SolScreenshot = () => {
             d='M532.379 161.945L532.379 325.601'
             stroke='#8C8C8C'
             strokeWidth='1.18592'
-            stroke-dasharray='4.74 4.74'
+            strokeDasharray='4.74 4.74'
           />
           <circle
             cx='532.378'

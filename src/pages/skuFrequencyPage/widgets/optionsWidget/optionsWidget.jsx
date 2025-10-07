@@ -1,18 +1,18 @@
-import { useState, useEffect } from 'react'
-import styles from './optionsWidget.module.css'
-import { useAppSelector, useAppDispatch } from '../../../../redux/hooks'
-import { Form, ConfigProvider, Input, Select, Button, Tooltip } from 'antd'
-import { complexRequestObjectGenerator } from '../../shared'
-import { actions as requestsMonitoringActions } from '../../../../redux/requestsMonitoring/requestsMonitoringSlice'
-import { MainFieldset, SubjectFieldset, QualityFieldset, SideParamsFieldset, DynamicFieldset } from '../../features'
-
+import { useState, useEffect } from 'react';
+import styles from './optionsWidget.module.css';
+import { useAppSelector, useAppDispatch } from '@/redux/hooks';
+import { Form, ConfigProvider, Input, Select, Button, Tooltip } from 'antd';
+import { complexRequestObjectGenerator } from '../../shared';
+import { actions as requestsMonitoringActions } from '@/redux/requestsMonitoring/requestsMonitoringSlice';
+import { MainFieldset, SubjectFieldset, QualityFieldset, SideParamsFieldset, DynamicFieldset } from '../../features';
+import { useDemoMode } from "@/app/providers";
 
 const competitionLevelValues = [
     { value: 4, label: 'Легко' },
     { value: 3, label: 'Средне' },
     { value: 2, label: 'Сложно' },
     { value: 1, label: 'Очень сложно' },
-]
+];
 
 const priceValues = [
     { value: JSON.stringify({ start: 1, end: 500 }), label: '1 - 500 ₽' },
@@ -22,63 +22,56 @@ const priceValues = [
     { value: JSON.stringify({ start: 3500, end: 5500 }), label: '3500 - 5500 ₽' },
     { value: JSON.stringify({ start: 5500, end: 8500 }), label: '5500 - 8500 ₽' },
     { value: JSON.stringify({ start: 8500, end: 0 }), label: '8500 ₽ +' },
-]
-
+];
 
 const OptionsWidget = () => {
-    const dispatch = useAppDispatch()
+    const dispatch = useAppDispatch();
+    const { isDemoMode } = useDemoMode();
     const [simpleForm] = Form.useForm();
     const [complexForm] = Form.useForm();
-    const { skuFrequencyMode } = useAppSelector(store => store.filters) // 'Простой' | 'Продвинутый'
-    const { optionsConfig, requestObject, isLoadingForButton } = useAppSelector(store => store.requestsMonitoring)
+    const { skuFrequencyMode } = useAppSelector(store => store.filters); // 'Простой' | 'Продвинутый'
+    const { optionsConfig, isLoadingForButton } = useAppSelector(store => store.requestsMonitoring);
     const { isSidebarHidden } = useAppSelector((state) => state.utils);
-    const prefered_items = Form.useWatch('prefered_items', complexForm)
-    const [isBodyVisisble, setIsBodyVisible] = useState(true)
-
-
+    const prefered_items = Form.useWatch('prefered_items', complexForm);
+    const [isBodyVisisble, setIsBodyVisible] = useState(true);
     const simpleFormSubmitHandler = (fields) => {
         const requestObject = {
             query: fields.query,
             avg_price_total: JSON.parse(fields.preferedProductPrice),
             competition_level: fields.competitionLevel,
             sorting: undefined
-            // sorting: {
-            //     sort_field: "niche_rating",
-            //     sort_order: "DESC"
-            // }
+            // sorting: { sort_field: "niche_rating", sort_order: "DESC" }
         }
-        dispatch(requestsMonitoringActions.setRequestObject({ data: requestObject, formType: 'easy' }))
-        //resetTableConfig()
-    }
+        dispatch(requestsMonitoringActions.setRequestObject({ data: requestObject, formType: 'easy' }));
+    };
 
     const complexFormSubmitHandler = (fields) => {
         const requestObject = complexRequestObjectGenerator(fields);
-        dispatch(requestsMonitoringActions.setRequestObject({ data: requestObject, formType: 'complex' }))
+        dispatch(requestsMonitoringActions.setRequestObject({ data: requestObject, formType: 'complex' }));
     }
 
     useEffect(() => {
         if (skuFrequencyMode === 'Простой') {
-            simpleForm.submit()
+            simpleForm.submit();
         }
         if (skuFrequencyMode === 'Продвинутый') {
-
             complexForm.validateFields()
                 .then(() => {
-                    complexForm.submit()
+                    complexForm.submit();
                 })
                 .catch((errorInfo) => {
-                    const values = complexForm.getFieldsValue()
-                    complexFormSubmitHandler(values)
+                    const values = complexForm.getFieldsValue();
+                    complexFormSubmitHandler(values);
                 })
         }
     }, [skuFrequencyMode, complexForm, simpleForm, isBodyVisisble])
 
     useEffect(() => {
-        complexForm.setFieldValue('frequency_30_start', 6000)
-        complexForm.setFieldValue('freq_per_good_start', 2)
-        complexForm.setFieldValue('dynamic_30_days', 'Рост')
-        complexForm.setFieldValue('dynamic_30_days_from', 100)
-    }, [])
+        complexForm.setFieldValue('frequency_30_start', 6000);
+        complexForm.setFieldValue('freq_per_good_start', 2);
+        complexForm.setFieldValue('dynamic_30_days', 'Рост');
+        complexForm.setFieldValue('dynamic_30_days_from', 100);
+    }, []);
 
     return (
         <section className={styles.widget}>
@@ -89,9 +82,6 @@ const OptionsWidget = () => {
                     onClick={e => {
                         e.preventDefault();
                         e.stopPropagation();
-                        // console.log('t', e.target)
-                        // console.log('ct', e.currentTarget)
-                        // console.log('type', e.type)
                         if (skuFrequencyMode === 'Продвинутый') {
                             setIsBodyVisible(!isBodyVisisble);
                         }
@@ -122,17 +112,6 @@ const OptionsWidget = () => {
                         </button>
                     }
                 </div>
-                {skuFrequencyMode === 'Продвинутый' && requestObject &&
-                    <div className={styles.widget__summaryBlock}>
-                        {/* {Object.keys(requestObject).map(_ => {
-                            return (
-                                <div className={styles.widget__summaryItem}>
-
-                                </div>
-                            )
-                        })} */}
-                    </div>
-                }
             </div>
             <ConfigProvider
                 theme={{

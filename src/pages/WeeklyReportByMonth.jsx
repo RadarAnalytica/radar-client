@@ -12,9 +12,11 @@ import NewFilterGroup from '../components/finReport/FilterGroup'
 import MobilePlug from '../components/sharedComponents/mobilePlug/mobilePlug';
 import Sidebar from '../components/sharedComponents/sidebar/sidebar';
 import Header from '../components/sharedComponents/header/header';
-
+import NoSubscriptionWarningBlock from '../components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock';
+import { useDemoMode } from "@/app/providers";
 
 const WeeklyReportByMonth = () => {
+  const {isDemoMode} = useDemoMode();
   const { authToken, user } = useContext(AuthContext);
   const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
@@ -43,58 +45,56 @@ const WeeklyReportByMonth = () => {
   return (
     <div className='dashboard-page'>
       <MobilePlug />
+
       <div style={{ height: '100vh', zIndex: 999 }}>
         <Sidebar />
       </div>
-      {/* <SideNav /> */}
-      <div className='dashboard-content pb-3' style={{ padding: '0 32px' }}>
-        <div style={{ width: '100%', padding: '20px 0' }} className="container dash-container">
-          <Header title={'По месяцам'} titlePrefix={'Отчёт'} />
+
+      <div className='dashboard-content pb-3' style={{padding: '0 32px'}}>
+        <div style={{width: '100%', padding: '20px 0'}} className="container dash-container">
+          <Header title={'По месяцам'} titlePrefix={'Отчёт'}/>
         </div>
-        {user.is_report_downloaded ? (
-          <>
-            <div className='container dash-container'>
-              <NewFilterGroup
-                pageIdent='month'
-                filtersData={byMonthFilters}
-                isLoading={isFiltersLoading}
-                getData={handleFetchReport}
-              />
+
+        {isDemoMode && 
+          <div className='mb-1'>
+            <NoSubscriptionWarningBlock />
+          </div>
+        }
+
+        {!user.is_report_downloaded &&
+          <div className='mb-1'>
+            <DemonstrationSection />
+          </div>
+        }
+        
+        <div className='container dash-container'>
+          <NewFilterGroup
+            pageIdent='month'
+            filtersData={byMonthFilters}
+            isLoading={isFiltersLoading}
+            getData={handleFetchReport}
+          />
+        </div>
+
+        <div className='container dash-container'>
+          {!loading ? (
+            <SalesTable tableData={weeklyData}/>
+          ) : (
+            <div
+              className='d-flex flex-column align-items-center justify-content-center'
+              style={{
+                height: '200px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <span className='loader'></span>
             </div>
-            <div className='container dash-container'>
-              {!loading ? (
-                <SalesTable tableData={weeklyData} />
-              ) : (
-                <div
-                  className='d-flex flex-column align-items-center justify-content-center'
-                  style={{
-                    height: '200px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
-                >
-                  <span className='loader'></span>
-                </div>
-              )}
-            </div>
-          </>
-        ) : (
-          <>
-            <div className='container dash-container'>
-              <DemonstrationSection />
-            </div>
-            <span className={styles.responsiveImageWrapper}>
-              <img
-                src={plFake}
-                alt='fakePL'
-                className={styles.responsiveImage}
-              />
-              <span></span>
-            </span>
-          </>
-        )}
-        <BottomNavigation />
+          )}
+        </div>
+        
+        <BottomNavigation/>
       </div>
     </div>
   );

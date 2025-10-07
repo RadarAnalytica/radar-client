@@ -3,7 +3,7 @@ import OrderTableExtended from '../containers/orderMap/OrderTableExtended';
 import styles from './StockDataRow.module.css';
 
 const StockDataRow = ({ stockName, orderDetails, saleDetails }) => {
-  return (orderDetails.length > 0 || saleDetails.length > 0) && (
+  return stockName && (orderDetails.length > 0 || saleDetails.length > 0) && (
     <div className={styles.block}>
       <div className={styles.block__wrapper}>
         <OrderTableExtended

@@ -51,11 +51,11 @@ export const MonthSelect = ({
                     theme={{
                         token: {
                             //colorBgBase: '#EAEAF1',
-                            colorBgContainer: '#EAEAF1',
-                            colorBorder: 'transparent',
+                            colorBgContainer: 'white',
+                            colorBorder: '#5329FF1A',
                             borderRadius: 8,
                             fontFamily: 'Mulish',
-                            fontSize: 16,
+                            fontSize: 14,
                             activeBorderColor: '#5329FF',
                             colorTextDisabled: '#000'
                         },
@@ -64,8 +64,8 @@ export const MonthSelect = ({
                                 activeBg: 'rgba(0,0,0,0.04)',
                                 colorPrimary: '#5329FF',
                                 cellActiveWithRangeBg: '#5329FF0D',
-                                activeBorderColor: 'transparent',
-                                hoverBorderColor: 'transparent',
+                                activeBorderColor: '#5329FF1A',
+                                hoverBorderColor: '#5329FF1A',
                                 paddingBlockLG: 5,
                                 inputFontSizeLG: 16,
                                 activeOutlineColor: 'transparent',

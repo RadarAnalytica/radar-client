@@ -2,6 +2,7 @@ import React, { useLayoutEffect, useMemo, useRef } from 'react';
 import AuthContext from '../../service/AuthContext';
 import { useState, useEffect, useContext } from 'react';
 import { ConfigProvider, Flex, Button } from 'antd';
+import { autoScrollForElements } from '@atlaskit/pragmatic-drag-and-drop-auto-scroll/dist/esm/entry-point/element';
 import MobilePlug from '../../components/sharedComponents/mobilePlug/mobilePlug';
 import Sidebar from '../../components/sharedComponents/sidebar/sidebar';
 import Header from '../../components/sharedComponents/header/header';
@@ -11,7 +12,7 @@ import styles from './Rnp.module.css';
 import { useAppSelector, useAppDispatch } from '../../redux/hooks';
 import { ServiceFunctions } from '../../service/serviceFunctions';
 import { RnpFilters } from './widget/RnpFilters/RnpFilters';
-import { COLUMNS, ROWS, renderFunction } from './config';
+import { COLUMNS, ROWS, renderFunction, getTableConfig, getTableData } from './config';
 import { format, isToday } from 'date-fns';
 import { ru } from 'date-fns/locale';
 import RnpList from './widget/RnpList/RnpList';
@@ -19,39 +20,24 @@ import ModalDeleteConfirm from '../../components/sharedComponents/ModalDeleteCon
 import DataCollectWarningBlock from '../../components/sharedComponents/dataCollectWarningBlock/dataCollectWarningBlock';
 import SelfCostWarningBlock from '../../components/sharedComponents/selfCostWraningBlock/selfCostWarningBlock';
 import ErrorModal from '../../components/sharedComponents/modals/errorModal/errorModal';
+import { Filters } from '@/components/sharedComponents/apiServicePagesFiltersComponent';
 import { fetchRnpFilters } from '../../redux/filtersRnp/filterRnpActions';
 import { actions as filterActions } from '../../redux/filtersRnp/filtersRnpSlice'
+import HowToLink from '../../components/sharedComponents/howToLink/howToLink';
+import { useDemoMode } from "@/app/providers";
+import NoSubscriptionWarningBlock from '@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock';
 
 export default function Rnp() {
 	const { user, authToken } = useContext(AuthContext);
+	const { isDemoMode } = useDemoMode();
 	const dispatch = useAppDispatch();
-	const { activeBrand } = useAppSelector( (state) => state.filtersRnp );
-	const { selectedRange } = useAppSelector( (state) => state.filters );
-	const filters = useAppSelector((state) => state.filtersRnp);
-	const { shops } = useAppSelector((state) => state.shopsSlice);
-
-	const shopStatus = useMemo(() => {
-		if (!activeBrand || !shops) return null;
-
-		if (activeBrand.id === 0) {
-			return {
-				id: 0,
-				brand_name: 'Все',
-				is_active: shops.some((shop) => shop.is_primary_collect),
-				is_valid: true,
-				is_primary_collect: shops.some(
-					(shop) => shop.is_primary_collect
-				),
-				is_self_cost_set: !shops.some((shop) => !shop.is_self_cost_set),
-			};
-		}
-
-		return shops.find((shop) => shop.id === activeBrand.id);
-	}, [activeBrand, shops]);
+	const { selectedRange, activeBrand, shops } = useAppSelector((state) => state.filters);
+	const filters = useAppSelector((state) => state.filters);
 
 	// const rnpSelected = useAppSelector((state) => state.rnpSelected);
 
 	const initLoad = useRef(true);
+	const pageContentRef = useRef(null);
 
 	const [loading, setLoading] = useState(true);
 	const [addRnpModalShow, setAddRnpModalShow] = useState(false);
@@ -61,7 +47,7 @@ export default function Rnp() {
 	const [rnpDataTotal, setRnpDataTotal] = useState(null)
 	const [deleteRnpId, setDeleteRnpId] = useState(null);
 	const [error, setError] = useState(null);
-	const [expanded, setExpanded] = useState([]);
+	const [expanded, setExpanded] = useState('collapsed');
 
 	const updateRnpListByArticle = async () => {
 		setLoading(true);
@@ -123,65 +109,19 @@ export default function Rnp() {
 	}
 
 	const dataToRnpList = (response) => {
+
 		const list = response.data.map((article, i) => {
-			// for (const article of response.data){
+			const tableConfig = getTableConfig(article);
+			const tableData = getTableData(article);
 			const item = {
 				table: {
+					columns_new: tableConfig,
+					datasource: tableData,
 					columns: [],
 					rows: [],
 				},
 				article_data: article.article_data,
 			};
-			// сборка колонок по датам из ответа
-			for (const column of COLUMNS){
-				item.table.columns.push(column)
-			}
-			for (const dateData of article.by_date_data.reverse()) {
-				if (!isToday(dateData.date)){
-				item.table.columns.push({
-					key: dateData.date,
-					dataIndex: dateData.date,
-					title: format(dateData.date, 'd MMMM', { locale: ru }),
-					width: 160,
-					render: renderFunction
-				});
-				}
-			}
-			// сборка суммарных значений
-			for (const row of ROWS) {
-				const rowItem = {
-					key: row.key,
-					period: row.period,
-				};
-				const dataRow = article.summary_data[row.key];
-				rowItem['sum'] = dataRow[row.key.slice(0, -5)];
-				// rowItem['sum'] = article.article_data.wb_id;
-				if (row.children) {
-					rowItem.children = [];
-					for (const childrenRow of row.children) {
-						const rowItemChildren = {};
-						rowItemChildren.key = `${row.key}_${childrenRow.dataIndex}`;
-						rowItemChildren.dataIndex = childrenRow.dataIndex;
-						rowItemChildren.period = childrenRow.period;
-						rowItemChildren['sum'] = dataRow[childrenRow.dataIndex];
-						rowItem.children.push(rowItemChildren);
-					}
-				}
-				item.table.rows.push(rowItem);
-			}
-			// сборка данных по датам
-			for (const dateData of article.by_date_data) {
-				const date = dateData.date;
-				for (const row of item.table.rows) {
-					const dataRow = dateData.rnp_data;
-					row[date] = dataRow[row.key][row?.key?.slice(0, -5)];
-					if (row.children) {
-						for (const childrenRow of row.children) {
-							childrenRow[date] = dataRow[row.key][childrenRow.dataIndex];
-						}
-					}
-				}
-			}
 
 			return item;
 		});
@@ -191,76 +131,29 @@ export default function Rnp() {
 
 	const dataToRnpTotalList = (response) => {
 		const article = response.data;
-		if (article.length === 0){
+		if (article.length === 0) {
 			setRnpDataTotal(null);
 			return
 		}
+		const tableConfig = getTableConfig(article);
+		const tableData = getTableData(article);
 		const item = {
-				table: {
-					columns: [],
-					rows: [],
-				},
-				article_data: article.article_data,
-			};
-			// сборка колонок по датам из ответа
-			for (const column of COLUMNS){
-				item.table.columns.push(column)
-			}
-			for (const dateData of article.by_date_data.reverse()) {
-				if (!isToday(dateData.date)){
-				item.table.columns.push({
-					key: dateData.date,
-					dataIndex: dateData.date,
-					title: format(dateData.date, 'd MMMM', { locale: ru }),
-					width: 160,
-					render: renderFunction
-				});
-				}
-			}
-			// сборка суммарных значений
-			for (const row of ROWS) {
-				const rowItem = {
-					key: row.key,
-					period: row.period,
-				};
-				const dataRow = article.summary_data[row.key];
-				rowItem['sum'] = dataRow[row.key.slice(0, -5)];
-				// rowItem['sum'] = article.article_data.wb_id;
-				if (row.children) {
-					rowItem.children = [];
-					for (const childrenRow of row.children) {
-						const rowItemChildren = {};
-						rowItemChildren.key = `${row.key}_${childrenRow.dataIndex}`;
-						rowItemChildren.dataIndex = childrenRow.dataIndex;
-						rowItemChildren.period = childrenRow.period;
-						rowItemChildren['sum'] = dataRow[childrenRow.dataIndex];
-						rowItem.children.push(rowItemChildren);
-					}
-				}
-				item.table.rows.push(rowItem);
-			}
-			// сборка данных по датам
-			for (const dateData of article.by_date_data) {
-				const date = dateData.date;
-				for (const row of item.table.rows) {
-					const dataRow = dateData.rnp_data;
-					row[date] = dataRow[row.key][row?.key?.slice(0, -5)];
-					// row[date] = article.article_data.wb_id
-					if (row.children) {
-						for (const childrenRow of row.children) {
-							childrenRow[date] = dataRow[row.key][childrenRow.dataIndex];
-							// childrenRow[date] = childrenRow.key
-						}
-					}
-				}
-			}
+			table: {
+				columns_new: tableConfig,
+				datasource: tableData,
+				columns: [],
+				rows: [],
+			},
+			article_data: article.article_data,
+		};
+
 		setRnpDataTotal(item);
 	};
 
 	const deleteHandler = (value) => {
 		deleteRnp(value)
 	}
-	
+
 	const addRnpList = async (porductIds) => {
 		setLoading(true);
 		try {
@@ -269,7 +162,7 @@ export default function Rnp() {
 					authToken,
 					porductIds
 				);
-				if (response.detail){
+				if (response.detail) {
 					setError(response.detail);
 					return
 				}
@@ -283,31 +176,71 @@ export default function Rnp() {
 	};
 
 	const viewHandler = (value) => {
-		if (view !== value){
+		if (view !== value) {
 			setView(value);
 			setLoading(true);
 		}
 	}
 
 	useLayoutEffect(() => {
-		if (!activeBrand && !activeBrand?.is_primary_collect){
+		if (!activeBrand && !activeBrand?.is_primary_collect) {
 			return
 		}
 
 		if (activeBrand && activeBrand.is_primary_collect) {
-			if (view === 'articles'){
+			if (view === 'articles') {
 				updateRnpListByArticle();
 			} else {
 				updateRnpListSummary();
 			}
 		}
 
-		if (activeBrand && !activeBrand?.is_primary_collect){
+		if (activeBrand && !activeBrand?.is_primary_collect) {
 			setLoading(false)
 		}
 
-	// }, [activeBrand, shopStatus, shops, filters, page, view, selectedRange]);
+		// }, [activeBrand, activeBrand, shops, filters, page, view, selectedRange]);
 	}, [filters, page, view, selectedRange]);
+
+	// Добавляем автоскролл к контейнеру страницы
+	useEffect(() => {
+		if (!pageContentRef.current) return;
+
+		const element = pageContentRef.current;
+
+		return autoScrollForElements({
+			element,
+		});
+	}, []);
+
+	useEffect(() => {
+		return () => {
+			localStorage.removeItem('RNP_EXPANDED_TABLE_ROWS_STATE');
+			localStorage.removeItem('RNP_EXPANDED_TOTAL_TABLE_ROWS_STATE');
+			localStorage.removeItem('RNP_EXPANDED_STATE');
+			localStorage.removeItem('SAVED_ORDER');
+		}
+	}, []);
+
+
+	useEffect(() => {
+		if (rnpDataByArticle) {
+			let EXPANDED_STATE = JSON.parse(localStorage.getItem('RNP_EXPANDED_STATE'));
+			if (EXPANDED_STATE && EXPANDED_STATE !== 'collapsed' && rnpDataByArticle?.length > 0) {
+				const isInCurrentList = rnpDataByArticle.some((el) => el.article_data.wb_id === EXPANDED_STATE);
+				let updatedExpandedState;
+				if (!isInCurrentList) {
+					EXPANDED_STATE = rnpDataByArticle[0].article_data.wb_id;
+				}
+				setExpanded(EXPANDED_STATE);
+				return
+			}
+
+			if (!EXPANDED_STATE) {
+				setExpanded(rnpDataByArticle[0].article_data.wb_id);
+			}
+		}
+	}, [rnpDataByArticle])
 
 	const addRnpHandler = (list) => {
 		setAddRnpModalShow(false);
@@ -318,21 +251,22 @@ export default function Rnp() {
 	return (
 		<main className={styles.page}>
 			<MobilePlug />
-			{/* ------ SIDE BAR ------ */}
+
 			<section className={styles.page__sideNavWrapper}>
 				<Sidebar />
 			</section>
-			{/* ------ CONTENT ------ */}
-			<section className={styles.page__content}>
-				{/* header */}
+
+			<section ref={pageContentRef} className={styles.page__content}>
 				<div className={styles.page__headerWrapper}>
 					<Header title="Рука на пульсе (РНП)"></Header>
 				</div>
 
-				{!loading && shopStatus && shopStatus.is_valid && shopStatus?.is_primary_collect && !shopStatus.is_self_cost_set && (
-						<SelfCostWarningBlock
-							shopId={activeBrand.id}
-						/>
+				{isDemoMode && <NoSubscriptionWarningBlock />}
+
+				{!loading && activeBrand && activeBrand.is_valid && activeBrand?.is_primary_collect && !activeBrand.is_self_cost_set && (
+					<SelfCostWarningBlock
+						shopId={activeBrand.id}
+					/>
 				)}
 				{!loading && ((rnpDataByArticle?.length > 0 && view === 'articles') || (view === 'total' && rnpDataTotal)) && (<ConfigProvider
 					theme={{
@@ -344,11 +278,11 @@ export default function Rnp() {
 						},
 						components: {
 							Button: {
-								paddingInlineLG: 20,
-								controlHeightLG: 45,
+								paddingInlineLG: 12,
+								controlHeightLG: 38,
 								defaultShadow: false,
 								contentFontSize: 16,
-								fontWeight: 600,
+								fontWeight: 500,
 								defaultBorderColor: 'transparent',
 								defaultColor: 'rgba(26, 26, 26, 0.5)',
 								defaultBg: 'transparent',
@@ -363,25 +297,25 @@ export default function Rnp() {
 					}}
 				>
 					<Flex justify="space-between">
-						<Flex>
-							<Button
-								type={view === 'articles' ? 'primary' : 'default'}
-								size="large"
+						<Flex gap={4} align="center">
+							<button
+								className={view === 'articles' ? `${styles.segmented__button} ${styles.segmented__button_active}` : styles.segmented__button}
 								onClick={() => {
 									viewHandler('articles');
 								}}
+								style={{ fontWeight: 500, fontSize: 14 }}
 							>
 								По артикулам
-							</Button>
-							<Button
-								type={view === 'total' ? 'primary' : 'default'}
-								size="large"
+							</button>
+							<button
+								className={view === 'total' ? `${styles.segmented__button} ${styles.segmented__button_active}` : styles.segmented__button}
 								onClick={() => {
 									viewHandler('total');
 								}}
+								style={{ fontWeight: 500, fontSize: 14 }}
 							>
 								Сводный
-							</Button>
+							</button>
 						</Flex>
 						<ConfigProvider
 							theme={{
@@ -402,34 +336,42 @@ export default function Rnp() {
 								type="primary"
 								size="large"
 								onClick={setAddRnpModalShow}
+								style={{ fontWeight: 600, fontSize: 14 }}
 							>
+								<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+									<path d="M9 1V9M9 17V9M9 9H1H17" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+								</svg>
+
 								Добавить артикул
 							</Button>
 						</ConfigProvider>
 					</Flex>
 				</ConfigProvider>)}
 
-				<div>
-					<RnpFilters
+				<div className={styles.page__filtersWrapper}>
+					<Filters
 						isDataLoading={loading}
-						slice={'filtersRnp'}
-						filterActions={filterActions}
-						fetchFilters={fetchRnpFilters}
 						articleSelect={false}
 						groupSelect={false}
 						categorySelect={false}
+						maxCustomDate={new Date(Date.now() - 24 * 60 * 60 * 1000)}
+					/>
+					<HowToLink
+						text='Как использовать?'
+						target='_blank'
+						url='https://radar.usedocs.com/article/79433'
 					/>
 				</div>
 
-				{loading && (
+				{loading && ((!rnpDataByArticle && view === 'articles') || (view === 'total' && !rnpDataTotal)) && (
 					<div className={styles.loading}>
 						<div className={styles.loading__loader}>
 							<span className="loader"></span>
 						</div>
 					</div>
 				)}
-				
-				{!loading  && shopStatus && !shopStatus?.is_primary_collect && (
+
+				{!loading && activeBrand && !activeBrand?.is_primary_collect && (
 					<>
 						<DataCollectWarningBlock
 							title='Ваши данные еще формируются и обрабатываются.'
@@ -437,7 +379,7 @@ export default function Rnp() {
 					</>
 				)}
 
-				{!loading && shopStatus && shopStatus?.is_primary_collect && (
+				{((rnpDataByArticle && view === 'articles') || (view === 'total' && rnpDataTotal)) && activeBrand && activeBrand?.is_primary_collect && (
 					<RnpList
 						view={view}
 						setView={viewHandler}
@@ -448,9 +390,9 @@ export default function Rnp() {
 						expanded={expanded}
 						setExpanded={setExpanded}
 						loading={loading}
-						// page={page}
-						// setPage={setPage}
-						// paginationState={paginationState}
+					// page={page}
+					// setPage={setPage}
+					// paginationState={paginationState}
 					/>
 				)}
 
@@ -477,7 +419,7 @@ export default function Rnp() {
 					onOk={() => deleteHandler(deleteRnpId)}
 				/>}
 
-				<ErrorModal open={!!error} message={error} onCancel={() => setError(null)}/>
+				<ErrorModal open={!!error} message={error} onCancel={() => setError(null)} />
 			</section>
 		</main>
 	);

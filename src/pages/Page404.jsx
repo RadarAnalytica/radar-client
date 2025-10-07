@@ -9,12 +9,6 @@ import styles from './Page404.module.css'
 
 
 const Page404 = () => {
-  // const navigate = useNavigate();
-
-  useEffect(() => {
-    window.location.href = `${URL}/not-found`
-  }, [])
-
   return (
     <>
       <main className={styles.page}>

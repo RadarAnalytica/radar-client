@@ -16,20 +16,18 @@ export const MultiSelect = (
         isDataLoading
     }
 ) => {
-    const [searchState, setSearchState] = useState('')
-    const [selectState, setSelectState] = useState([])
-    const prevSelectState = useRef(null)
-    const icon = <SelectIcon />
+    const [searchState, setSearchState] = useState('');
+    const [selectState, setSelectState] = useState([]);
+    const prevSelectState = useRef(null);
+    const icon = <SelectIcon />;
 
     const renderPopup = (menu) => {
-        let action
+        let action;
         if (selectState.filter(_ => _.value !== 'Все').length < optionsData.length && !searchState) {
-            action = () => { setSelectState(optionsData.filter(_ => _.value !== 'Все')) }
+            action = () => { setSelectState(optionsData.filter(_ => _.value !== 'Все')) };
+        } else if (selectState.filter(_ => _.value !== 'Все').length === optionsData.length) {
+            action = () => { setSelectState([{ value: 'Все' }]) };
         }
-        if (selectState.filter(_ => _.value !== 'Все').length === optionsData.length) {
-            action = () => { setSelectState([{ value: 'Все' }]) }
-        }
-
 
         if (selectId === 'product_groups' && (!optionsData || optionsData.length === 0)) {
             return (
@@ -46,7 +44,8 @@ export const MultiSelect = (
                             Создать
                         </Link>
                     </div>
-                </>)
+                </>
+            )
         }
 
         return (
@@ -78,17 +77,18 @@ export const MultiSelect = (
                     }}
                 >
                     {!searchState && <Button
-                        style={{ width: '100%' }}
                         type='primary'
                         size='large'
                         onClick={action}
                         disabled={optionsData.length === 0}
+                        style={{ fontSize: 14, width: '100%' }}
                     >
                         {selectState.filter(_ => _.value !== 'Все').length < optionsData.length && 'Выбрать все'}
                         {selectState.filter(_ => _.value !== 'Все').length === optionsData.length && 'Снять все'}
                     </Button>}
                 </ConfigProvider>
-            </>)
+            </>
+        )
     }
 
     const tagRender = props => {
@@ -97,13 +97,14 @@ export const MultiSelect = (
             event.preventDefault();
             event.stopPropagation();
         };
+        
         return (
             <Tag
                 color={value}
                 //onMouseDown={onPreventMouseDown}
                 closable={false}
                 onClose={onClose}
-                style={{ background: 'transparent', color: 'black', fontSize: '18px', display: 'flex', alignItems: 'center' }}
+                style={{ background: 'transparent', color: 'black', fontSize: '14px', display: 'flex', alignItems: 'center', border: 'none' }}
             >
                 {label}
             </Tag>
@@ -111,42 +112,33 @@ export const MultiSelect = (
     };
 
     const selectHandler = value => {
-        const isAllOptionIndex = value.findIndex(_ => _ === 'Все')
+        const isAllOptionIndex = value.findIndex(_ => _ === 'Все');
         if ((isAllOptionIndex !== -1 && isAllOptionIndex === value.length - 1) || value.length === 0) {
-            //const current = params.data.find(_ => _.value === 'Все');
-            setSelectState([{ value: 'Все', id: 0 }])
-            //dispatch(filterActions.setActiveFilters({ stateKey: i.articles.stateKey, data: [current] }))
-            return
+            const current = params.data.find(_ => _.value === 'Все');
+            setSelectState([current || { value: 'Все', id: 0 }]);
+            return;
         }
         if (isAllOptionIndex !== -1 && isAllOptionIndex !== value.length - 1) {
-            const valueArr = []
+            const valueArr = [];
             value.forEach(v => {
                 const el = params.data.find(_ => _.value === v);
                 el && el.value !== 'Все' && valueArr.push(el)
-            })
-            setSelectState(valueArr)
-            //dispatch(filterActions.setActiveFilters({ stateKey: i.articles.stateKey, data: valueArr }))
-            return
+            });
+            setSelectState(valueArr);
+            return;
         }
-        const valueArr = []
+        const valueArr = [];
         value.forEach(v => {
             const el = params.data.find(_ => _.value === v);
             el && valueArr.push(el)
-        })
-        //const current = i.articles.data.find(_ => _.value === value);
-        setSelectState(valueArr)
-        //dispatch(filterActions.setActiveFilters({ stateKey: i.articles.stateKey, data: valueArr }))
+        });
+        setSelectState(valueArr);
     }
 
     useEffect(() => {
-        if (Array.isArray(value)) {
-            setSelectState(value)
-            prevSelectState.current = value
-        } else {
-            setSelectState([value])
-            prevSelectState.current = [value]
-        }
-
+        const state = Array.isArray(value) ? value : [value];
+        setSelectState(state);
+        prevSelectState.current = state;
     }, [value])
 
     return (
@@ -162,19 +154,19 @@ export const MultiSelect = (
                     renderEmpty={() => (<div style={{ cursor: 'default' }}>{selectId === 'product_groups' ? 'Нет групп' : 'Нет данных'}</div>)}
                     theme={{
                         token: {
-                            colorBgContainer: '#EAEAF1',
-                            colorBorder: 'transparent',
+                            colorBgContainer: 'white',
+                            colorBorder: '#5329FF1A',
                             borderRadius: 8,
                             fontFamily: 'Mulish',
-                            fontSize: 16,
+                            fontSize: 12,
                         },
                         components: {
                             Select: {
-                                activeBorderColor: 'transparent',
+                                activeBorderColor: '#5329FF1A',
                                 activeOutlineColor: 'transparent',
-                                hoverBorderColor: 'transparent',
+                                hoverBorderColor: '#5329FF1A',
                                 optionActiveBg: 'transparent',
-                                optionFontSize: 16,
+                                optionFontSize: 14,
                                 optionSelectedBg: 'transparent',
                                 optionSelectedColor: '#5329FF',
                             }
@@ -191,10 +183,10 @@ export const MultiSelect = (
                         tagRender={tagRender}
                         suffixIcon={icon}
                         className={styles.plainSelect__select}
-                        options={optionsData.filter((_) => _.value.toLowerCase().includes(searchState.toLowerCase())).map((option, id) => ({
-                            ...option,
-                            key: option.id || option.value
-                        }))}
+                        options={optionsData
+                            .filter((_) => typeof _.value === 'string' ? _.value.toLowerCase().includes(searchState.toLowerCase()) : true)
+                            .map((option, id) => ({ ...option, key: option.id || option.value}))
+                        }
                         value={(Array.isArray(selectState) ? selectState : [])}
                         id={selectId}
                         //onChange={handler}
@@ -203,18 +195,11 @@ export const MultiSelect = (
                         dropdownRender={renderPopup}
                         onDropdownVisibleChange={(open) => {
                             if (!open) {
-                                setSearchState('')
-                                if (JSON.stringify(prevSelectState.current) === JSON.stringify(selectState)) return
-                                dispatch(filterActions.setActiveFilters({ stateKey: params.stateKey, data: selectState }))
-                                prevSelectState.current = selectState
-                                // if (selectState.length === optionsData.length) {
-                                //     setSelectState([{value: 'Все', id: 0}])
-                                //     dispatch(filterActions.setActiveFilters({ stateKey: params.stateKey, data: [{value: 'Все', id: 0}] }))
-                                //     prevSelectState.current = [{value: 'Все', id: 0}]
-                                // } else {
-                                //     dispatch(filterActions.setActiveFilters({ stateKey: params.stateKey, data: selectState }))
-                                //     prevSelectState.current = selectState
-                                // }
+                                setSearchState('');
+                                if (JSON.stringify(prevSelectState.current) === JSON.stringify(selectState)) return;
+
+                                dispatch(filterActions.setActiveFilters({ stateKey: params.stateKey, data: selectState }));
+                                prevSelectState.current = selectState;
                             }
                         }}
                         maxTagPlaceholder={omittedValues => (

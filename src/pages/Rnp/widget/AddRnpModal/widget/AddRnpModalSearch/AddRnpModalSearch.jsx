@@ -38,21 +38,25 @@ function AddRnpModalSearch({
         theme={{
             token: {
                 colorPrimary: '#5329FF',
-                fontSize: 16,
+                fontSize: 14,
                 contentFontSizeLG: 16,
-                controlHeightLG: 45,
+                controlHeightLG: 38,
+                fontFamily: 'Mulish',
             },
             components: {
               Form: {
                 itemMarginBottom: 0
               },
               Input: {
+                colorBorder: '#5329FF1A',
                 activeBorderColor: '#5329FF',
                 hoverBorderColor: '#5329FF'
               },
               Button: {
                 paddingInline: 12,
-                fontWeight: 600
+                fontSize: 14,
+                fontWeight: 600,
+                controlHeightLG: 38,
               }
             }
         }}
@@ -73,6 +77,8 @@ function AddRnpModalSearch({
             htmlType='submit'
             icon={search}
             loading={loading}
+            style={{ fontSize: 14 }}
+            className={styles.search__button}
           >
               Найти
           </Button>

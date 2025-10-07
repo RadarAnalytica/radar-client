@@ -1,12 +1,12 @@
 import React, { useContext, useEffect, useRef } from 'react';
-import AuthContext from '../../../../service/AuthContext';
+import AuthContext from '@/service/AuthContext';
 import styles from './filters.module.css'
 import { TimeSelect, PlainSelect, FrequencyModeSelect, ShopSelect, MultiSelect, MonthSelect, TempTimeSelect } from '../features'
-import { useAppDispatch, useAppSelector } from '../../../../redux/hooks';
-import { actions as filterActions } from '../../../../redux/apiServicePagesFiltersState/apiServicePagesFilterState.slice'
-import { fetchShops } from '../../../../redux/shops/shopsActions';
-import { fetchFilters } from '../../../../redux/apiServicePagesFiltersState/filterActions';
-import { URL } from '../../../../service/config';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import { actions as filterActions } from '@/redux/apiServicePagesFiltersState/apiServicePagesFilterState.slice'
+import { fetchShops } from '@/redux/shops/shopsActions';
+import { fetchFilters } from '@/redux/apiServicePagesFiltersState/filterActions';
+import { URL } from '@/service/config';
 import { getSavedActiveWeeks } from '@/service/utils';
 
 export const Filters = ({
@@ -19,15 +19,15 @@ export const Filters = ({
   weekSelect = false,
   monthSelect = false,
   tempPageCondition,
-  isDataLoading
+  isDataLoading,
+  maxCustomDate,
 }) => {
 
-  // ------ база ------//
+  // ------ это база ------//
   const { user, authToken } = useContext(AuthContext);
   const dispatch = useAppDispatch()
   const { activeBrand, filters, shops } = useAppSelector(store => store.filters)
   const filtersState = useAppSelector(store => store.filters)
-  //--------------------//
 
 
   // ---- хэндлер выбора магазина -----------//
@@ -38,12 +38,10 @@ export const Filters = ({
   //- -----------------------------------------//
 
 
-
-
   return (
     <div className={styles.filters}>
       <div className={styles.filters__inputsMainWrapper}>
-        {shops && activeBrand && weekSelect && 
+        {shops && activeBrand && weekSelect &&
           <div className={styles.filters__inputWrapper}>
             <MultiSelect
               dispatch={dispatch}
@@ -73,12 +71,18 @@ export const Filters = ({
         }
         {shops && activeBrand && timeSelect && tempPageCondition !== 'supplier' &&
           <div className={styles.filters__inputWrapper}>
-            <TimeSelect isDataLoading={isDataLoading} />
+            <TimeSelect 
+              isDataLoading={isDataLoading}
+              maxCustomDate={maxCustomDate}
+            />
           </div>
         }
         {timeSelect && tempPageCondition === 'supplier' &&
           <div className={styles.filters__inputWrapper}>
-            <TempTimeSelect isDataLoading={isDataLoading} />
+            <TempTimeSelect
+              isDataLoading={isDataLoading}
+              maxCustomDate={maxCustomDate}
+            />
           </div>
         }
         {shops && activeBrand && shopSelect &&

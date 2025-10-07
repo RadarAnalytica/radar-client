@@ -1,0 +1,273 @@
+{
+    "data": [
+        {
+            "product_id": 49448,
+            "shop_name": "Демо магазин",
+            "title": "Ночная сорочка шелковая с сердечками",
+            "wb_id": 10000001,
+            "barcode": "2039363459666",
+            "photo": "https://basket-13.wbbasket.ru/vol2029/part202947/202947555/images/c246x328/1.webp",
+            "vendor_code": "H1915/бант на черном",
+            "is_selected": true
+        },
+        {
+            "product_id": 49325,
+            "shop_name": "Демо магазин",
+            "title": "Купальник танкини больших размеров",
+            "wb_id": 10000002,
+            "barcode": "2039526258389",
+            "photo": "https://basket-14.wbbasket.ru/vol2104/part210430/210430042/images/c246x328/1.webp",
+            "vendor_code": "22092/радужный",
+            "is_selected": true
+        },
+        {
+            "product_id": 49397,
+            "shop_name": "Демо магазин",
+            "title": "Купальник больших размеров слитный с юбкой",
+            "wb_id": 10000003,
+            "barcode": "2039647830525",
+            "photo": "https://basket-14.wbbasket.ru/vol2167/part216748/216748127/images/c246x328/1.webp",
+            "vendor_code": "24008/конфетти",
+            "is_selected": true
+        },
+        {
+            "product_id": 49370,
+            "shop_name": "Демо магазин",
+            "title": "Накидка на купальник больших размеров",
+            "wb_id": 10000004,
+            "barcode": "2039756496995",
+            "photo": "https://basket-15.wbbasket.ru/vol2210/part221031/221031209/images/c246x328/1.webp",
+            "vendor_code": "307/черный",
+            "is_selected": true
+        },
+        {
+            "product_id": 49371,
+            "shop_name": "Демо магазин",
+            "title": "Накидка на купальник большой размер",
+            "wb_id": 10000005,
+            "barcode": "2039756755368",
+            "photo": "https://basket-15.wbbasket.ru/vol2210/part221032/221032446/images/c246x328/1.webp",
+            "vendor_code": "307/белый",
+            "is_selected": true
+        },
+        {
+            "product_id": 49479,
+            "shop_name": "Демо магазин",
+            "title": "Пижама шелковая больших размеров",
+            "wb_id": 10000006,
+            "barcode": "2039799051533",
+            "photo": "https://basket-15.wbbasket.ru/vol2227/part222751/222751389/images/c246x328/1.webp",
+            "vendor_code": "1142/черный",
+            "is_selected": true
+        },
+        {
+            "product_id": 49403,
+            "shop_name": "Демо магазин",
+            "title": "Купальник слитный большой размер",
+            "wb_id": 10000007,
+            "barcode": "2039840815268",
+            "photo": "https://basket-15.wbbasket.ru/vol2246/part224668/224668926/images/c246x328/1.webp",
+            "vendor_code": "24008/белыйцветок",
+            "is_selected": true
+        },
+        {
+            "product_id": 49245,
+            "shop_name": "Демо магазин",
+            "title": "Купальник слитный с юбкой больших размеров",
+            "wb_id": 10000008,
+            "barcode": "2039840845371",
+            "photo": "https://basket-15.wbbasket.ru/vol2246/part224671/224671002/images/c246x328/1.webp",
+            "vendor_code": "20008/птички",
+            "is_selected": true
+        },
+        {
+            "product_id": 49330,
+            "shop_name": "Демо магазин",
+            "title": "Раздельный купальник с шортами",
+            "wb_id": 10000009,
+            "barcode": "2040021717356",
+            "photo": "https://basket-15.wbbasket.ru/vol2318/part231851/231851858/images/c246x328/1.webp",
+            "vendor_code": "22092/голубойшифон",
+            "is_selected": true
+        },
+        {
+            "product_id": 49376,
+            "shop_name": "Демо магазин",
+            "title": "Купальник слитный больших размеров",
+            "wb_id": 10000010,
+            "barcode": "2041160123145",
+            "photo": "https://basket-16.wbbasket.ru/vol2594/part259490/259490377/images/c246x328/1.webp",
+            "vendor_code": "3417/синий",
+            "is_selected": true
+        },
+        {
+            "product_id": 65351,
+            "shop_name": "Демо магазин",
+            "title": "Черная футболка в сетку со стразами",
+            "wb_id": 10000011,
+            "barcode": "4610319184788",
+            "photo": "https://basket-17.wbbasket.ru/vol2684/part268470/268470092/images/c246x328/1.webp",
+            "vendor_code": "F-02/черный",
+            "is_selected": true
+        },
+        {
+            "product_id": 64986,
+            "shop_name": "Демо магазин",
+            "title": "Платье длинное вечернее блестящее",
+            "wb_id": 10000012,
+            "barcode": "4610319181442",
+            "photo": "https://basket-17.wbbasket.ru/vol2684/part268486/268486172/images/c246x328/1.webp",
+            "vendor_code": "D-055/черный",
+            "is_selected": true
+        },
+        {
+            "product_id": 65029,
+            "shop_name": "Демо магазин",
+            "title": "Лонгслив кружевной",
+            "wb_id": 10000013,
+            "barcode": "4610319183644",
+            "photo": "https://basket-19.wbbasket.ru/vol3223/part322361/322361671/images/c246x328/1.webp",
+            "vendor_code": "T-073/черный",
+            "is_selected": true
+        },
+        {
+            "product_id": 49269,
+            "shop_name": "Демо магазин",
+            "title": "Халат домашний шелковый",
+            "wb_id": 10000014,
+            "barcode": "2042766627211",
+            "photo": "https://basket-19.wbbasket.ru/vol3269/part326903/326903694/images/c246x328/1.webp",
+            "vendor_code": "7013/черный",
+            "is_selected": true
+        },
+        {
+            "product_id": 49414,
+            "shop_name": "Демо магазин",
+            "title": "Халат домашний шелковый",
+            "wb_id": 10000015,
+            "barcode": "2042766639221",
+            "photo": "https://basket-19.wbbasket.ru/vol3269/part326905/326905188/images/c246x328/1.webp",
+            "vendor_code": "7013/синий",
+            "is_selected": true
+        },
+        {
+            "product_id": 49386,
+            "shop_name": "Демо магазин",
+            "title": "Купальник слитный большой размер",
+            "wb_id": 10000016,
+            "barcode": "2042780516416",
+            "photo": "https://basket-20.wbbasket.ru/vol3277/part327727/327727211/images/c246x328/1.webp",
+            "vendor_code": "24008/синий",
+            "is_selected": true
+        },
+        {
+            "product_id": 49391,
+            "shop_name": "Демо магазин",
+            "title": "Купальник слитный большой размер",
+            "wb_id": 10000017,
+            "barcode": "2042780580332",
+            "photo": "https://basket-20.wbbasket.ru/vol3277/part327739/327739022/images/c246x328/1.webp",
+            "vendor_code": "24008/черный",
+            "is_selected": true
+        },
+        {
+            "product_id": 49280,
+            "shop_name": "Демо магазин",
+            "title": "Пижама атласная летняя с шортами",
+            "wb_id": 10000018,
+            "barcode": "2043198167979",
+            "photo": "https://basket-21.wbbasket.ru/vol3602/part360233/360233510/images/c246x328/1.webp",
+            "vendor_code": "6800/синяявишня",
+            "is_selected": true
+        },
+        {
+            "product_id": 49336,
+            "shop_name": "Демо магазин",
+            "title": "Раздельный купальник с шортами и топом сеткой",
+            "wb_id": 10000019,
+            "barcode": "2043605655136",
+            "photo": "https://basket-22.wbbasket.ru/vol3877/part387795/387795700/images/c246x328/1.webp",
+            "vendor_code": "22092/чернаясетка",
+            "is_selected": true
+        },
+        {
+            "product_id": 49234,
+            "shop_name": "Демо магазин",
+            "title": "Купальник танкини с рукавами и с шортами",
+            "wb_id": 10000020,
+            "barcode": "2045269674508",
+            "photo": "https://basket-23.wbbasket.ru/vol3945/part394513/394513445/images/c246x328/1.webp",
+            "vendor_code": "22092/синийрук",
+            "is_selected": true
+        },
+        {
+            "product_id": 49342,
+            "shop_name": "Демо магазин",
+            "title": "Раздельный купальник с шортами и майкой",
+            "wb_id": 10000021,
+            "barcode": "2043721826649",
+            "photo": "https://basket-23.wbbasket.ru/vol3945/part394536/394536036/images/c246x328/1.webp",
+            "vendor_code": "22092/синий",
+            "is_selected": true
+        },
+        {
+            "product_id": 49347,
+            "shop_name": "Демо магазин",
+            "title": "Раздельный купальник с бриджами и топом - майкой",
+            "wb_id": 10000022,
+            "barcode": "2043920744584",
+            "photo": "https://basket-23.wbbasket.ru/vol4123/part412369/412369904/images/c246x328/1.webp",
+            "vendor_code": "22092/черныйдлин",
+            "is_selected": true
+        },
+        {
+            "product_id": 49352,
+            "shop_name": "Демо магазин",
+            "title": "Раздельный купальник с шортами и майкой",
+            "wb_id": 10000023,
+            "barcode": "2043938648805",
+            "photo": "https://basket-24.wbbasket.ru/vol4136/part413639/413639573/images/c246x328/1.webp",
+            "vendor_code": "22092/синийромб",
+            "is_selected": true
+        },
+        {
+            "product_id": 49369,
+            "shop_name": "Демо магазин",
+            "title": "Купальник слитный коровий принт",
+            "wb_id": 10000024,
+            "barcode": "2044386895476",
+            "photo": "https://basket-25.wbbasket.ru/vol4395/part439572/439572491/images/c246x328/1.webp",
+            "vendor_code": "24008/коровий",
+            "is_selected": true
+        }
+    ],
+    "total_count": 24,
+    "page": 1,
+    "per_page": 25,
+    "rnp_wb_ids": [
+        10000001,
+        10000002,
+        10000003,
+        10000004,
+        10000005,
+        10000006,
+        10000007,
+        10000008,
+        10000009,
+        10000010,
+        10000011,
+        10000012,
+        10000013,
+        10000014,
+        10000015,
+        10000016,
+        10000017,
+        10000018,
+        10000019,
+        10000020,
+        10000021,
+        10000022,
+        10000023,
+        10000024
+    ]
+}

@@ -1,6 +1,7 @@
 import React from 'react';
 import styles from './OrderMapTable.module.css'
-import { formatPrice } from '../../service/utils';
+import { formatPrice } from '@/service/utils';
+
 const OrderMapTable = ({ title, data, totalAmount, totalCount, visibility = false }) => {
   const withName = [...data].slice(5);
   // const otherRegion = withName.slice(-5)

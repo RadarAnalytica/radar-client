@@ -4,101 +4,69 @@ import './styles.css';
 import Map from '../components/Map';
 import OrderMapPieChart from '../containers/orderMap/OrderMapPieChart';
 import OrderMapTable from '../containers/orderMap/OrderMapTable';
-import OrderTableExtended from '../containers/orderMap/OrderTableExtended';
 import AuthContext from '../service/AuthContext';
-import { formatPrice } from '../service/utils';
-import SelfCostWarning from '../components/SelfCostWarning';
-import DataCollectionNotification from '../components/DataCollectionNotification';
-import { useAppDispatch, useAppSelector } from '../redux/hooks';
-import { fetchShops } from '../redux/shops/shopsActions';
-import { fetchGeographyData } from '../redux/geoData/geoDataActions';
+import { formatPrice } from '@/service/utils';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import { fetchShops } from '@/redux/shops/shopsActions';
 import { useLocation, useNavigate } from "react-router-dom";
 import NoSubscriptionPage from './NoSubscriptionPage';
-import RadioGroup from '../components/RadioGroup';
-import OrderSalesPieCharts from '../components/OrderSalesPieCharts';
-import StockDataRow from '../components/StockDataRow';
-import green from '../assets/greenarrow.png';
-import red from '../assets/redarrow.png';
-import { ServiceFunctions } from '../service/serviceFunctions';
-import { Filters } from '../components/sharedComponents/apiServicePagesFiltersComponent';
-import MobilePlug from '../components/sharedComponents/mobilePlug/mobilePlug';
-import Sidebar from '../components/sharedComponents/sidebar/sidebar';
-import Header from '../components/sharedComponents/header/header';
-import { mockGetGeographyData } from '../service/mockServiceFunctions'
-import DataCollectWarningBlock from '../components/sharedComponents/dataCollectWarningBlock/dataCollectWarningBlock';
-import NoSubscriptionWarningBlock from '../components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock'
+import RadioGroup from '@/components/RadioGroup';
+import OrderSalesPieCharts from '@/components/OrderSalesPieCharts';
+import StockDataRow from '@/components/StockDataRow';
+import green from '@/assets/greenarrow.png';
+import red from '@/assets/redarrow.png';
+import { ServiceFunctions } from '@/service/serviceFunctions';
+import { Filters } from '@/components/sharedComponents/apiServicePagesFiltersComponent';
+import MobilePlug from '@/components/sharedComponents/mobilePlug/mobilePlug';
+import Sidebar from '@/components/sharedComponents/sidebar/sidebar';
+import Header from '@/components/sharedComponents/header/header';
+import { mockGetGeographyData } from '@/service/mockServiceFunctions'
+import DataCollectWarningBlock from '@/components/sharedComponents/dataCollectWarningBlock/dataCollectWarningBlock';
+import NoSubscriptionWarningBlock from '@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock'
+import { useDemoMode } from "@/app/providers";
 
 const OrdersMap = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { user, authToken, logout } = useContext(AuthContext);
+  const { isDemoMode } = useDemoMode();
   const shops = useAppSelector((state) => state.shopsSlice.shops);
-  const { activeBrand, selectedRange, isFiltersLoaded, activeBrandName, activeArticle, activeGroup } = useAppSelector(store => store.filters)
-  const filters = useAppSelector(store => store.filters)
-
-  // const [geoData, setGeoData] = useState([]);
-  // const { geoData, loading, error } = useAppSelector(
-  // (state) => state.geoDataSlice
-  // );
+  const { activeBrand, selectedRange, isFiltersLoaded, activeBrandName, activeArticle, activeGroup } = useAppSelector(store => store.filters);
+  const filters = useAppSelector(store => store.filters);
   const [geoData, setGeoData] = useState([])
-
   const [byRegions, setByRegions] = useState(true);
   const [_, setActiveBrand] = useState(null);
   const [firstLoading, setFirstLoading] = useState(true);
   const [data, setData] = useState();
   const [loading, setLoading] = useState(false); // лоадер для загрузки данных
   const [isVisible, setIsVisible] = useState(true);
-  const prevselectedRange = useRef(selectedRange);
-  const prevActiveBrand = useRef(activeBrand);
-  const authTokenRef = useRef(authToken);
-  const [primaryCollect, setPrimaryCollect] = useState(null)
+  const [primaryCollect, setPrimaryCollect] = useState(null);
 
   const radioOptions = [
     { value: 'region', label: 'По регионам' },
     { value: 'store', label: 'По складам' },
   ];
-
-
-
   const updateGeoData = async () => {
     setLoading(true)
     try {
       if (activeBrand && selectedRange && authToken) {
-        let data = null;
-        if (user.subscription_status === null) {
-          data = await mockGetGeographyData(selectedRange);
-        } else {
-          data = await ServiceFunctions.getGeographyData(authToken, selectedRange, activeBrand.id, filters);
-        }
+        const data = await ServiceFunctions.getGeographyData(authToken, selectedRange, activeBrand.id, filters);
         setGeoData(data);
       }
-      setByRegions(true)
-      setLoading(false)
     } catch (error) {
-      setLoading(false)
+      console.log(error);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  
-  }
-
-  // useEffect(() => {
-  //   if (activeBrand && activeBrand.is_primary_collect && activeBrand.is_primary_collect !== primaryCollect) {
-  //     setPrimaryCollect(activeBrand.is_primary_collect)
-  //     updateGeoData()
-  //   }
-  // }, [authToken]);
+  };
 
   useEffect(() => {
-    setPrimaryCollect(activeBrand?.is_primary_collect)
+    setPrimaryCollect(activeBrand?.is_primary_collect);
     if (activeBrand && activeBrand.is_primary_collect && isFiltersLoaded) {
       updateGeoData();
     }
   }, [activeBrand, selectedRange, isFiltersLoaded, activeBrandName, activeArticle, activeGroup]);
-
-
-
 
   useEffect(() => {
     if (shops?.length === 0 && !firstLoading) {
@@ -141,22 +109,13 @@ const OrdersMap = () => {
     };
   }, [dispatch, activeBrand, selectedRange, authToken]);
 
-  // useEffect(() => {
-  // if (authToken !== authTokenRef.current) {
-  //dispatch(fetchShops(authToken));
-  // }
-  // }, [dispatch]);
-
-
   const checkIdQueryParam = () => {
     const searchParams = new URLSearchParams(location.search);
     const idQueryParam = searchParams.get('id');
+
     if (idQueryParam && parseInt(idQueryParam) !== user.id) {
       logout();
       navigate('/signin');
-
-    } else {
-      return;
     }
   };
 
@@ -165,20 +124,6 @@ const OrdersMap = () => {
       checkIdQueryParam();
     }
   }, [location.search]);
-
-  // const changePeriod = () => {
-  //     setLoading(true)
-  //     if (user && activeBrand) {
-  //         ServiceFunctions.getGeoData(user.id, activeBrand, selectedRange).then(data => setData(data))
-  //     }
-  // }
-
-  // useEffect(() => {
-  //     changePeriod()
-  // }, [selectedRange, activeBrand])
-
-  // const orders = data && data?.orders && data?.orders.data ? data?.orders.data : [];
-  // const sales = data && data?.sales && data?.sales.data ? data?.sales.data : [];
 
   const ordersByWarehouses = data ? data?.ordersByWarehouse : [];
   const salesByWarehouses = data ? data?.salesByWarehouse : [];
@@ -418,8 +363,10 @@ const OrdersMap = () => {
     }
   }
 
-  let map = document.getElementById('order-map');
-  map ? map.addEventListener('mouseover', findGTagName) : console.log();
+  const map = document.getElementById('order-map');
+  if (map) {
+    map.addEventListener('mouseover', findGTagName);
+  }
 
   const [tooltipData, setTooltipData] = useState();
   useEffect(() => {
@@ -632,10 +579,10 @@ const OrdersMap = () => {
     // },
   ];
 
-  const orderCount = geoData?.geo_data?.map((el) => el.orderCount);
-  const orderAmount = geoData?.geo_data?.map((el) => el.orderAmount);
-  const saleCount = geoData?.geo_data?.map((el) => el.saleCount);
-  const saleAmount = geoData?.geo_data?.map((el) => el.saleAmount);
+  // const orderCount = geoData?.geo_data?.map((el) => el.orderCount);
+  // const orderAmount = geoData?.geo_data?.map((el) => el.orderAmount);
+  // const saleCount = geoData?.geo_data?.map((el) => el.saleCount);
+  // const saleAmount = geoData?.geo_data?.map((el) => el.saleAmount);
 
   const orderCountStock = geoData?.stock_data?.map((el) => el.orderCount);
   const orderAmountStock = geoData?.stock_data?.map((el) => el.orderAmount);
@@ -688,7 +635,7 @@ const OrdersMap = () => {
 
   if (user?.subscription_status === 'expired') {
     return <NoSubscriptionPage title={'География заказов и продаж'} />
-  };
+  }
 
   // if (!shops || shops.length === 0) {
   //   return null; // or a loading indicator
@@ -698,23 +645,19 @@ const OrdersMap = () => {
     isVisible && (
       <main className={styles.page}>
         <MobilePlug />
-        {/* ------ SIDE BAR ------ */}
+
         <section className={styles.page__sideNavWrapper}>
           <Sidebar />
         </section>
-        {/* ------ CONTENT ------ */}
+
         <section className={styles.page__content}>
-          {/* header */}
           <div className={styles.page__headerWrapper}>
             <div style={{ width: '100%' }} className="map-container dash-container container p-3">
               <Header title='География заказов и продаж' />
             </div>
           </div>
-          {/* !header */}
 
-          {/* DEMO BLOCK */}
-          {user.subscription_status === null && <NoSubscriptionWarningBlock />}
-          {/* !DEMO BLOCK */}
+          {isDemoMode && <NoSubscriptionWarningBlock />}
 
           <div style={{ width: '100%' }} className="map-container dash-container container p-3">
             <Filters
@@ -724,17 +667,17 @@ const OrdersMap = () => {
           </div>
 
           {loading &&
-          <div className='map-container dash-container container p-3'
-            style={{
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              height: '100%',
-              width: '100%',
-            }}
-          >
-            <span className='loader'></span>
-          </div>
+            <div className='map-container dash-container container p-3'
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                height: '100%',
+                width: '100%',
+              }}
+            >
+              <span className='loader'></span>
+            </div>
           }
 
           {activeBrand && activeBrand.is_primary_collect && !loading && (
@@ -742,7 +685,7 @@ const OrdersMap = () => {
               <RadioGroup
                 options={radioOptions}
                 name='mapView'
-                defaultValue='region'
+                defaultValue={byRegions ? 'region' : 'store'}
                 onChange={handleRadioChange}
               />
 
@@ -926,11 +869,7 @@ const OrdersMap = () => {
           )}
 
           {activeBrand && !activeBrand.is_primary_collect && !loading &&
-
             <div style={{ width: '100%', padding: '0 20px' }}>
-              {/* <DataCollectionNotification
-              title={'Ваши данные еще формируются и обрабатываются.'}
-            /> */}
               <DataCollectWarningBlock
                 title='Ваши данные еще формируются и обрабатываются.'
               />
@@ -939,18 +878,6 @@ const OrdersMap = () => {
         </section>
         {/* ---------------------- */}
       </main>
-
-      // <div className='orders-map'>
-      //   <MobilePlug />
-      // <SideNav />
-      //   <div className='orders-map-content pb-3'>
-      //     <div style={{ width: '100%'}} className="container dash-container">
-      //       <TopNav title={'География заказов и продаж'} mikeStarinaStaticProp />
-      //     </div>
-
-
-      //   </div>
-      // </div>
     )
   );
 };

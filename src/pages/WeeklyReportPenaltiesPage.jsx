@@ -12,8 +12,11 @@ import NewFilterGroup from '../components/finReport/FilterGroup'
 import MobilePlug from '../components/sharedComponents/mobilePlug/mobilePlug';
 import Sidebar from '../components/sharedComponents/sidebar/sidebar';
 import Header from '../components/sharedComponents/header/header';
+import NoSubscriptionWarningBlock from '../components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock';
+import { useDemoMode } from "@/app/providers";
 
 const WeeklyReportPenaltiesPage = () => {
+  const {isDemoMode} = useDemoMode();
   const dispatch = useDispatch();
   const { penaltiesData, loading } = useSelector(
     (state) => state.penaltiesSlice
@@ -38,38 +41,36 @@ const WeeklyReportPenaltiesPage = () => {
   return (
     <div className='dashboard-page'>
       <MobilePlug />
+
       <div style={{ height: '100vh', zIndex: 999 }}>
         <Sidebar />
       </div>
-      {/* <SideNav /> */}
+
       <div className='dashboard-content pb-3' style={{ padding: '0 32px' }}>
         <div style={{ width: '100%', padding: '20px 0' }} className="container dash-container">
           <Header title={'Штрафы'} titlePrefix={'Отчёт'} />
         </div>
-        {user.is_report_downloaded ? (
-          <>
-            <div className='container dash-container'>
-              <NewFilterGroup pageIdent='penalty' filtersData={penaltyFilters} isLoading={isFiltersLoading} getData={handleApplyFilters} />
-            </div>
-            <div className='container dash-container'>
-              <LogisticsTable data={penaltiesData} loading={loading} />
-            </div>
-          </>
-        ) : (
-          <>
-            <div className='container dash-container'>
-              <DemonstrationSection />
-            </div>
-            <span className={styles.responsiveImageWrapper}>
-              <img
-                src={plFake}
-                alt='fakePL'
-                className={styles.responsiveImage}
-              />
-              <span></span>
-            </span>
-          </>
-        )}
+
+        {isDemoMode && 
+          <div className='mb-1'>
+            <NoSubscriptionWarningBlock />
+          </div>
+        }
+
+        {!user.is_report_downloaded &&
+          <div className='mb-1'>
+            <DemonstrationSection />
+          </div>
+        }
+
+        <div className='container dash-container'>
+          <NewFilterGroup pageIdent='penalty' filtersData={penaltyFilters} isLoading={isFiltersLoading} getData={handleApplyFilters} />
+        </div>
+
+        <div className='container dash-container'>
+          <LogisticsTable data={penaltiesData} loading={loading} />
+        </div>
+        
         <BottomNavigation />
       </div>
     </div>

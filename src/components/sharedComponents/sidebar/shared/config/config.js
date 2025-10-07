@@ -110,21 +110,28 @@ export const menuConfig = [
                 isNew: false
             },
             {
-                id: 4,
+                id: 5,
+                url: '/operations-costs', 
+                label: 'Операционные расходы',
+                isActive: false,
+                isNew: true
+            },
+            {
+                id: 6,
                 url: '/report-week',
                 label: 'Отчет по неделям',
                 isActive: true,
                 isNew: false
             },
             {
-                id: 5,
+                id: 7,
                 url: '/report-profit-loss', 
                 label: 'Отчет о прибыли и убытках',
                 isActive: true,
                 isNew: false
             },
             {
-                id: 6,
+                id: 4,
                 url: '/report-main',
                 label: 'Оцифровка еженедельных отчетов (ручная)',
                 hasTopBorder: true,
@@ -132,10 +139,10 @@ export const menuConfig = [
                 isNew: false
             },
             {
-                id: 7,
+                id: 8,
                 url: '/operating-expenses', 
                 label: 'Операционные расходы',
-                isActive: false,
+                isActive: true,
                 isNew: true
             },
         ]

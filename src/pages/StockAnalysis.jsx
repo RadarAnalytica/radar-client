@@ -30,7 +30,7 @@ import MobilePlug from "../components/sharedComponents/mobilePlug/mobilePlug";
 import Header from '../components/sharedComponents/header/header'
 import SelfCostWarningBlock from "../components/sharedComponents/selfCostWraningBlock/selfCostWarningBlock";
 import Sidebar from "../components/sharedComponents/sidebar/sidebar";
-import {mockGetAnalysisData} from '../service/mockServiceFunctions'
+import {mockGetAnalysisData} from '../service/mockServiceFunctions';
 
 
 const StockAnalysis = () => {
@@ -51,7 +51,6 @@ const StockAnalysis = () => {
   // рефы (используются для сохранения пред значений)
   const prevDays = useRef(selectedRange);
   const prevActiveBrand = useRef(activeBrand ? activeBrand.id : null);
-
 
 
 

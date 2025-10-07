@@ -1,53 +1,35 @@
 import React, { useState, useContext, useEffect, useMemo, useCallback } from 'react'
 import styles from './dashboardPage.module.css'
-import { useAppSelector } from '../../../../redux/hooks'
-import AuthContext from '../../../../service/AuthContext'
-import { ServiceFunctions } from '../../../../service/serviceFunctions'
+import { useAppSelector } from '@/redux/hooks'
+import AuthContext from '@/service/AuthContext'
+import { ServiceFunctions } from '@/service/serviceFunctions'
 
-import Header from '../../../../components/sharedComponents/header/header'
-import Sidebar from '../../../../components/sharedComponents/sidebar/sidebar'
-import MobilePlug from '../../../../components/sharedComponents/mobilePlug/mobilePlug'
-import { Filters } from '../../../../components/sharedComponents/apiServicePagesFiltersComponent'
-import SelfCostWarningBlock from '../../../../components/sharedComponents/selfCostWraningBlock/selfCostWarningBlock'
-import DataCollectWarningBlock from '../../../../components/sharedComponents/dataCollectWarningBlock/dataCollectWarningBlock'
-import FirstBarsGroup from '../../../../components/dashboardPageComponents/barsGroup/firstBarsGroup'
-import SecondBarsGroup from '../../../../components/dashboardPageComponents/barsGroup/secondBarsGroup'
-import MainChart from '../../../../components/dashboardPageComponents/charts/mainChart/mainChart'
-import AbcDataBlock from '../../../../components/dashboardPageComponents/blocks/abcDataBlock/abcDataBlock'
-import FinanceBlock from '../../../../components/dashboardPageComponents/blocks/financeBlock/financeBlock'
-import ProfitBlock from '../../../../components/dashboardPageComponents/blocks/profitBlock/profitBlock'
-import MarginChartBlock from '../../../../components/dashboardPageComponents/blocks/marginChartBlock/marginChartBlock'
-import ProfitChartBlock from '../../../../components/dashboardPageComponents/blocks/profitChartBlock/profitChartBlock'
-import StorageBlock from '../../../../components/dashboardPageComponents/blocks/storageBlock/storageBlock'
-import StorageRevenueChartBlock from '../../../../components/dashboardPageComponents/blocks/storageRevenueChartBlock/storageRevenueChartBlock'
-import CostsBlock from '../../../../components/dashboardPageComponents/blocks/costsBlock/costsBlock'
-import RevenueStructChartBlock from '../../../../components/dashboardPageComponents/blocks/revenueStructChartBlock/revenueStructChartBlock'
-import TaxTableBlock from '../../../../components/dashboardPageComponents/blocks/taxTableBlock/taxTableBlock'
-import HowToLink from '../../../../components/sharedComponents/howToLink/howToLink'
-import TurnoverBlock from '../../../../components/dashboardPageComponents/blocks/turnoverBlock/turnoverBlock'
-import { mockGetDashBoard } from '../../../../service/mockServiceFunctions';
-import StockAnalysisBlock from '../../../../components/dashboardPageComponents/blocks/stockAnalysisBlock/stockAnalysisBlock'
-import NoSubscriptionWarningBlock from '../../../../components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock'
+import Header from '@/components/sharedComponents/header/header'
+import Sidebar from '@/components/sharedComponents/sidebar/sidebar'
+import MobilePlug from '@/components/sharedComponents/mobilePlug/mobilePlug'
+import { Filters } from '@/components/sharedComponents/apiServicePagesFiltersComponent'
+import SelfCostWarningBlock from '@/components/sharedComponents/selfCostWraningBlock/selfCostWarningBlock'
+import DataCollectWarningBlock from '@/components/sharedComponents/dataCollectWarningBlock/dataCollectWarningBlock'
+import FirstBarsGroup from '@/components/dashboardPageComponents/barsGroup/firstBarsGroup'
+import SecondBarsGroup from '@/components/dashboardPageComponents/barsGroup/secondBarsGroup'
+import MainChart from '@/components/dashboardPageComponents/charts/mainChart/mainChart'
+import AbcDataBlock from '@/components/dashboardPageComponents/blocks/abcDataBlock/abcDataBlock'
+import FinanceBlock from '@/components/dashboardPageComponents/blocks/financeBlock/financeBlock'
+import ProfitBlock from '@/components/dashboardPageComponents/blocks/profitBlock/profitBlock'
+import MarginChartBlock from '@/components/dashboardPageComponents/blocks/marginChartBlock/marginChartBlock'
+import ProfitChartBlock from '@/components/dashboardPageComponents/blocks/profitChartBlock/profitChartBlock'
+import StorageBlock from '@/components/dashboardPageComponents/blocks/storageBlock/storageBlock'
+import StorageRevenueChartBlock from '@/components/dashboardPageComponents/blocks/storageRevenueChartBlock/storageRevenueChartBlock'
+import CostsBlock from '@/components/dashboardPageComponents/blocks/costsBlock/costsBlock'
+import RevenueStructChartBlock from '@/components/dashboardPageComponents/blocks/revenueStructChartBlock/revenueStructChartBlock'
+import TaxTableBlock from '@/components/dashboardPageComponents/blocks/taxTableBlock/taxTableBlock'
+import HowToLink from '@/components/sharedComponents/howToLink/howToLink'
+import TurnoverBlock from '@/components/dashboardPageComponents/blocks/turnoverBlock/turnoverBlock'
+// import { mockGetDashBoard } from '@/service/mockServiceFunctions';
+// import StockAnalysisBlock from '@/components/dashboardPageComponents/blocks/stockAnalysisBlock/stockAnalysisBlock'
+import NoSubscriptionWarningBlock from '@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock'
+import { useDemoMode } from "@/app/providers";
 
-// const WarningBlocks = React.memo(({ shopStatus, loading, activeBrand, updateDataDashBoard }) => {
-//     if (!shopStatus) return null;
-
-//     return (
-//         <>
-//             {!shopStatus.is_self_cost_set && !loading && (
-//                 <SelfCostWarningBlock
-//                     shopId={activeBrand.id}
-//                     onUpdateDashboard={updateDataDashBoard}
-//                 />
-//             )}
-//             {!shopStatus.is_primary_collect && (
-//                 <DataCollectWarningBlock
-//                     title='Ваши данные еще формируются и обрабатываются.'
-//                 />
-//             )}
-//         </>
-//     );
-// });
 
 const MainContent = React.memo(({
     shopStatus,
@@ -149,7 +131,8 @@ const MainContent = React.memo(({
 });
 
 const _DashboardPage = () => {
-    const { user, authToken } = useContext(AuthContext)
+    const { authToken } = useContext(AuthContext);
+    const { isDemoMode } = useDemoMode();
     const { activeBrand, selectedRange, isFiltersLoaded, activeBrandName, activeArticle, activeGroup, shops } = useAppSelector((state) => state.filters);
     const filters = useAppSelector((state) => state.filters);
     const { isSidebarHidden } = useAppSelector((state) => state.utils);
@@ -165,12 +148,6 @@ const _DashboardPage = () => {
         setPageState(prev => ({ ...prev, loading: true }));
         try {
             if (activeBrand !== null && activeBrand !== undefined) {
-                if (user.subscription_status === null) {
-                    const data = await mockGetDashBoard(selectedRange, activeBrand);
-                    setPageState(prev => ({ ...prev, dataDashBoard: data }));
-                    return;
-                }
-
                 const data = await ServiceFunctions.getDashBoard(
                     authToken,
                     selectedRange,
@@ -213,9 +190,11 @@ const _DashboardPage = () => {
     return (
         <main className={styles.page}>
             <MobilePlug />
+
             <section className={styles.page__sideNavWrapper}>
                 <Sidebar />
             </section>
+
             <section className={styles.page__content}>
                 <div className={styles.page__headerWrapper}>
                     <Header title='Сводка продаж' />
@@ -235,7 +214,7 @@ const _DashboardPage = () => {
                     updateDataDashBoard={updateDataDashBoard}
                 /> */}
 
-                {user.subscription_status === null && <NoSubscriptionWarningBlock />}
+                {isDemoMode && <NoSubscriptionWarningBlock />}
 
                 <div className={styles.page__controlsWrapper}>
                     <Filters
@@ -266,7 +245,7 @@ const _DashboardPage = () => {
                 />
             </section>
         </main>
-    )
+    );
 }
 
 const DashboardPage = React.memo(_DashboardPage);

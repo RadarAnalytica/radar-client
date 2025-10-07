@@ -3,45 +3,59 @@ import { useAppSelector } from '@/redux/hooks';
 import { useDispatch } from 'react-redux';
 import AuthContext from '@/service/AuthContext';
 import { fetchFilters } from '@/redux/apiServicePagesFiltersState/filterActions';
-import { URL } from '@/service/config';
+// import { URL } from '@/service/config';
+import { fetchApi } from '@/service/fetchApi';
 import type { RootState, AppDispatch } from '@/redux/store.types';
 
 const FiltersProvider = ({ children }: { children: React.ReactNode }) => {
 
-    const { user, authToken } = useContext(AuthContext);
-    const dispatch = useDispatch<AppDispatch>()
-    const { activeBrand, shops } = useAppSelector((store: RootState) => store.filters)
+    const { authToken } = useContext(AuthContext);
+    const dispatch = useDispatch<AppDispatch>();
+    const { activeBrand, shops } = useAppSelector((store: RootState) => store.filters);
     const { messages } = useAppSelector((state: RootState) => state.messagesSlice);
-    const prevMessages = useRef<any[] | null>(null)
+    const prevMessages = useRef<any[] | null>(null);
 
+  const getFiltersData = async () => {
+    if (!authToken) return;
 
-    const getFiltersData = async () => {
-        try {
-            let shopsResponse = await fetch(`${URL}/api/shop/all`, {
-                method: 'GET',
-                headers: {
-                    'content-type': 'application/json',
-                    authorization: 'JWT ' + authToken,
-                }
-            })
-            //let shopsResponse = null
-            // @ts-ignore
-            dispatch(fetchFilters({
-                authToken,
-                shopsData: shopsResponse?.ok ? await shopsResponse.json() : null
-                //shopsData: null
-            }))
-        } catch (error) {
-            console.error("Error fetching initial data:", error);
+    try {
+      let shopsResponse = await fetchApi('/api/shop/all', {
+        method: 'GET',
+        headers: {
+          'content-type': 'application/json',
+          authorization: 'JWT ' + authToken,
         }
+      });
+
+      let shopsData = null;
+      if (shopsResponse?.ok) {
+        shopsData = await shopsResponse.json();
+      }
+
+      // @ts-ignore
+      dispatch(fetchFilters({
+        authToken,
+        shopsData
+        //shopsData: null
+      }));
+    } catch (error) {
+      console.error("FiltersProvider: Error fetching initial data:", error);
     }
+  }
 
     // Получаем данные магазинов
     useEffect(() => {
-        if ((!shops || shops.length === 0)) {
+        if (!shops || shops.length === 0) {
             getFiltersData()
         }
     }, []);
+
+    // Отслеживаем изменения authToken
+    useEffect(() => {
+        if (authToken && (!shops || shops.length === 0)) {
+            getFiltersData();
+        }
+    }, [authToken]);
 
     //Данные магазина [A-Za-z0-9]+ успешно собраны\. Результаты доступны на страницах сервиса
     useEffect(() => {

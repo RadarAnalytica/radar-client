@@ -1,25 +1,28 @@
-import React, { useState, useEffect, useContext, useRef, useMemo, useCallback } from 'react'
-import styles from './selfCostPage.module.css'
-import Header from '../../components/sharedComponents/header/header'
-import Sidebar from '../../components/sharedComponents/sidebar/sidebar'
-import MobilePlug from '../../components/sharedComponents/mobilePlug/mobilePlug'
-import { Filters } from '../../components/sharedComponents/apiServicePagesFiltersComponent'
-import HowToLink from '../../components/sharedComponents/howToLink/howToLink'
-import { SelfCostTableWidget, SearchWidget } from './widgets'
-import AuthContext from '../../service/AuthContext'
-import ErrorModal from '../../components/sharedComponents/modals/errorModal/errorModal'
-import { useAppSelector } from '../../redux/hooks'
-import { URL } from '../../service/config'
-import DataCollectWarningBlock from '../../components/sharedComponents/dataCollectWarningBlock/dataCollectWarningBlock'
-import { ServiceFunctions } from '../../service/serviceFunctions'
+import React, { useState, useEffect, useContext, useRef, useMemo, useCallback } from 'react';
+import styles from './selfCostPage.module.css';
+import Header from '@/components/sharedComponents/header/header';
+import Sidebar from '@/components/sharedComponents/sidebar/sidebar';
+import MobilePlug from '@/components/sharedComponents/mobilePlug/mobilePlug';
+import { Filters } from '@/components/sharedComponents/apiServicePagesFiltersComponent';
+import HowToLink from '@/components/sharedComponents/howToLink/howToLink';
+import { SelfCostTableWidget, SearchWidget } from './widgets';
+import AuthContext from '@/service/AuthContext';
+import ErrorModal from '@/components/sharedComponents/modals/errorModal/errorModal';
+import { useAppSelector } from '@/redux/hooks';
+import DataCollectWarningBlock from '@/components/sharedComponents/dataCollectWarningBlock/dataCollectWarningBlock';
+import { ServiceFunctions } from '@/service/serviceFunctions';
+import { useDemoMode } from "@/app/providers";
+import NoSubscriptionWarningBlock
+  from "@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock";
 
 const initDataStatus = {
     isError: false,
     isLoading: false,
     message: ''
-}
+};
 
 const SelfCostPage = () => {
+    const { isDemoMode } = useDemoMode();
     const [searchInputValue, setSearchInputValue] = useState('')
     const [isSuccess, setIsSuccess] = useState(false);
     const [dataStatus, setDataStatus] = useState(initDataStatus)
@@ -32,10 +35,10 @@ const SelfCostPage = () => {
     //const prevShop = useRef(activeBrand)
 
     const getTableData = useCallback(async (authToken, shopId, filters) => {
-        setDataStatus({ ...initDataStatus, isLoading: true })
-        const res = await ServiceFunctions.getSelfCostData(authToken, shopId, filters)
+        setDataStatus({ ...initDataStatus, isLoading: true });
+        const res = await ServiceFunctions.getSelfCostData(authToken, shopId, filters);
         if (!res.ok) {
-            setDataStatus({ ...initDataStatus, isError: true, message: 'Что-то пошло не так :( Попробуйте оновить страницу' })
+            setDataStatus({ ...initDataStatus, isError: true, message: 'Что-то пошло не так :( Попробуйте оновить страницу' });
             return;
         }
 
@@ -102,16 +105,17 @@ const SelfCostPage = () => {
     return (
         <main className={styles.page}>
             <MobilePlug />
-            {/* ------ SIDE BAR ------ */}
+
             <section className={styles.page__sideNavWrapper}>
                 <Sidebar />
             </section>
-            {/* ------ CONTENT ------ */}
+
             <section className={styles.page__content}>
-                {/* header */}
                 <div className={styles.page__headerWrapper}>
                     <Header title='Себестоимость' />
                 </div>
+
+                {isDemoMode && <NoSubscriptionWarningBlock />}
 
                 <div className={styles.page__filtersWrapper}>
                     <Filters
@@ -126,13 +130,13 @@ const SelfCostPage = () => {
                         target='_blank'
                     />
                 </div>
-                {/* DATA COLLECT WARNING */}
+                
                 {activeBrand && !activeBrand.is_primary_collect &&
                     <DataCollectWarningBlock
                         title='Ваши данные еще формируются и обрабатываются.'
                     />
                 }
-                {/* !DATA COLLECT WARNING */}
+
                 {activeBrand && activeBrand.is_primary_collect &&
                     <>
                         <div className={styles.page__searchWrapper}>
@@ -167,7 +171,6 @@ const SelfCostPage = () => {
                 </svg>
                 Себестоимость установлена
             </div>}
-
 
             <ErrorModal
                 footer={null}

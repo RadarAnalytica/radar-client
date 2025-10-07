@@ -1,29 +1,29 @@
-import { useContext, useState, useEffect, useMemo, useCallback, useRef } from 'react';
+import { useContext, useState, useEffect, useMemo, useRef } from 'react';
 import styles from './AbcAnalysisPage.module.css';
-import { useAppDispatch, useAppSelector } from '../../redux/hooks';
-import AuthContext from '../../service/AuthContext';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import AuthContext from '@/service/AuthContext';
 import NoSubscriptionPage from '../NoSubscriptionPage';
-import { ServiceFunctions } from '../../service/serviceFunctions';
-import DataCollectionNotification from '../../components/DataCollectionNotification';
-import { Filters } from '../../components/sharedComponents/apiServicePagesFiltersComponent';
-import MobilePlug from '../../components/sharedComponents/mobilePlug/mobilePlug';
-import Header from '../../components/sharedComponents/header/header';
-import Sidebar from '../../components/sharedComponents/sidebar/sidebar';
-import { mockGetAbcData } from '../../service/mockServiceFunctions';
-// import NoSubscriptionWarningBlock from '../../components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock';
-import SelfCostWarningBlock from '../../components/sharedComponents/selfCostWraningBlock/selfCostWarningBlock';
-import DataCollectWarningBlock from '../../components/sharedComponents/dataCollectWarningBlock/dataCollectWarningBlock';
+import { ServiceFunctions } from '@/service/serviceFunctions';
+import { Filters } from '@/components/sharedComponents/apiServicePagesFiltersComponent';
+import MobilePlug from '@/components/sharedComponents/mobilePlug/mobilePlug';
+import Header from '@/components/sharedComponents/header/header';
+import Sidebar from '@/components/sharedComponents/sidebar/sidebar';
+import SelfCostWarningBlock from '@/components/sharedComponents/selfCostWraningBlock/selfCostWarningBlock';
+import DataCollectWarningBlock from '@/components/sharedComponents/dataCollectWarningBlock/dataCollectWarningBlock';
 import { ConfigProvider, Table, Button, Flex } from 'antd';
 import ruRU from 'antd/locale/ru_RU'
 import { COLUMNS } from './widgets/table/config';
+import { useDemoMode } from "@/app/providers";
+import NoSubscriptionWarningBlock
+  from "@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock";
 
 const AbcAnalysisPage = () => {
 	const { activeBrand, selectedRange, isFiltersLoaded, activeBrandName, activeArticle, activeGroup, shops } = useAppSelector(
 		(store) => store.filters
 	);
 	const filters = useAppSelector((store) => store.filters);
-	//const shops = useAppSelector((state) => state.shopsSlice.shops);
 	const { user, authToken } = useContext(AuthContext);
+  const { isDemoMode } = useDemoMode();
 	const dispatch = useAppDispatch();
 	const [dataAbcAnalysis, setDataAbcAnalysis] = useState(null);
 	const [isNeedCost, setIsNeedCost] = useState([]);
@@ -44,7 +44,7 @@ const AbcAnalysisPage = () => {
 		// расчет высоты относительно контента, высоты фильтров и отступов
 		const availableHeight = height - 230 > 350 ? height - 230 : 400;
 		return ({ x: '100%', y: availableHeight })
-	}, [dataAbcAnalysis])
+	}, [dataAbcAnalysis]);
 
 	const updateDataAbcAnalysis = async (
 		viewType,
@@ -54,30 +54,20 @@ const AbcAnalysisPage = () => {
 	) => {
     try {
       setLoading(true);
-			let data = null;
-			if (user.subscription_status === null) {
-				data = await mockGetAbcData(viewType, selectedRange);
-			} else {
-				data = await ServiceFunctions.getAbcData(
-					viewType,
-					authToken,
-					selectedRange,
-					activeBrand,
-					filters,
-					page,
-					sorting.direction
-				);
-			}
+
+			const data = await ServiceFunctions.getAbcData(
+        viewType,
+        authToken,
+        selectedRange,
+        activeBrand,
+        filters,
+        page,
+        sorting.direction
+      );
 
 			setIsNeedCost(data.is_need_cost);
+      setDataAbcAnalysis(data?.results ? data : []);
 
-			const result = data.results;
-
-			if (!!result) {
-				setDataAbcAnalysis(data);
-			} else {
-				setDataAbcAnalysis([]);
-			}
 		} catch (e) {
 			console.error(e);
 			setDataAbcAnalysis([]);
@@ -135,9 +125,8 @@ const AbcAnalysisPage = () => {
 				selectedRange,
 				activeBrand.id.toString()
 			);
-			return
 		} else {
-			shops.length > 0 && setLoading(false);
+			setLoading(false);
 		}
 	}, [viewType, page, sorting, activeBrand, selectedRange, isFiltersLoaded, activeBrandName, activeArticle, activeGroup]);
 
@@ -256,20 +245,20 @@ const AbcAnalysisPage = () => {
 	}
 
 	return (
-		// isVisible && (
 		<main className={styles.page}>
 			<MobilePlug />
-			{/* ------ SIDE BAR ------ */}
+
 			<section className={styles.page__sideNavWrapper}>
 				<Sidebar />
 			</section>
-			{/* ------ CONTENT ------ */}
+
 			<section className={styles.page__content}>
-				{/* header */}
 				<div className={styles.page__headerWrapper}>
 					<Header title="ABC-анализ" />
 				</div>
-				{/* !header */}
+
+        {isDemoMode && <NoSubscriptionWarningBlock />}
+
 				<div>
 					<Filters setLoading={setLoading} isDataLoading={loading} />
 				</div>

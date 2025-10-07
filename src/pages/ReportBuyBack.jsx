@@ -13,10 +13,13 @@ import Sidebar from '../components/sharedComponents/sidebar/sidebar';
 import Header from '../components/sharedComponents/header/header';
 import ErrorModal from '../components/sharedComponents/modals/errorModal/errorModal';
 import SuccesModal from '../components/sharedComponents/modals/successModal/successModal';
+import NoSubscriptionWarningBlock from '../components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock';
+import { useDemoMode } from "@/app/providers";
 
 const ReportBuyBack = () => {
   const [file, setFile] = useState();
-  const { authToken } = useContext(AuthContext);
+  const { authToken, user } = useContext(AuthContext);
+  const {isDemoMode} = useDemoMode();
   const [show, setShow] = useState(false);
   const [costPriceShow, setCostPriceShow] = useState(false);
   const [selfBuyoutStatus, setselfBuyoutStatus] = useState();
@@ -83,14 +86,24 @@ const ReportBuyBack = () => {
   return (
     <div className='dashboard-page'>
       <MobilePlug />
+
       <div style={{ height: '100vh', zIndex: 999 }}>
         <Sidebar />
       </div>
-      {/* <SideNav /> */}
+
       <div className='dashboard-content pb-3' style={{ padding: '0 32px' }}>
         <div style={{ width: '100%', padding: '20px 0' }} className="container dash-container">
           <Header title={'Себестоимость'} titlePrefix={'Отчёт'} />
         </div>
+
+        {isDemoMode && 
+          <NoSubscriptionWarningBlock />
+        }
+
+        {!user.is_report_downloaded &&
+          <DemonstrationSection />
+        }
+
         <div className='container dash-container'>
           <div className={styles.primeCost}>
             <div className={styles.primeCostBox}>
@@ -102,7 +115,6 @@ const ReportBuyBack = () => {
                     {selfBuyoutStatus}
                   </span>
                 )}
-                {/* <span className={styles.lastDownlaod}>Последняя загрузка</span> */}
               </div>
             </div>
             <div className={styles.primeCostBoxButton}>
@@ -112,8 +124,10 @@ const ReportBuyBack = () => {
             </div>
           </div>
         </div>
+
         <BottomNavigation />
       </div>
+
       <Modal
         show={costPriceShow}
         onHide={handleCostPriceClose}

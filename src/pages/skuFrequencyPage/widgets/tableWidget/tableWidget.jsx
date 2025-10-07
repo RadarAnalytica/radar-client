@@ -1,35 +1,29 @@
 import React, { useRef, useEffect } from 'react'
 import styles from './tableWidget.module.css'
-import { useAppSelector, useAppDispatch } from '../../../../redux/hooks';
-import { fetchRequestsMonitoringData, fetchRequestsMonitoringDataEasy } from '../../../../redux/requestsMonitoring/requestsMonitoringActions';
-import { actions as reqsMonitoringActions } from '../../../../redux/requestsMonitoring/requestsMonitoringSlice';
-import ErrorModal from '../../../../components/sharedComponents/modals/errorModal/errorModal';
+import { useAppSelector, useAppDispatch } from '@/redux/hooks';
+import { fetchRequestsMonitoringData, fetchRequestsMonitoringDataEasy } from '@/redux/requestsMonitoring/requestsMonitoringActions';
+import { actions as reqsMonitoringActions } from '@/redux/requestsMonitoring/requestsMonitoringSlice';
+import ErrorModal from '@/components/sharedComponents/modals/errorModal/errorModal';
 import { Table as RadarTable } from 'radar-ui';
 import { cellRender } from '../../shared/configs/cellRender';
 
-
 const TableWidget = ({ tableConfig, setTableConfig }) => {
-    const dispatch = useAppDispatch()
-    const containerRef = useRef(null) // реф скролл-контейнера (используется чтобы седить за позицией скрола)
-    const { requestData, requestStatus, requestObject, formType, pagination } = useAppSelector(store => store.requestsMonitoring)
+    const dispatch = useAppDispatch();
+    const containerRef = useRef(null); // реф скролл-контейнера (используется чтобы седить за позицией скрола)
+    const { requestData, requestStatus, requestObject, formType, pagination } = useAppSelector(store => store.requestsMonitoring);
+    console.log('requestData', requestObject)
     //задаем начальную дату
     useEffect(() => {
-        console.log('requestObject', requestObject)
-        console.log('formType', formType)
         if (requestObject && formType === 'complex') {
-            dispatch(fetchRequestsMonitoringData({ requestObject, requestData }))
+            dispatch(fetchRequestsMonitoringData({ requestObject, requestData }));
         }
         if (requestObject && formType === 'easy') {
-            dispatch(fetchRequestsMonitoringDataEasy({ requestObject, requestData }))
+            dispatch(fetchRequestsMonitoringDataEasy({ requestObject, requestData }));
         }
         if (containerRef?.current) {
-            //console.log('scrollTo', { top: 0, behavior: 'smooth' })
-            containerRef.current.scrollTo({ top: 0, behavior: 'smooth' })
+            containerRef.current.scrollTo({ top: 0, behavior: 'smooth' });
         }
-    }, [requestObject, formType])
-
-
-
+    }, [requestObject, formType]);
 
     if (requestStatus.isLoading) {
         return (
@@ -129,6 +123,7 @@ const TableWidget = ({ tableConfig, setTableConfig }) => {
                     paginationContainerStyle={{
                         bottom: 0
                     }}
+                    sorting={{sort_field: requestObject?.sorting?.sort_field, sort_order: requestObject?.sorting?.sort_order}}
                     scrollContainerRef={containerRef}
                     bodyCellWrapperStyle={{
                         minHeight: '85px'

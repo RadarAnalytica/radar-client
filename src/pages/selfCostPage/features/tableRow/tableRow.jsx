@@ -12,23 +12,23 @@ import { getSaveButtonStatus, getRowSaveButtonStatus, getAddDateButtonStatus, ge
 import ErrorModal from "../../../../components/sharedComponents/modals/errorModal/errorModal";
 import { fetchShops } from "../../../../redux/shops/shopsActions";
 import { useAppDispatch } from "../../../../redux/hooks";
-
+import { fetchApi } from "@/service/fetchApi";
+import { useDemoMode } from "@/app/providers";
 
 const dataFetchingStatus = {
     isLoading: false,
     isSuccess: false,
     isError: false,
     message: ''
-}
-
+};
 
 const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, initDataStatus, shopId, setIsSuccess, dataStatus, setTableData, tableData, resetSearch }) => {
-    const datePickerContainerRef = useRef(null)
-    //const rowRef = useRef(null)
-    const [product, setProduct] = useState() // присваиваем глубоким копированием
-    const [isOpen, setIsOpen] = useState(false) // стейт открытия аккордеона
-    const [isDatePickerVisible, setIsDatePickerVisible] = useState(false) // стейт датапикера
-    const [selectedDate, setSelectedDate] = useState(null) // значение датапикера
+    const datePickerContainerRef = useRef(null);
+    const {isDemoMode} = useDemoMode();
+    const [product, setProduct] = useState(); // присваиваем глубоким копированием
+    const [isOpen, setIsOpen] = useState(false); // стейт открытия аккордеона
+    const [isDatePickerVisible, setIsDatePickerVisible] = useState(false); // стейт датапикера
+    const [selectedDate, setSelectedDate] = useState(null); // значение датапикера
     const [month, setMonth] = useState(new Date()); // стейт месяца датапикера
     const [historyItemsToDelete, setHistoryItemsToDelete] = useState([])
     const [saveButtonStatus, setSaveButtonStatus] = useState(false)
@@ -69,7 +69,7 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
         }
 
         try {
-            const res = await fetch(`${URL}/api/product/self-costs`, {
+            const res = await fetchApi('/api/product/self-costs', {
                 method: 'POST',
                 headers: {
                     'content-type': 'application/json',
@@ -83,20 +83,25 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
                 setDataStatus({ ...initDataStatus, isError: true, message: parsedData.detail || 'Что-то пошло не так :(' })
                 return;
             }
-            const parsedData = await res.json()
+            const parsedData = await res.json();
             let newTableData = tableData;
             const index = newTableData.findIndex(_ => _.product === parsedData.product);
-            newTableData[index] = parsedData
-            const isAllProductsHasSelfCost = !newTableData.some(_ => _.cost === null )
+            newTableData[index] = parsedData;
+            const isAllProductsHasSelfCost = !newTableData.some(_ => _.cost === null );
 
             if (isAllProductsHasSelfCost) {
-                dispatch(fetchShops(authToken))
+                dispatch(fetchShops(authToken));
             }
-            setTableData(newTableData)
-            setDataStatus({ ...initDataStatus })
-            setIsSuccess(true)
-        } catch {
-            setDataStatus({ ...initDataStatus, isError: true, message: 'Что-то пошло не так :(' })
+            setTableData(newTableData);
+            setDataStatus({ ...initDataStatus });
+            setIsSuccess(true);
+        } catch (e) {
+            console.error('Error', e);
+            setDataStatus({ 
+                ...initDataStatus, 
+                isError: true, 
+                message: 'Что-то пошло не так :(' 
+            });
         }
     }, [product, authToken, initDataStatus, setDataStatus, setTableData, tableData, setIsSuccess]);
 
@@ -115,38 +120,47 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
         }
 
         try {
-            const res = await fetch(`${URL}/api/product/self-costs`, {
+            const res = await fetchApi('/api/product/self-costs', {
                 method: 'PATCH',
                 headers: {
                     'content-type': 'application/json',
                     'authorization': 'JWT ' + authToken
                 },
                 body: JSON.stringify(object)
-            })
+            });
 
             if (!res.ok) {
-                const parsedData = await res.json()
-                setDataStatus({ ...initDataStatus, isError: true, message: parsedData.detail || 'Что-то пошло не так :(' })
+                const parsedData = await res.json();
+                setDataStatus({ 
+                    ...initDataStatus, 
+                    isError: true, 
+                    message: parsedData.detail || 'Что-то пошло не так :(' 
+                });
                 return;
             }
 
-            setHistoryItemsToDelete([])
+            setHistoryItemsToDelete([]);
             if (!shouldUpdateDefaultParams) {
-                const parsedData = await res.json()
+                const parsedData = await res.json();
                 let newTableData = tableData;
-                const updatedCurrentProduct = parsedData.updated_items[0]
+                const updatedCurrentProduct = isDemoMode ? product : parsedData.updated_items[0];
                 const index = newTableData.findIndex(_ => _.product === updatedCurrentProduct.product);
-                newTableData[index] = updatedCurrentProduct
-                setTableData(newTableData)
-                setDataStatus({ ...initDataStatus })
-                setIsSuccess(true)
+                newTableData[index] = updatedCurrentProduct;
+                setTableData(newTableData);
+                setDataStatus({ ...initDataStatus });
+                setIsSuccess(true);
             }
 
             if (shouldUpdateDefaultParams) {
-                await updateDefaultParams()
+                await updateDefaultParams();
             }
-        } catch {
-            setDataStatus({ ...initDataStatus, isError: true, message: 'Что-то1 пошло не так :(' })
+        } catch (e) {
+            console.log('e', e);
+            setDataStatus({ 
+                ...initDataStatus, 
+                isError: true, 
+                message: 'Что-то1 пошло не так :(' 
+            });
         }
     }, [product, historyItemsToDelete, authToken, initDataStatus, setDataStatus, setTableData, tableData, setIsSuccess, updateDefaultParams]);
 

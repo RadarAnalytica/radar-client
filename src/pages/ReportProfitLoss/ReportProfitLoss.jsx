@@ -1,28 +1,29 @@
 import React from 'react';
-import AuthContext from '../../service/AuthContext';
+import AuthContext from '@/service/AuthContext';
 import { useState, useEffect, useContext, useMemo } from 'react';
-import MobilePlug from '../../components/sharedComponents/mobilePlug/mobilePlug';
-import Sidebar from '../../components/sharedComponents/sidebar/sidebar';
-import Header from '../../components/sharedComponents/header/header';
-import TableWidget from '../../components/sharedComponents/ReportTable/newTableWidget';
-import SelfCostWarningBlock from '../../components/sharedComponents/selfCostWraningBlock/selfCostWarningBlock';
-import { ServiceFunctions } from '../../service/serviceFunctions';
-import { formatPrice } from '../../service/utils';
+import MobilePlug from '@/components/sharedComponents/mobilePlug/mobilePlug';
+import Sidebar from '@/components/sharedComponents/sidebar/sidebar';
+import Header from '@/components/sharedComponents/header/header';
+import TableWidget from '@/components/sharedComponents/ReportTable/newTableWidget';
+import SelfCostWarningBlock from '@/components/sharedComponents/selfCostWraningBlock/selfCostWarningBlock';
+import { ServiceFunctions } from '@/service/serviceFunctions';
+import { formatPrice } from '@/service/utils';
 import { Flex } from 'antd';
 import styles from './ReportProfitLoss.module.css';
-import { Filters } from '../../components/sharedComponents/apiServicePagesFiltersComponent';
-import dayjs from 'dayjs';
-import { COLUMNS, ROWS } from './config';
-import { useAppSelector } from '../../redux/hooks';
-import HowToLink from '../../components/sharedComponents/howToLink/howToLink';
-import DataCollectWarningBlock from '../../components/sharedComponents/dataCollectWarningBlock/dataCollectWarningBlock'
-import NoSubscriptionWarningBlock from '../../components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock';
-import { startOfYear, format } from "date-fns";
-
+import { Filters } from '@/components/sharedComponents/apiServicePagesFiltersComponent';
+//import dayjs from 'dayjs';
+//import { COLUMNS, ROWS } from './config';
+import { useAppSelector } from '@/redux/hooks';
+import HowToLink from '@/components/sharedComponents/howToLink/howToLink';
+import DataCollectWarningBlock from '@/components/sharedComponents/dataCollectWarningBlock/dataCollectWarningBlock'
+import NoSubscriptionWarningBlock from '@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock';
+//import { startOfYear, format } from "date-fns";
+import { useDemoMode } from '@/app/providers/DemoDataProvider';
 
 export default function ReportProfitLoss() {
 	const { user, authToken } = useContext(AuthContext);
 	const { activeBrand, selectedRange, activeMonths, activeBrandName, activeArticle, activeGroup, isFiltersLoaded, shops } = useAppSelector((state) => state.filters);
+	const { isDemoMode } = useDemoMode();
 	const filters = useAppSelector((state) => state.filters);
 	//const { shops } = useAppSelector((state) => state.shopsSlice);
 
@@ -46,27 +47,6 @@ export default function ReportProfitLoss() {
 
 		return shops.find(shop => shop.id === activeBrand.id);
 	}, [activeBrand, shops]);
-
-	// const initialRange = useMemo(() => ({
-	// 	month_to: dayjs().format('YYYY-MM'),
-	// 	month_from: dayjs().startOf('year').format('YYYY-MM')
-	// }), [])
-
-	// const updateSavedMonthRange = () => {
-	// 	if (!activeBrand) {
-	// 		return
-	// 	}
-	// 	const savedMonthRange = localStorage.getItem('reportProfitLossMonth');
-	// 	if (savedMonthRange) {
-	// 		const data = JSON.parse(savedMonthRange);
-	// 		if (activeBrand.id in data) {
-	// 			return data[activeBrand.id]
-	// 		}
-	// 	}
-	// 	return initialRange
-	// };
-
-	// const [monthRange, setMonthRange] = useState(updateSavedMonthRange());
 
 	function renderColumn(data) {
 		if (typeof data !== 'object') {
@@ -108,9 +88,9 @@ export default function ReportProfitLoss() {
 			sortable: false,
 			fixed: true,
 			fixedLeft: 0,
-			width: 200,
-			minWidth: 200,
-			maxWidth: 400,
+			width: 220,
+			minWidth: 220,
+			maxWidth: 440,
 			hidden: false,
 		}];
 
@@ -143,15 +123,18 @@ export default function ReportProfitLoss() {
 	}
 
 	const getData = (data, metricsOrder) => {
-
 		const tableData = [];
-		metricsOrder.forEach(metric => {
-			const { key, title, isChildren } = metric;
+		const childrenData = [];
+		metricsOrder.forEach((metric, index) => {
+			const { key, title, isChildren, isParent, parentKey } = metric;
 			let rowObject = {
-				article: title
+				article: title,
+				isParent,
+				id: index,
+				key: `${index}-${key}`,
 			}
 			data.forEach(item => {
-				if (isChildren) {
+				if (isParent || isChildren) {
 					rowObject[item.year] = item.data.direct_expenses[key];
 				} else {
 					rowObject[item.year] = item.data[key];
@@ -159,7 +142,7 @@ export default function ReportProfitLoss() {
 
 				if (item.months) {
 					item.months.forEach(month => {
-						if (isChildren) {
+						if (isChildren || isParent) {
 							rowObject[month.month_label] = month.data.direct_expenses[key];
 						} else {
 							rowObject[month.month_label] = month.data[key];
@@ -167,10 +150,23 @@ export default function ReportProfitLoss() {
 					});
 				}
 			});
-			tableData.push(rowObject);
-		});
 
-		return tableData;
+			if (isChildren) {
+				childrenData.push(rowObject);
+			} else {
+				tableData.push(rowObject);
+			}
+		});
+		const finalDataSource = tableData.map(_ => {
+			if (_.isParent) {
+				return {
+					..._,
+					children: childrenData
+				}
+			}
+			return _;
+		});
+		return finalDataSource;
 	}
 
 	const dataToTableData = (response) => {
@@ -187,14 +183,14 @@ export default function ReportProfitLoss() {
 			{ key: 'sales', title: 'Фактические продажи' },
 			{ key: 'mp_discount', title: 'Скидка за счет МП' },
 			{ key: 'realization', title: 'Реализация' },
-			{ key: 'total_expenses', title: 'Прямые расходы', isChildren: true },
-			{ key: 'cost', title: 'Себестоимость', isChildren: true },
-			{ key: 'advert', title: 'Внутренняя реклама', isChildren: true },
-			{ key: 'storage', title: 'Хранение', isChildren: true },
-			{ key: 'paid_acceptance', title: 'Платная приемка', isChildren: true },
-			{ key: 'commission', title: 'Комиссия', isChildren: true },
-			{ key: 'logistic', title: 'Логистика', isChildren: true },
-			{ key: 'penalties', title: 'Штрафы', isChildren: true },
+			{ key: 'total_expenses', title: 'Прямые расходы', isParent: true },
+			{ key: 'cost', title: 'Себестоимость', isChildren: true, parentKey: 'total_expenses' },
+			{ key: 'advert', title: 'Внутренняя реклама', isChildren: true, parentKey: 'total_expenses' },
+			{ key: 'storage', title: 'Хранение', isChildren: true, parentKey: 'total_expenses' },
+			{ key: 'paid_acceptance', title: 'Платная приемка', isChildren: true, parentKey: 'total_expenses' },
+			{ key: 'commission', title: 'Комиссия', isChildren: true, parentKey: 'total_expenses' },
+			{ key: 'logistic', title: 'Логистика', isChildren: true, parentKey: 'total_expenses' },
+			{ key: 'penalties', title: 'Штрафы', isChildren: true, parentKey: 'total_expenses' },
 			{ key: 'compensation', title: 'Компенсация' },
 			{ key: 'gross_margin', title: 'Маржинальная прибыль' },
 			{ key: 'operating_profit', title: 'Операционная прибыль (EBITDA)' },
@@ -236,31 +232,9 @@ export default function ReportProfitLoss() {
 		}
 	}, [activeBrand, selectedRange, activeMonths, activeBrandName, activeArticle, activeGroup, isFiltersLoaded]);
 
-	// const monthHandler = (data) => {
-	// 	let selectedRange = initialRange;
-	// 	if (data) {
-	// 		const [start, end] = data;
-	// 		selectedRange = {
-	// 			month_from: dayjs(start).format('YYYY-MM'),
-	// 			month_to: dayjs(end).format('YYYY-MM')
-	// 		}
-	// 	}
-
-	// 	setMonthRange(selectedRange);
-	// 	saveMonthRange(selectedRange);
-	// }
-
-	// const saveMonthRange = (range) => {
-	// 	const savedMonthRange = JSON.parse(localStorage.getItem('reportProfitLossMonth')) || {};
-	// 	savedMonthRange[activeBrand.id] = range;
-	// 	localStorage.setItem(
-	// 		'reportProfitLossMonth',
-	// 		JSON.stringify(savedMonthRange)
-	// 	);
-	// }
 
 	useEffect(() => {
-		if (!activeBrand){
+		if (!activeBrand) {
 			return
 		}
 		let savedFilterMonths = JSON.parse(localStorage.getItem('activeMonths')) || {};
@@ -289,6 +263,14 @@ export default function ReportProfitLoss() {
 					<SelfCostWarningBlock />
 				)}
 
+				<div className={styles.how}>
+					<HowToLink text='Как использовать раздел' url='https://radar.usedocs.com/article/77557' target='_blank' />
+				</div>
+
+				{!loading && isDemoMode && (
+					<NoSubscriptionWarningBlock />
+				)}
+
 				<div className={styles.controls}>
 					<Filters
 						timeSelect={false}
@@ -296,14 +278,6 @@ export default function ReportProfitLoss() {
 						isDataLoading={loading}
 					/>
 				</div>
-
-				<div className={styles.how}>
-					<HowToLink text='Как использовать раздел' url='https://radar.usedocs.com/article/77557' target='_blank' />
-				</div>
-
-				{!loading && shops && user.subscription_status === null && (
-					<NoSubscriptionWarningBlock />
-				)}
 
 				{!loading && shops && user?.subscription_status && !shopStatus?.is_primary_collect && (
 					<DataCollectWarningBlock

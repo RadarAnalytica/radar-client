@@ -1,15 +1,17 @@
-import { useEffect, useContext, useState } from 'react'
-import styles from './linkedShops.module.css'
-import Header from '../../components/sharedComponents/header/header'
-import Sidebar from '../../components/sharedComponents/sidebar/sidebar'
-import MobilePlug from '../../components/sharedComponents/mobilePlug/mobilePlug'
-import { AddShopWidget, ShopCardWidget } from './widgets'
-import { useAppSelector, useAppDispatch } from '../../redux/hooks'
-import { fetchShops } from '../../redux/shops/shopsActions'
-import AuthContext from '../../service/AuthContext'
-
+import { useEffect, useContext, useState } from 'react';
+import styles from './linkedShops.module.css';
+import Header from '../../components/sharedComponents/header/header';
+import Sidebar from '../../components/sharedComponents/sidebar/sidebar';
+import MobilePlug from '../../components/sharedComponents/mobilePlug/mobilePlug';
+import { AddShopWidget, ShopCardWidget } from './widgets';
+import { useAppSelector, useAppDispatch } from '../../redux/hooks';
+import { fetchShops } from '../../redux/shops/shopsActions';
+import AuthContext from '../../service/AuthContext';
+import { useDemoMode } from "@/app/providers";
+import NoSubscriptionWarningBlock from '@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock';
 
 const LinkedShopsPage = () => {
+    const { isDemoMode } = useDemoMode();
     const { authToken } = useContext(AuthContext)
     const [statusBarState, setStatusBarState] = useState({
         type: '',
@@ -43,17 +45,18 @@ const LinkedShopsPage = () => {
     return (
         <main className={styles.page}>
             <MobilePlug />
-            {/* ------ SIDE BAR ------ */}
+
             <section className={styles.page__sideNavWrapper}>
                 <Sidebar />
             </section>
-            {/* ------ CONTENT ------ */}
+
             <section className={styles.page__content}>
-                {/* header */}
                 <div className={styles.page__headerWrapper}>
                     <Header title='Подключенные магазины' />
                 </div>
-                {/* !header */}
+                
+                {isDemoMode && <NoSubscriptionWarningBlock />}
+
                 <div className={styles.page__layout}>
                     {shops && shops.length > 0 && [...shops].sort((a, b) => a.id - b.id).map(shop => (
                         <ShopCardWidget key={shop.id} shop={shop} authToken={authToken} setStatusBarState={setStatusBarState} />
@@ -61,8 +64,7 @@ const LinkedShopsPage = () => {
                     <AddShopWidget authToken={authToken} setStatusBarState={setStatusBarState} />
                 </div>
             </section>
-            {/* ---------------------- */}
-            {/* status bars */}
+
             {statusBarState.isActive &&
                 <div className={styles.page__statusBar}>
                     {statusBarState.type === 'Success' &&

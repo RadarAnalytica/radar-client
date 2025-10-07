@@ -14,7 +14,7 @@ import MobilePlug from "../components/sharedComponents/mobilePlug/mobilePlug";
 import Header from "../components/sharedComponents/header/header";
 import Sidebar from "../components/sharedComponents/sidebar/sidebar";
 import { mockGetAbcData } from "../service/mockServiceFunctions";
-import NoSubscriptionWarningBlock from '../components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock'
+import NoSubscriptionWarningBlock from '../components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock';
 import SelfCostWarningBlock from "../components/sharedComponents/selfCostWraningBlock/selfCostWarningBlock";
 
 const AbcAnalysisPage = () => {
@@ -189,21 +189,18 @@ const AbcAnalysisPage = () => {
     // isVisible && (
     <main className={styles.page}>
       <MobilePlug />
-      {/* ------ SIDE BAR ------ */}
+
       <section className={styles.page__sideNavWrapper}>
         <Sidebar />
       </section>
-      {/* ------ CONTENT ------ */}
+
       <section className={styles.page__content}>
-        {/* header */}
         <div className={styles.page__headerWrapper}>
           <Header title='ABC-анализ' />
         </div>
-        {/* !header */}
 
-        {/* DEMO BLOCK */}
-        {user.subscription_status === null && <NoSubscriptionWarningBlock />}
-        {/* SELF-COST WARNING */}
+        {isDemoMode && <NoSubscriptionWarningBlock />}
+        
         {
           shopStatus &&
           !shopStatus.is_self_cost_set &&

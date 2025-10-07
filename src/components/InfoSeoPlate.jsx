@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import styles from './InfoSeoPlate.module.css';
 import cursor from '../assets/cursor.svg';
 import mash from '../assets/mash.svg';
@@ -8,6 +8,7 @@ import AuthContext from '../service/AuthContext';
 import { ServiceFunctions } from '../service/serviceFunctions';
 import Modal from 'react-bootstrap/Modal';
 import warningIcon from '../assets/warning.png';
+import { useDemoMode } from "@/app/providers";
 
 const InfoSeoPlate = ({ setCompaireData, setLinksToSend }) => {
   const { authToken } = useContext(AuthContext);
@@ -16,6 +17,7 @@ const InfoSeoPlate = ({ setCompaireData, setLinksToSend }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [showModalError, setShowModalError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const { isDemoMode } = useDemoMode();
 
   const handleShowModalError = () => setShowModalError(true);
   const handleCloseModalError = () => setShowModalError(false);
@@ -79,6 +81,13 @@ const InfoSeoPlate = ({ setCompaireData, setLinksToSend }) => {
     setLinksToSend(dataToSend);
   };
 
+  useEffect(() => {
+    if (isDemoMode) {
+      setGroupAInput('https://www.wildberries.ru/catalog/490402931');
+      setGroupBInput('https://www.wildberries.ru/catalog/521447982');
+    }
+  }, [isDemoMode]);
+
   return (
     <>
       {!isLoading && (
@@ -130,6 +139,7 @@ https://www.wildberries.ru/catalog/177307535
 https://www.wildberries.ru/catalog/177307899'
                   rows={6}
                   className={styles.groupTextarea}
+                  value={groupAInput}
                   onChange={(e) => setGroupAInput(e.target.value)}
                 />
               </div>
@@ -141,6 +151,7 @@ https://www.wildberries.ru/catalog/177307535
 https://www.wildberries.ru/catalog/177307899'
                   rows={6}
                   className={styles.groupTextarea}
+                  value={groupBInput}
                   onChange={(e) => setGroupBInput(e.target.value)}
                 />
               </div>
