@@ -352,7 +352,7 @@ export class DemoDataService {
 
         item.by_date_data = item.by_date_data.slice(-(days + 1));
         const diffDays = filters?.selectedRange?.to 
-          ? Math.round((Number(new Date()) - Number(new Date(filters.selectedRange.to))) / 86400000) - 1
+          ? Math.round((Number(new Date()) - Number(new Date(filters.selectedRange.to))) / 86400000)
           : 0;
         
         const updatedByDateData = item.by_date_data.map((dateItem: any, index: number) => {
@@ -390,7 +390,7 @@ export class DemoDataService {
 
       data.by_date_data = data.by_date_data.slice(-(days + 1));
       const diffDays = filters?.selectedRange?.to 
-          ? Math.round((Number(new Date()) - Number(new Date(filters.selectedRange.to))) / 86400000) - 1
+          ? Math.round((Number(new Date()) - Number(new Date(filters.selectedRange.to))) / 86400000)
           : 0;
 
       const updatedByDateData = data.by_date_data.map((dateItem: any, index: number) => {

@@ -13,23 +13,22 @@ import ErrorModal from "../../../../components/sharedComponents/modals/errorModa
 import { fetchShops } from "../../../../redux/shops/shopsActions";
 import { useAppDispatch } from "../../../../redux/hooks";
 import { fetchApi } from "@/service/fetchApi";
-
+import { useDemoMode } from "@/app/providers";
 
 const dataFetchingStatus = {
     isLoading: false,
     isSuccess: false,
     isError: false,
     message: ''
-}
-
+};
 
 const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, initDataStatus, shopId, setIsSuccess, dataStatus, setTableData, tableData, resetSearch }) => {
-    const datePickerContainerRef = useRef(null)
-    //const rowRef = useRef(null)
-    const [product, setProduct] = useState() // присваиваем глубоким копированием
-    const [isOpen, setIsOpen] = useState(false) // стейт открытия аккордеона
-    const [isDatePickerVisible, setIsDatePickerVisible] = useState(false) // стейт датапикера
-    const [selectedDate, setSelectedDate] = useState(null) // значение датапикера
+    const datePickerContainerRef = useRef(null);
+    const {isDemoMode} = useDemoMode();
+    const [product, setProduct] = useState(); // присваиваем глубоким копированием
+    const [isOpen, setIsOpen] = useState(false); // стейт открытия аккордеона
+    const [isDatePickerVisible, setIsDatePickerVisible] = useState(false); // стейт датапикера
+    const [selectedDate, setSelectedDate] = useState(null); // значение датапикера
     const [month, setMonth] = useState(new Date()); // стейт месяца датапикера
     const [historyItemsToDelete, setHistoryItemsToDelete] = useState([])
     const [saveButtonStatus, setSaveButtonStatus] = useState(false)
@@ -144,7 +143,7 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
             if (!shouldUpdateDefaultParams) {
                 const parsedData = await res.json();
                 let newTableData = tableData;
-                const updatedCurrentProduct = parsedData.updated_items[0];
+                const updatedCurrentProduct = isDemoMode ? product : parsedData.updated_items[0];
                 const index = newTableData.findIndex(_ => _.product === updatedCurrentProduct.product);
                 newTableData[index] = updatedCurrentProduct;
                 setTableData(newTableData);
