@@ -1,14 +1,16 @@
 import styles from './cellRender.module.css';
 import { Link } from 'react-router-dom';
-import { formatPrice } from '../../../../service/utils';
-
+import { formatPrice } from '@/service/utils';
+import { useDemoMode } from "@/app/providers";
 
 export const cellRender = (value, record, index, dataIndex) => {
   if (dataIndex === 'query') {
+    const { isDemoMode } = useDemoMode();
     const url = `/monitoring/request?query=${encodeURIComponent(value)}`;
+
     return (
       <Link
-        className={styles.cell__query}
+        className={`${styles.cell__query} ${isDemoMode ? "pointer-events-none" : ""}`}
         to={url}
         target='_blank'
         title='Смотреть подробнее'
