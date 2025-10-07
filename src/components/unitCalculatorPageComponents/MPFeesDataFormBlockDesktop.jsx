@@ -1,10 +1,10 @@
-import styles from './MPFeesDataFormBlockDesktop.module.css'
+import styles from './MPFeesDataFormBlockDesktop.module.css';
 import { Form, Input, ConfigProvider, Tooltip } from 'antd';
 import { normilizeUnitsInputValue } from './UnitCalcUtils';
 import { useAppSelector } from '../../redux/hooks';
 
 const MPFeesDataFormBlockDesktop = ({ mp_fee, form }) => {
-    const { isSidebarHidden } = useAppSelector(store => store.utils)
+    const { isSidebarHidden } = useAppSelector(store => store.utils);
     const product_price = Form.useWatch('product_price', form);
     const additional_mp_fee = Form.useWatch('additional_mp_fee', form);
     const equiring_fee = Form.useWatch('equiring_fee', form);
@@ -50,13 +50,13 @@ const MPFeesDataFormBlockDesktop = ({ mp_fee, form }) => {
                     }
                     className={styles.formItem}
                     getValueProps={(value) => {
-                        const transformedValue = {value: value ? value + ' %' : value}
-                        return transformedValue
+                        const transformedValue = {value: value ? value + ' %' : value};
+                        return transformedValue;
                     }}
                     normalize={(value, prevValue) => {
-                        const normalizedValue = normilizeUnitsInputValue(value, prevValue, ' %')
-                        const regex = /^(100(\.0*)?|0*(\d{1,2}(\.\d*)?|\.\d+))$|^$/ // только целые и дробные от 0 до 100
-                        if (regex.test(normalizedValue)) { return normalizedValue };
+                        const normalizedValue = normilizeUnitsInputValue(value, prevValue, ' %');
+                        const regex = /^(100(\.0*)?|0*(\d{1,2}(\.\d*)?|\.\d+))$|^$/; // только целые и дробные от 0 до 100
+                        if (regex.test(normalizedValue)) { return normalizedValue; };
                         return prevValue || '';
                     }}
                     name='additional_mp_fee'
@@ -92,13 +92,13 @@ const MPFeesDataFormBlockDesktop = ({ mp_fee, form }) => {
                     }
                     className={styles.formItem}
                     getValueProps={(value) => {
-                        const transformedValue = {value: value ? value + ' %' : value}
-                        return transformedValue
+                        const transformedValue = {value: value ? value + ' %' : value};
+                        return transformedValue;
                     }}
                     normalize={(value, prevValue) => {
-                        const normalizedValue = normilizeUnitsInputValue(value, prevValue, ' %')
-                        const regex = /^(100(\.0*)?|0*(\d{1,2}(\.\d*)?|\.\d+))$|^$/ // только целые и дробные от 0 до 100
-                        if (regex.test(normalizedValue)) { return normalizedValue };
+                        const normalizedValue = normilizeUnitsInputValue(value, prevValue, ' %');
+                        const regex = /^(100(\.0*)?|0*(\d{1,2}(\.\d*)?|\.\d+))$|^$/; // только целые и дробные от 0 до 100
+                        if (regex.test(normalizedValue)) { return normalizedValue; };
                         return prevValue || '';
                     }}
                     name='equiring_fee'
@@ -112,7 +112,7 @@ const MPFeesDataFormBlockDesktop = ({ mp_fee, form }) => {
                 </Form.Item>
             </div>
         </fieldset>
-    )
-}
+    );
+};
 
 export default MPFeesDataFormBlockDesktop;

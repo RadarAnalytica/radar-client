@@ -1,22 +1,21 @@
-import React, { useState, useEffect, useContext } from 'react'
-import styles from './taxTableBlock.module.css'
-import { formatPrice } from '../../../../service/utils'
-import { Select, Input, ConfigProvider, Button } from 'antd'
-import { RedoOutlined } from '@ant-design/icons'
-import AuthContext from '../../../../service/AuthContext'
-import { useAppSelector } from '../../../../redux/hooks'
-import { ServiceFunctions } from '../../../../service/serviceFunctions'
+import React, { useState, useEffect, useContext } from 'react';
+import styles from './taxTableBlock.module.css';
+import { formatPrice } from '../../../../service/utils';
+import { Select, Input, ConfigProvider, Button } from 'antd';
+import { RedoOutlined } from '@ant-design/icons';
+import AuthContext from '../../../../service/AuthContext';
+import { useAppSelector } from '../../../../redux/hooks';
+import { ServiceFunctions } from '../../../../service/serviceFunctions';
 
-const taxOption = ['УСН Д-Р', 'УСН-доходы', 'Не считать налог', 'Считать от РС']
+const taxOption = ['УСН Д-Р', 'УСН-доходы', 'Не считать налог', 'Считать от РС'];
 
 const TaxTableBlock = ({ dataDashBoard, loading, updateDashboard }) => {
-    const data = dataDashBoard?.taxInfo || {}
-    const { authToken } = useContext(AuthContext)
-    const [taxType, setTaxType] = useState()
-    const [taxRate, setTaxRate] = useState()
-    const [isButtonVisible, setIsButtonVisible] = useState(false)
+    const data = dataDashBoard?.taxInfo || {};
+    const { authToken } = useContext(AuthContext);
+    const [taxType, setTaxType] = useState();
+    const [taxRate, setTaxRate] = useState();
+    const [isButtonVisible, setIsButtonVisible] = useState(false);
     const { activeBrand, selectedRange } = useAppSelector((state) => state.filters);
-
 
 
     const handleTaxSubmit = async (type, submit) => {
@@ -28,7 +27,7 @@ const TaxTableBlock = ({ dataDashBoard, loading, updateDashboard }) => {
             // Обновляем данные дашборда
             await updateDashboard(selectedRange, activeBrand.id, authToken);
             if (submit) {
-                setIsButtonVisible(false)
+                setIsButtonVisible(false);
             }
         } catch (error) {
             console.error('Ошибка при обновлении налоговой ставки:', error);
@@ -40,7 +39,7 @@ const TaxTableBlock = ({ dataDashBoard, loading, updateDashboard }) => {
             setTaxType(dataDashBoard.taxInfo?.taxType);
             setTaxRate(dataDashBoard.taxInfo?.taxRate);
         }
-    }, [dataDashBoard])
+    }, [dataDashBoard]);
 
 
     if (loading) {
@@ -50,7 +49,7 @@ const TaxTableBlock = ({ dataDashBoard, loading, updateDashboard }) => {
                     <span className='loader'></span>
                 </div>
             </div>
-        )
+        );
     }
 
     return (
@@ -86,8 +85,8 @@ const TaxTableBlock = ({ dataDashBoard, loading, updateDashboard }) => {
                             <Select
                                 value={taxType}
                                 onSelect={(value) => {
-                                    handleTaxSubmit(value)
-                                    setTaxType(value)
+                                    handleTaxSubmit(value);
+                                    setTaxType(value);
                                 }}
                                 options={taxOption.map(_ => ({ value: _, label: _ }))}
                                 suffixIcon={
@@ -119,9 +118,9 @@ const TaxTableBlock = ({ dataDashBoard, loading, updateDashboard }) => {
                                     value={taxRate}
                                     placeholder={`${taxRate} %`}
                                     onChange={(e) => {
-                                        setTaxRate((prevValue) => e.target.value.replace(/[^0-9.-]+|\.(?=\D)/g, ''))
+                                        setTaxRate((prevValue) => e.target.value.replace(/[^0-9.-]+|\.(?=\D)/g, ''));
                                     }}
-                                    onFocus={() => { setIsButtonVisible(true) }}
+                                    onFocus={() => { setIsButtonVisible(true); }}
                                 />
                             </ConfigProvider>
                             {isButtonVisible &&
@@ -162,7 +161,7 @@ const TaxTableBlock = ({ dataDashBoard, loading, updateDashboard }) => {
                 </div>
             </div>
         </div >
-    )
-}
+    );
+};
 
 export default TaxTableBlock;

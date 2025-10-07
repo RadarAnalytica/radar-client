@@ -1,6 +1,6 @@
-import styles from './extensionScreen.module.css'
-import { Link } from 'react-router-dom'
-import image from './assets/Image.png'
+import styles from './extensionScreen.module.css';
+import { Link } from 'react-router-dom';
+import image from './assets/Image.png';
 
 export const ExtensionScreen = () => {
 
@@ -48,7 +48,6 @@ export const ExtensionScreen = () => {
                     </div>
 
 
-
                     <div className={styles['screen__imgWrapper']}>
                         <img src={image} alt='обложка блока' className={styles['screen__image']} loading='lazy' decoding='async' />
                     </div>
@@ -57,5 +56,5 @@ export const ExtensionScreen = () => {
 
             </div>
         </section>
-    )
-}
+    );
+};

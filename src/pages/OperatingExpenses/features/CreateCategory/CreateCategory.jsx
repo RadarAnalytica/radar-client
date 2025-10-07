@@ -18,7 +18,7 @@ export default function ModalCreateCategory({
 	const onFinish = (form) => {
 		// if (!!data) {
 		// 	onSubmit({name: form.name.trim()});
-		// 	return 
+		// 	return
 		// }
 		onSubmit({name: form.name.trim()});
 	};
@@ -63,7 +63,7 @@ export default function ModalCreateCategory({
 				closeIcon={<CloseIcon className={styles.close__icon} />}
 				title={
 					<h2 className={styles.modal__title}>
-						{ !!data ? 'Редактирование статьи расходов' : 'Добавление статьи расходов' }
+						{ data ? 'Редактирование статьи расходов' : 'Добавление статьи расходов' }
 					</h2>
 				}
 				footer={null}

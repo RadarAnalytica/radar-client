@@ -1,5 +1,5 @@
-import styles from './profitBlock.module.css'
-import { getProfitData } from '../blockUtils'
+import styles from './profitBlock.module.css';
+import { getProfitData } from '../blockUtils';
 import { formatPrice } from '../../../../service/utils';
 import { Tooltip, ConfigProvider } from 'antd';
 
@@ -8,7 +8,7 @@ const tooltipData = {
     "ROI": 'Расчитана как отношение чистой прибыли к суммарным расходам (себестоимость продаж + расходы на рекламу, логистику, хранение, штрафы, комиссию)',
     "Рентабельность ВП": 'Отношение валовой прибыли к суммарной выручке',
     "Рентабельность ОП": 'Отношение операционной прибыли к суммарной выручке',
-}
+};
 
 const ProfitBlock = ({ dataDashBoard, loading }) => {
 
@@ -20,7 +20,7 @@ const ProfitBlock = ({ dataDashBoard, loading }) => {
                     <span className='loader'></span>
                 </div>
             </div>
-        )
+        );
     }
 
     return (
@@ -29,7 +29,7 @@ const ProfitBlock = ({ dataDashBoard, loading }) => {
 
             <div className={styles.block__table}>
                 {profitData && profitData.map((i, id) => {
-                    const tooltip = tooltipData[i.name]
+                    const tooltip = tooltipData[i.name];
                     return (
                         <div className={styles.block__tableRow} key={id}>
                             <div className={styles.block__tableRowTitle}>
@@ -60,11 +60,11 @@ const ProfitBlock = ({ dataDashBoard, loading }) => {
                                 <p className={styles.block__mainData}>{formatPrice(i.value, '%')}</p>
                             </div>
                         </div>
-                    )
+                    );
                 })}
             </div>
         </div>
-    )
-}
+    );
+};
 
 export default ProfitBlock;

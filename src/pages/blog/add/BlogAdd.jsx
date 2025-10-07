@@ -6,53 +6,53 @@ import { createBlogPost, createBlogCategory } from '../../../service/api/api';
 import { fetchPosts } from '../../../redux/blog/blogActions';
 import { useAppDispatch } from '../../../redux/hooks';
 
-const statusInitialState = { isLoading: false, isError: false, isSuccess: false, message: '' }
+const statusInitialState = { isLoading: false, isError: false, isSuccess: false, message: '' };
 
 const BlogAdd = ({ categories, token, setActivePage }) => {
-  const [categoriesState, setCategoriesState] = useState([...categories, { id: 'add', name: 'Создать категорию' }])
-  const [mainFormStatus, setMainFormStatus] = useState(statusInitialState)
-  const [categoryFormStatus, setCategoryFormStatus] = useState(statusInitialState)
-  const [isAddCategoryModalVisible, setIsAddCategoryModalVisible] = useState(false)
-  const dispatch = useAppDispatch()
-  const [ mainForm ] = Form.useForm()
-  const [ categoryForm ] = Form.useForm()
+  const [categoriesState, setCategoriesState] = useState([...categories, { id: 'add', name: 'Создать категорию' }]);
+  const [mainFormStatus, setMainFormStatus] = useState(statusInitialState);
+  const [categoryFormStatus, setCategoryFormStatus] = useState(statusInitialState);
+  const [isAddCategoryModalVisible, setIsAddCategoryModalVisible] = useState(false);
+  const dispatch = useAppDispatch();
+  const [mainForm] = Form.useForm();
+  const [categoryForm] = Form.useForm();
 
   const categorySelectChangeHandler = (value) => {
     if (value !== 'add') return;
-    setIsAddCategoryModalVisible(true)
-  }
+    setIsAddCategoryModalVisible(true);
+  };
 
   const categoryFormSubmitHandler = async (fields) => {
-    setCategoryFormStatus({ ...categoryFormStatus, isLoading: true })
+    setCategoryFormStatus({ ...categoryFormStatus, isLoading: true });
     const data = {
       name: fields.categoryName,
       description: fields.categoryDescription ? fields.categoryDescription : '',
       slug: fields.categoryUrl
-    }
+    };
 
     try {
       const res = await createBlogCategory(data, token);
-      setCategoriesState([res, ...categoriesState])
-      setCategoryFormStatus(statusInitialState)
-      setIsAddCategoryModalVisible(false)
-      categoryForm.resetFields()
+      setCategoriesState([res, ...categoriesState]);
+      setCategoryFormStatus(statusInitialState);
+      setIsAddCategoryModalVisible(false);
+      categoryForm.resetFields();
     } catch (error) {
       setCategoryFormStatus({
         ...statusInitialState,
         isError: true,
         message: error.message || 'Что-то пошло не так при создании статьи'
       });
-      setIsAddCategoryModalVisible(false)
+      setIsAddCategoryModalVisible(false);
     }
-  }
+  };
 
   const mainFormSubmitHandler = async (fields) => {
     if (fields.category === 'add') {
-      return setMainFormStatus({ ...statusInitialState, isLoading: false, isError: true, message: 'Пожалуйста, выберите категорию статьи!' })
+      return setMainFormStatus({ ...statusInitialState, isLoading: false, isError: true, message: 'Пожалуйста, выберите категорию статьи!' });
     }
-    setMainFormStatus({ ...statusInitialState, isLoading: true })
+    setMainFormStatus({ ...statusInitialState, isLoading: true });
     const formData = new FormData();
-    const query = `title=${fields.articleName}&slug=${fields.articleUrl}&category_id=${fields.category}&description=${fields.articleDescription}`
+    const query = `title=${fields.articleName}&slug=${fields.articleUrl}&category_id=${fields.category}&description=${fields.articleDescription}`;
 
     if (fields.textFile?.file?.originFileObj) {
       formData.append('document', fields.textFile.file.originFileObj);
@@ -64,8 +64,8 @@ const BlogAdd = ({ categories, token, setActivePage }) => {
 
     try {
       await createBlogPost(formData, query, token);
-      setMainFormStatus({...statusInitialState, isSuccess: true, message: 'Статья успешно создана'})
-      mainForm.resetFields()
+      setMainFormStatus({...statusInitialState, isSuccess: true, message: 'Статья успешно создана'});
+      mainForm.resetFields();
     } catch (error) {
       setMainFormStatus({
         ...statusInitialState,
@@ -73,7 +73,7 @@ const BlogAdd = ({ categories, token, setActivePage }) => {
         message: error.message || 'Что-то пошло не так при создании статьи'
       });
     }
-  }
+  };
 
   return (
     <div className={styles.page}>
@@ -246,9 +246,9 @@ const BlogAdd = ({ categories, token, setActivePage }) => {
       <Modal
         open={mainFormStatus.isError || mainFormStatus.isSuccess}
         footer={null}
-        onOk={() => {dispatch(fetchPosts(token)); setMainFormStatus(statusInitialState); setActivePage('articlesList')}}
-        onClose={() => { dispatch(fetchPosts(token)); setMainFormStatus(statusInitialState); setActivePage('articlesList')}}
-        onCancel={() => { dispatch(fetchPosts(token)); setMainFormStatus(statusInitialState); setActivePage('articlesList')}}
+        onOk={() => {dispatch(fetchPosts(token)); setMainFormStatus(statusInitialState); setActivePage('articlesList');}}
+        onClose={() => { dispatch(fetchPosts(token)); setMainFormStatus(statusInitialState); setActivePage('articlesList');}}
+        onCancel={() => { dispatch(fetchPosts(token)); setMainFormStatus(statusInitialState); setActivePage('articlesList');}}
       >
         <div className={styles.form__modalBody}>
           {mainFormStatus.message}

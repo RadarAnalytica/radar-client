@@ -1,24 +1,24 @@
-import React, { useState, useContext } from 'react'
-import SideNav from '../components/SideNav'
-import TopNav from '../components/TopNav'
-import CalculateForm from '../containers/calculate/CalculateForm'
-import CalculateResults from '../containers/calculate/CalculateResults'
-import NoSubscriptionPage from './NoSubscriptionPage'
+import React, { useState, useContext } from 'react';
+import SideNav from '../components/SideNav';
+import TopNav from '../components/TopNav';
+import CalculateForm from '../containers/calculate/CalculateForm';
+import CalculateResults from '../containers/calculate/CalculateResults';
+import NoSubscriptionPage from './NoSubscriptionPage';
 import AuthContext from '../service/AuthContext';
 
 const Calculate = () => {
     const { user } = useContext(AuthContext);
-    const [sellPrice, setSellPrice] = useState(0)
-    const [targetIncome, setTargetIncome] = useState(0)
-    const [mpComission, setMpComission] = useState(0)
-    const [mpLogistic, setMpLogistic] = useState(0)
-    const [reverseLogistic, setReverseLogistic] = useState(0)
-    const [buyinCost, setBuyinCost] = useState(0)
-    const [logitics, setLogistics] = useState(0)
-    const [wrapper, setWrapper] = useState(0)
-    const [buyoutRate, setBuyoutRate] = useState(100)
-    const [taxRate, setTaxRate] = useState(0)
-    const [amortization, setAmortization] = useState(0)
+    const [sellPrice, setSellPrice] = useState(0);
+    const [targetIncome, setTargetIncome] = useState(0);
+    const [mpComission, setMpComission] = useState(0);
+    const [mpLogistic, setMpLogistic] = useState(0);
+    const [reverseLogistic, setReverseLogistic] = useState(0);
+    const [buyinCost, setBuyinCost] = useState(0);
+    const [logitics, setLogistics] = useState(0);
+    const [wrapper, setWrapper] = useState(0);
+    const [buyoutRate, setBuyoutRate] = useState(100);
+    const [taxRate, setTaxRate] = useState(0);
+    const [amortization, setAmortization] = useState(0);
 
     const [result, setResult] = useState({
         marginalProfit: 0,
@@ -26,7 +26,7 @@ const Calculate = () => {
         netProfit: 0,
         profitability: 0,
         targetAmount: 0,
-    })
+    });
 
     const calculateMetrics = () => {
         // Calculate Marginal Profit
@@ -41,7 +41,7 @@ const Calculate = () => {
         // Calculate Profitability
         const profitability = (netProfit / sellPrice) * 100 * 2;
 
-        const targetAmount = targetIncome / marginalProfit
+        const targetAmount = targetIncome / marginalProfit;
 
         setResult({
             marginalProfit,
@@ -49,7 +49,7 @@ const Calculate = () => {
             netProfit,
             profitability,
             targetAmount
-        })
+        });
 
         return {
             marginalProfit,
@@ -66,7 +66,7 @@ const Calculate = () => {
     };
 
     if (user?.subscription_status === 'expired') {
-        return <NoSubscriptionPage title={'Калькулятор unit-экономики товара'} />
+        return <NoSubscriptionPage title={'Калькулятор unit-экономики товара'} />;
       };
 
     return (
@@ -101,7 +101,7 @@ const Calculate = () => {
                 </div>
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default Calculate
+export default Calculate;

@@ -3,7 +3,7 @@ import AuthContext from '@/service/AuthContext';
 import styles from './AddRnpFilters.module.css';
 import { ShopSelect, MultiSelect } from '@/components/sharedComponents/apiServicePagesFiltersComponent/features';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { actions as filterActions } from '@/redux/filtersRnpAdd/filtersRnpAddSlice'
+import { actions as filterActions } from '@/redux/filtersRnpAdd/filtersRnpAddSlice';
 import { fetchShops } from '@/redux/shops/shopsActions';
 import { fetchFiltersRnpAdd } from '@/redux/filtersRnpAdd/filtersRnpAddActions';
 
@@ -21,21 +21,21 @@ export const Filters = ({
   const filtersState = useAppSelector(store => store.filtersRnpAdd);
   //const shops = useAppSelector((state) => state.shopsSlice.shops);
   const { messages } = useAppSelector((state) => state.messagesSlice);
-  const prevMessages = useRef()
+  const prevMessages = useRef();
   //--------------------//
 
 
   // ---- хэндлер выбора магазина -----------//
   const shopChangeHandler = (value) => {
-    const selectedShop = shops?.find(_ => _.id === value)
-    dispatch(filterActions.setActiveShop(selectedShop))
-  }
+    const selectedShop = shops?.find(_ => _.id === value);
+    dispatch(filterActions.setActiveShop(selectedShop));
+  };
   //- -----------------------------------------//
 
   // ------- Фетч фильтров -------------//
   const fetchFiltersData = async () => {
     try {
-      dispatch(fetchFiltersRnpAdd(authToken))
+      dispatch(fetchFiltersRnpAdd(authToken));
     } catch (error) {
       console.error("Error fetching initial data:", error);
     }
@@ -54,11 +54,11 @@ export const Filters = ({
   // 1.2 - если магазин уже установлен, но по нему еще не собраны данные (это проверяем в п2.2) - проверяем магазин после апдейта каждые 30 сек (см п2.2)
   useEffect(() => {
     if (shops && !activeBrand) {
-      dispatch(filterActions.setActiveShop(shops[0]))
+      dispatch(filterActions.setActiveShop(shops[0]));
     }
 
     if (shops && activeBrand && activeBrand.id !== 0) {
-      dispatch(filterActions.setActiveShop(shops[0]))
+      dispatch(filterActions.setActiveShop(shops[0]));
     }
     if (shops && activeBrand &&
       (!filtersState.activeBrandName.some(_ => _.value === 'Все') &&
@@ -66,16 +66,16 @@ export const Filters = ({
       !filtersState.activeGroup.some(_ => _.value === 'Все') &&
       !filtersState.activeCategory.some(_ => _.value === 'Все'))
     ) {
-      dispatch(filterActions.setActiveShop(shops[0]))
+      dispatch(filterActions.setActiveShop(shops[0]));
     }
-    
+
     // if (shops && activeBrand && !activeBrand.is_primary_collect) {
     //   const currentShop = shops.find(shop => shop.id === activeBrand.id)
     //   if (currentShop?.is_primary_collect) {
     //     dispatch(filterActions.setActiveShop(currentShop))
     //   }
     // }
-  }, [shops, open])
+  }, [shops, open]);
   //--------------------------------------------------------------------------------//
 
   //Данные магазина [A-Za-z0-9]+ успешно собраны\. Результаты доступны на страницах сервиса
@@ -83,35 +83,35 @@ export const Filters = ({
     // Если это первая пачка сообщений, то данные актуальны и мы просто записываем сообщения для последующего сравнения
     if (!prevMessages?.current) {
         prevMessages.current = messages;
-        return
+        return;
     }
-    
+
     // Если это последующие сообщения ....
     if (messages && activeBrand?.id === 0 && prevMessages?.current) {
       // Ищем свежие сообщения
-      let filteredMessages = messages.filter(m => !prevMessages.current.some(_ => _.id === m.id))
+      let filteredMessages = messages.filter(m => !prevMessages.current.some(_ => _.id === m.id));
       // Выходим если свежих нет
       if (!!filteredMessages && filteredMessages.length > 0) {
         // Если свежие есть, то ищем интересующее нас (про сбор данных магазина) и полученные меньше минуты назад
         const now = Date.now();
         filteredMessages = filteredMessages
           .filter(m => /Данные магазина [A-Za-z0-9]+ успешно собраны\. Результаты доступны на страницах сервиса/.test(m.text))
-          .filter(m => (now - new Date(m.created_at)) < 60000 )
-        
+          .filter(m => (now - new Date(m.created_at)) < 60000 );
+
 
         // Если выходим если таких нет
         if (!!filteredMessages || filteredMessages.length > 0) {
           fetchFiltersData();
         }
-      } 
+      }
     }
-    prevMessages.current = messages
-  }, [messages])
+    prevMessages.current = messages;
+  }, [messages]);
 
   return (
     <div className={styles.filters}>
       <div className={styles.filters__inputsMainWrapper}>
-        
+
         {shops && activeBrand &&
           <div className={styles.filters__inputWrapper}>
             <ShopSelect
@@ -172,7 +172,7 @@ export const Filters = ({
                 />
               </div>}
             </React.Fragment>
-          )
+          );
         })}
       </div>
     </div>

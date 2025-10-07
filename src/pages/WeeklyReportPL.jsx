@@ -8,7 +8,7 @@ import { fetchPLFilters } from '@/redux/reportPL/plFiltersAction';
 import styles from './WeeklyReportPL.module.css';
 import DemonstrationSection from '../components/DemonstrationSection';
 import plFake from '../pages/images/goods-fake.png';
-import NewFilterGroup from '../components/finReport/FilterGroup'
+import NewFilterGroup from '../components/finReport/FilterGroup';
 import MobilePlug from '../components/sharedComponents/mobilePlug/mobilePlug';
 import Sidebar from '../components/sharedComponents/sidebar/sidebar';
 import Header from '../components/sharedComponents/header/header';
@@ -26,7 +26,7 @@ const WeeklyReportPL = () => {
   useEffect(() => {
     dispatch(fetchPLFilters(
       authToken
-    ))
+    ));
 
   }, [authToken, dispatch]);
 
@@ -51,7 +51,7 @@ const WeeklyReportPL = () => {
           <Header title={'P&L'} titlePrefix={'Отчёт'} />
         </div>
 
-        {isDemoMode && 
+        {isDemoMode &&
           <div className='mb-1'>
             <NoSubscriptionWarningBlock />
           </div>

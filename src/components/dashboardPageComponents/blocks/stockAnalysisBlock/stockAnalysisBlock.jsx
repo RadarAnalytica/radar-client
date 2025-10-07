@@ -1,14 +1,14 @@
-import { useState } from 'react'
-import styles from './stockAnalysisBlock.module.css'
-import { Link } from 'react-router-dom'
-import { stockAnalysisTableConfig } from './stockAnalysisBlockTableConfig'
+import { useState } from 'react';
+import styles from './stockAnalysisBlock.module.css';
+import { Link } from 'react-router-dom';
+import { stockAnalysisTableConfig } from './stockAnalysisBlockTableConfig';
 import { Table as RadarTable } from 'radar-ui';
 import { sortTableDataFunc } from '../../../../pages/apiServicePages/stockAnalysisPage/shared/utils/tableUtils';
 
 const StockAnalysisBlock = ({ data, loading }) => {
 
-    const [tableConfig, setTableConfig] = useState(stockAnalysisTableConfig)
-    const [sortState, setSortState] = useState({sort_field: undefined, sort_order: undefined}) // стейт сортировки (см initSortState)
+    const [tableConfig, setTableConfig] = useState(stockAnalysisTableConfig);
+    const [sortState, setSortState] = useState({sort_field: undefined, sort_order: undefined}); // стейт сортировки (см initSortState)
     const [paginationState, setPaginationState] = useState({ current: 1, total: 50, pageSize: 50 });
 
     const onResizeGroup = (columnKey, width) => {
@@ -37,7 +37,7 @@ const StockAnalysisBlock = ({ data, loading }) => {
 
         // Обновляем состояние
         setTableConfig(prevConfig => {
-            const updatedConfig = updateColumnWidth(prevConfig)
+            const updatedConfig = updateColumnWidth(prevConfig);
             const normalizedTableConfig = updatedConfig.map(item => ({
                 ...item,
                 render: undefined,
@@ -45,9 +45,9 @@ const StockAnalysisBlock = ({ data, loading }) => {
                     ...child,
                     render: undefined
                 }))
-            }))
-            localStorage.setItem('MonitoringTableConfig', JSON.stringify(normalizedTableConfig))
-            return updatedConfig
+            }));
+            localStorage.setItem('MonitoringTableConfig', JSON.stringify(normalizedTableConfig));
+            return updatedConfig;
         });
     };
 
@@ -58,7 +58,7 @@ const StockAnalysisBlock = ({ data, loading }) => {
                     <span className='loader'></span>
                 </div>
             </div>
-        )
+        );
     }
     return (
         <div className={styles.block}>
@@ -86,15 +86,15 @@ const StockAnalysisBlock = ({ data, loading }) => {
                     // stickyHeader
                     onResize={onResizeGroup}
                     onSort={(sort_field, sort_order) => {
-                        console.log('sorting', { sort_field, sort_order }) 
+                        console.log('sorting', { sort_field, sort_order });
                     }}
                     pagination={{
                         current: paginationState.current,
                         pageSize: paginationState.pageSize,
                         total: paginationState.total,
                         onChange: (page, pageSize) => {
-                            console.log('pagination', { page, pageSize }) 
-                            setPaginationState({...paginationState, current: page, pageSize: pageSize})
+                            console.log('pagination', { page, pageSize });
+                            setPaginationState({...paginationState, current: page, pageSize: pageSize});
                         },
                         showQuickJumper: true,
                     }}
@@ -114,7 +114,7 @@ const StockAnalysisBlock = ({ data, loading }) => {
                 />
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default StockAnalysisBlock
+export default StockAnalysisBlock;

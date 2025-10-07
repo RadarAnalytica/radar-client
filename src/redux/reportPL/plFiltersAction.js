@@ -14,13 +14,13 @@ export const fetchPLFilters = createAsyncThunk(
                 }
             }
         );
-        
+
         const data = await res.json();
         return {
             'brand': data.brand_filter,
             'group': data.group_filter,
             'month': data.month_filter
-        }
+        };
     }
 );
 

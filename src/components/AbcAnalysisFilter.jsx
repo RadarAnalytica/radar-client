@@ -1,5 +1,5 @@
 import React from "react";
-import Period from "./period/Period"
+import Period from "./period/Period";
 
 const AbcAnalysisFilter = ({
   shops, setActiveBrand, setSelectedRange, selectedRange, activeBrand
@@ -13,7 +13,7 @@ const AbcAnalysisFilter = ({
     is_valid: true,
   };
 
-  const shopArrayFormSelect = [allShopOptionAsShopObject, ...shops]
+  const shopArrayFormSelect = [allShopOptionAsShopObject, ...shops];
 
   const weekAgo = new Date(new Date().setDate(new Date().getDate() - 7))
     .toLocaleDateString("ru")
@@ -31,8 +31,6 @@ const AbcAnalysisFilter = ({
     .reverse()
     .join("-");
 
-
-  
 
   return (
     <div className='filter container filter-panel dash-container d-flex'>
@@ -64,9 +62,9 @@ const AbcAnalysisFilter = ({
               id='store'
               value={activeBrand.id}
               onChange={(e) => {
-                const { value } = e.target
-                const selectedShop = shopArrayFormSelect.find(_ => _.id.toString() === value)
-                setActiveBrand(selectedShop)
+                const { value } = e.target;
+                const selectedShop = shopArrayFormSelect.find(_ => _.id.toString() === value);
+                setActiveBrand(selectedShop);
               }}
             >
               {shopArrayFormSelect &&

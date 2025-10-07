@@ -1,6 +1,6 @@
 import React from 'react';
 import './styles.css';
-import styles from "../pages/Politics.module.css"
+import styles from "../pages/Politics.module.css";
 import LimitedFooter from '../components/LimitedFooter';
 import NavbarMainHome from '../components/NavbarMainHome';
 import FooterNewVersion from '../components/FooterNewVersion';

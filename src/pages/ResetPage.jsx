@@ -1,22 +1,22 @@
-import React, { useEffect, useState } from 'react'
-import RestorePass from '../containers/RestorePass'
-import { useNavigate } from 'react-router-dom'
-import axios from 'axios'
-import { URL } from '../service/config'
+import React, { useEffect, useState } from 'react';
+import RestorePass from '../containers/RestorePass';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { URL } from '../service/config';
 
 const ResetPage = () => {
 
-    const navigate = useNavigate()
+    const navigate = useNavigate();
 
 
-    const loca = document.location.href
-    const array = loca ? loca.split('/') : []
-    const reverseArr = array.reverse()
+    const loca = document.location.href;
+    const array = loca ? loca.split('/') : [];
+    const reverseArr = array.reverse();
 
-    const email = reverseArr && reverseArr.length ? reverseArr[1] : null
-    const code = reverseArr && reverseArr.length ? reverseArr[0] : null
+    const email = reverseArr && reverseArr.length ? reverseArr[1] : null;
+    const code = reverseArr && reverseArr.length ? reverseArr[0] : null;
 
-    const [confirmed, setConfirmed] = useState(false)
+    const [confirmed, setConfirmed] = useState(false);
 
     // useEffect(() => {
     //     if (email && code) {
@@ -45,7 +45,7 @@ const ResetPage = () => {
                 </div>
             }
         </div>
-    )
-}
+    );
+};
 
-export default ResetPage
+export default ResetPage;

@@ -12,11 +12,11 @@ function summaryRender(value, row, i) {
 }
 
 function valueRender(value) {
-	console.log('valueRender', value)
+	console.log('valueRender', value);
 	if (!value){
-		return '-'
+		return '-';
 	}
-	return formatPrice(value)
+	return formatPrice(value);
 }
 
 function columnRender(value, row) {
@@ -106,4 +106,4 @@ export const CATEGORY_COLUMNS = [
 		key: 'action',
 		width: '50%',
 	},
-]
+];

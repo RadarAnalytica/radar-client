@@ -1,8 +1,8 @@
-import styles from './icon.module.css'
+import styles from './icon.module.css';
 import { alertIcon, menuIcon } from './svgIcons';
 
 // type: 'alert' | 'menu'
-// counter: number 
+// counter: number
 const Icon = ({ type, counter }) => {
     switch (type) {
         case 'alert': {
@@ -15,7 +15,7 @@ const Icon = ({ type, counter }) => {
                         </div>
                     }
                 </div>
-            )
+            );
         }
 
         case 'menu': {
@@ -23,9 +23,9 @@ const Icon = ({ type, counter }) => {
                 <div className={styles.menuIcon}>
                     {menuIcon}
                 </div>
-            )
+            );
         }
     }
-}
+};
 
 export default Icon;

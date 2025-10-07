@@ -19,56 +19,56 @@ const dashboardFiltersSlice = createSlice({
     initialState,
     reducers: {
         switchDashboardFilter(state, action) {
-            const { ident, elem } = action.payload
-            const filterElem = state.dashboardFilters[ident]
-            filterElem[elem] = !filterElem[elem]
+            const { ident, elem } = action.payload;
+            const filterElem = state.dashboardFilters[ident];
+            filterElem[elem] = !filterElem[elem];
             if (ident === 'week') {
-                state.dashboardFilters.weekOrigin[elem] = !state.dashboardFilters.weekOrigin[elem]
+                state.dashboardFilters.weekOrigin[elem] = !state.dashboardFilters.weekOrigin[elem];
             }
 
             if (ident === 'year' || ident === 'month') {
-                let visibleMonthArray = []
-                let visibleYearArray = []
+                let visibleMonthArray = [];
+                let visibleYearArray = [];
                 if (
                     Object.values(state.dashboardFilters.month).filter(el => el === true).length === Object.values(state.dashboardFilters.month).length ||
                     Object.values(state.dashboardFilters.month).filter(el => el === false).length === Object.values(state.dashboardFilters.month).length
                 ) {
-                    visibleMonthArray = Object.keys(state.dashboardFilters.month)
+                    visibleMonthArray = Object.keys(state.dashboardFilters.month);
                 } else {
-                    visibleMonthArray = Object.keys(state.dashboardFilters.month).filter((el) => state.dashboardFilters.month[el])
+                    visibleMonthArray = Object.keys(state.dashboardFilters.month).filter((el) => state.dashboardFilters.month[el]);
                 }
                 if (
                     Object.values(state.dashboardFilters.year).filter(el => el === true).length === Object.values(state.dashboardFilters.year).length ||
                     Object.values(state.dashboardFilters.year).filter(el => el === false).length === Object.values(state.dashboardFilters.year).length
                 ) {
-                    visibleYearArray = Object.keys(state.dashboardFilters.year)
+                    visibleYearArray = Object.keys(state.dashboardFilters.year);
                 } else {
-                    visibleYearArray = Object.keys(state.dashboardFilters.year).filter((el) => state.dashboardFilters.year[el])
+                    visibleYearArray = Object.keys(state.dashboardFilters.year).filter((el) => state.dashboardFilters.year[el]);
                 }
 
-                state.dashboardFilters['week'] = {}
+                state.dashboardFilters['week'] = {};
                 for (let elem of Object.keys(state.dashboardFilters.weekOrigin)) {
-                    const elemList = elem.split('-')
+                    const elemList = elem.split('-');
                     if (elemList[1].startsWith('0')) {
-                        elemList[1] = elemList[1].replace('0', '')
+                        elemList[1] = elemList[1].replace('0', '');
                     }
-                    
+
                     if (visibleYearArray.includes(elemList[0]) && visibleMonthArray.includes(elemList[1])) {
-                        state.dashboardFilters.week[elem] = state.dashboardFilters.weekOrigin[elem]
+                        state.dashboardFilters.week[elem] = state.dashboardFilters.weekOrigin[elem];
                     }
                 }
 
             }
         },
         switchAllDashboardFilter(state, action) {
-            const { ident, value } = action.payload
-            const filterElem = state.dashboardFilters[ident]
+            const { ident, value } = action.payload;
+            const filterElem = state.dashboardFilters[ident];
             for (let el of Object.keys(filterElem)) {
-                filterElem[el] = value
-                if (ident === 'week') state.dashboardFilters.weekOrigin[el] = !state.dashboardFilters.weekOrigin[el]
+                filterElem[el] = value;
+                if (ident === 'week') state.dashboardFilters.weekOrigin[el] = !state.dashboardFilters.weekOrigin[el];
             }
         },
-        
+
     },
     extraReducers: (builder) => {
         builder
@@ -92,4 +92,4 @@ export default dashboardFiltersSlice.reducer;
 export const {
     switchDashboardFilter,
     switchAllDashboardFilter
-} = dashboardFiltersSlice.actions
+} = dashboardFiltersSlice.actions;

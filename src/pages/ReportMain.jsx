@@ -22,7 +22,7 @@ import MobilePlug from '../components/sharedComponents/mobilePlug/mobilePlug';
 import FileUploader from '../components/sharedComponents/fileUploader/fileUploader';
 import Sidebar from '../components/sharedComponents/sidebar/sidebar';
 import HowToLink from '../components/sharedComponents/howToLink/howToLink';
-import ModalDeleteConfirm from "../components/sharedComponents/ModalDeleteConfirm"
+import ModalDeleteConfirm from "../components/sharedComponents/ModalDeleteConfirm";
 import Header from '../components/sharedComponents/header/header';
 import NoSubscriptionWarningBlock from '../components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock';
 import { Tooltip } from "antd";
@@ -154,7 +154,7 @@ const ReportMain = () => {
           <Header title={'Главная'} titlePrefix={'Отчёт'} />
         </div>
 
-        {isDemoMode && 
+        {isDemoMode &&
           <div className='mb-3'>
             <NoSubscriptionWarningBlock />
           </div>
@@ -400,9 +400,6 @@ const ReportMain = () => {
 
 
           {/* !file uploader */}
-
-
-
 
 
         </div>

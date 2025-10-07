@@ -1,10 +1,9 @@
-import js from '@eslint/js'
-import globals from 'globals'
-import react from 'eslint-plugin-react'
-import reactHooks from 'eslint-plugin-react-hooks'
-import reactRefresh from 'eslint-plugin-react-refresh'
-import tsParser from '@typescript-eslint/parser'
-import tsPlugin from '@typescript-eslint/eslint-plugin'
+import js from '@eslint/js';
+import globals from 'globals';
+import react from 'eslint-plugin-react';
+import reactHooks from 'eslint-plugin-react-hooks';
+import tsParser from '@typescript-eslint/parser';
+import tsPlugin from '@typescript-eslint/eslint-plugin';
 
 export default [
   { ignores: ['dist'] },
@@ -25,7 +24,6 @@ export default [
     plugins: {
       react,
       'react-hooks': reactHooks,
-      'react-refresh': reactRefresh,
       '@typescript-eslint': tsPlugin,
     },
     rules: {
@@ -33,14 +31,26 @@ export default [
       ...react.configs.recommended.rules,
       ...react.configs['jsx-runtime'].rules,
       ...reactHooks.configs.recommended.rules,
-      ...tsPlugin.configs['recommended-type-checked'].rules,
+      ...tsPlugin.configs.recommended.rules,
       '@typescript-eslint/ban-ts-comment': 'warn',
       '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }],
       'react/jsx-no-target-blank': 'off',
-      'react-refresh/only-export-components': [
-        'warn',
-        { allowConstantExport: true },
-      ],
+      // свои правила
+      'semi': ['error', 'always'],
+      'react/jsx-pascal-case': ['error', {
+        allowAllCaps: true,
+        allowLeadingUnderscore: false,
+        allowNamespace: false,
+        ignore: []
+      }],
+      'no-multiple-empty-lines': ['error', {
+        max: 2,
+        maxEOF: 1,
+        maxBOF: 0
+      }],
+      'eol-last': ['error', 'always'],
+      'no-trailing-spaces': 'error',
+      'array-bracket-spacing': ['error', 'never'],
     },
   },
 ]

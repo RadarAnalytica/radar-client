@@ -1,5 +1,5 @@
-import { Modal, Button, Flex, ConfigProvider } from "antd"
-import styles from "./ModalDeleteConfirm.module.css"
+import { Modal, Button, Flex, ConfigProvider } from "antd";
+import styles from "./ModalDeleteConfirm.module.css";
 
 function ModalFooter({onCancel, onOk}) {
   return (
@@ -26,7 +26,7 @@ function ModalFooter({onCancel, onOk}) {
         <Button type="primary" onClick={onCancel} size="lg" className={styles.btn}>Оставить</Button>
       </Flex>
     </ConfigProvider>
-  )
+  );
 }
 
 export default function ModalDeleteConfirm({onOk, onCancel, title}) {
@@ -55,5 +55,5 @@ export default function ModalDeleteConfirm({onOk, onCancel, title}) {
         footer={<ModalFooter onOk={onOk} onCancel={onCancel}/>}
       ></Modal>
     </ConfigProvider>
-  )
+  );
 }

@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './OrderMapTable.module.css'
+import styles from './OrderMapTable.module.css';
 import { formatPrice } from '@/service/utils';
 
 const OrderMapTable = ({ title, data, totalAmount, totalCount, visibility = false }) => {

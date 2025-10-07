@@ -20,7 +20,7 @@ export const mainTableConfig = [
             { ruName: 'Коэффициент демпинга, %', engName: 'dumping', units: '%', isSortable: true, isActive: false },
         ]
     },
-]
+];
 
 
 export const byColorTableConfig = [
@@ -45,7 +45,7 @@ export const byColorTableConfig = [
             { ruName: 'Коэффициент демпинга, %', engName: 'dumping', units: '%', isSortable: true, isActive: false },
         ]
     },
-]
+];
 
 export const byWarehouseTableConfig = [
     {
@@ -67,7 +67,7 @@ export const byWarehouseTableConfig = [
             { ruName: 'Оборачиваемость, дней', engName: 'turnover', units: 'дн', isSortable: true, isActive: true },
         ]
     },
-]
+];
 
 
 export const bySizeTableConfig = [
@@ -92,4 +92,4 @@ export const bySizeTableConfig = [
             { ruName: 'Коэффициент демпинга, %', engName: 'dumping', units: '%', isSortable: true, isActive: false },
         ]
     },
-]
+];

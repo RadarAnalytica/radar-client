@@ -12,13 +12,13 @@ const initDataFetchingStatus = {
     isError: false,
     isSuccess: false,
     message: ''
-}
+};
 
 const GroupEditModal = ({ isEditGroupModalVisible, setIsEditGroupModalVisible, dataFetchingStatus, setDataFetchingStatus, groupData, updateMainData, groupId }) => {
-    const { authToken } = useContext(AuthContext)
-    const [inputValue, setInputValue] = useState('')
-    const [groupDataState, setGroupDataState] = useState()
-    const dispatch = useAppDispatch()
+    const { authToken } = useContext(AuthContext);
+    const [inputValue, setInputValue] = useState('');
+    const [groupDataState, setGroupDataState] = useState();
+    const dispatch = useAppDispatch();
 
     const getGroupData = async (authToken, groupId) => {
         //setDataFetchingStatus({ ...initDataFetchingStatus, isLoading: true })
@@ -53,16 +53,16 @@ const GroupEditModal = ({ isEditGroupModalVisible, setIsEditGroupModalVisible, d
               message: 'Что-то пошло не так :('
             });
         }
-    }
+    };
 
 
     const updateGroup = async () => {
-        setDataFetchingStatus({ ...initDataFetchingStatus, isLoading: true })
+        setDataFetchingStatus({ ...initDataFetchingStatus, isLoading: true });
         const requestObject = {
             name: inputValue,
             description: groupDataState?.description,
             product_ids: groupDataState?.products.map(_ => _.id)
-        }
+        };
         try {
             // TODO: перенести метод в ServiceFunctions
             const res = await fetchApi(`/api/product/product_groups/${groupDataState?.id}`, {
@@ -96,17 +96,17 @@ const GroupEditModal = ({ isEditGroupModalVisible, setIsEditGroupModalVisible, d
               message: 'Что-то пошло не так :('
             });
         }
-    }
+    };
 
 
     // 0. Получаем данные магазинов
     useEffect(() => {
         if (groupData) {
-            setInputValue(groupData?.name)
-            setGroupDataState(groupData)
+            setInputValue(groupData?.name);
+            setGroupDataState(groupData);
         }
         if (!groupData && groupId) {
-            getGroupData(authToken, groupId)
+            getGroupData(authToken, groupId);
         }
 
     }, [groupData, groupId]);
@@ -175,7 +175,7 @@ const GroupEditModal = ({ isEditGroupModalVisible, setIsEditGroupModalVisible, d
                 </ConfigProvider>
             </div>
         </Modal>
-    )
-}
+    );
+};
 
 export default GroupEditModal;

@@ -5,7 +5,7 @@ import LimitedFooter from '../components/LimitedFooter';
 import { Link } from 'react-router-dom';
 import { URL } from '../service/config';
 import NavbarMainHome from '../components/NavbarMainHome';
-import styles from './Page404.module.css'
+import styles from './Page404.module.css';
 
 
 const Page404 = () => {
@@ -103,7 +103,7 @@ const Page404 = () => {
             >
               Войти
             </button>
-            <button 
+            <button
               className={styles.header__navLink}
               onClick={() => window.location.href = `${URL}/signup`}
             >

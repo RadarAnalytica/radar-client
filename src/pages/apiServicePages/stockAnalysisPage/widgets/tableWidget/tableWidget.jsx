@@ -1,17 +1,17 @@
-import React, { useRef, useState, useEffect } from 'react'
-import styles from './tableWidget.module.css'
-import { tableConfig, sortTableDataFunc } from '../../shared'
-import { formatPrice } from '../../../../../service/utils'
-import { Tooltip, Pagination, ConfigProvider } from 'antd'
+import React, { useRef, useState, useEffect } from 'react';
+import styles from './tableWidget.module.css';
+import { tableConfig, sortTableDataFunc } from '../../shared';
+import { formatPrice } from '../../../../../service/utils';
+import { Tooltip, Pagination, ConfigProvider } from 'antd';
 
 
 /**
  * Краткое описание:
- * 
+ *
  * Общая таблица (супертаблица) рендерится на основе конфига (tableConfig) и состоит из нескольких маленьких таблиц
  * Разделил их по наличию заголовка, кроме самой перой (Товар) - тут искуственно отделен первый столбец для реализации фиксации первого столбца при
  * горизонтальном скроле.
- * 
+ *
  * 1. Сначала мапим весь конфиг (сами таблицы)
  * 2. Далее внутри для каждой таблицы мапим массив заголовков
  * 3. Далее под хэдером таблицы еще раз мапим массив заголовков и внутри для каждого заголовка мапим уже данные забирая только нужные для конкретного заголовка и конкретной
@@ -24,17 +24,16 @@ import { Tooltip, Pagination, ConfigProvider } from 'antd'
 const initSortState = {
     sortedValue: 'saleSum',
     sortType: 'DESC',
-}
-
+};
 
 
 const TableWidget = ({ stockAnalysisFilteredData, loading }) => {
 
-    const containerRef = useRef(null) // реф скролл-контейнера (используется чтобы седить за позицией скрола)
-    const [tableData, setTableData] = useState() // данные для рендера таблицы
-    const [isXScrolled, setIsXScrolled] = useState(false) // следим за скролом по Х
-    const [isEndOfXScroll, setIsEndOfXScroll] = useState(false) // отслеживаем конец скролла по Х
-    const [sortState, setSortState] = useState(initSortState) // стейт сортировки (см initSortState)
+    const containerRef = useRef(null); // реф скролл-контейнера (используется чтобы седить за позицией скрола)
+    const [tableData, setTableData] = useState(); // данные для рендера таблицы
+    const [isXScrolled, setIsXScrolled] = useState(false); // следим за скролом по Х
+    const [isEndOfXScroll, setIsEndOfXScroll] = useState(false); // отслеживаем конец скролла по Х
+    const [sortState, setSortState] = useState(initSortState); // стейт сортировки (см initSortState)
     const [paginationState, setPaginationState] = useState({ current: 1, total: 50, pageSize: 50 });
 
 
@@ -42,14 +41,14 @@ const TableWidget = ({ stockAnalysisFilteredData, loading }) => {
     useEffect(() => {
         if (stockAnalysisFilteredData) {
             if (sortState.sortedValue && sortState.sortType) {
-                setTableData([...sortTableDataFunc(sortState.sortType, sortState.sortedValue, stockAnalysisFilteredData)])
-                setPaginationState({...paginationState, total: [...sortTableDataFunc(sortState.sortType, sortState.sortedValue, stockAnalysisFilteredData)].length})
+                setTableData([...sortTableDataFunc(sortState.sortType, sortState.sortedValue, stockAnalysisFilteredData)]);
+                setPaginationState({...paginationState, total: [...sortTableDataFunc(sortState.sortType, sortState.sortedValue, stockAnalysisFilteredData)].length});
             } else {
                 setTableData(stockAnalysisFilteredData);
-                setPaginationState({...paginationState, total: stockAnalysisFilteredData.length})
+                setPaginationState({...paginationState, total: stockAnalysisFilteredData.length});
             }
         }
-    }, [stockAnalysisFilteredData])
+    }, [stockAnalysisFilteredData]);
 
 
     // отслеживаем скролл в контейнере
@@ -58,20 +57,20 @@ const TableWidget = ({ stockAnalysisFilteredData, loading }) => {
 
             // если скроллим вправо
             if (containerRef.current.scrollLeft > 1) {
-                setIsXScrolled(true)
+                setIsXScrolled(true);
             } else {
-                setIsXScrolled(false)
+                setIsXScrolled(false);
             }
 
             // вычисляем достиг ли скролл конца справа
             const delta = containerRef.current.scrollWidth - (containerRef.current.scrollLeft + containerRef.current.clientWidth);
             if (delta < 16) {
-                setIsEndOfXScroll(true)
+                setIsEndOfXScroll(true);
             } else {
-                setIsEndOfXScroll(false)
+                setIsEndOfXScroll(false);
             }
         }
-    }
+    };
 
     // хэндлер сортировки
     const sortButtonClickHandler = (e, value) => {
@@ -79,10 +78,10 @@ const TableWidget = ({ stockAnalysisFilteredData, loading }) => {
 
         // выключаем сортировку если нажата уже активная клавиша
         if (sortState.sortType === id && sortState.sortedValue === value) {
-            setSortState(initSortState)
-            setTableData(stockAnalysisFilteredData)
-            setPaginationState({...paginationState, total: stockAnalysisFilteredData.length, current: 1})
-            return
+            setSortState(initSortState);
+            setTableData(stockAnalysisFilteredData);
+            setPaginationState({...paginationState, total: stockAnalysisFilteredData.length, current: 1});
+            return;
         }
 
 
@@ -90,38 +89,38 @@ const TableWidget = ({ stockAnalysisFilteredData, loading }) => {
         setSortState({
             sortedValue: value,
             sortType: id,
-        })
-        setTableData([...sortTableDataFunc(id, value, stockAnalysisFilteredData)])
-        setPaginationState({...paginationState, total: [...sortTableDataFunc(id, value, stockAnalysisFilteredData)].length, current: 1})
-    }
+        });
+        setTableData([...sortTableDataFunc(id, value, stockAnalysisFilteredData)]);
+        setPaginationState({...paginationState, total: [...sortTableDataFunc(id, value, stockAnalysisFilteredData)].length, current: 1});
+    };
 
     const paginationHandler = (page) => {
-        setPaginationState({ ...paginationState, current: page })
-    }
+        setPaginationState({ ...paginationState, current: page });
+    };
 
     useEffect(() => {
-        const paginationNextButton = document.querySelector('.ant-pagination-jump-next')
-        const paginationPrevButton = document.querySelector('.ant-pagination-jump-prev')
-        const paginationSingleNextButton = document.querySelector('.ant-pagination-next')
-        const paginationSinglePrevButton = document.querySelector('.ant-pagination-prev')
+        const paginationNextButton = document.querySelector('.ant-pagination-jump-next');
+        const paginationPrevButton = document.querySelector('.ant-pagination-jump-prev');
+        const paginationSingleNextButton = document.querySelector('.ant-pagination-next');
+        const paginationSinglePrevButton = document.querySelector('.ant-pagination-prev');
         if (paginationNextButton) {
-         paginationNextButton.setAttribute('title', 'Следующие 5 страниц')
+         paginationNextButton.setAttribute('title', 'Следующие 5 страниц');
         }
         if (paginationSingleNextButton) {
-         paginationSingleNextButton.setAttribute('title', 'Следующая страница')
+         paginationSingleNextButton.setAttribute('title', 'Следующая страница');
         }
         if (paginationSinglePrevButton) {
-         paginationSinglePrevButton.setAttribute('title', 'Предыдущая страница')
+         paginationSinglePrevButton.setAttribute('title', 'Предыдущая страница');
         }
         if (paginationPrevButton) {
-         paginationPrevButton.setAttribute('title', 'Предыдущие 5 страниц')
+         paginationPrevButton.setAttribute('title', 'Предыдущие 5 страниц');
         }
-     }, [paginationState])
+     }, [paginationState]);
 
      useEffect(() => {
         const { current } = containerRef;
-        current?.scrollTo({ top: 0, behavior: 'smooth', duration: 100 })
-    }, [paginationState.current])
+        current?.scrollTo({ top: 0, behavior: 'smooth', duration: 100 });
+    }, [paginationState.current]);
 
     if (loading) {
         return (
@@ -130,9 +129,8 @@ const TableWidget = ({ stockAnalysisFilteredData, loading }) => {
                     <span className='loader'></span>
                 </div>
             </div>
-        )
+        );
     }
-
 
 
     return (
@@ -151,7 +149,6 @@ const TableWidget = ({ stockAnalysisFilteredData, loading }) => {
                         <div className={tableStyle} key={id} style={{ boxShadow: t.tableName === 'О товаре' && isXScrolled ? '10px 0 10px -5px rgba(0, 0, 0, 0.1)' : 'none' }}>
 
 
-
                             {/* Хэдер */}
                             <div className={styles.table__header}>
                                 {/* Заголовок таблицы. Марджин нужен для второй таблицы у которой нет заголовка (разделено для реализации наложения при боковом скроле) */}
@@ -166,7 +163,7 @@ const TableWidget = ({ stockAnalysisFilteredData, loading }) => {
                                     {t.values.map((v, id) => {
 
                                         // определяем необходимые стили
-                                        const headerCellStyle = v.ruName === 'Товар' ? `${styles.table__headerItem} ${styles.table__headerItem_wide}` : v.isShortCell ? `${styles.table__headerItem} ${styles.table__headerItem_short}` : styles.table__headerItem
+                                        const headerCellStyle = v.ruName === 'Товар' ? `${styles.table__headerItem} ${styles.table__headerItem_wide}` : v.isShortCell ? `${styles.table__headerItem} ${styles.table__headerItem_short}` : styles.table__headerItem;
                                         return (
                                             <div className={headerCellStyle} key={id}>
                                                 <p className={styles.table__headerItemTitle}>{v.ruName}</p>
@@ -194,7 +191,7 @@ const TableWidget = ({ stockAnalysisFilteredData, loading }) => {
                                                     </div>
                                                 }
                                             </div>
-                                        )
+                                        );
                                     })}
                                 </div>
                             </div>
@@ -217,12 +214,12 @@ const TableWidget = ({ stockAnalysisFilteredData, loading }) => {
                                                             <div className={styles.table__rowImgWrapper}>
                                                                 <img src={product.photo} width={30} height={40} onError={(e) => {
                                                                     e.target.onerror = null;
-                                                                    e.target.style.display = 'none'
+                                                                    e.target.style.display = 'none';
                                                                 }} />
                                                             </div>
                                                             <p className={styles.table__rowTitle}>{product[v.engName]}</p>
                                                         </div>
-                                                    )
+                                                    );
                                                 } else {
                                                     return (
                                                         <div className={v.isShortCell ? `${styles.table__rowItem} ${styles.table__rowItem_short}` : styles.table__rowItem} key={id}>
@@ -238,11 +235,11 @@ const TableWidget = ({ stockAnalysisFilteredData, loading }) => {
                                                             }
 
                                                         </div>
-                                                    )
+                                                    );
                                                 }
                                             }))}
                                         </div>
-                                    )
+                                    );
                                 })}
                                 {tableData && tableData.length === 0 && id === 0 &&
                                     <div className={styles.table__row}>
@@ -253,7 +250,7 @@ const TableWidget = ({ stockAnalysisFilteredData, loading }) => {
                                 }
                             </div>
                         </div>
-                    )
+                    );
                 })}
 
             </div>
@@ -286,7 +283,7 @@ const TableWidget = ({ stockAnalysisFilteredData, loading }) => {
                 </ConfigProvider>
             </div>
         </div>
-    )
-}
+    );
+};
 
 export default TableWidget;

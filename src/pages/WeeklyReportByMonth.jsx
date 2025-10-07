@@ -8,7 +8,7 @@ import SalesTable from '../components/SaleTable';
 import BottomNavigation from '../components/BottomNavigation';
 import plFake from '../pages/images/month-fake.png';
 import DemonstrationSection from '../components/DemonstrationSection';
-import NewFilterGroup from '../components/finReport/FilterGroup'
+import NewFilterGroup from '../components/finReport/FilterGroup';
 import MobilePlug from '../components/sharedComponents/mobilePlug/mobilePlug';
 import Sidebar from '../components/sharedComponents/sidebar/sidebar';
 import Header from '../components/sharedComponents/header/header';
@@ -28,7 +28,7 @@ const WeeklyReportByMonth = () => {
   useEffect(() => {
     dispatch(fetchByMonthFilters(
       authToken
-    ))
+    ));
   }, [authToken, dispatch]);
 
   const handleFetchReport = useCallback(() => {
@@ -39,7 +39,7 @@ const WeeklyReportByMonth = () => {
       })
     ).then(() => {
       setLoading(false);
-    })
+    });
   }, [authToken, dispatch, isFiltersLoading]);
 
   return (
@@ -55,7 +55,7 @@ const WeeklyReportByMonth = () => {
           <Header title={'По месяцам'} titlePrefix={'Отчёт'}/>
         </div>
 
-        {isDemoMode && 
+        {isDemoMode &&
           <div className='mb-1'>
             <NoSubscriptionWarningBlock />
           </div>
@@ -66,7 +66,7 @@ const WeeklyReportByMonth = () => {
             <DemonstrationSection />
           </div>
         }
-        
+
         <div className='container dash-container'>
           <NewFilterGroup
             pageIdent='month'
@@ -93,7 +93,7 @@ const WeeklyReportByMonth = () => {
             </div>
           )}
         </div>
-        
+
         <BottomNavigation/>
       </div>
     </div>

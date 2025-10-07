@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import styles from './confirmationModal.module.css'
+import styles from './confirmationModal.module.css';
 import { Modal, Input, ConfigProvider, Button, Select } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { URL } from '../../../../../service/config';
@@ -14,7 +14,7 @@ const initDataFetchingStatus = {
     isError: false,
     isSuccess: false,
     message: ''
-}
+};
 
 const ConfirmationModal = ({
     open,
@@ -82,7 +82,7 @@ const ConfirmationModal = ({
                         <Button
                             type='primary'
                             className={styles.modal__submitButton}
-                            onClick={() => { mainAction(); returnAction() }}
+                            onClick={() => { mainAction(); returnAction(); }}
                         >
                             {actionTitle}
                         </Button>
@@ -90,7 +90,7 @@ const ConfirmationModal = ({
                 </div>
             </div>
         </Modal>
-    )
-}
+    );
+};
 
 export default ConfirmationModal;

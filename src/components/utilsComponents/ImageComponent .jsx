@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import styles from "../../pages/MainPage.module.css"
+import styles from "../../pages/MainPage.module.css";
 const ImageComponent = ({ heavyImageSrc, lightImageSrc, style }) => {
   const [heavyImageLoaded, setHeavyImageLoaded] = useState(false);
 

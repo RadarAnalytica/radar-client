@@ -12,7 +12,7 @@ const initialState = {
         period: 30
     },
     filters: undefined
-}
+};
 
 const filtersRnpSlice = createSlice({
     name: 'filtersRnp',
@@ -26,13 +26,13 @@ const filtersRnpSlice = createSlice({
                 activeArticle: [{value: 'Все'}],
                 activeGroup: [{id: 0, value: 'Все'}],
                 activeCategory: [{value: 'Все', id: 0}]
-            }
+            };
         },
         setPeriod: (state, action) => {
             return {
                 ...state,
                 selectedRange: action.payload
-            }
+            };
         },
         setActiveFilters: (state, action) => {
             const { stateKey, data } = action.payload;
@@ -43,7 +43,7 @@ const filtersRnpSlice = createSlice({
                     activeGroup: [{value: 'Все', id: 0}],
                     activeArticle: [{value: 'Все', id: 0}],
                     activeCategory: [{value: 'Все', id: 0}]
-                }
+                };
             }
             if (stateKey === 'activeArticle') {
                 return {
@@ -51,7 +51,7 @@ const filtersRnpSlice = createSlice({
                     [stateKey]: data,
                     activeGroup: [{value: 'Все', id: 0}],
                     activeCategory: [{value: 'Все', id: 0}]
-                }
+                };
             }
             if (stateKey === 'activeGroup') {
                 return {
@@ -60,9 +60,9 @@ const filtersRnpSlice = createSlice({
                     activeBrandName: [{value: 'Все'}],
                     activeArticle: [{value: 'Все'}],
                     activeCategory: [{value: 'Все', id: 0}]
-                }
+                };
             }
-            
+
             if (stateKey === 'activeCategory') {
                 return {
                     ...state,
@@ -70,13 +70,13 @@ const filtersRnpSlice = createSlice({
                     activeBrandName: [{value: 'Все'}],
                     activeArticle: [{value: 'Все'}],
                     activeGroup: [{value: 'Все', id: 0}]
-                }
+                };
             }
-            
+
             return {
                 ...state,
                 [stateKey]: data
-            }
+            };
         }
     },
     extraReducers: (bulder) => {
@@ -87,9 +87,9 @@ const filtersRnpSlice = createSlice({
                     filters: action.payload.filtersData,
                     shops: action.payload.shops,
                     ...action.payload.initState
-                }
-            })
+                };
+            });
     }
-})
+});
 
 export const { actions, reducer } = filtersRnpSlice;

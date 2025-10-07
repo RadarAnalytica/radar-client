@@ -1,4 +1,4 @@
-import styles from './support.module.css'
+import styles from './support.module.css';
 import { Link } from 'react-router-dom';
 
 const Support = ({ isMenuHidden }) => {
@@ -16,7 +16,7 @@ const Support = ({ isMenuHidden }) => {
                 <p className={styles.support__text}>Напишите нам</p>
             </div>
         </Link>
-    )
-}
+    );
+};
 
 export default Support;

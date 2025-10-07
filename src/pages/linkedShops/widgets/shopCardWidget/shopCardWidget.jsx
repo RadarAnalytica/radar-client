@@ -1,20 +1,19 @@
-import { useState, useEffect } from 'react'
-import styles from './shopCardWidget.module.css'
-import WbIcon from '../../../../assets/WbIcon'
-import moment from 'moment'
-import { Modal, Button, ConfigProvider, Form, Input, message } from 'antd'
-import { Link } from 'react-router-dom'
-import { deleteShop } from '../../../../redux/deleteShop/deleteShopActions'
-import { editShop } from '../../../../redux/editShop/editShopActions'
-import { fetchFilters } from '../../../../redux/apiServicePagesFiltersState/filterActions'
-import { fetchShops } from '../../../../redux/shops/shopsActions'
-import { useAppDispatch } from '../../../../redux/hooks'
-import { actions as filterActions } from '../../../../redux/apiServicePagesFiltersState/apiServicePagesFilterState.slice'
-
+import { useState, useEffect } from 'react';
+import styles from './shopCardWidget.module.css';
+import WbIcon from '../../../../assets/WbIcon';
+import moment from 'moment';
+import { Modal, Button, ConfigProvider, Form, Input, message } from 'antd';
+import { Link } from 'react-router-dom';
+import { deleteShop } from '../../../../redux/deleteShop/deleteShopActions';
+import { editShop } from '../../../../redux/editShop/editShopActions';
+import { fetchFilters } from '../../../../redux/apiServicePagesFiltersState/filterActions';
+import { fetchShops } from '../../../../redux/shops/shopsActions';
+import { useAppDispatch } from '../../../../redux/hooks';
+import { actions as filterActions } from '../../../../redux/apiServicePagesFiltersState/apiServicePagesFilterState.slice';
 
 
 /**
- * 
+ *
 brand_name: "JuliaShine111"
 id: 88
 is_active: true
@@ -30,65 +29,64 @@ const getShopStatus = (isActive, isValid, isPrimaryCollect) => {
             <div className={`${styles.widget__shopStatusIcon} ${styles.widget__shopStatusIcon_active}`}>
                 Активен
             </div>
-        )
+        );
     }
     if ((isActive && isValid && !isPrimaryCollect)) {
         return (
             <div className={`${styles.widget__shopStatusIcon} ${styles.widget__shopStatusIcon_loading}`}>
                 Сбор данных
             </div>
-        )
+        );
     }
     if ((isActive && !isValid)) {
         return (
             <div className={`${styles.widget__shopStatusIcon} ${styles.widget__shopStatusIcon_error}`}>
                 Ошибка
             </div>
-        )
+        );
     }
-}
+};
 const getShopSelfCostStatus = (is_self_cost_set) => {
     if (is_self_cost_set) {
         return (
             <div className={`${styles.widget__shopStatusIcon} ${styles.widget__shopStatusIcon_active}`}>
                 Установлена
             </div>
-        )
+        );
     }
     if (!is_self_cost_set) {
         return (
             <div className={`${styles.widget__shopStatusIcon} ${styles.widget__shopStatusIcon_error}`}>
                 Не установлена
             </div>
-        )
+        );
     }
-}
+};
 
 const initRequestStatus = {
     isLoading: false,
     isSuccess: false,
     isError: false,
     message: ''
-}
+};
 
 
 export const ShopCardWidget = ({ shop, authToken, setStatusBarState }) => {
     const dispatch = useAppDispatch();
-    const [deleteModalVisible, setDeleteModalVisible] = useState(false)
-    const [editModalVisible, setEditModalVisible] = useState(false)
-    const [deleteShopRequestStatus, setDeleteShopRequestStatus] = useState(initRequestStatus)
-    const [editShopRequestStatus, setEditShopRequestStatus] = useState(initRequestStatus)
-    const [form] = Form.useForm()
-
+    const [deleteModalVisible, setDeleteModalVisible] = useState(false);
+    const [editModalVisible, setEditModalVisible] = useState(false);
+    const [deleteShopRequestStatus, setDeleteShopRequestStatus] = useState(initRequestStatus);
+    const [editShopRequestStatus, setEditShopRequestStatus] = useState(initRequestStatus);
+    const [form] = Form.useForm();
 
 
     const deleteShopHandler = async () => {
         const deleteShopData = {
             shop,
             authToken
-        }
+        };
         shop?.id && dispatch(deleteShop({ deleteShopData, setDeleteShopRequestStatus, initRequestStatus }));
-    }
+    };
 
     const editShopHandler = (fields) => {
         const editData = {
@@ -96,42 +94,42 @@ export const ShopCardWidget = ({ shop, authToken, setStatusBarState }) => {
             name: fields.name,
             shopToken: fields.shopToken,
             authToken
-        }
+        };
         dispatch(editShop({ editData, setEditShopRequestStatus, initRequestStatus }));
-    }
+    };
 
     useEffect(() => {
         if (deleteShopRequestStatus.isSuccess) {
-            dispatch(fetchShops(authToken))
+            dispatch(fetchShops(authToken));
             dispatch(fetchFilters(authToken));
             setStatusBarState({
                 isActive: true,
                 type: 'Success',
                 message: deleteShopRequestStatus.message
-            })
-            setDeleteShopRequestStatus(initRequestStatus)
-            setDeleteModalVisible(false)
+            });
+            setDeleteShopRequestStatus(initRequestStatus);
+            setDeleteModalVisible(false);
         }
         if (deleteShopRequestStatus.isError) {
             setStatusBarState({
                 isActive: true,
                 type: 'Error',
                 message: deleteShopRequestStatus.message
-            })
-            setDeleteShopRequestStatus(initRequestStatus)
-            setDeleteModalVisible(false)
+            });
+            setDeleteShopRequestStatus(initRequestStatus);
+            setDeleteModalVisible(false);
         }
         if (editShopRequestStatus.isSuccess) {
-            form.resetFields()
-            dispatch(fetchShops(authToken))
+            form.resetFields();
+            dispatch(fetchShops(authToken));
             dispatch(fetchFilters(authToken));
             setStatusBarState({
                 isActive: true,
                 type: 'Success',
                 message: editShopRequestStatus.message
-            })
-            setEditShopRequestStatus(initRequestStatus)
-            setEditModalVisible(false)
+            });
+            setEditShopRequestStatus(initRequestStatus);
+            setEditModalVisible(false);
         }
         if (editShopRequestStatus.isError) {
             // setStatusBarState({
@@ -142,13 +140,13 @@ export const ShopCardWidget = ({ shop, authToken, setStatusBarState }) => {
             // setEditShopRequestStatus(initRequestStatus)
             //setEditModalVisible(false)
         }
-    }, [deleteShopRequestStatus, editShopRequestStatus])
+    }, [deleteShopRequestStatus, editShopRequestStatus]);
 
     useEffect(() => {
         if (shop) {
-            form.setFieldValue('name', shop.brand_name)
+            form.setFieldValue('name', shop.brand_name);
         }
-    }, [shop])
+    }, [shop]);
 
     return (
         <div className={styles.widget}>
@@ -184,7 +182,7 @@ export const ShopCardWidget = ({ shop, authToken, setStatusBarState }) => {
                 <div className={styles.widget__token}>
                     <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <circle cx="15" cy="15" r="14" stroke="#8C8C8C" strokeWidth="2" />
-                        <path d="M16.9609 10.6387C17.2523 11.2703 17.8513 11.7052 18.542 11.7871L23.1914 12.3389L19.7539 15.5176C19.2432 15.9898 19.0139 16.6937 19.1494 17.376L20.0625 21.9678L15.9766 19.6807C15.3698 19.3412 14.6302 19.3411 14.0234 19.6807L9.9375 21.9678L10.8506 17.376C10.9861 16.6938 10.7568 15.9898 10.2461 15.5176L6.80859 12.3389L11.458 11.7871C12.1487 11.7052 12.7477 11.2703 13.0391 10.6387L15 6.3877L16.9609 10.6387Z" stroke="#8C8C8C" stroke-width="2" />
+                        <path d="M16.9609 10.6387C17.2523 11.2703 17.8513 11.7052 18.542 11.7871L23.1914 12.3389L19.7539 15.5176C19.2432 15.9898 19.0139 16.6937 19.1494 17.376L20.0625 21.9678L15.9766 19.6807C15.3698 19.3412 14.6302 19.3411 14.0234 19.6807L9.9375 21.9678L10.8506 17.376C10.9861 16.6938 10.7568 15.9898 10.2461 15.5176L6.80859 12.3389L11.458 11.7871C12.1487 11.7052 12.7477 11.2703 13.0391 10.6387L15 6.3877L16.9609 10.6387Z" stroke="#8C8C8C" strokeWidth="2" />
                     </svg>
                     Токен
                 </div>
@@ -193,8 +191,6 @@ export const ShopCardWidget = ({ shop, authToken, setStatusBarState }) => {
 
 
             {/* end of the card */}
-
-
 
 
             {/* modals */}
@@ -260,16 +256,15 @@ export const ShopCardWidget = ({ shop, authToken, setStatusBarState }) => {
             </Modal>
 
 
-
             {/* edit modal */}
             <Modal
                 open={editModalVisible}
                 footer={null}
                 width={700}
                 centered
-                onOk={() => { setEditModalVisible(false); form.resetFields(); setEditShopRequestStatus(initRequestStatus) }}
-                onClose={() => { setEditModalVisible(false); form.resetFields(); setEditShopRequestStatus(initRequestStatus) }}
-                onCancel={() => { setEditModalVisible(false); form.resetFields(); setEditShopRequestStatus(initRequestStatus) }}
+                onOk={() => { setEditModalVisible(false); form.resetFields(); setEditShopRequestStatus(initRequestStatus); }}
+                onClose={() => { setEditModalVisible(false); form.resetFields(); setEditShopRequestStatus(initRequestStatus); }}
+                onCancel={() => { setEditModalVisible(false); form.resetFields(); setEditShopRequestStatus(initRequestStatus); }}
                 closeIcon={
                     <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M10 7.77813L17.7781 0L20 2.22187L12.2219 10L20 17.7781L17.7781 20L10 12.2219L2.22187 20L0 17.7781L7.77813 10L0 2.22187L2.22187 0L10 7.77813Z" fill="#1A1A1A" fillOpacity="0.5" />
@@ -314,9 +309,9 @@ export const ShopCardWidget = ({ shop, authToken, setStatusBarState }) => {
                                     () => ({
                                         validator(_, value) {
                                             if (value && !value.trim()) {
-                                                return Promise.reject(new Error('Пожалуйста, заполните это поле!'))
+                                                return Promise.reject(new Error('Пожалуйста, заполните это поле!'));
                                             }
-                                            return Promise.resolve()
+                                            return Promise.resolve();
                                         },
                                     }),
                                 ]}
@@ -336,9 +331,9 @@ export const ShopCardWidget = ({ shop, authToken, setStatusBarState }) => {
                                     () => ({
                                         validator(_, value) {
                                             if (value && !value.trim()) {
-                                                return Promise.reject(new Error('Пожалуйста, заполните поле корректно!!'))
+                                                return Promise.reject(new Error('Пожалуйста, заполните поле корректно!!'));
                                             }
-                                            return Promise.resolve()
+                                            return Promise.resolve();
                                         },
                                     }),
                                 ]}
@@ -357,7 +352,7 @@ export const ShopCardWidget = ({ shop, authToken, setStatusBarState }) => {
                                         {getShopSelfCostStatus(shop.is_self_cost_set)}
                                         <Link
                                             to='/selfcost'
-                                            onClick={() => { dispatch(filterActions.setActiveShop(shop)) }}
+                                            onClick={() => { dispatch(filterActions.setActiveShop(shop)); }}
                                             className={styles.modal__ssLink}
                                         >
                                             Изменить
@@ -384,5 +379,5 @@ export const ShopCardWidget = ({ shop, authToken, setStatusBarState }) => {
                 </div>
             </Modal>
         </div>
-    )
-}
+    );
+};

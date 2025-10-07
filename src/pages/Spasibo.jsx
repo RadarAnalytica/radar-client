@@ -98,7 +98,7 @@ const Spasibo = () => {
               />
             </svg>
             <div className='top-right-spasibo top-right-height col'>
-             
+
             </div>
           </div>
 

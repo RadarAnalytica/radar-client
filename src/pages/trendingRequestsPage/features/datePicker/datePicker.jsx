@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
-import styles from './datePicker.module.css'
-import { Select, ConfigProvider } from 'antd'
-import { DayPicker } from 'react-day-picker'
+import styles from './datePicker.module.css';
+import { Select, ConfigProvider } from 'antd';
+import { DayPicker } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
 import { ru } from 'date-fns/locale';
 import { format, parse } from 'date-fns';
@@ -10,7 +10,7 @@ import DatePickerCustomDropdown from '../../../../components/sharedComponents/ap
 
 export const DatePicker = ({ selectedDate, setSelectedDate, isExampleDataSet }) => {
     const [month, setMonth] = useState(moment().subtract(30, 'days').format('YYYY-MM-DD'));
-    const [isDropdownOpen, setIsDropdownOpen] = useState(false)
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const datePickerRef = useRef(null);
     const dropdownRef = useRef(null);
     const customRuLocale = {
@@ -39,15 +39,15 @@ export const DatePicker = ({ selectedDate, setSelectedDate, isExampleDataSet }) 
     useEffect(() => {
         const handleClickOutside = (event) => {
             // Проверяем все возможные селекты и их выпадающие списки
-            const isSelectElement = 
+            const isSelectElement =
                 event.target.closest('.ant-select') !== null ||
                 event.target.closest('.ant-select-dropdown') !== null ||
                 event.target.closest('.ant-select-item') !== null ||
                 event.target.closest('.rdp-dropdown') !== null ||
                 event.target.closest('.rdp-caption_dropdowns') !== null;
-            
+
             if (
-                datePickerRef.current && 
+                datePickerRef.current &&
                 !datePickerRef.current.contains(event.target) &&
                 dropdownRef.current &&
                 !dropdownRef.current.contains(event.target) &&
@@ -64,12 +64,12 @@ export const DatePicker = ({ selectedDate, setSelectedDate, isExampleDataSet }) 
     }, [isDropdownOpen]);
 
     const selectClickHandler = (e) => {
-        setIsDropdownOpen(!isDropdownOpen)
-    }
+        setIsDropdownOpen(!isDropdownOpen);
+    };
 
     const handleDayClick = (day) => {
-        setSelectedDate(format(day, 'dd.MM.yyyy'))
-        setIsDropdownOpen(false)
+        setSelectedDate(format(day, 'dd.MM.yyyy'));
+        setIsDropdownOpen(false);
     };
 
     return (
@@ -110,5 +110,5 @@ export const DatePicker = ({ selectedDate, setSelectedDate, isExampleDataSet }) 
                 }
             </div>
         </>
-    )
-}
+    );
+};

@@ -6,10 +6,10 @@ import downArrow from '../assets/down.svg';
 import BottomNavigation from '../components/BottomNavigation';
 import AuthContext from '../service/AuthContext';
 import { ServiceFunctions } from '@/service/serviceFunctions';
-import { fetchABCFilters } from '@/redux/reportABC/abcFiltersActions'
+import { fetchABCFilters } from '@/redux/reportABC/abcFiltersActions';
 import abcFake from '../pages/images/abc_fake.png';
 import DemonstrationSection from '../components/DemonstrationSection';
-import NewFilterGroup from '../components/finReport/FilterGroup'
+import NewFilterGroup from '../components/finReport/FilterGroup';
 import { formatPrice } from '@/service/utils';
 import MobilePlug from '../components/sharedComponents/mobilePlug/mobilePlug';
 import Sidebar from '../components/sharedComponents/sidebar/sidebar';
@@ -79,7 +79,7 @@ const ReportAbcAnalysis = () => {
         </div>
 
 
-        {isDemoMode && 
+        {isDemoMode &&
           <div className='mb-1'>
             <NoSubscriptionWarningBlock />
           </div>

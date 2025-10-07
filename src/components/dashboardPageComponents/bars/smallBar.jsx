@@ -1,4 +1,4 @@
-import styles from './smallBar.module.css'
+import styles from './smallBar.module.css';
 import { Tooltip, ConfigProvider } from 'antd';
 import { formatPrice } from '../../../service/utils';
 import { getRateIcon, getRateStyle } from '../shared/barUtils';
@@ -22,7 +22,7 @@ const SmallBar = ({
                     <span className='loader'></span>
                 </div>
             </div>
-        )
+        );
     }
 
     return (
@@ -67,7 +67,7 @@ const SmallBar = ({
             </div>
 
         </div>
-    )
-}
+    );
+};
 
 export default SmallBar;

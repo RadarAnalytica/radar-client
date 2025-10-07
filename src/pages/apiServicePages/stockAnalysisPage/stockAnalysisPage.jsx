@@ -9,9 +9,9 @@ import DataCollectWarningBlock from '@/components/sharedComponents/dataCollectWa
 import AuthContext from '@/service/AuthContext';
 import { SearchWidget, TableWidget } from './widgets';
 import { ServiceFunctions } from '@/service/serviceFunctions';
-import styles from './stockAnalysisPage.module.css'
+import styles from './stockAnalysisPage.module.css';
 import { mockGetAnalysisData } from '@/service/mockServiceFunctions';
-import NoSubscriptionWarningBlock from '@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock'
+import NoSubscriptionWarningBlock from '@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock';
 import { useDemoMode } from '@/app/providers/DemoDataProvider';
 
 const StockAnalysisPage = () => {
@@ -139,7 +139,7 @@ const StockAnalysisPage = () => {
                 />
             </section>
 x       </main>
-    )
-}
+    );
+};
 
 export default StockAnalysisPage;

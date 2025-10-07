@@ -1,5 +1,5 @@
 import { useState, useContext, useEffect } from 'react';
-import styles from './header.module.css'
+import styles from './header.module.css';
 import Icon from './headerIcon/icon';
 import { Popover } from 'antd';
 import HeaderMenu from './headerMenu/headerMenu';
@@ -15,7 +15,7 @@ const popoverOptions = {
     arrow: false,
     trigger: 'click',
     placement: 'bottomLeft'
-}
+};
 
 const Header = ({
     title = 'Radar Analytica',
@@ -24,7 +24,7 @@ const Header = ({
     videoReviewLink
 }) => {
     const dispatch = useAppDispatch();
-    const { user, logout, authToken } = useContext(AuthContext)
+    const { user, logout, authToken } = useContext(AuthContext);
     // стейт видимости поповера меню
     const [isMenuPopoverVisible, setIsMenuPopoverVisible] = useState(false);
     // сообщения
@@ -39,7 +39,7 @@ const Header = ({
                 dispatch(fetchMessages(authToken));
             }, 60000);
         }
-        return () => { intervalId && clearInterval(intervalId); }
+        return () => { intervalId && clearInterval(intervalId); };
     }, [authToken, messages]);
 
     // пропс для кнопки внутри меню
@@ -114,9 +114,9 @@ const Header = ({
                 }
             </header>
         </div>
-    )
+    );
 
-}
+};
 
 /**
  *     user-select: none;

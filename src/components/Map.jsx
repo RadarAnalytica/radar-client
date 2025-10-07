@@ -296,7 +296,7 @@ const Map = ({ onMouseMove, data, onMouseEnterAction }) => {
               }}
               xmlns='http://www.w3.org/1999/xhtml'
             >
-              <div 
+              <div
                 className="d-flex w-auto align-items-center gap-2"
               >
                 <img
@@ -307,7 +307,7 @@ const Map = ({ onMouseMove, data, onMouseEnterAction }) => {
                   height={16}
                 />
 
-                <p 
+                <p
                   style={{ textAlign: 'center', padding: 0, margin: 0 }}
                 >
                   {Number(data?.centr?.common)} %
@@ -480,13 +480,13 @@ const Map = ({ onMouseMove, data, onMouseEnterAction }) => {
               }}
               xmlns='http://www.w3.org/1999/xhtml'
             >
-              <div 
+              <div
                  className="d-flex w-auto align-items-center gap-2"
               >
-                <img 
+                <img
                   style={{ minWidth: 16, minHeight: 16 }}
-                  src={NorthCircle} 
-                  alt='' 
+                  src={NorthCircle}
+                  alt=''
                   width={16}
                   height={16}
                 />
@@ -495,7 +495,7 @@ const Map = ({ onMouseMove, data, onMouseEnterAction }) => {
                 </p>
               </div>
               <p style={{ textAlign: 'center', padding: 0, margin: 0 }}>
-                
+
                 <img
                   src={
                     data?.northCaucasian?.compare > 0
@@ -735,7 +735,7 @@ const Map = ({ onMouseMove, data, onMouseEnterAction }) => {
                 </p>
               </div>
               <p style={{ textAlign: 'center', margin: 0, padding: 0 }}>
-                
+
                 <img
                   src={
                     data?.southern?.compare > 0
@@ -1250,7 +1250,7 @@ const Map = ({ onMouseMove, data, onMouseEnterAction }) => {
                   {Number(data?.farEastern?.common)} %
                 </p>
               </div>
-              
+
               <p style={{ textAlign: 'center', padding: 0, margin: 0 }}>
                 <img
                   src={
@@ -1790,7 +1790,7 @@ const Map = ({ onMouseMove, data, onMouseEnterAction }) => {
               </p>
               </div>
               <p style={{ textAlign: 'center', padding: 0, margin: 0 }}>
-                
+
                 <img
                   src={
                     data?.siberian?.compare > 0
@@ -2004,9 +2004,9 @@ const Map = ({ onMouseMove, data, onMouseEnterAction }) => {
                   {Number(data?.ural?.common)} %
                 </p>
               </div>
-              
+
               <p style={{ textAlign: 'center', padding: 0, margin: 0 }}>
-                
+
                 <img
                   src={
                     data?.ural?.compare > 0
@@ -2327,7 +2327,7 @@ const Map = ({ onMouseMove, data, onMouseEnterAction }) => {
               </p>
               </div>
               <p style={{ textAlign: 'center', padding: 0, margin: 0 }}>
-                
+
                 <img
                   src={
                     data?.privolzhsky?.compare > 0
@@ -2733,7 +2733,7 @@ const Map = ({ onMouseMove, data, onMouseEnterAction }) => {
               </p>
               </div>
               <p style={{ textAlign: 'center', padding: 0, margin: 0 }}>
-                
+
                 <img
                   src={
                     data?.northWestern?.compare > 0

@@ -1,19 +1,19 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import { URL } from '../service/config';
 import { useLocation, useNavigate } from 'react-router-dom';
-import axios from 'axios'
+import axios from 'axios';
 
 const ConfirmationPage = () => {
 
-    const navigate = useNavigate()
+    const navigate = useNavigate();
 
 
-    const loca = document.location.href
-    const array = loca ? loca.split('/') : []
-    const reverseArr = array.reverse()
+    const loca = document.location.href;
+    const array = loca ? loca.split('/') : [];
+    const reverseArr = array.reverse();
 
-    const email = reverseArr && reverseArr.length ? reverseArr[1] : null
-    const code = reverseArr && reverseArr.length ? reverseArr[0] : null
+    const email = reverseArr && reverseArr.length ? reverseArr[1] : null;
+    const code = reverseArr && reverseArr.length ? reverseArr[0] : null;
 
     useEffect(() => {
         if (email && code) {
@@ -22,11 +22,11 @@ const ConfirmationPage = () => {
             axios.patch(`${URL}/api/user/confirm`, postData)
                 .then(response => {
                     if (response.status === 200) {
-                        navigate('/signin')
+                        navigate('/signin');
                     }
                 })
                 .catch(error => {
-                    alert(error.message)
+                    alert(error.message);
                     console.error('Ошибка при подтверждении', error);
                 });
         }
@@ -42,7 +42,7 @@ const ConfirmationPage = () => {
                 </div>
             }
         </div>
-    )
-}
+    );
+};
 
-export default ConfirmationPage
+export default ConfirmationPage;

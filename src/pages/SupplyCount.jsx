@@ -1,6 +1,6 @@
-import React from 'react'
-import TopNav from '../components/TopNav'
-import SideNav from '../components/SideNav'
+import React from 'react';
+import TopNav from '../components/TopNav';
+import SideNav from '../components/SideNav';
 
 const SupplyCount = () => {
 
@@ -15,7 +15,7 @@ const SupplyCount = () => {
                 </div>
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default SupplyCount
+export default SupplyCount;

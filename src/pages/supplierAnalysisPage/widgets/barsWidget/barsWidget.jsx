@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import styles from './barsWidget.module.css'
+import styles from './barsWidget.module.css';
 import DownloadButton from '../../../../components/DownloadButton';
 import { ConfigProvider, Checkbox, Button } from 'antd';
 import { formatPrice } from '../../../../service/utils';
@@ -9,7 +9,7 @@ import { Bar } from '../../features';
 
 
 /**
- * 
+ *
   "brands": 0,
   "goods": 0,
   "avg_daily_revenue": 0,
@@ -49,14 +49,14 @@ const BARS_CONFIG = [
             index: 'buyout_quantity', units: 'шт'
         }
     },
-]
+];
 
 
 const BarsWidget = ({ dataHandler, dataType, id }) => {
-    const dispatch = useAppDispatch()
-    const widgetData = useAppSelector(state => selectSupplierAnalysisDataByType(state, dataType))
-    const { isSidebarHidden } = useAppSelector(store => store.utils)
-    const { selectedRange } = useAppSelector(store => store.filters)
+    const dispatch = useAppDispatch();
+    const widgetData = useAppSelector(state => selectSupplierAnalysisDataByType(state, dataType));
+    const { isSidebarHidden } = useAppSelector(store => store.utils);
+    const { selectedRange } = useAppSelector(store => store.filters);
 
 
     useEffect(() => {
@@ -64,29 +64,29 @@ const BarsWidget = ({ dataHandler, dataType, id }) => {
             let datesRange;
 
             if (selectedRange.period) {
-                datesRange = selectedRange
+                datesRange = selectedRange;
             } else {
                 datesRange = {
                     date_from: selectedRange.from,
                     date_to: selectedRange.to
-                }
+                };
             }
             const reqData = {
                 "supplier_id": parseInt(id),
                 "page": 1,
                 "limit": 25,
                 ...datesRange
-            }
-            dispatch(dataHandler(reqData))
+            };
+            dispatch(dataHandler(reqData));
         }
-    }, [id, selectedRange])
+    }, [id, selectedRange]);
 
     if (widgetData.isLoading) {
         return (
             <div className={styles.loaderWrapper}>
                 <span className='loader'></span>
             </div>
-        )
+        );
     }
     if (widgetData.isError) {
         return (
@@ -109,22 +109,22 @@ const BarsWidget = ({ dataHandler, dataType, id }) => {
                         onClick={() => {
                             if (selectedRange && id) {
                                 let datesRange;
-                    
+
                                 if (selectedRange.period) {
-                                    datesRange = selectedRange
+                                    datesRange = selectedRange;
                                 } else {
                                     datesRange = {
                                         date_from: selectedRange.from,
                                         date_to: selectedRange.to
-                                    }
+                                    };
                                 }
                                 const reqData = {
                                     "supplier_id": parseInt(id),
                                     "page": 1,
                                     "limit": 25,
                                     ...datesRange
-                                }
-                                dispatch(dataHandler(reqData))
+                                };
+                                dispatch(dataHandler(reqData));
                             }
                         }}
                     >
@@ -132,13 +132,13 @@ const BarsWidget = ({ dataHandler, dataType, id }) => {
                     </Button>
                 </ConfigProvider>
             </div>
-        )
+        );
     }
 
     return (
         <div className={isSidebarHidden ? styles.widget : `${styles.widget} ${styles.widget_2cols}`}>
             {widgetData?.data && Object.keys(widgetData.data).map((_, id) => {
-                const CONFIG = BARS_CONFIG.find(i => i.index === _)
+                const CONFIG = BARS_CONFIG.find(i => i.index === _);
                 return CONFIG && (
                     <Bar
                         key={id}
@@ -151,12 +151,11 @@ const BarsWidget = ({ dataHandler, dataType, id }) => {
                         additionalData={widgetData.data[CONFIG.additionalData?.index]}
                         additionalDataUnits={CONFIG.additionalData?.units}
                     />
-                )
+                );
             })}
         </div>
-    )
-}
+    );
+};
 
 export default BarsWidget;
-
 

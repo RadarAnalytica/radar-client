@@ -1,26 +1,26 @@
-import { useContext, useState } from 'react'
-import styles from './banner.module.css'
-import pic from './assets/board.png'
-import tgs from './assets/tgs.png'
-import { Link } from 'react-router-dom'
-import { URL } from '../../../../../service/config'
-import AuthContext from '../../../../../service/AuthContext'
-import ErrorModal from '../../../../../components/sharedComponents/modals/errorModal/errorModal'
-import SuccessModal from '../../../../../components/sharedComponents/modals/successModal/successModal'
+import { useContext, useState } from 'react';
+import styles from './banner.module.css';
+import pic from './assets/board.png';
+import tgs from './assets/tgs.png';
+import { Link } from 'react-router-dom';
+import { URL } from '../../../../../service/config';
+import AuthContext from '../../../../../service/AuthContext';
+import ErrorModal from '../../../../../components/sharedComponents/modals/errorModal/errorModal';
+import SuccessModal from '../../../../../components/sharedComponents/modals/successModal/successModal';
 
 const initRequestState = {
     isSuccess: false,
     isLoading: false,
     isError: false,
     message: ''
-}
+};
 
 const Top = () => {
-    const [ reqState, setReqState ] = useState(initRequestState)
-    const { authToken } = useContext(AuthContext)
+    const [reqState, setReqState] = useState(initRequestState);
+    const { authToken } = useContext(AuthContext);
 
     const supportRequestHandler = async () => {
-        setReqState({...initRequestState, isLoading: true})
+        setReqState({...initRequestState, isLoading: true});
         try {
             let res = await fetch(`${URL}/api/admin/webhook/consult`, {
                 method: 'POST',
@@ -28,17 +28,17 @@ const Top = () => {
                     'Content-type': 'application/json',
                     'Authorization': 'JWT ' + authToken
                 }
-            })
+            });
             if (!res.ok) {
-                setReqState({...initRequestState, isError: true, message: 'Не удалось отправить запрос2!'})
+                setReqState({...initRequestState, isError: true, message: 'Не удалось отправить запрос2!'});
                 return;
             }
 
-            setReqState({...initRequestState, isSuccess: true})
+            setReqState({...initRequestState, isSuccess: true});
         } catch {
-            setReqState({...initRequestState, isError: true, message: 'Не удалось отправить запрос1!'})
+            setReqState({...initRequestState, isError: true, message: 'Не удалось отправить запрос1!'});
         }
-    }
+    };
 
     return (
         <div className={styles.topWrapper}>
@@ -48,11 +48,11 @@ const Top = () => {
             </div>
 
             <div className={styles.buttonWrapper}>
-                <button 
+                <button
                     className={styles.button}
                     onClick={() => {
                         if (!reqState.isLoading) {
-                            supportRequestHandler()
+                            supportRequestHandler();
                         }
                     }}
                     disabled={reqState.isLoading}
@@ -79,8 +79,8 @@ const Top = () => {
                 onCancel={() => setReqState(initRequestState)}
             />
         </div>
-    )
-}
+    );
+};
 
 const Bottom = () => {
 
@@ -101,15 +101,8 @@ const Bottom = () => {
                 </Link>
             </div>
         </div>
-    )
-}
+    );
+};
 
 
-
-
-
-
-
-
-
-export const Banner = Object.assign({ Top, Bottom })
+export const Banner = Object.assign({ Top, Bottom });

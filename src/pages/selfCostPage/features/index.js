@@ -1,2 +1,2 @@
 import TableRow from "./tableRow/tableRow";
-export { TableRow }
+export { TableRow };

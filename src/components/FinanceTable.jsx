@@ -84,7 +84,7 @@ export const TableRow = ({ values, percent, sign, tableType, tooltipList }) => {
                     ? 0 + " %"
                     : val} */}
                   {i === 0 &&
-                  tableType === 1 && 
+                  tableType === 1 &&
                   (val in tooltipList)
                   // (val === "Выручка" ||
                   //   val === "Маржинальная стоимость" ||

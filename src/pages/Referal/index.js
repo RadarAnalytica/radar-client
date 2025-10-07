@@ -1,3 +1,3 @@
-import ReferalPage from './Referal'
+import ReferalPage from './Referal';
 
 export default ReferalPage;

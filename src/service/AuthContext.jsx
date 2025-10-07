@@ -36,7 +36,7 @@ export const AuthProvider = ({ children }) => {
     }
 
     console.log('user', user);
-    
+
   }, [value]);
 
   // To delete the cookie:

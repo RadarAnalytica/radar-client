@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react"
-import styles from './tableMiniChart.module.css'
+import React, { useState, useEffect } from "react";
+import styles from './tableMiniChart.module.css';
 import { Chart } from 'react-chartjs-2';
 import { Bar } from 'react-chartjs-2';
 import { Chart as ChartJS, BarElement, CategoryScale, LinearScale, Tooltip, Legend } from 'chart.js';
@@ -22,7 +22,7 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 
 const TableMiniChart = ({ data }) => {
 
-    const [normilizedChartData, setNormilizedChartData] = useState()
+    const [normilizedChartData, setNormilizedChartData] = useState();
 
     useEffect(() => {
         if (data) {
@@ -49,15 +49,15 @@ const TableMiniChart = ({ data }) => {
                             // if (clickedIndex !== null && context.dataIndex !== clickedIndex) {
                             //     return 'rgba(240, 173, 0, 0.3)';
                             // }
-                            return gradient
+                            return gradient;
                             //return context.dataIndex === clickedIndex ? '#F0AD00' : gradient;
                         },
                     }
                 ]
-            }
-            setNormilizedChartData(normilizedData)
+            };
+            setNormilizedChartData(normilizedData);
         }
-    }, [data])
+    }, [data]);
 
     const chartOptions = {
         responsive: true,
@@ -95,7 +95,7 @@ const TableMiniChart = ({ data }) => {
                 //min: 0,
             },
         },
-    }
+    };
 
 
     return (
@@ -114,7 +114,7 @@ const TableMiniChart = ({ data }) => {
                 />
             }
         </div>
-    )
-}
+    );
+};
 
 export default TableMiniChart;

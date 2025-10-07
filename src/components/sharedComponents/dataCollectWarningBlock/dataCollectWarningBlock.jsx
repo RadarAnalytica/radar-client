@@ -1,6 +1,6 @@
-import styles from './dataCollectWarningBlock.module.css'
-import cover from './cover.png'
-import header_bg from './header_bg.png'
+import styles from './dataCollectWarningBlock.module.css';
+import cover from './cover.png';
+import header_bg from './header_bg.png';
 
 const DataCollectWarningBlock = ({bigPreview = true}) => {
     return (
@@ -17,6 +17,6 @@ const DataCollectWarningBlock = ({bigPreview = true}) => {
             </div> }
         </div>
     );
-}
+};
 
 export default DataCollectWarningBlock;

@@ -1,16 +1,16 @@
 import { useEffect } from 'react';
-import styles from './goodsTableCustomHeader.module.css'
-import { ConfigProvider, Select } from 'antd'
-import { useAppSelector, useAppDispatch } from '../../../../redux/hooks'
-import { actions as supplierAnalysisActions } from '../../../../redux/supplierAnalysis/supplierAnalysisSlice'
-import { selectSupplierCurrentBrand, selectSupplierBrands } from '../../../../redux/supplierAnalysis/supplierAnalysisSelectors'
+import styles from './goodsTableCustomHeader.module.css';
+import { ConfigProvider, Select } from 'antd';
+import { useAppSelector, useAppDispatch } from '../../../../redux/hooks';
+import { actions as supplierAnalysisActions } from '../../../../redux/supplierAnalysis/supplierAnalysisSlice';
+import { selectSupplierCurrentBrand, selectSupplierBrands } from '../../../../redux/supplierAnalysis/supplierAnalysisSelectors';
 import { fetchSupplierAnalysisBrandsData } from '../../../../redux/supplierAnalysis/supplierAnalysisActions';
 
 const GoodsTableCustomHeader = ({ id }) => {
 
     const dispatch = useAppDispatch();
-    const supplierCurrentBrand = useAppSelector(selectSupplierCurrentBrand)
-    const supplierBrands = useAppSelector(selectSupplierBrands)
+    const supplierCurrentBrand = useAppSelector(selectSupplierCurrentBrand);
+    const supplierBrands = useAppSelector(selectSupplierBrands);
     useEffect(() => {
 
         if (id) {
@@ -25,11 +25,11 @@ const GoodsTableCustomHeader = ({ id }) => {
                 //     "sort_field": "revenue",
                 //     "sort_order": "DESC"
                 // }
-            }
-            dispatch(fetchSupplierAnalysisBrandsData(requestObject))
+            };
+            dispatch(fetchSupplierAnalysisBrandsData(requestObject));
         }
 
-    }, [id])
+    }, [id]);
 
     return (
         <div className={styles.header}>
@@ -75,7 +75,7 @@ const GoodsTableCustomHeader = ({ id }) => {
                 }
             </ConfigProvider>
         </div>
-    )
-}
+    );
+};
 
 export default GoodsTableCustomHeader;

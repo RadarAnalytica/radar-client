@@ -1,1 +1,1 @@
-export { StatusBanner } from './ui/statusBanner/statusBanner'
+export { StatusBanner } from './ui/statusBanner/statusBanner';

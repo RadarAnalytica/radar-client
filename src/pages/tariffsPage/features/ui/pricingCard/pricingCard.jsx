@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
-import styles from './pricingCard.module.css'
+import styles from './pricingCard.module.css';
 import { formatPrice } from '../../../../../service/utils';
 import { LoadingOutlined } from '@ant-design/icons';
 
 export const PricingCard = ({ item, setModalItem, action, isWidgetActive}) => {
 
-    const [ currentActiveItem, setCurrentActiveItem ] = useState(undefined);
+    const [currentActiveItem, setCurrentActiveItem] = useState(undefined);
 
     useEffect(() => {
         if (!isWidgetActive) {
@@ -49,7 +49,7 @@ export const PricingCard = ({ item, setModalItem, action, isWidgetActive}) => {
                     <button
                         className={styles.card__actionButton}
                         style={{ width: '100%', paddingLeft: 0, paddingRight: 0 }}
-                        onClick={() => { action(); setCurrentActiveItem(item) }}
+                        onClick={() => { action(); setCurrentActiveItem(item); }}
                         disabled={isWidgetActive}
                     >
                         {isWidgetActive && currentActiveItem?.title === item.title && <LoadingOutlined />}
@@ -58,5 +58,5 @@ export const PricingCard = ({ item, setModalItem, action, isWidgetActive}) => {
                     </button>
             </div>
         </div>
-    )
-}
+    );
+};

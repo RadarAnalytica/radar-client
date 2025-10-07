@@ -18,28 +18,28 @@ const ImageMasonry = ({ images, onImageClick, selectedImages, onImageDoubleClick
       <div className={styles.grid}>
         {images.length > 1 ? (
           <>
-            <img 
-              src={images[0]} 
-              alt="First image" 
+            <img
+              src={images[0]}
+              alt="First image"
               className={`${styles.mainImage} ${selectedImages.includes(images[0]) ? styles.selected : ''}`}
               onClick={(e) => handleImageClick(images[0], e)}
               onContextMenu={(e) => {
                 e.preventDefault();
-                handleImageClick(images[0], e)
+                handleImageClick(images[0], e);
               }}
               onDoubleClick={() => onImageDoubleClick(images[0])}
             />
             <div className={styles.smallImagesGrid}>
               {images.slice(1, 4).map((image, index) => (
-                <img 
-                  key={index} 
-                  src={image} 
-                  alt={`Image ${index + 2}`} 
+                <img
+                  key={index}
+                  src={image}
+                  alt={`Image ${index + 2}`}
                   className={`${styles.smallImage} ${selectedImages.includes(image) ? styles.selected : ''}`}
                   onClick={(e) => handleImageClick(image, e)}
                   onContextMenu={(e) => {
                     e.preventDefault();
-                    handleImageClick(image, e)
+                    handleImageClick(image, e);
                   }}
                   onDoubleClick={() => onImageDoubleClick(image)}
                 />
@@ -47,14 +47,14 @@ const ImageMasonry = ({ images, onImageClick, selectedImages, onImageDoubleClick
             </div>
           </>
         ) : (
-          <img 
-            src={images[0]} 
-            alt="Single image" 
+          <img
+            src={images[0]}
+            alt="Single image"
             className={`${styles.mainImage} ${selectedImages.includes(images[0]) ? styles.selected : ''}`}
             onClick={(e) => handleImageClick(images[0], e)}
             onContextMenu={(e) => {
-              e.preventDefault(); 
-              handleImageClick(images[0], e)
+              e.preventDefault();
+              handleImageClick(images[0], e);
             }}
             onDoubleClick={() => onImageDoubleClick(images[0])}
           />

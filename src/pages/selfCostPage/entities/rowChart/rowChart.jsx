@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import styles from './rowChart.module.css'
+import styles from './rowChart.module.css';
 import { Chart } from 'react-chartjs-2';
 import { CategoryScale, LinearScale, Chart as ChartJS, Filler, BarController, PointElement, BarElement, LineElement, LineController, Tooltip } from 'chart.js';
 import moment from 'moment';
@@ -18,13 +18,13 @@ ChartJS.register(
 
 const RowChart = ({ product, data }) => {
 
-    const [chartData, setChartData] = useState(null)
-    const [chartWidth, setChartWidth] = useState(null)
+    const [chartData, setChartData] = useState(null);
+    const [chartWidth, setChartWidth] = useState(null);
 
     useEffect(() => {
         if (data && product) {
             const chartNormilizedData = {
-                labels: [ 'По умолчанию' , ...data.map(i => moment(i.date).format('DD.MM.YY'))],
+                labels: ['По умолчанию' , ...data.map(i => moment(i.date).format('DD.MM.YY'))],
                 datasets: [
                     {
                         label: '1',
@@ -51,13 +51,13 @@ const RowChart = ({ product, data }) => {
                         yAxisID: 'y',
                     }
                 ]
-            }
-            setChartData({...chartNormilizedData })
-            setChartWidth(data.length * 180)
+            };
+            setChartData({...chartNormilizedData });
+            setChartWidth(data.length * 180);
         }
 
 
-    }, [data, product])
+    }, [data, product]);
 
     const chartOptions = {
         resposive: false,
@@ -98,7 +98,7 @@ const RowChart = ({ product, data }) => {
                 },
             },
         },
-    }
+    };
 
     return (
         <>
@@ -113,7 +113,7 @@ const RowChart = ({ product, data }) => {
                 </div>
             }
         </>
-    )
-}
+    );
+};
 
 export default RowChart;

@@ -1,6 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
-import aiGenIcon from '../../../../assets/aiGenerator.svg'
-import styles from './navLink.module.css'
+import aiGenIcon from '../../../../assets/aiGenerator.svg';
+import styles from './navLink.module.css';
 import { featuresIcons } from "../shared/icons/icons";
 
 const finReportsUrls = [
@@ -14,30 +14,30 @@ const finReportsUrls = [
     '/prime-cost',
     '/buy-back',
     '/external-expenses'
-]
+];
 
 const NavLink = ({ url, title, icon, isMenuHidden, item }) => {
-    const { pathname } = useLocation()
+    const { pathname } = useLocation();
 
-    let style = styles.navLink
+    let style = styles.navLink;
     if (title !== 'Оцифровка еженедельных отчетов' && pathname !== '/abc-data-reports') {
-        style = pathname.includes(url) ? `${styles.navLink} ${styles.navLink_activeNoIcon}` : style
+        style = pathname.includes(url) ? `${styles.navLink} ${styles.navLink_activeNoIcon}` : style;
     }
     if (title === 'Оцифровка еженедельных отчетов') {
         if (pathname === url) {
-            style = `${styles.navLink} ${styles.navLink_activeNoIcon}`
+            style = `${styles.navLink} ${styles.navLink_activeNoIcon}`;
         }
         const isInArr = finReportsUrls.some(_ => _ === pathname) || pathname.includes(url);
         if (isInArr) {
-            style = `${styles.navLink} ${styles.navLink_activeNoIcon}`
+            style = `${styles.navLink} ${styles.navLink_activeNoIcon}`;
         }
         if (!isInArr)
-            style = styles.navLink
+            style = styles.navLink;
     }
 
     return (
         <>
-            {item.hasTopBorder && 
+            {item.hasTopBorder &&
                 <div className={styles.navLink__lineWrapper}>
                 </div>
             }
@@ -63,7 +63,7 @@ const NavLink = ({ url, title, icon, isMenuHidden, item }) => {
                 }
             </Link>
         </>
-    )
-}
+    );
+};
 
 export default NavLink;

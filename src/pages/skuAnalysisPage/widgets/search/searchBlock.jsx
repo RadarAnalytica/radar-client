@@ -1,9 +1,9 @@
-import React, { useState, useRef, useEffect } from 'react'
-import styles from './searchBlock.module.css'
+import React, { useState, useRef, useEffect } from 'react';
+import styles from './searchBlock.module.css';
 import { Input, ConfigProvider, Button } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { useAppSelector, useAppDispatch } from '../../../../redux/hooks';
-import { actions as skuAnalysisActions } from '../../../../redux/skuAnalysis/skuAnalysisSlice'
+import { actions as skuAnalysisActions } from '../../../../redux/skuAnalysis/skuAnalysisSlice';
 import ErrorModal from '../../../../components/sharedComponents/modals/errorModal/errorModal';
 
 
@@ -12,47 +12,47 @@ const requestInitState = {
     isError: false,
     isSuccess: false,
     message: ''
-}
+};
 
 const SearchBlock = () => {
-    const dispatch = useAppDispatch()
-    const inputRef = useRef(null)
-    const [inputValue, setInputValue] = useState('')
-    const [requestStatus, setRequestStatus] = useState(requestInitState)
-    const { skuSearchHistory } = useAppSelector(store => store.skuAnalysis)
-    const navigate = useNavigate()
+    const dispatch = useAppDispatch();
+    const inputRef = useRef(null);
+    const [inputValue, setInputValue] = useState('');
+    const [requestStatus, setRequestStatus] = useState(requestInitState);
+    const { skuSearchHistory } = useAppSelector(store => store.skuAnalysis);
+    const navigate = useNavigate();
 
 
     const historyButtonClickHandler = (e) => {
         const { id } = e.target;
-        setInputValue(id)
-        navigate(`/sku-analysis/${id}`)
-    }
+        setInputValue(id);
+        navigate(`/sku-analysis/${id}`);
+    };
 
     const searchSubmitHandler = (e) => {
-        if (e && e.key && e.key !== 'Enter') return
+        if (e && e.key && e.key !== 'Enter') return;
         let normilizedId;
         if (/^(|\d+)$/.test(inputValue)) {
-            normilizedId = inputValue
+            normilizedId = inputValue;
         } else {
-            const startId = inputValue.indexOf('wildberries.ru/catalog/') + 'wildberries.ru/catalog/'.length
-            const endId = inputValue.indexOf('/detail.aspx')
+            const startId = inputValue.indexOf('wildberries.ru/catalog/') + 'wildberries.ru/catalog/'.length;
+            const endId = inputValue.indexOf('/detail.aspx');
             if (startId === -1 || endId === -1) {
-                setRequestStatus({ ...requestInitState, isError: true, message: 'Не верный формат артикула. Вставьте только числа или ссылку вида: https://www.wildberries.ru/catalog/ID/detail.aspx' })
-                setInputValue('')
-                return
+                setRequestStatus({ ...requestInitState, isError: true, message: 'Не верный формат артикула. Вставьте только числа или ссылку вида: https://www.wildberries.ru/catalog/ID/detail.aspx' });
+                setInputValue('');
+                return;
             }
-            normilizedId = inputValue.substring(startId, endId)
+            normilizedId = inputValue.substring(startId, endId);
         }
 
-        navigate(`/sku-analysis/${normilizedId}`)
-    }
+        navigate(`/sku-analysis/${normilizedId}`);
+    };
 
     useEffect(() => {
         if (inputRef && inputRef.current) {
-            inputRef.current.focus()
+            inputRef.current.focus();
         }
-    }, [])
+    }, []);
 
     return (
         <div className={styles.search}>
@@ -79,7 +79,7 @@ const SearchBlock = () => {
                         size='large'
                         value={inputValue}
                         onChange={(e) => setInputValue(e.target.value)}
-                        onKeyDown={(e) => { searchSubmitHandler(e) }}
+                        onKeyDown={(e) => { searchSubmitHandler(e); }}
                         className={styles.search__input}
                     />
                     <Button
@@ -101,15 +101,15 @@ const SearchBlock = () => {
                     {skuSearchHistory.map((i, id) => {
 
                         return (
-                            <button 
-                                className={styles.search__historyItem} 
+                            <button
+                                className={styles.search__historyItem}
                                 key={id}
                                 id={i}
                                 onClick={historyButtonClickHandler}
                             >
                                 {i}
                             </button>
-                        )
+                        );
                     })}
 
                     <button className={styles.search__historyDeleteButton} onClick={() => dispatch(skuAnalysisActions.resetSkuSearchHistory())}>
@@ -122,7 +122,6 @@ const SearchBlock = () => {
             }
 
 
-
             <ErrorModal
                 footer={null}
                 open={requestStatus.isError}
@@ -132,7 +131,7 @@ const SearchBlock = () => {
                 message={requestStatus.message}
             />
         </div>
-    )
-}
+    );
+};
 
 export default SearchBlock;

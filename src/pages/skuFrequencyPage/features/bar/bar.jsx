@@ -1,7 +1,7 @@
-import styles from './bar.module.css'
-import { formatRateValue } from '../../shared'
-import { formatPrice } from '../../../../service/utils'
-import { Link } from 'react-router-dom'
+import styles from './bar.module.css';
+import { formatRateValue } from '../../shared';
+import { formatPrice } from '../../../../service/utils';
+import { Link } from 'react-router-dom';
 
 const SmallBar = ({ title, data, units }) => {
     return (
@@ -9,10 +9,10 @@ const SmallBar = ({ title, data, units }) => {
             <p className={`${styles.bar__title} ${styles.bar__title_small} `}>{title}</p>
             <p className={`${styles.bar__data} ${styles.bar__data_small}`}>{formatPrice(data, units)}</p>
         </div>
-    )
-}
+    );
+};
 const MediumBar = ({ title, data, rate, units }) => {
-    const rateObject = formatRateValue(rate)
+    const rateObject = formatRateValue(rate);
     return (
         <div className={`${styles.bar} ${styles.bar_medium}`}>
             <p className={styles.bar__title}>{title}</p>
@@ -26,8 +26,8 @@ const MediumBar = ({ title, data, rate, units }) => {
                 }
             </div>
         </div>
-    )
-}
+    );
+};
 
 const LargeBar = ({ data, link, title, icon, type }) => {
 
@@ -63,13 +63,13 @@ const LargeBar = ({ data, link, title, icon, type }) => {
                 ))}
             </div>
         </div>
-    )
-}
+    );
+};
 
 
 const Bar = {
     Small: SmallBar,
     Medium: MediumBar,
     Large: LargeBar
-}
+};
 export default Bar;

@@ -10,7 +10,7 @@ const DashboardFilter = ({
   shops, setActiveBrand, setSelectedRange, selectedRange, activeBrand
 }) => {
   const { authToken } = useContext(AuthContext);
-  
+
 
   const weekAgo = new Date(new Date().setDate(new Date().getDate() - 7))
     .toLocaleDateString('ru')
@@ -63,13 +63,13 @@ const DashboardFilter = ({
     is_valid: true,
   };
 
-  const shopArrayFormSelect = [allShopOptionAsShopObject, ...shops]
+  const shopArrayFormSelect = [allShopOptionAsShopObject, ...shops];
 
   return (
     <div className='filter container filter-panel  dash-container p-3 pb-4 pt-0 d-flex'>
       <div className='row'>
         <div className='filter-item col' style={{ position: 'relative' }}>
-          <Period 
+          <Period
             selectedRange={selectedRange}
             setSelectedRange={setSelectedRange}
           />
@@ -147,9 +147,9 @@ const DashboardFilter = ({
               id='store'
               value={activeBrand?.id}
               onChange={(e) => {
-                const { value } = e.target
-                const selectedShop = shopArrayFormSelect.find(_ => _.id.toString() === value)
-                setActiveBrand(selectedShop)
+                const { value } = e.target;
+                const selectedShop = shopArrayFormSelect.find(_ => _.id.toString() === value);
+                setActiveBrand(selectedShop);
               }}
             >
               {shopArrayFormSelect &&

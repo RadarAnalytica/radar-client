@@ -10,7 +10,7 @@ const ScheduleBigChart = ({ labels, dataRevenue, dataNetProfit, minDataRevenue, 
     //console.log('dataRevenue', dataRevenue);
     //console.log('dataNetProfit', dataNetProfit);
     //console.log('labels 1', labels);
-    
+
     const data = {
         labels: labels,
         datasets: [

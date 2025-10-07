@@ -5,7 +5,7 @@ import { fetchByGoodsFilters } from '@/redux/reportByGoods/byGoodsFiltersAction'
 import AuthContext from '../service/AuthContext';
 import TableByGoods from '../components/TableByGoods';
 import BottomNavigation from '../components/BottomNavigation';
-import NewFilterGroup from '../components/finReport/FilterGroup'
+import NewFilterGroup from '../components/finReport/FilterGroup';
 import MobilePlug from '../components/sharedComponents/mobilePlug/mobilePlug';
 import Sidebar from '../components/sharedComponents/sidebar/sidebar';
 import Header from '../components/sharedComponents/header/header';
@@ -51,7 +51,7 @@ const WeeklyReportByGoods = () => {
           <Header title={'По товарам'} titlePrefix={'Отчёт'} />
         </div>
 
-        {isDemoMode && 
+        {isDemoMode &&
           <div className='mb-1'>
             <NoSubscriptionWarningBlock />
           </div>
@@ -87,7 +87,7 @@ const WeeklyReportByGoods = () => {
             </div>
           }
         </div>
-        
+
         <BottomNavigation />
       </div>
     </div>

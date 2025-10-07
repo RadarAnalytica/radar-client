@@ -1,6 +1,6 @@
-import { useState, useEffect, useRef, forwardRef } from 'react'
-import styles from './videoReviews.module.css'
-import { VideoCard } from '../../features'
+import { useState, useEffect, useRef, forwardRef } from 'react';
+import styles from './videoReviews.module.css';
+import { VideoCard } from '../../features';
 
 
 export const VIDEO_CARDS_CONFIG = [
@@ -34,15 +34,15 @@ export const VIDEO_CARDS_CONFIG = [
         // video: cover,
         videoSrc: "https://play.boomstream.com/YdvSIQ0U?color=transparent&title=0&size=cover"
     },
-]
+];
 
 export const VideoReviews = () => {
 
-    const [cards, setCards] = useState(VIDEO_CARDS_CONFIG)
-    const containerRef = useRef(null)
+    const [cards, setCards] = useState(VIDEO_CARDS_CONFIG);
+    const containerRef = useRef(null);
 
     const handleScroll = (direction) => {
-        const card = document.querySelector('#card-0') // searching for the first card
+        const card = document.querySelector('#card-0'); // searching for the first card
         if (containerRef?.current && card) {
             const cardWidth = card.offsetWidth; // width of the card
 
@@ -62,34 +62,34 @@ export const VideoReviews = () => {
                 entries.forEach(_ => {
                     if (_.isIntersecting && containerRef.current) {
                         const scrollWidth = containerRef.current?.scrollWidth; // getting scroll width of the container
-                        const scrollPosition = containerRef.current?.scrollLeft // getting scroll position
-                        const containerWidth = containerRef.current?.offsetWidth // width of the container
-                        const isScrolledToTheLastScreen = (scrollPosition + containerWidth) >= containerWidth * 3
-                        let backScrollTrigger = Math.round(scrollWidth / containerWidth) >= 3
+                        const scrollPosition = containerRef.current?.scrollLeft; // getting scroll position
+                        const containerWidth = containerRef.current?.offsetWidth; // width of the container
+                        const isScrolledToTheLastScreen = (scrollPosition + containerWidth) >= containerWidth * 3;
+                        let backScrollTrigger = Math.round(scrollWidth / containerWidth) >= 3;
 
                         if (backScrollTrigger && isScrolledToTheLastScreen) {
-                            return
+                            return;
                         } else {
-                            setCards([...cards, ...VIDEO_CARDS_CONFIG])
+                            setCards([...cards, ...VIDEO_CARDS_CONFIG]);
                         }
 
                     }
-                })
+                });
             }, {
                 root: containerRef.current,
                 rootMargin: '0px',
-            })
-            el = document.querySelector(`#card-${cards.length - 1}`)
+            });
+            el = document.querySelector(`#card-${cards.length - 1}`);
             if (el) {
-                observer.observe(el)
+                observer.observe(el);
             }
         }
         return () => {
             if (observer && el) {
-                observer.unobserve(el)
+                observer.unobserve(el);
             }
-        }
-    }, [cards])
+        };
+    }, [cards]);
 
     return (
         <section className={styles.screen}>
@@ -131,19 +131,19 @@ export const VideoReviews = () => {
                         {cards.map((_, id) => {
                             return (
                                 <VideoCard item={_} key={id} id={id.toString()} />
-                            )
+                            );
                         })}
                     </CarouselContainer>
                 </div>
             </div>
         </section>
-    )
-}
+    );
+};
 
 
 const CarouselContainer = forwardRef(({ children, isCenteredOn1920plus }, ref) => {
     // const isCenteredOn1920Style = isCenteredOn1920plus ? 'centeredOn1920' : 'notCenteredOn1920'
-    const [isScrolling, setIsScrolling] = useState(false)
+    const [isScrolling, setIsScrolling] = useState(false);
 
     return (
         <div className={isScrolling ? `${styles.wrapper} ${styles.wrapper_shadow}` : styles.wrapper}>
@@ -152,12 +152,12 @@ const CarouselContainer = forwardRef(({ children, isCenteredOn1920plus }, ref) =
                 className={`${styles.slider} ${styles.slider_notCenteredOn1920}`}
                 ref={ref}
                 onScroll={() => {
-                    setIsScrolling(true)
+                    setIsScrolling(true);
                 }}
                 onScrollEnd={() => setIsScrolling(false)}
             >
                 {children}
             </div>
         </div>
-    )
-})
+    );
+});

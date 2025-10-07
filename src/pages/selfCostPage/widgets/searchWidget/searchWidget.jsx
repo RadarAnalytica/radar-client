@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import styles from './searchWidget.module.css'
+import styles from './searchWidget.module.css';
 import { Input, ConfigProvider, Button } from 'antd';
 
 const getFilteredData = (query, data) => {
@@ -14,34 +14,34 @@ const getFilteredData = (query, data) => {
     }
 
     return filteredData;
-}
+};
 
 const SearchWidget = ({ tableData, setFilteredTableData, searchInputValue, setSearchInputValue, noSearchAction }) => {
 
     const inputKeydownHandler = (e) => {
-        if (e && e.key !== 'Enter') return
-        setFilteredTableData(getFilteredData(searchInputValue.trim(), tableData))
-    }
+        if (e && e.key !== 'Enter') return;
+        setFilteredTableData(getFilteredData(searchInputValue.trim(), tableData));
+    };
     const searchButtonClickHandler = () => {
-        setFilteredTableData(getFilteredData(searchInputValue.trim(), tableData))
-    }
+        setFilteredTableData(getFilteredData(searchInputValue.trim(), tableData));
+    };
     const inputChangeHandler = (e) => {
         if (e.target.value === '') {
-            noSearchAction()
+            noSearchAction();
             //setFilteredTableData(JSON.parse(JSON.stringify(tableData)))
         }
-        setSearchInputValue(e.target.value)
+        setSearchInputValue(e.target.value);
         // const regex = /^[a-zA-Zа-яА-Я0-9\s]*$/;
         // if (regex.test(e.target.value)) {
         //     setSearchInputValue(e.target.value)
         // }
-    }
+    };
 
     useEffect(() => {
         if (searchInputValue) {
-            setFilteredTableData(getFilteredData(searchInputValue.trim(), tableData))
+            setFilteredTableData(getFilteredData(searchInputValue.trim(), tableData));
         }
-    }, [tableData])
+    }, [tableData]);
 
     return (
         <div className={styles.widget}>
@@ -101,7 +101,7 @@ const SearchWidget = ({ tableData, setFilteredTableData, searchInputValue, setSe
                 </ConfigProvider>
             </div>
         </div>
-    )
-}
+    );
+};
 
 export default SearchWidget;

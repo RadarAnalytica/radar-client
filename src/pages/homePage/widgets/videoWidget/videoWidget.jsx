@@ -1,5 +1,5 @@
-import styles from './videoWidget.module.css'
-import { VIDEOS } from './config'
+import styles from './videoWidget.module.css';
+import { VIDEOS } from './config';
 
 
 export const VideoWidget = () => {
@@ -25,13 +25,13 @@ export const VideoWidget = () => {
                             //allow="autoplay"
                             ></iframe>
                         </div>
-                    )
+                    );
                 } else {
                     return (
                         <div className={styles.card} key={id}>
                             <img src={_.plug} alt='' />
                         </div>
-                    )
+                    );
                 }
             })}
 
@@ -55,5 +55,5 @@ export const VideoWidget = () => {
                 Следите за показателями ваших конкурентов и анализируйте потенциал их ниш.
             </div>
         </div>
-    )
-}
+    );
+};

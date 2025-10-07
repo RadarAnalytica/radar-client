@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect, useRef } from "react";
 import AuthContext from "../service/AuthContext";
-import styles from './StartPage.module.css'
+import styles from './StartPage.module.css';
 import { Link } from "react-router-dom";
 import PopupBanner from "../components/sharedComponents/popupBanner/PopupBanner";
 import TgBanner from "../components/startPageComponents/tgBanner/TgBanner";
@@ -9,14 +9,12 @@ import MobilePlug from "../components/sharedComponents/mobilePlug/mobilePlug";
 import Sidebar from "../components/sharedComponents/sidebar/sidebar";
 
 
-
-
 // Main page for authorized user
 const StartPage = () => {
-    const ref = useRef(null)
+    const ref = useRef(null);
     const { user } = useContext(AuthContext);
-    const [playVideo, setPlayVideo] = useState(0)
-    const [videoSource, setVideoSource] = useState('https://play.boomstream.com/I4yecQZ8?size=cover&title=0&start=1&color=%23F7F6FE&autostart=0&volume=50')
+    const [playVideo, setPlayVideo] = useState(0);
+    const [videoSource, setVideoSource] = useState('https://play.boomstream.com/I4yecQZ8?size=cover&title=0&start=1&color=%23F7F6FE&autostart=0&volume=50');
 
     useEffect(() => {
         window.addEventListener('message', receiveMessage, false);
@@ -26,22 +24,22 @@ const StartPage = () => {
             }
 
             if (event.data.method === 'play') {
-                setPlayVideo(1)
+                setPlayVideo(1);
             }
 
             if (event.data.method === 'pause') {
-                setPlayVideo(0)
+                setPlayVideo(0);
             }
         }
 
-        return () => { window.removeEventListener('message', receiveMessage) }
-    }, [])
+        return () => { window.removeEventListener('message', receiveMessage); };
+    }, []);
 
     const playClickHandler = () => {
         ref.current.contentWindow.postMessage({ code: `https://play.boomstream.com/I4yecQZ8?size=cover&title=0&start=1&color=%23F7F6FE&autostart=0&volume=50`, method: 'action', action: 'play', data: '' }, '*');
         //
         // setVideoSource('https://play.boomstream.com/QLwHwcta?size=cover&title=0&start=1&color=%23F7F6FE&autostart=1&volume=50')
-    }
+    };
 
 
     return (
@@ -139,7 +137,7 @@ const StartPage = () => {
 
             </section>
         </main>
-    )
-}
+    );
+};
 
 export default StartPage;

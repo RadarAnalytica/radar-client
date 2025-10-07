@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext, useRef, useCallback, useMemo } from 'react';
-import styles from './addRnpModal.module.css'
-import AddRnpModalFooter from './widget/AddRnpModalFooter/AddRnpModalFooter'
+import styles from './addRnpModal.module.css';
+import AddRnpModalFooter from './widget/AddRnpModalFooter/AddRnpModalFooter';
 import { Modal, Checkbox, ConfigProvider, Pagination, Flex, Tooltip } from 'antd';
 import AuthContext from '@/service/AuthContext';
 import { useAppSelector } from '@/redux/hooks';
@@ -20,7 +20,7 @@ const AddRnpModal = ({ isAddRnpModalVisible, setIsAddRnpModalVisible, addRnp }) 
     const { isDemoMode } = useDemoMode();
     const { shops, activeBrand, selectedRange } = useAppSelector( (state) => state.filtersRnpAdd );
     const filters = useAppSelector((state) => state.filtersRnpAdd);
-    const [ rnpSelected, setRnpSelected ] = useState(null);
+    const [rnpSelected, setRnpSelected] = useState(null);
 
     const shopStatus = useMemo(() => {
         if (!activeBrand || !shops) return null;
@@ -52,32 +52,32 @@ const AddRnpModal = ({ isAddRnpModalVisible, setIsAddRnpModalVisible, addRnp }) 
 
     const submitRnpDataArticle = () => {
         addRnp(rnpSelected);
-    }
+    };
 
     const selectRnpHandler = (value) => {
         let list = [];
         if (rnpSelected.includes(value)){
-            list = rnpSelected.filter((el) => el !== value)
+            list = rnpSelected.filter((el) => el !== value);
         } else {
-            list = [...rnpSelected, value]
+            list = [...rnpSelected, value];
         }
         setRnpSelected(list);
-    }
+    };
 
     useEffect(() => {
         if ( page !== 1 ){
-            setPage(1)
+            setPage(1);
         }
         setRequest((state) => Date.now());
-    }, [search, filters])
-    
-    useEffect(() => {
-        setRequest((state) => Date.now());
-    }, [page])
+    }, [search, filters]);
 
     useEffect(() => {
         setRequest((state) => Date.now());
-    }, [page])
+    }, [page]);
+
+    useEffect(() => {
+        setRequest((state) => Date.now());
+    }, [page]);
 
     useEffect(() => {
         if (!activeBrand || (
@@ -201,7 +201,7 @@ const AddRnpModal = ({ isAddRnpModalVisible, setIsAddRnpModalVisible, addRnp }) 
                         {!loading && shopStatus && localrnpDataArticle && localrnpDataArticle?.data?.length > 0 && (<div className={styles.modal__container}>
                             {localrnpDataArticle?.data?.map((el, i) => (
                                 <Flex key={i} className={styles.item} gap={20}>
-                                    {(rnpSelected.length >= 25 && !rnpSelected.includes(el.wb_id)) && 
+                                    {(rnpSelected.length >= 25 && !rnpSelected.includes(el.wb_id)) &&
                                       <Tooltip title="Максимальное количество артикулов в РНП - 25" arrow={false}>
                                         <Checkbox
                                             defaultChecked={rnpSelected?.includes(el.wb_id)}
@@ -211,7 +211,7 @@ const AddRnpModal = ({ isAddRnpModalVisible, setIsAddRnpModalVisible, addRnp }) 
                                         />
                                       </Tooltip>
                                     }
-                                    {(rnpSelected.length < 25 || rnpSelected.includes(el.wb_id)) && 
+                                    {(rnpSelected.length < 25 || rnpSelected.includes(el.wb_id)) &&
                                         <Checkbox
                                             defaultChecked={rnpSelected?.includes(el.wb_id)}
                                             data-value={el.wb_id}
@@ -255,7 +255,7 @@ const AddRnpModal = ({ isAddRnpModalVisible, setIsAddRnpModalVisible, addRnp }) 
             </Modal>
             <ErrorModal open={!!error} message={error} onCancel={() => setError(null)}/>
         </>
-    )
-}
+    );
+};
 
 export default AddRnpModal;

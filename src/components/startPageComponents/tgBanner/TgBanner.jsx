@@ -1,8 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import tgLogo from '../../../assets/tbBanner_tglogo.png'
-import styles from './TgBanner.module.css'
-
+import tgLogo from '../../../assets/tbBanner_tglogo.png';
+import styles from './TgBanner.module.css';
 
 
 const TgBanner = () => {
@@ -15,7 +14,7 @@ const TgBanner = () => {
             </div>
 
             <Link
-                to='https://t.me/radar_analytica' 
+                to='https://t.me/radar_analytica'
                 target='blank'
                 className={styles.banner__tgLink}
             >
@@ -24,13 +23,13 @@ const TgBanner = () => {
                     width={54}
                     height={54}
                     decoding="async"
-                    fetchpriority="low"
+                    fetchPriority="low"
                     loading="lazy"
                 />
                 @WB-Radar
             </Link>
         </div>
-    )
-}
+    );
+};
 
 export default TgBanner;

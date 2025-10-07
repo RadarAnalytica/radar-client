@@ -30,14 +30,14 @@ const customCellRender = (value, record, index, dataIndex) => {
                     </Tooltip>
                 </ConfigProvider>
             </div>
-        )
+        );
     }
     return (
         <>
             {value}
         </>
     );
-}
+};
 
 export default function TableWidget({ loading, columns, data, rowSelection = false, virtual = true, is_primary_collect, progress = null, setTableColumns }) {
     const tableContainerRef = useRef(null);
@@ -48,7 +48,7 @@ export default function TableWidget({ loading, columns, data, rowSelection = fal
         const mouseHandler = (e) => {
             e.preventDefault();
             e.stopPropagation();
-        }
+        };
 
         document.addEventListener('mousemove', mouseHandler);
         const newConfig = columns.map((col, index) => {
@@ -63,17 +63,17 @@ export default function TableWidget({ loading, columns, data, rowSelection = fal
             }
             return col;
         });
-        localStorage.setItem('reportWeekTableConfig', JSON.stringify(newConfig))
+        localStorage.setItem('reportWeekTableConfig', JSON.stringify(newConfig));
         setTableColumns(newConfig);
         document.removeEventListener('mousemove', mouseHandler);
-    }
+    };
 
     useEffect(() => {
-        setSortState({ sort_field: undefined, sort_order: undefined })
-    }, [data])
+        setSortState({ sort_field: undefined, sort_order: undefined });
+    }, [data]);
 
     if (!loading && !is_primary_collect) {
-        return <></>
+        return <></>;
     }
 
     return (
@@ -131,5 +131,4 @@ export default function TableWidget({ loading, columns, data, rowSelection = fal
         </div>
     );
 }
-
 

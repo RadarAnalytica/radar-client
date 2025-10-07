@@ -6,7 +6,7 @@ import Sidebar from '@/components/sharedComponents/sidebar/sidebar';
 import { AddSkuModal, ConfirmationModal, GroupEditModal } from '../../features';
 import { SingleGroupWidget, NoDataWidget } from '../../widgets';
 import { useNavigate } from 'react-router-dom';
-import styles from './singleGroupPage.module.css'
+import styles from './singleGroupPage.module.css';
 import AuthContext from '@/service/AuthContext';
 import ErrorModal from '@/components/sharedComponents/modals/errorModal/errorModal';
 import { useParams } from 'react-router-dom';
@@ -37,16 +37,16 @@ const initConfirmationState = {
 };
 
 const SingleGroupPage = () => {
-    const { authToken, user } = useContext(AuthContext)
-    const [dataFetchingStatus, setDataFetchingStatus] = useState(initDataFetchingStatus)
-    const [groupData, setGroupData] = useState([])
-    const [isEditGroupModalVisible, setIsEditGroupModalVisible] = useState(false)
-    const [isAddSkuModalVisible, setIsAddSkuModalVisible] = useState(false)
-    const [confirmationModalState, setConfirmationModalState] = useState(initConfirmationState)
+    const { authToken, user } = useContext(AuthContext);
+    const [dataFetchingStatus, setDataFetchingStatus] = useState(initDataFetchingStatus);
+    const [groupData, setGroupData] = useState([]);
+    const [isEditGroupModalVisible, setIsEditGroupModalVisible] = useState(false);
+    const [isAddSkuModalVisible, setIsAddSkuModalVisible] = useState(false);
+    const [confirmationModalState, setConfirmationModalState] = useState(initConfirmationState);
     const [alertState, setAlertState] = useState(initAlertState);
-    const navigate = useNavigate()
-    const params = useParams()
-    const dispatch = useAppDispatch()
+    const navigate = useNavigate();
+    const params = useParams();
+    const dispatch = useAppDispatch();
     const { shops } = useAppSelector((state) => state.shopsSlice);
 
     // ------- Фетч массива магазинов -------------//
@@ -60,7 +60,7 @@ const SingleGroupPage = () => {
     //---------------------------------------------//
 
     const getGroupData = async (authToken, groupId) => {
-        groupData.length === 0 && setDataFetchingStatus({ ...initDataFetchingStatus, isLoading: true })
+        groupData.length === 0 && setDataFetchingStatus({ ...initDataFetchingStatus, isLoading: true });
 
         try {
             const res = await fetchApi(`/api/product/product_groups/${groupId}`, {
@@ -95,7 +95,7 @@ const SingleGroupPage = () => {
               message: 'Что-то пошло не так :('
             });
         }
-    }
+    };
 
     const deleteGroup = async (authToken, groupId) => {
         try {
@@ -126,11 +126,11 @@ const SingleGroupPage = () => {
               message: 'Что-то пошло не так :('
             });
         }
-    }
+    };
 
     useEffect(() => {
-        params?.group_id && getGroupData(authToken, params.group_id)
-    }, [params])
+        params?.group_id && getGroupData(authToken, params.group_id);
+    }, [params]);
 
     // 0. Получаем данные магазинов
     useEffect(() => {
@@ -142,9 +142,9 @@ const SingleGroupPage = () => {
     useEffect(() => {
         let timeout;
         if (alertState.isVisible) {
-            timeout = setTimeout(() => { setAlertState(initAlertState) }, 1500)
+            timeout = setTimeout(() => { setAlertState(initAlertState); }, 1500);
         }
-    }, [alertState])
+    }, [alertState]);
 
     return (
         <main className={styles.page}>
@@ -166,11 +166,11 @@ const SingleGroupPage = () => {
                                 ]}
                                 actions={[
                                     //{ type: 'edit', action: () => { setIsAddSkuModalVisible(true) } },
-                                    { type: 'edit', action: () => { setIsEditGroupModalVisible(true) } },
+                                    { type: 'edit', action: () => { setIsEditGroupModalVisible(true); } },
                                     //{ type: 'delete', action: () => { deleteGroup(authToken, params?.group_id) } },
                                     {
                                         type: 'delete', action: () => {
-                                            setConfirmationModalState({ open: true, title: 'Удаление группы', actionTitle: 'Удалить', message: `Вы уверены, что хотите удалить группу "${groupData.name}"?`, mainAction: () => { deleteGroup(authToken, params?.group_id) }, returnAction: () => { setConfirmationModalState(initConfirmationState) } });
+                                            setConfirmationModalState({ open: true, title: 'Удаление группы', actionTitle: 'Удалить', message: `Вы уверены, что хотите удалить группу "${groupData.name}"?`, mainAction: () => { deleteGroup(authToken, params?.group_id); }, returnAction: () => { setConfirmationModalState(initConfirmationState); } });
                                         }
                                     },
                                 ]}
@@ -255,7 +255,7 @@ const SingleGroupPage = () => {
                 {alertState.message}
             </div>}
         </main>
-    )
-}
+    );
+};
 
 export default SingleGroupPage;

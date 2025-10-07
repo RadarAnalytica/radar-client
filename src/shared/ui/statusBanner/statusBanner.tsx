@@ -1,5 +1,5 @@
-import React from 'react'
-import styles from './statusBanner.module.css'
+import React from 'react';
+import styles from './statusBanner.module.css';
 
 type TStatusBannerProps = {
     title?: string | React.ReactNode,
@@ -18,5 +18,5 @@ export const StatusBanner: React.FC<TStatusBannerProps> = ({
             {icon && icon}
             {title && typeof title === 'string' ? <p className={styles.banner__title}>{title}</p> : title}
         </div>
-    )
-}
+    );
+};

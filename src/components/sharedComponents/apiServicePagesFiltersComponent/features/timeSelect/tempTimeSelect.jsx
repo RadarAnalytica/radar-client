@@ -4,10 +4,10 @@ import 'react-day-picker/dist/style.css';
 import { ru } from 'date-fns/locale';
 import { format } from 'date-fns';
 import styles from './timeSelect.module.css';
-import { SelectIcon } from '../../shared'
+import { SelectIcon } from '../../shared';
 import { useAppDispatch, useAppSelector } from '../../../../../redux/hooks';
 import { actions as filtersActions } from '../../../../../redux/apiServicePagesFiltersState/apiServicePagesFilterState.slice';
-import { Select, ConfigProvider } from 'antd'
+import { Select, ConfigProvider } from 'antd';
 import DatePickerCustomDropdown from '../../shared/datePickerCustomDropdown/datePickerCustomDropdown';
 
 const predefinedRanges = [
@@ -31,20 +31,20 @@ const predefinedRanges = [
 
 export const TempTimeSelect = ({ isDataLoading }) => {
 
-    const dispatch = useAppDispatch()
-    const { selectedRange } = useAppSelector(store => store.filters)
+    const dispatch = useAppDispatch();
+    const { selectedRange } = useAppSelector(store => store.filters);
     const [isCalendarOpen, setIsCalendarOpen] = useState(false);
     const [month, setMonth] = useState(new Date());
     const [localSelectedRange, setLocalSelectedRange] = useState({ from: null, to: null });
-    const [selectOptions, setSelectOptions] = useState([...predefinedRanges])
-    const [selectValue, setSelectValue] = useState()
+    const [selectOptions, setSelectOptions] = useState([...predefinedRanges]);
+    const [selectValue, setSelectValue] = useState();
     const today = new Date();
     const now = new Date();
     const currentHourUTC = now.getUTCHours();
     // Если время до 10:00 UTC, то блокируем вчерашний день
     // Если время после 10:00 UTC, то разблокируем вчерашний день
     const maxDate = currentHourUTC < 10 ? today.setDate(today.getDate() - 2) : today.setDate(today.getDate() - 1);
-    
+
     const minDate = new Date('2025-06-15');
 
 
@@ -52,8 +52,7 @@ export const TempTimeSelect = ({ isDataLoading }) => {
     startMonth.setDate(today.getDate() - 90);
     const endMonth = new Date(today);
 
-    const icon = <SelectIcon />
-
+    const icon = <SelectIcon />;
 
 
     const customRuLocale = {
@@ -76,8 +75,8 @@ export const TempTimeSelect = ({ isDataLoading }) => {
                 ? { from: format(day, 'yyyy-MM-dd'), to: format(from, 'yyyy-MM-dd') }
                 : { from: format(from, 'yyyy-MM-dd'), to: format(day, 'yyyy-MM-dd') };
             setLocalSelectedRange(newRange);
-            setSelectValue(0)
-            dispatch(filtersActions.setPeriod(newRange))
+            setSelectValue(0);
+            dispatch(filtersActions.setPeriod(newRange));
             setIsCalendarOpen(false);
         }
     };
@@ -87,73 +86,73 @@ export const TempTimeSelect = ({ isDataLoading }) => {
 
     const timeSelectChangeHandler = (value) => {
         if (value !== 0) {
-            setSelectValue(value)
-            setSelectOptions(predefinedRanges)
-            setLocalSelectedRange({ from: null, to: null })
-            dispatch(filtersActions.setPeriod({ period: value }))
+            setSelectValue(value);
+            setSelectOptions(predefinedRanges);
+            setLocalSelectedRange({ from: null, to: null });
+            dispatch(filtersActions.setPeriod({ period: value }));
         } else {
-            setLocalSelectedRange({ from: null, to: null })
-            setIsCalendarOpen(true)
+            setLocalSelectedRange({ from: null, to: null });
+            setIsCalendarOpen(true);
         }
-    }
+    };
 
     useEffect(() => {
         if (selectedRange && selectedRange.period && selectedRange.period !== selectValue) {
-            setSelectValue(selectedRange.period)
+            setSelectValue(selectedRange.period);
         }
         if (selectedRange && !selectedRange.period && selectValue !== 0) {
-            setSelectValue(0)
+            setSelectValue(0);
         }
-    }, [selectedRange])
+    }, [selectedRange]);
 
     useEffect(() => {
         if (selectValue === undefined) {
             if (selectedRange.period) {
-                setSelectValue(selectedRange.period)
+                setSelectValue(selectedRange.period);
             }
 
             if (selectedRange.from && selectedRange.to) {
-                setSelectValue(0)
+                setSelectValue(0);
                 const newOptions = [...selectOptions].map(_ => {
                     if (_.value === 0) {
-                        _.title = `${format(selectedRange.from, 'dd.MM.yyyy')} - ${format(selectedRange.to, 'dd.MM.yyyy')}`
+                        _.title = `${format(selectedRange.from, 'dd.MM.yyyy')} - ${format(selectedRange.to, 'dd.MM.yyyy')}`;
                     }
 
-                    return _
-                })
-                setSelectOptions(newOptions)
+                    return _;
+                });
+                setSelectOptions(newOptions);
             }
         }
-    }, [selectValue])
+    }, [selectValue]);
 
     useEffect(() => {
         let newOptions = selectOptions;
         if (selectValue === 0 && !selectedRange.period) {
             newOptions = [...newOptions].map(_ => {
                 if (_.value === 0) {
-                    _.title = `${format(selectedRange.from, 'dd.MM.yyyy')} - ${format(selectedRange.to, 'dd.MM.yyyy')}`
+                    _.title = `${format(selectedRange.from, 'dd.MM.yyyy')} - ${format(selectedRange.to, 'dd.MM.yyyy')}`;
                 }
 
-                return _
-            })
+                return _;
+            });
         } else {
             newOptions = [...newOptions].map(_ => {
                 if (_.value === 0) {
-                    _.title = `Произвольные даты`
+                    _.title = `Произвольные даты`;
                 }
 
-                return _
-            })
+                return _;
+            });
         }
-        setSelectOptions(newOptions)
-    }, [selectedRange, selectValue])
+        setSelectOptions(newOptions);
+    }, [selectedRange, selectValue]);
 
 
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (periodRef.current && !periodRef.current.contains(event.target) && !event.target.classList.value.includes('ant')) {
                 setIsCalendarOpen(false);
-                setLocalSelectedRange({ from: null, to: null })
+                setLocalSelectedRange({ from: null, to: null });
             }
         };
 
@@ -198,28 +197,28 @@ export const TempTimeSelect = ({ isDataLoading }) => {
                         suffixIcon={icon}
                         className={styles.select}
                         options={[...selectOptions].map(i => {
-                            return ({ value: i.value, label: i.title })
+                            return ({ value: i.value, label: i.title });
                         })}
                         onDropdownVisibleChange={(visible) => {
                             let newOptions = selectOptions;
                             if (!visible && !selectedRange.period) {
                                 newOptions = [...newOptions].map(_ => {
                                     if (_.value === 0) {
-                                        _.title = `${format(selectedRange.from, 'dd.MM.yyyy')} - ${format(selectedRange.to, 'dd.MM.yyyy')}`
+                                        _.title = `${format(selectedRange.from, 'dd.MM.yyyy')} - ${format(selectedRange.to, 'dd.MM.yyyy')}`;
                                     }
 
-                                    return _
-                                })
+                                    return _;
+                                });
                             } else if (visible) {
                                 newOptions = [...newOptions].map(_ => {
                                     if (_.value === 0) {
-                                        _.title = `Произвольные даты`
+                                        _.title = `Произвольные даты`;
                                     }
 
-                                    return _
-                                })
+                                    return _;
+                                });
                             }
-                            setSelectOptions(newOptions)
+                            setSelectOptions(newOptions);
                         }}
                         value={selectValue}
                         onSelect={timeSelectChangeHandler}

@@ -1,10 +1,10 @@
-import React from 'react'
-import sortArrow from '../../assets/sortarrow.svg'
-import SearchButton from '../../assets/searchstock.svg'
-import DownloadFile from '../../assets/downloadxlfile.svg'
+import React from 'react';
+import sortArrow from '../../assets/sortarrow.svg';
+import SearchButton from '../../assets/searchstock.svg';
+import DownloadFile from '../../assets/downloadxlfile.svg';
 import ArrowUp from "../../assets/ArrowUp.svg";
 import ArrowDown from "../../assets/ArrowDown.svg";
-import { useState } from 'react'
+import { useState } from 'react';
 
 
 const CategoryMonitoring = () => {
@@ -375,11 +375,10 @@ const CategoryMonitoring = () => {
       dataRadar: 57,
       dataWB: 6
     }
-  ]
+  ];
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredData, setFilteredData] = useState(data);
   const [sortConfig, setSortConfig] = useState({ column: null, direction: null });
-
 
 
   // Search
@@ -407,7 +406,6 @@ const CategoryMonitoring = () => {
     setFilteredData(filtered); // Обновить отфильтрованные данные
   };
   // Search
-
 
 
   const sortData = (key) => {
@@ -479,7 +477,7 @@ const CategoryMonitoring = () => {
 
   // ];
   return (
-    <div class="table-content-category-monitoring">
+    <div className="table-content-category-monitoring">
       <div className='search'>
 
         <input type='text'
@@ -963,7 +961,7 @@ const CategoryMonitoring = () => {
         </table>
       </div >
     </div >
-  )
-}
+  );
+};
 
-export default CategoryMonitoring
+export default CategoryMonitoring;

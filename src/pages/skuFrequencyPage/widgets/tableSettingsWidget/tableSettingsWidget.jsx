@@ -1,6 +1,6 @@
-import { useState, useEffect, useCallback } from 'react'
-import { radarTableConfig } from '../../shared/configs/tableConfig'
-import styles from './tableSettingsWidget.module.css'
+import { useState, useEffect, useCallback } from 'react';
+import { radarTableConfig } from '../../shared/configs/tableConfig';
+import styles from './tableSettingsWidget.module.css';
 import {
     ConfigProvider,
     Modal,
@@ -20,9 +20,9 @@ const getReplicatedArray = (array, fields) => {
             ..._,
             hidden: _.children?.every(child => {
                 if (child.fixed || fields[child.dataIndex] === undefined) {
-                    return undefined
+                    return undefined;
                 } else {
-                    return !fields[child.dataIndex]
+                    return !fields[child.dataIndex];
                 }
             }),
             children: _?.children?.map(child => {
@@ -30,10 +30,10 @@ const getReplicatedArray = (array, fields) => {
                     ...child,
                     hidden: child.fixed ? undefined : !fields[child.dataIndex]
 
-                }
+                };
             })
-        }
-    })
+        };
+    });
 
     replicatedArray = replicatedArray.map(item => {
         return {
@@ -41,80 +41,78 @@ const getReplicatedArray = (array, fields) => {
             colSpan: item.children?.filter(child => !child.hidden)?.length || 1,
             width: item.children?.filter(child => !child.hidden)?.reduce((acc, child) => acc + child.width, 0) || item.width,
             minWidth: item.children?.filter(child => !child.hidden)?.reduce((acc, child) => acc + child.minWidth, 0) || item.minWidth
-        }
-    })
-    return replicatedArray
-}
-
-
+        };
+    });
+    return replicatedArray;
+};
 
 
 const TableSettingsWidget = ({ tableConfig, setTableConfig }) => {
-    const [isModalOpen, setIsModalOpen] = useState(false)
-    const [checkAllButtonState, setCheckAllButtonState] = useState('Выбрать все')
-    const [searchState, setSearchState] = useState('')
-    const [renderList, setRenderList] = useState([])
-    const [form] = Form.useForm()
-    const [searchForm] = Form.useForm()
-    const filter = Form.useWatch('filter', searchForm)
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [checkAllButtonState, setCheckAllButtonState] = useState('Выбрать все');
+    const [searchState, setSearchState] = useState('');
+    const [renderList, setRenderList] = useState([]);
+    const [form] = Form.useForm();
+    const [searchForm] = Form.useForm();
+    const filter = Form.useWatch('filter', searchForm);
 
     const getNormalizedArray = useCallback((array, searchState) => {
-        let normalizedArray = array.map(_ => _.children).flat().filter(_ => _.title?.toLowerCase().includes(searchState.toLowerCase()))
-        return normalizedArray
+        let normalizedArray = array.map(_ => _.children).flat().filter(_ => _.title?.toLowerCase().includes(searchState.toLowerCase()));
+        return normalizedArray;
     }, [tableConfig, searchState]);
     const сheckAllHandler = () => {
-        const values = form.getFieldsValue()
-        const keysArr = Object.keys(values)
-        const type = keysArr.some(_ => !values[_]) ? 'select' : 'deselect'
+        const values = form.getFieldsValue();
+        const keysArr = Object.keys(values);
+        const type = keysArr.some(_ => !values[_]) ? 'select' : 'deselect';
 
         if (type === 'select') {
             keysArr.forEach(_ => {
-                form.setFieldValue(_, true)
-            })
-            setCheckAllButtonState('Снять все')
+                form.setFieldValue(_, true);
+            });
+            setCheckAllButtonState('Снять все');
         }
         if (type === 'deselect') {
             keysArr.forEach(_ => {
-                form.setFieldValue(_, false)
-            })
-            setCheckAllButtonState('Выбрать все')
+                form.setFieldValue(_, false);
+            });
+            setCheckAllButtonState('Выбрать все');
         }
     };
 
     const searchHandler = (fields) => {
-        setSearchState(fields.filter.trim())
+        setSearchState(fields.filter.trim());
     };
 
     const updateOptionsConfig = (fields) => {
-        const updatedConfig = getReplicatedArray(tableConfig, fields)
-        setIsModalOpen(false)
-        searchForm.resetFields()
-        setSearchState('')
-        localStorage.setItem('MonitoringTableConfig', JSON.stringify(updatedConfig))
-        setTableConfig((prev) => updatedConfig)
+        const updatedConfig = getReplicatedArray(tableConfig, fields);
+        setIsModalOpen(false);
+        searchForm.resetFields();
+        setSearchState('');
+        localStorage.setItem('MonitoringTableConfig', JSON.stringify(updatedConfig));
+        setTableConfig((prev) => updatedConfig);
     };
 
     useEffect(() => {
         if (!filter) {
-            searchForm.submit()
+            searchForm.submit();
         }
     }, [filter]);
 
     useEffect(() => {
         if (isModalOpen) {
-            const values = form.getFieldsValue()
-            const keysArr = Object.keys(values)
+            const values = form.getFieldsValue();
+            const keysArr = Object.keys(values);
             if (keysArr.length > 0 && keysArr.some(_ => !values[_])) {
-                setCheckAllButtonState('Выбрать все')
+                setCheckAllButtonState('Выбрать все');
             }
             if (keysArr.length > 0 && keysArr.every(_ => values[_])) {
-                setCheckAllButtonState('Снять все')
+                setCheckAllButtonState('Снять все');
             }
         }
     }, [form, isModalOpen]);
 
     useEffect(() => {
-        setRenderList(getNormalizedArray(tableConfig, searchState))
+        setRenderList(getNormalizedArray(tableConfig, searchState));
     }, [tableConfig, searchState]);
 
     return (
@@ -210,8 +208,8 @@ const TableSettingsWidget = ({ tableConfig, setTableConfig }) => {
                 <Modal
                     footer={null}
                     open={isModalOpen}
-                    onClose={() => { form.resetFields(); setSearchState(''); searchForm.resetFields(); setIsModalOpen(false) }}
-                    onCancel={() => { form.resetFields(); setSearchState(''); searchForm.resetFields(); setIsModalOpen(false) }}
+                    onClose={() => { form.resetFields(); setSearchState(''); searchForm.resetFields(); setIsModalOpen(false); }}
+                    onCancel={() => { form.resetFields(); setSearchState(''); searchForm.resetFields(); setIsModalOpen(false); }}
                     width={1000}
                     closeIcon={
                         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -291,12 +289,12 @@ const TableSettingsWidget = ({ tableConfig, setTableConfig }) => {
                             form={form}
                             onFinish={updateOptionsConfig}
                             onFieldsChange={(fields) => {
-                                const values = form.getFieldsValue()
-                                const keysArr = Object.keys(values)
+                                const values = form.getFieldsValue();
+                                const keysArr = Object.keys(values);
                                 if (keysArr.some(_ => !values[_])) {
-                                    setCheckAllButtonState('Выбрать все')
+                                    setCheckAllButtonState('Выбрать все');
                                 } else {
-                                    setCheckAllButtonState('Снять все')
+                                    setCheckAllButtonState('Снять все');
                                 }
                             }}
                         >
@@ -325,34 +323,34 @@ const TableSettingsWidget = ({ tableConfig, setTableConfig }) => {
                                 align="end"
                                 className={styles.controls}
                             >
-                                <Button 
+                                <Button
                                     size="large"
-                                    type='text' 
+                                    type='text'
                                     onClick={() => {
-                                        console.log('radarTableConfig', radarTableConfig)
-                                        setTableConfig(JSON.parse(JSON.stringify(radarTableConfig)))
-                                        localStorage.setItem('MonitoringTableConfig', JSON.stringify(radarTableConfig))
-                                        form.resetFields()
-                                        setSearchState('')
-                                        searchForm.resetFields()
-                                        setIsModalOpen(false)
-                                        setRenderList((prev) => [...getNormalizedArray(radarTableConfig, searchState)])
-                                        const values = form.getFieldsValue()
-                                        const keysArr = Object.keys(values)
-                                        const type = keysArr.some(_ => !values[_]) ? 'select' : 'deselect'
-                                
+                                        console.log('radarTableConfig', radarTableConfig);
+                                        setTableConfig(JSON.parse(JSON.stringify(radarTableConfig)));
+                                        localStorage.setItem('MonitoringTableConfig', JSON.stringify(radarTableConfig));
+                                        form.resetFields();
+                                        setSearchState('');
+                                        searchForm.resetFields();
+                                        setIsModalOpen(false);
+                                        setRenderList((prev) => [...getNormalizedArray(radarTableConfig, searchState)]);
+                                        const values = form.getFieldsValue();
+                                        const keysArr = Object.keys(values);
+                                        const type = keysArr.some(_ => !values[_]) ? 'select' : 'deselect';
+
                                         if (type === 'select') {
                                             keysArr.forEach(_ => {
-                                                form.setFieldValue(_, true)
-                                            })
-                                            setCheckAllButtonState('Снять все')
+                                                form.setFieldValue(_, true);
+                                            });
+                                            setCheckAllButtonState('Снять все');
                                         }
                                     }}
                                     style={{ color: '#F93C65'}}
                                 >
                                     По умолчанию
                                 </Button>
-                                <Button size="large" onClick={() => { form.resetFields(); setSearchState(''); searchForm.resetFields(); setIsModalOpen(false) }}>
+                                <Button size="large" onClick={() => { form.resetFields(); setSearchState(''); searchForm.resetFields(); setIsModalOpen(false); }}>
                                     Отменить
                                 </Button>
                                 <Button
@@ -369,6 +367,6 @@ const TableSettingsWidget = ({ tableConfig, setTableConfig }) => {
             </ConfigProvider>
         </>
     );
-}
+};
 
-export default TableSettingsWidget
+export default TableSettingsWidget;

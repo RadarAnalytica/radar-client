@@ -1,12 +1,10 @@
 import React from "react";
-import styles from './tariffsPage.module.css'
+import styles from './tariffsPage.module.css';
 import { Link } from "react-router-dom";
 import MobilePlug from "../../components/sharedComponents/mobilePlug/mobilePlug";
 import { PricingScreen, FormScreen, ExtensionScreen, VideoReviews } from "./widgets";
 import Header from "../../components/sharedComponents/header/header";
 import Breadcrumbs from "../../components/sharedComponents/header/headerBreadcrumbs/breadcrumbs";
-
-
 
 
 const TariffsPage = () => {
@@ -37,7 +35,7 @@ const TariffsPage = () => {
                 <FormScreen />
             </div>
         </main>
-    )
-}
+    );
+};
 
 export default TariffsPage;

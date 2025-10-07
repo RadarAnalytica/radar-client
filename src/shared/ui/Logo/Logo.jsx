@@ -1,5 +1,5 @@
-import { Link } from 'react-router-dom'
-import styles from './Logo.module.css'
+import { Link } from 'react-router-dom';
+import styles from './Logo.module.css';
 
 export const Logo= ({ text, responsive = true }) => {
 
@@ -29,7 +29,7 @@ export const Logo= ({ text, responsive = true }) => {
                     <path d="M64.5298 47.5192L67.5901 47.3069L66.1812 43.6927C66.1373 43.583 66.0758 43.4054 65.9965 43.1598C65.9172 42.9143 65.8149 42.5986 65.6896 42.2128C65.6422 42.4927 65.5939 42.7599 65.5447 43.0144C65.5007 43.2685 65.4533 43.5126 65.4026 43.7467L64.5298 47.5192ZM60.5156 52.0016L63.6193 40.535L67.4735 40.2676L72.1632 51.1935L69.1029 51.4058L68.3913 49.4416L64.0205 49.7449L63.5759 51.7893L60.5156 52.0016Z" fill="white" />
                 </svg>
             </Link>
-        )
+        );
     }
 
     if (text === true) {
@@ -114,7 +114,7 @@ export const Logo= ({ text, responsive = true }) => {
                 </svg>
 
             </div>
-        )
+        );
     }
 
     if (typeof text === 'string') {
@@ -148,6 +148,6 @@ export const Logo= ({ text, responsive = true }) => {
                     {text}
                 </p>
             </div>
-        )
+        );
     }
-}
+};

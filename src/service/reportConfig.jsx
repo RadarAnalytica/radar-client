@@ -286,7 +286,7 @@ export const reportFilters = {
             items: []
         },
     ],
-}
+};
 
 export const monthNames = {
     '1': 'Январь',

@@ -1,5 +1,5 @@
-import styles from "../components/ApiBlockContainer.module.css"
-import circle from "../assets/circleApi.svg"
+import styles from "../components/ApiBlockContainer.module.css";
+import circle from "../assets/circleApi.svg";
 
 const ApiTitle = ({ title }) => {
     return (
@@ -7,8 +7,8 @@ const ApiTitle = ({ title }) => {
             <div className={styles.icon}><img src={circle} /></div>
             <div className={styles.title}>{title}</div>
         </div>
-    )
-}
+    );
+};
 const ApiBlockContainer = () => {
     return (
         <div className={styles.apiWrapper}>
@@ -45,6 +45,6 @@ const ApiBlockContainer = () => {
 
             </div>
         </div>
-    )
-}
-export default ApiBlockContainer
+    );
+};
+export default ApiBlockContainer;

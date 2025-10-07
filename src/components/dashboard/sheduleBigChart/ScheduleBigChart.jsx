@@ -3,7 +3,6 @@ import { Chart as ChartJS, BarElement, CategoryScale, LinearScale, Tooltip, Lege
 import { Bar } from 'react-chartjs-2';
 
 
-
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 
 const ScheduleBigChart = ({ labels, dataRevenue, dataNetProfit, minDataRevenue, maxDataRevenue, stepSizeRevenue, loading }) => {

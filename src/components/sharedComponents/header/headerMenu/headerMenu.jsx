@@ -1,5 +1,5 @@
-import styles from './headerMenu.module.css'
-import { Link } from 'react-router-dom'
+import styles from './headerMenu.module.css';
+import { Link } from 'react-router-dom';
 import CloseIcon from '../../../../assets/CloseIcon.svg';
 
 const HeaderMenu = ({ popoverCloseHandler, logout }) => {
@@ -29,12 +29,12 @@ const HeaderMenu = ({ popoverCloseHandler, logout }) => {
             <div className={styles.menu__logoutWrapper}>
                 <button
                     className={styles.menu__logoutLink}
-                    onClick={() => { logout(); popoverCloseHandler() }}
+                    onClick={() => { logout(); popoverCloseHandler(); }}
                 >
                     Выход
                 </button>
             </div>
         </div>
-    )
-}
+    );
+};
 export default HeaderMenu;

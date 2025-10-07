@@ -1,9 +1,9 @@
 import React, { useContext, useEffect, useRef } from 'react';
 import AuthContext from '@/service/AuthContext';
-import styles from './filters.module.css'
-import { TimeSelect, PlainSelect, FrequencyModeSelect, ShopSelect, MultiSelect, MonthSelect, TempTimeSelect } from '../features'
+import styles from './filters.module.css';
+import { TimeSelect, PlainSelect, FrequencyModeSelect, ShopSelect, MultiSelect, MonthSelect, TempTimeSelect } from '../features';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { actions as filterActions } from '@/redux/apiServicePagesFiltersState/apiServicePagesFilterState.slice'
+import { actions as filterActions } from '@/redux/apiServicePagesFiltersState/apiServicePagesFilterState.slice';
 import { fetchShops } from '@/redux/shops/shopsActions';
 import { fetchFilters } from '@/redux/apiServicePagesFiltersState/filterActions';
 import { URL } from '@/service/config';
@@ -25,16 +25,16 @@ export const Filters = ({
 
   // ------ это база ------//
   const { user, authToken } = useContext(AuthContext);
-  const dispatch = useAppDispatch()
-  const { activeBrand, filters, shops } = useAppSelector(store => store.filters)
-  const filtersState = useAppSelector(store => store.filters)
+  const dispatch = useAppDispatch();
+  const { activeBrand, filters, shops } = useAppSelector(store => store.filters);
+  const filtersState = useAppSelector(store => store.filters);
 
 
   // ---- хэндлер выбора магазина -----------//
   const shopChangeHandler = (value) => {
-    const selectedShop = shops?.find(_ => _.id === value)
-    dispatch(filterActions.setActiveShop(selectedShop))
-  }
+    const selectedShop = shops?.find(_ => _.id === value);
+    dispatch(filterActions.setActiveShop(selectedShop));
+  };
   //- -----------------------------------------//
 
 
@@ -71,7 +71,7 @@ export const Filters = ({
         }
         {shops && activeBrand && timeSelect && tempPageCondition !== 'supplier' &&
           <div className={styles.filters__inputWrapper}>
-            <TimeSelect 
+            <TimeSelect
               isDataLoading={isDataLoading}
               maxCustomDate={maxCustomDate}
             />
@@ -149,7 +149,7 @@ export const Filters = ({
                 />
               </div> */}
             </React.Fragment>
-          )
+          );
         })}
       </div>
     </div>

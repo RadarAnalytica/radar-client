@@ -67,7 +67,7 @@ const LinkedShopsPage = React.lazy(() => import("./pages/linkedShops/linkedShops
 const AdminDashboardPage = React.lazy(() => import("./pages/AdminPage/AdminDashboardPage"));
 const AdminReferalPage = React.lazy(() => import("./pages/AdminPage/AdminReferalPage"));
 const OperatingExpenses = React.lazy(() => import("./pages/OperatingExpenses"));
-const MainPage = React.lazy(() => import('./pages/homePage'))
+const MainPage = React.lazy(() => import('./pages/homePage'));
 const ReferalPage = React.lazy(() => import("./pages/Referal"));
 const SupplierAnalysisPage = React.lazy(() => import("./pages/supplierAnalysisPage/supplierAnalysisPage"));
 const SupplierIdPage = React.lazy(() => import("./pages/supplierAnalysisPage/supplierIdPage"));
@@ -166,7 +166,7 @@ function App() {
         </ProductProvider>
       </AuthProvider>
     </ErrorBoundary>
-  )
+  );
 }
 
 export default App;

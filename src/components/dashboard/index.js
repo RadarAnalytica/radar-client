@@ -4,4 +4,4 @@ import ScheduleProfitabilityChart from './sheduleProfibilityChart/ScheduleProfit
 import StructureRevenue from './structureRevenue/StructureRevenue';
 import TaxTable from './taxTable/TaxTable';
 
-export { RevenueStorageChart, ScheduleBigChart, ScheduleProfitabilityChart, TaxTable, StructureRevenue }
+export { RevenueStorageChart, ScheduleBigChart, ScheduleProfitabilityChart, TaxTable, StructureRevenue };

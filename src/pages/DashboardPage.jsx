@@ -36,7 +36,7 @@ import { format, differenceInDays } from 'date-fns';
 import MobilePlug from '../components/sharedComponents/mobilePlug/mobilePlug';
 import Sidebar from '../components/sharedComponents/sidebar/sidebar';
 import Header from '../components/sharedComponents/header/header';
-import { Filters } from '../components/sharedComponents/apiServicePagesFiltersComponent'
+import { Filters } from '../components/sharedComponents/apiServicePagesFiltersComponent';
 import { ScheduleProfitabilityChart, ScheduleBigChart, RevenueStorageChart, TaxTable, StructureRevenue } from '../components/dashboard';
 
 import { mockGetDashBoard, mockGetChartDetailData } from '../service/mockServiceFunctions';
@@ -72,22 +72,21 @@ const DashboardPage = () => {
   const prevDays = useRef(selectedRange);
   const prevActiveBrand = useRef(activeBrand);
 
-  const [chartRoiMarginalityData, setChartRoiMarginalityData] = useState()
-  const [salesAndProfit, setSalesAndProfit] = useState()
-  const [revenueByWarehouse, SetRevenueByWarehouse] = useState()
-  const [structure, setStructure] = useState()
-
+  const [chartRoiMarginalityData, setChartRoiMarginalityData] = useState();
+  const [salesAndProfit, setSalesAndProfit] = useState();
+  const [revenueByWarehouse, SetRevenueByWarehouse] = useState();
+  const [structure, setStructure] = useState();
 
 
   useEffect(() => {
     if (activeBrand && activeBrand.is_primary_collect) {
-      updateDataDashBoard(selectedRange, activeBrand.id, authToken)
+      updateDataDashBoard(selectedRange, activeBrand.id, authToken);
     }
   }, [activeBrand, selectedRange]);
 
   useEffect(() => {
     const updateChartDetailData = async () => {
-      setIsDetailChartDataLoading(true)
+      setIsDetailChartDataLoading(true);
       let data = null;
       if (user.subscription_status === null) {
         data = await mockGetChartDetailData(selectedRangeDetail);
@@ -128,7 +127,7 @@ const DashboardPage = () => {
       setDetailChartLabels(result);
       setDetailChartData(counts);
       setDetailChartAverages(averages);
-      setIsDetailChartDataLoading(false)
+      setIsDetailChartDataLoading(false);
     };
     activeBrand?.id && updateChartDetailData();
   }, [selectedRangeDetail, activeBrand]);
@@ -153,7 +152,6 @@ const DashboardPage = () => {
   }, [firstLoading, shops]);
 
 
-
   const handleUpdateDashboard = () => {
     setTimeout(() => {
       updateDataDashBoardCaller();
@@ -164,7 +162,6 @@ const DashboardPage = () => {
     activeBrand !== undefined &&
       updateDataDashBoard(selectedRange, activeBrand.id, authToken);
   };
-
 
 
   useEffect(() => {
@@ -392,7 +389,7 @@ const DashboardPage = () => {
 
   const [curOrders, setCurOrders] = useState();
   useEffect(() => {
-    if (!!selectedRange.period) {
+    if (selectedRange.period) {
 
       if (selectedRange.period === 1) {
         setCurOrders(reportDaily);
@@ -700,7 +697,7 @@ const DashboardPage = () => {
   // };
 
   function getPastDays(number) {
-    const today = !!selectedRange.to ? new Date(selectedRange.to) : new Date();
+    const today = selectedRange.to ? new Date(selectedRange.to) : new Date();
     const pastDays = [];
 
     for (let i = 0; i < number; i++) {
@@ -896,7 +893,7 @@ const DashboardPage = () => {
   //   return null; // or a loading indicator
   // }
 
-  const rangeDays = selectedRange.from && selectedRange.to ? differenceInDays(selectedRange.to, selectedRange.from, { unit: 'days' }) : selectedRange.period
+  const rangeDays = selectedRange.from && selectedRange.to ? differenceInDays(selectedRange.to, selectedRange.from, { unit: 'days' }) : selectedRange.period;
   return (
     <main className={styles.page}>
       <MobilePlug />
@@ -1084,7 +1081,7 @@ const DashboardPage = () => {
                           <path
                             d='M10 8.27813L17.7781 0.5L20 2.72187L12.2219 10.5L20 18.2781L17.7781 20.5L10 12.7219L2.22187 20.5L0 18.2781L7.77813 10.5L0 2.72187L2.22187 0.5L10 8.27813Z'
                             fill='#1A1A1A'
-                            fill-opacity='0.5'
+                            fillOpacity='0.5'
                           />
                         </svg>
                       </div>
@@ -1322,7 +1319,7 @@ const DashboardPage = () => {
 
     //   </div>
     // </div>
-  )
+  );
 };
 
 export default DashboardPage;

@@ -7,12 +7,12 @@ import styles from './RnpTable.module.css';
 const customCellRender = (value, record, index, dataIndex) => {
 
 	if (dataIndex === 'summary') {
-		return <div className={styles.customCellBold}>{formatPrice(value, '')}</div>
+		return <div className={styles.customCellBold}>{formatPrice(value, '')}</div>;
 	}
 	if (dataIndex === 'period' && record.isParent && value !== 'Переходы (шт)') {
 		return <div className={styles.customCellBold}>
 			{value}
-		</div>
+		</div>;
 	}
 	if (dataIndex === 'period' && record.isParent && value === 'Переходы (шт)') {
 		return <div className={styles.customCellBoldTooltip}>
@@ -29,20 +29,20 @@ const customCellRender = (value, record, index, dataIndex) => {
 					</svg>
 				</Tooltip>
 			}
-		</div>
+		</div>;
 	}
 	if (dataIndex === 'period' && !record.isParent) {
-		return <div className={`${styles.customCell} ${styles.customCellIdent}`} data-rnp-is-last-child={record.isLastChild ? 'lastChild' : ''}>{value}</div>
+		return <div className={`${styles.customCell} ${styles.customCellIdent}`} data-rnp-is-last-child={record.isLastChild ? 'lastChild' : ''}>{value}</div>;
 	}
 	return (
 		<div className={styles.customCell}>{value}</div>
 	);
-}
+};
 
 export default function RnpTableTotal({ loading, columns, data, columns2, data2, expanded, el }) {
 	// table config
-	const [tableConfig, setTableConfig] = useState()
-	const [expandedRowKeys, setExpandedRowKeys] = useState([])
+	const [tableConfig, setTableConfig] = useState();
+	const [expandedRowKeys, setExpandedRowKeys] = useState([]);
 	// ref of scroll container
 	const containerRef = useRef(null);
 
@@ -61,12 +61,12 @@ export default function RnpTableTotal({ loading, columns, data, columns2, data2,
 			return col;
 		});
 		setTableConfig(newConfig);
-	}
+	};
 
 	// update table config when columns2 changes
 	useEffect(() => {
-		setTableConfig(columns2)
-	}, [columns2])
+		setTableConfig(columns2);
+	}, [columns2]);
 
 	// Инициализация состояния раскрытых строк
 	useEffect(() => {
@@ -74,12 +74,12 @@ export default function RnpTableTotal({ loading, columns, data, columns2, data2,
 
 		// Пытаемся загрузить сохраненное состояние
 		const savedState = localStorage.getItem('RNP_EXPANDED_TOTAL_TABLE_ROWS_STATE');
-		
+
 		if (savedState) {
 			try {
 				const parsedState = JSON.parse(savedState);
 				setExpandedRowKeys(parsedState);
-				return
+				return;
 			} catch (error) {
 				console.error('Ошибка при парсинге сохраненного состояния:', error);
 			}
@@ -88,14 +88,14 @@ export default function RnpTableTotal({ loading, columns, data, columns2, data2,
 		// Если нет сохраненного состояния или это другой элемент, раскрываем все строки
 		const allKeys = data2.map((item) => item.id);
 		setExpandedRowKeys(allKeys);
-		localStorage.setItem('RNP_EXPANDED_TOTAL_TABLE_ROWS_STATE', JSON.stringify(allKeys))
-	}, [data2])
+		localStorage.setItem('RNP_EXPANDED_TOTAL_TABLE_ROWS_STATE', JSON.stringify(allKeys));
+	}, [data2]);
 
 	// Сохранение состояния при изменении раскрытых строк
 	const handleExpandedRowsChange = (keys) => {
 		setExpandedRowKeys(keys);
 		localStorage.setItem('RNP_EXPANDED_TOTAL_TABLE_ROWS_STATE', JSON.stringify(keys));
-	}
+	};
 
 	return (
 		<div className={styles.container} >
@@ -108,7 +108,7 @@ export default function RnpTableTotal({ loading, columns, data, columns2, data2,
 				<div className={styles.tableContainer} ref={containerRef}>
 					<RadarTable
 						rowKey={(record) => record.id}
-					
+
 						dataSource={data2}
 						config={tableConfig}
 
@@ -122,7 +122,7 @@ export default function RnpTableTotal({ loading, columns, data, columns2, data2,
 
 						pagination={false}
 						paginationContainerStyle={{ display: 'none' }}
-						
+
 						stickyHeader={true}
 						scrollContainerRef={containerRef}
 

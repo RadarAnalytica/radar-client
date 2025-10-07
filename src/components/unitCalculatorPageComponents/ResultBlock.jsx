@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react'
-import styles from './ResultBlock.module.css'
+import { useState, useEffect } from 'react';
+import styles from './ResultBlock.module.css';
 import { Input, Button, ConfigProvider, Tooltip } from 'antd';
-import { utils, writeFile } from 'xlsx'
+import { utils, writeFile } from 'xlsx';
 import { useLocation } from 'react-router-dom';
 import { normilizeUnitsInputValue, investValueInputTransformer, createExelData } from './UnitCalcUtils';
 import { formatPrice } from '../../service/utils';
@@ -9,39 +9,39 @@ import moment from 'moment';
 
 const ResultBlock = ({result, token, investValue, setInvestValue}) => {
 
-    const [ buttonState, setButtonState ] = useState('Поделиться результатом')
-    const { pathname } = useLocation()
+    const [buttonState, setButtonState] = useState('Поделиться результатом');
+    const { pathname } = useLocation();
 
     const shareButtonClickHandler = () => {
         if (token) {
             const currentDomain = `${window.location.protocol}//${window.location.hostname}${window.location.port ? `:${window.location.port}` : ''}`;
             navigator.clipboard.writeText(`${currentDomain}${pathname}?data=${token}`)
-            .catch(err => console.log('Error'))
-            setButtonState('Ссылка скопирована')
+            .catch(err => console.log('Error'));
+            setButtonState('Ссылка скопирована');
         }
-    }
+    };
 
 
     useEffect(() => {
         const changeButtonStateFunc = () => {
             if (buttonState === 'Ссылка скопирована') {
-                setButtonState('Поделиться результатом')
+                setButtonState('Поделиться результатом');
             }
-        }
-        const timer = setTimeout(changeButtonStateFunc, 1500)
-        return () => {clearTimeout(timer)} 
-    }, [buttonState])
+        };
+        const timer = setTimeout(changeButtonStateFunc, 1500);
+        return () => {clearTimeout(timer);};
+    }, [buttonState]);
 
     const generateExcel = () => {
-            const data = createExelData(result)
+            const data = createExelData(result);
             const ws = utils.aoa_to_sheet(data);
-            const cell = ws['A1']
+            const cell = ws['A1'];
             cell.l = { Target: "https://radar-analytica.ru/calculate", Tooltip: "Перейти на сайт" };
             ws['!cols'] = [{ wch: 50 }, { wch: 25 },];
             const wb = utils.book_new();
             utils.book_append_sheet(wb, ws, "Sheet1");
-            const date = moment().format('DD.MM.YYYY')
-            const name = result && result?.product ? result.product : '____'
+            const date = moment().format('DD.MM.YYYY');
+            const name = result && result?.product ? result.product : '____';
             writeFile(wb, `RADAR ANALYTICA - Расчет для ${name} от ${date}.xlsx`);
       };
 
@@ -71,7 +71,7 @@ const ResultBlock = ({result, token, investValue, setInvestValue}) => {
                         icon={result !== undefined && <ShareIcon />}
                         disabled={result === undefined}
                         size='large'
-                        onClick={() => {shareButtonClickHandler()}}
+                        onClick={() => {shareButtonClickHandler();}}
                         className={styles.result__shareButton}
                     >{buttonState}</Button>
                 </ConfigProvider>
@@ -109,11 +109,11 @@ const ResultBlock = ({result, token, investValue, setInvestValue}) => {
                         onChange={(e) => {
                             const value = e.target.value;
                             const prevValue = investValue;
-                            const normalizedValue = normilizeUnitsInputValue(value, prevValue, ' ₽')
-                            const regex = /^(|\d+)$/ // только целые числа
-                            if (regex.test(normalizedValue)) { return setInvestValue(normalizedValue)};
-                            return setInvestValue(prevValue || '')
-                        }}  
+                            const normalizedValue = normilizeUnitsInputValue(value, prevValue, ' ₽');
+                            const regex = /^(|\d+)$/; // только целые числа
+                            if (regex.test(normalizedValue)) { return setInvestValue(normalizedValue);};
+                            return setInvestValue(prevValue || '');
+                        }}
                     />
                 </label>
 
@@ -145,8 +145,6 @@ const ResultBlock = ({result, token, investValue, setInvestValue}) => {
                     </div>
                 </div>
             </div>
-
-
 
 
             <div className={styles.result__tableWrapper}>
@@ -184,10 +182,10 @@ const ResultBlock = ({result, token, investValue, setInvestValue}) => {
                 </div>
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default ResultBlock
+export default ResultBlock;
 
 const ShareIcon = () => {
     return (
@@ -196,13 +194,13 @@ const ShareIcon = () => {
             <path d="M4.19949 8.15587C4.51764 8.47402 4.51764 8.98985 4.19949 9.308L2.66333 10.8442C1.28468 12.2228 1.28468 14.458 2.66333 15.8367C4.04198 17.2153 6.27721 17.2153 7.65586 15.8367L9.19202 14.3005C9.51017 13.9824 10.026 13.9824 10.3441 14.3005C10.6623 14.6187 10.6623 15.1345 10.3441 15.4526L8.80798 16.9888C6.79303 19.0038 3.52616 19.0038 1.51121 16.9888C-0.503737 14.9739 -0.503737 11.707 1.51121 9.69204L3.04737 8.15587C3.36552 7.83773 3.88134 7.83773 4.19949 8.15587Z" fill="#5329FF" />
             <path d="M6.11966 11.2282C5.80151 11.5464 5.80151 12.0622 6.11966 12.3803C6.43781 12.6985 6.95363 12.6985 7.27178 12.3803L11.8803 7.77184C12.1984 7.45369 12.1984 6.93787 11.8803 6.61972C11.5621 6.30157 11.0463 6.30157 10.7281 6.61972L6.11966 11.2282Z" fill="#5329FF" />
         </svg>
-    )
-}
+    );
+};
 const DownloadIcon = () => {
     return (
         <svg width="18" height="17" viewBox="0 0 18 17" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M9.9 6.69999H14.4L9 12.1L3.6 6.69999H8.1V0.399994H9.9V6.69999ZM1.8 14.8H16.2V8.49999H18V15.7C18 15.9387 17.9052 16.1676 17.7364 16.3364C17.5676 16.5052 17.3387 16.6 17.1 16.6H0.9C0.661305 16.6 0.432387 16.5052 0.263604 16.3364C0.0948211 16.1676 0 15.9387 0 15.7V8.49999H1.8V14.8Z" fill="white" />
         </svg>
 
-    )
-}
+    );
+};

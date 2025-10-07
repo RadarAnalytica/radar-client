@@ -18,7 +18,7 @@ export const stockAnalysisTableConfig = [
         hidden: false,
         fixed: false,
         groupColor: 'white',
-        children: [ 
+        children: [
             {title: 'Бренд', dataIndex: 'brandName', units: null, sortable: true, fixed: false, width: 200},
             //{title: 'Баркод', dataIndex: 'barcode', units: null, sortable: true, fixed: false, width: 200},
             {title: 'Категория', dataIndex: 'category', units: null, sortable: true, fixed: false, width: 200},
@@ -170,4 +170,4 @@ export const stockAnalysisTableConfig = [
             {title: 'Данные Радар', dataIndex: 'dataRadar', units: 'шт', sortable: false, fixed: false, width: 200},
         ].map(_ => ({ ..._, render: _.render?.bind(_), key: _.dataIndex, minWidth: _.width }))
     },
-].map(_ => ({ ..._, colSpan: _?.children?.length || 1, className: 'stockAnalysisBlockTableGroupCell' }))
+].map(_ => ({ ..._, colSpan: _?.children?.length || 1, className: 'stockAnalysisBlockTableGroupCell' }));

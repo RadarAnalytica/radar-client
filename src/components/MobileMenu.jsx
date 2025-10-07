@@ -1,26 +1,26 @@
-import React, { useContext, useEffect, useState } from 'react'
-import AuthContext from '../service/AuthContext'
+import React, { useContext, useEffect, useState } from 'react';
+import AuthContext from '../service/AuthContext';
 import { IoMdClose } from "react-icons/io";
-import logo from '../assets/logo.png'
+import logo from '../assets/logo.png';
 import { useNavigate } from 'react-router-dom';
-import greygrow from '../assets/grey-grow.png'
-import purplegrow from '../assets/purple-grow.png'
+import greygrow from '../assets/grey-grow.png';
+import purplegrow from '../assets/purple-grow.png';
 
 
 const MobileMenu = () => {
 
-    const { showMobile, setShowMobile, logout } = useContext(AuthContext)
+    const { showMobile, setShowMobile, logout } = useContext(AuthContext);
 
-    const navigate = useNavigate()
+    const navigate = useNavigate();
 
-    const url = document.location.href
-    const chunkArray = url ? url.split('/').reverse() : null
-    const location = chunkArray ? chunkArray[0] : null
+    const url = document.location.href;
+    const chunkArray = url ? url.split('/').reverse() : null;
+    const location = chunkArray ? chunkArray[0] : null;
 
-    const [active, setActive] = useState('')
+    const [active, setActive] = useState('');
     useEffect(() => {
-        setActive(location)
-    }, [location])
+        setActive(location);
+    }, [location]);
 
     return (
         <div className={showMobile ? 'mobile-menu mobile-open' : 'mobile-menu'}>
@@ -31,7 +31,7 @@ const MobileMenu = () => {
                 <img src={logo} alt="" style={{ maxWidth: '140px' }} />
             </div>
             <div className='mt-4 mb-4'>
-                <div className='sidenav-el' onClick={() => { setShowMobile(false); navigate('/dashboard') }}>
+                <div className='sidenav-el' onClick={() => { setShowMobile(false); navigate('/dashboard'); }}>
                     <div className="d-flex align-items-center">
                         <img src={active === 'dashboard' ? purplegrow : greygrow} alt="" className='side-nav-icon' />
                         <span className='sidenav-title' style={active === 'dashboard' ? { fontWeight: 'bold', color: 'black' } : {}}>Сводка продаж</span>
@@ -48,7 +48,7 @@ const MobileMenu = () => {
                                     <p className='mb-2'>Настройки аккаунта</p> */}
                     <p
                         className='mb-1 mt-2'
-                        onClick={() => { setShowMobile(false); navigate('/linked-shops') }}>
+                        onClick={() => { setShowMobile(false); navigate('/linked-shops'); }}>
                         Подключенный магазины
                     </p>
                     {/* <p className='mb-2'>Экспорт отчетов</p>
@@ -69,7 +69,7 @@ const MobileMenu = () => {
                 </a>
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default MobileMenu
+export default MobileMenu;

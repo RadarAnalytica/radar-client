@@ -6,7 +6,7 @@ import time from "../pages/images/time.png";
 import YellowRadarLarge from "../pages/images/YellowRadarLarge";
 import AuthContext from "../service/AuthContext";
 import YellowRadarSmall from "../pages/images/YelowRadarSmall";
-import styles from "../components/StepsTime.module.css"
+import styles from "../components/StepsTime.module.css";
 
 const StepsTime = ({ redirect }) => {
   const navigate = useNavigate();

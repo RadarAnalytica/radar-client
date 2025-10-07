@@ -1,4 +1,4 @@
-import { menuIcons } from "../icons/icons"
+import { menuIcons } from "../icons/icons";
 
 export const menuConfig = [
     {
@@ -111,7 +111,7 @@ export const menuConfig = [
             },
             {
                 id: 5,
-                url: '/operations-costs', 
+                url: '/operations-costs',
                 label: 'Операционные расходы',
                 isActive: false,
                 isNew: true
@@ -125,7 +125,7 @@ export const menuConfig = [
             },
             {
                 id: 7,
-                url: '/report-profit-loss', 
+                url: '/report-profit-loss',
                 label: 'Отчет о прибыли и убытках',
                 isActive: true,
                 isNew: false
@@ -140,7 +140,7 @@ export const menuConfig = [
             },
             {
                 id: 8,
-                url: '/operating-expenses', 
+                url: '/operating-expenses',
                 label: 'Операционные расходы',
                 isActive: true,
                 isNew: true
@@ -212,7 +212,7 @@ export const menuConfig = [
             },
         ]
     },
-]
+];
 
 export const adminConfig = {
     name: 'admin',
@@ -241,4 +241,4 @@ export const adminConfig = {
             isNew: false
         },
     ]
-}
+};

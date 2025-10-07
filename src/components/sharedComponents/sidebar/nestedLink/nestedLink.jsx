@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import NavLink from '../navLink/navLink';
 import { useLocation } from 'react-router-dom';
-import styles from './nestedLink.module.css'
+import styles from './nestedLink.module.css';
 
 const finReportsUrls = [
     '/weeklyreport-dashboard',
@@ -14,29 +14,29 @@ const finReportsUrls = [
     '/prime-cost',
     '/buy-back',
     '/external-expenses'
-]
+];
 
 const NestedLink = ({ title, icon, links, isMenuHidden }) => {
-    const { pathname } = useLocation()
-    const [isInList, setIsInList] = useState(false)
-    const [isOpen, setIsOpen] = useState(false)
+    const { pathname } = useLocation();
+    const [isInList, setIsInList] = useState(false);
+    const [isOpen, setIsOpen] = useState(false);
 
     useEffect(() => {
-        
+
         let timeout;
         if (isMenuHidden) {
-            setIsOpen(false)
+            setIsOpen(false);
         }
         if (!isMenuHidden && isInList) {
-            timeout = setTimeout(() => setIsOpen(true), 50)
-            setIsOpen(true)
+            timeout = setTimeout(() => setIsOpen(true), 50);
+            setIsOpen(true);
         }
         if (!isMenuHidden && !isInList) {
-            setIsOpen(false)
+            setIsOpen(false);
         }
 
-        return () => {timeout && clearTimeout(timeout)}
-    }, [isMenuHidden, isInList, pathname])
+        return () => {timeout && clearTimeout(timeout);};
+    }, [isMenuHidden, isInList, pathname]);
 
     useEffect(() => {
         let isInList = false;
@@ -46,9 +46,9 @@ const NestedLink = ({ title, icon, links, isMenuHidden }) => {
         if (!isInList && title === 'Мои финансы' && (links.some(_ => pathname.includes(_.url) && pathname !== '/main') || finReportsUrls.some(_ => _ === pathname) && pathname !== '/main')) {
             isInList = true;
         }
-        setIsInList(isInList)
-       
-    }, [pathname, links])
+        setIsInList(isInList);
+
+    }, [pathname, links]);
 
     return (
         <div className={isMenuHidden ? `${styles.nested} ${styles.nested_hidden}` : styles.nested}>
@@ -61,7 +61,7 @@ const NestedLink = ({ title, icon, links, isMenuHidden }) => {
                 </div>
             }
             {!isMenuHidden &&
-                <div className={isOpen || isInList ? `${styles.nested__header} ${styles.nested__header_active}` : styles.nested__header} onClick={() => { setIsOpen(!isOpen) }}>
+                <div className={isOpen || isInList ? `${styles.nested__header} ${styles.nested__header_active}` : styles.nested__header} onClick={() => { setIsOpen(!isOpen); }}>
 
                     <div className={styles.nested__titleWrapper}>
                         <div className={styles.nested__fullMenuIconWrapper}>
@@ -78,11 +78,11 @@ const NestedLink = ({ title, icon, links, isMenuHidden }) => {
                 {links.map((i, id) => {
                     return i.isActive && (
                         <NavLink url={i.url} title={i.label} key={id} item={i} />
-                    )
+                    );
                 })}
             </div>
         </div>
-    )
-}
+    );
+};
 
 export default NestedLink;

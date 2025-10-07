@@ -1,23 +1,23 @@
-import React, { useState, useEffect } from 'react'
-import styles from './skuIdPage.module.css'
-import Header from '../../components/sharedComponents/header/header'
-import Sidebar from '../../components/sharedComponents/sidebar/sidebar'
-import MobilePlug from '../../components/sharedComponents/mobilePlug/mobilePlug'
-import { ItemWidget, BarsWidget, MainChartWidget, TableWidget } from './widgets'
-import { Filters } from '../../components/sharedComponents/apiServicePagesFiltersComponent'
-import Breadcrumbs from '../../components/sharedComponents/header/headerBreadcrumbs/breadcrumbs'
-import { useParams, useNavigate } from 'react-router-dom'
-import { useAppDispatch, useAppSelector } from '../../redux/hooks'
-import { fetchSkuAnalysisMainChartData, fetchSkuAnalysisSkuData, fetchSkuAnalysisIndicatorsData, fetchSkuAnalysisMainTableData, fetchSkuAnalysisByColorTableData, fetchSkuAnalysisByWarehousesTableData, fetchSkuAnalysisBySizeTableData } from '../../redux/skuAnalysis/skuAnalysisActions'
-import { actions as skuAnalysisActions } from '../../redux/skuAnalysis/skuAnalysisSlice'
-import { ConfigProvider, Segmented } from 'antd'
-import { mainTableConfig, byColorTableConfig, byWarehouseTableConfig, bySizeTableConfig } from './shared'
-import ErrorModal from '../../components/sharedComponents/modals/errorModal/errorModal'
+import React, { useState, useEffect } from 'react';
+import styles from './skuIdPage.module.css';
+import Header from '../../components/sharedComponents/header/header';
+import Sidebar from '../../components/sharedComponents/sidebar/sidebar';
+import MobilePlug from '../../components/sharedComponents/mobilePlug/mobilePlug';
+import { ItemWidget, BarsWidget, MainChartWidget, TableWidget } from './widgets';
+import { Filters } from '../../components/sharedComponents/apiServicePagesFiltersComponent';
+import Breadcrumbs from '../../components/sharedComponents/header/headerBreadcrumbs/breadcrumbs';
+import { useParams, useNavigate } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '../../redux/hooks';
+import { fetchSkuAnalysisMainChartData, fetchSkuAnalysisSkuData, fetchSkuAnalysisIndicatorsData, fetchSkuAnalysisMainTableData, fetchSkuAnalysisByColorTableData, fetchSkuAnalysisByWarehousesTableData, fetchSkuAnalysisBySizeTableData } from '../../redux/skuAnalysis/skuAnalysisActions';
+import { actions as skuAnalysisActions } from '../../redux/skuAnalysis/skuAnalysisSlice';
+import { ConfigProvider, Segmented } from 'antd';
+import { mainTableConfig, byColorTableConfig, byWarehouseTableConfig, bySizeTableConfig } from './shared';
+import ErrorModal from '../../components/sharedComponents/modals/errorModal/errorModal';
 import { useDemoMode } from "@/app/providers";
 import NoSubscriptionWarningBlock
   from "@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock";
 
-const segments = ['По цветам', 'По складам', 'По размерам']
+const segments = ['По цветам', 'По складам', 'По размерам'];
 const SkuIdPage = () => {
     const dispatch = useAppDispatch();
     const { isDemoMode } = useDemoMode();
@@ -31,10 +31,10 @@ const SkuIdPage = () => {
     useEffect(() => {
         const loadSkuAnalysisData = async () => {
             if (!params?.id) return;
-            
+
             try {
                 dispatch(skuAnalysisActions.setDataStatus({ isLoading: true, isError: false, message: '' }));
-                
+
                 await Promise.all([
                     dispatch(fetchSkuAnalysisSkuData({ id: params.id, selectedRange })),
                     dispatch(fetchSkuAnalysisMainChartData({ id: params.id, selectedRange })),
@@ -44,13 +44,13 @@ const SkuIdPage = () => {
                     dispatch(fetchSkuAnalysisByWarehousesTableData({ id: params.id, selectedRange })),
                     dispatch(fetchSkuAnalysisBySizeTableData({ id: params.id, selectedRange }))
                 ]);
-                
+
                 dispatch(skuAnalysisActions.setDataStatus({ isLoading: false, isError: false, message: '' }));
             } catch (error) {
-                dispatch(skuAnalysisActions.setDataStatus({ 
-                    isLoading: false, 
-                    isError: true, 
-                    message: 'Failed to load SKU analysis data. Please try again.' 
+                dispatch(skuAnalysisActions.setDataStatus({
+                    isLoading: false,
+                    isError: true,
+                    message: 'Failed to load SKU analysis data. Please try again.'
                 }));
             }
         };
@@ -169,21 +169,21 @@ const SkuIdPage = () => {
                 open={dataStatus.isError}
                 footer={null}
                 onOk={() => {
-                    dispatch(skuAnalysisActions.setDataStatus({ isLoading: false, isError: false, message: '' }))
-                    navigate('/sku-analysis')
+                    dispatch(skuAnalysisActions.setDataStatus({ isLoading: false, isError: false, message: '' }));
+                    navigate('/sku-analysis');
                 }}
                 onClose={() => {
-                    dispatch(skuAnalysisActions.setDataStatus({ isLoading: false, isError: false, message: '' }))
-                    navigate('/sku-analysis')
+                    dispatch(skuAnalysisActions.setDataStatus({ isLoading: false, isError: false, message: '' }));
+                    navigate('/sku-analysis');
                 }}
                 onCancel={() => {
-                    dispatch(skuAnalysisActions.setDataStatus({ isLoading: false, isError: false, message: '' }))
-                    navigate('/sku-analysis')
+                    dispatch(skuAnalysisActions.setDataStatus({ isLoading: false, isError: false, message: '' }));
+                    navigate('/sku-analysis');
                 }}
                 message={dataStatus.message}
             />
         </main>
-    )
-}
+    );
+};
 
-export default SkuIdPage
+export default SkuIdPage;

@@ -15,7 +15,7 @@ import { Filters } from '@/components/sharedComponents/apiServicePagesFiltersCom
 //import { COLUMNS, ROWS } from './config';
 import { useAppSelector } from '@/redux/hooks';
 import HowToLink from '@/components/sharedComponents/howToLink/howToLink';
-import DataCollectWarningBlock from '@/components/sharedComponents/dataCollectWarningBlock/dataCollectWarningBlock'
+import DataCollectWarningBlock from '@/components/sharedComponents/dataCollectWarningBlock/dataCollectWarningBlock';
 import NoSubscriptionWarningBlock from '@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock';
 //import { startOfYear, format } from "date-fns";
 import { useDemoMode } from '@/app/providers/DemoDataProvider';
@@ -52,7 +52,7 @@ export default function ReportProfitLoss() {
 		if (typeof data !== 'object') {
 			return (
 				<div className={styles.cell}>{formatPrice(data, '₽')}</div>
-			)
+			);
 		}
 		return (
 			<Flex className={styles.cell} justify="space-between" gap={8}>
@@ -79,7 +79,7 @@ export default function ReportProfitLoss() {
 			style: {
 
 			}
-		}
+		};
 
 		const config = [{
 			key: 'article',
@@ -120,7 +120,7 @@ export default function ReportProfitLoss() {
 		});
 
 		return config;
-	}
+	};
 
 	const getData = (data, metricsOrder) => {
 		const tableData = [];
@@ -132,7 +132,7 @@ export default function ReportProfitLoss() {
 				isParent,
 				id: index,
 				key: `${index}-${key}`,
-			}
+			};
 			data.forEach(item => {
 				if (isParent || isChildren) {
 					rowObject[item.year] = item.data.direct_expenses[key];
@@ -162,12 +162,12 @@ export default function ReportProfitLoss() {
 				return {
 					..._,
 					children: childrenData
-				}
+				};
 			}
 			return _;
 		});
 		return finalDataSource;
-	}
+	};
 
 	const dataToTableData = (response) => {
 		if (!response || !response.data || response.data.length === 0) {
@@ -235,7 +235,7 @@ export default function ReportProfitLoss() {
 
 	useEffect(() => {
 		if (!activeBrand) {
-			return
+			return;
 		}
 		let savedFilterMonths = JSON.parse(localStorage.getItem('activeMonths')) || {};
 		savedFilterMonths[activeBrand.id] = activeMonths;
@@ -243,7 +243,7 @@ export default function ReportProfitLoss() {
 			'activeMonths',
 			JSON.stringify(savedFilterMonths)
 		);
-	}, [activeMonths])
+	}, [activeMonths]);
 
 	return (
 		<main className={styles.page}>

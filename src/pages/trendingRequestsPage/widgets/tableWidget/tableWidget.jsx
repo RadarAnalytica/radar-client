@@ -1,23 +1,23 @@
 // Dont forget to renew imports
-import React, { useRef, useState, useEffect, useCallback, useMemo } from 'react'
-import styles from './tableWidget.module.css'
+import React, { useRef, useState, useEffect, useCallback, useMemo } from 'react';
+import styles from './tableWidget.module.css';
 // Возможно будет удобнее передавать конфиг пропсом
-import { tableConfig } from './config'
-import { sortTableDataFunc } from './utils'
-import { formatPrice } from '../../../../service/utils'
-import { ConfigProvider, Pagination } from 'antd'
-import DownloadButton from '../../../../components/DownloadButton'
-import { fileDownload } from '../../../../service/utils'
-import { Link } from 'react-router-dom'
+import { tableConfig } from './config';
+import { sortTableDataFunc } from './utils';
+import { formatPrice } from '../../../../service/utils';
+import { ConfigProvider, Pagination } from 'antd';
+import DownloadButton from '../../../../components/DownloadButton';
+import { fileDownload } from '../../../../service/utils';
+import { Link } from 'react-router-dom';
 
 
 /**
  * Краткое описание:
- * 
+ *
  * Общая таблица (супертаблица) рендерится на основе конфига (tableConfig) и состоит из нескольких маленьких таблиц
  * Разделил их по наличию заголовка, кроме самой перой (Товар) - тут искуственно отделен первый столбец для реализации фиксации первого столбца при
  * горизонтальном скроле.
- * 
+ *
  * 1. Сначала мапим весь конфиг (сами таблицы)
  * 2. Далее внутри для каждой таблицы мапим массив заголовков
  * 3. Далее под хэдером таблицы еще раз мапим массив заголовков и внутри для каждого заголовка мапим уже данные забирая только нужные для конкретного заголовка и конкретной
@@ -26,47 +26,43 @@ import { Link } from 'react-router-dom'
  */
 
 
-
-
-
-
 export const TableWidget = React.memo(({ rawData, loading, tablePaginationState, setRequestState, requestState, initRequestStatus, setRequestStatus, setSortState, sortState, initSortState }) => {
 
 
-    const containerRef = useRef(null) // реф скролл-контейнера (используется чтобы седить за позицией скрола)
-    const [tableData, setTableData] = useState() // данные для рендера таблицы
-    const [isXScrolled, setIsXScrolled] = useState(false) // следим за скролом по Х
-    const [isEndOfXScroll, setIsEndOfXScroll] = useState(false) // отслеживаем конец скролла по Х
-    const [isExelLoading, setIsExelLoading] = useState(false)
+    const containerRef = useRef(null); // реф скролл-контейнера (используется чтобы седить за позицией скрола)
+    const [tableData, setTableData] = useState(); // данные для рендера таблицы
+    const [isXScrolled, setIsXScrolled] = useState(false); // следим за скролом по Х
+    const [isEndOfXScroll, setIsEndOfXScroll] = useState(false); // отслеживаем конец скролла по Х
+    const [isExelLoading, setIsExelLoading] = useState(false);
 
 
     // задаем начальную дату
     useEffect(() => {
-        setTableData(rawData)
-    }, [rawData])//рубашка мужская
+        setTableData(rawData);
+    }, [rawData]);//рубашка мужская
 
     useEffect(() => {
-        const paginationNextButton = document.querySelector('.ant-pagination-jump-next')
-        const paginationPrevButton = document.querySelector('.ant-pagination-jump-prev')
-        const paginationSingleNextButton = document.querySelector('.ant-pagination-next')
-        const paginationSinglePrevButton = document.querySelector('.ant-pagination-prev')
+        const paginationNextButton = document.querySelector('.ant-pagination-jump-next');
+        const paginationPrevButton = document.querySelector('.ant-pagination-jump-prev');
+        const paginationSingleNextButton = document.querySelector('.ant-pagination-next');
+        const paginationSinglePrevButton = document.querySelector('.ant-pagination-prev');
         if (paginationNextButton) {
-            paginationNextButton.setAttribute('title', 'Следующие 5 страниц')
+            paginationNextButton.setAttribute('title', 'Следующие 5 страниц');
         }
         if (paginationSingleNextButton) {
-            paginationSingleNextButton.setAttribute('title', 'Следующая страница')
+            paginationSingleNextButton.setAttribute('title', 'Следующая страница');
         }
         if (paginationSinglePrevButton) {
-            paginationSinglePrevButton.setAttribute('title', 'Предыдущая страница')
+            paginationSinglePrevButton.setAttribute('title', 'Предыдущая страница');
         }
         if (paginationPrevButton) {
-            paginationPrevButton.setAttribute('title', 'Предыдущие 5 страниц')
+            paginationPrevButton.setAttribute('title', 'Предыдущие 5 страниц');
         }
-    }, [tablePaginationState])
+    }, [tablePaginationState]);
 
     const paginationHandler = useCallback((page) => {
-        setRequestState({ ...requestState, page })
-    }, [requestState, setRequestState])
+        setRequestState({ ...requestState, page });
+    }, [requestState, setRequestState]);
 
 
     // отслеживаем скролл в контейнере
@@ -75,20 +71,20 @@ export const TableWidget = React.memo(({ rawData, loading, tablePaginationState,
 
             // если скроллим вправо
             if (containerRef.current.scrollLeft > 1) {
-                setIsXScrolled(true)
+                setIsXScrolled(true);
             } else {
-                setIsXScrolled(false)
+                setIsXScrolled(false);
             }
 
             // вычисляем достиг ли скролл конца справа
             const delta = containerRef.current.scrollWidth - (containerRef.current.scrollLeft + containerRef.current.clientWidth);
             if (delta < 16) {
-                setIsEndOfXScroll(true)
+                setIsEndOfXScroll(true);
             } else {
-                setIsEndOfXScroll(false)
+                setIsEndOfXScroll(false);
             }
         }
-    }, [])
+    }, []);
 
     // хэндлер сортировки
     const sortButtonClickHandler = useCallback((e, value) => {
@@ -96,10 +92,10 @@ export const TableWidget = React.memo(({ rawData, loading, tablePaginationState,
 
         // выключаем сортировку если нажата уже активная клавиша
         if (sortState.sortType === id && sortState.sortedValue === value) {
-            setSortState(initSortState)
+            setSortState(initSortState);
             //setTableData(rawData)
-            setRequestState({ ...requestState, sorting: { sort_field: 'frequency', sort_order: 'DESC' }, page: 1, limit: 25 })
-            return
+            setRequestState({ ...requestState, sorting: { sort_field: 'frequency', sort_order: 'DESC' }, page: 1, limit: 25 });
+            return;
         }
 
 
@@ -107,13 +103,13 @@ export const TableWidget = React.memo(({ rawData, loading, tablePaginationState,
         setSortState({
             sortedValue: value,
             sortType: id,
-        })
-        setRequestState({ ...requestState, sorting: { sort_field: value, sort_order: id }, page: 1, limit: 25 })
+        });
+        setRequestState({ ...requestState, sorting: { sort_field: value, sort_order: id }, page: 1, limit: 25 });
         //setTableData([...sortTableDataFunc(id, value, rawData)])
-    }, [sortState, rawData])
+    }, [sortState, rawData]);
 
     const downloadButtonHandler = useCallback(async () => {
-        setIsExelLoading(true)
+        setIsExelLoading(true);
         try {
             let res = await fetch(`https://radarmarket.ru/api/web-service/trending-queries/download`, {
                 method: 'POST',
@@ -122,21 +118,21 @@ export const TableWidget = React.memo(({ rawData, loading, tablePaginationState,
                     'accept': 'application/json'
                 },
                 body: JSON.stringify(requestState)
-            })
+            });
 
             if (!res.ok) {
-                setIsExelLoading(false)
-                return setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось скачать таблицу.' })
+                setIsExelLoading(false);
+                return setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось скачать таблицу.' });
             }
 
-            const blob = await res.blob()
+            const blob = await res.blob();
             fileDownload(blob, "Поиск_трендовых_запросов.xlsx", setIsExelLoading);
 
         } catch {
-            setIsExelLoading(false)
-            setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось скачать таблицу.' })
+            setIsExelLoading(false);
+            setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось скачать таблицу.' });
         }
-    }, [requestState, initRequestStatus, setRequestStatus])
+    }, [requestState, initRequestStatus, setRequestStatus]);
 
     const memoizedPaginationTheme = useMemo(() => ({
         token: {
@@ -151,7 +147,7 @@ export const TableWidget = React.memo(({ rawData, loading, tablePaginationState,
                 itemColor: '#8C8C8C',
             }
         }
-    }), [])
+    }), []);
 
     if (loading) {
         return (
@@ -160,9 +156,8 @@ export const TableWidget = React.memo(({ rawData, loading, tablePaginationState,
                     <span className='loader'></span>
                 </div>
             </div>
-        )
+        );
     }
-
 
 
     return (
@@ -201,7 +196,7 @@ export const TableWidget = React.memo(({ rawData, loading, tablePaginationState,
                                         {t.values.map((v, id) => {
 
                                             // определяем необходимые стили
-                                            const headerCellStyle = v.ruName === 'Товар' ? `${styles.table__headerItem} ${styles.table__headerItem_wide}` : styles.table__headerItem
+                                            const headerCellStyle = v.ruName === 'Товар' ? `${styles.table__headerItem} ${styles.table__headerItem_wide}` : styles.table__headerItem;
                                             return (
                                                 <div className={headerCellStyle} key={id}>
                                                     <p className={styles.table__headerItemTitle}>{v.ruName}</p>
@@ -229,7 +224,7 @@ export const TableWidget = React.memo(({ rawData, loading, tablePaginationState,
                                                         </div>
                                                     }
                                                 </div>
-                                            )
+                                            );
                                         })}
                                     </div>
                                 </div>
@@ -249,9 +244,9 @@ export const TableWidget = React.memo(({ rawData, loading, tablePaginationState,
                                                             <div className={`${styles.table__rowItem} ${styles.table__rowItem_wide}`} key={id}>
                                                                 <div className={styles.table__mainTitleWrapper}>
                                                                     {/* <p className={styles.table__rowTitle}>{product[v.engName]}</p> */}
-                                                                    <Link 
-                                                                        className={styles.table__rowTitle} 
-                                                                        style={{ textDecoration: 'none' }} 
+                                                                    <Link
+                                                                        className={styles.table__rowTitle}
+                                                                        style={{ textDecoration: 'none' }}
                                                                         to={`/trend-analysis?query=${product[v.engName]}`}
                                                                         target='_blank'
                                                                     >
@@ -269,18 +264,18 @@ export const TableWidget = React.memo(({ rawData, loading, tablePaginationState,
                                                                 </div>
 
                                                             </div>
-                                                        )
+                                                        );
                                                     }
                                                     if (v.ruName === 'Приоритетный предмет') {
                                                         return (
                                                             <div className={styles.table__rowItem} key={id}>{product[v.engName]}</div>
-                                                        )
+                                                        );
                                                     }
 
                                                     if (v.units === '%' && product[v.engName] < 0) {
                                                         return (
                                                             <div className={styles.table__rowItem} key={id}>{formatPrice(product[v.engName], v.units)}</div>
-                                                        )
+                                                        );
                                                     }
 
                                                     if (v.units === '%' && product[v.engName] >= 0) {
@@ -288,16 +283,16 @@ export const TableWidget = React.memo(({ rawData, loading, tablePaginationState,
                                                             <div className={styles.table__rowItem} key={id}>
                                                                 <span style={{ marginLeft: 8}}>{formatPrice(product[v.engName], v.units)}</span>
                                                             </div>
-                                                        )
+                                                        );
                                                     }
 
 
                                                     return (
                                                         <div className={styles.table__rowItem} key={id}>{formatPrice(product[v.engName], v.units)}</div>
-                                                    )
+                                                    );
                                                 }))}
                                             </div>
-                                        )
+                                        );
                                     })}
                                     {tableData && tableData.length === 0 && id === 0 &&
                                         <div className={styles.table__row}>
@@ -308,7 +303,7 @@ export const TableWidget = React.memo(({ rawData, loading, tablePaginationState,
                                     }
                                 </div>
                             </div>
-                        )
+                        );
                     })}
 
                 </div>
@@ -326,26 +321,26 @@ export const TableWidget = React.memo(({ rawData, loading, tablePaginationState,
                 </ConfigProvider>
             </div>
         </>
-    )
-})
+    );
+});
 
 const CopyButton = React.memo(({ url }) => {
 
-    const [isCopied, setIsCopied] = useState(false)
+    const [isCopied, setIsCopied] = useState(false);
 
     const copyHandler = useCallback(() => {
-        navigator.clipboard.writeText(url).catch(err => console.log('Error'))
-        setIsCopied(true)
-    }, [url])
+        navigator.clipboard.writeText(url).catch(err => console.log('Error'));
+        setIsCopied(true);
+    }, [url]);
 
     useEffect(() => {
         let timeout;
         if (isCopied) {
-            timeout = setTimeout(() => setIsCopied(false), 3000)
+            timeout = setTimeout(() => setIsCopied(false), 3000);
         }
 
-        return () => { timeout && clearTimeout(timeout) }
-    }, [isCopied])
+        return () => { timeout && clearTimeout(timeout); };
+    }, [isCopied]);
 
     return (
         <button className={styles.table__actionButton} onClick={copyHandler} title='Скопировать'>
@@ -363,5 +358,5 @@ const CopyButton = React.memo(({ url }) => {
 
             }
         </button>
-    )
-})
+    );
+});

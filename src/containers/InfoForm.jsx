@@ -1,7 +1,7 @@
-import React, { useContext, useState } from 'react'
-import logo from '../assets/logo.png'
-import { Link } from 'react-router-dom'
-import AuthContext from '../service/AuthContext'
+import React, { useContext, useState } from 'react';
+import logo from '../assets/logo.png';
+import { Link } from 'react-router-dom';
+import AuthContext from '../service/AuthContext';
 
 const InfoForm = () => {
 
@@ -40,7 +40,7 @@ const InfoForm = () => {
                 <p className='clue-text text-center mb-0 mt-1'>Уже подтвердили аккаунт? <Link className='link' to={'/signin'}>Войти</Link></p>
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default InfoForm
+export default InfoForm;

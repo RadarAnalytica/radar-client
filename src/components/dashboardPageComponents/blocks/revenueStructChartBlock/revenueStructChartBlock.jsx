@@ -1,4 +1,4 @@
-import styles from './revenueStructChartBlock.module.css'
+import styles from './revenueStructChartBlock.module.css';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Doughnut } from 'react-chartjs-2';
 import { processStructureData } from '../blockUtils';
@@ -7,7 +7,7 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 
 const RevenueStructChartBlock = ({ dataDashBoard, loading }) => {
 
-    const dataStructureRevenue = processStructureData(dataDashBoard?.structure)
+    const dataStructureRevenue = processStructureData(dataDashBoard?.structure);
     const { isSidebarHidden } = useAppSelector((state) => state.utils);
 
     const data = {
@@ -89,8 +89,8 @@ const RevenueStructChartBlock = ({ dataDashBoard, loading }) => {
             ctx.font = `${fontSize}px Mulish`;
             ctx.textBaseline = 'middle';
             ctx.fillStyle = '#000';
-            
-            // Уменьшаем расстояние между строками  
+
+            // Уменьшаем расстояние между строками
             //const startY = height / 2 - ((labels.length - 1) * 20) + 15; // уменьшено с 30 до 20
             const startY = height / 2 - labels.length / 2 * fontSize * 2; // уменьшено с 30 до 20
             labels.forEach((label, index) => {
@@ -136,7 +136,7 @@ const RevenueStructChartBlock = ({ dataDashBoard, loading }) => {
                     <span className='loader'></span>
                 </div>
             </div>
-        )
+        );
     }
 
     return (
@@ -146,8 +146,8 @@ const RevenueStructChartBlock = ({ dataDashBoard, loading }) => {
                 <Doughnut data={data} options={options} />
             </div>
         </div >
-    )
-}
+    );
+};
 
 
 export default RevenueStructChartBlock;

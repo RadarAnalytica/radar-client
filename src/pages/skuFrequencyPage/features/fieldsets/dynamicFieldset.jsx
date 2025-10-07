@@ -1,13 +1,13 @@
-import { useMemo, useState, useEffect, useRef } from 'react'
-import styles from './dynamicFieldset.module.css'
-import { Form, ConfigProvider, Input, Select, Button, Tag } from 'antd'
-import { Link } from 'react-router-dom'
+import { useMemo, useState, useEffect, useRef } from 'react';
+import styles from './dynamicFieldset.module.css';
+import { Form, ConfigProvider, Input, Select, Button, Tag } from 'antd';
+import { Link } from 'react-router-dom';
 
 const dynamicOptions = [
     { value: 'Изменение' },
     { value: 'Рост' },
     { value: 'Падение' },
-]
+];
 
 const monthsOptions = [
     { label: 'Январь', value: 1 },
@@ -22,17 +22,17 @@ const monthsOptions = [
     { label: 'Октябрь', value: 10 },
     { label: 'Ноябрь', value: 11 },
     { label: 'Декабрь', value: 12 },
-]
+];
 
 const DynamicFieldset = ({ form }) => {
 
-    const [isBodyVisisble, setIsBodyVisible] = useState(true)
+    const [isBodyVisisble, setIsBodyVisible] = useState(true);
 
-    const dynamic_30_days = Form.useWatch('dynamic_30_days', form)
-    const dynamic_60_days = Form.useWatch('dynamic_60_days', form)
-    const dynamic_90_days = Form.useWatch('dynamic_90_days', form)
-    const months_grow = Form.useWatch('months_grow', form)
-    const months_fall = Form.useWatch('months_fall', form)
+    const dynamic_30_days = Form.useWatch('dynamic_30_days', form);
+    const dynamic_60_days = Form.useWatch('dynamic_60_days', form);
+    const dynamic_90_days = Form.useWatch('dynamic_90_days', form);
+    const months_grow = Form.useWatch('months_grow', form);
+    const months_fall = Form.useWatch('months_fall', form);
 
     const memoizedConfigProviderTheme = useMemo(() => ({
         token: {
@@ -54,7 +54,7 @@ const DynamicFieldset = ({ form }) => {
                 colorBorder: 'transparent'
             }
         }
-    }), [])
+    }), []);
 
     const tagRender = props => {
         const { label, value, closable, onClose } = props;
@@ -79,18 +79,18 @@ const DynamicFieldset = ({ form }) => {
 
         const growAction = () => {
             if (months_grow && Array.isArray(months_grow) && months_grow.length === monthsOptions.length) {
-                form.setFieldValue('months_grow', [])
+                form.setFieldValue('months_grow', []);
             } else {
-                form.setFieldValue('months_grow', monthsOptions.map(_ => _.value))
+                form.setFieldValue('months_grow', monthsOptions.map(_ => _.value));
             }
-        }
+        };
         const fallAction = () => {
             if (months_fall && Array.isArray(months_fall) && months_fall.length === monthsOptions.length) {
-                form.setFieldValue('months_fall', [])
+                form.setFieldValue('months_fall', []);
             } else {
-                form.setFieldValue('months_fall', monthsOptions.map(_ => _.value))
+                form.setFieldValue('months_fall', monthsOptions.map(_ => _.value));
             }
-        }
+        };
 
         if (selectId === 'months_grow') {
             return (
@@ -114,7 +114,7 @@ const DynamicFieldset = ({ form }) => {
                             {months_grow && Array.isArray(months_grow) && months_grow.length === monthsOptions.length ? 'Снять все' : 'Выбрать все'}
                         </Button>
                     </ConfigProvider>
-                </>)
+                </>);
         }
         if (selectId === 'months_fall') {
             return (
@@ -138,12 +138,11 @@ const DynamicFieldset = ({ form }) => {
                             {months_fall && Array.isArray(months_fall) && months_fall.length === monthsOptions.length ? 'Снять все' : 'Выбрать все'}
                         </Button>
                     </ConfigProvider>
-                </>)
+                </>);
         }
 
 
-
-    }
+    };
 
     return (
         <fieldset
@@ -225,14 +224,14 @@ const DynamicFieldset = ({ form }) => {
                                         rules={[
                                             ({ getFieldValue }) => ({
                                                 validator(_, value) {
-                                                    const regex = /^(|\d+)$/ // только целые числа
+                                                    const regex = /^(|\d+)$/; // только целые числа
                                                     if (!value && getFieldValue('dynamic_30_days') && !getFieldValue('dynamic_30_days_to')) {
-                                                        return Promise.reject(new Error(''))
+                                                        return Promise.reject(new Error(''));
                                                     }
                                                     if (value && !regex.test(value)) {
-                                                        return Promise.reject(new Error(''))
+                                                        return Promise.reject(new Error(''));
                                                     }
-                                                    return Promise.resolve()
+                                                    return Promise.resolve();
                                                 },
                                             }),
                                         ]}
@@ -256,14 +255,14 @@ const DynamicFieldset = ({ form }) => {
                                         rules={[
                                             ({ getFieldValue }) => ({
                                                 validator(_, value) {
-                                                    const regex = /^(|\d+)$/ // только целые числа
+                                                    const regex = /^(|\d+)$/; // только целые числа
                                                     if (!value && getFieldValue('dynamic_30_days') && !getFieldValue('dynamic_30_days_from')) {
-                                                        return Promise.reject(new Error(''))
+                                                        return Promise.reject(new Error(''));
                                                     }
                                                     if (value && !regex.test(value)) {
                                                         return Promise.reject(new Error(''));
                                                     }
-                                                    return Promise.resolve()
+                                                    return Promise.resolve();
                                                 },
                                             }),
                                         ]}
@@ -314,14 +313,14 @@ const DynamicFieldset = ({ form }) => {
                                         rules={[
                                             ({ getFieldValue }) => ({
                                                 validator(_, value) {
-                                                    const regex = /^(|\d+)$/ // только целые числа
+                                                    const regex = /^(|\d+)$/; // только целые числа
                                                     if (!value && getFieldValue('dynamic_60_days') && !getFieldValue('dynamic_60_days_to')) {
-                                                        return Promise.reject(new Error(''))
+                                                        return Promise.reject(new Error(''));
                                                     }
                                                     if (value && !regex.test(value)) {
-                                                        return Promise.reject(new Error(''))
+                                                        return Promise.reject(new Error(''));
                                                     }
-                                                    return Promise.resolve()
+                                                    return Promise.resolve();
                                                     //return Promise.reject(new Error(''));
                                                 },
                                             }),
@@ -345,14 +344,14 @@ const DynamicFieldset = ({ form }) => {
                                         rules={[
                                             ({ getFieldValue }) => ({
                                                 validator(_, value) {
-                                                    const regex = /^(|\d+)$/ // только целые числа
+                                                    const regex = /^(|\d+)$/; // только целые числа
                                                     if (!value && getFieldValue('dynamic_60_days') && !getFieldValue('dynamic_60_days_from')) {
-                                                        return Promise.reject(new Error(''))
+                                                        return Promise.reject(new Error(''));
                                                     }
                                                     if (value && !regex.test(value)) {
-                                                        return Promise.reject(new Error(''))
+                                                        return Promise.reject(new Error(''));
                                                     }
-                                                    return Promise.resolve()
+                                                    return Promise.resolve();
                                                 },
                                             }),
                                         ]}
@@ -404,14 +403,14 @@ const DynamicFieldset = ({ form }) => {
                                         rules={[
                                             ({ getFieldValue }) => ({
                                                 validator(_, value) {
-                                                    const regex = /^(|\d+)$/ // только целые числа
+                                                    const regex = /^(|\d+)$/; // только целые числа
                                                     if (!value && getFieldValue('dynamic_90_days') && !getFieldValue('dynamic_90_days_to')) {
-                                                        return Promise.reject(new Error(''))
+                                                        return Promise.reject(new Error(''));
                                                     }
                                                     if (value && !regex.test(value)) {
-                                                        return Promise.reject(new Error(''))
+                                                        return Promise.reject(new Error(''));
                                                     }
-                                                    return Promise.resolve()
+                                                    return Promise.resolve();
                                                 },
                                             }),
                                         ]}
@@ -434,14 +433,14 @@ const DynamicFieldset = ({ form }) => {
                                         rules={[
                                             ({ getFieldValue }) => ({
                                                 validator(_, value) {
-                                                    const regex = /^(|\d+)$/ // только целые числа
+                                                    const regex = /^(|\d+)$/; // только целые числа
                                                     if (!value && getFieldValue('dynamic_90_days') && !getFieldValue('dynamic_90_days_from')) {
-                                                        return Promise.reject(new Error(''))
+                                                        return Promise.reject(new Error(''));
                                                     }
                                                     if (value && !regex.test(value)) {
-                                                        return Promise.reject(new Error(''))
+                                                        return Promise.reject(new Error(''));
                                                     }
-                                                    return Promise.resolve()
+                                                    return Promise.resolve();
                                                 },
                                             }),
                                         ]}
@@ -579,7 +578,7 @@ const DynamicFieldset = ({ form }) => {
                 </ConfigProvider>
             </div>
         </fieldset>
-    )
-}
+    );
+};
 
 export default DynamicFieldset;

@@ -9,11 +9,11 @@ const getCurrentUser = () => {
     if (userData) {
       return JSON.parse(userData);
     }
-    
+
     // Или из cookie
     const cookies = document.cookie.split(';');
     const radarCookie = cookies.find(cookie => cookie.trim().startsWith('radar='));
-    
+
     if (radarCookie) {
       const token = radarCookie.split('=')[1];
       if (token && token !== 'undefined') {
@@ -29,7 +29,7 @@ const getCurrentUser = () => {
   } catch (error) {
     console.warn('Error getting user data:', error);
   }
-  
+
   return null;
 };
 
@@ -42,7 +42,7 @@ const createMockResponse = (data: any) => {
       'Content-Type': 'application/json',
     }
   });
-  
+
   (mockResponse as any).isDemo = true;
   return mockResponse;
 };
@@ -59,7 +59,7 @@ export const fetchApi = async (endpoint: string, options: RequestInit = {}) => {
     if (demoData?.data) {
       return createMockResponse(demoData.data);
     }
-    
+
     // Если нет демо-данных для этого эндпоинта, возвращаем ошибку
     return createMockResponse({
       success: false,

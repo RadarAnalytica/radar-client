@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import styles from './mainChart.module.css'
+import styles from './mainChart.module.css';
 import MainChartControls from './mainChartControls/mainChartControls';
 import { getChartData, getChartOptions } from '../../shared/mainChartUtils';
 import { differenceInDays } from 'date-fns';
@@ -24,28 +24,28 @@ ChartJS.register(
 
 const MainChart = ({ title, loading, dataDashBoard, selectedRange }) => {
 
-    const [chartData, setChartData] = useState()
-    const [days, setDays] = useState()
+    const [chartData, setChartData] = useState();
+    const [days, setDays] = useState();
     const [controlsState, setControlsState] = useState({
         isOrderQuantityActive: true,
         isSalesQuantityActive: true,
         isOrderAmountActive: true,
         isSalesAmountActive: true,
-    })
-    const [isModalOpen, setIsModalOpen] = useState(false)
+    });
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
 
     //Трансформируем данные для графика
     useEffect(() => {
         if (dataDashBoard && selectedRange) {
-            setChartData(getChartData(dataDashBoard, selectedRange, controlsState))
+            setChartData(getChartData(dataDashBoard, selectedRange, controlsState));
         }
-    }, [dataDashBoard, selectedRange, controlsState])
+    }, [dataDashBoard, selectedRange, controlsState]);
 
     //Преобразуем период
     useEffect(() => {
-        setDays(selectedRange.from && selectedRange.to ? differenceInDays(selectedRange.to, selectedRange.from, { unit: 'days' }) : selectedRange.period)
-    }, [selectedRange])
+        setDays(selectedRange.from && selectedRange.to ? differenceInDays(selectedRange.to, selectedRange.from, { unit: 'days' }) : selectedRange.period);
+    }, [selectedRange]);
 
 
     return (
@@ -112,7 +112,7 @@ const MainChart = ({ title, loading, dataDashBoard, selectedRange }) => {
             }
 
             {isModalOpen &&
-                
+
                     <MainChartModal
                         isModalOpen={isModalOpen}
                         setIsModalOpen={setIsModalOpen}
@@ -172,7 +172,7 @@ const MainChart = ({ title, loading, dataDashBoard, selectedRange }) => {
                 )
             } */}
         </>
-    )
-}
+    );
+};
 
 export default MainChart;

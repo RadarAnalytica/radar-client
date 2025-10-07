@@ -22,7 +22,7 @@ import SelfCostWarningBlock from '../../components/sharedComponents/selfCostWran
 import ErrorModal from '../../components/sharedComponents/modals/errorModal/errorModal';
 import { Filters } from '@/components/sharedComponents/apiServicePagesFiltersComponent';
 import { fetchRnpFilters } from '../../redux/filtersRnp/filterRnpActions';
-import { actions as filterActions } from '../../redux/filtersRnp/filtersRnpSlice'
+import { actions as filterActions } from '../../redux/filtersRnp/filtersRnpSlice';
 import HowToLink from '../../components/sharedComponents/howToLink/howToLink';
 import { useDemoMode } from "@/app/providers";
 import NoSubscriptionWarningBlock from '@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock';
@@ -44,7 +44,7 @@ export default function Rnp() {
 	const [page, setPage] = useState(1);
 	const [view, setView] = useState('articles');
 	const [rnpDataByArticle, setRnpDataByArticle] = useState(null);
-	const [rnpDataTotal, setRnpDataTotal] = useState(null)
+	const [rnpDataTotal, setRnpDataTotal] = useState(null);
 	const [deleteRnpId, setDeleteRnpId] = useState(null);
 	const [error, setError] = useState(null);
 	const [expanded, setExpanded] = useState('collapsed');
@@ -52,7 +52,7 @@ export default function Rnp() {
 	const updateRnpListByArticle = async () => {
 		setLoading(true);
 		try {
-			if (!!activeBrand) {
+			if (activeBrand) {
 				const response = await ServiceFunctions.postRnpByArticle(
 					authToken,
 					selectedRange,
@@ -63,7 +63,7 @@ export default function Rnp() {
 				dataToRnpList(response);
 			}
 		} catch (error) {
-			console.error('updateRnpListByArticle error', error)
+			console.error('updateRnpListByArticle error', error);
 		} finally {
 			setLoading(false);
 		}
@@ -72,7 +72,7 @@ export default function Rnp() {
 	const updateRnpListSummary = async () => {
 		setLoading(true);
 		try {
-			if (!!activeBrand) {
+			if (activeBrand) {
 				const response = await ServiceFunctions.postRnpSummary(
 					authToken,
 					selectedRange,
@@ -94,19 +94,19 @@ export default function Rnp() {
 		setDeleteRnpId(null);
 		setLoading(true);
 		try {
-			if (!!activeBrand) {
+			if (activeBrand) {
 				const response = await ServiceFunctions.deleteRnpId(
 					authToken,
 					id
 				);
 			}
 		} catch (error) {
-			console.error('deleteRnp error', error)
+			console.error('deleteRnp error', error);
 		} finally {
 			setPage(1);
 			updateRnpListByArticle();
 		}
-	}
+	};
 
 	const dataToRnpList = (response) => {
 
@@ -133,7 +133,7 @@ export default function Rnp() {
 		const article = response.data;
 		if (article.length === 0) {
 			setRnpDataTotal(null);
-			return
+			return;
 		}
 		const tableConfig = getTableConfig(article);
 		const tableData = getTableData(article);
@@ -151,24 +151,24 @@ export default function Rnp() {
 	};
 
 	const deleteHandler = (value) => {
-		deleteRnp(value)
-	}
+		deleteRnp(value);
+	};
 
 	const addRnpList = async (porductIds) => {
 		setLoading(true);
 		try {
-			if (!!activeBrand) {
+			if (activeBrand) {
 				const response = await ServiceFunctions.postUpdateRnpProducts(
 					authToken,
 					porductIds
 				);
 				if (response.detail) {
 					setError(response.detail);
-					return
+					return;
 				}
 			}
 		} catch (error) {
-			console.error('addRnpList error', error)
+			console.error('addRnpList error', error);
 		} finally {
 			setPage(1);
 			updateRnpListByArticle();
@@ -180,11 +180,11 @@ export default function Rnp() {
 			setView(value);
 			setLoading(true);
 		}
-	}
+	};
 
 	useLayoutEffect(() => {
 		if (!activeBrand && !activeBrand?.is_primary_collect) {
-			return
+			return;
 		}
 
 		if (activeBrand && activeBrand.is_primary_collect) {
@@ -196,7 +196,7 @@ export default function Rnp() {
 		}
 
 		if (activeBrand && !activeBrand?.is_primary_collect) {
-			setLoading(false)
+			setLoading(false);
 		}
 
 		// }, [activeBrand, activeBrand, shops, filters, page, view, selectedRange]);
@@ -219,7 +219,7 @@ export default function Rnp() {
 			localStorage.removeItem('RNP_EXPANDED_TOTAL_TABLE_ROWS_STATE');
 			localStorage.removeItem('RNP_EXPANDED_STATE');
 			localStorage.removeItem('SAVED_ORDER');
-		}
+		};
 	}, []);
 
 
@@ -233,19 +233,19 @@ export default function Rnp() {
 					EXPANDED_STATE = rnpDataByArticle[0]?.article_data?.wb_id;
 				}
 				setExpanded(EXPANDED_STATE);
-				return
+				return;
 			}
 
 			if (!EXPANDED_STATE) {
 				setExpanded(rnpDataByArticle[0]?.article_data?.wb_id);
 			}
 		}
-	}, [rnpDataByArticle])
+	}, [rnpDataByArticle]);
 
 	const addRnpHandler = (list) => {
 		setAddRnpModalShow(false);
 		addRnpList(list);
-	}
+	};
 
 
 	return (
@@ -396,7 +396,7 @@ export default function Rnp() {
 					/>
 				)}
 
-				{/* {!loading && rnpDataByArticle?.length === 0 && 
+				{/* {!loading && rnpDataByArticle?.length === 0 &&
 					<NoDataWidget
 						mainTitle='Здесь пока нет ни одного артикула'
 						mainText='Добавьте артикулы для отчета «Рука на пульсе»'

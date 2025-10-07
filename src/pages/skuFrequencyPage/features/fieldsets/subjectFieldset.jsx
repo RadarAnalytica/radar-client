@@ -1,13 +1,13 @@
-import { useState, useEffect, useCallback, useMemo } from 'react'
-import styles from './subjectFieldset.module.css'
-import { Form, ConfigProvider, Input, Select, Button, Tag } from 'antd'
-import { ApiService } from '../../../trendingRequestsPage/shared'
+import { useState, useEffect, useCallback, useMemo } from 'react';
+import styles from './subjectFieldset.module.css';
+import { Form, ConfigProvider, Input, Select, Button, Tag } from 'antd';
+import { ApiService } from '../../../trendingRequestsPage/shared';
 
 const SubjectFieldset = ({ prefered_items, form }) => {
 
-    const [searchState, setSearchState] = useState('') // search field inside select state
-    const [preferedItemsData, setPreferedItemsData] = useState([]) // list of items
-    const [isBodyVisisble, setIsBodyVisible] = useState(false)
+    const [searchState, setSearchState] = useState(''); // search field inside select state
+    const [preferedItemsData, setPreferedItemsData] = useState([]); // list of items
+    const [isBodyVisisble, setIsBodyVisible] = useState(false);
 
     // subject getter
     const getPreferedItemsTest = useCallback(async () => {
@@ -28,29 +28,29 @@ const SubjectFieldset = ({ prefered_items, form }) => {
                     }
                 }
             );
-            setPreferedItemsData(data)
+            setPreferedItemsData(data);
         } catch (error) {
             console.error('Error fetching preferred items:', error);
         }
-    }, [])
+    }, []);
     // ------------ popup custom select ---------//
     const renderPopup = useCallback((menu) => {
         let action;
         const acc = preferedItemsData?.reduce((total, item) => {
-            return total + item.children.length
-        }, 0)
+            return total + item.children.length;
+        }, 0);
         if (prefered_items?.length < acc) {
             action = () => {
-                let allDataArr = []
+                let allDataArr = [];
                 preferedItemsData.forEach(_ => {
-                    const normilized = _.children.map(c => c.id)
-                    allDataArr = [...allDataArr, ...normilized]
-                })
-                form.setFieldValue('prefered_items', [...allDataArr])
-            }
+                    const normilized = _.children.map(c => c.id);
+                    allDataArr = [...allDataArr, ...normilized];
+                });
+                form.setFieldValue('prefered_items', [...allDataArr]);
+            };
         }
         if (prefered_items?.length === acc) {
-            action = () => { form.setFieldValue('prefered_items', []) }
+            action = () => { form.setFieldValue('prefered_items', []); };
         }
 
         return (
@@ -92,8 +92,8 @@ const SubjectFieldset = ({ prefered_items, form }) => {
                         {prefered_items?.length === acc && 'Снять все'}
                     </Button>}
                 </ConfigProvider>
-            </div>)
-    }, [preferedItemsData, prefered_items, searchState, form])
+            </div>);
+    }, [preferedItemsData, prefered_items, searchState, form]);
 
     // ----------- select custom tag ---------------//
     const tagRender = useCallback(props => {
@@ -110,7 +110,7 @@ const SubjectFieldset = ({ prefered_items, form }) => {
                 <p className={styles.form__multiLabel} title={label.props.children.toString().replace(',', '')}>{label}</p>
             </Tag>
         );
-    }, [])
+    }, []);
 
 
     // ----------------- theme -----------------------//
@@ -131,14 +131,14 @@ const SubjectFieldset = ({ prefered_items, form }) => {
                 selectorBg: 'transparent'
             }
         }
-    }), [])
+    }), []);
 
     //getting subject
     useEffect(() => {
         if (preferedItemsData.length === 0) {
-            getPreferedItemsTest()
+            getPreferedItemsTest();
         }
-    }, [preferedItemsData])
+    }, [preferedItemsData]);
 
     return (
         <fieldset
@@ -227,7 +227,7 @@ const SubjectFieldset = ({ prefered_items, form }) => {
                             tagRender={tagRender}
                             onDropdownVisibleChange={(open) => {
                                 if (!open) {
-                                    setSearchState('')
+                                    setSearchState('');
                                 }
                             }}
                             suffixIcon={
@@ -241,27 +241,27 @@ const SubjectFieldset = ({ prefered_items, form }) => {
                                     label: <>{_.name}</>,
                                     title: _.name,
                                     options: _.children.filter(c => c.name.toLowerCase().includes(searchState.toLowerCase())).map(c => ({ value: c.id, label: c.name }))
-                                }
+                                };
                             })}
                             maxTagPlaceholder={omittedValues => {
                                 if (omittedValues.length > 1) {
                                     return (
                                         // <p className={styles.form__multiLabel}>Выбрано: {omittedValues.length}</p>
                                         <>Выбрано: {omittedValues.length}</>
-                                    )
+                                    );
                                 }
                                 if (omittedValues.length === 1) {
                                     let valueName = '';
                                     preferedItemsData.forEach(_ => {
                                         const index = _.children.findIndex(c => c.id === omittedValues[0].value);
                                         if (index !== -1) {
-                                            valueName = _.children[index].name
+                                            valueName = _.children[index].name;
                                         }
-                                    })
+                                    });
                                     return (
                                         // <p className={styles.form__multiLabel} title={valueName}>{valueName}</p>
                                         <>{valueName}</>
-                                    )
+                                    );
                                 }
                             }}
                             menuItemSelectedIcon={<span style={{ background: '#5329FF', width: 4, height: 4, borderRadius: '50% 50%' }}></span>}
@@ -270,7 +270,7 @@ const SubjectFieldset = ({ prefered_items, form }) => {
                 </ConfigProvider>
             </div>
         </fieldset>
-    )
-}
+    );
+};
 
 export default SubjectFieldset;

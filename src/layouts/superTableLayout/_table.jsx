@@ -1,19 +1,19 @@
 // Dont forget to renew imports
-import React, { useRef, useState, useEffect } from 'react'
-import styles from './tableWidget.module.css'
+import React, { useRef, useState, useEffect } from 'react';
+import styles from './tableWidget.module.css';
 // Возможно будет удобнее передавать конфиг пропсом
-import { tableConfig } from './_config'
-import { sortTableDataFunc } from './_utils'
-import { formatPrice } from '../../../../../service/utils'
+import { tableConfig } from './_config';
+import { sortTableDataFunc } from './_utils';
+import { formatPrice } from '../../../../../service/utils';
 
 
 /**
  * Краткое описание:
- * 
+ *
  * Общая таблица (супертаблица) рендерится на основе конфига (tableConfig) и состоит из нескольких маленьких таблиц
  * Разделил их по наличию заголовка, кроме самой перой (Товар) - тут искуственно отделен первый столбец для реализации фиксации первого столбца при
  * горизонтальном скроле.
- * 
+ *
  * 1. Сначала мапим весь конфиг (сами таблицы)
  * 2. Далее внутри для каждой таблицы мапим массив заголовков
  * 3. Далее под хэдером таблицы еще раз мапим массив заголовков и внутри для каждого заголовка мапим уже данные забирая только нужные для конкретного заголовка и конкретной
@@ -26,24 +26,23 @@ import { formatPrice } from '../../../../../service/utils'
 const initSortState = {
     sortedValue: undefined,
     sortType: undefined,
-}
-
+};
 
 
 const TableWidget = ({ stockAnalysisFilteredData, loading }) => {
 
-    
-    const containerRef = useRef(null) // реф скролл-контейнера (используется чтобы седить за позицией скрола)
-    const [ tableData, setTableData ] = useState() // данные для рендера таблицы
-    const [isXScrolled, setIsXScrolled] = useState(false) // следим за скролом по Х
-    const [isEndOfXScroll, setIsEndOfXScroll] = useState(false) // отслеживаем конец скролла по Х
-    const [ sortState, setSortState ] = useState(initSortState) // стейт сортировки (см initSortState)
-    
+
+    const containerRef = useRef(null); // реф скролл-контейнера (используется чтобы седить за позицией скрола)
+    const [tableData, setTableData] = useState(); // данные для рендера таблицы
+    const [isXScrolled, setIsXScrolled] = useState(false); // следим за скролом по Х
+    const [isEndOfXScroll, setIsEndOfXScroll] = useState(false); // отслеживаем конец скролла по Х
+    const [sortState, setSortState] = useState(initSortState); // стейт сортировки (см initSortState)
+
 
     // задаем начальную дату
     useEffect(() => {
-        setTableData(stockAnalysisFilteredData)
-    }, [stockAnalysisFilteredData])
+        setTableData(stockAnalysisFilteredData);
+    }, [stockAnalysisFilteredData]);
 
 
     // отслеживаем скролл в контейнере
@@ -52,20 +51,20 @@ const TableWidget = ({ stockAnalysisFilteredData, loading }) => {
 
             // если скроллим вправо
             if (containerRef.current.scrollLeft > 1) {
-                setIsXScrolled(true)
+                setIsXScrolled(true);
             } else {
-                setIsXScrolled(false)
+                setIsXScrolled(false);
             }
 
             // вычисляем достиг ли скролл конца справа
             const delta = containerRef.current.scrollWidth - (containerRef.current.scrollLeft + containerRef.current.clientWidth);
             if (delta < 16) {
-                setIsEndOfXScroll(true)
+                setIsEndOfXScroll(true);
             } else {
-                setIsEndOfXScroll(false)
+                setIsEndOfXScroll(false);
             }
         }
-    }
+    };
 
     // хэндлер сортировки
     const sortButtonClickHandler = (e, value) => {
@@ -73,9 +72,9 @@ const TableWidget = ({ stockAnalysisFilteredData, loading }) => {
 
         // выключаем сортировку если нажата уже активная клавиша
         if (sortState.sortType === id && sortState.sortedValue === value) {
-            setSortState(initSortState)
-            setTableData(stockAnalysisFilteredData)
-            return
+            setSortState(initSortState);
+            setTableData(stockAnalysisFilteredData);
+            return;
         }
 
 
@@ -83,9 +82,9 @@ const TableWidget = ({ stockAnalysisFilteredData, loading }) => {
         setSortState({
             sortedValue: value,
             sortType: id,
-        })
-        setTableData([...sortTableDataFunc(id, value, stockAnalysisFilteredData)])
-    }
+        });
+        setTableData([...sortTableDataFunc(id, value, stockAnalysisFilteredData)]);
+    };
 
     if (loading) {
         return (
@@ -94,9 +93,8 @@ const TableWidget = ({ stockAnalysisFilteredData, loading }) => {
                     <span className='loader'></span>
                 </div>
             </div>
-        )
+        );
     }
-
 
 
     return (
@@ -126,7 +124,7 @@ const TableWidget = ({ stockAnalysisFilteredData, loading }) => {
                             {t.values.map((v, id) => {
 
                                 // определяем необходимые стили
-                                const headerCellStyle = v.ruName === 'Товар' ? `${styles.table__headerItem} ${styles.table__headerItem_wide}` : styles.table__headerItem
+                                const headerCellStyle = v.ruName === 'Товар' ? `${styles.table__headerItem} ${styles.table__headerItem_wide}` : styles.table__headerItem;
                                 return (
                                     <>
                                     {/* Рендерим айтем заголовка таблицы с кнопками сортировки (если они нужны) */}
@@ -157,7 +155,7 @@ const TableWidget = ({ stockAnalysisFilteredData, loading }) => {
                                             }
                                         </div>
                                     </>
-                                )
+                                );
                             })}
                         </div>
 
@@ -166,24 +164,24 @@ const TableWidget = ({ stockAnalysisFilteredData, loading }) => {
                             {/* Мапим данные о товарах */}
                             {tableData && tableData.length > 0 && tableData.map((product, id) => {
                                 return (
-                                    <div 
+                                    <div
                                         className={styles.table__row} key={id} id={`table_row_${id}`}
                                         onMouseOver={(e) => {
-                                            const { id } = e.target
+                                            const { id } = e.target;
                                             const rows = document.querySelectorAll(`#${id}`);
                                             if (rows) {
                                                 rows.forEach(row => {
-                                                    row.style.background = '#F2F2F2'
-                                                })
+                                                    row.style.background = '#F2F2F2';
+                                                });
                                             }
                                         }}
                                         onMouseLeave={(e) => {
-                                            const { id } = e.target
+                                            const { id } = e.target;
                                             const rows = document.querySelectorAll(`#${id}`);
                                             if (rows) {
                                                 rows.forEach(row => {
-                                                    row.style.background = 'none'
-                                                })
+                                                    row.style.background = 'none';
+                                                });
                                             }
                                         }}
                                     >
@@ -197,15 +195,15 @@ const TableWidget = ({ stockAnalysisFilteredData, loading }) => {
                                                         </div>
                                                         <p className={styles.table__rowTitle}>{product[v.engName]}</p>
                                                     </div>
-                                                )
+                                                );
                                             } else {
                                                 return (
                                                     <div className={styles.table__rowItem} key={id}>{v.units ? formatPrice(product[v.engName], v.units) : product[v.engName]}</div>
-                                                )
+                                                );
                                             }
                                         }))}
                                     </div>
-                                )
+                                );
                             })}
                              {tableData && tableData.length === 0 && id === 0 &&
                                 <div className={styles.table__row}>
@@ -216,11 +214,11 @@ const TableWidget = ({ stockAnalysisFilteredData, loading }) => {
                             }
                         </div>
                     </div>
-                )
+                );
             })}
 
         </div>
-    )
-}
+    );
+};
 
 export default TableWidget;

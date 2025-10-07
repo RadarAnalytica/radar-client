@@ -1,19 +1,19 @@
-import styles from './ordersTableCustomHeader.module.css'
-import { ConfigProvider, Segmented } from 'antd'
-import { useAppSelector, useAppDispatch } from '../../../../redux/hooks'
-import { actions as supplierAnalysisActions } from '../../../../redux/supplierAnalysis/supplierAnalysisSlice'
-import { selectOrdersStructureTab } from '../../../../redux/supplierAnalysis/supplierAnalysisSelectors'
+import styles from './ordersTableCustomHeader.module.css';
+import { ConfigProvider, Segmented } from 'antd';
+import { useAppSelector, useAppDispatch } from '../../../../redux/hooks';
+import { actions as supplierAnalysisActions } from '../../../../redux/supplierAnalysis/supplierAnalysisSlice';
+import { selectOrdersStructureTab } from '../../../../redux/supplierAnalysis/supplierAnalysisSelectors';
 
 const tabs = [
     // 'По группам цветов',
     'По складам (последние 30 дней)',
     'По размерам'
-]
+];
 
 const OrdersTableCustomHeader = () => {
 
     const dispatch = useAppDispatch();
-    const ordersStructureTab = useAppSelector(selectOrdersStructureTab)
+    const ordersStructureTab = useAppSelector(selectOrdersStructureTab);
 
     return (
         <div className={styles.header}>
@@ -45,7 +45,7 @@ const OrdersTableCustomHeader = () => {
                 />
             </ConfigProvider>
         </div>
-    )
-}
+    );
+};
 
-export default OrdersTableCustomHeader
+export default OrdersTableCustomHeader;

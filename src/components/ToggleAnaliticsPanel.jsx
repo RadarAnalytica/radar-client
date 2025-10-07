@@ -3,7 +3,7 @@ import "../pages/styles.css";
 import Theses from "../pages/images/ThesesAnalyticsHome";
 import IMG from "../pages/images/imgAnalytics";
 import lightImg from "../pages/images/mainDashboard.png";
-import styles from "../components/ToggleAnalyticsPanel.module.css"
+import styles from "../components/ToggleAnalyticsPanel.module.css";
 
 const ToggleAnalyticsPanel = () => {
   const [isActive, setActive] = useState(true);

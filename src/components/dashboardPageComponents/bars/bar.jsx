@@ -1,4 +1,4 @@
-import styles from './bar.module.css'
+import styles from './bar.module.css';
 import { getIcon, getRateIcon, getRateStyle } from '../shared/barUtils';
 import { formatPrice } from '../../../service/utils';
 import { ConfigProvider, Tooltip } from 'antd';
@@ -12,7 +12,7 @@ const Bar = ({ fixed = true, title, amount, amountInPercent, amountPerDay, quant
                     <span className='loader'></span>
                 </div>
             </div>
-        )
+        );
     }
 
     return (
@@ -85,7 +85,7 @@ const Bar = ({ fixed = true, title, amount, amountInPercent, amountPerDay, quant
             }
 
         </div>
-    )
-}
+    );
+};
 
 export default Bar;

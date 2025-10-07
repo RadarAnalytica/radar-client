@@ -57,7 +57,7 @@ export default function ReferalPage() {
 				value
 			)
 		}
-	]), [])
+	]), []);
 
 	const updateData = async () => {
 		setLoading(true);
@@ -79,14 +79,14 @@ export default function ReferalPage() {
 			if (response === 'Ok'){
 				setSuccessModalOpen(true);
 			}
-			
+
 		} catch (error) {
 			console.error('withdrawalHandler error: ', error);
 			setErrorModalOpen(true);
 		} finally {
 			setLoadingWithdrawal(false);
 		}
-	}
+	};
 
 	useEffect(() => {
 		updateData();
@@ -120,7 +120,7 @@ export default function ReferalPage() {
 
 			<ConfigProvider
 				locale={ruRU}
-				renderEmpty={ () => (<div>Нет начислений</div>)} 
+				renderEmpty={ () => (<div>Нет начислений</div>)}
 				theme={{
 					token: {
 						colorPrimary: '#5329ff',
@@ -386,7 +386,7 @@ export default function ReferalPage() {
 										{(!data || data?.transactions?.transactions_data?.length === 0) && (
 											<div>Нет начислений</div>
 										)}
-										{data?.transactions?.transactions_data?.length > 0 && 
+										{data?.transactions?.transactions_data?.length > 0 &&
 											<div className={styles.table_container}>
 												<Table
 													columns={TABLE_COLUMNS}
@@ -397,9 +397,9 @@ export default function ReferalPage() {
 																key: transaction.id,
 																addititonal: transaction.bonus_amount === 1500 ? 'Бонус от Радар' : transaction.addititonal,
 																...transaction
-															})
+															});
 														}
-														return acc
+														return acc;
 													}, [])}
 													pagination={{
 														locale: {

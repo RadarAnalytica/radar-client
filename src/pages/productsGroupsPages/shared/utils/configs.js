@@ -7,7 +7,7 @@ export const addSkuTableConfig =  {
         {ruName: 'Бренд', engName: 'brand', hasSelect: false},
         {ruName: 'Магазин', engName: 'shop', hasSelect: false},
     ]
-}
+};
 
 /**
  *   {
@@ -34,7 +34,7 @@ export const singleGroupTableConfig = {
         {ruName: 'Магазин', engName: 'shop', hasSelect: false},
         {ruName: 'Действия', engName: 'actions', hasSelect: false, actionTypes: ['delete']},
     ]
-}
+};
 
 export const groupsMainTableConfig =  {
     tableName: null,
@@ -44,7 +44,7 @@ export const groupsMainTableConfig =  {
         //{ruName: 'Артикулы', units: 'шт', engName: 'sku', hasSelect: false},
         {ruName: 'Действия', engName: 'actions', hasSelect: false, actionTypes: ['edit', 'delete']},
     ]
-}
+};
 
 //   {name: '1', description: '', id: 2, shop_name: 'JuliaShine111'}
 

@@ -14,40 +14,40 @@ export const fetchABCFilters = createAsyncThunk(
                 }
             }
         );
-        
+
         const data = await res.json();
 
-        let visibleMonthArray = []
-        let visibleYearArray = []
+        let visibleMonthArray = [];
+        let visibleYearArray = [];
         if (
             Object.values(data.month_filter).filter(el => el === true).length === Object.values(data.month_filter).length ||
             Object.values(data.month_filter).filter(el => el === false).length === Object.values(data.month_filter).length
         ) {
-            visibleMonthArray = Object.keys(data.month_filter)
+            visibleMonthArray = Object.keys(data.month_filter);
         } else {
-            visibleMonthArray = Object.keys(data.month_filter).filter((el) => data.month_filter[el])
+            visibleMonthArray = Object.keys(data.month_filter).filter((el) => data.month_filter[el]);
         }
         if (
             Object.values(data.year_filter).filter(el => el === true).length === Object.values(data.year_filter).length ||
             Object.values(data.year_filter).filter(el => el === false).length === Object.values(data.year_filter).length
         ) {
-            visibleYearArray = Object.keys(data.year_filter)
+            visibleYearArray = Object.keys(data.year_filter);
         } else {
-            visibleYearArray = Object.keys(data.year_filter).filter((el) => data.year_filter[el])
+            visibleYearArray = Object.keys(data.year_filter).filter((el) => data.year_filter[el]);
         }
 
-        const week_data = {}
+        const week_data = {};
         for (let elem of Object.keys(data.week_filter)) {
-            const elemList = elem.split('-')
+            const elemList = elem.split('-');
             if (elemList[1].startsWith('0')) {
-                elemList[1] = elemList[1].replace('0', '')
+                elemList[1] = elemList[1].replace('0', '');
             }
-            
+
             if (visibleYearArray.includes(elemList[0]) && visibleMonthArray.includes(elemList[1])) {
-                week_data[elem] = data.week_filter[elem]
+                week_data[elem] = data.week_filter[elem];
             }
         }
-        
+
         return {
             brand: data.brand_filter,
             year: data.year_filter,
@@ -58,7 +58,7 @@ export const fetchABCFilters = createAsyncThunk(
             group: data.group_filter,
             wbId: data.article_filter,
             product: data.product_filter,
-        }
+        };
     }
 );
 

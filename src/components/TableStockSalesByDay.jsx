@@ -347,7 +347,7 @@ const TableStockSalesByDay = ({ setDataTable }) => {
                     </div>
                   ))}
                 </div>
-                {/* <div 
+                {/* <div
                 className={styles.columnWidth}
 
                 >

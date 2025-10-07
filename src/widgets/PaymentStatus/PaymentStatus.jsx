@@ -1,8 +1,8 @@
-import styles from './PaymentStatus.module.css'
-import classNames from 'classnames/bind'
-import successImage from './success.png'
-import failImage from './fail.png'
-import { Link } from 'react-router-dom'
+import styles from './PaymentStatus.module.css';
+import classNames from 'classnames/bind';
+import successImage from './success.png';
+import failImage from './fail.png';
+import { Link } from 'react-router-dom';
 
 const Success = () => {
     return (
@@ -15,8 +15,8 @@ const Success = () => {
                 <img src={successImage} alt="Payment Success" decoding='async' />
             </div>
         </section>
-    )
-}
+    );
+};
 const Fail = () => {
     return (
         <section className={`${styles.widget} ${styles.widget_fail}`}>
@@ -40,8 +40,8 @@ const Fail = () => {
                 <img src={failImage} alt="Payment Fail" decoding='async' />
             </div>
         </section >
-    )
-}
+    );
+};
 
 
-export const PaymentStatus = Object.assign({ Success, Fail })
+export const PaymentStatus = Object.assign({ Success, Fail });

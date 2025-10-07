@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useContext, useRef } from 'react';
-import styles from './addSkuModal.module.css'
+import styles from './addSkuModal.module.css';
 import { addSkuTableConfig } from '../../../shared';
-import { AddSkuModalFooter } from '../../../entities'
+import { AddSkuModalFooter } from '../../../entities';
 import { Modal, Checkbox, ConfigProvider, Pagination, Input } from 'antd';
-import wb_icon from '../../../../../assets/wb_icon.png'
+import wb_icon from '../../../../../assets/wb_icon.png';
 import { URL } from '../../../../../service/config';
 import AuthContext from '../../../../../service/AuthContext';
 import { fetchFilters } from '../../../../../redux/apiServicePagesFiltersState/filterActions';
@@ -20,11 +20,11 @@ const getFilteredData = (query, data) => {
             // item?.productName?.toLowerCase().includes(query.toLowerCase())
         );
 
-        filteredData.sort((a, b) => a.article.localeCompare(b.article))
+        filteredData.sort((a, b) => a.article.localeCompare(b.article));
     }
 
     return filteredData;
-}
+};
 
 const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, groupData, getGroupData, initDataFetchingStatus, setDataFetchingStatus, dataFetchingStatus, shops, setAlertState }) => {
     let checkedListRef = useRef(null);
@@ -64,16 +64,16 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, groupData,
             tableData.forEach(i => {
                 if (newSavedList.some(_ => _ === i.id)) {
                     const index = newSavedList.findIndex(_ => _ === i.id);
-                    newSavedList.splice(index, 1)
+                    newSavedList.splice(index, 1);
                 }
-            })
-            checkedListRef.current = newSavedList
+            });
+            checkedListRef.current = newSavedList;
         }
         setCheckedList(e.target.checked ? tableData.map(_ => _.id) : []);
     };
 
     const getProductsList = async (authToken, groupId) => {
-        !tableData && setDataFetchingStatus({ ...initDataFetchingStatus, isLoading: true })
+        !tableData && setDataFetchingStatus({ ...initDataFetchingStatus, isLoading: true });
         try {
             const res = await fetchApi(`/api/product/product_groups/${groupId}/products`, {
                 headers: {
@@ -106,24 +106,24 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, groupData,
               message: 'Что-то пошло не так :('
             });
         }
-    }
+    };
 
     const addProducts = async () => {
         let requestObject = {
             name: groupData.name,
             description: groupData.description,
             product_ids: checkedList
-        }
+        };
         if (searchInputValue) {
-            let ids = [...checkedList, ...checkedListRef.current]
-            let normalizedIds = []
+            let ids = [...checkedList, ...checkedListRef.current];
+            let normalizedIds = [];
             ids.forEach(i => {
                 if (!normalizedIds.some(_ => _ === i)) {
-                    normalizedIds.push(i)
+                    normalizedIds.push(i);
                 }
-            })
+            });
 
-            requestObject.product_ids = normalizedIds
+            requestObject.product_ids = normalizedIds;
         }
 
         try {
@@ -134,99 +134,98 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, groupData,
                     'authorization': 'JWT ' + authToken,
                 },
                 body: JSON.stringify(requestObject)
-            })
+            });
 
             if (!res.ok) {
-                const parsedData = await res.json()
-                setDataFetchingStatus({ ...initDataFetchingStatus, isError: true, message: parsedData?.detail || 'Что-то пошло не так :(' })
+                const parsedData = await res.json();
+                setDataFetchingStatus({ ...initDataFetchingStatus, isError: true, message: parsedData?.detail || 'Что-то пошло не так :(' });
                 return;
             }
-            setIsAddSkuModalVisible(false)
-            getGroupData(authToken, groupData.id)
-            setAlertState({ isVisible: true, message: 'Артикул успешно добавлен' })
-            dispatch(fetchFilters(authToken))
+            setIsAddSkuModalVisible(false);
+            getGroupData(authToken, groupData.id);
+            setAlertState({ isVisible: true, message: 'Артикул успешно добавлен' });
+            dispatch(fetchFilters(authToken));
             //setGroupData(parsedRes.data)
             //setDataFetchingStatus(initDataFetchingStatus)
         } catch {
-            setDataFetchingStatus({ ...initDataFetchingStatus, isError: true, message: 'Что-то пошло не так :(' })
+            setDataFetchingStatus({ ...initDataFetchingStatus, isError: true, message: 'Что-то пошло не так :(' });
         }
-    }
+    };
 
     const paginationHandler = (page) => {
-        setPaginationState({ ...paginationState, current: page })
-    }
+        setPaginationState({ ...paginationState, current: page });
+    };
 
     const inputKeydownHandler = (e) => {
-        if (e && e.key !== 'Enter') return
-        searchButtonClickHandler()
-    }
+        if (e && e.key !== 'Enter') return;
+        searchButtonClickHandler();
+    };
     const searchButtonClickHandler = () => {
-        const filteredData = getFilteredData(searchInputValue.trim(), initData)
-        const newCheckedList = []
+        const filteredData = getFilteredData(searchInputValue.trim(), initData);
+        const newCheckedList = [];
         checkedList.forEach(i => {
             if (filteredData.some(_ => _.id === i)) {
-                newCheckedList.push(i)
+                newCheckedList.push(i);
             }
-        })
+        });
         // Store current checked items before clearing
         checkedListRef.current = [...checkedList];
-        setCheckedList(newCheckedList)
-        setTableData(filteredData)
-    }
+        setCheckedList(newCheckedList);
+        setTableData(filteredData);
+    };
     const inputChangeHandler = (e) => {
         if (e.target.value === '') {
-            setTableData([...initData])
+            setTableData([...initData]);
 
             if (checkedListRef.current) {
-                setCheckedList([...checkedListRef.current, ...checkedList])
+                setCheckedList([...checkedListRef.current, ...checkedList]);
             }
         }
-        setSearchInputValue(e.target.value)
-    }
+        setSearchInputValue(e.target.value);
+    };
 
     useEffect(() => {
         if (groupData && groupData.id) {
-            getProductsList(authToken, groupData.id)
+            getProductsList(authToken, groupData.id);
         }
-    }, [groupData, groupData.products])
-
+    }, [groupData, groupData.products]);
 
 
     useEffect(() => {
-        const paginationNextButton = document.querySelector('.ant-pagination-jump-next')
-        const paginationPrevButton = document.querySelector('.ant-pagination-jump-prev')
-        const paginationSingleNextButton = document.querySelector('.ant-pagination-next')
-        const paginationSinglePrevButton = document.querySelector('.ant-pagination-prev')
+        const paginationNextButton = document.querySelector('.ant-pagination-jump-next');
+        const paginationPrevButton = document.querySelector('.ant-pagination-jump-prev');
+        const paginationSingleNextButton = document.querySelector('.ant-pagination-next');
+        const paginationSinglePrevButton = document.querySelector('.ant-pagination-prev');
         if (paginationNextButton) {
-         paginationNextButton.setAttribute('title', 'Следующие 5 страниц')
+         paginationNextButton.setAttribute('title', 'Следующие 5 страниц');
         }
         if (paginationSingleNextButton) {
-         paginationSingleNextButton.setAttribute('title', 'Следующая страница')
+         paginationSingleNextButton.setAttribute('title', 'Следующая страница');
         }
         if (paginationSinglePrevButton) {
-         paginationSinglePrevButton.setAttribute('title', 'Предыдущая страница')
+         paginationSinglePrevButton.setAttribute('title', 'Предыдущая страница');
         }
         if (paginationPrevButton) {
-         paginationPrevButton.setAttribute('title', 'Предыдущие 5 страниц')
+         paginationPrevButton.setAttribute('title', 'Предыдущие 5 страниц');
         }
-     }, [paginationState])
+     }, [paginationState]);
 
     useEffect(() => {
-        setPaginationState({ current: 1, total: tableData?.length, pageSize: 50 })
-    }, [tableData])
+        setPaginationState({ current: 1, total: tableData?.length, pageSize: 50 });
+    }, [tableData]);
 
     useEffect(() => {
         if (!isAddSkuModalVisible) {
-            setSearchInputValue('')
-            setTableData(initData)
+            setSearchInputValue('');
+            setTableData(initData);
             setCheckedList(initData?.filter(_ => _.in_group).map(_ => _.id));
         }
-    }, [isAddSkuModalVisible])
+    }, [isAddSkuModalVisible]);
 
     useEffect(() => {
         const { current } = scrollContainerRef;
-        current?.scrollTo({ top: 0, behavior: 'smooth', duration: 100 })
-    }, [paginationState.current])
+        current?.scrollTo({ top: 0, behavior: 'smooth', duration: 100 });
+    }, [paginationState.current]);
 
     return (
         <Modal
@@ -320,7 +319,7 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, groupData,
                                                     </ConfigProvider>
                                                 }
                                             </div>
-                                        )
+                                        );
                                     })}
                                 </div>
                             </div>
@@ -347,16 +346,16 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, groupData,
                                                             <img src={wb_icon} width={20} height={20} alt='' />
                                                             {product[v.engName]}
                                                         </div>
-                                                    )
+                                                    );
                                                 }
 
                                                 if (v.engName === 'shop') {
-                                                    const currentShopName = shops.find(_ => _.id === product[v.engName])?.brand_name
+                                                    const currentShopName = shops.find(_ => _.id === product[v.engName])?.brand_name;
                                                     return (
                                                         <div className={styles.table__rowItem} key={id}>
                                                             {currentShopName ? currentShopName : product[v.engName]}
                                                         </div>
-                                                    )
+                                                    );
                                                 }
 
                                                 return (
@@ -388,7 +387,7 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, groupData,
                                                                             height={60}
                                                                             onError={(e) => {
                                                                                 e.target.onerror = null;
-                                                                                e.target.style.display = 'none'
+                                                                                e.target.style.display = 'none';
                                                                             }}
                                                                         />
                                                                     }
@@ -399,10 +398,10 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, groupData,
                                                             <>{product[v.engName]}</>
                                                         }
                                                     </div>
-                                                )
+                                                );
                                             }))}
                                         </div>
-                                    )
+                                    );
                                 })}
                                 {/* No data */}
                                 {/* {tableData && tableData.length === 0 && id === 0 &&
@@ -446,7 +445,7 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, groupData,
                 </ConfigProvider>
             </div>
         </Modal>
-    )
-}
+    );
+};
 
 export default AddSkuModal;

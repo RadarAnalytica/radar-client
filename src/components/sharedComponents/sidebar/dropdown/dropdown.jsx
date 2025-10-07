@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react'
-import styles from './dropdown.module.css'
-import { Link } from 'react-router-dom'
+import { useState, useEffect } from 'react';
+import styles from './dropdown.module.css';
+import { Link } from 'react-router-dom';
 
 const Dropdown = ({ isMenuHidden }) => {
 
@@ -9,12 +9,12 @@ const Dropdown = ({ isMenuHidden }) => {
     useEffect(() => {
         let timeout;
         if (isMenuHidden) {
-            setIsOpen(false)
+            setIsOpen(false);
         } else {
-            timeout = setTimeout(() => setIsOpen(true), 100)
+            timeout = setTimeout(() => setIsOpen(true), 100);
         }
-        return () => {timeout && clearTimeout(timeout)}
-    }, [isMenuHidden])
+        return () => {timeout && clearTimeout(timeout);};
+    }, [isMenuHidden]);
 
     return (
         <div className={isMenuHidden ? `${styles.dropdown} ${styles.dropdown_hidden}` : styles.dropdown}>
@@ -28,7 +28,7 @@ const Dropdown = ({ isMenuHidden }) => {
                 </div>
             }
             {!isMenuHidden &&
-                <div className={isOpen ? `${styles.dropdown__header} ${styles.dropdown__header_active}` : styles.dropdown__header} onClick={() => { setIsOpen(!isOpen) }}>
+                <div className={isOpen ? `${styles.dropdown__header} ${styles.dropdown__header_active}` : styles.dropdown__header} onClick={() => { setIsOpen(!isOpen); }}>
 
                     <div className={styles.dropdown__titleWrapper}>
                     <svg width="14" height="22" viewBox="0 0 14 22" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -51,7 +51,7 @@ const Dropdown = ({ isMenuHidden }) => {
                 </Link>
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default Dropdown
+export default Dropdown;

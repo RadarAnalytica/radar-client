@@ -1,25 +1,25 @@
-import styles from './costsBlock.module.css'
-import { getCostsData } from '../blockUtils'
-import { formatPrice } from '../../../../service/utils'
-import { getRateIcon } from '../../shared/barUtils'
+import styles from './costsBlock.module.css';
+import { getCostsData } from '../blockUtils';
+import { formatPrice } from '../../../../service/utils';
+import { getRateIcon } from '../../shared/barUtils';
 
 const getRateStyle = (amount, styles) => {
-    let style = ''
+    let style = '';
     if (amount > 0) {
-        style = `${styles.block__mainSubData} ${styles.block__mainSubData_green}`
+        style = `${styles.block__mainSubData} ${styles.block__mainSubData_green}`;
     }
     if (amount < 0) {
-        style = `${styles.block__mainSubData} ${styles.block__mainSubData_red}`
+        style = `${styles.block__mainSubData} ${styles.block__mainSubData_red}`;
     }
     if (amount === 0) {
-        style = `${styles.block__mainSubData} ${styles.block__mainSubData_gray}`
+        style = `${styles.block__mainSubData} ${styles.block__mainSubData_gray}`;
     }
-    return style
-}
+    return style;
+};
 
 const CostsBlock = ({ dataDashBoard, loading }) => {
 
-    const data = getCostsData(dataDashBoard)
+    const data = getCostsData(dataDashBoard);
     if (loading) {
         return (
             <div className={styles.block}>
@@ -27,7 +27,7 @@ const CostsBlock = ({ dataDashBoard, loading }) => {
                     <span className='loader'></span>
                 </div>
             </div>
-        )
+        );
     }
 
     return (
@@ -59,11 +59,11 @@ const CostsBlock = ({ dataDashBoard, loading }) => {
                                 </div>
                             </div>
                         </div>
-                    )
+                    );
                 })}
             </div>
         </div>
-    )
-}
+    );
+};
 
 export default CostsBlock;

@@ -55,35 +55,35 @@ export default function ModalCreateExpense({
 	);
 
 	useEffect(() => {
-		document.body.classList.add('red')
-		return () => document.body.classList.remove('red')
-	}, [])
+		document.body.classList.add('red');
+		return () => document.body.classList.remove('red');
+	}, []);
 
 	const { shops, filters } = useAppSelector((state) => state.filters);
 
 	const allFilters = useMemo(() => {
 		// сборка данных для значения фильтра Все
-		return filters.find((el) => el.shop.id === 0)
+		return filters.find((el) => el.shop.id === 0);
 	}, [filters]);
 
 	const shopsList = useMemo(() => {
 		if (shops && shops.length > 0){
 			// сборка магазинов без сбора данных и магазин не Все
-			return shops.filter((shop) => (shop.id !== 0 && shop.is_primary_collect))
+			return shops.filter((shop) => (shop.id !== 0 && shop.is_primary_collect));
 		}
 		return [];
 	}, [shops]);
 
 	const brandsList = useMemo(() => {
 		if (allFilters && allFilters.brands){
-			return allFilters.brands.data
+			return allFilters.brands.data;
 		}
 		return [];
 	}, [allFilters]);
-	
+
 	const articlesList = useMemo(() => {
 		if (allFilters && allFilters.articles){
-			return allFilters.articles.data
+			return allFilters.articles.data;
 		}
 		return [];
 	}, [allFilters]);
@@ -92,12 +92,12 @@ export default function ModalCreateExpense({
 
 	const [selection, setSelection] = useState(() => {
 		if (data?.vendor_code) {
-			return 'vendor_code'
+			return 'vendor_code';
 		}
 		if (data?.brand_name) {
-			return 'brand_name'
+			return 'brand_name';
 		}
-		return 'shop'
+		return 'shop';
 	}); // 'shop' | 'vendor_code' | 'brand_name'
 
 	const [openCalendar, setOpenCalendar] = useState(false);
@@ -120,14 +120,14 @@ export default function ModalCreateExpense({
 	const onFinish = (values) => {
 		values.date = date;
 		console.log('onFinish', values);
-		handle(values)
+		handle(values);
 	};
 
 	const cancelHandler = () => {
 		onCancel();
 		form.resetFields();
 	};
-	
+
 	// const [date, setDate] = useState(data?.date || '10-10-2024');
 	const [frequency, setFrequency] = useState('week');
 	// const [type, setType] = useState(data?.type || 'once');
@@ -143,8 +143,8 @@ export default function ModalCreateExpense({
 	maxDate.setDate(today.getDate() + 90);
 
 	const dateHandler = () => {
-		setOpenCalendar((state) => !state)
-	}
+		setOpenCalendar((state) => !state);
+	};
 
 	useEffect(() => {
 		const handleClickOutside = (event) => {
@@ -161,16 +161,16 @@ export default function ModalCreateExpense({
 	}, []);
 
 	const handleDayClick = (day) => {
-		console.log('handleDayClick', day)
+		console.log('handleDayClick', day);
 		setDate(format(day, 'yyyy-MM-d'));
 		setOpenCalendar(false);
-	}
+	};
 
 	const handleOnBlur = (event) => {
 		if (datePickerRef.current && !datePickerRef.current.contains(event.target)){
 			setOpenCalendar(false);
 		}
-	}
+	};
 	// const [sum, setSum] = useState(data?.sum || 0);
 	const [description, setDescription] = useState(data?.description || '');
 
@@ -352,7 +352,7 @@ export default function ModalCreateExpense({
 								initialValue={data?.month}
 								// validateStatus='error'
 							>
-						
+
 								<Input
 									size="large"
 									type='number'
@@ -475,7 +475,7 @@ export default function ModalCreateExpense({
 								</Radio.Group>
 							</Form.Item>
 						</ConfigProvider>
-						{selection === 'shop' && 
+						{selection === 'shop' &&
 							<Form.Item
 								name="shop"
 								initialValue={data?.shop}
@@ -496,7 +496,7 @@ export default function ModalCreateExpense({
 								suffixIcon={icon}
 							/>
 						</Form.Item>}
-						{selection === 'vendor_code' && 
+						{selection === 'vendor_code' &&
 							<Form.Item
 								name="vendor_code"
 								initialValue={data?.vendor_code}
@@ -516,7 +516,7 @@ export default function ModalCreateExpense({
 								suffixIcon={icon}
 							/>
 						</Form.Item>}
-						{selection === 'brand_name' && 
+						{selection === 'brand_name' &&
 						<Form.Item
 							name="brand_name"
 							initialValue={data?.brand_name}
@@ -524,7 +524,7 @@ export default function ModalCreateExpense({
 								{ required: true, message: 'ОПожалуйста, выберите значение!' }
 							]}
 						>
-							<Select 
+							<Select
 								size="large"
 								options={brandsList.map((el, i) => ({
 									key: i,

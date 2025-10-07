@@ -1,9 +1,9 @@
-import styles from './itemHead.module.css'
+import styles from './itemHead.module.css';
 import { useAppSelector } from '../../../../../redux/hooks';
 import { formatPrice } from '../../../../../service/utils';
 import { Link } from 'react-router-dom';
 
-/** 
+/**
  * {
   "wb_id": 93378993,
   "wb_id_url": "https://www.wildberries.ru/catalog/93378993/detail.aspx",
@@ -30,7 +30,7 @@ import { Link } from 'react-router-dom';
 const ItemHead = () => {
 
     const { skuMainData, dataStatus } = useAppSelector(store => store.skuAnalysis);
-    
+
     if (dataStatus.isLoading) {
         return (
             <div className={styles.head}>
@@ -38,7 +38,7 @@ const ItemHead = () => {
                     <span className='loader'></span>
                 </div>
             </div>
-        )
+        );
     }
 
     return (
@@ -52,13 +52,13 @@ const ItemHead = () => {
                                     <div className={styles.head__mainPhotoWrapper} key={id}>
                                         <img src={i} alt='' width={138} height={182} className={styles.head__galleryMainImage} />
                                     </div>
-                                )
+                                );
                             } else {
 
                                 return id < 4 && (
                                     <div className={styles.head__secPhotoWrapper} key={id}>
                                         <img src={i} alt='' width={39} height={54} className={styles.head__galleryImage} />
-                                    </div>)
+                                    </div>);
                             }
                         })}
                     </div>
@@ -80,6 +80,6 @@ const ItemHead = () => {
                 </div>
             }
         </>
-    )
-}
+    );
+};
 export default ItemHead;

@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import SelfCostModal from '../selfCostModal/selfCostModal';
-import styles from './selfCostWarningBlock.module.css'
+import styles from './selfCostWarningBlock.module.css';
 import { Link } from 'react-router-dom';
 
 const SelfCostWarningBlock = ({ shopId, onUpdateDashboard }) => {
 
-    const [isModalVisible, setIsModalVisible ] = useState(false);
-   
+    const [isModalVisible, setIsModalVisible] = useState(false);
+
 
     return (
         <div className={styles.block}>
@@ -50,7 +50,7 @@ const SelfCostWarningBlock = ({ shopId, onUpdateDashboard }) => {
                 shopId={shopId}
             /> */}
         </div>
-    )
-}
+    );
+};
 
 export default SelfCostWarningBlock;

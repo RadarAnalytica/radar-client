@@ -67,7 +67,7 @@ const SideNav = () => {
         <div style={{marginTop: '1.5em'}}>
           <div className='sidenav-el' onClick={() => navigate('/dashboard')}>
             <div className='d-flex align-items-center'>
-              <svg 
+              <svg
                 viewBox="0 0 19 18"
                 xmlns="http://www.w3.org/2000/svg"
                 className='side-nav-icon'
@@ -92,7 +92,7 @@ const SideNav = () => {
           </div>
           <div className='sidenav-el' onClick={() => navigate('/report-main')}>
             <div className='d-flex align-items-center'>
-              <svg className='side-nav-icon' viewBox="0 0 18 20" xmlns="http://www.w3.org/2000/svg" 
+              <svg className='side-nav-icon' viewBox="0 0 18 20" xmlns="http://www.w3.org/2000/svg"
                 fill={
                     active === 'weeklyreport-dashboard' ||
                     active === 'weeklyreport-pl' ||
@@ -500,14 +500,14 @@ const SideNav = () => {
       </div>
 
       <div
-        className='support-block'      
+        className='support-block'
       >
         <a href="https://t.me/radar_analytica_support" target="_blank">
-          <img 
-            src={support} 
-            alt='Call support window' 
-            className='support-icon' 
-            style={{ cursor: "pointer" }}  
+          <img
+            src={support}
+            alt='Call support window'
+            className='support-icon'
+            style={{ cursor: "pointer" }}
             // onClick={() => toggleOpenSupport()}
           />
         </a>

@@ -8,7 +8,7 @@ import { fetchPenaltiesData } from '../redux/reportPrnalties/penaltiesActions';
 import { fetchPenaltyFilters } from '../redux/reportPrnalties/penaltyFiltersActions';
 import DemonstrationSection from '../components/DemonstrationSection';
 import plFake from '../pages/images/penalties-fake.png';
-import NewFilterGroup from '../components/finReport/FilterGroup'
+import NewFilterGroup from '../components/finReport/FilterGroup';
 import MobilePlug from '../components/sharedComponents/mobilePlug/mobilePlug';
 import Sidebar from '../components/sharedComponents/sidebar/sidebar';
 import Header from '../components/sharedComponents/header/header';
@@ -27,8 +27,8 @@ const WeeklyReportPenaltiesPage = () => {
   useEffect(() => {
     dispatch(fetchPenaltyFilters(
       authToken
-    ))
-  }, [authToken, dispatch])
+    ));
+  }, [authToken, dispatch]);
 
   const handleApplyFilters = useCallback(() => {
     dispatch(
@@ -51,7 +51,7 @@ const WeeklyReportPenaltiesPage = () => {
           <Header title={'Штрафы'} titlePrefix={'Отчёт'} />
         </div>
 
-        {isDemoMode && 
+        {isDemoMode &&
           <div className='mb-1'>
             <NoSubscriptionWarningBlock />
           </div>
@@ -70,7 +70,7 @@ const WeeklyReportPenaltiesPage = () => {
         <div className='container dash-container'>
           <LogisticsTable data={penaltiesData} loading={loading} />
         </div>
-        
+
         <BottomNavigation />
       </div>
     </div>

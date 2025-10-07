@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useRef, useMemo, useCallback } from "react"
-import styles from './tableRow.module.css'
-import { RowChart, BodyInput } from '../../entities/index'
-import { Button, ConfigProvider, Input } from "antd"
+import React, { useState, useEffect, useRef, useMemo, useCallback } from "react";
+import styles from './tableRow.module.css';
+import { RowChart, BodyInput } from '../../entities/index';
+import { Button, ConfigProvider, Input } from "antd";
 import { DayPicker } from 'react-day-picker';
-import moment from "moment"
+import moment from "moment";
 import 'react-day-picker/dist/style.css';
 import { ru } from 'date-fns/locale';
 import DatePickerCustomDropdown from "../../../../components/sharedComponents/apiServicePagesFiltersComponent/shared/datePickerCustomDropdown/datePickerCustomDropdown";
@@ -30,13 +30,13 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
     const [isDatePickerVisible, setIsDatePickerVisible] = useState(false); // стейт датапикера
     const [selectedDate, setSelectedDate] = useState(null); // значение датапикера
     const [month, setMonth] = useState(new Date()); // стейт месяца датапикера
-    const [historyItemsToDelete, setHistoryItemsToDelete] = useState([])
-    const [saveButtonStatus, setSaveButtonStatus] = useState(false)
-    const [rowSaveButtonDisabledStatus, setRowSaveButtonDisabledStatus] = useState(true)
-    const [rowSaveButtonForLastHistoryParamsDisabledStatus, setRowSaveButtonForLastHistoryParamsDisabledStatus] = useState(true)
-    const [addDateButtonDisabledStatus, setAddDateButtonDisabledStatus] = useState(true)
-    const [isUpdating, setIsUpdating] = useState(false)
-    const dispatch = useAppDispatch()
+    const [historyItemsToDelete, setHistoryItemsToDelete] = useState([]);
+    const [saveButtonStatus, setSaveButtonStatus] = useState(false);
+    const [rowSaveButtonDisabledStatus, setRowSaveButtonDisabledStatus] = useState(true);
+    const [rowSaveButtonForLastHistoryParamsDisabledStatus, setRowSaveButtonForLastHistoryParamsDisabledStatus] = useState(true);
+    const [addDateButtonDisabledStatus, setAddDateButtonDisabledStatus] = useState(true);
+    const [isUpdating, setIsUpdating] = useState(false);
+    const dispatch = useAppDispatch();
     const customRuLocale = useMemo(() => ({
         ...ru,
         localize: {
@@ -54,19 +54,19 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
     }, [product?.self_cost_change_history]);
 
     const handleDayClick = useCallback((day) => {
-        setSelectedDate(day)
+        setSelectedDate(day);
         setIsDatePickerVisible(false);
     }, []);
 
     const updateDefaultParams = useCallback(async () => {
-        setDataStatus({ ...initDataStatus, isLoading: true })
+        setDataStatus({ ...initDataStatus, isLoading: true });
         const newProduct = {
             product: product.product,
             user: product.user,
             shop: product.shop,
             cost: product.cost ? parseInt(product.cost) : null,
             fulfillment: product.fulfillment ? parseInt(product.fulfillment) : null,
-        }
+        };
 
         try {
             const res = await fetchApi('/api/product/self-costs', {
@@ -76,11 +76,11 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
                     'authorization': 'JWT ' + authToken
                 },
                 body: JSON.stringify(newProduct)
-            })
+            });
 
             if (!res.ok) {
-                const parsedData = await res.json()
-                setDataStatus({ ...initDataStatus, isError: true, message: parsedData.detail || 'Что-то пошло не так :(' })
+                const parsedData = await res.json();
+                setDataStatus({ ...initDataStatus, isError: true, message: parsedData.detail || 'Что-то пошло не так :(' });
                 return;
             }
             const parsedData = await res.json();
@@ -97,16 +97,16 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
             setIsSuccess(true);
         } catch (e) {
             console.error('Error', e);
-            setDataStatus({ 
-                ...initDataStatus, 
-                isError: true, 
-                message: 'Что-то пошло не так :(' 
+            setDataStatus({
+                ...initDataStatus,
+                isError: true,
+                message: 'Что-то пошло не так :('
             });
         }
     }, [product, authToken, initDataStatus, setDataStatus, setTableData, tableData, setIsSuccess]);
 
     const updateHistoryParams = useCallback(async (shouldUpdateDefaultParams = true) => {
-        setDataStatus({ ...initDataStatus, isLoading: true })
+        setDataStatus({ ...initDataStatus, isLoading: true });
         const object = {
             items_to_update: product.self_cost_change_history.map(i => ({
                 product: product.product,
@@ -117,7 +117,7 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
                 date: moment(i.date).format('YYYY-MM-DD')
             })),
             ids_to_delete: historyItemsToDelete?.map(i => i.id)
-        }
+        };
 
         try {
             const res = await fetchApi('/api/product/self-costs', {
@@ -131,10 +131,10 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
 
             if (!res.ok) {
                 const parsedData = await res.json();
-                setDataStatus({ 
-                    ...initDataStatus, 
-                    isError: true, 
-                    message: parsedData.detail || 'Что-то пошло не так :(' 
+                setDataStatus({
+                    ...initDataStatus,
+                    isError: true,
+                    message: parsedData.detail || 'Что-то пошло не так :('
                 });
                 return;
             }
@@ -156,10 +156,10 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
             }
         } catch (e) {
             console.log('e', e);
-            setDataStatus({ 
-                ...initDataStatus, 
-                isError: true, 
-                message: 'Что-то1 пошло не так :(' 
+            setDataStatus({
+                ...initDataStatus,
+                isError: true,
+                message: 'Что-то1 пошло не так :('
             });
         }
     }, [product, historyItemsToDelete, authToken, initDataStatus, setDataStatus, setTableData, tableData, setIsSuccess, updateDefaultParams]);
@@ -169,36 +169,36 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
         const index = newProduct.self_cost_change_history.findIndex(_ => moment(_.date).format('YYYY-MM-DD') === moment(item.date).format('YYYY-MM-DD'));
         if (index !== -1) {
             if (newProduct.self_cost_change_history[index].id) {
-                setHistoryItemsToDelete([...historyItemsToDelete, newProduct.self_cost_change_history[index]])
+                setHistoryItemsToDelete([...historyItemsToDelete, newProduct.self_cost_change_history[index]]);
             }
-            newProduct.self_cost_change_history.splice(index, 1)
-            setProduct({ ...newProduct })
+            newProduct.self_cost_change_history.splice(index, 1);
+            setProduct({ ...newProduct });
         }
     }, [product, historyItemsToDelete]);
 
     useEffect(() => {
         if (selectedDate) {
             let newProduct = product;
-            const index = newProduct.self_cost_change_history.findIndex(_ => _.date === moment(selectedDate).format('YYYY-MM-DD'))
+            const index = newProduct.self_cost_change_history.findIndex(_ => _.date === moment(selectedDate).format('YYYY-MM-DD'));
             if (index !== -1) {
                 setSelectedDate(null);
-                return
+                return;
             }
-            newProduct.self_cost_change_history.push({ date: moment(selectedDate).format('YYYY-MM-DD'), cost: 0, fulfillment: 0 })
-            newProduct.self_cost_change_history.sort((a, b) => moment(a.date) > moment(b.date) ? 1 : -1)
-            setProduct({ ...newProduct })
-            setSelectedDate(null)
+            newProduct.self_cost_change_history.push({ date: moment(selectedDate).format('YYYY-MM-DD'), cost: 0, fulfillment: 0 });
+            newProduct.self_cost_change_history.sort((a, b) => moment(a.date) > moment(b.date) ? 1 : -1);
+            setProduct({ ...newProduct });
+            setSelectedDate(null);
         }
-    }, [selectedDate, product])
+    }, [selectedDate, product]);
 
     useEffect(() => {
         if (product && currentProduct) {
-            setSaveButtonStatus(getSaveButtonStatus(product, currentProduct, historyItemsToDelete))
-            setRowSaveButtonDisabledStatus(getRowSaveButtonStatus(product, currentProduct, isOpen, dataStatus))
-            setAddDateButtonDisabledStatus(getAddDateButtonStatus(product, dataStatus))
-            setRowSaveButtonForLastHistoryParamsDisabledStatus(getRowSaveButtonForLastHistoryParamsStatus(product, currentProduct, isOpen, dataStatus))
+            setSaveButtonStatus(getSaveButtonStatus(product, currentProduct, historyItemsToDelete));
+            setRowSaveButtonDisabledStatus(getRowSaveButtonStatus(product, currentProduct, isOpen, dataStatus));
+            setAddDateButtonDisabledStatus(getAddDateButtonStatus(product, dataStatus));
+            setRowSaveButtonForLastHistoryParamsDisabledStatus(getRowSaveButtonForLastHistoryParamsStatus(product, currentProduct, isOpen, dataStatus));
         }
-    }, [product, historyItemsToDelete, currentProduct, isOpen, dataStatus])
+    }, [product, historyItemsToDelete, currentProduct, isOpen, dataStatus]);
 
     useEffect(() => {
         const handleClickOutside = (event) => {
@@ -214,8 +214,8 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
     }, []);
 
     useEffect(() => {
-        setProduct(JSON.parse(JSON.stringify(currentProduct)))
-    }, [currentProduct])
+        setProduct(JSON.parse(JSON.stringify(currentProduct)));
+    }, [currentProduct]);
 
     const memoizedProduct = useMemo(() => product, [product]);
     const memoizedIsOpen = useMemo(() => isOpen, [isOpen]);
@@ -241,7 +241,7 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
                             height={60}
                             onError={(e) => {
                                 e.target.onerror = null;
-                                e.target.style.display = 'none'
+                                e.target.style.display = 'none';
                             }}
                         />}
                     </div>
@@ -272,7 +272,7 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
                                             ...product,
                                             cost: /^(?:|\d+)$/.test(e.target.value) ? value : product.cost,
                                         };
-                                        setProduct({ ...newProduct })
+                                        setProduct({ ...newProduct });
                                     }}
                                     style={{ height: '44px' }}
                                     size='large'
@@ -291,7 +291,7 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
                                             ...product,
                                             fulfillment: /^(?:|\d+)$/.test(e.target.value) ? value : product.fulfillment,
                                         };
-                                        setProduct({ ...newProduct })
+                                        setProduct({ ...newProduct });
                                     }}
                                     size='large'
                                     disabled={memoizedIsOpen}
@@ -316,7 +316,6 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
                 }
 
 
-
                 {/* Инпуты себестоимости и фулфилмента - последние исторические значения */}
                 {product?.self_cost_change_history?.length > 0 &&
                     <>
@@ -332,13 +331,13 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
                                     value={product.self_cost_change_history.sort((a, b) => moment(a.date) > moment(b.date) ? 1 : -1)[product.self_cost_change_history.length - 1].cost}
                                     onChange={(e) => {
                                         let value = e.target.value ? parseInt(e.target.value) : e.target.value;
-                                        let newHistory = product.self_cost_change_history.sort((a, b) => moment(a.date) > moment(b.date) ? 1 : -1)
+                                        let newHistory = product.self_cost_change_history.sort((a, b) => moment(a.date) > moment(b.date) ? 1 : -1);
                                         newHistory[newHistory.length - 1].cost = /^(?:|\d+)$/.test(e.target.value) ? value : newHistory[newHistory.length - 1].cost;
                                         let newProduct = {
                                             ...product,
                                             self_cost_change_history: newHistory
                                         };
-                                        setProduct({ ...newProduct })
+                                        setProduct({ ...newProduct });
                                     }}
                                     style={{ height: '44px' }}
                                     size='large'
@@ -353,13 +352,13 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
                                     placeholder={currentProduct.self_cost_change_history.sort((a, b) => moment(a.date) > moment(b.date) ? 1 : -1)[product.self_cost_change_history.length - 1]?.fulfillment}
                                     onChange={(e) => {
                                         let value = e.target.value ? parseInt(e.target.value) : e.target.value;
-                                        let newHistory = product.self_cost_change_history.sort((a, b) => moment(a.date) > moment(b.date) ? 1 : -1)
+                                        let newHistory = product.self_cost_change_history.sort((a, b) => moment(a.date) > moment(b.date) ? 1 : -1);
                                         newHistory[newHistory.length - 1].fulfillment = /^(?:|\d+)$/.test(e.target.value) ? value : newHistory[newHistory.length - 1].fulfillment;
                                         let newProduct = {
                                             ...product,
                                             self_cost_change_history: newHistory
                                         };
-                                        setProduct({ ...newProduct })
+                                        setProduct({ ...newProduct });
                                     }}
                                     size='large'
                                     disabled={memoizedIsOpen}
@@ -418,7 +417,7 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
                                         </svg>
                                     </button>
                                 </div>
-                            )
+                            );
                         })}
 
                         {/* кнопка добавить дату */}
@@ -484,18 +483,18 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
                                             ...product,
                                             cost: /^(?:|\d+)$/.test(e.target.value) ? value : product.cost,
                                         };
-                                        setProduct({ ...newProduct })
+                                        setProduct({ ...newProduct });
                                     }}
                                     size='large'
                                 />
                             </div>
                             {product.self_cost_change_history?.map((i, id) => {
-                                const prevValue = currentProduct.self_cost_change_history.find(_ => _.id === i.id)
+                                const prevValue = currentProduct.self_cost_change_history.find(_ => _.id === i.id);
                                 return (
                                     <div className={styles.row__bodyMainItem} key={moment(i.date).format('DD.MM.YY')}>
                                         <BodyInput item={i} setProduct={setProduct} type='cost' product={product} prevValue={prevValue} />
                                     </div>
-                                )
+                                );
                             })}
                         </div>
                         <div className={styles.row__bodyContainer}>
@@ -513,18 +512,18 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
                                             ...product,
                                             fulfillment: /^(?:|\d+)$/.test(e.target.value) ? value : product.fulfillment,
                                         };
-                                        setProduct({ ...newProduct })
+                                        setProduct({ ...newProduct });
                                     }}
                                     size='large'
                                 />
                             </div>
                             {product.self_cost_change_history?.map((i, id) => {
-                                const prevValue = currentProduct.self_cost_change_history.find(_ => _.id === i.id)
+                                const prevValue = currentProduct.self_cost_change_history.find(_ => _.id === i.id);
                                 return (
                                     <div className={styles.row__bodyMainItem} key={moment(i.date).format('DD.MM.YY')}>
                                         <BodyInput item={i} setProduct={setProduct} type='fulfillment' product={product} prevValue={prevValue} />
                                     </div>
-                                )
+                                );
                             })}
                         </div>
                     </ConfigProvider>
@@ -550,7 +549,7 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
                 </div>}
             <ErrorModal />
         </>
-    )
-}
+    );
+};
 
 export default React.memo(TableRow);

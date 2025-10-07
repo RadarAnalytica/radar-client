@@ -189,7 +189,7 @@ const TableStockGlitter = ({
       commission: '0,00 ₽',
       profit: '300,00 ₽',
     },
-    
+
     // ... more data objects
   ];
 

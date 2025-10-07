@@ -1,53 +1,53 @@
-import { useState, useContext, useEffect } from "react"
-import { Table } from "antd"
-import ErrorModal from "../../../../components/sharedComponents/modals/errorModal/errorModal"
-import AuthContext from "../../../../service/AuthContext"
-import { URL } from "../../../../service/config"
-import { Link } from "react-router-dom"
+import { useState, useContext, useEffect } from "react";
+import { Table } from "antd";
+import ErrorModal from "../../../../components/sharedComponents/modals/errorModal/errorModal";
+import AuthContext from "../../../../service/AuthContext";
+import { URL } from "../../../../service/config";
+import { Link } from "react-router-dom";
 
 const initReqStatus = {
     isLoading: false,
     isError: false,
     message: ''
-}
+};
 
 
 const fetchUsersData = async (token, tableData, setTableData, setStatus, paginationState, setPaginationState) => {
 
-    !tableData && setStatus({ ...initReqStatus, isLoading: false })
+    !tableData && setStatus({ ...initReqStatus, isLoading: false });
     try {
         let res = await fetch(`${URL}/api/admin/referral-system/users?page=${paginationState.current}&per_page=${paginationState.pageSize}`, {
             headers: {
                 'content-type': 'application/json',
                 'authorization': 'JWT ' + token
             }
-        })
+        });
 
         if (!res.ok) {
-            setStatus({ ...initReqStatus, isError: true, message: 'Не удалось получить список пользователей' })
+            setStatus({ ...initReqStatus, isError: true, message: 'Не удалось получить список пользователей' });
             return;
         }
 
-        res = await res.json()
-        setTableData(res.data)
-        setPaginationState({...paginationState, total: res.total})
-        setStatus(initReqStatus)
+        res = await res.json();
+        setTableData(res.data);
+        setPaginationState({...paginationState, total: res.total});
+        setStatus(initReqStatus);
 
 
     } catch {
-        setStatus({ ...initReqStatus, isError: true, message: 'Не удалось получить список пользователей' })
+        setStatus({ ...initReqStatus, isError: true, message: 'Не удалось получить список пользователей' });
     }
-}
+};
 
 export const DashboardTableWidget = () => {
-    const { authToken } = useContext(AuthContext)
-    const [reqStatus, setReqStatus] = useState(initReqStatus)
-    const [paginationState, setPaginationState] = useState({current: 1, pageSize: 25, total: 25 })
-    const [tableData, setTableData] = useState()
+    const { authToken } = useContext(AuthContext);
+    const [reqStatus, setReqStatus] = useState(initReqStatus);
+    const [paginationState, setPaginationState] = useState({current: 1, pageSize: 25, total: 25 });
+    const [tableData, setTableData] = useState();
 
     useEffect(() => {
-        fetchUsersData(authToken, tableData, setTableData, setReqStatus, paginationState, setPaginationState)
-    }, [paginationState.current])
+        fetchUsersData(authToken, tableData, setTableData, setReqStatus, paginationState, setPaginationState);
+    }, [paginationState.current]);
 
     return (
         <div>
@@ -73,9 +73,8 @@ export const DashboardTableWidget = () => {
                 onCancel={() => setReqStatus(initReqStatus)}
             />
         </div>
-    )
-}
-
+    );
+};
 
 
 const TABLE_CONFIG = [
@@ -103,9 +102,9 @@ const TABLE_CONFIG = [
             >
                 Начислить бонусы
             </Link>
-        )
+        );
     }}
-]
+];
 
 /**
  * {

@@ -1,33 +1,33 @@
-import React, { useState, useContext, useEffect, useMemo, useCallback } from 'react'
-import styles from './dashboardPage.module.css'
-import { useAppSelector } from '@/redux/hooks'
-import AuthContext from '@/service/AuthContext'
-import { ServiceFunctions } from '@/service/serviceFunctions'
+import React, { useState, useContext, useEffect, useMemo, useCallback } from 'react';
+import styles from './dashboardPage.module.css';
+import { useAppSelector } from '@/redux/hooks';
+import AuthContext from '@/service/AuthContext';
+import { ServiceFunctions } from '@/service/serviceFunctions';
 
-import Header from '@/components/sharedComponents/header/header'
-import Sidebar from '@/components/sharedComponents/sidebar/sidebar'
-import MobilePlug from '@/components/sharedComponents/mobilePlug/mobilePlug'
-import { Filters } from '@/components/sharedComponents/apiServicePagesFiltersComponent'
-import SelfCostWarningBlock from '@/components/sharedComponents/selfCostWraningBlock/selfCostWarningBlock'
-import DataCollectWarningBlock from '@/components/sharedComponents/dataCollectWarningBlock/dataCollectWarningBlock'
-import FirstBarsGroup from '@/components/dashboardPageComponents/barsGroup/firstBarsGroup'
-import SecondBarsGroup from '@/components/dashboardPageComponents/barsGroup/secondBarsGroup'
-import MainChart from '@/components/dashboardPageComponents/charts/mainChart/mainChart'
-import AbcDataBlock from '@/components/dashboardPageComponents/blocks/abcDataBlock/abcDataBlock'
-import FinanceBlock from '@/components/dashboardPageComponents/blocks/financeBlock/financeBlock'
-import ProfitBlock from '@/components/dashboardPageComponents/blocks/profitBlock/profitBlock'
-import MarginChartBlock from '@/components/dashboardPageComponents/blocks/marginChartBlock/marginChartBlock'
-import ProfitChartBlock from '@/components/dashboardPageComponents/blocks/profitChartBlock/profitChartBlock'
-import StorageBlock from '@/components/dashboardPageComponents/blocks/storageBlock/storageBlock'
-import StorageRevenueChartBlock from '@/components/dashboardPageComponents/blocks/storageRevenueChartBlock/storageRevenueChartBlock'
-import CostsBlock from '@/components/dashboardPageComponents/blocks/costsBlock/costsBlock'
-import RevenueStructChartBlock from '@/components/dashboardPageComponents/blocks/revenueStructChartBlock/revenueStructChartBlock'
-import TaxTableBlock from '@/components/dashboardPageComponents/blocks/taxTableBlock/taxTableBlock'
-import HowToLink from '@/components/sharedComponents/howToLink/howToLink'
-import TurnoverBlock from '@/components/dashboardPageComponents/blocks/turnoverBlock/turnoverBlock'
+import Header from '@/components/sharedComponents/header/header';
+import Sidebar from '@/components/sharedComponents/sidebar/sidebar';
+import MobilePlug from '@/components/sharedComponents/mobilePlug/mobilePlug';
+import { Filters } from '@/components/sharedComponents/apiServicePagesFiltersComponent';
+import SelfCostWarningBlock from '@/components/sharedComponents/selfCostWraningBlock/selfCostWarningBlock';
+import DataCollectWarningBlock from '@/components/sharedComponents/dataCollectWarningBlock/dataCollectWarningBlock';
+import FirstBarsGroup from '@/components/dashboardPageComponents/barsGroup/firstBarsGroup';
+import SecondBarsGroup from '@/components/dashboardPageComponents/barsGroup/secondBarsGroup';
+import MainChart from '@/components/dashboardPageComponents/charts/mainChart/mainChart';
+import AbcDataBlock from '@/components/dashboardPageComponents/blocks/abcDataBlock/abcDataBlock';
+import FinanceBlock from '@/components/dashboardPageComponents/blocks/financeBlock/financeBlock';
+import ProfitBlock from '@/components/dashboardPageComponents/blocks/profitBlock/profitBlock';
+import MarginChartBlock from '@/components/dashboardPageComponents/blocks/marginChartBlock/marginChartBlock';
+import ProfitChartBlock from '@/components/dashboardPageComponents/blocks/profitChartBlock/profitChartBlock';
+import StorageBlock from '@/components/dashboardPageComponents/blocks/storageBlock/storageBlock';
+import StorageRevenueChartBlock from '@/components/dashboardPageComponents/blocks/storageRevenueChartBlock/storageRevenueChartBlock';
+import CostsBlock from '@/components/dashboardPageComponents/blocks/costsBlock/costsBlock';
+import RevenueStructChartBlock from '@/components/dashboardPageComponents/blocks/revenueStructChartBlock/revenueStructChartBlock';
+import TaxTableBlock from '@/components/dashboardPageComponents/blocks/taxTableBlock/taxTableBlock';
+import HowToLink from '@/components/sharedComponents/howToLink/howToLink';
+import TurnoverBlock from '@/components/dashboardPageComponents/blocks/turnoverBlock/turnoverBlock';
 // import { mockGetDashBoard } from '@/service/mockServiceFunctions';
 // import StockAnalysisBlock from '@/components/dashboardPageComponents/blocks/stockAnalysisBlock/stockAnalysisBlock'
-import NoSubscriptionWarningBlock from '@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock'
+import NoSubscriptionWarningBlock from '@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock';
 import { useDemoMode } from "@/app/providers";
 
 
@@ -161,7 +161,7 @@ const _DashboardPage = () => {
         } finally {
             setPageState(prev => ({ ...prev, loading: false }));
         }
-    }
+    };
 
     const shopStatus = useMemo(() => {
         if (!activeBrand || !shops) return null;
@@ -246,7 +246,7 @@ const _DashboardPage = () => {
             </section>
         </main>
     );
-}
+};
 
 const DashboardPage = React.memo(_DashboardPage);
 export default DashboardPage;

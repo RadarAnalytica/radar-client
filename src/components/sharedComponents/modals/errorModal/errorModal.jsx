@@ -1,4 +1,4 @@
-import styles from './errorModal.module.css'
+import styles from './errorModal.module.css';
 import { Modal } from "antd";
 
 const ErrorModal = ({ message, ...rest }) => {
@@ -19,7 +19,7 @@ const ErrorModal = ({ message, ...rest }) => {
                 <p className={styles.modal__message}>{message}</p>
             </div>
         </Modal>
-    )
-}
+    );
+};
 
 export default ErrorModal;
