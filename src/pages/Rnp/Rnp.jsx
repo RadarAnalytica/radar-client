@@ -120,7 +120,7 @@ export default function Rnp() {
 					columns: [],
 					rows: [],
 				},
-				article_data: article.article_data,
+				article_data: article?.article_data,
 			};
 
 			return item;
@@ -144,7 +144,7 @@ export default function Rnp() {
 				columns: [],
 				rows: [],
 			},
-			article_data: article.article_data,
+			article_data: article?.article_data,
 		};
 
 		setRnpDataTotal(item);
@@ -227,17 +227,17 @@ export default function Rnp() {
 		if (rnpDataByArticle) {
 			let EXPANDED_STATE = JSON.parse(localStorage.getItem('RNP_EXPANDED_STATE'));
 			if (EXPANDED_STATE && EXPANDED_STATE !== 'collapsed' && rnpDataByArticle?.length > 0) {
-				const isInCurrentList = rnpDataByArticle.some((el) => el.article_data.wb_id === EXPANDED_STATE);
+				const isInCurrentList = rnpDataByArticle.some((el) => el?.article_data?.wb_id === EXPANDED_STATE);
 				let updatedExpandedState;
 				if (!isInCurrentList) {
-					EXPANDED_STATE = rnpDataByArticle[0].article_data.wb_id;
+					EXPANDED_STATE = rnpDataByArticle[0]?.article_data?.wb_id;
 				}
 				setExpanded(EXPANDED_STATE);
 				return
 			}
 
 			if (!EXPANDED_STATE) {
-				setExpanded(rnpDataByArticle[0].article_data.wb_id);
+				setExpanded(rnpDataByArticle[0]?.article_data?.wb_id);
 			}
 		}
 	}, [rnpDataByArticle])
