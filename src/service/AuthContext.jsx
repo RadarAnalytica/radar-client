@@ -134,9 +134,13 @@ export const AuthProvider = ({ children }) => {
     // Delete cookie using the hook's deleteCookie function
     deleteCookie();
 
-    setAuthToken(null);
-    setUser(null);
-    window.location.replace(user?.email === 'demo@radar.ru' ? `${URL}/signup` : URL);
+    if (user?.email === 'demo@radar.ru') {
+      window.location.replace(`${URL}/signup`);
+    } else {
+      setAuthToken(null);
+      setUser(null);
+      window.location.replace(URL);
+    }
   };
 
   // Offcanvas functions

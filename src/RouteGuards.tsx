@@ -10,7 +10,6 @@ import NoSubscriptionPlugPage from './pages/noSubscriptionPlugPage/noSubscriptio
 import NoSubscriptionPage from './pages/NoSubscriptionPage';
 
 
-
 /**
  * -----------------------------------------------
  * 
@@ -34,12 +33,6 @@ import NoSubscriptionPage from './pages/NoSubscriptionPage';
 type GuardType = 'redirect' | 'fallback';
 type SubscriptionType = 'Smart' | string;
 type UserRole = 'admin' | string;
-
-interface FallbackProps {
-  title?: string;
-  pathname?: string;
-  [key: string]: any;
-}
 
 type FallbackComponent = (props?: any) => ReactNode;
 
