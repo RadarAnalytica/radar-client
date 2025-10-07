@@ -11,7 +11,7 @@ const TableWidget = ({ tableConfig, setTableConfig }) => {
     const dispatch = useAppDispatch();
     const containerRef = useRef(null); // реф скролл-контейнера (используется чтобы седить за позицией скрола)
     const { requestData, requestStatus, requestObject, formType, pagination } = useAppSelector(store => store.requestsMonitoring);
-    console.log('requestData', requestObject);
+    
     //задаем начальную дату
     useEffect(() => {
         if (requestObject && formType === 'complex') {
@@ -48,9 +48,7 @@ const TableWidget = ({ tableConfig, setTableConfig }) => {
         );
     }
 
-
     const onResizeGroup = (columnKey, width) => {
-
         // Обновляем конфигурацию колонок с группированной структурой
         const updateColumnWidth = (columns) => {
           return columns.map(col => {
@@ -75,13 +73,14 @@ const TableWidget = ({ tableConfig, setTableConfig }) => {
           });
         };
 
-         // Обновляем состояние
-         setTableConfig(prevConfig => {
+        // Обновляем состояние
+        setTableConfig(prevConfig => {
             const updatedConfig = updateColumnWidth(prevConfig);
             localStorage.setItem('MonitoringTableConfig', JSON.stringify(updatedConfig));
             return updatedConfig;
         });
-      };
+    };
+
     return requestData && tableConfig && (
         <div className={styles.widget}>
             <div
@@ -132,7 +131,6 @@ const TableWidget = ({ tableConfig, setTableConfig }) => {
         </div>
     );
 };
-
 
 export default TableWidget;
 
