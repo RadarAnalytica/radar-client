@@ -31,7 +31,7 @@ const DatePickerCustomDropdown = (props) => {
                 color={'black'}
                 closable={false}
                 onClose={onClose}
-                style={{ background: 'transparent', color: 'black', fontSize: '18px', display: 'flex', alignItems: 'center', border: 'none' }}
+                style={{ background: 'transparent', color: 'black', fontSize: '14px', display: 'flex', alignItems: 'center', border: 'none' }}
             >
                 <div style={{color: 'black'}}>{label}</div>
             </Tag>
