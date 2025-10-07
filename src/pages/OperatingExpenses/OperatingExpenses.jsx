@@ -441,6 +441,7 @@ export default function OperatingExpenses() {
 					</Flex>
 				)}
 
+
 				<div className={styles.controls}>
 					<Filters
 						shopSelect={true}
