@@ -4,24 +4,24 @@ export const sortTableDataFunc = (sortType, sortedValue, dataToSort) => {
     if (sortType === 'ASC') {
         sortedData = [...dataToSort].sort((a, b) => {
             if (typeof a[sortedValue] === 'number' && typeof b[sortedValue] === 'number') {
-                return a[sortedValue] - b[sortedValue]
+                return a[sortedValue] - b[sortedValue];
             } else {
-                return a[sortedValue].localeCompare(b[sortedValue])
+                return a[sortedValue].localeCompare(b[sortedValue]);
             }
-        })
+        });
     }
 
     if (sortType === 'DESC') {
         sortedData = [...dataToSort].sort((a, b) => {
             if (typeof a[sortedValue] === 'number' && typeof b[sortedValue] === 'number') {
-                return b[sortedValue] - a[sortedValue]
+                return b[sortedValue] - a[sortedValue];
             } else {
-                return b[sortedValue].localeCompare(a[sortedValue])
+                return b[sortedValue].localeCompare(a[sortedValue]);
             }
-        })
+        });
     }
     return sortedData;
-}
+};
 
 export const formatRateValue = (value) => {
     let result = {
@@ -37,7 +37,7 @@ export const formatRateValue = (value) => {
                 }}
             ></div>
         )
-    }
+    };
     if (value > 0) {
         result = {
             value: '+ ' + result.value + ' %',
@@ -47,7 +47,7 @@ export const formatRateValue = (value) => {
                     <path d="M14 0.544067L16.29 2.83407L11.41 7.71407L7.41 3.71407L0 11.1341L1.41 12.5441L7.41 6.54407L11.41 10.5441L17.71 4.25407L20 6.54407V0.544067H14Z" fill="#00B69B" />
                 </svg>
             )
-        }
+        };
     }
     if (value < 0) {
         result = {
@@ -59,14 +59,14 @@ export const formatRateValue = (value) => {
                 </svg>
 
             )
-        }
+        };
     }
     if (value === 0) {
         result = {
             ...result,
             value: result.value + ' %',
-        }
+        };
     }
 
     return result;
-}
+};

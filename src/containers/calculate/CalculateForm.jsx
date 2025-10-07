@@ -1,5 +1,5 @@
-import React from 'react'
-import '../../pages/styles.css'
+import React from 'react';
+import '../../pages/styles.css';
 
 const CalculateForm = ({
     base: { sellPrice, setSellPrice, targetIncome, setTargetIncome },
@@ -72,7 +72,7 @@ const CalculateForm = ({
                 </button>
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default CalculateForm
+export default CalculateForm;

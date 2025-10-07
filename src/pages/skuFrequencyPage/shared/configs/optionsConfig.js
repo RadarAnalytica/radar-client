@@ -9,7 +9,7 @@ export const optionsConfig = [
     { label: 'Коэффициент спроса', name: 'freq_per_good', isActive: true, hasTooltip: true, tooltipText: 'Показатель, который отражает соотношение между частотностью поискового запроса и количеством товаров, предлагаемых по этому запросу. Чем выше коэффициент спроса, тем больше интерес аудитории к данной тематике и тем меньше конкуренция среди продавцов. Данный показатель рассчитывается по формуле: Частотность WB / Кол-во товаров на WB.'},
     { label: 'Кол-во продавцов', name: 'suppliers_quantity', isActive: true, units: 'шт'},
     { label: '% продавцов с продажами', name: 'suppliers_with_sales_percent', isActive: true, units: '%'},
-]
+];
 
 export const sideOptionsConfig = [
     {
@@ -22,7 +22,7 @@ export const sideOptionsConfig = [
             { label: 'Монопольность, %', name: 'monopoly_percent', isWide: false, units: '%', hasTooltip: true, tooltipText: 'Процент выручки, приходящийся на ТОП-30 артикулов от всех артикулов на первой странице.'},
             { label: 'Кол-во артикулов по запросу, шт', name: 'top_goods_quantity', isWide: false, units: 'шт'},
             { label: 'Процент выкупа, %', name: 'buyout_percent', isWide: false, units: '%'},
-            
+
         ]
     },
     {
@@ -48,4 +48,4 @@ export const sideOptionsConfig = [
             { label: '% артикулов с продажами', name: 'goods_with_sales_percent_300', isWide: false, units: '%'}
         ]
     },
-]
+];

@@ -25,7 +25,7 @@ export const getMaxValue = (chartData) => {
         ?.sort((a, b) => b - a);
     const maxValue = sortedValuesArray && sortedValuesArray.length ? sortedValuesArray[0] : 0;
     return maxValue;
-}
+};
 
 export const getMaxAmount = (chartData) => {
     const bar = chartData?.datasets?.filter((item) => item?.type === 'bar');
@@ -34,10 +34,10 @@ export const getMaxAmount = (chartData) => {
         ?.flat(1)
         ?.sort((a, b) => b - a)[0];
     return maxAmount;
-}
+};
 
 export const getPastDays = (number, selectedRange) => {
-    const today = !!selectedRange.to ? new Date(selectedRange.to) : new Date();
+    const today = selectedRange.to ? new Date(selectedRange.to) : new Date();
     const pastDays = [];
 
     for (let i = 0; i < number; i++) {
@@ -63,7 +63,7 @@ export const getPastDays = (number, selectedRange) => {
     }
 
     return pastDays;
-}
+};
 
 
 export const getChartData = (dataDashBoard, selectedRange, controlsState) => {
@@ -211,7 +211,7 @@ export const getChartData = (dataDashBoard, selectedRange, controlsState) => {
         ],
     };
 
-}
+};
 
 
 export const getChartTooltip = (context, chartData) => {
@@ -350,8 +350,7 @@ export const getChartTooltip = (context, chartData) => {
     tooltipEl.style.padding = '1rem';
     tooltipEl.style.pointerEvents = 'none';
     tooltipEl.style.zIndex = '1000';
-}
-
+};
 
 
 export const getChartOptions = (chartData, days) => {
@@ -371,7 +370,7 @@ export const getChartOptions = (chartData, days) => {
                 mode: 'index',
                 axis: 'x',
                 callbacks: {},
-                external: (context) => {getChartTooltip(context, chartData)}
+                external: (context) => {getChartTooltip(context, chartData);}
             },
             verticalDashedLine: { enabled: true }
         },
@@ -418,7 +417,7 @@ export const getChartOptions = (chartData, days) => {
                 },
             },
         },
-    }
+    };
 
     return chartOptions;
-}
+};

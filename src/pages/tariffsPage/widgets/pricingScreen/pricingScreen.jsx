@@ -1,12 +1,12 @@
-import React, { useState, useContext, useEffect } from 'react'
-import styles from './pricingScreen.module.css'
-import { useNavigate, useLocation } from 'react-router-dom'
-import { PricingCard, PricingModal } from '../../features'
-import { URL } from '../../../../service/config'
+import React, { useState, useContext, useEffect } from 'react';
+import styles from './pricingScreen.module.css';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { PricingCard, PricingModal } from '../../features';
+import { URL } from '../../../../service/config';
 import { jwtDecode } from "jwt-decode";
 import axios from "axios";
-import AuthContext from '../../../../service/AuthContext'
-import { ServiceFunctions } from '../../../../service/serviceFunctions'
+import AuthContext from '../../../../service/AuthContext';
+import { ServiceFunctions } from '../../../../service/serviceFunctions';
 
 
 export const pricing = [
@@ -42,22 +42,22 @@ export const pricing = [
         color: '#F8BE72',
         value: '12month'
     },
-]
+];
 
 export const PricingScreen = () => {
-    
+
 
     // ------------ states and vars ---------------//
     const { user, logout, authToken } = useContext(AuthContext);
-    const [ modalItem, setModalItem ] = useState(undefined)
+    const [modalItem, setModalItem] = useState(undefined);
     const [isScriptLoaded, setIsScriptLoaded] = useState(false);
-    const [ isWidgetActive, setIsWidgetActive] = useState(false);
+    const [isWidgetActive, setIsWidgetActive] = useState(false);
     // const [selectedPeriod, setSelectedPeriod] = useState('1month');
     const [trialExpired, setTrialExpired] = useState(user?.is_test_used);
     const [subscriptionDiscount, setSubscriptionDiscount] = useState(
         user?.is_subscription_discount
     );
-    
+
     const navigate = useNavigate();
     const location = useLocation();
     const userIdInvoiceHardCode = 'radar-51-20240807-161128';
@@ -72,8 +72,6 @@ export const PricingScreen = () => {
             : setSubscriptionDiscount(false);
     }
 
-    
-
 
     // -------------- redirect -------------//
 
@@ -83,8 +81,8 @@ export const PricingScreen = () => {
                 navigate('/signup');
             }
         };
-        redirect()
-    }, [user])
+        redirect();
+    }, [user]);
 
 
     // ---------- idk what is this ------------ //
@@ -148,7 +146,6 @@ export const PricingScreen = () => {
      // ------------------------------------------//
 
 
-
      // ----------- cloudpayments script -----------------//
      useEffect(() => {
         const loadCloudPaymentsScript = () => {
@@ -180,11 +177,9 @@ export const PricingScreen = () => {
      // ------------------------------------------//
 
 
-
-
      // -------------------------------- pay function -------------------------------//
      const pay = async (_) => {
-        const selectedPeriod = _.value
+        const selectedPeriod = _.value;
         const refresh_result = await refreshUserToken();
         // console.log('refresh_result', refresh_result);
 
@@ -232,7 +227,7 @@ export const PricingScreen = () => {
             amountSubscribe = _.price;
             firstAmount = _.price;
             periodSubscribe = 1;
-            if (!!newTrialExpired) {
+            if (newTrialExpired) {
                 startDateSubscribe.setMonth(
                     startDateSubscribe.getMonth() + periodSubscribe
                 );
@@ -275,7 +270,7 @@ export const PricingScreen = () => {
         //   startDateSubscribe.toISOString().split('T')[0]
         // );
         startDateSubscribe = startDateSubscribe.toISOString().split('T')[0];
-        startDateSubscribe = `${startDateSubscribe}T10:00:00`
+        startDateSubscribe = `${startDateSubscribe}T10:00:00`;
         // console.log('startDateSubscribe', startDateSubscribe);
         // eslint-disable-next-line no-undef
         var widget = new cp.CloudPayments({
@@ -444,7 +439,7 @@ export const PricingScreen = () => {
         setIsWidgetActive(false);
     };
      // ----------------------------------------------------------------------------//
-    
+
 
     return (
         <section className={styles.screen}>
@@ -456,12 +451,12 @@ export const PricingScreen = () => {
                 <div className={styles.screen__cards}>
                     {pricing.map((_, id) => {
                         return (
-                            <PricingCard key={id} item={_} setModalItem={setModalItem} action={() => {setIsWidgetActive(true); pay(_)}} isWidgetActive={isWidgetActive} />
-                        )
+                            <PricingCard key={id} item={_} setModalItem={setModalItem} action={() => {setIsWidgetActive(true); pay(_);}} isWidgetActive={isWidgetActive} />
+                        );
                     })}
                 </div>
             </div>
-            
+
             {/* modal */}
             <PricingModal
                  visible={!!modalItem}
@@ -471,10 +466,10 @@ export const PricingScreen = () => {
                     if (modalItem) {
                         setIsWidgetActive(true);
                         pay(modalItem);
-                        setModalItem(undefined)
+                        setModalItem(undefined);
                     }
                 }}
             />
         </section>
-    )
-}
+    );
+};

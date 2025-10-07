@@ -152,19 +152,19 @@ const supplierAnalysisSlice = createSlice({
             return {
                 ...state,
                 isAnyDataLoading: action.payload
-            }
+            };
         },
         setSupplierMainData: (state, action) => {
             return {
                 ...state,
                 mainSupplierData: action.payload
-            }
+            };
         },
         setSupplierCompareData: (state, action) => {
             return {
                 ...state,
                 compareSupplierData: action.payload
-            }
+            };
         },
         setSupplierCurrentBrand: (state, action) => {
             return {
@@ -179,19 +179,19 @@ const supplierAnalysisSlice = createSlice({
                     },
                     sort: {}
                 }
-            }
+            };
         },
         setOrdersStructureTab: (state, action) => {
             return {
                 ...state,
                 ordersStructureTab: action.payload
-            }
+            };
         },
         setStockChartTab: (state, action) => {
             return {
                 ...state,
                 stockChartTab: action.payload
-            }
+            };
         },
         setDataFetchingStatus: (state, action) => {
             const { dataType, statusObject } = action.payload;
@@ -201,7 +201,7 @@ const supplierAnalysisSlice = createSlice({
                     ...state[dataType],
                     ...statusObject
                 }
-            }
+            };
         },
         setPagination: (state, action) => {
             const { dataType, pagination } = action.payload;
@@ -211,7 +211,7 @@ const supplierAnalysisSlice = createSlice({
                     ...state[dataType],
                     pagination: pagination
                 }
-            }
+            };
         },
         setSort: (state, action) => {
             const { dataType, sort } = action.payload;
@@ -226,33 +226,33 @@ const supplierAnalysisSlice = createSlice({
                         total: 25
                     }
                 }
-            }
+            };
         },
         resetState: () => {
             return {
                 ...initialState
-            }
+            };
         }
     },
     extraReducers: (bulder) => {
         bulder
             .addCase(fetchSupplierAnalysisMetaData.fulfilled, (state, action) => {
-                let isAnyDataLoadingUpd = Object.keys(state).every(key => !state[key]?.isLoading)
+                let isAnyDataLoadingUpd = Object.keys(state).every(key => !state[key]?.isLoading);
                 state.isAnyDataLoading = !isAnyDataLoadingUpd;
                 state.metaData.data = action.payload;
             })
             .addCase(fetchSupplierAnalysisIndicatorsData.fulfilled, (state, action) => {
-                let isAnyDataLoadingUpd = Object.keys(state).every(key => !state[key]?.isLoading)
+                let isAnyDataLoadingUpd = Object.keys(state).every(key => !state[key]?.isLoading);
                 state.isAnyDataLoading = !isAnyDataLoadingUpd;
                 state.indicatorsData.data = action.payload;
             })
             .addCase(fetchSupplierAnalysisMainChartData.fulfilled, (state, action) => {
-                let isAnyDataLoadingUpd = Object.keys(state).every(key => !state[key]?.isLoading)
+                let isAnyDataLoadingUpd = Object.keys(state).every(key => !state[key]?.isLoading);
                 state.isAnyDataLoading = !isAnyDataLoadingUpd;
                 state.mainChartData.data = action.payload;
             })
             .addCase(fetchSupplierAnalysisByDatesTableData.fulfilled, (state, action) => {
-                let isAnyDataLoadingUpd = Object.keys(state).every(key => !state[key]?.isLoading)
+                let isAnyDataLoadingUpd = Object.keys(state).every(key => !state[key]?.isLoading);
                 state.isAnyDataLoading = !isAnyDataLoadingUpd;
                 state.byDatesTableData.data = action.payload;
             })
@@ -260,60 +260,60 @@ const supplierAnalysisSlice = createSlice({
                 // let isAnyDataLoadingUpd = Object.keys(state).every(key => !state[key]?.isLoading)
                 // state.isAnyDataLoading = isAnyDataLoadingUpd;
                 state.supplierBrands = action.payload;
-                state.supplierCurrentBrand = -1
+                state.supplierCurrentBrand = -1;
             })
             .addCase(fetchSupplierAnalysisByBrandTableData.fulfilled, (state, action) => {
-                let isAnyDataLoadingUpd = Object.keys(state).every(key => !state[key]?.isLoading)
+                let isAnyDataLoadingUpd = Object.keys(state).every(key => !state[key]?.isLoading);
                 state.isAnyDataLoading = !isAnyDataLoadingUpd;
                 state.byBrandsTableData.data = action.payload.data;
-                state.byBrandsTableData.pagination.total = action.payload.pagination.total
+                state.byBrandsTableData.pagination.total = action.payload.pagination.total;
             })
             .addCase(fetchSupplierAnalysisBySubjectsTableData.fulfilled, (state, action) => {
-                let isAnyDataLoadingUpd = Object.keys(state).every(key => !state[key]?.isLoading)
+                let isAnyDataLoadingUpd = Object.keys(state).every(key => !state[key]?.isLoading);
                 state.isAnyDataLoading = !isAnyDataLoadingUpd;
                 state.bySubjectsTableData.data = action.payload.data;
-                state.bySubjectsTableData.pagination.total = action.payload.pagination.total
+                state.bySubjectsTableData.pagination.total = action.payload.pagination.total;
             })
             .addCase(fetchSupplierAnalysisByWarehousesTableData.fulfilled, (state, action) => {
-                let isAnyDataLoadingUpd = Object.keys(state).every(key => !state[key]?.isLoading)
+                let isAnyDataLoadingUpd = Object.keys(state).every(key => !state[key]?.isLoading);
                 state.isAnyDataLoading = !isAnyDataLoadingUpd;
                 state.byWarehousesTableData.data = action.payload;
             })
             .addCase(fetchSupplierAnalysisBySizesTableData.fulfilled, (state, action) => {
-                let isAnyDataLoadingUpd = Object.keys(state).every(key => !state[key]?.isLoading)
+                let isAnyDataLoadingUpd = Object.keys(state).every(key => !state[key]?.isLoading);
                 state.isAnyDataLoading = !isAnyDataLoadingUpd;
                 state.bySizesTableData.data = action.payload;
             })
             .addCase(fetchSupplierAnalysisByWharehousesComparsionData.fulfilled, (state, action) => {
-                let isAnyDataLoadingUpd = Object.keys(state).every(key => !state[key]?.isLoading)
+                let isAnyDataLoadingUpd = Object.keys(state).every(key => !state[key]?.isLoading);
                 state.isAnyDataLoading = !isAnyDataLoadingUpd;
                 state.byWharehousesComparsionData.data = action.payload;
             })
             .addCase(fetchSupplierAnalysisByIncomingOrdersComparsionData.fulfilled, (state, action) => {
-                let isAnyDataLoadingUpd = Object.keys(state).every(key => !state[key]?.isLoading)
+                let isAnyDataLoadingUpd = Object.keys(state).every(key => !state[key]?.isLoading);
                 state.isAnyDataLoading = !isAnyDataLoadingUpd;
                 state.byIncomingOrdersComparsionData.data = action.payload;
             })
             .addCase(fetchSupplierAnalysisByOrderedProductsComparsionData.fulfilled, (state, action) => {
-                let isAnyDataLoadingUpd = Object.keys(state).every(key => !state[key]?.isLoading)
+                let isAnyDataLoadingUpd = Object.keys(state).every(key => !state[key]?.isLoading);
                 state.isAnyDataLoading = !isAnyDataLoadingUpd;
                 state.byOrderedProductsComparsionData.data = action.payload;
             })
             .addCase(fetchSupplierAnalysisByAvgPricesComparsionData.fulfilled, (state, action) => {
-                let isAnyDataLoadingUpd = Object.keys(state).every(key => !state[key]?.isLoading)
+                let isAnyDataLoadingUpd = Object.keys(state).every(key => !state[key]?.isLoading);
                 state.isAnyDataLoading = !isAnyDataLoadingUpd;
                 state.byAvgPricesComparsionData.data = action.payload;
             })
             .addCase(fetchSupplierAnalysisByAvgDiscountsComparsionData.fulfilled, (state, action) => {
-                let isAnyDataLoadingUpd = Object.keys(state).every(key => !state[key]?.isLoading)
+                let isAnyDataLoadingUpd = Object.keys(state).every(key => !state[key]?.isLoading);
                 state.isAnyDataLoading = !isAnyDataLoadingUpd;
                 state.byAvgDiscountsComparsionData.data = action.payload;
             })
             .addCase(fetchSupplierAnalysisByStockSizeComparsionData.fulfilled, (state, action) => {
-                let isAnyDataLoadingUpd = Object.keys(state).every(key => !state[key]?.isLoading)
+                let isAnyDataLoadingUpd = Object.keys(state).every(key => !state[key]?.isLoading);
                 state.isAnyDataLoading = !isAnyDataLoadingUpd;
                 state.byStockSizeComparsionData.data = action.payload;
-            })
+            });
     }
 });
 

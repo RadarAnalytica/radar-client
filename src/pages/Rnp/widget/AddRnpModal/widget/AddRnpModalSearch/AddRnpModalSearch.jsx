@@ -1,7 +1,7 @@
 import { useEffect } from "react";
-import { ConfigProvider, Form, Flex, Input, Button } from "antd"
-import styles from "./AddRnpModalSearch.module.css"
-import { search } from "../../../icons"
+import { ConfigProvider, Form, Flex, Input, Button } from "antd";
+import styles from "./AddRnpModalSearch.module.css";
+import { search } from "../../../icons";
 
 function AddRnpModalSearch({
   loading,
@@ -13,14 +13,14 @@ function AddRnpModalSearch({
   const finishHandler = (data) => {
     const value = data.search.trim();
     if (!value){
-      return
+      return;
     }
     submitSearch(value);
-  }
+  };
 
   useEffect(() => {
     let timeout = null;
-    
+
     if (!searchValue) {
       timeout = setTimeout(() => {
         submitSearch(null);
@@ -29,9 +29,9 @@ function AddRnpModalSearch({
       clearTimeout(timeout);
     }
 
-    return () => clearTimeout(timeout)
+    return () => clearTimeout(timeout);
 
-  }, [searchValue])
+  }, [searchValue]);
 
   return (
     <ConfigProvider
@@ -85,7 +85,7 @@ function AddRnpModalSearch({
         </Flex>
       </Form>
     </ConfigProvider>
-  )
+  );
 }
 
-export default AddRnpModalSearch
+export default AddRnpModalSearch;

@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState, useRef } from 'react';
-import styles from './OrdersMap.module.css'
+import styles from './OrdersMap.module.css';
 import './styles.css';
 import Map from '../components/Map';
 import OrderMapPieChart from '../containers/orderMap/OrderMapPieChart';
@@ -20,9 +20,9 @@ import { Filters } from '@/components/sharedComponents/apiServicePagesFiltersCom
 import MobilePlug from '@/components/sharedComponents/mobilePlug/mobilePlug';
 import Sidebar from '@/components/sharedComponents/sidebar/sidebar';
 import Header from '@/components/sharedComponents/header/header';
-import { mockGetGeographyData } from '@/service/mockServiceFunctions'
+import { mockGetGeographyData } from '@/service/mockServiceFunctions';
 import DataCollectWarningBlock from '@/components/sharedComponents/dataCollectWarningBlock/dataCollectWarningBlock';
-import NoSubscriptionWarningBlock from '@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock'
+import NoSubscriptionWarningBlock from '@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock';
 import { useDemoMode } from "@/app/providers";
 
 const OrdersMap = () => {
@@ -34,7 +34,7 @@ const OrdersMap = () => {
   const shops = useAppSelector((state) => state.shopsSlice.shops);
   const { activeBrand, selectedRange, isFiltersLoaded, activeBrandName, activeArticle, activeGroup } = useAppSelector(store => store.filters);
   const filters = useAppSelector(store => store.filters);
-  const [geoData, setGeoData] = useState([])
+  const [geoData, setGeoData] = useState([]);
   const [byRegions, setByRegions] = useState(true);
   const [_, setActiveBrand] = useState(null);
   const [firstLoading, setFirstLoading] = useState(true);
@@ -48,7 +48,7 @@ const OrdersMap = () => {
     { value: 'store', label: 'По складам' },
   ];
   const updateGeoData = async () => {
-    setLoading(true)
+    setLoading(true);
     try {
       if (activeBrand && selectedRange && authToken) {
         const data = await ServiceFunctions.getGeographyData(authToken, selectedRange, activeBrand.id, filters);
@@ -634,7 +634,7 @@ const OrdersMap = () => {
   };
 
   if (user?.subscription_status === 'expired') {
-    return <NoSubscriptionPage title={'География заказов и продаж'} />
+    return <NoSubscriptionPage title={'География заказов и продаж'} />;
   }
 
   // if (!shops || shops.length === 0) {

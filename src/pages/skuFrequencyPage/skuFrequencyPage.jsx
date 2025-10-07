@@ -1,19 +1,19 @@
-import React, { useEffect, useState } from 'react'
-import styles from './skuFrequencyPage.module.css'
-import Header from '@/components/sharedComponents/header/header'
-import Sidebar from '@/components/sharedComponents/sidebar/sidebar'
-import MobilePlug from '@/components/sharedComponents/mobilePlug/mobilePlug'
-import { Filters } from '@/components/sharedComponents/apiServicePagesFiltersComponent'
-import { OptionsWidget, TableSettingsWidget, HowtoWidget, TableWidget } from './widgets'
-import { useAppSelector, useAppDispatch } from '@/redux/hooks'
-import DownloadButton from '@/components/DownloadButton'
-import { actions as reqActions } from '@/redux/requestsMonitoring/requestsMonitoringSlice'
-import { actions as filterActions } from '@/redux/apiServicePagesFiltersState/apiServicePagesFilterState.slice'
-import { radarTableConfig } from './shared'
-import HowToLink from '@/components/sharedComponents/howToLink/howToLink'
-import { ServiceFunctions } from '@/service/serviceFunctions'
-import { fileDownload } from '@/service/utils'
-import ErrorModal from '@/components/sharedComponents/modals/errorModal/errorModal'
+import React, { useEffect, useState } from 'react';
+import styles from './skuFrequencyPage.module.css';
+import Header from '@/components/sharedComponents/header/header';
+import Sidebar from '@/components/sharedComponents/sidebar/sidebar';
+import MobilePlug from '@/components/sharedComponents/mobilePlug/mobilePlug';
+import { Filters } from '@/components/sharedComponents/apiServicePagesFiltersComponent';
+import { OptionsWidget, TableSettingsWidget, HowtoWidget, TableWidget } from './widgets';
+import { useAppSelector, useAppDispatch } from '@/redux/hooks';
+import DownloadButton from '@/components/DownloadButton';
+import { actions as reqActions } from '@/redux/requestsMonitoring/requestsMonitoringSlice';
+import { actions as filterActions } from '@/redux/apiServicePagesFiltersState/apiServicePagesFilterState.slice';
+import { radarTableConfig } from './shared';
+import HowToLink from '@/components/sharedComponents/howToLink/howToLink';
+import { ServiceFunctions } from '@/service/serviceFunctions';
+import { fileDownload } from '@/service/utils';
+import ErrorModal from '@/components/sharedComponents/modals/errorModal/errorModal';
 import { useDemoMode } from "@/app/providers";
 import NoSubscriptionWarningBlock
   from "@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock";
@@ -30,8 +30,8 @@ const SkuFrequencyPage = () => {
     const dispatch = useAppDispatch();
 
     const downloadHandler = async () => {
-        const url = formType === 'complex' ? '/api/web-service/monitoring-oracle/get/download' : '/api/web-service/monitoring-oracle/easy/get/download'
-        const filename = formType === 'complex' ? 'Поиск_ниши__продвинутый.xlsx' : 'Поиск_ниши__простой.xlsx'
+        const url = formType === 'complex' ? '/api/web-service/monitoring-oracle/get/download' : '/api/web-service/monitoring-oracle/easy/get/download';
+        const filename = formType === 'complex' ? 'Поиск_ниши__продвинутый.xlsx' : 'Поиск_ниши__простой.xlsx';
 
         let res = await ServiceFunctions.getTrendingRequestExelFile(requestObject, url, setDownloadStatus);
         if (res) {
@@ -40,19 +40,19 @@ const SkuFrequencyPage = () => {
                 isLoading: false,
                 isError: false,
                 message: ''
-            })
+            });
         }
     };
 
     useEffect(() => {
         return () => {
-            dispatch(reqActions.resetState())
-            dispatch(filterActions.setSkuFrequencyMode('Простой'))
-        }
+            dispatch(reqActions.resetState());
+            dispatch(filterActions.setSkuFrequencyMode('Простой'));
+        };
     }, []);
 
     useEffect(() => {
-        let savedTableConfig = localStorage.getItem('MonitoringTableConfig')
+        let savedTableConfig = localStorage.getItem('MonitoringTableConfig');
 
         if (savedTableConfig) {
             try {
@@ -156,7 +156,7 @@ const SkuFrequencyPage = () => {
             />
         </main>
     );
-}
+};
 
 export default SkuFrequencyPage;
 

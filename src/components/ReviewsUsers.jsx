@@ -1,7 +1,7 @@
 import React from "react";
 import "../pages/styles.css";
 import Reviews from "./Reviews";
-import styles from "../components/ReviewsUsers.module.css"
+import styles from "../components/ReviewsUsers.module.css";
 
 const ReviewsUsers = () => {
   return (

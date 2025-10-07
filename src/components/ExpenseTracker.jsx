@@ -11,7 +11,7 @@ import { URL } from '../service/config';
 import CustomDayPicker from './CustomDayPicker';
 
 import { Tooltip } from "antd";
-import ModalDeleteConfirm from "../components/sharedComponents/ModalDeleteConfirm"
+import ModalDeleteConfirm from "../components/sharedComponents/ModalDeleteConfirm";
 
 const ExpenseTracker = () => {
   const dispatch = useDispatch();
@@ -90,8 +90,8 @@ const ExpenseTracker = () => {
       console.log('response', response);
 
       if (response && response.id) { // Проверяем успешность операции
-        console.log('Response in sendRowData:', response)
-        row.id = response.id
+        console.log('Response in sendRowData:', response);
+        row.id = response.id;
         console.log('Операция выполнена успешно:', response);
         // dispatch(fetchExternalExpenses(authToken)); // Обновляем данные
       } else {
@@ -146,7 +146,7 @@ const ExpenseTracker = () => {
         row.id === rowId ? { ...row, date: selectedDate } : row
       )
     );
-    // console.log('Selected Date:', selectedDate); 
+    // console.log('Selected Date:', selectedDate);
   };
 
   const handleArticleChange = (rowId, value) => {
@@ -181,7 +181,7 @@ const ExpenseTracker = () => {
           [row.id]: false,
         }));
         rows.sort((a, b) => +new Date(a.date) - +new Date(b.date));
-        setRows(rows)
+        setRows(rows);
       } catch (error) {
         console.error('Ошибка при сохранении строки:', error);
       }
@@ -206,7 +206,7 @@ const ExpenseTracker = () => {
           expenses: [0, 0, 0, 0, 0],
         };
 
-        // Добавляем новую строку 
+        // Добавляем новую строку
         setRows((prevRows) => [...prevRows, newRow]);
 
         // Сбросим отслеживание изменений после добавления строки
@@ -236,7 +236,7 @@ const ExpenseTracker = () => {
   };
 
   const handleDeleteRow = async (id) => {
-    console.log('Delete row:', id)
+    console.log('Delete row:', id);
     if (id < 0) {
       setRows((prevRows) => prevRows.filter((row) => row.id !== id));
       setHasChanges((prevChanges) => {
@@ -245,7 +245,7 @@ const ExpenseTracker = () => {
         return updatedChanges;
       });
       setDeleteId();
-      return
+      return;
     }
     try {
       // Сохраняем строки с несохраненными данными перед удалением
@@ -372,9 +372,6 @@ const ExpenseTracker = () => {
                 </Tooltip>
               </div>
             </div>))}
-
-
-
 
 
           {/* add Rows */}

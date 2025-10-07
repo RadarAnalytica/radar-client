@@ -25,7 +25,7 @@ import styles from '../pages/TariffsPage.module.css';
 import thumbup from '../pages/images/thumbup.png';
 import ImageComponent from './utilsComponents/ImageComponent ';
 import { ServiceFunctions } from '../service/serviceFunctions';
-import { periodStringFormat } from '../service/utils'
+import { periodStringFormat } from '../service/utils';
 
 const SelectRate = ({ redirect, isShowText }) => {
   const { user, authToken } = useContext(AuthContext);
@@ -172,7 +172,7 @@ const SelectRate = ({ redirect, isShowText }) => {
       amountSubscribe = 2990;
       firstAmount = 2990;
       periodSubscribe = 1;
-      if (!!newTrialExpired) {
+      if (newTrialExpired) {
         startDateSubscribe.setMonth(
           startDateSubscribe.getMonth() + periodSubscribe
         );
@@ -204,7 +204,7 @@ const SelectRate = ({ redirect, isShowText }) => {
     //   startDateSubscribe.toISOString().split('T')[0]
     // );
     startDateSubscribe = startDateSubscribe.toISOString().split('T')[0];
-    startDateSubscribe = `${startDateSubscribe}T10:00:00`
+    startDateSubscribe = `${startDateSubscribe}T10:00:00`;
     // console.log('startDateSubscribe', startDateSubscribe);
     // eslint-disable-next-line no-undef
     var widget = new cp.CloudPayments({

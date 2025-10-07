@@ -11,7 +11,7 @@ import Sidebar from '@/components/sharedComponents/sidebar/sidebar';
 import SelfCostWarningBlock from '@/components/sharedComponents/selfCostWraningBlock/selfCostWarningBlock';
 import DataCollectWarningBlock from '@/components/sharedComponents/dataCollectWarningBlock/dataCollectWarningBlock';
 import { ConfigProvider, Table, Button, Flex } from 'antd';
-import ruRU from 'antd/locale/ru_RU'
+import ruRU from 'antd/locale/ru_RU';
 import { COLUMNS } from './widgets/table/config';
 import { useDemoMode } from "@/app/providers";
 import NoSubscriptionWarningBlock
@@ -37,13 +37,13 @@ const AbcAnalysisPage = () => {
 	const tableContainerRef = useRef(null);
 	const tableScroll = useMemo(() => {
 		if (!tableContainerRef.current){
-			return ({ x: '100%', y: 400 })
+			return ({ x: '100%', y: 400 });
 		}
 		const container = tableContainerRef.current;
 		const {height} = container.getBoundingClientRect();
 		// расчет высоты относительно контента, высоты фильтров и отступов
 		const availableHeight = height - 230 > 350 ? height - 230 : 400;
-		return ({ x: '100%', y: availableHeight })
+		return ({ x: '100%', y: availableHeight });
 	}, [dataAbcAnalysis]);
 
 	const updateDataAbcAnalysis = async (
@@ -131,8 +131,8 @@ const AbcAnalysisPage = () => {
 	}, [viewType, page, sorting, activeBrand, selectedRange, isFiltersLoaded, activeBrandName, activeArticle, activeGroup]);
 
 	useEffect(() => {
-		setPage(1)
-	}, [activeBrand, selectedRange, isFiltersLoaded, activeBrandName, activeArticle, activeGroup])
+		setPage(1);
+	}, [activeBrand, selectedRange, isFiltersLoaded, activeBrandName, activeArticle, activeGroup]);
 
 	//---------------------------------------------------------------------------------------//
 
@@ -231,18 +231,18 @@ const AbcAnalysisPage = () => {
 
 	const viewTypeHandler = (view) => {
 		setViewType(view);
-		setPage(1)
-	}
+		setPage(1);
+	};
 
 	const tableChangeHandler = (pagination, filters, sorter, extra) => {
 		if (extra.action === 'sort'){
 			setSorting({ key: sorter.field, direction: sorter.order || 'desc' });
-			setPage(1)
+			setPage(1);
 		}
 		if (extra.action === 'paginate'){
-			setPage(pagination.current)
+			setPage(pagination.current);
 		}
-	}
+	};
 
 	return (
 		<main className={styles.page}>
@@ -276,7 +276,7 @@ const AbcAnalysisPage = () => {
 								title='Ваши данные еще формируются и обрабатываются.'
 						/>
 				)}
-				
+
 				<div className={styles.wrapper} ref={tableContainerRef}>
 					{loading && (
 						<div className={styles.loading}>
@@ -336,7 +336,7 @@ const AbcAnalysisPage = () => {
 									},
 								}}
 							>
-							
+
 							{!loading && (<div className="abcAnalysis">
 								<Flex gap={12} className={styles.view} align='center'>
 									<span>Выбрать вид:</span>

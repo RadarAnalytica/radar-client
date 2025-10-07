@@ -6,8 +6,8 @@ const rnpSelectedSlice = createSlice({
   initialState: null,
   reducers: {
     setList: (state, action) => {
-      return action.payload
+      return action.payload;
     }
   }
-})
+});
 export const { actions, reducer } = rnpSelectedSlice;

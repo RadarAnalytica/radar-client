@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import styles from './compareChart.module.css'
+import styles from './compareChart.module.css';
 import { Chart } from 'react-chartjs-2';
 import { CategoryScale, LinearScale, Chart as ChartJS, Filler, BarController, PointElement, BarElement, LineElement, LineController, Tooltip } from 'chart.js';
 import annotationPlugin from 'chartjs-plugin-annotation';
@@ -24,7 +24,7 @@ ChartJS.register(
 
 export const CompareChart = ({ data, mainSupplier, compareSupplier, isMainSupplierActive, isCompareSupplierActive, chartType, units }) => {
 
-    const [normilizedChartData, setNormilizedChartData] = useState()
+    const [normilizedChartData, setNormilizedChartData] = useState();
 
     useEffect(() => {
         if (data && chartType === 'bar') {
@@ -87,8 +87,8 @@ export const CompareChart = ({ data, mainSupplier, compareSupplier, isMainSuppli
                         tooltipColor: '#5329FF'
                     },
                 ]
-            }
-            setNormilizedChartData({ ...nomalizedDataObject })
+            };
+            setNormilizedChartData({ ...nomalizedDataObject });
         }
         if (data && chartType === 'line') {
             const nomalizedDataObject = {
@@ -135,10 +135,10 @@ export const CompareChart = ({ data, mainSupplier, compareSupplier, isMainSuppli
                         borderWidth: 2,
                     },
                 ]
-            }
-            setNormilizedChartData({ ...nomalizedDataObject })
+            };
+            setNormilizedChartData({ ...nomalizedDataObject });
         }
-    }, [data, isMainSupplierActive, isCompareSupplierActive, mainSupplier, compareSupplier])
+    }, [data, isMainSupplierActive, isCompareSupplierActive, mainSupplier, compareSupplier]);
 
     const chartOptions = {
         //responsive: true,
@@ -156,7 +156,7 @@ export const CompareChart = ({ data, mainSupplier, compareSupplier, isMainSuppli
                 mode: 'index',
                 axis: 'x',
                 callbacks: {getColor: () => {}},
-                external: (context) => { getChartTooltip(context, normilizedChartData, units, false)}
+                external: (context) => { getChartTooltip(context, normilizedChartData, units, false);}
             },
             verticalDashedLine: { enabled: true }
         },
@@ -211,7 +211,7 @@ export const CompareChart = ({ data, mainSupplier, compareSupplier, isMainSuppli
             //     },
             // },
         },
-    }
+    };
 
     // if (widgetData.isLoading) {
     //     return (
@@ -235,7 +235,6 @@ export const CompareChart = ({ data, mainSupplier, compareSupplier, isMainSuppli
     // }
 
 
-
     return (
         <>
             {normilizedChartData &&
@@ -246,5 +245,5 @@ export const CompareChart = ({ data, mainSupplier, compareSupplier, isMainSuppli
                     options={chartOptions}
                 />}
         </>
-    )
-}
+    );
+};

@@ -9,7 +9,7 @@ const LogisticsTable = ({data, loading}) => {
 
   useEffect(() => {
     let timeoutId;
-    
+
     if (loading) {
       setShowLoading(true);
     } else {

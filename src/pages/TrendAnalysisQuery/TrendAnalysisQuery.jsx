@@ -39,7 +39,7 @@ export default function TrendAnalysisQuery() {
 		const url = new URL(location.href);
 		const urlQuery = url.searchParams.get('query');
 		if (window.history.state?.visited == urlQuery){
-			return null
+			return null;
 		}
 		if (urlQuery) {
 			return url.searchParams.get('query').trim();
@@ -48,7 +48,7 @@ export default function TrendAnalysisQuery() {
 	};
 	const [query, setQuery] = useState(initQuery());
 
-	
+
 	const updateHistoryState = () => {
 		const url = new URL(location.href);
 		if (query !== window.history.state?.visited && query){
@@ -56,9 +56,9 @@ export default function TrendAnalysisQuery() {
 		} else {
 			url.searchParams.delete('query');
 		}
-		window.history.pushState({visited: query}, '', url)
-	}
-	
+		window.history.pushState({visited: query}, '', url);
+	};
+
 	useEffect(() => {
 		updateHistoryState();
 	}, [query]);
@@ -103,7 +103,7 @@ export default function TrendAnalysisQuery() {
 		})).reverse();
 
 		setData(dataResult);
-	}
+	};
 
 	const checkQuery = (query) => {
 		if (!query){
@@ -113,7 +113,7 @@ export default function TrendAnalysisQuery() {
 			return query.trim().length === 0;
 		}
 		return true;
-	}
+	};
 
 	const updateData = async () => {
 		if (!query) {
@@ -128,7 +128,7 @@ export default function TrendAnalysisQuery() {
 					selectedRange,
 				);
 
-      mapResponseToData(response)
+      mapResponseToData(response);
 		} catch (e) {
 			console.error(e);
 			setData([]);
@@ -149,11 +149,11 @@ export default function TrendAnalysisQuery() {
 			);
 			fileDownload(fileBlob, `Статистика_запроса.xlsx`);
 		} catch(error) {
-			console.error('Ошибка скачивания: ', error)
+			console.error('Ошибка скачивания: ', error);
 		} finally {
 			setDownloadLoading(false);
 		}
-	}
+	};
 
 	return (
 		<main className={styles.page}>

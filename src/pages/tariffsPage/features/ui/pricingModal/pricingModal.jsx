@@ -1,5 +1,5 @@
-import styles from './pricingModal.module.css'
-import { formatPrice } from '../../../../../service/utils'
+import styles from './pricingModal.module.css';
+import { formatPrice } from '../../../../../service/utils';
 
 
 const FEATURES = [
@@ -10,7 +10,7 @@ const FEATURES = [
     'Мониторинг и прогнозирование трендов и ниш',
     'Анализ позиций карточек в выдаче и работа с ключевыми фразами',
     'Отслеживание эффективности SEO-оформления и оптимизация контента',
-]
+];
 
 
 export const PricingModal = ({ visible, setIsModalVisible, item, action }) => {
@@ -21,7 +21,7 @@ export const PricingModal = ({ visible, setIsModalVisible, item, action }) => {
             id='pricing-modal'
             onClick={(e) => {
                 if (e.target.id === 'pricing-modal') {
-                    setIsModalVisible(false)
+                    setIsModalVisible(false);
                 }
             }}
         >
@@ -91,12 +91,12 @@ export const PricingModal = ({ visible, setIsModalVisible, item, action }) => {
 
                                         {_}
                                     </li>
-                                )
+                                );
                             })}
                         </ul>
                     </div>
                 </div>
             </div>
         </section>
-    )
-}
+    );
+};

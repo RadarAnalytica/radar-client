@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState, useRef } from "react";
-import styles from './StockAnalysis.module.css'
+import styles from './StockAnalysis.module.css';
 import SideNav from "../components/SideNav";
 import TopNav from "../components/TopNav";
 import StockAnalysisFilter from "../components/StockAnalysisFilter";
@@ -27,7 +27,7 @@ import { URL } from "../service/config";
 import { fileDownload } from "../service/utils";
 import { Filters } from "../components/sharedComponents/apiServicePagesFiltersComponent";
 import MobilePlug from "../components/sharedComponents/mobilePlug/mobilePlug";
-import Header from '../components/sharedComponents/header/header'
+import Header from '../components/sharedComponents/header/header';
 import SelfCostWarningBlock from "../components/sharedComponents/selfCostWraningBlock/selfCostWarningBlock";
 import Sidebar from "../components/sharedComponents/sidebar/sidebar";
 import {mockGetAnalysisData} from '../service/mockServiceFunctions';
@@ -38,7 +38,7 @@ const StockAnalysis = () => {
   // const dispatch = useAppDispatch();
   const { user, authToken } = useContext(AuthContext);
   // const shops = useAppSelector((state) => state.shopsSlice.shops); // магазины
-  const { activeBrand, selectedRange } = useAppSelector(store => store.filters)
+  const { activeBrand, selectedRange } = useAppSelector(store => store.filters);
 
   // стейты
   const [file, setFile] = useState(); // это видимо загрузка файла себестоимости
@@ -51,7 +51,6 @@ const StockAnalysis = () => {
   // рефы (используются для сохранения пред значений)
   const prevDays = useRef(selectedRange);
   const prevActiveBrand = useRef(activeBrand ? activeBrand.id : null);
-
 
 
   // 2.1 Получаем данные по выбранному магазину и проверяем себестоимость
@@ -71,7 +70,7 @@ const StockAnalysis = () => {
           );
         }
         setStockAnalysisData(data);
-        setHasSelfCostPrice(data.every(_ => _.costPriceOne !== null))
+        setHasSelfCostPrice(data.every(_ => _.costPriceOne !== null));
 
       }
       prevDays.current = selectedRange;
@@ -87,8 +86,6 @@ const StockAnalysis = () => {
   //---------------------------------------------------------------------------------------//
 
 
-
-
   // ----------------------------- пока хз что это ----------------------------------------//
   const handleCostPriceShow = () => {
     setCostPriceShow(true);
@@ -96,9 +93,6 @@ const StockAnalysis = () => {
 
   const handleCostPriceClose = () => setCostPriceShow(false);
   //----------------------------------------------------------------------------------------//
-
-
-
 
 
   // ---------------- видимо это фильтрация на основе поиска ---------------//
@@ -153,14 +147,11 @@ const StockAnalysis = () => {
   // ---------------------------------------------------------------------------------------//
 
 
-
-
   // --------------------------- ниче не загружаем если нет магазов (переписать бы по человечески) ---------------------//
   // if (!shops || shops.length === 0) {
   //   return null; // or a loading indicator
   // }
   // -------------------------------------------------------------------------------------------------------------------//
-
 
 
   //------ загрузка эксельки---------------//

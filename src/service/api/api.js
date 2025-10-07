@@ -8,13 +8,13 @@ export const getCalculatorSubjects = async (data) => {
                 'cache': 'no-store'
             },
             body: JSON.stringify(data)
-        }).then(res => res.json())
+        }).then(res => res.json());
 
         return res;
     } catch (e) {
-        console.log('error')
+        console.log('error');
     }
-}
+};
 
 export const createBlogPost = async (data, query, token) => {
     try {
@@ -36,7 +36,7 @@ export const createBlogPost = async (data, query, token) => {
     } catch (error) {
         throw error;
     }
-}
+};
 
 export const createBlogCategory = async (data, token) => {
     try {
@@ -58,9 +58,9 @@ export const createBlogCategory = async (data, token) => {
     } catch (error) {
         throw error;
     }
-}
+};
 export const addShop = async (data) => {
-    const { brandName, tkn, authToken } = data
+    const { brandName, tkn, authToken } = data;
     const response = await fetch(URL + '/api/shop/', {
         method: 'POST',
         headers: {
@@ -72,7 +72,7 @@ export const addShop = async (data) => {
             token: tkn,
             is_active: true
         })
-    })
+    });
 
     return response;
-}
+};

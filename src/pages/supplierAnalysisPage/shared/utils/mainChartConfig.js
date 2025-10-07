@@ -33,7 +33,7 @@ export const chartCompareConfigObject = [
     { engName: 'goods_quantity', ruName: 'Артикулов, шт', color: '#FFA1EB', isControlTooltip: false, hasUnits: true, units: 'шт', isOnChart: true, isAnnotation: false, isControl: true, defaultActive: false },
     { engName: 'brands_quantity', ruName: 'Кол-во брендов, шт', color: '#ADADAD', isControlTooltip: false, hasUnits: true, units: 'шт', isOnChart: true, isAnnotation: false, isControl: true, defaultActive: false },
     { engName: 'brands_with_sales_quantity', ruName: 'Брендов с продажами, шт', color: '#5F00B2', isControlTooltip: false, hasUnits: true, units: 'шт', isOnChart: true, isAnnotation: false, isControl: true, defaultActive: false },
-    
+
     { engName: 'queries_count', ruName: 'Всего запросов, шт', color: '#FFDC89', isControlTooltip: false, controlTooltipText: 'text', hasUnits: true, units: 'шт', isOnChart: true, isAnnotation: false, isControl: true, defaultActive: true },
     { engName: 'avg_place', ruName: 'Средняя позиция', color: '#C7D61E', isControlTooltip: false, controlTooltipText: 'text', hasUnits: false, isOnChart: true, isAnnotation: false, isControl: true, defaultActive: true },
     { engName: 'total_shows', ruName: 'Всего показов, шт', color: '#F9813C', isControlTooltip: true, controlTooltipText: 'Значение общего числа показов, которое получили артикулы поставщика по всем запросам, в которых они были видны. Расчетный показатель зависит от количества запросов, их частотности и позиций артикулов по ним', hasUnits: true, units: 'шт', isOnChart: true, isAnnotation: false, isControl: true, defaultActive: false },
@@ -45,9 +45,9 @@ export const chartCompareConfigObject = [
     { engName: 'buyouts_daily', ruName: 'Реальные выкупы (прирост за период), шт', color: '#FF0000', isControlTooltip: false, controlTooltipText: 'text', hasUnits: true, units: 'шт', isOnChart: true, isAnnotation: false, isControl: true, defaultActive: false },
     { engName: 'buyout_percent', ruName: 'Выкупаемость, %', color: '#88E473', isControlTooltip: false, controlTooltipText: 'text', hasUnits: true, units: '%', isOnChart: true, isAnnotation: false, isControl: true, defaultActive: false },
     //{ engName: '', ruName: 'Праздники', color: '#B53B32', isControlTooltip: false, controlTooltipText: 'text', hasUnits: false, units: 'шт', isOnChart: true, isAnnotation: false, isControl: true, defaultActive: false },
-    
+
     { engName: 'seasonality', ruName: 'Сезоны продаж', color: '#90DAFF', isControlTooltip: false, hasUnits: false, isOnChart: false, isAnnotation: false, isControl: true, defaultActive: true },
-]
+];
 
 export const annotationColorsConfig = [
     { bgColor: '#FEEBF4', lableColor: '#F93C94' },
@@ -56,12 +56,12 @@ export const annotationColorsConfig = [
     { bgColor: '#FEEBF0', lableColor: '#F93C65' },
     { bgColor: '#FBEDFF', lableColor: '#D54AFF' },
     { bgColor: '#E5F7ED', lableColor: '#00AF4F' },
-]
+];
 
 const getAnnotations = (initData) => {
     // отфильтровываем даты без распродажи
-    const filteredData = initData.filter(_ => _.item !== '')
-    const normilizedData = []
+    const filteredData = initData.filter(_ => _.item !== '');
+    const normilizedData = [];
     // нормализуем отфиьтрованные данные в формат [{name: 'action_name', dates: []}, ...]
     filteredData.forEach(i => {
         const index = normilizedData.findIndex(_ => _.name === i.item);
@@ -69,17 +69,17 @@ const getAnnotations = (initData) => {
             normilizedData.push({
                 name: i.item,
                 dates: [i.date]
-            })
+            });
         } else {
-            normilizedData[index].dates.push(i.date)
+            normilizedData[index].dates.push(i.date);
         }
-    })
+    });
 
     // сортируем даты для каждого элемента нормализованного массива и создаем обьект аннотаций
-    let annotations = {}
+    let annotations = {};
     normilizedData.forEach((i, id) => {
-        i.dates.sort((a, b) => moment(a) > moment(b) ? 1 : -1)
-        const color = id < annotationColorsConfig.length - 1 ? annotationColorsConfig[id] : annotationColorsConfig[id - (Math.floor(id / annotationColorsConfig.length - 1) * (annotationColorsConfig.length - 1))]
+        i.dates.sort((a, b) => moment(a) > moment(b) ? 1 : -1);
+        const color = id < annotationColorsConfig.length - 1 ? annotationColorsConfig[id] : annotationColorsConfig[id - (Math.floor(id / annotationColorsConfig.length - 1) * (annotationColorsConfig.length - 1))];
         annotations[`annotation_${id}`] = {
             drawTime: 'beforeDatasetsDraw',
             type: 'box',
@@ -101,40 +101,40 @@ const getAnnotations = (initData) => {
                 },
                 padding: 4
             }
-        }
-    })
+        };
+    });
 
     return annotations;
-}
+};
 
 const getSeason = (seasonsData) => {
     let normilizedArr = [];
     seasonsData.forEach((i, id) => {
-        if (id === 0 && i.item === 0) return
-        if (id !== 0 && i.item === 0) return
+        if (id === 0 && i.item === 0) return;
+        if (id !== 0 && i.item === 0) return;
         if (id === 0 && i.item === 1) {
-            normilizedArr.push([i.date])
-            return
+            normilizedArr.push([i.date]);
+            return;
         }
         if (id !== 0 && i.item === 1) {
             if (i.item === seasonsData[id - 1].item && normilizedArr.length > 0) {
                 normilizedArr[normilizedArr.length - 1].push(i.date);
-                return
+                return;
             }
             if (i.item === seasonsData[id - 1].item && normilizedArr.length === 0) {
                 normilizedArr.push([i.date]);
-                return
+                return;
             }
             if (i.item !== seasonsData[id - 1]) {
                 normilizedArr.push([i.date]);
-                return
+                return;
             }
         }
 
-    })
-    if (normilizedArr.length === 0) return {}
-    normilizedArr.forEach(i => i.sort((a, b) => moment(a) > moment(b) ? 1 : -1))
-    let seasonObject = {}
+    });
+    if (normilizedArr.length === 0) return {};
+    normilizedArr.forEach(i => i.sort((a, b) => moment(a) > moment(b) ? 1 : -1));
+    let seasonObject = {};
     normilizedArr.forEach((i, id) => {
         seasonObject[`season_${id}`] = {
             drawTime: 'beforeDraw',
@@ -143,12 +143,12 @@ const getSeason = (seasonsData) => {
             xMax: moment(i[i.length - 1]).format('DD.MM.YY'),
             backgroundColor: '#88E47350',
             borderWidth: 0,
-        }
-    })
+        };
+    });
 
 
-    return seasonObject
-}
+    return seasonObject;
+};
 
 export const getChartTooltip = (context, chartData, unitsType, isMainChart = true) => {
     // Tooltip Element
@@ -207,8 +207,8 @@ export const getChartTooltip = (context, chartData, unitsType, isMainChart = tru
 
         // here
         datasets?.forEach(function (set, i) {
-            const targetColor = typeof set.backgroundColor === 'string' ? set.backgroundColor : set.tooltipColor
-            const units = unitsType ? unitsType : chartCompareConfigObject.find(_ => _.ruName === set.label)?.units
+            const targetColor = typeof set.backgroundColor === 'string' ? set.backgroundColor : set.tooltipColor;
+            const units = unitsType ? unitsType : chartCompareConfigObject.find(_ => _.ruName === set.label)?.units;
             const targetDescr = !isMainChart && unitsType ? `, ${unitsType}` : '';
             let value = set?.data[targetInex] || '0';
             let style = '';
@@ -283,23 +283,23 @@ export const getChartTooltip = (context, chartData, unitsType, isMainChart = tru
     tooltipEl.style.padding = '1rem';
     tooltipEl.style.pointerEvents = 'none';
     tooltipEl.style.zIndex = '1000';
-}
+};
 
 export const mainChartOptionsGenerator = (chartData, anotationField, seasonsField, normilizedChartData) => {
-    const annotationData = anotationField && chartData[anotationField?.engName]
-    const seasonsData = seasonsField && chartData[seasonsField?.engName]
+    const annotationData = anotationField && chartData[anotationField?.engName];
+    const seasonsData = seasonsField && chartData[seasonsField?.engName];
     let annotationObject = anotationField && anotationField?.isActive && getAnnotations(annotationData);
     if (anotationField?.isActive) {
         annotationObject = {
             ...annotationObject,
             ...getAnnotations(annotationData)
-        }
+        };
     }
     if (seasonsField?.isActive) {
         annotationObject = {
             ...annotationObject,
             ...getSeason(seasonsData)
-        }
+        };
     }
 
     const opt = {
@@ -318,7 +318,7 @@ export const mainChartOptionsGenerator = (chartData, anotationField, seasonsFiel
             ctx.restore();
           }
         }
-      }
+      };
 
 
     const chartOptions = {
@@ -332,7 +332,7 @@ export const mainChartOptionsGenerator = (chartData, anotationField, seasonsFiel
                 mode: 'index',
                 axis: 'x',
                 callbacks: {},
-                external: (context) => { getChartTooltip(context, normilizedChartData) }
+                external: (context) => { getChartTooltip(context, normilizedChartData); }
             },
             annotation: {
                 annotations: { ...annotationObject }
@@ -354,7 +354,7 @@ export const mainChartOptionsGenerator = (chartData, anotationField, seasonsFiel
                 },
             },
         }
-    }
+    };
 
     return chartOptions;
-}
+};

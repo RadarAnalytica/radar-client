@@ -1,26 +1,23 @@
-import React, { useRef, useEffect } from 'react'
-import styles from './searchBlock.module.css'
+import React, { useRef, useEffect } from 'react';
+import styles from './searchBlock.module.css';
 import { Input, ConfigProvider, Button } from 'antd';
 import { URL } from '../../../../service/config';
 
 
-
-
 const SearchWidget = ({ setData, authToken, setStatus, initStatus, inputValue, setInputValue, fetchUserData }) => {
-    const inputRef = useRef(null)
+    const inputRef = useRef(null);
 
-  
 
     const searchSubmitHandler = (e) => {
-        if (e && e.key && e.key !== 'Enter') return
-        fetchUserData(authToken, inputValue, setStatus, initStatus, setData)
-    }
+        if (e && e.key && e.key !== 'Enter') return;
+        fetchUserData(authToken, inputValue, setStatus, initStatus, setData);
+    };
 
     useEffect(() => {
         if (inputRef && inputRef.current) {
-            inputRef.current.focus()
+            inputRef.current.focus();
         }
-    }, [])
+    }, []);
 
     return (
         <div className={styles.search}>
@@ -47,7 +44,7 @@ const SearchWidget = ({ setData, authToken, setStatus, initStatus, inputValue, s
                         size='large'
                         value={inputValue}
                         onChange={(e) => setInputValue(e.target.value)}
-                        onKeyDown={(e) => { searchSubmitHandler(e) }}
+                        onKeyDown={(e) => { searchSubmitHandler(e); }}
                         className={styles.search__input}
                         type='number'
                     />
@@ -65,9 +62,9 @@ const SearchWidget = ({ setData, authToken, setStatus, initStatus, inputValue, s
                     </Button>
                 </ConfigProvider>
             </div>
-           
+
         </div>
-    )
-}
+    );
+};
 
 export default SearchWidget;

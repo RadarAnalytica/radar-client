@@ -48,9 +48,9 @@ const AdminSideNav = () => {
                 </span>
               </div>
             </div>
-          { true && 
+          { true &&
           <>
-          <p 
+          <p
             className='sidenav-el sidenav-title submenu-item'
             style={
               { fontWeight: ['blog-list', 'blog-add'].includes(location) ? 'bold' : 'inherit'}

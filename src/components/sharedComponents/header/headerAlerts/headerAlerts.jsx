@@ -1,4 +1,4 @@
-import styles from './headerAlerts.module.css'
+import styles from './headerAlerts.module.css';
 import NoteMessge from '../../../../pages/images/somethingWrongIcon.png';
 import RecommendationMessge from '../../../../pages/images/recommendationsIcon.png';
 import OkMessage from '../../../../pages/images/okIcon.png';
@@ -15,13 +15,13 @@ const HeaderAlerts = ({ messages }) => {
         const aDate = moment(a.created_at);
         const bDate = moment(b.created_at);
         if (aDate > bDate) {
-            return -1
+            return -1;
         } else {
-            return 1
+            return 1;
         }
     }) : undefined;
     const dispatch = useAppDispatch();
-    const { authToken } = useContext(AuthContext)
+    const { authToken } = useContext(AuthContext);
 
     const onDeleteMsg = async (messageId) => {
 
@@ -56,16 +56,16 @@ const HeaderAlerts = ({ messages }) => {
                                 <p className={styles.list__text}>{moment(m.created_at).format('DD.MM.YYYY')}</p>
                                 <button
                                     className={styles.list__deleteButton}
-                                    onClick={() => { 
-                                        const item = document.querySelector(`#message_id_${m.id}`)
+                                    onClick={() => {
+                                        const item = document.querySelector(`#message_id_${m.id}`);
                                         if (item) {
                                             //item.style.transition = 'max-height .3s'
-                                            item.style.opacity = '0'
-                                            item.style.maxHeight = '0px'
-                                           
-                                            
+                                            item.style.opacity = '0';
+                                            item.style.maxHeight = '0px';
+
+
                                         }
-                                        onDeleteMsg(m.id) 
+                                        onDeleteMsg(m.id);
                                     }}
                                 >
                                     <img src={CloseIcon} alt='' />
@@ -76,11 +76,11 @@ const HeaderAlerts = ({ messages }) => {
                             {m.text}
                         </div>
                     </li>
-                )
+                );
             }
             )}
 
-            {(!!!sortedMessages || (sortedMessages && sortedMessages.length === 0)) &&
+            {(!sortedMessages || (sortedMessages && sortedMessages.length === 0)) &&
             <div className={styles.list__noMessages}>
                  <img src={OkMessage} alt='' />
                  <p className={styles.list__title}>Нет новых сообщений!</p>
@@ -88,24 +88,24 @@ const HeaderAlerts = ({ messages }) => {
             }
             <div className={styles.list__blur_bottom}></div>
         </ul>
-    )
-}
+    );
+};
 export default HeaderAlerts;
 
 /**
  * created_at
-: 
+:
 "2024-09-30 14:07:41.138966"
 id
-: 
+:
 159
 text
-: 
+:
 "в целях уточнения расчетов отдельных параметров по магазину Test (no collect) установите себестоимость продуктов"
 title
-: 
+:
 "Установка себестоимости"
 type
-: 
+:
 "recommendation"
  */

@@ -1,26 +1,26 @@
-import React, { useContext, useEffect } from 'react'
-import SignUpForm from '../containers/SignUpForm'
-import AuthContext from '../service/AuthContext'
-import { useNavigate } from 'react-router-dom'
-import { Helmet } from 'react-helmet-async'
+import React, { useContext, useEffect } from 'react';
+import SignUpForm from '../containers/SignUpForm';
+import AuthContext from '../service/AuthContext';
+import { useNavigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 
 const SignUpPage = () => {
 
-    const { user } = useContext(AuthContext)
+    const { user } = useContext(AuthContext);
 
-    const navigate = useNavigate()
+    const navigate = useNavigate();
     useEffect(() => {
         setTimeout(() => {
             if (user) {
                 if (user?.subscription_status !== 'expired') {
-                    navigate('/onboarding')
+                    navigate('/onboarding');
                 } else {
-                    navigate('/tariffs')
+                    navigate('/tariffs');
                 }
-                
+
             }
         }, 200);
-    }, [user])
+    }, [user]);
 
     return (
         <div className='signup-page pt-1 pb-1'>
@@ -30,7 +30,7 @@ const SignUpPage = () => {
             </Helmet>
             <SignUpForm />
         </div>
-    )
-}
+    );
+};
 
-export default SignUpPage
+export default SignUpPage;

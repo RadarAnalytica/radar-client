@@ -2,16 +2,16 @@ import React, { useState } from "react";
 import { useDropzone } from "react-dropzone";
 
 const DropFile = ({saveShow, setSaveShow, setCostPriceShow, file, setFile}) => {
-  
+
    const onDrop = acceptedFiles => {
     // Обработка загруженных файлов
     if(acceptedFiles.length > 0) {
       setFile(acceptedFiles[0]);
-      setCostPriceShow(false)
-      setSaveShow(true)
-      return file
+      setCostPriceShow(false);
+      setSaveShow(true);
+      return file;
     }
-    setSaveShow(false)
+    setSaveShow(false);
   };
 
   const { getRootProps, getInputProps } = useDropzone({ onDrop });

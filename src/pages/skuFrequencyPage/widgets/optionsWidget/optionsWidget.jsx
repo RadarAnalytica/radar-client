@@ -41,14 +41,14 @@ const OptionsWidget = () => {
             competition_level: fields.competitionLevel,
             sorting: undefined
             // sorting: { sort_field: "niche_rating", sort_order: "DESC" }
-        }
+        };
         dispatch(requestsMonitoringActions.setRequestObject({ data: requestObject, formType: 'easy' }));
     };
 
     const complexFormSubmitHandler = (fields) => {
         const requestObject = complexRequestObjectGenerator(fields);
         dispatch(requestsMonitoringActions.setRequestObject({ data: requestObject, formType: 'complex' }));
-    }
+    };
 
     useEffect(() => {
         if (skuFrequencyMode === 'Простой') {
@@ -62,9 +62,9 @@ const OptionsWidget = () => {
                 .catch((errorInfo) => {
                     const values = complexForm.getFieldsValue();
                     complexFormSubmitHandler(values);
-                })
+                });
         }
-    }, [skuFrequencyMode, complexForm, simpleForm, isBodyVisisble])
+    }, [skuFrequencyMode, complexForm, simpleForm, isBodyVisisble]);
 
     useEffect(() => {
         complexForm.setFieldValue('frequency_30_start', 6000);
@@ -361,7 +361,7 @@ const OptionsWidget = () => {
             </ConfigProvider>
             {/* -------------------------------------------------------------------------------- */}
         </section>
-    )
-}
+    );
+};
 
-export default OptionsWidget
+export default OptionsWidget;

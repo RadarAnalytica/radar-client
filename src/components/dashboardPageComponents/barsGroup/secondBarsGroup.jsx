@@ -1,9 +1,9 @@
-import styles from './barsGroup.module.css'
+import styles from './barsGroup.module.css';
 import SmallBar from '../bars/smallBar';
 import { useAppSelector } from '../../../redux/hooks';
 
 const SecondBarsGroup = ({ dataDashBoard, loading }) => {
-    const { isSidebarHidden } = useAppSelector(store => store.utils)
+    const { isSidebarHidden } = useAppSelector(store => store.utils);
     return (
         <div className={isSidebarHidden ? styles.group : styles.group_openSidebar}>
             <SmallBar
@@ -60,7 +60,7 @@ const SecondBarsGroup = ({ dataDashBoard, loading }) => {
             />
             <SmallBar
                 title='Штрафы WB'
-                hasTooltip={!!!dataDashBoard?.penalty}
+                hasTooltip={!dataDashBoard?.penalty}
                 tooltipText='В выбранном периоде штрафов и расходов на платную приемку нет'
                 loading={loading}
                 mainData={dataDashBoard?.penalty}
@@ -70,8 +70,6 @@ const SecondBarsGroup = ({ dataDashBoard, loading }) => {
                 loading={loading}
                 mainData={dataDashBoard?.compensation}
             />
-
-
 
 
             <SmallBar
@@ -115,10 +113,7 @@ const SecondBarsGroup = ({ dataDashBoard, loading }) => {
             />
 
 
-
-
-
-            {/* 
+            {/*
             <SmallBar //этого не будет
                 title='Возвраты'
                 loading={loading}
@@ -130,11 +125,8 @@ const SecondBarsGroup = ({ dataDashBoard, loading }) => {
             /> */}
 
 
-
-
-
         </div>
-    )
-}
+    );
+};
 
 export default SecondBarsGroup;

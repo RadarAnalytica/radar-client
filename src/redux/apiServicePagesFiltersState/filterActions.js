@@ -6,8 +6,6 @@ import { actions as shopsActions } from '../shops/shopsSlice';
 import { fetchApi } from '../../service/fetchApi';
 
 
-
-
 const createFiltersDTO = (data, shopsData) => {
   // 0 - собираем список недель для фильтр  а выбора недели
   const weeksListData = weeksList();
@@ -25,41 +23,41 @@ const createFiltersDTO = (data, shopsData) => {
       value: _.shop_data.brand_name,
       is_self_cost_set: shopsData?.find(s => s.id === _.shop_data.id) ? shopsData?.find(s => s.id === _.shop_data.id).is_self_cost_set : false,
     }))
-  ]
+  ];
 
 
   // 2 - Трансформируем дату для опции "все магазины"
   // 2.1 - выцепляем все бренды по всем магазинам
   // 2.2 - выцепляем все артикулы всех брендов по всем магазинам
   // 2.3  - выцепляем все группы всех магазинов
-  const allBransdData = []
-  const allArticlesData = []
-  const allGroupsData = []
-  const allCategoriesData = []
+  const allBransdData = [];
+  const allArticlesData = [];
+  const allGroupsData = [];
+  const allCategoriesData = [];
   data.forEach((_, id) => {
     _.groups?.forEach(g => {
-      allGroupsData.push({ ...g, value: g.name, key: g.id })
-    })
+      allGroupsData.push({ ...g, value: g.name, key: g.id });
+    });
     _.categories?.forEach(c => {
-      allCategoriesData.push({ ...c, value: c.name, key: c.id })
+      allCategoriesData.push({ ...c, value: c.name, key: c.id });
       c.brand?.forEach((b, barndId) => {
         const brandObject ={
           name: b.name ? b.name : `Без названия&${_.shop_data.id}`,
           value: b.name ? b.name : `Без названия (${_.shop_data.brand_name})`,
           category: c.name
-        }
-        const isBrandInList = allBransdData.some(_ => _.name === brandObject.name)
+        };
+        const isBrandInList = allBransdData.some(_ => _.name === brandObject.name);
         if (_.shop_data.is_primary_collect && !isBrandInList) {
-          allBransdData.push(brandObject)
+          allBransdData.push(brandObject);
         }
         b.wb_id?.forEach(a => {
           if (_.shop_data.is_primary_collect) {
-            allArticlesData.push({ name: a, value: a, brand: b.name ? b.name : brandObject.value, category: c.name })
+            allArticlesData.push({ name: a, value: a, brand: b.name ? b.name : brandObject.value, category: c.name });
           }
-        })
-      })
-    })
-  })
+        });
+      });
+    });
+  });
   // 2.4 - собираем обьект для "все магазины"
   const allShopsOption = {
     shop: shops[0],
@@ -98,29 +96,29 @@ const createFiltersDTO = (data, shopsData) => {
       enLabel: 'categories',
       data: allCategoriesData
     }
-  }
+  };
 
   // формируем итоговый массив для всех данных
   const DTO = [allShopsOption, ...data?.map(i => {
-    let articlesData = []
-    let categoriesData = []
-    let brandsData = []
+    let articlesData = [];
+    let categoriesData = [];
+    let brandsData = [];
     i.categories?.forEach(c => {
-      categoriesData.push({ ...c, value: c.name, key: c.id })
+      categoriesData.push({ ...c, value: c.name, key: c.id });
       c.brand?.forEach((item, bId) => {
         const brandObject ={
           name: item.name ? item.name : `Без названия&${i.shop_data.id}`,
           value: item.name ? item.name : `Без названия (${i.shop_data.brand_name})`,
           category: c.name
-        }
-        const isBrandInList = brandsData.some(_ => _.name === brandObject.name)
+        };
+        const isBrandInList = brandsData.some(_ => _.name === brandObject.name);
         if (!isBrandInList) {
-          brandsData.push(brandObject)
+          brandsData.push(brandObject);
         }
-        const items = item.wb_id.map(_ => ({ name: _, value: _, brand: item.name ? item.name : brandObject.value, category: c.name }))
-        articlesData = [...articlesData, ...items]
-      })
-    })
+        const items = item.wb_id.map(_ => ({ name: _, value: _, brand: item.name ? item.name : brandObject.value, category: c.name }));
+        articlesData = [...articlesData, ...items];
+      });
+    });
 
     let newItem = {
       shop: {
@@ -162,46 +160,45 @@ const createFiltersDTO = (data, shopsData) => {
         enLabel: 'categories',
         data: categoriesData
       }
-    }
+    };
 
-    return newItem
-  })]
-
+    return newItem;
+  })];
 
 
   // поднимаем сохраненный период чтобы установить его по умолчанию
-  let savedSelectedRange = localStorage.getItem('selectedRange')
+  let savedSelectedRange = localStorage.getItem('selectedRange');
   if (savedSelectedRange) {
-    savedSelectedRange = JSON.parse(savedSelectedRange)
+    savedSelectedRange = JSON.parse(savedSelectedRange);
   } else {
     savedSelectedRange = {
       period: 30
-    }
+    };
   }
 
 
   // поднимаем сохраненный магазин чтобы установить его по умолчанию
-  let savedActiveBrand = localStorage.getItem('activeShop')
+  let savedActiveBrand = localStorage.getItem('activeShop');
   if (savedActiveBrand) {
-    savedActiveBrand = JSON.parse(savedActiveBrand)
+    savedActiveBrand = JSON.parse(savedActiveBrand);
     // проверяем есть ли магазин в массиве (это на случай разных аккаунтов)
     // для поиска нужен сложный индекс тк айди магазинов могут совпадать в разных аккаунтах
     const isInShops = shops.some(_ => String(_.id + _.brand_name) === String(savedActiveBrand.id + savedActiveBrand.brand_name));
     // Если магазин нет в массиве (т.е. валиден для этого аккаунта) то...
     if (!isInShops) {
-      savedActiveBrand = shops[0]
+      savedActiveBrand = shops[0];
     } else {
-      savedActiveBrand = shops.find(_ => String(_.id + _.brand_name) === String(savedActiveBrand.id + savedActiveBrand.brand_name))
+      savedActiveBrand = shops.find(_ => String(_.id + _.brand_name) === String(savedActiveBrand.id + savedActiveBrand.brand_name));
     }
   } else {
-    savedActiveBrand = shops[0]
+    savedActiveBrand = shops[0];
   }
 
   // поднимаем сохраненный период по неделям, чтобы установить его по умолчанию
-  let savedActiveWeeks = getSavedActiveWeeks(savedActiveBrand.id)
+  let savedActiveWeeks = getSavedActiveWeeks(savedActiveBrand.id);
 
   // поднимаем сохраненный период по месяцам, чтобы установить его по умолчанию
-  let savedActiveMonths = getSavedActiveMonths(savedActiveBrand.id)
+  let savedActiveMonths = getSavedActiveMonths(savedActiveBrand.id);
 
 
   return {
@@ -217,8 +214,8 @@ const createFiltersDTO = (data, shopsData) => {
       activeWeeks: savedActiveWeeks,
       activeMonths: savedActiveMonths
     }
-  }
-}
+  };
+};
 
 export const fetchFilters = createAsyncThunk(
   'filters',
@@ -239,12 +236,12 @@ export const fetchFilters = createAsyncThunk(
         },
       });
       const data = await res.json();
-      
+
       // Для демо-данных структура отличается
       if (data?.data?.shops) {
         return createFiltersDTO(data.data.shops, shopsData);
       }
-      
+
       // Если это демо-данные - структура filtersData
       if (data?.filtersData) {
         return data;

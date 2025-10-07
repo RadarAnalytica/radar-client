@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext, useMemo } from 'react';
-import styles from './productsGroupsPage.module.css'
+import styles from './productsGroupsPage.module.css';
 import MobilePlug from '@/components/sharedComponents/mobilePlug/mobilePlug';
 import Sidebar from '@/components/sharedComponents/sidebar/sidebar';
 import Header from '@/components/sharedComponents/header/header';
@@ -18,12 +18,12 @@ const initDataFetchingStatus = {
     isError: false,
     isSuccess: false,
     message: ''
-}
+};
 
 const initAlertState = {
     isVisible: false,
     message: '',
-}
+};
 const ProductGroupsPage = () => {
     const { authToken } = useContext(AuthContext);
     const { isDemoMode } = useDemoMode();
@@ -42,7 +42,7 @@ const ProductGroupsPage = () => {
         } catch (error) {
             setDataFetchingStatus({ ...initDataFetchingStatus, isError: true, message: error.message || 'Что-то пошло не так :(' });
         }
-    }
+    };
 
     useEffect(() => {
         getGroupsData(authToken);
@@ -51,9 +51,9 @@ const ProductGroupsPage = () => {
     useEffect(() => {
         let timeout;
         if (alertState.isVisible) {
-            timeout = setTimeout(() => { setAlertState(initAlertState) }, 1500)
+            timeout = setTimeout(() => { setAlertState(initAlertState); }, 1500);
         }
-    }, [alertState])
+    }, [alertState]);
 
     return (
         <main className={styles.page}>
@@ -125,7 +125,7 @@ const ProductGroupsPage = () => {
               </div>
             }
         </main>
-    )
-}
+    );
+};
 
 export default ProductGroupsPage;

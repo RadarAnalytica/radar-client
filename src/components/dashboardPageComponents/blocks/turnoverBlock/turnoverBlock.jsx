@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import styles from './turnoverBlock.module.css'
+import styles from './turnoverBlock.module.css';
 import { formatPrice } from '../../../../service/utils';
 import { Tooltip, ConfigProvider, Modal } from 'antd';
 import { ServiceFunctions } from '../../../../service/serviceFunctions';
@@ -13,45 +13,45 @@ export const addSkuTableConfig = {
         { ruName: 'Продажи за период', engName: 'sales_count', units: 'шт', isSortable: true, hasSelect: false },
         { ruName: 'Обрачиваемость', engName: 'turnover', isSortable: false, hasSelect: false },
     ]
-}
+};
 
 const initSortState = {
     sortedValue: '',
     sortType: 'DESC',
-}
+};
 
 const getTurnoverBarParams = (turnoverValue) => {
     let params = {
         title: 'Хорошо',
         color: '#DBF7E9'
-    }
+    };
     if (turnoverValue === 0) {
         params = {
             title: 'Плохо',
             color: '#FEDACC'
-        }
+        };
     }
-    if (turnoverValue <= 30) { return params }
+    if (turnoverValue <= 30) { return params; }
     if (turnoverValue > 30 && turnoverValue <= 60) {
         params = {
             title: 'Умеренно',
             color: '#F2F2F2'
-        }
+        };
     }
     if (turnoverValue > 60 && turnoverValue <= 90) {
         params = {
             title: 'Слабо',
             color: '#FCEFCC'
-        }
+        };
     }
     if (turnoverValue > 90) {
         params = {
             title: 'Плохо',
             color: '#FEDACC'
-        }
+        };
     }
     return params;
-}
+};
 
 export const sortTableDataFunc = (sortType, sortedValue, dataToSort) => {
     let sortedData = dataToSort;
@@ -59,32 +59,32 @@ export const sortTableDataFunc = (sortType, sortedValue, dataToSort) => {
     if (sortType === 'ASC') {
         sortedData = [...dataToSort].sort((a, b) => {
             if (typeof a[sortedValue] === 'number' && typeof b[sortedValue] === 'number') {
-                return b[sortedValue] - a[sortedValue]
+                return b[sortedValue] - a[sortedValue];
             } else {
-                return b[sortedValue].localeCompare(a[sortedValue])
+                return b[sortedValue].localeCompare(a[sortedValue]);
             }
-        })
+        });
     }
 
     if (sortType === 'DESC') {
         sortedData = [...dataToSort].sort((a, b) => {
             if (typeof a[sortedValue] === 'number' && typeof b[sortedValue] === 'number') {
-                return a[sortedValue] - b[sortedValue]
+                return a[sortedValue] - b[sortedValue];
             } else {
-                return a[sortedValue].localeCompare(b[sortedValue])
+                return a[sortedValue].localeCompare(b[sortedValue]);
             }
-        })
+        });
     }
     return sortedData;
-}
+};
 
 
 const TurnoverBlock = ({ loading, turnover, selectedRange, activeBrand, authToken, filters }) => {
-    const [initData, setInitData] = useState([])
-    const [tableData, setTableData] = useState([])
-    const [isModalVisible, setIsModalVisible] = useState(false)
-    const [sortState, setSortState] = useState(initSortState) // стейт сортировки (см initSortState)
-    const [isTableDataLoading, setIsTableDataLoading] = useState(false)
+    const [initData, setInitData] = useState([]);
+    const [tableData, setTableData] = useState([]);
+    const [isModalVisible, setIsModalVisible] = useState(false);
+    const [sortState, setSortState] = useState(initSortState); // стейт сортировки (см initSortState)
+    const [isTableDataLoading, setIsTableDataLoading] = useState(false);
 
     // хэндлер сортировки
     const sortButtonClickHandler = (e, value) => {
@@ -92,9 +92,9 @@ const TurnoverBlock = ({ loading, turnover, selectedRange, activeBrand, authToke
 
         // выключаем сортировку если нажата уже активная клавиша
         if (sortState.sortType === id && sortState.sortedValue === value) {
-            setSortState(initSortState)
-            setTableData(initData)
-            return
+            setSortState(initSortState);
+            setTableData(initData);
+            return;
         }
 
 
@@ -102,9 +102,9 @@ const TurnoverBlock = ({ loading, turnover, selectedRange, activeBrand, authToke
         setSortState({
             sortedValue: value,
             sortType: id,
-        })
-        setTableData([...sortTableDataFunc(id, value, initData)])
-    }
+        });
+        setTableData([...sortTableDataFunc(id, value, initData)]);
+    };
 
     const getTurnoverTableData = async (selectedRange, activeBrand, authToken, filters) => {
         setIsTableDataLoading(true);
@@ -132,20 +132,20 @@ const TurnoverBlock = ({ loading, turnover, selectedRange, activeBrand, authToke
                     if (a.photo) return -1;
                     if (b.photo) return 1;
                     return 0;
-                })
-                const arrWODoubled = []
+                });
+                const arrWODoubled = [];
                 sortedData.forEach(i => {
                     if (arrWODoubled.length === 0) {
-                        arrWODoubled.push(i)
+                        arrWODoubled.push(i);
                     } else {
-                        const isExist = arrWODoubled.some(_ => JSON.stringify(_) === JSON.stringify(i))
+                        const isExist = arrWODoubled.some(_ => JSON.stringify(_) === JSON.stringify(i));
                         if (!isExist) {
-                            arrWODoubled.push(i)
+                            arrWODoubled.push(i);
                         }
                     }
-                })
+                });
                 setTableData(arrWODoubled);
-                setInitData(arrWODoubled)
+                setInitData(arrWODoubled);
             }
 
         } catch (e) {
@@ -157,17 +157,17 @@ const TurnoverBlock = ({ loading, turnover, selectedRange, activeBrand, authToke
 
     useEffect(() => {
         if (isModalVisible && selectedRange && activeBrand && authToken) {
-            getTurnoverTableData(selectedRange, activeBrand.id, authToken, filters)
+            getTurnoverTableData(selectedRange, activeBrand.id, authToken, filters);
         }
 
         if (!isModalVisible) {
-            setSortState(initSortState)
+            setSortState(initSortState);
         }
 
         if (!isModalVisible) {
-            setSortState(initSortState)
+            setSortState(initSortState);
         }
-    }, [isModalVisible, selectedRange, activeBrand])
+    }, [isModalVisible, selectedRange, activeBrand]);
 
 
     if (loading) {
@@ -177,7 +177,7 @@ const TurnoverBlock = ({ loading, turnover, selectedRange, activeBrand, authToke
                     <span className='loader'></span>
                 </div>
             </div>
-        )
+        );
     }
     return (
         <div className={styles.block}>
@@ -269,7 +269,7 @@ const TurnoverBlock = ({ loading, turnover, selectedRange, activeBrand, authToke
                                                         </div>
                                                     }
                                                 </div>
-                                            )
+                                            );
                                         })}
                                     </div>
                                 </div>
@@ -294,7 +294,7 @@ const TurnoverBlock = ({ loading, turnover, selectedRange, activeBrand, authToke
                                                                 {/* <img src={wb_icon} width={20} height={20} alt='' /> */}
                                                                 {product[v.engName]}
                                                             </div>
-                                                        )
+                                                        );
                                                     }
                                                     if (v.engName === 'turnover') {
                                                         const params = getTurnoverBarParams(product[v.engName]);
@@ -302,7 +302,7 @@ const TurnoverBlock = ({ loading, turnover, selectedRange, activeBrand, authToke
                                                             <div className={styles.table__rowItem} key={id}>
                                                                 <div className={styles.table__bar} style={{ background: params.color }}>{params.title}</div>
                                                             </div>
-                                                        )
+                                                        );
                                                     }
 
                                                     return (
@@ -317,7 +317,7 @@ const TurnoverBlock = ({ loading, turnover, selectedRange, activeBrand, authToke
                                                                                 height={40}
                                                                                 onError={(e) => {
                                                                                     e.target.onerror = null;
-                                                                                    e.target.style.display = 'none'
+                                                                                    e.target.style.display = 'none';
                                                                                 }}
                                                                             />
                                                                         }
@@ -328,10 +328,10 @@ const TurnoverBlock = ({ loading, turnover, selectedRange, activeBrand, authToke
                                                                 <>{v.units ? formatPrice(product[v.engName], v.units) : product[v.engName]}</>
                                                             }
                                                         </div>
-                                                    )
+                                                    );
                                                 }))}
                                             </div>
-                                        )
+                                        );
                                     })}
                                     {/* No data */}
                                     {tableData && tableData.length === 0 &&
@@ -380,7 +380,7 @@ const TurnoverBlock = ({ loading, turnover, selectedRange, activeBrand, authToke
                 </div>
             </Modal>
         </div>
-    )
-}
+    );
+};
 
 export default TurnoverBlock;

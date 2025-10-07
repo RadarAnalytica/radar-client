@@ -13,13 +13,13 @@ const initRequestStatus = {
     isSuccess: false,
     isError: false,
     message: ''
-}
+};
 
 export const AddShopWidget = ({ authToken, setStatusBarState }) => {
-    const dispatch = useAppDispatch()
-    const [isModalVisible, setIsModalVisible] = useState(false)
-    const [ addShopRequestStatus, setAddShopRequestStatus ] = useState(initRequestStatus)
-    const [form] = Form.useForm()
+    const dispatch = useAppDispatch();
+    const [isModalVisible, setIsModalVisible] = useState(false);
+    const [addShopRequestStatus, setAddShopRequestStatus] = useState(initRequestStatus);
+    const [form] = Form.useForm();
 
 
     const getFiltersData = async () => {
@@ -30,50 +30,50 @@ export const AddShopWidget = ({ authToken, setStatusBarState }) => {
                     'content-type': 'application/json',
                     authorization: 'JWT ' + authToken,
                 }
-            })
+            });
             //let shopsResponse = null
             // @ts-ignore
             dispatch(fetchFilters({
                 authToken,
                 shopsData: shopsResponse?.ok ? await shopsResponse.json() : null
                 //shopsData: null
-            }))
+            }));
         } catch (error) {
             console.error("Error fetching initial data:", error);
         }
-    }
+    };
 
     const addShopHandler = async (fields) => {
         const addShopData = {
             brandName: fields.name,
             tkn: fields.token,
             authToken
-        }
-        setAddShopRequestStatus({...initRequestStatus, isLoading: true})
+        };
+        setAddShopRequestStatus({...initRequestStatus, isLoading: true});
         try {
-            let res = await addShop(addShopData)
+            let res = await addShop(addShopData);
             if (!res.ok) {
-                setAddShopRequestStatus({...initRequestStatus, isLoading: false, isError: true, message: 'Не удалось добавить магазин'})
-                return
+                setAddShopRequestStatus({...initRequestStatus, isLoading: false, isError: true, message: 'Не удалось добавить магазин'});
+                return;
             }
-            setAddShopRequestStatus({...initRequestStatus, isLoading: false, isSuccess: true, message: 'Магазин успешно добавлен'})
+            setAddShopRequestStatus({...initRequestStatus, isLoading: false, isSuccess: true, message: 'Магазин успешно добавлен'});
         } catch {
-            setAddShopRequestStatus({...initRequestStatus, isLoading: false, isError: true, message: 'Не удалось добавить магазин'})
+            setAddShopRequestStatus({...initRequestStatus, isLoading: false, isError: true, message: 'Не удалось добавить магазин'});
         }
-    }
+    };
 
 
     useEffect(() => {
         if (addShopRequestStatus.isSuccess) {
-            form.resetFields()
-            setIsModalVisible(false)
-            getFiltersData()
+            form.resetFields();
+            setIsModalVisible(false);
+            getFiltersData();
             setStatusBarState({
                 isActive: true,
                 type: 'Success',
                 message: addShopRequestStatus.message
-            })
-            setAddShopRequestStatus(initRequestStatus)
+            });
+            setAddShopRequestStatus(initRequestStatus);
         }
         if (addShopRequestStatus.isError) {
             // setIsModalVisible(false)
@@ -81,10 +81,10 @@ export const AddShopWidget = ({ authToken, setStatusBarState }) => {
                 isActive: true,
                 type: 'Error',
                 message: addShopRequestStatus.message
-            })
-            setAddShopRequestStatus(initRequestStatus)
+            });
+            setAddShopRequestStatus(initRequestStatus);
         }
-    }, [addShopRequestStatus])
+    }, [addShopRequestStatus]);
 
     return (
         <div className={styles.widget}>
@@ -124,9 +124,9 @@ export const AddShopWidget = ({ authToken, setStatusBarState }) => {
                 footer={null}
                 width={700}
                 centered
-                onOk={() => {setIsModalVisible(false); form.resetFields()}}
-                onClose={() => {setIsModalVisible(false); form.resetFields()}}
-                onCancel={() => {setIsModalVisible(false); form.resetFields()}}
+                onOk={() => {setIsModalVisible(false); form.resetFields();}}
+                onClose={() => {setIsModalVisible(false); form.resetFields();}}
+                onCancel={() => {setIsModalVisible(false); form.resetFields();}}
                 closeIcon={
                     <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M10 7.77813L17.7781 0L20 2.22187L12.2219 10L20 17.7781L17.7781 20L10 12.2219L2.22187 20L0 17.7781L7.77813 10L0 2.22187L2.22187 0L10 7.77813Z" fill="#1A1A1A" fillOpacity="0.5" />
@@ -168,9 +168,9 @@ export const AddShopWidget = ({ authToken, setStatusBarState }) => {
                                     () => ({
                                         validator(_, value) {
                                             if (value && !value.trim()) {
-                                                return Promise.reject(new Error('Пожалуйста, заполните это поле!'))
+                                                return Promise.reject(new Error('Пожалуйста, заполните это поле!'));
                                             }
-                                            return Promise.resolve()
+                                            return Promise.resolve();
                                         },
                                     }),
                                 ]}
@@ -190,9 +190,9 @@ export const AddShopWidget = ({ authToken, setStatusBarState }) => {
                                     () => ({
                                         validator(_, value) {
                                             if (value && !value.trim()) {
-                                                return Promise.reject(new Error('Пожалуйста, заполните это поле!'))
+                                                return Promise.reject(new Error('Пожалуйста, заполните это поле!'));
                                             }
-                                            return Promise.resolve()
+                                            return Promise.resolve();
                                         },
                                     }),
                                 ]}
@@ -215,5 +215,5 @@ export const AddShopWidget = ({ authToken, setStatusBarState }) => {
                 </div>
             </Modal>
         </div>
-    )
-}
+    );
+};

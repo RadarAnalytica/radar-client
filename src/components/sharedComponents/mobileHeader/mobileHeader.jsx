@@ -1,16 +1,16 @@
 import { useState, useContext } from 'react';
-import styles from './mobileHeader.module.css'
+import styles from './mobileHeader.module.css';
 import { Link } from 'react-router-dom';
-import logo from '../../../assets/logo.png'
+import logo from '../../../assets/logo.png';
 import { Modal } from 'antd';
 import { URL } from '../../../service/config';
 import AuthContext from '../../../service/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
 const MobileHeader = ({ title }) => {
-    const { user } = useContext(AuthContext)
-    const [isMenuVisible, setIsMenuVisible] = useState(false)
-    const navigate = useNavigate()
+    const { user } = useContext(AuthContext);
+    const [isMenuVisible, setIsMenuVisible] = useState(false);
+    const navigate = useNavigate();
     return (
         <header className={styles.header}>
             <div className={`${styles.header__block} ${styles.header__mainBlock}`}>
@@ -18,7 +18,7 @@ const MobileHeader = ({ title }) => {
                     <img src={logo} alt='логотип' width={100} height={37} />
                 </Link>
 
-                <button className={styles.header__menuButton} onClick={() => { setIsMenuVisible(true) }}>
+                <button className={styles.header__menuButton} onClick={() => { setIsMenuVisible(true); }}>
                     <svg width="38" height="26" viewBox="0 0 38 26" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M0 1.25H38" stroke="#552CFF" strokeWidth="1.5" />
                         <path d="M0 13.25H38" stroke="#552CFF" strokeWidth="1.5" />
@@ -71,7 +71,7 @@ const MobileHeader = ({ title }) => {
                 </div>
             </Modal>
         </header>
-    )
-}
+    );
+};
 
 export default MobileHeader;

@@ -1,6 +1,4 @@
-import styles from './howtoWidget.module.css'
-
-
+import styles from './howtoWidget.module.css';
 
 
 export const HowtoWidget = () => {
@@ -13,5 +11,5 @@ export const HowtoWidget = () => {
                 <p className={styles.widget__text}>Уникальный инструмент с детализированными фильтрами, который помогает находить наиболее прибыльные и низкоконкурентные запросы — а значит, и подходящие товары и ниши.</p>
             </div>
         </div>
-    )
-}
+    );
+};

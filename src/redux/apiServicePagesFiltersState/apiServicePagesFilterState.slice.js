@@ -16,7 +16,7 @@ const initialState = {
   },
   filters: undefined,
   isFiltersLoaded: false
-}
+};
 
 const apiServicePagesFilterStateSlice = createSlice({
   name: 'filters',
@@ -31,19 +31,19 @@ const apiServicePagesFilterStateSlice = createSlice({
         activeGroup: [{id: 0, value: 'Все'}],
         activeWeeks: getSavedActiveWeeks(action.payload.id),
         activeMonths: getSavedActiveMonths(action.payload.id),
-      }
+      };
     },
     setPeriod: (state, action) => {
       return {
         ...state,
         selectedRange: action.payload
-      }
+      };
     },
     setSkuFrequencyMode: (state, action) => {
       return {
         ...state,
         skuFrequencyMode: action.payload
-      }
+      };
     },
     setActiveFilters: (state, action) => {
       const { stateKey, data } = action.payload;
@@ -54,7 +54,7 @@ const apiServicePagesFilterStateSlice = createSlice({
           [stateKey]: data,
           activeGroup: [{value: 'Все', id: 0}],
           activeArticle: [{value: 'Все', id: 0}]
-        }
+        };
       }
 
       if (stateKey === 'activeArticle') {
@@ -62,7 +62,7 @@ const apiServicePagesFilterStateSlice = createSlice({
           ...state,
           [stateKey]: data,
           activeGroup: [{value: 'Все', id: 0}],
-        }
+        };
       }
 
       if (stateKey === 'activeGroup') {
@@ -71,27 +71,27 @@ const apiServicePagesFilterStateSlice = createSlice({
           [stateKey]: data,
           activeBrandName: [{value: 'Все'}],
           activeArticle: [{value: 'Все'}],
-        }
+        };
       }
 
       if (stateKey === 'activeWeeks') {
         return {
           ...state,
           [stateKey]: data,
-        }
+        };
       }
 
       if (stateKey === 'activeMonths') {
         return {
           ...state,
           [stateKey]: data,
-        }
+        };
       }
 
       return {
         ...state,
         [stateKey]: data
-      }
+      };
     }
   },
   extraReducers: (builder) => {
@@ -107,6 +107,6 @@ const apiServicePagesFilterStateSlice = createSlice({
       return newState;
     });
   }
-})
+});
 
 export const { actions, reducer } = apiServicePagesFilterStateSlice;

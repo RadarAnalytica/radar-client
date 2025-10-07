@@ -1,6 +1,6 @@
-import React from 'react'
+import React from 'react';
 
-import saveGlitProduct from '../../pages/images/saveglitproduct.svg'
+import saveGlitProduct from '../../pages/images/saveglitproduct.svg';
 
 const Product = ({productBySku}) => {
 
@@ -113,6 +113,6 @@ const Product = ({productBySku}) => {
       </div>
     </div>
   );
-}
+};
 
-export default Product
+export default Product;

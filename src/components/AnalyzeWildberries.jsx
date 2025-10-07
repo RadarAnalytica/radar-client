@@ -1,14 +1,13 @@
-
-import styles from "../components/AnalyzeWildberries.module.css"
+import styles from "../components/AnalyzeWildberries.module.css";
 import { useNavigate } from 'react-router-dom';
 
-import webLogo from "../assets/firstLogoMain.svg"
-import browserLogo from "../assets/secondLogoMain.svg"
-import telegramLogo from "../assets/thirdLogoMain.svg"
+import webLogo from "../assets/firstLogoMain.svg";
+import browserLogo from "../assets/secondLogoMain.svg";
+import telegramLogo from "../assets/thirdLogoMain.svg";
 
-import webLogo1 from "../assets/iconLogoFirst.png"
-import browserLogo1 from "../assets/IconLogoSecond.png"
-import telegramLogo1 from "../assets/IconLogoThird.png"
+import webLogo1 from "../assets/iconLogoFirst.png";
+import browserLogo1 from "../assets/IconLogoSecond.png";
+import telegramLogo1 from "../assets/IconLogoThird.png";
 
 
 const AnalyzeWildberries = () => {

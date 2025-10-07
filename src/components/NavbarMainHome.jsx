@@ -168,7 +168,7 @@ const NavbarMainHome = ({ onlyLogo }) => {
               <Dropdown.Item href='#'>
                 {' '}
                 <LogoNavbarSelect.specProject />
-                Спец. проекты 
+                Спец. проекты
               </Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>

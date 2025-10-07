@@ -1,8 +1,8 @@
-import { useState, useEffect, useRef } from 'react'
-import styles from './multiSelect.module.css'
-import { SelectIcon } from '../../shared'
-import { Select, ConfigProvider, Input, Button, Tag } from 'antd'
-import { Link } from 'react-router-dom'
+import { useState, useEffect, useRef } from 'react';
+import styles from './multiSelect.module.css';
+import { SelectIcon } from '../../shared';
+import { Select, ConfigProvider, Input, Button, Tag } from 'antd';
+import { Link } from 'react-router-dom';
 
 export const MultiSelect = (
     {
@@ -24,9 +24,9 @@ export const MultiSelect = (
     const renderPopup = (menu) => {
         let action;
         if (selectState.filter(_ => _.value !== 'Все').length < optionsData.length && !searchState) {
-            action = () => { setSelectState(optionsData.filter(_ => _.value !== 'Все')) };
+            action = () => { setSelectState(optionsData.filter(_ => _.value !== 'Все')); };
         } else if (selectState.filter(_ => _.value !== 'Все').length === optionsData.length) {
-            action = () => { setSelectState([{ value: 'Все' }]) };
+            action = () => { setSelectState([{ value: 'Все' }]); };
         }
 
         if (selectId === 'product_groups' && (!optionsData || optionsData.length === 0)) {
@@ -45,7 +45,7 @@ export const MultiSelect = (
                         </Link>
                     </div>
                 </>
-            )
+            );
         }
 
         return (
@@ -88,8 +88,8 @@ export const MultiSelect = (
                     </Button>}
                 </ConfigProvider>
             </>
-        )
-    }
+        );
+    };
 
     const tagRender = props => {
         const { label, value, closable, onClose } = props;
@@ -97,7 +97,7 @@ export const MultiSelect = (
             event.preventDefault();
             event.stopPropagation();
         };
-        
+
         return (
             <Tag
                 color={value}
@@ -122,7 +122,7 @@ export const MultiSelect = (
             const valueArr = [];
             value.forEach(v => {
                 const el = params.data.find(_ => _.value === v);
-                el && el.value !== 'Все' && valueArr.push(el)
+                el && el.value !== 'Все' && valueArr.push(el);
             });
             setSelectState(valueArr);
             return;
@@ -130,16 +130,16 @@ export const MultiSelect = (
         const valueArr = [];
         value.forEach(v => {
             const el = params.data.find(_ => _.value === v);
-            el && valueArr.push(el)
+            el && valueArr.push(el);
         });
         setSelectState(valueArr);
-    }
+    };
 
     useEffect(() => {
         const state = Array.isArray(value) ? value : [value];
         setSelectState(state);
         prevSelectState.current = state;
-    }, [value])
+    }, [value]);
 
     return (
         <div className={styles.plainSelect}>
@@ -210,7 +210,7 @@ export const MultiSelect = (
                                 }
                                 {omittedValues.length === 1 && params.stateKey === 'activeWeeks' &&
                                    <p className={styles.plainSelect__multiLabel} title={omittedValues[0].label}>{omittedValues[0].label}</p>}
-                                
+
                             </>
                         )}
                         menuItemSelectedIcon={<span style={{ background: '#5329FF', width: 4, height: 4, borderRadius: '50% 50%' }}></span>}
@@ -219,5 +219,5 @@ export const MultiSelect = (
                 </ConfigProvider>
             </div>
         </div>
-    )
-}
+    );
+};

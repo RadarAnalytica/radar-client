@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import styles from './PopupBanner.module.css'
+import styles from './PopupBanner.module.css';
 
 
 /**
- * 
- * 
+ *
+ *
  --- expected this props ----
  type TProps = {
     mainTitle?: string,
@@ -13,19 +13,18 @@ import styles from './PopupBanner.module.css'
     offerTitle?: string,
     offerSubtitle?: string,
     sideBarText?: string
-    
+
 }
     ------------------------
  */
 
 
-
 const PopupBanner = ({ mainTitle, mainSubtitle, offerTitle, offerSubtitle, description, sideBarText }) => {
 
-    const [isOpen, setIsOpen] = useState(false) //boolean
+    const [isOpen, setIsOpen] = useState(false); //boolean
 
     return (
-        <div className={styles.banner} onClick={() => { setIsOpen(!isOpen) }}>
+        <div className={styles.banner} onClick={() => { setIsOpen(!isOpen); }}>
             <div className={styles.banner__head}>
                 <div className={styles.banner__infoWrapper}>
                     <div className={styles.banner__offerBlock}>
@@ -45,18 +44,17 @@ const PopupBanner = ({ mainTitle, mainSubtitle, offerTitle, offerSubtitle, descr
             </div>
 
 
-
             {isOpen &&
-                <div className={styles.banner__body} onClick={() => {setIsOpen(false)}}>
+                <div className={styles.banner__body} onClick={() => {setIsOpen(false);}}>
                     {description ?
                         <p className={styles.banner__description}>
                             {description}
-                        </p> 
+                        </p>
                         :
-                        
+
                         <div className={styles.banner__bar}>
                             <p className={styles.banner__barText}>
-                                Мы развиваем партнерскую сеть и <b>предлагаем вам зарабатывать вместе с&nbsp;Радар-Аналитикой.</b> Получайте <b>до 1300</b> рублей за&nbsp;каждого привлеченного клиента, который зарегистрируется по&nbsp;вашей персональной ссылке. 
+                                Мы развиваем партнерскую сеть и <b>предлагаем вам зарабатывать вместе с&nbsp;Радар-Аналитикой.</b> Получайте <b>до 1300</b> рублей за&nbsp;каждого привлеченного клиента, который зарегистрируется по&nbsp;вашей персональной ссылке.
                             </p>
 
                             <p className={styles.banner__barText}>
@@ -80,7 +78,7 @@ const PopupBanner = ({ mainTitle, mainSubtitle, offerTitle, offerSubtitle, descr
                 </div>
             }
         </div>
-    )
-}
+    );
+};
 
 export default PopupBanner;

@@ -10,13 +10,13 @@ import DownloadButton from './DownloadButton';
 import { ConfigProvider, Pagination } from 'antd';
 
 const SeoCompaire = ({ compaireData, linksToSend }) => {
-  const scrollContainerRef = useRef(null)
+  const scrollContainerRef = useRef(null);
   const { authToken } = useContext(AuthContext);
   const [byOptions, setByOptions] = useState('onlyA');
   const [searchQuery, setSearchQuery] = useState('');
   const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
   const [sortedData, setSortedData] = useState([]);
-  const [isExelLoading, setIsExelLoading] = useState(false)
+  const [isExelLoading, setIsExelLoading] = useState(false);
   const [paginationState, setPaginationState] = useState({ current: 1, total: 50, pageSize: 50 });
 
   const contentA = compaireData?.products_a ?? [];
@@ -72,14 +72,14 @@ const SeoCompaire = ({ compaireData, linksToSend }) => {
 
       setSortConfig({ key, direction: newDirection });
       setSortedData(newSortedData);
-      setPaginationState({ ...paginationState, total: newSortedData.length })
+      setPaginationState({ ...paginationState, total: newSortedData.length });
     },
     [sortedData, sortConfig]
   );
 
   const paginationHandler = (page) => {
-    setPaginationState({ ...paginationState, current: page })
-  }
+    setPaginationState({ ...paginationState, current: page });
+  };
 
   useEffect(() => {
     const keywordsA = Object.keys(compaireData?.keywords_a || {}).map((x) =>
@@ -114,32 +114,32 @@ const SeoCompaire = ({ compaireData, linksToSend }) => {
         .map(([key, value]) => ({ key, value })),
     };
     setSortedData(dataMap[byOptions] || []);
-    setPaginationState({ ...paginationState, total: dataMap[byOptions]?.length || 0 })
+    setPaginationState({ ...paginationState, total: dataMap[byOptions]?.length || 0 });
   }, [byOptions, compaireData]);
 
   useEffect(() => {
-    const paginationNextButton = document.querySelector('.ant-pagination-jump-next')
-    const paginationPrevButton = document.querySelector('.ant-pagination-jump-prev')
-    const paginationSingleNextButton = document.querySelector('.ant-pagination-next')
-    const paginationSinglePrevButton = document.querySelector('.ant-pagination-prev')
+    const paginationNextButton = document.querySelector('.ant-pagination-jump-next');
+    const paginationPrevButton = document.querySelector('.ant-pagination-jump-prev');
+    const paginationSingleNextButton = document.querySelector('.ant-pagination-next');
+    const paginationSinglePrevButton = document.querySelector('.ant-pagination-prev');
     if (paginationNextButton) {
-      paginationNextButton.setAttribute('title', 'Следующие 5 страниц')
+      paginationNextButton.setAttribute('title', 'Следующие 5 страниц');
     }
     if (paginationSingleNextButton) {
-      paginationSingleNextButton.setAttribute('title', 'Следующая страница')
+      paginationSingleNextButton.setAttribute('title', 'Следующая страница');
     }
     if (paginationSinglePrevButton) {
-      paginationSinglePrevButton.setAttribute('title', 'Предыдущая страница')
+      paginationSinglePrevButton.setAttribute('title', 'Предыдущая страница');
     }
     if (paginationPrevButton) {
-      paginationPrevButton.setAttribute('title', 'Предыдущие 5 страниц')
+      paginationPrevButton.setAttribute('title', 'Предыдущие 5 страниц');
     }
-  }, [paginationState])
+  }, [paginationState]);
 
   useEffect(() => {
     const { current } = scrollContainerRef;
-    current?.scrollTo({ top: 0, behavior: 'smooth', duration: 100 })
-}, [paginationState.current])
+    current?.scrollTo({ top: 0, behavior: 'smooth', duration: 100 });
+}, [paginationState.current]);
 
   const handleRadioChange = (value) => {
     setByOptions(value);
@@ -149,7 +149,7 @@ const SeoCompaire = ({ compaireData, linksToSend }) => {
     if (e.target.value) {
       setPaginationState({...paginationState, total: sortedData.filter((item) => {
         return item.key.toLowerCase().includes(e.target.value.toLowerCase());
-      }).length })
+      }).length });
     }
     setSearchQuery(e.target.value);
   };
@@ -199,7 +199,7 @@ const SeoCompaire = ({ compaireData, linksToSend }) => {
   };
 
   const handleDownload = async () => {
-    setIsExelLoading(true)
+    setIsExelLoading(true);
     try {
       const response = await ServiceFunctions.postSeoLinksToGetExcel(authToken, linksToSend);
       const blob = await response.blob();
@@ -211,12 +211,12 @@ const SeoCompaire = ({ compaireData, linksToSend }) => {
       link.click();
       document.body.removeChild(link);
       window.URL.revokeObjectURL(url);
-      setIsExelLoading(false)
+      setIsExelLoading(false);
     } catch (e) {
       console.error('Error downloading file:', e);
-      setIsExelLoading(false)
+      setIsExelLoading(false);
     }
-  }
+  };
 
   return (
     <div className={styles.seoCompaireWrapper}>
@@ -300,8 +300,6 @@ const SeoCompaire = ({ compaireData, linksToSend }) => {
           </div>
         </div>
       </div>
-
-
 
 
       <div className={styles.bottomBlock}>

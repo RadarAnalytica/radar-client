@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from 'react'
-import styles from './supplierIdPage.module.css'
-import Header from '@/components/sharedComponents/header/header'
-import Sidebar from '@/components/sharedComponents/sidebar/sidebar'
-import MobilePlug from '@/components/sharedComponents/mobilePlug/mobilePlug'
-import { BarsWidget, MainChartWidget, TableWidget, StockChartWidget } from './widgets'
-import { Filters } from '@/components/sharedComponents/apiServicePagesFiltersComponent'
-import Breadcrumbs from '@/components/sharedComponents/header/headerBreadcrumbs/breadcrumbs'
-import { useParams, useNavigate } from 'react-router-dom'
-import { useAppDispatch, useAppSelector } from '@/redux/hooks'
-import { mainTableConfig, goodsTableConfig, salesTableConfig, ordersStructByWarehousesTableConfig, ordersStructBySizesTableConfig } from './shared'
-import { GoodsTableCustomHeader, OrdersTableCustomHeader, StockChartCustomHeader } from './entities'
+import React, { useEffect, useState } from 'react';
+import styles from './supplierIdPage.module.css';
+import Header from '@/components/sharedComponents/header/header';
+import Sidebar from '@/components/sharedComponents/sidebar/sidebar';
+import MobilePlug from '@/components/sharedComponents/mobilePlug/mobilePlug';
+import { BarsWidget, MainChartWidget, TableWidget, StockChartWidget } from './widgets';
+import { Filters } from '@/components/sharedComponents/apiServicePagesFiltersComponent';
+import Breadcrumbs from '@/components/sharedComponents/header/headerBreadcrumbs/breadcrumbs';
+import { useParams, useNavigate } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import { mainTableConfig, goodsTableConfig, salesTableConfig, ordersStructByWarehousesTableConfig, ordersStructBySizesTableConfig } from './shared';
+import { GoodsTableCustomHeader, OrdersTableCustomHeader, StockChartCustomHeader } from './entities';
 import {
     fetchSupplierAnalysisMetaData,
     fetchSupplierAnalysisIndicatorsData,
@@ -25,14 +25,14 @@ import {
     fetchSupplierAnalysisByAvgPricesComparsionData,
     fetchSupplierAnalysisByAvgDiscountsComparsionData,
     fetchSupplierAnalysisByStockSizeComparsionData
-} from '@/redux/supplierAnalysis/supplierAnalysisActions'
-import { ServiceFunctions } from '@/service/serviceFunctions'
-import { actions as supplierActions } from '@/redux/supplierAnalysis/supplierAnalysisSlice'
+} from '@/redux/supplierAnalysis/supplierAnalysisActions';
+import { ServiceFunctions } from '@/service/serviceFunctions';
+import { actions as supplierActions } from '@/redux/supplierAnalysis/supplierAnalysisSlice';
 import {
     selectMainSupplierData,
     selectStockChartTab,
     selectOrdersStructureTab
-} from '@/redux/supplierAnalysis/supplierAnalysisSelectors'
+} from '@/redux/supplierAnalysis/supplierAnalysisSelectors';
 import NoSubscriptionWarningBlock
   from "@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock";
 import { useDemoMode } from "@/app/providers";
@@ -50,12 +50,12 @@ const SupplierIdPage = () => {
         //берем айди из урл
         const { id } = params;
         // если его нет то редиректим
-        if (!id) { navigate('/supplier-analysis'); return };
+        if (!id) { navigate('/supplier-analysis'); return; };
         // если айди найден и уже есть данные поставщика и айди совпадают то ничего не делаем
-        if (mainSupplierData && mainSupplierData.supplier_id === parseInt(id)) { return } else {
+        if (mainSupplierData && mainSupplierData.supplier_id === parseInt(id)) { return; } else {
             const supplierChecker = async (id) => {
                 // запускаем поиск
-                const res = await ServiceFunctions.getSupplierAnalysisSuggestData(id, () => { })
+                const res = await ServiceFunctions.getSupplierAnalysisSuggestData(id, () => { });
                 // еслио н пустой редиректим
                 if (res.length === 0) {
                     navigate('/supplier-analysis');
@@ -65,29 +65,29 @@ const SupplierIdPage = () => {
                     // редиректим если не найдено
                     if (!current) {
                         navigate('/supplier-analysis');
-                        return
+                        return;
                     }
                     // сохраняем если найдено
                     if (current) {
-                        dispatch(supplierActions.setSupplierMainData(current))
+                        dispatch(supplierActions.setSupplierMainData(current));
                     }
                 }
-            }
+            };
             // если все выше не прошло - проверяем
-            supplierChecker(id)
+            supplierChecker(id);
 
         }
 
 
-    }, [params, mainSupplierData])
+    }, [params, mainSupplierData]);
 
 
     //сброс при анмаунте
     useEffect(() => {
         return () => {
-            dispatch(supplierActions.resetState())
-        }
-    }, [])
+            dispatch(supplierActions.resetState());
+        };
+    }, []);
 
 
     return (
@@ -142,7 +142,6 @@ const SupplierIdPage = () => {
                         dataHandler={fetchSupplierAnalysisMainChartData}
                     />
                 </div>
-
 
 
                 <div className={styles.page__tableWrapper}>
@@ -202,14 +201,14 @@ const SupplierIdPage = () => {
             </section>
             {/* ---------------------- */}
         </main>
-    )
-}
+    );
+};
 
 
 const TableTabsWrapper = () => {
 
-    const mainSupplierData = useAppSelector(selectMainSupplierData)
-    const ordersStructureTab = useAppSelector(selectOrdersStructureTab)
+    const mainSupplierData = useAppSelector(selectMainSupplierData);
+    const ordersStructureTab = useAppSelector(selectOrdersStructureTab);
 
     return (
         <>
@@ -232,8 +231,8 @@ const TableTabsWrapper = () => {
                 />
             }
         </>
-    )
-}
+    );
+};
 
 const getStockChartProps = (tabType) => {
     let props = {
@@ -241,9 +240,9 @@ const getStockChartProps = (tabType) => {
         dataType: 'byIncomingOrdersComparsionData',
         dataHandler: fetchSupplierAnalysisByIncomingOrdersComparsionData,
         summaryType: undefined
-    }
+    };
     if (tabType === 'Входящие заказы') {
-        return props
+        return props;
     }
     if (tabType === 'Заказанные товары') {
         props = {
@@ -251,8 +250,8 @@ const getStockChartProps = (tabType) => {
             dataType: 'byOrderedProductsComparsionData',
             dataHandler: fetchSupplierAnalysisByOrderedProductsComparsionData,
             summaryType: undefined
-        }
-        return props
+        };
+        return props;
     }
     if (tabType === 'Средние цены') {
         props = {
@@ -260,8 +259,8 @@ const getStockChartProps = (tabType) => {
             dataType: 'byAvgPricesComparsionData',
             dataHandler: fetchSupplierAnalysisByAvgPricesComparsionData,
             summaryType: 'avg'
-        }
-        return props
+        };
+        return props;
     }
     if (tabType === 'Средние скидки') {
         props = {
@@ -269,8 +268,8 @@ const getStockChartProps = (tabType) => {
             dataType: 'byAvgDiscountsComparsionData',
             dataHandler: fetchSupplierAnalysisByAvgDiscountsComparsionData,
             summaryType: 'avg'
-        }
-        return props
+        };
+        return props;
     }
     if (tabType === 'Товарные остатки') {
         props = {
@@ -278,24 +277,24 @@ const getStockChartProps = (tabType) => {
             dataType: 'byStockSizeComparsionData',
             dataHandler: fetchSupplierAnalysisByStockSizeComparsionData,
             summaryType: 'last_value'
-        }
-        return props
+        };
+        return props;
     }
-}
+};
 
 
 const ChartTabsWrapper = () => {
-    const stockChartTab = useAppSelector(selectStockChartTab)
-    const [ config, setConfig ] = useState(getStockChartProps(stockChartTab))
+    const stockChartTab = useAppSelector(selectStockChartTab);
+    const [config, setConfig] = useState(getStockChartProps(stockChartTab));
 
     useEffect(() => {
-        setConfig(getStockChartProps(stockChartTab))
-    }, [stockChartTab])
+        setConfig(getStockChartProps(stockChartTab));
+    }, [stockChartTab]);
     return (
             <StockChartWidget
                 {...config}
             />
-    )
-}
+    );
+};
 
-export default SupplierIdPage
+export default SupplierIdPage;

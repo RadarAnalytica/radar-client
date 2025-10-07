@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import styles from './mainChartWidget.module.css'
+import styles from './mainChartWidget.module.css';
 import { ChartControls } from '../../features';
 import { Chart } from 'react-chartjs-2';
 import { useAppSelector, useAppDispatch } from '../../../../redux/hooks';
@@ -26,11 +26,11 @@ ChartJS.register(
 
 
 const MainChartWidget = ({ id, dataType, dataHandler }) => {
-    const dispatch = useAppDispatch()
-    const [chartControls, setChartControls] = useState(undefined)
-    const [normilizedChartData, setNormilizedChartData] = useState()
-    const { selectedRange } = useAppSelector(store => store.filters)
-    const widgetData = useAppSelector(store => store.supplierAnalysis[dataType])
+    const dispatch = useAppDispatch();
+    const [chartControls, setChartControls] = useState(undefined);
+    const [normilizedChartData, setNormilizedChartData] = useState();
+    const { selectedRange } = useAppSelector(store => store.filters);
+    const widgetData = useAppSelector(store => store.supplierAnalysis[dataType]);
 
 
     //data fetching
@@ -39,31 +39,31 @@ const MainChartWidget = ({ id, dataType, dataHandler }) => {
             let datesRange;
 
             if (selectedRange.period) {
-                datesRange = selectedRange
+                datesRange = selectedRange;
             } else {
                 datesRange = {
                     date_from: selectedRange.from,
                     date_to: selectedRange.to
-                }
+                };
             }
             const reqData = {
                 "supplier_id": parseInt(id),
                 "page": 1,
                 "limit": 25,
                 ...datesRange
-            }
-            dispatch(dataHandler(reqData))
+            };
+            dispatch(dataHandler(reqData));
         }
-    }, [selectedRange, id])
+    }, [selectedRange, id]);
 
     useEffect(() => {
-        const chartControlsFromLocalStorage = JSON.parse(localStorage.getItem('SuppierAnalysysMainChartControls'))
+        const chartControlsFromLocalStorage = JSON.parse(localStorage.getItem('SuppierAnalysysMainChartControls'));
         if (chartControlsFromLocalStorage) {
-            setChartControls(chartControlsFromLocalStorage)
+            setChartControls(chartControlsFromLocalStorage);
         } else {
-            setChartControls(chartCompareConfigObject.filter(_ => _.isControl).map(_ => ({ ..._, isActive: _.defaultActive })))
+            setChartControls(chartCompareConfigObject.filter(_ => _.isControl).map(_ => ({ ..._, isActive: _.defaultActive })));
         }
-    }, [chartCompareConfigObject])
+    }, [chartCompareConfigObject]);
 
 
     useEffect(() => {
@@ -73,7 +73,7 @@ const MainChartWidget = ({ id, dataType, dataHandler }) => {
                 datasets: chartControls.map(i => {
                     let yAxis = 'y1';
                     if (i.hasUnits && i.units === '₽') {
-                        yAxis = 'y'
+                        yAxis = 'y';
                     }
                     if (i.isOnChart && i.isActive) {
                         return {
@@ -88,22 +88,22 @@ const MainChartWidget = ({ id, dataType, dataHandler }) => {
                             pointRadius: 6,
                             hoverRadius: 8,
                             borderWidth: 2
-                        }
+                        };
                     } else {
-                        return {}
+                        return {};
                     }
                 })
-            }
-            setNormilizedChartData({ ...data })
+            };
+            setNormilizedChartData({ ...data });
         }
-    }, [widgetData.data, chartControls])
+    }, [widgetData.data, chartControls]);
 
     if (widgetData.isLoading) {
         return (
             <div className={styles.loaderWrapper}>
                 <span className='loader'></span>
             </div>
-        )
+        );
     }
     if (widgetData.isError) {
         return (
@@ -129,20 +129,20 @@ const MainChartWidget = ({ id, dataType, dataHandler }) => {
                                         let datesRange;
 
                                         if (selectedRange.period) {
-                                            datesRange = selectedRange
+                                            datesRange = selectedRange;
                                         } else {
                                             datesRange = {
                                                 date_from: selectedRange.from,
                                                 date_to: selectedRange.to
-                                            }
+                                            };
                                         }
                                         const reqData = {
                                             "supplier_id": parseInt(id),
                                             "page": 1,
                                             "limit": 25,
                                             ...datesRange
-                                        }
-                                        dispatch(dataHandler(reqData))
+                                        };
+                                        dispatch(dataHandler(reqData));
                                     }
                                 }}
                             >
@@ -151,9 +151,8 @@ const MainChartWidget = ({ id, dataType, dataHandler }) => {
                         </ConfigProvider>
                     </div>
                 </div>
-        )
+        );
     }
-
 
 
     return (
@@ -174,7 +173,7 @@ const MainChartWidget = ({ id, dataType, dataHandler }) => {
                     />}
             </div>
         </div>
-    )
-}
+    );
+};
 
 export default MainChartWidget;

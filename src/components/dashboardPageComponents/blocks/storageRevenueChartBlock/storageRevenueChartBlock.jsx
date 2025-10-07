@@ -1,11 +1,11 @@
-import styles from './storageRevenueChartBlock.module.css'
+import styles from './storageRevenueChartBlock.module.css';
 import { Bar } from 'react-chartjs-2';
 import { processRevenueData } from '../blockUtils';
 
 const StorageRevenueChartBlock = ({ dataDashBoard, loading }) => {
 //data.revenueByWarehouse
 
-    const { labels, dataRevenueStorage, isLoading, max } = processRevenueData(dataDashBoard?.revenueByWarehouse)
+    const { labels, dataRevenueStorage, isLoading, max } = processRevenueData(dataDashBoard?.revenueByWarehouse);
 
     const data = {
         labels: labels,
@@ -103,7 +103,6 @@ const StorageRevenueChartBlock = ({ dataDashBoard, loading }) => {
     };
 
 
-
     if (loading) {
         return (
             <div className={styles.block}>
@@ -111,7 +110,7 @@ const StorageRevenueChartBlock = ({ dataDashBoard, loading }) => {
                     <span className='loader'></span>
                 </div>
             </div>
-        )
+        );
     }
 
     return (
@@ -121,7 +120,7 @@ const StorageRevenueChartBlock = ({ dataDashBoard, loading }) => {
                 <Bar data={data} options={options} />
             </div>
         </div >
-    )
-}
+    );
+};
 
 export default StorageRevenueChartBlock;

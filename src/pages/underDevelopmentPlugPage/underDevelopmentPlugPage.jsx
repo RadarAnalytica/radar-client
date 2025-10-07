@@ -1,9 +1,7 @@
-import styles from './underDevelopmentPlugPage.module.css'
-import pic from '../../assets/under_dev_plug.png'
-import Sidebar from '../../components/sharedComponents/sidebar/sidebar'
-import MobilePlug from '../../components/sharedComponents/mobilePlug/mobilePlug'
-
-
+import styles from './underDevelopmentPlugPage.module.css';
+import pic from '../../assets/under_dev_plug.png';
+import Sidebar from '../../components/sharedComponents/sidebar/sidebar';
+import MobilePlug from '../../components/sharedComponents/mobilePlug/mobilePlug';
 
 
 const UnderDevelopmentPlugPage = () => {
@@ -28,7 +26,7 @@ const UnderDevelopmentPlugPage = () => {
             </section>
             {/* ---------------------- */}
         </main>
-    )
-}
+    );
+};
 
-export default UnderDevelopmentPlugPage
+export default UnderDevelopmentPlugPage;

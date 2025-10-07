@@ -1,15 +1,14 @@
 import React, { useState, useEffect, useContext } from 'react';
-import styles from './singleGroupWidget.module.css'
+import styles from './singleGroupWidget.module.css';
 import HowToLink from '../../../../components/sharedComponents/howToLink/howToLink';
 import { Checkbox, ConfigProvider, Tooltip } from 'antd';
 import { singleGroupTableConfig, buttonIcons } from '../../shared';
-import wb_icon from '../../../../assets/wb_icon.png'
+import wb_icon from '../../../../assets/wb_icon.png';
 import { URL } from '../../../../service/config';
 import AuthContext from '../../../../service/AuthContext';
 import { useAppDispatch } from '../../../../redux/hooks';
 import { fetchFilters } from '../../../../redux/apiServicePagesFiltersState/filterActions';
 import { fetchApi } from "@/service/fetchApi";
-
 
 
 const SingleGroupWidget = ({
@@ -25,22 +24,22 @@ const SingleGroupWidget = ({
     initConfirmationState,
     setAlertState
 }) => {
-    const { authToken } = useContext(AuthContext)
-    const [tableData, setTableData] = useState([])
+    const { authToken } = useContext(AuthContext);
+    const [tableData, setTableData] = useState([]);
     const [checkedList, setCheckedList] = useState([]);
-    const dispatch = useAppDispatch()
+    const dispatch = useAppDispatch();
     const checkAll = tableData && tableData.length === checkedList.length;
     const indeterminate = tableData && checkedList.length > 0 && checkedList.length < tableData.length;
 
     const onCheckboxChange = (e) => {
         const { value, checked } = e.target;
         if (checked) {
-            setCheckedList([...checkedList, value])
+            setCheckedList([...checkedList, value]);
         } else {
-            const index = checkedList.findIndex(_ => _ === value)
-            const newList = checkedList
-            newList.splice(index, 1)
-            setCheckedList([...newList])
+            const index = checkedList.findIndex(_ => _ === value);
+            const newList = checkedList;
+            newList.splice(index, 1);
+            setCheckedList([...newList]);
         }
     };
 
@@ -51,10 +50,10 @@ const SingleGroupWidget = ({
     const deleteSkuFromGroup = async (product) => {
         const updatedTableData = tableData;
         const index = updatedTableData.findIndex(_ => _.id === product.id);
-        updatedTableData.splice(index, 1)
+        updatedTableData.splice(index, 1);
         const requestObject = {
             product_ids: updatedTableData.map(_ => _.id)
-        }
+        };
         try {
             const res = await fetchApi(`/api/product/product_groups/${groupId}`, {
                 method: 'PATCH',
@@ -63,27 +62,27 @@ const SingleGroupWidget = ({
                     'authorization': 'JWT ' + authToken
                 },
                 body: JSON.stringify(requestObject)
-            })
+            });
 
             if (!res.ok) {
-                const parsedData = await res.json()
-                setDataFetchingStatus({ ...initDataFetchingStatus, isError: true, message: parsedData?.detail || 'Что-то пошло не так :(' })
+                const parsedData = await res.json();
+                setDataFetchingStatus({ ...initDataFetchingStatus, isError: true, message: parsedData?.detail || 'Что-то пошло не так :(' });
                 return;
             }
-            setTableData(updatedTableData)
-            setAlertState({isVisible: true, message: 'Артикул успешно удален'})
-            dispatch(fetchFilters(authToken))
-            getGroupData(authToken, groupId)
+            setTableData(updatedTableData);
+            setAlertState({isVisible: true, message: 'Артикул успешно удален'});
+            dispatch(fetchFilters(authToken));
+            getGroupData(authToken, groupId);
             // успешно обновлено
 
         } catch {
-            setDataFetchingStatus({ ...initDataFetchingStatus, isError: true, message: 'Что-то пошло не так :(' })
+            setDataFetchingStatus({ ...initDataFetchingStatus, isError: true, message: 'Что-то пошло не так :(' });
         }
-    }
+    };
 
     useEffect(() => {
-        data && setTableData(data.products)
-    }, [data])
+        data && setTableData(data.products);
+    }, [data]);
 
     return (
         <div className={styles.widget}>
@@ -131,7 +130,7 @@ const SingleGroupWidget = ({
                                             }
                                             <p className={styles.table__headerItemTitle}>{v.ruName}</p>
                                         </div>
-                                    )
+                                    );
                                 })}
                             </div>
                         </div>
@@ -155,16 +154,16 @@ const SingleGroupWidget = ({
                                                         <img src={wb_icon} width={20} height={20} alt='' />
                                                         {product[v.engName]}
                                                     </div>
-                                                )
+                                                );
                                             }
 
                                             if (v.engName === 'shop') {
-                                                const currentShopName = shops.find(_ => _.id === product[v.engName])?.brand_name
+                                                const currentShopName = shops.find(_ => _.id === product[v.engName])?.brand_name;
                                                 return (
                                                     <div className={styles.table__rowItem} key={id}>
                                                         {currentShopName ? currentShopName : product[v.engName]}
                                                     </div>
-                                                )
+                                                );
                                             }
 
                                             if (v.engName === 'actions') {
@@ -173,19 +172,19 @@ const SingleGroupWidget = ({
                                                     <div className={styles.table__rowItem} key={id}>
                                                         {v.actionTypes.map((a, id) => {
                                                             return (
-                                                                <button 
-                                                                    className={styles.table__actionButton} 
+                                                                <button
+                                                                    className={styles.table__actionButton}
                                                                     style={{ marginRight: '25px'}}
-                                                                    key={id} 
+                                                                    key={id}
                                                                     //onClick={() => { deleteSkuFromGroup(product) }}
-                                                                    onClick={() => {setConfirmationModalState({open: true, title: 'Удаление товара', actionTitle: 'Удалить', message: `Вы уверены, что хотите удалить товар "${product.article}"?`, mainAction: () => {deleteSkuFromGroup(product)}, returnAction: () => {setConfirmationModalState(initConfirmationState)}})}}
+                                                                    onClick={() => {setConfirmationModalState({open: true, title: 'Удаление товара', actionTitle: 'Удалить', message: `Вы уверены, что хотите удалить товар "${product.article}"?`, mainAction: () => {deleteSkuFromGroup(product);}, returnAction: () => {setConfirmationModalState(initConfirmationState);}});}}
                                                                 >
                                                                     {buttonIcons[a]}
                                                                 </button>
-                                                            )
+                                                            );
                                                         })}
                                                     </div>
-                                                )
+                                                );
                                             }
 
                                             return (
@@ -209,14 +208,14 @@ const SingleGroupWidget = ({
                                                                 </ConfigProvider>
                                                             }
                                                             <div className={styles.table__rowImgWrapper}>
-                                                                {product[v.photoFieldName] && 
-                                                                    <img 
-                                                                        src={product[v.photoFieldName]} 
-                                                                        width={30} 
-                                                                        height={40} 
+                                                                {product[v.photoFieldName] &&
+                                                                    <img
+                                                                        src={product[v.photoFieldName]}
+                                                                        width={30}
+                                                                        height={40}
                                                                         onError={(e) => {
                                                                             e.target.onerror = null;
-                                                                            e.target.style.display = 'none'
+                                                                            e.target.style.display = 'none';
                                                                         }}
                                                                     />
                                                                 }
@@ -227,10 +226,10 @@ const SingleGroupWidget = ({
                                                         <>{product[v.engName]}</>
                                                     }
                                                 </div>
-                                            )
+                                            );
                                         }))}
                                     </div>
-                                )
+                                );
                             })}
                         </div>
                     </div>
@@ -239,7 +238,7 @@ const SingleGroupWidget = ({
 
                 </div>}
         </div>
-    )
-}
+    );
+};
 
 export default SingleGroupWidget;

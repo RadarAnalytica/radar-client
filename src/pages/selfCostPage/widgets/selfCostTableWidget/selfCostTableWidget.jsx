@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from 'react'
-import styles from './selfCostTableWidget.module.css'
-import { tableConfig } from '../../shared'
-import { TableRow } from '../../features'
-import { Pagination, ConfigProvider } from 'antd'
+import React, { useState, useEffect } from 'react';
+import styles from './selfCostTableWidget.module.css';
+import { tableConfig } from '../../shared';
+import { TableRow } from '../../features';
+import { Pagination, ConfigProvider } from 'antd';
 
 const initDataStatus = {
     isError: false,
     isLoading: false,
     message: ''
-}
+};
 
 const SelfCostTableWidget = ({
     setIsSuccess,
@@ -26,31 +26,31 @@ const SelfCostTableWidget = ({
 
 
     const paginationHandler = (page) => {
-        setPaginationState({ ...paginationState, current: page })
-    }
+        setPaginationState({ ...paginationState, current: page });
+    };
 
     useEffect(() => {
-        setPaginationState({ current: 1, total: tableData?.length, pageSize: 50 })
-    }, [tableData])
+        setPaginationState({ current: 1, total: tableData?.length, pageSize: 50 });
+    }, [tableData]);
 
     useEffect(() => {
-        const paginationNextButton = document.querySelector('.ant-pagination-jump-next')
-        const paginationPrevButton = document.querySelector('.ant-pagination-jump-prev')
-        const paginationSingleNextButton = document.querySelector('.ant-pagination-next')
-        const paginationSinglePrevButton = document.querySelector('.ant-pagination-prev')
+        const paginationNextButton = document.querySelector('.ant-pagination-jump-next');
+        const paginationPrevButton = document.querySelector('.ant-pagination-jump-prev');
+        const paginationSingleNextButton = document.querySelector('.ant-pagination-next');
+        const paginationSinglePrevButton = document.querySelector('.ant-pagination-prev');
         if (paginationNextButton) {
-         paginationNextButton.setAttribute('title', 'Следующие 5 страниц')
+         paginationNextButton.setAttribute('title', 'Следующие 5 страниц');
         }
         if (paginationSingleNextButton) {
-         paginationSingleNextButton.setAttribute('title', 'Следующая страница')
+         paginationSingleNextButton.setAttribute('title', 'Следующая страница');
         }
         if (paginationSinglePrevButton) {
-         paginationSinglePrevButton.setAttribute('title', 'Предыдущая страница')
+         paginationSinglePrevButton.setAttribute('title', 'Предыдущая страница');
         }
         if (paginationPrevButton) {
-         paginationPrevButton.setAttribute('title', 'Предыдущие 5 страниц')
+         paginationPrevButton.setAttribute('title', 'Предыдущие 5 страниц');
         }
-     }, [paginationState])
+     }, [paginationState]);
 
 
     if (!tableData && dataStatus.isLoading) {
@@ -60,7 +60,7 @@ const SelfCostTableWidget = ({
                     <span className='loader'></span>
                 </div>
             </div>
-        )
+        );
     }
 
     return (
@@ -74,12 +74,12 @@ const SelfCostTableWidget = ({
                         <div className={styles.table__headerContainer}>
                             {tableConfig.values.map((v, id) => {
                                 // определяем необходимые стили
-                                const headerCellStyle = v.ruName === 'Продукт' ? `${styles.table__headerItem} ${styles.table__headerItem_wide}` : v.ruName === 'Фулфилмент' ? `${styles.table__headerItem} ${styles.table__headerItem_full}` : styles.table__headerItem
+                                const headerCellStyle = v.ruName === 'Продукт' ? `${styles.table__headerItem} ${styles.table__headerItem_wide}` : v.ruName === 'Фулфилмент' ? `${styles.table__headerItem} ${styles.table__headerItem_full}` : styles.table__headerItem;
                                 return (
                                     <div className={headerCellStyle} key={id}>
                                         <p className={styles.table__headerItemTitle}>{v.ruName}</p>
                                     </div>
-                                )
+                                );
                             })}
                         </div>
                     </div>
@@ -105,7 +105,7 @@ const SelfCostTableWidget = ({
                                     tableData={tableData}
                                     resetSearch={resetSearch}
                                 />
-                            )
+                            );
                         })}
                         {tableData && tableData.length === 0 &&
                             <div className={styles.table__row}>
@@ -144,7 +144,7 @@ const SelfCostTableWidget = ({
                 />
             </ConfigProvider>
         </div>
-    )
-}
+    );
+};
 
 export default SelfCostTableWidget;

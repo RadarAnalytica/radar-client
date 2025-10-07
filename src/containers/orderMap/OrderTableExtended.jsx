@@ -1,6 +1,6 @@
-import React from 'react'
-import styles from './OrderTableExtended.module.css'
-import { formatPrice } from '../../service/utils'
+import React from 'react';
+import styles from './OrderTableExtended.module.css';
+import { formatPrice } from '../../service/utils';
 
 const OrderTableExtended = ({ title, data, geoData }) => {
     // const uniqueDistricts = Array.from(new Set(geoData.map(item => item.districtName[0].toUpperCase() + item.districtName.slice(1))));
@@ -17,9 +17,9 @@ const OrderTableExtended = ({ title, data, geoData }) => {
     //   });
 
     data?.forEach((...item) => {
-        let sub = item?.district?.split('федеральный округ')?.join('фо')
-        item.district = sub
-    })
+        let sub = item?.district?.split('федеральный округ')?.join('фо');
+        item.district = sub;
+    });
 
     // stok?.forEach(item => {
     //     if (item.stockName && item.stockName.length) {
@@ -57,7 +57,7 @@ const OrderTableExtended = ({ title, data, geoData }) => {
                 }
             </div>
         </>
-    )
-}
+    );
+};
 
-export default OrderTableExtended
+export default OrderTableExtended;

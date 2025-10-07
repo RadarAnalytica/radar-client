@@ -1,2 +1,2 @@
 import FiltersProvider from './providers/FiltersProvider';
-export { FiltersProvider }
+export { FiltersProvider };

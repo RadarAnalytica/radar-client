@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
-import styles from './datePickerCustomDropdown.module.css'
-import { Select, ConfigProvider, Tag } from 'antd'
+import styles from './datePickerCustomDropdown.module.css';
+import { Select, ConfigProvider, Tag } from 'antd';
 
 const DatePickerCustomDropdown = (props) => {
     const { options, value } = props;
@@ -10,9 +10,9 @@ const DatePickerCustomDropdown = (props) => {
             target: {
                 value: value.toString()
             }
-        }
-        props.onChange(e)
-    }
+        };
+        props.onChange(e);
+    };
 
     const Suffix = () => {
 
@@ -21,8 +21,8 @@ const DatePickerCustomDropdown = (props) => {
                 <path d="M1 1L7 7L13 1" stroke="#5329FF" strokeWidth="2" strokeLinecap="round" />
             </svg>
 
-        )
-    }
+        );
+    };
 
     const tagRender = useCallback(props => {
         const { label, value, closable, onClose } = props;
@@ -36,7 +36,7 @@ const DatePickerCustomDropdown = (props) => {
                 <div style={{color: 'black'}}>{label}</div>
             </Tag>
         );
-    }, [])
+    }, []);
 
     return (
         <div className={styles.dropdown}>
@@ -87,8 +87,8 @@ const DatePickerCustomDropdown = (props) => {
                             color: 'black'
                         }
                     }}
-                    style={{ 
-                        border: 'none', 
+                    style={{
+                        border: 'none',
                         color: 'black',
                         outline: 'none',
                         boxShadow: 'none'
@@ -96,9 +96,8 @@ const DatePickerCustomDropdown = (props) => {
                 />
             </ConfigProvider>
         </div>
-    )
-}
+    );
+};
 
 
-
-export default DatePickerCustomDropdown
+export default DatePickerCustomDropdown;

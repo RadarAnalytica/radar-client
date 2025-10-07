@@ -3,7 +3,7 @@ import {URL} from '../../service/config';
 
 
 export const addShop = createAsyncThunk("addShop", async (addShopData) => {
-    const {brandName, tkn, authToken } = addShopData
+    const {brandName, tkn, authToken } = addShopData;
     const response = await fetch(URL + '/api/shop/', {
         method: 'POST',
         headers: {
@@ -15,7 +15,7 @@ export const addShop = createAsyncThunk("addShop", async (addShopData) => {
             token: tkn,
             is_active: true
         })
-    })
+    });
     const data = await response.json();
-    return data
-})
+    return data;
+});

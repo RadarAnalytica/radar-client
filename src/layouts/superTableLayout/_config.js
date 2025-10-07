@@ -100,4 +100,4 @@ export const tableConfig = [
             {ruName: 'Данные Радар', engName: 'dataRadar', units: 'шт', isSortable: false},
         ]
     },
-]
+];

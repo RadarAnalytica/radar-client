@@ -16,7 +16,7 @@ export default function RnpItem({ title, photo, wb_id, shop }) {
 						alt=''
 						onError={(e) => {
 							e.target.src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/wcAAgAB/HHpC6UAAAAASUVORK5CYII=';
-							e.target.style.display = 'none'
+							e.target.style.display = 'none';
 						}}
 					/>}
 			</div>

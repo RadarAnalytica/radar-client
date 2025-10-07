@@ -27,7 +27,7 @@ const ExternalExpensesPage = () => {
           <Header title='Внешние расходы' />
         </div>
 
-        {isDemoMode && 
+        {isDemoMode &&
           <NoSubscriptionWarningBlock />
         }
 

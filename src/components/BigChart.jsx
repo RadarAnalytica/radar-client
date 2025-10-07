@@ -270,7 +270,6 @@ const BigChart = ({
       </div>
 
 
-      
       <div className='bar-div' style={{ position: 'relative' }}>
         {((data && data.labels.length === 0) || loading) && (
           <div
@@ -307,7 +306,7 @@ const BigChart = ({
                 external: function(context) {
                   // Tooltip Element
                   let tooltipEl = document.getElementById('chartjs-tooltip');
-                
+
                   // Create element on first render
                   if (!tooltipEl) {
                     tooltipEl = document.createElement('div');
@@ -317,7 +316,7 @@ const BigChart = ({
                     tooltipEl.classList.add('custom-tooltip');
                     document.body.appendChild(tooltipEl);
                   }
-                
+
                   // Hide if no tooltip
                   const tooltipModel = context.tooltip;
                   if (tooltipModel.opacity === 0) {
@@ -325,7 +324,7 @@ const BigChart = ({
                     tooltipEl.style.visibility = 'hidden';
                     return;
                   }
-                
+
                   // Set caret Position
                   tooltipEl.classList.remove('above', 'below', 'no-transform');
                   if (tooltipModel.yAlign) {
@@ -333,11 +332,11 @@ const BigChart = ({
                   } else {
                     tooltipEl.classList.add('no-transform');
                   }
-                
+
                   function getBody(bodyItem) {
                     return bodyItem.lines;
                   }
-                
+
                   // Set Text
                   if (tooltipModel.body) {
                     let datasets = data?.datasets
@@ -345,12 +344,12 @@ const BigChart = ({
                       ?.reverse();
                     const datalabels = data?.labels;
                     const targetInex = datalabels?.indexOf(tooltipModel.title[0]);
-                
+
                     const titleLines = tooltipModel.title || [];
                     const bodyLines = tooltipModel.body.map(getBody);
-                
+
                     let innerHtml = '<thead>';
-                
+
                     titleLines.forEach(function(title) {
                       innerHtml +=
                         '<tr><th style="color: silver; font-weight: 400;">' +
@@ -384,47 +383,47 @@ const BigChart = ({
                       innerHtml += '<tr><td>' + span + '</td></tr>';
                     });
                     innerHtml += '</tbody>';
-                
+
                     let tableRoot = tooltipEl.querySelector('table');
                     tableRoot.innerHTML = innerHtml;
                   }
-                
+
                   const position = context.chart.canvas.getBoundingClientRect();
-                  
+
                   // Calculate initial position
                   let tooltipLeft = position.left + tooltipModel.caretX;
                   let tooltipTop = position.top + tooltipModel.caretY;
-                  
+
                   // Get tooltip dimensions
                   tooltipEl.style.display = 'block'; // Нужно для правильного расчета размеров
                   const tooltipWidth = tooltipEl.offsetWidth;
                   const tooltipHeight = tooltipEl.offsetHeight;
-                  
+
                   // Получаем размеры viewport
                   const viewportWidth = window.innerWidth;
                   const viewportHeight = window.innerHeight;
-                  
+
                   // Добавляем отступ от краев экрана
                   const margin = 10;
-                  
+
                   // Корректировка по горизонтали
                   if (tooltipLeft + tooltipWidth + margin > viewportWidth) {
                     tooltipLeft = viewportWidth - tooltipWidth - margin;
                   } else if (tooltipLeft - margin < 0) {
                     tooltipLeft = margin;
                   }
-                  
+
                   // Корректировка по вертикали
                   if (tooltipTop + tooltipHeight + margin > viewportHeight) {
                     tooltipTop = viewportHeight - tooltipHeight - margin;
                   } else if (tooltipTop - margin < 0) {
                     tooltipTop = margin;
                   }
-                  
+
                   // Добавляем скролл страницы к позиции
                   tooltipLeft += window.scrollX;
                   tooltipTop += window.scrollY;
-                
+
                   // Apply styles
                   tooltipEl.style.position = 'absolute';
                   tooltipEl.style.left = Math.round(tooltipLeft) + 'px';

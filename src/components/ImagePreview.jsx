@@ -5,13 +5,13 @@ const ImagePreview = ({ images, onClose }) => {
     const [currentIndex, setCurrentIndex] = useState(0);
 
     const goToPrevious = () => {
-      setCurrentIndex((prevIndex) => 
+      setCurrentIndex((prevIndex) =>
         prevIndex === 0 ? images.length - 1 : prevIndex - 1
       );
     };
-  
+
     const goToNext = () => {
-      setCurrentIndex((prevIndex) => 
+      setCurrentIndex((prevIndex) =>
         prevIndex === images.length - 1 ? 0 : prevIndex + 1
       );
     };
@@ -24,9 +24,9 @@ const ImagePreview = ({ images, onClose }) => {
         <button className={`${styles.navButton} ${styles.prevButton}`} onClick={goToPrevious}>
           &#8249;
         </button>
-        <img 
-          src={images[currentIndex]} 
-          alt={`Preview ${currentIndex + 1}`} 
+        <img
+          src={images[currentIndex]}
+          alt={`Preview ${currentIndex + 1}`}
           className={styles.carouselImage}
         />
         <button className={`${styles.navButton} ${styles.nextButton}`} onClick={goToNext}>
@@ -39,6 +39,5 @@ const ImagePreview = ({ images, onClose }) => {
     </div>
     );
   };
-  
+
   export default ImagePreview;
-  

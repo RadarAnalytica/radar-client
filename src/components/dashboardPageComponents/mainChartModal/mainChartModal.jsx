@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext, useRef } from 'react';
-import styles from './mainChartModal.module.css'
+import styles from './mainChartModal.module.css';
 import { Modal, ConfigProvider } from 'antd';
 import { Filters } from '../../sharedComponents/apiServicePagesFiltersComponent';
 import { Chart as ChartJS, BarElement, CategoryScale, LinearScale, Tooltip, Legend } from 'chart.js';
@@ -13,24 +13,21 @@ import { mockGetChartDetailData } from '../../../service/mockServiceFunctions';
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 
 
-
-
-
 const MainChartModal = ({ isModalOpen, setIsModalOpen, loading, chartData }) => {
 
-    const { user, authToken } = useContext(AuthContext)
-    const [isDetailChartDataLoading, setIsDetailChartDataLoading] = useState(false)
+    const { user, authToken } = useContext(AuthContext);
+    const [isDetailChartDataLoading, setIsDetailChartDataLoading] = useState(false);
     const [detailChartLabels, setDetailChartLabels] = useState([]);
     const [detailChartData, setDetailChartData] = useState([]);
     const [detailChartAverages, setDetailChartAverages] = useState([]);
     const { activeBrand, selectedRange } = useAppSelector((state) => state.filters);
 
     const absoluteValue = detailChartData?.reduce((i, acc) => {
-        return acc += i
-    }, 0)
-    const sortedChartData = [...detailChartData]?.sort((a, b) => b - a)
-    const maxValue = chartYaxisMaxScale(sortedChartData[0])
-    const step = Math.round(maxValue / 10)
+        return acc += i;
+    }, 0);
+    const sortedChartData = [...detailChartData]?.sort((a, b) => b - a);
+    const maxValue = chartYaxisMaxScale(sortedChartData[0]);
+    const step = Math.round(maxValue / 10);
     const chartRef = useRef(null);
     const [clickedIndex, setClickedIndex] = useState(null);
     const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
@@ -109,7 +106,7 @@ const MainChartModal = ({ isModalOpen, setIsModalOpen, loading, chartData }) => 
         },
         scales: {
             x: { grid: { display: false }, ticks: { color: '#8C8C8C' } },
-            y: { beginAtZero: true, min: 0, max: !!maxValue ? maxValue : 10, grid: { display: true }, ticks: { color: '#8C8C8C', stepSize: step } },
+            y: { beginAtZero: true, min: 0, max: maxValue ? maxValue : 10, grid: { display: true }, ticks: { color: '#8C8C8C', stepSize: step } },
         },
     };
     const renderCustomTooltip = () => {
@@ -159,11 +156,11 @@ const MainChartModal = ({ isModalOpen, setIsModalOpen, loading, chartData }) => 
     // получаем данные
     useEffect(() => {
         const updateChartDetailData = async () => {
-            
-            setIsDetailChartDataLoading(true)
+
+            setIsDetailChartDataLoading(true);
             let data = null;
             if (user.subscription_status === null) {;
-                data = await mockGetChartDetailData(selectedRange)
+                data = await mockGetChartDetailData(selectedRange);
             } else {
                 data = await ServiceFunctions.getChartDetailData(
                     authToken,
@@ -201,7 +198,7 @@ const MainChartModal = ({ isModalOpen, setIsModalOpen, loading, chartData }) => 
             setDetailChartLabels(result);
             setDetailChartData(counts);
             setDetailChartAverages(averages);
-            setIsDetailChartDataLoading(false)
+            setIsDetailChartDataLoading(false);
         };
         activeBrand && updateChartDetailData();
     }, [selectedRange, activeBrand]);
@@ -247,7 +244,7 @@ const MainChartModal = ({ isModalOpen, setIsModalOpen, loading, chartData }) => 
                 }
             </div>
         </Modal>
-    )
-}
+    );
+};
 
 export default MainChartModal;

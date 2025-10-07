@@ -9,12 +9,12 @@ export const unitCalcResultFunction = (
 ) => {
 
     // basics
-    const product_cost = parseInt(fields.product_cost)
-    const product_price = parseInt(fields.product_price)
+    const product_cost = parseInt(fields.product_cost);
+    const product_price = parseInt(fields.product_price);
     const SPP = fields.isSPP ? parseInt(fields.SPP) : 0;
     const current_storage_logistic_price = last_mile_logistics_price + last_mile_logistics_price_w_buyout;
-    
-    // for self cost  
+
+    // for self cost
     const defective_percentage = fields.defective_percentage ? parseInt(fields.defective_percentage) : 0;
     const inhouse_logistics_price = fields.inhouse_logistics_price ? parseInt(fields.inhouse_logistics_price) : 0;
     const packaging_price = fields.packaging_price ? parseInt(fields.packaging_price) : 0;
@@ -30,18 +30,17 @@ export const unitCalcResultFunction = (
     const cargo_acceptance_price = fields.is_paid_cargo_acceptance ? parseInt(fields.cargo_acceptance_price) : 0;
 
     //for size
-    const package_width_int = parseInt(fields.package_width)
-    const package_length_int = parseInt(fields.package_length)
-    const package_height_int = parseInt(fields.package_height)
-    const sizes_sum = package_width_int + package_length_int + package_height_int
-    const volume = (((package_height_int / 100) * (package_length_int / 100) * (package_width_int / 100)) * 1000).toFixed(2)
-
+    const package_width_int = parseInt(fields.package_width);
+    const package_length_int = parseInt(fields.package_length);
+    const package_height_int = parseInt(fields.package_height);
+    const sizes_sum = package_width_int + package_length_int + package_height_int;
+    const volume = (((package_height_int / 100) * (package_length_int / 100) * (package_width_int / 100)) * 1000).toFixed(2);
 
 
     // total product price (with spp discount)
     const total_product_price = product_price - (product_price*((SPP)/100));
 
-    // self cost 
+    // self cost
     let selfCost = product_cost + (product_cost*((defective_percentage)/100)) + other_costs + inhouse_logistics_price + packaging_price + mp_logistics_price + fullfilment_price;
 
     // gross margin (price value wo selfcost)
@@ -55,33 +54,33 @@ export const unitCalcResultFunction = (
 
 
     // tax fee
-    let absTaxFee = 0
+    let absTaxFee = 0;
     if (fields.tax_state === 'УСН-доходы') {
         absTaxFee = (total_product_price * ((tax_rate) / 100));
     }
     if (fields.tax_state === 'Доходы - расходы') {
         absTaxFee = ((total_product_price - selfCost) * ((tax_rate) / 100));
     }
-    
-   
-    let netProfit = grossMargin - absMpFee - absEquiringFee - absTaxFee - cargo_acceptance_price - adv_price - current_storage_logistic_price - current_storage_price_month
+
+
+    let netProfit = grossMargin - absMpFee - absEquiringFee - absTaxFee - cargo_acceptance_price - adv_price - current_storage_logistic_price - current_storage_price_month;
     let totalMargin = (netProfit / total_product_price) * 100;
     //const minimalPrice = total_product_price - netProfit;
     const minimalPrice = selfCost + absMpFee + absEquiringFee + absTaxFee + adv_price + cargo_acceptance_price + current_storage_logistic_price + current_storage_price_month;
     const maximumDiscount = totalMargin;
     const roi = (netProfit / selfCost) * 100;
-    const totalProductAmountQuef = (100 - defective_percentage)/100
+    const totalProductAmountQuef = (100 - defective_percentage)/100;
 
 
     //расчет поставки
-    const total_product_quantity = Math.round((invest_value / product_cost) * totalProductAmountQuef)
-    const total_value = Math.round(((invest_value / product_cost) * totalProductAmountQuef) * product_price)
-    const total_net_value = Math.round(((invest_value / product_cost) * totalProductAmountQuef) * netProfit)
-    const zero_loss_point = total_net_value > 0 ? Math.ceil(invest_value / (selfCost + netProfit)) : '--'
+    const total_product_quantity = Math.round((invest_value / product_cost) * totalProductAmountQuef);
+    const total_value = Math.round(((invest_value / product_cost) * totalProductAmountQuef) * product_price);
+    const total_net_value = Math.round(((invest_value / product_cost) * totalProductAmountQuef) * netProfit);
+    const zero_loss_point = total_net_value > 0 ? Math.ceil(invest_value / (selfCost + netProfit)) : '--';
 
 
     //дополнительно
-   
+
     return {
         ...fields,
         selfCost: selfCost.toFixed(2),
@@ -107,32 +106,32 @@ export const unitCalcResultFunction = (
         absTaxFee: Math.round(absTaxFee),
         invest_value,
         absMpFee,
-    }
-}
+    };
+};
 
 
 export const logisticsWithBuyoutPercentagePriceCalcFunc = (current_storage_logistic_price, return_price, buyout_percentage = 100) => {
-    const bp = parseInt(buyout_percentage)
-    const cslp = parseInt(current_storage_logistic_price)
-    if (bp === 0 || Number.isNaN(bp)) { return 0 }
+    const bp = parseInt(buyout_percentage);
+    const cslp = parseInt(current_storage_logistic_price);
+    if (bp === 0 || Number.isNaN(bp)) { return 0; }
     const basisQty = 1000;
-    let price = 0
+    let price = 0;
     const f = (qty, boPercentage, cslp, returnPrice) => {
-        if (!boPercentage || boPercentage === 1) {price = cslp; return}
+        if (!boPercentage || boPercentage === 1) {price = cslp; return;}
         const returnQty = Math.floor(boPercentage * qty);
-        if (returnQty < 1) return
+        if (returnQty < 1) return;
         //console.log('qty: '+qty)
         //console.log('retQty: '+returnQty)
         price += (qty * cslp) + (returnQty * returnPrice);
         //console.log('price: '+price)
-        
-        f(returnQty, boPercentage, cslp, returnPrice)
-    }
-    f(basisQty, ((100 - bp) / 100), cslp, return_price)
+
+        f(returnQty, boPercentage, cslp, returnPrice);
+    };
+    f(basisQty, ((100 - bp) / 100), cslp, return_price);
     // console.log(price / basisQty)
 
-    return Math.round((price / basisQty) - cslp)
-}
+    return Math.round((price / basisQty) - cslp);
+};
 
 export function encodeUnicodeToBase64(str) {
     const utf8Str = encodeURIComponent(str); // Преобразуем в UTF-8
@@ -142,7 +141,6 @@ export function encodeUnicodeToBase64(str) {
     // const bytes = encoder.encode(str);
     // return btoa(String.fromCharCode(...bytes));
   }
-
 
 
 export function decodeBase64ToUnicode(token) {
@@ -161,9 +159,9 @@ export function decodeBase64ToUnicode(token) {
 
 
 export function investValueInputTransformer (value) {
-    const transformedValue = value ? value + ' ₽' : value
-    return transformedValue
-} 
+    const transformedValue = value ? value + ' ₽' : value;
+    return transformedValue;
+}
 
 
 export function normilizeUnitsInputValue (value, prevValue, units) {
@@ -172,7 +170,7 @@ export function normilizeUnitsInputValue (value, prevValue, units) {
         let transformedValue = value.substring(0, value.length - 2);
         return transformedValue;
     }
-    
+
     if (units.length > 2 && prevValue && value && (prevValue.toString() + units.substring(0, units.length - 1)) === value.toString().trim()) {
         //console.log(value.indexOf(units))
         let transformedValue = value.substring(0, value.length - 3);
@@ -181,87 +179,87 @@ export function normilizeUnitsInputValue (value, prevValue, units) {
 
     const arrFromValue = value.split(units);
     const transformedArr = arrFromValue.filter(_ => _ !== units);
-    let transformedValue = ''
+    let transformedValue = '';
     transformedArr.forEach(_ => {
-        transformedValue += _
-    })
-    return transformedValue
+        transformedValue += _;
+    });
+    return transformedValue;
 }
 
 
 export const createExelData = (result) => {
     if (result) {
-        const basicDataTable = [['Базовые данные', '']]
-        const logisticsDataTable = [['Логистика', '']]
-        const mpFeesDataTable = [['Удержания маркетплейса', '']]
-        const additionalDataTable_Shipping = [['Дополнительно - организация поставки', '']]
-        const additionalDataTable_Taxes = [['Допольнительно - налоги', '']]
-        const additionalDataTable_Others = [['Допольнительно - прочие расходы на товар', '']]
-        const resultTable = [['Итоговые значения', '']]
-        const supplyTable = [['Расчет партии', '']]
+        const basicDataTable = [['Базовые данные', '']];
+        const logisticsDataTable = [['Логистика', '']];
+        const mpFeesDataTable = [['Удержания маркетплейса', '']];
+        const additionalDataTable_Shipping = [['Дополнительно - организация поставки', '']];
+        const additionalDataTable_Taxes = [['Допольнительно - налоги', '']];
+        const additionalDataTable_Others = [['Допольнительно - прочие расходы на товар', '']];
+        const resultTable = [['Итоговые значения', '']];
+        const supplyTable = [['Расчет партии', '']];
 
-        const keysArr = Object.keys(result)
+        const keysArr = Object.keys(result);
 
         keysArr.forEach(k => {
-            let value = result[k]
+            let value = result[k];
             if (typeof value === 'boolean') {
-                value = value === true ? 'да' : 'нет'
+                value = value === true ? 'да' : 'нет';
             }
 
             if (!value) {
-                value = '-'
+                value = '-';
             }
 
             if (k === 'product' || k === 'product_price' || k === 'SPP' || k === 'isSPP' || k === 'product_cost' || k === 'total_product_price' || k === 'isHeavy' || k === 'package_length' || k === 'package_width' || k === 'package_height' || k === 'sizes_sum' || k === 'volume') {
-                basicDataTable.push([fieldsVocab[k], value.toString()])
+                basicDataTable.push([fieldsVocab[k], value.toString()]);
             }
             if (k === 'warehouse' || k === 'buyout_percentage' || k === 'PackageType' || k === 'cargo_acceptance_price' || k === 'last_mile_logistics_price' || k === 'current_storage_logistic_price' || k === 'storagePrice' || k === 'buyout_percentage' || k === 'is_paid_cargo_acceptance') {
-                logisticsDataTable.push([fieldsVocab[k], value.toString()])
+                logisticsDataTable.push([fieldsVocab[k], value.toString()]);
             }
             if (k === 'equiring_fee' || k === 'additional_mp_fee' || k === 'mpFee' || k === 'absMpFee') {
-                mpFeesDataTable.push([fieldsVocab[k], value.toString()])
+                mpFeesDataTable.push([fieldsVocab[k], value.toString()]);
             }
             if (k === 'inhouse_logistics_price' || k === 'packaging_price' || k === 'mp_logistics_price' || k === 'fullfilment_price') {
-                additionalDataTable_Shipping.push([fieldsVocab[k], value.toString()])
+                additionalDataTable_Shipping.push([fieldsVocab[k], value.toString()]);
             }
             if (k === 'tax_state' || k === 'tax_rate' || k === 'absTaxFee') {
-                additionalDataTable_Taxes.push([fieldsVocab[k], value.toString()])
+                additionalDataTable_Taxes.push([fieldsVocab[k], value.toString()]);
             }
             if (k === 'adv_price' || k === 'defective_percentage' || k === 'other_costs') {
-                additionalDataTable_Others.push([fieldsVocab[k], value.toString()])
+                additionalDataTable_Others.push([fieldsVocab[k], value.toString()]);
             }
             if (k === 'selfCost' || k === 'roi' || k === 'totalMargin' || k === 'netProfit' || k === 'minimalPrice' || k === 'maximumDiscount') {
-                resultTable.push([fieldsVocab[k], value.toString()])
+                resultTable.push([fieldsVocab[k], value.toString()]);
             }
             if (k === 'invest_value' || k === 'total_product_quantity' || k === 'total_value' || k === 'total_net_value' || k === 'zero_loss_point') {
-                supplyTable.push([fieldsVocab[k], value.toString()])
+                supplyTable.push([fieldsVocab[k], value.toString()]);
             }
-        })
+        });
         const finalData = [
             [["Расчет сгенерирован с помощью сервиса Radar Analytica"]],
             ['', ''],
             ...basicDataTable,
             ['', ''],
-            ...logisticsDataTable, 
-            ['', ''], 
+            ...logisticsDataTable,
+            ['', ''],
             ...mpFeesDataTable,
-            ['', ''], 
+            ['', ''],
             ...additionalDataTable_Shipping,
-            ['', ''], 
+            ['', ''],
             ...additionalDataTable_Taxes,
-            ['', ''], 
+            ['', ''],
             ...additionalDataTable_Others,
-            ['', ''], 
+            ['', ''],
             ...resultTable,
             ['', ''],
             ...supplyTable
-        ]
+        ];
 
         return finalData;
     }
 
-    return []
-}
+    return [];
+};
 
 
 export const fieldsVocab = {

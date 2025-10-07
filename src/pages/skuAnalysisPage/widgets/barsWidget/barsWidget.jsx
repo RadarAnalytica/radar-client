@@ -1,9 +1,8 @@
-import styles from './barsWidget.module.css'
+import styles from './barsWidget.module.css';
 import { Tooltip, ConfigProvider } from 'antd';
 import { useAppSelector } from '../../../../redux/hooks';
 import { compareDictionary } from '../../shared';
 import { formatPrice } from '../../../../service/utils';
-
 
 
 /**
@@ -21,15 +20,15 @@ import { formatPrice } from '../../../../service/utils';
 
 const BarsWidget = () => {
 
-    const { skuIndicatorsData, dataStatus } = useAppSelector(store => store.skuAnalysis)
-    const { isSidebarHidden } = useAppSelector(store => store.utils)
+    const { skuIndicatorsData, dataStatus } = useAppSelector(store => store.skuAnalysis);
+    const { isSidebarHidden } = useAppSelector(store => store.utils);
 
     if (dataStatus.isLoading) {
         return (
             <div className={styles.loaderWrapper}>
                     <span className='loader'></span>
             </div>
-        )
+        );
     }
 
 
@@ -66,10 +65,10 @@ const BarsWidget = () => {
                             </div>
                         }
                     </div>
-                )
+                );
             })}
         </div>
-    )
-}
+    );
+};
 
 export default BarsWidget;

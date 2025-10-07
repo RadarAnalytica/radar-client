@@ -1,6 +1,6 @@
-import React from 'react'
-import logo from '../assets/logo.png'
-import mock from '../assets/desktop-mockup.png'
+import React from 'react';
+import logo from '../assets/logo.png';
+import mock from '../assets/desktop-mockup.png';
 
 const MockUpPage = () => {
 
@@ -18,7 +18,7 @@ const MockUpPage = () => {
                 </div>
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default MockUpPage
+export default MockUpPage;

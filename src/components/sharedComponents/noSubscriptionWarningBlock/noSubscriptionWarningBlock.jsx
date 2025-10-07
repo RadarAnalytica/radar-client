@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import styles from './nuSubscriptionWarningBlock.module.css'
+import styles from './nuSubscriptionWarningBlock.module.css';
 import AuthContext from '@/service/AuthContext';
 import { getDayDeclension } from '@/service/utils';
 import { URL } from '@/service/config';
@@ -46,7 +46,7 @@ const NoSubscriptionWarningBlock = ({ className = '' }) => {
             console.error(error);
             setRequestStatus({ ...INIT_REQUEST_STATUS, isError: true, message: error.message });
         }
-    }
+    };
 
     useEffect(() => {
         if (requestStatus.isSuccess) {
@@ -112,7 +112,7 @@ const NoSubscriptionWarningBlock = ({ className = '' }) => {
                     </Button>
                 </ConfigProvider>
             </div>
-            
+
             <ErrorModal
                 footer={null}
                 open={requestStatus.isError}
@@ -179,7 +179,7 @@ const NoSubscriptionWarningBlock = ({ className = '' }) => {
                     </Button>
                 </ConfigProvider>
             </div>
-            
+
             <ErrorModal
                 footer={null}
                 open={requestStatus.isError}
@@ -192,5 +192,5 @@ const NoSubscriptionWarningBlock = ({ className = '' }) => {
     );
 
     return isDemoUser ? demoUserBlock : regularBlock;
-}
-export default NoSubscriptionWarningBlock
+};
+export default NoSubscriptionWarningBlock;

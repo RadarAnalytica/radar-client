@@ -4,7 +4,7 @@ import {Tooltip} from 'antd';
 import ArrowUp from "../assets/ArrowUp.svg";
 import ArrowDown from "../assets/ArrowDown.svg";
 import "../App.css";
-import styles from './TableAbcData.module.css'
+import styles from './TableAbcData.module.css';
 
 const TableAbcData = ({ dataTable, setDataTable, setViewType, viewType, loading }) => {
   // const [asc, setAsc] = useState(true);
@@ -16,7 +16,7 @@ const TableAbcData = ({ dataTable, setDataTable, setViewType, viewType, loading 
 
   const sortData = (config) => {
     const { column, direction } = config;
-    let sortedData = []
+    let sortedData = [];
     if (column === 'category') {
       sortedData = [...dataTable].sort((a, b) => {
         if (typeof b[column] === "number" && typeof a[column] === "number") {
@@ -67,14 +67,14 @@ const TableAbcData = ({ dataTable, setDataTable, setViewType, viewType, loading 
   }
 
   useEffect(() => {
-    sortData(sortConfig)
-  }, [sortConfig])
+    sortData(sortConfig);
+  }, [sortConfig]);
 
   return (
     <div
       className='abcAnalysis dash-container table-content'
       style={{
-        // maxHeight: "700px", 
+        // maxHeight: "700px",
         marginTop: "25px"
       }}
     >

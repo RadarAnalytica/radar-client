@@ -81,7 +81,7 @@ export function filterArraysNoData(obj, days) {
 // func that format any value to display (e.g, prices, percents...)
 export const formatPrice = (value, literal) => {
   // define a value to return
-  let formattedPriceString = '0'
+  let formattedPriceString = '0';
   // checking if value exists
   if (value !== undefined && value !== null) {
     //in case if value is a string
@@ -89,7 +89,7 @@ export const formatPrice = (value, literal) => {
     // checking that number is number
     if (Number.isNaN(number)) {
       if (literal) {
-        formattedPriceString += ` ${literal}`
+        formattedPriceString += ` ${literal}`;
       }
       return formattedPriceString;
     }
@@ -99,7 +99,7 @@ export const formatPrice = (value, literal) => {
     });
     // adding a literal (like "шт" or "₽") to the string
     if (literal) {
-      formattedPriceString += ` ${literal}`
+      formattedPriceString += ` ${literal}`;
     }
   }
   return formattedPriceString;
@@ -130,7 +130,7 @@ export const getDayDeclension = (quantity) => {
     default:
       return `${quantity} дней`;
   }
-}
+};
 
 export const formatDate = (date) => {
   const months = [
@@ -383,8 +383,8 @@ export const formatFromIsoDate = (dateString) => {
     addLeadZero(dateCurrent.getDate()),
     addLeadZero(dateCurrent.getMonth() + 1),
     dateCurrent.getFullYear()
-  ].join('.')
-}
+  ].join('.');
+};
 
 export const calculateReturns = (data, days) => {
   const currentDate = new Date();
@@ -541,7 +541,7 @@ export function useCookie(name) {
   });
 
   const deleteCookie = useCallback(() => {
-    console.log(name)
+    console.log(name);
     Cookies.remove(name);
     setValue(null);
   }, [name]);
@@ -605,27 +605,27 @@ export const periodStringFormat = (period) => {
   /* TODO подумать про склонения или использовать date-fns */
 
   if (!period) {
-    return '3 дня'
+    return '3 дня';
   }
 
   if (period >= 6) {
-    return `${period} дней`
+    return `${period} дней`;
   } else {
-    return `${period} дня`
+    return `${period} дня`;
   }
 
-}
+};
 
 export const rangeApiFormat = (range) => {
   let params = '';
-  if (!!range.period) {
+  if (range.period) {
     params += 'period=' + range.period;
   } else {
     params += `date_from=${range.from}`;
     params += `&date_to=${range.to}`;
   }
-  return params
-}
+  return params;
+};
 
 export const fileDownload = (blob, title, setLoading) => {
   const url = window.URL.createObjectURL(new Blob([blob]));
@@ -636,26 +636,26 @@ export const fileDownload = (blob, title, setLoading) => {
   link.click();
   link.parentNode.removeChild(link);
   if (setLoading) {
-    setLoading(false)
+    setLoading(false);
   }
-}
+};
 
 
 export const chartYaxisMaxScale = (maxChartValue) => {
-  let maxValue = Math.ceil(maxChartValue / 10) * 10
+  let maxValue = Math.ceil(maxChartValue / 10) * 10;
 
   if (maxChartValue < 100) {
-    maxValue = Math.ceil(maxChartValue / 10) * 10
+    maxValue = Math.ceil(maxChartValue / 10) * 10;
   }
   if (maxChartValue >= 100 && maxChartValue < 1000) {
-    maxValue = Math.ceil(maxChartValue / 100) * 100
+    maxValue = Math.ceil(maxChartValue / 100) * 100;
   }
   if (maxChartValue >= 1000) {
-    maxValue = Math.ceil(maxChartValue / 1000) * 1000
+    maxValue = Math.ceil(maxChartValue / 1000) * 1000;
   }
 
-  return maxValue
-}
+  return maxValue;
+};
 
 
 export function detectBrowser() {
@@ -678,7 +678,7 @@ export function detectBrowser() {
 export const verticalDashedLinePlugin = {
   id: 'verticalDashedLine',
   beforeDraw: function (chart) {
-    const enabled = chart?.config?._config?.options?.plugins?.verticalDashedLine?.enabled
+    const enabled = chart?.config?._config?.options?.plugins?.verticalDashedLine?.enabled;
     if (chart.tooltip?._active && chart.tooltip._active.length && enabled) {
       const ctx = chart.ctx;
       ctx.save();
@@ -693,7 +693,7 @@ export const verticalDashedLinePlugin = {
       ctx.restore();
     }
   }
-}
+};
 
 export function weeksList() {
 
@@ -730,34 +730,34 @@ export function weeksList() {
 
 export function getSavedActiveWeeks(id) {
   const weeksListData = weeksList();
-  let savedActiveWeeks = localStorage.getItem('activeWeeks')
+  let savedActiveWeeks = localStorage.getItem('activeWeeks');
   if (savedActiveWeeks) {
     const data = JSON.parse(savedActiveWeeks);
     if (id in data) {
-      return data[id]
+      return data[id];
     }
-    savedActiveWeeks = weeksListData.slice(0, 12)
+    savedActiveWeeks = weeksListData.slice(0, 12);
   } else {
-    savedActiveWeeks = weeksListData.slice(0, 12)
+    savedActiveWeeks = weeksListData.slice(0, 12);
   }
-  return savedActiveWeeks
+  return savedActiveWeeks;
 }
 
 export const initialMonths = {
     month_to: dayjs().format('YYYY-MM'),
     month_from: dayjs().startOf('year').format('YYYY-MM')
-}
+};
 
 export function getSavedActiveMonths(id) {
-  let savedActiveMonths = localStorage.getItem('activeMonths')
+  let savedActiveMonths = localStorage.getItem('activeMonths');
   if (savedActiveMonths) {
     const data = JSON.parse(savedActiveMonths);
     if (id in data) {
-      return data[id]
+      return data[id];
     }
-    savedActiveMonths = initialMonths
+    savedActiveMonths = initialMonths;
   } else {
-    savedActiveMonths = initialMonths
+    savedActiveMonths = initialMonths;
   }
-  return savedActiveMonths
+  return savedActiveMonths;
 }

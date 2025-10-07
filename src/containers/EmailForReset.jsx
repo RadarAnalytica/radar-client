@@ -1,48 +1,48 @@
-import React, { useContext, useEffect, useState } from 'react'
-import logo from '../assets/logo.png'
-import InputField from '../components/InputField'
-import { Link, useNavigate } from 'react-router-dom'
-import { URL } from '../service/config'
-import ErrorModal from '../components/sharedComponents/modals/errorModal/errorModal'
-import SuccessModal from '../components/sharedComponents/modals/successModal/successModal'
-import styles from './EmailForReset.module.css'
+import React, { useContext, useEffect, useState } from 'react';
+import logo from '../assets/logo.png';
+import InputField from '../components/InputField';
+import { Link, useNavigate } from 'react-router-dom';
+import { URL } from '../service/config';
+import ErrorModal from '../components/sharedComponents/modals/errorModal/errorModal';
+import SuccessModal from '../components/sharedComponents/modals/successModal/successModal';
+import styles from './EmailForReset.module.css';
 
 const initRequestStatus = {
     isLoading: false,
     isError: false,
     isSuccess: false,
     message: ''
-}
+};
 
 const EmailForReset = () => {
 
-    const [email, setEmail] = useState()
-    const [isSubmitDisabled, setIsSubmitDisabled] = useState(true)
-    const [emailErrorText, setEmailErrorText] = useState()
-    const [requestState, setRequestState] = useState(initRequestStatus)
+    const [email, setEmail] = useState();
+    const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
+    const [emailErrorText, setEmailErrorText] = useState();
+    const [requestState, setRequestState] = useState(initRequestStatus);
 
-    const navigate = useNavigate()
+    const navigate = useNavigate();
 
     const emailHandler = (e) => {
         const { value } = e.target;
         setEmail(value);
         if (!value) {
-            setEmailErrorText('Пожалуйста, заполните это поле!')
-            setIsSubmitDisabled(true)
-            return
+            setEmailErrorText('Пожалуйста, заполните это поле!');
+            setIsSubmitDisabled(true);
+            return;
         }
         if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
-            setEmailErrorText('Пожалуйста, введите корректный Email')
-            setIsSubmitDisabled(true)
-            return
+            setEmailErrorText('Пожалуйста, введите корректный Email');
+            setIsSubmitDisabled(true);
+            return;
         }
-        setEmailErrorText('')
-        setIsSubmitDisabled(false)
-    }
+        setEmailErrorText('');
+        setIsSubmitDisabled(false);
+    };
 
     const submitHandler = async () => {
-        setRequestState({ ...initRequestStatus, isLoading: true })        
-        
+        setRequestState({ ...initRequestStatus, isLoading: true });
+
         try {
             let res = await fetch(`${URL}/api/user/reset`, {
                 method: 'POST',
@@ -50,19 +50,19 @@ const EmailForReset = () => {
                     'content-type': 'application/json'
                 },
                 body: JSON.stringify({ email })
-            })
+            });
 
             if (!res.ok) {
-                res = await res.json()
-                return setRequestState({ ...initRequestStatus, isError: true, message: res?.detail && typeof (res.detail) === 'string' ? res.detail : 'Что-то пошло не так :(' })
+                res = await res.json();
+                return setRequestState({ ...initRequestStatus, isError: true, message: res?.detail && typeof (res.detail) === 'string' ? res.detail : 'Что-то пошло не так :(' });
             }
-            setRequestState({...initRequestStatus, isSuccess: true, message: 'success'})
-            setEmail('')
+            setRequestState({...initRequestStatus, isSuccess: true, message: 'success'});
+            setEmail('');
         } catch (e) {
-            console.log(e)
-            setRequestState({ ...initRequestStatus, isError: true, message: res.detail || 'Что-то пошло не так :(' })
+            console.log(e);
+            setRequestState({ ...initRequestStatus, isError: true, message: res.detail || 'Что-то пошло не так :(' });
         }
-    }
+    };
 
     return (
         <div className='signin-form'>
@@ -88,8 +88,8 @@ const EmailForReset = () => {
             >Получить ссылку</button>
             <div style={{ display: 'flex', justifyContent: 'center' }}>
                 <p className='clue-text'>
-                    <button className='link' style={{ marginRight: '20px' }} onClick={() => { window.location.href = `${URL}/signup` }}>Регистрация</button>
-                    <button className='link' onClick={() => { window.location.href = `${URL}/signin` }}>Вход</button>
+                    <button className='link' style={{ marginRight: '20px' }} onClick={() => { window.location.href = `${URL}/signup`; }}>Регистрация</button>
+                    <button className='link' onClick={() => { window.location.href = `${URL}/signin`; }}>Вход</button>
                 </p>
             </div>
 
@@ -103,14 +103,14 @@ const EmailForReset = () => {
             />
             <SuccessModal
                 open={requestState.isSuccess}
-                onOk={() => { location.href = '/signin' }}
-                onClose={() => { location.href = '/signin' }}
-                onCancel={() => { location.href = '/signin' }}
+                onOk={() => { location.href = '/signin'; }}
+                onClose={() => { location.href = '/signin'; }}
+                onCancel={() => { location.href = '/signin'; }}
                 footer={null}
                 message={'Ссылка на сброс пароля была направлена на Вашу почту'}
             />
         </div>
-    )
-}
+    );
+};
 
-export default EmailForReset
+export default EmailForReset;

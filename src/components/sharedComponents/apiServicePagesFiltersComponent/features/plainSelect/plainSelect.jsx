@@ -1,6 +1,6 @@
-import styles from './plainSelect.module.css'
-import { SelectIcon } from '../../shared'
-import { Select, ConfigProvider } from 'antd'
+import styles from './plainSelect.module.css';
+import { SelectIcon } from '../../shared';
+import { Select, ConfigProvider } from 'antd';
 
 export const PlainSelect = (
     {
@@ -14,7 +14,7 @@ export const PlainSelect = (
     }
 ) => {
 
-    const icon = <SelectIcon />
+    const icon = <SelectIcon />;
 
     return (
         <div className={styles.plainSelect}>
@@ -26,7 +26,7 @@ export const PlainSelect = (
             </label>
             <div className={styles.plainSelect__selectWrapper}>
                 <ConfigProvider
-                    renderEmpty={ () => (<div>Нет данных</div>)} 
+                    renderEmpty={ () => (<div>Нет данных</div>)}
                     theme={{
                         token: {
                             //colorBgBase: '#EAEAF1',
@@ -63,5 +63,5 @@ export const PlainSelect = (
                 </ConfigProvider>
             </div>
         </div>
-    )
-}
+    );
+};

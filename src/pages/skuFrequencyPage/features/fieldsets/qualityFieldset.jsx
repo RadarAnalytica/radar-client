@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react'
-import styles from './qualityFieldset.module.css'
-import { Form, ConfigProvider, Checkbox, Tooltip } from 'antd'
+import { useState, useEffect } from 'react';
+import styles from './qualityFieldset.module.css';
+import { Form, ConfigProvider, Checkbox, Tooltip } from 'antd';
 
 
 const QUALITY_CONFIG = [
@@ -52,10 +52,10 @@ const QUALITY_CONFIG = [
         ),
         value: 1,
     },
-]
+];
 
 const QualityFieldset = () => {
-    const [isBodyVisisble, setIsBodyVisible] = useState(false)
+    const [isBodyVisisble, setIsBodyVisible] = useState(false);
     return (
         <fieldset
             className={styles.fieldset}
@@ -89,7 +89,7 @@ const QualityFieldset = () => {
                         document.selection.empty();
                     }
                 }}
-                
+
             >
                 <h3 className={styles.fieldset__title}>Рейтинг качества ниши</h3>
                 <button className={isBodyVisisble ? styles.widget__openButton : `${styles.widget__openButton} ${styles.widget__openButton_closed}`} type='button'>
@@ -141,7 +141,7 @@ const QualityFieldset = () => {
                 </div>
             </div>
         </fieldset>
-    )
-}
+    );
+};
 
 export default QualityFieldset;

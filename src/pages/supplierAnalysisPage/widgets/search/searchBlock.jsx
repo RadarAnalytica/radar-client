@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react'
-import styles from './searchBlock.module.css'
+import React, { useState, useEffect, useRef } from 'react';
+import styles from './searchBlock.module.css';
 import { ConfigProvider, Button, AutoComplete } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import ErrorModal from '../../../../components/sharedComponents/modals/errorModal/errorModal';
@@ -15,65 +15,64 @@ const requestInitState = {
     isError: false,
     isSuccess: false,
     message: ''
-}
+};
 
 const SearchBlock = ({ supplierType = 'main' }) => {
-    const dispatch = useAppDispatch()
-    const mainSupplierData = useAppSelector(selectMainSupplierData)
-    const compareSupplierData = useAppSelector(selectCompareSupplierData)
-    const [requestStatus, setRequestStatus] = useState(requestInitState)
+    const dispatch = useAppDispatch();
+    const mainSupplierData = useAppSelector(selectMainSupplierData);
+    const compareSupplierData = useAppSelector(selectCompareSupplierData);
+    const [requestStatus, setRequestStatus] = useState(requestInitState);
     const [autocompleteOptions, setAutocompleteOptions] = useState();
     const [currentData, setCurrentData] = useState();
-    const [ searchValue, setSearchValue ] = useState('')
+    const [searchValue, setSearchValue] = useState('');
     const [loadingOptions, setLoadingOptions] = useState(false);
-    const navigate = useNavigate()
-    const ref = useRef(null)
+    const navigate = useNavigate();
+    const ref = useRef(null);
 
     const getSuggestDataWrapperFunc = async (value) => {
-        const res = await ServiceFunctions.getSupplierAnalysisSuggestData(value, setLoadingOptions)
+        const res = await ServiceFunctions.getSupplierAnalysisSuggestData(value, setLoadingOptions);
 
         if (res) {
-            setAutocompleteOptions(res)
+            setAutocompleteOptions(res);
         }
-    }
+    };
 
-    const debouncedDataFetch = useDebouncedFunction(getSuggestDataWrapperFunc, 500)
-
+    const debouncedDataFetch = useDebouncedFunction(getSuggestDataWrapperFunc, 500);
 
 
     const handleSearch = (value) => { // обработка ввода пользователя вручную
-        setSearchValue(value)
+        setSearchValue(value);
         if (value) {
-            debouncedDataFetch(value)
+            debouncedDataFetch(value);
         }
         if (!value && supplierType === 'main') {
-            dispatch(supplierActions.setSupplierMainData(undefined))
+            dispatch(supplierActions.setSupplierMainData(undefined));
         }
         if (!value && supplierType === 'compare') {
-            dispatch(supplierActions.setSupplierCompareData(undefined))
+            dispatch(supplierActions.setSupplierCompareData(undefined));
         }
     };
 
     const handleSelect = (value) => { // обработка клика на опцию
         const item = autocompleteOptions.find(_ => _.supplier_id === value);
         if (item && supplierType === 'main') {
-            dispatch(supplierActions.setSupplierMainData(item))
-            setSearchValue(item.display_name)
+            dispatch(supplierActions.setSupplierMainData(item));
+            setSearchValue(item.display_name);
         }
         if (item && supplierType === 'compare') {
-            dispatch(supplierActions.setSupplierCompareData(item))
-            setSearchValue(item.display_name)
+            dispatch(supplierActions.setSupplierCompareData(item));
+            setSearchValue(item.display_name);
         }
     };
 
     useEffect(() => {
         if (supplierType === 'main') {
-            setCurrentData(mainSupplierData)
+            setCurrentData(mainSupplierData);
         }
         if (supplierType === 'compare') {
-            setCurrentData(compareSupplierData)
+            setCurrentData(compareSupplierData);
         }
-    }, [supplierType, mainSupplierData, compareSupplierData])
+    }, [supplierType, mainSupplierData, compareSupplierData]);
 
     return (
         <div className={supplierType === 'main' ? styles.search : supplierType === 'compare' ? styles.search_compare : ''}>
@@ -118,29 +117,29 @@ const SearchBlock = ({ supplierType = 'main' }) => {
                         onSearch={handleSearch}
                         onSelect={handleSelect}
                         options={autocompleteOptions && [...autocompleteOptions]?.sort((a,b) => {
-                            const a_index = a.display_name.toLowerCase().indexOf(searchValue.toLowerCase())
-                            const b_index = b.display_name.toLowerCase().indexOf(searchValue.toLowerCase())
-                            
+                            const a_index = a.display_name.toLowerCase().indexOf(searchValue.toLowerCase());
+                            const b_index = b.display_name.toLowerCase().indexOf(searchValue.toLowerCase());
+
                             if (a_index === 0) {
-                                return -1
+                                return -1;
                             }
                             if (b_index === 0) {
-                                return 1
+                                return 1;
                             }
                             if (a_index > 0 && b_index > 0) {
-                                return a_index - b_index
+                                return a_index - b_index;
                             }
                             if (a_index > 0 && b_index < 0) {
-                                return -1
+                                return -1;
                             }
                             if (b_index > 0 && a_index < 0) {
-                                return 1
+                                return 1;
                             }
                             if (b_index < 0 && a_index < 0) {
-                                return 0
+                                return 0;
                             }
                         })?.map(_ => ({ label: _?.display_name, value: _?.supplier_id, key: _?.supplier_id }))}
-                        
+
                     />
                     {supplierType === 'main' &&
                         <Button
@@ -174,7 +173,7 @@ const SearchBlock = ({ supplierType = 'main' }) => {
                 message={requestStatus.message}
             />
         </div>
-    )
-}
+    );
+};
 
 export default SearchBlock;

@@ -13,7 +13,7 @@ function cellRenderer(value, record) {
       <div>
         {moment(value).format('DD.MM.YYYY')}
       </div>
-    )
+    );
   }
   if (dataIndex === 'revenue_dynamics') {
     return (
@@ -27,7 +27,7 @@ function cellRenderer(value, record) {
           title={title}
         />
       </div>
-    )
+    );
   }
   if (dataIndex === 'orders_dynamics') {
     return (
@@ -41,12 +41,12 @@ function cellRenderer(value, record) {
           title={title}
         />
       </div>
-    )
+    );
   }
   if (dataIndex === 'wb_id_name') {
     return (
       <ProductCell value={value} rowData={record} />
-    )
+    );
   }
   if (dataIndex === 'brand_name') {
     return (
@@ -60,7 +60,7 @@ function cellRenderer(value, record) {
       >
         {value}
       </Link>
-    )
+    );
   }
 
   return (
@@ -75,7 +75,7 @@ function cellRenderer(value, record) {
     >
       {units ? formatPrice(value, units) : value}
     </div>
-  )
+  );
 }
 
 function SortIcon({ sortOrder }) {
@@ -118,7 +118,7 @@ function SortIcon({ sortOrder }) {
 
 function sorter(a, b, direction) {
 
-  const { dataIndex: key } = this
+  const { dataIndex: key } = this;
   if (typeof a[key] === 'number' && typeof b[key] === 'number') {
     return direction === 'DESC' ? a[key] - b[key] : b[key] - a[key];
   } else {
@@ -154,10 +154,10 @@ export const mainTableConfig = [
   { title: 'Артикулов с продажами, шт', dataIndex: 'goods_with_sales_quantity', units: 'шт', width: 350, render: cellRenderer, filterOptions: true, },
   { title: 'Кол-во брендов, шт', dataIndex: 'brands_quantity', units: 'шт', width: 300, render: cellRenderer, filterOptions: true, },
   { title: 'Кол-во брендов с продажами, шт', dataIndex: 'brands_with_sales_quantity', units: 'шт', width: 400, render: cellRenderer, filterOptions: true, },
-].map(_ => ({ ..._, render: cellRenderer.bind(_), sortDirections: ['ASC', 'DESC'], sorter: sorter.bind(_), sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} /> }))
+].map(_ => ({ ..._, render: cellRenderer.bind(_), sortDirections: ['ASC', 'DESC'], sorter: sorter.bind(_), sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} /> }));
 
 /**
- * 
+ *
  * {
             "image_url": "https://basket-12.wbbasket.ru/vol1695/part169571/169571619/images/c246x328/1.webp",
             "wb_id_name": "Портативные, мини вентиляторы",
@@ -174,7 +174,6 @@ export const mainTableConfig = [
  */
 
 
-
 export const goodsTableConfig = [
   { title: 'Товар', dataIndex: 'wb_id_name', units: null, fixed: 'left', width: 400, render: cellRenderer, filterOptions: true, },
   { title: 'Доля заказов среди выборки, %', dataIndex: 'share_percent', units: '%', width: 300, render: cellRenderer, filterOptions: true, },
@@ -184,7 +183,7 @@ export const goodsTableConfig = [
   { title: 'Средняя скидка без СПП, %', dataIndex: 'avg_discount', units: '%', width: 250, render: cellRenderer, filterOptions: true, },
   { title: 'Средний чек, руб', dataIndex: 'avg_check', units: '₽', width: 200, render: cellRenderer, filterOptions: true, },
   { title: 'Выручка, руб', dataIndex: 'revenue', units: '₽', width: 200, render: cellRenderer, filterOptions: true, },
-].map(_ => ({ ..._, render: cellRenderer.bind(_), sortDirections: ['ASC', 'DESC'], sorter:  _.dataIndex !== 'wb_id_name', sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} /> }))
+].map(_ => ({ ..._, render: cellRenderer.bind(_), sortDirections: ['ASC', 'DESC'], sorter:  _.dataIndex !== 'wb_id_name', sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} /> }));
 
 
 /**
@@ -214,7 +213,7 @@ export const salesTableConfig = [
   { title: 'Динамика выручки', dataIndex: 'revenue_dynamics', units: 'руб', hasChart: true, width: 300, render: cellRenderer, filterOptions: true, },
   { title: 'Заказы, шт', dataIndex: 'orders', units: 'шт', width: 170, render: cellRenderer, filterOptions: true, },
   { title: 'Остатки на конец периода, шт', dataIndex: 'quantity', units: 'шт', width: 320, render: cellRenderer, filterOptions: true, },
-].map(_ => ({ ..._, render: cellRenderer.bind(_), sortDirections: ['ASC', 'DESC'], sorter: _.dataIndex !== 'revenue_dynamics', sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} /> }))
+].map(_ => ({ ..._, render: cellRenderer.bind(_), sortDirections: ['ASC', 'DESC'], sorter: _.dataIndex !== 'revenue_dynamics', sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} /> }));
 
 export const ordersStructByColorsTableConfig = [
   { title: 'Цвет', dataIndex: '', units: null, fixed: 'left', width: 270, render: cellRenderer, filterOptions: true, },
@@ -229,7 +228,7 @@ export const ordersStructByColorsTableConfig = [
   { title: 'Заказы, шт', dataIndex: 'orders', units: 'шт', width: 160, render: cellRenderer, filterOptions: true, },
   { title: 'Динамика заказов', dataIndex: '', units: 'шт', hasChart: true, width: 200, render: cellRenderer, filterOptions: true, },
   { title: 'Упущенная выручка, руб', dataIndex: 'orders_dynamics', units: '₽', width: 170, render: cellRenderer, filterOptions: true, },
-].map(_ => ({ ..._, render: cellRenderer.bind(_), sortDirections: ['ASC', 'DESC'], sorter: _.dataIndex !== 'revenue_dynamics' || _.dataIndex !== 'reven_dynamics', sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} /> }))
+].map(_ => ({ ..._, render: cellRenderer.bind(_), sortDirections: ['ASC', 'DESC'], sorter: _.dataIndex !== 'revenue_dynamics' || _.dataIndex !== 'reven_dynamics', sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} /> }));
 
 /*
 [
@@ -263,7 +262,7 @@ export const ordersStructByWarehousesTableConfig = [
   { title: 'Динамика выручки', dataIndex: 'revenue_dynamics', units: 'руб', hasChart: true, width: 300, render: cellRenderer,  filterOptions: true, },
   { title: 'Заказы, шт', dataIndex: 'orders', units: 'шт', width: 200, render: cellRenderer, filterOptions: true, },
   { title: 'Динамика заказов', dataIndex: 'orders_dynamics', units: 'шт', hasChart: true, width: 300, render: cellRenderer,  filterOptions: true, },
-].map(_ => ({ ..._, render: cellRenderer.bind(_), sortDirections: ['ASC', 'DESC'], sorter: _.dataIndex !== 'revenue_dynamics' && _.dataIndex !== 'orders_dynamics' ? sorter.bind(_) : false, sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} /> }))
+].map(_ => ({ ..._, render: cellRenderer.bind(_), sortDirections: ['ASC', 'DESC'], sorter: _.dataIndex !== 'revenue_dynamics' && _.dataIndex !== 'orders_dynamics' ? sorter.bind(_) : false, sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} /> }));
 
 /**
  *  {
@@ -295,8 +294,5 @@ export const ordersStructBySizesTableConfig = [
   { title: 'Динамика выручки', dataIndex: 'revenue_dynamics', units: 'руб', hasChart: true, width: 300, render: cellRenderer,  filterOptions: true, },
   { title: 'Заказы, шт', dataIndex: 'orders', units: 'шт', width: 200, render: cellRenderer, filterOptions: true, },
   { title: 'Динамика заказов', dataIndex: 'orders_dynamics', units: 'шт', hasChart: true, width: 300, render: cellRenderer,  filterOptions: true, },
-].map(_ => ({ ..._, render: cellRenderer.bind(_), sortDirections: ['ASC', 'DESC'], sorter: _.dataIndex !== 'revenue_dynamics' && _.dataIndex !== 'orders_dynamics' ? sorter.bind(_) : false, sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} /> }))
-
-
-
+].map(_ => ({ ..._, render: cellRenderer.bind(_), sortDirections: ['ASC', 'DESC'], sorter: _.dataIndex !== 'revenue_dynamics' && _.dataIndex !== 'orders_dynamics' ? sorter.bind(_) : false, sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} /> }));
 

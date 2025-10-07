@@ -2,7 +2,7 @@ import React, { useEffect, useState, useContext } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 // import './styles.css';
 import styles from './AfterPayment.module.css';
-import AuthContext from '../../service/AuthContext'
+import AuthContext from '../../service/AuthContext';
 import { URL } from '../../service/config';
 import { PaymentStatus } from '../../widgets';
 import { ExternalHeader, ExternalFooter } from '../../widgets';
@@ -24,7 +24,7 @@ const AfterPayment= ({ devMode }) => {
   const { authToken, user } = useContext(AuthContext);
   const navigate = useNavigate();
   const location = useLocation();
-  const [status, setStatus] = useState(location?.state?.paymentStatus && location?.state?.paymentStatus === 'success' ? true : false)
+  const [status, setStatus] = useState(location?.state?.paymentStatus && location?.state?.paymentStatus === 'success' ? true : false);
 
 
   const refreshUserToken = async () => {
@@ -50,11 +50,11 @@ const AfterPayment= ({ devMode }) => {
   useEffect(() => {
     const timeout = setTimeout(() => {
       refreshUserToken().then((res) => {
-      !devMode && navigate('/main')
-      })
+      !devMode && navigate('/main');
+      });
     }, 5000);
 
-    return () => { clearTimeout(timeout) }
+    return () => { clearTimeout(timeout); };
   }, []);
 
   return (
@@ -71,7 +71,7 @@ const AfterPayment= ({ devMode }) => {
         <button className={styles.switcher} onClick={() => devMode && setStatus(!status)}>Switcher</button>
       }
     </main>
-  )
+  );
 };
 
 export default AfterPayment;

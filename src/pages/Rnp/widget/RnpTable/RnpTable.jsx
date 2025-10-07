@@ -7,12 +7,12 @@ import styles from './RnpTable.module.css';
 const customCellRender = (value, record, index, dataIndex) => {
 
 	if (dataIndex === 'summary') {
-		return <div className={styles.customCellBold}>{formatPrice(value, '')}</div>
+		return <div className={styles.customCellBold}>{formatPrice(value, '')}</div>;
 	}
 	if (dataIndex === 'period' && record.isParent && value !== 'Переходы (шт)') {
 		return <div className={styles.customCellBold}>
 			{value}
-		</div>
+		</div>;
 	}
 	if (dataIndex === 'period' && record.isParent && value === 'Переходы (шт)') {
 		return <div className={styles.customCellBoldTooltip}>
@@ -29,20 +29,20 @@ const customCellRender = (value, record, index, dataIndex) => {
 					</svg>
 				</Tooltip>
 			}
-		</div>
+		</div>;
 	}
 	if (dataIndex === 'period' && !record.isParent) {
-		return <div className={`${styles.customCell} ${styles.customCellIdent}`} data-rnp-is-last-child={record.isLastChild ? 'lastChild' : ''}>{value}</div>
+		return <div className={`${styles.customCell} ${styles.customCellIdent}`} data-rnp-is-last-child={record.isLastChild ? 'lastChild' : ''}>{value}</div>;
 	}
 	return (
 		<div className={styles.customCell}>{value}</div>
 	);
-}
+};
 
 export default function RnpTable({ loading, columns, data, columns2, data2, expanded, el }) {
 	// table config
-	const [tableConfig, setTableConfig] = useState()
-	const [expandedRowKeys, setExpandedRowKeys] = useState([])
+	const [tableConfig, setTableConfig] = useState();
+	const [expandedRowKeys, setExpandedRowKeys] = useState([]);
 	// ref of scroll container
 	const containerRef = useRef(null);
 
@@ -61,12 +61,12 @@ export default function RnpTable({ loading, columns, data, columns2, data2, expa
 			return col;
 		});
 		setTableConfig(newConfig);
-	}
+	};
 
 	// update table config when columns2 changes
 	useEffect(() => {
-		setTableConfig(columns2)
-	}, [columns2])
+		setTableConfig(columns2);
+	}, [columns2]);
 
 	// Инициализация состояния раскрытых строк
 	useEffect(() => {
@@ -94,8 +94,8 @@ export default function RnpTable({ loading, columns, data, columns2, data2, expa
 		// Если нет сохраненного состояния или это другой элемент, раскрываем все строки
 		const allKeys = data2.map((item) => item.id);
 		setExpandedRowKeys(allKeys);
-		localStorage.setItem('RNP_EXPANDED_TABLE_ROWS_STATE', JSON.stringify({ id: el.article_data.wb_id, keys: allKeys }))
-	}, [data2, el?.article_data?.wb_id])
+		localStorage.setItem('RNP_EXPANDED_TABLE_ROWS_STATE', JSON.stringify({ id: el.article_data.wb_id, keys: allKeys }));
+	}, [data2, el?.article_data?.wb_id]);
 
 	// Сохранение состояния при изменении раскрытых строк
 	const handleExpandedRowsChange = (keys) => {
@@ -110,7 +110,7 @@ export default function RnpTable({ loading, columns, data, columns2, data2, expa
 			};
 			localStorage.setItem('RNP_EXPANDED_TABLE_ROWS_STATE', JSON.stringify(stateToSave));
 		}
-	}
+	};
 
 	return (
 		<div className={styles.container} >

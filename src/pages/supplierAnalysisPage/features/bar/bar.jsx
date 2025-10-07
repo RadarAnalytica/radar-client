@@ -1,5 +1,5 @@
 import { Tooltip, ConfigProvider } from 'antd';
-import styles from './bar.module.css'
+import styles from './bar.module.css';
 import { formatPrice } from '../../../../service/utils';
 
 const Bar = ({
@@ -39,7 +39,7 @@ const Bar = ({
                 </div>
             }
         </div>
-    )
-}
+    );
+};
 
 export default Bar;

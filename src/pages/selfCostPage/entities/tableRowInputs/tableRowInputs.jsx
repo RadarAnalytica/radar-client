@@ -1,28 +1,28 @@
-import React, { useState } from 'react'
-import styles from './tableRowInputs.module.css'
-import { Input, ConfigProvider } from 'antd'
+import React, { useState } from 'react';
+import styles from './tableRowInputs.module.css';
+import { Input, ConfigProvider } from 'antd';
 
 const TableRowInputs = ({ selfCost, fullfilment }) => {
 
-    const [selfCostValue, setSelfCostValue] = useState(selfCost)
-    const [fullfilmentValue, setFullfilmentValue] = useState(fullfilment)
+    const [selfCostValue, setSelfCostValue] = useState(selfCost);
+    const [fullfilmentValue, setFullfilmentValue] = useState(fullfilment);
 
     return (
         <>
             <div className={`${styles.table__rowItem} ${styles.table__rowItem_first}`}>
                 <Input
                     value={selfCostValue}
-                    onChange={(e) => setSelfCostValue((prev) => { if (/^(|\d+)$/.test(e.target.value)) { return e.target.value } else { return prev }})}
+                    onChange={(e) => setSelfCostValue((prev) => { if (/^(|\d+)$/.test(e.target.value)) { return e.target.value; } else { return prev; }})}
                 />
             </div>
             <div className={styles.table__rowItem}>
                 <Input
                     style={{ width: '160px'}}
                     value={fullfilmentValue}
-                    onChange={(e) => setFullfilmentValue((prev) => { if (/^(|\d+)$/.test(e.target.value)) { return e.target.value } else { return prev }})}
+                    onChange={(e) => setFullfilmentValue((prev) => { if (/^(|\d+)$/.test(e.target.value)) { return e.target.value; } else { return prev; }})}
                 />
 
-                <button 
+                <button
                     className={styles.table__saveButton}
                     disabled={selfCost == selfCostValue && fullfilment == fullfilmentValue}
                 >
@@ -35,7 +35,7 @@ const TableRowInputs = ({ selfCost, fullfilment }) => {
             </div>
 
         </>
-    )
-}
+    );
+};
 
 export default TableRowInputs;

@@ -1,10 +1,10 @@
-import React from 'react'
-import sortArrow from '../../assets/sortarrow.svg'
-import SearchButton from '../../assets/searchstock.svg'
-import DownloadFile from '../../assets/downloadxlfile.svg'
+import React from 'react';
+import sortArrow from '../../assets/sortarrow.svg';
+import SearchButton from '../../assets/searchstock.svg';
+import DownloadFile from '../../assets/downloadxlfile.svg';
 import ArrowUp from "../../assets/ArrowUp.svg";
 import ArrowDown from "../../assets/ArrowDown.svg";
-import { useState } from 'react'
+import { useState } from 'react';
 const RequestMonitoring = () => {
   const dataTable = [
     {
@@ -52,7 +52,7 @@ const RequestMonitoring = () => {
       requestFrequency: 'Аренд 3',
       middlePosition: 325353,
     },
-  ]
+  ];
 
   const [sortConfig, setSortConfig] = useState({ column: null, direction: null });
   const [searchTerm, setSearchTerm] = useState('');
@@ -118,7 +118,7 @@ const RequestMonitoring = () => {
   };
 
   return (
-    <div class="request-table table-content">
+    <div className="request-table table-content">
       <div className='search'>
         <input type='text'
           placeholder='Поиск по категории'
@@ -225,7 +225,7 @@ const RequestMonitoring = () => {
       </table> */}
 
     </div>
-  )
-}
+  );
+};
 
-export default RequestMonitoring
+export default RequestMonitoring;

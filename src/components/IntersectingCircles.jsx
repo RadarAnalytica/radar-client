@@ -12,7 +12,7 @@ const IntersectingCircles = ({ color1, color2, colorIntersection, textColorA,tex
   const dx = centerBX - centerAX;
   const dy = centerBY - centerAY;
   const distance = Math.sqrt(dx * dx + dy * dy);
-  
+
   const angle = Math.acos(distance / (2 * radius));
   const intersectionHeight = 2 * radius * Math.sin(angle);
 

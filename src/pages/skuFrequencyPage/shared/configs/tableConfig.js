@@ -116,15 +116,5 @@ export const radarTableConfig = [
             { title: 'Артикулов с продажами, %', dataIndex: 'goods_with_sales_percent_300', width: 220, units: '%', sortable: true, hidden: false, tooltipText: 'Расчетное среднее значение за 30 дней' },
         ].map(_ => ({ ..._, key: _.dataIndex, minWidth: _.width, className: 'monitoringTableLeafCell', maxWidth: _.width * 2 }))
     }
-].map(_ => ({ ..._, colSpan: _?.children?.length || 1}))
-
-
-
-
-
-
-
-
-
-
+].map(_ => ({ ..._, colSpan: _?.children?.length || 1}));
 

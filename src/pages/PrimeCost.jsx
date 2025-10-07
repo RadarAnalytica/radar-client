@@ -7,7 +7,7 @@ import Modal from 'react-bootstrap/Modal';
 import DragDropFile from '../components/DragAndDropFiles';
 import BottomNavigation from '../components/BottomNavigation';
 import styles from './PrimeCost.module.css';
-import doneIcon from "../assets/tick-active.png"
+import doneIcon from "../assets/tick-active.png";
 import MobilePlug from '../components/sharedComponents/mobilePlug/mobilePlug';
 import Sidebar from '../components/sharedComponents/sidebar/sidebar';
 import Header from '../components/sharedComponents/header/header';
@@ -46,11 +46,11 @@ const PrimeCost = () => {
   };
 
   const handleCostPriceSave = async () => {
-    setIsFileUpload(true)
+    setIsFileUpload(true);
     try {
       await ServiceFunctions.postCostUpdate(authToken, file);
       setShowSuccessPopup(true);
-      getCostPiceStatus()
+      getCostPiceStatus();
     } catch (error) {
       // Обработка ошибки
       console.error('Ошибка при загрузке файла:', error);
@@ -58,8 +58,8 @@ const PrimeCost = () => {
       setShowModalError(true);
     } finally {
       setCostPriceShow(false);
-      setTimeout(() => setFile(null), 500)
-      setIsFileUpload(false)
+      setTimeout(() => setFile(null), 500);
+      setIsFileUpload(false);
     }
   };
 
@@ -92,7 +92,7 @@ const PrimeCost = () => {
           <Header title={'Себестоимость'} titlePrefix={'Отчёт'} />
         </div>
 
-        {isDemoMode && 
+        {isDemoMode &&
           <NoSubscriptionWarningBlock />
         }
 
@@ -128,7 +128,7 @@ const PrimeCost = () => {
 
         <BottomNavigation />
       </div>
-      
+
       <Modal
         show={costPriceShow}
         onHide={handleCostPriceClose}

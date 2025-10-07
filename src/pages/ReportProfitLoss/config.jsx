@@ -35,7 +35,7 @@ const renderTitle = (value, row) => {
 		);
 	}
 	if (row.key == 'direct_expenses'){
-		return (<span className="ant-table-cell-direct">{value}</span>)
+		return (<span className="ant-table-cell-direct">{value}</span>);
 	}
 	// console.log('summaryRender', row)
 	return value;
@@ -93,18 +93,18 @@ export const ROWS = [
 				key: 'logistic',
 				title: 'Логистика',
 			},
-			
+
 			{
 				key: 'penalties',
 				title: 'Штрафы',
 			},
-			
-			
+
+
 			// {
 			// 	key: 'other_retentions',
 			// 	title: 'Прочие удержания',
 			// },
-			
+
 		]
 	},
 	{

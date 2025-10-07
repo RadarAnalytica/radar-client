@@ -1,22 +1,22 @@
-import styles from './financeBlock.module.css'
+import styles from './financeBlock.module.css';
 import { getFinanceData } from '../blockUtils';
 import { formatPrice } from '../../../../service/utils';
 import { getRateIcon } from '../../shared/barUtils';
 import { Tooltip, ConfigProvider } from 'antd';
 
 const getRateStyle = (amount, styles) => {
-    let style = ''
+    let style = '';
     if (amount > 0) {
-        style = `${styles.block__mainSubData} ${styles.block__mainSubData_green}`
+        style = `${styles.block__mainSubData} ${styles.block__mainSubData_green}`;
     }
     if (amount < 0) {
-        style = `${styles.block__mainSubData} ${styles.block__mainSubData_red}`
+        style = `${styles.block__mainSubData} ${styles.block__mainSubData_red}`;
     }
     if (amount === 0) {
-        style = `${styles.block__mainSubData} ${styles.block__mainSubData_gray}`
+        style = `${styles.block__mainSubData} ${styles.block__mainSubData_gray}`;
     }
-    return style
-}
+    return style;
+};
 
 const tooltipData = {
     "Выручка": 'Сумма, заработанная при продаже товаров',
@@ -24,10 +24,10 @@ const tooltipData = {
     "Чистая прибыль": 'Прибыль, остающаяся после уплаты налогов, сборов, отчислений',
     "EBITDA": "EBITDA — это показатель прибыли до вычета процентов, налогов, амортизации и износа, показывающий операционную рентабельность",
     "Маржа EBITDA": "Маржа EBITDA — это процент от выручки, который остаётся после вычета операционных расходов, но до налогов, процентов и износа"
-}
+};
 
 const FinanceBlock = ({ dataDashBoard, loading }) => {
-    const financeData = getFinanceData(dataDashBoard)
+    const financeData = getFinanceData(dataDashBoard);
 
     if (loading) {
         return (
@@ -36,7 +36,7 @@ const FinanceBlock = ({ dataDashBoard, loading }) => {
                     <span className='loader'></span>
                 </div>
             </div>
-        )
+        );
     }
 
     return (
@@ -45,8 +45,8 @@ const FinanceBlock = ({ dataDashBoard, loading }) => {
 
             <div className={styles.block__table}>
                 {financeData && financeData.map((i, id) => {
-                    const tooltip = tooltipData[i.name]
-                    const units = i.name === 'Маржа EBITDA' ? '%' : '₽'
+                    const tooltip = tooltipData[i.name];
+                    const units = i.name === 'Маржа EBITDA' ? '%' : '₽';
                     return (
                     <div className={styles.block__tableRow} key={id}>
                         <div className={styles.block__tableRowTitle}>
@@ -81,10 +81,10 @@ const FinanceBlock = ({ dataDashBoard, loading }) => {
                             </div>
                         </div>
                     </div>
-                )})}
+                );})}
             </div>
         </div >
-    )
-}
+    );
+};
 
 export default FinanceBlock;

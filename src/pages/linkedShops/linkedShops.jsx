@@ -12,12 +12,12 @@ import NoSubscriptionWarningBlock from '@/components/sharedComponents/noSubscrip
 
 const LinkedShopsPage = () => {
     const { isDemoMode } = useDemoMode();
-    const { authToken } = useContext(AuthContext)
+    const { authToken } = useContext(AuthContext);
     const [statusBarState, setStatusBarState] = useState({
         type: '',
         message: '',
         isActive: false
-    })
+    });
     const dispatch = useAppDispatch();
     const shops = useAppSelector((state) => state.shopsSlice.shops);
 
@@ -33,14 +33,14 @@ const LinkedShopsPage = () => {
                     type: '',
                     message: '',
                     isActive: false
-                })
-            }, 2000)
+                });
+            }, 2000);
         }
 
         return () => {
-            timeout && clearTimeout(timeout)
-        }
-    }, [statusBarState])
+            timeout && clearTimeout(timeout);
+        };
+    }, [statusBarState]);
 
     return (
         <main className={styles.page}>
@@ -54,7 +54,7 @@ const LinkedShopsPage = () => {
                 <div className={styles.page__headerWrapper}>
                     <Header title='Подключенные магазины' />
                 </div>
-                
+
                 {isDemoMode && <NoSubscriptionWarningBlock />}
 
                 <div className={styles.page__layout}>
@@ -87,7 +87,7 @@ const LinkedShopsPage = () => {
                 </div>
             }
         </main>
-    )
-}
+    );
+};
 
-export default LinkedShopsPage
+export default LinkedShopsPage;

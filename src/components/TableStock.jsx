@@ -9,8 +9,8 @@ const TableStock = ({ data, setDataTable, loading }) => {
   const navigate = useNavigate();
   const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
   const [isScrolled, setIsScrolled] = useState(false);
-  const [ dataTable, setFilteredDataTable ] = useState()
-  const [ virtualLimit, setVirtualLimit ] = useState({min: 0, max: 100})
+  const [dataTable, setFilteredDataTable] = useState();
+  const [virtualLimit, setVirtualLimit] = useState({min: 0, max: 100});
 
 
   useEffect(() => {
@@ -18,25 +18,25 @@ const TableStock = ({ data, setDataTable, loading }) => {
       const filteredData = [];
       data.forEach((_, id) => {
         if (id >= virtualLimit.min && id <= virtualLimit.max) {
-          filteredData.push(_)
+          filteredData.push(_);
         }
-      })
-      setFilteredDataTable(filteredData)
+      });
+      setFilteredDataTable(filteredData);
     }
-   
-  }, [data, virtualLimit])
+
+  }, [data, virtualLimit]);
 
   const observerRef = useRef(null);
-  const containerRef = useRef(null)
+  const containerRef = useRef(null);
   const bottomObserverOptions = {
       root: containerRef.current,
       rootMargin: '0px 0px 70px 0px',
       threshold: 0.1,
-  }
+  };
 
   useEffect(() => {
     const bottomObserver = new IntersectionObserver((entries) => {
-     
+
         const [entry] = entries;
         if (dataTable && entry.isIntersecting && virtualLimit.max < dataTable.length + 100) {
           let newMinLimit = virtualLimit.min;
@@ -46,7 +46,7 @@ const TableStock = ({ data, setDataTable, loading }) => {
                 min: newMinLimit,
                 max: newMaxLimit,
               }
-            )
+            );
         }
     }, bottomObserverOptions);
 
@@ -56,7 +56,6 @@ const TableStock = ({ data, setDataTable, loading }) => {
       bottomObserver.observe(currentRef);
     }
 
-    
 
     return () => {
         if (currentRef) {
@@ -64,7 +63,7 @@ const TableStock = ({ data, setDataTable, loading }) => {
         }
     };
 }, [observerRef, virtualLimit, dataTable, bottomObserverOptions]);
-  
+
 
   const handleMouseEnter = (e) => {
     const element = e.target;
@@ -82,7 +81,7 @@ const TableStock = ({ data, setDataTable, loading }) => {
         if (typeof a[key] === 'number' && typeof b[key] === 'number') {
           return direction === 'asc' ? a[key] - b[key] : b[key] - a[key];
         } else {
-          console.log(a, b)
+          console.log(a, b);
           return direction === 'asc'
             ? a[key].localeCompare(b[key])
             : b[key].localeCompare(a[key]);
@@ -98,9 +97,7 @@ const TableStock = ({ data, setDataTable, loading }) => {
     return <SortArrows columnKey={columnKey} sortConfig={sortConfig} />;
   };
 
-  
 
-  
   useEffect(() => {
     const handleScroll = () => {
       const tableContainer = document.querySelector('.custom-table');
@@ -120,7 +117,7 @@ const TableStock = ({ data, setDataTable, loading }) => {
       }
     };
 
-    
+
   }, []);
 
   // const handleClickProductName = (shop) => {
@@ -134,16 +131,16 @@ const TableStock = ({ data, setDataTable, loading }) => {
   return (
     <div style={{ display: 'flex', flexDirection: 'row', height: '100%', overflow: 'hidden'}} ref={containerRef}>
       {/* <div style={{ width: '3.5vw', height: '100%' }}></div> */}
-      <div 
-        className='custom-table' 
+      <div
+        className='custom-table'
         style=
-        {{ 
+        {{
           overflow: loading ? 'hidden' : '',
           maxHeight: '650px',
         }}
       >
         <div className='table-container' style={{ minWidth: '100%'}}>
-          {/* {dataTable.length === 0 && 
+          {/* {dataTable.length === 0 &&
             <div
               className='cell header-cell'
               style={{paddingLeft: 50, background: 'none', border: 'none' }}
@@ -168,7 +165,7 @@ const TableStock = ({ data, setDataTable, loading }) => {
               <span className='loader'></span>
             </div>
           )}
-          
+
          {dataTable && dataTable.length === 0 && (
           <div
               className='cell header-cell'
@@ -262,7 +259,7 @@ const TableStock = ({ data, setDataTable, loading }) => {
                   <div
                     className='cell cell-header'
                     style={{
-                      maxWidth: '200px', 
+                      maxWidth: '200px',
                       minWidth: '150px',
                       minHeight: '70px',
                       border: 'none',

@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { URL } from './config';
-import { switchPLFilter } from '../redux/reportPL/plFiltersSlice'
+import { switchPLFilter } from '../redux/reportPL/plFiltersSlice';
 
 
 export const getFilterData = async (pageIdent, authToken) => {
@@ -23,7 +23,7 @@ export const getFilterData = async (pageIdent, authToken) => {
         default:
             break;
     }
-}
+};
 
 export const useSwitchFilterElem = async (pageIdent, filterIdent, filterElem) => {
     const dispatch = useDispatch();
@@ -33,8 +33,8 @@ export const useSwitchFilterElem = async (pageIdent, filterIdent, filterElem) =>
         case 'pl':
             dispatch(switchPLFilter(
                   filterIdent, filterElem
-                ))
-            return
+                ));
+            return;
         case 'month':
             return await getMonthFilters();
         case 'goods':
@@ -48,7 +48,7 @@ export const useSwitchFilterElem = async (pageIdent, filterIdent, filterElem) =>
         default:
             break;
     }
-}
+};
 
 const getDashboardFilters = async (authToken) => {
     const response = await fetch(`${URL}/api/report/v2/get-dashboard-filters`, {
@@ -67,7 +67,7 @@ const getDashboardFilters = async (authToken) => {
         'week': Array.from(new Set(data.date_sale_filter?.weekdays)),
         'group': Array.from(new Set(data.groups_filter)),
     };
-}
+};
 
 
 const getPLFilters = async (authToken) => {
@@ -83,7 +83,7 @@ const getPLFilters = async (authToken) => {
         'brand': data.brand_filter,
         'group': data.group_filter,
     };
-}
+};
 
 const getMonthFilters = async (authToken) => {
     const response = await fetch(`${URL}/api/report/v2/get-month-product-filters`, {
@@ -108,7 +108,7 @@ const getMonthFilters = async (authToken) => {
         'month': data.date_sale_filter.months,
         'week': data.date_sale_filter.weekdays,
     };
-}
+};
 
 const getGoodsFilters = async (authToken) => {
     const response = await fetch(`${URL}/api/report/v2/get-month-product-filters`, {
@@ -133,7 +133,7 @@ const getGoodsFilters = async (authToken) => {
         'month': data.date_sale_filter.months,
         'week': data.date_sale_filter.weekdays,
     };
-}
+};
 
 const getABCFilters = async (authToken) => {
     const response = await fetch(`${URL}/api/report/v2/abc/filters`, {
@@ -153,7 +153,7 @@ const getABCFilters = async (authToken) => {
         'wbId': data.article_filter,
         'product': data.product_filter,
     };
-}
+};
 
 const getPenaltyFilters = async (authToken) => {
     const response = await fetch(`${URL}/api/report/v2/get-penalties-filters`, {
@@ -174,7 +174,7 @@ const getPenaltyFilters = async (authToken) => {
         'types': data.action_type_filter,
         'product': data.title_filter,
     };
-}
+};
 
 const getChartsFilters = async (authToken) => {
     const response = await fetch(`${URL}/api/report/v2/get-charts-filters`, {
@@ -193,4 +193,4 @@ const getChartsFilters = async (authToken) => {
         'group': data.groups_filter,
         'wbId': data.wb_id_filter,
     };
-}
+};

@@ -1,12 +1,12 @@
 import { useState } from 'react';
-import styles from './LogisticsDataFormBlockDesktop.module.css'
+import styles from './LogisticsDataFormBlockDesktop.module.css';
 import { Form, Input, Checkbox, Radio, ConfigProvider, Tooltip, AutoComplete, Select } from 'antd';
 import { tempWhouseData } from './tempWarehouseData';
 import { normilizeUnitsInputValue } from './UnitCalcUtils';
 import { useAppSelector } from '../../redux/hooks';
 const LogisticsDataFormBlockDesktop = ({ form, current_storage_logistic_price, buyout_log_price, storagePrice }) => {
 
-    const { isSidebarHidden } = useAppSelector(store => store.utils)
+    const { isSidebarHidden } = useAppSelector(store => store.utils);
     const warehouse = Form.useWatch('warehouse', form);
     const cargo_acceptance_price = Form.useWatch('cargo_acceptance_price', form);
     const isHeavy = Form.useWatch('isHeavy', form);
@@ -14,15 +14,15 @@ const LogisticsDataFormBlockDesktop = ({ form, current_storage_logistic_price, b
     const buyout_percentage = Form.useWatch('buyout_percentage', form);
     const delivery_speed = Form.useWatch('delivery_speed', form);
 
-    const [whouseData, setWhouseData] = useState(tempWhouseData.fbo)
+    const [whouseData, setWhouseData] = useState(tempWhouseData.fbo);
 
     const handleSearch = (value) => {
         const newData = tempWhouseData.fbo.filter(_ => _.name.toLowerCase().includes(value.toLowerCase()));
-        setWhouseData(newData)
+        setWhouseData(newData);
     };
 
     const handleSelect = (value) => {
-        form.setFieldValue('warehouse', value)
+        form.setFieldValue('warehouse', value);
     };
 
 
@@ -200,13 +200,13 @@ const LogisticsDataFormBlockDesktop = ({ form, current_storage_logistic_price, b
                     label='Стоимость платной приемки, ₽'
                     className={styles.formItem}
                     getValueProps={(value) => {
-                        const transformedValue = { value: value ? value + ' ₽' : value }
-                        return transformedValue
+                        const transformedValue = { value: value ? value + ' ₽' : value };
+                        return transformedValue;
                     }}
                     normalize={(value, prevValue) => {
-                        const normalizedValue = normilizeUnitsInputValue(value, prevValue, ' ₽')
-                        const regex = /^-?\d*\.?\d*$/ // только целые и дробные числа
-                        if (regex.test(normalizedValue)) { return normalizedValue };
+                        const normalizedValue = normilizeUnitsInputValue(value, prevValue, ' ₽');
+                        const regex = /^-?\d*\.?\d*$/; // только целые и дробные числа
+                        if (regex.test(normalizedValue)) { return normalizedValue; };
                         return prevValue || '';
                     }}
                     rules={
@@ -264,7 +264,6 @@ const LogisticsDataFormBlockDesktop = ({ form, current_storage_logistic_price, b
             </div>
 
 
-
             <div className={isSidebarHidden ? `${styles.fieldset__wrapper} ${styles.fieldset__wrapper_2cols}` : styles.fieldset__wrapper}>
                 <Form.Item
                     label={
@@ -289,13 +288,13 @@ const LogisticsDataFormBlockDesktop = ({ form, current_storage_logistic_price, b
                         </div>
                     }
                     getValueProps={(value) => {
-                        const transformedValue = { value: value ? value + ' ч' : value }
-                        return transformedValue
+                        const transformedValue = { value: value ? value + ' ч' : value };
+                        return transformedValue;
                     }}
                     normalize={(value, prevValue) => {
-                        const normalizedValue = normilizeUnitsInputValue(value, prevValue, ' ч')
-                        const regex = /^(|\d+)$/ // только целые числа
-                        if (regex.test(normalizedValue)) { return normalizedValue };
+                        const normalizedValue = normilizeUnitsInputValue(value, prevValue, ' ч');
+                        const regex = /^(|\d+)$/; // только целые числа
+                        if (regex.test(normalizedValue)) { return normalizedValue; };
                         return prevValue || '';
                     }}
                     name='delivery_speed'
@@ -320,12 +319,12 @@ const LogisticsDataFormBlockDesktop = ({ form, current_storage_logistic_price, b
                                 }}
                             >
                                 <Tooltip
-                                    title='У разных категорий товаров процент выкупа отличается. Товары с размерностью имеют меньший показатель, чем товары повседневного спроса.  
+                                    title='У разных категорий товаров процент выкупа отличается. Товары с размерностью имеют меньший показатель, чем товары повседневного спроса.
 
-                                Пример категорий и средних значений для них: 
+                                Пример категорий и средних значений для них:
                                 Продукты – 94-97%
                                 Косметика – 90-95%
-                                Товары для дома – 85-95% 
+                                Товары для дома – 85-95%
                                 Товары для детей (не одежда) – 85-95%
                                 Спорт-товары – 85-95%
                                 Электроника – 85-95%
@@ -342,13 +341,13 @@ const LogisticsDataFormBlockDesktop = ({ form, current_storage_logistic_price, b
                         </div>
                     }
                     getValueProps={(value) => {
-                        const transformedValue = { value: value ? value + ' %' : value }
-                        return transformedValue
+                        const transformedValue = { value: value ? value + ' %' : value };
+                        return transformedValue;
                     }}
                     normalize={(value, prevValue) => {
-                        const normalizedValue = normilizeUnitsInputValue(value, prevValue, ' %')
-                        const regex = /^(100(\.0*)?|0*(\d{1,2}(\.\d*)?|\.\d+))$|^$/ // только целые и дробные от 0 до 100
-                        if (regex.test(normalizedValue)) { return normalizedValue };
+                        const normalizedValue = normilizeUnitsInputValue(value, prevValue, ' %');
+                        const regex = /^(100(\.0*)?|0*(\d{1,2}(\.\d*)?|\.\d+))$|^$/; // только целые и дробные от 0 до 100
+                        if (regex.test(normalizedValue)) { return normalizedValue; };
                         return prevValue || '';
                     }}
                     name='buyout_percentage'
@@ -407,7 +406,7 @@ const LogisticsDataFormBlockDesktop = ({ form, current_storage_logistic_price, b
 
             </Form.Item> */}
         </fieldset>
-    )
-}
+    );
+};
 
 export default LogisticsDataFormBlockDesktop;

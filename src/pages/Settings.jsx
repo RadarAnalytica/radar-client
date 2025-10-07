@@ -1,32 +1,31 @@
-import React, { useContext, useEffect, useState } from 'react'
-import SideNav from '../components/SideNav'
-import TopNav from '../components/TopNav'
-import AuthContext from '../service/AuthContext'
-import { ServiceFunctions } from '../service/serviceFunctions'
-import { URL } from '../service/config'
-import './styles.css'
+import React, { useContext, useEffect, useState } from 'react';
+import SideNav from '../components/SideNav';
+import TopNav from '../components/TopNav';
+import AuthContext from '../service/AuthContext';
+import { ServiceFunctions } from '../service/serviceFunctions';
+import { URL } from '../service/config';
+import './styles.css';
 
 const Settings = () => {
 
-    const { user } = useContext(AuthContext)
+    const { user } = useContext(AuthContext);
 
-    const [brandNames, setBrandNames] = useState()
-    const [activeBrand, setActiveBrand] = useState()
+    const [brandNames, setBrandNames] = useState();
+    const [activeBrand, setActiveBrand] = useState();
     useEffect(() => {
         if (user) {
             ServiceFunctions.getBrandNames(user.id).then(data => {
-                let names = [...new Set(data)]
-                setBrandNames(names)
-            })
+                let names = [...new Set(data)];
+                setBrandNames(names);
+            });
         }
-    }, [user])
+    }, [user]);
 
     useEffect(() => {
         if (brandNames && brandNames.length) {
-            setActiveBrand(brandNames[0])
+            setActiveBrand(brandNames[0]);
         }
-    }, [brandNames])
-
+    }, [brandNames]);
 
 
     const [file, setFile] = useState(null);
@@ -61,19 +60,19 @@ const Settings = () => {
         }
     };
 
-    const [tax, setTax] = useState({ type: null, value: null })
+    const [tax, setTax] = useState({ type: null, value: null });
     useEffect(() => {
-        setTax({ ...tax, type: null })
-    }, [])
+        setTax({ ...tax, type: null });
+    }, []);
 
     const handleTaxSubmit = (e, obj) => {
         if (obj.value === null) {
-            e.preventDefautl()
-            alert('Укажите значение налоговой ставки')
+            e.preventDefautl();
+            alert('Укажите значение налоговой ставки');
         } else {
-            ServiceFunctions.updateTax(user.id, activeBrand, tax)
+            ServiceFunctions.updateTax(user.id, activeBrand, tax);
         }
-    }
+    };
 
     return (
         <div className='dashboard-page'>
@@ -114,7 +113,7 @@ const Settings = () => {
                                         if (user && activeBrand) {
                                             fetch(`${URL}/api/data-collection/costs/${user.id}?brandName=${activeBrand}`).then(
                                                 response => {
-                                                    return response.blob()
+                                                    return response.blob();
                                                 }
                                             ).then(blob => {
                                                 const url = window.URL.createObjectURL(new Blob([blob]));
@@ -124,7 +123,7 @@ const Settings = () => {
                                                 document.body.appendChild(link);
                                                 link.click();
                                                 link.parentNode.removeChild(link);
-                                            })
+                                            });
                                         }
                                     }}
                                 >
@@ -175,7 +174,7 @@ const Settings = () => {
                 </div>
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default Settings
+export default Settings;

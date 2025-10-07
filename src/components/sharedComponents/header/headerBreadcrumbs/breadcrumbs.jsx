@@ -1,6 +1,6 @@
-import styles from './breadcrumbs.module.css'
-import { buttonIcons } from '../../../../pages/productsGroupsPages/shared'
-import { Link } from "react-router-dom"
+import styles from './breadcrumbs.module.css';
+import { buttonIcons } from '../../../../pages/productsGroupsPages/shared';
+import { Link } from "react-router-dom";
 
 const Breadcrumbs = ({ config, actions }) => {
 
@@ -18,7 +18,7 @@ const Breadcrumbs = ({ config, actions }) => {
                             {i.name}
                             <span styles={styles.breadcrumbs__separator}>/</span>
                         </Link>
-                    )
+                    );
                 } else {
                     return (
                         <p
@@ -28,7 +28,7 @@ const Breadcrumbs = ({ config, actions }) => {
                         >
                             {i.name}
                         </p>
-                    )
+                    );
                 }
 
             })}
@@ -40,12 +40,12 @@ const Breadcrumbs = ({ config, actions }) => {
                            <button className={styles.breadcrumbs__actionButton} onClick={a.action} key={id}>
                                 {buttonIcons[a.type]}
                            </button>
-                        )
+                        );
                     })}
                 </div>
             }
         </div>
-    )
-}
+    );
+};
 
 export default Breadcrumbs;

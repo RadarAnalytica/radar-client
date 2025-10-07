@@ -1,6 +1,6 @@
 import React, { useRef, useMemo } from 'react';
 import styles from './monthSelect.module.css';
-import { ConfigProvider, DatePicker } from 'antd'
+import { ConfigProvider, DatePicker } from 'antd';
 import locale from 'antd/locale/ru_RU';
 import dayjs from 'dayjs';
 import { initialMonths } from '@/service/utils';
@@ -23,10 +23,10 @@ export const MonthSelect = ({
             return [
                 dayjs(value?.month_from),
                 dayjs(value?.month_to),
-            ]
+            ];
         }
-        return []
-    }, [value])
+        return [];
+    }, [value]);
 
     const onChangeHandler = (data) => {
         let selectedMonths = initialMonths;
@@ -35,10 +35,10 @@ export const MonthSelect = ({
             selectedMonths = {
                 month_from: dayjs(start).format('YYYY-MM'),
                 month_to: dayjs(end).format('YYYY-MM')
-            }
+            };
         }
-        dispatch(filterActions.setActiveFilters({ stateKey: 'activeMonths', data: selectedMonths }))
-    }
+        dispatch(filterActions.setActiveFilters({ stateKey: 'activeMonths', data: selectedMonths }));
+    };
 
     return (
         <div className={styles.calendarContainer} ref={monthRef}>

@@ -1,6 +1,6 @@
-import styles from './shopSelect.module.css'
-import { SelectIcon } from '../../shared'
-import { Select, ConfigProvider } from 'antd'
+import styles from './shopSelect.module.css';
+import { SelectIcon } from '../../shared';
+import { Select, ConfigProvider } from 'antd';
 
 export const ShopSelect = (
     {
@@ -13,7 +13,7 @@ export const ShopSelect = (
     }
 ) => {
 
-    const icon = <SelectIcon />
+    const icon = <SelectIcon />;
 
     return (
         <div className={styles.plainSelect}>
@@ -25,7 +25,7 @@ export const ShopSelect = (
             </label>
             <div className={styles.plainSelect__selectWrapper}>
                 <ConfigProvider
-                    renderEmpty={ () => (<div>Нет данных</div>)} 
+                    renderEmpty={ () => (<div>Нет данных</div>)}
                     theme={{
                         token: {
                             colorBgContainer: 'white',
@@ -62,5 +62,5 @@ export const ShopSelect = (
                 </ConfigProvider>
             </div>
         </div>
-    )
-}
+    );
+};

@@ -10,14 +10,14 @@ const StockAnalysisFilter = ({shops, setActiveBrand, setSelectedRange, selectedR
     is_valid: true,
   };
 
-  const shopArrayFormSelect = [allShopOptionAsShopObject, ...shops]
+  const shopArrayFormSelect = [allShopOptionAsShopObject, ...shops];
   return (
     // <div className='filter container filter-panel dash-container d-flex' style={{ marginTop: '16px'}}>
     //   <div className='row w-100 flex gap-3'>
     <div className='filter container dash-container pb-4 pt-0 d-flex'>
       <div className='row w-100'>
         <div className='filter-item col'>
-          <Period 
+          <Period
             selectedRange={selectedRange}
             setSelectedRange={setSelectedRange}
           />
@@ -40,9 +40,9 @@ const StockAnalysisFilter = ({shops, setActiveBrand, setSelectedRange, selectedR
               id='store'
               value={activeBrand.id}
               onChange={(e) => {
-                const { value } = e.target
-                const selectedShop = shopArrayFormSelect.find(_ => _.id.toString() === value)
-                setActiveBrand(selectedShop)
+                const { value } = e.target;
+                const selectedShop = shopArrayFormSelect.find(_ => _.id.toString() === value);
+                setActiveBrand(selectedShop);
               }}
             >
               {shopArrayFormSelect &&

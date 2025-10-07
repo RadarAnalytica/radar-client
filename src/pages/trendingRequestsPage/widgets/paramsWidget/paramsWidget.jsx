@@ -1,12 +1,12 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react'
-import { Form, ConfigProvider, Select, Input, Button, Tag, message } from 'antd'
-import { DatePicker } from '../../features'
-import styles from './paramsWidget.module.css'
-import moment from 'moment'
-import { ApiService } from '../../shared'
-import { useAppSelector } from '@/redux/hooks'
-import HowToLink from '@/components/sharedComponents/howToLink/howToLink'
-import { HowtoWidget } from '../howtoWidget/howtoWidget'
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import { Form, ConfigProvider, Select, Input, Button, Tag, message } from 'antd';
+import { DatePicker } from '../../features';
+import styles from './paramsWidget.module.css';
+import moment from 'moment';
+import { ApiService } from '../../shared';
+import { useAppSelector } from '@/redux/hooks';
+import HowToLink from '@/components/sharedComponents/howToLink/howToLink';
+import { HowtoWidget } from '../howtoWidget/howtoWidget';
 import { useDemoMode } from "@/app/providers";
 
 const dynamicOptions = [
@@ -36,33 +36,33 @@ const dynamicNormalizer = (dynamic, from, to) => {
     let result = {
         start: null,
         end: null
-    }
-    if (!dynamic || (!from && !to)) { return result }
+    };
+    if (!dynamic || (!from && !to)) { return result; }
     if (dynamic === 'Рост') {
         result = {
             start: parseInt(from) || null,
             end: parseInt(to) || null
-        }
+        };
         return result;
     }
     if (dynamic === 'Падение') {
-        console.log(parseInt(from) * -1)
+        console.log(parseInt(from) * -1);
         result = {
             start: (parseInt(from) * -1) || null,
             end: (parseInt(to) * -1 )|| null
-        }
+        };
         return result;
     }
     return result;
-}
+};
 
 export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, setRequestStatus, requestStatus, isParamsVisible, setIsParamsVisible, setSortState, initSortState }) => {
   const { isDemoMode } = useDemoMode();
-  const [selectedDate, setSelectedDate] = useState(moment().subtract(30, 'days').format('DD.MM.YYYY'))
-    const [searchState, setSearchState] = useState('')
-    const [ isExampleDataSet, setIsExampleDataSet ] = useState(false)
-    const [preferedItemsData, setPreferedItemsData] = useState([])
-    const [form] = Form.useForm()
+  const [selectedDate, setSelectedDate] = useState(moment().subtract(30, 'days').format('DD.MM.YYYY'));
+    const [searchState, setSearchState] = useState('');
+    const [isExampleDataSet, setIsExampleDataSet] = useState(false);
+    const [preferedItemsData, setPreferedItemsData] = useState([]);
+    const [form] = Form.useForm();
     const { isSidebarHidden } = useAppSelector((state) => state.utils);
 
     const getPreferedItemsTest = useCallback(async () => {
@@ -83,27 +83,27 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                     }
                 }
             );
-            setPreferedItemsData(data)
+            setPreferedItemsData(data);
         } catch (error) {
             console.error('Error fetching preferred items:', error);
         }
     }, []);
 
-    const dynamic_30_days = Form.useWatch('dynamic_30_days', form)
-    const dynamic_60_days = Form.useWatch('dynamic_60_days', form)
-    const dynamic_90_days = Form.useWatch('dynamic_90_days', form)
-    const dynamic_30_days_from = Form.useWatch('dynamic_30_days_from', form)
-    const dynamic_30_days_to = Form.useWatch('dynamic_30_days_to', form)
-    const dynamic_60_days_from = Form.useWatch('dynamic_60_days_from', form)
-    const dynamic_60_days_to = Form.useWatch('dynamic_60_days_to', form)
-    const dynamic_90_days_from = Form.useWatch('dynamic_90_days_from', form)
-    const dynamic_90_days_to = Form.useWatch('dynamic_90_days_to', form)
-    const prefered_items = Form.useWatch('prefered_items', form)
+    const dynamic_30_days = Form.useWatch('dynamic_30_days', form);
+    const dynamic_60_days = Form.useWatch('dynamic_60_days', form);
+    const dynamic_90_days = Form.useWatch('dynamic_90_days', form);
+    const dynamic_30_days_from = Form.useWatch('dynamic_30_days_from', form);
+    const dynamic_30_days_to = Form.useWatch('dynamic_30_days_to', form);
+    const dynamic_60_days_from = Form.useWatch('dynamic_60_days_from', form);
+    const dynamic_60_days_to = Form.useWatch('dynamic_60_days_to', form);
+    const dynamic_90_days_from = Form.useWatch('dynamic_90_days_from', form);
+    const dynamic_90_days_to = Form.useWatch('dynamic_90_days_to', form);
+    const prefered_items = Form.useWatch('prefered_items', form);
 
     const resetFieldsHandler = useCallback(() => {
-        form.resetFields()
-        setSelectedDate(moment().subtract(30, 'days').format('DD.MM.YYYY'))
-    }, [form])
+        form.resetFields();
+        setSelectedDate(moment().subtract(30, 'days').format('DD.MM.YYYY'));
+    }, [form]);
 
     const submitHandler = useCallback((fields) => {
         setRequestState({
@@ -141,18 +141,18 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
             query: fields.request_example,
             page: 1,
             limit: 25
-        })
-        setSortState(initSortState)
+        });
+        setSortState(initSortState);
     }, [selectedDate, setRequestState]);
 
     const setExampleData = () => {
-        setSelectedDate(moment().subtract(3, 'days').format('DD.MM.YYYY'))
-        form.setFieldValue('dynamic_60_days', 'Рост')
-        form.setFieldValue('dynamic_60_days_from', 100)
-        form.setFieldValue('dynamic_60_days_from', 100)
-        form.setFieldValue('frequency_30_days_from', 6000)
-        setIsExampleDataSet(true)
-        setIsParamsVisible(true)
+        setSelectedDate(moment().subtract(3, 'days').format('DD.MM.YYYY'));
+        form.setFieldValue('dynamic_60_days', 'Рост');
+        form.setFieldValue('dynamic_60_days_from', 100);
+        form.setFieldValue('dynamic_60_days_from', 100);
+        form.setFieldValue('frequency_30_days_from', 6000);
+        setIsExampleDataSet(true);
+        setIsParamsVisible(true);
     };
 
     // Прямой запрос, не удалять. Старина М, 06.06.25
@@ -198,7 +198,7 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
     useEffect(() => {
         let timeout;
         if (isExampleDataSet) {
-            timeout = setTimeout(() => {setIsExampleDataSet(false)}, 3000);
+            timeout = setTimeout(() => {setIsExampleDataSet(false);}, 3000);
         }
         return () => timeout && clearTimeout(timeout);
     }, [isExampleDataSet]);
@@ -219,7 +219,7 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                 'dynamic_60_days_to',
                 'dynamic_90_days_from',
                 'dynamic_90_days_to'
-            ])
+            ]);
         }
     }, [
         dynamic_30_days_from,
@@ -249,18 +249,18 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
     const renderPopup = useCallback((menu) => {
         let action;
         const acc = preferedItemsData?.reduce((total, item) => {
-            return total + item.children.length
+            return total + item.children.length;
         }, 0);
 
         if (prefered_items?.length < acc) {
             action = () => {
-                let allDataArr = []
+                let allDataArr = [];
                 preferedItemsData.forEach(_ => {
-                    const normilized = _.children.map(c => c.id)
-                    allDataArr = [...allDataArr, ...normilized]
-                })
-                form.setFieldValue('prefered_items', [...allDataArr])
-            }
+                    const normilized = _.children.map(c => c.id);
+                    allDataArr = [...allDataArr, ...normilized];
+                });
+                form.setFieldValue('prefered_items', [...allDataArr]);
+            };
         }
 
         if (prefered_items?.length === acc) {
@@ -306,8 +306,8 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                         {prefered_items?.length === acc && 'Снять все'}
                     </Button>}
                 </ConfigProvider>
-            </div>)
-    }, [preferedItemsData, prefered_items, searchState, form])
+            </div>);
+    }, [preferedItemsData, prefered_items, searchState, form]);
 
     const memoizedConfigProviderTheme = useMemo(() => ({
         token: {
@@ -426,15 +426,15 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                                         rules={[
                                                             ({ getFieldValue }) => ({
                                                                 validator(_, value) {
-                                                                    const regex = /^(|\d+)$/ // только целые числа
-                                                                    const valuesArr = [getFieldValue('dynamic_30_days_to'), getFieldValue('dynamic_60_days_from'), getFieldValue('dynamic_60_days_to'), getFieldValue('dynamic_90_days_to'), getFieldValue('dynamic_90_days_from')]
+                                                                    const regex = /^(|\d+)$/; // только целые числа
+                                                                    const valuesArr = [getFieldValue('dynamic_30_days_to'), getFieldValue('dynamic_60_days_from'), getFieldValue('dynamic_60_days_to'), getFieldValue('dynamic_90_days_to'), getFieldValue('dynamic_90_days_from')];
                                                                     if (!value && getFieldValue('dynamic_30_days') && !valuesArr.some(_ => _)) {
-                                                                        return Promise.reject(new Error(''))
+                                                                        return Promise.reject(new Error(''));
                                                                     }
                                                                     if (value && !regex.test(value)) {
-                                                                        return Promise.reject(new Error(''))
+                                                                        return Promise.reject(new Error(''));
                                                                     }
-                                                                    return Promise.resolve()
+                                                                    return Promise.resolve();
                                                                 },
                                                             }),
                                                         ]}
@@ -454,15 +454,15 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                                         rules={[
                                                             ({ getFieldValue }) => ({
                                                                 validator(_, value) {
-                                                                    const regex = /^(|\d+)$/ // только целые числа
-                                                                    const valuesArr = [getFieldValue('dynamic_30_days_from'), getFieldValue('dynamic_60_days_from'), getFieldValue('dynamic_60_days_to'), getFieldValue('dynamic_90_days_to'), getFieldValue('dynamic_90_days_from')]
+                                                                    const regex = /^(|\d+)$/; // только целые числа
+                                                                    const valuesArr = [getFieldValue('dynamic_30_days_from'), getFieldValue('dynamic_60_days_from'), getFieldValue('dynamic_60_days_to'), getFieldValue('dynamic_90_days_to'), getFieldValue('dynamic_90_days_from')];
                                                                     if (!value && getFieldValue('dynamic_30_days') && !valuesArr.some(_ => _)) {
-                                                                        return Promise.reject(new Error(''))
+                                                                        return Promise.reject(new Error(''));
                                                                     }
                                                                     if (value && !regex.test(value)) {
                                                                         return Promise.reject(new Error(''));
                                                                     }
-                                                                    return Promise.resolve()
+                                                                    return Promise.resolve();
                                                                 },
                                                             }),
                                                         ]}
@@ -522,15 +522,15 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                                         rules={[
                                                             ({ getFieldValue }) => ({
                                                                 validator(_, value) {
-                                                                    const regex = /^(|\d+)$/ // только целые числа
-                                                                    const valuesArr = [getFieldValue('dynamic_30_days_from'), getFieldValue('dynamic_30_days_to'), getFieldValue('dynamic_60_days_to'), getFieldValue('dynamic_90_days_to'), getFieldValue('dynamic_90_days_from')]
+                                                                    const regex = /^(|\d+)$/; // только целые числа
+                                                                    const valuesArr = [getFieldValue('dynamic_30_days_from'), getFieldValue('dynamic_30_days_to'), getFieldValue('dynamic_60_days_to'), getFieldValue('dynamic_90_days_to'), getFieldValue('dynamic_90_days_from')];
                                                                     if (!value && getFieldValue('dynamic_60_days') && !valuesArr.some(_ => _)) {
-                                                                        return Promise.reject(new Error(''))
+                                                                        return Promise.reject(new Error(''));
                                                                     }
                                                                     if (value && !regex.test(value)) {
-                                                                        return Promise.reject(new Error(''))
+                                                                        return Promise.reject(new Error(''));
                                                                     }
-                                                                    return Promise.resolve()
+                                                                    return Promise.resolve();
                                                                     //return Promise.reject(new Error(''));
                                                                 },
                                                             }),
@@ -551,15 +551,15 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                                         rules={[
                                                             ({ getFieldValue }) => ({
                                                                 validator(_, value) {
-                                                                    const regex = /^(|\d+)$/ // только целые числа
-                                                                    const valuesArr = [getFieldValue('dynamic_30_days_from'), getFieldValue('dynamic_30_days_to'), getFieldValue('dynamic_60_days_from'), getFieldValue('dynamic_90_days_to'), getFieldValue('dynamic_90_days_from')]
+                                                                    const regex = /^(|\d+)$/; // только целые числа
+                                                                    const valuesArr = [getFieldValue('dynamic_30_days_from'), getFieldValue('dynamic_30_days_to'), getFieldValue('dynamic_60_days_from'), getFieldValue('dynamic_90_days_to'), getFieldValue('dynamic_90_days_from')];
                                                                     if (!value && getFieldValue('dynamic_60_days') && !valuesArr.some(_ => _)) {
-                                                                        return Promise.reject(new Error(''))
+                                                                        return Promise.reject(new Error(''));
                                                                     }
                                                                     if (value && !regex.test(value)) {
-                                                                        return Promise.reject(new Error(''))
+                                                                        return Promise.reject(new Error(''));
                                                                     }
-                                                                    return Promise.resolve()
+                                                                    return Promise.resolve();
                                                                 },
                                                             }),
                                                         ]}
@@ -614,15 +614,15 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                                         rules={[
                                                             ({ getFieldValue }) => ({
                                                                 validator(_, value) {
-                                                                    const regex = /^(|\d+)$/ // только целые числа
-                                                                    const valuesArr = [getFieldValue('dynamic_30_days_from'), getFieldValue('dynamic_30_days_to'), getFieldValue('dynamic_60_days_from'), getFieldValue('dynamic_90_days_to'), getFieldValue('dynamic_60_days_from')]
+                                                                    const regex = /^(|\d+)$/; // только целые числа
+                                                                    const valuesArr = [getFieldValue('dynamic_30_days_from'), getFieldValue('dynamic_30_days_to'), getFieldValue('dynamic_60_days_from'), getFieldValue('dynamic_90_days_to'), getFieldValue('dynamic_60_days_from')];
                                                                     if (!value && getFieldValue('dynamic_90_days') && !valuesArr.some(_ => _)) {
-                                                                        return Promise.reject(new Error(''))
+                                                                        return Promise.reject(new Error(''));
                                                                     }
                                                                     if (value && !regex.test(value)) {
-                                                                        return Promise.reject(new Error(''))
+                                                                        return Promise.reject(new Error(''));
                                                                     }
-                                                                    return Promise.resolve()
+                                                                    return Promise.resolve();
                                                                 },
                                                             }),
                                                         ]}
@@ -641,15 +641,15 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                                         rules={[
                                                             ({ getFieldValue }) => ({
                                                                 validator(_, value) {
-                                                                    const regex = /^(|\d+)$/ // только целые числа
-                                                                    const valuesArr = [getFieldValue('dynamic_30_days_from'), getFieldValue('dynamic_30_days_to'), getFieldValue('dynamic_60_days_from'), getFieldValue('dynamic_90_days_from'), getFieldValue('dynamic_60_days_from')]
+                                                                    const regex = /^(|\d+)$/; // только целые числа
+                                                                    const valuesArr = [getFieldValue('dynamic_30_days_from'), getFieldValue('dynamic_30_days_to'), getFieldValue('dynamic_60_days_from'), getFieldValue('dynamic_90_days_from'), getFieldValue('dynamic_60_days_from')];
                                                                     if (!value && getFieldValue('dynamic_90_days') && !valuesArr.some(_ => _)) {
-                                                                        return Promise.reject(new Error(''))
+                                                                        return Promise.reject(new Error(''));
                                                                     }
                                                                     if (value && !regex.test(value)) {
-                                                                        return Promise.reject(new Error(''))
+                                                                        return Promise.reject(new Error(''));
                                                                     }
-                                                                    return Promise.resolve()
+                                                                    return Promise.resolve();
                                                                 },
                                                             }),
                                                         ]}
@@ -685,7 +685,7 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                                 rules={[
                                                     ({ getFieldValue }) => ({
                                                         validator(_, value) {
-                                                            const regex = /^(|\d+)$/ // только целые числа
+                                                            const regex = /^(|\d+)$/; // только целые числа
                                                             if (value && !regex.test(value)) {
                                                                 return Promise.reject(new Error(''));
                                                             }
@@ -711,7 +711,7 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                                 rules={[
                                                     ({ getFieldValue }) => ({
                                                         validator(_, value) {
-                                                            const regex = /^(|\d+)$/ // только целые числа
+                                                            const regex = /^(|\d+)$/; // только целые числа
                                                             if (value && !regex.test(value)) {
                                                                 return Promise.reject(new Error(''));
                                                             }
@@ -741,7 +741,7 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                                 rules={[
                                                     ({ getFieldValue }) => ({
                                                         validator(_, value) {
-                                                            const regex = /^(|\d+)$/ // только целые числа
+                                                            const regex = /^(|\d+)$/; // только целые числа
                                                             if (value && !regex.test(value)) {
                                                                 return Promise.reject(new Error(''));
                                                             }
@@ -766,7 +766,7 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                                 rules={[
                                                     ({ getFieldValue }) => ({
                                                         validator(_, value) {
-                                                            const regex = /^(|\d+)$/ // только целые числа
+                                                            const regex = /^(|\d+)$/; // только целые числа
                                                             if (value && !regex.test(value)) {
                                                                 return Promise.reject(new Error(''));
                                                             }
@@ -796,7 +796,7 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                                 rules={[
                                                     ({ getFieldValue }) => ({
                                                         validator(_, value) {
-                                                            const regex = /^(|\d+)$/ // только целые числа
+                                                            const regex = /^(|\d+)$/; // только целые числа
                                                             if (value && !regex.test(value)) {
                                                                 return Promise.reject(new Error(''));
                                                             }
@@ -821,7 +821,7 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                                 rules={[
                                                     ({ getFieldValue }) => ({
                                                         validator(_, value) {
-                                                            const regex = /^(|\d+)$/ // только целые числа
+                                                            const regex = /^(|\d+)$/; // только целые числа
                                                             if (value && !regex.test(value)) {
                                                                 return Promise.reject(new Error(''));
                                                             }
@@ -886,7 +886,7 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                                     tagRender={tagRender}
                                                     onDropdownVisibleChange={(open) => {
                                                         if (!open) {
-                                                            setSearchState('')
+                                                            setSearchState('');
                                                         }
                                                     }}
                                                     suffixIcon={
@@ -900,27 +900,27 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                                             label: <>{_.name}</>,
                                                             title: _.name,
                                                             options: _.children.filter(c => c.name.toLowerCase().includes(searchState.toLowerCase())).map(c => ({ value: c.id, label: c.name }))
-                                                        }
+                                                        };
                                                     })}
                                                     maxTagPlaceholder={omittedValues => {
                                                         if (omittedValues.length > 1) {
                                                             return (
                                                                 // <p className={styles.form__multiLabel}>Выбрано: {omittedValues.length}</p>
                                                                 <>Выбрано: {omittedValues.length}</>
-                                                            )
+                                                            );
                                                         }
                                                         if (omittedValues.length === 1) {
                                                             let valueName = '';
                                                             preferedItemsData.forEach(_ => {
                                                                 const index = _.children.findIndex(c => c.id === omittedValues[0].value);
                                                                 if (index !== -1) {
-                                                                    valueName = _.children[index].name
+                                                                    valueName = _.children[index].name;
                                                                 }
-                                                            })
+                                                            });
                                                             return (
                                                                 // <p className={styles.form__multiLabel} title={valueName}>{valueName}</p>
                                                                 <>{valueName}</>
-                                                            )
+                                                            );
                                                         }
                                                     }}
                                                     menuItemSelectedIcon={<span style={{ background: '#5329FF', width: 4, height: 4, borderRadius: '50% 50%' }}></span>}
@@ -981,5 +981,5 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                 </div>
             </div >
         </>
-    )
-})
+    );
+});

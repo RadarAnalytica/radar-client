@@ -1,13 +1,13 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import './styles.css';
-import styles from './RestoreError.module.css'
+import styles from './RestoreError.module.css';
 import NavbarMainHome from '../components/NavbarMainHome';
 //import SuccessPayment from './images/SuccessPayment.svg';
 import successPaymentImg from './images/SuccessPayment.png';
 import errorPaymentImg from './images/errorPayment.png';
 import CustomButton from '../components/utilsComponents/CustomButton';
-import AuthContext from '../service/AuthContext'
+import AuthContext from '../service/AuthContext';
 import { URL } from '../service/config';
 
 
@@ -15,7 +15,7 @@ const RestoreError = () => {
   const navigate = useNavigate();
 
   const tryAgain = () => {
-    navigate('/reset')
+    navigate('/reset');
   };
 
   return (

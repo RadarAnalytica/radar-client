@@ -1,3 +1,3 @@
 import RequestMonitoringPage from './RequestMonitoringPage';
 
-export default RequestMonitoringPage
+export default RequestMonitoringPage;

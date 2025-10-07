@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import styles from './sidebar.module.css'
+import styles from './sidebar.module.css';
 import { Link } from 'react-router-dom';
 import logo from '../../../assets/logo.png';
 import smallLogo from '../../../assets/small_logo.png';
@@ -8,16 +8,14 @@ import Support from './supportBlock/support';
 import NestedLink from './nestedLink/nestedLink';
 import { menuConfig, adminConfig } from './shared/config/config';
 import { useAppSelector, useAppDispatch } from '../../../redux/hooks';
-import { actions as utilsActions } from '../../../redux/utils/utilsSlice'
+import { actions as utilsActions } from '../../../redux/utils/utilsSlice';
 import AuthContext from '../../../service/AuthContext';
 
 
-
-
 const Sidebar = () => {
-    const dispatch = useAppDispatch()
-    const { user } = useContext(AuthContext)
-    const { isSidebarHidden } = useAppSelector(store => store.utils)
+    const dispatch = useAppDispatch();
+    const { user } = useContext(AuthContext);
+    const { isSidebarHidden } = useAppSelector(store => store.utils);
 
     return (
         <nav className={isSidebarHidden ? `${styles.sidebar} ${styles.sidebar_hidden}` : styles.sidebar}
@@ -44,7 +42,7 @@ const Sidebar = () => {
                             return isMenuActive && (
                                 <li className={styles.sidebar__navListItem} key={i.id}>
                                     <NestedLink title={i.label} icon={i.icon} links={i.children} isMenuHidden={isSidebarHidden} />
-                                </li>)
+                                </li>);
 
                         })}
                         {user?.role === 'admin' &&
@@ -65,7 +63,7 @@ const Sidebar = () => {
                 </div>
             </div>
         </nav>
-    )
-}
+    );
+};
 
 export default Sidebar;

@@ -1,5 +1,5 @@
-import styles from './formScreen.module.css'
-import { ContactForm } from '../../features'
+import styles from './formScreen.module.css';
+import { ContactForm } from '../../features';
 
 export const FormScreen = () => {
 
@@ -60,5 +60,5 @@ export const FormScreen = () => {
                 </div>
             </div>
         </section>
-    )
-}
+    );
+};

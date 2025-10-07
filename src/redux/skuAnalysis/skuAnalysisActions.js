@@ -1,17 +1,17 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { actions as skuAnalysisActions } from './skuAnalysisSlice'
+import { actions as skuAnalysisActions } from './skuAnalysisSlice';
 
 
 export const fetchSkuAnalysisMainChartData = createAsyncThunk(
     'skuChartData',
     async (reqData, { dispatch }) => {
       try {
-        let queryString = `?wb_id=${reqData.id}`
+        let queryString = `?wb_id=${reqData.id}`;
         if (reqData.selectedRange.period) {
-            queryString += `&period=${reqData.selectedRange.period}`
+            queryString += `&period=${reqData.selectedRange.period}`;
         }
         if (reqData.selectedRange.from && reqData.selectedRange.to) {
-             queryString += `&date_from=${reqData.selectedRange.from}&date_to=${reqData.selectedRange.to}`
+             queryString += `&date_from=${reqData.selectedRange.from}&date_to=${reqData.selectedRange.to}`;
         }
         const res = await fetch(`https://radarmarket.ru/api/web-service/product-analysis/charts${queryString}`, {
           method: 'GET',
@@ -21,14 +21,14 @@ export const fetchSkuAnalysisMainChartData = createAsyncThunk(
         });
         if (!res.ok) {
           const data = await res.json();
-          dispatch(skuAnalysisActions.setDataStatus({isLoading: false, isError: true, message: data.detail ? data.detail : 'Что-то пошло не так :('}))
+          dispatch(skuAnalysisActions.setDataStatus({isLoading: false, isError: true, message: data.detail ? data.detail : 'Что-то пошло не так :('}));
         }
         const data = await res.json();
         //dispatch(skuAnalysisActions.setDataStatus({isLoading: false, isError: false, message: ''}))
-        dispatch(skuAnalysisActions.skuSearchHistoryAdd(reqData.id))
+        dispatch(skuAnalysisActions.skuSearchHistoryAdd(reqData.id));
         return data;
       } catch (e) {
-        dispatch(skuAnalysisActions.setDataStatus({isLoading: false, isError: true, message: 'Что-то пошло не так :('}))
+        dispatch(skuAnalysisActions.setDataStatus({isLoading: false, isError: true, message: 'Что-то пошло не так :('}));
       }
     }
 );
@@ -37,12 +37,12 @@ export const fetchSkuAnalysisSkuData = createAsyncThunk(
     'skuMainData',
     async (reqData, { dispatch }) => {
       try {
-        let queryString = `?wb_id=${reqData.id}`
+        let queryString = `?wb_id=${reqData.id}`;
         if (reqData.selectedRange.period) {
-            queryString += `&period=${reqData.selectedRange.period}`
+            queryString += `&period=${reqData.selectedRange.period}`;
         }
         if (reqData.selectedRange.from && reqData.selectedRange.to) {
-            queryString += `&date_from=${reqData.selectedRange.from}&date_to=${reqData.selectedRange.to}`
+            queryString += `&date_from=${reqData.selectedRange.from}&date_to=${reqData.selectedRange.to}`;
         }
         const res = await fetch(`https://radarmarket.ru/api/web-service/product-analysis/product-meta${queryString}`, {
           method: 'GET',
@@ -52,14 +52,14 @@ export const fetchSkuAnalysisSkuData = createAsyncThunk(
         });
         if (!res.ok) {
           const data = await res.json();
-          dispatch(skuAnalysisActions.setDataStatus({isLoading: false, isError: true, message: data.detail ? data.detail : 'Что-то пошло не так :('}))
+          dispatch(skuAnalysisActions.setDataStatus({isLoading: false, isError: true, message: data.detail ? data.detail : 'Что-то пошло не так :('}));
         }
         const data = await res.json();
         //dispatch(skuAnalysisActions.setDataStatus({isLoading: false, isError: false, message: ''}))
-        dispatch(skuAnalysisActions.skuSearchHistoryAdd(reqData.id))
+        dispatch(skuAnalysisActions.skuSearchHistoryAdd(reqData.id));
         return data;
       } catch {
-        dispatch(skuAnalysisActions.setDataStatus({isLoading: false, isError: true, message: 'Что-то пошло не так :('}))
+        dispatch(skuAnalysisActions.setDataStatus({isLoading: false, isError: true, message: 'Что-то пошло не так :('}));
       }
     }
 );
@@ -67,12 +67,12 @@ export const fetchSkuAnalysisIndicatorsData = createAsyncThunk(
     'skuIndicatorsData',
     async (reqData, { dispatch }) => {
       try {
-        let queryString = `?wb_id=${reqData.id}`
+        let queryString = `?wb_id=${reqData.id}`;
         if (reqData.selectedRange.period) {
-            queryString += `&period=${reqData.selectedRange.period}`
+            queryString += `&period=${reqData.selectedRange.period}`;
         }
         if (reqData.selectedRange.from && reqData.selectedRange.to) {
-            queryString += `&date_from=${reqData.selectedRange.from}&date_to=${reqData.selectedRange.to}`
+            queryString += `&date_from=${reqData.selectedRange.from}&date_to=${reqData.selectedRange.to}`;
         }
         const res = await fetch(`https://radarmarket.ru/api/web-service/product-analysis/indicators${queryString}`, {
           method: 'GET',
@@ -82,14 +82,14 @@ export const fetchSkuAnalysisIndicatorsData = createAsyncThunk(
         });
         if (!res.ok) {
           const data = await res.json();
-          dispatch(skuAnalysisActions.setDataStatus({isLoading: false, isError: true, message: data.detail ? data.detail : 'Что-то пошло не так :('}))
+          dispatch(skuAnalysisActions.setDataStatus({isLoading: false, isError: true, message: data.detail ? data.detail : 'Что-то пошло не так :('}));
         }
         const data = await res.json();
         //dispatch(skuAnalysisActions.setDataStatus({isLoading: false, isError: false, message: ''}))
-        dispatch(skuAnalysisActions.skuSearchHistoryAdd(reqData.id))
+        dispatch(skuAnalysisActions.skuSearchHistoryAdd(reqData.id));
         return data;
       } catch {
-        dispatch(skuAnalysisActions.setDataStatus({isLoading: false, isError: true, message: 'Что-то пошло не так :('}))
+        dispatch(skuAnalysisActions.setDataStatus({isLoading: false, isError: true, message: 'Что-то пошло не так :('}));
       }
     }
 );
@@ -97,12 +97,12 @@ export const fetchSkuAnalysisMainTableData = createAsyncThunk(
     'skuMainTableData',
     async (reqData, { dispatch }) => {
       try {
-        let queryString = `?wb_id=${reqData.id}`
+        let queryString = `?wb_id=${reqData.id}`;
         if (reqData.selectedRange.period) {
-            queryString += `&period=${reqData.selectedRange.period}`
+            queryString += `&period=${reqData.selectedRange.period}`;
         }
         if (reqData.selectedRange.from && reqData.selectedRange.to) {
-            queryString += `&date_from=${reqData.selectedRange.from}&date_to=${reqData.selectedRange.to}`
+            queryString += `&date_from=${reqData.selectedRange.from}&date_to=${reqData.selectedRange.to}`;
         }
         const res = await fetch(`https://radarmarket.ru/api/web-service/product-analysis/table/by-date${queryString}`, {
           method: 'GET',
@@ -112,14 +112,14 @@ export const fetchSkuAnalysisMainTableData = createAsyncThunk(
         });
         if (!res.ok) {
           const data = await res.json();
-          dispatch(skuAnalysisActions.setDataStatus({isLoading: false, isError: true, message: data.detail ? data.detail : 'Что-то пошло не так :('}))
+          dispatch(skuAnalysisActions.setDataStatus({isLoading: false, isError: true, message: data.detail ? data.detail : 'Что-то пошло не так :('}));
         }
         const data = await res.json();
         //dispatch(skuAnalysisActions.setDataStatus({isLoading: false, isError: false, message: ''}))
-        dispatch(skuAnalysisActions.skuSearchHistoryAdd(reqData.id))
+        dispatch(skuAnalysisActions.skuSearchHistoryAdd(reqData.id));
         return data;
       } catch {
-        dispatch(skuAnalysisActions.setDataStatus({isLoading: false, isError: true, message: 'Что-то пошло не так :('}))
+        dispatch(skuAnalysisActions.setDataStatus({isLoading: false, isError: true, message: 'Что-то пошло не так :('}));
       }
     }
 );
@@ -127,12 +127,12 @@ export const fetchSkuAnalysisByColorTableData = createAsyncThunk(
     'skuByColorTableData',
     async (reqData, { dispatch }) => {
       try {
-        let queryString = `?wb_id=${reqData.id}`
+        let queryString = `?wb_id=${reqData.id}`;
         if (reqData.selectedRange.period) {
-            queryString += `&period=${reqData.selectedRange.period}`
+            queryString += `&period=${reqData.selectedRange.period}`;
         }
         if (reqData.selectedRange.from && reqData.selectedRange.to) {
-            queryString += `&date_from=${reqData.selectedRange.from}&date_to=${reqData.selectedRange.to}`
+            queryString += `&date_from=${reqData.selectedRange.from}&date_to=${reqData.selectedRange.to}`;
         }
         const res = await fetch(`https://radarmarket.ru/api/web-service/product-analysis/table/by-color${queryString}`, {
           method: 'GET',
@@ -142,14 +142,14 @@ export const fetchSkuAnalysisByColorTableData = createAsyncThunk(
         });
         if (!res.ok) {
           const data = await res.json();
-          dispatch(skuAnalysisActions.setDataStatus({isLoading: false, isError: true, message: data.detail ? data.detail : 'Что-то пошло не так :('}))
+          dispatch(skuAnalysisActions.setDataStatus({isLoading: false, isError: true, message: data.detail ? data.detail : 'Что-то пошло не так :('}));
         }
         const data = await res.json();
         //dispatch(skuAnalysisActions.setDataStatus({isLoading: false, isError: false, message: ''}))
-        dispatch(skuAnalysisActions.skuSearchHistoryAdd(reqData.id))
+        dispatch(skuAnalysisActions.skuSearchHistoryAdd(reqData.id));
         return data;
       } catch {
-        dispatch(skuAnalysisActions.setDataStatus({isLoading: false, isError: true, message: 'Что-то пошло не так :('}))
+        dispatch(skuAnalysisActions.setDataStatus({isLoading: false, isError: true, message: 'Что-то пошло не так :('}));
       }
     }
 );
@@ -157,12 +157,12 @@ export const fetchSkuAnalysisByWarehousesTableData = createAsyncThunk(
     'skuByWarehouseTableData',
     async (reqData, { dispatch }) => {
       try {
-        let queryString = `?wb_id=${reqData.id}`
+        let queryString = `?wb_id=${reqData.id}`;
         if (reqData.selectedRange.period) {
-            queryString += `&period=${reqData.selectedRange.period}`
+            queryString += `&period=${reqData.selectedRange.period}`;
         }
         if (reqData.selectedRange.from && reqData.selectedRange.to) {
-            queryString += `&date_from=${reqData.selectedRange.from}&date_to=${reqData.selectedRange.to}`
+            queryString += `&date_from=${reqData.selectedRange.from}&date_to=${reqData.selectedRange.to}`;
         }
         const res = await fetch(`https://radarmarket.ru/api/web-service/product-analysis/table/by-warehouse${queryString}`, {
           method: 'GET',
@@ -172,14 +172,14 @@ export const fetchSkuAnalysisByWarehousesTableData = createAsyncThunk(
         });
         if (!res.ok) {
           const data = await res.json();
-          dispatch(skuAnalysisActions.setDataStatus({isLoading: false, isError: true, message: data.detail ? data.detail : 'Что-то пошло не так :('}))
+          dispatch(skuAnalysisActions.setDataStatus({isLoading: false, isError: true, message: data.detail ? data.detail : 'Что-то пошло не так :('}));
         }
         const data = await res.json();
         //dispatch(skuAnalysisActions.setDataStatus({isLoading: false, isError: false, message: ''}))
-        dispatch(skuAnalysisActions.skuSearchHistoryAdd(reqData.id))
+        dispatch(skuAnalysisActions.skuSearchHistoryAdd(reqData.id));
         return data;
       } catch {
-        dispatch(skuAnalysisActions.setDataStatus({isLoading: false, isError: true, message: 'Что-то пошло не так :('}))
+        dispatch(skuAnalysisActions.setDataStatus({isLoading: false, isError: true, message: 'Что-то пошло не так :('}));
       }
     }
 );
@@ -187,12 +187,12 @@ export const fetchSkuAnalysisBySizeTableData = createAsyncThunk(
     'skuBySizeTableData',
     async (reqData, { dispatch }) => {
       try {
-        let queryString = `?wb_id=${reqData.id}`
+        let queryString = `?wb_id=${reqData.id}`;
         if (reqData.selectedRange.period) {
-            queryString += `&period=${reqData.selectedRange.period}`
+            queryString += `&period=${reqData.selectedRange.period}`;
         }
         if (reqData.selectedRange.from && reqData.selectedRange.to) {
-            queryString += `&date_from=${reqData.selectedRange.from}&date_to=${reqData.selectedRange.to}`
+            queryString += `&date_from=${reqData.selectedRange.from}&date_to=${reqData.selectedRange.to}`;
         }
         const res = await fetch(`https://radarmarket.ru/api/web-service/product-analysis/table/by-size${queryString}`, {
           method: 'GET',
@@ -202,14 +202,14 @@ export const fetchSkuAnalysisBySizeTableData = createAsyncThunk(
         });
         if (!res.ok) {
           const data = await res.json();
-          dispatch(skuAnalysisActions.setDataStatus({isLoading: false, isError: true, message: data.detail ? data.detail : 'Что-то пошло не так :('}))
+          dispatch(skuAnalysisActions.setDataStatus({isLoading: false, isError: true, message: data.detail ? data.detail : 'Что-то пошло не так :('}));
         }
         const data = await res.json();
         //dispatch(skuAnalysisActions.setDataStatus({isLoading: false, isError: false, message: ''}))
-        dispatch(skuAnalysisActions.skuSearchHistoryAdd(reqData.id))
+        dispatch(skuAnalysisActions.skuSearchHistoryAdd(reqData.id));
         return data;
       } catch {
-        dispatch(skuAnalysisActions.setDataStatus({isLoading: false, isError: true, message: 'Что-то пошло не так :('}))
+        dispatch(skuAnalysisActions.setDataStatus({isLoading: false, isError: true, message: 'Что-то пошло не так :('}));
       }
     }
 );

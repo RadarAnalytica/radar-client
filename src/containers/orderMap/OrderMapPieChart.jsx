@@ -4,7 +4,7 @@ import { Chart, Doughnut } from 'react-chartjs-2';
 import { formatPrice } from '../../service/utils';
 import GreenArrow from '../../assets/greenarrow.svg';
 import RedArrow from '../../assets/redarrow.svg';
-import styles from './OrderMapPieChart.module.css'
+import styles from './OrderMapPieChart.module.css';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -111,11 +111,11 @@ const OrderMapPieChart = ({
   // const red = require('../../assets/redarrow.png');
 
   let bgColorData = colorCons;
-  if (!!!bgColorData || bgColorData.length === 0) {
+  if (!bgColorData || bgColorData.length === 0) {
     bgColorData = [];
     firstFive?.forEach(_ => {
       bgColorData.push(getRandomColor());
-    })
+    });
   }
 
   const data = {
@@ -410,7 +410,6 @@ const OrderMapPieChart = ({
                       {compare ? Number(compare).toFixed(0) : 0} %
                     </span>
                   </div>
-
 
 
                 </div>

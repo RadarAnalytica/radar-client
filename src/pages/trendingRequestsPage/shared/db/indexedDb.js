@@ -35,7 +35,7 @@ export class CacheManager {
     async get(url) {
         try {
             if (!this.db) await this.init();
-            
+
             return new Promise((resolve, reject) => {
                 const transaction = this.db.transaction([this.config.storeName], 'readonly');
                 const store = transaction.objectStore(this.config.storeName);
@@ -127,7 +127,6 @@ export class CacheManager {
 }
 
 
-
 export class ApiService {
     constructor(cacheConfig = {}) {
         this.cache = new CacheManager(cacheConfig);
@@ -167,16 +166,16 @@ export class ApiService {
                 'cache-control': 'public, must-revalidate, max-age=86400',
                 'content-type': 'application/json'
             }});
-            
+
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
 
             const data = await response.json();
-            
+
             // Сохраняем в кэш
             await this.cache.set(url, data, ttl);
-            
+
             return data;
         } catch (error) {
             console.error('Fetch error:', error);

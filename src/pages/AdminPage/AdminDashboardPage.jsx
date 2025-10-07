@@ -1,15 +1,14 @@
 import React, { useEffect, useState, useContext } from 'react';
-import styles from './AdminDashboardPage.module.css'
+import styles from './AdminDashboardPage.module.css';
 import MobilePlug from '../../components/sharedComponents/mobilePlug/mobilePlug';
 import AuthContext from '../../service/AuthContext';
-import Header from '../../components/sharedComponents/header/header'
-import Sidebar from '../../components/sharedComponents/sidebar/sidebar'
+import Header from '../../components/sharedComponents/header/header';
+import Sidebar from '../../components/sharedComponents/sidebar/sidebar';
 import { URL } from '../../service/config';
 import ErrorModal from '../../components/sharedComponents/modals/errorModal/errorModal';
-import { Bar } from './features'
+import { Bar } from './features';
 import { DashboardTableWidget } from './widgets';
 import moment from 'moment';
-
 
 
 const initStatus = {
@@ -17,11 +16,11 @@ const initStatus = {
     isError: false,
     isSuccess: false,
     message: ''
-}
+};
 
 
 const fetchStatistics = async (token, setStatus, initStatus, setData) => {
-    setStatus({ ...initStatus, isLoading: true })
+    setStatus({ ...initStatus, isLoading: true });
     try {
         let res = await fetch(`${URL}/api/admin/service-analysis/`, {
             method: 'POST',
@@ -29,23 +28,23 @@ const fetchStatistics = async (token, setStatus, initStatus, setData) => {
                 'Content-type': 'application/json',
                 'Authorization': 'JWT ' + token
             }
-        })
+        });
 
         if (!res.ok) {
-            setStatus({ ...initStatus, isError: true, message: 'Не удалось получить данные' })
-            return
+            setStatus({ ...initStatus, isError: true, message: 'Не удалось получить данные' });
+            return;
         }
 
         res = await res.json();
-        setStatus({ ...initStatus, isSuccess: true })
-        setData(res.data)
+        setStatus({ ...initStatus, isSuccess: true });
+        setData(res.data);
     } catch {
-        setStatus({ ...initStatus, isError: true, message: 'Не удалось получить данные' })
+        setStatus({ ...initStatus, isError: true, message: 'Не удалось получить данные' });
     }
-}
+};
 
 /**
- * 
+ *
  * {
     "data": {
         "date": "2025-07-09",
@@ -63,16 +62,15 @@ const fetchStatistics = async (token, setStatus, initStatus, setData) => {
  */
 
 
-
 const AdminDashboardPage = () => {
 
-    const { authToken } = useContext(AuthContext)
-    const [status, setStatus] = useState(initStatus)
-    const [dashboardData, setData] = useState()
+    const { authToken } = useContext(AuthContext);
+    const [status, setStatus] = useState(initStatus);
+    const [dashboardData, setData] = useState();
 
     useEffect(() => {
-        fetchStatistics(authToken, setStatus, initStatus, setData)
-    }, [])
+        fetchStatistics(authToken, setStatus, initStatus, setData);
+    }, []);
 
 
     return (
@@ -98,14 +96,14 @@ const AdminDashboardPage = () => {
                             <Bar.Small title='Аккаунтов с тестовым периодом' data={dashboardData.trial_accounts} units='шт' />
                             <Bar.Small title='Активных подписок' data={dashboardData.active_paid_subscriptions} units='шт' />
                             <Bar.Small title='Неактивных аккаунтов' data={dashboardData.inactive_accounts} units='шт' />
-                            <Bar.Small 
-                                title='Возобновляемых подписок, шт' 
-                                data={dashboardData.subscription_renewals.renewals_count} 
+                            <Bar.Small
+                                title='Возобновляемых подписок, шт'
+                                data={dashboardData.subscription_renewals.renewals_count}
                                 units='шт'
                             />
-                            <Bar.Small 
-                                title='Возобновляемых подписок, %' 
-                                data={dashboardData.subscription_renewals.renewals_percentage} 
+                            <Bar.Small
+                                title='Возобновляемых подписок, %'
+                                data={dashboardData.subscription_renewals.renewals_percentage}
                                 units='%'
                             />
                         </>
@@ -119,8 +117,6 @@ const AdminDashboardPage = () => {
             {/* ---------------------- */}
 
 
-
-
             {/*  modals */}
             <ErrorModal
                 open={status.isError}
@@ -131,7 +127,7 @@ const AdminDashboardPage = () => {
             />
         </main>
 
-    )
-}
+    );
+};
 
 export default AdminDashboardPage;

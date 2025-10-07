@@ -1,7 +1,7 @@
-import React, { useState, useContext, useEffect } from 'react'
-import styles from './searchWidget.module.css'
-import { Input, ConfigProvider, Button } from 'antd'
-import { getFilteredData } from '../../shared'
+import React, { useState, useContext, useEffect } from 'react';
+import styles from './searchWidget.module.css';
+import { Input, ConfigProvider, Button } from 'antd';
+import { getFilteredData } from '../../shared';
 import DragDropFile from '../../../../../components/DragAndDropFiles';
 import Modal from "react-bootstrap/Modal";
 import { saveFileClickHandler, getFileClickHandler } from '../../../../../service/getSaveFile';
@@ -13,34 +13,34 @@ import { useNavigate } from 'react-router-dom';
 
 const SearchWidget = ({ stockAnalysisData, setStockAnalysisFilteredData, filters }) => {
 
-    const { authToken, user } = useContext(AuthContext)
-    const { activeBrand, selectedRange } = useAppSelector(store => store.filters)
-    const [searchInputValue, setSearchInputValue] = useState('')
-    const [isSelfCostModalVisible, setIsSelfCostModalVisible] = useState(false)
-    const [ isExelLoading, setIsExelLoading ] = useState(false)
+    const { authToken, user } = useContext(AuthContext);
+    const { activeBrand, selectedRange } = useAppSelector(store => store.filters);
+    const [searchInputValue, setSearchInputValue] = useState('');
+    const [isSelfCostModalVisible, setIsSelfCostModalVisible] = useState(false);
+    const [isExelLoading, setIsExelLoading] = useState(false);
     const [file, setFile] = useState(); // это видимо загрузка файла себестоимости
-    const navigate = useNavigate()
+    const navigate = useNavigate();
 
     const inputKeydownHandler = (e) => {
-        if (e && e.key !== 'Enter') return
-        setStockAnalysisFilteredData(getFilteredData(searchInputValue.trim(), stockAnalysisData))
-    }
+        if (e && e.key !== 'Enter') return;
+        setStockAnalysisFilteredData(getFilteredData(searchInputValue.trim(), stockAnalysisData));
+    };
     const searchButtonClickHandler = () => {
-        setStockAnalysisFilteredData(getFilteredData(searchInputValue.trim(), stockAnalysisData))
-    }
+        setStockAnalysisFilteredData(getFilteredData(searchInputValue.trim(), stockAnalysisData));
+    };
     const inputChangeHandler = (e) => {
         if (e.target.value === '') {
-            setStockAnalysisFilteredData(stockAnalysisData)
+            setStockAnalysisFilteredData(stockAnalysisData);
         }
-        setSearchInputValue(e.target.value)
+        setSearchInputValue(e.target.value);
         // const regex = /^[a-zA-Zа-яА-Я0-9\s]*$/;
         // if (regex.test(e.target.value)) {
         //     setSearchInputValue(e.target.value)
         // }
-    }
+    };
 
     const getProdAnalyticXlsxHandler = async () => {
-        setIsExelLoading(true)
+        setIsExelLoading(true);
         const fileBlob = await ServiceFunctions.getProdAnalyticXlsx(
           authToken,
           selectedRange,
@@ -52,9 +52,9 @@ const SearchWidget = ({ stockAnalysisData, setStockAnalysisFilteredData, filters
 
     useEffect(() => {
         if (stockAnalysisData && searchInputValue) {
-            setStockAnalysisFilteredData(getFilteredData(searchInputValue.trim(), stockAnalysisData))
+            setStockAnalysisFilteredData(getFilteredData(searchInputValue.trim(), stockAnalysisData));
         }
-    }, [stockAnalysisData])
+    }, [stockAnalysisData]);
 
     return (
         <div className={styles.widget}>
@@ -253,7 +253,7 @@ const SearchWidget = ({ stockAnalysisData, setStockAnalysisFilteredData, filters
                 </Modal.Body>
             </Modal>
         </div>
-    )
-}
+    );
+};
 
-export default SearchWidget
+export default SearchWidget;

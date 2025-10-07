@@ -38,7 +38,7 @@ const TableSections = ({ data, cellWidths }) => {
           </div>
           {/* <div className={styles.sppCell}>{data?.avg_spp} %</div> */}
           <div className={styles.buyoutCell} style={{ width: getMinWidth(cellWidths.buyoutCell)}}>
-            {formatPrice(data?.purchase_percent, '%')} 
+            {formatPrice(data?.purchase_percent, '%')}
           </div>
         </div>
         {/* Self Cost Section */}
@@ -106,7 +106,7 @@ const TableSections = ({ data, cellWidths }) => {
             {formatPrice(data?.compensation_damage.rub, '₽')}
           </div>
           <div className={styles.defectCompnesaitionCell} style={{ width: getMinWidth(cellWidths.damageQuantityCell) }}>
-            {formatPrice(data?.compensation_damage.quantity, 'шт')} 
+            {formatPrice(data?.compensation_damage.quantity, 'шт')}
           </div>
           <div className={styles.defectCompnesaitionCell} style={{ width: getMinWidth(cellWidths.finesCell) }}>
             {formatPrice(data?.penalties, '₽')}
@@ -169,7 +169,7 @@ const TableSections = ({ data, cellWidths }) => {
           style={{ background: 'rgba(83, 41, 255, 0.05)' }}
         >
           <div className={styles.defectCompnesaitionCell} style={{ width: getMinWidth(cellWidths.payToRsCell) }}>
-            {formatPrice(data?.payment, '₽')} 
+            {formatPrice(data?.payment, '₽')}
           </div>
           <div className={styles.defectCompnesaitionCell} style={{ width: getMinWidth(cellWidths.pureProfitCell) }}>
             {formatPrice(data?.profit, '₽')}

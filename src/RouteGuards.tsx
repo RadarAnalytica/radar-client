@@ -12,20 +12,20 @@ import NoSubscriptionPage from './pages/NoSubscriptionPage';
 
 /**
  * -----------------------------------------------
- * 
+ *
  *  thats how it works:
- * 
+ *
  *  we splited our protection rules into 5 layers (from top to down):
  *  1. Auth, 2. Onboarding, 3. Subscription status 4. user role 5. subscription type
- * 
+ *
  *  Auth layer is on by default (just wrap route with plain <ProtectedRoute>)
  *  The simpliest way to use this comp is to pass protection layer's flag to it (e.g. <ProtectedRoute onboardProtected>) and thats it!
- * 
+ *
  *  Also u can use more options for more granular protection handle:
  *  use layer's guardType to set the behavior of protection (fallback/redirect)
  *  use layer fallback's to pass component for render. Use layer redirect's to set redirection url
- * 
- *  
+ *
+ *
  *  --- feel free to dm me for any questions -------
  * ----------------------------- Mike Starina ----
  */
@@ -103,7 +103,7 @@ const config: Partial<ProtectedRouteProps> = {
     subscriptionRedirect: '/tariffs',
     subscription: 'Smart',
     role: 'admin',
-}
+};
 
 export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   children,
@@ -140,8 +140,8 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   role = config.role!,
 }) => {
   const { user } = useContext(AuthContext);
-  const { pathname } = useLocation()
-  const navigate = useNavigate()
+  const { pathname } = useLocation();
+  const navigate = useNavigate();
   const isCalculateEntryUrl = sessionStorage.getItem('isCalculateEntryUrl');
 
   // -------this is test user object for dev purposes ------//
@@ -168,7 +168,7 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   if (underDevProtected && process.env.NODE_ENV === 'production') {
     switch(underDevGuardType) {
       case 'redirect': {
-        navigate(underDevRedirect)
+        navigate(underDevRedirect);
         return null;
       }
       case 'fallback': {
@@ -176,7 +176,7 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
           <Suspense fallback={<LoaderPage />}>
             {underDevFallback()}
           </Suspense>
-        )
+        );
       }
     }
     return (underDevFallback());
@@ -187,11 +187,11 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
     switch (authGuardType) {
       case 'redirect': {
         if (isCalculateEntryUrl === '1') {
-          sessionStorage.removeItem('isCalculateEntryUrl')
-          window.location.replace(`${URL}/signup`)
+          sessionStorage.removeItem('isCalculateEntryUrl');
+          window.location.replace(`${URL}/signup`);
           return null;
         } else {
-          window.location.replace(`${URL}${authRedirect}`)
+          window.location.replace(`${URL}${authRedirect}`);
           return null;
         }
       }
@@ -200,10 +200,10 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
           <Suspense fallback={<LoaderPage/>}>
             {authFallback()}
           </Suspense>
-        )
+        );
       }
     }
-    window.location.replace(`${URL}${authRedirect}`)
+    window.location.replace(`${URL}${authRedirect}`);
     return null;
   }
 
@@ -211,32 +211,32 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   if (testPeriodProtected && user && user.subscription_status === null) {
      switch(testPeriodGuardType) {
        case 'redirect': {
-         return (<Navigate to={testPeriodRedirect} />)
+         return (<Navigate to={testPeriodRedirect} />);
         }
         case 'fallback': {
           return (
             <Suspense fallback={<LoaderPage />}>
             {testPeriodFallback({title: routeRuName, pathname: pathname.substring(1)})}
           </Suspense>
-        )
+        );
       }
     }
 
-    return (<Navigate to={testPeriodRedirect} replace />)
+    return (<Navigate to={testPeriodRedirect} replace />);
   }
-  
+
   // ---------3. Subscription expiration protection (checking subscription) -------//
   if (expireProtected && user && user.subscription_status && user.subscription_status.toLowerCase() === 'expired') {
     switch(expireGuardType) {
       case 'redirect': {
-        return (<Navigate to={expireRedirect} />)
+        return (<Navigate to={expireRedirect} />);
       }
       case 'fallback': {
         return (
           <Suspense fallback={<LoaderPage />}>
             {expireFallback({title: routeRuName, pathname: pathname.substring(1)})}
           </Suspense>
-        )
+        );
       }
     }
     return <Navigate to={expireRedirect} replace />;
@@ -246,32 +246,32 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
     if (onboardProtected && user && user.subscription_status && user.subscription_status.toLowerCase() === 'smart' && !user.is_onboarded) {
     switch(onboardGuardType) {
         case 'redirect': {
-          return (<Navigate to={onboardRedirect} />)
+          return (<Navigate to={onboardRedirect} />);
         }
         case 'fallback': {
         return (
           <Suspense fallback={<LoaderPage />}>
             {onboardFallback()}
           </Suspense>
-        )
+        );
         }
       }
-      
-      return (<Navigate to={onboardRedirect} replace />)
+
+      return (<Navigate to={onboardRedirect} replace />);
   }
 
   // ----------5. User role protection ------------//
   if (userRoleProtected && user && role && user.role !== role) {
     switch(userRoleGuardType) {
         case 'redirect': {
-          return (<Navigate to={userRoleRedirect} />)
+          return (<Navigate to={userRoleRedirect} />);
         }
         case 'fallback': {
         return (
           <Suspense fallback={<LoaderPage />}>
             {userRoleFallback()}
           </Suspense>
-        )
+        );
         }
       }
 
@@ -285,18 +285,18 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
      */
     switch(subscriptionGuardType) {
       case 'redirect': {
-        return (<Navigate to={subscriptionRedirect} />)
+        return (<Navigate to={subscriptionRedirect} />);
       }
       case 'fallback': {
         return (
           <Suspense fallback={<LoaderPage />}>
             {subscriptionFallback()}
           </Suspense>
-        )
+        );
       }
     }
 
-    return (<Navigate to={subscriptionRedirect} replace />)
+    return (<Navigate to={subscriptionRedirect} replace />);
   }
 
   // ----default ----------//
@@ -308,5 +308,5 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
       </Helmet>
       {children}
     </Suspense>
-  )
-}
+  );
+};

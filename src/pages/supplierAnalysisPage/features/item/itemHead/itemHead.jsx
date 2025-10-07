@@ -1,8 +1,8 @@
-import styles from './itemHead.module.css'
+import styles from './itemHead.module.css';
 import { useAppSelector } from '../../../../../redux/hooks';
 import { formatPrice } from '../../../../../service/utils';
 
-/** 
+/**
  * {
   "wb_id": 93378993,
   "wb_id_url": "https://www.wildberries.ru/catalog/93378993/detail.aspx",
@@ -37,7 +37,7 @@ const ItemHead = () => {
                     <span className='loader'></span>
                 </div>
             </div>
-        )
+        );
     }
 
     return (
@@ -50,13 +50,13 @@ const ItemHead = () => {
                                 <div className={styles.head__mainPhotoWrapper} key={id}>
                                     <img src={i} alt='' width={138} height={182} className={styles.head__galleryMainImage} />
                                 </div>
-                            )
+                            );
                         } else {
 
                             return id < 4 && (
                                 <div className={styles.head__secPhotoWrapper} key={id}>
                                     <img src={i} alt='' width={39} height={54} className={styles.head__galleryImage} />
-                                </div>)
+                                </div>);
                         }
                     })}
                 </div>
@@ -70,6 +70,6 @@ const ItemHead = () => {
                 </div>
             </div>}
         </>
-    )
-}
+    );
+};
 export default ItemHead;

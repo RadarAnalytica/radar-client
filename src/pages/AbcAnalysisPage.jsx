@@ -1,5 +1,5 @@
 import { useContext, useState, useEffect } from "react";
-import styles from './AbcAnalysisPage.module.css'
+import styles from './AbcAnalysisPage.module.css';
 import SideNav from "../components/SideNav";
 import TopNav from "../components/TopNav";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
@@ -18,8 +18,8 @@ import NoSubscriptionWarningBlock from '../components/sharedComponents/noSubscri
 import SelfCostWarningBlock from "../components/sharedComponents/selfCostWraningBlock/selfCostWarningBlock";
 
 const AbcAnalysisPage = () => {
-  const { activeBrand, selectedRange: days } = useAppSelector(store => store.filters)
-  const filters = useAppSelector(store => store.filters)
+  const { activeBrand, selectedRange: days } = useAppSelector(store => store.filters);
+  const filters = useAppSelector(store => store.filters);
   const shops = useAppSelector((state) => state.shopsSlice.shops);
   const { user, authToken } = useContext(AuthContext);
   const dispatch = useAppDispatch();
@@ -27,8 +27,8 @@ const AbcAnalysisPage = () => {
   const [isNeedCost, setIsNeedCost] = useState([]);
   const [viewType, setViewType] = useState("proceeds");
   const [loading, setLoading] = useState(false);
-  const [primaryCollect, setPrimaryCollect] = useState(null)
-  const [shopStatus, setShopStatus] = useState(null)
+  const [primaryCollect, setPrimaryCollect] = useState(null);
+  const [shopStatus, setShopStatus] = useState(null);
 
   // console.log('---------- base ----------')
   // console.log(loading)
@@ -89,9 +89,9 @@ const AbcAnalysisPage = () => {
   // 2.1 Получаем данные по выбранному магазину и проверяем себестоимость
 
   useEffect(() => {
-    setPrimaryCollect(activeBrand?.is_primary_collect)
+    setPrimaryCollect(activeBrand?.is_primary_collect);
     if (activeBrand?.is_primary_collect && viewType && days && authToken) {
-      updateDataAbcAnalysis(viewType, authToken, days, activeBrand.id.toString())
+      updateDataAbcAnalysis(viewType, authToken, days, activeBrand.id.toString());
     }
   }, [activeBrand, viewType, days, filters]);
   //---------------------------------------------------------------------------------------//
@@ -100,8 +100,8 @@ const AbcAnalysisPage = () => {
 
   useEffect(() => {
     if (activeBrand && activeBrand.is_primary_collect && activeBrand.is_primary_collect !== primaryCollect) {
-      setPrimaryCollect(activeBrand.is_primary_collect)
-      updateDataAbcAnalysis(viewType, authToken, days, activeBrand.id.toString())
+      setPrimaryCollect(activeBrand.is_primary_collect);
+      updateDataAbcAnalysis(viewType, authToken, days, activeBrand.id.toString());
     }
   }, [authToken]);
 
@@ -117,7 +117,6 @@ const AbcAnalysisPage = () => {
       updateDataAbcAnalysis(viewType, days, activeBrand, authToken);
     }
   };
-
 
 
   useEffect(() => {
@@ -163,18 +162,15 @@ const AbcAnalysisPage = () => {
             is_valid: true,
             is_primary_collect: shops.some(_ => _.is_primary_collect),
             is_self_cost_set: !shops.some(_ => !_.is_self_cost_set)
-        }
-        setShopStatus(allShop)
+        };
+        setShopStatus(allShop);
     }
 
     if (activeBrand && activeBrand.id !== 0 && shops) {
-        const currShop = shops.find(_ => _.id === activeBrand.id)
-        setShopStatus(currShop)
+        const currShop = shops.find(_ => _.id === activeBrand.id);
+        setShopStatus(currShop);
     }
-}, [activeBrand, shops, filters])
-
-
-
+}, [activeBrand, shops, filters]);
 
 
   if (user?.subscription_status === "expired") {
@@ -200,7 +196,7 @@ const AbcAnalysisPage = () => {
         </div>
 
         {isDemoMode && <NoSubscriptionWarningBlock />}
-        
+
         {
           shopStatus &&
           !shopStatus.is_self_cost_set &&

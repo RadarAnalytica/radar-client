@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 // import ArrowUp from "../assets/ArrowDown.svg";
 import ArrowUp from "../../../assets/ArrowDown.svg";
 import ArrowDown from "../../../assets/ArrowUp.svg";
-import pageIcon from "../../../assets/page-icon.svg"
+import pageIcon from "../../../assets/page-icon.svg";
 import GreenArrow from '../../../assets/greenarrow.svg';
 import RedArrow from '../../../assets/redarrow.svg';
 import styles from './TableRequestMonitoring.module.css';
@@ -30,10 +30,10 @@ const TableRequestMonitoring = ({ dataTable, monitorData, setPage, sort, setSort
 
     const sortData = (key) => {
         if (key === "asc") {
-            setSort("desc")
+            setSort("desc");
         }
         if (key === "desc") {
-            setSort("asc")
+            setSort("asc");
         }
     };
 
@@ -68,8 +68,8 @@ const TableRequestMonitoring = ({ dataTable, monitorData, setPage, sort, setSort
     };
 
     useEffect(() => {
-        setFilteredDayLenght(filteredData.length > 0 ? filteredData[0]['details'].length : 0)
-    }, [filteredData])
+        setFilteredDayLenght(filteredData.length > 0 ? filteredData[0]['details'].length : 0);
+    }, [filteredData]);
 
     const calculateCompareFlags = (data) => {
         let countTrueFlags = 0;
@@ -288,6 +288,6 @@ const TableRequestMonitoring = ({ dataTable, monitorData, setPage, sort, setSort
                 <div className={styles.tableLeftMargin}></div>
             </div>
         </div >
-    )
-}
-export default TableRequestMonitoring
+    );
+};
+export default TableRequestMonitoring;

@@ -16,17 +16,17 @@ export default function ReportTable({ loading, columns, data, rowSelection = fal
 
 	useEffect(() => {
 		if (!tableContainerRef.current || tableContainerRef.current.offsetHeight <= 450){
-			setTableScroll({ x: 'max-content', y: 344 })
+			setTableScroll({ x: 'max-content', y: 344 });
 		}
 		const container = tableContainerRef.current;
 		const width = container.offsetWidth;
 		const height = container.offsetHeight;
 		const availableHeight = height - 106 - 5;
-		setTableScroll({ x: width, y: availableHeight })
-	}, [loading])
+		setTableScroll({ x: width, y: availableHeight });
+	}, [loading]);
 
 	if (!loading && !is_primary_collect){
-		return <></>
+		return <></>;
 	}
 
 	return (
@@ -45,7 +45,7 @@ export default function ReportTable({ loading, columns, data, rowSelection = fal
 						</div>}
 				</div>}
 				<ConfigProvider
-					renderEmpty={ () => (<div>Нет данных</div>)} 
+					renderEmpty={ () => (<div>Нет данных</div>)}
 					theme={{
 						components: {
 							Table: {
@@ -105,7 +105,7 @@ export default function ReportTable({ loading, columns, data, rowSelection = fal
 function ExpandIcon({ expanded, onExpand, record }) {
 	const canExpand = !!record?.children && record?.children?.length > 0;
 	// const canExpand = false;
-	return canExpand && 
+	return canExpand &&
 		<ConfigProvider
 			theme={{
 				token: {
@@ -132,7 +132,7 @@ function ExpandIcon({ expanded, onExpand, record }) {
 					<path d="M1 1L7 7L13 1" stroke='currentColor' strokeWidth="2" strokeLinecap="round"/>
 				</svg>
 			</Button>
-		</ConfigProvider>
+		</ConfigProvider>;
 };
 
 function SortIcon({ sortOrder }) {
@@ -162,4 +162,4 @@ function SortIcon({ sortOrder }) {
 	);
 }
 
-export {ExpandIcon, SortIcon}
+export {ExpandIcon, SortIcon};

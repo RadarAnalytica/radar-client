@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState, useRef } from "react";
 import SideNav from "../components/SideNav";
 import TopNav from "../components/TopNav";
-import styles from './LinkedShops.module.css'
+import styles from './LinkedShops.module.css';
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import AuthContext from "../service/AuthContext";
 import wblogo from "../assets/wblogo.png";
@@ -31,7 +31,7 @@ import { addShop } from "../service/api/api";
 import Sidebar from "../components/sharedComponents/sidebar/sidebar";
 import Header from "../components/sharedComponents/header/header";
 import { fetchFilters } from "../redux/apiServicePagesFiltersState/filterActions";
-import { actions as filterActions } from '../redux/apiServicePagesFiltersState/apiServicePagesFilterState.slice'
+import { actions as filterActions } from '../redux/apiServicePagesFiltersState/apiServicePagesFilterState.slice';
 
 const LinkedShops = () => {
   const { user, authToken, logout } = useContext(AuthContext);
@@ -199,7 +199,7 @@ const LinkedShops = () => {
     }
 
     try {
-      await addShop(addShopData)
+      await addShop(addShopData);
       handleClose();
       setShowSuccess(true);
       dispatch(fetchShops(authToken));
@@ -417,9 +417,9 @@ const LinkedShops = () => {
                         <text
                           x='30'
                           y='25'
-                          font-family='Arial'
-                          font-size='18'
-                          font-weight='400'
+                          fontFamily='Arial'
+                          fontSize='18'
+                          fontWeight='400'
                           fill='black'
                         >
                           Ошибка
@@ -448,9 +448,9 @@ const LinkedShops = () => {
                         <text
                           x='30'
                           y='25'
-                          font-family='Arial'
-                          font-size='18'
-                          font-weight='400'
+                          fontFamily='Arial'
+                          fontSize='18'
+                          fontWeight='400'
                           fill='black'
                         >
                           Активен
@@ -484,9 +484,9 @@ const LinkedShops = () => {
                         <text
                           x='30'
                           y='25'
-                          font-family='Arial'
-                          font-size='18'
-                          font-weight='400'
+                          fontFamily='Arial'
+                          fontSize='18'
+                          fontWeight='400'
                           fill='black'
                         >
                           Сбор данных

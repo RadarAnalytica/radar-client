@@ -19,5 +19,5 @@ export const SelectIcon = () => {
                 strokeLinecap='round'
             />
         </svg>
-    )
-}
+    );
+};

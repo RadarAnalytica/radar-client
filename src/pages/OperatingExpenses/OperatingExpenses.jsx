@@ -54,7 +54,7 @@ export default function OperatingExpenses() {
 	const [expense, setExpense] = useState([]);
 	const [expenseEdit, setExpenseEdit] = useState(null);
 	const [expenseCopy, setExpenseCopy] = useState(null);
-	
+
 	const actionExpenseRender = (value, row) => {
 		if (row.key == 'summary') {
 			return null;
@@ -66,7 +66,7 @@ export default function OperatingExpenses() {
 					icon={EditIcon}
 					onClick={() => {
 						setExpenseEdit((expense.find((item) => item.id === row.id)));
-						setModalCreateExpenseOpen(true)
+						setModalCreateExpenseOpen(true);
 					}}
 					title='Изменить'
 					></Button>
@@ -75,7 +75,7 @@ export default function OperatingExpenses() {
 					icon={CopyIcon}
 					onClick={() => {
 						setExpenseCopy((expense.find((item) => item.id === row.id)));
-						setModalCreateExpenseOpen(true)
+						setModalCreateExpenseOpen(true);
 					}}
 					title='Копировать'
 					></Button>
@@ -86,16 +86,16 @@ export default function OperatingExpenses() {
 					title='Удалить'
 				></Button>
 			</ConfigProvider>
-		</Flex>)
-	}
+		</Flex>);
+	};
 
 	const expenseData = useMemo(() => {
 		const columns = EXPENSE_COLUMNS.map((column, i) => {
 			if (column.dataIndex == 'action'){
-				column.render = actionExpenseRender
+				column.render = actionExpenseRender;
 			}
-			return ({ ...column, key: column.i })
-		})
+			return ({ ...column, key: column.i });
+		});
 
 		let data = expense?.map((item) => ({
 			...item,
@@ -129,7 +129,7 @@ export default function OperatingExpenses() {
 					icon={EditIcon}
 					onClick={() => {
 						setCategoryEdit((category.find((article) => article.id === row.id)));
-						setModalCreateCategoryOpen(true)
+						setModalCreateCategoryOpen(true);
 					}}
 					title='Изменить'
 					></Button>
@@ -140,21 +140,21 @@ export default function OperatingExpenses() {
 					title='Удалить'
 				></Button>
 			</ConfigProvider>
-		</Flex>)
-	}
+		</Flex>);
+	};
 
 	const categoryData = useMemo(() => {
 		const columns = CATEGORY_COLUMNS.map((column, i) => {
 			if (column.dataIndex == 'action'){
-				column.render = actionCategoryRender
+				column.render = actionCategoryRender;
 			}
-			return ({ ...column, key: column.i })
-		})
+			return ({ ...column, key: column.i });
+		});
 		let data = [];
 		if (category){
 			data = category.map((article) => ({...article, key: article.id}));
 		}
-		return {data, columns}
+		return {data, columns};
 	}, [category]);
 
 	const updateCategories = async () => {
@@ -173,69 +173,69 @@ export default function OperatingExpenses() {
 				setLoading(false);
 			}
 		}
-	}
+	};
 
 	const updatePeriodicExpenses = async () => {
 		setLoading(true);
 		try {
 			const res = await ServiceFunctions.getAllOperatingExpensesExpense(authToken);
-			console.log(res)
-			setExpense(res.data)
+			console.log(res);
+			setExpense(res.data);
 		} catch(error) {
 			console.error('updateExpenses error', error);
 			setExpense([]);
 		} finally {
-			console.log('updateExpenses', !firstLoad.current)
+			console.log('updateExpenses', !firstLoad.current);
 			// if (!firstLoad.current) {
 				setLoading(false);
 			// }
 		}
-	}
+	};
 
 	const updateExpenses = async () => {
 		setLoading(true);
 		try {
 			const res = await ServiceFunctions.getOperatingExpensesExpenseGetAll(authToken);
-			console.log(res)
-			setExpense(res.data)
-			return
+			console.log(res);
+			setExpense(res.data);
+			return;
 		} catch(error) {
 			console.error('updateExpenses error', error);
 			setExpense([]);
 		} finally {
-			console.log('updateExpenses', !firstLoad.current)
+			console.log('updateExpenses', !firstLoad.current);
 			if (!firstLoad.current) {
 				setLoading(false);
 			}
 		}
-	}
+	};
 
 	useEffect(() => {
 		if (!activeBrand && !activeBrand?.is_primary_collect ){
-			return
+			return;
 		}
 
 		if (firstLoad.current) {
 			updateCategories().then(() => {
 				updateExpenses();
 			}).then(() => {
-					console.log('promise ')
+					console.log('promise ');
 					firstLoad.current = false;
 					setLoading(false);
 				});
-			return
+			return;
 		}
 
 		if (view === 'expense'){
 			console.log('updateCosts');
 			updateExpenses();
 		}
-		
+
 		if (view === 'category'){
 			console.log('updateArticles');
 			updateCategories();
 		}
-	}, [ activeBrand, selectedRange ])
+	}, [activeBrand, selectedRange]);
 
 	const modalExpenseHandlerClose = () => {
 		setModalCreateExpenseOpen(false);
@@ -263,30 +263,30 @@ export default function OperatingExpenses() {
 		try {
 			const res = await ServiceFunctions.postOperatingExpensesCategoryCreate(authToken, category);
 			// console.log('createCategory', res);
-			// 
-			setCategory((list) => [...list, res])
-			// 
+			//
+			setCategory((list) => [...list, res]);
+			//
 		} catch(error) {
 			console.error('createCategory error', error);
 		} finally {
 			setModalCreateCategoryOpen(false);
 			setCategoryLoading(false);
 		}
-	}
+	};
 
 	const editCategory = async (category) => {
 		setLoading(true);
 		setModalCreateCategoryOpen(false);
 		try {
 			const res = await ServiceFunctions.patchOperatingExpensesCategory(authToken, category);
-			// 
+			//
 			setCategory((list) => list.map((el) => {
 				if (el.id === category.id){
-					return category
+					return category;
 				}
-				return el
-			}))
-			// 
+				return el;
+			}));
+			//
 		} catch(error) {
 			console.error('createArticle error', error);
 		} finally {
@@ -295,25 +295,25 @@ export default function OperatingExpenses() {
 				setLoading(false);
 			// }
 		}
-	}
+	};
 
 	const handleCategory = (category) => {
 		setModalCreateCategoryOpen(false);
-		if (!!categoryEdit){
-			console.log('editCategory')
-			const editedCategory = {...categoryEdit, ...category}
+		if (categoryEdit){
+			console.log('editCategory');
+			const editedCategory = {...categoryEdit, ...category};
 			editCategory(editedCategory);
-			return
+			return;
 		}
 		createCategory(category);
 		// setExpenses((category) => category.push(article) );
 	};
 
 	const handleExpanse = (expense) => {
-		console.log('handleExpanse', expense)
-		if (!!expenseEdit){
+		console.log('handleExpanse', expense);
+		if (expenseEdit){
 			editExpanse(expense);
-			return
+			return;
 		}
 		createExpense(expense);
 		// setExpenses((category) => category.push(article) );
@@ -323,44 +323,44 @@ export default function OperatingExpenses() {
 		setCategoryLoading(true);
 		// console.log('createCategory', category)
 		// setModalCreateCategoryOpen(false);
-		console.log('createExpense', expense)
+		console.log('createExpense', expense);
 		try {
 			const res = await ServiceFunctions.postOperatingExpensesExpenseCreate(authToken, expense);
 			// console.log('createCategory', res);
-			// 
-			setExpense((list) => [...list, res])
-			// 
+			//
+			setExpense((list) => [...list, res]);
+			//
 		} catch(error) {
 			console.error('createCategory error', error);
 		} finally {
 			setModalCreateExpenseOpen(false);
 			setCategoryLoading(false);
 		}
-	}
+	};
 
 	const deleteExpense = async (id) => {
 		setLoading(true);
 		try {
 			const res = await ServiceFunctions.deleteOperatingExpensesExpenseDelete(authToken, id);
-			// 
+			//
 			setExpense((list) => list.filter((el) => el.id !== id));
-			// 
+			//
 		} catch(error) {
 			console.error('deleteExpense error', error);
 		} finally {
 			setDeleteExpenseId(null);
 			setLoading(false);
 		}
-	}
-	
+	};
+
 	const deletePeriodicExpense = async (id) => {
 		console.log('delete cost');
 		setLoading(true);
 		try {
 			const res = await ServiceFunctions.deleteOperatingExpensesExpense();
-			// 
+			//
 			setExpense((list) => list.filter((el) => el.id !== id));
-			// 
+			//
 			console.log('deleteExpense', res);
 		} catch(error) {
 			console.error('deleteExpense error', error);
@@ -368,24 +368,24 @@ export default function OperatingExpenses() {
 			setDeleteExpenseId(null);
 			setLoading(false);
 		}
-	}
+	};
 
 	const deleteCategoryHandler = async (id) => {
 		console.log('deleteCategoryHandler');
 		setLoading(true);
 		try {
 			const res = await ServiceFunctions.deleteOperatingExpensesCategory(authToken, id);
-			// 
-			console.log('id', id)
+			//
+			console.log('id', id);
 			setCategory((list) => list.filter((el) => el.id !== id));
-			// 
+			//
 		} catch(error) {
 			console.error('deleteCategoryHandler error', error);
 		} finally {
 			setDeleteCategoryId(null);
 			setLoading(false);
 		}
-	}
+	};
 
 	return (
 		<main className={styles.page}>
@@ -528,7 +528,7 @@ export default function OperatingExpenses() {
 						</Flex>
 					</Flex>
 				)}
-				
+
 				<div className={styles.controls}>
 						<Filters
 							shopSelect={true}
@@ -548,7 +548,7 @@ export default function OperatingExpenses() {
 							// operationCostsArticlesHandler={}
 						/>
 				</div>
-				
+
 				{!loading && shops && shopStatus && !shopStatus?.is_primary_collect && (
 						<DataCollectWarningBlock />
 				)}

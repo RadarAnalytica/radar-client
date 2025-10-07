@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import styles from './mainChartWidget.module.css'
+import styles from './mainChartWidget.module.css';
 import { Segmented, ConfigProvider } from 'antd';
 import { ChartControls } from '../../features';
 import { Chart } from 'react-chartjs-2';
@@ -26,11 +26,11 @@ ChartJS.register(
 
 
 const MainChartWidget = ({ id }) => {
-    const dispatch = useAppDispatch()
-    const [tabsState, setTabsState] = useState('Аналитика товара') // не удалять - стейт табов вариантов графика
-    const [chartControls, setChartControls] = useState(chartCompareConfigObject.filter(_ => _.isControl).map(_ => ({ ..._, isActive: _.defaultActive })))
-    const [normilizedChartData, setNormilizedChartData] = useState()
-    const { skuChartData, dataStatus } = useAppSelector(store => store.skuAnalysis)
+    const dispatch = useAppDispatch();
+    const [tabsState, setTabsState] = useState('Аналитика товара'); // не удалять - стейт табов вариантов графика
+    const [chartControls, setChartControls] = useState(chartCompareConfigObject.filter(_ => _.isControl).map(_ => ({ ..._, isActive: _.defaultActive })));
+    const [normilizedChartData, setNormilizedChartData] = useState();
+    const { skuChartData, dataStatus } = useAppSelector(store => store.skuAnalysis);
 
     useEffect(() => {
         if (skuChartData && chartControls) {
@@ -39,7 +39,7 @@ const MainChartWidget = ({ id }) => {
                 datasets: chartControls.map(i => {
                     let yAxis = 'y1';
                     if (i.hasUnits && i.units === '₽') {
-                        yAxis = 'y'
+                        yAxis = 'y';
                     }
                     if (i.isOnChart && i.isActive) {
                         return {
@@ -54,24 +54,23 @@ const MainChartWidget = ({ id }) => {
                             pointRadius: 6,
                             hoverRadius: 8,
                             borderWidth: 2
-                        }
+                        };
                     } else {
-                        return {}
+                        return {};
                     }
                 })
-            }
-            setNormilizedChartData({ ...data })
+            };
+            setNormilizedChartData({ ...data });
         }
-    }, [skuChartData, chartControls])
+    }, [skuChartData, chartControls]);
 
     if (dataStatus.isLoading) {
         return (
             <div className={styles.loaderWrapper}>
                 <span className='loader'></span>
             </div>
-        )
+        );
     }
-
 
 
     return (
@@ -125,7 +124,7 @@ const MainChartWidget = ({ id }) => {
                 </div>
             }
         </div>
-    )
-}
+    );
+};
 
 export default MainChartWidget;

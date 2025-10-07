@@ -17822,7 +17822,6 @@ const mockStock = [
 ];
 
 
-
 export async function mockGetAllShops() {
 	return mockShops;
 }
@@ -17834,37 +17833,37 @@ function getRange(selectedRange){
 export async function mockGetDashBoard(selectedRange, idShop) {
     const promise = new Promise((resolve) => {
         setTimeout(() => {
-            resolve(mockDashBoard[19999][getRange(selectedRange)])
-        }, 1500)
-    })
+            resolve(mockDashBoard[19999][getRange(selectedRange)]);
+        }, 1500);
+    });
 	return promise;
 }
 
 export async function mockGetAbcData(viewType, selectedRange) {
-    console.log(viewType, selectedRange)
+    console.log(viewType, selectedRange);
     const promise = new Promise((resolve) => {
         setTimeout(() => {
-            resolve(mockABC[getRange(selectedRange)][viewType])
-        }, 1500)
-    })
+            resolve(mockABC[getRange(selectedRange)][viewType]);
+        }, 1500);
+    });
 	return promise;
 }
 
 export async function mockGetGeographyData(selectedRange) {
     const promise = new Promise((resolve) => {
         setTimeout(() => {
-            resolve(mockGeo[getRange(selectedRange)])
-        }, 500)
-    })
+            resolve(mockGeo[getRange(selectedRange)]);
+        }, 500);
+    });
 	return promise;
 }
 
 export async function mockGetAnalysisData() {
     const promise = new Promise((resolve) => {
         setTimeout(() => {
-            resolve(mockStock)
-        }, 1500)
-    })
+            resolve(mockStock);
+        }, 1500);
+    });
 	return promise;
 	// return mockStock;
 }
@@ -17872,8 +17871,8 @@ export async function mockGetAnalysisData() {
 export async function mockGetChartDetailData(selectedRange) {
     const promise = new Promise((resolve) => {
         setTimeout(() => {
-            resolve(mockDetailChartData[getRange(selectedRange)])
-        }, 1500)
-    })
+            resolve(mockDetailChartData[getRange(selectedRange)]);
+        }, 1500);
+    });
 	return promise;
 }

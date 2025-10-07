@@ -8,15 +8,15 @@ import { URL } from '../service/config';
 const RestorePass = ({ email }) => {
   const [pass, setPass] = useState();
   const [confPass, setConfPass] = useState();
-  const [ passInputErrMessage, setPassInputErrMessage ] = useState('')
-  const [ confPassInputErrMessage, setConfPassInputErrMessage ] = useState('')
+  const [passInputErrMessage, setPassInputErrMessage] = useState('');
+  const [confPassInputErrMessage, setConfPassInputErrMessage] = useState('');
 
   const handlePass = (e) => setPass(e.target.value);
   const handleConfPass = (e) => setConfPass(e.target.value);
   const navigate = useNavigate();
 
   const updatePass = async (email, pass) => {
-    let loc_string = window.location.href
+    let loc_string = window.location.href;
     try {
       const res = await fetch(`${URL}/api/user/restore_password`, {
         method: 'POST',
@@ -32,11 +32,11 @@ const RestorePass = ({ email }) => {
       });
       if (!res.ok) {
         alert('Возникла ошибка. Поторите попытку');
-        return
+        return;
       }
 
       alert('Пароль успешно обновлен');
-      window.location.href = `${URL}/signin`
+      window.location.href = `${URL}/signin`;
       //const data = await res.json();
       //return data;
     } catch {
@@ -46,32 +46,32 @@ const RestorePass = ({ email }) => {
 
   const handler = async (e) => {
     if (pass?.length < 6) {
-      setPassInputErrMessage('Пожалуйста, введите не менеe 6 символов')
+      setPassInputErrMessage('Пожалуйста, введите не менеe 6 символов');
     }
     if (pass !== confPass) {
-      setConfPassInputErrMessage('Пароли не совпадают')
+      setConfPassInputErrMessage('Пароли не совпадают');
     }
     if (pass && confPass && pass === confPass && pass?.length >= 6) {
-      setPassInputErrMessage('')
-      setConfPassInputErrMessage('')
-      await updatePass(email, pass)
+      setPassInputErrMessage('');
+      setConfPassInputErrMessage('');
+      await updatePass(email, pass);
     } else {
       e.preventDefault();
     }
   };
-  localStorage.removeItem('authToken')
+  localStorage.removeItem('authToken');
 
 
   useEffect(() => {
     if (pass?.length < 6) {
-      setPassInputErrMessage('Пожалуйста, введите не менеe 6 символов')
+      setPassInputErrMessage('Пожалуйста, введите не менеe 6 символов');
     } else {
-      setPassInputErrMessage('')
+      setPassInputErrMessage('');
     }
     if (pass === confPass) {
-      setConfPassInputErrMessage('')
+      setConfPassInputErrMessage('');
     }
-  }, [pass, confPass])
+  }, [pass, confPass]);
 
   return (
     <div className='signin-form'>
@@ -112,8 +112,8 @@ const RestorePass = ({ email }) => {
         Обновить
       </button>
       <div style={{ display: 'flex', justifyContent: 'center' }}>
-        <button className='link' style={{ marginRight: '20px' }} onClick={() => { window.location.href = `${URL}/signup` }}>Регистрация</button>
-        <button className='link' onClick={() => { window.location.href = `${URL}/signin` }}>Вход</button>
+        <button className='link' style={{ marginRight: '20px' }} onClick={() => { window.location.href = `${URL}/signup`; }}>Регистрация</button>
+        <button className='link' onClick={() => { window.location.href = `${URL}/signin`; }}>Вход</button>
       </div>
     </div>
   );

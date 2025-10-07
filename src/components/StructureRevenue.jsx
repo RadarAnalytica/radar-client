@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './StructureRevenue.module.css'
+import styles from './StructureRevenue.module.css';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Doughnut } from 'react-chartjs-2';
 

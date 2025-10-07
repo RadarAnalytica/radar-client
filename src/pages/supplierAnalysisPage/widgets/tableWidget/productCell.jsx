@@ -1,6 +1,6 @@
-import styles from './productCell.module.css'
-import { Link } from 'react-router-dom'
-import { useState, useEffect } from 'react'
+import styles from './productCell.module.css';
+import { Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 
 export const ProductCell = ({value, rowData }) => {
 
@@ -8,7 +8,7 @@ export const ProductCell = ({value, rowData }) => {
         <div className={`${styles.table__rowItem} ${styles.table__rowItem_wide}`}>
         <div className={styles.table__rowImgWrapper}>
             <img src={rowData?.image_url} width={45} height={60} onError={(e) => {
-                e.target.style.display = 'none'
+                e.target.style.display = 'none';
             }} />
         </div>
         <div className={styles.table__mainTitleWrapper}>
@@ -25,28 +25,27 @@ export const ProductCell = ({value, rowData }) => {
         </div>
 
     </div>
-    )
-}
-
+    );
+};
 
 
 const CopyButton = ({ url }) => {
 
-    const [isCopied, setIsCopied] = useState(false)
+    const [isCopied, setIsCopied] = useState(false);
 
     const copyHandler = () => {
-        navigator.clipboard.writeText(url).catch(err => console.log('Error'))
-        setIsCopied(true)
-    }
+        navigator.clipboard.writeText(url).catch(err => console.log('Error'));
+        setIsCopied(true);
+    };
 
     useEffect(() => {
         let timeout;
         if (isCopied) {
-            timeout = setTimeout(() => setIsCopied(false), 3000)
+            timeout = setTimeout(() => setIsCopied(false), 3000);
         }
 
-        return () => { timeout && clearTimeout(timeout) }
-    }, [isCopied])
+        return () => { timeout && clearTimeout(timeout); };
+    }, [isCopied]);
 
     return (
         <button className={styles.table__actionButton} onClick={copyHandler} title='Скопировать'>
@@ -64,5 +63,5 @@ const CopyButton = ({ url }) => {
 
             }
         </button>
-    )
-}
+    );
+};

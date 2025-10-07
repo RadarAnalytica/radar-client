@@ -1,37 +1,37 @@
-import React, { useContext, useEffect, useState } from 'react'
-import logo from '../assets/logo.png'
-import InputField from '../components/InputField'
-import { Link, useNavigate } from 'react-router-dom'
-import AuthContext from '../service/AuthContext'
+import React, { useContext, useEffect, useState } from 'react';
+import logo from '../assets/logo.png';
+import InputField from '../components/InputField';
+import { Link, useNavigate } from 'react-router-dom';
+import AuthContext from '../service/AuthContext';
 import warningIcon from '../assets/warning.png';
 import Modal from 'react-bootstrap/Modal';
 
 
 const SignInForm = () => {
 
-    const [email, setEmail] = useState()
-    const [password, setPassword] = useState()
+    const [email, setEmail] = useState();
+    const [password, setPassword] = useState();
 
     const emailHandler = (e) => {
         setEmail(e.target.value);
-    }
+    };
 
-    const navigate = useNavigate()
+    const navigate = useNavigate();
 
     const passHandler = (e) => {
         setPassword(e.target.value);
-    }
+    };
 
-    const { login } = useContext(AuthContext)
+    const { login } = useContext(AuthContext);
 
     const [show, setShow] = useState(false);
-    const [error, setError] = useState('')
+    const [error, setError] = useState('');
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
-    const [emailErrorText, setEmailErrorText] = useState()
-    const [passErrorText, setPassErrorText] = useState()
+    const [emailErrorText, setEmailErrorText] = useState();
+    const [passErrorText, setPassErrorText] = useState();
 
     const isValidEmail = (email) => {
         return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -46,27 +46,27 @@ const SignInForm = () => {
 
     useEffect(() => {
         if (email && !isValidEmail(email)) {
-            setEmailErrorText('Введите корректный Email')
+            setEmailErrorText('Введите корректный Email');
         }
         else if (password && password.length < 6) {
-            setPassErrorText("Пароль должен быть не короче 6 символов")
+            setPassErrorText("Пароль должен быть не короче 6 символов");
         }
         else {
-            setEmailErrorText()
-            setPassErrorText()
+            setEmailErrorText();
+            setPassErrorText();
         }
-    }, [email, password])
+    }, [email, password]);
 
     const handleSubmit = (e) => {
         if (!email || !password) {
-            e.preventDefault()
-            setError('Введите корректное значение для всех полей')
-            setShow(true)
+            e.preventDefault();
+            setError('Введите корректное значение для всех полей');
+            setShow(true);
         }
         else {
-            login(email, password, setError, setShow)
+            login(email, password, setError, setShow);
         }
-    }
+    };
 
     // const warningIcon = require('../assets/warning.png')
 
@@ -225,6 +225,6 @@ const SignInForm = () => {
         </Modal>
       </div>
     );
-}
+};
 
-export default SignInForm
+export default SignInForm;
