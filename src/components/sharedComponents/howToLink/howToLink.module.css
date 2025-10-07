@@ -1,17 +1,17 @@
 .link {
     text-decoration: none;
-    padding: 4px 3px;
-    border-radius: 4px;
+    padding: 4px 8px 4px 4px;
+    border-radius: 8px;
     color: #5329FF;
     font-family: Mulish;
-    font-weight: 700;
-    font-size: 14px;
+    font-weight: 600;
+    font-size: 12px;
     line-height: 100%;
     letter-spacing: 0%;
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    gap: 4px;
+    gap: 8px;
     background: #5329FF0D;
     width: auto;
     flex-grow: 0;

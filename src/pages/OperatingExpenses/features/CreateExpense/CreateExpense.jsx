@@ -8,6 +8,7 @@ import { useAppSelector } from '@/redux/hooks';
 import { DayPicker } from 'react-day-picker';
 import { format } from 'date-fns';
 import { ru } from 'date-fns/locale';
+import HowToLink from '@/components/sharedComponents/howToLink/howToLink';
 
 export default function ModalCreateExpense({
 	open = true,
@@ -21,7 +22,7 @@ export default function ModalCreateExpense({
 	state = null,
 	...props
 }) {
-	const Title = ({state}) => (
+	const Title = ({ state }) => (
 		<ConfigProvider
 			theme={{
 				components: {
@@ -35,7 +36,8 @@ export default function ModalCreateExpense({
 		>
 			<Flex
 				justify="flex-start"
-				align="flex-end"
+				align="flex-start"
+				vertical
 				gap={16}
 				className={styles.modal__header}
 			>
@@ -44,12 +46,10 @@ export default function ModalCreateExpense({
 					{copy && 'Копирование расхода'}
 					{!edit && !copy && 'Добавление расхода'}
 				</h2>
-				<Flex gap={10} align='center'>
-					<Tooltip title={'Как это работает'}>
-						{InfoIcon}
-					</Tooltip>
-					Как это работает
-				</Flex>
+				<HowToLink
+					text='Как это работает?'
+					link='/'
+				/>
 			</Flex>
 		</ConfigProvider>
 	);
@@ -67,7 +67,7 @@ export default function ModalCreateExpense({
 	}, [filters]);
 
 	const shopsList = useMemo(() => {
-		if (shops && shops.length > 0){
+		if (shops && shops.length > 0) {
 			// сборка магазинов без сбора данных и магазин не Все
 			return shops.filter((shop) => (shop.id !== 0 && shop.is_primary_collect))
 		}
@@ -75,14 +75,14 @@ export default function ModalCreateExpense({
 	}, [shops]);
 
 	const brandsList = useMemo(() => {
-		if (allFilters && allFilters.brands){
+		if (allFilters && allFilters.brands) {
 			return allFilters.brands.data
 		}
 		return [];
 	}, [allFilters]);
-	
+
 	const articlesList = useMemo(() => {
-		if (allFilters && allFilters.articles){
+		if (allFilters && allFilters.articles) {
 			return allFilters.articles.data
 		}
 		return [];
@@ -103,14 +103,14 @@ export default function ModalCreateExpense({
 	const [openCalendar, setOpenCalendar] = useState(false);
 
 	const customRuLocale = {
-			...ru,
-			localize: {
-					...ru.localize,
-					month: (n, options) => {
-							const monthName = ru.localize.month(n, options);
-							return monthName.charAt(0).toUpperCase() + monthName.slice(1);
-					},
+		...ru,
+		localize: {
+			...ru.localize,
+			month: (n, options) => {
+				const monthName = ru.localize.month(n, options);
+				return monthName.charAt(0).toUpperCase() + monthName.slice(1);
 			},
+		},
 	};
 
 	const icon = <SelectIcon />;
@@ -127,11 +127,11 @@ export default function ModalCreateExpense({
 		onCancel();
 		form.resetFields();
 	};
-	
+
 	// const [date, setDate] = useState(data?.date || '10-10-2024');
 	const [frequency, setFrequency] = useState('week');
 	// const [type, setType] = useState(data?.type || 'once');
-	const [date, setDate] = useState(data?.date || format(new Date(), 'yyyy-MM-d'));
+	const [date, setDate] = useState(data?.date || format(new Date(), 'yyyy-MM-dd'));
 
 	// 2025-09-15
 	const dateContainerRef = useRef(null);
@@ -162,12 +162,12 @@ export default function ModalCreateExpense({
 
 	const handleDayClick = (day) => {
 		console.log('handleDayClick', day)
-		setDate(format(day, 'yyyy-MM-d'));
+		setDate(format(day, 'yyyy-MM-dd'));
 		setOpenCalendar(false);
 	}
 
 	const handleOnBlur = (event) => {
-		if (datePickerRef.current && !datePickerRef.current.contains(event.target)){
+		if (datePickerRef.current && !datePickerRef.current.contains(event.target)) {
 			setOpenCalendar(false);
 		}
 	}
@@ -191,10 +191,10 @@ export default function ModalCreateExpense({
 					Modal: {},
 					Form: {
 						itemMarginBottom: 8,
-						labelFontSize: 16,
+						labelFontSize: 12,
 						labelColor: '#1a1a1a',
 						labelColonMarginInlineEnd: 10,
-						labelRequiredMarkColor: '#000'
+						//labelRequiredMarkColor: '#000'
 					},
 					Button: {
 						paddingInline: 0,
@@ -215,10 +215,10 @@ export default function ModalCreateExpense({
 				open={true}
 				centered={true}
 				closable={true}
-				closeIcon={<CloseIcon className={styles.close__icon} />}
-				title={<Title state={state}/>}
+				//closeIcon={<CloseIcon className={styles.close__icon} />}
+				title={<Title state={state} />}
 				footer={null}
-				width={600}
+				width={960}
 				onCancel={onCancel}
 				props
 			>
@@ -226,51 +226,76 @@ export default function ModalCreateExpense({
 					form={form}
 					onFinish={onFinish}
 					layout="vertical"
-					// initialValues={data}
+					className={styles.modal__form}
+				// initialValues={data}
 				>
 					<h3 className={styles.modal__subtitle}>Тип операции</h3>
 					<ConfigProvider
 						theme={{
 							token: {
-								fontSize: 16
+								fontSize: 14
 							}
 						}}>
-							<Form.Item
-								className={styles.modal__part}
-								name='type'
-								initialValue={data?.type || 'once'}
-							>
-								<Radio.Group>
-									<Radio value="once">Разовая</Radio>
-									<Radio value="plan">Плановая</Radio>
-								</Radio.Group>
-							</Form.Item>
+						<Form.Item
+							className={styles.modal__part}
+							name='type'
+							initialValue={data?.type || 'once'}
+						>
+							<Radio.Group className={styles.customRadioGroup}>
+								<Radio value="once">Разовая</Radio>
+								<Radio value="plan">Плановая</Radio>
+							</Radio.Group>
+						</Form.Item>
 					</ConfigProvider>
 					<Row className={styles.modal__part} gutter={16}>
 						<Col span={12} ref={dateContainerRef}>
-							<Form.Item
-								label="Дата"
-								name='date'
-								initialValue={format(new Date(date), 'dd.MM.yyyy')}
-								rules={[
-									{ required: true, message: 'Пожалуйста, выберите дату!' }
-								]}
+							<ConfigProvider
+								renderEmpty={() => (<div>Нет данных</div>)}
+								theme={{
+									token: {
+										colorBgContainer: 'white !important',
+										colorBorder: '#5329FF1A',
+										borderRadius: 8,
+										fontFamily: 'Mulish',
+										fontSize: 12,
+										fontWeight: 500,
+										controlHeightLG: 40,
+									},
+									components: {
+										Select: {
+											activeBorderColor: '#5329FF1A',
+											activeOutlineColor: 'transparent',
+											hoverBorderColor: '#5329FF1A',
+											optionActiveBg: 'transparent',
+											optionFontSize: 14,
+											optionSelectedBg: 'transparent',
+											optionSelectedColor: '#5329FF',
+										}
+									}
+								}}
 							>
-								<Select
+								<Form.Item
+									label="Дата"
 									name='date'
-									size="large"
-									placeholder="Выберите дату"
-									suffixIcon={icon}
-									variant="filled"
-									value={format(new Date(date), 'dd.MM.yyyy')}
-									onClick={dateHandler}
-									disabled={openCalendar}
-									dropdownStyle={{ display: 'none' }}
-									style={{display: 'block'}}
-								/>
-								<div
-									ref={datePickerRef}
-									className={`${styles.calendarPopup} ${openCalendar ? styles.visible : ''}`}
+									initialValue={format(new Date(date), 'dd.MM.yyyy')}
+									rules={[
+										{ required: true, message: 'Пожалуйста, выберите дату!' }
+									]}
+								>
+									<Select
+										name='date'
+										size="large"
+										placeholder="Выберите дату"
+										suffixIcon={icon}
+										value={format(new Date(date), 'dd.MM.yyyy')}
+										onClick={dateHandler}
+										disabled={openCalendar}
+										dropdownStyle={{ display: 'none' }}
+										style={{ display: 'block' }}
+									/>
+									<div
+										ref={datePickerRef}
+										className={`${styles.calendarPopup} ${openCalendar ? styles.visible : ''}`}
 									>
 										<DayPicker
 											minDate={minDate}
@@ -288,41 +313,97 @@ export default function ModalCreateExpense({
 											className={styles.customDayPicker}
 											locale={customRuLocale}
 											onDayClick={handleDayClick}
-											// disabled={[
-													// { before: minDate },
-													// { after: maxDate },
-											// ]}
-											// startMonth={startMonth}
-											// endMonth={endMonth}
-											// components={{
-											// 		Dropdown: DatePickerCustomDropdown
-											// }}
-									/>
-								</div>
-							</Form.Item>
+										// disabled={[
+										// { before: minDate },
+										// { after: maxDate },
+										// ]}
+										// startMonth={startMonth}
+										// endMonth={endMonth}
+										// components={{
+										// 		Dropdown: DatePickerCustomDropdown
+										// }}
+										/>
+									</div>
+								</Form.Item>
+							</ConfigProvider>
 						</Col>
 						<Col span={12}>
-							<Form.Item
-								label="Сумма, руб"
-								name='value'
-								// required={true}
-								initialValue={data?.value}
-								// validateStatus='error'
-								rules={[
-									{ required: true, message: 'Пожалуйста, введите сумму расхода!' }
-								]}
+							<ConfigProvider
+								renderEmpty={() => (<div>Нет данных</div>)}
+								theme={{
+									token: {
+										colorBgContainer: 'white',
+										colorBorder: '#5329FF1A',
+										borderRadius: 8,
+										fontFamily: 'Mulish',
+										fontSize: 12,
+										fontWeight: 500,
+										controlHeightLG: 40,
+									},
+									components: {
+										Input: {
+											activeBorderColor: '#5329FF1A',
+											hoverBorderColor: '#5329FF1A',
+											activeOutlineColor: 'transparent',
+											activeBg: 'transparent',
+											hoverBg: 'transparent',
+											activeBg: 'transparent',
+											activeShadow: 'transparent'
+										}
+									}
+								}}
 							>
-								<Input
-									size="large"
-									type='number'
-									min={0}
-									onWheel={(e) => e.currentTarget.blur()}
-								/>
-							</Form.Item>
+								<Form.Item
+									label="Сумма, руб"
+									name='value'
+									// required={true}
+									initialValue={data?.value}
+									// validateStatus='error'
+									rules={[
+										{ required: true, message: 'Пожалуйста, введите сумму расхода!' }
+									]}
+								>
+									<Input
+										size="large"
+										type='number'
+										min={0}
+										onWheel={(e) => e.currentTarget.blur()}
+										suffix={<svg width="9" height="11" viewBox="0 0 9 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+											<path opacity="0.5" d="M0.519063 6.685V5.586H5.30006C5.3794 5.586 5.47273 5.58133 5.58006 5.572C5.69206 5.56267 5.80873 5.544 5.93006 5.516C6.39673 5.404 6.74206 5.173 6.96606 4.823C7.19006 4.473 7.30206 4.07167 7.30206 3.619C7.30206 3.32967 7.2554 3.04967 7.16206 2.779C7.06873 2.50833 6.9194 2.27267 6.71406 2.072C6.5134 1.87133 6.25206 1.736 5.93006 1.666C5.81806 1.63333 5.7014 1.61467 5.58006 1.61C5.4634 1.60533 5.37006 1.603 5.30006 1.603H2.46506V0.42H5.34206C5.41206 0.42 5.5124 0.422333 5.64306 0.427C5.7784 0.431666 5.9254 0.448 6.08406 0.476C6.63006 0.56 7.0874 0.746666 7.45606 1.036C7.8294 1.32533 8.1094 1.68933 8.29606 2.128C8.48273 2.56667 8.57606 3.05433 8.57606 3.591C8.57606 4.389 8.36606 5.06333 7.94606 5.614C7.52606 6.16 6.9054 6.49833 6.08406 6.629C5.9254 6.65233 5.7784 6.66867 5.64306 6.678C5.5124 6.68267 5.41206 6.685 5.34206 6.685H0.519063ZM0.519063 8.904V7.875H6.11906V8.904H0.519063ZM1.56906 10.5V0.42H2.81506V10.5H1.56906Z" fill="#1A1A1A" />
+										</svg>
+										}
+									/>
+								</Form.Item>
+							</ConfigProvider>
 						</Col>
 					</Row>
 					{typeValue === 'plan' && <Row className={styles.modal__part} gutter={16}>
 						<Col span={12} ref={dateContainerRef}>
+						<ConfigProvider
+								renderEmpty={() => (<div>Нет данных</div>)}
+								theme={{
+									token: {
+										colorBgContainer: 'white !important',
+										colorBorder: '#5329FF1A',
+										borderRadius: 8,
+										fontFamily: 'Mulish',
+										fontSize: 12,
+										fontWeight: 500,
+										controlHeightLG: 40,
+									},
+									components: {
+										Select: {
+											activeBorderColor: '#5329FF1A',
+											activeOutlineColor: 'transparent',
+											hoverBorderColor: '#5329FF1A',
+											optionActiveBg: 'transparent',
+											optionFontSize: 14,
+											optionSelectedBg: 'transparent',
+											optionSelectedColor: '#5329FF',
+										}
+									}
+								}}
+							>
 							<Form.Item
 								label="Частота расхода"
 								name='frequency'
@@ -342,6 +423,7 @@ export default function ModalCreateExpense({
 									onChange={setFrequency}
 								/>
 							</Form.Item>
+							</ConfigProvider>
 						</Col>
 
 						{frequency === 'month' && <Col span={12}>
@@ -350,9 +432,9 @@ export default function ModalCreateExpense({
 								name='month'
 								// required={true}
 								initialValue={data?.month}
-								// validateStatus='error'
+							// validateStatus='error'
 							>
-						
+
 								<Input
 									size="large"
 									type='number'
@@ -364,6 +446,31 @@ export default function ModalCreateExpense({
 						</Col>}
 
 						{frequency === 'week' && <Col span={12}>
+						<ConfigProvider
+								renderEmpty={() => (<div>Нет данных</div>)}
+								theme={{
+									token: {
+										colorBgContainer: 'white !important',
+										colorBorder: '#5329FF1A',
+										borderRadius: 8,
+										fontFamily: 'Mulish',
+										fontSize: 12,
+										fontWeight: 500,
+										controlHeightLG: 40,
+									},
+									components: {
+										Select: {
+											activeBorderColor: '#5329FF1A',
+											activeOutlineColor: 'transparent',
+											hoverBorderColor: '#5329FF1A',
+											optionActiveBg: 'transparent',
+											optionFontSize: 14,
+											optionSelectedBg: 'transparent',
+											optionSelectedColor: '#5329FF',
+										}
+									}
+								}}
+							>
 							<Form.Item
 								label="День недели"
 								name='week'
@@ -389,16 +496,42 @@ export default function ModalCreateExpense({
 									onChange={setFrequency}
 								/>
 							</Form.Item>
+							</ConfigProvider>
 						</Col>}
 					</Row>}
 					<div className={styles.modal__part}>
+					<ConfigProvider
+								renderEmpty={() => (<div>Нет данных</div>)}
+								theme={{
+									token: {
+										colorBgContainer: 'white !important',
+										colorBorder: '#5329FF1A',
+										borderRadius: 8,
+										fontFamily: 'Mulish',
+										fontSize: 12,
+										fontWeight: 500,
+										controlHeightLG: 40,
+									},
+									components: {
+										Select: {
+											activeBorderColor: '#5329FF1A',
+											activeOutlineColor: 'transparent',
+											hoverBorderColor: '#5329FF1A',
+											optionActiveBg: 'transparent',
+											optionFontSize: 14,
+											optionSelectedBg: 'transparent',
+											optionSelectedColor: '#5329FF',
+										}
+									}
+								}}
+							>
 						<Form.Item
 							label="Статья"
 							name='expense_categories'
 							initialValue={data?.category}
 							rules={[
-									{ required: true, message: 'Пожалуйста, выберите значение!' }
-								]}
+								{ required: true, message: 'Пожалуйста, выберите значение!' }
+							]}
 						>
 							<Select
 								size="large"
@@ -413,6 +546,7 @@ export default function ModalCreateExpense({
 								mode="multiple"
 							/>
 						</Form.Item>
+						</ConfigProvider>
 						<Flex justify="flex-end">
 							<ConfigProvider
 								theme={{
@@ -420,14 +554,14 @@ export default function ModalCreateExpense({
 										fontSize: 16
 									}
 								}}>
-									<Button
-										type="link"
-										onClick={() => {
-											setModalCreateCategoryOpen(true);
-										}}
-									>
-										Добавить статью
-									</Button>
+								<Button
+									type="link"
+									onClick={() => {
+										setModalCreateCategoryOpen(true);
+									}}
+								>
+									Добавить статью
+								</Button>
 							</ConfigProvider>
 						</Flex>
 					</div>
@@ -445,8 +579,8 @@ export default function ModalCreateExpense({
 							<Input.TextArea
 								size="large"
 								autoSize={{ minRows: 1, maxRows: 3 }}
-								// onInput={(e) => setDescription(e.target.value)}
-								// maxLength={150}
+							// onInput={(e) => setDescription(e.target.value)}
+							// maxLength={150}
 							/>
 						</Form.Item>
 					</div>
@@ -455,27 +589,27 @@ export default function ModalCreateExpense({
 							Распределять на
 						</h3>
 						<ConfigProvider
-						theme={{
-							token: {
-								fontSize: 16
-							}
-						}}>
+							theme={{
+								token: {
+									fontSize: 14
+								}
+							}}>
 							<Form.Item
 								name="selection"
 								initialValue={selection}
 								onChange={(e) => {
 									setSelection(e.target.value);
 								}}
-								// required={true}
+							// required={true}
 							>
-								<Radio.Group>
+								<Radio.Group className={styles.customRadioGroup}>
 									<Radio value="shop">Магазины</Radio>
 									<Radio value="vendor_code">Артикулы</Radio>
 									<Radio value="brand_name">Бренды</Radio>
 								</Radio.Group>
 							</Form.Item>
 						</ConfigProvider>
-						{selection === 'shop' && 
+						{selection === 'shop' &&
 							<Form.Item
 								name="shop"
 								initialValue={data?.shop}
@@ -483,20 +617,45 @@ export default function ModalCreateExpense({
 									{ required: true, message: 'ОПожалуйста, выберите значение!' }
 								]}
 							>
-							<Select
-								size="large"
-								options={shopsList.map((el) => ({
-									key: el.id,
-									value: el.id,
-									label: el.brand_name,
-									disabled: !el.is_active,
-								}))}
-								placeholder="Выберите магазины"
-								showSearch
-								suffixIcon={icon}
-							/>
-						</Form.Item>}
-						{selection === 'vendor_code' && 
+								<Select
+									size="large"
+									options={shopsList.map((el) => ({
+										key: el.id,
+										value: el.id,
+										label: el.brand_name,
+										disabled: !el.is_active,
+									}))}
+									placeholder="Выберите магазины"
+									showSearch
+									suffixIcon={icon}
+								/>
+							</Form.Item>}
+							<ConfigProvider
+								renderEmpty={() => (<div>Нет данных</div>)}
+								theme={{
+									token: {
+										colorBgContainer: 'white !important',
+										colorBorder: '#5329FF1A',
+										borderRadius: 8,
+										fontFamily: 'Mulish',
+										fontSize: 12,
+										fontWeight: 500,
+										controlHeightLG: 40,
+									},
+									components: {
+										Select: {
+											activeBorderColor: '#5329FF1A',
+											activeOutlineColor: 'transparent',
+											hoverBorderColor: '#5329FF1A',
+											optionActiveBg: 'transparent',
+											optionFontSize: 14,
+											optionSelectedBg: 'transparent',
+											optionSelectedColor: '#5329FF',
+										}
+									}
+								}}
+							>
+						{selection === 'vendor_code' &&
 							<Form.Item
 								name="vendor_code"
 								initialValue={data?.vendor_code}
@@ -504,38 +663,39 @@ export default function ModalCreateExpense({
 									{ required: true, message: 'Пожалуйста, выберите значение!' }
 								]}
 							>
-							<Select
-								size="large"
-								options={articlesList.map((el, i) => ({
-									key: i,
-									value: el.value,
-									label: el.name,
-								}))}
-								placeholder="Выберите артикулы"
-								showSearch
-								suffixIcon={icon}
-							/>
-						</Form.Item>}
-						{selection === 'brand_name' && 
-						<Form.Item
-							name="brand_name"
-							initialValue={data?.brand_name}
-							rules={[
-								{ required: true, message: 'ОПожалуйста, выберите значение!' }
-							]}
-						>
-							<Select 
-								size="large"
-								options={brandsList.map((el, i) => ({
-									key: i,
-									value: el.value,
-									label: el.name,
-								}))}
-								placeholder="Выберите бренды"
-								showSearch
-								suffixIcon={icon}
-							/>
-						</Form.Item>}
+								<Select
+									size="large"
+									options={articlesList.map((el, i) => ({
+										key: i,
+										value: el.value,
+										label: el.name,
+									}))}
+									placeholder="Выберите артикулы"
+									showSearch
+									suffixIcon={icon}
+								/>
+							</Form.Item>}
+						{selection === 'brand_name' &&
+							<Form.Item
+								name="brand_name"
+								initialValue={data?.brand_name}
+								rules={[
+									{ required: true, message: 'Пожалуйста, выберите значение!' }
+								]}
+							>
+								<Select
+									size="large"
+									options={brandsList.map((el, i) => ({
+										key: i,
+										value: el.value,
+										label: el.name,
+									}))}
+									placeholder="Выберите бренды"
+									showSearch
+									suffixIcon={icon}
+								/>
+							</Form.Item>}
+							</ConfigProvider>
 					</div>
 					<ConfigProvider
 						theme={{

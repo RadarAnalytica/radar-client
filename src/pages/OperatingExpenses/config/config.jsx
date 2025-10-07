@@ -39,71 +39,54 @@ export const EXPENSE_COLUMNS = [
 		title: 'Дата',
 		dataIndex: 'date',
 		key: 'date',
-		render: summaryRender,
-		width: `${100 / 8}%`
 	},
 	{
 		title: 'Описание',
 		dataIndex: 'description',
 		key: 'description',
-		render: columnRender,
-		width: `${100 / 8}%`
 	},
 	{
 		title: 'Сумма, руб',
 		dataIndex: 'value',
 		key: 'value',
-		render: valueRender,
-		width: `${100 / 8}%`
+		units: ' ',
 	},
 	{
 		title: 'Статья расходов',
 		dataIndex: 'expense_categories',
 		key: 'expense_categories',
-		// render: columnRender,
-		render: columnExpensesRender,
-		width: `${100 / 8}%`
 	},
 	{
 		title: 'Артикул',
 		dataIndex: 'vendor_code',
 		key: 'vendor_code',
-		render: columnRender,
-		width: `${100 / 8}%`
 	},
 	{
 		title: 'Бренд',
 		dataIndex: 'brand_name',
 		key: 'brand_name',
-		render: columnRender,
-		width: `${100 / 8}%`
 	},
 	{
 		title: 'Магазин',
 		dataIndex: 'shop',
 		key: 'shop',
-		render: columnRender,
-		width: `${100 / 8}%`
 	},
 	{
 		title: 'Действия',
 		dataIndex: 'action',
 		key: 'action',
-		width: `${100 / 8}%`
 	},
-];
+].map((_) => ({ ..._, width: `${100 / 8}%`, minWidth: `${100 / 8}%`, maxWidth: `${100 / 4}%` }));
 
 export const CATEGORY_COLUMNS = [
 	{
 		title: 'Статья расходов',
 		dataIndex: 'name',
 		key: 'name',
-		width: '50%'
 	},
 	{
 		title: 'Действия',
 		dataIndex: 'action',
 		key: 'action',
-		width: '50%',
 	},
-]
+].map((_) => ({ ..._, width: `${100 / 2}%`, minWidth: `${100 / 2}%`, maxWidth: `${100 / 2}%` }));

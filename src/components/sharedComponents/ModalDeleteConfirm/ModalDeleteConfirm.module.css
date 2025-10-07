@@ -1,3 +1,74 @@
-.btn{
+.btn {
   flex-grow: 1;
+}
+
+.modal__title {
+  margin: 0;
+  font-weight: 600;
+  font-size: 22px;
+  color: #1a1a1a;
+  max-width: 75%;
+}
+
+
+.modal__body {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 16px;
+  position: relative;
+}
+
+.modal__close {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  opacity: 1;
+  transition: opacity 0.15s;
+}
+
+.modal__close:hover {
+  opacity: 0.5;
+}
+
+.modal__actionButtons {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.modal__actionButton {
+  width: 50%;
+  height: 46px;
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 160%;
+  letter-spacing: 0%;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.modal__actionButton:hover {
+  opacity: 0.7;
+}
+
+.modal__actionButton_cancel {
+  color: #1a1a1a;
+  background: #1A1A1A08;
+}
+.modal__actionButton_confirm {
+  color: white;
+  background: #F93C65;
 }
