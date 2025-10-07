@@ -20,7 +20,7 @@ const SeoPage = () => {
 
   const [compaireData, setCompaireData] = useState({});
   const [linksToSend, setLinksToSend] = useState({});
-  const isDemoMode = useDemoMode();
+  const { isDemoMode } = useDemoMode();
 
   return (
     <div className={styles.pageWrapper}>
@@ -48,9 +48,7 @@ const SeoPage = () => {
           </Header>
         </div>
 
-        {isDemoMode && (
-					  <NoSubscriptionWarningBlock className="mb-3" />
-        )}
+        {isDemoMode && <NoSubscriptionWarningBlock className="mb-3" />}
 
         <div className='container dash-container'>
           {Object.keys(compaireData).length <= 0 && (

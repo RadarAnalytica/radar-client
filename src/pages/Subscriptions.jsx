@@ -16,19 +16,23 @@ import MobilePlug from "../components/sharedComponents/mobilePlug/mobilePlug";
 import Sidebar from "../components/sharedComponents/sidebar/sidebar";
 import Header from "../components/sharedComponents/header/header";
 import { getDayDeclension } from "../service/utils";
+import { fetchApi } from "@/service/fetchApi";
+import { useDemoMode } from "@/app/providers";
+import NoSubscriptionWarningBlock from "@/components/sharedComponents/NoSubscriptionWarningBlock/NoSubscriptionWarningBlock";
 
 const Subscriptions = () => {
   const navigate = useNavigate();
   const { authToken, user } = useContext(AuthContext);
+  const { isDemoMode } = useDemoMode();
   const [subscriptions, setSubscriptions] = useState([]);
   const [keepSubscriptionId, setKeepSubscriptionId] = useState(null);
   const [openModal, setOpenModal] = useState(false);
   const months = [
     'января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'
-  ]
+  ];
 
   const fetchSubscriptions = async () => {
-    const response = await fetch(`${URL}/api/user/subscription/all`, {
+    const response = await fetchApi('/api/user/subscription/all', {
       method: "GET",
       headers: {
         "content-type": "application/json",
@@ -53,8 +57,8 @@ const Subscriptions = () => {
 
   const handleRestoreSubscription = async (subscriptionId) => {
     try {
-      const response = await fetch(
-        `${URL}/api/user/subscription/restore/${subscriptionId}`,
+      const response = await fetchApi(
+        `/api/user/subscription/restore/${subscriptionId}`,
         {
           method: "GET",
           headers: {
@@ -77,8 +81,8 @@ const Subscriptions = () => {
 
   const handleCancelSubscription = async (subscriptionId) => {
     try {
-      const response = await fetch(
-        `${URL}/api/user/subscription/cancel/${subscriptionId}`,
+      const response = await fetchApi(
+        `/api/user/subscription/cancel/${subscriptionId}`,
         {
           method: "GET",
           headers: {
@@ -151,15 +155,18 @@ const Subscriptions = () => {
   return (
     <div className="sub-page">
       <MobilePlug />
+
       <div style={{ height: '100vh' }}>
         <Sidebar />
       </div>
-      {/* <SideNav /> */}
+
       <div className="sub-page-content" style={{ padding: '0 32px' }}>
         <div style={{ margin: '20px 0' }}>
           <Header title={"Моя подписка"} />
         </div>
-        {/* <TopNav title={"Моя подписка"} /> */}
+
+        {isDemoMode && <NoSubscriptionWarningBlock />}
+
         <div className="container dash-container sub-page-grid">
           {subscriptions.map((item) => {
             const activeText = item.active ? "Активна" : "Неактивна";
@@ -180,13 +187,6 @@ const Subscriptions = () => {
             const activeTillPeriodValue = new Date(Date.parse(paymentDateEndString))
             const activeTillPeriod = `${activeTillPeriodValue.getDate()} ${months[activeTillPeriodValue.getMonth()]}`
 
-            // const paymentDateValue = moment(item.validity_period)
-            // const paymentDate = paymentDateValue.locale("ru")
-            //   .add(1, "days")
-            //   .format("DD MMMM");
-            // const activeTillPeriodValue = moment(item.validity_period)
-            // const activeTillPeriod = activeTillPeriodValue.locale("ru")
-            //   .format("DD MMMM");
             return (
               <div className="sub-card">
                 <div className="sub-card-row">
@@ -242,6 +242,7 @@ const Subscriptions = () => {
             </div>}
         </div>
       </div>
+
       <Modal
         show={openModal}
         onHide={() => setOpenModal(false)}
