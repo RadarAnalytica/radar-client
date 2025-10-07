@@ -35,7 +35,7 @@ export default [
       '@typescript-eslint/ban-ts-comment': 'warn',
       '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }],
       'react/jsx-no-target-blank': 'off',
-
+      // свои правила
       'semi': ['error', 'always'],
       'react/jsx-pascal-case': ['error', {
         allowAllCaps: true,
