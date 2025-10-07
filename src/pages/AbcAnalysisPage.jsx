@@ -14,7 +14,7 @@ import MobilePlug from "../components/sharedComponents/mobilePlug/mobilePlug";
 import Header from "../components/sharedComponents/header/header";
 import Sidebar from "../components/sharedComponents/sidebar/sidebar";
 import { mockGetAbcData } from "../service/mockServiceFunctions";
-import NoSubscriptionWarningBlock from '../components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock'
+import NoSubscriptionWarningBlock from '../components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock';
 import SelfCostWarningBlock from "../components/sharedComponents/selfCostWraningBlock/selfCostWarningBlock";
 
 const AbcAnalysisPage = () => {

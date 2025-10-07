@@ -18,7 +18,7 @@ import Header from "../components/sharedComponents/header/header";
 import { getDayDeclension } from "../service/utils";
 import { fetchApi } from "@/service/fetchApi";
 import { useDemoMode } from "@/app/providers";
-import NoSubscriptionWarningBlock from "@/components/sharedComponents/NoSubscriptionWarningBlock/NoSubscriptionWarningBlock";
+import NoSubscriptionWarningBlock from '@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock';
 
 const Subscriptions = () => {
   const navigate = useNavigate();
