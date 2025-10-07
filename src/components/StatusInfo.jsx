@@ -14,9 +14,9 @@ const StatusInfo = ({ title, fill, width }) => {
         <text
           x='30'
           y='25'
-          font-family='Arial'
-          font-size='18'
-          font-weight='400'
+          fontFamily='Arial'
+          fontSize='18'
+          fontWeight='400'
           fill='black'
         >
           {title}

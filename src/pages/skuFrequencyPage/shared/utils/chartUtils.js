@@ -9,8 +9,8 @@ export const chartDataNormalizer = (rawData, period) => {
             const splitted = _.split(' ');
             const normilized = [...splitted].reverse();
             return normilized[0] + ' ' + normilized[1];
-        })
-    }   
+        });
+    }
 
 
     const normalizedData = {
@@ -32,8 +32,8 @@ export const chartDataNormalizer = (rawData, period) => {
                 borderWidth: 2
             }
         ],
-    }
+    };
 
 
     return normalizedData;
-}
+};

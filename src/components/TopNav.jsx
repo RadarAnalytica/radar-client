@@ -6,7 +6,7 @@ import { useAppDispatch } from "../redux/hooks";
 import { useSelector } from "react-redux";
 import { MessagesDropdown } from "./MessagesDropdown";
 import { Link } from "react-router-dom";
-import styles from './TopNav.module.css'
+import styles from './TopNav.module.css';
 import { URL } from "../service/config";
 import "../App.css";
 
@@ -41,14 +41,14 @@ const TopNav = ({ title, children, subTitle, mikeStarinaStaticProp }) => {
     setShowErrorPopup(!showErrorPopup);
   };
 
-  
+
   const containerStyles = mikeStarinaStaticProp ?
     `container d-flex align-items-center justify-content-between topNavWidth` :
-    `container dash-container d-flex align-items-center justify-content-between`
+    `container dash-container d-flex align-items-center justify-content-between`;
 
   const topNavStyles = mikeStarinaStaticProp ?
     `top-nav topNavStatic container dash-container` :
-    `top-nav container dash-container`
+    `top-nav container dash-container`;
 
   return (
     <div className={topNavStyles}
@@ -115,9 +115,9 @@ const TopNav = ({ title, children, subTitle, mikeStarinaStaticProp }) => {
               )}
             </span>
             {showErrorPopup && (
-              <div 
-                className={styles.messagesBackdrop} 
-                onClick={(e)=> {e.target.id === 'messages-backdrop' && setShowErrorPopup(false)}}
+              <div
+                className={styles.messagesBackdrop}
+                onClick={(e)=> {e.target.id === 'messages-backdrop' && setShowErrorPopup(false);}}
                 id='messages-backdrop'
               >
                   <div className={styles.messagesModal}>
@@ -134,9 +134,9 @@ const TopNav = ({ title, children, subTitle, mikeStarinaStaticProp }) => {
         </span>
 
         {menuShown && (
-          <div 
+          <div
             className={styles.menuModal__bg}
-            onClick={(e) => {e.target.id === 'menu-backdrop' && setMenuShown(false)}} 
+            onClick={(e) => {e.target.id === 'menu-backdrop' && setMenuShown(false);}}
             id='menu-backdrop'
           >
             <div style={{ display: 'none' }}></div> {/*это костыль */}
@@ -146,7 +146,7 @@ const TopNav = ({ title, children, subTitle, mikeStarinaStaticProp }) => {
             >
               <div style={{ display: 'none' }}></div> {/*это костыль */}
               <div className={styles.menuModal__closeButtonWrapper}>
-                <button className={styles.menuModal__closeButton} onClick={(e) => {setMenuShown(false)}}>
+                <button className={styles.menuModal__closeButton} onClick={(e) => {setMenuShown(false);}}>
                   <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path fillRule="evenodd" clipRule="evenodd" d="M14.3282 1.70711C14.7187 1.31658 14.7187 0.683417 14.3282 0.292893C13.9377 -0.0976311 13.3045 -0.0976311 12.914 0.292893L7.207 5.99988L1.70711 0.499986C1.31658 0.109461 0.683417 0.109461 0.292893 0.499986C-0.0976311 0.89051 -0.0976311 1.52368 0.292893 1.9142L5.58579 7.20709L0.292893 12.5C-0.0976311 12.8905 -0.0976311 13.5237 0.292893 13.9142C0.683417 14.3047 1.31658 14.3047 1.70711 13.9142L7.41409 8.20721L12.914 13.7071C13.3045 14.0976 13.9377 14.0976 14.3282 13.7071C14.7187 13.3166 14.7187 12.6834 14.3282 12.2929L9.03531 7L14.3282 1.70711Z" fill="#ECECEC" />
                   </svg>
@@ -166,7 +166,7 @@ const TopNav = ({ title, children, subTitle, mikeStarinaStaticProp }) => {
               <div className={styles.menuModal__logoutWrapper}>
                 <button
                   className={styles.menuModal__logoutLink}
-                  onClick={() => { logout(); setMenuShown(false) }}
+                  onClick={() => { logout(); setMenuShown(false); }}
                 >
                   Выход
                 </button>

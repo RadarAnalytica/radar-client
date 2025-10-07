@@ -1,13 +1,13 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import './styles.css';
-import styles from './AfterPayment.module.css'
+import styles from './AfterPayment.module.css';
 import NavbarMainHome from '../components/NavbarMainHome';
 //import SuccessPayment from './images/SuccessPayment.svg';
 import successPaymentImg from './images/SuccessPayment.png';
 import errorPaymentImg from './images/errorPayment.png';
 import CustomButton from '../components/utilsComponents/CustomButton';
-import AuthContext from '../service/AuthContext'
+import AuthContext from '../service/AuthContext';
 import { URL } from '../service/config';
 
 
@@ -15,7 +15,7 @@ const AfterPayment = ({ devMode }) => {
   const { authToken, user } = useContext(AuthContext);
   const navigate = useNavigate();
   const location = useLocation();
-  const [ status, setStatus ] = useState(location?.state?.paymentStatus && location?.state?.paymentStatus === 'success' ? true : false)
+  const [status, setStatus] = useState(location?.state?.paymentStatus && location?.state?.paymentStatus === 'success' ? true : false);
 
   //const status = location?.state?.paymentStatus && location?.state?.paymentStatus === 'success' ? true : false;
 
@@ -42,10 +42,10 @@ const AfterPayment = ({ devMode }) => {
   useEffect(() => {
     const timeout = setTimeout(() => {
       refreshUserToken().then((res) => {
-      !devMode && navigate('/main')})
+      !devMode && navigate('/main');});
     }, 5000);
 
-    return () => {clearTimeout(timeout)}
+    return () => {clearTimeout(timeout);};
   }, []);
 
   const paymentMessage = status
@@ -61,7 +61,7 @@ const AfterPayment = ({ devMode }) => {
     : 'Попробуйте вернуться и провести оплату еще раз';
 
   const tryAgain = () => {
-    navigate('/main')
+    navigate('/main');
   };
 
   return (

@@ -34,7 +34,7 @@ export const fetchMockShops = createAsyncThunk<Shop[], void>(
     try {
       dispatch(setLoading(true));
       const data = mockGetAllShops();
-      console.log('fetchShops', data)
+      console.log('fetchShops', data);
       return data;
     } catch (e) {
       throw e;

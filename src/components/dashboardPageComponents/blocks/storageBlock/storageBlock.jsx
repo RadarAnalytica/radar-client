@@ -1,11 +1,11 @@
-import styles from './storageBlock.module.css'
-import { Link } from 'react-router-dom'
-import { getStorageData } from '../blockUtils'
-import { formatPrice } from '../../../../service/utils'
+import styles from './storageBlock.module.css';
+import { Link } from 'react-router-dom';
+import { getStorageData } from '../blockUtils';
+import { formatPrice } from '../../../../service/utils';
 
 const StorageBlock = ({ dataDashBoard, loading }) => {
 
-    const data = getStorageData(dataDashBoard)
+    const data = getStorageData(dataDashBoard);
 
 
     if (loading) {
@@ -15,7 +15,7 @@ const StorageBlock = ({ dataDashBoard, loading }) => {
                     <span className='loader'></span>
                 </div>
             </div>
-        )
+        );
     }
 
     return (
@@ -71,11 +71,11 @@ const StorageBlock = ({ dataDashBoard, loading }) => {
                                 <p className={styles.block__plainData}>{formatPrice(i.salesPrice, '₽')}</p>
                                 <p className={styles.block__mainData}>{formatPrice(i.quantity, 'шт')}</p>
                         </div>
-                    )
+                    );
                 })}
             </div>
         </div>
-    )
-}
+    );
+};
 
 export default StorageBlock;

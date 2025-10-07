@@ -1,13 +1,13 @@
-import styles from './frequencyModeSelect.module.css'
-import { SelectIcon } from '../../shared'
-import { Select, ConfigProvider } from 'antd'
-import { actions as filterActions } from '../../../../../redux/apiServicePagesFiltersState/apiServicePagesFilterState.slice'
-import { useAppSelector, useAppDispatch } from '../../../../../redux/hooks'
+import styles from './frequencyModeSelect.module.css';
+import { SelectIcon } from '../../shared';
+import { Select, ConfigProvider } from 'antd';
+import { actions as filterActions } from '../../../../../redux/apiServicePagesFiltersState/apiServicePagesFilterState.slice';
+import { useAppSelector, useAppDispatch } from '../../../../../redux/hooks';
 
 export const FrequencyModeSelect = ({ isDataLoading }) => {
-    const dispatch = useAppDispatch()
-    const { skuFrequencyMode } = useAppSelector(store => store.filters)
-    const icon = <SelectIcon />
+    const dispatch = useAppDispatch();
+    const { skuFrequencyMode } = useAppSelector(store => store.filters);
+    const icon = <SelectIcon />;
 
     return (
         <div className={styles.plainSelect}>
@@ -19,7 +19,7 @@ export const FrequencyModeSelect = ({ isDataLoading }) => {
             </label>
             <div className={styles.plainSelect__selectWrapper}>
                 <ConfigProvider
-                    renderEmpty={ () => (<div>Нет данных</div>)} 
+                    renderEmpty={ () => (<div>Нет данных</div>)}
                     theme={{
                         token: {
                             colorBgContainer: 'white',
@@ -55,5 +55,5 @@ export const FrequencyModeSelect = ({ isDataLoading }) => {
                 </ConfigProvider>
             </div>
         </div>
-    )
-}
+    );
+};

@@ -6,4 +6,4 @@ export const tableConfig = {
         {ruName: 'Себестоимость', engName: 'self_cost', units: null, isSortable: false},
         {ruName: 'Фулфилмент', engName: 'fullfillment', units: null, isSortable: false},
     ]
-}
+};

@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import styles from './groupsMainWidget.module.css'
+import styles from './groupsMainWidget.module.css';
 import HowToLink from '@/components/sharedComponents/howToLink/howToLink';
 import { groupsMainTableConfig, buttonIcons } from '../../shared';
 import { Checkbox, ConfigProvider, message } from 'antd';
@@ -19,30 +19,30 @@ const initConfirmationState = {
 };
 
 const GroupsMainWidget = ({ setIsAddGroupModalVisible, groupsMainData, getGroupsData, setDataFetchingStatus, initDataFetchingStatus, dataFetchingStatus, setAlertState }) => {
-    const { authToken } = useContext(AuthContext)
-    const [tableData, setTableData] = useState([])
+    const { authToken } = useContext(AuthContext);
+    const [tableData, setTableData] = useState([]);
     const [checkedList, setCheckedList] = useState([]);
-    const [isEditGroupModalVisible, setIsEditGroupModalVisible] = useState(false)
-    const [confirmationModalState, setConfirmationModalState] = useState(initConfirmationState)
-    const [ editedGroupId, setEditedGroupId ] = useState()
-    const dispatch = useAppDispatch()
+    const [isEditGroupModalVisible, setIsEditGroupModalVisible] = useState(false);
+    const [confirmationModalState, setConfirmationModalState] = useState(initConfirmationState);
+    const [editedGroupId, setEditedGroupId] = useState();
+    const dispatch = useAppDispatch();
     const checkAll = tableData && tableData.length === checkedList.length;
     const indeterminate = tableData && checkedList.length > 0 && checkedList.length < tableData.length;
 
     const onCheckboxChange = (e) => {
         const { value, checked } = e.target;
         if (checked) {
-            setCheckedList([...checkedList, value])
+            setCheckedList([...checkedList, value]);
         } else {
-            const index = checkedList.findIndex(_ => _ === value)
-            const newList = checkedList
-            newList.splice(index, 1)
-            setCheckedList([...newList])
+            const index = checkedList.findIndex(_ => _ === value);
+            const newList = checkedList;
+            newList.splice(index, 1);
+            setCheckedList([...newList]);
         }
     };
 
     const deleteGroup = async (authToken, groupId) => {
-        setDataFetchingStatus({ ...initDataFetchingStatus, isLoading: true })
+        setDataFetchingStatus({ ...initDataFetchingStatus, isLoading: true });
         try {
             // TODO: перенести метод в ServiceFunctions
             const res = await fetchApi(`/api/product/product_groups/${groupId}`, {
@@ -51,7 +51,7 @@ const GroupsMainWidget = ({ setIsAddGroupModalVisible, groupsMainData, getGroups
                     'content-type': 'application/json',
                     'authorization': 'JWT ' + authToken
                 },
-            })
+            });
 
             if (!res.ok) {
                 const parsedData = await res.json();
@@ -73,24 +73,24 @@ const GroupsMainWidget = ({ setIsAddGroupModalVisible, groupsMainData, getGroups
               message: 'Что-то пошло не так :('
             });
         }
-    }
+    };
 
     const onCheckAllChange = e => {
         setCheckedList(e.target.checked ? tableData.map(_ => _.group) : []);
     };
 
     useEffect(() => {
-        groupsMainData && setTableData(groupsMainData)
-    }, [groupsMainData])
+        groupsMainData && setTableData(groupsMainData);
+    }, [groupsMainData]);
 
     useEffect(() => {
-        editedGroupId && setIsEditGroupModalVisible(true)
-    }, [editedGroupId])
+        editedGroupId && setIsEditGroupModalVisible(true);
+    }, [editedGroupId]);
     useEffect(() => {
         if (!isEditGroupModalVisible) {
-            setEditedGroupId(undefined)
+            setEditedGroupId(undefined);
         }
-    }, [isEditGroupModalVisible])
+    }, [isEditGroupModalVisible]);
 
     return (
         <div className={styles.widget}>
@@ -138,7 +138,7 @@ const GroupsMainWidget = ({ setIsAddGroupModalVisible, groupsMainData, getGroups
                                             }
                                             <p className={styles.table__headerItemTitle}>{v.ruName}</p>
                                         </div>
-                                    )
+                                    );
                                 })}
                             </div>
                         </div>
@@ -169,7 +169,7 @@ const GroupsMainWidget = ({ setIsAddGroupModalVisible, groupsMainData, getGroups
                                                                     // <Link className={styles.table__actionButton} key={id} to={`/groups/${product.id}`}>
                                                                     //     {buttonIcons[a]}
                                                                     // </Link>
-                                                                )
+                                                                );
                                                             }
                                                             if (a === 'delete') {
                                                                 return (
@@ -177,20 +177,20 @@ const GroupsMainWidget = ({ setIsAddGroupModalVisible, groupsMainData, getGroups
                                                                         className={styles.table__actionButton}
                                                                         key={id}
                                                                         //onClick={() => deleteGroup(authToken, product.id)}
-                                                                        onClick={() => setConfirmationModalState({open: true, title: 'Удаление группы', actionTitle: 'Удалить', message: `Вы уверены, что хотите удалить группу "${product.name}"?`, mainAction: () => {deleteGroup(authToken, product.id)}, returnAction: () => {setConfirmationModalState(initConfirmationState)}})}
+                                                                        onClick={() => setConfirmationModalState({open: true, title: 'Удаление группы', actionTitle: 'Удалить', message: `Вы уверены, что хотите удалить группу "${product.name}"?`, mainAction: () => {deleteGroup(authToken, product.id);}, returnAction: () => {setConfirmationModalState(initConfirmationState);}})}
                                                                     >
                                                                         {buttonIcons[a]}
                                                                     </button>
-                                                                )
+                                                                );
                                                             }
                                                             return (
                                                                 <button className={styles.table__actionButton} key={id}>
                                                                     {buttonIcons[a]}
                                                                 </button>
-                                                            )
+                                                            );
                                                         })}
                                                     </div>
-                                                )
+                                                );
                                             }
                                             if (v.engName === 'name') {
 
@@ -198,7 +198,7 @@ const GroupsMainWidget = ({ setIsAddGroupModalVisible, groupsMainData, getGroups
                                                     <div className={styles.table__rowItem} key={id}>
                                                         <Link to={`/groups/${product.id}`} className={styles.table__rowTitle}>{product[v.engName]}</Link>
                                                     </div>
-                                                )
+                                                );
                                             }
 
                                             return (
@@ -228,10 +228,10 @@ const GroupsMainWidget = ({ setIsAddGroupModalVisible, groupsMainData, getGroups
                                                     }
 
                                                 </div>
-                                            )
+                                            );
                                         }))}
                                     </div>
-                                )
+                                );
                             })}
                             {/* No data */}
                             {tableData && tableData.length === 0 &&
@@ -261,7 +261,7 @@ const GroupsMainWidget = ({ setIsAddGroupModalVisible, groupsMainData, getGroups
                 {...confirmationModalState}
             />
         </div>
-    )
-}
+    );
+};
 
 export default GroupsMainWidget;

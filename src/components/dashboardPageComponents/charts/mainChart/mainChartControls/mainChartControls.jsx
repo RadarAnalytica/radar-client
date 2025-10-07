@@ -1,4 +1,4 @@
-import styles from './mainChartControls.module.css'
+import styles from './mainChartControls.module.css';
 import { Checkbox, ConfigProvider } from 'antd';
 
 const MainChartControls = ({ constrolsState, setControlsState }) => {
@@ -7,8 +7,8 @@ const MainChartControls = ({ constrolsState, setControlsState }) => {
         setControlsState({
             ...constrolsState,
             [e.target.value]: e.target.checked
-        })
-    }
+        });
+    };
 
     return (
         <div className={styles.controls}>
@@ -104,7 +104,7 @@ const MainChartControls = ({ constrolsState, setControlsState }) => {
                 </ConfigProvider>
             </div>
         </div>
-    )
-}
+    );
+};
 
 export default MainChartControls;

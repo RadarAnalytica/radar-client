@@ -37,7 +37,7 @@ const DownloadButton = ({ handleDownload, loading }) => {
         </Button>
       </ConfigProvider>
     </>
-  )
+  );
 };
 
 export default DownloadButton;

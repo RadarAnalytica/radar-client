@@ -8,14 +8,14 @@ function FilterReportWeek({
 	setPeriod,
 	setLoading,
 }) {
-	
+
 	return (
 		<div className={styles.container}>
 			{periodOptions.length > 0 && (
 				<div className={styles.item}>
-					<PeriodsFilterReportWeek 
-						period={period} 
-						periodOptions={periodOptions} 
+					<PeriodsFilterReportWeek
+						period={period}
+						periodOptions={periodOptions}
 						setPeriod={setPeriod}
 					/>
 				</div>)}

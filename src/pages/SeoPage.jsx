@@ -9,7 +9,7 @@ import Sidebar from '../components/sharedComponents/sidebar/sidebar';
 import MobilePlug from '../components/sharedComponents/mobilePlug/mobilePlug';
 import Header from '../components/sharedComponents/header/header';
 import NoSubscriptionWarningBlock from '@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock';
-import { useDemoMode } from "@/app/providers";  
+import { useDemoMode } from "@/app/providers";
 
 const SeoPage = () => {
   const { user } = useContext(AuthContext);

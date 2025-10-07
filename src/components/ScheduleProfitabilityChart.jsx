@@ -11,10 +11,10 @@ const ScheduleProfitabilityChart = ({ dataProfitability, dataProfitPlus, dataPro
     // console.log('dataProfitPlus', dataProfitPlus)
     // console.log('dataProfitMinus', dataProfitMinus)
     // console.log('labels', labels)
-    const min = minValue
-    const max = maxValue
+    const min = minValue;
+    const max = maxValue;
     if (Math.abs(min) + Math.abs(max) < 300) {
-        step = 25
+        step = 25;
     }
     const data = {
         labels: labels,
@@ -142,7 +142,6 @@ const ScheduleProfitabilityChart = ({ dataProfitability, dataProfitPlus, dataPro
                     },
                 }
             }
-
 
 
         },

@@ -10,4 +10,4 @@ export const getFilteredData = (query, data) => {
     }
 
     return filteredData;
-}
+};

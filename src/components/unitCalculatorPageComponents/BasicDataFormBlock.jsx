@@ -2,34 +2,34 @@ import { useState, useRef, useEffect } from 'react';
 import { Form, Input, Checkbox, ConfigProvider, Tooltip, Select, Modal, AutoComplete } from 'antd';
 import { normilizeUnitsInputValue } from './UnitCalcUtils';
 import { getCalculatorSubjects } from '../../service/api/api';
-import styles from './BasicDataFormBlock.module.css'
+import styles from './BasicDataFormBlock.module.css';
 import useDebouncedFunction from '../../service/hooks/useDebounce';
 
 const BasicDataFormBlock = ({ form, setMpMainFee, isProductFromToken, setIsProductFromToken }) => {
-    const [ autocompleteOptions, setAutocompleteOptions ] = useState();
+    const [autocompleteOptions, setAutocompleteOptions] = useState();
     // console.log(autocompleteOptions)
     const [loadingOptions, setLoadingOptions] = useState(true);
     const [inputValue, setInputValue] = useState('');
     const [isOptionClicked, setIsOptionClicked] = useState(false);
-    const [ error, setError ] = useState(false)
-    const dropdownRef = useRef(null)
+    const [error, setError] = useState(false);
+    const dropdownRef = useRef(null);
 
     const getSubjectsDataWSetter = async (value) => {
         setLoadingOptions(true);
-        const res = await getCalculatorSubjects({search_string: value.trim()})
-        
+        const res = await getCalculatorSubjects({search_string: value.trim()});
+
         if (res.rows) {
-            setAutocompleteOptions(res.rows)
+            setAutocompleteOptions(res.rows);
         } else {
-            setError(true)
+            setError(true);
         }
         setLoadingOptions(false);
-    }
-    const debouncedDataFetch = useDebouncedFunction(getSubjectsDataWSetter, 500)
+    };
+    const debouncedDataFetch = useDebouncedFunction(getSubjectsDataWSetter, 500);
     useEffect( () => {
         setLoadingOptions(true);
         getSubjectsDataWSetter('');
-    }, [])
+    }, []);
 
     const isSPP = Form.useWatch('isSPP', form);
     const product = Form.useWatch('product', form);
@@ -41,38 +41,38 @@ const BasicDataFormBlock = ({ form, setMpMainFee, isProductFromToken, setIsProdu
     const package_width = Form.useWatch('package_width', form);
     const package_height = Form.useWatch('package_height', form);
 
-    const package_width_int = parseInt(package_width)
-    const package_length_int = parseInt(package_length)
-    const package_height_int = parseInt(package_height)
+    const package_width_int = parseInt(package_width);
+    const package_length_int = parseInt(package_length);
+    const package_height_int = parseInt(package_height);
 
-    const sidesSum = package_width_int + package_length_int + package_height_int
-    const volume = (((package_height_int / 100) * (package_length_int / 100) * (package_width_int / 100)) * 1000).toFixed(2)
+    const sidesSum = package_width_int + package_length_int + package_height_int;
+    const volume = (((package_height_int / 100) * (package_length_int / 100) * (package_width_int / 100)) * 1000).toFixed(2);
 
     const autocompleteValidation = (_, value) => { //custom validation for autocomplete
         if (!value) {
-            return Promise.reject('Пожалуйста, заполните это поле')
+            return Promise.reject('Пожалуйста, заполните это поле');
         // } else if (!isOptionClicked && !isProductFromToken) {
         } else if (!isOptionClicked && isProductFromToken !== null && isProductFromToken === false) {
-            return Promise.reject('Пожалуйста, выберите опцию')
+            return Promise.reject('Пожалуйста, выберите опцию');
         } else {
-            return Promise.resolve()
+            return Promise.resolve();
         }
-    }
+    };
 
 
     const handleSearch = (value) => { // обработка ввода пользователя вручную
-        setIsProductFromToken(false)
-        setIsOptionClicked(false)
+        setIsProductFromToken(false);
+        setIsOptionClicked(false);
         setInputValue(value);
         // if (value === '') {
             // setAutocompleteOptions([])
         // }
-        value && debouncedDataFetch(value)
+        value && debouncedDataFetch(value);
     };
 
     const handleSelect = (value) => { // обработка клика на опцию
-        setIsOptionClicked(true)
-        setIsProductFromToken(null)
+        setIsOptionClicked(true);
+        setIsProductFromToken(null);
         setInputValue(value);
         // const currentOption = autocompleteOptions.find(_ => _.name === value)
         // if (currentOption) {
@@ -82,12 +82,12 @@ const BasicDataFormBlock = ({ form, setMpMainFee, isProductFromToken, setIsProdu
 
     return (
         <fieldset className={styles.fieldset}>
-            <Modal 
+            <Modal
                 open={error}
                 title='Что-то пошло не так'
-                onClose={() => {setError(false)}}
-                onOk={() => {setError(false)}}
-                onCancel={() => {setError(false)}}
+                onClose={() => {setError(false);}}
+                onOk={() => {setError(false);}}
+                onCancel={() => {setError(false);}}
                 footer={null}
             />
             <div className={styles.fieldset__header}>
@@ -135,7 +135,7 @@ const BasicDataFormBlock = ({ form, setMpMainFee, isProductFromToken, setIsProdu
                         { validator: isProductFromToken !== null && autocompleteValidation }
                     ]}
                 >
-                    <Select 
+                    <Select
                         showSearch
                         size='large'
                         placeholder='Введите название товара'
@@ -150,15 +150,15 @@ const BasicDataFormBlock = ({ form, setMpMainFee, isProductFromToken, setIsProdu
                         )}
                         getPopupContainer={(triggerNode) => triggerNode.parentNode}
                         onDropdownVisibleChange={(open) => {
-                            const p = document.querySelector('#calc-content')
+                            const p = document.querySelector('#calc-content');
                             if (open) {
                                 // Отключаем прокрутку при открытии
                                 document.body.style.overflow = 'hidden';
-                                p.style.overflow = 'hidden'
+                                p.style.overflow = 'hidden';
                             } else {
                                 // Восстанавливаем прокрутку при закрытии
                                 document.body.style.overflow = 'auto';
-                                p.style.overflow = 'auto'
+                                p.style.overflow = 'auto';
                             }
                         }}
                         notFoundContent={<div style={{color: 'black'}}>
@@ -175,7 +175,7 @@ const BasicDataFormBlock = ({ form, setMpMainFee, isProductFromToken, setIsProdu
                                 </div>
                             )
                         }}
-                        
+
                         // value={inputValue}
                         onSearch={handleSearch}
                         onSelect={handleSelect}
@@ -195,13 +195,13 @@ const BasicDataFormBlock = ({ form, setMpMainFee, isProductFromToken, setIsProdu
                     label='Цена товара'
                     className={isSPP ? styles.formItem : `${styles.formItem} ${styles.formItem_wide}`}
                     getValueProps={(value) => {
-                        const transformedValue = {value: value ? value + ' ₽' : value}
-                        return transformedValue
+                        const transformedValue = {value: value ? value + ' ₽' : value};
+                        return transformedValue;
                     }}
                     normalize={(value, prevValue) => {
-                        const normalizedValue = normilizeUnitsInputValue(value, prevValue, ' ₽')
-                        const regex = /^-?\d*\.?\d*$/ // только целые и дробные числа
-                        if (regex.test(normalizedValue)) { return normalizedValue };
+                        const normalizedValue = normilizeUnitsInputValue(value, prevValue, ' ₽');
+                        const regex = /^-?\d*\.?\d*$/; // только целые и дробные числа
+                        if (regex.test(normalizedValue)) { return normalizedValue; };
                         return prevValue || '';
                     }}
                     rules={
@@ -222,13 +222,13 @@ const BasicDataFormBlock = ({ form, setMpMainFee, isProductFromToken, setIsProdu
                     className={styles.formItem}
                     name='SPP'
                     getValueProps={(value) => {
-                        const transformedValue = {value: value ? value + ' %' : value}
-                        return transformedValue
+                        const transformedValue = {value: value ? value + ' %' : value};
+                        return transformedValue;
                     }}
                     normalize={(value, prevValue) => {
-                        const normalizedValue = normilizeUnitsInputValue(value, prevValue, ' %')
-                        const regex = /^(100(\.0*)?|0*(\d{1,2}(\.\d*)?|\.\d+))$|^$/ // только целые и дробные от 0 до 100
-                        if (regex.test(normalizedValue)) { return normalizedValue };
+                        const normalizedValue = normilizeUnitsInputValue(value, prevValue, ' %');
+                        const regex = /^(100(\.0*)?|0*(\d{1,2}(\.\d*)?|\.\d+))$|^$/; // только целые и дробные от 0 до 100
+                        if (regex.test(normalizedValue)) { return normalizedValue; };
                         return prevValue || '';
                     }}
                     rules={
@@ -244,7 +244,6 @@ const BasicDataFormBlock = ({ form, setMpMainFee, isProductFromToken, setIsProdu
                         className={styles.formItem__input}
                     />
                 </Form.Item>}
-
 
 
                 <ConfigProvider
@@ -279,13 +278,13 @@ const BasicDataFormBlock = ({ form, setMpMainFee, isProductFromToken, setIsProdu
                 label='Закупочная цена'
                 className={styles.formItem}
                 getValueProps={(value) => {
-                    const transformedValue = {value: value ? value + ' ₽' : value}
-                    return transformedValue
+                    const transformedValue = {value: value ? value + ' ₽' : value};
+                    return transformedValue;
                 }}
                 normalize={(value, prevValue) => {
-                    const normalizedValue = normilizeUnitsInputValue(value, prevValue, ' ₽')
-                    const regex = /^-?\d*\.?\d*$/ // только целые и дробные числа
-                    if (regex.test(normalizedValue)) { return normalizedValue };
+                    const normalizedValue = normilizeUnitsInputValue(value, prevValue, ' ₽');
+                    const regex = /^-?\d*\.?\d*$/; // только целые и дробные числа
+                    if (regex.test(normalizedValue)) { return normalizedValue; };
                     return prevValue || '';
                 }}
                 rules={
@@ -308,13 +307,13 @@ const BasicDataFormBlock = ({ form, setMpMainFee, isProductFromToken, setIsProdu
                     name='package_length'
                     className={styles.formItem}
                     getValueProps={(value) => {
-                        const transformedValue = {value: value ? value + ' см' : value}
-                        return transformedValue
+                        const transformedValue = {value: value ? value + ' см' : value};
+                        return transformedValue;
                     }}
                     normalize={(value, prevValue) => {
-                        const normalizedValue = normilizeUnitsInputValue(value, prevValue, ' см')
-                        const regex = /^(|\d+)$/ // только целые числа
-                        if (regex.test(normalizedValue)) { return normalizedValue };
+                        const normalizedValue = normilizeUnitsInputValue(value, prevValue, ' см');
+                        const regex = /^(|\d+)$/; // только целые числа
+                        if (regex.test(normalizedValue)) { return normalizedValue; };
                         return prevValue || '';
                     }}
                     rules={
@@ -335,13 +334,13 @@ const BasicDataFormBlock = ({ form, setMpMainFee, isProductFromToken, setIsProdu
                     name='package_width'
                     className={styles.formItem}
                     getValueProps={(value) => {
-                        const transformedValue = {value: value ? value + ' см' : value}
-                        return transformedValue
+                        const transformedValue = {value: value ? value + ' см' : value};
+                        return transformedValue;
                     }}
                     normalize={(value, prevValue) => {
-                        const normalizedValue = normilizeUnitsInputValue(value, prevValue, ' см')
-                        const regex = /^(|\d+)$/ // только целые числа
-                        if (regex.test(normalizedValue)) { return normalizedValue };
+                        const normalizedValue = normilizeUnitsInputValue(value, prevValue, ' см');
+                        const regex = /^(|\d+)$/; // только целые числа
+                        if (regex.test(normalizedValue)) { return normalizedValue; };
                         return prevValue || '';
                     }}
                     rules={
@@ -362,13 +361,13 @@ const BasicDataFormBlock = ({ form, setMpMainFee, isProductFromToken, setIsProdu
                     className={styles.formItem}
                     name='package_height'
                     getValueProps={(value) => {
-                        const transformedValue = {value: value ? value + ' см' : value}
-                        return transformedValue
+                        const transformedValue = {value: value ? value + ' см' : value};
+                        return transformedValue;
                     }}
                     normalize={(value, prevValue) => {
-                        const normalizedValue = normilizeUnitsInputValue(value, prevValue, ' см')
-                        const regex = /^(|\d+)$/ // только целые числа
-                        if (regex.test(normalizedValue)) { return normalizedValue };
+                        const normalizedValue = normilizeUnitsInputValue(value, prevValue, ' см');
+                        const regex = /^(|\d+)$/; // только целые числа
+                        if (regex.test(normalizedValue)) { return normalizedValue; };
                         return prevValue || '';
                     }}
                     rules={
@@ -436,7 +435,7 @@ const BasicDataFormBlock = ({ form, setMpMainFee, isProductFromToken, setIsProdu
                 </div>
             </div>
         </fieldset>
-    )
-}
+    );
+};
 
 export default BasicDataFormBlock;

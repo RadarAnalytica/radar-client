@@ -1,34 +1,33 @@
-import { useEffect, useState } from 'react'
-import styles from './skuFrequencyRequestPage.module.css'
-import Header from '../../components/sharedComponents/header/header'
-import Sidebar from '../../components/sharedComponents/sidebar/sidebar'
-import MobilePlug from '../../components/sharedComponents/mobilePlug/mobilePlug'
-import { Filters } from '../../components/sharedComponents/apiServicePagesFiltersComponent'
-import Breadcrumbs from '../../components/sharedComponents/header/headerBreadcrumbs/breadcrumbs'
-import { useSearchParams, useNavigate } from 'react-router-dom'
-import { Segmented, ConfigProvider } from 'antd'
-import { BarsWidget, ChartWidget } from './widgets'
+import { useEffect, useState } from 'react';
+import styles from './skuFrequencyRequestPage.module.css';
+import Header from '../../components/sharedComponents/header/header';
+import Sidebar from '../../components/sharedComponents/sidebar/sidebar';
+import MobilePlug from '../../components/sharedComponents/mobilePlug/mobilePlug';
+import { Filters } from '../../components/sharedComponents/apiServicePagesFiltersComponent';
+import Breadcrumbs from '../../components/sharedComponents/header/headerBreadcrumbs/breadcrumbs';
+import { useSearchParams, useNavigate } from 'react-router-dom';
+import { Segmented, ConfigProvider } from 'antd';
+import { BarsWidget, ChartWidget } from './widgets';
 
 
 // dont forget to rename the component and its export
 const SkuFrequencyRequestPage = () => {
 
-    const [mainTabsState, setMainTabsState] = useState('Общая информация')
-    const [chartTabsState, setChartTabsState] = useState('По месяцам')
-    const [currentQuery, setCurrentQuery] = useState()
+    const [mainTabsState, setMainTabsState] = useState('Общая информация');
+    const [chartTabsState, setChartTabsState] = useState('По месяцам');
+    const [currentQuery, setCurrentQuery] = useState();
     const [searchParams] = useSearchParams();
     const navigate = useNavigate();
 
 
-
     useEffect(() => {
-        const query = searchParams.get('query')
+        const query = searchParams.get('query');
         if (query) {
-            setCurrentQuery(query)
+            setCurrentQuery(query);
         } else {
-            navigate('/monitoring')
+            navigate('/monitoring');
         }
-    }, [searchParams])
+    }, [searchParams]);
 
     return (
         <main className={styles.page}>
@@ -137,8 +136,8 @@ const SkuFrequencyRequestPage = () => {
             </div>
             {/* ---------------------- */}
         </main>
-    )
-}
+    );
+};
 
 export default SkuFrequencyRequestPage;
 

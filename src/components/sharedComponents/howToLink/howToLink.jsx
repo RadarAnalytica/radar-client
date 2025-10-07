@@ -1,5 +1,5 @@
-import styles from './howToLink.module.css'
-import { Link } from 'react-router-dom'
+import styles from './howToLink.module.css';
+import { Link } from 'react-router-dom';
 
 const HowToLink = ({
     text = 'no text',
@@ -20,7 +20,7 @@ const HowToLink = ({
 
             {text}
         </Link>
-    )
-}
+    );
+};
 
 export default HowToLink;

@@ -94,7 +94,7 @@ export default function OperatingExpenses() {
 				setLoading(false);
 			}
 		}
-	}
+	};
 
 	const updatePeriodicExpenses = async () => {
 		setLoading(true);
@@ -106,12 +106,12 @@ export default function OperatingExpenses() {
 			console.error('updateExpenses error', error);
 			setExpense([]);
 		} finally {
-			console.log('updateExpenses', !firstLoad.current)
+			console.log('updateExpenses', !firstLoad.current);
 			// if (!firstLoad.current) {
 			setLoading(false);
 			// }
 		}
-	}
+	};
 
 	const updateExpenses = async () => {
 		setLoading(true);
@@ -124,12 +124,12 @@ export default function OperatingExpenses() {
 			console.error('updateExpenses error', error);
 			setExpense([]);
 		} finally {
-			console.log('updateExpenses', !firstLoad.current)
+			console.log('updateExpenses', !firstLoad.current);
 			if (!firstLoad.current) {
 				setLoading(false);
 			}
 		}
-	}
+	};
 
 	useEffect(() => {
 		if (!activeBrand && !activeBrand?.is_primary_collect) {
@@ -192,14 +192,14 @@ export default function OperatingExpenses() {
 			setModalCreateCategoryOpen(false);
 			setCategoryLoading(false);
 		}
-	}
+	};
 
 	const editCategory = async (category) => {
 		setLoading(true);
 		setModalCreateCategoryOpen(false);
 		try {
 			const res = await ServiceFunctions.patchOperatingExpensesCategory(authToken, category);
-			// 
+			//
 			setCategory((list) => list.map((el) => {
 				if (el.id === category.id) {
 					return category
@@ -215,7 +215,7 @@ export default function OperatingExpenses() {
 			setLoading(false);
 			// }
 		}
-	}
+	};
 
 	const handleCategory = (category) => {
 		setModalCreateCategoryOpen(false);
@@ -223,7 +223,7 @@ export default function OperatingExpenses() {
 			console.log('editCategory')
 			const editedCategory = { ...categoryEdit, ...category }
 			editCategory(editedCategory);
-			return
+			return;
 		}
 		createCategory(category);
 		// setExpenses((category) => category.push(article) );
@@ -233,7 +233,7 @@ export default function OperatingExpenses() {
 		console.log('handleExpanse', expense)
 		if (!!expenseEdit) {
 			editExpanse(expense);
-			return
+			return;
 		}
 		createExpense(expense);
 		// setExpenses((category) => category.push(article) );
@@ -243,7 +243,7 @@ export default function OperatingExpenses() {
 		setCategoryLoading(true);
 		// console.log('createCategory', category)
 		// setModalCreateCategoryOpen(false);
-		console.log('createExpense', expense)
+		console.log('createExpense', expense);
 		try {
 			const res = await ServiceFunctions.postOperatingExpensesExpenseCreate(authToken, expense);
 			// console.log('createCategory', res);
@@ -317,7 +317,7 @@ export default function OperatingExpenses() {
 		setLoading(true);
 		try {
 			const res = await ServiceFunctions.deleteOperatingExpensesExpenseDelete(authToken, id);
-			// 
+			//
 			setExpense((list) => list.filter((el) => el.id !== id));
 			// 
 		} catch (error) {
@@ -333,9 +333,9 @@ export default function OperatingExpenses() {
 		setLoading(true);
 		try {
 			const res = await ServiceFunctions.deleteOperatingExpensesExpense();
-			// 
+			//
 			setExpense((list) => list.filter((el) => el.id !== id));
-			// 
+			//
 			console.log('deleteExpense', res);
 		} catch (error) {
 			console.error('deleteExpense error', error);
@@ -343,15 +343,15 @@ export default function OperatingExpenses() {
 			setDeleteExpenseId(null);
 			setLoading(false);
 		}
-	}
+	};
 
 	const deleteCategoryHandler = async (id) => {
 		console.log('deleteCategoryHandler');
 		setLoading(true);
 		try {
 			const res = await ServiceFunctions.deleteOperatingExpensesCategory(authToken, id);
-			// 
-			console.log('id', id)
+			//
+			console.log('id', id);
 			setCategory((list) => list.filter((el) => el.id !== id));
 			// 
 		} catch (error) {
@@ -360,7 +360,7 @@ export default function OperatingExpenses() {
 			setDeleteCategoryId(null);
 			setLoading(false);
 		}
-	}
+	};
 
 	return (
 		<main className={styles.page}>

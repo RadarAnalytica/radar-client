@@ -12,7 +12,7 @@ import manager1 from "../pages/images/manager1.png";
 import manager2 from "../pages/images/manager2.png";
 import manager3 from "../pages/images/manager3.png";
 import Steps from "../pages/images/Steps";
-import styles from "../components/BtnHomePage.module.css"
+import styles from "../components/BtnHomePage.module.css";
 
 const dataImages = {
   newbie: [newbie1, newbie2, newbie3],

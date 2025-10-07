@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 
 const TopTgIcon = () => {
     return (
@@ -12,7 +12,7 @@ const TopTgIcon = () => {
             </defs>
         </svg>
 
-    )
-}
+    );
+};
 
-export default TopTgIcon
+export default TopTgIcon;

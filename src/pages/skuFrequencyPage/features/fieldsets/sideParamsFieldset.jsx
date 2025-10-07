@@ -1,10 +1,10 @@
-import { useState } from 'react'
-import styles from './sideParamsFieldset.module.css'
-import { Form, ConfigProvider, Input, Tooltip } from 'antd'
-import { sideOptionsConfig } from '../../shared'
+import { useState } from 'react';
+import styles from './sideParamsFieldset.module.css';
+import { Form, ConfigProvider, Input, Tooltip } from 'antd';
+import { sideOptionsConfig } from '../../shared';
 
 const SideParamsFieldset = () => {
-    const [isBodyVisisble, setIsBodyVisible] = useState(false)
+    const [isBodyVisisble, setIsBodyVisible] = useState(false);
 
     return (
         <fieldset
@@ -70,23 +70,23 @@ const SideParamsFieldset = () => {
                                 {_.title && <p className={styles.fieldset__title}>{_.title}</p>}
                                 <div className={layoutStyles} key={id}>
                                     {_.options.map((i, id) => {
-                                        return <FormItemBlock i={i} key={id} />
+                                        return <FormItemBlock i={i} key={id} />;
                                     })}
                                 </div>
                             </div>
-                        )
+                        );
                     })}
                 </div>
 
             </ConfigProvider>
         </fieldset>
-    )
-}
+    );
+};
 
 
 const FormItemBlock = ({ i }) => {
 
-    const [errorState, setErrorState] = useState({ fromInput: '', toInput: '' })
+    const [errorState, setErrorState] = useState({ fromInput: '', toInput: '' });
 
 
     const itemStyles = i.isWide ? `${styles.form__complexInputWrapper} ${styles.form__complexInputWrapper_wide}` : styles.form__complexInputWrapper;
@@ -138,20 +138,20 @@ const FormItemBlock = ({ i }) => {
                             rules={[
                                 () => ({
                                     validator(_, value) {
-                                        const regex = /^(|\d+)$/ // только целые числа
+                                        const regex = /^(|\d+)$/; // только целые числа
                                         if (value && !regex.test(value)) {
-                                            return Promise.reject(new Error(''))
+                                            return Promise.reject(new Error(''));
                                         }
                                         if (i.units === '%' && value && value.trim()) {
                                             const int = parseInt(value);
                                             if (int && typeof int === 'number' && (int < 0 || int > 100)) {
-                                                setErrorState({ ...errorState, fromInput: 'Пожалуйста, введите значения от 0 до 100!' })
-                                                return Promise.reject(new Error(''))
+                                                setErrorState({ ...errorState, fromInput: 'Пожалуйста, введите значения от 0 до 100!' });
+                                                return Promise.reject(new Error(''));
                                             }
                                         }
 
-                                        setErrorState({ ...errorState, fromInput: '' })
-                                        return Promise.resolve()
+                                        setErrorState({ ...errorState, fromInput: '' });
+                                        return Promise.resolve();
                                     },
                                 }),
                             ]}
@@ -186,19 +186,19 @@ const FormItemBlock = ({ i }) => {
                             rules={[
                                 () => ({
                                     validator(_, value) {
-                                        const regex = /^(|\d+)$/ // только целые числа
+                                        const regex = /^(|\d+)$/; // только целые числа
                                         if (value && !regex.test(value)) {
-                                            return Promise.reject(new Error(''))
+                                            return Promise.reject(new Error(''));
                                         }
                                         if (i.units === '%' && value && value.trim()) {
                                             const int = parseInt(value);
                                             if (int && typeof int === 'number' && (int < 0 || int > 100)) {
-                                                setErrorState({ ...errorState, toInput: 'Пожалуйста, введите значения от 0 до 100!' })
-                                                return Promise.reject(new Error(''))
+                                                setErrorState({ ...errorState, toInput: 'Пожалуйста, введите значения от 0 до 100!' });
+                                                return Promise.reject(new Error(''));
                                             }
                                         }
-                                        setErrorState({ ...errorState, toInput: '' })
-                                        return Promise.resolve()
+                                        setErrorState({ ...errorState, toInput: '' });
+                                        return Promise.resolve();
                                     },
                                 }),
                             ]}
@@ -212,7 +212,7 @@ const FormItemBlock = ({ i }) => {
                     </Tooltip>
                 </ConfigProvider>
             </div>
-        </div>)
-}
+        </div>);
+};
 
 export default SideParamsFieldset;

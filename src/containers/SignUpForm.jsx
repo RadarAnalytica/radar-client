@@ -17,7 +17,7 @@ const SignUpForm = () => {
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
     const referral = searchParams.get('referral') || searchParams.get('radar');
-    
+
     if (referral) {
       // Save the referral code (to localStorage)
       localStorage.setItem('referralCode', referral);
@@ -44,7 +44,7 @@ const SignUpForm = () => {
     promocode: null,
     confirmed: false,
     isOnboarded: false,
-    referral_partner_link: localStorage.getItem('referralCode') || '', 
+    referral_partner_link: localStorage.getItem('referralCode') || '',
   });
 
   const nameHandler = (e) => {
@@ -131,7 +131,7 @@ const SignUpForm = () => {
   const sumbitHandler = (e, obj) => {
     const nullable = Object.values(obj)?.filter((item) => item === null);
     console.log(obj, Object.values(obj), nullable);
-    
+
     if (!obj || nullable?.length > 3 || !isValidEmail(obj.email) || (obj.password && obj.password.length < 6)) {
       e.preventDefault();
       setError('Введите корректное значение для всех полей');

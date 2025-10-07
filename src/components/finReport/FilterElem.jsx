@@ -2,81 +2,81 @@ import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 import styles from './FilterElem.module.css';
-import { monthNames } from '../../service/reportConfig'
-import { switchPLFilter, switchAllPLFilter } from '../../redux/reportPL/plFiltersSlice'
-import { switchDashboardFilter, switchAllDashboardFilter } from '../../redux/dashboardReport/dashboardFiltersSlice'
-import { switchByMonthFilter, switchAllByMonthFilter } from '../../redux/reportByMonth/byMonthFiltersSlice'
-import { switchByGoodsFilter, switchAllByGoodsFilter } from '../../redux/reportByGoods/byGoodsFiltersSlice'
-import { switchABCFilter, switchAllABCFilter } from '../../redux/reportABC/abcFiltersSlice'
-import { switchPenaltyFilter, switchAllPenaltyFilter } from '../../redux/reportPrnalties/penaltyFiltersSlice'
-import { switchChartsFilter, switchAllChartsFilter } from '../../redux/reportCharts/chartsFiltersSlice'
+import { monthNames } from '../../service/reportConfig';
+import { switchPLFilter, switchAllPLFilter } from '../../redux/reportPL/plFiltersSlice';
+import { switchDashboardFilter, switchAllDashboardFilter } from '../../redux/dashboardReport/dashboardFiltersSlice';
+import { switchByMonthFilter, switchAllByMonthFilter } from '../../redux/reportByMonth/byMonthFiltersSlice';
+import { switchByGoodsFilter, switchAllByGoodsFilter } from '../../redux/reportByGoods/byGoodsFiltersSlice';
+import { switchABCFilter, switchAllABCFilter } from '../../redux/reportABC/abcFiltersSlice';
+import { switchPenaltyFilter, switchAllPenaltyFilter } from '../../redux/reportPrnalties/penaltyFiltersSlice';
+import { switchChartsFilter, switchAllChartsFilter } from '../../redux/reportCharts/chartsFiltersSlice';
 
 const FilterElem = ({title, pageIdent, filterIdent, items, isLoading, widthData, changeWeekFilter}) => {
   const [isAllSelected, setIsAllSelected] = useState((false));
   const [options, setOptions] = useState([]);
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   // const [isLoading, setIsLoading] = useState(startLoading);
-  
+
   useEffect(() => {
-    const current = []
+    const current = [];
     // const storageItem = localStorage.getItem(pageIdent)
-    
+
     // let currentPageData = JSON.parse(storageItem)
     // currentPageData = currentPageData ? currentPageData : {}
     // let currentFilterData = currentPageData[filterIdent] ? currentPageData[filterIdent] : []
-    let counter = 0
+    let counter = 0;
     for (let elem of items ? Object.keys(items) : []) {
-      
+
       current.push({
         key: `${filterIdent}${counter}`,
         value: elem,
         isSelected: items[elem]// currentFilterData.includes(elem)
-      })
-      counter++
+      });
+      counter++;
     }
     // if (filterIdent === 'year' || filterIdent === 'month') {
     //   changeWeekFilter();
     // }
-    setOptions(current)
-  }, [items, filterIdent, pageIdent])
+    setOptions(current);
+  }, [items, filterIdent, pageIdent]);
 
   const changeSelectOption = (optionElem) => {
     switch (pageIdent) {
             case 'dashboard':
               dispatch(switchDashboardFilter(
                 { ident: filterIdent, elem: optionElem.value }
-              ))
-                return 
+              ));
+                return;
             case 'pl':
                 dispatch(switchPLFilter(
                       { ident: filterIdent, elem: optionElem.value }
-                    ))
-                return
+                    ));
+                return;
             case 'month':
               dispatch(switchByMonthFilter(
                 { ident: filterIdent, elem: optionElem.value }
-              ))
-              return
+              ));
+              return;
             case 'goods':
               dispatch(switchByGoodsFilter(
                 { ident: filterIdent, elem: optionElem.value }
-              ))
-              return
+              ));
+              return;
             case 'abc':
               dispatch(switchABCFilter(
                 { ident: filterIdent, elem: optionElem.value }
-              ))
-              return
+              ));
+              return;
             case 'penalty':
               dispatch(switchPenaltyFilter(
                 { ident: filterIdent, elem: optionElem.value }
-              ))
-              return 
+              ));
+              return;
             case 'charts':
               dispatch(switchChartsFilter(
                 { ident: filterIdent, elem: optionElem.value }
-              ))
-              return 
+              ));
+              return;
             default:
                 break;
         }
@@ -85,7 +85,7 @@ const FilterElem = ({title, pageIdent, filterIdent, items, isLoading, widthData,
     //     ? { ...elem, isSelected: !elem.isSelected }
     //     : elem
     // ));
-    
+
     // const storageItem = localStorage.getItem(pageIdent);
     // let currentPageData = JSON.parse(storageItem);
     // currentPageData = currentPageData ? currentPageData : {}
@@ -96,80 +96,80 @@ const FilterElem = ({title, pageIdent, filterIdent, items, isLoading, widthData,
     //   currentFilterData.push(optionElem.value);
     // }
     // console.log('currentFilterData', currentFilterData);
-    
+
     // currentPageData[filterIdent] = currentFilterData
     // console.log('currentPageData', currentPageData);
-    
+
     // localStorage.setItem(pageIdent, JSON.stringify(currentPageData))
     // if (filterIdent === 'year' || filterIdent === 'month') {
     //   changeWeekFilter();
     // }
     // setOptions(updatedList)
-  }
+  };
   // console.log('Test one of Fin Report pages');
-  
+
   useEffect(() =>  {
-    const selectList = options.map(x => x.isSelected ? 1 : 0)
-    const res = (selectList.reduce((acc, num) => acc + num, 0)) === options.length
+    const selectList = options.map(x => x.isSelected ? 1 : 0);
+    const res = (selectList.reduce((acc, num) => acc + num, 0)) === options.length;
     setIsAllSelected(res);
     // if (filterIdent === 'year' || filterIdent === 'month') {
     //   changeWeekFilter();
     // }
-  }, [options, filterIdent])
+  }, [options, filterIdent]);
 
 
   const handleSelectAll = () => {
     // const storageItem = localStorage.getItem(pageIdent);
     // let currentPageData = JSON.parse(storageItem);
     // currentPageData = currentPageData ? currentPageData : {}
-    let isAllValue = true
+    let isAllValue = true;
     if (isAllSelected) {
-      isAllValue = false
-      
+      isAllValue = false;
+
       // currentPageData[filterIdent] = []
-    } 
-    setIsAllSelected(isAllValue)
+    }
+    setIsAllSelected(isAllValue);
     switch (pageIdent) {
       case 'dashboard':
         dispatch(switchAllDashboardFilter(
           { ident: filterIdent, value: isAllValue }
-        ))
-        return 
+        ));
+        return;
       case 'pl':
         dispatch(switchAllPLFilter(
           { ident: filterIdent, value: isAllValue }
-        ))
-        return
+        ));
+        return;
       case 'month':
         dispatch(switchAllByMonthFilter(
           { ident: filterIdent, value: isAllValue }
-        ))
-        return 
+        ));
+        return;
       case 'goods':
         dispatch(switchAllByGoodsFilter(
           { ident: filterIdent, value: isAllValue }
-        ))
-        return 
+        ));
+        return;
       case 'abc':
         dispatch(switchAllABCFilter(
           { ident: filterIdent, value: isAllValue }
-        ))
-        return 
+        ));
+        return;
       case 'penalty':
         dispatch(switchAllPenaltyFilter(
           { ident: filterIdent, value: isAllValue }
-        ))
-        return 
+        ));
+        return;
       case 'charts':
         dispatch(switchAllChartsFilter(
           { ident: filterIdent, value: isAllValue }
-        ))
-        return 
+        ));
+        return;
       default:
           break;
   }
     // localStorage.setItem(pageIdent, JSON.stringify(currentPageData))
-  }
+  };
   const handleTitleDisplay = (e) => {
     const span = e.currentTarget;
     if (span.scrollWidth > span.clientWidth) {
@@ -202,10 +202,10 @@ const FilterElem = ({title, pageIdent, filterIdent, items, isLoading, widthData,
             {options.map((option) => {
               let monthValue;
               if (filterIdent === 'month') {
-                const splittedValue = option.value.split('.')
-                monthValue = monthNames[parseInt(option.value.split('.')[0])]
+                const splittedValue = option.value.split('.');
+                monthValue = monthNames[parseInt(option.value.split('.')[0])];
                 if (splittedValue[1]) {
-                  monthValue += ` ${splittedValue[1]}`
+                  monthValue += ` ${splittedValue[1]}`;
                 } else {
                   //
                 }
@@ -218,21 +218,21 @@ const FilterElem = ({title, pageIdent, filterIdent, items, isLoading, widthData,
                 <input
                   type='checkbox'
                   checked={option.isSelected}
-                  onChange={() => {changeSelectOption(option)}}
+                  onChange={() => {changeSelectOption(option);}}
                   className={styles.checkbox}
                 />
-                <span 
+                <span
                 style={{maxWidth: widthData ? '600px' : '180px'}}
                 ref={(el) => el && handleTitleDisplay({ currentTarget: el })}
                 >
                   {filterIdent === 'month' ? monthValue : option.value}
                 </span>
               </label>
-            )})}
+            );})}
           </div>
         )}
       </div>
   );
 };
 
-export default FilterElem
+export default FilterElem;

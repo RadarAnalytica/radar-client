@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import styles from './barsWidget.module.css'
+import styles from './barsWidget.module.css';
 import Bar from '../../features/bar/bar';
 import { useAppSelector } from '../../../../redux/hooks';
 import ErrorModal from '../../../../components/sharedComponents/modals/errorModal/errorModal';
@@ -9,14 +9,14 @@ const initRequestStatus = {
     isError: false,
     isSuccess: false,
     message: ''
-}
+};
 
 const BarsWidget = ({currentQuery}) => {
-    const [queryDetailsData, setQueryDetailsData] = useState()
-    const [ requestStatus, setRequestStatus ] = useState(initRequestStatus)
+    const [queryDetailsData, setQueryDetailsData] = useState();
+    const [requestStatus, setRequestStatus] = useState(initRequestStatus);
 
     const getQueryDetailsData = async (query) => {
-        setRequestStatus({...initRequestStatus, isLoading: true})
+        setRequestStatus({...initRequestStatus, isLoading: true});
         try {
             let res = await fetch(`https://radarmarket.ru/api/web-service/monitoring-oracle/query-details`, {
                 method: 'POST',
@@ -24,26 +24,26 @@ const BarsWidget = ({currentQuery}) => {
                     "Content-type": "application/json"
                 },
                 body: JSON.stringify({ query: query})
-            })
+            });
 
             if (!res.ok) {
-                setRequestStatus({...initRequestStatus, isError: true, message: 'Не удалось получить данные. Попробуйте обновить страницу.'})
+                setRequestStatus({...initRequestStatus, isError: true, message: 'Не удалось получить данные. Попробуйте обновить страницу.'});
             }
             //console.log(res)
-            res = await res.json()
-            setQueryDetailsData(res)
-            setRequestStatus(initRequestStatus)
+            res = await res.json();
+            setQueryDetailsData(res);
+            setRequestStatus(initRequestStatus);
 
         } catch {
-            setRequestStatus({...initRequestStatus, isError: true, message: 'Не удалось получить данные. Попробуйте обновить страницу.'})
+            setRequestStatus({...initRequestStatus, isError: true, message: 'Не удалось получить данные. Попробуйте обновить страницу.'});
         }
-    }
+    };
 
     useEffect(() => {
         if (currentQuery) {
-            getQueryDetailsData(currentQuery)
+            getQueryDetailsData(currentQuery);
         }
-    }, [currentQuery])
+    }, [currentQuery]);
 
     if (requestStatus.isLoading || requestStatus.isError) {
         return (
@@ -61,7 +61,7 @@ const BarsWidget = ({currentQuery}) => {
                     onCancel={() => setRequestStatus(initRequestStatus)}
                 />
             </section>
-        )
+        );
     }
 
     return queryDetailsData && (
@@ -104,10 +104,10 @@ const BarsWidget = ({currentQuery}) => {
                 <Bar.Small title='Ср. кол-во оценок' data={queryDetailsData.avg_reviews} />
                 <Bar.Small title='Категории' data={queryDetailsData.subjects} />
             </div>
-            
+
         </section>
-    )
-}
+    );
+};
 
 export default BarsWidget;
 

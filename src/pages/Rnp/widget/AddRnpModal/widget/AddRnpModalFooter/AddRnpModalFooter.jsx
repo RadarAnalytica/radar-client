@@ -1,4 +1,4 @@
-import { Button, ConfigProvider, Flex } from 'antd'
+import { Button, ConfigProvider, Flex } from 'antd';
 
 const AddRnpModalFooter = ({ setIsAddRnpModalVisible, isDataLoading, submitDisabled, addProducts }) => {
 
@@ -56,7 +56,7 @@ const AddRnpModalFooter = ({ setIsAddRnpModalVisible, isDataLoading, submitDisab
                 </ConfigProvider>
             </ConfigProvider>
         </Flex>
-    )
-}
+    );
+};
 
-export default AddRnpModalFooter
+export default AddRnpModalFooter;

@@ -1,21 +1,21 @@
 import { URL } from "./config";
 
 export const saveFileClickHandler = async (file, token) => {
-    const formData = new FormData(); 
+    const formData = new FormData();
     formData.append("file", file);  // Добавляем файл в formData
 
     try {
-        const res = await fetch(`${URL}/api/description-generator/get_keywords`, {  
-            method: 'POST',                              
+        const res = await fetch(`${URL}/api/description-generator/get_keywords`, {
+            method: 'POST',
             headers: {
                 authorization: "JWT " + token,
-              
+
             },
-            body: formData,  
+            body: formData,
         });
 
         if (res.ok) {
-            const keywords = await res.json();  
+            const keywords = await res.json();
             console.log('Файл успешно загружен и ключевые слова получены');
             return keywords; // Возвращаем ключевые слова
         } else {

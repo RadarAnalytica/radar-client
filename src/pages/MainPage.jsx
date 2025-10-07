@@ -7,7 +7,7 @@ import AccordionMain from '../components/AccordionMain';
 import manyApi from './images/manyApi.svg';
 import manyApiMobile from './images/manyApiMobile.svg';
 import manyApiMedium from '../pages/images/blockApiMedium.svg';
-import wbLogo from './images/wb_icon.svg'
+import wbLogo from './images/wb_icon.svg';
 
 import FinancialStatements from '../components/FinancialStatements';
 import apiBlock from './images/apiblock2.svg';
@@ -18,7 +18,7 @@ import StepsTime from '../components/StepsTime';
 // import SelectRate from '../components/SelectRate';
 import SelectRateMain from '../components/SelectRateMain';
 import NavbarMainHome from '../components/NavbarMainHome';
-import AnalyzeWildberries from "../components/AnalyzeWildberries"
+import AnalyzeWildberries from "../components/AnalyzeWildberries";
 import AuthContext from '../service/AuthContext';
 import { useNavigate } from 'react-router-dom';
 // import LimitedFooter from '../components/LimitedFooter';
@@ -33,7 +33,7 @@ import ligtning from './images/ligtningIcon.svg';
 import safety from './images/safety.svg';
 import bigData from './images/bigData.svg';
 import FooterNewVersion from '../components/FooterNewVersion';
-import ApiBlockContainer from "../components/ApiBlockContainer"
+import ApiBlockContainer from "../components/ApiBlockContainer";
 
 import ImageComponent from '../components/utilsComponents/ImageComponent ';
 import BlockImg_x1 from './images/Dashboard_x1.png';
@@ -42,14 +42,14 @@ import { Helmet } from 'react-helmet-async';
 
 import VideoComponent from '../components/utilsComponents/VideoComponent';
 import lowQualityVideo from "../assets/video/WebmLow.webm";
-import highQualityVideoWebm from "../assets/video/Webm_1920.webm"
+import highQualityVideoWebm from "../assets/video/Webm_1920.webm";
 import highQualityVideo from "../assets/video/fixed_video.mp4";
-import preview from "../assets/video/firstShot.jpg"
+import preview from "../assets/video/firstShot.jpg";
 import LoaderPage from "../pages/LoaderPage";
 
 const AdaptiveMedia = lazy(() => import("../components/AdaptiveMedia"));
 
-import styles from "../pages/MainPage.module.css"
+import styles from "../pages/MainPage.module.css";
 
 const MainPage = () => {
 
@@ -71,12 +71,12 @@ const MainPage = () => {
    // ----- video instruction script ----------------------//
    useLayoutEffect(() => {
     const head = document.querySelector('head');
-    const videoscript = head.querySelector('#video_instruction')
-   
-    const script = document.createElement('script')
-    script.src = 'https://app.getreview.com/tags/ugfMbLpl3yqfOvpC/sdk.js'
-    script.async = true
-    script.id = 'video_instruction'
+    const videoscript = head.querySelector('#video_instruction');
+
+    const script = document.createElement('script');
+    script.src = 'https://app.getreview.com/tags/ugfMbLpl3yqfOvpC/sdk.js';
+    script.async = true;
+    script.id = 'video_instruction';
 
     if (!videoscript) {
       head.appendChild(script);
@@ -84,8 +84,8 @@ const MainPage = () => {
 
     return () => {
       head.removeChild(script);
-    }
-  }, [])
+    };
+  }, []);
 
   // ------------------------------------------------------//
 

@@ -35,7 +35,7 @@ const StockAnalysisGlitter = () => {
     const productBySku = Array.isArray(productData)
       ? productData.find((item) => item.sku === id)
       : null;
-  
+
     const storedActiveShop = localStorage.getItem('activeShop');
     let activeShop;
     if (storedActiveShop && typeof storedActiveShop === 'string') {
@@ -87,7 +87,7 @@ const StockAnalysisGlitter = () => {
           }
         );
       }, []);
-    
+
       useEffect(() => {
         if (days !== prevDays.current) {
           setIsInitialLoading(true);
@@ -126,8 +126,8 @@ const StockAnalysisGlitter = () => {
               {!isInitialLoading && (
                 <>
                   <div className='productInfo-price-photo-photo'>
-                  <img 
-                      src={productBySku?.photo} 
+                  <img
+                      src={productBySku?.photo}
                       alt='product image'
                       onError={(e) => {
                         e.target.style.backgroundColor = '#D3D3D3';
@@ -155,7 +155,7 @@ const StockAnalysisGlitter = () => {
                 </>
               )}
             </div>
-  
+
             <div
              className='productInfo-wbInfo'
             >
@@ -209,9 +209,9 @@ const StockAnalysisGlitter = () => {
                         src={glityellow}
                         alt=''
                       />
-                    </div> 
-                  </span>   
-                  </div>      
+                    </div>
+                  </span>
+                  </div>
                   <div>
                     <a
                       href={linkToWb}
@@ -228,7 +228,7 @@ const StockAnalysisGlitter = () => {
                 </>
               )}
             </div>
-  
+
             <div className='barcode-sku-brand'>
               {isInitialLoading && (
                 <div
@@ -293,7 +293,7 @@ const StockAnalysisGlitter = () => {
                     activeTab === 'product' ? 'rgba(26, 26, 26, 1)' : '#8C8C8C',
                 }}
               >
-                <p 
+                <p
                 className='productInfo-nav-text'
                 style={{
                   fontWeight: activeTab === 'product' ? '600' : '500',
@@ -347,7 +347,7 @@ const StockAnalysisGlitter = () => {
           {TabContent()}
         </div>
       </div>
-    )
-}
+    );
+};
 
 export default StockAnalysisGlitter;

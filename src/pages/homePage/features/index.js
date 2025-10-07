@@ -1,1 +1,1 @@
-export { Banner } from './ui/banner/banner'
+export { Banner } from './ui/banner/banner';

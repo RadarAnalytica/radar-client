@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import styles from './addGroupModal.module.css'
+import styles from './addGroupModal.module.css';
 import { Modal, Input, ConfigProvider, Button, Select } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import AuthContext from '@/service/AuthContext';
@@ -19,14 +19,14 @@ const AddGroupModal = ({ isAddGroupModalVisible, setIsAddGroupModalVisible, data
     const navigate = useNavigate();
 
     const createGroup = async () => {
-        setDataFetchingStatus({ ...initDataFetchingStatus, isLoading: true })
+        setDataFetchingStatus({ ...initDataFetchingStatus, isLoading: true });
         const requestObject = {
             name: inputValue,
             description: "",
             user: user.id,
             shop: activeBrand.id,
             product_ids: []
-        }
+        };
         try {
             const res = await fetchApi(`/api/product/product_groups`, {
                 method: 'POST',
@@ -63,7 +63,7 @@ const AddGroupModal = ({ isAddGroupModalVisible, setIsAddGroupModalVisible, data
               message: 'Что-то пошло не так :('
             });
         }
-    }
+    };
 
     // ------- Фетч массива магазинов -------------//
     const fetchShopData = async () => {
@@ -146,8 +146,8 @@ const AddGroupModal = ({ isAddGroupModalVisible, setIsAddGroupModalVisible, data
                                 </svg>
                             }
                             onChange={(value) => {
-                                const selectedShop = shops.find(_ => _.id === value)
-                                dispatch(filterActions.setActiveShop(selectedShop))
+                                const selectedShop = shops.find(_ => _.id === value);
+                                dispatch(filterActions.setActiveShop(selectedShop));
                             }}
                         />
                     </ConfigProvider>
@@ -174,7 +174,7 @@ const AddGroupModal = ({ isAddGroupModalVisible, setIsAddGroupModalVisible, data
                 </ConfigProvider>
             </div>
         </Modal>
-    )
-}
+    );
+};
 
 export default AddGroupModal;

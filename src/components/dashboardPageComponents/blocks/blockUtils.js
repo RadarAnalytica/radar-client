@@ -1,12 +1,12 @@
 export const getColor = (value) => {
   if (value >= 45) {
-    return 'rgba(0, 182, 155, 1)'
+    return 'rgba(0, 182, 155, 1)';
   }
   if (value <= 25) {
-    return 'rgba(249, 60, 101, 1)'
+    return 'rgba(249, 60, 101, 1)';
   }
-  return 'rgba(240, 173, 0, 1)'
-}
+  return 'rgba(240, 173, 0, 1)';
+};
 
 export const getFinanceData = (dataDashBoard) => {
   let financeData;
@@ -62,8 +62,8 @@ export const getFinanceData = (dataDashBoard) => {
   }
 
 
-  return financeData
-}
+  return financeData;
+};
 
 export const getProfitData = (dataDashBoard) => {
   let profitData;
@@ -89,8 +89,8 @@ export const getProfitData = (dataDashBoard) => {
     ];
   }
 
-  return profitData
-}
+  return profitData;
+};
 
 export const getCostsData = (dataDashBoard) => {
   let costsData;
@@ -121,8 +121,8 @@ export const getCostsData = (dataDashBoard) => {
     ];
   }
 
-  return costsData
-}
+  return costsData;
+};
 
 export const getStorageData = (dataDashBoard) => {
   let storageData;
@@ -169,8 +169,8 @@ export const getStorageData = (dataDashBoard) => {
     ];
   }
 
-  return storageData
-}
+  return storageData;
+};
 
 export const processSalesAndProfit = (salesAndProfit) => {
   if (!salesAndProfit || !salesAndProfit.length) return {

@@ -7,4 +7,4 @@ export const compareDictionary = {
     "avg_orders": {ruName: 'Заказов в день при наличии товара на складе', units: 'шт'},
     "avg_revenue": {ruName: 'Выручка в день при наличии товара на складе', units: '₽'},
     "supplier_buyout_percent": {ruName: 'Процент выкупа поставщика', units: '%', hasTooltip: false, tooltipText: ''}
-}
+};

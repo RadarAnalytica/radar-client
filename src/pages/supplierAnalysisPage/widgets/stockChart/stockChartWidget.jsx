@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import styles from './stockChartWidget.module.css'
+import styles from './stockChartWidget.module.css';
 import DownloadButton from '../../../../components/DownloadButton';
 import { ConfigProvider, Checkbox, Button } from 'antd';
 import { formatPrice } from '../../../../service/utils';
@@ -10,7 +10,7 @@ import { selectMainSupplierData, selectCompareSupplierData, selectSupplierAnalys
 
 
 /**
- * 
+ *
 
   {
     "warehouse_name": "string",
@@ -26,26 +26,26 @@ import { selectMainSupplierData, selectCompareSupplierData, selectSupplierAnalys
 
 const getSummary = (data, summaryType) => {
     if (!data) return '0';
-    const { length } = data
+    const { length } = data;
     const summary = data.reduce((acc, a) => {
         if (a) {
-            return acc += a
+            return acc += a;
         } else {
-            return acc
+            return acc;
         }
-    }, 0)
+    }, 0);
 
     if (summaryType === 'sum') {
-        return summary
+        return summary;
     }
 
     if (summaryType === 'avg') {
-        return summary / length
+        return summary / length;
     }
     if (summaryType === 'last_value') {
-        return data[data.length - 1] || 0
+        return data[data.length - 1] || 0;
     }
-}
+};
 
 
 const StockChartWidget = ({
@@ -59,13 +59,13 @@ const StockChartWidget = ({
     summaryType = 'sum' // 'sum' | 'avg' | 'last_value'
 }) => {
 
-    const dispatch = useAppDispatch()
-    const mainSupplierData = useAppSelector(selectMainSupplierData)
-    const compareSupplierData = useAppSelector(selectCompareSupplierData)
-    const { data: chartData, isLoading, isError, message } = useAppSelector(state => selectSupplierAnalysisDataByType(state, dataType))
-    const { selectedRange } = useAppSelector(store => store.filters)
-    const [isMainSupplierActive, setIsMainSupplierActive] = useState(true)
-    const [isCompareSupplierActive, setIsCompareSupplierActive] = useState(true)
+    const dispatch = useAppDispatch();
+    const mainSupplierData = useAppSelector(selectMainSupplierData);
+    const compareSupplierData = useAppSelector(selectCompareSupplierData);
+    const { data: chartData, isLoading, isError, message } = useAppSelector(state => selectSupplierAnalysisDataByType(state, dataType));
+    const { selectedRange } = useAppSelector(store => store.filters);
+    const [isMainSupplierActive, setIsMainSupplierActive] = useState(true);
+    const [isCompareSupplierActive, setIsCompareSupplierActive] = useState(true);
 
 
     //data fetch
@@ -74,21 +74,21 @@ const StockChartWidget = ({
             let datesRange;
 
             if (selectedRange.period) {
-                datesRange = selectedRange
+                datesRange = selectedRange;
             } else {
                 datesRange = {
                     date_from: selectedRange.from,
                     date_to: selectedRange.to
-                }
+                };
             }
             const requestObject = {
                 "main_supplier_id": parseInt(mainSupplierData.supplier_id),
                 "compared_supplier_id": compareSupplierData?.supplier_id ? parseInt(compareSupplierData.supplier_id) : 0,
                 ...datesRange,
-            }
-            dispatch(dataHandler({ data: requestObject, hasLoadingStatus: chartData ? false : true }))
+            };
+            dispatch(dataHandler({ data: requestObject, hasLoadingStatus: chartData ? false : true }));
         }
-    }, [mainSupplierData, compareSupplierData, selectedRange, dataType, units, dataHandler, summaryType, chartType])
+    }, [mainSupplierData, compareSupplierData, selectedRange, dataType, units, dataHandler, summaryType, chartType]);
 
     // if (isLoading) {
     //     return (
@@ -126,19 +126,19 @@ const StockChartWidget = ({
                                         let datesRange;
 
                                         if (selectedRange.period) {
-                                            datesRange = selectedRange
+                                            datesRange = selectedRange;
                                         } else {
                                             datesRange = {
                                                 date_from: selectedRange.from,
                                                 date_to: selectedRange.to
-                                            }
+                                            };
                                         }
                                         const requestObject = {
                                             "main_supplier_id": parseInt(mainSupplierData.supplier_id),
                                             "compared_supplier_id": parseInt(compareSupplierData.supplier_id),
                                             ...datesRange,
-                                        }
-                                        dispatch(dataHandler(requestObject))
+                                        };
+                                        dispatch(dataHandler(requestObject));
                                     }
                                 }}
                             >
@@ -148,7 +148,7 @@ const StockChartWidget = ({
                     </div>
                 </div>
             </div>
-        )
+        );
     }
 
 
@@ -182,9 +182,9 @@ const StockChartWidget = ({
                                 className={styles.widget__checkbox}
                                 onChange={(e) => {
                                     if (e.target.checked) {
-                                        setIsMainSupplierActive(true)
+                                        setIsMainSupplierActive(true);
                                     } else {
-                                        setIsMainSupplierActive(false)
+                                        setIsMainSupplierActive(false);
                                     }
                                 }
                                 }
@@ -214,9 +214,9 @@ const StockChartWidget = ({
                                 className={styles.widget__checkbox}
                                 onChange={(e) => {
                                     if (e.target.checked) {
-                                        setIsCompareSupplierActive(true)
+                                        setIsCompareSupplierActive(true);
                                     } else {
-                                        setIsCompareSupplierActive(false)
+                                        setIsCompareSupplierActive(false);
                                     }
                                 }}
                             >
@@ -245,7 +245,7 @@ const StockChartWidget = ({
                 }
             </div>
         </div>
-    )
-}
+    );
+};
 
 export default StockChartWidget;

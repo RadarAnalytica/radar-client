@@ -1,4 +1,4 @@
-import styles from './itemInfo.module.css'
+import styles from './itemInfo.module.css';
 import { Link } from 'react-router-dom';
 import { useAppSelector } from '../../../../../redux/hooks';
 import { formatPrice } from '../../../../../service/utils';
@@ -40,7 +40,7 @@ const ItemInfo = () => {
                     <span className='loader'></span>
                 </div>
             </div>
-        )
+        );
     }
 
     return (
@@ -83,6 +83,6 @@ const ItemInfo = () => {
                 </div>
             }
         </>
-    )
-}
+    );
+};
 export default ItemInfo;

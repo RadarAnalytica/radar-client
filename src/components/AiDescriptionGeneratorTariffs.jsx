@@ -18,18 +18,18 @@ import SolLabelStartBsn from "../pages/images/SolLabelStartBsn";
 import YellowRadarPoint from "../pages/images/YellowRadarPoint";
 import CustomButton from "./utilsComponents/CustomButton";
 import { URL } from "../service/config";
-import styles from "./AiDescriptionGeneratorTariffs.module.css"
+import styles from "./AiDescriptionGeneratorTariffs.module.css";
 import closebtn from "../assets/closebtn.png";
 import { ServiceFunctions } from "../service/serviceFunctions";
 
 const AiDescriptionGeneratorTariffs = ({ redirect, setIsModalOpenNewGen }) => {
-    const navigate = useNavigate()
+    const navigate = useNavigate();
     const [isScriptLoaded, setIsScriptLoaded] = useState(false);
 
     const [selectedGenerationsAmount, setSelectedGenerationsAmount] = useState("5generations");
     const handleClose = () => {
-        setIsModalOpenNewGen(false)
-    }
+        setIsModalOpenNewGen(false);
+    };
     const handleGenerationsAmountChanged = (e) => {
         setSelectedGenerationsAmount(e.target.value);
     };
@@ -41,20 +41,20 @@ const AiDescriptionGeneratorTariffs = ({ redirect, setIsModalOpenNewGen }) => {
           const script = document.createElement('script');
           script.src = 'https://widget.cloudpayments.ru/bundles/cloudpayments.js';
           script.async = true;
-    
+
           script.onload = () => {
             setIsScriptLoaded(true);
           };
-    
+
           document.body.appendChild(script);
         };
-    
+
         if (!window.cp) {
           loadCloudPaymentsScript();
         } else {
           setIsScriptLoaded(true);
         }
-    
+
         return () => {
           const script = document.querySelector('script[src="https://widget.cloudpayments.ru/bundles/cloudpayments.js"]');
           if (script) {
@@ -62,7 +62,6 @@ const AiDescriptionGeneratorTariffs = ({ redirect, setIsModalOpenNewGen }) => {
           }
         };
       }, []);
-
 
 
     const refreshUserToken = async () => {
@@ -148,7 +147,7 @@ const AiDescriptionGeneratorTariffs = ({ redirect, setIsModalOpenNewGen }) => {
             sberSupport: true,
             sberPaySupport: true,
         });
-        console.log(widget)
+        console.log(widget);
 
         /**
          * var widget = new cp.CloudPayments({

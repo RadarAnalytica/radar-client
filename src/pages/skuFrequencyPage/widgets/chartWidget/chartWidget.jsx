@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import styles from './chartWidget.module.css'
+import styles from './chartWidget.module.css';
 import { Chart } from 'react-chartjs-2';
 import { ServiceFunctions } from '../../../../service/serviceFunctions';
 import { chartDataNormalizer } from '../../shared';
@@ -25,9 +25,7 @@ const initRequestStatus = {
     isError: false,
     isSuccess: false,
     message: ''
-}
-
-
+};
 
 
 export const getChartTooltip = (context, chartData) => {
@@ -89,7 +87,7 @@ export const getChartTooltip = (context, chartData) => {
         datasets?.forEach(function (set, i) {
             const targetColor = set.backgroundColor;
             //const units = chartCompareConfigObject.find(_ => _.ruName === set.label).units
-            const units = ''
+            const units = '';
             const targetDescr = units ? units : '';
             let value = formatPrice(set?.data[targetInex], '') || '0';
             let style = '';
@@ -104,7 +102,7 @@ export const getChartTooltip = (context, chartData) => {
                 '' +
                 targetDescr +
                 '<span>' + 'Частотность запроса ' + '</span>' +
-                '<span style="font-weight: bold;">' + 
+                '<span style="font-weight: bold;">' +
                 value +
                 '</span></span>';
             innerHtml += '<tr style={{ width: 100%}}><td style={{ width: 100%}}>' + span + '</td></tr>';
@@ -166,7 +164,7 @@ export const getChartTooltip = (context, chartData) => {
     tooltipEl.style.padding = '1rem';
     tooltipEl.style.pointerEvents = 'none';
     tooltipEl.style.zIndex = '1000';
-}
+};
 
 const ChartWidget = ({ chartTabsState, currentQuery }) => {
 
@@ -174,8 +172,8 @@ const ChartWidget = ({ chartTabsState, currentQuery }) => {
     const [requestStatus, setRequestStatus] = useState(initRequestStatus);
 
     useEffect(() => {
-        !requestStatus.isLoading && ServiceFunctions.getMonitoringChartData(chartTabsState, currentQuery, setChartData, setRequestStatus, chartDataNormalizer)
-    }, [currentQuery, chartTabsState])
+        !requestStatus.isLoading && ServiceFunctions.getMonitoringChartData(chartTabsState, currentQuery, setChartData, setRequestStatus, chartDataNormalizer);
+    }, [currentQuery, chartTabsState]);
 
 
     if (requestStatus.isLoading) {
@@ -183,7 +181,7 @@ const ChartWidget = ({ chartTabsState, currentQuery }) => {
             <div className={styles.widget__loaderWrapper}>
                 <span className='loader'></span>
             </div>
-        )
+        );
     }
 
     const chartOptions = {
@@ -209,7 +207,7 @@ const ChartWidget = ({ chartTabsState, currentQuery }) => {
                 },
             },
         }
-    }
+    };
 
     return chartData && (
         <section className={styles.widget}>
@@ -221,7 +219,7 @@ const ChartWidget = ({ chartTabsState, currentQuery }) => {
                 options={{...chartOptions, tooltip: { ...chartOptions.tooltip,  external: (context) => chartData && getChartTooltip(context, chartData)}}}
             />
         </section>
-    )
-}
+    );
+};
 
-export default ChartWidget
+export default ChartWidget;

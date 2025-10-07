@@ -1,2 +1,2 @@
 import Bar from "./bar/bar";
-export { Bar }
+export { Bar };

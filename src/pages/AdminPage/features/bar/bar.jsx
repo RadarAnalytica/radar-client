@@ -1,6 +1,6 @@
-import styles from './bar.module.css'
-import { formatPrice } from '../../../../service/utils'
-import { Link } from 'react-router-dom'
+import styles from './bar.module.css';
+import { formatPrice } from '../../../../service/utils';
+import { Link } from 'react-router-dom';
 
 const SmallBar = ({ title, data, units }) => {
     return (
@@ -8,10 +8,10 @@ const SmallBar = ({ title, data, units }) => {
             <p className={`${styles.bar__title} ${styles.bar__title_small} `}>{title}</p>
             <p className={`${styles.bar__data} ${styles.bar__data_small}`}>{units && data ? formatPrice(data, units) : data}</p>
         </div>
-    )
-}
+    );
+};
 const MediumBar = ({ title, data, rate, units }) => {
-    const rateObject = formatRateValue(rate)
+    const rateObject = formatRateValue(rate);
     return (
         <div className={`${styles.bar} ${styles.bar_medium}`}>
             <p className={styles.bar__title}>{title}</p>
@@ -25,8 +25,8 @@ const MediumBar = ({ title, data, rate, units }) => {
                 }
             </div>
         </div>
-    )
-}
+    );
+};
 
 const LargeBar = ({ data, link, title, icon, type }) => {
 
@@ -62,21 +62,16 @@ const LargeBar = ({ data, link, title, icon, type }) => {
                 ))}
             </div>
         </div>
-    )
-}
+    );
+};
 
 
 const Bar = {
     Small: SmallBar,
     Medium: MediumBar,
     Large: LargeBar
-}
+};
 export default Bar;
-
-
-
-
-
 
 
 export const formatRateValue = (value) => {
@@ -93,7 +88,7 @@ export const formatRateValue = (value) => {
                 }}
             ></div>
         )
-    }
+    };
     if (value > 0) {
         result = {
             value: '+ ' + result.value + ' %',
@@ -103,7 +98,7 @@ export const formatRateValue = (value) => {
                     <path d="M14 0.544067L16.29 2.83407L11.41 7.71407L7.41 3.71407L0 11.1341L1.41 12.5441L7.41 6.54407L11.41 10.5441L17.71 4.25407L20 6.54407V0.544067H14Z" fill="#00B69B" />
                 </svg>
             )
-        }
+        };
     }
     if (value < 0) {
         result = {
@@ -115,14 +110,14 @@ export const formatRateValue = (value) => {
                 </svg>
 
             )
-        }
+        };
     }
     if (value === 0) {
         result = {
             ...result,
             value: result.value + ' %',
-        }
+        };
     }
 
     return result;
-}
+};

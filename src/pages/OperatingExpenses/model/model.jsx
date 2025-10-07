@@ -29,7 +29,7 @@ function actionRender(value, row) {
 						icon={DeleteIcon}
 					></Button>
 				</ConfigProvider>
-			</Flex>)
+			</Flex>);
 }
 
 
@@ -45,7 +45,7 @@ function actionExpansesRender(value, row) {
 				icon={DeleteIcon}
 			></Button>
 		</ConfigProvider>
-	</Flex>)
+	</Flex>);
 }
 
 function arrowRender(value, literal) {
@@ -145,4 +145,4 @@ export const ARTICLES_COLUMNS = [
 		width: '50%',
 		render: actionExpansesRender
 	},
-]
+];

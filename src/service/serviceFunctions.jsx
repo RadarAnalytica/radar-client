@@ -1,6 +1,6 @@
 import { URL } from './config';
-import { formatFromIsoDate, rangeApiFormat } from './utils'
-import { store } from '../redux/store'
+import { formatFromIsoDate, rangeApiFormat } from './utils';
+import { store } from '../redux/store';
 import moment from 'moment';
 import { fetchApi } from './fetchApi';
 
@@ -13,50 +13,50 @@ export const getRequestObject = (filters, selectedRange, shopId) => {
 		period: selectedRange?.period && selectedRange.period,
 		date_from: selectedRange?.from && selectedRange.from,
 		date_to: selectedRange?.to && selectedRange.to
-	}
+	};
 
 	if (filters.activeBrandName && Array.isArray(filters.activeBrandName) && !filters.activeBrandName.some(_ => _.value === 'Все')) {
-		requestObject.brands = filters.activeBrandName.map(_ => _.name)
+		requestObject.brands = filters.activeBrandName.map(_ => _.name);
 	}
 	// filters?.activeArticle.value !== 'Все'
 	if (filters.activeArticle && Array.isArray(filters.activeArticle) && !filters.activeArticle.some(_ => _.value === 'Все')) {
-		requestObject.articles = filters.activeArticle.map(_ => _.value)
+		requestObject.articles = filters.activeArticle.map(_ => _.value);
 	}
 	if (filters.activeGroup && Array.isArray(filters.activeGroup) && !filters.activeGroup.some(_ => _.value === 'Все')) {
-		requestObject.product_groups = filters.activeGroup.map(_ => _.id)
+		requestObject.product_groups = filters.activeGroup.map(_ => _.id);
 	}
 	if (filters.activeCategory && Array.isArray(filters.activeCategory) && !filters.activeCategory.some(_ => _.value === 'Все')) {
-		requestObject.categories = filters.activeCategory.map(_ => _.id)
+		requestObject.categories = filters.activeCategory.map(_ => _.id);
 	}
 	return requestObject;
-}
+};
 
 export const getRnpRequestObject = (filters, selectedRange, shopId) => {
 	let requestObject = {
 		articles: null,
 		product_groups: null,
 		brands: null,
-		shops: !!shopId ? [shopId] : null,
+		shops: shopId ? [shopId] : null,
 		period: selectedRange?.period && selectedRange.period,
 		date_from: selectedRange?.from && selectedRange.from,
 		date_to: selectedRange?.to && selectedRange.to
-	}
+	};
 
 	if (filters.activeBrandName && Array.isArray(filters.activeBrandName) && !filters.activeBrandName.some(_ => _.value === 'Все')) {
-		requestObject.brands = filters.activeBrandName.map(_ => _.name)
+		requestObject.brands = filters.activeBrandName.map(_ => _.name);
 	}
 	// filters?.activeArticle.value !== 'Все'
 	if (filters.activeArticle && Array.isArray(filters.activeArticle) && !filters.activeArticle.some(_ => _.value === 'Все')) {
-		requestObject.articles = filters.activeArticle.map(_ => _.value)
+		requestObject.articles = filters.activeArticle.map(_ => _.value);
 	}
 	if (filters.activeGroup && Array.isArray(filters.activeGroup) && !filters.activeGroup.some(_ => _.value === 'Все')) {
-		requestObject.product_groups = filters.activeGroup.map(_ => _.id)
+		requestObject.product_groups = filters.activeGroup.map(_ => _.id);
 	}
 	if (filters.activeCategory && Array.isArray(filters.activeCategory) && !filters.activeCategory.some(_ => _.value === 'Все')) {
-		requestObject.categories = filters.activeCategory.map(_ => _.id)
+		requestObject.categories = filters.activeCategory.map(_ => _.id);
 	}
 	return requestObject;
-}
+};
 
 export const ServiceFunctions = {
 	register: async (object) => {
@@ -65,7 +65,7 @@ export const ServiceFunctions = {
 				return {
 					success: false,
 					message: 'Пароль должен быть не короче 6 символов'
-				}
+				};
 			}
 			const res = await fetch(`${URL}/api/user/signup`, {
 				method: 'POST',
@@ -108,8 +108,8 @@ export const ServiceFunctions = {
 
 	getDashBoard: async (token, selectedRange, idShop, filters) => {
 		//let rangeParams = rangeApiFormat(selectedRange);
-		const body = getRequestObject(filters, selectedRange, idShop)
-		
+		const body = getRequestObject(filters, selectedRange, idShop);
+
 		const res = await fetchApi(
 			'/api/dashboard/',
 			{
@@ -130,9 +130,9 @@ export const ServiceFunctions = {
 		const data = await res.json();
 		return data;
 	},
-	
+
 	getSelfCostData: async (token, idShop, filters) => {
-		const body = getRequestObject(filters, undefined, idShop)
+		const body = getRequestObject(filters, undefined, idShop);
 		const res = await fetchApi(
 			'/api/product/self-costs/list',
 			{
@@ -182,7 +182,7 @@ export const ServiceFunctions = {
 				authorization: 'JWT ' + token,
 			},
 		});
-		const data = await res.blob()
+		const data = await res.blob();
 		return data;
 	},
 
@@ -200,7 +200,7 @@ export const ServiceFunctions = {
 
 	getGeographyData: async (token, selectedRange, idShop, filters) => {
 		//let rangeParams = rangeApiFormat(selectedRange);
-		const body = getRequestObject(filters, selectedRange, idShop)
+		const body = getRequestObject(filters, selectedRange, idShop);
 		const res = await fetchApi('/api/geo/', {
 			method: 'POST',
 			headers: {
@@ -233,7 +233,7 @@ export const ServiceFunctions = {
 
 	getAbcData: async (viewType, token, selectedRange, idShop, filters, page, sorting) => {
 		//let rangeParams = rangeApiFormat(day);
-		const body = getRequestObject(filters, selectedRange, idShop)
+		const body = getRequestObject(filters, selectedRange, idShop);
 		const res = await fetchApi(
 			`/api/abc_data/${viewType}?page=${page}&per_page=100&sorting=${sorting}`,
 			{
@@ -317,7 +317,7 @@ export const ServiceFunctions = {
 		});
 		// const data = await res.json();
 		// return data;
-		return res
+		return res;
 	},
 
 	getUserGenerationsData: async (token, id) => {
@@ -442,7 +442,7 @@ export const ServiceFunctions = {
 	},
 
 	getAnalysisData: async (token, selectedRange, shop, filters) => {
-		const body = getRequestObject(filters, selectedRange, shop)
+		const body = getRequestObject(filters, selectedRange, shop);
 		const res = await fetchApi('/api/prod_analytic/', {
 			method: 'POST',
 			headers: {
@@ -458,7 +458,7 @@ export const ServiceFunctions = {
 
 	getProdAnalyticXlsx: async (token, selectedRange, shop, filters) => {
 		let rangeParams = rangeApiFormat(selectedRange);
-		const body = getRequestObject(filters, selectedRange, shop)
+		const body = getRequestObject(filters, selectedRange, shop);
 		const res = await fetch(`${URL}/api/prod_analytic/download`, {
 			method: 'POST',
 			headers: {
@@ -468,7 +468,7 @@ export const ServiceFunctions = {
 			body: JSON.stringify(body),
 		});
 
-		const data = await res.blob()
+		const data = await res.blob();
 		return data;
 	},
 
@@ -613,42 +613,42 @@ export const ServiceFunctions = {
 
 		if (!!groupFilterData && Object.keys(groupFilterData).length > 0) {
 			for (let _key of Object.keys(groupFilterData)) {
-				if (!!groupFilterData[_key]) {
+				if (groupFilterData[_key]) {
 					groupFilter.push(_key);
 				}
 			}
 		}
 		if (!!brandFilterData && Object.keys(brandFilterData).length > 0) {
 			for (let _key of Object.keys(brandFilterData)) {
-				if (!!brandFilterData[_key]) {
+				if (brandFilterData[_key]) {
 					brandFilter.push(_key);
 				}
 			}
 		}
 		if (!!wbIdFilterData && Object.keys(wbIdFilterData).length > 0) {
 			for (let _key of Object.keys(wbIdFilterData)) {
-				if (!!wbIdFilterData[_key]) {
+				if (wbIdFilterData[_key]) {
 					wbIdFilter.push(_key);
 				}
 			}
 		}
 		if (!!yearFilterData && Object.keys(yearFilterData).length > 0) {
 			for (let _key of Object.keys(yearFilterData)) {
-				if (!!yearFilterData[_key]) {
+				if (yearFilterData[_key]) {
 					yearFilter.push(_key);
 				}
 			}
 		}
 		if (!!monthFilterData && Object.keys(monthFilterData).length > 0) {
 			for (let _key of Object.keys(monthFilterData)) {
-				if (!!monthFilterData[_key]) {
+				if (monthFilterData[_key]) {
 					monthFilter.push(_key);
 				}
 			}
 		}
 		if (!!weekFilterData && Object.keys(weekFilterData).length > 0) {
 			for (let _key of Object.keys(weekFilterData)) {
-				if (!!weekFilterData[_key]) {
+				if (weekFilterData[_key]) {
 					weekFilter.push(_key);
 				}
 			}
@@ -838,8 +838,8 @@ export const ServiceFunctions = {
 				authorization: 'JWT ' + token,
 			},
 		});
-		const data = await res.json()
-		data.updated_at = data.updated_at === '' ? null : `Последняя загрузка ${formatFromIsoDate(data.updated_at)}г.`
+		const data = await res.json();
+		data.updated_at = data.updated_at === '' ? null : `Последняя загрузка ${formatFromIsoDate(data.updated_at)}г.`;
 
 		return data;
 	},
@@ -852,7 +852,7 @@ export const ServiceFunctions = {
 				authorization: 'JWT ' + token,
 			},
 		});
-		const data = await res.blob()
+		const data = await res.blob();
 		return data;
 	},
 
@@ -899,73 +899,73 @@ export const ServiceFunctions = {
 	},
 
 	postAbcReportsData: async (token) => {
-		const storeFilterData = store.getState().abcFiltersSlice.abcFilters
+		const storeFilterData = store.getState().abcFiltersSlice.abcFilters;
 
 		if (Object.keys(storeFilterData).length === 0) {
-			return []
+			return [];
 		}
-		const brandFilterData = storeFilterData.brand
-		const wbIdFilterData = storeFilterData.wbId
-		const groupFilterData = storeFilterData.group
-		const productFilterData = storeFilterData.product
-		const yearFilterData = storeFilterData.year
-		const monthFilterData = storeFilterData.month
-		const weekFilterData = storeFilterData.week
+		const brandFilterData = storeFilterData.brand;
+		const wbIdFilterData = storeFilterData.wbId;
+		const groupFilterData = storeFilterData.group;
+		const productFilterData = storeFilterData.product;
+		const yearFilterData = storeFilterData.year;
+		const monthFilterData = storeFilterData.month;
+		const weekFilterData = storeFilterData.week;
 
-		const productFilter = []
-		const groupFilter = []
-		const brandFilter = []
-		const wbIdFilter = []
-		const yearFilter = []
-		const monthFilter = []
-		const weekFilter = []
+		const productFilter = [];
+		const groupFilter = [];
+		const brandFilter = [];
+		const wbIdFilter = [];
+		const yearFilter = [];
+		const monthFilter = [];
+		const weekFilter = [];
 
 		if (!!productFilterData && Object.keys(productFilterData).length > 0) {
 			for (let _key of Object.keys(productFilterData)) {
-				if (!!productFilterData[_key]) {
-					productFilter.push(_key)
+				if (productFilterData[_key]) {
+					productFilter.push(_key);
 				}
 			}
 		}
 		if (!!groupFilterData && Object.keys(groupFilterData).length > 0) {
 			for (let _key of Object.keys(groupFilterData)) {
-				if (!!groupFilterData[_key]) {
-					groupFilter.push(_key)
+				if (groupFilterData[_key]) {
+					groupFilter.push(_key);
 				}
 			}
 		}
 		if (!!brandFilterData && Object.keys(brandFilterData).length > 0) {
 			for (let _key of Object.keys(brandFilterData)) {
-				if (!!brandFilterData[_key]) {
-					brandFilter.push(_key)
+				if (brandFilterData[_key]) {
+					brandFilter.push(_key);
 				}
 			}
 		}
 		if (!!wbIdFilterData && Object.keys(wbIdFilterData).length > 0) {
 			for (let _key of Object.keys(wbIdFilterData)) {
-				if (!!wbIdFilterData[_key]) {
-					wbIdFilter.push(_key)
+				if (wbIdFilterData[_key]) {
+					wbIdFilter.push(_key);
 				}
 			}
 		}
 		if (!!yearFilterData && Object.keys(yearFilterData).length > 0) {
 			for (let _key of Object.keys(yearFilterData)) {
-				if (!!yearFilterData[_key]) {
-					yearFilter.push(_key)
+				if (yearFilterData[_key]) {
+					yearFilter.push(_key);
 				}
 			}
 		}
 		if (!!monthFilterData && Object.keys(monthFilterData).length > 0) {
 			for (let _key of Object.keys(monthFilterData)) {
-				if (!!monthFilterData[_key]) {
-					monthFilter.push(_key)
+				if (monthFilterData[_key]) {
+					monthFilter.push(_key);
 				}
 			}
 		}
 		if (!!weekFilterData && Object.keys(weekFilterData).length > 0) {
 			for (let _key of Object.keys(weekFilterData)) {
-				if (!!weekFilterData[_key]) {
-					weekFilter.push(_key)
+				if (weekFilterData[_key]) {
+					weekFilter.push(_key);
 				}
 			}
 		}
@@ -978,7 +978,7 @@ export const ServiceFunctions = {
 			product_filter_list: productFilter,
 			year_filter_list: yearFilter,
 			week_filter_list: weekFilter
-		}
+		};
 
 		const response = await fetch(`${URL}/api/report/abc/data`, {
 			method: 'POST',
@@ -1017,7 +1017,7 @@ export const ServiceFunctions = {
 				authorization: 'JWT ' + token,
 			},
 		});
-		const data = await res.json()
+		const data = await res.json();
 
 		return data.status;
 	},
@@ -1030,7 +1030,7 @@ export const ServiceFunctions = {
 				Authorization: token,
 			},
 		});
-		const data = await res.blob()
+		const data = await res.blob();
 		return data;
 	},
 
@@ -1128,11 +1128,11 @@ export const ServiceFunctions = {
 	},
 
 	getReportWeek: async (token, selectedRange, shopId, filters, activeWeeks) => {
-		const body = getRequestObject(filters, selectedRange, shopId)
+		const body = getRequestObject(filters, selectedRange, shopId);
 		body.week_starts = [];
 
 		if (Array.isArray(activeWeeks) && !activeWeeks.find((week) => week.value === 'Все')){
-			body.week_starts = activeWeeks.map((week) => week.value)
+			body.week_starts = activeWeeks.map((week) => week.value);
 		}
 
 		const res = await fetchApi(
@@ -1153,11 +1153,11 @@ export const ServiceFunctions = {
 	},
 
 	getDownloadReportWeek: async (token, selectedRange, shopId, filters, weekStart) => {
-		const body = getRequestObject(filters, null, shopId)
+		const body = getRequestObject(filters, null, shopId);
 		body.week_starts = [];
-		
+
 		if (!activeWeeks.find((week) => week.value === 'Все')){
-			body.week_starts = activeWeeks.map((week) => week.value)
+			body.week_starts = activeWeeks.map((week) => week.value);
 		}
 
 		const res = await fetch(
@@ -1172,13 +1172,13 @@ export const ServiceFunctions = {
 			}
 		);
 
-		const data = await res.blob()
+		const data = await res.blob();
 		return data;
 	},
 
 
 	getMonitoringChartData: async (periodState, query, setChartData, setRequestStatus, chartDataNormalizer) => {
-		setRequestStatus({ isLoading: true, isError: false, isSuccess: false, message: '' })
+		setRequestStatus({ isLoading: true, isError: false, isSuccess: false, message: '' });
 		const period = periodState === 'По дням' ? 'day' : 'month';
 		try {
 			let res = await fetch(`https://radarmarket.ru/api/analytic/query-dynamics/${period}?query_string=${query}`,
@@ -1190,17 +1190,17 @@ export const ServiceFunctions = {
 				}
 			);
 			if (!res.ok) {
-				res = await res.json()
-				setRequestStatus({ isLoading: false, isError: true, isSuccess: false, message: res.detail || 'Не удалось загрузить данные' })
-				return
+				res = await res.json();
+				setRequestStatus({ isLoading: false, isError: true, isSuccess: false, message: res.detail || 'Не удалось загрузить данные' });
+				return;
 			}
-			setRequestStatus({ isLoading: false, isError: false, isSuccess: true, message: '' })
-			res = await res.json()
-			const normalizedData = chartDataNormalizer(res[query], period)
-			setChartData(normalizedData)
+			setRequestStatus({ isLoading: false, isError: false, isSuccess: true, message: '' });
+			res = await res.json();
+			const normalizedData = chartDataNormalizer(res[query], period);
+			setChartData(normalizedData);
 			return res;
 		} catch {
-			setRequestStatus({ isLoading: false, isError: true, isSuccess: false, message: 'Не удалось загрузить данные' })
+			setRequestStatus({ isLoading: false, isError: true, isSuccess: false, message: 'Не удалось загрузить данные' });
 		}
 	},
 
@@ -1208,7 +1208,7 @@ export const ServiceFunctions = {
 		let url = `https://radarmarket.ru/api/analytic/query-dynamics/${timeFrame}?query_string=${encodeURIComponent(query)}`;
 
     if (timeFrame === 'day') {
-			url += '&' + rangeApiFormat(selectedRange)
+			url += '&' + rangeApiFormat(selectedRange);
 		}
 
 		const res = await fetch(url, {
@@ -1234,7 +1234,7 @@ export const ServiceFunctions = {
 	) => {
 		let url = `https://radarmarket.ru/api/analytic/query-dynamics/${timeFrame}/download?query_string=${encodeURIComponent(query)}`;
 		if (timeFrame == 'day') {
-			url += '&' + rangeApiFormat(selectedRange)
+			url += '&' + rangeApiFormat(selectedRange);
 		}
 		const res = await fetch(
 			url,
@@ -1246,7 +1246,7 @@ export const ServiceFunctions = {
 			}
 		);
 
-		const data = await res.blob()
+		const data = await res.blob();
 		return data;
 	},
 	getReportProfitLoss: async (token, selectedRange, shopId, filters, monthRange) => {
@@ -1282,11 +1282,11 @@ export const ServiceFunctions = {
 					}
 				}
 			);
-			
+
 			if (res.status !== 200){
 				throw new Error('Ощибка запроса');
 			}
-	
+
 			return res.json();
 
 		} catch(error) {
@@ -1307,11 +1307,11 @@ export const ServiceFunctions = {
 					}
 				}
 			);
-			
+
 			if (res.status !== 200){
 				throw new Error('Ошибка запроса');
 			}
-	
+
 			return res.json();
 
 		} catch(error) {
@@ -1326,7 +1326,7 @@ export const ServiceFunctions = {
 					'content-type': 'application/json',
 					'authorization': 'JWT ' + token
 				},
-			})
+			});
 
 			if (!res.ok){
 				throw new Error('Ошибка запроса');
@@ -1340,31 +1340,31 @@ export const ServiceFunctions = {
 		}
 	},
 	getSupplierAnalysisSuggestData: async (query, setIsLoading) => {
-		setIsLoading(true)
+		setIsLoading(true);
 		try {
 			let res = await fetch(`https://radarmarket.ru/api/web-service/supplier-analysis/search?query=${query}`, {
 				headers: {
 					'content-type': 'application/json',
 				}
-			})
+			});
 
 			if (!res.ok && res.status === 404) {
 				setIsLoading(false);
-				return []
+				return [];
 			}
 			if (!res.ok && res.status !== 404) {
 				setIsLoading(false);
-				return []
+				return [];
 			}
 
-			res = await res.json()
-			console.log(res)
+			res = await res.json();
+			console.log(res);
 			setIsLoading(false);
 			res = res.map(_ => ({
 				..._,
 				display_name: `${_?.trademark} (${_?.name})`
-			}))
-			return res
+			}));
+			return res;
 		} catch {
 			setIsLoading(false);
 		}
@@ -1384,11 +1384,11 @@ export const ServiceFunctions = {
 					// signal
 				}
 			);
-			
+
 			if (res.status !== 200){
 				throw new Error('Ошибка запроса');
 			}
-	
+
 			return res.json();
 
 		} catch(error) {
@@ -1411,11 +1411,11 @@ export const ServiceFunctions = {
 					// signal
 				}
 			);
-			
+
 			if (res.status !== 200){
 				throw new Error('Ошибка запроса');
 			}
-	
+
 			return res.json();
 
 		} catch(error) {
@@ -1427,7 +1427,7 @@ export const ServiceFunctions = {
 		try {
 			let body = getRnpRequestObject(filters, selectedRange, shopId);
 			const res = await fetchApi(
-				`/api/rnp/products?page=${page}&per_page=25${!!search ? `&search=${search}` : ''}` ,
+				`/api/rnp/products?page=${page}&per_page=25${search ? `&search=${search}` : ''}` ,
 				{
 					method: 'POST',
 					headers: {
@@ -1438,11 +1438,11 @@ export const ServiceFunctions = {
 					signal
 				}
 			);
-			
+
 			if (res.status !== 200){
 				throw new Error('Ошибка запроса');
 			}
-	
+
 			return res.json();
 
 		} catch(error) {
@@ -1464,11 +1464,11 @@ export const ServiceFunctions = {
 					}
 				}
 			);
-			
+
 			if (res.status !== 200){
 				throw new Error('Ошибка запроса');
 			}
-	
+
 			return res.json();
 
 		} catch(error) {
@@ -1491,14 +1491,14 @@ export const ServiceFunctions = {
 					})
 				}
 			);
-			
+
 			if (res.status !== 200){
 				if (res.status == 400){
 					return res.json();
 				}
 				throw new Error('Ошибка запроса');
 			}
-	
+
 			return res.json();
 
 		} catch(error) {
@@ -1518,11 +1518,11 @@ export const ServiceFunctions = {
 					}
 				}
 			);
-			
+
 			if (res.status !== 200){
 				throw new Error('Ошибка запроса');
 			}
-	
+
 			return res.json();
 
 		} catch(error) {
@@ -1542,11 +1542,11 @@ export const ServiceFunctions = {
 					}
 				}
 			);
-			
+
 			if (res.status !== 200){
 				throw new Error('Ошибка запроса');
 			}
-	
+
 			return res.json();
 		} catch(error) {
 			console.error('getOperatingExpensesCategory ', error);
@@ -1565,11 +1565,11 @@ export const ServiceFunctions = {
 					}
 				}
 			);
-			
+
 			if (res.status !== 200){
 				throw new Error('Ошибка запроса');
 			}
-	
+
 			return res.json();
 			/*
 			const res = {
@@ -1584,7 +1584,7 @@ export const ServiceFunctions = {
 					},
 				]
 			};
-			
+
 			return res;
 			*/
 
@@ -1606,11 +1606,11 @@ export const ServiceFunctions = {
 					body: JSON.stringify(category)
 				}
 			);
-			
+
 			if (!res.ok) {
 				throw new Error('Ошибка запроса');
 			}
-	
+
 			return res.json();
 		} catch(error) {
 			console.error('postOperatingExpensesCategoryCreate ', error);
@@ -1630,11 +1630,11 @@ export const ServiceFunctions = {
 					body: JSON.stringify(category)
 				}
 			);
-			
+
 			if (!res.ok) {
 				throw new Error('Ошибка запроса');
 			}
-	
+
 			return res.json();
 		} catch(error) {
 			console.error('aptchOperationConstsEditArticle ', error);
@@ -1719,11 +1719,11 @@ export const ServiceFunctions = {
 					}
 				}
 			);
-			
+
 			if (!res.ok){
 				throw new Error('Ошибка запроса');
 			}
-	
+
 			return res.json();
 			/*
 			const res = {
@@ -1783,11 +1783,11 @@ export const ServiceFunctions = {
 					body: JSON.stringify(expense)
 				}
 			);
-			
+
 			if (!res.ok) {
 				throw new Error('Ошибка запроса');
 			}
-	
+
 			return res.json();
 		} catch(error) {
 			console.error('postOperatingExpensesExpenseCreate ', error);

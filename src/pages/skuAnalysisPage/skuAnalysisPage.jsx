@@ -32,6 +32,6 @@ const SkuAnalysisPage = () => {
       </section>
     </main>
   );
-}
+};
 
 export default SkuAnalysisPage;

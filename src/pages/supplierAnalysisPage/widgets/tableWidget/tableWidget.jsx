@@ -1,5 +1,5 @@
-import React, { useRef, useEffect } from 'react'
-import styles from './tableWidget.module.css'
+import React, { useRef, useEffect } from 'react';
+import styles from './tableWidget.module.css';
 import DownloadButton from '../../../../components/DownloadButton';
 import { ConfigProvider, Table, Button } from 'antd';
 import { useAppSelector, useAppDispatch } from '../../../../redux/hooks';
@@ -8,38 +8,38 @@ import { selectSupplierAnalysisDataByType, selectSupplierCurrentBrand } from '..
 
 
 const getRequestObject = (id, selectedRange, paginationConfig, sort, currentBrand, dataType, hasPagination) => {
-    if (!id) return undefined
+    if (!id) return undefined;
     let datesRange;
 
     if (!selectedRange) {
-        datesRange = { period: 30 }
+        datesRange = { period: 30 };
     }
     if (selectedRange.period) {
-        datesRange = selectedRange
+        datesRange = selectedRange;
     } else {
         datesRange = {
             date_from: selectedRange.from,
             date_to: selectedRange.to
-        }
+        };
     }
     let reqData = {
         supplier_id: parseInt(id),
         ...datesRange,
-    }
+    };
 
     if (hasPagination && paginationConfig?.page) {
         reqData = {
             ...reqData,
             page: paginationConfig.page,
             limit: paginationConfig.limit
-        }
+        };
     }
 
     if (sort && hasPagination) {
         reqData = {
             ...reqData,
             sorting: sort
-        }
+        };
     }
 
 
@@ -47,18 +47,17 @@ const getRequestObject = (id, selectedRange, paginationConfig, sort, currentBran
         reqData = {
             ...reqData,
             brands: [currentBrand],
-        }
+        };
     }
     if (dataType === 'byBrandsTableData' && currentBrand === -1) {
         reqData = {
             ...reqData,
             brands: [],
-        }
+        };
     }
 
-    return reqData
-}
-
+    return reqData;
+};
 
 
 const TableWidget = ({
@@ -72,11 +71,11 @@ const TableWidget = ({
     containerHeight,
     hasPagination = false
 }) => {
-    const dispatch = useAppDispatch()
-    const containerRef = useRef(null)
-    const { selectedRange } = useAppSelector(store => store.filters)
-    const currentBrand = useAppSelector(selectSupplierCurrentBrand)
-    const { data: tableData, isLoading, isError, isSuccess, message, pagination: paginationConfig, sort } = useAppSelector(state => selectSupplierAnalysisDataByType(state, dataType))
+    const dispatch = useAppDispatch();
+    const containerRef = useRef(null);
+    const { selectedRange } = useAppSelector(store => store.filters);
+    const currentBrand = useAppSelector(selectSupplierCurrentBrand);
+    const { data: tableData, isLoading, isError, isSuccess, message, pagination: paginationConfig, sort } = useAppSelector(state => selectSupplierAnalysisDataByType(state, dataType));
 
 
     // ------------ table change handler (for pagination && sorting)-----------//
@@ -89,7 +88,7 @@ const TableWidget = ({
                     sort_field: sorter.field,
                     sort_order: sorter.order
                 }
-            }))
+            }));
         }
 
         if (action === 'paginate' && hasPagination) {
@@ -99,85 +98,83 @@ const TableWidget = ({
                     ...paginationConfig,
                     page: pagination.current,
                 }
-            }))
+            }));
         }
-    }
-
+    };
 
 
     // --------------------- Effects ---------------------//
 
     //костыль для начального положения скролла
     useEffect(() => {
-        const tBody = document.querySelectorAll('.ant-table-tbody-virtual-holder')
+        const tBody = document.querySelectorAll('.ant-table-tbody-virtual-holder');
         if (tBody) {
             tBody.forEach(_ => {
-                _.scrollTo({ top: 0 })
-            })
+                _.scrollTo({ top: 0 });
+            });
         }
 
-    }, [tableData, isLoading, tableConfig, paginationConfig])
+    }, [tableData, isLoading, tableConfig, paginationConfig]);
 
     //pagination styles
     useEffect(() => {
-        const paginationNextButton = document.querySelectorAll('.ant-pagination-jump-next')
-        const paginationPrevButton = document.querySelectorAll('.ant-pagination-jump-prev')
-        const paginationSingleNextButton = document.querySelectorAll('.ant-pagination-next')
-        const paginationSinglePrevButton = document.querySelectorAll('.ant-pagination-prev')
-        const jumper = document.querySelectorAll('.ant-pagination-options-quick-jumper')
+        const paginationNextButton = document.querySelectorAll('.ant-pagination-jump-next');
+        const paginationPrevButton = document.querySelectorAll('.ant-pagination-jump-prev');
+        const paginationSingleNextButton = document.querySelectorAll('.ant-pagination-next');
+        const paginationSinglePrevButton = document.querySelectorAll('.ant-pagination-prev');
+        const jumper = document.querySelectorAll('.ant-pagination-options-quick-jumper');
 
 
         if (jumper) {
             jumper.forEach(_ => {
-                const input = _?.querySelector('input')
+                const input = _?.querySelector('input');
 
                 if (input && _) {
-                    input.style.backgroundColor = '#EEEAFF'
-                    input.style.padding = '5px'
-                    input.style.width = '32px'
-                    _.textContent = 'Перейти на'
-                    _.appendChild(input)
+                    input.style.backgroundColor = '#EEEAFF';
+                    input.style.padding = '5px';
+                    input.style.width = '32px';
+                    _.textContent = 'Перейти на';
+                    _.appendChild(input);
                     const suffix = document.createElement('span');
-                    suffix.textContent = 'стр'
-                    _.appendChild(suffix)
-                    _.style.color = 'black'
+                    suffix.textContent = 'стр';
+                    _.appendChild(suffix);
+                    _.style.color = 'black';
                 }
-            })
+            });
 
         }
 
         if (paginationNextButton) {
-            paginationNextButton.forEach(_ => _.setAttribute('title', 'Следующие 5 страниц'))
+            paginationNextButton.forEach(_ => _.setAttribute('title', 'Следующие 5 страниц'));
         }
         if (paginationSingleNextButton) {
-            paginationSingleNextButton.forEach(_ => _.setAttribute('title', 'Следующая страница'))
+            paginationSingleNextButton.forEach(_ => _.setAttribute('title', 'Следующая страница'));
         }
         if (paginationSinglePrevButton) {
-            paginationSinglePrevButton.forEach(_ => _.setAttribute('title', 'Предыдущая страница'))
+            paginationSinglePrevButton.forEach(_ => _.setAttribute('title', 'Предыдущая страница'));
         }
         if (paginationPrevButton) {
-            paginationPrevButton.forEach(_ => _.setAttribute('title', 'Предыдущие 5 страниц'))
+            paginationPrevButton.forEach(_ => _.setAttribute('title', 'Предыдущие 5 страниц'));
         }
-    }, [tableData, paginationConfig])
+    }, [tableData, paginationConfig]);
 
     //data fetching (all tables except 'products')
     useEffect(() => {
         if (dataType !== 'byBrandsTableData') {
-            const requestObject = getRequestObject(id, selectedRange, paginationConfig, sort, currentBrand, dataType, hasPagination)
-            requestObject && dispatch(dataHandler({ data: requestObject, hasLoadingStatus: true }))
+            const requestObject = getRequestObject(id, selectedRange, paginationConfig, sort, currentBrand, dataType, hasPagination);
+            requestObject && dispatch(dataHandler({ data: requestObject, hasLoadingStatus: true }));
         }
-    }, [id, selectedRange, paginationConfig?.page, sort, dataType])
+    }, [id, selectedRange, paginationConfig?.page, sort, dataType]);
 
     //data fetching 'products' table
     useEffect(() => {
         if (dataType === 'byBrandsTableData') {
-            const requestObject = getRequestObject(id, selectedRange, paginationConfig, sort, currentBrand, dataType, hasPagination)
-            requestObject && dispatch(dataHandler({ data: requestObject, hasLoadingStatus: true }))
+            const requestObject = getRequestObject(id, selectedRange, paginationConfig, sort, currentBrand, dataType, hasPagination);
+            requestObject && dispatch(dataHandler({ data: requestObject, hasLoadingStatus: true }));
         }
-    }, [id, selectedRange, paginationConfig?.page, sort, currentBrand, dataType, hasPagination])
+    }, [id, selectedRange, paginationConfig?.page, sort, currentBrand, dataType, hasPagination]);
 
     // -------------------------------------------------------//
-
 
 
     // ---------------------- loading layout -----------------//
@@ -188,9 +185,8 @@ const TableWidget = ({
                     <span className='loader'></span>
                 </div>
             </div>
-        )
+        );
     }
-
 
 
     // ----------------------- fetching error layout ----------------------//
@@ -215,8 +211,8 @@ const TableWidget = ({
                                 size='large'
                                 style={{ marginLeft: 24 }}
                                 onClick={() => {
-                                    const requestObject = getRequestObject(id, selectedRange, paginationConfig, sort, currentBrand, dataType, hasPagination)
-                                    requestObject && dispatch(dataHandler({ data: requestObject, hasLoadingStatus: true }))
+                                    const requestObject = getRequestObject(id, selectedRange, paginationConfig, sort, currentBrand, dataType, hasPagination);
+                                    requestObject && dispatch(dataHandler({ data: requestObject, hasLoadingStatus: true }));
                                 }}
                             >
                                 Обновить
@@ -225,10 +221,8 @@ const TableWidget = ({
                     </div>
                 </div>
             </div >
-        )
+        );
     }
-
-
 
 
     // ---------------------------main layout ---------------------------------//
@@ -298,9 +292,9 @@ const TableWidget = ({
                                     return {
                                         ..._,
                                         sortOrder: sort.sort_order
-                                    }
+                                    };
                                 } else {
-                                    return _
+                                    return _;
                                 }
                             })}
                             dataSource={tableData?.map((_, id) => ({ ..._, key: id }))}
@@ -325,11 +319,9 @@ const TableWidget = ({
                 </ConfigProvider>
             </div>
         </div>
-    )
+    );
 
-}
+};
 
 export default TableWidget;
-
-
 

@@ -1,6 +1,6 @@
-import React from 'react'
-import styles from './noDataWidget.module.css'
-import HowToLink from '../../../../components/sharedComponents/howToLink/howToLink'
+import React from 'react';
+import styles from './noDataWidget.module.css';
+import HowToLink from '../../../../components/sharedComponents/howToLink/howToLink';
 
 const NoDataWidget = ({ type = 'group', mainTitle, mainText, buttonTitle, action, howLinkGroup = true }) => {
 
@@ -29,7 +29,7 @@ const NoDataWidget = ({ type = 'group', mainTitle, mainText, buttonTitle, action
                 </div>
             </div>
         </div>
-    )
-}
+    );
+};
 
 export default NoDataWidget;

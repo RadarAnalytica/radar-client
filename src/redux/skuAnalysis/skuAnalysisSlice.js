@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchSkuAnalysisMainChartData, fetchSkuAnalysisSkuData, fetchSkuAnalysisIndicatorsData, fetchSkuAnalysisMainTableData, fetchSkuAnalysisByColorTableData, fetchSkuAnalysisByWarehousesTableData, fetchSkuAnalysisBySizeTableData } from './skuAnalysisActions'
+import { fetchSkuAnalysisMainChartData, fetchSkuAnalysisSkuData, fetchSkuAnalysisIndicatorsData, fetchSkuAnalysisMainTableData, fetchSkuAnalysisByColorTableData, fetchSkuAnalysisByWarehousesTableData, fetchSkuAnalysisBySizeTableData } from './skuAnalysisActions';
 
 const initialState = {
     skuSearchHistory: [],
@@ -23,43 +23,43 @@ const skuAnalysisSlice = createSlice({
     reducers: {
         skuSearchHistoryAdd: (state, action) => {
             if (state.skuSearchHistory.some(_ => _ === action.payload)) {
-                return state
+                return state;
             } else {
                 return {
                     ...state,
                     skuSearchHistory: [...state.skuSearchHistory, action.payload]
-                }
+                };
             }
         },
         deleteSkuFromHistory: (state, action) => {
             const newHistory = state.skuSearchHistory;
-            const currId = newHistory.findIndex(_ => _ === action.payload)
+            const currId = newHistory.findIndex(_ => _ === action.payload);
 
             if (currId !== -1) {
-                newHistory.splice(currId, 1)
+                newHistory.splice(currId, 1);
                 return {
                     ...state,
                     skuSearchHistory: newHistory
-                }
+                };
             }
         },
         resetSkuSearchHistory: (state) => {
             return {
                 ...state,
                 skuSearchHistory: [],
-            }
+            };
         },
         setSkuMainData: (state, action) => {
             return {
                 ...state,
                 skuMainData: action.payload
-            }
+            };
         },
         setDataStatus: (state, action) => {
             return {
                 ...state,
                 dataStatus: action.payload
-            }
+            };
         }
     },
     extraReducers: (bulder) => {
@@ -84,7 +84,7 @@ const skuAnalysisSlice = createSlice({
             })
             .addCase(fetchSkuAnalysisBySizeTableData.fulfilled, (state, action) => {
                     state.skuBySizeTableData = action.payload;
-            })
+            });
     }
 });
 

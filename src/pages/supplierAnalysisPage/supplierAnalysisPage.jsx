@@ -32,6 +32,6 @@ const SupplierAnalysisPage = () => {
       </section>
     </main>
   );
-}
+};
 
 export default SupplierAnalysisPage;

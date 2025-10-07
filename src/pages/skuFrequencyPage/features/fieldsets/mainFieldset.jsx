@@ -1,11 +1,10 @@
-import { useState } from 'react'
-import styles from './mainFieldset.module.css'
-import { Form, ConfigProvider, Input, Tooltip } from 'antd'
+import { useState } from 'react';
+import styles from './mainFieldset.module.css';
+import { Form, ConfigProvider, Input, Tooltip } from 'antd';
 
 const MainFieldset = ({ optionsConfig, form }) => {
 
-    const [isBodyVisisble, setIsBodyVisible] = useState(true)
-
+    const [isBodyVisisble, setIsBodyVisible] = useState(true);
 
 
     return (
@@ -42,7 +41,7 @@ const MainFieldset = ({ optionsConfig, form }) => {
                     }
                 }}
             >
-                <h3 
+                <h3
                     className={styles.fieldset__title}
                 >
                     Основные
@@ -105,17 +104,17 @@ const MainFieldset = ({ optionsConfig, form }) => {
                     {optionsConfig.map((i, id) => {
                         return i.isActive && (
                             <FormItemBlock key={id} i={i} />
-                        )
+                        );
                     })}
                 </ConfigProvider>
             </div>
         </fieldset>
-    )
-}
+    );
+};
 
 const FormItemBlock = ({ i }) => {
 
-    const [errorState, setErrorState] = useState({ fromInput: '', toInput: '' })
+    const [errorState, setErrorState] = useState({ fromInput: '', toInput: '' });
 
     return (
         <div className={styles.form__complexInputWrapper}>
@@ -167,14 +166,14 @@ const FormItemBlock = ({ i }) => {
                                     validator(_, value) {
 
                                         if (i.name === 'freq_per_good') {
-                                            const regex = /^-?\d*\.?\d*$/ // только целые и дробные числа
+                                            const regex = /^-?\d*\.?\d*$/; // только целые и дробные числа
                                             if (value && !regex.test(value)) {
-                                                return Promise.reject(new Error(''))
+                                                return Promise.reject(new Error(''));
                                             }
                                         } else {
-                                            const regex = /^(|\d+)$/ // только целые числа
+                                            const regex = /^(|\d+)$/; // только целые числа
                                             if (value && !regex.test(value)) {
-                                                return Promise.reject(new Error(''))
+                                                return Promise.reject(new Error(''));
                                             }
                                         }
 
@@ -182,13 +181,13 @@ const FormItemBlock = ({ i }) => {
                                         if (i.units === '%' && value && value.trim()) {
                                             const int = parseInt(value);
                                             if (int && typeof int === 'number' && (int < 0 || int > 100)) {
-                                                setErrorState({ ...errorState, fromInput: 'Пожалуйста, введите значения от 0 до 100!' })
-                                                return Promise.reject(new Error(''))
+                                                setErrorState({ ...errorState, fromInput: 'Пожалуйста, введите значения от 0 до 100!' });
+                                                return Promise.reject(new Error(''));
                                             }
                                         }
 
-                                        setErrorState({ ...errorState, fromInput: '' })
-                                        return Promise.resolve()
+                                        setErrorState({ ...errorState, fromInput: '' });
+                                        return Promise.resolve();
                                     },
                                 }),
                             ]}
@@ -225,25 +224,25 @@ const FormItemBlock = ({ i }) => {
                                     validator(_, value) {
 
                                         if (i.name === 'freq_per_good') {
-                                            const regex = /^-?\d*\.?\d*$/ // только целые и дробные числа
+                                            const regex = /^-?\d*\.?\d*$/; // только целые и дробные числа
                                             if (value && !regex.test(value)) {
-                                                return Promise.reject(new Error(''))
+                                                return Promise.reject(new Error(''));
                                             }
                                         } else {
-                                            const regex = /^(|\d+)$/ // только целые числа
+                                            const regex = /^(|\d+)$/; // только целые числа
                                             if (value && !regex.test(value)) {
-                                                return Promise.reject(new Error(''))
+                                                return Promise.reject(new Error(''));
                                             }
                                         }
                                         if (i.units === '%' && value && value.trim()) {
                                             const int = parseInt(value);
                                             if (int && typeof int === 'number' && (int < 0 || int > 100)) {
-                                                setErrorState({ ...errorState, toInput: 'Пожалуйста, введите значения от 0 до 100!' })
-                                                return Promise.reject(new Error(''))
+                                                setErrorState({ ...errorState, toInput: 'Пожалуйста, введите значения от 0 до 100!' });
+                                                return Promise.reject(new Error(''));
                                             }
                                         }
-                                        setErrorState({ ...errorState, toInput: '' })
-                                        return Promise.resolve()
+                                        setErrorState({ ...errorState, toInput: '' });
+                                        return Promise.resolve();
                                     },
                                 }),
                             ]}
@@ -258,7 +257,7 @@ const FormItemBlock = ({ i }) => {
                 </ConfigProvider>
             </div>
         </div>
-    )
-}
+    );
+};
 
 export default MainFieldset;

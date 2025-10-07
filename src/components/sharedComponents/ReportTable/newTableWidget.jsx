@@ -4,14 +4,14 @@ import { Table as RadarTable } from 'radar-ui';
 import { formatPrice } from '../../../service/utils';
 import styles from './newTableWidget.module.css';
 
-const years = ['2020', '2021', '2022', '2023', '2024', '2025', '2026', '2027', '2028', '2029', '2030']
+const years = ['2020', '2021', '2022', '2023', '2024', '2025', '2026', '2027', '2028', '2029', '2030'];
 
 
 const customCellRender = (value, record, index, dataIndex) => {
 
-	let yearAttribute = ''
+	let yearAttribute = '';
 	if (years.some(year => year.toString() === dataIndex.toString())) {
-		yearAttribute = 'profitLossYearCell'
+		yearAttribute = 'profitLossYearCell';
 	}
 
 	if (record.article === 'Прямые расходы') {
@@ -21,13 +21,13 @@ const customCellRender = (value, record, index, dataIndex) => {
 					<span className={styles.customCellValueRub} title={formatPrice(value.rub, '₽')}><b>{formatPrice(value.rub, '₽')}</b></span>
 					<span className={styles.customCellValuePercent} title={formatPrice(value.percent, '%')}><b>{formatPrice(value.percent, '%')}</b></span>
 				</div>
-			)
+			);
 		}
 		return (
 			<div className={styles.customCell} data-year-attribute={yearAttribute}>
 				<span className={styles.customCellValueText} title={value}><b>{value}</b></span>
 			</div>
-		)
+		);
 	}
 
 	if (
@@ -38,7 +38,7 @@ const customCellRender = (value, record, index, dataIndex) => {
 			<div className={`${styles.customCell} ${styles.customCellChildren}`} data-year-attribute={yearAttribute}>
 				<span className={styles.customCellValueText} style={{ color: 'rgba(0, 0, 0, .5)'}} title={value}>{value}</span>
 			</div>
-		)
+		);
 	}
 	if (dataIndex !== 'article' &&
 		(record.article === 'Себестоимость' || record.article === 'Внутренняя реклама' || record.article === 'Хранение' || record.article === 'Платная приемка' || record.article === 'Комиссия' || record.article === 'Логистика' || record.article === 'Штрафы')
@@ -48,7 +48,7 @@ const customCellRender = (value, record, index, dataIndex) => {
 				<span className={styles.customCellValueRub} style={{ color: 'rgba(0, 0, 0, .5)'}} title={formatPrice(value.rub, '₽')}>{formatPrice(value.rub, '₽')}</span>
 				<span className={styles.customCellValuePercent} style={{ color: 'rgba(0, 0, 0, .5)'}} title={formatPrice(value.percent, '%')}>{formatPrice(value.percent, '%')}</span>
 			</div>
-		)
+		);
 	}
 	if (typeof value === 'object') {
 		return (
@@ -56,18 +56,16 @@ const customCellRender = (value, record, index, dataIndex) => {
 				<span className={styles.customCellValueRub} title={formatPrice(value.rub, '₽')}>{formatPrice(value.rub, '₽')}</span>
 				{record.article !== 'Фактические продажи' && <span className={styles.customCellValuePercent} title={formatPrice(value.percent, '%')}>{formatPrice(value.percent, '%')}</span>}
 			</div>
-		)
+		);
 	}
 	return (
 		<div className={styles.customCell} data-year-attribute={yearAttribute}>
 			<span className={styles.customCellValueText} title={value}>{value}</span>
 		</div>
-	)
+	);
 
 
-}
-
-
+};
 
 
 const TableWidget = ({ loading, columns, data, rowSelection = false, virtual = true, is_primary_collect, progress = null, setTableConfig }) => {
@@ -79,7 +77,7 @@ const TableWidget = ({ loading, columns, data, rowSelection = false, virtual = t
 		const mouseHandler = (e) => {
 			e.preventDefault();
 			e.stopPropagation();
-		}
+		};
 
 		document.addEventListener('mousemove', mouseHandler);
 		const newConfig = columns.map((col, index) => {
@@ -96,11 +94,11 @@ const TableWidget = ({ loading, columns, data, rowSelection = false, virtual = t
 		});
 		setTableConfig(newConfig);
 		document.removeEventListener('mousemove', mouseHandler);
-	}
+	};
 
 
 	if (!loading && !is_primary_collect) {
-		return <></>
+		return <></>;
 	}
 
 	return (
@@ -118,7 +116,7 @@ const TableWidget = ({ loading, columns, data, rowSelection = false, virtual = t
 						/>
 					</div>}
 				</div>}
-				{!loading && 
+				{!loading &&
 				<RadarTable
 					resizeable
 					treeMode={true}
@@ -146,5 +144,4 @@ const TableWidget = ({ loading, columns, data, rowSelection = false, virtual = t
 };
 
 export default TableWidget;
-
 

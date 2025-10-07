@@ -1,11 +1,11 @@
-import styles from './cellRender.module.css'
-import { Link } from 'react-router-dom'
-import { formatPrice } from '../../../../service/utils'
+import styles from './cellRender.module.css';
+import { Link } from 'react-router-dom';
+import { formatPrice } from '../../../../service/utils';
 
 
 export const cellRender = (value, record, index, dataIndex) => {
   if (dataIndex === 'query') {
-    const url = `/monitoring/request?query=${encodeURIComponent(value)}`
+    const url = `/monitoring/request?query=${encodeURIComponent(value)}`;
     return (
       <Link
         className={styles.cell__query}
@@ -25,7 +25,7 @@ export const cellRender = (value, record, index, dataIndex) => {
             fill="currentColor"/>
         </svg>
       </Link>
-    )
+    );
   }
 
   if (dataIndex === 'niche_rating') {
@@ -43,7 +43,7 @@ export const cellRender = (value, record, index, dataIndex) => {
                   d="M10 0L12.2451 6.90983H19.5106L13.6327 11.1803L15.8779 18.0902L10 13.8197L4.12215 18.0902L6.36729 11.1803L0.489435 6.90983H7.75486L10 0Z"
                   fill="#5329FF"/>
               </svg>
-            )
+            );
           } else {
             return (
               <svg width="20" height="19" viewBox="0 0 20 19" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -51,12 +51,12 @@ export const cellRender = (value, record, index, dataIndex) => {
                   d="M10 0L12.2451 6.90983H19.5106L13.6327 11.1803L15.8779 18.0902L10 13.8197L4.12215 18.0902L6.36729 11.1803L0.489435 6.90983H7.75486L10 0Z"
                   fill="#8C8C8C"/>
               </svg>
-            )
+            );
 
           }
         })}
       </div>
-    )
+    );
   }
 
   return (
@@ -66,5 +66,5 @@ export const cellRender = (value, record, index, dataIndex) => {
     >
       {value}
     </div>
-  )
-}
+  );
+};

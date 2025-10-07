@@ -22,7 +22,7 @@ import {
 	getISOWeek,
 } from 'date-fns';
 // import downloadIcon from '../images/Download.svg';
-import DataCollectWarningBlock from '@/components/sharedComponents/dataCollectWarningBlock/dataCollectWarningBlock'
+import DataCollectWarningBlock from '@/components/sharedComponents/dataCollectWarningBlock/dataCollectWarningBlock';
 import NoSubscriptionWarningBlock from '@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock';
 import { COLUMNS } from './columnsConfig';
 import TableWidget from './widgets/TableWidget/TableWidget';
@@ -52,14 +52,14 @@ export default function ReportWeek() {
 			interval = setInterval(() => {
 				setProgress((state) => {
 					if (state > 90){
-						clearInterval(interval)
-						return state
+						clearInterval(interval);
+						return state;
 					}
-					return Math.ceil(state + (90 / 15))
-				})
-			}, 1000)
+					return Math.ceil(state + (90 / 15));
+				});
+			}, 1000);
 		}
-		return () => clearInterval(interval)
+		return () => clearInterval(interval);
 	}, [loading]);
 
 	useEffect(() => {
@@ -110,21 +110,21 @@ export default function ReportWeek() {
 				const columns = JSON.parse(savedColumnsWeek);
 				return columns.map((column) => COLUMNS.find((el) => {
 					if (typeof column == 'object'){
-						return el.dataIndex == column.dataIndex
+						return el.dataIndex == column.dataIndex;
 					}
-					return el.dataIndex == column
-				}))
+					return el.dataIndex == column;
+				}));
 			} catch (error) {
-				console.error('Ошибка при обработке сохраненных настроек', error)
+				console.error('Ошибка при обработке сохраненных настроек', error);
 				return COLUMNS;
 			}
 		}
 		return COLUMNS;
-	}
+	};
 
 	const shopStatus = useMemo(() => {
 			if (!activeBrand || !shops) return null;
-			
+
 			if (activeBrand.id === 0) {
 					return {
 						id: 0,
@@ -135,13 +135,13 @@ export default function ReportWeek() {
 						is_self_cost_set: !shops.some(shop => !shop.is_self_cost_set)
 					};
 			}
-			
+
 			return shops.find(shop => shop.id === activeBrand.id);
 	}, [activeBrand, shops]);
 
 	useEffect(() => {
 		if (!activeBrand){
-			return
+			return;
 		}
 		let savedFilterWeek = JSON.parse(localStorage.getItem('activeWeeks')) || {};
 		savedFilterWeek[activeBrand.id] = activeWeeks;
@@ -199,7 +199,7 @@ export default function ReportWeek() {
 	const dataToTableData = (weeks) => {
 		if (!weeks || weeks?.length === 0) {
 			setTableRows([]);
-			setProgress(null)
+			setProgress(null);
 			setLoading(false);
 			return;
 		}
@@ -217,12 +217,12 @@ export default function ReportWeek() {
 				if (typeof el.data[key] === 'object') {
 					Object.keys(el.data[key]).forEach(k => {
 						row[`${key}_${k}`] = el.data[key][k];
-					})
+					});
 
 				} else {
 					row[key] = el.data[key];
 				}
-			})
+			});
 			return row;
 		});
 
@@ -233,8 +233,8 @@ export default function ReportWeek() {
 				} else {
 					summary[key] += row[key];
 				}
-			})
-		})
+			});
+		});
 
 		// приcвоение расчетных значений
 		summary = {
@@ -254,7 +254,7 @@ export default function ReportWeek() {
 
 		rows.unshift(summary);
 		setTableRows(rows);
-		setProgress(null)
+		setProgress(null);
 		setLoading(false);
 	};
 
@@ -272,12 +272,12 @@ export default function ReportWeek() {
 	};
 
 	const tableColumnsHandler = (columns) => {
-		setTableColumns(columns)
-	}
+		setTableColumns(columns);
+	};
 
 	const configClear = () => {
 		tableColumnsHandler(COLUMNS);
-		localStorage.setItem('reportWeekTableConfig', JSON.stringify(COLUMNS))
+		localStorage.setItem('reportWeekTableConfig', JSON.stringify(COLUMNS));
 		setIsPopoverOpen(false);
 	};
 
@@ -319,7 +319,7 @@ export default function ReportWeek() {
 	);
 
 	const handleDownload = async () => {
-		setDownloadLoading(true)
+		setDownloadLoading(true);
 		try {
 			const fileBlob = await ServiceFunctions.getDownloadReportWeek(
 				authToken,
@@ -330,9 +330,9 @@ export default function ReportWeek() {
 			);
 			fileDownload(fileBlob, 'Отчет_по_неделям.xlsx');
 		} catch(e) {
-			console.error('Ошибка скачивания: ', error)
+			console.error('Ошибка скачивания: ', error);
 		} finally {
-			setDownloadLoading(false)
+			setDownloadLoading(false);
 		}
 	};
 

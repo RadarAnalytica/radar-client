@@ -1,16 +1,16 @@
-import React, { useState, useEffect, useContext } from 'react'
-import styles from './subscriptionModal.module.css'
-import { Modal, ConfigProvider } from 'antd'
-import { useNavigate } from 'react-router-dom'
-import { URL } from '../../../../service/config'
-import { ServiceFunctions } from '../../../../service/serviceFunctions'
+import React, { useState, useEffect, useContext } from 'react';
+import styles from './subscriptionModal.module.css';
+import { Modal, ConfigProvider } from 'antd';
+import { useNavigate } from 'react-router-dom';
+import { URL } from '../../../../service/config';
+import { ServiceFunctions } from '../../../../service/serviceFunctions';
 import { jwtDecode } from "jwt-decode";
-import AuthContext from '../../../../service/AuthContext'
-import { getDayDeclension } from '../../../../service/utils'
+import AuthContext from '../../../../service/AuthContext';
+import { getDayDeclension } from '../../../../service/utils';
 
 const SubscriptionModal = ({ visible, visibilityHandler }) => {
 
-  const { authToken, user } = useContext(AuthContext)
+  const { authToken, user } = useContext(AuthContext);
   const [isScriptLoaded, setIsScriptLoaded] = useState(false);
   const [selectedPeriod, setSelectedPeriod] = useState('1month');
   const [trialExpired, setTrialExpired] = useState(user?.is_test_used);
@@ -18,7 +18,6 @@ const SubscriptionModal = ({ visible, visibilityHandler }) => {
     user?.is_subscription_discount
   );
   const navigate = useNavigate();
-
 
 
   useEffect(() => {
@@ -121,7 +120,7 @@ const SubscriptionModal = ({ visible, visibilityHandler }) => {
       amountSubscribe = 3990;
       firstAmount = newTrialExpired ? 3990 : 10;
       periodSubscribe = 1;
-      if (!!newTrialExpired) {
+      if (newTrialExpired) {
         startDateSubscribe.setMonth(
           startDateSubscribe.getMonth() + periodSubscribe
         );
@@ -161,7 +160,7 @@ const SubscriptionModal = ({ visible, visibilityHandler }) => {
     //   startDateSubscribe.toISOString().split('T')[0]
     // );
     startDateSubscribe = startDateSubscribe.toISOString().split('T')[0];
-    startDateSubscribe = `${startDateSubscribe}T10:00:00`
+    startDateSubscribe = `${startDateSubscribe}T10:00:00`;
     // console.log('startDateSubscribe', startDateSubscribe);
     // eslint-disable-next-line no-undef
     var widget = new cp.CloudPayments({
@@ -227,7 +226,7 @@ const SubscriptionModal = ({ visible, visibilityHandler }) => {
       function (options) {
         // success - действие при успешной оплате
         navigate('/after-payment', { state: { paymentStatus: 'success' } });
-        return
+        return;
         // TODO отправка запроса в сервис бэкенда на обновление данных user
         // (/api/user Patch subscription_status: ['Test', 'Month 1', 'Month 3', 'Month 6'],
         // subscription_start_date: TODAY, is_test_used: true (если выбран тестовый период, если нет - не передавать))
@@ -280,7 +279,7 @@ const SubscriptionModal = ({ visible, visibilityHandler }) => {
         // fail
         //действие при неуспешной оплате
         navigate('/after-payment', { state: { paymentStatus: 'error' } });
-        return
+        return;
 
         ServiceFunctions.getFailPaymentStatus(authToken)
           .then(res => {
@@ -442,7 +441,7 @@ const SubscriptionModal = ({ visible, visibilityHandler }) => {
             <button
               className={styles.modal__actionButton}
               onClick={() => {
-                payFunction(user.id, selectedPeriod, trialExpired)
+                payFunction(user.id, selectedPeriod, trialExpired);
                 //visibilityHandler(false)
               }}
             >
@@ -452,7 +451,7 @@ const SubscriptionModal = ({ visible, visibilityHandler }) => {
         </div>
       </Modal>
     </ConfigProvider>
-  )
-}
+  );
+};
 
 export default SubscriptionModal;

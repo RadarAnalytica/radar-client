@@ -216,7 +216,7 @@ export class DemoDataService {
     data.results.map(item => {
       item.amount = item.amount / denominator;
     });
-    
+
     return data;
   }
 
@@ -228,11 +228,11 @@ export class DemoDataService {
     data.results.map(item => {
       item.amount = item.amount / denominator;
     });
-    
+
     return data;
   }
 
-  private getSelfCostsData(): any { 
+  private getSelfCostsData(): any {
     return { data: selfCostsData };
   }
 
@@ -274,7 +274,7 @@ export class DemoDataService {
     const oneYearLater = now;
     threeMonthsLater.setMonth(threeMonthsLater.getMonth() + 3);
     oneYearLater.setFullYear(oneYearLater.getFullYear() + 1);
-    
+
     return [
       {
           "id": 1,
@@ -301,7 +301,7 @@ export class DemoDataService {
       dayTo = store.getState().filters?.selectedRange?.to;
       days++;
     }
-    
+
     const denominator = 90 / days;
 
     data.orderCountList = data.orderCountList.slice(0, days);
@@ -329,7 +329,7 @@ export class DemoDataService {
         date: date.toISOString().split('T')[0] // Формат YYYY-MM-DD
       };
     });
-    
+
     data.orderAmount = Math.round(data.orderAmount / denominator);
     data.saleAmount = data.saleAmount / denominator;
     data.orderCount = data.orderCount / denominator;
@@ -375,10 +375,10 @@ export class DemoDataService {
         }
 
         item.by_date_data = item.by_date_data.slice(-(days + 1));
-        const diffDays = filters?.selectedRange?.to 
+        const diffDays = filters?.selectedRange?.to
           ? Math.round((Number(new Date()) - Number(new Date(filters.selectedRange.to))) / 86400000)
           : 0;
-        
+
         const updatedByDateData = item.by_date_data.map((dateItem: any, index: number) => {
           // Генерируем дату от вчерашнего или последнего выбранного дня и назад
           const date = new Date();
@@ -393,10 +393,10 @@ export class DemoDataService {
       return item;
     });
 
-    return { 
-      data: updatedData, 
-      page: 1, 
-      per_page: 25, 
+    return {
+      data: updatedData,
+      page: 1,
+      per_page: 25,
       total_count: updatedData.length,
     };
   }
@@ -413,7 +413,7 @@ export class DemoDataService {
       }
 
       data.by_date_data = data.by_date_data.slice(-(days + 1));
-      const diffDays = filters?.selectedRange?.to 
+      const diffDays = filters?.selectedRange?.to
           ? Math.round((Number(new Date()) - Number(new Date(filters.selectedRange.to))) / 86400000)
           : 0;
 
@@ -468,27 +468,27 @@ export class DemoDataService {
     const monthFrom = filters?.activeMonths?.month_from;
     const monthTo = filters?.activeMonths?.month_to;
     const now = new Date();
-    
+
     let startYear = Number(now.getFullYear());
     let startMonth = Number(now.getMonth()) + 1;
     let endYear = startYear;
     let endMonth = startMonth;
-    
+
     // Парсим фильтры если они есть
     if (monthFrom) {
       const [year, month] = monthFrom.split('-').map(Number);
       startYear = year;
       startMonth = month;
     }
-    
+
     if (monthTo) {
       const [year, month] = monthTo.split('-').map(Number);
       endYear = year;
       endMonth = month;
     }
-    
+
     const result = [];
-    
+
     // Генерируем данные по годам
     for (let year = endYear; year >= startYear; year--) {
       // Определяем диапазон месяцев для текущего года
@@ -517,7 +517,7 @@ export class DemoDataService {
       'Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь',
       'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'
     ];
-    
+
     for (let month = startMonth; month <= endMonth; month++) {
       months.push({
         year: year,
@@ -525,7 +525,7 @@ export class DemoDataService {
         label: `${monthNames[month - 1]} ${year}`
       });
     }
-    
+
     return months;
   }
 
@@ -616,7 +616,7 @@ export class DemoDataService {
   // Генерация данных за месяц
   private generateMonthPlData(monthInfo: { year: number; month: number; label: string }) {
     const baseMultiplier = this.generateRandomPercent(0.4, 0.6); // Вариация по месяцам
-    
+
     return {
       month_label: monthInfo.label,
       data: {
@@ -787,7 +787,7 @@ export class DemoDataService {
 
     // Проверяем, находимся ли мы на странице ReportWeek
     const isReportWeekPage = window.location.pathname.includes('/report-week');
-    
+
     let weeksListData;
     if (isReportWeekPage) {
       weeksListData = this.generateWeekOptions();
@@ -893,16 +893,16 @@ export class DemoDataService {
     let activeWeeks = filters.activeWeeks || [];
 
     if (activeWeeks.length === 0) {
-      return { 
-        data: [{weeks: [], year: new Date().getFullYear()}], 
+      return {
+        data: [{weeks: [], year: new Date().getFullYear()}],
         messsage: 'Success',
       };
     }
-  
+
     // Получаем текущую дату и вычисляем количество недель от начала года
     const currentDate = new Date();
     const currentWeekNumber = this.getWeekNumber(currentDate);
-    
+
     // Генерируем данные только для выбранных недель
     const dynamicWeeklyData = [];
 
@@ -920,14 +920,14 @@ export class DemoDataService {
         const weekStartDate = this.getDateFromWeekNumber(weekDate.getFullYear(), weekNumber);
         const weekEndDate = new Date(weekStartDate);
         weekEndDate.setDate(weekStartDate.getDate() + 6);
-        
+
         const startDateStr = this.formatDate(weekStartDate);
         const endDateStr = this.formatDate(weekEndDate);
         const weekLabel = `${weekNumber} неделя (${startDateStr} - ${endDateStr})`;
-        
+
         // Генерируем случайные данные на основе базовых данных
         const generatedData = this.generateRandomWeeklyData(baseData, weekNumber, currentWeekNumber);
-        
+
         dynamicWeeklyData.push({
           week: weekNumber,
           week_label: weekLabel,
@@ -935,12 +935,12 @@ export class DemoDataService {
         });
       }
     }
-    
+
     // Сортируем по номеру недели (от большей к меньшей)
     dynamicWeeklyData.sort((a, b) => b.week - a.week);
-    
-    return { 
-      data: [{weeks: dynamicWeeklyData, year: currentDate.getFullYear()}], 
+
+    return {
+      data: [{weeks: dynamicWeeklyData, year: currentDate.getFullYear()}],
       messsage: 'Success',
     };
   }
@@ -949,17 +949,17 @@ export class DemoDataService {
   private generateRandomWeeklyData(baseData: any, weekNumber: number, currentWeek: number): any {
     // Функция для генерации случайного числа в диапазоне
     const randomInRange = (min: number, max: number) => Math.random() * (max - min) + min;
-    
+
     // Функция для генерации случайного числа с вариацией от базового значения
     const randomVariation = (baseValue: number, variationPercent: number = 0.3) => {
       const variation = baseValue * variationPercent;
       return Math.max(0, baseValue + randomInRange(-variation, variation));
     };
-    
+
     // Чем дальше от текущей недели, тем больше вариация
     const weeksDiff = currentWeek - weekNumber;
     const variationMultiplier = 1 + (weeksDiff * 0.1);
-    
+
     return {
       revenue: {
         rub: Math.round(randomVariation(baseData.data.revenue.rub, 0.2 * variationMultiplier)),
@@ -1015,17 +1015,17 @@ export class DemoDataService {
   private generateAvgSppPercentFields(baseData: any, variationMultiplier: number): any {
     const fields: any = {};
     const baseValue = baseData.data.avg_spp_rub_percent || 0;
-    
+
     for (let i = 1; i <= 100; i++) {
       const fieldName = `avg_spp_rub_percent_${i}`;
       const randomVariation = (baseValue: number, variationPercent: number) => {
         const variation = baseValue * variationPercent;
         return Math.max(0, baseValue + (Math.random() * variation * 2 - variation));
       };
-      
+
       fields[fieldName] = Math.round(randomVariation(baseValue, 0.3 * variationMultiplier) * 100) / 100;
     }
-    
+
     return fields;
   }
 
@@ -1034,12 +1034,12 @@ export class DemoDataService {
     const jan1 = new Date(year, 0, 1);
     const daysToAdd = (weekNumber - 1) * 7;
     const weekStart = new Date(jan1.getTime() + daysToAdd * 24 * 60 * 60 * 1000);
-    
+
     // Корректируем на понедельник
     const dayOfWeek = weekStart.getDay();
     const daysToMonday = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
     weekStart.setDate(weekStart.getDate() + daysToMonday);
-    
+
     return weekStart;
   }
 

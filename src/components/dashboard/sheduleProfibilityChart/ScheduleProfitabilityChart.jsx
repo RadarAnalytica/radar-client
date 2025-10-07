@@ -6,10 +6,10 @@ import roi from '../../../assets/roi.svg';
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 
 const ScheduleProfitabilityChart = ({ dataProfitability, dataProfitPlus, dataProfitMinus, loading, labels, step, minValue, maxValue }) => {
-    const min = minValue
-    const max = maxValue
+    const min = minValue;
+    const max = maxValue;
     if (Math.abs(min) + Math.abs(max) < 300) {
-        step = 25
+        step = 25;
     }
     const marginMin = dataProfitPlus ? Math.round([...dataProfitPlus].sort((a,b) => a - b)[0]) : 0;
     const marginMax = dataProfitPlus ? Math.ceil([...dataProfitPlus].sort((a,b) => b - a)[0] / 100) * 100 : 100;
@@ -150,7 +150,6 @@ const ScheduleProfitabilityChart = ({ dataProfitability, dataProfitPlus, dataPro
             }
 
 
-
         },
         scales: {
             A: {
@@ -187,7 +186,7 @@ const ScheduleProfitabilityChart = ({ dataProfitability, dataProfitPlus, dataPro
                 },
                 ticks: {
                     color: '#8C8C8C',
-                    // autoSkip: false, 
+                    // autoSkip: false,
                     // minRotation: 0,
                     callback: function (value, index) {
                         return data.labels[index];
@@ -218,7 +217,7 @@ const ScheduleProfitabilityChart = ({ dataProfitability, dataProfitPlus, dataPro
                         className="position-absolute w-100 h-100 d-flex flex-column align-items-center justify-content-center"
                         style={{
                             top: 0,
-                            left: 0 
+                            left: 0
                         }}
                     >
                         <span className="loader"></span>

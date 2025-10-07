@@ -1,5 +1,5 @@
-import styles from './marginChartBlock.module.css'
-import { processMarginalityRoiChart } from '../blockUtils'
+import styles from './marginChartBlock.module.css';
+import { processMarginalityRoiChart } from '../blockUtils';
 import roi from '../../../../assets/roi.svg';
 import { Chart } from 'react-chartjs-2';
 import { CategoryScale, LinearScale, Chart as ChartJS, Filler, BarController, PointElement, BarElement, LineElement, LineController, Tooltip } from 'chart.js';
@@ -27,12 +27,12 @@ const MarginChartBlock = ({ dataDashBoard, loading }) => {
         labels,
         step,
         minValue,
-        maxValue } = processMarginalityRoiChart(dataDashBoard?.marginalityRoiChart)
-    const min = minValue
-    const max = maxValue
+        maxValue } = processMarginalityRoiChart(dataDashBoard?.marginalityRoiChart);
+    const min = minValue;
+    const max = maxValue;
 
     if (Math.abs(min) + Math.abs(max) < 300) {
-        step = 25
+        step = 25;
     }
 
     const marginMin = dataProfitPlus ? Math.round([...dataProfitPlus].sort((a, b) => a - b)[0]) : 0;
@@ -154,7 +154,6 @@ const MarginChartBlock = ({ dataDashBoard, loading }) => {
             }
 
 
-
         },
         scales: {
             A: {
@@ -187,7 +186,7 @@ const MarginChartBlock = ({ dataDashBoard, loading }) => {
                 },
                 ticks: {
                     color: '#8C8C8C',
-                    // autoSkip: false, 
+                    // autoSkip: false,
                     // minRotation: 0,
                     callback: function (value, index) {
                         return data.labels[index];
@@ -209,7 +208,7 @@ const MarginChartBlock = ({ dataDashBoard, loading }) => {
                     <span className='loader'></span>
                 </div>
             </div>
-        )
+        );
     }
 
     return (
@@ -229,7 +228,7 @@ const MarginChartBlock = ({ dataDashBoard, loading }) => {
                 <Chart type='line' data={data} options={options} />
             </div>
         </div >
-    )
-}
+    );
+};
 
 export default MarginChartBlock;

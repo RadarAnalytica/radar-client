@@ -22,7 +22,7 @@ import lowResImage from '../pages/images/imageFonStartBsn_comp.png'; // the low-
 import highResImage from '../pages/images/imageFonStartBsn.png'; // the high-res image
 import styles from '../pages/TariffsPage.module.css';
 import thumbup from '../pages/images/thumbup.png';
-import { periodStringFormat } from '../service/utils'
+import { periodStringFormat } from '../service/utils';
 
 const SelectRateMain = ({ redirect, isShowText }) => {
   const { user, authToken } = useContext(AuthContext);

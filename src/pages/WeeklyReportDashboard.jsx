@@ -8,7 +8,7 @@ import TooltipInfo from '../components/TooltipInfo';
 import AuthContext from '../service/AuthContext';
 import { ServiceFunctions } from '@/service/serviceFunctions';
 import { formatPrice } from '@/service/utils';
-import NewFilterGroup from '../components/finReport/FilterGroup'
+import NewFilterGroup from '../components/finReport/FilterGroup';
 import MobilePlug from '../components/sharedComponents/mobilePlug/mobilePlug';
 import Sidebar from '../components/sharedComponents/sidebar/sidebar';
 import Header from '../components/sharedComponents/header/header';
@@ -31,7 +31,7 @@ const WeeklyReportDashboard = () => {
   useEffect(() => {
     dispatch(fetchDashboardFilters(
       authToken
-    ))
+    ));
 
   }, [authToken, dispatch]);
 
@@ -99,7 +99,7 @@ const WeeklyReportDashboard = () => {
           <Header title={'Дашборд'} titlePrefix={'Отчёт'}/>
         </div>
 
-        {isDemoMode && 
+        {isDemoMode &&
           <div className='mb-1'>
             <NoSubscriptionWarningBlock />
           </div>
@@ -558,7 +558,7 @@ const WeeklyReportDashboard = () => {
                           value={selectedValue}
                           onChange={(e) => {
                             const selected = e.target.value;
-                            setSelectedValue(selected)
+                            setSelectedValue(selected);
                             handleTaxSubmit({
                               taxType: selected,
                               taxRate: selected === "Не считать налог" ? 0 : taxRate,

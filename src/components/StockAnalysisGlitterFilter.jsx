@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 
 const StockAnalysisGlitterFilter = ({setDays}) => {
   return (
@@ -59,7 +59,7 @@ const StockAnalysisGlitterFilter = ({setDays}) => {
         </div>
     </div>
 </div>
-  )
-}
+  );
+};
 
-export default StockAnalysisGlitterFilter
+export default StockAnalysisGlitterFilter;

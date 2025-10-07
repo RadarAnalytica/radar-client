@@ -1,4 +1,4 @@
-import styles from './profitChartBlock.module.css'
+import styles from './profitChartBlock.module.css';
 import { processSalesAndProfit } from '../blockUtils';
 import { Chart as ChartJS, BarElement, CategoryScale, LinearScale, Tooltip, Legend } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
@@ -153,9 +153,8 @@ const ProfitChartBlock = ({ dataDashBoard, loading }) => {
                     <span className='loader'></span>
                 </div>
             </div>
-        )
+        );
     }
-
 
 
     return (
@@ -175,7 +174,7 @@ const ProfitChartBlock = ({ dataDashBoard, loading }) => {
                 <Bar data={data} options={options} />
             </div>
         </div >
-    )
-}
+    );
+};
 
 export default ProfitChartBlock;

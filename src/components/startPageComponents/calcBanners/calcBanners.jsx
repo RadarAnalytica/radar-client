@@ -1,11 +1,11 @@
-import styles from './calcBanners.module.css'
+import styles from './calcBanners.module.css';
 import { Link } from 'react-router-dom';
-import banner1 from '../../../../public/sp_c_banner_01.svg'
-import banner2 from '../../../../public/sp_c_banner_02.svg'
-import banner3 from '../../../../public/sp_c_banner_03.svg'
-import banner4 from '../../../../public/sp_c_banner_04.svg'
-import banner5 from '../../../../public/sp_c_banner_05.svg'
-import banner6 from '../../../../public/sp_c_banner_06.svg'
+import banner1 from '../../../../public/sp_c_banner_01.svg';
+import banner2 from '../../../../public/sp_c_banner_02.svg';
+import banner3 from '../../../../public/sp_c_banner_03.svg';
+import banner4 from '../../../../public/sp_c_banner_04.svg';
+import banner5 from '../../../../public/sp_c_banner_05.svg';
+import banner6 from '../../../../public/sp_c_banner_06.svg';
 const CalcBanners = () => {
 
     return (
@@ -58,8 +58,6 @@ const CalcBanners = () => {
             </div>
 
 
-
-
             <div className={`${styles.banner} ${styles.banner_bgGold}`}>
                 <div className={`${styles.banner__header} ${styles.banner__header_bgGold}`}>
                     <div className={styles.banner__titleWrapper}>
@@ -105,7 +103,7 @@ const CalcBanners = () => {
                 </div>
             </div>
         </div>
-    )
-}
+    );
+};
 
 export default CalcBanners;

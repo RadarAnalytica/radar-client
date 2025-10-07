@@ -8,8 +8,8 @@ import { useAppSelector } from "../../../redux/hooks";
 const SelfCostModal = ({ isModalVisible, setIsModalVisible, onUpdateDashboard, shopId }) => {
 
     const [file, setFile] = useState();
-    const { authToken } = useContext(AuthContext)
-    const { selectedRange } = useAppSelector(store => store.filters)
+    const { authToken } = useContext(AuthContext);
+    const { selectedRange } = useAppSelector(store => store.filters);
 
     const handleCostPriceSave = () => {
         saveFileClickHandler(file, authToken, shopId);
@@ -101,7 +101,7 @@ const SelfCostModal = ({ isModalVisible, setIsModalVisible, onUpdateDashboard, s
                 )}
             </Modal.Body>
         </Modal>
-    )
-}
+    );
+};
 
 export default SelfCostModal;

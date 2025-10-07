@@ -5,13 +5,13 @@ import TopNav from '../../components/TopNav';;
 import glitterStar from '../../pages/images/glitterstar.svg';
 import glityellow from '../../pages/images/glityellow.svg';
 import glitFile from '../../pages/images/glitfile.svg';
-import SearchButton from '../../assets/searchstock.svg'
-import RequestMonitoringFilter from '../../components/RequestMonitoringFilter'
-import TableRequestMonitoring from './widgets/TableRequestMonitoring'
-import enteringQueries from "../../pages/images/enteringQueries.svg"
+import SearchButton from '../../assets/searchstock.svg';
+import RequestMonitoringFilter from '../../components/RequestMonitoringFilter';
+import TableRequestMonitoring from './widgets/TableRequestMonitoring';
+import enteringQueries from "../../pages/images/enteringQueries.svg";
 import { ServiceFunctions } from "../../service/serviceFunctions";
 import AuthContext from "../../service/AuthContext";
-import warningIcon from "../../assets/warning.png"
+import warningIcon from "../../assets/warning.png";
 import Modal from 'react-bootstrap/Modal';
 import styles from './RequestMonitoringPage.module.css';
 import MobilePlug from '../../components/sharedComponents/mobilePlug/mobilePlug';
@@ -42,7 +42,7 @@ const RequestMonitoringPage = () => {
     // Функция для обработки
     const handleFilterSearch = async () => {
         if (searchInputQuery) {
-            await updateRequestMonitoring(authToken, searchInputQuery, Number(days), 1, monitorData.page_limit ?? 25, sort)
+            await updateRequestMonitoring(authToken, searchInputQuery, Number(days), 1, monitorData.page_limit ?? 25, sort);
         } else {
             setErrorMessage("Введите артикул или ссылку на карточку товара.");
             handleShowModal();
@@ -51,18 +51,18 @@ const RequestMonitoringPage = () => {
 
     // Функция для обновления данных
     const handleUpdate = async () => {
-        await updateRequestMonitoring(authToken, searchInputQuery, Number(days), page, monitorData.page_limit ?? 25, sort)
-    }
+        await updateRequestMonitoring(authToken, searchInputQuery, Number(days), page, monitorData.page_limit ?? 25, sort);
+    };
 
     useEffect(() => {
-        handleFilterSearch()
-    }, [days])
+        handleFilterSearch();
+    }, [days]);
 
     useEffect(() => {
         if (searchInputQuery) {
-            updateRequestMonitoring(authToken, searchInputQuery, Number(days), page, monitorData.page_limit ?? 25, sort)
+            updateRequestMonitoring(authToken, searchInputQuery, Number(days), page, monitorData.page_limit ?? 25, sort);
         }
-    }, [page, sort])
+    }, [page, sort]);
 
     const updateRequestMonitoring = async (
         token, product, period, page, page_limit, sort
@@ -100,7 +100,7 @@ const RequestMonitoringPage = () => {
             } else if (e.request) {
                 setErrorMessage('Ошибка сети: сервер не отвечает.');
             } else {
-                console.log(e.errorMessage)
+                console.log(e.errorMessage);
                 setErrorMessage(`Ошибка: не удалось найти данный товар.`);
             }
             console.error(e);
@@ -142,7 +142,7 @@ const RequestMonitoringPage = () => {
                             className='search-input'
                             value={searchInputQuery}
                             onChange={handleSearchQuery}
-                            onKeyDown={(e) => {if (e.key && e.key === 'Enter') { handleFilterSearch() }}}
+                            onKeyDown={(e) => {if (e.key && e.key === 'Enter') { handleFilterSearch(); }}}
                             style={{ marginLeft: '20px' }}
                         />
                         <div style={{ marginLeft: '10px' }}>
@@ -185,7 +185,7 @@ const RequestMonitoringPage = () => {
                                 className='search-input'
                                 value={searchInputQuery}
                                 onChange={handleSearchQuery}
-                                onKeyDown={(e) => {if (e.key && e.key === 'Enter') { handleFilterSearch() }}}
+                                onKeyDown={(e) => {if (e.key && e.key === 'Enter') { handleFilterSearch(); }}}
                                 style={{ marginLeft: '20px' }}
                             />
                             <div style={{ marginLeft: '10px' }}>
@@ -211,7 +211,7 @@ const RequestMonitoringPage = () => {
                                 className='search-input'
                                 value={searchInputQuery}
                                 onChange={handleSearchQuery}
-                                onKeyDown={(e) => {if (e.key && e.key === 'Enter') { handleFilterSearch() }}}
+                                onKeyDown={(e) => {if (e.key && e.key === 'Enter') { handleFilterSearch(); }}}
                                 style={{ marginLeft: '20px' }}
                             />
                             <div style={{ marginLeft: '10px' }}>
@@ -420,6 +420,6 @@ const RequestMonitoringPage = () => {
                 </>
             )}
         </div>
-    </div>
-}
-export default RequestMonitoringPage
+    </div>;
+};
+export default RequestMonitoringPage;

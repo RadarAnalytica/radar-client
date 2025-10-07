@@ -1,6 +1,6 @@
 import React from 'react';
 import OrderMapPieChart from '../containers/orderMap/OrderMapPieChart';
-import styles from './OrderSalesPieCharts.module.css'
+import styles from './OrderSalesPieCharts.module.css';
 
 const OrderSalesPieCharts = ({ geoData, orderData, salesData }) => {
   return (

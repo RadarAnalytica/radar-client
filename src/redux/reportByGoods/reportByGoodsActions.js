@@ -1,124 +1,124 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { store } from '../store'
+import { store } from '../store';
 import { URL } from '../../service/config';
 
 export const fetchReportByGoods = createAsyncThunk(
     'weeklyReport/fetchByGoods',
     async ({ authToken }) => {
         // Convert single string values to arrays
-        const storeFilterData = store.getState().byGoodsFiltersSlice.byGoodsFilters
-                
+        const storeFilterData = store.getState().byGoodsFiltersSlice.byGoodsFilters;
+
         if (Object.keys(storeFilterData).length === 0) {
-            return {}
+            return {};
         }
 
-        const sizeFilterData = storeFilterData.size
-        const vendorCodeFilterData = storeFilterData.vendorCode
-        const productFilterData = storeFilterData.product
-        const groupFilterData = storeFilterData.group
-        const brandFilterData = storeFilterData.brand
-        const countryFilterData = storeFilterData.country
-        const wbIdFilterData = storeFilterData.wbId
-        const subjectFilterData = storeFilterData.subject
-        const sridFilterData = storeFilterData.srid
-        const yearFilterData = storeFilterData.year
-        const monthFilterData = storeFilterData.month
-        const weekFilterData = storeFilterData.week
+        const sizeFilterData = storeFilterData.size;
+        const vendorCodeFilterData = storeFilterData.vendorCode;
+        const productFilterData = storeFilterData.product;
+        const groupFilterData = storeFilterData.group;
+        const brandFilterData = storeFilterData.brand;
+        const countryFilterData = storeFilterData.country;
+        const wbIdFilterData = storeFilterData.wbId;
+        const subjectFilterData = storeFilterData.subject;
+        const sridFilterData = storeFilterData.srid;
+        const yearFilterData = storeFilterData.year;
+        const monthFilterData = storeFilterData.month;
+        const weekFilterData = storeFilterData.week;
 
-        const sizeFilter = []
-        const vendorCodeFilter = []
-        const productFilter = []
-        const groupFilter = []
-        const brandFilter = []
-        const countryFilter = []
-        const wbIdFilter = []
-        const subjectFilter = []
-        const sridFilter = []
-        const yearFilter = []
-        const monthFilter = []
-        const weekFilter = []
+        const sizeFilter = [];
+        const vendorCodeFilter = [];
+        const productFilter = [];
+        const groupFilter = [];
+        const brandFilter = [];
+        const countryFilter = [];
+        const wbIdFilter = [];
+        const subjectFilter = [];
+        const sridFilter = [];
+        const yearFilter = [];
+        const monthFilter = [];
+        const weekFilter = [];
 
         if (!!sizeFilterData && Object.keys(sizeFilterData).length > 0) {
             for (let _key of Object.keys(sizeFilterData)) {
-                if (!!sizeFilterData[_key]) {
-                    sizeFilter.push(_key)
+                if (sizeFilterData[_key]) {
+                    sizeFilter.push(_key);
                 }
             }
         }
         if (!!vendorCodeFilterData && Object.keys(vendorCodeFilterData).length > 0) {
             for (let _key of Object.keys(vendorCodeFilterData)) {
-                if (!!vendorCodeFilterData[_key]) {
-                    vendorCodeFilter.push(_key)
+                if (vendorCodeFilterData[_key]) {
+                    vendorCodeFilter.push(_key);
                 }
             }
         }
         if (!!productFilterData && Object.keys(productFilterData).length > 0) {
             for (let _key of Object.keys(productFilterData)) {
-                if (!!productFilterData[_key]) {
-                    productFilter.push(_key)
+                if (productFilterData[_key]) {
+                    productFilter.push(_key);
                 }
             }
         }
         if (!!groupFilterData && Object.keys(groupFilterData).length > 0) {
             for (let _key of Object.keys(groupFilterData)) {
-                if (!!groupFilterData[_key]) {
-                    groupFilter.push(_key)
+                if (groupFilterData[_key]) {
+                    groupFilter.push(_key);
                 }
             }
         }
         if (!!brandFilterData && Object.keys(brandFilterData).length > 0) {
             for (let _key of Object.keys(brandFilterData)) {
-                if (!!brandFilterData[_key]) {
-                    brandFilter.push(_key)
+                if (brandFilterData[_key]) {
+                    brandFilter.push(_key);
                 }
             }
         }
         if (!!countryFilterData && Object.keys(countryFilterData).length > 0) {
             for (let _key of Object.keys(countryFilterData)) {
-                if (!!countryFilterData[_key]) {
-                    countryFilter.push(_key)
+                if (countryFilterData[_key]) {
+                    countryFilter.push(_key);
                 }
             }
         }
         if (!!wbIdFilterData && Object.keys(wbIdFilterData).length > 0) {
             for (let _key of Object.keys(wbIdFilterData)) {
-                if (!!wbIdFilterData[_key]) {
-                    wbIdFilter.push(_key)
+                if (wbIdFilterData[_key]) {
+                    wbIdFilter.push(_key);
                 }
             }
         }
         if (!!subjectFilterData && Object.keys(subjectFilterData).length > 0) {
             for (let _key of Object.keys(subjectFilterData)) {
-                if (!!subjectFilterData[_key]) {
-                    subjectFilter.push(_key)
+                if (subjectFilterData[_key]) {
+                    subjectFilter.push(_key);
                 }
             }
         }
         if (!!sridFilterData && Object.keys(sridFilterData).length > 0) {
             for (let _key of Object.keys(sridFilterData)) {
-                if (!!sridFilterData[_key]) {
-                    sridFilter.push(_key)
+                if (sridFilterData[_key]) {
+                    sridFilter.push(_key);
                 }
             }
         }
         if (!!yearFilterData && Object.keys(yearFilterData).length > 0) {
             for (let _key of Object.keys(yearFilterData)) {
-                if (!!yearFilterData[_key]) {
-                    yearFilter.push(_key)
+                if (yearFilterData[_key]) {
+                    yearFilter.push(_key);
                 }
             }
         }
         if (!!monthFilterData && Object.keys(monthFilterData).length > 0) {
             for (let _key of Object.keys(monthFilterData)) {
-                if (!!monthFilterData[_key]) {
-                    monthFilter.push(_key)
+                if (monthFilterData[_key]) {
+                    monthFilter.push(_key);
                 }
             }
         }
         if (!!weekFilterData && Object.keys(weekFilterData).length > 0) {
             for (let _key of Object.keys(weekFilterData)) {
-                if (!!weekFilterData[_key]) {
-                    weekFilter.push(_key)
+                if (weekFilterData[_key]) {
+                    weekFilter.push(_key);
                 }
             }
         }
@@ -140,7 +140,7 @@ export const fetchReportByGoods = createAsyncThunk(
             },
         };
         // console.log(formattedFilters);
-        
+
 
         const res = await fetch(`${URL}/api/report/get-by-product`, {
             method: 'POST',

@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react'
-import styles from './optionsSettingsWidget.module.css'
+import { useState, useEffect } from 'react';
+import styles from './optionsSettingsWidget.module.css';
 import {
     ConfigProvider,
     Modal,
@@ -15,38 +15,38 @@ import { useAppSelector, useAppDispatch } from '../../../../redux/hooks';
 import { actions as reqsMonitoringActions } from '../../../../redux/requestsMonitoring/requestsMonitoringSlice';
 
 const OptionsSettingsWidget = () => {
-    const dispatch = useAppDispatch()
-    const [isModalOpen, setIsModalOpen] = useState(false)
-    const [checkAllButtonState, setCheckAllButtonState] = useState('Выбрать все')
-    const [searchState, setSearchState] = useState('')
-    const { optionsConfig } = useAppSelector(store => store.requestsMonitoring)
+    const dispatch = useAppDispatch();
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [checkAllButtonState, setCheckAllButtonState] = useState('Выбрать все');
+    const [searchState, setSearchState] = useState('');
+    const { optionsConfig } = useAppSelector(store => store.requestsMonitoring);
 
-    const [form] = Form.useForm()
-    const [searchForm] = Form.useForm()
-    const filter = Form.useWatch('filter', searchForm)
+    const [form] = Form.useForm();
+    const [searchForm] = Form.useForm();
+    const filter = Form.useWatch('filter', searchForm);
 
     const сheckAllHandler = () => {
-        const values = form.getFieldsValue()
-        const keysArr = Object.keys(values)
-        const type = keysArr.some(_ => !values[_]) ? 'select' : 'deselect'
+        const values = form.getFieldsValue();
+        const keysArr = Object.keys(values);
+        const type = keysArr.some(_ => !values[_]) ? 'select' : 'deselect';
 
         if (type === 'select') {
             keysArr.forEach(_ => {
-                form.setFieldValue(_, true)
-            })
-            setCheckAllButtonState('Снять все')
+                form.setFieldValue(_, true);
+            });
+            setCheckAllButtonState('Снять все');
         }
         if (type === 'deselect') {
             keysArr.forEach(_ => {
-                form.setFieldValue(_, false)
-            })
-            setCheckAllButtonState('Выбрать все')
+                form.setFieldValue(_, false);
+            });
+            setCheckAllButtonState('Выбрать все');
         }
-    }
+    };
 
     const searchHandler = (fields) => {
-        setSearchState(fields.filter === '' ? fields.filter : fields.filter.trim())
-    }
+        setSearchState(fields.filter === '' ? fields.filter : fields.filter.trim());
+    };
 
     const updateOptionsConfig = (fields) => {
         let updatedOptions = [...optionsConfig];
@@ -56,14 +56,14 @@ const OptionsSettingsWidget = () => {
                 updatedOptions[index] = {
                     ...updatedOptions[index],
                     isActive: fields[key]
-                }
+                };
             }
         }
-        dispatch(reqsMonitoringActions.updateOptionsConfig(updatedOptions))
-        setIsModalOpen(false)
-        setSearchState('')
-        searchForm.resetFields()
-    }
+        dispatch(reqsMonitoringActions.updateOptionsConfig(updatedOptions));
+        setIsModalOpen(false);
+        setSearchState('');
+        searchForm.resetFields();
+    };
 
     // const defaultButtonClickHandler = () => {
     //     dispatch(reqsMonitoringActions.setDefaultOptionsConfig())
@@ -75,20 +75,20 @@ const OptionsSettingsWidget = () => {
 
     useEffect(() => {
         if (!filter) {
-            searchForm.submit()
+            searchForm.submit();
         }
-    }, [filter])
+    }, [filter]);
 
     useEffect(() => {
-        const values = form.getFieldsValue()
-        const keysArr = Object.keys(values)
+        const values = form.getFieldsValue();
+        const keysArr = Object.keys(values);
         if (keysArr.length > 0 && keysArr.some(_ => !values[_])) {
-            setCheckAllButtonState('Выбрать все')
+            setCheckAllButtonState('Выбрать все');
         }
         if (keysArr.length > 0 && !keysArr.some(_ => !values[_])) {
-            setCheckAllButtonState('Снять все')
+            setCheckAllButtonState('Снять все');
         }
-    }, [form])
+    }, [form]);
 
     return (
         <>
@@ -182,8 +182,8 @@ const OptionsSettingsWidget = () => {
                 <Modal
                     footer={null}
                     open={isModalOpen}
-                    onClose={() => { form.resetFields(); setSearchState(''); searchForm.resetFields(); setIsModalOpen(false) }}
-                    onCancel={() => { form.resetFields(); setSearchState(''); searchForm.resetFields(); setIsModalOpen(false) }}
+                    onClose={() => { form.resetFields(); setSearchState(''); searchForm.resetFields(); setIsModalOpen(false); }}
+                    onCancel={() => { form.resetFields(); setSearchState(''); searchForm.resetFields(); setIsModalOpen(false); }}
                     width={1000}
                     closeIcon={
                         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -263,12 +263,12 @@ const OptionsSettingsWidget = () => {
                             form={form}
                             onFinish={updateOptionsConfig}
                             onFieldsChange={(fields) => {
-                                const values = form.getFieldsValue()
-                                const keysArr = Object.keys(values)
+                                const values = form.getFieldsValue();
+                                const keysArr = Object.keys(values);
                                 if (keysArr.some(_ => !values[_])) {
-                                    setCheckAllButtonState('Выбрать все')
+                                    setCheckAllButtonState('Выбрать все');
                                 } else {
-                                    setCheckAllButtonState('Снять все')
+                                    setCheckAllButtonState('Снять все');
                                 }
                             }}
                         >
@@ -294,13 +294,13 @@ const OptionsSettingsWidget = () => {
                                 align="end"
                                 className={styles.controls}
                             >
-                                {/* <button 
+                                {/* <button
                                     className={styles.modal__defaultButton}
                                     onClick={defaultButtonClickHandler}
                                 >
                                     По умолчанию
                                 </button> */}
-                                <Button size="large" onClick={() => { form.resetFields(); setSearchState(''); searchForm.resetFields(); setIsModalOpen(false) }}>
+                                <Button size="large" onClick={() => { form.resetFields(); setSearchState(''); searchForm.resetFields(); setIsModalOpen(false); }}>
                                     Отменить
                                 </Button>
                                 <Button
@@ -316,7 +316,7 @@ const OptionsSettingsWidget = () => {
                 </Modal>
             </ConfigProvider>
         </>
-    )
-}
+    );
+};
 
-export default OptionsSettingsWidget
+export default OptionsSettingsWidget;

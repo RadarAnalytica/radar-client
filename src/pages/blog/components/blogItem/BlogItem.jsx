@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import styles from './blogItem.module.css'
+import styles from './blogItem.module.css';
 import { Button, ConfigProvider, Modal } from 'antd';
 import moment from 'moment';
 import AuthContext from '../../../../service/AuthContext';
@@ -13,17 +13,17 @@ const initState = {
   isSuccess: false,
   isError: false,
   message: ''
-}
+};
 
 const BlogItem = ({ title, category, preview, date, description, is_published, allData, setPostIdForUpdate, ...rest }) => {
 
   const dispatch = useAppDispatch();
-  const { authToken } = useContext(AuthContext)
-  const [isConfirmationModalActive, setIsConfirmationModalActive] = useState(false)
-  const [status, setStatus] = useState(initState)
+  const { authToken } = useContext(AuthContext);
+  const [isConfirmationModalActive, setIsConfirmationModalActive] = useState(false);
+  const [status, setStatus] = useState(initState);
 
   const deleteArticleHandler = async () => {
-    setStatus({ ...initState, isLoading: true })
+    setStatus({ ...initState, isLoading: true });
     const { id } = rest;
     try {
 
@@ -32,21 +32,21 @@ const BlogItem = ({ title, category, preview, date, description, is_published, a
         headers: {
           'authorization': 'JWT ' + authToken
         }
-      })
+      });
 
       if (!res.ok) {
-        setStatus({ ...initState, isError: true, message: 'Не удалось удалить статью.' })
+        setStatus({ ...initState, isError: true, message: 'Не удалось удалить статью.' });
       }
 
-      setStatus({ ...initState, isSuccess: true, message: 'Статья успешно удалена' })
+      setStatus({ ...initState, isSuccess: true, message: 'Статья успешно удалена' });
       dispatch(fetchPosts(authToken));
     } catch {
-      setStatus({ ...initState, isError: true, message: 'Не удалось удалить статью.' })
+      setStatus({ ...initState, isError: true, message: 'Не удалось удалить статью.' });
     }
-  }
+  };
 
   const ArticleVisibilityHandler = async () => {
-    setStatus({ ...initState, isLoading: true })
+    setStatus({ ...initState, isLoading: true });
     const { id } = rest;
     try {
 
@@ -57,18 +57,18 @@ const BlogItem = ({ title, category, preview, date, description, is_published, a
           'authorization': 'JWT ' + authToken
         },
         body: JSON.stringify({ ...allData, is_published: !is_published })
-      })
+      });
 
       if (!res.ok) {
-        setStatus({ ...initState, isError: true, message: 'Не удалось изменить видимость статьи.' })
+        setStatus({ ...initState, isError: true, message: 'Не удалось изменить видимость статьи.' });
       }
 
-      setStatus(initState)
+      setStatus(initState);
       dispatch(fetchPosts(authToken));
     } catch {
-      setStatus({ ...initState, isError: true, message: 'Не удалось изменить видимость статьи.' })
+      setStatus({ ...initState, isError: true, message: 'Не удалось изменить видимость статьи.' });
     }
-  }
+  };
 
   return (
     <div to='/' className={styles.card}>
@@ -160,7 +160,7 @@ const BlogItem = ({ title, category, preview, date, description, is_published, a
           onCancel={() => setIsConfirmationModalActive(false)}
           onOk={() => {
             deleteArticleHandler();
-            setIsConfirmationModalActive(false)
+            setIsConfirmationModalActive(false);
           }}
           cancelText='Отменить'
           okText='Удалить'
@@ -192,7 +192,7 @@ const BlogItem = ({ title, category, preview, date, description, is_published, a
         </div>
       </Modal>
     </div>
-  )
-}
+  );
+};
 
 export default BlogItem;

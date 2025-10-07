@@ -1,13 +1,13 @@
 import { useContext, useState, useEffect } from 'react';
 import { ServiceFunctions } from '../service/serviceFunctions';
-import { fileDownload } from '../service/utils'
+import { fileDownload } from '../service/utils';
 import AuthContext from '../service/AuthContext';
 import buyback from './images/buyBackIcon.svg';
 import Modal from 'react-bootstrap/Modal';
 import DragDropFile from '../components/DragAndDropFiles';
 import BottomNavigation from '../components/BottomNavigation';
 import styles from './PrimeCost.module.css';
-import doneIcon from "../assets/tick-active.png"
+import doneIcon from "../assets/tick-active.png";
 import MobilePlug from '../components/sharedComponents/mobilePlug/mobilePlug';
 import Sidebar from '../components/sharedComponents/sidebar/sidebar';
 import Header from '../components/sharedComponents/header/header';
@@ -27,7 +27,7 @@ const ReportBuyBack = () => {
   const [showModalError, setShowModalError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [isFileUpload, setIsFileUpload] = useState();
-  const [uploadError, setUploadError] = useState('')
+  const [uploadError, setUploadError] = useState('');
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -50,12 +50,12 @@ const ReportBuyBack = () => {
     try {
       let res = await ServiceFunctions.postSelfBuyoutUpdate(authToken, file);
       if (!res.ok) {
-        res = await res.json()
+        res = await res.json();
         setErrorMessage(res.message || 'Не удалось загрузить данные');
-        return setShowModalError(true)
+        return setShowModalError(true);
       }
       setShowSuccessPopup(true);
-      getselfBuyoutStatus()
+      getselfBuyoutStatus();
     } catch (error) {
       // Обработка ошибки
       console.error('Ошибка при загрузке файла:', error);
@@ -96,7 +96,7 @@ const ReportBuyBack = () => {
           <Header title={'Себестоимость'} titlePrefix={'Отчёт'} />
         </div>
 
-        {isDemoMode && 
+        {isDemoMode &&
           <NoSubscriptionWarningBlock />
         }
 

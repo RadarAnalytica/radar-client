@@ -1,7 +1,6 @@
-
 import React from 'react';
 import { Bar } from 'react-chartjs-2';
-import styles from './RevenueStorageChart.module.css'
+import styles from './RevenueStorageChart.module.css';
 
 const RevenueStorageChart = ({ dataRevenueStorage, labels, isLoading, max }) => {
     const data = {

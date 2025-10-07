@@ -12,7 +12,7 @@ import { ServiceFunctions } from '../service/serviceFunctions';
 import AuthContext from '../service/AuthContext';
 import DemonstrationSection from '../components/DemonstrationSection';
 import plFake from '../pages/images/schedule-fake.png';
-import NewFilterGroup from '../components/finReport/FilterGroup'
+import NewFilterGroup from '../components/finReport/FilterGroup';
 import MobilePlug from '../components/sharedComponents/mobilePlug/mobilePlug';
 import Sidebar from '../components/sharedComponents/sidebar/sidebar';
 import Header from '../components/sharedComponents/header/header';
@@ -58,7 +58,7 @@ const Schedule = () => {
     'Окт',
     'Ноя',
     'Дек',
-  ])
+  ]);
   const [bigChartLabels, setBigChartLabels] = useState([
     'Янв',
     'Фев',
@@ -137,9 +137,9 @@ const Schedule = () => {
   useEffect(() => {
     dispatch(fetchChartsFilters(
       authToken
-    ))
+    ));
 
-  }, [authToken, dispatch])
+  }, [authToken, dispatch]);
 
   const transformFilters = (data) => {
     return {
@@ -288,20 +288,20 @@ const Schedule = () => {
     // обходим дату по годам
     for (const year in rawData) {
       // Если у нас включен фильтр по годам и текущий год не выбран, то переходим к следующему году
-      if (years.length !== 0 && !years.some(_ => _ === year)) { continue };
+      if (years.length !== 0 && !years.some(_ => _ === year)) { continue; };
       // Если прошлое условие прошло, то переходим к месяцам
       const currentYearData = rawData[year];
       // обходим месяца
       for (const month in currentYearData) {
 
         // Также как и года проверяем статус фильтров месяцев. Если он включен и текущий месяц выбран, то работаем с ним.
-        if (months.length !== 0 && !months.some(_ => monthNames[parseInt(_) - 1] === month)) continue
-        const currentMonthData = currentYearData[month]
+        if (months.length !== 0 && !months.some(_ => monthNames[parseInt(_) - 1] === month)) continue;
+        const currentMonthData = currentYearData[month];
         // Подготавливаем массивы данных для графика
         revenueArray.push(currentMonthData.total_month_revenue || 0);
         profitArray.push(currentMonthData.total_month_profit || 0);
         // Обязательно добавляем год к лейблу месяца
-        const monthLabel = monthNameMap[month] ? `${monthNameMap[month]} ${year}` : `${month} ${year}`
+        const monthLabel = monthNameMap[month] ? `${monthNameMap[month]} ${year}` : `${month} ${year}`;
         labelsArray.push(monthLabel);
         // if (currentMonthData.total_month_revenue > 0 || currentMonthData.total_month_profit > 0) {
         //   // Подготавливаем массивы данных для графика
@@ -361,7 +361,7 @@ const Schedule = () => {
     const roiArray = [];
     const marginalityHigh = [];
     const marginalityLow = [];
-    const marginChartLabels = []
+    const marginChartLabels = [];
 
     const rawData = data.roi_and_marginality;
 
@@ -376,16 +376,16 @@ const Schedule = () => {
         // Также как и года проверяем статус фильтров месяцев. Если он включен и текущий месяц выбран, то работаем с ним. Если нет, то переходим к следующему месяцу
         //console.log(months)
         const isInMonthsList = months.some(_ => {
-          const index = parseInt(_)
-          return monthNames[index - 1] === month
-        })
+          const index = parseInt(_);
+          return monthNames[index - 1] === month;
+        });
         if (months.length !== 0 && !isInMonthsList) continue;
-        const currentMonthData = currentYearData[month]
+        const currentMonthData = currentYearData[month];
         // Подготавливаем массивы данных для графика
         roiArray.push(currentMonthData.average_month_roi || 0);
         marginalityHigh.push(currentMonthData.max_month_marginality || 0);
         marginalityLow.push(currentMonthData.min_month_marginality || 0);
-        const monthLabel = monthNameMap[month] ? `${monthNameMap[month]} ${year}` : `${month} ${year}`
+        const monthLabel = monthNameMap[month] ? `${monthNameMap[month]} ${year}` : `${month} ${year}`;
         marginChartLabels.push(monthLabel);
         // if (currentMonthData.average_month_roi > 0 || currentMonthData.max_month_marginality > 0 || currentMonthData.min_month_marginality > 0) {
         //   // Подготавливаем массивы данных для графика
@@ -414,7 +414,7 @@ const Schedule = () => {
     setDataProfitMinus(marginalityLow);
     setDataProfitPlus(marginalityHigh);
     setDataProfitability(roiArray);
-    setMarginChartLabels(marginChartLabels)
+    setMarginChartLabels(marginChartLabels);
 
   };
 
@@ -514,7 +514,6 @@ const Schedule = () => {
   };
 
 
-
   const handleYear = () => {
     const currentYears = selectedYears ?? {};
     const newSelectedYears = {};
@@ -608,8 +607,8 @@ const Schedule = () => {
         <div style={{ width: '100%', padding: '20px 0' }} className="container dash-container">
           <Header title={'Графики'} titlePrefix={'Отчёт'} />
         </div>
-        
-        {isDemoMode && 
+
+        {isDemoMode &&
           <div className='mb-1'>
             <NoSubscriptionWarningBlock />
           </div>

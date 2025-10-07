@@ -1,5 +1,5 @@
-import styles from './addSkuModalFooter.module.css'
-import { Button, ConfigProvider } from 'antd'
+import styles from './addSkuModalFooter.module.css';
+import { Button, ConfigProvider } from 'antd';
 
 const AddSkuModalFooter = ({ setIsAddSkuModalVisible, isDataLoading, isCheckedListEmpty, addProducts }) => {
 
@@ -44,7 +44,7 @@ const AddSkuModalFooter = ({ setIsAddSkuModalVisible, isDataLoading, isCheckedLi
                 </Button>
             </ConfigProvider>
         </div>
-    )
-}
+    );
+};
 
-export default AddSkuModalFooter
+export default AddSkuModalFooter;

@@ -10,7 +10,7 @@ import AuthContext from "../service/AuthContext";
 import lowResImage from '../pages/images/imageFonStartBsn_comp.png'; // the low-res image
 import highResImage from '../pages/images/imageFonStartBsn.png'; // the high-res image
 import ImageComponent from "./utilsComponents/ImageComponent ";
-import styles from "../components/TryProduct.module.css"
+import styles from "../components/TryProduct.module.css";
 
 
 const TryProduct = ({ redirect }) => {

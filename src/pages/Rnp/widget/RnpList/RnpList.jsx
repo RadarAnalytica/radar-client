@@ -125,7 +125,7 @@ function RnpListItem({ el, index, expanded, setExpanded, setDeleteRnpId, onReord
 	const expandHandler = (value) => {
 		const timeout = setTimeout(() => {
 			ref.current.scrollIntoView({ behavior: "smooth" });
-		}, 150)
+		}, 150);
 		let newExpanded = 'collapsed';
 		if (expanded !== value) {
 			newExpanded = value;
@@ -148,8 +148,8 @@ function RnpListItem({ el, index, expanded, setExpanded, setDeleteRnpId, onReord
 		};
 
 		function onChange({ source, self }) {
-			document.body.classList.remove(styles.no_drop)
-			document.body.classList.add(styles.copy)
+			document.body.classList.remove(styles.no_drop);
+			document.body.classList.add(styles.copy);
 			const isSource = source.data.id === id;
 			if (isSource) {
 				setClosestEdge(null);
@@ -192,20 +192,19 @@ function RnpListItem({ el, index, expanded, setExpanded, setDeleteRnpId, onReord
 				onDragEnter: onChange,
 				onDrag: onChange,
 				onDragLeave() {
-					document.body.classList.remove(styles.copy)
-					document.body.classList.add(styles.no_drop)
+					document.body.classList.remove(styles.copy);
+					document.body.classList.add(styles.no_drop);
 					setClosestEdge(null);
 				},
 				onDrop() {
-					document.body.classList.remove(styles.no_drop)
-					document.body.classList.remove(styles.copy)
+					document.body.classList.remove(styles.no_drop);
+					document.body.classList.remove(styles.copy);
 					setClosestEdge(null);
 				},
 			}),
 			// Убираем автоскролл из RnpListItem - он должен быть только на контейнере
-		)
+		);
 	}, [el, onReorder]);
-
 
 
 	return (
@@ -315,7 +314,7 @@ export default function RnpList({ view, expanded, setExpanded, setAddRnpModalSho
 			const newOrder = [...order];
 			const [removed] = newOrder.splice(draggedIndex, 1);
 
-			// Если перетаскиваем в зону после перетаскиваемой карточки, 
+			// Если перетаскиваем в зону после перетаскиваемой карточки,
 			// нужно учесть что мы уже удалили один элемент
 			let targetIndex = dropZoneIndex;
 			if (dropZoneIndex > draggedIndex) {
@@ -350,7 +349,7 @@ export default function RnpList({ view, expanded, setExpanded, setAddRnpModalSho
 
 	useEffect(() => {
 		if (!ref.current) {
-			return
+			return;
 		}
 		const element = ref.current;
 		return monitorForElements({
@@ -441,7 +440,7 @@ export default function RnpList({ view, expanded, setExpanded, setAddRnpModalSho
 				setOrder(rnpDataByArticle.map((el) => el.article_data.wb_id));
 			}
 		}
-	}, [rnpDataByArticle])
+	}, [rnpDataByArticle]);
 
 	return (
 		<>
@@ -511,7 +510,7 @@ export default function RnpList({ view, expanded, setExpanded, setAddRnpModalSho
 											isDragging={isDragging}
 										/>
 									</React.Fragment>
-								)
+								);
 
 							})
 						}

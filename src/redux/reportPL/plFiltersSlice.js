@@ -15,18 +15,18 @@ const plFiltersSlice = createSlice({
     initialState,
     reducers: {
         switchPLFilter(state, action) {
-            const { ident, elem } = action.payload
-            const filterElem = state.plFilters[ident]
-            filterElem[elem] = !filterElem[elem]
+            const { ident, elem } = action.payload;
+            const filterElem = state.plFilters[ident];
+            filterElem[elem] = !filterElem[elem];
         },
         switchAllPLFilter(state, action) {
-            const { ident, value } = action.payload
-            const filterElem = state.plFilters[ident]
+            const { ident, value } = action.payload;
+            const filterElem = state.plFilters[ident];
             for (let el of Object.keys(filterElem)) {
-                filterElem[el] = value
+                filterElem[el] = value;
             }
         },
-        
+
     },
     extraReducers: (builder) => {
         builder
@@ -50,4 +50,4 @@ export default plFiltersSlice.reducer;
 export const {
     switchPLFilter,
     switchAllPLFilter
-} = plFiltersSlice.actions
+} = plFiltersSlice.actions;

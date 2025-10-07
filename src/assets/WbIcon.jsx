@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 
 const WbIcon = () => {
   return (
@@ -12,7 +12,7 @@ const WbIcon = () => {
 </defs>
 </svg>
 
-  )
-}
+  );
+};
 
-export default WbIcon
+export default WbIcon;

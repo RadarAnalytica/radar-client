@@ -6,7 +6,7 @@ import Header from '../components/sharedComponents/header/header';
 import MobilePlug from '../components/sharedComponents/mobilePlug/mobilePlug';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
-import styles from './NoSubscriptionPage.module.css'
+import styles from './NoSubscriptionPage.module.css';
 
 const NoSubscriptionPage = ({ title }) => {
   const navigate = useNavigate();

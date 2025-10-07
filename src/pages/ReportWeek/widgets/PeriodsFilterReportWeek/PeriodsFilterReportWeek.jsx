@@ -7,21 +7,21 @@ function PeriodForm({period, periodOptions, setPeriod}) {
   const [form] = useForm();
 
   function formChangeHandler(){
-    const data = form.getFieldsValue()
+    const data = form.getFieldsValue();
     let result = [];
     for (const week in data){
-      data[week] && result.push(Number(week))
+      data[week] && result.push(Number(week));
     }
-    setPeriod(result)
+    setPeriod(result);
   }
 
   function checkAllHandler() {
     for (const check of periodOptions) {
-      form.setFieldValue(check.value, periodOptions.length > period.length ? true : false)
+      form.setFieldValue(check.value, periodOptions.length > period.length ? true : false);
     }
     formChangeHandler();
   }
-  
+
   const indeterminate = periodOptions.length > 0 && period.length < periodOptions.length && period.length > 0;
 
   return (

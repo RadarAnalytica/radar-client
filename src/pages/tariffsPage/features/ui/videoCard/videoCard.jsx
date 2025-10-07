@@ -1,4 +1,4 @@
-import styles from './videoCard.module.css'
+import styles from './videoCard.module.css';
 
 export const VideoCard = ({ item, id }) => {
 
@@ -26,5 +26,5 @@ export const VideoCard = ({ item, id }) => {
                     </Text>
             </div> */}
         </div>
-    )
-}
+    );
+};

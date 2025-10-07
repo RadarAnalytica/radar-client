@@ -18,7 +18,7 @@ const blogSlice = createSlice({
             })
             .addCase(fetchCategories.fulfilled, (state, action) => {
                 state.categories = action.payload;
-            })
+            });
     }
 });
 

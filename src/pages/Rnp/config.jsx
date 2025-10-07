@@ -6,7 +6,7 @@ import 'moment/dist/locale/ru';
 moment.locale('ru');
 
 
-export const renderFunction = (value) => (formatPrice(value))
+export const renderFunction = (value) => (formatPrice(value));
 
 export const COLUMNS = [
   {
@@ -231,7 +231,7 @@ export const ROWS = [
 ];
 
 /**
- * 
+ *
  *const configItemTemplate = {
       //key: 'name',
       //title: 'Name',
@@ -277,7 +277,7 @@ let configItemTemplate = {
   style: {
 
   }
-}
+};
 const metricsOrder = [
   { key: 'expected_marginality_data', title: 'Прогноз. маржинальность (%)', isParent: true },
   { key: 'plan_marginality', title: 'План. маржинальность (%)', isChildren: true, parentKey: 'expected_marginality_data' },
@@ -335,7 +335,7 @@ const metricsOrder = [
 
 export const getTableConfig = (initialData) => {
 
-  
+
   const tableConfig = [
     {
       title: 'Период',
@@ -360,18 +360,18 @@ export const getTableConfig = (initialData) => {
   initialData.by_date_data?.sort((a, b) => new Date(b.date) - new Date(a.date)).forEach(_ => {
     const formattedDate = moment(_.date).format('D MMMM');
     const isToday = moment(_.date).isSame(moment(), 'day');
-    
+
     if (!isToday) {
       tableConfig.push({
         title: formattedDate,
         key: formattedDate,
         dataIndex: formattedDate,
         ...configItemTemplate,
-      })
+      });
     }
-  })
+  });
   return tableConfig;
-}
+};
 
 
 export const getTableData = (initialData) => {
@@ -386,31 +386,31 @@ export const getTableData = (initialData) => {
       parentKey,
       key,
       id: `${index}-${key}`,
-    }
+    };
     initialData.by_date_data.forEach(dataItem => {
       const formattedDate = moment(dataItem.date).format('D MMMM');
-     
+
       if (isParent) {
         const suffixIndex = key.indexOf('_data');
         const parentDataKey = key.slice(0, suffixIndex);
-        rowObject[formattedDate] = dataItem.rnp_data[key][key.slice(0, suffixIndex)]
-        rowObject.summary = initialData.summary_data[key][key.slice(0, suffixIndex)]
+        rowObject[formattedDate] = dataItem.rnp_data[key][key.slice(0, suffixIndex)];
+        rowObject.summary = initialData.summary_data[key][key.slice(0, suffixIndex)];
       } else if (isChildren && parentKey) {
-        rowObject[formattedDate] = dataItem.rnp_data[parentKey][key]
-        rowObject.summary = initialData.summary_data[parentKey][key]
+        rowObject[formattedDate] = dataItem.rnp_data[parentKey][key];
+        rowObject.summary = initialData.summary_data[parentKey][key];
       }
-    })
+    });
 
     if (isParent) {
-      tableData.push(rowObject)
+      tableData.push(rowObject);
     }
     if (isChildren) {
-      childrenData.push(rowObject)
+      childrenData.push(rowObject);
     }
-  })
+  });
 
   const tableDataWithChildren = tableData.map(_ => {
-    const filteredChildren = childrenData.filter(c => c.parentKey === _.key)
+    const filteredChildren = childrenData.filter(c => c.parentKey === _.key);
     return {
       ..._,
       children: filteredChildren.map((c, index) => {
@@ -418,11 +418,11 @@ export const getTableData = (initialData) => {
           return {
             ...c,
             isLastChild: true
-          }
+          };
         }
-        return c
+        return c;
       }),
-    }
-  })
+    };
+  });
   return tableDataWithChildren;
-}
+};

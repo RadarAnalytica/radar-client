@@ -7,58 +7,58 @@ import { URL } from '../../../service/config';
 import { useAppDispatch } from '../../../redux/hooks';
 import { fetchPosts } from '../../../redux/blog/blogActions';
 
-const statusInitialState = { isLoading: false, isError: false, isSuccess: false, message: '' }
+const statusInitialState = { isLoading: false, isError: false, isSuccess: false, message: '' };
 
 const BlogUpdate = ({ categories, post, setPostIdForUpdate, token }) => {
-  const dispatch = useAppDispatch()
-  const [categoriesState, setCategoriesState] = useState([...categories, { id: 'add', name: 'Создать категорию' }])
-  const [mainFormStatus, setMainFormStatus] = useState(statusInitialState)
-  const [categoryFormStatus, setCategoryFormStatus] = useState(statusInitialState)
-  const [isAddCategoryModalVisible, setIsAddCategoryModalVisible] = useState(false)
-  const [mainForm] = Form.useForm()
-  const [categoryForm] = Form.useForm()
+  const dispatch = useAppDispatch();
+  const [categoriesState, setCategoriesState] = useState([...categories, { id: 'add', name: 'Создать категорию' }]);
+  const [mainFormStatus, setMainFormStatus] = useState(statusInitialState);
+  const [categoryFormStatus, setCategoryFormStatus] = useState(statusInitialState);
+  const [isAddCategoryModalVisible, setIsAddCategoryModalVisible] = useState(false);
+  const [mainForm] = Form.useForm();
+  const [categoryForm] = Form.useForm();
 
   const categorySelectChangeHandler = (value) => {
     if (value !== 'add') return;
-    setIsAddCategoryModalVisible(true)
-  }
+    setIsAddCategoryModalVisible(true);
+  };
 
   const categoryFormSubmitHandler = async (fields) => {
-    setCategoryFormStatus({ ...categoryFormStatus, isLoading: true })
+    setCategoryFormStatus({ ...categoryFormStatus, isLoading: true });
     const data = {
       name: fields.categoryName,
       description: fields.categoryDescription ? fields.categoryDescription : '',
       slug: fields.categoryUrl
-    }
+    };
 
     try {
       const res = await createBlogCategory(data, token);
-      setCategoriesState([res, ...categoriesState])
-      mainForm.setFieldValue('category', res.id)
-      setCategoryFormStatus(statusInitialState)
-      setIsAddCategoryModalVisible(false)
-      categoryForm.resetFields()
+      setCategoriesState([res, ...categoriesState]);
+      mainForm.setFieldValue('category', res.id);
+      setCategoryFormStatus(statusInitialState);
+      setIsAddCategoryModalVisible(false);
+      categoryForm.resetFields();
     } catch (error) {
       setCategoryFormStatus({
         ...statusInitialState,
         isError: true,
         message: error.message || 'Что-то пошло не так при создании статьи'
       });
-      setIsAddCategoryModalVisible(false)
+      setIsAddCategoryModalVisible(false);
     }
-  }
+  };
 
   const mainFormSubmitHandler = async (fields) => {
     if (fields.category === 'add') {
-      return setMainFormStatus({ ...statusInitialState, isLoading: false, isError: true, message: 'Пожалуйста, выберите категорию статьи!' })
+      return setMainFormStatus({ ...statusInitialState, isLoading: false, isError: true, message: 'Пожалуйста, выберите категорию статьи!' });
     }
-    setMainFormStatus({ ...statusInitialState, isLoading: true })
+    setMainFormStatus({ ...statusInitialState, isLoading: true });
     const plainData = {
       title: fields.articleName,
       slug: fields.articleUrl,
       category_id: fields.category,
       description: fields.articleDescription
-    }
+    };
     const filesData = new FormData();
 
     if (fields.textFile?.file?.originFileObj) {
@@ -77,11 +77,11 @@ const BlogUpdate = ({ categories, post, setPostIdForUpdate, token }) => {
           'authorization': 'JWT ' + token
         },
         body: JSON.stringify(plainData)
-      })
-     
+      });
+
 
       if (!plainDataRes.ok) {
-        return setMainFormStatus({ ...statusInitialState, isError: true, message: 'Не удалось обновить статью' })
+        return setMainFormStatus({ ...statusInitialState, isError: true, message: 'Не удалось обновить статью' });
       }
 
       if (Object.keys(filesData).length > 0) {
@@ -91,19 +91,19 @@ const BlogUpdate = ({ categories, post, setPostIdForUpdate, token }) => {
             'authorization': 'JWT ' + token
           },
           body: filesData
-        })
-  
-        if (!filesDataRes.ok) {
-          return setMainFormStatus({ ...statusInitialState, isError: true, message: 'Не удалось обновить статью' })
-        }
-        
-      }
-      
+        });
 
-      setMainFormStatus({ ...statusInitialState, isSuccess: true, message: 'Статья успешно обновлена' })
-      mainForm.resetFields()
-      dispatch(fetchPosts(token))
-      setPostIdForUpdate(undefined)
+        if (!filesDataRes.ok) {
+          return setMainFormStatus({ ...statusInitialState, isError: true, message: 'Не удалось обновить статью' });
+        }
+
+      }
+
+
+      setMainFormStatus({ ...statusInitialState, isSuccess: true, message: 'Статья успешно обновлена' });
+      mainForm.resetFields();
+      dispatch(fetchPosts(token));
+      setPostIdForUpdate(undefined);
     } catch (error) {
       setMainFormStatus({
         ...statusInitialState,
@@ -111,7 +111,7 @@ const BlogUpdate = ({ categories, post, setPostIdForUpdate, token }) => {
         message: 'Что-то пошло не так при обновлении статьи'
       });
     }
-  }
+  };
 
   return (
     <div className={styles.page}>

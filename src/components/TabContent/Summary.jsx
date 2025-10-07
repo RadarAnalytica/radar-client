@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import glitIconBlue from '../../pages/images/glittericonblue.svg';
 import glitCostPrise from '../../pages/images/glitsotprice.svg';
 import glitIconGreen from '../../pages/images/gliticongreen.svg';
@@ -12,13 +12,13 @@ import StockCostPrice from '../../assets/stockcostprice.svg';
 const Summary = ({ days, productBySku, isInitialLoading }) => {
 
   const dataDash =  {
-    orderAmountList: [4534, 7234, 5896, 3468, 1259, 7925, 6548, 4534, 7234, 5896, 3468, 1259, 7925, 6548, 8566, 4534, 7234, 5896, 3468, 1259, 7925, 6548, 4534, 7234, 5896, 3468, 1259, 7925, 6548, 8566 ],
+    orderAmountList: [4534, 7234, 5896, 3468, 1259, 7925, 6548, 4534, 7234, 5896, 3468, 1259, 7925, 6548, 8566, 4534, 7234, 5896, 3468, 1259, 7925, 6548, 4534, 7234, 5896, 3468, 1259, 7925, 6548, 8566],
     saleAmountList: [5896, 3468, 7925, 1259, 4534, 7234, 6548, 5896, 3468, 7925, 1259, 4534, 7234, 6548, 1456, 5896, 3468, 7925, 1259, 4534, 7234, 6548, 5896, 3468, 7925, 1259, 4534, 7234, 6548, 1456],
     returnAmountList: [4875, 3468, 7925, 1259, 4534, 7234, 6548, 4875, 3468, 7925, 1259, 4534, 7234, 6548, 1456, 4875, 3468, 7925, 1259, 4534, 7234, 6548, 4875, 3468, 7925, 1259, 4534, 7234, 6548, 1456],
     orderCountList: [55, 23, 64, 58, 79, 23, 54, 55, 23, 64, 58, 79, 23, 54, 17, 55, 23, 64, 58, 79, 23, 54, 55, 23, 64, 58, 79, 23, 54, 17],
     saleCountList: [45, 32, 64, 45, 81, 33, 14, 45, 32, 64, 45, 81, 33, 14, 60, 45, 32, 64, 45, 81, 33, 14, 45, 32, 64, 45, 81, 33, 14, 60],
     returnCountList: [45, 32, 64, 45, 81, 33, 14, 45, 32, 64, 45, 81, 33, 14, 60, 45, 32, 64, 45, 81, 33, 14, 45, 32, 64, 45, 81, 33, 14, 60],
-}
+};
 const [activeTabDay, setActiveTabDay] = useState('saleDay');
 
 
@@ -112,7 +112,7 @@ const [activeTabDay, setActiveTabDay] = useState('saleDay');
             hoverBackgroundColor: "rgba(83, 41, 255, 0.7)",
             yAxisID: "A",
             data: dataDash?.saleAmountList || [],
-            
+
           }
         : {
             label: "Продажи",
@@ -141,7 +141,7 @@ const [activeTabDay, setActiveTabDay] = useState('saleDay');
             yAxisID: "A",
             data: dataDash?.returnAmountList || [],
             xAxisID: 'x-1'
-            
+
           }
         : {
             label: "Возвраты",
@@ -265,7 +265,7 @@ const [activeTabDay, setActiveTabDay] = useState('saleDay');
     };
 
     const dataTableSaleDay = [
-       
+
       {
         productName: 'Шампунь',
         brandName: 'Бренд 2',
@@ -404,9 +404,9 @@ const [activeTabDay, setActiveTabDay] = useState('saleDay');
           dataRadar: 57,
           dataWB: 6
         }
-    ]
+    ];
     const dataTableOrderDay = [
-     
+
       {
         productName: 'Пенал',
         brandName: 'Бренд 2',
@@ -545,7 +545,7 @@ const [activeTabDay, setActiveTabDay] = useState('saleDay');
           dataRadar: 57,
           dataWB: 6
         }
-    ]
+    ];
     const [dataSaleDay, setDataSaleDay] = useState(dataTableSaleDay);
     const [dataOrderDay, setDataOrderDay] = useState(dataTableOrderDay);
 
@@ -637,7 +637,7 @@ const [activeTabDay, setActiveTabDay] = useState('saleDay');
                 </div>
               </div>
               <div className='sebestoimost-box-button'>
-                <button> 
+                <button>
                   <img src={sebestoimostIcon} alt='sebestoimost icon'/>
                   <span>Установить себестоимость</span>
                 </button>
@@ -1069,7 +1069,7 @@ const [activeTabDay, setActiveTabDay] = useState('saleDay');
             backgroundColor:
               activeTabDay === 'saleDay' ? '#5329FF1A' : 'transparent',
             fontSize: '18px',
-            fontWeight: 
+            fontWeight:
               activeTabDay === 'saleDay' ? '600' : '500',
             color: activeTabDay === 'saleDay' ? 'rgb(26, 26, 26, 1)' : 'rgb(26, 26, 26, 0.5)',
           }}
@@ -1096,7 +1096,7 @@ const [activeTabDay, setActiveTabDay] = useState('saleDay');
               backgroundColor:
                 activeTabDay === 'orderDay' ? '#5329FF1A' : 'transparent',
               fontSize: '18px',
-              fontWeight: 
+              fontWeight:
                 activeTabDay === 'orderDay' ? '600' : '500',
               color: activeTabDay === 'orderDay' ? 'rgb(26, 26, 26, 1)' : 'rgb(26, 26, 26, 0.5)',
           }}
@@ -1108,7 +1108,7 @@ const [activeTabDay, setActiveTabDay] = useState('saleDay');
           </p>
         </div>
       </div>
-     { activeTabDay === 'saleDay' && 
+     { activeTabDay === 'saleDay' &&
       <TableStockSalesByDay
         dataSaleDay={dataSaleDay}
         setDataSaleDay={setDataSaleDay}
@@ -1126,6 +1126,6 @@ const [activeTabDay, setActiveTabDay] = useState('saleDay');
       />}
     </>
   );
-}
+};
 
-export default Summary
+export default Summary;

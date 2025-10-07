@@ -19,7 +19,7 @@ class ErrorBoundary extends React.Component {
   componentDidCatch(error, errorInfo) {
     // Логируем ошибку в консоль для отладки
     console.error('ErrorBoundary caught an error:', error, errorInfo);
-    
+
     this.setState({
       error: error,
       errorInfo: errorInfo
@@ -41,7 +41,7 @@ class ErrorBoundary extends React.Component {
           <div className={styles.errorBoundary__coverWrapper}>
             <img src={cover} alt='' />
           </div>
-          <button 
+          <button
             className={styles.errorBoundary__retryButton}
             onClick={() => window.location.reload()}
           >
@@ -51,9 +51,9 @@ class ErrorBoundary extends React.Component {
             <p className={styles.errorBoundary__telegramText}>
               Если проблема повторяется, обратитесь в нашу поддержку:
             </p>
-            <a 
-              href="https://t.me/radar_analytica_support" 
-              target="_blank" 
+            <a
+              href="https://t.me/radar_analytica_support"
+              target="_blank"
               rel="noopener noreferrer"
               className={styles.errorBoundary__telegramLink}
             >

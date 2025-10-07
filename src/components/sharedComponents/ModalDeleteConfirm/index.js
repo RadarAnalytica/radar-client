@@ -1,2 +1,2 @@
-import ModalDeleteConfirm from "./ModalDeleteConfirm"
+import ModalDeleteConfirm from "./ModalDeleteConfirm";
 export default ModalDeleteConfirm;

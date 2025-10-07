@@ -1,15 +1,15 @@
-import { useState, useEffect } from 'react'
-import styles from './contactForm.module.css'
-import { Form, ConfigProvider, Input, Button, Checkbox } from 'antd'
-import { Link } from 'react-router-dom'
-import { URL } from '../../../../../service/config'
+import { useState, useEffect } from 'react';
+import styles from './contactForm.module.css';
+import { Form, ConfigProvider, Input, Button, Checkbox } from 'antd';
+import { Link } from 'react-router-dom';
+import { URL } from '../../../../../service/config';
 
 const initRequestStatusObject = {
     isLoading: false,
     isError: false,
     isSuccess: false,
     message: ''
-}
+};
 
 const sendFormDataFunc = async (
     initRequestStatus,
@@ -17,7 +17,7 @@ const sendFormDataFunc = async (
     url,
     fields,
 ) => {
-    setRequestStatus({ ...initRequestStatus, isLoading: true})
+    setRequestStatus({ ...initRequestStatus, isLoading: true});
 
     try {
 
@@ -27,47 +27,45 @@ const sendFormDataFunc = async (
                 'content-type': 'application/json'
             },
             body: JSON.stringify(fields)
-        })
+        });
 
         if (!res.ok) {
-            setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось отправить данные формы' })
-            return
+            setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось отправить данные формы' });
+            return;
         }
 
-        setRequestStatus({ ...initRequestStatus, isSuccess: true, message: 'Данные успешно отправлены!' })
-        res = await res.json()
-        return res
+        setRequestStatus({ ...initRequestStatus, isSuccess: true, message: 'Данные успешно отправлены!' });
+        res = await res.json();
+        return res;
 
     } catch (e) {
-        setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось отправить данные формы' })
-        console.error(e)
-    }
-}
-
-
-
-const phoneFormatter = (value) => {
-    if (!value) return '+7'
-    if (value.length > 0) {
-        const formattedValue = '+' + value.slice(0, 1) + ' ' + value.slice(1, 4) + ' ' + value.slice(4, 7) + ' ' + value.slice(7, 9) + ' ' + value.slice(9, 11)
-        return formattedValue.trim()
+        setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось отправить данные формы' });
+        console.error(e);
     }
 };
 
 
+const phoneFormatter = (value) => {
+    if (!value) return '+7';
+    if (value.length > 0) {
+        const formattedValue = '+' + value.slice(0, 1) + ' ' + value.slice(1, 4) + ' ' + value.slice(4, 7) + ' ' + value.slice(7, 9) + ' ' + value.slice(9, 11);
+        return formattedValue.trim();
+    }
+};
+
 
 export const ContactForm = () => {
-    const [requestStatus, setRequestStatus] = useState(initRequestStatusObject)
-    const [form] = Form.useForm()
+    const [requestStatus, setRequestStatus] = useState(initRequestStatusObject);
+    const [form] = Form.useForm();
 
     const submitHandler = (fields) => {
-        sendFormDataFunc(initRequestStatusObject, setRequestStatus, `${URL}/api/common/landing/consult`, fields)
-    }
+        sendFormDataFunc(initRequestStatusObject, setRequestStatus, `${URL}/api/common/landing/consult`, fields);
+    };
 
     // сбрасываем статус запроса
     useEffect(() => {
         let timeout;
-    
+
         if (requestStatus.isError || requestStatus.isSuccess) {
             if (requestStatus.isSuccess && form) {
                 form.resetFields();
@@ -76,13 +74,13 @@ export const ContactForm = () => {
                 setRequestStatus(initRequestStatusObject);
             }, 2000);
         }
-    
+
         return () => {
             if (timeout) {
                 clearTimeout(timeout);
             }
         };
-    }, [requestStatus, form])
+    }, [requestStatus, form]);
 
     return (
         <ConfigProvider
@@ -135,8 +133,8 @@ export const ContactForm = () => {
                             { max: 16, message: 'Пожалуйста, введите корректный номер телефона' },
                         ]}
                         normalize={(value) => {
-                            const transformedValue = phoneFormatter(value.replace(/\D/g, '').trim())
-                            return transformedValue
+                            const transformedValue = phoneFormatter(value.replace(/\D/g, '').trim());
+                            return transformedValue;
                         }}
                     >
                         <Input
@@ -226,5 +224,5 @@ export const ContactForm = () => {
                 }
             </Form>
         </ConfigProvider>
-    )
-}
+    );
+};

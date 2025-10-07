@@ -1,4 +1,4 @@
-import styles from './successModal.module.css'
+import styles from './successModal.module.css';
 import { Modal } from "antd";
 
 const SuccessModal = ({ title, message, ...rest }) => {
@@ -19,7 +19,7 @@ const SuccessModal = ({ title, message, ...rest }) => {
                 <p className={styles.modal__message}>{message}</p>
             </div>
         </Modal>
-    )
-}
+    );
+};
 
 export default SuccessModal;

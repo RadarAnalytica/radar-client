@@ -1,6 +1,5 @@
-import styles from './Header.module.css'
-import { Logo } from '../../shared/ui/Logo/Logo'
-
+import styles from './Header.module.css';
+import { Logo } from '../../shared/ui/Logo/Logo';
 
 
 export const ExternalHeader = () => {
@@ -10,7 +9,6 @@ export const ExternalHeader = () => {
         <Logo />
       </section>
     </header>
-  )
-}
-
+  );
+};
 

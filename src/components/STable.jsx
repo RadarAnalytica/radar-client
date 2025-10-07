@@ -24,7 +24,7 @@ const SalesTable = () => {
           <div className={styles.fixedHeader}>
             <div className={styles.weekCellHeader}>Неделя</div>
           </div>
-          
+
           {/* Fixed Content */}
           <div className={styles.fixedContent}>
             <div className={styles.weekCell}>
@@ -40,7 +40,7 @@ const SalesTable = () => {
               <>
                 {/* September */}
                 <div className={styles.monthSection}>
-                  <div 
+                  <div
                     className={`${styles.monthRow} ${styles.clickable}`}
                     onClick={() => toggleRow('Сентябрь')}
                   >
@@ -56,7 +56,7 @@ const SalesTable = () => {
 
                 {/* October */}
                 <div className={styles.monthSection}>
-                  <div 
+                  <div
                     className={`${styles.monthRow} ${styles.clickable}`}
                     onClick={() => toggleRow('Октябрь')}
                   >

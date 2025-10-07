@@ -6066,4 +6066,4 @@ export const tempWhouseData = {
             ]
         }
     ]
-}
+};

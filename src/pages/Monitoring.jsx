@@ -1,6 +1,6 @@
-import React from 'react'
-import TopNav from '../components/TopNav'
-import SideNav from '../components/SideNav'
+import React from 'react';
+import TopNav from '../components/TopNav';
+import SideNav from '../components/SideNav';
 
 const Monitoring = () => {
 
@@ -15,7 +15,7 @@ const Monitoring = () => {
                 </div>
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default Monitoring
+export default Monitoring;

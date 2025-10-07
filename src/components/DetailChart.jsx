@@ -2,22 +2,19 @@ import React, { useRef, useState, useEffect } from 'react';
 import { Chart as ChartJS, BarElement, CategoryScale, LinearScale, Tooltip, Legend } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
 import { chartYaxisMaxScale } from '../service/utils';
-import styles from './DetailChart.module.css'
+import styles from './DetailChart.module.css';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 
 const DetailChart = ({ labels, chartData, isLoading }) => {
 
 
-
-
-
     const absoluteValue = chartData?.reduce((i, acc) => {
-        return acc += i
-    }, 0)
-    const sortedChartData = [...chartData]?.sort((a, b) => b - a)
-    const maxValue = chartYaxisMaxScale(sortedChartData[0])
-    const step = Math.round(maxValue / 10)
+        return acc += i;
+    }, 0);
+    const sortedChartData = [...chartData]?.sort((a, b) => b - a);
+    const maxValue = chartYaxisMaxScale(sortedChartData[0]);
+    const step = Math.round(maxValue / 10);
     const chartRef = useRef(null);
     const containerRef = useRef(null);
     const [clickedIndex, setClickedIndex] = useState(null);
@@ -52,7 +49,6 @@ const DetailChart = ({ labels, chartData, isLoading }) => {
             }
         ],
     };
-
 
 
     const options = {
@@ -98,7 +94,7 @@ const DetailChart = ({ labels, chartData, isLoading }) => {
         },
         scales: {
             x: { grid: { display: false }, ticks: { color: '#8C8C8C' } },
-            y: { beginAtZero: true, min: 0, max: !!maxValue ? maxValue : 10, grid: { display: true }, ticks: { color: '#8C8C8C', stepSize: step } },
+            y: { beginAtZero: true, min: 0, max: maxValue ? maxValue : 10, grid: { display: true }, ticks: { color: '#8C8C8C', stepSize: step } },
         },
     };
 
@@ -117,7 +113,7 @@ const DetailChart = ({ labels, chartData, isLoading }) => {
 
     const renderCustomTooltip = () => {
         if (clickedIndex === null) return null;
-        const total = chartData[clickedIndex]
+        const total = chartData[clickedIndex];
 
         const isLeftSide = clickedIndex > 11;
         const tooltipStyle = {

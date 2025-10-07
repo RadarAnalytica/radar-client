@@ -1,9 +1,9 @@
-import styles from './FeaturesWidget.module.css'
-import { Link } from 'react-router-dom'
-import card1 from './assets/card1.png'
-import card2 from './assets/card2.png'
-import card3 from './assets/card3.png'
-import card4 from './assets/card4.png'
+import styles from './FeaturesWidget.module.css';
+import { Link } from 'react-router-dom';
+import card1 from './assets/card1.png';
+import card2 from './assets/card2.png';
+import card3 from './assets/card3.png';
+import card4 from './assets/card4.png';
 
 export const FeaturesWidget = () => {
 
@@ -50,7 +50,6 @@ export const FeaturesWidget = () => {
             </div>
 
 
-
             <div className={styles.card}>
                 <div className={styles.card__infoBlock}>
                     <p className={styles.card__title}>
@@ -72,7 +71,6 @@ export const FeaturesWidget = () => {
                     <img src={card3} alt='' width={330} height={225} />
                 </div>
             </div>
-
 
 
             <div className={styles.card}>
@@ -97,5 +95,5 @@ export const FeaturesWidget = () => {
             </div>
 
         </div>
-    )
-}
+    );
+};

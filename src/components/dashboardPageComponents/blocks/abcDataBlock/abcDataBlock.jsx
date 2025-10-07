@@ -1,7 +1,7 @@
-import styles from './abcDataBlock.module.css'
-import { Link } from 'react-router-dom'
-import { formatPrice } from '../../../../service/utils'
-import { getColor } from '../blockUtils'
+import styles from './abcDataBlock.module.css';
+import { Link } from 'react-router-dom';
+import { formatPrice } from '../../../../service/utils';
+import { getColor } from '../blockUtils';
 
 const AbcDataBlock = ({ titles, data, loading }) => {
 
@@ -12,7 +12,7 @@ const AbcDataBlock = ({ titles, data, loading }) => {
                     <span className='loader'></span>
                 </div>
             </div>
-        )
+        );
     }
     return (
         <div className={styles.block}>
@@ -56,7 +56,7 @@ const AbcDataBlock = ({ titles, data, loading }) => {
                 </div>
             }
         </div>
-    )
-}
+    );
+};
 
-export default AbcDataBlock
+export default AbcDataBlock;

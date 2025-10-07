@@ -3,7 +3,7 @@ import FilterElem from './FilterElem';
 import styles from './FilterGroup.module.css';
 import AuthContext from '../../service/AuthContext';
 // import { getFilterData } from '../../service/ReportService'
-import { reportFilters } from '../../service/reportConfig'
+import { reportFilters } from '../../service/reportConfig';
 import DownloadButton from '../DownloadButton';
 import { URL } from '../../service/config';
 import { useSelector, useDispatch } from 'react-redux';
@@ -15,9 +15,9 @@ const NewFilterGroup = ({pageIdent, filtersData, isLoading, getData}) => {
     const isDownloading = useSelector((state) => state.downloadReducer?.isDownloading);
     // const [isLoading, setIsLoading] = useState(true);
     // const { plFilters } = useSelector((state) => state?.plFiltersSlice);
-    const [isCollapsed, setIsCollapsed] = useState(false)
-    const [filters, setFilters] = useState(reportFilters[pageIdent])
-    const [weekOriginFilter, setWeekOriginFilter] = useState([])
+    const [isCollapsed, setIsCollapsed] = useState(false);
+    const [filters, setFilters] = useState(reportFilters[pageIdent]);
+    const [weekOriginFilter, setWeekOriginFilter] = useState([]);
 
     // useEffect(() => {
     //     const storageItem = localStorage.getItem(pageIdent)
@@ -27,67 +27,67 @@ const NewFilterGroup = ({pageIdent, filtersData, isLoading, getData}) => {
     //             storageData[item.filterIdent] = []
     //         }
     //         console.log(storageData);
-            
+
     //         localStorage.setItem(pageIdent, JSON.stringify(storageData))
     //     }
     // }, [pageIdent])
-    
+
     useEffect(() => {
-        
+
         const filterData = async () => {
             // const result = await getFilters(authToken)
             setFilters((list) => {
                 return list.map((el) => (
                     { ...el, items: filtersData[el.filterIdent] }
-                ))
+                ));
             });
             // if (filtersData.week) {
             //     setWeekOriginFilter(filtersData.week)
             // }
             // setIsLoading(false);
-        }
-        
-        filterData()
-        
-      }, [pageIdent, authToken, setFilters, setWeekOriginFilter, filtersData])
-    
+        };
+
+        filterData();
+
+      }, [pageIdent, authToken, setFilters, setWeekOriginFilter, filtersData]);
+
     useEffect(() => {
-        getData()
-    }, [getData])
+        getData();
+    }, [getData]);
 
     const changeWeekFilters = useCallback(() => {
-        return
-        const storageItem = localStorage.getItem(pageIdent)
-        let currentPageData = JSON.parse(storageItem)
-        currentPageData = currentPageData ? currentPageData : {}
-        const yearSelectList = currentPageData.year ? currentPageData.year : []
-        const monthSelectList = currentPageData.month ? currentPageData.month : []
+        return;
+        const storageItem = localStorage.getItem(pageIdent);
+        let currentPageData = JSON.parse(storageItem);
+        currentPageData = currentPageData ? currentPageData : {};
+        const yearSelectList = currentPageData.year ? currentPageData.year : [];
+        const monthSelectList = currentPageData.month ? currentPageData.month : [];
 
-        let currentWeekFilter = []
+        let currentWeekFilter = [];
         if (yearSelectList.length > 0) {
             for (let _year of yearSelectList) {
-                currentWeekFilter = currentWeekFilter.concat(weekOriginFilter.filter(el => el.includes(`${_year}-`)))
+                currentWeekFilter = currentWeekFilter.concat(weekOriginFilter.filter(el => el.includes(`${_year}-`)));
             }
         } else {
-            currentWeekFilter = [...weekOriginFilter]
+            currentWeekFilter = [...weekOriginFilter];
         }
-        const yearFilteredList = Array.from(new Set(currentWeekFilter))
-        currentWeekFilter = []
+        const yearFilteredList = Array.from(new Set(currentWeekFilter));
+        currentWeekFilter = [];
 
         if (monthSelectList.length > 0) {
             for (let _month of monthSelectList) {
-                currentWeekFilter = currentWeekFilter.concat(yearFilteredList.filter(el => el.includes(`-${_month}-`)))
+                currentWeekFilter = currentWeekFilter.concat(yearFilteredList.filter(el => el.includes(`-${_month}-`)));
             }
         } else {
-            currentWeekFilter = [...yearFilteredList]
+            currentWeekFilter = [...yearFilteredList];
         }
-        
+
         // setFilters((list) => {
         //     return list.map((el) => (
         //         el.filterIdent === 'week' ? {...el, items: Array.from(new Set(currentWeekFilter)) } : el
         //     ))
         // })
-    }, [weekOriginFilter, pageIdent])
+    }, [weekOriginFilter, pageIdent]);
 
     const handleDownload = async () => {
         dispatch(setDownloadLoading(true));
@@ -123,8 +123,8 @@ const NewFilterGroup = ({pageIdent, filtersData, isLoading, getData}) => {
     //     const resultFilters = {}
     //     const dashboardStorage = localStorage.getItem('dashboard')
     //     let currentPageData = JSON.parse(dashboardStorage)
-    //     const dashboardPageData = currentPageData ? currentPageData : {}  
-        
+    //     const dashboardPageData = currentPageData ? currentPageData : {}
+
     //     resultFilters['dashboard'] = {
     //         warehouse_name_filter: dashboardPageData.wh ? dashboardPageData.wh : [],
     //         brand_name_filter: dashboardPageData.brand ? dashboardPageData.brand : [],
@@ -140,7 +140,7 @@ const NewFilterGroup = ({pageIdent, filtersData, isLoading, getData}) => {
     // }
 
     return (
-        
+
         <div className={styles.filterContainer}>
             <div className="dash-container p-3 pb-2 pt-3 d-flex">
                 <button
@@ -151,7 +151,7 @@ const NewFilterGroup = ({pageIdent, filtersData, isLoading, getData}) => {
                 </button>
                 <DownloadButton handleDownload={handleDownload} loading={isDownloading}/>
             </div>
-            
+
             {!isCollapsed && (
                 <>
                   <div className={styles.filterGrid}>
@@ -165,7 +165,7 @@ const NewFilterGroup = ({pageIdent, filtersData, isLoading, getData}) => {
                                 items={elem.items}
                                 isLoading={isLoading}
                                 widthData={elem.width}
-                                changeWeekFilter={changeWeekFilters}    
+                                changeWeekFilter={changeWeekFilters}
                             />
                         );
                     })}
@@ -183,7 +183,7 @@ const NewFilterGroup = ({pageIdent, filtersData, isLoading, getData}) => {
                 </>
             )}
         </div>
-    )
+    );
 };
 
 export default NewFilterGroup;

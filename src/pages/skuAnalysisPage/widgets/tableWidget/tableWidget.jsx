@@ -1,5 +1,5 @@
-import React, { useState, useRef, useEffect } from 'react'
-import styles from './tableWidget.module.css'
+import React, { useState, useRef, useEffect } from 'react';
+import styles from './tableWidget.module.css';
 import { formatPrice } from '../../../../service/utils';
 import moment from 'moment';
 import { useAppSelector } from '../../../../redux/hooks';
@@ -12,23 +12,23 @@ import { sortTableDataFunc } from '../../shared';
 const initSortState = {
     sortedValue: undefined,
     sortType: undefined,
-}
+};
 
 const TableWidget = ({ data, tableConfig, tinyRows = false }) => {
 
 
-    const containerRef = useRef(null) // реф скролл-контейнера (используется чтобы седить за позицией скрола)
-    const [tableData, setTableData] = useState() // данные для рендера таблицы
-    const [isXScrolled, setIsXScrolled] = useState(false) // следим за скролом по Х
-    const [isEndOfXScroll, setIsEndOfXScroll] = useState(false) // отслеживаем конец скролла по Х
-    const [sortState, setSortState] = useState(initSortState) // стейт сортировки (см initSortState)
-    const { dataStatus } = useAppSelector(store => store.skuAnalysis)
+    const containerRef = useRef(null); // реф скролл-контейнера (используется чтобы седить за позицией скрола)
+    const [tableData, setTableData] = useState(); // данные для рендера таблицы
+    const [isXScrolled, setIsXScrolled] = useState(false); // следим за скролом по Х
+    const [isEndOfXScroll, setIsEndOfXScroll] = useState(false); // отслеживаем конец скролла по Х
+    const [sortState, setSortState] = useState(initSortState); // стейт сортировки (см initSortState)
+    const { dataStatus } = useAppSelector(store => store.skuAnalysis);
 
 
     //задаем начальную дату
     useEffect(() => {
-        setTableData(data)
-    }, [data])
+        setTableData(data);
+    }, [data]);
     //задаем конфиг таблицы
 
 
@@ -38,20 +38,20 @@ const TableWidget = ({ data, tableConfig, tinyRows = false }) => {
 
             // если скроллим вправо
             if (containerRef.current.scrollLeft > 1) {
-                setIsXScrolled(true)
+                setIsXScrolled(true);
             } else {
-                setIsXScrolled(false)
+                setIsXScrolled(false);
             }
 
             // вычисляем достиг ли скролл конца справа
             const delta = containerRef.current.scrollWidth - (containerRef.current.scrollLeft + containerRef.current.clientWidth);
             if (delta < 16) {
-                setIsEndOfXScroll(true)
+                setIsEndOfXScroll(true);
             } else {
-                setIsEndOfXScroll(false)
+                setIsEndOfXScroll(false);
             }
         }
-    }
+    };
 
     // хэндлер сортировки
     const sortButtonClickHandler = (e, value) => {
@@ -59,9 +59,9 @@ const TableWidget = ({ data, tableConfig, tinyRows = false }) => {
 
         // выключаем сортировку если нажата уже активная клавиша
         if (sortState.sortType === id && sortState.sortedValue === value) {
-            setSortState(initSortState)
-            setTableData(data)
-            return
+            setSortState(initSortState);
+            setTableData(data);
+            return;
         }
 
 
@@ -69,9 +69,9 @@ const TableWidget = ({ data, tableConfig, tinyRows = false }) => {
         setSortState({
             sortedValue: value,
             sortType: id,
-        })
-        setTableData([...sortTableDataFunc(id, value, data)])
-    }
+        });
+        setTableData([...sortTableDataFunc(id, value, data)]);
+    };
 
     if (dataStatus.isLoading) {
         return (
@@ -80,7 +80,7 @@ const TableWidget = ({ data, tableConfig, tinyRows = false }) => {
                     <span className='loader'></span>
                 </div>
             </div>
-        )
+        );
     }
 
     return (
@@ -93,7 +93,6 @@ const TableWidget = ({ data, tableConfig, tinyRows = false }) => {
                 const headerStyle = id === 0 ? `${styles.table__header} ${styles.table__header_leftPadding}` : id === tableConfig.length - 1 ? `${styles.table__header} ${styles.table__header_rightPadding}` : styles.table__header;
                 const headerContainerStyle = id === 0 ? `${styles.table__headerContainer} ${styles.table__headerContainer_leftRounded}` : id === tableConfig.length - 1 ? `${styles.table__headerContainer} ${styles.table__headerContainer_rightRounded}` : styles.table__headerContainer;
                 const tableBodyStyle = id === 0 ? `${styles.table__body} ${styles.table__body_leftPadding}` : id === tableConfig.length - 1 ? `${styles.table__body} ${styles.table__body_rightPadding}` : styles.table__body;
-
 
 
                 return (
@@ -117,7 +116,7 @@ const TableWidget = ({ data, tableConfig, tinyRows = false }) => {
                                 {t.values.map((v, id) => {
 
                                     // определяем необходимые стили
-                                    const headerCellStyle = v.ruName === 'Товар' || v.ruName === 'Склад' ? `${styles.table__headerItem} ${styles.table__headerItem_wide}` : styles.table__headerItem
+                                    const headerCellStyle = v.ruName === 'Товар' || v.ruName === 'Склад' ? `${styles.table__headerItem} ${styles.table__headerItem_wide}` : styles.table__headerItem;
                                     return v.isActive && (
                                         <>
                                             {/* Рендерим айтем заголовка таблицы с кнопками сортировки (если они нужны) */}
@@ -148,7 +147,7 @@ const TableWidget = ({ data, tableConfig, tinyRows = false }) => {
                                                 }
                                             </div>
                                         </>
-                                    )
+                                    );
                                 })}
                             </div>
                         </div>
@@ -166,7 +165,7 @@ const TableWidget = ({ data, tableConfig, tinyRows = false }) => {
                                             if (v.ruName === 'Дата') {
                                                 return v.isActive && (
                                                     <div className={styles.table__rowItem} key={id}>{moment(product[v.engName]).format('DD.MM.YYYY')}</div>
-                                                )
+                                                );
                                             }
                                             if (v.isChart) {
                                                 return (
@@ -176,7 +175,7 @@ const TableWidget = ({ data, tableConfig, tinyRows = false }) => {
                                                         />
                                                     </div>
 
-                                                )
+                                                );
                                             }
 
                                             if (v.ruName === 'Товар') {
@@ -199,15 +198,15 @@ const TableWidget = ({ data, tableConfig, tinyRows = false }) => {
                                                         </div>
 
                                                     </div>
-                                                )
+                                                );
                                             }
 
                                             return v.isActive && (
                                                 <div className={styles.table__rowItem} key={id}>{v.units ? formatPrice(product[v.engName], v.units) : product[v.engName]}</div>
-                                            )
+                                            );
                                         }))}
                                     </div>
-                                )
+                                );
                             })}
                             {tableData && tableData.length === 0 && id === 0 &&
                                 <div className={styles.table__row}>
@@ -218,31 +217,31 @@ const TableWidget = ({ data, tableConfig, tinyRows = false }) => {
                             }
                         </div>
                     </div>
-                )
+                );
             })}
 
         </div>
-    )
-}
+    );
+};
 
 
 const CopyButton = ({ url }) => {
 
-    const [isCopied, setIsCopied] = useState(false)
+    const [isCopied, setIsCopied] = useState(false);
 
     const copyHandler = () => {
-        navigator.clipboard.writeText(url).catch(err => console.log('Error'))
-        setIsCopied(true)
-    }
+        navigator.clipboard.writeText(url).catch(err => console.log('Error'));
+        setIsCopied(true);
+    };
 
     useEffect(() => {
         let timeout;
         if (isCopied) {
-            timeout = setTimeout(() => setIsCopied(false), 3000)
+            timeout = setTimeout(() => setIsCopied(false), 3000);
         }
 
-        return () => { timeout && clearTimeout(timeout) }
-    }, [isCopied])
+        return () => { timeout && clearTimeout(timeout); };
+    }, [isCopied]);
 
     return (
         <button className={styles.table__actionButton} onClick={copyHandler} title='Скопировать'>
@@ -260,10 +259,8 @@ const CopyButton = ({ url }) => {
 
             }
         </button>
-    )
-}
+    );
+};
 
 export default TableWidget;
-
-
 

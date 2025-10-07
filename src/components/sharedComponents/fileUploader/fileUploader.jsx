@@ -1,10 +1,10 @@
-import React, { useState, useContext, useEffect, useRef } from 'react'
-import styles from './fileUploader.module.css'
-import { Upload, ConfigProvider, Button, Progress, Tooltip } from 'antd'
-import uploadIcon from '../../../pages/images/upload.svg'
-import AuthContext from '../../../service/AuthContext'
-import { URL } from '../../../service/config'
-import ErrorModal from '../modals/errorModal/errorModal'
+import React, { useState, useContext, useEffect, useRef } from 'react';
+import styles from './fileUploader.module.css';
+import { Upload, ConfigProvider, Button, Progress, Tooltip } from 'antd';
+import uploadIcon from '../../../pages/images/upload.svg';
+import AuthContext from '../../../service/AuthContext';
+import { URL } from '../../../service/config';
+import ErrorModal from '../modals/errorModal/errorModal';
 
 
 /** Ответ начальной загрузки файлов
@@ -26,7 +26,7 @@ const initUploadStatus = {
     isError: false,
     isSuccess: false,
     message: ''
-}
+};
 
 
 // Общая проверка статусов загрузок
@@ -36,27 +36,27 @@ const checkFinalStatus = async (token) => {
             headers: {
                 authorization: 'JWT ' + token
             }
-        })
+        });
 
         if (!res.ok) {
-            return
+            return;
         }
 
-        res = await res.json()
-        return res?.data?.items
+        res = await res.json();
+        return res?.data?.items;
     } catch {
 
     }
-}
+};
 
 const FileUploader = ({ setShow, setError, getListOfReports }) => {
 
-    const { authToken } = useContext(AuthContext)
+    const { authToken } = useContext(AuthContext);
     const [fileList, setFileList] = useState([]);
     const [uploadStatus, setUploadStatus] = useState(initUploadStatus);
-    const [progressBarState, setProgressBarState] = useState(0)
-    const [requestCounter, setRequestCounter] = useState(0)
-    const intervalRef = useRef(null)
+    const [progressBarState, setProgressBarState] = useState(0);
+    const [requestCounter, setRequestCounter] = useState(0);
+    const intervalRef = useRef(null);
     // use it to abort  uploadHandler whe unmounting
     const uploadAbortControllerRef = useRef(null);
 
@@ -66,9 +66,9 @@ const FileUploader = ({ setShow, setError, getListOfReports }) => {
         uploadAbortControllerRef.current = new AbortController();
 
         // меняем статус загрузки
-        setUploadStatus({ ...initUploadStatus, isUploading: true })
+        setUploadStatus({ ...initUploadStatus, isUploading: true });
         // меняем значение прогрессбара
-        setProgressBarState(1)
+        setProgressBarState(1);
         // готовим формдату для отправки
         const formData = new FormData();
         fileList.forEach((item, id) => {
@@ -86,15 +86,15 @@ const FileUploader = ({ setShow, setError, getListOfReports }) => {
                     isUninitialized: false,
                     message: ''
                 }
-            }))
-            // подготавливаем и сохраняем список файлов 
+            }));
+            // подготавливаем и сохраняем список файлов
             const fileListToSave = upd.map(_ => ({
                 ..._,
                 file: { name: _.file.name },
-            }))
-            localStorage.setItem('uploadingFiles', JSON.stringify(fileListToSave))
-            return upd
-        })
+            }));
+            localStorage.setItem('uploadingFiles', JSON.stringify(fileListToSave));
+            return upd;
+        });
 
         // загружаем
         try {
@@ -110,9 +110,9 @@ const FileUploader = ({ setShow, setError, getListOfReports }) => {
             // обрабатываем упавший запрос
             if (!response.ok) {
                 // меняем статус загрузки
-                response = await response.json()
+                response = await response.json();
                 setUploadStatus({ ...initUploadStatus, isUploading: false, isError: true, message: response.message || 'Не удалось загрузить файлы' });
-                setProgressBarState(0)
+                setProgressBarState(0);
                 // меняем статус файлов
                 setFileList(prev => prev.map(_ => ({
                     ..._,
@@ -123,31 +123,31 @@ const FileUploader = ({ setShow, setError, getListOfReports }) => {
                         isUninitialized: false,
                         message: 'Ошибка'
                     }
-                })))
-                localStorage.removeItem('uploadingFiles')
+                })));
+                localStorage.removeItem('uploadingFiles');
                 // выходим
-                return
+                return;
             }
 
             // обновляем статус прогрессбара
-            setProgressBarState(2)
+            setProgressBarState(2);
             // запускаем проверку статуса файлов
             intervalRef.current = setInterval(() => {
-                checkAllUploads(authToken, fileList.length)
-            }, 1000)
-           
+                checkAllUploads(authToken, fileList.length);
+            }, 1000);
+
         } catch (error) {
             setUploadStatus({ ...initUploadStatus, isUploading: false, isError: true, message: 'Не удалось загрузить файлы' });
-            localStorage.removeItem('uploadingFiles')
+            localStorage.removeItem('uploadingFiles');
         }
-    }
+    };
 
     // ------------- функция для периодической проверки статуса загруженных файлов --------------//
     const checkAllUploads = async (token, counter) => {
 
         // обновляем счетчик запросов (покажем ошибку если он будет больше 600 (10 минут))
         if (intervalRef && intervalRef.current) {
-            setRequestCounter((prev) => prev + 1)
+            setRequestCounter((prev) => prev + 1);
         }
 
         try {
@@ -156,42 +156,42 @@ const FileUploader = ({ setShow, setError, getListOfReports }) => {
                     'content-type': 'application/json',
                     'authorization': 'JWT ' + token
                 }
-            })
+            });
 
             // обрабатываем упавший запрос
             if (!res.ok) {
                 // меняем статус загрузки
-                setUploadStatus({ ...initUploadStatus, isError: true, message: 'Не удалось загрузить файлы' })
+                setUploadStatus({ ...initUploadStatus, isError: true, message: 'Не удалось загрузить файлы' });
                 // обнуляем прогресс бар
-                setProgressBarState(0)
+                setProgressBarState(0);
                 // обнуляем счетчик запросов
-                setRequestCounter(0)
+                setRequestCounter(0);
                 // удаляем интервал
-                intervalRef?.current && clearInterval(intervalRef.current)
-                intervalRef.current = null
+                intervalRef?.current && clearInterval(intervalRef.current);
+                intervalRef.current = null;
                 // удаляем сохраненные файлы и выходим
-                localStorage.removeItem('uploadingFiles')
-                return
+                localStorage.removeItem('uploadingFiles');
+                return;
             }
 
             // парсим запрос
-            res = await res.json()
+            res = await res.json();
             // смотрим количество файлов в статусе ожидают и в процессе
             const totalAmount = res.pending.count + res.processing.count;
 
             // высчитываем статус прогресс бара и обновляем
-            const step = 100 / counter
-            const progress = step * (counter - totalAmount)
-            setProgressBarState((prev) => prev > progress ? prev : progress)
+            const step = 100 / counter;
+            const progress = step * (counter - totalAmount);
+            setProgressBarState((prev) => prev > progress ? prev : progress);
 
             // финальные статусы
             const { completed, failed } = res;
             // обновляем статус успешно загруженных
             if (completed.count > 0) {
                 setFileList(prev => prev.map(_ => {
-                    const index = completed.files.findIndex(i => i.filename === _.file.name)
+                    const index = completed.files.findIndex(i => i.filename === _.file.name);
                     if (index === -1) {
-                        return { ..._ }
+                        return { ..._ };
                     } else {
                         return {
                             ..._,
@@ -202,17 +202,17 @@ const FileUploader = ({ setShow, setError, getListOfReports }) => {
                                 isUninitialized: false,
                                 message: 'Файл успешно загружен'
                             }
-                        }
+                        };
                     }
-                }))
+                }));
             }
 
             // обновляем статус ошибок
             if (failed.count > 0) {
                 setFileList(prev => prev.map(_ => {
-                    const index = failed.files.findIndex(i => i.filename === _.file.name)
+                    const index = failed.files.findIndex(i => i.filename === _.file.name);
                     if (index === -1) {
-                        return { ..._ }
+                        return { ..._ };
                     } else {
                         return {
                             ..._,
@@ -223,9 +223,9 @@ const FileUploader = ({ setShow, setError, getListOfReports }) => {
                                 isUninitialized: false,
                                 message: failed.files[index].error_message || 'Ошибка: Не удалось обработать файл'
                             }
-                        }
+                        };
                     }
-                }))
+                }));
             }
 
             // выходим когда прогресс бар дошел до 100%
@@ -233,30 +233,30 @@ const FileUploader = ({ setShow, setError, getListOfReports }) => {
                 setFileList(prev => prev.map(_ => {
                     // ищем в списке файлы с именем айтем, фильтруем по айди и берем с наибольшим
                     //const item = finalResult?.filter(i => i.original_filename === _.file.name).sort((a, b) => a.id - b.id).pop()
-                    _.status.isLoading = false
-                    return _
-                }))
+                    _.status.isLoading = false;
+                    return _;
+                }));
 
                 // обновляем статус загрузки
-                setUploadStatus(initUploadStatus)
+                setUploadStatus(initUploadStatus);
                 // обновляем список отчетов
                 await getListOfReports();
 
                 //удаляем интервал
-                intervalRef?.current && clearInterval(intervalRef.current)
-                intervalRef.current = null
+                intervalRef?.current && clearInterval(intervalRef.current);
+                intervalRef.current = null;
                 // сбрасываем бар
-                setRequestCounter(0)
-                localStorage.removeItem('uploadingFiles')
+                setRequestCounter(0);
+                localStorage.removeItem('uploadingFiles');
             }
         } catch {
-            setUploadStatus({ ...initUploadStatus, isError: true, message: 'Не удалось загрузить файлы' })
-            intervalRef?.current && clearInterval(intervalRef.current)
-            intervalRef.current = null
-            setRequestCounter(0)
-            localStorage.removeItem('uploadingFiles')
+            setUploadStatus({ ...initUploadStatus, isError: true, message: 'Не удалось загрузить файлы' });
+            intervalRef?.current && clearInterval(intervalRef.current);
+            intervalRef.current = null;
+            setRequestCounter(0);
+            localStorage.removeItem('uploadingFiles');
         }
-    }
+    };
 
     //-------- проверка на наличие файлов в процессинге при загрузке страницы ----------//
     useEffect(() => {
@@ -264,40 +264,40 @@ const FileUploader = ({ setShow, setError, getListOfReports }) => {
         const initialCheck = async (hasNoSavedList = false, list) => {
 
             // меняем статус загрузки
-            setUploadStatus(_ => ({ ...initUploadStatus, isUploading: true }))
+            setUploadStatus(_ => ({ ...initUploadStatus, isUploading: true }));
             // меняем статус бара
-            setProgressBarState(_ => 1)
+            setProgressBarState(_ => 1);
             try {
                 let res = await fetch(`${URL}/api/file-process/status-count`, {
                     headers: {
                         'content-type': 'application/json',
                         'authorization': 'JWT ' + authToken
                     }
-                })
+                });
 
                 // выходим если запрос упал
                 if (!res.ok) {
-                    setUploadStatus({ ...initUploadStatus, isError: false, message: 'Не удалось проверить статус файлов в обработке' })
-                    setProgressBarState(0)
-                    setFileList([])
-                    intervalRef?.current && clearInterval(intervalRef.current)
-                    intervalRef.current = null
-                    localStorage.removeItem('uploadingFiles')
-                    return
+                    setUploadStatus({ ...initUploadStatus, isError: false, message: 'Не удалось проверить статус файлов в обработке' });
+                    setProgressBarState(0);
+                    setFileList([]);
+                    intervalRef?.current && clearInterval(intervalRef.current);
+                    intervalRef.current = null;
+                    localStorage.removeItem('uploadingFiles');
+                    return;
                 }
                 // парсим запрос
-                res = await res.json()
+                res = await res.json();
 
                 // проверяем есть ли файлы в процессе
-                const { pending, processing } = res
+                const { pending, processing } = res;
                 const totalAmount = pending.count + processing.count;
 
 
                 // если нет сохраненного списка файлов выходим если нет в процессинге ничего
                 if (hasNoSavedList && totalAmount === 0) {
-                    setUploadStatus(initUploadStatus)
-                    setProgressBarState(0)
-                    localStorage.removeItem('uploadingFiles')
+                    setUploadStatus(initUploadStatus);
+                    setProgressBarState(0);
+                    localStorage.removeItem('uploadingFiles');
                 }
                 // если есть то формируем список фалов на основе того что в процессинге и работаем с этим
                 if (hasNoSavedList && totalAmount > 0) {
@@ -329,18 +329,18 @@ const FileUploader = ({ setShow, setError, getListOfReports }) => {
                             }
                         }))
 
-                    ]
+                    ];
 
-                    setFileList(list)
+                    setFileList(list);
                 }
 
                 // если нет то чекаем статус по сохраненным файлам и выходим
                 if (list && totalAmount === 0) {
                     // получаем список загруженных файлов
-                    const finalResult = await checkFinalStatus(authToken)
+                    const finalResult = await checkFinalStatus(authToken);
                     list = list.map(_ => {
                         // ищем в списке файлы с именем айтем, фильтруем по айди и берем с наибольшим
-                        const item = finalResult?.filter(i => i.original_filename === _.file.name).sort((a, b) => a.id - b.id).pop()
+                        const item = finalResult?.filter(i => i.original_filename === _.file.name).sort((a, b) => a.id - b.id).pop();
                         // если нашли то обновляем статус файла
                         if (item) {
                             let status = _.status;
@@ -351,7 +351,7 @@ const FileUploader = ({ setShow, setError, getListOfReports }) => {
                                     isError: true,
                                     isSuccess: false,
                                     message: item.error_message || 'Не удалось обработать файл'
-                                }
+                                };
                             }
                             if (item.status === 'completed') {
                                 status = {
@@ -360,12 +360,12 @@ const FileUploader = ({ setShow, setError, getListOfReports }) => {
                                     isError: false,
                                     isSuccess: true,
                                     message: 'Файл успешно загружен'
-                                }
+                                };
                             }
                             return {
                                 ..._,
                                 status: status
-                            }
+                            };
 
                             // если вдруг файл все еще висит в загрузке, то уходим в ошибку или возвращаем текущий статус
                         } else {
@@ -379,25 +379,25 @@ const FileUploader = ({ setShow, setError, getListOfReports }) => {
                                         isSuccess: false,
                                         message: 'Не удалось определить статус файла'
                                     }
-                                }
+                                };
                             }
                             return {
                                 ..._,
-                            }
+                            };
                         }
-                    })
-                    setFileList([...list])
-                    setUploadStatus(initUploadStatus)
-                    setProgressBarState(0)
-                    localStorage.removeItem('uploadingFiles')
-                    return
+                    });
+                    setFileList([...list]);
+                    setUploadStatus(initUploadStatus);
+                    setProgressBarState(0);
+                    localStorage.removeItem('uploadingFiles');
+                    return;
                 }
 
 
                 // если в процессе файлов меньше чем сохранено (нужно проверить статус некоторых)
                 if (list && totalAmount <= fileList?.length) {
                     // получаем список загруженных файлов
-                    const finalResult = await checkFinalStatus(authToken)
+                    const finalResult = await checkFinalStatus(authToken);
                     list = list.map(_ => {
                         // сначала проверяем что файл есть в процессинге (в статусах pending || processing) т.к. если он завершен, то мы увидим его статус через checkFinalStatus()
                         const isInPendingList = pending.files.some(pe => pe === _.file.name);
@@ -415,9 +415,9 @@ const FileUploader = ({ setShow, setError, getListOfReports }) => {
                                     isSuccess: false,
                                     message: ''
                                 }
-                            }
+                            };
                         } else {
-                            const item = finalResult?.filter(i => i.original_filename === _.file.name).sort((a, b) => a.id - b.id).pop()
+                            const item = finalResult?.filter(i => i.original_filename === _.file.name).sort((a, b) => a.id - b.id).pop();
                             // если нашли то обновляем статус файла а если нет, то уводим в ошибку
                             if (item) {
                                 let status = _.status;
@@ -428,7 +428,7 @@ const FileUploader = ({ setShow, setError, getListOfReports }) => {
                                         isError: true,
                                         isSuccess: false,
                                         message: item.error_message || 'Не удалось обработать файл'
-                                    }
+                                    };
                                 }
                                 if (item.status === 'completed') {
                                     status = {
@@ -437,12 +437,12 @@ const FileUploader = ({ setShow, setError, getListOfReports }) => {
                                         isError: false,
                                         isSuccess: true,
                                         message: 'Файл успешно загружен'
-                                    }
+                                    };
                                 }
                                 return {
                                     ..._,
                                     status: status
-                                }
+                                };
 
                                 // если не нашли то возвращаем текущий
                             } else {
@@ -456,88 +456,88 @@ const FileUploader = ({ setShow, setError, getListOfReports }) => {
                                         message: 'Не удалось получить статус файла'
                                     }
 
-                                }
+                                };
                             }
                         }
-                    })
-                    setFileList([...list])
+                    });
+                    setFileList([...list]);
                 }
 
 
-                // Проверяем что в списке файлов есть файлы со статусом "Загрузка" и запустим проверку для них. 
+                // Проверяем что в списке файлов есть файлы со статусом "Загрузка" и запустим проверку для них.
                 // Если таких файлов нет, то выходим
                 const isHasLoadingStatus = list?.some(_ => _.status.isLoading);
                 if (!isHasLoadingStatus) {
-                    setUploadStatus(initUploadStatus)
-                    setProgressBarState(0)
-                    return
+                    setUploadStatus(initUploadStatus);
+                    setProgressBarState(0);
+                    return;
                 } else {
                     // обновляем статус бар
-                    setProgressBarState(_ => 2)
+                    setProgressBarState(_ => 2);
 
                     // и запускаем цикл проверки
                     if (!intervalRef?.current) {
                         intervalRef.current = setInterval(() => {
-                            checkAllUploads(authToken, totalAmount)
-                        }, 1000)
+                            checkAllUploads(authToken, totalAmount);
+                        }, 1000);
                     }
                 }
 
             } catch {
-                setUploadStatus(initUploadStatus)
-                setUploadStatus({ ...initUploadStatus, isError: false, message: 'Не удалось проверить статус файлов в обработке' })
-                setFileList([])
-                intervalRef?.current && clearInterval(intervalRef.current)
-                intervalRef.current = null
-                localStorage.removeItem('uploadingFiles')
+                setUploadStatus(initUploadStatus);
+                setUploadStatus({ ...initUploadStatus, isError: false, message: 'Не удалось проверить статус файлов в обработке' });
+                setFileList([]);
+                intervalRef?.current && clearInterval(intervalRef.current);
+                intervalRef.current = null;
+                localStorage.removeItem('uploadingFiles');
             }
-        }
+        };
 
 
         // поднимаем сохраненные файлы
-        let uploadingFiles = localStorage.getItem('uploadingFiles')
+        let uploadingFiles = localStorage.getItem('uploadingFiles');
         if (uploadingFiles) {
-            uploadingFiles = JSON.parse(uploadingFiles)
-            setFileList(uploadingFiles)
-            initialCheck(false, uploadingFiles)
+            uploadingFiles = JSON.parse(uploadingFiles);
+            setFileList(uploadingFiles);
+            initialCheck(false, uploadingFiles);
         } else {
-            initialCheck(true, undefined)
+            initialCheck(true, undefined);
         }
 
 
         return () => {
-            intervalRef?.current && clearInterval(intervalRef.current)
-            intervalRef.current = null
+            intervalRef?.current && clearInterval(intervalRef.current);
+            intervalRef.current = null;
             uploadAbortControllerRef?.current?.abort();
-        }
-    }, [])
+        };
+    }, []);
 
 
     // ---------- меняем всплывашку у кнопки "удалить" ----------//
     useEffect(() => {
         const delButton = document.querySelectorAll('.ant-upload-list-item-action');
-        const listItem = document.querySelectorAll('.ant-upload-list-item')
-        const list = document.querySelector('.ant-upload-list')
+        const listItem = document.querySelectorAll('.ant-upload-list-item');
+        const list = document.querySelector('.ant-upload-list');
         if (list) {
-            list.style.width = '100%'
+            list.style.width = '100%';
         }
         if (listItem) {
-            listItem.forEach(_ => _.style.margin = 0)
+            listItem.forEach(_ => _.style.margin = 0);
         }
         if (delButton) {
-            delButton.forEach(_ => _.title = 'Удалить файл')
+            delButton.forEach(_ => _.title = 'Удалить файл');
         }
-    }, [fileList])
+    }, [fileList]);
 
 
     // --------- сбрасываем интервал проверки по условию ------------//
     useEffect(() => {
         if (intervalRef?.current && requestCounter >= 600) {
-            setUploadStatus({ ...initUploadStatus, isError: true, message: 'Не удалось обработать файлы. Пожалуйста, обратитесь в поддержку' })
-            intervalRef?.current && clearInterval(intervalRef.current)
-            intervalRef.current = null
-            setProgressBarState(0)
-            setRequestCounter(0)
+            setUploadStatus({ ...initUploadStatus, isError: true, message: 'Не удалось обработать файлы. Пожалуйста, обратитесь в поддержку' });
+            intervalRef?.current && clearInterval(intervalRef.current);
+            intervalRef.current = null;
+            setProgressBarState(0);
+            setRequestCounter(0);
             setFileList(prev => prev.map(_ => {
                 if (_.status.isLoading) {
                     return {
@@ -549,13 +549,12 @@ const FileUploader = ({ setShow, setError, getListOfReports }) => {
                             isSuccess: false,
                             message: 'Ошибка'
                         }
-                    }
+                    };
                 }
-            }))
-            localStorage.removeItem('uploadingFiles')
+            }));
+            localStorage.removeItem('uploadingFiles');
         }
-    }, [requestCounter, intervalRef])
-
+    }, [requestCounter, intervalRef]);
 
 
     return (
@@ -586,17 +585,17 @@ const FileUploader = ({ setShow, setError, getListOfReports }) => {
                         const index = fileList.findIndex(_ => _.file.name === file.name);
                         setFileList(prev => {
                             if (index !== -1) {
-                                prev.splice(index, 1)
-                                return [...prev]
+                                prev.splice(index, 1);
+                                return [...prev];
                             } else {
-                                return prev
+                                return prev;
                             }
                         });
                     }}
                     beforeUpload={file => {
                         setFileList(prevFileList => {
                             if (prevFileList.some(_ => _.file.name === file.name)) {
-                                return prevFileList
+                                return prevFileList;
                             }
                             return [...prevFileList, {
                                 file: file,
@@ -607,8 +606,8 @@ const FileUploader = ({ setShow, setError, getListOfReports }) => {
                                     isSuccess: false,
                                     message: ''
                                 }
-                            }]
-                        })
+                            }];
+                        });
                     }}
                     fileList={fileList.map(_ => _.file)}
                     itemRender={(originNode, file, currList, actions) => {
@@ -617,7 +616,7 @@ const FileUploader = ({ setShow, setError, getListOfReports }) => {
                         // currList — весь список файлов
                         // actions — { download, preview, remove }
                         const index = fileList.findIndex(_ => _.file === file);
-                        const item = fileList[index]
+                        const item = fileList[index];
 
                         return (
                             <>
@@ -712,7 +711,7 @@ const FileUploader = ({ setShow, setError, getListOfReports }) => {
                             type='default'
                             variat='outlined'
                             color='#F93C65'
-                            onClick={() => { setFileList([]); localStorage.removeItem('uploadingFiles') }}
+                            onClick={() => { setFileList([]); localStorage.removeItem('uploadingFiles'); }}
                             loading={uploadStatus.isUploading}
                         >
                             Очистить
@@ -735,30 +734,22 @@ const FileUploader = ({ setShow, setError, getListOfReports }) => {
             </ConfigProvider>
 
 
-
-
-
-
             {/* modals */}
-
-
-
-
 
 
             {/* error modal */}
             <ErrorModal
                 footer={null}
                 open={uploadStatus.isError}
-                onOk={() => { setUploadStatus(initUploadStatus); setProgressBarState(0) }}
-                onClose={() => { setUploadStatus(initUploadStatus); setProgressBarState(0) }}
-                onCancel={() => { setUploadStatus(initUploadStatus); setProgressBarState(0) }}
+                onOk={() => { setUploadStatus(initUploadStatus); setProgressBarState(0); }}
+                onClose={() => { setUploadStatus(initUploadStatus); setProgressBarState(0); }}
+                onCancel={() => { setUploadStatus(initUploadStatus); setProgressBarState(0); }}
                 message={uploadStatus.message}
             />
 
         </div >
-    )
-}
+    );
+};
 
 export default FileUploader;
 

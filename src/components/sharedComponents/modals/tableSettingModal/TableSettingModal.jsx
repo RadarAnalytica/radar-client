@@ -27,14 +27,13 @@ export default function TableSettingModal({
 	// const checkAll = useMemo(() => checked.length == shownColumns.length, [shownColumns])
 
 
-
 	const [form] = useForm();
 
 	function filterColumns(data) {
 		const value = data.filter.trim();
 		if (!value) {
 			setShownColumns(tableColumns);
-			return
+			return;
 		}
 		setShownColumns(() => (
 			tableColumns.filter((el) => {
@@ -45,33 +44,33 @@ export default function TableSettingModal({
 
 	function onFinish(data) {
 		const newTableColumns = tableColumns.map(_ => {
-			return { ..._, hidden: !data[_.dataIndex] }
-		})
-		setTableColumns(newTableColumns)
-		localStorage.setItem('reportWeekTableConfig', JSON.stringify(newTableColumns))
-		closeModal()
+			return { ..._, hidden: !data[_.dataIndex] };
+		});
+		setTableColumns(newTableColumns);
+		localStorage.setItem('reportWeekTableConfig', JSON.stringify(newTableColumns));
+		closeModal();
 	}
 
 	function сheckAllHandler(type) {
-		const data = form.getFieldsValue()
+		const data = form.getFieldsValue();
 
 		setShownColumns(shownColumns.map(_ => {
-			return { ..._, hidden: type === 'select' ? false : true }
-		}))
+			return { ..._, hidden: type === 'select' ? false : true };
+		}));
 		for (const check in data) {
-			form.setFieldValue(check, type === 'select' ? true : false)
+			form.setFieldValue(check, type === 'select' ? true : false);
 		}
 	}
 
 	function checkChangeHandler() {
-		const data = form.getFieldsValue()
+		const data = form.getFieldsValue();
 		let result = [];
 		for (const week in data) {
-			data[week] && result.push(Number(week))
+			data[week] && result.push(Number(week));
 		}
 		setShownColumns(shownColumns.map(_ => {
-			return { ..._, hidden: !data[_.dataIndex] }
-		}))
+			return { ..._, hidden: !data[_.dataIndex] };
+		}));
 
 	}
 
@@ -228,8 +227,8 @@ export default function TableSettingModal({
 						type='link'
 						size='small'
 						onClick={() => {
-							const type = shownColumns.some((el) => el.hidden) ? 'select' : 'deselect'
-							сheckAllHandler(type)
+							const type = shownColumns.some((el) => el.hidden) ? 'select' : 'deselect';
+							сheckAllHandler(type);
 						}}>
 						{shownColumns.some((el) => el.hidden) ? 'Выбрать все' : 'Снять все'}
 					</Button>

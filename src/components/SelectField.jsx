@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 
 const SelectField = ({ options, callback, label, required, placeholder, defautlValue }) => {
 
@@ -15,7 +15,7 @@ const SelectField = ({ options, callback, label, required, placeholder, defautlV
                 }
             </select>
         </div>
-    )
-}
+    );
+};
 
-export default SelectField
+export default SelectField;

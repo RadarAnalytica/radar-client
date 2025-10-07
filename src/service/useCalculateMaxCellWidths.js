@@ -42,7 +42,7 @@ export const useCalculateMaxCellWidths = (tableData) => {
       marginProfitCell: 150,
       roiCell: 0,
     };
-  
+
     Object.values(tableData).forEach(yearData => {
       if (yearData.total) {
         const measureDiv = document.createElement('div');
@@ -68,7 +68,7 @@ export const useCalculateMaxCellWidths = (tableData) => {
          const salesText = `${yearData.total?.revenue?.quantity || 0} шт`;
          measureDiv.textContent = salesText;
          cellWidths.salesCell = Math.max(cellWidths.salesCell, measureDiv.offsetWidth);
- 
+
          // Revenue cell
          const revenueText = `${formatPrice(yearData.total?.revenue?.rub || 0)} ₽`;
          measureDiv.textContent = revenueText;
@@ -78,12 +78,12 @@ export const useCalculateMaxCellWidths = (tableData) => {
          const avgPriceText = `${formatPrice(yearData.total?.avg_check || 0)} ₽`;
          measureDiv.textContent = avgPriceText;
          cellWidths.avgPriceCell = Math.max(cellWidths.avgPriceCell, measureDiv.offsetWidth);
- 
+
          // SPP cell
          const sppText = `${yearData.total?.avg_spp || 0} %`;
          measureDiv.textContent = sppText;
          cellWidths.sppCell = Math.max(cellWidths.sppCell, measureDiv.offsetWidth);
- 
+
          // Buyout cell
          const buyoutText = `${yearData.total?.purchase_percent || 0} %`;
          measureDiv.textContent = buyoutText;
@@ -192,7 +192,7 @@ export const useCalculateMaxCellWidths = (tableData) => {
           measureDiv.textContent = otherKeepPercentText;
           const otherKeepPercentWidth = measureDiv.offsetWidth;
           cellWidths.keepOtherCell = Math.max(cellWidths.keepOtherCell, otherKeepRubWidth, otherKeepPercentWidth);
-          
+
           //Pay For Take Cell
           const payForText = `${formatPrice(yearData.total?.acceptance.rub || 0)} ₽`;
           const payForPercentText = `${yearData.total?.acceptance.percent || 0} %`;
@@ -280,7 +280,6 @@ export const useCalculateMaxCellWidths = (tableData) => {
           cellWidths.roiCell = Math.max(cellWidths.roiCell, roiCellWidth);
 
 
-
         document.body.removeChild(measureDiv);
       }
 
@@ -289,7 +288,7 @@ export const useCalculateMaxCellWidths = (tableData) => {
           const measureDiv = document.createElement('div');
           measureDiv.style.cssText = 'position: absolute; visibility: hidden; white-space: nowrap;';
           document.body.appendChild(measureDiv);
-  
+
           // Purchase cell
           const purchasePriceText = `${formatPrice(weekData.data?.purchases?.rub || 0)} ₽`;
           const purchaseQuantityText = `${weekData.data?.purchases?.quantity || 0} шт`;
@@ -298,33 +297,33 @@ export const useCalculateMaxCellWidths = (tableData) => {
           measureDiv.textContent = purchaseQuantityText;
           const purchaseQuantityWidth = measureDiv.offsetWidth;
           cellWidths.purchaseCell = Math.max(cellWidths.purchaseCell, purchasePriceWidth, purchaseQuantityWidth);
-  
+
           // Return cell
           const returnPriceText = `${formatPrice(weekData.data?.return?.rub || 0)} ₽`;
           const returnQuantityText = `${weekData.data?.return?.quantity || 0} шт`;
           measureDiv.textContent = returnPriceText;
           cellWidths.returnCell = Math.max(cellWidths.returnCell, measureDiv.offsetWidth);
-  
+
           // Sales cell
           const salesText = `${weekData.data?.revenue?.quantity || 0} шт`;
           measureDiv.textContent = salesText;
           cellWidths.salesCell = Math.max(cellWidths.salesCell, measureDiv.offsetWidth);
-  
+
           // Revenue cell
           const revenueText = `${formatPrice(weekData.data?.revenue?.rub || 0)} ₽`;
           measureDiv.textContent = revenueText;
           cellWidths.revenueCell = Math.max(cellWidths.revenueCell, measureDiv.offsetWidth);
-  
+
           // Avg price cell
           const avgPriceText = `${formatPrice(weekData.data?.avg_check || 0)} ₽`;
           measureDiv.textContent = avgPriceText;
           cellWidths.avgPriceCell = Math.max(cellWidths.avgPriceCell, measureDiv.offsetWidth);
-  
+
           // SPP cell
           const sppText = `${weekData.data?.avg_spp || 0} %`;
           measureDiv.textContent = sppText;
           cellWidths.sppCell = Math.max(cellWidths.sppCell, measureDiv.offsetWidth);
-  
+
           // Buyout cell
           const buyoutText = `${weekData.data?.purchase_percent || 0} %`;
           measureDiv.textContent = buyoutText;
@@ -433,7 +432,7 @@ export const useCalculateMaxCellWidths = (tableData) => {
           measureDiv.textContent = otherKeepPercentText;
           const otherKeepPercentWidth = measureDiv.offsetWidth;
           cellWidths.keepOtherCell = Math.max(cellWidths.keepOtherCell, otherKeepRubWidth, otherKeepPercentWidth);
-          
+
           //Pay For Take Cell
           const payForText = `${formatPrice(weekData.data?.acceptance.rub || 0)} ₽`;
           const payForPercentText = `${weekData.data?.acceptance.percent || 0} %`;
@@ -521,17 +520,16 @@ export const useCalculateMaxCellWidths = (tableData) => {
           cellWidths.roiCell = Math.max(cellWidths.roiCell, roiCellWidth);
 
 
-
           document.body.removeChild(measureDiv);
         });
       });
     });
-  
+
     // Add padding to all widths
     Object.keys(cellWidths).forEach(key => {
       cellWidths[key] += 26;
     });
-  
+
     return cellWidths;
-  }, [tableData])
+  }, [tableData]);
 };

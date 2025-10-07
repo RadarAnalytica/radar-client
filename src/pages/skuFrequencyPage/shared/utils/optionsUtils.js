@@ -2,42 +2,42 @@ const dynamicNormalizer = (dynamic, from, to) => {
     let result = {
         start: null,
         end: null
-    }
-    if (!dynamic || (!from && !to)) { return result }
+    };
+    if (!dynamic || (!from && !to)) { return result; }
     if (dynamic === 'Рост') {
         result = {
             start: parseInt(from) || null,
             end: parseInt(to) || null
-        }
+        };
         return result;
     }
     if (dynamic === 'Падение') {
-        console.log(parseInt(from) * -1)
+        console.log(parseInt(from) * -1);
         result = {
             start: (parseInt(from) * -1) || null,
             end: (parseInt(to) * -1) || null
-        }
+        };
         return result;
     }
-    return result
-}
+    return result;
+};
 
 
 export const complexRequestObjectGenerator = (fields) => {
 
-    let { months_grow, months_fall } = fields
+    let { months_grow, months_fall } = fields;
 
     if (!months_grow) {
-        months_grow = null
+        months_grow = null;
     }
     if (months_grow && Array.isArray(months_grow) && months_grow.length === 0) {
-        months_grow = null
+        months_grow = null;
     }
     if (!months_fall) {
-        months_fall = null
+        months_fall = null;
     }
     if (months_fall && Array.isArray(months_fall) && months_fall.length === 0) {
-        months_fall = null
+        months_fall = null;
     }
 
 
@@ -197,4 +197,4 @@ export const complexRequestObjectGenerator = (fields) => {
     };
 
     return requestObject;
-}
+};

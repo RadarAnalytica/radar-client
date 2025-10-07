@@ -179,13 +179,13 @@ const Subscriptions = () => {
               : restoreSubscription({
                 subscriptionId: item.id,
               });
-            const paymentDateEndString = item.validity_period
-            const paymentDateValue = new Date(Date.parse(paymentDateEndString))
-            paymentDateValue.setDate(paymentDateValue.getDate() + 1)
-            const paymentDate = `${paymentDateValue.getDate()} ${months[paymentDateValue.getMonth()]}`
+            const paymentDateEndString = item.validity_period;
+            const paymentDateValue = new Date(Date.parse(paymentDateEndString));
+            paymentDateValue.setDate(paymentDateValue.getDate() + 1);
+            const paymentDate = `${paymentDateValue.getDate()} ${months[paymentDateValue.getMonth()]}`;
 
-            const activeTillPeriodValue = new Date(Date.parse(paymentDateEndString))
-            const activeTillPeriod = `${activeTillPeriodValue.getDate()} ${months[activeTillPeriodValue.getMonth()]}`
+            const activeTillPeriodValue = new Date(Date.parse(paymentDateEndString));
+            const activeTillPeriod = `${activeTillPeriodValue.getDate()} ${months[activeTillPeriodValue.getMonth()]}`;
 
             return (
               <div className="sub-card">

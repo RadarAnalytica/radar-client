@@ -1,9 +1,9 @@
-import styles from './stockChartCustomHeader.module.css'
-import { ConfigProvider, Segmented } from 'antd'
-import { useAppSelector, useAppDispatch } from '../../../../redux/hooks'
-import { actions as supplierAnalysisActions } from '../../../../redux/supplierAnalysis/supplierAnalysisSlice'
-import { selectStockChartTab } from '../../../../redux/supplierAnalysis/supplierAnalysisSelectors'
-import { useCallback, memo } from 'react'
+import styles from './stockChartCustomHeader.module.css';
+import { ConfigProvider, Segmented } from 'antd';
+import { useAppSelector, useAppDispatch } from '../../../../redux/hooks';
+import { actions as supplierAnalysisActions } from '../../../../redux/supplierAnalysis/supplierAnalysisSlice';
+import { selectStockChartTab } from '../../../../redux/supplierAnalysis/supplierAnalysisSelectors';
+import { useCallback, memo } from 'react';
 
 const tabs = [
     'Входящие заказы',
@@ -11,7 +11,7 @@ const tabs = [
     'Средние цены',
     'Средние скидки',
     'Товарные остатки',
-]
+];
 
 const theme = {
     token: {
@@ -29,16 +29,16 @@ const theme = {
             trackPadding: 0
         }
     }
-}
+};
 
 const StockChartCustomHeader = memo(() => {
 
     const dispatch = useAppDispatch();
-    const stockChartTab = useAppSelector(selectStockChartTab)
+    const stockChartTab = useAppSelector(selectStockChartTab);
 
     const handleTabChange = useCallback((value) => {
-        dispatch(supplierAnalysisActions.setStockChartTab(value))
-    }, [dispatch])
+        dispatch(supplierAnalysisActions.setStockChartTab(value));
+    }, [dispatch]);
 
     return (
         <div className={styles.header}>
@@ -52,7 +52,7 @@ const StockChartCustomHeader = memo(() => {
                 />
             </ConfigProvider>
         </div>
-    )
-})
+    );
+});
 
-export default StockChartCustomHeader
+export default StockChartCustomHeader;

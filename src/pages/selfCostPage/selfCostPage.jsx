@@ -23,15 +23,15 @@ const initDataStatus = {
 
 const SelfCostPage = () => {
     const { isDemoMode } = useDemoMode();
-    const [searchInputValue, setSearchInputValue] = useState('')
+    const [searchInputValue, setSearchInputValue] = useState('');
     const [isSuccess, setIsSuccess] = useState(false);
-    const [dataStatus, setDataStatus] = useState(initDataStatus)
+    const [dataStatus, setDataStatus] = useState(initDataStatus);
     const [loading, setLoading] = useState(false);
-    const [tableData, setTableData] = useState() // данные для рендера таблицы
-    const [filteredTableData, setFilteredTableData] = useState() // данные для рендера таблицы
-    const { authToken } = useContext(AuthContext)
+    const [tableData, setTableData] = useState(); // данные для рендера таблицы
+    const [filteredTableData, setFilteredTableData] = useState(); // данные для рендера таблицы
+    const { authToken } = useContext(AuthContext);
     const { activeBrand, selectedRange, isFiltersLoaded, activeBrandName, activeArticle, activeGroup } = useAppSelector((state) => state.filters);
-    const filters = useAppSelector(store => store.filters)
+    const filters = useAppSelector(store => store.filters);
     //const prevShop = useRef(activeBrand)
 
     const getTableData = useCallback(async (authToken, shopId, filters) => {
@@ -43,8 +43,8 @@ const SelfCostPage = () => {
         }
 
         const parsedData = await res.json();
-        const { items } = parsedData.data
-        setDataStatus({ ...initDataStatus, isLoading: false })
+        const { items } = parsedData.data;
+        setDataStatus({ ...initDataStatus, isLoading: false });
         // sorting the data
         let sortedData = items.sort((a, b) => a.product - b.product);
         sortedData = sortedData.sort((a, b) => {
@@ -63,44 +63,44 @@ const SelfCostPage = () => {
             if (a.photo) return -1;
             if (b.photo) return 1;
             return 0;
-        })
-        setTableData([...sortedData])
-        setFilteredTableData([...sortedData])
+        });
+        setTableData([...sortedData]);
+        setFilteredTableData([...sortedData]);
         //prevShop.current = activeBrand
-    }, [])
+    }, []);
 
     const noSearchAction = useCallback(() => {
-        getTableData(authToken, activeBrand.id, filters)
-    }, [authToken, activeBrand, filters, getTableData])
+        getTableData(authToken, activeBrand.id, filters);
+    }, [authToken, activeBrand, filters, getTableData]);
 
     const resetSearch = useCallback(() => {
         if (searchInputValue) {
-            setSearchInputValue('')
-            setFilteredTableData(tableData)
+            setSearchInputValue('');
+            setFilteredTableData(tableData);
         }
-    }, [searchInputValue, tableData])
+    }, [searchInputValue, tableData]);
 
     //задаем начальную дату
     useEffect(() => {
         if (activeBrand && activeBrand.is_primary_collect && isFiltersLoaded) {
-            getTableData(authToken, activeBrand.id, filters)
+            getTableData(authToken, activeBrand.id, filters);
         }
-    }, [activeBrand, selectedRange, isFiltersLoaded, activeBrandName, activeArticle, activeGroup])
+    }, [activeBrand, selectedRange, isFiltersLoaded, activeBrandName, activeArticle, activeGroup]);
 
     useEffect(() => {
         let timeout;
         if (isSuccess) {
-            timeout = setTimeout(() => { setIsSuccess(false) }, 1500)
+            timeout = setTimeout(() => { setIsSuccess(false); }, 1500);
         }
         return () => {
-            if (timeout) clearTimeout(timeout)
-        }
-    }, [isSuccess])
+            if (timeout) clearTimeout(timeout);
+        };
+    }, [isSuccess]);
 
-    const memoizedDataStatus = useMemo(() => dataStatus, [dataStatus])
-    const memoizedFilteredTableData = useMemo(() => filteredTableData, [filteredTableData])
-    const memoizedTableData = useMemo(() => tableData, [tableData])
-    const memoizedSearchInputValue = useMemo(() => searchInputValue, [searchInputValue])
+    const memoizedDataStatus = useMemo(() => dataStatus, [dataStatus]);
+    const memoizedFilteredTableData = useMemo(() => filteredTableData, [filteredTableData]);
+    const memoizedTableData = useMemo(() => tableData, [tableData]);
+    const memoizedSearchInputValue = useMemo(() => searchInputValue, [searchInputValue]);
 
     return (
         <main className={styles.page}>
@@ -130,7 +130,7 @@ const SelfCostPage = () => {
                         target='_blank'
                     />
                 </div>
-                
+
                 {activeBrand && !activeBrand.is_primary_collect &&
                     <DataCollectWarningBlock
                         title='Ваши данные еще формируются и обрабатываются.'
@@ -182,7 +182,7 @@ const SelfCostPage = () => {
             />
 
         </main>
-    )
-}
+    );
+};
 
 export default SelfCostPage;

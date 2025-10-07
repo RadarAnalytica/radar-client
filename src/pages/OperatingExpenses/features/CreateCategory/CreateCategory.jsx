@@ -18,7 +18,7 @@ export default function ModalCreateCategory({
 	const onFinish = (form) => {
 		// if (!!data) {
 		// 	onSubmit({name: form.name.trim()});
-		// 	return 
+		// 	return
 		// }
 		onSubmit({ name: form.name.trim() });
 	};

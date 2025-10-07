@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useLayoutEffect } from 'react'
-import styles from './noSubscriptionPlugPage.module.css'
-import Header from '../../components/sharedComponents/header/header'
-import Sidebar from '../../components/sharedComponents/sidebar/sidebar'
-import MobilePlug from '../../components/sharedComponents/mobilePlug/mobilePlug'
-import NoSubscriptionWarningBlock from '../../components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock'
+import React, { useState, useEffect, useLayoutEffect } from 'react';
+import styles from './noSubscriptionPlugPage.module.css';
+import Header from '../../components/sharedComponents/header/header';
+import Sidebar from '../../components/sharedComponents/sidebar/sidebar';
+import MobilePlug from '../../components/sharedComponents/mobilePlug/mobilePlug';
+import NoSubscriptionWarningBlock from '../../components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock';
 // import dashboardPlug from '../../assets/dashboard_plug.png'
 // import reportPlug from '../../assets/report-main_plug.png'
 // import mapPlug from '../../assets/orders-map_plug.png'
@@ -13,56 +13,56 @@ import NoSubscriptionWarningBlock from '../../components/sharedComponents/noSubs
 // import monitoringPlug from '../../assets/monitoring_plug.png'
 // import seoPlug from '../../assets/seo_plug.png'
 //dashboard plugs
-import dashboard1 from '../../assets/plugs/dashboard/dashboard-1.svg'
-import dashboard2 from '../../assets/plugs/dashboard/dashboard_2.svg'
-import dashboard3 from '../../assets/plugs/dashboard/dashboard_3.svg'
-import dashboard4 from '../../assets/plugs/dashboard/dashboard_4.svg'
+import dashboard1 from '../../assets/plugs/dashboard/dashboard-1.svg';
+import dashboard2 from '../../assets/plugs/dashboard/dashboard_2.svg';
+import dashboard3 from '../../assets/plugs/dashboard/dashboard_3.svg';
+import dashboard4 from '../../assets/plugs/dashboard/dashboard_4.svg';
 //finreports plugs
-import fin1 from '../../assets/plugs/fin_reports/fin-1.svg'
-import fin2 from '../../assets/plugs/fin_reports/fin-2.png'
+import fin1 from '../../assets/plugs/fin_reports/fin-1.svg';
+import fin2 from '../../assets/plugs/fin_reports/fin-2.png';
 //map plugs
-import geo1 from '../../assets/plugs/orders_map/geo-1.svg'
-import geo2 from '../../assets/plugs/orders_map/geo-2.svg'
-import geo4 from '../../assets/plugs/orders_map/geo-4.svg'
+import geo1 from '../../assets/plugs/orders_map/geo-1.svg';
+import geo2 from '../../assets/plugs/orders_map/geo-2.svg';
+import geo4 from '../../assets/plugs/orders_map/geo-4.svg';
 //abc plugs
-import abc1 from '../../assets/plugs/abc/abc-1.svg'
-import abc2 from '../../assets/plugs/abc/abc-2.png'
+import abc1 from '../../assets/plugs/abc/abc-1.svg';
+import abc2 from '../../assets/plugs/abc/abc-2.png';
 //stock plugs
-import stock1 from '../../assets/plugs/prod_analytic/prod-1.png'
-import stock2 from '../../assets/plugs/prod_analytic/prod-2.svg'
-import stock3 from '../../assets/plugs/prod_analytic/prod-3.svg'
-import stock4 from '../../assets/plugs/prod_analytic/prod-4.svg'
-import stock5 from '../../assets/plugs/prod_analytic/prod-5.svg'
+import stock1 from '../../assets/plugs/prod_analytic/prod-1.png';
+import stock2 from '../../assets/plugs/prod_analytic/prod-2.svg';
+import stock3 from '../../assets/plugs/prod_analytic/prod-3.svg';
+import stock4 from '../../assets/plugs/prod_analytic/prod-4.svg';
+import stock5 from '../../assets/plugs/prod_analytic/prod-5.svg';
 //ai plugs
-import ai1 from '../../assets/plugs/ai-generation/ai-1.svg'
+import ai1 from '../../assets/plugs/ai-generation/ai-1.svg';
 //monitor plugs
-import monNew from '../../assets/plugs/monitoring/monitoring_1.webp'
+import monNew from '../../assets/plugs/monitoring/monitoring_1.webp';
 //import monitor1 from '../../assets/plugs/monitoring/monitoring-1.png'
 //import monitor2 from '../../assets/plugs/monitoring/monitoring-2.svg'
 //monitor plugs
-import seo1 from '../../assets/plugs/seo/seo-1.png'
-import seo2 from '../../assets/plugs/seo/seo-2.svg'
+import seo1 from '../../assets/plugs/seo/seo-1.png';
+import seo2 from '../../assets/plugs/seo/seo-2.svg';
 //shops plugs
-import shop1 from '../../assets/plugs/linked_shops/shop-1.svg'
+import shop1 from '../../assets/plugs/linked_shops/shop-1.svg';
 //subscription plugs
-import sub1 from '../../assets/plugs/subscription/subscriptions.svg'
+import sub1 from '../../assets/plugs/subscription/subscriptions.svg';
 //sku analysis plug
-import sku1 from '../../assets/plugs/sku_analysis/1.webp'
-import sku2 from '../../assets/plugs/sku_analysis/2.svg'
-import sku3 from '../../assets/plugs/sku_analysis/3.svg'
-import sku4 from '../../assets/plugs/sku_analysis/4.svg'
-import sku5 from '../../assets/plugs/sku_analysis/5.webp'
+import sku1 from '../../assets/plugs/sku_analysis/1.webp';
+import sku2 from '../../assets/plugs/sku_analysis/2.svg';
+import sku3 from '../../assets/plugs/sku_analysis/3.svg';
+import sku4 from '../../assets/plugs/sku_analysis/4.svg';
+import sku5 from '../../assets/plugs/sku_analysis/5.webp';
 //report week plug
-import reportWeek1 from '../../assets/plugs/report_week/week_report.webp'
+import reportWeek1 from '../../assets/plugs/report_week/week_report.webp';
 //selfcost
-import ss1 from '../../assets/plugs/selfcost/ss_1.png'
+import ss1 from '../../assets/plugs/selfcost/ss_1.png';
 //trending-requests
-import tr1 from '../../assets/plugs/trend/trend-1.svg'
-import tr2 from '../../assets/plugs/trend/trend-2.svg'
+import tr1 from '../../assets/plugs/trend/trend-1.svg';
+import tr2 from '../../assets/plugs/trend/trend-2.svg';
 //p&l report
 //import pl1 from '../../assets/plugs/pl-report/opiu-1.svg'
-import pl2 from '../../assets/plugs/pl-report/opiu-2.svg'
-import rnp from '../../assets/plugs/rnp/rnp-1.png'
+import pl2 from '../../assets/plugs/pl-report/opiu-2.svg';
+import rnp from '../../assets/plugs/rnp/rnp-1.png';
 
 
 const plugsConfig = {
@@ -85,19 +85,19 @@ const plugsConfig = {
     "report-profit-loss": [pl2],
     "supplier-analysis": [sku1, sku2, sku3, sku4, sku5],
     "rnp": [rnp],
-}
+};
 
 const NoSubscriptionPlugPage = ({ title, pathname }) => {
-    const [isImageLoaded, setIsImageLoaded] = useState(false)
-    let currentImages = plugsConfig[pathname] ? [...plugsConfig[pathname]] : []
-    
+    const [isImageLoaded, setIsImageLoaded] = useState(false);
+    let currentImages = plugsConfig[pathname] ? [...plugsConfig[pathname]] : [];
+
     useEffect(() => {
-        setIsImageLoaded(false)
+        setIsImageLoaded(false);
         return () => {
-            currentImages = undefined
-            setIsImageLoaded(false)
-        }
-    }, [pathname])
+            currentImages = undefined;
+            setIsImageLoaded(false);
+        };
+    }, [pathname]);
 
     return (
         <main className={styles.page}>
@@ -131,7 +131,7 @@ const NoSubscriptionPlugPage = ({ title, pathname }) => {
                                             alt=''
                                             loading='eager'
                                             decoding='async'
-                                            fetchpriority='high'
+                                            fetchPriority='high'
                                             style={{
                                                 padding: pathname === 'report-main' ? '0 12px'
                                                     : pathname === 'orders-map' || pathname === 'abc-data' ? '0 16px' : '0',
@@ -141,7 +141,7 @@ const NoSubscriptionPlugPage = ({ title, pathname }) => {
                                             }}
                                             hidden={!isImageLoaded}
                                             onLoad={() => {
-                                                setIsImageLoaded(true)
+                                                setIsImageLoaded(true);
                                             }}
                                         />
                                         <div className={styles.page__loaderWrapperInner} hidden={isImageLoaded}>
@@ -149,12 +149,12 @@ const NoSubscriptionPlugPage = ({ title, pathname }) => {
                                         </div>
 
                                     </>
-                                )
+                                );
                             }
 
                             return (
-                                <img src={i} key={id} alt='' loading='lazy' decoding='async' fetchpriority='low' hidden={!isImageLoaded} />
-                            )
+                                <img src={i} key={id} alt='' loading='lazy' decoding='async' fetchPriority='low' hidden={!isImageLoaded} />
+                            );
                         })}
 
                     </div>
@@ -167,7 +167,7 @@ const NoSubscriptionPlugPage = ({ title, pathname }) => {
             </section>
             {/* ---------------------- */}
         </main>
-    )
-}
+    );
+};
 
 export default NoSubscriptionPlugPage;

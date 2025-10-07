@@ -1,9 +1,8 @@
-
-import styles from './MainPage.module.css'
-import Sidebar from '../../components/sharedComponents/sidebar/sidebar'
-import MobilePlug from '../../components/sharedComponents/mobilePlug/mobilePlug'
-import Header from '../../components/sharedComponents/header/header'
-import { VideoWidget, FeaturesWidget, VideoWidgetOneLine } from './widgets'
+import styles from './MainPage.module.css';
+import Sidebar from '../../components/sharedComponents/sidebar/sidebar';
+import MobilePlug from '../../components/sharedComponents/mobilePlug/mobilePlug';
+import Header from '../../components/sharedComponents/header/header';
+import { VideoWidget, FeaturesWidget, VideoWidgetOneLine } from './widgets';
 import { Banner } from './features';
 import { useDemoMode } from "@/app/providers";
 import NoSubscriptionWarningBlock from '@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock';
@@ -32,6 +31,6 @@ export default function MainPage() {
                 <Banner.Bottom />
             </section>
         </main>
-    )
+    );
 }
 

@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchRequestsMonitoringData, fetchRequestsMonitoringDataEasy } from './requestsMonitoringActions'
+import { fetchRequestsMonitoringData, fetchRequestsMonitoringDataEasy } from './requestsMonitoringActions';
 import { optionsConfig } from "../../pages/skuFrequencyPage/shared";
 
 const initialState = {
@@ -30,17 +30,17 @@ const requestsMonitoringSlice = createSlice({
                 ...state,
                 requestObject: action.payload.data,
                 formType: action.payload.formType
-            }
+            };
         },
         updateRequestObject: (state, action) => {
-            console.log('action', action.payload)
+            console.log('action', action.payload);
             return {
                 ...state,
                 requestObject: {
                     ...state.requestObject,
                     ...action.payload
                 }
-            }
+            };
         },
         updatePagination: (state, action) => {
             return {
@@ -53,31 +53,31 @@ const requestsMonitoringSlice = createSlice({
                     ...state.pagination,
                     page: action.payload.page
                 }
-            }
+            };
         },
         setRequestStatus: (state, action) => {
-            state.requestStatus = action.payload
+            state.requestStatus = action.payload;
         },
         setButtonStatus: (state, action) => {
-            state.isLoadingForButton = action.payload
+            state.isLoadingForButton = action.payload;
         },
         updateOptionsConfig: (state, action) => {
-            state.optionsConfig = action.payload
+            state.optionsConfig = action.payload;
         },
         setDefaultOptionsConfig: (state, action) => {
            return {
             ...state,
             optionsConfig: [...optionsConfig]
-           }
+           };
         },
         resetState: () => {
-            return initialState
+            return initialState;
         }
     },
     extraReducers: (bulder) => {
         bulder
         .addCase(fetchRequestsMonitoringData.fulfilled, (state, action) => {
-            const { queries, limit, total_pages, page } = action.payload
+            const { queries, limit, total_pages, page } = action.payload;
             return {
                 ...state,
                 requestData: queries,
@@ -86,11 +86,11 @@ const requestsMonitoringSlice = createSlice({
                     page,
                     total_pages: total_pages
                 }
-            }
+            };
               //  state.requestData = action.payload;
         })
         .addCase(fetchRequestsMonitoringDataEasy.fulfilled, (state, action) => {
-            const { queries, limit, total_pages, page } = action.payload
+            const { queries, limit, total_pages, page } = action.payload;
             return {
                 ...state,
                 requestData: queries,
@@ -99,9 +99,9 @@ const requestsMonitoringSlice = createSlice({
                     page,
                     total_pages: total_pages
                 }
-            }
+            };
                // state.requestData = action.payload;
-        })
+        });
     }
 });
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './chartControls.module.css'
+import styles from './chartControls.module.css';
 import { Checkbox, ConfigProvider, Tooltip } from 'antd';
 
 const ChartControls = ({ chartControls, setChartControls }) => {
@@ -11,24 +11,24 @@ const ChartControls = ({ chartControls, setChartControls }) => {
                 return {
                     ...i,
                     isActive: checked
-                }
+                };
             } else {
-                return i
+                return i;
             }
-        })]
-        setChartControls(updatedChartControls)
-        localStorage.setItem('SuppierAnalysysMainChartControls', JSON.stringify(updatedChartControls))
-    }
+        })];
+        setChartControls(updatedChartControls);
+        localStorage.setItem('SuppierAnalysysMainChartControls', JSON.stringify(updatedChartControls));
+    };
 
     const deselectButtonClickHandler = () => {
-        setChartControls([...chartControls].map(i => ({ ...i, isActive: false })))
-        localStorage.setItem('SuppierAnalysysMainChartControls', JSON.stringify([...chartControls].map(i => ({ ...i, isActive: false }))))
-    }
+        setChartControls([...chartControls].map(i => ({ ...i, isActive: false })));
+        localStorage.setItem('SuppierAnalysysMainChartControls', JSON.stringify([...chartControls].map(i => ({ ...i, isActive: false }))));
+    };
 
     const selectAllButtonClickHandler = () => {
-        setChartControls([...chartControls].map(i => ({ ...i, isActive: true })))
-        localStorage.setItem('SuppierAnalysysMainChartControls', JSON.stringify([...chartControls].map(i => ({ ...i, isActive: true }))))
-    }
+        setChartControls([...chartControls].map(i => ({ ...i, isActive: true })));
+        localStorage.setItem('SuppierAnalysysMainChartControls', JSON.stringify([...chartControls].map(i => ({ ...i, isActive: true }))));
+    };
 
     return (
         <div className={styles.controls}>
@@ -82,7 +82,7 @@ const ChartControls = ({ chartControls, setChartControls }) => {
                             </Checkbox>
                         </ConfigProvider>
                     </div>
-                )
+                );
             })}
             {chartControls?.some(_ => _.isActive) ?
                 <button className={styles.controls__deselectButton} onClick={deselectButtonClickHandler}>
@@ -95,7 +95,7 @@ const ChartControls = ({ chartControls, setChartControls }) => {
             }
 
         </div>
-    )
-}
+    );
+};
 
 export default ChartControls;

@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 
 const MiniDemo = () => {
 
@@ -28,7 +28,7 @@ const MiniDemo = () => {
         </svg>
 
 
-    )
-}
+    );
+};
 
-export default MiniDemo
+export default MiniDemo;

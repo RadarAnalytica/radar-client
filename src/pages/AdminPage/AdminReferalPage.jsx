@@ -1,9 +1,9 @@
 import React, { useState, useContext, useEffect } from 'react';
-import styles from './AdminReferalPage.module.css'
+import styles from './AdminReferalPage.module.css';
 import MobilePlug from '../../components/sharedComponents/mobilePlug/mobilePlug';
 import AuthContext from '../../service/AuthContext';
-import Header from '../../components/sharedComponents/header/header'
-import Sidebar from '../../components/sharedComponents/sidebar/sidebar'
+import Header from '../../components/sharedComponents/header/header';
+import Sidebar from '../../components/sharedComponents/sidebar/sidebar';
 import ErrorModal from '../../components/sharedComponents/modals/errorModal/errorModal';
 import { SearchWidget } from './widgets';
 import { Input, Button, ConfigProvider, Form, Table } from 'antd';
@@ -14,13 +14,12 @@ import { useLocation } from 'react-router-dom';
 import { URL } from '../../service/config';
 
 
-
 const initStatus = {
     isLoading: false,
     isError: false,
     isSuccess: false,
     message: ''
-}
+};
 
 const HISTORY_COLUMNS = [
     { title: 'Дата', dataIndex: 'transaction_date', width: 100 },
@@ -29,46 +28,46 @@ const HISTORY_COLUMNS = [
     { title: 'Админ', dataIndex: 'admin_id', width: 100 },
     { title: 'Тип', dataIndex: 'transaction_type', width: 100 },
     { title: 'Вид', dataIndex: 'transaction_direction', width: 100 },
-]
+];
 
 const USER_COLUMNS = [
     { title: 'ID', dataIndex: 'id', width: 100 },
     { title: 'Ссылка', dataIndex: 'referral_link', width: 100 },
     { title: 'Количество', dataIndex: 'referral_count', width: 100 },
     { title: 'Баланс', dataIndex: 'bonus_balance', width: 100 },
-]
+];
 
 const fetchUserData = async (token, userId, setStatus, initStatus, setData) => {
     if (!userId) {
-        setStatus({ ...initStatus, isError: true, message: 'Пожалуйста введите id пользователя' })
-        return
+        setStatus({ ...initStatus, isError: true, message: 'Пожалуйста введите id пользователя' });
+        return;
     }
 
-    setStatus({ ...initStatus, isLoading: true })
+    setStatus({ ...initStatus, isLoading: true });
     try {
         let res = await fetch(`${URL}/api/admin/referral-system/${userId}/bonuses`, {
             headers: {
                 'Content-type': 'application/json',
                 'Authorization': 'JWT ' + token
             },
-        })
+        });
 
         if (!res.ok) {
-            setStatus({ ...initStatus, isError: true, message: 'Не удалось получить данные' })
-            return
+            setStatus({ ...initStatus, isError: true, message: 'Не удалось получить данные' });
+            return;
         }
 
         res = await res.json();
-        setStatus({ ...initStatus, isSuccess: true })
-        setData(res.data)
+        setStatus({ ...initStatus, isSuccess: true });
+        setData(res.data);
 
     } catch {
-        setStatus({ ...initStatus, isError: true, message: 'Не удалось получить данные' })
+        setStatus({ ...initStatus, isError: true, message: 'Не удалось получить данные' });
     }
-}
+};
 
 const accountRefill = async (token, reqData, setStatus, initStatus, setData, setSuccessRefill) => {
-    setStatus({ ...initStatus, isLoading: true })
+    setStatus({ ...initStatus, isLoading: true });
     try {
         let res = await fetch(`${URL}/api/admin/referral-system/bonus/`, {
             method: 'POST',
@@ -77,28 +76,28 @@ const accountRefill = async (token, reqData, setStatus, initStatus, setData, set
                 'Authorization': 'JWT ' + token
             },
             body: JSON.stringify(reqData)
-        })
+        });
 
         if (!res.ok) {
-            setStatus({ ...initStatus, isError: true, message: 'Не удалось получить данные' })
-            return
+            setStatus({ ...initStatus, isError: true, message: 'Не удалось получить данные' });
+            return;
         }
-        await fetchUserData(token, reqData.referrer_id, setStatus, initStatus, setData)
-        setStatus(initStatus)
-        setSuccessRefill(true)
+        await fetchUserData(token, reqData.referrer_id, setStatus, initStatus, setData);
+        setStatus(initStatus);
+        setSuccessRefill(true);
     } catch {
-        setStatus({ ...initStatus, isError: true, message: 'Не удалось получить данные' })
+        setStatus({ ...initStatus, isError: true, message: 'Не удалось получить данные' });
     }
-}
+};
 
 const AdminReferalPage = () => {
 
-    const { authToken, user } = useContext(AuthContext)
-    const [status, setStatus] = useState(initStatus)
-    const [data, setData] = useState()
-    const [searchInputValue, setSearchInputValue] = useState('')
-    const [successRefill, setSuccessRefill] = useState(false)
-    const [form] = Form.useForm()
+    const { authToken, user } = useContext(AuthContext);
+    const [status, setStatus] = useState(initStatus);
+    const [data, setData] = useState();
+    const [searchInputValue, setSearchInputValue] = useState('');
+    const [successRefill, setSuccessRefill] = useState(false);
+    const [form] = Form.useForm();
     const location = useLocation();
     const { id } = location.state || {};
 
@@ -108,16 +107,16 @@ const AdminReferalPage = () => {
             "referrer_id": data.id,
             "admin_id": user.id,
             "transaction_date": moment().toISOString(),
-        }
-        accountRefill(authToken, dataObject, setStatus, initStatus, setData, setSuccessRefill)
-    }
+        };
+        accountRefill(authToken, dataObject, setStatus, initStatus, setData, setSuccessRefill);
+    };
 
     useEffect(() => {
         if (id) {
-            setSearchInputValue(id)
-            fetchUserData(authToken, id, setStatus, initStatus, setData)
+            setSearchInputValue(id);
+            fetchUserData(authToken, id, setStatus, initStatus, setData);
         }
-    }, [id])
+    }, [id]);
 
     return (
         <main className={styles.page}>
@@ -244,8 +243,6 @@ const AdminReferalPage = () => {
             {/* ---------------------- */}
 
 
-
-
             {/*  modals */}
             <ErrorModal
                 open={status.isError}
@@ -271,7 +268,7 @@ const AdminReferalPage = () => {
             />
         </main>
 
-    )
-}
+    );
+};
 
 export default AdminReferalPage;

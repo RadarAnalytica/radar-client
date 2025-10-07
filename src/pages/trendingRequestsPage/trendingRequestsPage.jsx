@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react'
-import styles from './trendingRequests.module.css'
-import Header from '@/components/sharedComponents/header/header'
-import Sidebar from '@/components/sharedComponents/sidebar/sidebar'
-import MobilePlug from '@/components/sharedComponents/mobilePlug/mobilePlug'
-import { ParamsWidget, TableWidget } from './widgets'
-import ErrorModal from '@/components/sharedComponents/modals/errorModal/errorModal'
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import styles from './trendingRequests.module.css';
+import Header from '@/components/sharedComponents/header/header';
+import Sidebar from '@/components/sharedComponents/sidebar/sidebar';
+import MobilePlug from '@/components/sharedComponents/mobilePlug/mobilePlug';
+import { ParamsWidget, TableWidget } from './widgets';
+import ErrorModal from '@/components/sharedComponents/modals/errorModal/errorModal';
 import { fetchApi } from "@/service/fetchApi";
 import { useDemoMode } from "@/app/providers";
 import NoSubscriptionWarningBlock
@@ -33,7 +33,7 @@ const TrendingRequestsPage = () => {
     const [sortState, setSortState] = useState(initSortState); // стейт сортировки (см initSortState)
 
     const getTableData = useCallback(async (request) => {
-        setRequestStatus({ ...initRequestStatus, isLoading: true })
+        setRequestStatus({ ...initRequestStatus, isLoading: true });
         try {
             let res = await fetchApi(`https://radarmarket.ru/api/web-service/trending-queries/get`, {
                 method: 'POST',
@@ -42,29 +42,29 @@ const TrendingRequestsPage = () => {
                     'cache-control': 'public, must-revalidate, max-age=86400',
                 },
                 body: JSON.stringify(request)
-            })
+            });
 
             if (!res.ok) {
-                return setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось получить данные таблицы. Попробуйте перезагрузить страницу.' })
+                return setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось получить данные таблицы. Попробуйте перезагрузить страницу.' });
             }
-            res = await res.json()
-            setTableData(res.queries)
-            setRequestStatus(initRequestStatus)
-            setTablePaginationState({ limit: res.limit, page: res.page, total_pages: res.limit * res.total_pages })
-            setIsParamsVisible(false)
+            res = await res.json();
+            setTableData(res.queries);
+            setRequestStatus(initRequestStatus);
+            setTablePaginationState({ limit: res.limit, page: res.page, total_pages: res.limit * res.total_pages });
+            setIsParamsVisible(false);
         } catch {
-            setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось получить данные таблицы. Попробуйте перезагрузить страницу.' })
+            setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось получить данные таблицы. Попробуйте перезагрузить страницу.' });
         }
     }, []);
 
     useEffect(() => {
         if (requestState) {
-            getTableData(requestState)
+            getTableData(requestState);
         }
     }, [requestState, getTableData]);
 
     const handleErrorModalClose = useCallback(() => {
-        setRequestStatus(initRequestStatus)
+        setRequestStatus(initRequestStatus);
     }, []);
 
     const memoizedHeaderProps = useMemo(() => ({
@@ -83,7 +83,7 @@ const TrendingRequestsPage = () => {
             <section className={styles.page__content}>
                 <div className={styles.page__wrapper}>
                     <div className={styles.page__headerWrapper}>
-                        <Header 
+                        <Header
                             {...memoizedHeaderProps}
                             videoReviewLink='https://play.boomstream.com/JDw00KbS?size=cover&color=%23ffffff&autostart=0&loop=1&title=0&volume=50'
                         />
@@ -131,7 +131,7 @@ const TrendingRequestsPage = () => {
             />
         </main>
     );
-}
+};
 
 export default TrendingRequestsPage;
 

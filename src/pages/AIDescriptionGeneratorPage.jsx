@@ -26,11 +26,11 @@ import NoSubscriptionWarningBlock from '@/components/sharedComponents/noSubscrip
 function declineGeneration(count) {
   const lastTwo = count % 100;
   const lastOne = count % 10;
-  
+
   if (lastTwo >= 11 && lastTwo <= 19) {
     return `${count} генераций`;
   }
-  
+
   switch (lastOne) {
     case 1:
       return `${count} генерация`;
@@ -142,7 +142,7 @@ const AiDescriptionGeneratorPage = () => {
         handleShowModalError();
       }
     } catch (e) {
-      console.error('Ошибка сервера:', e)
+      console.error('Ошибка сервера:', e);
       if (e.response) {
         setErrorMessage(`Ошибка сервера.`);
       } else if (e.request) {
@@ -181,17 +181,17 @@ const AiDescriptionGeneratorPage = () => {
         if (!res.ok) {
           setErrorMessage('Что-то пошло не так!');
           handleShowModalError();
-          return
+          return;
         }
 
         // Проверка на отсутствие данных
         if (!res || res.length === 0) {
           setErrorMessage('Не правильная ссылка или артикул.');
           handleShowModalError();
-          return
+          return;
         }
 
-        res = await res.json()
+        res = await res.json();
         if (res && Number.isInteger(res)) {
           localStorage.setItem('generatedId', res);
         }
@@ -249,7 +249,7 @@ const AiDescriptionGeneratorPage = () => {
           setDescription(res); // Set the fetched data
           localStorage.removeItem('generatedId');
           setIsLoading(false); // Stop loading state
-          getGenerationsAmount()
+          getGenerationsAmount();
           clearInterval(intervalId); // Clear the interval
         } else {
           console.log('Result is null or empty, retrying...');
@@ -271,7 +271,7 @@ const AiDescriptionGeneratorPage = () => {
     if (linksArray?.length) {
       await updateAiDescriptionGeneratorKeyword(authToken, linksArray);
     }
-  }
+  };
 
 
   const handleCopy = async () => {
@@ -296,7 +296,7 @@ const AiDescriptionGeneratorPage = () => {
       return;
     }
 
-    const { productName, productDescription } = form.getFieldsValue()
+    const { productName, productDescription } = form.getFieldsValue();
     if (productDescription.length < 30) {
       setErrorMessage('Краткое описание должно содержать минимум 30 символов.');
       setShowModalError(true);
@@ -328,23 +328,23 @@ const AiDescriptionGeneratorPage = () => {
   };
   // ------------------------------------------------------------//
   const onClose = () => {
-    form.resetFields()
+    form.resetFields();
     removeAllKeywords();
     setProductName('');
     setShortDescription('');
     setCompetitorsLinks('');
     setNextStep(false);
     setIsModalOpen(false);
-    getGenerationsAmount()
+    getGenerationsAmount();
   };
   const onCloseNew = () => {
-    form.resetFields()
+    form.resetFields();
     setProductName('');
     setShortDescription('');
     setCompetitorsLinks('');
     setNextStep(false);
     setIsModalOpen(false);
-    getGenerationsAmount()
+    getGenerationsAmount();
   };
   // Function to handle adding keywords
   const handleAddKeyword = (e) => {
@@ -413,7 +413,7 @@ const AiDescriptionGeneratorPage = () => {
     setModalisShowKeywordsFile(false);
   };
   const handleSaveClick = async () => {
-    setIsFileUpload(true)
+    setIsFileUpload(true);
     try {
       const newKeywords = await saveFileClickHandler(file, authToken); // Отправляем файл и получаем ключевые слова
       addKeyword(newKeywords); // Обновляем ключевые слова в контексте
@@ -425,8 +425,8 @@ const AiDescriptionGeneratorPage = () => {
       setErrorMessage(error == 'Error: Unprocessable Entity' ? 'Некорректный формат файла' : 'Ошибка при загрузке файла');
       setShowModalError(true);
     } finally {
-      setTimeout(() => setFile(null), 500)  // Сбрасываем состояние файла после отправки
-      setIsFileUpload(false)
+      setTimeout(() => setFile(null), 500);  // Сбрасываем состояние файла после отправки
+      setIsFileUpload(false);
     }
   };
 
@@ -441,7 +441,7 @@ const AiDescriptionGeneratorPage = () => {
       <div style={{ height: '100vh' }}>
         <Sidebar />
       </div>
-      
+
       <div className={`${styles.generatorPage} dashboard-content pb-3 `} style={{ padding: '0 32px' }}>
         <div style={{ width: '100%', padding: '0', margin: '20px 0' }}>
           <Header
@@ -557,9 +557,9 @@ const AiDescriptionGeneratorPage = () => {
                     () => ({
                       validator(_, value) {
                         if (value && !value.trim()) {
-                          return Promise.reject(new Error('Пожалуйста, заполните поле корректно'))
+                          return Promise.reject(new Error('Пожалуйста, заполните поле корректно'));
                         }
-                        return Promise.resolve()
+                        return Promise.resolve();
                       },
                     }),
                   ]}
@@ -582,9 +582,9 @@ const AiDescriptionGeneratorPage = () => {
                     () => ({
                       validator(_, value) {
                         if (value && !value.trim()) {
-                          return Promise.reject(new Error('Пожалуйста, заполните поле корректно!'))
+                          return Promise.reject(new Error('Пожалуйста, заполните поле корректно!'));
                         }
-                        return Promise.resolve()
+                        return Promise.resolve();
                       },
                     }),
                   ]}
@@ -605,16 +605,16 @@ const AiDescriptionGeneratorPage = () => {
                     () => ({
                       validator(_, value) {
                         if (!value) {
-                          return Promise.reject(new Error('Пожалуйста, заполните это поле!'))
+                          return Promise.reject(new Error('Пожалуйста, заполните это поле!'));
                         }
                         if (value && !value.trim()) {
-                          return Promise.reject(new Error('Пожалуйста, заполните поле корректно'))
+                          return Promise.reject(new Error('Пожалуйста, заполните поле корректно'));
                         }
-                        const arr = value.split('\n')
+                        const arr = value.split('\n');
                         if (arr && arr.length > 5) {
-                          return Promise.reject(new Error('Пожалуйста, ввудите не более 5 ссылок!'))
+                          return Promise.reject(new Error('Пожалуйста, ввудите не более 5 ссылок!'));
                         }
-                        return Promise.resolve()
+                        return Promise.resolve();
                       },
                     }),
                   ]}
@@ -729,7 +729,7 @@ const AiDescriptionGeneratorPage = () => {
                     setErrorMessage('К сожалению, у вас закончился лимит генераций!');
                     handleShowModalError();
                   } else {
-                    openModal()
+                    openModal();
                   }
 
                 }}>

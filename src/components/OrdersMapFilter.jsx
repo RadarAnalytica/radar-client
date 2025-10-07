@@ -16,8 +16,8 @@ const OrdersMapFilter = ({
     is_primary_collect: shops.some(_ => _.is_primary_collect),
     is_valid: true,
   };
-  const shopArrayFormSelect = [allShopOptionAsShopObject, ...shops]
-  console.log(shopArrayFormSelect)
+  const shopArrayFormSelect = [allShopOptionAsShopObject, ...shops];
+  console.log(shopArrayFormSelect);
   return (
     <div className='filter container dash-container p-3 pb-4 pt-0 d-flex'>
       <div className='row w-100'>
@@ -45,9 +45,9 @@ const OrdersMapFilter = ({
               id='store'
               value={activeBrand.id}
               onChange={(e) => {
-                const { value } = e.target
-                const selectedShop = shopArrayFormSelect.find(_ => _.id.toString() === value)
-                setActiveBrand(selectedShop)
+                const { value } = e.target;
+                const selectedShop = shopArrayFormSelect.find(_ => _.id.toString() === value);
+                setActiveBrand(selectedShop);
               }}
             >
               {shopArrayFormSelect &&

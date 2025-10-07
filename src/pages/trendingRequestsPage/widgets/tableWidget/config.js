@@ -16,5 +16,5 @@ export const tableConfig = [
             {ruName: 'Частотность за 30 дней на 1 артикул, шт', engName: 'freq_per_good', units: null, isSortable: true},
         ]
     },
-  
-]
+
+];

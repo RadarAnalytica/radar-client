@@ -14,7 +14,7 @@ function FilterBrandArticle({
 	const [brandsOptions, setBrandsOptions] = useState(null);
 	const [articlesOptions, setArticlesOptions] = useState(null);
 	const [groupsOptions, setGroupsOptions] = useState(null);
-	
+
 	// filters/shared дубликат
 	// ------ база ------//
 	const { authToken } = useContext(AuthContext);
@@ -147,15 +147,15 @@ function FilterBrandArticle({
 	//--------------------------------------------------------------------------------//
 
   function brandsHandler(){
-    console.log('brandHandler')
+    console.log('brandHandler');
   }
 
   function groupsHandler(){
-    console.log('groupsHandler')
+    console.log('groupsHandler');
   }
 
   function articlesHandler(){
-    console.log('articlesHandler')
+    console.log('articlesHandler');
   }
 
 	return (

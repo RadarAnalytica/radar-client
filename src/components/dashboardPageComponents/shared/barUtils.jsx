@@ -125,7 +125,7 @@ export const getRateIcon = (rate) => {
           fill='#00B69B'
         />
       </svg>
-    )
+    );
   }
   if (parseInt(rate) < 0) {
     return (
@@ -142,7 +142,7 @@ export const getRateIcon = (rate) => {
           fill='#F93C65'
         />
       </svg>
-    )
+    );
   }
   if (parseInt(rate) === 0) {
     return (
@@ -154,23 +154,23 @@ export const getRateIcon = (rate) => {
           background: '#8C8C8C'
         }}
       ></div>
-    )
+    );
   }
 
-  return null
-}
+  return null;
+};
 
 
 export const getRateStyle = (amount, styles) => {
-  let style = ''
+  let style = '';
   if (amount > 0) {
-    style = `${styles.bar__mainSubData} ${styles.bar__mainSubData_green}`
+    style = `${styles.bar__mainSubData} ${styles.bar__mainSubData_green}`;
   }
   if (amount < 0) {
-    style = `${styles.bar__mainSubData} ${styles.bar__mainSubData_red}`
+    style = `${styles.bar__mainSubData} ${styles.bar__mainSubData_red}`;
   }
   if (amount === 0) {
-    style = `${styles.bar__mainSubData} ${styles.bar__mainSubData_gray}`
+    style = `${styles.bar__mainSubData} ${styles.bar__mainSubData_gray}`;
   }
-  return style
-}
+  return style;
+};
