@@ -39,7 +39,16 @@ const DatePickerCustomDropdown = (props) => {
     }, [])
 
     return (
-        <div className={styles.dropdown}>
+        <div 
+            className={styles.dropdown}
+            onMouseDown={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+            }}
+            onClick={(e) => {
+                e.stopPropagation();
+            }}
+        >
             <ConfigProvider
                 theme={{
                     token: {

@@ -1,0 +1,472 @@
+.modal :global(.ant-modal-content){
+    border-radius: 16px!important;
+    padding: 24px!important;
+  }
+  
+  .modal :global(.ant-form-item) label{
+    font-weight: 500;
+  }
+  .modal :global(.ant-radio-label){
+    padding-inline-start: 16px!important;
+    font-weight: 600;
+  }
+  
+  .modal :global(.ant-modal-title) {
+    margin-bottom: 16px;
+  }
+
+  .modal__header {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 16px;
+  }
+  .modal__header {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  
+  .modal__form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    /* gap: 16px; */
+  }
+  
+  .modal__title {
+    margin: 0;
+    font-weight: 600;
+    font-size: 22px;
+    color: #1a1a1a;
+  }
+  
+  .modal__part {
+    margin-bottom: 16px;
+  }
+  
+  .modal__part :global(.ant-select-selection-search-input){
+    border-color: transparent!important;
+  }
+  
+  .modal__subtitle {
+    margin-bottom: 8px;
+    font-weight: 600;
+    font-size: 14px;
+    color: #1a1a1a;
+  }
+  
+  .info__icon {
+    width: 20px;
+  }
+  
+  .close__icon {
+    width: 20px;
+  }
+  
+  .modal__body {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 16px;
+  }
+  
+  .modal__wrapper {
+    width: 100%;
+    display: flex;
+    align-items: flex-end;
+    gap: 20px;
+  }
+  
+  /* Remove circular hover highlight from AntD modal close button */
+  .modal :global(.ant-modal-close) {
+    border-radius: 0 !important;
+  }
+  
+  .modal :global(.ant-modal-close:hover),
+  .modal :global(.ant-modal-close:focus) {
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+  
+  :global(.rc-virtual-list-scrollbar-thumb) {
+    background-color: #A994FF !important;
+  }
+  
+  
+  .calendarContainer {
+    position: relative;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 10px;
+    flex-grow: 1;
+    min-width: 190px;
+    max-width: 240px;
+  }
+  
+  .label {
+    font-family: Mulish;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    color: '#1A1A1A';
+  }
+  
+  .calendarPopup {
+    position: absolute;
+    top: calc(100% + 5px);
+    z-index: 10;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    padding: 16px;
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+    pointer-events: none;
+  }
+  .calendarPopup.visible {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+    transition: opacity 0.4s ease-in-out 0.2s, transform 0.4s ease-in-out 0.2s; /* при появлении без задержки */
+  }
+  
+  
+  .customDayPicker .rdp-caption {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5em 1em;
+    font-weight: bold;
+  }
+  
+  .rdp-dropdown_root select {
+    font-size: 14px !important;
+  }
+  
+  .customDayPicker .rdp-dropdown .rdp-dropdown_root {
+    padding: 4px 8px;
+    border-radius: 4px;
+    background-color: rgba(0, 0, 0, 0.05);
+    cursor: pointer;
+    font-size: 14px !important;
+  }
+  
+  .customDayPicker .rdp-head {
+    font-weight: 600;
+    color: #8c8c8c;
+  }
+  
+  .customDayPicker .rdp-day {
+    width: 2.5em;
+    height: 2.5em;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin: 2px;
+    cursor: pointer;
+    border-radius: 50%;
+  }
+  
+  .customDayPicker .rdp-day--selected {
+    background-color: #5329FF !important;
+    color: white;
+    font-weight: bold;
+  }
+  
+  .customDayPicker .rdp-day--range-start,
+  .customDayPicker .rdp-day--range-end {
+    background-color: #5329FF !important;
+    color: white;
+  }
+  
+  .customDayPicker .rdp-day--outside {
+    color: rgba(140, 140, 140, 0.4);
+  }
+  
+  .customDayPicker .rdp-nav_button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #5329FF !important;
+    font-size: 14px !important;
+  }
+  
+  :global(.customDayPicker .rdp-caption,
+    .customDayPicker .rdp-weekday) {
+    text-transform: capitalize;
+  }
+  
+  /* Period.module.css */
+  
+  :global(.rdp-range_start .rdp-day_button .rdp-selected) {
+    background-color: #5329FF !important;
+    border: 1px solid #5329FF !important;
+    color: white !important;
+  }
+  
+  :global(.rdp-chevron) {
+    fill: #5329FF !important;
+  }
+  
+  :global(.rdp-root) {
+    font-size: 14px !important;
+    --rdp-accent-color: #5329FF !important;
+    --rdp-accent-background-color: #f0f0ff;
+    --rdp-day-height: 2.75rem;
+    --rdp-day-width: 2.75rem;
+  
+    --rdp-selected-border: 2px solid var(--rdp-accent-color);
+  
+    --rdp-today-color: var(--rdp-accent-color);
+  
+    --rdp-range_middle-background-color: var(--rdp-accent-background-color);
+    --rdp-range_middle-foreground-color: white;
+  
+    --rdp-range_start-date-background-color: var(--rdp-accent-color);
+  
+    --rdp-range_end-date-background-color: var(--rdp-accent-color);
+  
+  }
+  
+  :global(.rdp-day_button.rdp-selected) {
+    font-size: 14px !important;
+    font-weight: 600;
+  }
+  
+  :global(.rdp-day_button) {
+    font-size: 14px !important;
+    border-radius: 8px !important;
+    width: 40px !important;
+    height: 40px !important;
+  }
+  
+  
+  .dropdownWrapper {
+    width: 100%;
+    height: 38px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.05);
+    padding: 0px 16px 0px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: Mulish;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 1.5;
+    letter-spacing: 0%;
+    color: '#1A1A1A';
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+  }
+  
+  .select {
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, .05);
+    border-radius: 8px;
+    appearance: none;
+    cursor: pointer;
+    /* padding: 0px 32px 0px 16px; */
+    font-family: Mulish;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 1.5;
+    letter-spacing: 0%;
+    color: '#1A1A1A';
+    /* border: 1px  solid rgb(33, 37, 41); */
+    /* transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out; */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+  }
+  
+  .customPeriodOption {
+    width: 100%;
+    border-top: 1px solid silver;
+    padding: 6px 12px;
+    margin-top: 6px;
+    color: #5329FF;
+    cursor: pointer;
+  }
+  
+  .mainSelectWrapper {
+    position: relative;
+    width: 100%;
+    height: 38px;
+    max-height: 38px;
+    min-height: 38px;
+    box-sizing: border-box;
+  }
+  
+  .selectedOption {
+    color: #000;
+    /* margin-left: 5px; */
+  }
+  
+  .arrowIcon {
+    margin-left: 5px;
+  }
+  
+  
+  .dropdownMenu {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+    width: 100%;
+    list-style: none;
+    margin: 0;
+    padding: 0 8px;
+    text-align: left;
+  }
+  
+  .dropdownMenu li {
+    padding: 8px 10px;
+    cursor: pointer;
+    /* font-size: 14px; */
+    border-bottom: 1px solid #E8E8E8;
+  }
+  
+  .customDateOption {
+    color: #5329FF;
+    font-weight: 600;
+    border: none !important;
+    padding: 0 8px;
+    cursor: pointer;
+  }
+  
+  .selectWrapper {
+    position: relative;
+    width: 100%;
+  }
+  
+  .selectWrapper select {
+    width: 100%;
+    padding-right: 2rem;
+    padding-bottom: 20px;
+  }
+  
+  .dateSelectors {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  
+  .monthSelector,
+  .yearSelector {
+    padding: 5px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .monthSelector {
+    width: 45%;
+  }
+  
+  .yearSelector {
+    width: 45%;
+  }
+  
+  
+  
+  .captionWrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+  
+  .selectMonth,
+  .selectYear {
+    appearance: none;
+    background-color: #f4f4f4;
+    border: 1px solid #d1d1d1;
+    border-radius: 4px;
+    padding: 5px 12px;
+    font-size: 14px;
+    color: #333;
+    cursor: pointer;
+    outline: none;
+    margin: 0 5px;
+    width: auto;
+  }
+  
+  .selectWrapper {
+    position: relative;
+  }
+  
+  .selectWrapper::after {
+    content: "▼";
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    color: #666;
+    font-size: 10px;
+  }
+  
+  .selectMonth:focus,
+  .selectYear:focus {
+    border-color: #007bff;
+  }
+  
+  /* Scoped AntD Radio styles for CreateExpense only */
+  .customRadioGroup :global(.ant-radio-wrapper) {
+    display: inline-flex;
+    align-items: center;
+  }
+  
+  .customRadioGroup :global(.ant-radio) {
+    /* ensure consistent inline layout */
+    line-height: 1;
+  }
+  
+  .customRadioGroup :global(.ant-radio-inner) {
+    width: 20px;
+    height: 20px;
+    border-width: 1px;
+    border-color: #DADADA;
+    background-color: #ffffff;
+  }
+  
+  /* keep hover from globally changing inactive border */
+  .customRadioGroup :global(.ant-radio:hover .ant-radio-inner) {
+    border-color: #DADADA;
+  }
+  
+  /* Checked state: outer ring border color */
+  .customRadioGroup :global(.ant-radio-checked .ant-radio-inner) {
+    border-color: #5329FF !important;
+    background-color: #ffffff;
+  }
+  
+  /* Inner dot: 12x12 to create 3px white ring inside 20px circle */
+  .customRadioGroup :global(.ant-radio-checked .ant-radio-inner::after) {
+    width: 12px;
+    height: 12px;
+    background-color: #5329FF;
+    transform: translate(108%, 108%) scale(1) !important;
+    top: 0;
+    left: 0;
+  }
+  
+  /* Make sure unchecked has no visible dot */
+  .customRadioGroup :global(.ant-radio-inner::after) {
+    transform: translate(-50%, -50%) scale(0);
+  }

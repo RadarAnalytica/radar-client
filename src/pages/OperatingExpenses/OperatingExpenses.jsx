@@ -12,7 +12,7 @@ import DataCollectWarningBlock from '@/components/sharedComponents/dataCollectWa
 import ModalDeleteConfirm from '@/components/sharedComponents/ModalDeleteConfirm';
 import styles from './OperatingExpenses.module.css';
 import { EXPENSE_COLUMNS, CATEGORY_COLUMNS } from './config/config';
-import ModalCreateExpense from './features/CreateExpense/CreateExpense';
+import ExpenseMainModal from './features/CreateExpense/expenseMainModal';
 import ModalCreateCategory from './features/CreateCategory/CreateCategory';
 import { EditIcon, CopyIcon, DeleteIcon, InfoIcon } from './shared/Icons';
 import TableWidget from './widgets/table/tableWidget';
@@ -438,7 +438,7 @@ export default function OperatingExpenses() {
 					</div>
 				}
 
-				{modalCreateExpenseOpen && <ModalCreateExpense
+				{modalCreateExpenseOpen && <ExpenseMainModal
 					open={modalCreateExpenseOpen}
 					onCancel={modalExpenseHandlerClose}
 					setModalCreateCategoryOpen={setModalCreateCategoryOpen}
