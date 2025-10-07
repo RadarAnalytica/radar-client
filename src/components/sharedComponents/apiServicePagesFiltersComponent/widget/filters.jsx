@@ -19,7 +19,8 @@ export const Filters = ({
   weekSelect = false,
   monthSelect = false,
   tempPageCondition,
-  isDataLoading
+  isDataLoading,
+  maxCustomDate,
 }) => {
 
   // ------ это база ------//
@@ -40,7 +41,7 @@ export const Filters = ({
   return (
     <div className={styles.filters}>
       <div className={styles.filters__inputsMainWrapper}>
-        {shops && activeBrand && weekSelect && 
+        {shops && activeBrand && weekSelect &&
           <div className={styles.filters__inputWrapper}>
             <MultiSelect
               dispatch={dispatch}
@@ -70,12 +71,18 @@ export const Filters = ({
         }
         {shops && activeBrand && timeSelect && tempPageCondition !== 'supplier' &&
           <div className={styles.filters__inputWrapper}>
-            <TimeSelect isDataLoading={isDataLoading} />
+            <TimeSelect 
+              isDataLoading={isDataLoading}
+              maxCustomDate={maxCustomDate}
+            />
           </div>
         }
         {timeSelect && tempPageCondition === 'supplier' &&
           <div className={styles.filters__inputWrapper}>
-            <TempTimeSelect isDataLoading={isDataLoading} />
+            <TempTimeSelect
+              isDataLoading={isDataLoading}
+              maxCustomDate={maxCustomDate}
+            />
           </div>
         }
         {shops && activeBrand && shopSelect &&
