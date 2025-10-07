@@ -17,7 +17,7 @@ const InfoSeoPlate = ({ setCompaireData, setLinksToSend }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [showModalError, setShowModalError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-  const isDemoMode = useDemoMode();
+  const { isDemoMode } = useDemoMode();
 
   const handleShowModalError = () => setShowModalError(true);
   const handleCloseModalError = () => setShowModalError(false);
