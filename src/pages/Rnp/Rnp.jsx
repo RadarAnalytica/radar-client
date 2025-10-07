@@ -354,6 +354,7 @@ export default function Rnp() {
 						articleSelect={false}
 						groupSelect={false}
 						categorySelect={false}
+						maxCustomDate={new Date(Date.now() - 24 * 60 * 60 * 1000)}
 					/>
 					<HowToLink
 						text='Как использовать?'

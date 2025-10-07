@@ -33,7 +33,7 @@ const predefinedRanges = [
     }
 ];
 
-export const TimeSelect = ({ isDataLoading }) => {
+export const TimeSelect = ({ isDataLoading, maxCustomDate }) => {
 
     const dispatch = useAppDispatch()
     const { selectedRange } = useAppSelector(store => store.filters)
@@ -42,6 +42,7 @@ export const TimeSelect = ({ isDataLoading }) => {
     const [localSelectedRange, setLocalSelectedRange] = useState({ from: null, to: null });
     const [selectOptions, setSelectOptions] = useState([...predefinedRanges])
     const [selectValue, setSelectValue] = useState()
+    const maxDate = maxCustomDate ? maxCustomDate : new Date();
     const today = new Date();
     const minDate = new Date(today);
     minDate.setDate(today.getDate() - 90);
@@ -233,7 +234,7 @@ export const TimeSelect = ({ isDataLoading }) => {
                 {isCalendarOpen &&
                     <DayPicker
                         minDate={minDate}
-                        maxDate={today}
+                        maxDate={maxDate}
                         mode="range"
                         selected={localSelectedRange}
                         month={month}
@@ -244,7 +245,7 @@ export const TimeSelect = ({ isDataLoading }) => {
                         onDayClick={handleDayClick}
                         disabled={[
                             { before: minDate },
-                            { after: today },
+                            { after: maxDate },
                         ]}
                         startMonth={startMonth}
                         endMonth={endMonth}
