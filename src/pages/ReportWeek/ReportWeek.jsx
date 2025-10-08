@@ -152,17 +152,19 @@ export default function ReportWeek() {
 	}, [activeWeeks]);
 
 	useEffect(() => {
-		if (isDemoMode && weekOptions && weekOptions.length > 0) {
+		if (isDemoMode && weekOptions?.length) {
 			dispatch(fetchFilters(authToken));
 		}
 	}, [isDemoMode, weekOptions]);
 
 	useEffect(() => {
-		dispatch(filterActions.setActiveFilters({
-			stateKey: 'activeWeeks',
-			data: weekOptions[0].value
-		}));
-	}, [filters.filters]);
+		if (weekOptions?.length) {
+			dispatch(filterActions.setActiveFilters({
+				stateKey: 'activeWeeks',
+				data: weekOptions.slice(0, 12),
+			}));
+		}
+	}, [filters.filters, weekOptions]);
 
 	const updateDataReportWeek = async () => {
 		setLoading(true);
