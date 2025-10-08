@@ -8,7 +8,6 @@ export const VideoWidget = () => {
         <div className={styles.widget}>
             {/* cards */}
             {VIDEOS.map((_, id) => {
-
                 if (_.video) {
                     return (
                         <div className={styles.card} key={id}>
@@ -34,7 +33,6 @@ export const VideoWidget = () => {
                     );
                 }
             })}
-
 
             <div className={styles.description}>
                 <div className={styles.description__bullet}>
