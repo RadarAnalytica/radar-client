@@ -27,11 +27,40 @@ import HowToLink from '../../components/sharedComponents/howToLink/howToLink';
 import { useDemoMode } from "@/app/providers";
 import NoSubscriptionWarningBlock from '@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock';
 
+const sortBySavedSortState = (data, activeBrand) => {
+	const { id } = activeBrand;
+	let savedSortState = localStorage.getItem(`RNP_SAVED_ORDER_${id}`);
+	if (!savedSortState) {
+		return data;
+	}
+	savedSortState = JSON.parse(savedSortState);
+	
+	// Создаем Map для быстрого поиска элементов по wb_id
+	const itemsMap = new Map();
+	data.forEach(item => {
+		itemsMap.set(item.article_data.wb_id, item);
+	});
+	
+	// Сортируем элементы, которые есть в savedSortState, в порядке savedSortState
+	const sortedItems = savedSortState
+		.map(wbId => itemsMap.get(wbId))
+		.filter(Boolean); // Убираем undefined (элементы, которых уже нет в data)
+	
+	// Добавляем новые элементы, которых не было в savedSortState, в конец
+	data.forEach(item => {
+		if (!savedSortState.includes(item.article_data.wb_id)) {
+			sortedItems.push(item);
+		}
+	});
+	
+	return sortedItems;
+}
+
 export default function Rnp() {
 	const { user, authToken } = useContext(AuthContext);
 	const { isDemoMode } = useDemoMode();
 	const dispatch = useAppDispatch();
-	const { selectedRange, activeBrand, shops } = useAppSelector((state) => state.filters);
+	const { selectedRange, activeBrand, shops, activeBrandName } = useAppSelector((state) => state.filters);
 	const filters = useAppSelector((state) => state.filters);
 
 	// const rnpSelected = useAppSelector((state) => state.rnpSelected);
@@ -109,7 +138,7 @@ export default function Rnp() {
 	};
 
 	const dataToRnpList = (response) => {
-
+		const { data } = response;
 		const list = response.data.map((article, i) => {
 			const tableConfig = getTableConfig(article);
 			const tableData = getTableData(article);
@@ -120,13 +149,15 @@ export default function Rnp() {
 					columns: [],
 					rows: [],
 				},
-				article_data: article.article_data,
+				article_data: article?.article_data,
 			};
 
 			return item;
 		});
 
-		setRnpDataByArticle(list);
+		// Применяем сортировку согласно сохраненному порядку
+		const sortedList = activeBrand ? sortBySavedSortState(list, activeBrand) : list;
+		setRnpDataByArticle(sortedList);
 	};
 
 	const dataToRnpTotalList = (response) => {
@@ -144,7 +175,7 @@ export default function Rnp() {
 				columns: [],
 				rows: [],
 			},
-			article_data: article.article_data,
+			article_data: article?.article_data,
 		};
 
 		setRnpDataTotal(item);
@@ -218,8 +249,10 @@ export default function Rnp() {
 			localStorage.removeItem('RNP_EXPANDED_TABLE_ROWS_STATE');
 			localStorage.removeItem('RNP_EXPANDED_TOTAL_TABLE_ROWS_STATE');
 			localStorage.removeItem('RNP_EXPANDED_STATE');
-			localStorage.removeItem('SAVED_ORDER');
-		};
+			shops?.forEach((shop) => {
+				localStorage.removeItem(`RNP_SAVED_ORDER_${shop.id}`);
+			});
+		}
 	}, []);
 
 
@@ -227,17 +260,17 @@ export default function Rnp() {
 		if (rnpDataByArticle) {
 			let EXPANDED_STATE = JSON.parse(localStorage.getItem('RNP_EXPANDED_STATE'));
 			if (EXPANDED_STATE && EXPANDED_STATE !== 'collapsed' && rnpDataByArticle?.length > 0) {
-				const isInCurrentList = rnpDataByArticle.some((el) => el.article_data.wb_id === EXPANDED_STATE);
+				const isInCurrentList = rnpDataByArticle.some((el) => el?.article_data?.wb_id === EXPANDED_STATE);
 				let updatedExpandedState;
 				if (!isInCurrentList) {
-					EXPANDED_STATE = rnpDataByArticle[0].article_data.wb_id;
+					EXPANDED_STATE = rnpDataByArticle[0]?.article_data?.wb_id;
 				}
 				setExpanded(EXPANDED_STATE);
 				return;
 			}
 
 			if (!EXPANDED_STATE) {
-				setExpanded(rnpDataByArticle[0].article_data.wb_id);
+				setExpanded(rnpDataByArticle[0]?.article_data?.wb_id);
 			}
 		}
 	}, [rnpDataByArticle]);
@@ -385,6 +418,7 @@ export default function Rnp() {
 						setView={viewHandler}
 						setAddRnpModalShow={setAddRnpModalShow}
 						rnpDataByArticle={rnpDataByArticle}
+						setRnpDataByArticle={setRnpDataByArticle}
 						rnpDataTotal={rnpDataTotal}
 						setDeleteRnpId={setDeleteRnpId}
 						expanded={expanded}
