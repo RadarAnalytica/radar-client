@@ -1,3 +1,20 @@
+.widget__container {
+    width: 100%;
+    padding: 0 8px;
+    border-top-left-radius: 16px;
+    border-bottom-left-radius: 16px;
+    box-shadow: 0px 0px 20px 0px #00000014;
+    background: white;
+    overflow: hidden;
+}
+
+.widget__scrollContainer {
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+}
+
+
 .widget {
     width: 100%;
     min-height: 660px;
@@ -275,4 +292,33 @@
 }
 .sortControls__button:hover {
     color: #5329FF;
+}
+
+
+.customCell {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-wrap: wrap;
+    font-size: 14px;
+}
+.productCustomCell {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-wrap: wrap;
+    font-size: 14px;
+}
+
+.customCellBorderRight {
+    border-right: 1px solid #E8E8E8;
+}
+
+.bodyRowSpecial:hover td div {
+    background-color: #FAFAFA !important;
+    transition: background-color 0.2s ease;
 }
