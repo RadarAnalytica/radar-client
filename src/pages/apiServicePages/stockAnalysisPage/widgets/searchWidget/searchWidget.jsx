@@ -42,13 +42,13 @@ const SearchWidget = ({ stockAnalysisData, setStockAnalysisFilteredData, filters
     const getProdAnalyticXlsxHandler = async () => {
         setIsExelLoading(true);
         const fileBlob = await ServiceFunctions.getProdAnalyticXlsx(
-          authToken,
-          selectedRange,
-          activeBrand.id,
-          filters
+            authToken,
+            selectedRange,
+            activeBrand.id,
+            filters
         );
         fileDownload(fileBlob, "Товарная_аналитика.xlsx", setIsExelLoading);
-      };
+    };
 
     useEffect(() => {
         if (stockAnalysisData && searchInputValue) {
@@ -63,18 +63,34 @@ const SearchWidget = ({ stockAnalysisData, setStockAnalysisFilteredData, filters
                 <ConfigProvider
                     theme={{
                         token: {
-                            colorBorder: '#5329FF80 !important'
+                            colorBgContainer: 'white',
+                            colorBorder: '#5329FF1A',
+                            borderRadius: 8,
+                            fontFamily: 'Mulish',
+                            fontSize: 12,
+                            fontWeight: 500,
+                            controlHeightLG: 38,
                         },
                         components: {
                             Input: {
+                                activeBorderColor: '#5329FF1A',
+                                hoverBorderColor: '#5329FF1A',
+                                activeOutlineColor: 'transparent',
                                 activeBg: 'transparent',
                                 hoverBg: 'transparent',
-                                colorBgContainer: 'transparent',
+                                activeBg: 'transparent',
+                                activeShadow: 'transparent',
+                                activeBg: 'white',
                             }
                         }
                     }}
                 >
                     <Input
+                        prefix={
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M9.12793 0C14.1687 0.000149462 18.2549 4.08714 18.2549 9.12793C18.2548 11.3852 17.4328 13.4488 16.0752 15.042L20 18.9678L19.4834 19.4834L18.9678 20L15.042 16.0752C13.4488 17.4328 11.3852 18.2548 9.12793 18.2549C4.08714 18.2549 0.000149459 14.1687 0 9.12793C0 4.08705 4.08705 0 9.12793 0ZM9.12793 1.46094C4.89354 1.46094 1.46094 4.89354 1.46094 9.12793C1.46109 13.3622 4.89363 16.7949 9.12793 16.7949C13.3621 16.7948 16.7948 13.3621 16.7949 9.12793C16.7949 4.89363 13.3622 1.46109 9.12793 1.46094Z" fill="#8C8C8C" />
+                            </svg>
+                        }
                         size='large'
                         placeholder='Поиск по SKU или артикулу'
                         value={searchInputValue}
@@ -83,34 +99,12 @@ const SearchWidget = ({ stockAnalysisData, setStockAnalysisFilteredData, filters
                         autoCorrect='off'
                         spellCheck={false}
                         autoComplete='off'
+                        allowClear={{
+                            clearIcon: (<svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M8.71991 0.556763C9.01281 0.263923 9.48758 0.263887 9.78046 0.556763C10.0732 0.849645 10.0733 1.32444 9.78046 1.61731L6.39764 5.00012L9.78046 8.38293C10.0732 8.67584 10.0733 9.15064 9.78046 9.44348C9.48761 9.73633 9.01281 9.73623 8.71991 9.44348L5.3371 6.06067L1.95428 9.44348C1.66143 9.73627 1.18662 9.73621 0.893738 9.44348C0.600915 9.1506 0.600915 8.67581 0.893738 8.38293L4.27655 5.00012L0.893738 1.61731C0.600845 1.32442 0.600845 0.849656 0.893738 0.556763C1.18663 0.26387 1.66139 0.263869 1.95428 0.556763L5.3371 3.93958L8.71991 0.556763Z" fill="#8C8C8C" />
+                            </svg>)
+                        }}
                     />
-                </ConfigProvider>
-                {/* SEARCH BUTTON */}
-                <ConfigProvider
-                    wave={{ disabled: true }}
-                    theme={{
-                        token: {
-                            colorPrimary: '#E7E1FE',
-                            colorTextLightSolid: '#5329FF',
-                            fontSize: 16,
-                        },
-                        Button: {
-                            defaultShadow: 'none',
-                            primaryShadow: 'none'
-                        }
-                    }}
-                >
-                    <Button
-                        type='primary'
-                        size='large'
-                        onClick={searchButtonClickHandler}
-                    >
-                        <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path fillRule="evenodd" clipRule="evenodd" d="M1.5 9.60353C1.5 5.25398 5.02601 1.72797 9.37556 1.72797C13.7251 1.72797 17.2511 5.25398 17.2511 9.60353C17.2511 13.9531 13.7251 17.4791 9.37556 17.4791C5.02601 17.4791 1.5 13.9531 1.5 9.60353ZM9.37556 0.227966C4.19758 0.227966 0 4.42555 0 9.60353C0 14.7815 4.19758 18.9791 9.37556 18.9791C11.6946 18.9791 13.8169 18.1371 15.4537 16.7423L19.4834 20.772L20.5441 19.7114L16.5143 15.6816C17.9092 14.0449 18.7511 11.9225 18.7511 9.60353C18.7511 4.42555 14.5535 0.227966 9.37556 0.227966Z" fill="#5329FF" />
-                        </svg>
-
-                        Найти
-                    </Button>
                 </ConfigProvider>
             </div>
 
@@ -121,7 +115,9 @@ const SearchWidget = ({ stockAnalysisData, setStockAnalysisFilteredData, filters
                         token: {
                             colorPrimary: '#EFECFE',
                             colorTextLightSolid: '#5329FF',
-                            fontSize: 16,
+                            fontSize: 12,
+                            controlHeightLG: 38,
+                            fontWeight: 600,
                         },
                         Button: {
                             defaultShadow: 'none',
@@ -133,11 +129,16 @@ const SearchWidget = ({ stockAnalysisData, setStockAnalysisFilteredData, filters
                         type='primary'
                         size='large'
                         onClick={() => navigate('/selfcost')}
+                        style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: 10,
+                            fontWeight: 600,
+                        }}
                     >
                         <svg width="18" height="19" viewBox="0 0 18 19" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M9 18.5C4.0293 18.5 0 14.4707 0 9.5C0 4.5293 4.0293 0.5 9 0.5C13.9707 0.5 18 4.5293 18 9.5C18 14.4707 13.9707 18.5 9 18.5ZM9 16.7C10.9096 16.7 12.7409 15.9414 14.0912 14.5912C15.4414 13.2409 16.2 11.4096 16.2 9.5C16.2 7.59044 15.4414 5.75909 14.0912 4.40883C12.7409 3.05857 10.9096 2.3 9 2.3C7.09044 2.3 5.25909 3.05857 3.90883 4.40883C2.55857 5.75909 1.8 7.59044 1.8 9.5C1.8 11.4096 2.55857 13.2409 3.90883 14.5912C5.25909 15.9414 7.09044 16.7 9 16.7ZM9 5.045L13.455 9.5L9 13.955L4.545 9.5L9 5.045ZM9 7.5911L7.0911 9.5L9 11.4089L10.9089 9.5L9 7.5911Z" fill="#5329FF" />
                         </svg>
-
                         Установить себестоимость
                     </Button>
                 </ConfigProvider>
@@ -149,7 +150,9 @@ const SearchWidget = ({ stockAnalysisData, setStockAnalysisFilteredData, filters
                         token: {
                             colorPrimary: '#5329FF',
                             colorTextLightSolid: 'white',
-                            fontSize: 16,
+                            fontSize: 12,
+                            controlHeightLG: 38,
+                            fontWeight: 600,
                         },
                         Button: {
                             defaultShadow: 'none',
@@ -162,10 +165,18 @@ const SearchWidget = ({ stockAnalysisData, setStockAnalysisFilteredData, filters
                         size='large'
                         loading={isExelLoading}
                         onClick={getProdAnalyticXlsxHandler}
+                        style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: 10,
+                            fontWeight: 600,
+                        }}
                     >
-                        <svg width="18" height="17" viewBox="0 0 18 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M9.9 6.69999H14.4L9 12.1L3.6 6.69999H8.1V0.399994H9.9V6.69999ZM1.8 14.8H16.2V8.49999H18V15.7C18 15.9387 17.9052 16.1676 17.7364 16.3364C17.5676 16.5052 17.3387 16.6 17.1 16.6H0.9C0.661305 16.6 0.432387 16.5052 0.263604 16.3364C0.0948211 16.1676 0 15.9387 0 15.7V8.49999H1.8V14.8Z" fill="white" />
+                        <svg width="16" height="18" viewBox="0 0 16 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M7.99967 5.5625C8.37937 5.5625 8.68717 5.8703 8.68717 6.25V10.0902L9.34687 9.43053C9.61536 9.16205 10.0507 9.16205 10.3191 9.43053C10.5876 9.69902 10.5876 10.1343 10.3191 10.4028L8.48581 12.2361C8.41989 12.3021 8.34393 12.3518 8.26284 12.3853C8.18178 12.4189 8.09289 12.4375 7.99967 12.4375C7.90646 12.4375 7.81757 12.4189 7.73651 12.3853C7.65542 12.3518 7.57945 12.3021 7.51354 12.2361L5.6802 10.4028C5.41172 10.1343 5.41172 9.69902 5.6802 9.43053C5.94869 9.16205 6.38399 9.16205 6.65248 9.43053L7.31217 10.0902L7.31217 6.25C7.31217 5.8703 7.61998 5.5625 7.99967 5.5625Z" fill="white" />
+                            <path fillRule="evenodd" clipRule="evenodd" d="M0.895508 4.41667C0.895508 2.01193 2.84493 0.0625 5.24967 0.0625H9.23089C10.3857 0.0625 11.4932 0.521241 12.3098 1.33781L13.8285 2.85659C14.6451 3.67316 15.1038 4.78065 15.1038 5.93545V13.5833C15.1038 15.9881 13.1544 17.9375 10.7497 17.9375H5.24967C2.84493 17.9375 0.895508 15.9881 0.895508 13.5833V4.41667ZM5.24967 1.4375C3.60433 1.4375 2.27051 2.77132 2.27051 4.41667V13.5833C2.27051 15.2287 3.60433 16.5625 5.24967 16.5625H10.7497C12.395 16.5625 13.7288 15.2287 13.7288 13.5833V5.93545C13.7288 5.14533 13.415 4.38756 12.8563 3.82886L11.3375 2.31008C10.7788 1.75138 10.021 1.4375 9.23089 1.4375H5.24967Z" fill="white" />
                         </svg>
+
                         Скачать Excel
                     </Button>
                 </ConfigProvider>}

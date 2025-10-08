@@ -12,6 +12,25 @@
     width: 100%;
     height: 100%;
     overflow: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #5329ff80 transparent;
+}
+
+.widget__scrollContainer::-webkit-scrollbar {
+    width: 3px;
+    height: 3px;
+    border-radius: 3px;
+}
+
+.widget__scrollContainer::-webkit-scrollbar-thumb {
+    border-radius: 6px;
+    background: #5329ff80;
+}
+
+.widget__scrollContainer::-webkit-scrollbar-track {
+    background: transparent;
+    height: 50%;
+    margin: 10px 20px;
 }
 
 
@@ -26,7 +45,8 @@
     justify-content: flex-start;
     align-items: flex-start;
     position: relative;
-    transform: scale(100%); /* ??? */
+    transform: scale(100%);
+    /* ??? */
 }
 
 .widget__wrapper {
@@ -48,13 +68,13 @@
     height: 6px;
     border-radius: 6px;
 }
-  
+
 .widget::-webkit-scrollbar-track {
     background: transparent;
     height: 50%;
     margin: 10px 20px;
 }
-  
+
 .widget::-webkit-scrollbar-thumb {
     background: #5329ff80;
     border-radius: 6px;
@@ -94,6 +114,7 @@
 .table:first-of-type {
     border: none
 }
+
 .table:last-of-type {
     border: none
 }
@@ -164,6 +185,7 @@
     max-width: 300px;
 
 }
+
 .table__headerItem_short {
     padding-left: 5px;
     min-width: 100px;
@@ -239,10 +261,12 @@
     min-width: 300px;
     max-width: 300px;
 }
+
 .table__rowItem_short {
     min-width: 100px;
     max-width: 100px;
 }
+
 .table__rowItemTextWrapper {
     width: 100%;
     white-space: nowrap;
@@ -280,6 +304,7 @@
     align-items: center;
     gap: 2px;
 }
+
 .sortControls__button {
     border: none;
     background: transparent;
@@ -287,9 +312,11 @@
     cursor: pointer;
     transition: all .2s ease-in-out;
 }
+
 .sortControls__button_active {
     color: #5329FF;
 }
+
 .sortControls__button:hover {
     color: #5329FF;
 }
@@ -303,8 +330,17 @@
     text-overflow: ellipsis;
     text-wrap: wrap;
     font-size: 14px;
+    font-weight: 500;
 }
+
 .productCustomCell {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 20px;
+}
+
+.productCustomCellTitle {
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
@@ -312,6 +348,15 @@
     text-overflow: ellipsis;
     text-wrap: wrap;
     font-size: 14px;
+    font-weight: 700;
+}
+
+.productCustomCell img {
+    border-radius: 3px;
+    overflow: hidden;
+    flex-grow: 0;
+    flex-shrink: 0;
+    background: #D9D9D9;
 }
 
 .customCellBorderRight {
@@ -321,4 +366,22 @@
 .bodyRowSpecial:hover td div {
     background-color: #FAFAFA !important;
     transition: background-color 0.2s ease;
+}
+
+.bodyRowSpecial:hover td {
+    background-color: #FAFAFA !important;
+    transition: background-color 0.2s ease;
+}
+
+:global(.radar-table__body-cell:has(div[data-border-right="true"])) {
+    border-right: 1px solid #E8E8E8 !important;
+}
+
+.abcBar {
+    width: 50px;
+    height: 30px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
