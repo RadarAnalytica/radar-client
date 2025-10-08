@@ -15,10 +15,17 @@
   margin-bottom: 16px;
 }
 
+.modal__form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  /* gap: 16px; */
+}
+
 .modal__title {
   margin: 0;
-  font-weight: 700;
-  font-size: 24px;
+  font-weight: 600;
+  font-size: 22px;
   color: #1a1a1a;
 }
 
@@ -32,8 +39,8 @@
 
 .modal__subtitle {
   margin-bottom: 8px;
-  font-weight: 700;
-  font-size: 18px;
+  font-weight: 600;
+  font-size: 14px;
   color: #1a1a1a;
 }
 
@@ -43,6 +50,33 @@
 
 .close__icon {
   width: 20px;
+}
+
+.modal__body {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.modal__wrapper {
+  width: 100%;
+  display: flex;
+  align-items: flex-end;
+  gap: 20px;
+}
+
+/* Remove circular hover highlight from AntD modal close button */
+.modal :global(.ant-modal-close) {
+  border-radius: 0 !important;
+}
+
+.modal :global(.ant-modal-close:hover),
+.modal :global(.ant-modal-close:focus) {
+  background: transparent !important;
+  box-shadow: none !important;
 }
 
 :global(.rc-virtual-list-scrollbar-thumb) {
@@ -100,11 +134,16 @@
   font-weight: bold;
 }
 
-.customDayPicker .rdp-dropdown {
+.rdp-dropdown_root select {
+  font-size: 14px !important;
+}
+
+.customDayPicker .rdp-dropdown .rdp-dropdown_root {
   padding: 4px 8px;
   border-radius: 4px;
   background-color: rgba(0, 0, 0, 0.05);
   cursor: pointer;
+  font-size: 14px !important;
 }
 
 .customDayPicker .rdp-head {
@@ -144,7 +183,7 @@
   border: none;
   cursor: pointer;
   color: #5329FF !important;
-  font-size: 1.5em;
+  font-size: 14px !important;
 }
 
 :global(.customDayPicker .rdp-caption,
@@ -165,6 +204,7 @@
 }
 
 :global(.rdp-root) {
+  font-size: 14px !important;
   --rdp-accent-color: #5329FF !important;
   --rdp-accent-background-color: #f0f0ff;
   --rdp-day-height: 2.75rem;
@@ -183,11 +223,16 @@
 
 }
 
+:global(.rdp-day_button.rdp-selected) {
+  font-size: 14px !important;
+  font-weight: 600;
+}
+
 :global(.rdp-day_button) {
+  font-size: 14px !important;
   border-radius: 8px !important;
   width: 40px !important;
   height: 40px !important;
-  font-weight: 400 !important;
 }
 
 
@@ -203,7 +248,7 @@
   cursor: pointer;
   font-family: Mulish;
   font-weight: 400;
-  font-size: 16px;
+  font-size: 14px;
   line-height: 1.5;
   letter-spacing: 0%;
   color: '#1A1A1A';
@@ -222,7 +267,7 @@
   /* padding: 0px 32px 0px 16px; */
   font-family: Mulish;
   font-weight: 400;
-  font-size: 16px;
+  font-size: 14px;
   line-height: 1.5;
   letter-spacing: 0%;
   color: '#1A1A1A';
@@ -366,4 +411,49 @@
 .selectMonth:focus,
 .selectYear:focus {
   border-color: #007bff;
+}
+
+/* Scoped AntD Radio styles for CreateExpense only */
+.customRadioGroup :global(.ant-radio-wrapper) {
+  display: inline-flex;
+  align-items: center;
+}
+
+.customRadioGroup :global(.ant-radio) {
+  /* ensure consistent inline layout */
+  line-height: 1;
+}
+
+.customRadioGroup :global(.ant-radio-inner) {
+  width: 20px;
+  height: 20px;
+  border-width: 1px;
+  border-color: #DADADA;
+  background-color: #ffffff;
+}
+
+/* keep hover from globally changing inactive border */
+.customRadioGroup :global(.ant-radio:hover .ant-radio-inner) {
+  border-color: #DADADA;
+}
+
+/* Checked state: outer ring border color */
+.customRadioGroup :global(.ant-radio-checked .ant-radio-inner) {
+  border-color: #5329FF !important;
+  background-color: #ffffff;
+}
+
+/* Inner dot: 12x12 to create 3px white ring inside 20px circle */
+.customRadioGroup :global(.ant-radio-checked .ant-radio-inner::after) {
+  width: 12px;
+  height: 12px;
+  background-color: #5329FF;
+  transform: translate(108%, 108%) scale(1) !important;
+  top: 0;
+  left: 0;
+}
+
+/* Make sure unchecked has no visible dot */
+.customRadioGroup :global(.ant-radio-inner::after) {
+  transform: translate(-50%, -50%) scale(0);
 }
