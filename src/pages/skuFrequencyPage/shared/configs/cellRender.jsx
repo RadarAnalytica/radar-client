@@ -10,7 +10,7 @@ export const cellRender = (value, record, index, dataIndex) => {
 
     return (
       <Link
-        className={`${styles.cell__query} ${isDemoMode ? "pointer-events-none" : ""}`}
+        className={`${styles.cell__query} ${isDemoMode ? "pe-none" : ""}`}
         to={url}
         target='_blank'
         title='Смотреть подробнее'

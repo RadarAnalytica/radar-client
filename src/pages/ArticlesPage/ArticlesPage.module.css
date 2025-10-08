@@ -1,0 +1,71 @@
+.page {
+  min-height: 100vh;
+  background-color: #f5f5f5;
+  padding: 40px 20px;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.title {
+  font-size: 32px;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+.articlesGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 30px;
+  margin-bottom: 40px;
+}
+
+.loaderContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 60vh;
+}
+
+.errorContainer {
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.errorContainer h2 {
+  color: #ff4d4f;
+  margin-bottom: 16px;
+}
+
+.errorContainer p {
+  color: #666;
+  font-size: 16px;
+}
+
+.emptyState {
+  text-align: center;
+  padding: 60px 20px;
+  color: #999;
+  font-size: 18px;
+}
+
+@media (max-width: 768px) {
+  .title {
+    font-size: 24px;
+    margin-bottom: 30px;
+  }
+
+  .articlesGrid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .page {
+    padding: 20px 16px;
+  }
+}
+

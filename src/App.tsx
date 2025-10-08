@@ -73,6 +73,7 @@ const SupplierAnalysisPage = React.lazy(() => import("./pages/supplierAnalysisPa
 const SupplierIdPage = React.lazy(() => import("./pages/supplierAnalysisPage/supplierIdPage"));
 const RestoreError = React.lazy(() => import("./pages/RestoreError"));
 const Rnp = React.lazy(() => import('./pages/Rnp'));
+const ArticlesPage = React.lazy(() => import('./pages/ArticlesPage/ArticlesPage'));
 
 // During migration, allow missing props on ProtectedRoute
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -148,6 +149,7 @@ function App() {
                 <Route path='/referal' element={<ProtectedRoute expireProtected onboardProtected routeRuName='Реферальная программа'><ReferalPage /></ProtectedRoute>} />
                 <Route path='/rnp' element={<ProtectedRoute expireProtected onboardProtected routeRuName='Рука на пульсе (РНП)'><Rnp /></ProtectedRoute>} />
                 {/* Public routes */}
+                <Route path='/articles' element={<Suspense fallback={<LoaderPage />}><ArticlesPage /></Suspense>} />
                 <Route path='/calculate' element={<Suspense fallback={<LoaderPage />}>{deviceRegexp.test(userAgent) ? <UnitCalculatorPage /> : <UnitCalculatorPageDesktop />}</Suspense>} />
                 <Route path='/stub' element={<Suspense fallback={<LoaderPage />}>{' '}<StubPage /></Suspense>} />
                 <Route path='/spasibo' element={<Suspense fallback={<LoaderPage />}>{' '}<Spasibo /></Suspense>} />

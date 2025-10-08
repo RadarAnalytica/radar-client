@@ -46,3 +46,31 @@ export const fetchCategories = createAsyncThunk(
     }
   }
 );
+
+export const fetchArticles = createAsyncThunk(
+  'blog/fetchArticles',
+  async (_, { rejectWithValue }) => {
+    try {
+      const res = await fetch(`${URL}/api/blog/articles`, {
+        method: 'GET',
+        headers: {
+          'cache': 'no-store',
+          'content-type': 'application/json',
+        },
+      });
+
+      if (!res.ok) {
+        throw new Error('Не удалось загрузить статьи');
+      }
+
+      const data = await res.json();
+      
+      // Фильтруем только опубликованные статьи
+      const publishedArticles = data.data?.items?.filter(article => article.is_published) || [];
+      
+      return publishedArticles;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
