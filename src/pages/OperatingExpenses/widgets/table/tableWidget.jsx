@@ -13,8 +13,8 @@ const customCellExpenseRender = (
     dataIndex,
     setExpenseEdit,
     setModalCreateExpenseOpen,
-    setExpenseCopy,
     setDeleteExpenseId,
+    copyExpense,
     data
 ) => {
     if (dataIndex === 'date' && record.key === 'summary') {
@@ -66,10 +66,7 @@ const customCellExpenseRender = (
                 <Button
                     type="text"
                     icon={CopyIcon}
-                    onClick={() => {
-                        setExpenseCopy((data.find((item) => item.id === record.id)));
-                        setModalCreateExpenseOpen(true)
-                    }}
+                    onClick={() => copyExpense(record.id)}
                     title='Копировать'
                 ></Button>
                 <Button
@@ -124,8 +121,9 @@ export default function TableWidget({
     data,
     setExpenseEdit,
     setModalCreateExpenseOpen,
-    setExpenseCopy,
     setDeleteExpenseId,
+    copyExpense,
+    highlightedExpenseId,
     tableType,
     setCategoryEdit,
     setModalCreateCategoryOpen,
@@ -161,8 +159,8 @@ export default function TableWidget({
                                     dataIndex,
                                     setExpenseEdit,
                                     setModalCreateExpenseOpen,
-                                    setExpenseCopy,
                                     setDeleteExpenseId,
+                                    copyExpense,
                                     data
                                 )
                             }
@@ -183,7 +181,17 @@ export default function TableWidget({
                     headerCellWrapperStyle={{
                         lineHeight: '122%',
                     }}
-                    bodyRowClassName={styles.bodyRowSpecial}
+                    bodyRowClassName={(record) => {
+                        const baseClass = styles.bodyRowSpecial;
+                        const isHighlighted = highlightedExpenseId && record.id === highlightedExpenseId;
+                        const highlightClass = isHighlighted ? styles.highlightedRow : '';
+                        
+                        if (isHighlighted) {
+                            console.log('Highlighting row:', record.id, 'with class:', styles.highlightedRow);
+                        }
+                        
+                        return `${baseClass} ${highlightClass}`.trim();
+                    }}
                 />
             </div>
         </div>

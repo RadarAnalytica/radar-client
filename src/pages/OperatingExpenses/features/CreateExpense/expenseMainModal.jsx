@@ -3,7 +3,7 @@ import { SelectIcon } from '@/components/sharedComponents/apiServicePagesFilters
 import styles from './expenseMainModal.module.css';
 import { CloseIcon, InfoIcon } from '../../shared/Icons';
 import { TimeSelect } from '@/components/sharedComponents/apiServicePagesFiltersComponent/features/timeSelect/timeSelect';
-import { useState, useMemo, useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import { useAppSelector } from '@/redux/hooks';
 import { DayPicker } from 'react-day-picker';
 import { format } from 'date-fns';
@@ -11,78 +11,27 @@ import { ru } from 'date-fns/locale';
 import HowToLink from '@/components/sharedComponents/howToLink/howToLink';
 import DatePickerCustomDropdown from '@/components/sharedComponents/apiServicePagesFiltersComponent/shared/datePickerCustomDropdown/datePickerCustomDropdown';
 import { RadioGroup } from './RadioGroup';
+import { DateSelect } from './DateSelect';
+import { MultiSelect } from './MultiSelect';
 
 export default function ExpenseMainModal({
 	open = true,
 	onCancel,
 	setModalCreateCategoryOpen,
 	category,
-	edit,
-	copy,
-	create,
+	editData,
 	handle,
-	state = null,
 	...props
 }) {
 
-
+	console.log('edit', editData);
 	const { shops, filters } = useAppSelector((state) => state.filters);
-
-	const allFilters = useMemo(() => {
-		// сборка данных для значения фильтра Все
-		return filters.find((el) => el.shop.id === 0)
-	}, [filters]);
-
-	const shopsList = useMemo(() => {
-		if (shops && shops.length > 0) {
-			// сборка магазинов без сбора данных и магазин не Все
-			return shops.filter((shop) => (shop.id !== 0 && shop.is_primary_collect))
-		}
-		return [];
-	}, [shops]);
-
-	const brandsList = useMemo(() => {
-		if (allFilters && allFilters.brands) {
-			return allFilters.brands.data
-		}
-		return [];
-	}, [allFilters]);
-
-	const articlesList = useMemo(() => {
-		if (allFilters && allFilters.articles) {
-			return allFilters.articles.data
-		}
-		return [];
-	}, [allFilters]);
-
-	const data = edit || copy || null;
-
-	const [selection, setSelection] = useState(() => {
-		if (data?.vendor_code) {
-			return 'vendor_code'
-		}
-		if (data?.brand_name) {
-			return 'brand_name'
-		}
-		return 'shop'
-	}); // 'shop' | 'vendor_code' | 'brand_name'
-
-	const [openCalendar, setOpenCalendar] = useState(false);
-
-	const customRuLocale = {
-		...ru,
-		localize: {
-			...ru.localize,
-			month: (n, options) => {
-				const monthName = ru.localize.month(n, options);
-				return monthName.charAt(0).toUpperCase() + monthName.slice(1);
-			},
-		},
-	};
-
-	const icon = <SelectIcon />;
-
 	const [form] = Form.useForm();
+
+	const selection = Form.useWatch('selection', form);
+	const frequency = Form.useWatch('frequency', form);
+	const typeValue = Form.useWatch('type', form);
+
 
 	const onFinish = (values) => {
 		values.date = date;
@@ -95,39 +44,27 @@ export default function ExpenseMainModal({
 		form.resetFields();
 	};
 
-	// const [date, setDate] = useState(data?.date || '10-10-2024');
-	const [frequency, setFrequency] = useState('week');
-	// const [type, setType] = useState(data?.type || 'once');
-	const [date, setDate] = useState(data?.date || format(new Date(), 'yyyy-MM-dd'));
+	useEffect(() => {
+		if (editData) {
+			const selectionType = editData.shop ? 'shop' : editData.brand_name ? 'brand_name' : 'vendor_code';
+			form.setFieldsValue({
+				type: editData.type || 'once',
+				date: editData.date,
+				expense_categories: editData.expense_categories,
+				selection: 'shop',
+				shop: Array.isArray(editData.shop) ? editData.shop?.map((el) => el.id) : [editData.shop?.id],
+				vendor_code: Array.isArray(editData.vendor_code) ? editData.vendor_code?.map((el) => el.id) : [editData.vendor_code?.id],
+				brand_name: Array.isArray(editData.brand_name) ? editData.brand_name?.map((el) => el.id) : [editData.brand_name?.id],
+				frequency: 'week',
+				week: editData.week,
+				month: editData.month,
+				end_date: editData.end_date,
+				description: editData.description,
+				value: editData.value,
+			})
+		}
+	}, [editData])
 
-	// 2025-09-15
-	const dateContainerRef = useRef(null);
-	const today = new Date();
-	const minDate = new Date(today);
-	const maxDate = new Date(today);
-	minDate.setDate(today.getDate() - 90);
-	maxDate.setDate(today.getDate() + 90);
-
-	const dateHandler = () => {
-		setOpenCalendar((state) => !state)
-	}
-
-	const handleDayClick = (day) => {
-		const formattedDate = format(day, 'yyyy-MM-dd');
-		setDate(formattedDate);
-		form.setFieldValue('date', format(day, 'dd.MM.yyyy'));
-		setOpenCalendar(false);
-	}
-
-	const handleDropdownVisibleChange = (visible) => {
-		setOpenCalendar(visible);
-	}
-
-	// const [sum, setSum] = useState(data?.sum || 0);
-	const [description, setDescription] = useState(data?.description || '');
-
-
-	const typeValue = Form.useWatch('type', form);
 
 	return (
 		<ConfigProvider
@@ -175,9 +112,8 @@ export default function ExpenseMainModal({
 				<div className={styles.modal__body}>
 					<header className={styles.modal__header}>
 						<h2 className={styles.modal__title}>
-							{edit && 'Редактирование расхода'}
-							{copy && 'Копирование расхода'}
-							{!edit && !copy && 'Добавление расхода'}
+							{editData && 'Редактирование расхода'}
+							{!editData && 'Добавление расхода'}
 						</h2>
 						<HowToLink
 							text='Как это работает?'
@@ -191,32 +127,43 @@ export default function ExpenseMainModal({
 						layout="vertical"
 						className={styles.modal__form}
 						initialValues={{
-							type: data?.type || 'once',
+							type: 'once',
+							date: format(new Date(), 'dd.MM.yyyy'),
+							expense_categories: [],
+							selection: 'shop',
+							shop: [],
+							vendor_code: [],
+							brand_name: [],
+							frequency: 'week',
+							week: [],
 						}}
 					>
 
 						{/* Тип операции (разова / плановая) */}
-						<RadioGroup
-							label='Тип операции'
-							name='type'
-							options={[
-								{ value: 'once', label: 'Разовая' },
-								{ value: 'plan', label: 'Плановая' },
-							]}
-						/>
-
-
-
-
-
-
+						{!editData &&
+							<RadioGroup
+								label='Тип операции'
+								name='type'
+								options={[
+									{ value: 'once', label: 'Разовая' },
+									{ value: 'plan', label: 'Плановая' },
+								]}
+							/>
+						}
+						{editData &&
+							<p className={styles.modal__typeSubtitle}>{editData.type === 'once' ? 'Разовый расход' : 'Плановый расход'}</p>
+						}
 
 
 
 						{/* Выбор даты и суммы расхода */}
 						<Row className={styles.modal__part} gutter={16}>
-							<Col span={12} ref={dateContainerRef}>
-								
+							<Col span={12}>
+								<DateSelect
+									form={form}
+									label="Дата"
+									formId='date'
+								/>
 							</Col>
 							<Col span={12}>
 								<ConfigProvider
@@ -247,9 +194,6 @@ export default function ExpenseMainModal({
 									<Form.Item
 										label="Сумма, руб"
 										name='value'
-										// required={true}
-										initialValue={data?.value}
-										// validateStatus='error'
 										rules={[
 											{ required: true, message: 'Пожалуйста, введите сумму расхода!' }
 										]}
@@ -282,7 +226,7 @@ export default function ExpenseMainModal({
 						{/* Допы для плановых расходов */}
 						{typeValue === 'plan' &&
 							<Row className={styles.modal__part} gutter={16}>
-								<Col span={12} ref={dateContainerRef}>
+								<Col span={8}>
 									<ConfigProvider
 										renderEmpty={() => (<div>Нет данных</div>)}
 										theme={{
@@ -318,38 +262,109 @@ export default function ExpenseMainModal({
 											<Select
 												size="large"
 												placeholder="Частота расхода"
-												suffixIcon={icon}
+												suffixIcon={<SelectIcon />}
 												defaultValue={frequency}
 												options={[
 													{ value: 'week', label: 'Каждую неделю' },
 													{ value: 'month', label: 'Каждый месяц' },
 												]}
-												onChange={setFrequency}
 											/>
 										</Form.Item>
 									</ConfigProvider>
 								</Col>
 
-								{frequency === 'month' && <Col span={12}>
-									<Form.Item
-										label="Число или день"
-										name='month'
-										// required={true}
-										initialValue={data?.month}
-									// validateStatus='error'
+								{frequency === 'month' && <Col span={8}>
+									<ConfigProvider
+										renderEmpty={() => (<div>Нет данных</div>)}
+										theme={{
+											token: {
+												colorBgContainer: 'white',
+												colorBorder: '#5329FF1A',
+												borderRadius: 8,
+												fontFamily: 'Mulish',
+												fontSize: 12,
+												fontWeight: 500,
+												controlHeightLG: 40,
+											},
+											components: {
+												Input: {
+													activeBorderColor: '#5329FF1A',
+													hoverBorderColor: '#5329FF1A',
+													activeOutlineColor: 'transparent',
+													activeBg: 'transparent',
+													hoverBg: 'transparent',
+													activeBg: 'transparent',
+													activeShadow: 'transparent'
+												}
+											}
+										}}
 									>
+										<Form.Item
+											label="Число или день"
+											name='month'
+										>
 
-										<Input
-											size="large"
-											type='number'
-											min={0}
-											placeholder='Число от 1 до 28'
-											onWheel={(e) => e.currentTarget.blur()}
-										/>
-									</Form.Item>
+											<Input
+												size="large"
+												type='number'
+												min={0}
+												placeholder='Число от 1 до 28'
+												onWheel={(e) => e.currentTarget.blur()}
+											/>
+										</Form.Item>
+									</ConfigProvider>
 								</Col>}
 
-								{frequency === 'week' && <Col span={12}>
+								{frequency === 'week' && <Col span={8}>
+									<ConfigProvider
+										renderEmpty={() => (<div>Нет данных</div>)}
+										theme={{
+											token: {
+												colorBgContainer: 'white',
+												colorBorder: '#5329FF1A',
+												borderRadius: 8,
+												fontFamily: 'Mulish',
+												fontSize: 12,
+											},
+											components: {
+												Select: {
+													activeBorderColor: '#5329FF1A',
+													activeOutlineColor: 'transparent',
+													hoverBorderColor: '#5329FF1A',
+													optionActiveBg: 'transparent',
+													optionFontSize: 14,
+													optionSelectedBg: 'transparent',
+													optionSelectedColor: '#5329FF',
+												}
+											}
+										}}
+									>
+										<Form.Item
+											label="День недели"
+											name='week'
+											rules={[
+												{ required: true, message: 'Пожалуйста, выберите значение!' }
+											]}
+										>
+											<MultiSelect
+												form={form}
+												optionsData={[
+													{ value: 0, label: 'Понедельник' },
+													{ value: 1, label: 'Вторник' },
+													{ value: 2, label: 'Среда' },
+													{ value: 3, label: 'Четверг' },
+													{ value: 4, label: 'Пятница' },
+													{ value: 5, label: 'Суббота' },
+													{ value: 6, label: 'Воскресенье' },
+												]}
+												selectId='week'
+												hasSearch={false}
+												selectPlaceholder='Выберите дни'
+											/>
+										</Form.Item>
+									</ConfigProvider>
+								</Col>}
+								<Col span={8}>
 									<ConfigProvider
 										renderEmpty={() => (<div>Нет данных</div>)}
 										theme={{
@@ -375,33 +390,13 @@ export default function ExpenseMainModal({
 											}
 										}}
 									>
-										<Form.Item
-											label="День недели"
-											name='week'
-											// required={true}
-											initialValue={data?.week}
-											rules={[
-												{ required: true, message: 'Пожалуйста, выберите значение!' }
-											]}
-										>
-											<Select
-												size="large"
-												placeholder="Выберите день"
-												suffixIcon={icon}
-												options={[
-													{ value: 0, label: 'Понедельник' },
-													{ value: 1, label: 'Вторник' },
-													{ value: 2, label: 'Среда' },
-													{ value: 3, label: 'Четверг' },
-													{ value: 4, label: 'Пятница' },
-													{ value: 5, label: 'Суббота' },
-													{ value: 6, label: 'Воскресенье' },
-												]}
-												onChange={setFrequency}
-											/>
-										</Form.Item>
+										<DateSelect
+											form={form}
+											label="Дата окончания"
+											formId='end_date'
+										/>
 									</ConfigProvider>
-								</Col>}
+								</Col>
 							</Row>}
 						{/* -------------------*/}
 
@@ -420,13 +415,11 @@ export default function ExpenseMainModal({
 								renderEmpty={() => (<div>Нет данных</div>)}
 								theme={{
 									token: {
-										colorBgContainer: 'white !important',
+										colorBgContainer: 'white',
 										colorBorder: '#5329FF1A',
 										borderRadius: 8,
 										fontFamily: 'Mulish',
 										fontSize: 12,
-										fontWeight: 500,
-										controlHeightLG: 40,
 									},
 									components: {
 										Select: {
@@ -444,22 +437,21 @@ export default function ExpenseMainModal({
 								<Form.Item
 									label="Статья"
 									name='expense_categories'
-									initialValue={data?.category}
 									rules={[
 										{ required: true, message: 'Пожалуйста, выберите значение!' }
 									]}
 									style={{ width: '100%' }}
 								>
-									<Select
-										size="large"
-										placeholder="Выберите статью"
-										suffixIcon={icon}
-										options={category.map((el, i) => ({
+									<MultiSelect
+										form={form}
+										optionsData={category.map((el, i) => ({
 											key: el.id,
 											value: el.id,
 											label: el.name,
 										}))}
-										mode="multiple"
+										selectId='expense_categories'
+										searchFieldPlaceholder='Поиск по названию статьи'
+										selectPlaceholder='Выберите статьи'
 									/>
 								</Form.Item>
 							</ConfigProvider>
@@ -519,8 +511,6 @@ export default function ExpenseMainModal({
 								<Form.Item
 									label="Описание"
 									name='description'
-									// required={true}
-									initialValue={data?.description || description}
 									rules={[
 										{ required: true, message: 'Пожалуйста, введите значение!', min: 0 },
 										{ message: 'Описание не должно быть больше 150 символов!', max: 150 }
@@ -529,8 +519,7 @@ export default function ExpenseMainModal({
 									<Input.TextArea
 										size="large"
 										autoSize={{ minRows: 1, maxRows: 3 }}
-									// onInput={(e) => setDescription(e.target.value)}
-									// maxLength={150}
+										placeholder='Описание'
 									/>
 								</Form.Item>
 							</ConfigProvider>
@@ -554,42 +543,28 @@ export default function ExpenseMainModal({
 							</h3>
 
 							{/* РАспределить на магазины, артикулы, бренды */}
-							<ConfigProvider
-								theme={{
-									token: {
-										fontSize: 14
-									}
-								}}>
-								<Form.Item
-									name="selection"
-									initialValue={selection}
-									onChange={(e) => {
-										setSelection(e.target.value);
-									}}
-								// required={true}
-								>
-									<Radio.Group className={styles.customRadioGroup}>
-										<Radio value="shop">Магазины</Radio>
-										<Radio value="vendor_code">Артикулы</Radio>
-										<Radio value="brand_name">Бренды</Radio>
-									</Radio.Group>
-								</Form.Item>
-							</ConfigProvider>
+							<RadioGroup
+								name="selection"
+								//label='Тип операции'
+								options={[
+									{ value: 'shop', label: 'Магазины' },
+									{ value: 'vendor_code', label: 'Артикулы' },
+									{ value: 'brand_name', label: 'Бренды' },
+								]}
+							/>
 
 
-
+							{/* Селекты магазинов, брендов, артикулов */}
 							{selection === 'shop' &&
 								<ConfigProvider
 									renderEmpty={() => (<div>Нет данных</div>)}
 									theme={{
 										token: {
-											colorBgContainer: 'white !important',
+											colorBgContainer: 'white',
 											colorBorder: '#5329FF1A',
 											borderRadius: 8,
 											fontFamily: 'Mulish',
 											fontSize: 12,
-											fontWeight: 500,
-											controlHeightLG: 40,
 										},
 										components: {
 											Select: {
@@ -606,22 +581,27 @@ export default function ExpenseMainModal({
 								>
 									<Form.Item
 										name="shop"
-										initialValue={data?.shop}
 										rules={[
-											{ required: true, message: 'ОПожалуйста, выберите значение!' }
+											{ required: true, message: 'Пожалуйста, выберите значение!' }
 										]}
 									>
-										<Select
-											size="large"
-											options={shopsList.map((el) => ({
-												key: el.id,
-												value: el.id,
-												label: el.brand_name,
-												disabled: !el.is_active,
-											}))}
-											placeholder="Выберите магазины"
-											showSearch
-											suffixIcon={icon}
+										<MultiSelect
+											form={form}
+											optionsData={shops?.map((el) => {
+												if (el.id === 0) {
+													return false
+												} else {
+													return {
+														key: el.id,
+														value: el.id,
+														label: el.brand_name,
+														disabled: !el.is_active,
+													}
+												}
+											}).filter(Boolean)}
+											selectId='shop'
+											searchFieldPlaceholder='Поиск по названию магазина'
+											selectPlaceholder='Выберите магазины'
 										/>
 									</Form.Item>
 								</ConfigProvider>}
@@ -629,13 +609,11 @@ export default function ExpenseMainModal({
 								renderEmpty={() => (<div>Нет данных</div>)}
 								theme={{
 									token: {
-										colorBgContainer: 'white !important',
+										colorBgContainer: 'white',
 										colorBorder: '#5329FF1A',
 										borderRadius: 8,
 										fontFamily: 'Mulish',
 										fontSize: 12,
-										fontWeight: 500,
-										controlHeightLG: 40,
 									},
 									components: {
 										Select: {
@@ -653,41 +631,51 @@ export default function ExpenseMainModal({
 								{selection === 'vendor_code' &&
 									<Form.Item
 										name="vendor_code"
-										initialValue={data?.vendor_code}
 										rules={[
 											{ required: true, message: 'Пожалуйста, выберите значение!' }
 										]}
 									>
-										<Select
-											size="large"
-											options={articlesList.map((el, i) => ({
-												key: i,
+										<MultiSelect
+											form={form}
+											optionsData={shops?.map((el) => {
+												if (el.id === 0) {
+													return false
+												} else {
+													return {
+														key: el.id,
+														value: el.id,
+														label: el.brand_name,
+														disabled: !el.is_active,
+													}
+												}
+											}).filter(Boolean)}
+											optionsData={filters.find(_ => _.shop.id === 0)?.articles.data.map((el, i) => ({
+												key: el.value,
 												value: el.value,
 												label: el.name,
 											}))}
-											placeholder="Выберите артикулы"
-											showSearch
-											suffixIcon={icon}
+											selectId='vendor_code'
+											searchFieldPlaceholder='Поиск по названию артикула'
+											selectPlaceholder='Выберите артикулы'
 										/>
 									</Form.Item>}
 								{selection === 'brand_name' &&
 									<Form.Item
 										name="brand_name"
-										initialValue={data?.brand_name}
 										rules={[
 											{ required: true, message: 'Пожалуйста, выберите значение!' }
 										]}
 									>
-										<Select
-											size="large"
-											options={brandsList.map((el, i) => ({
-												key: i,
+										<MultiSelect
+											form={form}
+											optionsData={filters.find(_ => _.shop.id === 0)?.brands.data.map((el, i) => ({
+												key: el.value,
 												value: el.value,
 												label: el.name,
 											}))}
-											placeholder="Выберите бренды"
-											showSearch
-											suffixIcon={icon}
+											selectId='brand_name'
+											searchFieldPlaceholder='Поиск по названию бренда'
+											selectPlaceholder='Выберите бренды'
 										/>
 									</Form.Item>}
 							</ConfigProvider>
@@ -761,7 +749,7 @@ export default function ExpenseMainModal({
 						</ConfigProvider>
 					</Form>
 				</div>
-			</Modal>
+			</Modal >
 		</ConfigProvider >
 	);
 }

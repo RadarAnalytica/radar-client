@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { ConfigProvider, Form, Select } from 'antd';
 import { format } from 'date-fns';
 import { DayPicker } from 'react-day-picker';
@@ -5,15 +6,47 @@ import 'react-day-picker/dist/style.css';
 import { ru } from 'date-fns/locale';
 import styles from './expenseMainModal.module.css';
 import DatePickerCustomDropdown from '@/components/sharedComponents/apiServicePagesFiltersComponent/shared/datePickerCustomDropdown/datePickerCustomDropdown';
+import { SelectIcon } from '@/components/sharedComponents/apiServicePagesFiltersComponent/shared';
+
+const customRuLocale = {
+    ...ru,
+    localize: {
+        ...ru.localize,
+        month: (n, options) => {
+            const monthName = ru.localize.month(n, options);
+            return monthName.charAt(0).toUpperCase() + monthName.slice(1);
+        },
+    },
+};
+
+export const DateSelect = (
+    {
+        form,
+        label,
+        formId
+    }
+) => {
+    const [openCalendar, setOpenCalendar] = useState(false);
+    const date = Form.useWatch([formId], form);
+
+    const today = new Date();
+	const minDate = new Date(today);
+	const maxDate = new Date(today);
+	minDate.setDate(today.getDate() - 90);
+	maxDate.setDate(today.getDate() + 90);
+
+    const handleDayClick = (day) => {
+        setOpenCalendar(false);
+		form?.setFieldValue([formId], format(day, 'dd.MM.yyyy'));
+	}
 
 
-export const DateSelect = () => {
     return (
         <ConfigProvider
             renderEmpty={() => (<div>Нет данных</div>)}
             theme={{
                 token: {
-                    colorBgContainer: 'white !important',
+                    colorBgContainer: 'white',
                     colorBorder: '#5329FF1A',
                     borderRadius: 8,
                     fontFamily: 'Mulish',
@@ -35,9 +68,8 @@ export const DateSelect = () => {
             }}
         >
             <Form.Item
-                label="Дата"
-                name='date'
-                initialValue={format(new Date(date), 'dd.MM.yyyy')}
+                label={label}
+                name={formId}
                 rules={[
                     { required: true, message: 'Пожалуйста, выберите дату!' }
                 ]}
@@ -46,11 +78,9 @@ export const DateSelect = () => {
                     name='date'
                     size="large"
                     placeholder="Выберите дату"
-                    suffixIcon={icon}
-                    value={format(new Date(date), 'dd.MM.yyyy')}
+                    suffixIcon={<SelectIcon />}
                     open={openCalendar}
-                    onDropdownVisibleChange={handleDropdownVisibleChange}
-                    // popupMatchSelectWidth={false}
+                    onDropdownVisibleChange={() => setOpenCalendar((prev) => !prev)}
                     dropdownStyle={{ width: 'fit-content' }}
                     dropdownRender={() => (
                         <div
@@ -72,8 +102,8 @@ export const DateSelect = () => {
                                     { before: minDate },
                                     { after: new Date() },
                                 ]}
-                                mode="single"
                                 selected={new Date(date)}
+                                mode="single"
                                 captionLayout="dropdown"
                                 className={styles.customDayPicker}
                                 locale={customRuLocale}

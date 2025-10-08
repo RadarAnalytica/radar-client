@@ -49,6 +49,12 @@
   .modal__part :global(.ant-select-selection-search-input){
     border-color: transparent!important;
   }
+
+  .modal__typeSubtitle {
+    font-weight: 600;
+    font-size: 14px;
+    color: #1a1a1a;
+  }
   
   .modal__subtitle {
     margin-bottom: 8px;

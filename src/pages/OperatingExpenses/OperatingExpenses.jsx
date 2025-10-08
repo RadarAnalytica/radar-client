@@ -34,7 +34,7 @@ export default function OperatingExpenses() {
 
 	const [expense, setExpense] = useState([]);
 	const [expenseEdit, setExpenseEdit] = useState(null);
-	const [expenseCopy, setExpenseCopy] = useState(null);
+	const [highlightedExpenseId, setHighlightedExpenseId] = useState(null);
 
 
 	const expenseData = useMemo(() => {
@@ -44,6 +44,7 @@ export default function OperatingExpenses() {
 
 		let data = expense?.map((item) => ({
 			...item,
+			key: item.id,
 			expense_categories: item.expense_categories.map((el) => el.name).join(', ')
 		}));
 
@@ -160,7 +161,6 @@ export default function OperatingExpenses() {
 	const modalExpenseHandlerClose = () => {
 		setModalCreateExpenseOpen(false);
 		setExpenseEdit(null);
-		setExpenseCopy(null);
 	};
 
 	const modalCategoryHandlerClose = () => {
@@ -255,6 +255,70 @@ export default function OperatingExpenses() {
 		} finally {
 			setModalCreateExpenseOpen(false);
 			setCategoryLoading(false);
+		}
+	}
+
+	const copyExpense = async (expenseId) => {
+		try {
+			let expenseToCopy = expense.find((item) => item.id === expenseId);
+			console.log('expenseToCopy', expenseToCopy)
+			if (!expenseToCopy) {
+				console.error('Expense not found');
+				return;
+			}
+
+			// Prepare expense data for copying (remove id and any timestamps)
+			const { id, created_at, updated_at, ...expenseData } = expenseToCopy;
+
+			// Transform expense_categories: extract IDs if it's an array of objects
+			if (expenseData.expense_categories && Array.isArray(expenseData.expense_categories)) {
+				expenseData.expense_categories = expenseData.expense_categories.map(cat => 
+					typeof cat === 'object' ? cat.id : cat
+				);
+			}
+
+			// Transform shop, vendor_code, brand_name: extract IDs if they are objects/arrays
+			if (expenseData.shop) {
+				// expenseData.shop = Array.isArray(expenseData.shop) 
+				// 	? expenseData.shop.map(s => s.id || s)
+				// 	: [expenseData.shop.id || expenseData.shop];
+				expenseData.shop = Array.isArray(expenseData.shop) 
+					? expenseData.shop.map(s => s.id || s)
+					: expenseData.shop.id || expenseData.shop;
+			}
+			if (expenseData.vendor_code) {
+				expenseData.vendor_code = Array.isArray(expenseData.vendor_code)
+					? expenseData.vendor_code.map(v => v.id || v)
+					: expenseData.vendor_code.id || expenseData.vendor_code;
+				// expenseData.vendor_code = Array.isArray(expenseData.vendor_code)
+				// 	? expenseData.vendor_code.map(v => v.id || v)
+				// 	: [expenseData.vendor_code.id || expenseData.vendor_code];
+			}
+			if (expenseData.brand_name) {
+				expenseData.brand_name = Array.isArray(expenseData.brand_name)
+					? expenseData.brand_name.map(b => b.id || b)
+					: expenseData.brand_name.id || expenseData.brand_name;
+				// expenseData.brand_name = Array.isArray(expenseData.brand_name)
+				// 	? expenseData.brand_name.map(b => b.id || b)
+				// 	: [expenseData.brand_name.id || expenseData.brand_name];
+			}
+
+			const res = await ServiceFunctions.postOperatingExpensesExpenseCreate(authToken, expenseData);
+			console.log('copyExpense result', res);
+
+			// Add new expense to the list
+			setExpense((list) => [...list, res]);
+
+			// Highlight the new expense
+			setHighlightedExpenseId(res.id);
+			console.log('Highlighted expense ID:', res.id);
+
+			// Remove highlight after 2 seconds
+			setTimeout(() => {
+				setHighlightedExpenseId(null);
+			}, 2000);
+		} catch (error) {
+			console.error('copyExpense error', error);
 		}
 	}
 
@@ -418,8 +482,9 @@ export default function OperatingExpenses() {
 							data={expenseData.data}
 							setExpenseEdit={setExpenseEdit}
 							setModalCreateExpenseOpen={setModalCreateExpenseOpen}
-							setExpenseCopy={setExpenseCopy}
 							setDeleteExpenseId={setDeleteExpenseId}
+							copyExpense={copyExpense}
+							highlightedExpenseId={highlightedExpenseId}
 							tableType='expense'
 						/>
 					</div>
@@ -444,11 +509,8 @@ export default function OperatingExpenses() {
 					setModalCreateCategoryOpen={setModalCreateCategoryOpen}
 					category={category}
 					zIndex={1000}
-					edit={expenseEdit}
-					copy={expenseCopy}
 					handle={handleExpanse}
-					state={() => ('edit' && expenseEdit) || ('copy' && expenseCopy)}
-					data={expenseEdit || expenseCopy}
+					editData={expenseEdit}
 				/>}
 
 				{modalCreateCategoryOpen && <ModalCreateCategory

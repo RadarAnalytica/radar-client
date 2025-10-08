@@ -60,4 +60,51 @@
 .bodyRowSpecial:hover td div {
     background-color: #FAFAFA !important;
     transition: background-color 0.2s ease;
-  }
+}
+
+.highlightedRow td {
+    animation: highlightFade 2s ease-in-out;
+    position: relative;
+}
+
+.highlightedRow td > * {
+    position: relative;
+    z-index: 2;
+}
+
+.highlightedRow td::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(83, 41, 255, 0.15);
+    animation: highlightFadeOverlay 2s ease-in-out;
+    pointer-events: none;
+    z-index: 0;
+}
+
+@keyframes highlightFade {
+    0% {
+        background-color: rgba(83, 41, 255, 0.15) !important;
+    }
+    25% {
+        background-color: rgba(83, 41, 255, 0.08) !important;
+    }
+    75% {
+        background-color: rgba(83, 41, 255, 0.04) !important;
+    }
+    100% {
+        background-color: transparent;
+    }
+}
+
+@keyframes highlightFadeOverlay {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
