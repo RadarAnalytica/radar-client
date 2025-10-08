@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import styles from './BlogAdd.module.css';
 import { Form, Input, Upload, Select, Button, ConfigProvider, Modal } from 'antd';
 import { InboxOutlined } from '@ant-design/icons';
-import { createBlogPost, createBlogCategory } from '../../../service/api/api';
-import { fetchPosts } from '../../../redux/blog/blogActions';
-import { useAppDispatch } from '../../../redux/hooks';
+import { createBlogPost, createBlogCategory } from '@/service/api/api';
+import { fetchPosts } from '@/redux/blog/blogActions';
+import { useAppDispatch } from '@/redux/hooks';
 
 const statusInitialState = { isLoading: false, isError: false, isSuccess: false, message: '' };
 
@@ -115,7 +115,6 @@ const BlogAdd = ({ categories, token, setActivePage }) => {
             </Input>
           </Form.Item>
 
-
           {/* Url */}
           <Form.Item
             label='url статьи'
@@ -146,7 +145,6 @@ const BlogAdd = ({ categories, token, setActivePage }) => {
             </Input>
           </Form.Item>
 
-
           {/* Docx */}
           <Form.Item
             label='Текст статьи'
@@ -165,7 +163,6 @@ const BlogAdd = ({ categories, token, setActivePage }) => {
               <p className="ant-upload-text">Кликните или перетащите файл</p>
             </Upload.Dragger>
           </Form.Item>
-
 
           {/* Cover */}
           <Form.Item
@@ -227,7 +224,6 @@ const BlogAdd = ({ categories, token, setActivePage }) => {
               />
             </Form.Item>
           </ConfigProvider>
-
 
           {/* Submit */}
           <Button
@@ -300,6 +296,7 @@ const BlogAdd = ({ categories, token, setActivePage }) => {
                 >
                 </Input>
               </Form.Item>
+
               {/* Category slug */}
               <Form.Item
                 label='Url категории'
@@ -314,6 +311,7 @@ const BlogAdd = ({ categories, token, setActivePage }) => {
                 >
                 </Input>
               </Form.Item>
+
               {/* Category description */}
               <Form.Item
                 label='Описание категории'

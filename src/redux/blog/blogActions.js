@@ -29,10 +29,12 @@ export const fetchCategories = createAsyncThunk(
   async (token, { dispatch }) => {
     try {
       dispatch(setLoading(true));
-      const res = await fetch(`${URL}/api/blog/categories`, {
+      const res = await fetch(`${URL}/api/admin/blog/categories`, {
         method: 'GET',
         headers: {
+          'cache': 'no-store',
           'content-type': 'application/json',
+          'authorization': 'JWT ' + token
         },
       });
       const data = await res.json();
