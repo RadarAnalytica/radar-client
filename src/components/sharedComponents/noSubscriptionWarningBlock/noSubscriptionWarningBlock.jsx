@@ -68,7 +68,7 @@ const NoSubscriptionWarningBlock = ({ className = '' }) => {
                     <p className={styles.block__title}>Добро пожаловать в сервис Радар-Аналитика!</p>
                 </div>
 
-                <p className={styles.block__text}>
+                <p className={`${styles.block__text} mb-0`}>
                     <b>У вас еще нет активной подписки,</b> а в сервисе представлены лишь тестовые данные для демонстрации функционала.
                 </p>
 
@@ -77,7 +77,6 @@ const NoSubscriptionWarningBlock = ({ className = '' }) => {
                         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M19 19L14.6569 14.6569M14.6569 14.6569C16.1046 13.2091 17 11.2091 17 9C17 4.58172 13.4183 1 9 1C4.58172 1 1 4.58172 1 9C1 13.4183 4.58172 17 9 17C11.2091 17 13.2091 16.1046 14.6569 14.6569Z" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                         </svg>
-
                     </div>
                     <p className={styles.block__subtext}>
                         Обязательно пройдитесь по всем разделам, чтобы увидеть, какие возможности доступны для работы с финансами и бизнес-показателями.
@@ -169,7 +168,7 @@ const NoSubscriptionWarningBlock = ({ className = '' }) => {
                         size='large'
                         type='primary'
                         style={{
-                            height: 64,
+                            height: 52,
                             width: '100%',
                         }}
                         loading={requestStatus.isLoading}

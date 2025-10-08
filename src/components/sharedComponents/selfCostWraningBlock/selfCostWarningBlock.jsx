@@ -1,13 +1,9 @@
 import React, { useState } from 'react';
-import SelfCostModal from '../selfCostModal/selfCostModal';
 import styles from './selfCostWarningBlock.module.css';
 import { Link } from 'react-router-dom';
 
 const SelfCostWarningBlock = ({ shopId, onUpdateDashboard }) => {
-
-    const [isModalVisible, setIsModalVisible] = useState(false);
-
-
+    // const [isModalVisible, setIsModalVisible] = useState(false);
     return (
         <div className={styles.block}>
             <div className={styles.block__titleWrapper}>
@@ -35,7 +31,7 @@ const SelfCostWarningBlock = ({ shopId, onUpdateDashboard }) => {
                 </p>
             </div>
 
-            <p className={styles.block__text}>
+            <p className={`${styles.block__text} mb-1`}>
                 Для правильного расчета данных нам нужно знать себестоимость ваших товаров. Данные в блоках «прибыль», «финансы», «себестоимость проданных товаров» не учитывают себестоимость товаров, для которых она неизвестна.
             </p>
 

@@ -263,11 +263,10 @@ const AbcAnalysisPage = () => {
 					<Filters setLoading={setLoading} isDataLoading={loading} />
 				</div>
 
-				{/* SELF-COST WARNING */}
 				{!loading && shops && activeBrand?.is_primary_collect && !activeBrand.is_self_cost_set && (
 						<SelfCostWarningBlock
 							shopId={activeBrand.id}
-							onUpdateDashboard={handleUpdateAbcAnalysis} //
+							onUpdateDashboard={handleUpdateAbcAnalysis}
 						/>
 				)}
 

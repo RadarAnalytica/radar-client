@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { useAppSelector, useAppDispatch } from '@/redux/hooks';
+import { useAppSelector } from '@/redux/hooks';
 import Sidebar from '@/components/sharedComponents/sidebar/sidebar';
 import Header from '@/components/sharedComponents/header/header';
 import MobilePlug from '@/components/sharedComponents/mobilePlug/mobilePlug';
@@ -10,19 +10,18 @@ import AuthContext from '@/service/AuthContext';
 import { SearchWidget, TableWidget } from './widgets';
 import { ServiceFunctions } from '@/service/serviceFunctions';
 import styles from './stockAnalysisPage.module.css';
-import { mockGetAnalysisData } from '@/service/mockServiceFunctions';
 import NoSubscriptionWarningBlock from '@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock';
 import { useDemoMode } from '@/app/providers/DemoDataProvider';
 
 const StockAnalysisPage = () => {
-    const { user, authToken } = useContext(AuthContext);
+    const { authToken } = useContext(AuthContext);
     const { isDemoMode } = useDemoMode();
-    const { activeBrand, selectedRange, isFiltersLoaded, activeBrandName, activeArticle, activeGroup, shops } = useAppSelector((state) => state.filters);
+    const { activeBrand, selectedRange, shops } = useAppSelector((state) => state.filters);
     // const { shops } = useAppSelector((state) => state.shopsSlice);
     const filters = useAppSelector((state) => state.filters);
     const [stockAnalysisData, setStockAnalysisData] = useState([]); // это базовые данные для таблицы
     const [stockAnalysisFilteredData, setStockAnalysisFilteredData] = useState(); // это данные для таблицы c учетом поиска
-    const [hasSelfCostPrice, setHasSelfCostPrice] = useState(false);
+    const [setHasSelfCostPrice] = useState(false);
     const [loading, setLoading] = useState(false);
     const [primaryCollect, setPrimaryCollect] = useState(null);
     const [shopStatus, setShopStatus] = useState(null);
