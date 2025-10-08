@@ -137,7 +137,7 @@ const StockAnalysisPage = () => {
                     setLoading={setLoading}
                 />
             </section>
-x       </main>
+        </main>
     );
 };
 
