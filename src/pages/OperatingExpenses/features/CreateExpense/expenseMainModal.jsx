@@ -24,7 +24,6 @@ export default function ExpenseMainModal({
 	...props
 }) {
 
-	console.log('edit', editData);
 	const { shops, filters } = useAppSelector((state) => state.filters);
 	const [form] = Form.useForm();
 
@@ -34,8 +33,9 @@ export default function ExpenseMainModal({
 
 
 	const onFinish = (values) => {
-		values.date = date;
+		console.log('values', values);
 		console.log('onFinish', values);
+		values.month = [parseInt(values.month)]
 		handle(values)
 	};
 

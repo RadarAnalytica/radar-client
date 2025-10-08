@@ -279,28 +279,19 @@ export default function OperatingExpenses() {
 
 			// Transform shop, vendor_code, brand_name: extract IDs if they are objects/arrays
 			if (expenseData.shop) {
-				// expenseData.shop = Array.isArray(expenseData.shop) 
-				// 	? expenseData.shop.map(s => s.id || s)
-				// 	: [expenseData.shop.id || expenseData.shop];
 				expenseData.shop = Array.isArray(expenseData.shop) 
 					? expenseData.shop.map(s => s.id || s)
-					: expenseData.shop.id || expenseData.shop;
+					: [expenseData.shop.id || expenseData.shop];
 			}
 			if (expenseData.vendor_code) {
 				expenseData.vendor_code = Array.isArray(expenseData.vendor_code)
 					? expenseData.vendor_code.map(v => v.id || v)
-					: expenseData.vendor_code.id || expenseData.vendor_code;
-				// expenseData.vendor_code = Array.isArray(expenseData.vendor_code)
-				// 	? expenseData.vendor_code.map(v => v.id || v)
-				// 	: [expenseData.vendor_code.id || expenseData.vendor_code];
+					: [expenseData.vendor_code.id || expenseData.vendor_code];
 			}
 			if (expenseData.brand_name) {
 				expenseData.brand_name = Array.isArray(expenseData.brand_name)
 					? expenseData.brand_name.map(b => b.id || b)
-					: expenseData.brand_name.id || expenseData.brand_name;
-				// expenseData.brand_name = Array.isArray(expenseData.brand_name)
-				// 	? expenseData.brand_name.map(b => b.id || b)
-				// 	: [expenseData.brand_name.id || expenseData.brand_name];
+					: [expenseData.brand_name.id || expenseData.brand_name];
 			}
 
 			const res = await ServiceFunctions.postOperatingExpensesExpenseCreate(authToken, expenseData);
