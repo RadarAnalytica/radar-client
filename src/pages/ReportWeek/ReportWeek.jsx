@@ -150,7 +150,6 @@ export default function ReportWeek() {
 	const updateDataReportWeek = async () => {
 		setLoading(true);
 		progress.start();
-
 		try {
 			if (activeBrand !== null && activeBrand !== undefined) {
 				const response = await ServiceFunctions.getReportWeek(
@@ -170,21 +169,20 @@ export default function ReportWeek() {
 					}
 				}
 
+				progress.complete();
 				await setTimeout(() => dataToTableData(weeks), 500);
 			}
 		} catch (e) {
 			console.error(e);
-			dataToTableData(null);
-		} finally {
 			progress.complete();
-			setLoading(false);
+			dataToTableData(null);
 		}
 	};
 
 	const dataToTableData = (weeks) => {
 		if (!weeks || weeks?.length === 0) {
 			setTableRows([]);
-			progress.reset();
+			progress.complete();
 			setLoading(false);
 			return;
 		}
@@ -239,7 +237,7 @@ export default function ReportWeek() {
 
 		rows.unshift(summary);
 		setTableRows(rows);
-		progress.reset();
+		progress.complete();
 		setLoading(false);
 	};
 
@@ -410,7 +408,6 @@ export default function ReportWeek() {
 					/>
 				)}
 
-				{/* { shopStatus?.is_primary_collect && */}
 				<div className={styles.container}>
 					<TableWidget
 						loading={loading}
