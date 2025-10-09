@@ -8,7 +8,7 @@
     flex-direction: column;
     justify-content: space-between;
     align-items: flex-start;
-    gap: 4px;
+    gap: 14px;
     transition: all .1s ease-in-out;
     box-sizing: border-box;
 }

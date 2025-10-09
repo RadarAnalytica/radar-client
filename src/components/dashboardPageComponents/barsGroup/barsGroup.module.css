@@ -8,9 +8,9 @@
     justify-content: stretch;
     box-sizing: border-box;
 
-    @media (max-width: 1366px) {
+    /* @media (max-width: 1366px) {
         grid-template-columns: repeat(2, 1fr);
-    }
+    } */
 }
 
 .group_openSidebar {

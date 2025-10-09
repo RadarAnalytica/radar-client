@@ -35,7 +35,7 @@ const ProfitChartBlock = ({ dataDashBoard, loading }) => {
                 borderWidth: 0,
                 barPercentage: 0.9,
                 borderRadius: 3,
-
+                yAxisID: 'A',
             },
             {
                 label: 'Чистая прибыль',
@@ -56,6 +56,7 @@ const ProfitChartBlock = ({ dataDashBoard, loading }) => {
                 borderWidth: 0,
                 barPercentage: 0.9,
                 borderRadius: 3,
+                yAxisID: 'B',
             },
         ],
     };
@@ -118,9 +119,10 @@ const ProfitChartBlock = ({ dataDashBoard, loading }) => {
                     color: '#8C8C8C',
                 }
             },
-            y: {
+            A: {
                 //beginAtZero: true,
                 //min: minDataRevenue,
+                position: 'left',
                 max: maxDataRevenue,
                 grid: {
                     drawOnChartArea: true,
@@ -132,6 +134,26 @@ const ProfitChartBlock = ({ dataDashBoard, loading }) => {
                 ticks: {
                     // stepSize: stepSizeRevenue,
                    color: '#F0AD00',
+                    callback: function (value) {
+                        return value.toLocaleString();
+                    }
+                }
+            },
+            B: {
+                //beginAtZero: true,
+                //min: minDataRevenue,
+                position: 'right',
+                max: maxDataRevenue,
+                grid: {
+                    drawOnChartArea: false,
+                    tickLength: 0,
+                },
+                border: {
+                    color: 'white',
+                },
+                ticks: {
+                    // stepSize: stepSizeRevenue,
+                   color: '#5329FF',
                     callback: function (value) {
                         return value.toLocaleString();
                     }
