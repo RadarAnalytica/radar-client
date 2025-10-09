@@ -143,7 +143,6 @@ const SupplierIdPage = () => {
                     />
                 </div>
 
-
                 <div className={styles.page__tableWrapper}>
                     <TableWidget
                         id={mainSupplierData?.supplier_id}

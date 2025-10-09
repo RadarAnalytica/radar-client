@@ -28,39 +28,22 @@ import { COLUMNS } from './columnsConfig';
 import TableWidget from './widgets/TableWidget/TableWidget';
 import { useDemoMode } from '@/app/providers/DemoDataProvider';
 import { fetchFilters } from '@/redux/apiServicePagesFiltersState/filterActions';
+import { useLoadingProgress } from '@/service/hooks/useLoadingProgress';
 
 export default function ReportWeek() {
 	const { user, authToken } = useContext(AuthContext);
 	const { isDemoMode } = useDemoMode();
 	const dispatch = useAppDispatch();
-  const { activeBrand, selectedRange, activeBrandName, activeArticle, activeGroup, activeWeeks, isFiltersLoaded, shops } = useAppSelector(
-    (state) => state.filters
-  );
+  	const { activeBrand, selectedRange, activeBrandName, activeArticle, activeGroup, activeWeeks, isFiltersLoaded, shops } = useAppSelector(state => state.filters);
 	const filters = useAppSelector((state) => state.filters);
 	//const { shops } = useAppSelector((state) => state.shopsSlice);
 	const [loading, setLoading] = useState(true);
+	const progress = useLoadingProgress({ loading });
 	const [downloadLoading, setDownloadLoading] = useState(false);
 	const [isPopoverOpen, setIsPopoverOpen] = useState(false);
 	const [isConfigOpen, setConfigOpen] = useState(false);
 	const [tableRows, setTableRows] = useState(null);
-	const [progress, setProgress] = useState(0);
 	const [tableColumns, setTableColumns] = useState(COLUMNS);
-
-	useEffect(() => {
-		let interval = null;
-		if (loading) {
-			interval = setInterval(() => {
-				setProgress((state) => {
-					if (state > 90){
-						clearInterval(interval);
-						return state;
-					}
-					return Math.ceil(state + (90 / 15));
-				});
-			}, 1000);
-		}
-		return () => clearInterval(interval);
-	}, [loading]);
 
 	useEffect(() => {
 		localStorage.removeItem('reportWeekColumns');
@@ -140,9 +123,7 @@ export default function ReportWeek() {
 	}, [activeBrand, shops]);
 
 	useEffect(() => {
-		if (!activeBrand){
-			return;
-		}
+		if (!activeBrand) return;
 		let savedFilterWeek = JSON.parse(localStorage.getItem('activeWeeks')) || {};
 		savedFilterWeek[activeBrand.id] = activeWeeks;
 		localStorage.setItem(
@@ -168,7 +149,8 @@ export default function ReportWeek() {
 
 	const updateDataReportWeek = async () => {
 		setLoading(true);
-		setProgress(0);
+		progress.start();
+
 		try {
 			if (activeBrand !== null && activeBrand !== undefined) {
 				const response = await ServiceFunctions.getReportWeek(
@@ -188,20 +170,21 @@ export default function ReportWeek() {
 					}
 				}
 
-				setProgress(100);
 				await setTimeout(() => dataToTableData(weeks), 500);
 			}
 		} catch (e) {
 			console.error(e);
-			setProgress(100);
 			dataToTableData(null);
+		} finally {
+			progress.complete();
+			setLoading(false);
 		}
 	};
 
 	const dataToTableData = (weeks) => {
 		if (!weeks || weeks?.length === 0) {
 			setTableRows([]);
-			setProgress(null);
+			progress.reset();
 			setLoading(false);
 			return;
 		}
@@ -256,7 +239,7 @@ export default function ReportWeek() {
 
 		rows.unshift(summary);
 		setTableRows(rows);
-		setProgress(null);
+		progress.reset();
 		setLoading(false);
 	};
 
@@ -341,14 +324,12 @@ export default function ReportWeek() {
 	return (
 		<main className={styles.page}>
 			<MobilePlug />
-			{/* ------ SIDE BAR ------ */}
+
 			<section className={styles.page__sideNavWrapper}>
 				<Sidebar />
 			</section>
 
-			{/* ------ CONTENT ------ */}
 			<section className={styles.page__content}>
-				{/* header */}
 				<div className={styles.page__headerWrapper}>
 					<Header title="По неделям"></Header>
 				</div>
@@ -436,7 +417,7 @@ export default function ReportWeek() {
 						columns={tableColumns}
 						data={tableRows}
 						is_primary_collect={shopStatus?.is_primary_collect}
-						progress={progress}
+						progress={progress.value}
 						setTableColumns={setTableColumns}
 					/>
 				</div>

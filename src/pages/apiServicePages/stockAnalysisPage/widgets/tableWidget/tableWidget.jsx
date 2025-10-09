@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import styles from './tableWidget.module.css';
 import { tableConfig, sortTableDataFunc } from '../../shared';
 import { formatPrice } from '../../../../../service/utils';
-import { Tooltip, Pagination, ConfigProvider } from 'antd';
+import { Tooltip, Pagination, ConfigProvider, Progress } from 'antd';
 import { Table as RadarTable } from 'radar-ui';
 import { newTableConfig } from '../../shared/configs/newTableConfig';
 
@@ -19,8 +19,6 @@ import { newTableConfig } from '../../shared/configs/newTableConfig';
  * таблицы
  * 4. В процессе расставляем стили в зависимости от позиции таблицы, элемента и тд
  */
-
-
 //инит стейт сортировки
 const initSortState = {
     sortedValue: 'saleSum',
@@ -63,7 +61,7 @@ const customCellRender = (value, record, index, dataIndex) => {
 };
 
 
-const TableWidget = ({ stockAnalysisFilteredData, loading }) => {
+const TableWidget = ({ stockAnalysisFilteredData, loading, progress }) => {
 
     const containerRef = useRef(null); // реф скролл-контейнера (используется чтобы седить за позицией скрола)
     const [tableData, setTableData] = useState(); // данные для рендера таблицы
@@ -83,11 +81,8 @@ const TableWidget = ({ stockAnalysisFilteredData, loading }) => {
         }
     }, [stockAnalysisFilteredData]);
 
-
-
     // хэндлер сортировки
     const sortButtonClickHandler = (sort_field, sort_order) => {
-
         // выключаем сортировку если нажата уже активная клавиша
         if (sortState.sortType === sort_order && sortState.sortedValue === sort_field) {
             setSortState(initSortState);
@@ -95,7 +90,6 @@ const TableWidget = ({ stockAnalysisFilteredData, loading }) => {
             setPaginationState({ ...paginationState, total: Math.ceil(stockAnalysisFilteredData.length / paginationState.pageSize), current: 1 });
             return;
         }
-
 
         // включаем сортировку и сортируем дату
         setSortState({
@@ -120,6 +114,17 @@ const TableWidget = ({ stockAnalysisFilteredData, loading }) => {
             <div className={styles.widget}>
                 <div className={styles.widget__loaderWrapper}>
                     <span className='loader'></span>
+                    {progress !== null && 
+                        <div className={styles.loadingProgress}>
+                            <Progress
+                                percent={progress}
+                                size='small'
+                                showInfo={false}
+                                strokeColor='#5329FF'
+                                strokeLinecap={1}
+                            />
+                        </div>
+                    }
                 </div>
             </div>
         );

@@ -19,6 +19,7 @@ import DataCollectWarningBlock from '@/components/sharedComponents/dataCollectWa
 import NoSubscriptionWarningBlock from '@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock';
 //import { startOfYear, format } from "date-fns";
 import { useDemoMode } from '@/app/providers/DemoDataProvider';
+import { useLoadingProgress } from '@/service/hooks/useLoadingProgress';
 
 export default function ReportProfitLoss() {
 	const { user, authToken } = useContext(AuthContext);
@@ -26,8 +27,8 @@ export default function ReportProfitLoss() {
 	const { isDemoMode } = useDemoMode();
 	const filters = useAppSelector((state) => state.filters);
 	//const { shops } = useAppSelector((state) => state.shopsSlice);
-
 	const [loading, setLoading] = useState(true);
+	const progress = useLoadingProgress({ loading });
 	const [columns, setColumns] = useState([]);
 	const [data, setData] = useState([]);
 
@@ -172,6 +173,7 @@ export default function ReportProfitLoss() {
 	const dataToTableData = (response) => {
 		if (!response || !response.data || response.data.length === 0) {
 			setColumns([]);
+			progress.reset();
 			setData([]);
 			return;
 		}
@@ -197,14 +199,17 @@ export default function ReportProfitLoss() {
 			{ key: 'tax', title: 'Налоги' },
 			{ key: 'net_profit', title: 'Чистая прибыль' },
 		];
-
+		
 		setLoading(false);
+		progress.complete();
 		setData([...getData(data, metricsOrder)]);
 		setColumns(getConfig(data));
 	};
 
 	const updateDataReportProfitLoss = async () => {
-		setLoading(true);
+		setLoading(true);	
+		progress.start();
+
 		try {
 			const response = await ServiceFunctions.getReportProfitLoss(
 				authToken,
@@ -217,8 +222,8 @@ export default function ReportProfitLoss() {
 		} catch (e) {
 			console.error(e);
 			dataToTableData(null);
-			setLoading(false);
 		} finally {
+			progress.complete();
 			setLoading(false);
 		}
 	};
@@ -248,13 +253,12 @@ export default function ReportProfitLoss() {
 	return (
 		<main className={styles.page}>
 			<MobilePlug />
-			{/* ------ SIDE BAR ------ */}
+
 			<section className={styles.page__sideNavWrapper}>
 				<Sidebar />
 			</section>
-			{/* ------ CONTENT ------ */}
+			
 			<section className={styles.page__content}>
-				{/* header */}
 				<div className={styles.page__headerWrapper}>
 					<Header title="Отчет о прибыли и убытках"></Header>
 				</div>
@@ -290,7 +294,7 @@ export default function ReportProfitLoss() {
 					data={data}
 					virtual={false}
 					is_primary_collect={activeBrand?.is_primary_collect}
-					//progress={progress}
+					progress={progress.value}
 					setTableConfig={setColumns}
 				/>
 			</section>
