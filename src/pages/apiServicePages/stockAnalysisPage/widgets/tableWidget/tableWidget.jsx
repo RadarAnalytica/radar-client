@@ -39,23 +39,34 @@ const getABCBarOptions = (value) => {
 const customCellRender = (value, record, index, dataIndex) => {
     const rightBorders = ['category', 'sold_cost', 'return_cost', 'product_cost_stock', 'from_client_sum', 'additionalPayment', 'lostRevenue', 'byProfit', 'minDiscountPrice', 'orderSum', 'completed', 'saleCountDay'];
     if (dataIndex === 'productName') {
-        return <div className={styles.productCustomCell}>
-            <img src={record.photo} width={30} height={40} alt='Product'></img>
-            <div className={styles.productCustomCellTitle}>{value}</div>
-            </div>;
+        return (
+            <div className={styles.productCustomCell}>
+                <div className={styles.productCustomCellImgWrapper}>
+                    <img 
+                        src={record.photo} 
+                        width={30} 
+                        height={40} 
+                        alt='Product'
+                        onError={(e) => { e.target.style.display = 'none'; }}
+                    ></img>
+                </div>
+                <div className={styles.productCustomCellTitle} title={value}>{value}</div>
+            </div>
+        );
     }
     if (dataIndex === 'byRevenue' || dataIndex === 'byProfit') {
         return (<div className={styles.productCustomCell} data-border-right={rightBorders.includes(dataIndex)}>
             <div
                 className={styles.abcBar}
                 style={{ backgroundColor: getABCBarOptions(value) }}
+                title={value}
             >
                 {value}
             </div>
         </div>);
     }
 
-    return <div className={styles.customCell} data-border-right={rightBorders.includes(dataIndex)}>
+    return <div className={styles.customCell} data-border-right={rightBorders.includes(dataIndex)} title={typeof value === 'number' ? formatPrice(value, newTableConfig.map(item => item.children).flat().find(item => item.dataIndex === dataIndex)?.units || '') : value}>
         {typeof value === 'number' ? formatPrice(value, newTableConfig.map(item => item.children).flat().find(item => item.dataIndex === dataIndex)?.units || '') : value}
     </div>;
 };
@@ -67,6 +78,7 @@ const TableWidget = ({ stockAnalysisFilteredData, loading, progress }) => {
     const [tableData, setTableData] = useState(); // данные для рендера таблицы
     const [sortState, setSortState] = useState(initSortState); // стейт сортировки (см initSortState)
     const [paginationState, setPaginationState] = useState({ current: 1, total: 50, pageSize: 50 });
+    const [ tableConfig, setTableConfig ] = useState();
 
     // задаем начальную дату
     useEffect(() => {
@@ -97,12 +109,60 @@ const TableWidget = ({ stockAnalysisFilteredData, loading, progress }) => {
             sortType: sort_order,
         });
         setTableData([...sortTableDataFunc(sort_order, sort_field, stockAnalysisFilteredData)]);
-        setPaginationState({ ...paginationState, total: [...sortTableDataFunc(sort_order, sort_field, stockAnalysisFilteredData)].length, current: 1 });
+        setPaginationState({ ...paginationState, total: Math.ceil([...sortTableDataFunc(sort_order, sort_field, stockAnalysisFilteredData)].length / paginationState.pageSize), current: 1 });
     };
 
     const paginationHandler = (page) => {
         setPaginationState({ ...paginationState, current: page });
     };
+
+    const onResizeGroup = (columnKey, width) => {
+        // Обновляем конфигурацию колонок с группированной структурой
+        const updateColumnWidth = (columns) => {
+          return columns.map(col => {
+            // Если это группа с children
+            if (col.children && col.children.length > 0) {
+              const updatedChildren = updateColumnWidth(col.children);
+
+              // Всегда пересчитываем ширину группы на основе суммы ширин дочерних колонок
+              const totalWidth = updatedChildren.reduce((sum, child) => {
+                if (child.hidden) return sum; // Пропускаем скрытые колонки
+                return sum + (child.width || child.minWidth || 200);
+              }, 0);
+              return { ...col, width: totalWidth, minWidth: totalWidth, children: updatedChildren };
+            }
+
+            // Если это листовая колонка
+            if (col.key === columnKey) {
+              return { ...col, width: width, minWidth: width };
+            }
+
+            return col;
+          });
+        };
+
+        // Обновляем состояние
+        setTableConfig(prevConfig => {
+            const updatedConfig = updateColumnWidth(prevConfig);
+            localStorage.setItem('STOCK_ANALYSIS_TABLE_CONFIG', JSON.stringify(updatedConfig));
+            return updatedConfig;
+        });
+    };
+
+    useEffect(() => {
+        let savedTableConfig = localStorage.getItem('STOCK_ANALYSIS_TABLE_CONFIG');
+        if (savedTableConfig) {
+            try {
+                savedTableConfig = JSON.parse(savedTableConfig);
+                setTableConfig(savedTableConfig);
+            } catch (error) {
+                console.error('Error parsing saved table config:', error);
+                setTableConfig(newTableConfig);
+            }
+        } else {
+            setTableConfig(newTableConfig);
+        }
+    }, []);
 
     useEffect(() => {
         const { current } = containerRef;
@@ -114,7 +174,7 @@ const TableWidget = ({ stockAnalysisFilteredData, loading, progress }) => {
             <div className={styles.widget}>
                 <div className={styles.widget__loaderWrapper}>
                     <span className='loader'></span>
-                    {progress !== null && 
+                    {progress !== null &&
                         <div className={styles.loadingProgress}>
                             <Progress
                                 percent={progress}
@@ -133,12 +193,14 @@ const TableWidget = ({ stockAnalysisFilteredData, loading, progress }) => {
     return (
         <div className={styles.widget__container}>
             <div className={styles.widget__scrollContainer} ref={containerRef}>
-                {tableData && paginationState &&
+                {tableData && tableData.length > 0 && tableConfig &&
                     <RadarTable
-                        config={newTableConfig}
-                        dataSource={tableData.slice((paginationState.current - 1) * paginationState.pageSize, paginationState.current * paginationState.pageSize)}
+                        config={tableConfig}
+                        dataSource={[...tableData.slice((paginationState.current - 1) * paginationState.pageSize, paginationState.current * paginationState.pageSize)]}
                         preset='radar-table-simple'
                         stickyHeader
+                        resizeable
+                        onResize={onResizeGroup}
                         onSort={sortButtonClickHandler}
                         pagination={{
                             current: paginationState.current,
@@ -152,11 +214,8 @@ const TableWidget = ({ stockAnalysisFilteredData, loading, progress }) => {
                         paginationContainerStyle={{
                             bottom: 0
                         }}
-                        sorting={{sort_field: sortState?.sortedValue, sort_order: sortState?.sortType}}
+                        sorting={{ sort_field: sortState?.sortedValue, sort_order: sortState?.sortType }}
                         scrollContainerRef={containerRef}
-                        // bodyCellWrapperStyle={{
-                        //     minHeight: '85px'
-                        // }}
                         customCellRender={{
                             idx: [],
                             renderer: customCellRender,
@@ -179,6 +238,7 @@ const TableWidget = ({ stockAnalysisFilteredData, loading, progress }) => {
                         }}
                         bodyCellStyle={{
                             borderBottom: '1px solid #E8E8E8',
+                            height: '50px',
                         }}
                         bodyRowClassName={styles.bodyRowSpecial}
                     />

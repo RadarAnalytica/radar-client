@@ -12,7 +12,7 @@
 }
 .page__content {
     width: 100%;
-    padding: 30px 0 30px 52px;
+    padding: 20px 0 20px 32px;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -25,7 +25,7 @@
 }
 .page__staticContentWrapper {
     width: 100%;
-    padding-right: 52px;
+    padding-right: 32px;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
