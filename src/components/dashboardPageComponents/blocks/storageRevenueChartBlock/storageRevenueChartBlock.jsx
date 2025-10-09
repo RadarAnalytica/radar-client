@@ -85,7 +85,8 @@ const StorageRevenueChartBlock = ({ dataDashBoard, loading }) => {
                 beginAtZero: true,
                 min: 0,
                 max: max,
-                grid: { display: true },
+                grid: { display: true, tickLength: 0 },
+                border: { color: 'white' },
                 ticks: {
                     callback: function (value) {
                         return value.toLocaleString('ru-RU') + '₽';

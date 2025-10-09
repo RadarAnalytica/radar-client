@@ -23,8 +23,8 @@
 
 .block__title {
     font-family: Mulish;
-    font-weight: 700;
-    font-size: 24px;
+    font-weight: 600;
+    font-size: 22px;
     line-height: 100%;
     letter-spacing: 0%;
     margin: 0;
@@ -65,7 +65,7 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: stretch;
-    gap: 4px;
+    gap: 8px;
     flex-grow: 0;
     flex-shrink: 0;
 }
@@ -79,9 +79,8 @@
 }
 
 .block__inputLabel {
-    font-family: 'Mulish';
-    font-size: 14px;
-    font-weight: 400;
+    font-size: 12px;
+    font-weight: 500;
     line-height: 100%;
     color: #1A1A1A
 }
@@ -95,6 +94,7 @@
     flex-direction: column;
     justify-content: flex-end;
     align-items: flex-start;
+    gap: 12px;
 }
 
 .block__row {
@@ -104,9 +104,8 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
-    gap: 8px;
+    gap: 6px;
     padding: 8px;
-    border-bottom: 1px solid silver;
 }
 
 .block__row:last-of-type {
@@ -114,19 +113,18 @@
 }
 
 .block__rowTitle {
-    font-family: 'Mulish';
     font-size: 14px;
     font-weight: 500;
     line-height: 100%;
-    color: #1A1A1A;
+    color: #8C8C8C;
     margin: 0;
     padding: 0;
 }
 
 .block__rowData {
     font-family: Mulish;
-    font-weight: 700;
-    font-size: 18px;
+    font-weight: 600;
+    font-size: 22px;
     line-height: 100%;
     letter-spacing: 0%;
     text-align: left;

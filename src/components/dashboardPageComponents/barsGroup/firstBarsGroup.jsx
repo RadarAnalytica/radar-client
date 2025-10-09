@@ -50,13 +50,6 @@ const FirstBarsGroup = ({ dataDashBoard, selectedRange, loading }) => {
                     hasTooltip
                     tooltipText='Сумма реализации товара с учетом согласованной скидки продавца и СПП'
                 />
-                {/* <Bar
-                    fixed={false}
-                    title='Средний чек'
-                    averageBill={dataDashBoard?.averageBill}
-                    averageBillInPercent={dataDashBoard?.averageBillCompare}
-                    loading={loading}
-                /> */}
                 <Bar
                     fixed={false}
                     title='Процент выкупа'

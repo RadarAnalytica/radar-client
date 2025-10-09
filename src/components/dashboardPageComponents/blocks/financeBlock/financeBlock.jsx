@@ -6,16 +6,20 @@ import { Tooltip, ConfigProvider } from 'antd';
 
 const getRateStyle = (amount, styles) => {
     let style = '';
+    let bgColor = ''
     if (amount > 0) {
         style = `${styles.block__mainSubData} ${styles.block__mainSubData_green}`;
+        bgColor = '#00B69B0D';
     }
     if (amount < 0) {
         style = `${styles.block__mainSubData} ${styles.block__mainSubData_red}`;
+        bgColor = '#F93C650D';
     }
     if (amount === 0) {
         style = `${styles.block__mainSubData} ${styles.block__mainSubData_gray}`;
+        bgColor = '#8C8C8C0D';
     }
-    return style;
+    return { style, bgColor };
 };
 
 const tooltipData = {
@@ -48,40 +52,41 @@ const FinanceBlock = ({ dataDashBoard, loading }) => {
                     const tooltip = tooltipData[i.name];
                     const units = i.name === 'Маржа EBITDA' ? '%' : '₽';
                     return (
-                    <div className={styles.block__tableRow} key={id}>
-                        <div className={styles.block__tableRowTitle}>
-                            {i.name}
-                            {tooltip &&
-                            <ConfigProvider
-                                theme={{
-                                    token: {
-                                        colorTextLightSolid: '#1A1A1A'
-                                    }
-                                }}
-                            >
-                                <Tooltip
-                                    arrow={false}
-                                    color='white'
-                                    title={tooltip}
-                                >
+                        <div className={styles.block__tableRow} key={id}>
+                            <div className={styles.block__tableRowTitle}>
+                                {i.name}
+                                {tooltip &&
+                                    <ConfigProvider
+                                        theme={{
+                                            token: {
+                                                colorTextLightSolid: '#1A1A1A'
+                                            }
+                                        }}
+                                    >
+                                        <Tooltip
+                                            arrow={false}
+                                            color='white'
+                                            title={tooltip}
+                                        >
 
-                                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" className={styles.bar__tooltipIcon}>
-                                        <rect x="0.75" y="0.75" width="18.5" height="18.5" rx="9.25" stroke="black" strokeOpacity="0.1" strokeWidth="1.5" />
-                                        <path d="M9.064 15V7.958H10.338V15H9.064ZM8.952 6.418V5.046H10.464V6.418H8.952Z" fill="#1A1A1A" fillOpacity="0.5" />
-                                    </svg>
+                                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" className={styles.bar__tooltipIcon}>
+                                                <rect x="0.75" y="0.75" width="18.5" height="18.5" rx="9.25" stroke="black" strokeOpacity="0.1" strokeWidth="1.5" />
+                                                <path d="M9.064 15V7.958H10.338V15H9.064ZM8.952 6.418V5.046H10.464V6.418H8.952Z" fill="#1A1A1A" fillOpacity="0.5" />
+                                            </svg>
 
-                                </Tooltip>
-                            </ConfigProvider>}
-                        </div>
-                        <div className={styles.block__tableRowContent}>
-                            <p className={i.amount > 1000000000 ? `${styles.block__mainData} ${styles.block__mainData_small}` : styles.block__mainData}>{formatPrice(i.amount, units)}</p>
-                            <div className={styles.block__secDataWrapper}>
-                                {getRateIcon(i.rate)}
-                                <p className={getRateStyle(parseInt(i.rate), styles)}>{formatPrice(i.rate, '%')}</p>
+                                        </Tooltip>
+                                    </ConfigProvider>}
+                            </div>
+                            <div className={styles.block__tableRowContent}>
+                                <p className={i.amount > 1000000000 ? `${styles.block__mainData} ${styles.block__mainData_small}` : styles.block__mainData}>{formatPrice(i.amount, units)}</p>
+                                <div className={styles.block__secDataWrapper} style={{ backgroundColor: getRateStyle(parseInt(i.rate), styles).bgColor }}>
+                                    <p className={getRateStyle(parseInt(i.rate), styles).style}>{formatPrice(i.rate, '%')}</p>
+                                    {getRateIcon(i.rate)}
+                                </div>
                             </div>
                         </div>
-                    </div>
-                );})}
+                    );
+                })}
             </div>
         </div >
     );

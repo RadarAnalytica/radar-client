@@ -33,13 +33,22 @@ const DatePickerCustomDropdown = (props) => {
                 onClose={onClose}
                 style={{ background: 'transparent', color: 'black', fontSize: '18px', display: 'flex', alignItems: 'center', border: 'none' }}
             >
-                <div style={{color: 'black'}}>{label}</div>
+                <div style={{ color: 'black' }}>{label}</div>
             </Tag>
         );
     }, []);
 
     return (
-        <div className={styles.dropdown}>
+        <div
+            className={styles.dropdown}
+            onMouseDown={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+            }}
+            onClick={(e) => {
+                e.stopPropagation();
+            }}
+        >
             <ConfigProvider
                 theme={{
                     token: {
@@ -80,7 +89,7 @@ const DatePickerCustomDropdown = (props) => {
                     options={options}
                     suffixIcon={<Suffix />}
                     className={styles.dropdown__select}
-                    dropdownStyle={{ minWidth: '120px'}}
+                    dropdownStyle={{ minWidth: '120px' }}
                     tagRender={tagRender}
                     styles={{
                         root: {

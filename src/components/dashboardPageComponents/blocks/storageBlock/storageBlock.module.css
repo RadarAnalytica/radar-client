@@ -2,7 +2,7 @@
     background: white;
     box-shadow: 0px 0px 20px 0px #00000014;
     border-radius: 16px;
-    padding: 16px;
+    padding: 12px;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -27,8 +27,8 @@
 
 .block__title {
     font-family: Mulish;
-    font-weight: 700;
-    font-size: 24px;
+    font-weight: 600;
+    font-size: 22px;
     line-height: 100%;
     letter-spacing: 0%;
     margin: 0;
@@ -38,16 +38,14 @@
 
 .block__mainLink {
     text-decoration: none;
-    padding: 6px 10px;
     display: flex;
     justify-content: flex-start;
     align-items: center;
     gap: 10px;
-    background: #F6F4FF;
     border-radius: 8px;
     font-family: Mulish;
     font-weight: 600;
-    font-size: 16px;
+    font-size: 14px;
     line-height: 160%;
     letter-spacing: 0%;
     color: #5329FF
@@ -74,7 +72,7 @@
     display: grid;
     grid-template-columns: 2fr 1.5fr 1.5fr 1.5fr;
     gap: 10px;
-    padding: 8px;
+    padding: 11px;
     cursor: pointer;
     transition: all .2s ease-in-out;
 }
@@ -94,8 +92,8 @@
 .block__tableColumnTitle {
     width: 100%;
     font-family: Mulish;
-    font-weight: 600;
-    font-size: 16px;
+    font-weight: 500;
+    font-size: 14px;
     line-height: 100%;
     letter-spacing: 0%;
     color: #1A1A1A;
@@ -115,7 +113,7 @@
     width: 100%;
     font-family: Mulish;
     font-weight: 500;
-    font-size: 16px;
+    font-size: 14px;
     line-height: 100%;
     letter-spacing: 0%;
     color: #8C8C8C;
@@ -128,8 +126,8 @@
 .block__tableRowTitle {
     width: 100%;
     font-family: Mulish;
-    font-weight: 600;
-    font-size: 16px;
+    font-weight: 500;
+    font-size: 14px;
     line-height: 100%;
     letter-spacing: 0%;
     color: #1A1A1A;
@@ -151,7 +149,7 @@
 .block__plainData {
     font-family: Mulish;
     font-weight: 500;
-    font-size: 16px;
+    font-size: 14px;
     line-height: 100%;
     letter-spacing: 0%;
     color: #1A1A1A;
@@ -166,7 +164,7 @@
 .block__mainData {
     font-family: Mulish;
     font-weight: 700;
-    font-size: 18px;
+    font-size: 14px;
     line-height: 100%;
     letter-spacing: 0%;
     color: #1A1A1A;

@@ -1131,8 +1131,12 @@ export const ServiceFunctions = {
 		const body = getRequestObject(filters, selectedRange, shopId);
 		body.week_starts = [];
 
-		if (Array.isArray(activeWeeks) && !activeWeeks.find((week) => week.value === 'Все')){
+		if (Array.isArray(activeWeeks) && activeWeeks.length > 0 && !activeWeeks.find((week) => week.value === 'Все')){
 			body.week_starts = activeWeeks.map((week) => week.value);
+		}
+
+		if (!Array.isArray(activeWeeks) && activeWeeks?.value){
+			body.week_starts = [activeWeeks.value];
 		}
 
 		const res = await fetchApi(

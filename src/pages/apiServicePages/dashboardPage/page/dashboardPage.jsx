@@ -45,7 +45,7 @@ const MainContent = React.memo(({
     if (!shopStatus?.is_primary_collect) return null;
 
     return (
-        <>
+        <div className={styles.page__mainContentWrapper}>
             <FirstBarsGroup
                 dataDashBoard={dataDashBoard}
                 selectedRange={selectedRange}
@@ -126,7 +126,7 @@ const MainContent = React.memo(({
                 data={dataDashBoard?.ABCAnalysis}
                 loading={loading}
             />
-        </>
+        </div>
     );
 });
 
@@ -197,34 +197,25 @@ const _DashboardPage = () => {
 
             <section className={styles.page__content}>
                 <div className={styles.page__headerWrapper}>
-                    <Header title='Сводка продаж' />
+                    <Header 
+                        title='Сводка продаж'
+                        howToLink="https://radar.usedocs.com/article/75916"
+                        howToLinkText="Как проверить данные?"
+                    />
                 </div>
 
-                {activeBrand && !activeBrand.is_self_cost_set && (
+                {activeBrand && activeBrand.is_primary_collect && !activeBrand.is_self_cost_set && (
                     <SelfCostWarningBlock
                         shopId={activeBrand?.id}
                         onUpdateDashboard={updateDataDashBoard}
                     />
                 )}
 
-                {/* <WarningBlocks
-                    shopStatus={shopStatus}
-                    loading={pageState.loading}
-                    activeBrand={activeBrand}
-                    updateDataDashBoard={updateDataDashBoard}
-                /> */}
-
                 {isDemoMode && <NoSubscriptionWarningBlock />}
 
                 <div className={styles.page__controlsWrapper}>
                     <Filters
                         isDataLoading={pageState.loading}
-                    />
-
-                    <HowToLink
-                        text='Как проверить данные?'
-                        target='_blank'
-                        url='https://radar.usedocs.com/article/75916'
                     />
                 </div>
 

@@ -64,16 +64,18 @@ const TaxTableBlock = ({ dataDashBoard, loading, updateDashboard }) => {
                         <ConfigProvider
                             theme={{
                                 token: {
-                                    //colorBgBase: '#EAEAF1',
+                                    colorBgContainer: 'white',
+                                    colorBorder: '#5329FF1A',
                                     borderRadius: 8,
                                     fontFamily: 'Mulish',
-                                    fontSize: 14
+                                    fontSize: 12,
+                                    fontWeight: 500,
                                 },
                                 components: {
                                     Select: {
-                                        activeBorderColor: '#d9d9d9',
+                                        activeBorderColor: '#5329FF1A',
                                         activeOutlineColor: 'transparent',
-                                        hoverBorderColor: '#d9d9d9',
+                                        hoverBorderColor: '#5329FF1A',
                                         optionActiveBg: 'transparent',
                                         optionFontSize: 14,
                                         optionSelectedBg: 'transparent',
@@ -91,7 +93,7 @@ const TaxTableBlock = ({ dataDashBoard, loading, updateDashboard }) => {
                                 options={taxOption.map(_ => ({ value: _, label: _ }))}
                                 suffixIcon={
                                     <svg width="14" height="9" viewBox="0 0 14 9" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M1 1L7 7L13 1" stroke="#1A1A1A" strokeWidth="2" strokeLinecap="round" />
+                                        <path d="M1 1L7 7L13 1" stroke="#8C8C8C" strokeWidth="2" strokeLinecap="round" />
                                     </svg>
 
                                 }
@@ -106,11 +108,25 @@ const TaxTableBlock = ({ dataDashBoard, loading, updateDashboard }) => {
                             <ConfigProvider
                                 theme={{
                                     token: {
-                                        colorPrimary: '#5329FF',
+                                        colorBgContainer: 'white',
+                                        colorBorder: '#5329FF1A',
                                         borderRadius: 8,
                                         fontFamily: 'Mulish',
-                                        fontSize: 14
+                                        fontSize: 12,
+                                        fontWeight: 500,
+                                        controlHeightLG: 40,
                                     },
+                                    components: {
+                                        Input: {
+                                            activeBorderColor: '#5329FF1A',
+                                            hoverBorderColor: '#5329FF1A',
+                                            activeOutlineColor: 'transparent',
+                                            activeBg: 'transparent',
+                                            hoverBg: 'transparent',
+                                            activeBg: 'transparent',
+                                            activeShadow: 'transparent'
+                                        }
+                                    }
                                 }}
                             >
                                 <Input

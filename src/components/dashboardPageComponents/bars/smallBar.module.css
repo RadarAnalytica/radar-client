@@ -8,7 +8,7 @@
     flex-direction: column;
     justify-content: space-between;
     align-items: flex-start;
-    gap: 8px;
+    gap: 4px;
     transition: all .1s ease-in-out;
     box-sizing: border-box;
 }
@@ -28,7 +28,7 @@
 .bar__title {
     font-family: Mulish;
     font-weight: 500;
-    font-size: 16px;
+    font-size: 14px;
     line-height: 100%;
     letter-spacing: 0%;
     margin: 0;
@@ -43,8 +43,8 @@
 
 .bar__mainData {
     font-family: Mulish;
-    font-weight: 700;
-    font-size: 24px;
+    font-weight: 600;
+    font-size: 22px;
     line-height: 100%;
     letter-spacing: 0%;
     color: #1A1A1A;
@@ -79,6 +79,7 @@
     display: flex;
     justify-content: flex-end;
     align-items: center;
+    gap: 4px;
 }
 
 .bar__mainSubData {
