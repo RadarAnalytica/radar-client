@@ -49,7 +49,6 @@ export default [
         maxBOF: 0
       }],
       'eol-last': ['error', 'always'],
-      'no-trailing-spaces': 'error',
       'array-bracket-spacing': ['error', 'never'],
     },
   },
