@@ -68,7 +68,7 @@ const TaxTableBlock = ({ dataDashBoard, loading, updateDashboard }) => {
                                     colorBorder: '#5329FF1A',
                                     borderRadius: 8,
                                     fontFamily: 'Mulish',
-                                    fontSize: 12,
+                                    fontSize: 14,
                                     fontWeight: 500,
                                 },
                                 components: {
@@ -112,7 +112,7 @@ const TaxTableBlock = ({ dataDashBoard, loading, updateDashboard }) => {
                                         colorBorder: '#5329FF1A',
                                         borderRadius: 8,
                                         fontFamily: 'Mulish',
-                                        fontSize: 12,
+                                        fontSize: 14,
                                         fontWeight: 500,
                                         controlHeightLG: 40,
                                     },

@@ -82,8 +82,8 @@ const RevenueStructChartBlock = ({ dataDashBoard, loading }) => {
             const colors = dataset.backgroundColor;
             const width = basicWidth > 400 ? basicWidth / 2 : basicWidth;
             // Определение респонсивного размера шрифта
-            //const fontSize = 16; // Можете также сделать шрифт респонсивным
-            const fontSize = width / 20 > 10 ? width / 20 : 10; // Можете также сделать шрифт респонсивным
+            const fontSize = 14; // Можете также сделать шрифт респонсивным
+            // const fontSize = width / 20 > 10 ? width / 20 : 10; // Можете также сделать шрифт респонсивным
 
             ctx.restore();
             ctx.font = `${fontSize}px Mulish`;

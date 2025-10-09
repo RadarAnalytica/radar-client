@@ -64,7 +64,8 @@ const MainContent = React.memo(({
                 loading={loading}
             />
 
-            <div className={isSidebarHidden ? styles.page__chartGroup : styles.page__chartGroup_oneLine}>
+            {/* <div className={isSidebarHidden ? styles.page__chartGroup : styles.page__chartGroup_oneLine}> */}
+            <div className={styles.page__chartGroup}>
                 <FinanceBlock
                     loading={loading}
                     dataDashBoard={dataDashBoard}

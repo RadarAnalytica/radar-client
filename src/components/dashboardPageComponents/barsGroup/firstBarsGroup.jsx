@@ -8,7 +8,8 @@ const FirstBarsGroup = ({ dataDashBoard, selectedRange, loading }) => {
 
     const daysRange = selectedRange.from && selectedRange.to ? differenceInDays(selectedRange.to, selectedRange.from, { unit: 'days' }) : selectedRange.period;
     return (
-        <div className={isSidebarHidden ? styles.group : styles.group_openSidebar}>
+        // <div className={isSidebarHidden ? styles.group : styles.group_openSidebar}>
+        <div className={styles.group}>
             <Bar
                 title='Заказы'
                 amount={dataDashBoard?.orderAmount}

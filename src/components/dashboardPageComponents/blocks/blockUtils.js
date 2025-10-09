@@ -5,7 +5,7 @@ export const getColor = (value) => {
   if (value <= 25) {
     return {'color': 'rgba(249, 60, 101, 1)', 'backgroundColor': 'rgba(249, 60, 101, 0.1)'};
   }
-  return {'color': 'rgba(240, 173, 0, 1)', 'backgroundColor': 'rgba(240, 173, 0, 0.1)'};
+  return {'color': '#F0AD00', 'backgroundColor': '#F0AD000D'};
 };
 
 export const getFinanceData = (dataDashBoard) => {

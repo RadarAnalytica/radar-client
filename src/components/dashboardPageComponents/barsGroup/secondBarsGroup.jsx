@@ -5,7 +5,8 @@ import { useAppSelector } from '../../../redux/hooks';
 const SecondBarsGroup = ({ dataDashBoard, loading }) => {
     const { isSidebarHidden } = useAppSelector(store => store.utils);
     return (
-        <div className={isSidebarHidden ? styles.group : styles.group_openSidebar}>
+        // <div className={isSidebarHidden ? styles.group : styles.group_openSidebar}>
+        <div className={styles.group}>
             <SmallBar
                 title='Расходы на логистику'
                 hasTooltip

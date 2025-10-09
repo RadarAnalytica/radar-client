@@ -7,7 +7,8 @@ export const getIcon = (name) => {
             position: 'absolute',
             right: '0',
             top: '0',
-            width: '3.25vw',
+            width: '60px',
+            height: '60px',
           }}
           width='60'
           height='60'
@@ -44,7 +45,8 @@ export const getIcon = (name) => {
             position: 'absolute',
             right: '0',
             top: '0',
-            width: '3.25vw',
+            width: '60px',
+            height: '60px',
           }}
           width='60'
           height='60'
@@ -77,7 +79,8 @@ export const getIcon = (name) => {
             position: 'absolute',
             right: '0',
             top: '0',
-            width: '3.25vw',
+            width: '60px',
+            height: '60px',
           }}
           width='60'
           height='60'
