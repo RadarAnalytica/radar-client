@@ -1,6 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { URL } from '../../service/config';
-import axios from 'axios';
+import { fetchApi } from '../../service/fetchApi';
 
 // Types based on API response structure
 export interface Message {
@@ -20,25 +19,21 @@ interface MessagesState {
 export const fetchMessages = createAsyncThunk(
     'messages',
     async (token: string) => {
-        try {
-            const response = await axios.get(`${URL}/api/msg/`, {
-            // const response = await axios.get(`${URL}/api/msg`, {
-            //     headers: {
-            //         'content-type': 'application/json',
-            //         authorization: 'JWT ' + token,
-            //     },
-            // });
-            // const response = await fetch(`${URL}/api/msg/`, {
-                headers: {
-                    'content-type': 'application/json',
-                    authorization: 'JWT ' + token,
-                },
-            });
-            return response.data;
+        const response = await fetchApi('/api/msg/', {
+            method: 'GET',
+            headers: {
+                'content-type': 'application/json',
+                authorization: 'JWT ' + token,
+            },
+        });
 
-        } catch (error) {
-            throw error;
+        if (!response.ok) {
+            console.error('Failed to fetch messages');
+            return [];
         }
+
+        const data = await response.json();
+        return data;
     }
 );
 
