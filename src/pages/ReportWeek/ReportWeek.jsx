@@ -33,9 +33,10 @@ export default function ReportWeek() {
 	const { user, authToken } = useContext(AuthContext);
 	const { isDemoMode } = useDemoMode();
 	const dispatch = useAppDispatch();
-  const { activeBrand, selectedRange, activeBrandName, activeArticle, activeGroup, activeWeeks, isFiltersLoaded, shops } = useAppSelector(
-    (state) => state.filters
-  );
+	const { activeBrand, selectedRange, activeBrandName, activeArticle, activeGroup, activeWeeks, isFiltersLoaded, shops } = useAppSelector(
+		(state) => state.filters
+	);
+	console.log('activeWeeks', activeWeeks);
 	const filters = useAppSelector((state) => state.filters);
 	//const { shops } = useAppSelector((state) => state.shopsSlice);
 	const [loading, setLoading] = useState(true);
@@ -51,7 +52,7 @@ export default function ReportWeek() {
 		if (loading) {
 			interval = setInterval(() => {
 				setProgress((state) => {
-					if (state > 90){
+					if (state > 90) {
 						clearInterval(interval);
 						return state;
 					}
@@ -109,7 +110,7 @@ export default function ReportWeek() {
 			try {
 				const columns = JSON.parse(savedColumnsWeek);
 				return columns.map((column) => COLUMNS.find((el) => {
-					if (typeof column == 'object'){
+					if (typeof column == 'object') {
 						return el.dataIndex == column.dataIndex;
 					}
 					return el.dataIndex == column;
@@ -122,55 +123,25 @@ export default function ReportWeek() {
 		return COLUMNS;
 	};
 
-	const shopStatus = useMemo(() => {
-			if (!activeBrand || !shops) return null;
-
-			if (activeBrand.id === 0) {
-					return {
-						id: 0,
-						brand_name: 'Все',
-						is_active: shops.some(shop => shop.is_primary_collect),
-						is_valid: true,
-						is_primary_collect: shops.some(shop => shop.is_primary_collect),
-						is_self_cost_set: !shops.some(shop => !shop.is_self_cost_set)
-					};
-			}
-
-			return shops.find(shop => shop.id === activeBrand.id);
-	}, [activeBrand, shops]);
-
-	useEffect(() => {
-		if (!activeBrand){
-			return;
-		}
-		let savedFilterWeek = JSON.parse(localStorage.getItem('activeWeeks')) || {};
-		savedFilterWeek[activeBrand.id] = activeWeeks;
-		localStorage.setItem(
-			'activeWeeks',
-			JSON.stringify(savedFilterWeek)
-		);
-	}, [activeWeeks]);
-
 	useEffect(() => {
 		if (isDemoMode && weekOptions?.length) {
 			dispatch(fetchFilters(authToken));
 		}
 	}, [isDemoMode, weekOptions]);
 
-	useEffect(() => {
-		if (weekOptions?.length) {
-			dispatch(filterActions.setActiveFilters({
-				stateKey: 'activeWeeks',
-				data: weekOptions.slice(0, 12),
-			}));
-		}
-	}, [filters.filters, weekOptions]);
+	// useEffect(() => {
+	// 	if (weekOptions?.length) {
+	// 		dispatch(filterActions.setActiveFilters({
+	// 			stateKey: 'activeWeeks',
+	// 			data: weekOptions.slice(0, 12),
+	// 		}));
+	// 	}
+	// }, [filters.filters, weekOptions]);
 
 	const updateDataReportWeek = async () => {
 		setLoading(true);
 		setProgress(0);
 		try {
-			if (activeBrand !== null && activeBrand !== undefined) {
 				const response = await ServiceFunctions.getReportWeek(
 					authToken,
 					selectedRange,
@@ -190,7 +161,6 @@ export default function ReportWeek() {
 
 				setProgress(100);
 				await setTimeout(() => dataToTableData(weeks), 500);
-			}
 		} catch (e) {
 			console.error(e);
 			setProgress(100);
@@ -264,7 +234,7 @@ export default function ReportWeek() {
 		if (activeBrand && activeBrand.is_primary_collect && isFiltersLoaded) {
 			updateDataReportWeek();
 		}
-		if (activeBrand && !activeBrand.is_primary_collect && isFiltersLoaded){
+		if (activeBrand && !activeBrand.is_primary_collect && isFiltersLoaded) {
 			setLoading(false);
 		}
 	}, [activeBrand, selectedRange, activeBrandName, activeArticle, activeGroup, activeWeeks, isFiltersLoaded]);
@@ -331,7 +301,7 @@ export default function ReportWeek() {
 				activeWeeks
 			);
 			fileDownload(fileBlob, 'Отчет_по_неделям.xlsx');
-		} catch(e) {
+		} catch (e) {
 			console.error('Ошибка скачивания: ', error);
 		} finally {
 			setDownloadLoading(false);
@@ -423,19 +393,19 @@ export default function ReportWeek() {
 					</div>
 				</div>)}
 
-				{!loading && shops && user?.subscription_status && !shopStatus?.is_primary_collect && (
+				{!loading && shops && user?.subscription_status && !activeBrand?.is_primary_collect && (
 					<DataCollectWarningBlock
 						title='Ваши данные еще формируются и обрабатываются.'
 					/>
 				)}
 
-				{/* { shopStatus?.is_primary_collect && */}
+
 				<div className={styles.container}>
 					<TableWidget
 						loading={loading}
 						columns={tableColumns}
 						data={tableRows}
-						is_primary_collect={shopStatus?.is_primary_collect}
+						is_primary_collect={activeBrand?.is_primary_collect}
 						progress={progress}
 						setTableColumns={setTableColumns}
 					/>

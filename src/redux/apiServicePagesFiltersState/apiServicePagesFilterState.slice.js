@@ -75,6 +75,7 @@ const apiServicePagesFilterStateSlice = createSlice({
       }
 
       if (stateKey === 'activeWeeks') {
+        localStorage.setItem(`SAVED_ACTIVE_WEEKS_${state.activeBrand.id}`, JSON.stringify(data));
         return {
           ...state,
           [stateKey]: data,
