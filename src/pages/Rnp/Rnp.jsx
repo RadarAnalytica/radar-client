@@ -291,7 +291,11 @@ export default function Rnp() {
 
 			<section ref={pageContentRef} className={styles.page__content}>
 				<div className={styles.page__headerWrapper}>
-					<Header title="Рука на пульсе (РНП)"></Header>
+					<Header 
+						title="Рука на пульсе (РНП)"
+						howToLink="/"
+						howToLinkText="Как загрузить?"
+					/>
 				</div>
 
 				{isDemoMode && <NoSubscriptionWarningBlock />}
@@ -388,11 +392,6 @@ export default function Rnp() {
 						groupSelect={false}
 						categorySelect={false}
 						maxCustomDate={new Date(Date.now() - 24 * 60 * 60 * 1000)}
-					/>
-					<HowToLink
-						text='Как использовать?'
-						target='_blank'
-						url='https://radar.usedocs.com/article/79433'
 					/>
 				</div>
 
