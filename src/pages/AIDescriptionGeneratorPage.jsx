@@ -560,9 +560,9 @@ const AiDescriptionGeneratorPage = () => {
                     { max: 255, message: 'Название не должно быть длиннее 255 символов.' },
                     () => ({
                       validator(_, value) {
-                        if (value && !value.trim()) {
-                          return Promise.reject(new Error('Пожалуйста, заполните поле корректно'));
-                        }
+                        const v = value.trim();
+                        if (!v) return Promise.reject(new Error('Пожалуйста, заполните поле корректно'));
+                        if (v.length < 4) return Promise.reject(new Error('Название должно содержать не менее 4 символов'));
                         return Promise.resolve();
                       },
                     }),
@@ -572,7 +572,6 @@ const AiDescriptionGeneratorPage = () => {
                     autoComplete='off'
                     style={{ height: 44 }}
                     placeholder='Шорты Jony Jenson'
-                    minLength={3}
                     size='large'
                   />
                 </Form.Item>
