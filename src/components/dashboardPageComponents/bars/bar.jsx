@@ -42,48 +42,44 @@ const Bar = ({ fixed = true, title, amount, amountInPercent, amountPerDay, quant
                     </ConfigProvider>
                 </div>
             }
-
-            {fixed &&
-                <div className={styles.bar__dataWrapper}>
-                    <p className={styles.bar__mainData}>{formatPrice(amount, '₽')}</p>
-                    <div className={styles.bar__contentWrapper}>
-                        {getRateIcon(amountInPercent)}
-                        <p className={getRateStyle(parseInt(amountInPercent), styles)}>{formatPrice(amountInPercent, '%')}</p>
-                        <p className={`${styles.bar__mainSubData} ${styles.bar__mainSubData_gray}`}>В день ~ {formatPrice(amountPerDay, '₽')}</p>
+            <div className={styles.bar__mainDataWrapper}>
+                {fixed &&
+                    <div className={styles.bar__dataWrapper}>
+                        <p className={styles.bar__mainData}>{formatPrice(amount, '₽')}</p>
+                        <div className={styles.bar__contentWrapper}>
+                            <p className={getRateStyle(parseInt(amountInPercent), styles)}>{formatPrice(amountInPercent, '%')}</p>
+                            {getRateIcon(amountInPercent)}
+                            <p className={`${styles.bar__mainSubData} ${styles.bar__mainSubData_gray}`}>В день ~ {formatPrice(amountPerDay, '₽')}</p>
+                        </div>
                     </div>
-                </div>
-            }
-            {fixed &&
-                <div className={styles.bar__dataWrapper}>
-                    <p className={styles.bar__mainData}>{formatPrice(quantity, 'шт')}</p>
-                    <div className={styles.bar__contentWrapper}>
-                        {getRateIcon(quantityInPercent)}
-                        <p className={getRateStyle(parseInt(quantityInPercent), styles)}>{formatPrice(quantityInPercent, '%')}</p>
-                        <p className={`${styles.bar__mainSubData} ${styles.bar__mainSubData_gray}`}>В день ~ {formatPrice(quantityPerDay, 'шт')}</p>
+                }
+                {fixed &&
+                    <div className={styles.bar__dataWrapper}>
+                        <p className={styles.bar__mainData}>{formatPrice(quantity, 'шт')}</p>
+                        <div className={styles.bar__contentWrapper}>
+                            <p className={getRateStyle(parseInt(quantityInPercent), styles)}>{formatPrice(quantityInPercent, '%')}</p>
+                            {getRateIcon(quantityInPercent)}
+                            <p className={`${styles.bar__mainSubData} ${styles.bar__mainSubData_gray}`}>В день ~ {formatPrice(quantityPerDay, 'шт')}</p>
+                        </div>
                     </div>
-                </div>
-            }
+                }
 
-            {!fixed && butOutInPercent !== undefined && buyOut !== undefined &&
-                <div className={styles.bar__floatData}>
-                    <p className={styles.bar__mainData}>{formatPrice(buyOut, '%')}</p>
-                    <div className={styles.bar__contentWrapper}>
-                        {getRateIcon(butOutInPercent)}
-                        <p className={getRateStyle(parseInt(butOutInPercent), styles)}>{formatPrice(butOutInPercent, '%')}</p>
+                {!fixed && butOutInPercent !== undefined && buyOut !== undefined &&
+                    <div className={styles.bar__floatData}>
+                        <p className={styles.bar__mainData}>{formatPrice(buyOut, '%')}</p>
+                        <div className={styles.bar__contentWrapper}>
+                            <p className={getRateStyle(parseInt(butOutInPercent), styles)}>{formatPrice(butOutInPercent, '%')}</p>
+                            {getRateIcon(butOutInPercent)}
+                        </div>
                     </div>
-                </div>
-            }
+                }
 
-            {!fixed && averageBill !== undefined &&
-                <div className={styles.bar__floatData}>
-                    <p className={styles.bar__mainData}>{formatPrice(averageBill, '₽')}</p>
-                    {/* <div className={styles.bar__contentWrapper}>
-                        {getRateIcon(averageBillInPercent)}
-                        <p className={getRateStyle(parseInt(averageBillInPercent), styles)}>{formatPrice(averageBillInPercent, '%')}</p>
-                    </div> */}
-                </div>
-            }
-
+                {!fixed && averageBill !== undefined &&
+                    <div className={styles.bar__floatData}>
+                        <p className={styles.bar__mainData}>{formatPrice(averageBill, '₽')}</p>
+                    </div>
+                }
+            </div>
         </div>
     );
 };

@@ -10,6 +10,7 @@ import { fetchMessages } from '../../../redux/messages/messagesSlice';
 import { VideoReview } from './videoReviewButton/videoReview';
 import { StatusBanner } from '../../../shared';
 import { getDayDeclension } from '../../../service/utils';
+import HowToLink from '../howToLink/howToLink';
 
 const popoverOptions = {
     arrow: false,
@@ -21,7 +22,9 @@ const Header = ({
     title = 'Radar Analytica',
     titlePrefix,
     children,
-    videoReviewLink
+    videoReviewLink,
+    howToLink,
+    howToLinkText
 }) => {
     const dispatch = useAppDispatch();
     const { user, logout, authToken } = useContext(AuthContext);
@@ -84,6 +87,13 @@ const Header = ({
                         <VideoReview
                             link={videoReviewLink}
                         />
+                    }
+                    {howToLink &&
+                        <HowToLink
+						text={howToLinkText || 'Как использовать?'}
+						target='_blank'
+						url={howToLink}
+					/>
                     }
                 </div>
                 {children && children}

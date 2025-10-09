@@ -111,20 +111,6 @@ const SecondBarsGroup = ({ dataDashBoard, loading }) => {
                 secondaryDataUnits='шт'
                 secondaryData={dataDashBoard?.saleCount}
             />
-
-
-            {/*
-            <SmallBar //этого не будет
-                title='Возвраты'
-                loading={loading}
-                mainData={dataDashBoard?.returnAmount}
-                hasSecondaryData
-                secondaryDataType='absolute'
-                secondaryDataUnits='шт'
-                secondaryData={dataDashBoard?.returnCount}
-            /> */}
-
-
         </div>
     );
 };

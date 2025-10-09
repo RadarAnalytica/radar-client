@@ -39,8 +39,8 @@
 }
 .chart__title {
     font-family: Mulish;
-    font-weight: 700;
-    font-size: 24px;
+    font-weight: 600;
+    font-size: 22px;
     line-height: 100%;
     letter-spacing: 0%;
     color: #1A1A1A;
@@ -58,8 +58,8 @@
     align-items: center;
     cursor: pointer;
     font-family: Mulish;
-    font-weight: 500;
-    font-size: 16px;
+    font-weight: 600;
+    font-size: 12px;
     line-height: 100%;
     letter-spacing: 0%;
     color: #F0AD00;
@@ -76,4 +76,14 @@
     justify-content: stretch;
     align-items: stretch;
     position: relative;
+}
+
+/* Стили для меток на осях Y графика */
+.chart__content :global(canvas) {
+    color: #6B7280;
+}
+
+/* Альтернативный способ через псевдоэлементы Chart.js */
+.chart :global(.chartjs-render-monitor) {
+    color: #6B7280;
 }

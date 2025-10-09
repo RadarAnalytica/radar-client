@@ -60,8 +60,8 @@ const SmallBar = ({
                 }
                 {hasSecondaryData && secondaryDataType === 'relative' && !!secondaryData &&
                     <div className={styles.bar__secDataWrapper}>
-                        {getRateIcon(secondaryData)}
                         <p className={getRateStyle(parseInt(secondaryData), styles)}>{formatPrice(secondaryData, secondaryDataUnits)}</p>
+                        {getRateIcon(secondaryData)}
                     </div>
                 }
             </div>

@@ -123,12 +123,15 @@ const ProfitChartBlock = ({ dataDashBoard, loading }) => {
                 //min: minDataRevenue,
                 max: maxDataRevenue,
                 grid: {
-                    display: true,
                     drawOnChartArea: true,
+                    tickLength: 0,
+                },
+                border: {
+                    color: 'white',
                 },
                 ticks: {
                     // stepSize: stepSizeRevenue,
-                    color: '#8C8C8C',
+                   color: '#F0AD00',
                     callback: function (value) {
                         return value.toLocaleString();
                     }
@@ -159,15 +162,17 @@ const ProfitChartBlock = ({ dataDashBoard, loading }) => {
 
     return (
         <div className={styles.block}>
-            <p className={styles.block__title}>Продажи и прибыль</p>
-            <div className={styles.block__legend}>
-                <div className={styles.block__legendWrapper}>
-                    <div style={{ width: '20px', height: '20px', aspectRatio: '1 / 1', borderRadius: 3, background: '#F0AD00' }}></div>
-                    <p className={styles.block__legendItemText}>Выручка, ₽</p>
-                </div>
-                <div className={styles.block__legendWrapper}>
-                    <div style={{ width: '20px', height: '20px', aspectRatio: '1 / 1', borderRadius: 3, background: '#5329FF' }}></div>
-                    <p className={styles.block__legendItemText}>Чистая прибыль, ₽</p>
+            <div className={styles.block__header}>
+                <p className={styles.block__title}>Продажи и прибыль</p>
+                <div className={styles.block__legend}>
+                    <div className={styles.block__legendWrapper}>
+                        <div style={{ width: '20px', height: '20px', aspectRatio: '1 / 1', borderRadius: 3, background: '#F0AD00' }}></div>
+                        <p className={styles.block__legendItemText}>Выручка, ₽</p>
+                    </div>
+                    <div className={styles.block__legendWrapper}>
+                        <div style={{ width: '20px', height: '20px', aspectRatio: '1 / 1', borderRadius: 3, background: '#5329FF' }}></div>
+                        <p className={styles.block__legendItemText}>Чистая прибыль, ₽</p>
+                    </div>
                 </div>
             </div>
             <div className={styles.block__chart}>

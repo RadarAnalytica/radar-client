@@ -161,9 +161,15 @@ const MarginChartBlock = ({ dataDashBoard, loading }) => {
                 position: 'left',
                 grid: {
                     drawOnChartArea: true, // only want the grid lines for one axis to show up
+                    tickLength: 0,
+                },
+                border: {
+                    color: 'white',
                 },
                 ticks: {
                     //stepSize: step,
+                    tickLength: 0,
+                    color: '#5329FF',
                 },
             },
             B: {
@@ -173,9 +179,14 @@ const MarginChartBlock = ({ dataDashBoard, loading }) => {
                 suggestedMax: marginMax,
                 grid: {
                     drawOnChartArea: false,
+                    tickLength: 0,
+                },
+                border: {
+                    color: 'white',
                 },
                 ticks: {
                     stepSize: Math.round((marginMax - marginMin) / 5),
+                    color: '#F0AD00',
                 },
             },
             x: {
