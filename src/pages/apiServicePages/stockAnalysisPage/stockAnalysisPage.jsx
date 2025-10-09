@@ -22,7 +22,7 @@ const StockAnalysisPage = () => {
     const filters = useAppSelector((state) => state.filters);
     const [stockAnalysisData, setStockAnalysisData] = useState([]); // это базовые данные для таблицы
     const [stockAnalysisFilteredData, setStockAnalysisFilteredData] = useState(); // это данные для таблицы c учетом поиска
-    const [setHasSelfCostPrice] = useState(false);
+    const [hasSelfCostPrice, setHasSelfCostPrice] = useState(false);
     const [loading, setLoading] = useState(false);
     const progress = useLoadingProgress({ loading });
     const [primaryCollect, setPrimaryCollect] = useState(null);
@@ -31,7 +31,6 @@ const StockAnalysisPage = () => {
     const fetchAnalysisData = async () => {
         setLoading(true);
         progress.start();
-
         try {
             const data = await ServiceFunctions.getAnalysisData(
                 authToken,
@@ -40,15 +39,15 @@ const StockAnalysisPage = () => {
                 filters
             );
 
-            setStockAnalysisData(data);
-            setStockAnalysisFilteredData(data);
-            setHasSelfCostPrice(data.every(_ => _.costPriceOne !== null));
-
+            progress.complete();
+            await setTimeout(() => {
+                setStockAnalysisData(data);
+                setStockAnalysisFilteredData(data);
+                setHasSelfCostPrice(data.every(_ => _.costPriceOne !== null));
+                setLoading(false);
+            }, 500);
         } catch (error) {
             console.error(error);
-        } finally {
-            setLoading(false);
-            progress.complete();
         }
     };
 

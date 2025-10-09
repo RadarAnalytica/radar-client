@@ -24,6 +24,8 @@ import { mockGetGeographyData } from '@/service/mockServiceFunctions';
 import DataCollectWarningBlock from '@/components/sharedComponents/dataCollectWarningBlock/dataCollectWarningBlock';
 import NoSubscriptionWarningBlock from '@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock';
 import { useDemoMode } from "@/app/providers";
+import { useLoadingProgress } from '@/service/hooks/useLoadingProgress';
+import Loader from '@/components/ui/Loader';
 
 const OrdersMap = () => {
   const location = useLocation();
@@ -39,7 +41,8 @@ const OrdersMap = () => {
   const [_, setActiveBrand] = useState(null);
   const [firstLoading, setFirstLoading] = useState(true);
   const [data, setData] = useState();
-  const [loading, setLoading] = useState(false); // лоадер для загрузки данных
+  const [loading, setLoading] = useState(false);
+  const progress = useLoadingProgress({ loading });
   const [isVisible, setIsVisible] = useState(true);
   const [primaryCollect, setPrimaryCollect] = useState(null);
 
@@ -49,15 +52,20 @@ const OrdersMap = () => {
   ];
   const updateGeoData = async () => {
     setLoading(true);
+    progress.start();
+
     try {
       if (activeBrand && selectedRange && authToken) {
         const data = await ServiceFunctions.getGeographyData(authToken, selectedRange, activeBrand.id, filters);
-        setGeoData(data);
+        progress.complete();
+        
+        await setTimeout(() => {
+          setGeoData(data);
+          setLoading(false);
+        }, 500);
       }
     } catch (error) {
       console.log(error);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -666,19 +674,7 @@ const OrdersMap = () => {
             />
           </div>
 
-          {loading &&
-            <div className='map-container dash-container container p-3'
-              style={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                height: '100%',
-                width: '100%',
-              }}
-            >
-              <span className='loader'></span>
-            </div>
-          }
+          <Loader loading={loading} progress={progress.value} />
 
           {activeBrand && activeBrand.is_primary_collect && !loading && (
             <div className='map-container dash-container container p-3'>

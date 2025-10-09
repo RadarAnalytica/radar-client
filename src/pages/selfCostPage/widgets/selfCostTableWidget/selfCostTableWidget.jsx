@@ -21,10 +21,8 @@ const SelfCostTableWidget = ({
     setTableData,
     resetSearch
 }) => {
-
     const [paginationState, setPaginationState] = useState({ current: 1, total: 50, pageSize: 50 });
-
-
+    
     const paginationHandler = (page) => {
         setPaginationState({ ...paginationState, current: page });
     };
@@ -50,18 +48,7 @@ const SelfCostTableWidget = ({
         if (paginationPrevButton) {
          paginationPrevButton.setAttribute('title', 'Предыдущие 5 страниц');
         }
-     }, [paginationState]);
-
-
-    if (!tableData && dataStatus.isLoading) {
-        return (
-            <div className={styles.widget}>
-                <div className={styles.widget__loaderWrapper}>
-                    <span className='loader'></span>
-                </div>
-            </div>
-        );
-    }
+    }, [paginationState]);
 
     return (
         <div className={styles.widget}>
@@ -140,7 +127,6 @@ const SelfCostTableWidget = ({
                     total={paginationState.total}
                     pageSize={paginationState.pageSize}
                     showSizeChanger={false}
-                //showTotal={(total) => `Всего ${total} товаров`}
                 />
             </ConfigProvider>
         </div>

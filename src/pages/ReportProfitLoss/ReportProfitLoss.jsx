@@ -11,13 +11,10 @@ import { formatPrice } from '@/service/utils';
 import { Flex } from 'antd';
 import styles from './ReportProfitLoss.module.css';
 import { Filters } from '@/components/sharedComponents/apiServicePagesFiltersComponent';
-//import dayjs from 'dayjs';
-//import { COLUMNS, ROWS } from './config';
 import { useAppSelector } from '@/redux/hooks';
 import HowToLink from '@/components/sharedComponents/howToLink/howToLink';
 import DataCollectWarningBlock from '@/components/sharedComponents/dataCollectWarningBlock/dataCollectWarningBlock';
 import NoSubscriptionWarningBlock from '@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock';
-//import { startOfYear, format } from "date-fns";
 import { useDemoMode } from '@/app/providers/DemoDataProvider';
 import { useLoadingProgress } from '@/service/hooks/useLoadingProgress';
 
@@ -26,7 +23,6 @@ export default function ReportProfitLoss() {
 	const { activeBrand, selectedRange, activeMonths, activeBrandName, activeArticle, activeGroup, isFiltersLoaded, shops } = useAppSelector((state) => state.filters);
 	const { isDemoMode } = useDemoMode();
 	const filters = useAppSelector((state) => state.filters);
-	//const { shops } = useAppSelector((state) => state.shopsSlice);
 	const [loading, setLoading] = useState(true);
 	const progress = useLoadingProgress({ loading });
 	const [columns, setColumns] = useState([]);
@@ -67,9 +63,6 @@ export default function ReportProfitLoss() {
 
 	const getConfig = (data) => {
 		const configItemTemplate = {
-			//key: 'name',
-			//title: 'Name',
-			//dataIndex: 'name',
 			sortable: false,
 			fixed: false,
 			fixedLeft: 0,
@@ -77,9 +70,7 @@ export default function ReportProfitLoss() {
 			minWidth: 210,
 			maxWidth: 420,
 			hidden: false,
-			style: {
-
-			}
+			style: {}
 		};
 
 		const config = [{
@@ -173,7 +164,6 @@ export default function ReportProfitLoss() {
 	const dataToTableData = (response) => {
 		if (!response || !response.data || response.data.length === 0) {
 			setColumns([]);
-			progress.reset();
 			setData([]);
 			return;
 		}
@@ -200,16 +190,14 @@ export default function ReportProfitLoss() {
 			{ key: 'net_profit', title: 'Чистая прибыль' },
 		];
 		
-		setLoading(false);
-		progress.complete();
 		setData([...getData(data, metricsOrder)]);
 		setColumns(getConfig(data));
+		setLoading(false);
 	};
 
 	const updateDataReportProfitLoss = async () => {
 		setLoading(true);	
 		progress.start();
-
 		try {
 			const response = await ServiceFunctions.getReportProfitLoss(
 				authToken,
@@ -218,13 +206,11 @@ export default function ReportProfitLoss() {
 				filters,
 				activeMonths
 			);
-			dataToTableData(response);
+			progress.complete();
+			await setTimeout(() => dataToTableData(response), 500);
 		} catch (e) {
 			console.error(e);
 			dataToTableData(null);
-		} finally {
-			progress.complete();
-			setLoading(false);
 		}
 	};
 
@@ -237,11 +223,8 @@ export default function ReportProfitLoss() {
 		}
 	}, [activeBrand, selectedRange, activeMonths, activeBrandName, activeArticle, activeGroup, isFiltersLoaded]);
 
-
 	useEffect(() => {
-		if (!activeBrand) {
-			return;
-		}
+		if (!activeBrand) return;
 		let savedFilterMonths = JSON.parse(localStorage.getItem('activeMonths')) || {};
 		savedFilterMonths[activeBrand.id] = activeMonths;
 		localStorage.setItem(
@@ -288,6 +271,7 @@ export default function ReportProfitLoss() {
 						title='Ваши данные еще формируются и обрабатываются.'
 					/>
 				)}
+
 				<TableWidget
 					loading={loading}
 					columns={columns}

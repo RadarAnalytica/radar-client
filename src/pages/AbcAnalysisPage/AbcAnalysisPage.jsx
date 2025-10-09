@@ -14,22 +14,22 @@ import { ConfigProvider, Table, Button, Flex } from 'antd';
 import ruRU from 'antd/locale/ru_RU';
 import { COLUMNS } from './widgets/table/config';
 import { useDemoMode } from "@/app/providers";
-import NoSubscriptionWarningBlock
-  from "@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock";
+import NoSubscriptionWarningBlock from "@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock";
+import { useLoadingProgress } from '@/service/hooks/useLoadingProgress';
+import Loader from '@/components/ui/Loader';
 
 const AbcAnalysisPage = () => {
-	const { activeBrand, selectedRange, isFiltersLoaded, activeBrandName, activeArticle, activeGroup, shops } = useAppSelector(
-		(store) => store.filters
-	);
-	const filters = useAppSelector((store) => store.filters);
+	const filters = useAppSelector(state => state.filters);
+	const { activeBrand, selectedRange, isFiltersLoaded, activeBrandName, activeArticle, activeGroup, shops } = filters;
 	const { user, authToken } = useContext(AuthContext);
-  const { isDemoMode } = useDemoMode();
+  	const { isDemoMode } = useDemoMode();
 	const dispatch = useAppDispatch();
 	const [dataAbcAnalysis, setDataAbcAnalysis] = useState(null);
 	const [isNeedCost, setIsNeedCost] = useState([]);
 	const [viewType, setViewType] = useState('proceeds');
 	const [sorting, setSorting] = useState({ key: null, direction: 'desc' });
-	const [loading, setLoading] = useState(true);
+	const [loading, setLoading] = useState(false);
+	const progress = useLoadingProgress({ loading });
 	const [primaryCollect, setPrimaryCollect] = useState(null);
 	const [shopStatus, setShopStatus] = useState(null);
 
@@ -52,27 +52,29 @@ const AbcAnalysisPage = () => {
 		selectedRange,
 		activeBrand
 	) => {
-    try {
-      setLoading(true);
+		setLoading(true);
+		progress.start();
 
+    	try {
 			const data = await ServiceFunctions.getAbcData(
-        viewType,
-        authToken,
-        selectedRange,
-        activeBrand,
-        filters,
-        page,
-        sorting.direction
-      );
+				viewType,
+				authToken,
+				selectedRange,
+				activeBrand,
+				filters,
+				page,
+				sorting.direction
+			);
 
-			setIsNeedCost(data.is_need_cost);
-      setDataAbcAnalysis(data?.results ? data : []);
-
+			progress.complete();
+			await setTimeout(() => {
+				setIsNeedCost(data.is_need_cost);
+				setDataAbcAnalysis(data?.results ? data : []);
+				setLoading(false);
+			}, 500);
 		} catch (e) {
 			console.error(e);
 			setDataAbcAnalysis([]);
-		} finally {
-			setLoading(false);
 		}
 	};
 
@@ -126,6 +128,7 @@ const AbcAnalysisPage = () => {
 				activeBrand.id.toString()
 			);
 		} else {
+			progress.complete();
 			setLoading(false);
 		}
 	}, [viewType, page, sorting, activeBrand, selectedRange, isFiltersLoaded, activeBrandName, activeArticle, activeGroup]);
@@ -257,7 +260,7 @@ const AbcAnalysisPage = () => {
 					<Header title="ABC-анализ" />
 				</div>
 
-        {isDemoMode && <NoSubscriptionWarningBlock />}
+        		{isDemoMode && <NoSubscriptionWarningBlock />}
 
 				<div>
 					<Filters setLoading={setLoading} isDataLoading={loading} />
@@ -277,11 +280,8 @@ const AbcAnalysisPage = () => {
 				)}
 
 				<div className={styles.wrapper} ref={tableContainerRef}>
-					{loading && (
-						<div className={styles.loading}>
-							<span className="loader"></span>
-						</div>
-					)}
+					<Loader loading={loading} progress={progress.value} />
+
 					{!loading && shops && shopStatus?.is_primary_collect && (
 						<div className={styles.container}>
 							<ConfigProvider

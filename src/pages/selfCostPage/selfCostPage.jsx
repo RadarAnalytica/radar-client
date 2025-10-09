@@ -12,8 +12,9 @@ import { useAppSelector } from '@/redux/hooks';
 import DataCollectWarningBlock from '@/components/sharedComponents/dataCollectWarningBlock/dataCollectWarningBlock';
 import { ServiceFunctions } from '@/service/serviceFunctions';
 import { useDemoMode } from "@/app/providers";
-import NoSubscriptionWarningBlock
-  from "@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock";
+import NoSubscriptionWarningBlock from "@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock";
+import { useLoadingProgress } from '@/service/hooks/useLoadingProgress';
+import Loader from '@/components/ui/Loader';
 
 const initDataStatus = {
     isError: false,
@@ -26,16 +27,17 @@ const SelfCostPage = () => {
     const [searchInputValue, setSearchInputValue] = useState('');
     const [isSuccess, setIsSuccess] = useState(false);
     const [dataStatus, setDataStatus] = useState(initDataStatus);
-    const [loading, setLoading] = useState(false);
+    const progress = useLoadingProgress({ loading: dataStatus.isLoading });
     const [tableData, setTableData] = useState(); // данные для рендера таблицы
     const [filteredTableData, setFilteredTableData] = useState(); // данные для рендера таблицы
     const { authToken } = useContext(AuthContext);
     const { activeBrand, selectedRange, isFiltersLoaded, activeBrandName, activeArticle, activeGroup } = useAppSelector((state) => state.filters);
     const filters = useAppSelector(store => store.filters);
-    //const prevShop = useRef(activeBrand)
-
+    
     const getTableData = useCallback(async (authToken, shopId, filters) => {
         setDataStatus({ ...initDataStatus, isLoading: true });
+        progress.start();
+
         const res = await ServiceFunctions.getSelfCostData(authToken, shopId, filters);
         if (!res.ok) {
             setDataStatus({ ...initDataStatus, isError: true, message: 'Что-то пошло не так :( Попробуйте оновить страницу' });
@@ -44,29 +46,24 @@ const SelfCostPage = () => {
 
         const parsedData = await res.json();
         const { items } = parsedData.data;
-        setDataStatus({ ...initDataStatus, isLoading: false });
         // sorting the data
         let sortedData = items.sort((a, b) => a.product - b.product);
         sortedData = sortedData.sort((a, b) => {
             if (a.photo && b.photo) {
-                if (a.cost && b.cost) return 0;
-                if (a.cost) return -1;
-                if (b.cost) return 1;
-                return 0;
+                return a.cost && b.cost ? 0 : a.cost ? -1 : b.cost ? 1 : 0;
             }
             if (!a.photo && !b.photo) {
-                if (a.cost && b.cost) return 0;
-                if (a.cost) return -1;
-                if (b.cost) return 1;
-                return 0;
+                return a.cost && b.cost ? 0 : a.cost ? -1 : b.cost ? 1 : 0;
             }
-            if (a.photo) return -1;
-            if (b.photo) return 1;
-            return 0;
+            return a.photo ? -1 : b.photo ? 1 : 0;
         });
-        setTableData([...sortedData]);
-        setFilteredTableData([...sortedData]);
-        //prevShop.current = activeBrand
+
+        progress.complete();
+        await setTimeout(() => {
+            setTableData([...sortedData]);
+            setFilteredTableData([...sortedData]);
+            setDataStatus({ ...initDataStatus, isLoading: false });
+        }, 500);
     }, []);
 
     const noSearchAction = useCallback(() => {
@@ -119,7 +116,6 @@ const SelfCostPage = () => {
 
                 <div className={styles.page__filtersWrapper}>
                     <Filters
-                        setLoading={setLoading}
                         timeSelect={false}
                         articleSelect={false}
                         isDataLoading={dataStatus.isLoading}
@@ -149,20 +145,22 @@ const SelfCostPage = () => {
                             />
                         </div>
 
-                        <SelfCostTableWidget
-                            setIsSuccess={setIsSuccess}
-                            dataStatus={memoizedDataStatus}
-                            setDataStatus={setDataStatus}
-                            tableData={memoizedFilteredTableData}
-                            authToken={authToken}
-                            activeBrand={activeBrand}
-                            setTableData={setFilteredTableData}
-                            resetSearch={resetSearch}
-                        />
+                        {dataStatus.isLoading 
+                            ? <Loader loading={dataStatus.isLoading} progress={progress.value} /> 
+                            : <SelfCostTableWidget
+                                setIsSuccess={setIsSuccess}
+                                dataStatus={memoizedDataStatus}
+                                setDataStatus={setDataStatus}
+                                tableData={memoizedFilteredTableData}
+                                authToken={authToken}
+                                activeBrand={activeBrand}
+                                setTableData={setFilteredTableData}
+                                resetSearch={resetSearch}
+                            />
+                        }
                     </>
                 }
             </section>
-            {/* ---------------------- */}
 
             {isSuccess && <div className={styles.page__successAlert}>
                 <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
