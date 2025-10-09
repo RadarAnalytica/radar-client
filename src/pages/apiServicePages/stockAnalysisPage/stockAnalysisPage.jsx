@@ -78,6 +78,7 @@ const StockAnalysisPage = () => {
         fetchAnalysisData();
     }, [shops, filters]);
 
+
     return (
         <main className={styles.page}>
             <MobilePlug />
@@ -90,7 +91,7 @@ const StockAnalysisPage = () => {
                         <Header title='Аналитика по товарам' />
                     </div>
 
-                    {activeBrand && !activeBrand.is_self_cost_set && !loading &&
+                    {activeBrand && activeBrand.is_primary_collect && !activeBrand.is_self_cost_set && !loading &&
                         <div>
                             <SelfCostWarningBlock
                                 shopId={activeBrand.id}
@@ -108,13 +109,13 @@ const StockAnalysisPage = () => {
                         />
                     </div>
 
-                    {!shopStatus?.is_primary_collect &&
+                    {!activeBrand?.is_primary_collect &&
                         <DataCollectWarningBlock
                             title='Ваши данные еще формируются и обрабатываются.'
                         />
                     }
 
-                    {shopStatus?.is_primary_collect &&
+                    {activeBrand?.is_primary_collect &&
                         <SearchWidget
                             stockAnalysisData={stockAnalysisData}
                             setStockAnalysisFilteredData={setStockAnalysisFilteredData}
@@ -123,7 +124,7 @@ const StockAnalysisPage = () => {
                     }
                 </div>
 
-                {(isDemoMode || shopStatus?.is_primary_collect) &&
+                {(isDemoMode || activeBrand?.is_primary_collect) &&
                     <TableWidget
                         stockAnalysisFilteredData={stockAnalysisFilteredData}
                         loading={loading}

@@ -357,19 +357,13 @@
     font-weight: 700;
 }
 
-.productCustomCell img {
-    border-radius: 3px;
-    overflow: hidden;
-    flex-grow: 0;
-    flex-shrink: 0;
-    background: #D9D9D9;
-}
+
 
 .customCellBorderRight {
     border-right: 1px solid #E8E8E8;
 }
 
-.bodyRowSpecial:hover td div {
+.bodyRowSpecial:hover td div:not(.abcBar) {
     background-color: #FAFAFA !important;
     transition: background-color 0.2s ease;
 }
@@ -381,6 +375,21 @@
 
 :global(.radar-table__body-cell:has(div[data-border-right="true"])) {
     border-right: 1px solid #E8E8E8 !important;
+}
+
+.productCustomCellImgWrapper {
+    width: 30px;
+    height: 40px;
+    border-radius: 3px;
+    overflow: hidden;
+    background: #D9D9D9;
+    flex-grow: 0;
+    flex-shrink: 0;
+}
+
+.productCustomCellImgWrapper img {
+    border-radius: 3px;
+    overflow: hidden;
 }
 
 .abcBar {

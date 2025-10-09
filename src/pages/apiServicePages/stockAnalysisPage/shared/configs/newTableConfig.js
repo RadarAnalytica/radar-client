@@ -74,7 +74,7 @@ export const newTableConfig = [
                     fontSize: '14px',
                 }
             },
-        ],
+        ].map(_ => ({..._, maxWidth: _.width * 2})),
     },
     {
         title: '',
@@ -119,7 +119,7 @@ export const newTableConfig = [
                     borderRight: '1px solid #E8E8E8',
                 }
             },
-        ],
+        ].map(_ => ({..._, maxWidth: _.width * 2})),
     },
     {
         title: 'Продажи',
@@ -182,7 +182,7 @@ export const newTableConfig = [
                     borderRight: '1px solid #E8E8E8',
                 }
             },
-        ],
+        ].map(_ => ({..._, maxWidth: _.width * 2})),
     },
     {
         title: 'Возвраты',
@@ -245,7 +245,7 @@ export const newTableConfig = [
                     borderRight: '1px solid #E8E8E8',
                 }
             },
-        ],
+        ].map(_ => ({..._, maxWidth: _.width * 2})),
     },
     {
         title: 'Себестоимость',
@@ -293,7 +293,7 @@ export const newTableConfig = [
                     borderRight: '1px solid #E8E8E8',
                 }
             },
-        ],
+        ].map(_ => ({..._, maxWidth: _.width * 2})),
     },
     {
         title: 'Логистика',
@@ -371,7 +371,7 @@ export const newTableConfig = [
                     borderRight: '1px solid #E8E8E8',
                 }
             },
-        ],
+        ].map(_ => ({..._, maxWidth: _.width * 2})),
     },
     {
         title: 'Прочие расходы',
@@ -434,7 +434,7 @@ export const newTableConfig = [
                     borderRight: '1px solid #E8E8E8',
                 }
             },
-        ],
+        ].map(_ => ({..._, maxWidth: _.width * 2})),
     },
     {
         title: 'Прибыль',
@@ -557,7 +557,7 @@ export const newTableConfig = [
                     borderRight: '1px solid #E8E8E8',
                 }
             },
-        ],
+        ].map(_ => ({..._, maxWidth: _.width * 2})),
     },
     {
         title: 'АВС анализ',
@@ -603,7 +603,7 @@ export const newTableConfig = [
                     borderRight: '1px solid #E8E8E8',
                 }
             },
-        ],
+        ].map(_ => ({..._, maxWidth: _.width * 2})),
     },
     {
         title: 'Цена',
@@ -665,7 +665,7 @@ export const newTableConfig = [
                     borderRight: '1px solid #E8E8E8',
                 }
             },
-        ],
+        ].map(_ => ({..._, maxWidth: _.width * 2})),
     },
     {
         title: 'Заказы',
@@ -713,7 +713,7 @@ export const newTableConfig = [
                     borderRight: '1px solid #E8E8E8',
                 }
             },
-        ],
+        ].map(_ => ({..._, maxWidth: _.width * 2})),
     },
     {
         title: 'Выкупы',
@@ -791,7 +791,7 @@ export const newTableConfig = [
                     borderRight: '1px solid #E8E8E8',
                 }
             },
-        ],
+        ].map(_ => ({..._, maxWidth: _.width * 2})),
     },
     {
         title: 'Скорость',
@@ -839,7 +839,7 @@ export const newTableConfig = [
                     borderRight: '1px solid #E8E8E8',
                 }
             },
-        ],
+        ].map(_ => ({..._, maxWidth: _.width * 2})),
     },
     {
         title: 'Остаток',
@@ -871,7 +871,7 @@ export const newTableConfig = [
                     fontSize: '14px',
                 }
             },
-        ],
+        ].map(_ => ({..._, maxWidth: _.width * 2})),
     },
 ].map(_ => ({
     ..._,
