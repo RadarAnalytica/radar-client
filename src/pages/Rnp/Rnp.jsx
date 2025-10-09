@@ -26,6 +26,8 @@ import { actions as filterActions } from '../../redux/filtersRnp/filtersRnpSlice
 import HowToLink from '../../components/sharedComponents/howToLink/howToLink';
 import { useDemoMode } from "@/app/providers";
 import NoSubscriptionWarningBlock from '@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock';
+import Loader from '@/components/ui/Loader';
+import { useLoadingProgress } from '@/service/hooks/useLoadingProgress';
 
 const sortBySavedSortState = (data, activeBrand) => {
 	const { id } = activeBrand;
@@ -62,13 +64,10 @@ export default function Rnp() {
 	const dispatch = useAppDispatch();
 	const { selectedRange, activeBrand, shops, activeBrandName } = useAppSelector((state) => state.filters);
 	const filters = useAppSelector((state) => state.filters);
-
-	// const rnpSelected = useAppSelector((state) => state.rnpSelected);
-
 	const initLoad = useRef(true);
 	const pageContentRef = useRef(null);
-
 	const [loading, setLoading] = useState(true);
+	const progress = useLoadingProgress({ loading });
 	const [addRnpModalShow, setAddRnpModalShow] = useState(false);
 	const [page, setPage] = useState(1);
 	const [view, setView] = useState('articles');
@@ -79,7 +78,8 @@ export default function Rnp() {
 	const [expanded, setExpanded] = useState('collapsed');
 
 	const updateRnpListByArticle = async () => {
-		setLoading(true);
+		setLoading(rnpDataByArticle === null);
+		progress.start();
 		try {
 			if (activeBrand) {
 				const response = await ServiceFunctions.postRnpByArticle(
@@ -89,17 +89,21 @@ export default function Rnp() {
 					filters,
 					page
 				);
-				dataToRnpList(response);
+
+				progress.complete();
+				await setTimeout(() => {
+					dataToRnpList(response);
+					setLoading(false);
+				}, 500);
 			}
 		} catch (error) {
-			console.error('updateRnpListByArticle error', error);
-		} finally {
-			setLoading(false);
+			console.error('UpdateRnpListByArticle error', error);
 		}
 	};
 
 	const updateRnpListSummary = async () => {
-		setLoading(true);
+		setLoading(rnpDataTotal === null);
+		progress.start();
 		try {
 			if (activeBrand) {
 				const response = await ServiceFunctions.postRnpSummary(
@@ -109,13 +113,16 @@ export default function Rnp() {
 					filters,
 					page
 				);
-				dataToRnpTotalList(response);
+
+				progress.complete();
+				await setTimeout(() => {
+					dataToRnpTotalList(response);
+					setLoading(false);
+				}, 500);
 			}
 		} catch (error) {
 			console.error('updateRnpListSummary error', error);
 			setRnpDataTotal(null);
-		} finally {
-			setLoading(false);
 		}
 	};
 
@@ -396,14 +403,6 @@ export default function Rnp() {
 					/>
 				</div>
 
-				{loading && ((!rnpDataByArticle && view === 'articles') || (view === 'total' && !rnpDataTotal)) && (
-					<div className={styles.loading}>
-						<div className={styles.loading__loader}>
-							<span className="loader"></span>
-						</div>
-					</div>
-				)}
-
 				{!loading && activeBrand && !activeBrand?.is_primary_collect && (
 					<>
 						<DataCollectWarningBlock
@@ -412,7 +411,9 @@ export default function Rnp() {
 					</>
 				)}
 
-				{((rnpDataByArticle && view === 'articles') || (view === 'total' && rnpDataTotal)) && activeBrand && activeBrand?.is_primary_collect && (
+				<Loader loading={loading} progress={progress.value} />
+
+				{((rnpDataByArticle && view === 'articles') || (view === 'total' && rnpDataTotal)) && activeBrand?.is_primary_collect && (
 					<RnpList
 						view={view}
 						setView={viewHandler}
@@ -424,21 +425,8 @@ export default function Rnp() {
 						expanded={expanded}
 						setExpanded={setExpanded}
 						loading={loading}
-					// page={page}
-					// setPage={setPage}
-					// paginationState={paginationState}
 					/>
 				)}
-
-				{/* {!loading && rnpDataByArticle?.length === 0 &&
-					<NoDataWidget
-						mainTitle='Здесь пока нет ни одного артикула'
-						mainText='Добавьте артикулы для отчета «Рука на пульсе»'
-						buttonTitle='Добавить'
-						action={() => setAddRnpModalShow(true)}
-						howLinkGroup={false}
-					/>
-				} */}
 
 				{addRnpModalShow && <AddRnpModal
 					isAddRnpModalVisible={addRnpModalShow}
