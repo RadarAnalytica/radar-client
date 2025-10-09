@@ -328,23 +328,29 @@ const AiDescriptionGeneratorPage = () => {
   };
   // ------------------------------------------------------------//
   const onClose = () => {
-    form.resetFields();
-    removeAllKeywords();
-    setProductName('');
-    setShortDescription('');
-    setCompetitorsLinks('');
+    if (!isDemoMode) {
+      form.resetFields();
+      removeAllKeywords();
+      setProductName('');
+      setShortDescription('');
+      setCompetitorsLinks('');
+      getGenerationsAmount();
+    }
+
     setNextStep(false);
     setIsModalOpen(false);
-    getGenerationsAmount();
   };
   const onCloseNew = () => {
-    form.resetFields();
-    setProductName('');
-    setShortDescription('');
-    setCompetitorsLinks('');
+    if (!isDemoMode) {
+      form.resetFields();
+      setProductName('');
+      setShortDescription('');
+      setCompetitorsLinks('');
+      getGenerationsAmount();
+    }
+
     setNextStep(false);
     setIsModalOpen(false);
-    getGenerationsAmount();
   };
   // Function to handle adding keywords
   const handleAddKeyword = (e) => {
