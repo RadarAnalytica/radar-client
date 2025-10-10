@@ -562,7 +562,7 @@ const AiDescriptionGeneratorPage = () => {
                       validator(_, value) {
                         const v = value.trim();
                         if (!v) return Promise.reject(new Error('Пожалуйста, заполните поле корректно'));
-                        if (v.length < 4) return Promise.reject(new Error('Название должно содержать не менее 4 символов'));
+                        if (v.length < 3) return Promise.reject(new Error('Название должно содержать не менее 3 символов'));
                         return Promise.resolve();
                       },
                     }),
