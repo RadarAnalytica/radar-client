@@ -126,10 +126,11 @@
 
 .bar__loaderWrapper {
     width: 100%;
-    aspect-ratio: 3 / 2;
     display: flex;
     justify-content: center;
     align-items: center;
+    min-height: 80px;
+    height: 100%;
 }
 
 .bar__loaderWrapper_ar {

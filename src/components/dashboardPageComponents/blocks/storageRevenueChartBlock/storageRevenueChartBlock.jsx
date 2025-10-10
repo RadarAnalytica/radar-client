@@ -80,6 +80,12 @@ const StorageRevenueChartBlock = ({ dataDashBoard, loading }) => {
                 barPercentage: 0.5,
                 categoryPercentage: 0.9,
                 grid: { display: false },
+                ticks: {
+                    maxRotation: 45,
+                    minRotation: 0,
+                    autoSkip: true,
+                    autoSkipPadding: 1,
+                }
             },
             x: {
                 beginAtZero: true,
@@ -91,8 +97,10 @@ const StorageRevenueChartBlock = ({ dataDashBoard, loading }) => {
                     callback: function (value) {
                         return value.toLocaleString('ru-RU') + '₽';
                     },
-                    maxRotation: 0,
+                    maxRotation: 90,
                     minRotation: 0,
+                    autoSkip: true,
+                    autoSkipPadding: 25,
                 },
             },
         },

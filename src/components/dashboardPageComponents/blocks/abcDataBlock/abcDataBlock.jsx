@@ -1,7 +1,7 @@
 import styles from './abcDataBlock.module.css';
 import { Link } from 'react-router-dom';
 import { formatPrice } from '../../../../service/utils';
-import { getColor } from '../blockUtils';
+// import { getColor } from '../blockUtils';
 
 const AbcDataBlock = ({ titles, data, loading }) => {
 
@@ -39,30 +39,30 @@ const AbcDataBlock = ({ titles, data, loading }) => {
                         <div className={styles.block__tableCell}>Выручка</div>
                         <div className={styles.block__tableCell}>
                             <span className={styles.block__tableCellMainData}>{formatPrice(data.amountA, '₽')}</span>
-                            <span style={{ ...getColor(data.amountPercentA) }} className={styles.block__tableCellPercentData}>{formatPrice(data.amountPercentA, '%')}</span>
+                            <span style={{'color': 'rgba(0, 182, 155, 1)', 'backgroundColor': 'rgba(0, 182, 155, 0.1)'}} className={styles.block__tableCellPercentData}>{formatPrice(data.amountPercentA, '%')}</span>
                         </div>
                         <div className={styles.block__tableCell}>
                             <span className={styles.block__tableCellMainData}>{formatPrice(data.amountB, '₽')}</span>
-                            <span style={{ ...getColor(data.amountPercentB) }} className={styles.block__tableCellPercentData}>{formatPrice(data.amountPercentB, '%')}</span>
+                            <span style={{'color': '#F0AD00', 'backgroundColor': '#F0AD000D'}} className={styles.block__tableCellPercentData}>{formatPrice(data.amountPercentB, '%')}</span>
                         </div>
                         <div className={styles.block__tableCell}>
                             <span className={styles.block__tableCellMainData}>{formatPrice(data.amountC, '₽')}</span>
-                            <span style={{ ...getColor(data.amountPercentC) }} className={styles.block__tableCellPercentData}>{formatPrice(data.amountPercentC, '%')}</span>
+                            <span style={{'color': 'rgba(249, 60, 101, 1)', 'backgroundColor': 'rgba(249, 60, 101, 0.1)'}} className={styles.block__tableCellPercentData}>{formatPrice(data.amountPercentC, '%')}</span>
                         </div>
                     </div>
                     <div className={styles.block__tableRow}>
                         <div className={styles.block__tableCell}>Товар</div>
                         <div className={styles.block__tableCell}>
                             <span className={styles.block__tableCellMainData}>{formatPrice(data.countA, 'шт')}</span>
-                            <span style={{ ...getColor(data.countPercentA) }} className={styles.block__tableCellPercentData}>{formatPrice(data.countPercentA, '%')}</span>
+                            <span style={{'color': 'rgba(0, 182, 155, 1)', 'backgroundColor': 'rgba(0, 182, 155, 0.1)'}} className={styles.block__tableCellPercentData}>{formatPrice(data.countPercentA, '%')}</span>
                         </div>
                         <div className={styles.block__tableCell}>
                             <span className={styles.block__tableCellMainData}>{formatPrice(data.countB, 'шт')}</span>
-                            <span style={{ ...getColor(data.countPercentB) }} className={styles.block__tableCellPercentData}>{formatPrice(data.countPercentB, '%')}</span>
+                            <span style={{'color': '#F0AD00', 'backgroundColor': '#F0AD000D'}} className={styles.block__tableCellPercentData}>{formatPrice(data.countPercentB, '%')}</span>
                         </div>
                         <div className={styles.block__tableCell}>
                             <span className={styles.block__tableCellMainData}>{formatPrice(data.countC, 'шт')}</span>
-                            <span style={{ ...getColor(data.countPercentC) }} className={styles.block__tableCellPercentData}>{formatPrice(data.countPercentC, '%')}</span>
+                            <span style={{'color': 'rgba(249, 60, 101, 1)', 'backgroundColor': 'rgba(249, 60, 101, 0.1)'}} className={styles.block__tableCellPercentData}>{formatPrice(data.countPercentC, '%')}</span>
                         </div>
                     </div>
                 </div>
