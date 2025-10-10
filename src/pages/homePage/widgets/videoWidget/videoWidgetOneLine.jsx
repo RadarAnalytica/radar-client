@@ -35,11 +35,27 @@ const VideoComp = ({ item }) => {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const ref = useRef(null);
 
-    useEffect(() => {
-        if (!isModalVisible && ref?.current?.contentWindow) {
-            ref.current.contentWindow.postMessage({ code: item.video, method: 'action', action: 'pause', data: '' }, '*');
+    function receiveMessage(event) {
+        if (event.method === "loaded") {
+            ref.current.contentWindow.postMessage({ code: item.video, method: 'action', action: 'play', data: '' }, '*');
+            return;
         }
-    }, [isModalVisible]);
+    }
+
+    useEffect(() => {
+        window.addEventListener('message', receiveMessage, false);
+
+        if (ref && ref.current) {
+            if (isModalVisible) {
+                ref.current.contentWindow.postMessage({ code: item.video, method: 'action', action: 'play', data: '' }, '*');
+            } else {
+                ref.current.contentWindow.postMessage({ code: item.video, method: 'action', action: 'pause', data: '' }, '*');
+            }
+        }
+
+        return () => window.removeEventListener('message', receiveMessage, false);
+    }, [isModalVisible, ref]);
+
 
     return (
         <>
