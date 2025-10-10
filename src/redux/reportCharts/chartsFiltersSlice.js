@@ -67,6 +67,10 @@ const chartsFiltersSlice = createSlice({
                 filterElem[el] = value;
                 if (ident === 'week') state.chartsFilters.weekOrigin[el] = !state.chartsFilters.weekOrigin[el];
             }
+
+            if (ident === 'month') {
+                state.chartsFilters['week'] = state.chartsFilters.weekOrigin;
+            }
         },
 
     },
