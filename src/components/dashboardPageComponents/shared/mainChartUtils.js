@@ -84,7 +84,7 @@ export const getChartData = (dataDashBoard, selectedRange, controlsState) => {
                     hoverBackgroundColor: 'rgba(240, 173, 0, 7)',
                     yAxisID: 'A',
                     data: dataDashBoard?.orderAmountList || [],
-                    xAxisID: 'x-1',
+                    xAxisID: 'x',
                 }
                 : {
                     label: 'Заказы',
@@ -445,9 +445,10 @@ export const getChartOptions = (chartData, days) => {
             x: {
                 grid: {
                     drawOnChartArea: false,
+                    // display: false,
                 },
                 ticks: {
-                    display: false,
+                    // display: false,
                     autoSkip: true,
                     maxTicksLimit: days === 90 ? Math.ceil(92 / 13) : 30,
                 },

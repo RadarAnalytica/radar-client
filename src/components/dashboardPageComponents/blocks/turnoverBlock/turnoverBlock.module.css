@@ -8,7 +8,7 @@
     justify-content: space-between;
     align-items: flex-start;
     gap: 4px;
-    grid-row: span 3;
+    grid-row: span 22;
     transition: all .1s ease-in-out;
     width: 100%;
 }
@@ -19,7 +19,7 @@
 
 .block__loaderWrapper {
     width: 100%;
-    aspect-ratio: 1 / 1;
+    height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;

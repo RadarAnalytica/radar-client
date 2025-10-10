@@ -8,11 +8,12 @@
     justify-content: flex-start;
     align-items: flex-start;
     gap: 10px;
-    grid-row: span 9;
+    grid-row: span 105;
     transition: all .1s ease-in-out;
     flex-shrink: 1;
     width: 100%;
     overflow: hidden;
+    margin-top: 12px;
 }
 
 .block:hover {
@@ -32,7 +33,7 @@
 
 .bar__loaderWrapper {
     width: 100%;
-    aspect-ratio: 1 / 1;
+    height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;

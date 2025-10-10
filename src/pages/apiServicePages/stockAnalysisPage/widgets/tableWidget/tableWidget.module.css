@@ -363,7 +363,7 @@
     border-right: 1px solid #E8E8E8;
 }
 
-.bodyRowSpecial:hover td div:not(.abcBar) {
+.bodyRowSpecial:hover td div:not(.abcBar, .productCustomCellImgWrapper) {
     background-color: #FAFAFA !important;
     transition: background-color 0.2s ease;
 }
