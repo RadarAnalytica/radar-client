@@ -67,6 +67,10 @@ const byMonthFiltersSlice = createSlice({
                 filterElem[el] = value;
                 if (ident === 'week') state.byMonthFilters.weekOrigin[el] = !state.byMonthFilters.weekOrigin[el];
             }
+
+            if (ident === 'month') {
+                state.byMonthFilters['week'] = state.byMonthFilters.weekOrigin;
+            }
         },
 
     },

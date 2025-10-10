@@ -67,6 +67,10 @@ const dashboardFiltersSlice = createSlice({
                 filterElem[el] = value;
                 if (ident === 'week') state.dashboardFilters.weekOrigin[el] = !state.dashboardFilters.weekOrigin[el];
             }
+
+            if (ident === 'month') {
+                state.dashboardFilters['week'] = state.dashboardFilters.weekOrigin;
+            }
         },
 
     },
