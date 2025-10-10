@@ -14,7 +14,6 @@ import { ServiceFunctions } from '@/service/serviceFunctions';
 import { useDemoMode } from "@/app/providers";
 import NoSubscriptionWarningBlock from "@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock";
 import { useLoadingProgress } from '@/service/hooks/useLoadingProgress';
-import Loader from '@/components/ui/Loader';
 
 const initDataStatus = {
     isError: false,
@@ -63,6 +62,7 @@ const SelfCostPage = () => {
             setTableData([...sortedData]);
             setFilteredTableData([...sortedData]);
             setDataStatus({ ...initDataStatus, isLoading: false });
+            progress.reset();
         }, 500);
     }, []);
 
@@ -145,19 +145,17 @@ const SelfCostPage = () => {
                             />
                         </div>
 
-                        {dataStatus.isLoading 
-                            ? <Loader loading={dataStatus.isLoading} progress={progress.value} /> 
-                            : <SelfCostTableWidget
-                                setIsSuccess={setIsSuccess}
-                                dataStatus={memoizedDataStatus}
-                                setDataStatus={setDataStatus}
-                                tableData={memoizedFilteredTableData}
-                                authToken={authToken}
-                                activeBrand={activeBrand}
-                                setTableData={setFilteredTableData}
-                                resetSearch={resetSearch}
-                            />
-                        }
+                        <SelfCostTableWidget
+                            setIsSuccess={setIsSuccess}
+                            dataStatus={memoizedDataStatus}
+                            setDataStatus={setDataStatus}
+                            tableData={memoizedFilteredTableData}
+                            authToken={authToken}
+                            progress={progress}
+                            activeBrand={activeBrand}
+                            setTableData={setFilteredTableData}
+                            resetSearch={resetSearch}
+                        />
                     </>
                 }
             </section>
