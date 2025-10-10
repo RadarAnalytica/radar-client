@@ -307,7 +307,7 @@ export default function Rnp() {
 
 				{isDemoMode && <NoSubscriptionWarningBlock />}
 
-				{!loading && activeBrand && activeBrand.is_valid && activeBrand?.is_primary_collect && !activeBrand.is_self_cost_set && (
+				{!loading && activeBrand?.is_primary_collect && !activeBrand?.is_self_cost_set && (
 					<SelfCostWarningBlock
 						shopId={activeBrand.id}
 					/>
