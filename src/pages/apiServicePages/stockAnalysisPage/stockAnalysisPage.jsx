@@ -30,6 +30,8 @@ const StockAnalysisPage = () => {
 
     const fetchAnalysisData = async () => {
         setLoading(true);
+        setStockAnalysisData([])
+        setStockAnalysisFilteredData([])
         progress.start();
         try {
             const data = await ServiceFunctions.getAnalysisData(
@@ -39,44 +41,34 @@ const StockAnalysisPage = () => {
                 filters
             );
 
+            setStockAnalysisData(data);
+            setStockAnalysisFilteredData(data);
+            setHasSelfCostPrice(data.every(_ => _.costPriceOne !== null));
+            setLoading(false);
+
             progress.complete();
-            await setTimeout(() => {
-                setStockAnalysisData(data);
-                setStockAnalysisFilteredData(data);
-                setHasSelfCostPrice(data.every(_ => _.costPriceOne !== null));
-                setLoading(false);
-            }, 500);
+            // await setTimeout(() => {
+            //     setStockAnalysisData(data);
+            //     setStockAnalysisFilteredData(data);
+            //     setHasSelfCostPrice(data.every(_ => _.costPriceOne !== null));
+            //     setLoading(false);
+            // }, 500);
         } catch (error) {
             console.error(error);
         }
     };
 
     // 2.1 Получаем данные по выбранному магазину и проверяем себестоимость
-    useEffect(() => {
-        setPrimaryCollect(activeBrand?.is_primary_collect);
-        fetchAnalysisData();
-    }, []);
+    // useEffect(() => {
+    //     setPrimaryCollect(activeBrand?.is_primary_collect);
+    //     fetchAnalysisData();
+    // }, []);
 
     useEffect(() => {
-        if (activeBrand && activeBrand.id === 0 && shops) {
-            const allShop = {
-                id: 0,
-                brand_name: 'Все',
-                is_active: shops.some(_ => _.is_primary_collect),
-                is_valid: true,
-                is_primary_collect: shops.some(_ => _.is_primary_collect),
-                is_self_cost_set: !shops.some(_ => !_.is_self_cost_set)
-            };
-            setShopStatus(allShop);
+        if (filters.activeBrand) {
+            fetchAnalysisData();
         }
-
-        if (activeBrand && activeBrand.id !== 0 && shops) {
-            const currShop = shops.find(_ => _.id === activeBrand.id);
-            setShopStatus(currShop);
-        }
-
-        fetchAnalysisData();
-    }, [shops, filters]);
+    }, [filters]);
 
 
     return (
