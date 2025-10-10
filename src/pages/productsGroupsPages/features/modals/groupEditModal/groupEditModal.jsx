@@ -3,7 +3,7 @@ import styles from './groupEditModal.module.css';
 import { Modal, Input, ConfigProvider, Button } from 'antd';
 import { URL } from '@/service/config';
 import AuthContext from '../../../../../service/AuthContext';
-import { useAppDispatch } from '@/redux/hooks';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { fetchFilters } from '@/redux/apiServicePagesFiltersState/filterActions';
 import { fetchApi } from "@/service/fetchApi";
 
@@ -18,6 +18,7 @@ const GroupEditModal = ({ isEditGroupModalVisible, setIsEditGroupModalVisible, d
     const { authToken } = useContext(AuthContext);
     const [inputValue, setInputValue] = useState('');
     const [groupDataState, setGroupDataState] = useState();
+    const { shops } = useAppSelector((state) => state.shopsSlice);
     const dispatch = useAppDispatch();
 
     const getGroupData = async (authToken, groupId) => {
@@ -86,7 +87,7 @@ const GroupEditModal = ({ isEditGroupModalVisible, setIsEditGroupModalVisible, d
 
             setDataFetchingStatus(initDataFetchingStatus);
             updateMainData(authToken, groupDataState?.id);
-            dispatch(fetchFilters(authToken));
+            dispatch(fetchFilters({authToken, shopsData: shops}));
             setIsEditGroupModalVisible(false);
         } catch (e) {
             console.error('Error:', e);

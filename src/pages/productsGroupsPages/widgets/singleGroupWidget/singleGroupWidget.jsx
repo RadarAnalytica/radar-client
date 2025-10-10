@@ -6,7 +6,7 @@ import { singleGroupTableConfig, buttonIcons } from '../../shared';
 import wb_icon from '../../../../assets/wb_icon.png';
 import { URL } from '../../../../service/config';
 import AuthContext from '../../../../service/AuthContext';
-import { useAppDispatch } from '../../../../redux/hooks';
+import { useAppDispatch, useAppSelector } from '../../../../redux/hooks';
 import { fetchFilters } from '../../../../redux/apiServicePagesFiltersState/filterActions';
 import { fetchApi } from "@/service/fetchApi";
 
@@ -71,7 +71,7 @@ const SingleGroupWidget = ({
             }
             setTableData(updatedTableData);
             setAlertState({isVisible: true, message: 'Артикул успешно удален'});
-            dispatch(fetchFilters(authToken));
+            dispatch(fetchFilters({authToken, shopsData: shops}));
             getGroupData(authToken, groupId);
             // успешно обновлено
 
