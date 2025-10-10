@@ -11,6 +11,10 @@
     grid-row: span 22;
     transition: all .1s ease-in-out;
     width: 100%;
+
+    @media (max-width: 1300px) {
+        margin-top: 12px;
+    }
 }
 
 .block:hover {
