@@ -5,7 +5,8 @@ import { useAppSelector } from '../../../redux/hooks';
 const SecondBarsGroup = ({ dataDashBoard, loading }) => {
     const { isSidebarHidden } = useAppSelector(store => store.utils);
     return (
-        <div className={isSidebarHidden ? styles.group : styles.group_openSidebar}>
+        // <div className={isSidebarHidden ? styles.group : styles.group_openSidebar}>
+        <div className={styles.group}>
             <SmallBar
                 title='Расходы на логистику'
                 hasTooltip
@@ -111,20 +112,6 @@ const SecondBarsGroup = ({ dataDashBoard, loading }) => {
                 secondaryDataUnits='шт'
                 secondaryData={dataDashBoard?.saleCount}
             />
-
-
-            {/*
-            <SmallBar //этого не будет
-                title='Возвраты'
-                loading={loading}
-                mainData={dataDashBoard?.returnAmount}
-                hasSecondaryData
-                secondaryDataType='absolute'
-                secondaryDataUnits='шт'
-                secondaryData={dataDashBoard?.returnCount}
-            /> */}
-
-
         </div>
     );
 };

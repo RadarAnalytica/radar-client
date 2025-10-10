@@ -10,7 +10,6 @@ import DownloadButton from '../../../../components/DownloadButton';
 import { fileDownload } from '../../../../service/utils';
 import { Link } from 'react-router-dom';
 
-
 /**
  * Краткое описание:
  *
@@ -24,10 +23,7 @@ import { Link } from 'react-router-dom';
  * таблицы
  * 4. В процессе расставляем стили в зависимости от позиции таблицы, элемента и тд
  */
-
-
 export const TableWidget = React.memo(({ rawData, loading, tablePaginationState, setRequestState, requestState, initRequestStatus, setRequestStatus, setSortState, sortState, initSortState }) => {
-
 
     const containerRef = useRef(null); // реф скролл-контейнера (используется чтобы седить за позицией скрола)
     const [tableData, setTableData] = useState(); // данные для рендера таблицы
@@ -35,11 +31,10 @@ export const TableWidget = React.memo(({ rawData, loading, tablePaginationState,
     const [isEndOfXScroll, setIsEndOfXScroll] = useState(false); // отслеживаем конец скролла по Х
     const [isExelLoading, setIsExelLoading] = useState(false);
 
-
     // задаем начальную дату
     useEffect(() => {
         setTableData(rawData);
-    }, [rawData]);//рубашка мужская
+    }, [rawData]);
 
     useEffect(() => {
         const paginationNextButton = document.querySelector('.ant-pagination-jump-next');
@@ -63,7 +58,6 @@ export const TableWidget = React.memo(({ rawData, loading, tablePaginationState,
     const paginationHandler = useCallback((page) => {
         setRequestState({ ...requestState, page });
     }, [requestState, setRequestState]);
-
 
     // отслеживаем скролл в контейнере
     const scrollHandler = useCallback(() => {
@@ -158,7 +152,6 @@ export const TableWidget = React.memo(({ rawData, loading, tablePaginationState,
             </div>
         );
     }
-
 
     return (
         <>

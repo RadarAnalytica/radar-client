@@ -7,10 +7,15 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
-    gap: 16px;
-    grid-row: span 10;
+    gap: 12px;
+    grid-row: span 89;
     transition: all .1s ease-in-out;
     width: 100%;
+    margin-top: 12px;
+
+    @media (max-width: 1300px) {
+        margin-top: 24px;
+    }
 }
 
 .block:hover {
@@ -27,8 +32,8 @@
 
 .block__title {
     font-family: Mulish;
-    font-weight: 700;
-    font-size: 24px;
+    font-weight: 600;
+    font-size: 22px;
     line-height: 100%;
     letter-spacing: 0%;
     margin: 0;
@@ -55,7 +60,7 @@
 
 .bar__loaderWrapper {
     width: 100%;
-    aspect-ratio: 1 / 1;
+    height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -75,8 +80,8 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: stretch;
-    gap: 16px;
-    padding: 8px 0;
+    gap: 12px;
+    padding: 12px 0;
     cursor: pointer;
     border-bottom: 1px solid #E8E8E8;
 }
@@ -111,12 +116,14 @@
 }
 .block__rateWrapper {
     display: flex;
+    align-items: center;
+    gap: 4px;
 }
 
 .block__mainData {
     font-family: Mulish;
     font-weight: 700;
-    font-size: 18px;
+    font-size: 14px;
     line-height: 100%;
     letter-spacing: 0%;
     color: #1A1A1A;
@@ -127,8 +134,8 @@
 
 .block__mainSubData {
     font-family: Mulish;
-    font-weight: 600;
-    font-size: 14px;
+    font-weight: 500;
+    font-size: 12px;
     line-height: 100%;
     letter-spacing: 0%;
     margin: 0;

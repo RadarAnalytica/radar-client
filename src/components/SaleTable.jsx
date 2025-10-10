@@ -108,8 +108,8 @@ const SalesTable = ({ tableData }) => {
           ) : (
             <TableSectionsEmpty cellWidths={calculateMaxCellWidths} />
           )}
-
         </div>
+
         {expandedRows[year] && (
           <div>
             {Object.entries(groupWeeksByMonth(yearData)).map(
@@ -161,7 +161,7 @@ const SalesTable = ({ tableData }) => {
   return (
     <div className={styles.container}>
       {/* Header - Always visible */}
-      <div className={styles.header} style={{ width: 'fit-content' }}>
+      <div className={styles.header}>
         <div className={styles.weekCellEmptyHeader}>
           <div className={styles.headerWeekText}>Неделя</div>
         </div>

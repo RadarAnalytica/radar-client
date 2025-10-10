@@ -10,8 +10,9 @@ import ErrorModal from '@/components/sharedComponents/modals/errorModal/errorMod
 import { useAppSelector } from '@/redux/hooks';
 import { ServiceFunctions } from '@/service/serviceFunctions';
 import { useDemoMode } from "@/app/providers";
-import NoSubscriptionWarningBlock
-  from "@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock";
+import NoSubscriptionWarningBlock from "@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock";
+import { useLoadingProgress } from '@/service/hooks/useLoadingProgress';
+import Loader from '@/components/ui/Loader';
 
 const initDataFetchingStatus = {
     isLoading: false,
@@ -24,19 +25,23 @@ const initAlertState = {
     isVisible: false,
     message: '',
 };
+
 const ProductGroupsPage = () => {
     const { authToken } = useContext(AuthContext);
     const { isDemoMode } = useDemoMode();
     const [isAddGroupModalVisible, setIsAddGroupModalVisible] = useState(false);
     const [alertState, setAlertState] = useState(initAlertState);
     const [dataFetchingStatus, setDataFetchingStatus] = useState(initDataFetchingStatus);
+    const progress = useLoadingProgress({ loading: dataFetchingStatus.isLoading });
     const [groupsMainData, setGroupsMainData] = useState([]);
     const { shops } = useAppSelector((state) => state.shopsSlice);
 
     const getGroupsData = async (authToken) => {
-        groupsMainData.length === 0 && setDataFetchingStatus({ ...initDataFetchingStatus, isLoading: true });
+        progress.start();
+        setDataFetchingStatus({ ...initDataFetchingStatus, isLoading: true });
         try {
             const parsedRes = await ServiceFunctions.getProductGroupsList(authToken);
+            progress.complete();
             setGroupsMainData(parsedRes.data);
             setDataFetchingStatus(initDataFetchingStatus);
         } catch (error) {
@@ -70,11 +75,7 @@ const ProductGroupsPage = () => {
 
                 {isDemoMode && <NoSubscriptionWarningBlock />}
 
-                {dataFetchingStatus.isLoading &&
-                    <div className={styles.page__loaderWrapper}>
-                        <span className='loader'></span>
-                    </div>
-                }
+                <Loader loading={dataFetchingStatus.isLoading} progress={progress.value} />
 
                 {!dataFetchingStatus.isLoading && shops && groupsMainData && groupsMainData.length === 0 &&
                     <NoDataWidget

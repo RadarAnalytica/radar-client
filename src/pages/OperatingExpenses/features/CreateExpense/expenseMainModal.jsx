@@ -33,8 +33,6 @@ export default function ExpenseMainModal({
 
 
 	const onFinish = (values) => {
-		console.log('values', values);
-		console.log('onFinish', values);
 		values.month = [parseInt(values.month)]
 		handle(values)
 	};

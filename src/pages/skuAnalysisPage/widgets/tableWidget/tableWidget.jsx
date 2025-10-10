@@ -16,7 +16,6 @@ const initSortState = {
 
 const TableWidget = ({ data, tableConfig, tinyRows = false }) => {
 
-
     const containerRef = useRef(null); // реф скролл-контейнера (используется чтобы седить за позицией скрола)
     const [tableData, setTableData] = useState(); // данные для рендера таблицы
     const [isXScrolled, setIsXScrolled] = useState(false); // следим за скролом по Х
@@ -24,13 +23,10 @@ const TableWidget = ({ data, tableConfig, tinyRows = false }) => {
     const [sortState, setSortState] = useState(initSortState); // стейт сортировки (см initSortState)
     const { dataStatus } = useAppSelector(store => store.skuAnalysis);
 
-
     //задаем начальную дату
     useEffect(() => {
         setTableData(data);
     }, [data]);
-    //задаем конфиг таблицы
-
 
     // отслеживаем скролл в контейнере
     const scrollHandler = () => {

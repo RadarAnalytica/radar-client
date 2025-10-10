@@ -320,3 +320,34 @@
 .selectYear:focus {
   border-color: #007bff;
 }
+
+
+:global(.rdp-range_start .rdp-day_button .rdp-selected) {
+  background-color: #5329FF !important;
+  border: 1px solid #5329FF !important;
+  color: white !important;
+}
+
+:global(.rdp-chevron) {
+  fill: #5329FF !important;
+}
+
+:global(.rdp-root) {
+  font-size: 14px !important;
+  --rdp-accent-color: #5329FF !important;
+  --rdp-accent-background-color: #f0f0ff;
+  --rdp-day-height: 2.75rem;
+  --rdp-day-width: 2.75rem;
+
+  --rdp-selected-border: 2px solid var(--rdp-accent-color);
+
+  --rdp-today-color: var(--rdp-accent-color);
+
+  --rdp-range_middle-background-color: var(--rdp-accent-background-color);
+  --rdp-range_middle-foreground-color: white;
+
+  --rdp-range_start-date-background-color: var(--rdp-accent-color);
+
+  --rdp-range_end-date-background-color: var(--rdp-accent-color);
+
+}

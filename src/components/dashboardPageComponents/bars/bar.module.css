@@ -28,7 +28,7 @@
     flex-direction: column;
     justify-content: space-between;
     align-items: flex-start;
-    gap: 8px;
+    gap: 11px;
     transition: all .2s ease-in-out;
     box-sizing: border-box;
 }
@@ -40,7 +40,7 @@
 .bar__title {
     font-family: Mulish;
     font-weight: 500;
-    font-size: 16px;
+    font-size: 14px;
     line-height: 100%;
     letter-spacing: 0%;
     margin: 0;
@@ -51,12 +51,25 @@
 .bar__iconWrapper {
     position: absolute;
     top: 8px;
-    right: 16px;
+    right: 8px;
+
+    @media (max-width: 1300px) {
+        width: 30px;
+        height: 30px;
+    }
 }
+
+.bar__iconWrapper svg {
+    @media (max-width: 1300px) {
+        width: 30px !important;
+        height: 30px !important;
+    }
+}
+
 .bar__mainData {
     font-family: Mulish;
-    font-weight: 700;
-    font-size: 24px;
+    font-weight: 600;
+    font-size: 22px;
     line-height: 100%;
     letter-spacing: 0%;
     color: #1A1A1A;
@@ -68,6 +81,16 @@
     }
 }
 
+.bar__mainDataWrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    flex-shrink: 1;
+    flex-grow: 1;
+    width: 100%;
+}
+
 .bar__mainSubData {
     font-family: Mulish;
     font-weight: 600;
@@ -77,14 +100,16 @@
     margin: 0;
     padding: 0;
     color: #1A1A1A
-}   
+}
 
 .bar__mainSubData_green {
     color: #00B69B
 }
+
 .bar__mainSubData_red {
     color: #F93C65
 }
+
 .bar__mainSubData_gray {
     color: #8C8C8C
 }
@@ -108,16 +133,18 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
-    gap: 4px;
+    gap: 8px;
 }
 
 .bar__loaderWrapper {
     width: 100%;
-    aspect-ratio: 3 / 2;
     display: flex;
     justify-content: center;
     align-items: center;
+    min-height: 80px;
+    height: 100%;
 }
+
 .bar__loaderWrapper_ar {
     width: 100%;
     aspect-ratio: auto;

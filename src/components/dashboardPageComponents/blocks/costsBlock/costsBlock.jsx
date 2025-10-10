@@ -46,15 +46,15 @@ const CostsBlock = ({ dataDashBoard, loading }) => {
                                 <div className={styles.block__contentWrapper}>
                                     <p className={styles.block__mainData}>{formatPrice(i.amount, '₽')}</p>
                                     <div className={styles.block__rateWrapper}>
-                                        {getRateIcon(i.percent)}
                                         <p className={getRateStyle(parseInt(i.percent), styles)}>{formatPrice(i.percent, '%')}</p>
+                                        {getRateIcon(i.percent)}
                                     </div>
                                 </div>
                                 <div className={styles.block__contentWrapper}>
                                     <p className={styles.block__mainData}>{formatPrice(i.percentRate, '%')}</p>
-                                    <div className={styles.block__rateWrapper}>
-                                        {getRateIcon(i.percentRate2)}
+                                    <div className={styles.block__rateWrapper}>   
                                         <p className={getRateStyle(parseInt(i.percentRate2), styles)}>{formatPrice(i.percentRate2, '%')}</p>
+                                        {getRateIcon(i.percentRate2)}
                                     </div>
                                 </div>
                             </div>

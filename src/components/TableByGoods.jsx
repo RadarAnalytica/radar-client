@@ -324,7 +324,7 @@ const TableByGoods = ({ data }) => {
             <div className={styles.cell_costPerUnit}>
               {item.financeTotalPerUnit?.financeTotalPerUnit}
             </div>
-            <div style={{ width: '148px' }}>
+            <div className={styles.cell_financeMarginProfit}>
               {item.financeMarginProfit?.financeMarginProfit}
             </div>
             <div className={styles.cell_costPerUnit}>

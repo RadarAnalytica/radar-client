@@ -14,8 +14,7 @@ import { ConfigProvider, Segmented } from 'antd';
 import { mainTableConfig, byColorTableConfig, byWarehouseTableConfig, bySizeTableConfig } from './shared';
 import ErrorModal from '../../components/sharedComponents/modals/errorModal/errorModal';
 import { useDemoMode } from "@/app/providers";
-import NoSubscriptionWarningBlock
-  from "@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock";
+import NoSubscriptionWarningBlock from "@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock";
 
 const segments = ['По цветам', 'По складам', 'По размерам'];
 const SkuIdPage = () => {
