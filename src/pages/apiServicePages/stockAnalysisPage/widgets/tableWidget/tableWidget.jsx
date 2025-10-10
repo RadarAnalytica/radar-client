@@ -77,7 +77,7 @@ const TableWidget = ({ stockAnalysisFilteredData, loading, progress }) => {
     const containerRef = useRef(null); // реф скролл-контейнера (используется чтобы седить за позицией скрола)
     const [tableData, setTableData] = useState(); // данные для рендера таблицы
     const [sortState, setSortState] = useState(initSortState); // стейт сортировки (см initSortState)
-    const [paginationState, setPaginationState] = useState({ current: 1, total: 50, pageSize: 50 });
+    const [paginationState, setPaginationState] = useState({ current: 1, total: 50, pageSize: 25 });
     const [ tableConfig, setTableConfig ] = useState();
 
     // задаем начальную дату
@@ -117,6 +117,9 @@ const TableWidget = ({ stockAnalysisFilteredData, loading, progress }) => {
     };
 
     const onResizeGroup = (columnKey, width) => {
+        // Минимальная ширина колонки, чтобы контент не скрывался полностью
+        const MIN_COLUMN_WIDTH = 80;
+        
         // Обновляем конфигурацию колонок с группированной структурой
         const updateColumnWidth = (columns) => {
           return columns.map(col => {
@@ -134,7 +137,9 @@ const TableWidget = ({ stockAnalysisFilteredData, loading, progress }) => {
 
             // Если это листовая колонка
             if (col.key === columnKey) {
-              return { ...col, width: width, minWidth: width };
+              // Применяем минимальную ширину
+              const newWidth = Math.max(width, MIN_COLUMN_WIDTH);
+              return { ...col, width: newWidth, minWidth: newWidth };
             }
 
             return col;
@@ -197,6 +202,56 @@ const TableWidget = ({ stockAnalysisFilteredData, loading, progress }) => {
                     <RadarTable
                         config={tableConfig}
                         dataSource={[...tableData.slice((paginationState.current - 1) * paginationState.pageSize, paginationState.current * paginationState.pageSize)]}
+                        preset='radar-table-simple'
+                        stickyHeader
+                        resizeable
+                        onResize={onResizeGroup}
+                        onSort={sortButtonClickHandler}
+                        pagination={{
+                            current: paginationState.current,
+                            pageSize: paginationState.pageSize,
+                            total: paginationState.total,
+                            onChange: (page, pageSize) => {
+                                paginationHandler(page);
+                            },
+                            showQuickJumper: true,
+                        }}
+                        paginationContainerStyle={{
+                            bottom: 0
+                        }}
+                        sorting={{ sort_field: sortState?.sortedValue, sort_order: sortState?.sortType }}
+                        scrollContainerRef={containerRef}
+                        customCellRender={{
+                            idx: [],
+                            renderer: customCellRender,
+                        }}
+                        headerCellWrapperStyle={{
+                            minHeight: '0px',
+                            padding: '12px 10px',
+                            fontSize: 'inherit',
+                            //overflow: 'hidden',
+                            //wekitBoxOrient: 'vertical',
+                            //webkitLineClamp: 1,
+                            //textWrap: 'nowrap',
+                        }}
+                        bodyCellWrapperStyle={{
+                            padding: '5px 10px',
+                            minWidth: 'inherit',
+                            width: 'inherit',
+                            maxWidth: 'inherit',
+                            border: 'none',
+                        }}
+                        bodyCellStyle={{
+                            borderBottom: '1px solid #E8E8E8',
+                            height: '50px',
+                        }}
+                        bodyRowClassName={styles.bodyRowSpecial}
+                    />
+                }
+                {tableData && tableData.length === 0 && tableConfig &&
+                    <RadarTable
+                        config={tableConfig}
+                        dataSource={tableData}
                         preset='radar-table-simple'
                         stickyHeader
                         resizeable

@@ -337,6 +337,12 @@
     text-wrap: wrap;
     font-size: 14px;
     font-weight: 500;
+    min-width: 'inherit';
+    width: 'inherit';
+}
+.customCell * {
+    min-width: 'inherit';
+    width: 'inherit';
 }
 
 .productCustomCell {
@@ -344,6 +350,8 @@
     justify-content: flex-start;
     align-items: center;
     gap: 20px;
+    min-width: 'inherit';
+    width: 'inherit';
 }
 
 .productCustomCellTitle {
