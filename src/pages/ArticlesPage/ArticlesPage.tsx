@@ -1,13 +1,14 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
 import styles from './ArticlesPage.module.css';
-import { fetchArticles } from '../../redux/blog/blogActions';
+import { fetchArticles } from '@/redux/blog/blogActions';
 import ArticleCard from './components/ArticleCard/ArticleCard';
 import { Spin } from 'antd';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import type { RootState } from '@/redux/store.types';
 
 const ArticlesPage = () => {
-  const dispatch = useDispatch();
-  const { articles, loading, error } = useSelector((state) => state.blog);
+  const dispatch = useAppDispatch();
+  const { articles, loading, error } = useAppSelector((state: RootState) => state.blog);
 
   useEffect(() => {
     dispatch(fetchArticles());

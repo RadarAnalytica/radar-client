@@ -4,10 +4,10 @@ import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { ConfigProvider, Segmented } from 'antd';
 import { BlogAdd, BlogList, BlogUpdate } from '../blog';
 import { fetchPosts, fetchCategories } from '@/redux/blog/blogActions';
-import MobilePlug from '../../components/sharedComponents/mobilePlug/mobilePlug';
-import AuthContext from '../../service/AuthContext';
-import Header from '../../components/sharedComponents/header/header';
-import Sidebar from '../../components/sharedComponents/sidebar/sidebar';
+import MobilePlug from '@/components/sharedComponents/mobilePlug/mobilePlug';
+import AuthContext from '@/service/AuthContext';
+import Header from '@/components/sharedComponents/header/header';
+import Sidebar from '@/components/sharedComponents/sidebar/sidebar';
 
 const BlogPage = () => {
     const { authToken } = useContext(AuthContext);

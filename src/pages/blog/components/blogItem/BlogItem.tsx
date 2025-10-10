@@ -2,11 +2,25 @@ import React, { useContext, useState } from 'react';
 import styles from './blogItem.module.css';
 import { Button, ConfigProvider, Modal } from 'antd';
 import moment from 'moment';
-import AuthContext from '../../../../service/AuthContext';
-import { URL } from '../../../../service/config';
-import { useAppDispatch } from '../../../../redux/hooks';
-import { fetchPosts } from '../../../../redux/blog/blogActions';
+import AuthContext from '@/service/AuthContext';
+import { URL } from '@/service/config';
+import { Link } from 'react-router-dom';
+import { useAppDispatch } from '@/redux/hooks';
+import { fetchPosts } from '@/redux/blog/blogActions';
 
+interface BlogItemProps {
+  title: string;
+  category: { name: string };
+  preview: string;
+  date: string;
+  description: string;
+  is_published: boolean;
+  allData: any;
+  setPostIdForUpdate: (id: string) => void;
+  slug: string;
+  is_recommended: boolean;
+  is_popular: boolean;
+}
 
 const initState = {
   isLoading: false,
@@ -15,7 +29,7 @@ const initState = {
   message: ''
 };
 
-const BlogItem = ({ title, category, preview, date, description, is_published, allData, setPostIdForUpdate, ...rest }) => {
+const BlogItem = ({ title, category, preview, date, description, is_published, allData, setPostIdForUpdate, slug, is_recommended, is_popular, ...rest }: BlogItemProps) => {
 
   const dispatch = useAppDispatch();
   const { authToken } = useContext(AuthContext);
@@ -73,7 +87,7 @@ const BlogItem = ({ title, category, preview, date, description, is_published, a
   return (
     <div to='/' className={styles.card}>
       <div className={styles.card__coverWrapper}>
-        <img src={`${URL}/blog_content/media/${preview}`} alt='' />
+        <img src={`${URL}/static/blog/${preview}`} alt='' />
       </div>
       <div className={styles.card__info}>
         <div className={styles.card__tagsWrapper}>
@@ -84,7 +98,9 @@ const BlogItem = ({ title, category, preview, date, description, is_published, a
         </div>
 
         <div className={styles.card__titleWrapper}>
-          <h3 className={styles.card__title}>{title}</h3>
+          <Link to={`/articles/${slug}`}>
+            <h3 className={styles.card__title}>{title}</h3>
+          </Link>
           <p className={`${styles.card__text} ${styles.card__text_gray}`}>{description ? description : 'Нет описания'}</p>
         </div>
 
