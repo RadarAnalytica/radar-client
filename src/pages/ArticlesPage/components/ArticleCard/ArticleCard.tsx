@@ -1,12 +1,24 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 import styles from './ArticleCard.module.css';
+import { URL } from '@/service/config';
 import moment from 'moment';
 import 'moment/locale/ru';
 
 moment.locale('ru');
 
-const ArticleCard = ({ article }) => {
+interface ArticleCardProps {
+  article: {
+    id: number;
+    title: string;
+    description: string;
+    slug: string;
+    created_at: string;
+    image_url: string;
+    is_published: boolean;
+  };
+}
+
+const ArticleCard = ({ article }: ArticleCardProps) => {
   const {
     id,
     title,
@@ -19,17 +31,18 @@ const ArticleCard = ({ article }) => {
 
   const formattedDate = moment(created_at).format('D MMMM YYYY');
   const articleUrl = slug ? `/articles/${slug}` : `/articles/${id}`;
+  const articleCover = image_url ? `${URL}/static/blog${image_url}` : null;
 
   return (
     <div className={styles.card}>
       {image_url && (
         <div className={styles.imageContainer}>
           <img 
-            src={image_url} 
+            src={articleCover} 
             alt={title} 
             className={styles.image}
             onError={(e) => {
-              e.target.style.display = 'none';
+              (e.target as HTMLImageElement).style.display = 'none';
             }}
           />
         </div>

@@ -74,3 +74,30 @@ export const fetchArticles = createAsyncThunk(
     }
   }
 );
+
+export const fetchArticleBySlug = createAsyncThunk(
+  'blog/fetchArticleBySlug',
+  async (slugOrId, { rejectWithValue }) => {
+    try {
+      const res = await fetch(`${URL}/api/blog/articles/${slugOrId}`, {
+        method: 'GET',
+        headers: {
+          'cache': 'no-store',
+          'content-type': 'application/json',
+        },
+      });
+
+      if (!res.ok) {
+        if (res.status === 404) {
+          throw new Error('Статья не найдена');
+        }
+        throw new Error('Не удалось загрузить статью');
+      }
+
+      const data = await res.json();
+      return data;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);

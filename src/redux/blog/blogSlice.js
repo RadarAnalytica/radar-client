@@ -1,10 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { fetchPosts, fetchCategories, fetchArticles } from './blogActions';
+import { fetchPosts, fetchCategories, fetchArticles, fetchArticleBySlug } from './blogActions';
 
 const initialState = {
     categories: [],
     posts: [],
     articles: [],
+    currentArticle: null,
     loading: false,
     error: null,
 };
@@ -16,6 +17,10 @@ const blogSlice = createSlice({
     reducers: {
         clearArticles: (state) => {
             state.articles = [];
+            state.error = null;
+        },
+        clearCurrentArticle: (state) => {
+            state.currentArticle = null;
             state.error = null;
         },
     },
@@ -39,9 +44,22 @@ const blogSlice = createSlice({
             .addCase(fetchArticles.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload || 'Не удалось загрузить статьи';
+            })
+            .addCase(fetchArticleBySlug.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(fetchArticleBySlug.fulfilled, (state, action) => {
+                state.loading = false;
+                state.currentArticle = action.payload;
+                state.error = null;
+            })
+            .addCase(fetchArticleBySlug.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload || 'Не удалось загрузить статью';
             });
     }
 });
 
-export const { clearArticles } = blogSlice.actions;
+export const { clearArticles, clearCurrentArticle } = blogSlice.actions;
 export default blogSlice.reducer;

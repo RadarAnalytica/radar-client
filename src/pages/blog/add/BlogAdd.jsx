@@ -40,7 +40,7 @@ const BlogAdd = ({ categories, token, setActivePage }) => {
       setCategoryFormStatus({
         ...statusInitialState,
         isError: true,
-        message: error.message || 'Что-то пошло не так при создании статьи'
+        message: error.message || error.detail || 'Что-то пошло не так при создании категориистатьи'
       });
       setIsAddCategoryModalVisible(false);
     }
@@ -67,11 +67,7 @@ const BlogAdd = ({ categories, token, setActivePage }) => {
       setMainFormStatus({...statusInitialState, isSuccess: true, message: 'Статья успешно создана'});
       mainForm.resetFields();
     } catch (error) {
-      setMainFormStatus({
-        ...statusInitialState,
-        isError: true,
-        message: error.message || 'Что-то пошло не так при создании статьи'
-      });
+      console.log('error', error.message || error.detail || 'Что-то пошло не так при создании статьи');
     }
   };
 
