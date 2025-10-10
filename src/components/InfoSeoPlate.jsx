@@ -83,8 +83,22 @@ const InfoSeoPlate = ({ setCompaireData, setLinksToSend }) => {
 
   useEffect(() => {
     if (isDemoMode) {
-      setGroupAInput('https://www.wildberries.ru/catalog/490402931');
-      setGroupBInput('https://www.wildberries.ru/catalog/521447982');
+      const groupA = [
+        'https://www.wildberries.ru/catalog/81644046',
+        'https://www.wildberries.ru/catalog/128033464',
+        'https://www.wildberries.ru/catalog/176341521',
+        'https://www.wildberries.ru/catalog/60436862',
+        'https://www.wildberries.ru/catalog/160006001',
+      ];
+      const groupB = [
+        'https://www.wildberries.ru/catalog/171403718',
+        'https://www.wildberries.ru/catalog/212788036',
+        'https://www.wildberries.ru/catalog/167539844',
+        'https://www.wildberries.ru/catalog/250825960',
+        'https://www.wildberries.ru/catalog/169578418',
+      ];
+      setGroupAInput(groupA.join('\n'));
+      setGroupBInput(groupB.join('\n'));
     }
   }, [isDemoMode]);
 
