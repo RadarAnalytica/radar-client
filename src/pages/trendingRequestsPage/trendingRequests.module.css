@@ -4,14 +4,13 @@
     background-color: #F7F6FE;
     height: 100vh;
     overflow: hidden;
-    width: 100%;
     display: flex;
     box-sizing: border-box;
     min-width: 1200px;
 }
 .page__content {
-    width: 100%;
-    padding: 30px 0 30px 52px;
+    width: calc(100% - 74px);
+    padding: 20px 0 20px 32px;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -19,7 +18,9 @@
     gap: 20px;
     box-sizing: border-box;
     height: 100%;
-    overflow-y: scroll;
+    flex-grow: 0;
+    flex-shrink: 0;
+    overflow: auto;
     
 }
 .page__sideNavWrapper {
@@ -43,7 +44,7 @@
     justify-content: flex-start;
     align-items: center;
     gap: 20px;
-    padding-right: 52px;
+    padding-right: 32px;
 }
 
 .page__widgetWrapper {
