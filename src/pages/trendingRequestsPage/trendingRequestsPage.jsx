@@ -50,7 +50,7 @@ const TrendingRequestsPage = () => {
             res = await res.json();
             setTableData(res.queries);
             setRequestStatus(initRequestStatus);
-            setTablePaginationState({ limit: res.limit, page: res.page, total_pages: res.limit * res.total_pages });
+            setTablePaginationState({ limit: res.limit, page: res.page, total_pages: res.total_pages });
             setIsParamsVisible(false);
         } catch {
             setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось получить данные таблицы. Попробуйте перезагрузить страницу.' });

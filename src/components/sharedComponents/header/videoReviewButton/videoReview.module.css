@@ -1,19 +1,19 @@
 .button {
     border: none;
-    background-color: #F0AD00;
+    background-color: #F0AD001A;
     border-radius: 8px;
     font-family: Mulish;
-    font-weight: 700;
-    font-size: 16px;
+    font-weight: 600;
+    font-size: 12px;
     line-height: 100%;
     letter-spacing: 0%;
-    color: white;
+    color: #F0AD00;
     height: 100%;
-    padding: 10px 16px;
+    padding: 4px 8px 4px 4px;
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
     cursor: pointer;
     opacity: 1;
     box-shadow: 0px 0px 20px 0px #00000014;
