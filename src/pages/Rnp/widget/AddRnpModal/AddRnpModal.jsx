@@ -48,6 +48,16 @@ const AddRnpModal = ({ isAddRnpModalVisible, setIsAddRnpModalVisible, addRnp }) 
     const [error, setError] = useState(null);
     const initLoad = useRef(true);
 
+    const filtersKey = useMemo(() => {
+        return JSON.stringify({
+            activeBrandName: filters.activeBrandName,
+            shops: filters.shops,
+        });
+    }, [
+        filters.activeBrandName, 
+        filters.shops,
+    ]);
+
     const submitRnpDataArticle = () => {
         addRnp(rnpSelected);
     };
@@ -62,6 +72,8 @@ const AddRnpModal = ({ isAddRnpModalVisible, setIsAddRnpModalVisible, addRnp }) 
         setRnpSelected(list);
     };
 
+    const abortController = new AbortController();
+
     const updateData = async () => {
         if (activeBrand?.id &&
             initLoad.current &&
@@ -72,7 +84,6 @@ const AddRnpModal = ({ isAddRnpModalVisible, setIsAddRnpModalVisible, addRnp }) 
             return;
         }
 
-        const abortController = new AbortController();
         const { signal } = abortController;
         
         setLoading(true);
@@ -103,16 +114,28 @@ const AddRnpModal = ({ isAddRnpModalVisible, setIsAddRnpModalVisible, addRnp }) 
     };
 
     useEffect(() => {
-        if (page === 1) {
-            updateData();
-        } else {
+        if (page !== 1) {
             setPage(1);
         }
-    }, [search, filters, activeBrand?.id]);
+
+        updateData();
+
+        return () => {
+            abortController.abort('Отмена запроса');
+        };
+    }, [search, activeBrand?.id, filtersKey]);
 
     useEffect(() => {
-        updateData();
+        if (page !== 1) {
+            updateData();
+        }
+
+        return () => {
+            abortController.abort('Отмена запроса');
+        };
     }, [page]);
+
+    if (!isAddRnpModalVisible) return null;
 
     return (
         <>
