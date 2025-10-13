@@ -221,21 +221,21 @@ export const adminConfig = {
     children: [
         {
             id: 1,
-            url: '/blog',
+            url: '/admin/blog',
             label: 'Блог',
             isActive: true,
             isNew: false
         },
         {
             id: 2,
-            url: '/admin-dashboard',
+            url: '/admin/dashboard',
             label: 'Дашборд',
             isActive: true,
             isNew: false
         },
         {
             id: 2,
-            url: '/admin-referal',
+            url: '/admin/referal',
             label: 'Реферальная программа',
             isActive: true,
             isNew: false

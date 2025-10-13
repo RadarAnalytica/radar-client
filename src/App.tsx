@@ -39,7 +39,7 @@ const Instructions = React.lazy(() => import("./pages/Instructions"));
 //const StockAnalysis = React.lazy(() => import("./pages/StockAnalysis"));
 const MainWidget = React.lazy(() => import("./pages/MainWidget"));
 const StubPage = React.lazy(() => import("./pages/StubPage"));
-const AfterPayment = React.lazy(() => import("./pages/AfterPayment"));
+//const AfterPayment = React.lazy(() => import("./pages/AfterPayment"));
 const NewAfterPayment = React.lazy(() => import("./pages/afterPayment/AfterPayment"));
 const TariffsPage = React.lazy(() => import("./pages/tariffsPage/tariffsPage"));
 const Page404 = React.lazy(() => import("./pages/Page404"));
@@ -73,7 +73,6 @@ const SupplierAnalysisPage = React.lazy(() => import("./pages/supplierAnalysisPa
 const SupplierIdPage = React.lazy(() => import("./pages/supplierAnalysisPage/supplierIdPage"));
 const RestoreError = React.lazy(() => import("./pages/RestoreError"));
 const Rnp = React.lazy(() => import('./pages/Rnp'));
-const ArticlesPage = React.lazy(() => import('./pages/ArticlesPage/ArticlesPage'));
 const ArticleViewPage = React.lazy(() => import('./pages/ArticlesPage/ArticleViewPage'));
 
 // During migration, allow missing props on ProtectedRoute
@@ -103,9 +102,9 @@ function App() {
                 {/* dev */}
                 <Route path='/dev/after-payment' element={<ProtectedRoute><NewAfterPayment devMode /></ProtectedRoute>} />
                 {/* Admin */}
-                <Route path='/blog' element={<ProtectedRoute userRoleProtected routeRuName='Админ панель / Блог'><BlogPage /></ProtectedRoute>} />
-                <Route path='/admin-dashboard' element={<ProtectedRoute userRoleProtected routeRuName='Админ панель / Дашборд'><AdminDashboardPage /></ProtectedRoute>} />
-                <Route path='/admin-referal' element={<ProtectedRoute userRoleProtected routeRuName='Админ панель / Реферальная программа'><AdminReferalPage /></ProtectedRoute>} />
+                <Route path='/admin/blog' element={<ProtectedRoute userRoleProtected routeRuName='Админ панель / Блог'><BlogPage /></ProtectedRoute>} />
+                <Route path='/admin/dashboard' element={<ProtectedRoute userRoleProtected routeRuName='Админ панель / Дашборд'><AdminDashboardPage /></ProtectedRoute>} />
+                <Route path='/admin/referal' element={<ProtectedRoute userRoleProtected routeRuName='Админ панель / Реферальная программа'><AdminReferalPage /></ProtectedRoute>} />
                 {/* Protected routes */}
                 <Route path='/supplier-analysis' element={<ProtectedRoute expireProtected routeRuName='Анализ поставщика'><SupplierAnalysisPage /></ProtectedRoute>} />
                 <Route path='/supplier-analysis/:id' element={<ProtectedRoute testPeriodGuardType='redirect' testPeriodRedirect='/supplier-analysis' expireProtected routeRuName='Анализ поставщика'><SupplierIdPage /></ProtectedRoute>} />
@@ -150,8 +149,7 @@ function App() {
                 <Route path='/referal' element={<ProtectedRoute expireProtected onboardProtected routeRuName='Реферальная программа'><ReferalPage /></ProtectedRoute>} />
                 <Route path='/rnp' element={<ProtectedRoute expireProtected onboardProtected routeRuName='Рука на пульсе (РНП)'><Rnp /></ProtectedRoute>} />
                 {/* Public routes */}
-                <Route path='/articles' element={<Suspense fallback={<LoaderPage />}><ArticlesPage /></Suspense>} />
-                <Route path='/articles/:slugOrId' element={<Suspense fallback={<LoaderPage />}><ArticleViewPage /></Suspense>} />
+                <Route path='/admin/article/demo/:slugOrId' element={<Suspense fallback={<LoaderPage />}><ArticleViewPage /></Suspense>} />
                 <Route path='/calculate' element={<Suspense fallback={<LoaderPage />}>{deviceRegexp.test(userAgent) ? <UnitCalculatorPage /> : <UnitCalculatorPageDesktop />}</Suspense>} />
                 <Route path='/stub' element={<Suspense fallback={<LoaderPage />}>{' '}<StubPage /></Suspense>} />
                 <Route path='/spasibo' element={<Suspense fallback={<LoaderPage />}>{' '}<Spasibo /></Suspense>} />

@@ -29,27 +29,8 @@ const ArticleViewPage = () => {
     };
   }, [dispatch, slugOrId]);
 
-  // Обработка html контента
-  const processContent = (htmlContent: string) => {
-    if (!htmlContent) return '';
-    
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(htmlContent, 'text/html');
-    
-    const images = doc.querySelectorAll('img');
-    images.forEach((img) => {
-      const currentSrc = img.getAttribute('src');
-      if (currentSrc) {
-        img.setAttribute('src', `${URL}/static/blog${currentSrc}`);
-      }
-    });
-    
-    const bodyContent = doc.querySelector('body');
-    return bodyContent ? bodyContent.innerHTML : htmlContent;
-  };
-
   const handleBackClick = () => {
-    navigate('/articles');
+    navigate('/admin/blog');
   };
 
   if (loading) {
@@ -142,7 +123,7 @@ const ArticleViewPage = () => {
             <div 
               className={styles.content}
               dangerouslySetInnerHTML={{ 
-                __html: processContent(content) 
+                __html: content
               }}
             />
           )}

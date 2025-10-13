@@ -98,7 +98,7 @@ const BlogItem = ({ title, category, preview, date, description, is_published, a
         </div>
 
         <div className={styles.card__titleWrapper}>
-          <Link to={`/articles/${slug}`}>
+          <Link to={`/admin/article/demo/${slug}`} target='_blank'>
             <h3 className={styles.card__title}>{title}</h3>
           </Link>
           <p className={`${styles.card__text} ${styles.card__text_gray}`}>{description ? description : 'Нет описания'}</p>
