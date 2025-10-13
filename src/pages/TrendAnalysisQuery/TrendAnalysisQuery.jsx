@@ -14,6 +14,12 @@ import NoSubscriptionWarningBlock from "@/components/sharedComponents/noSubscrip
 import DownloadButton from '@/components/DownloadButton';
 import { Table as RadarTable } from 'radar-ui';
 
+
+
+const customCellRender = (value, record, index, dataIndex) => {
+	return <div className={styles.customCellRender}>{formatPrice(value, '')}</div>;
+};
+
 export default function TrendAnalysisQuery() {
 	const { isDemoMode } = useDemoMode();
 	const { selectedRange } = useAppSelector(state => state.filters);
@@ -428,6 +434,14 @@ export default function TrendAnalysisQuery() {
 											dataSource={data.table}
 											bodyRowClassName={styles.bodyRowSpecial}
 											paginationContainerStyle={{ display: 'none' }}
+											bodyCellWrapperStyle={{
+												//fontWeight: 700,
+											}}
+											bodyCellWrapperClassName={styles.customBodyCellWrapperClassName}
+											customCellRender={{
+												idx: ['quantity'],
+												renderer: customCellRender
+											}}
 										/>
 									</div>
 								}

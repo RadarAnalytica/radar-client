@@ -961,16 +961,23 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                         components: {
                                             Button: {
                                                 colorPrimaryHover: '#5329FF',
-                                                colorTextLightSolid: 'white'
+                                                colorTextLightSolid: 'white',
+                                                defaultHoverColor: 'white',
+                                                defaultHoverBg: '#5329FF',
+                                                textHoverBg: 'white',
+                                                defaultBg: '#5329FF1A',
+                                                defaultBorderColor: 'white',
+                                                defaultActiveBorderColor: 'white',
+                                                defaultColor: '#5329FF'
                                             }
                                         }
                                     }}
                                 >
                                     <Button
-                                        type='primary'
+                                        type='default'
                                         size='large'
                                         onClick={resetFieldsHandler}
-                                        style={{ color: '#5329FF'}}
+                                        style={{ border: 'none'}}
                                     >
                                         Очистить
                                     </Button>
