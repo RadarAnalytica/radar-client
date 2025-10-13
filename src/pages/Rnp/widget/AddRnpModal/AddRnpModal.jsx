@@ -43,11 +43,9 @@ const AddRnpModal = ({ isAddRnpModalVisible, setIsAddRnpModalVisible, addRnp }) 
 
     const [page, setPage] = useState(1);
     const [loading, setLoading] = useState(true);
-    // const [rnpInprogress, setRnpInprogress] = useState(false);
     const [localrnpDataArticle, setLocalrnpDataArticle] = useState([]);
     const [search, setSearch] = useState(null);
     const [error, setError] = useState(null);
-    const [request, setRequest] = useState(null);
     const initLoad = useRef(true);
 
     const submitRnpDataArticle = () => {
@@ -64,70 +62,57 @@ const AddRnpModal = ({ isAddRnpModalVisible, setIsAddRnpModalVisible, addRnp }) 
         setRnpSelected(list);
     };
 
-    useEffect(() => {
-        if ( page !== 1 ){
-            setPage(1);
-        }
-        setRequest((state) => Date.now());
-    }, [search, filters]);
-
-    useEffect(() => {
-        setRequest((state) => Date.now());
-    }, [page]);
-
-    useEffect(() => {
-        setRequest((state) => Date.now());
-    }, [page]);
-
-    useEffect(() => {
-        if (!activeBrand || (
+    const updateData = async () => {
+        if (activeBrand?.id &&
             initLoad.current &&
-            activeBrand.id !== 0 &&
             (filters.activeBrandName.some(_ => _.value === 'Все') &&
             filters.activeArticle.some(_ => _.value === 'Все') &&
             filters.activeGroup.some(_ => _.value === 'Все') &&
-            filters.activeCategory.some(_ => _.value === 'Все'))
-        )) {
+            filters.activeCategory.some(_ => _.value === 'Все'))) {
             return;
         }
 
         const abortController = new AbortController();
         const { signal } = abortController;
-
-        const updateData = async () => {
-            setLoading(true);
-            try {
-                const response = await ServiceFunctions.getRnpProducts(
-                    authToken,
-                    selectedRange,
-                    activeBrand.id,
-                    filters,
-                    page,
-                    search,
-                    signal
-                );
-                if (initLoad.current) {
-                    initLoad.current = false;
-                }
-                if (rnpSelected === null) {
-					setRnpSelected(response?.rnp_wb_ids || []);
-                }
-
-                setLocalrnpDataArticle(response);
-                setLoading(false);
-            } catch (error) {
-				if (error.message !== 'Отмена запроса') {
-                    console.error('updaternpDataArticle error', error);
-                }
+        
+        setLoading(true);
+        try {
+            const response = await ServiceFunctions.getRnpProducts(
+                authToken,
+                selectedRange,
+                activeBrand.id,
+                filters,
+                page,
+                search,
+                signal
+            );
+            if (initLoad.current) {
+                initLoad.current = false;
             }
-        };
+            if (rnpSelected === null) {
+                setRnpSelected(response?.rnp_wb_ids || []);
+            }
 
+            setLocalrnpDataArticle(response);
+            setLoading(false);
+        } catch (error) {
+            if (error.message !== 'Отмена запроса') {
+                console.error('updaternpDataArticle error', error);
+            }
+        }
+    };
+
+    useEffect(() => {
+        if (page === 1) {
+            updateData();
+        } else {
+            setPage(1);
+        }
+    }, [search, filters, activeBrand?.id]);
+
+    useEffect(() => {
         updateData();
-
-        return () => {
-            abortController.abort('Отмена запроса');
-        };
-    }, [request]);
+    }, [page]);
 
     return (
         <>
