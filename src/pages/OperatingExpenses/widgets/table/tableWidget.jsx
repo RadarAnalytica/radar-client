@@ -17,6 +17,13 @@ const customCellExpenseRender = (
     copyExpense,
     data
 ) => {
+    if (dataIndex === 'is_periodic' && record.key !== 'summary') {
+        return (
+            <div className={record.is_periodic ? styles.periodicBadge_periodic : styles.periodicBadge_static} title={record.is_periodic ? 'Периодический' : 'Разовый'}>
+                {record.is_periodic ? 'Плановый' : 'Разовый'}
+            </div>
+        )
+    }
     if (dataIndex === 'date' && record.key === 'summary') {
         return (
             <div className={`${styles.customCell} ${styles.customCell_summaryPadding}`}>

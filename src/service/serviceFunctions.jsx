@@ -1774,10 +1774,10 @@ export const ServiceFunctions = {
 			throw new Error(error);
 		}
 	},
-	postOperatingExpensesExpenseCreate: async(token, expense) => {
+	postOperatingExpensesExpenseCreate: async(token, expense, createExpenseUrl) => {
 		try {
 			const res = await fetch(
-				`${URL}/api/operating-expenses/expense/create`,
+				`${URL}/api/${createExpenseUrl}`,
 				{
 					method: 'POST',
 					headers: {

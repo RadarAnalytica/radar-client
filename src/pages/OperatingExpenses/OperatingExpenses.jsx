@@ -16,6 +16,7 @@ import ExpenseMainModal from './features/CreateExpense/expenseMainModal';
 import ModalCreateCategory from './features/CreateCategory/CreateCategory';
 import { EditIcon, CopyIcon, DeleteIcon, InfoIcon } from './shared/Icons';
 import TableWidget from './widgets/table/tableWidget';
+import { formatDate, parse } from 'date-fns';
 export default function OperatingExpenses() {
 
 	const { authToken } = useContext(AuthContext);
@@ -36,6 +37,62 @@ export default function OperatingExpenses() {
 	const [expenseEdit, setExpenseEdit] = useState(null);
 	const [highlightedExpenseId, setHighlightedExpenseId] = useState(null);
 
+
+	// Функция фильтрации по дате обновления (updated_at)
+	const filterByUpdatedDate = (items, dateRange) => {
+		let result = items;
+
+		// Применяем фильтрацию если есть диапазон дат
+		if (dateRange && dateRange.start && dateRange.end) {
+			const startDate = new Date(dateRange.start);
+			const endDate = new Date(dateRange.end);
+			endDate.setHours(23, 59, 59, 999); // Включаем весь конечный день
+
+			result = items.filter((item) => {
+				if (!item.updated_at) return false;
+				const updatedDate = new Date(item.updated_at);
+				return updatedDate >= startDate && updatedDate <= endDate;
+			});
+		}
+
+		// Всегда сортируем по дате обновления: самые свежие в начале
+		return result.sort((a, b) => {
+			if (!a.updated_at) return 1;
+			if (!b.updated_at) return -1;
+			const dateA = new Date(a.updated_at);
+			const dateB = new Date(b.updated_at);
+			return dateB - dateA; // Сортировка по убыванию (свежие первыми)
+		});
+	};
+
+	// const expenseData = useMemo(() => {
+	// 	const columns = EXPENSE_COLUMNS.map((column, i) => {
+	// 		return ({ ...column, key: column.i })
+	// 	})
+
+	// 	// Применяем фильтрацию по дате обновления
+	// 	const filteredExpenses = filterByUpdatedDate(expense, selectedRange);
+
+	// 	let data = filteredExpenses?.map((item) => ({
+	// 		...item,
+	// 		key: item.id,
+	// 		expense_categories: item.expense_categories.map((el) => el.name).join(', ')
+	// 	}));
+
+	// 	const result = {
+	// 		key: 'summary',
+	// 		date: 'Итого:',
+	// 		value: data.reduce((value, el) => (value += el.value), 0) || '-',
+	// 		description: '-',
+	// 		expense_categories: '-',
+	// 		vendor_code: '-',
+	// 		brand_name: '-',
+	// 		shop: '-',
+	// 		action: '-',
+	// 	};
+	// 	data.unshift(result);
+	// 	return { data, columns };
+	// }, [expense, selectedRange]);
 
 	const expenseData = useMemo(() => {
 		const columns = EXPENSE_COLUMNS.map((column, i) => {
@@ -117,7 +174,6 @@ export default function OperatingExpenses() {
 		setLoading(true);
 		try {
 			const res = await ServiceFunctions.getOperatingExpensesExpenseGetAll(authToken);
-			console.log(res)
 			setExpense(res.data)
 			return
 		} catch (error) {
@@ -239,17 +295,12 @@ export default function OperatingExpenses() {
 		// setExpenses((category) => category.push(article) );
 	};
 
-	const createExpense = async (expense) => {
-		setCategoryLoading(true);
-		// console.log('createCategory', category)
-		// setModalCreateCategoryOpen(false);
-		console.log('createExpense', expense);
+	const createExpense = async (requestData) => {
+		const {requestObject, requestUrl} = requestData;
+		console.log('requestObject', requestObject)
 		try {
-			const res = await ServiceFunctions.postOperatingExpensesExpenseCreate(authToken, expense);
-			// console.log('createCategory', res);
-			// 
-			setExpense((list) => [...list, res])
-			// 
+			const res = await ServiceFunctions.postOperatingExpensesExpenseCreate(authToken, requestObject, requestUrl);
+			setExpense((list) => [...list, ...res])
 		} catch (error) {
 			console.error('createCategory error', error);
 		} finally {
@@ -296,7 +347,7 @@ export default function OperatingExpenses() {
 					: [expenseData.brand_name.id || expenseData.brand_name];
 			}
 
-			const res = await ServiceFunctions.postOperatingExpensesExpenseCreate(authToken, expenseData);
+			const res = await ServiceFunctions.postOperatingExpensesExpenseCreate(authToken, expenseData, `/operating-expenses/expense/copy?expense_id=${expenseId}`);
 			console.log('copyExpense result', res);
 
 			// Add new expense to the list

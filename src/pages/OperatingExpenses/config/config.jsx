@@ -36,6 +36,14 @@ function columnExpensesRender(value, row) {
 
 export const EXPENSE_COLUMNS = [
 	{
+		title: 'Тип',
+		dataIndex: 'is_periodic',
+		key: 'is_periodic',
+		width: 40,
+		minWidth: 40,
+		maxWidth: 40,
+	},
+	{
 		title: 'Дата',
 		dataIndex: 'date',
 		key: 'date',
@@ -76,7 +84,7 @@ export const EXPENSE_COLUMNS = [
 		dataIndex: 'action',
 		key: 'action',
 	},
-].map((_) => ({ ..._, width: `${100 / 8}%`, minWidth: `${100 / 8}%`, maxWidth: `${100 / 4}%` }));
+].map((_) => ({ ..._, width: _.dataIndex === 'is_periodic' ? _.width : `${100 / 9}%`, minWidth: _.dataIndex === 'is_periodic' ? _.minWidth : `${100 / 9}%`, maxWidth: _.dataIndex === 'is_periodic' ? _.width : `${100 / 5}%` }));
 
 export const CATEGORY_COLUMNS = [
 	{
