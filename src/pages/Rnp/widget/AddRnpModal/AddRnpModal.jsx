@@ -47,16 +47,7 @@ const AddRnpModal = ({ isAddRnpModalVisible, setIsAddRnpModalVisible, addRnp }) 
     const [search, setSearch] = useState(null);
     const [error, setError] = useState(null);
     const initLoad = useRef(true);
-
-    const filtersKey = useMemo(() => {
-        return JSON.stringify({
-            activeBrandName: filters.activeBrandName,
-            shops: filters.shops,
-        });
-    }, [
-        filters.activeBrandName, 
-        filters.shops,
-    ]);
+    const isFirstMount = useRef(true);
 
     const submitRnpDataArticle = () => {
         addRnp(rnpSelected);
@@ -72,8 +63,6 @@ const AddRnpModal = ({ isAddRnpModalVisible, setIsAddRnpModalVisible, addRnp }) 
         setRnpSelected(list);
     };
 
-    const abortController = new AbortController();
-
     const updateData = async () => {
         if (activeBrand?.id &&
             initLoad.current &&
@@ -84,8 +73,6 @@ const AddRnpModal = ({ isAddRnpModalVisible, setIsAddRnpModalVisible, addRnp }) 
             return;
         }
 
-        const { signal } = abortController;
-        
         setLoading(true);
         try {
             const response = await ServiceFunctions.getRnpProducts(
@@ -95,7 +82,6 @@ const AddRnpModal = ({ isAddRnpModalVisible, setIsAddRnpModalVisible, addRnp }) 
                 filters,
                 page,
                 search,
-                signal
             );
             if (initLoad.current) {
                 initLoad.current = false;
@@ -113,27 +99,30 @@ const AddRnpModal = ({ isAddRnpModalVisible, setIsAddRnpModalVisible, addRnp }) 
         }
     };
 
+    // Сбрасываем флаг первого монтажа при открытии модалки
+    useEffect(() => {
+        if (isAddRnpModalVisible) {
+            isFirstMount.current = true;
+        }
+    }, [isAddRnpModalVisible]);
+
     useEffect(() => {
         if (page !== 1) {
             setPage(1);
-        }
-
-        updateData();
-
-        return () => {
-            abortController.abort('Отмена запроса');
-        };
-    }, [search, activeBrand?.id, filtersKey]);
-
-    useEffect(() => {
-        if (page !== 1) {
+        } else {
             updateData();
         }
+    }, [search, activeBrand?.id, filters]);
 
-        return () => {
-            abortController.abort('Отмена запроса');
-        };
+    useEffect(() => {
+        if (isFirstMount.current) {
+            isFirstMount.current = false;
+            return;
+        }
+        
+        updateData();
     }, [page]);
+
 
     if (!isAddRnpModalVisible) return null;
 
