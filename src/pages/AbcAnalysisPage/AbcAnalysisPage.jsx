@@ -127,9 +127,6 @@ const AbcAnalysisPage = () => {
 				selectedRange,
 				activeBrand.id.toString()
 			);
-		} else {
-			progress.complete();
-			setLoading(false);
 		}
 	}, [viewType, page, sorting, activeBrand, selectedRange, isFiltersLoaded, activeBrandName, activeArticle, activeGroup]);
 
@@ -274,9 +271,9 @@ const AbcAnalysisPage = () => {
 				)}
 
 				{!loading && shops && !shopStatus?.is_primary_collect && (
-						<DataCollectWarningBlock
-								title='Ваши данные еще формируются и обрабатываются.'
-						/>
+					<DataCollectWarningBlock
+							title='Ваши данные еще формируются и обрабатываются.'
+					/>
 				)}
 
 				<div className={styles.wrapper} ref={tableContainerRef}>
