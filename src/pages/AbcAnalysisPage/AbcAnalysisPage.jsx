@@ -28,7 +28,7 @@ const AbcAnalysisPage = () => {
 	const [isNeedCost, setIsNeedCost] = useState([]);
 	const [viewType, setViewType] = useState('proceeds');
 	const [sorting, setSorting] = useState({ key: null, direction: 'desc' });
-	const [loading, setLoading] = useState(false);
+	const [loading, setLoading] = useState(true);
 	const progress = useLoadingProgress({ loading });
 	const [primaryCollect, setPrimaryCollect] = useState(null);
 	const [shopStatus, setShopStatus] = useState(null);
@@ -267,10 +267,10 @@ const AbcAnalysisPage = () => {
 				</div>
 
 				{!loading && shops && activeBrand?.is_primary_collect && !activeBrand.is_self_cost_set && (
-						<SelfCostWarningBlock
-							shopId={activeBrand.id}
-							onUpdateDashboard={handleUpdateAbcAnalysis}
-						/>
+					<SelfCostWarningBlock
+						shopId={activeBrand.id}
+						onUpdateDashboard={handleUpdateAbcAnalysis}
+					/>
 				)}
 
 				{!loading && shops && !shopStatus?.is_primary_collect && (

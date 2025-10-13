@@ -23,7 +23,7 @@ const customCellRender = (value, record, index, dataIndex) => {
 export default function TrendAnalysisQuery() {
 	const { isDemoMode } = useDemoMode();
 	const { selectedRange } = useAppSelector(state => state.filters);
-	const [loading, setLoading] = useState(false);
+	const [loading, setLoading] = useState(true);
 	const [timeFrame, setTimeFrame] = useState('month');
 	const [data, setData] = useState(null);
 	const [downloadLoading, setDownloadLoading] = useState(false);

@@ -41,7 +41,7 @@ const OrdersMap = () => {
   const [_, setActiveBrand] = useState(null);
   const [firstLoading, setFirstLoading] = useState(true);
   const [data, setData] = useState();
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const progress = useLoadingProgress({ loading });
   const [isVisible, setIsVisible] = useState(true);
   const [primaryCollect, setPrimaryCollect] = useState(null);
