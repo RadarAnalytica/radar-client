@@ -1557,10 +1557,10 @@ export const ServiceFunctions = {
 			throw new Error(error);
 		}
 	},
-	getOperatingExpensesCategoryGetAll: async(token) => {
+	getOperatingExpensesCategoryGetAll: async(token, pagination) => {
 		try {
 			const res = await fetch(
-				`${URL}/api/operating-expenses/category/get-all?page=1&limit=100`,
+				`${URL}/api/operating-expenses/category/get-all?page=${pagination.page}&limit=${pagination.limit}`,
 				{
 					method: 'GET',
 					headers: {
@@ -1711,10 +1711,11 @@ export const ServiceFunctions = {
 			throw new Error(error);
 		}
 	},
-	getOperatingExpensesExpenseGetAll: async(token) => {
+	getOperatingExpensesExpenseGetAll: async(token, pagination) => {
+		console.log('pagination', pagination)
 		try {
 			const res = await fetch(
-				`${URL}/api/operating-expenses/expense/get-all?page=1&limit=100`,
+				`${URL}/api/operating-expenses/expense/get-all?page=${pagination.page}&limit=${pagination.limit}`,
 				{
 					method: 'GET',
 					headers: {
@@ -1798,11 +1799,11 @@ export const ServiceFunctions = {
 			throw new Error(error);
 		}
 	},
-	deleteOperatingExpensesExpenseDelete: async(token, id) => {
+	deleteOperatingExpensesExpenseDelete: async(token, id, isPeriodic) => {
 		try {
 			// operating-expenses/expense/delete?expense_id
 			const res = await fetch(
-				`${URL}/api/operating-expenses/expense/delete?expense_id=${id}`,
+				`${URL}/api/operating-expenses/expense/delete?expense_id=${id}&delete_linked=${!!isPeriodic}`,
 				{
 					method: 'DELETE',
 					headers: {

@@ -17,7 +17,7 @@ const customCellExpenseRender = (
     copyExpense,
     data
 ) => {
-    if (dataIndex === 'is_periodic' && record.key !== 'summary') {
+    if (dataIndex === 'is_periodic' && record.key !== 'summary' && record.is_periodic) {
         return (
             <div className={record.is_periodic ? styles.periodicBadge_periodic : styles.periodicBadge_static} title={record.is_periodic ? 'Периодический' : 'Разовый'}>
                 {record.is_periodic ? 'Плановый' : 'Разовый'}
@@ -101,24 +101,24 @@ const customCellCategoryRender = (
 ) => {
     if (dataIndex === 'action') {
         return (<Flex justify="start" gap={20}>
-			<ConfigProvider>
-				<Button
-					type="text"
-					icon={EditIcon}
-					onClick={() => {
-						setCategoryEdit((data.find((article) => article.id === record.id)));
-						setModalCreateCategoryOpen(true)
-					}}
-					title='Изменить'
-				></Button>
-				<Button
-					type="text"
-					icon={DeleteIcon}
-					onClick={() => setDeleteCategoryId(record.id)}
-					title='Удалить'
-				></Button>
-			</ConfigProvider>
-		</Flex>)
+            <ConfigProvider>
+                <Button
+                    type="text"
+                    icon={EditIcon}
+                    onClick={() => {
+                        setCategoryEdit((data.find((article) => article.id === record.id)));
+                        setModalCreateCategoryOpen(true)
+                    }}
+                    title='Изменить'
+                ></Button>
+                <Button
+                    type="text"
+                    icon={DeleteIcon}
+                    onClick={() => setDeleteCategoryId(record.id)}
+                    title='Удалить'
+                ></Button>
+            </ConfigProvider>
+        </Flex>)
     }
 }
 
@@ -134,7 +134,9 @@ export default function TableWidget({
     tableType,
     setCategoryEdit,
     setModalCreateCategoryOpen,
-    setDeleteCategoryId
+    setDeleteCategoryId,
+    pagination,
+    setPagination
 }) {
     const tableContainerRef = useRef(null);
 
@@ -147,13 +149,21 @@ export default function TableWidget({
                 <RadarTable
                     config={columns}
                     dataSource={data}
-
-                    pagination={false}
-                    paginationContainerStyle={{ display: 'none' }}
-
+                    pagination={{
+                        current: pagination.page,
+                        pageSize: pagination.limit,
+                        total: pagination.total,
+                        onChange: (page, pageSize) => {
+                            setPagination({
+                                ...pagination,
+                                page: page,
+                            })
+                        },
+                        showQuickJumper: true,
+                        hideOnSinglePage: true,
+                    }}
                     stickyHeader={true}
                     scrollContainerRef={tableContainerRef}
-
                     preset="radar-table-default"
                     customCellRender={{
                         idx: tableType === 'expense' ? [] : ['action'],
@@ -192,11 +202,11 @@ export default function TableWidget({
                         const baseClass = styles.bodyRowSpecial;
                         const isHighlighted = highlightedExpenseId && record.id === highlightedExpenseId;
                         const highlightClass = isHighlighted ? styles.highlightedRow : '';
-                        
+
                         if (isHighlighted) {
                             console.log('Highlighting row:', record.id, 'with class:', styles.highlightedRow);
                         }
-                        
+
                         return `${baseClass} ${highlightClass}`.trim();
                     }}
                 />

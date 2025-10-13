@@ -23,22 +23,23 @@ export const DateSelect = (
     {
         form,
         label,
-        formId
+        formId,
+        minDate,
+        maxDate,
+        required = true,
+        allowClear = false,
     }
 ) => {
     const [openCalendar, setOpenCalendar] = useState(false);
     const date = Form.useWatch([formId], form);
 
-    const today = new Date();
-	const minDate = new Date(today);
-	const maxDate = new Date(today);
-	minDate.setDate(today.getDate() - 90);
-	maxDate.setDate(today.getDate() + 90);
+  
+
 
     const handleDayClick = (day) => {
         setOpenCalendar(false);
-		form?.setFieldValue([formId], format(day, 'dd.MM.yyyy'));
-	}
+        form?.setFieldValue([formId], format(day, 'dd.MM.yyyy'));
+    }
 
 
     return (
@@ -71,7 +72,7 @@ export const DateSelect = (
                 label={label}
                 name={formId}
                 rules={[
-                    { required: true, message: 'Пожалуйста, выберите дату!' }
+                    { required: required, message: 'Пожалуйста, выберите дату!' }
                 ]}
             >
                 <Select
@@ -82,6 +83,7 @@ export const DateSelect = (
                     open={openCalendar}
                     onDropdownVisibleChange={() => setOpenCalendar((prev) => !prev)}
                     dropdownStyle={{ width: 'fit-content' }}
+                    allowClear={allowClear}
                     dropdownRender={() => (
                         <div
                             style={{
@@ -95,12 +97,12 @@ export const DateSelect = (
                         >
                             <DayPicker
                                 minDate={minDate}
-                                maxDate={new Date()}
+                                maxDate={maxDate}
                                 fromDate={minDate}
-                                toDate={new Date()}
+                                toDate={maxDate}
                                 disabled={[
                                     { before: minDate },
-                                    { after: new Date() },
+                                    { after: maxDate },
                                 ]}
                                 selected={new Date(date)}
                                 mode="single"

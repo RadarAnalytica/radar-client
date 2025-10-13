@@ -17,6 +17,7 @@ import ModalCreateCategory from './features/CreateCategory/CreateCategory';
 import { EditIcon, CopyIcon, DeleteIcon, InfoIcon } from './shared/Icons';
 import TableWidget from './widgets/table/tableWidget';
 import { formatDate, parse } from 'date-fns';
+import { Tooltip as RadarTooltip } from 'radar-ui';
 export default function OperatingExpenses() {
 
 	const { authToken } = useContext(AuthContext);
@@ -34,65 +35,18 @@ export default function OperatingExpenses() {
 	const [deleteCategoryId, setDeleteCategoryId] = useState(null);
 
 	const [expense, setExpense] = useState([]);
+	const [ expPagination, setExpPagination] = useState({
+		page: 1,
+		limit: 25,
+		total: 1,
+	});
+	const [ categoryPagination, setCategoryPagination] = useState({
+		page: 1,
+		limit: 25,
+		total: 1,
+	});
 	const [expenseEdit, setExpenseEdit] = useState(null);
 	const [highlightedExpenseId, setHighlightedExpenseId] = useState(null);
-
-
-	// Функция фильтрации по дате обновления (updated_at)
-	const filterByUpdatedDate = (items, dateRange) => {
-		let result = items;
-
-		// Применяем фильтрацию если есть диапазон дат
-		if (dateRange && dateRange.start && dateRange.end) {
-			const startDate = new Date(dateRange.start);
-			const endDate = new Date(dateRange.end);
-			endDate.setHours(23, 59, 59, 999); // Включаем весь конечный день
-
-			result = items.filter((item) => {
-				if (!item.updated_at) return false;
-				const updatedDate = new Date(item.updated_at);
-				return updatedDate >= startDate && updatedDate <= endDate;
-			});
-		}
-
-		// Всегда сортируем по дате обновления: самые свежие в начале
-		return result.sort((a, b) => {
-			if (!a.updated_at) return 1;
-			if (!b.updated_at) return -1;
-			const dateA = new Date(a.updated_at);
-			const dateB = new Date(b.updated_at);
-			return dateB - dateA; // Сортировка по убыванию (свежие первыми)
-		});
-	};
-
-	// const expenseData = useMemo(() => {
-	// 	const columns = EXPENSE_COLUMNS.map((column, i) => {
-	// 		return ({ ...column, key: column.i })
-	// 	})
-
-	// 	// Применяем фильтрацию по дате обновления
-	// 	const filteredExpenses = filterByUpdatedDate(expense, selectedRange);
-
-	// 	let data = filteredExpenses?.map((item) => ({
-	// 		...item,
-	// 		key: item.id,
-	// 		expense_categories: item.expense_categories.map((el) => el.name).join(', ')
-	// 	}));
-
-	// 	const result = {
-	// 		key: 'summary',
-	// 		date: 'Итого:',
-	// 		value: data.reduce((value, el) => (value += el.value), 0) || '-',
-	// 		description: '-',
-	// 		expense_categories: '-',
-	// 		vendor_code: '-',
-	// 		brand_name: '-',
-	// 		shop: '-',
-	// 		action: '-',
-	// 	};
-	// 	data.unshift(result);
-	// 	return { data, columns };
-	// }, [expense, selectedRange]);
 
 	const expenseData = useMemo(() => {
 		const columns = EXPENSE_COLUMNS.map((column, i) => {
@@ -119,6 +73,7 @@ export default function OperatingExpenses() {
 		data.unshift(result);
 		return { data, columns };
 	}, [expense]);
+	// console.log('expenseData', expenseData)
 
 	const [categoryEdit, setCategoryEdit] = useState(null);
 	const [category, setCategory] = useState([]);
@@ -139,7 +94,7 @@ export default function OperatingExpenses() {
 		setLoading(true);
 		setCategoryLoading(true);
 		try {
-			const res = await ServiceFunctions.getOperatingExpensesCategoryGetAll(authToken);
+			const res = await ServiceFunctions.getOperatingExpensesCategoryGetAll(authToken, categoryPagination);
 			// console.log('updateCategories', res);
 			setCategory(res.data);
 		} catch (error) {
@@ -153,28 +108,16 @@ export default function OperatingExpenses() {
 		}
 	};
 
-	const updatePeriodicExpenses = async () => {
-		setLoading(true);
-		try {
-			const res = await ServiceFunctions.getAllOperatingExpensesExpense(authToken);
-			console.log(res)
-			setExpense(res.data)
-		} catch (error) {
-			console.error('updateExpenses error', error);
-			setExpense([]);
-		} finally {
-			console.log('updateExpenses', !firstLoad.current);
-			// if (!firstLoad.current) {
-			setLoading(false);
-			// }
-		}
-	};
-
 	const updateExpenses = async () => {
 		setLoading(true);
 		try {
-			const res = await ServiceFunctions.getOperatingExpensesExpenseGetAll(authToken);
+			const res = await ServiceFunctions.getOperatingExpensesExpenseGetAll(authToken, expPagination);
 			setExpense(res.data)
+			setExpPagination({
+				page: res.page,
+				limit: res.limit,
+				total: res.total_pages,
+			})
 			return
 		} catch (error) {
 			console.error('updateExpenses error', error);
@@ -212,7 +155,7 @@ export default function OperatingExpenses() {
 			console.log('updateArticles');
 			updateCategories();
 		}
-	}, [activeBrand, selectedRange])
+	}, [activeBrand, selectedRange, expPagination.page, categoryPagination.page])
 
 	const modalExpenseHandlerClose = () => {
 		setModalCreateExpenseOpen(false);
@@ -300,7 +243,7 @@ export default function OperatingExpenses() {
 		console.log('requestObject', requestObject)
 		try {
 			const res = await ServiceFunctions.postOperatingExpensesExpenseCreate(authToken, requestObject, requestUrl);
-			setExpense((list) => [...list, ...res])
+			updateExpenses();
 		} catch (error) {
 			console.error('createCategory error', error);
 		} finally {
@@ -366,10 +309,10 @@ export default function OperatingExpenses() {
 		}
 	}
 
-	const deleteExpense = async (id) => {
+	const deleteExpense = async (id, isPeriodic) => {
 		setLoading(true);
 		try {
-			const res = await ServiceFunctions.deleteOperatingExpensesExpenseDelete(authToken, id);
+			const res = await ServiceFunctions.deleteOperatingExpensesExpenseDelete(authToken, id, isPeriodic);
 			//
 			setExpense((list) => list.filter((el) => el.id !== id));
 			// 
@@ -380,23 +323,6 @@ export default function OperatingExpenses() {
 			setLoading(false);
 		}
 	}
-
-	const deletePeriodicExpense = async (id) => {
-		console.log('delete cost');
-		setLoading(true);
-		try {
-			const res = await ServiceFunctions.deleteOperatingExpensesExpense();
-			//
-			setExpense((list) => list.filter((el) => el.id !== id));
-			//
-			console.log('deleteExpense', res);
-		} catch (error) {
-			console.error('deleteExpense error', error);
-		} finally {
-			setDeleteExpenseId(null);
-			setLoading(false);
-		}
-	};
 
 	const deleteCategoryHandler = async (id) => {
 		console.log('deleteCategoryHandler');
@@ -531,6 +457,8 @@ export default function OperatingExpenses() {
 							copyExpense={copyExpense}
 							highlightedExpenseId={highlightedExpenseId}
 							tableType='expense'
+							pagination={expPagination}
+							setPagination={setExpPagination}
 						/>
 					</div>
 				}
@@ -544,6 +472,8 @@ export default function OperatingExpenses() {
 							setCategoryEdit={setCategoryEdit}
 							setModalCreateCategoryOpen={setModalCreateCategoryOpen}
 							setDeleteCategoryId={setDeleteCategoryId}
+							pagination={categoryPagination}
+							setPagination={setCategoryPagination}
 						/>
 					</div>
 				}
@@ -571,13 +501,27 @@ export default function OperatingExpenses() {
 				{deleteExpenseId && <ModalDeleteConfirm
 					title={'Вы уверены, что хотите удалить расход?'}
 					onCancel={() => setDeleteExpenseId(null)}
-					onOk={() => deleteExpense(deleteExpenseId)}
+					text={expenseData.data.find((el) => el.id === deleteExpenseId)?.is_periodic ? (
+						<div className={styles.deleteModal__text}>
+							Вы удаляете периодический расход. Это действие также удалит все созданне расходы по этому шаблону. 
+							<RadarTooltip
+								text='Вы также можете запретить создавать новые расходы по этому шаблону. Для этого зайдите в редактирование планового расхода и установите/измените дату окончания расхода.'
+							>
+								<span
+									style={{ color: '#F93C65', textDecoration: 'underline' }}
+								>Подробнее</span>
+							</RadarTooltip>
+						</div>
+					) : null}
+					onOk={() => deleteExpense(deleteExpenseId, expenseData.data.find((el) => el.id === deleteExpenseId)?.is_periodic)}
+					isLoading={loading}
 				/>}
 
 				{deleteCategoryId && <ModalDeleteConfirm
 					title={'Вы уверены, что хотите удалить статью?'}
 					onCancel={() => setDeleteCategoryId(null)}
 					onOk={() => deleteCategoryHandler(deleteCategoryId)}
+					isLoading={loading}
 				/>}
 
 				{loading && <div className={styles.loading}>

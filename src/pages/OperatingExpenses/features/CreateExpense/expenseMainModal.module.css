@@ -146,6 +146,14 @@
   }
   
   
+  .customDayPicker {
+    font-size: 14px !important;
+  }
+
+  .customDayPicker * {
+    font-size: 14px !important;
+  }
+
   .customDayPicker .rdp-caption {
     display: flex;
     justify-content: space-between;

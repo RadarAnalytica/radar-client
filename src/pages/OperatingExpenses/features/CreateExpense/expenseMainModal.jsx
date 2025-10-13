@@ -24,7 +24,7 @@ const getRequestObject = (values) => {
 
 
 	if (values.type === 'plan') {
-		requestUrl = '/operating-expenses/periodic-expense/create';
+		requestUrl = 'operating-expenses/periodic-expense/create';
 		let formattedDateEnd;
 		if (values.end_date) {
 			formattedDateEnd = formatDate(parse(values.end_date, 'dd.MM.yyyy', new Date()), 'yyyy-MM-dd');
@@ -38,13 +38,17 @@ const getRequestObject = (values) => {
 			brand_names: values.brand_names,
 			shops: values.shops,
 			period_type: values.frequency,
-			period_values: values.frequency === 'week' ? values.week : [parseInt(values.month)],
+			period_values: values.frequency === 'week' 
+				? values.week 
+				: values.month 
+					? values.month.split(',').map(n => parseInt(n.trim(), 10)).filter(n => !isNaN(n))
+					: [],
 			finished_at: formattedDateEnd,
 		}
 	}
 
 	if (values.type === 'once') {
-		requestUrl = '/operating-expenses/expense/create';
+		requestUrl = 'operating-expenses/expense/create';
 		requestObject = {
 			expense_categories: values.expense_categories,
 			description: values.description,
@@ -70,10 +74,25 @@ const getRequestObject = (values) => {
 
 		const { shops, filters } = useAppSelector((state) => state.filters);
 		const [form] = Form.useForm();
+		const dateFrom = Form.useWatch('date', form);
 
 		const selection = Form.useWatch('selection', form);
 		const frequency = Form.useWatch('frequency', form);
 		const typeValue = Form.useWatch('type', form);
+
+		const today = new Date();
+		const minDateFrom = new Date(today);
+		const maxDateFrom = new Date(today);
+		minDateFrom.setDate(today.getDate() - 90);
+		maxDateFrom.setDate(today.getDate() + 90);
+
+	const minDateTo = dateFrom 
+		? (() => {
+			const parsedDate = parse(dateFrom, 'dd.MM.yyyy', new Date());
+			parsedDate.setDate(parsedDate.getDate() + 1);
+			return parsedDate;
+		})()
+		: today;
 
 
 		const onFinish = (values) => {
@@ -200,6 +219,8 @@ const getRequestObject = (values) => {
 										form={form}
 										label="Дата"
 										formId='date'
+										minDate={minDateFrom}
+										maxDate={maxDateFrom}
 									/>
 								</Col>
 								<Col span={12}>
@@ -336,19 +357,51 @@ const getRequestObject = (values) => {
 												}
 											}}
 										>
-											<Form.Item
-												label="Число или день"
-												name='month'
-											>
+										<Form.Item
+											label="Число или день"
+											name='month'
+											rules={[
+												{
+													validator: (_, value) => {
+														if (!value) {
+															return Promise.resolve();
+														}
 
-												<Input
-													size="large"
-													type='number'
-													min={0}
-													placeholder='Число от 1 до 28'
-													onWheel={(e) => e.currentTarget.blur()}
-												/>
-											</Form.Item>
+														// Проверяем, что строка содержит только цифры и запятые
+														if (!/^[0-9,\s]+$/.test(value)) {
+															return Promise.reject(new Error('Используйте только цифры и запятые'));
+														}
+
+														// Разбиваем по запятым и проверяем каждое число
+														const numbers = value.split(',').map(n => n.trim()).filter(n => n !== '');
+														
+														for (let num of numbers) {
+															const parsed = parseInt(num, 10);
+															if (isNaN(parsed)) {
+																return Promise.reject(new Error('Некорректное число'));
+															}
+															if (parsed < 1 || parsed > 31) {
+																return Promise.reject(new Error('Числа должны быть от 1 до 31'));
+															}
+														}
+
+														return Promise.resolve();
+													}
+												}
+											]}
+										>
+
+											<Input
+												size="large"
+												type='text'
+												placeholder='Например: 1, 15, 28'
+												onChange={(e) => {
+													// Фильтруем ввод: оставляем только цифры, запятые и пробелы
+													const filtered = e.target.value.replace(/[^0-9,\s]/g, '');
+													form.setFieldValue('month', filtered);
+												}}
+											/>
+										</Form.Item>
 										</ConfigProvider>
 									</Col>}
 
@@ -431,6 +484,10 @@ const getRequestObject = (values) => {
 												form={form}
 												label="Дата окончания"
 												formId='end_date'
+												minDate={minDateTo}
+												maxDate={undefined}
+												required={false}
+												allowClear
 											/>
 										</ConfigProvider>
 									</Col>
@@ -475,7 +532,7 @@ const getRequestObject = (values) => {
 										label="Статья"
 										name='expense_categories'
 										rules={[
-											{ required: true, message: 'Пожалуйста, выберите значение!' }
+											{ required: false, message: 'Пожалуйста, выберите значение!' }
 										]}
 										style={{ width: '100%' }}
 									>
