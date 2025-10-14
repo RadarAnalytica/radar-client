@@ -5,13 +5,9 @@ import { ArrowLeftOutlined } from '@ant-design/icons';
 import styles from './ArticleViewPage.module.css';
 import { fetchArticleBySlug } from '@/redux/blog/blogActions';
 import { clearCurrentArticle } from '@/redux/blog/blogSlice';
-import { URL } from '@/service/config';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import type { RootState } from '@/redux/store.types';
 import moment from 'moment';
-import 'moment/locale/ru';
-
-moment.locale('ru');
 
 const ArticleViewPage = () => {
   const dispatch = useAppDispatch();
@@ -73,8 +69,8 @@ const ArticleViewPage = () => {
     image_url,
   } = currentArticle;
 
-  const formattedCreatedDate = moment(created_at).format('D MMMM YYYY');
-  const formattedUpdatedDate = moment(updated_at).format('D MMMM YYYY');
+  const formattedCreatedDate = moment(created_at).format('DD.MM.YYYY');
+  const formattedUpdatedDate = moment(updated_at).format('DD.MM.YYYY');
 
   return (
     <div className={styles.page}>
