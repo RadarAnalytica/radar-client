@@ -1711,17 +1711,17 @@ export const ServiceFunctions = {
 			throw new Error(error);
 		}
 	},
-	getOperatingExpensesExpenseGetAll: async(token, pagination) => {
-		console.log('pagination', pagination)
+	getOperatingExpensesExpenseGetAll: async(token, requestObject) => {
 		try {
 			const res = await fetch(
-				`${URL}/api/operating-expenses/expense/get-all?page=${pagination.page}&limit=${pagination.limit}`,
+				`${URL}/api/operating-expenses/expense/get-all`,
 				{
-					method: 'GET',
+					method: 'POST',
 					headers: {
 						'content-type': 'application/json',
 						authorization: 'JWT ' + token,
-					}
+					},
+					body: JSON.stringify(requestObject)
 				}
 			);
 
@@ -1775,7 +1775,7 @@ export const ServiceFunctions = {
 			throw new Error(error);
 		}
 	},
-	getPeriodicExpenseTemplate: async(token, periodic_expense_id) => {
+	getPeriodicExpenseTemplate: async (token, periodic_expense_id) => {
 		try {
 			const res = await fetch(
 				`${URL}/api/operating-expenses/periodic-expense/get?expense_id=${periodic_expense_id}`,

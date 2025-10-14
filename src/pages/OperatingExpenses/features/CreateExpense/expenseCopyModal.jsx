@@ -17,27 +17,24 @@ import { formatDate, parse } from 'date-fns';
 
 
 
-const getRequestObject = (values, editData) => {
+const getRequestObject = (values) => {
 	let requestObject = {}
 	let requestUrl = '';
 	const formattedDateStart = formatDate(parse(values.date, 'dd.MM.yyyy', new Date()), 'yyyy-MM-dd');
 
-
-	if (editData.is_periodic) {
-		requestUrl = 'operating-expenses/periodic-expense/update';
+		requestUrl = 'operating-expenses/periodic-expense/create';
 		let formattedDateEnd;
 		if (values.end_date) {
 			formattedDateEnd = formatDate(parse(values.end_date, 'dd.MM.yyyy', new Date()), 'yyyy-MM-dd');
 		}
 		requestObject = {
-			type: 'plan',
 			expense_categories: values.expense_categories,
 			description: values.description,
 			value: values.value,
 			date_from: formattedDateStart,
-			vendor_code: values.vendor_code,
-			brand_name: values.brand_name,
-			shop: values.shop,
+			vendor_codes: values.vendor_codes,
+			brand_names: values.brand_names,
+			shops: values.shops,
 			period_type: values.frequency,
 			period_values: values.frequency === 'week'
 				? values.week
@@ -45,23 +42,7 @@ const getRequestObject = (values, editData) => {
 					? values.month.split(',').map(n => parseInt(n.trim(), 10)).filter(n => !isNaN(n))
 					: [],
 			finished_at: formattedDateEnd,
-			id: editData?.periodic_expense_id,
 		}
-	}
-	if (!editData.is_periodic) {
-		requestUrl = 'operating-expenses/expense/update';
-		requestObject = {
-			type: 'once',
-			expense_categories: values.expense_categories,
-			description: values.description,
-			value: values.value,
-			date: formattedDateStart,
-			shop: values.shop,
-			vendor_code: values.vendor_code,
-			brand_name: values.brand_name,
-			id: editData?.id,
-		}
-	}
 	return { requestObject, requestUrl };
 }
 
@@ -74,6 +55,7 @@ export default function ExpenseCopyModal({
 	handle,
 	expenseCopy,
 	setExpenseCopy,
+	loading,
 	...props
 }) {
 	const { shops, filters } = useAppSelector((state) => state.filters);
@@ -111,7 +93,7 @@ export default function ExpenseCopyModal({
 
 	useEffect(() => {
 		if (editData) {
-			const selectionType = editData.shop ? 'shop' : editData.brand_name ? 'brand_name' : 'vendor_code';
+			const selectionType = editData.shops ? 'shop' : editData.brand_names ? 'brand_name' : 'vendor_code';
 
 
 			const formattedDate = editData.date
@@ -124,11 +106,11 @@ export default function ExpenseCopyModal({
 
 			form.setFieldsValue({
 				date: formattedDate,
-				expense_categories: category.map((el) => editData.expense_categories.includes(el.name) ? el.id : false).filter(Boolean),
+				expense_categories: editData.expense_categories?.map((el) => el.id),
 				selection: selectionType,
-				shop: editData.shop?.id,
-				vendor_code: editData.vendor_code?.id,
-				brand_name: editData.brand_name?.id,
+				shops: editData.shops || [],
+				vendor_codes: editData.vendor_codes || [],
+				brand_names: editData.brand_names || [],
 				frequency: editData.frequency,
 				week: editData.week,
 				month: editData.month,
@@ -139,7 +121,7 @@ export default function ExpenseCopyModal({
 		}
 	}, [editData])
 
-	console.log('editData', editData);
+	console.log('editDataCopy', editData);
 
 
 	return (
@@ -213,7 +195,7 @@ export default function ExpenseCopyModal({
 							expense_categories: [],
 						}}
 					>
-						<p className={styles.modal__typeSubtitle}>{!editData.is_periodic ? 'Разовый расход' : 'Плановый расход'}</p>
+						<p className={styles.modal__typeSubtitle}>{'Плановый расход'}</p>
 
 						{/* Выбор даты и суммы расхода */}
 						<Row className={styles.modal__part} gutter={16}>
@@ -642,7 +624,6 @@ export default function ExpenseCopyModal({
 							{/* РАспределить на магазины, артикулы, бренды */}
 							<RadioGroup
 								name="selection"
-								//label='Тип операции'
 								options={[
 									{ value: 'shop', label: 'Магазины' },
 									{ value: 'vendor_code', label: 'Артикулы' },
@@ -652,17 +633,16 @@ export default function ExpenseCopyModal({
 
 
 							{/* Селекты магазинов, брендов, артикулов */}
-							<ConfigProvider
+							{selection === 'shop' &&
+								<ConfigProvider
 									renderEmpty={() => (<div>Нет данных</div>)}
 									theme={{
 										token: {
-											colorBgContainer: 'white !important',
+											colorBgContainer: 'white',
 											colorBorder: '#5329FF1A',
 											borderRadius: 8,
 											fontFamily: 'Mulish',
 											fontSize: 12,
-											fontWeight: 500,
-											controlHeightLG: 40,
 										},
 										components: {
 											Select: {
@@ -677,20 +657,16 @@ export default function ExpenseCopyModal({
 										}
 									}}
 								>
-							
-							{selection === 'shop' &&
-								
 									<Form.Item
-										name="shop"
+										name="shops"
 										rules={[
 											{ required: true, message: 'Пожалуйста, выберите значение!' }
 										]}
 									>
-										<Select
-											size="large"
-											placeholder="Выберите магазин"
-											suffixIcon={<SelectIcon />}
-											options={shops?.map((el) => {
+										<MultiSelect
+											form={form}
+											hasSelectAll
+											optionsData={shops?.map((el) => {
 												if (el.id === 0) {
 													return false
 												} else {
@@ -702,44 +678,71 @@ export default function ExpenseCopyModal({
 													}
 												}
 											}).filter(Boolean)}
+											selectId='shops'
+											searchFieldPlaceholder='Поиск по названию магазина'
+											selectPlaceholder='Выберите магазины'
 										/>
 									</Form.Item>
-								
-							}
+								</ConfigProvider>}
+							<ConfigProvider
+								renderEmpty={() => (<div>Нет данных</div>)}
+								theme={{
+									token: {
+										colorBgContainer: 'white',
+										colorBorder: '#5329FF1A',
+										borderRadius: 8,
+										fontFamily: 'Mulish',
+										fontSize: 12,
+									},
+									components: {
+										Select: {
+											activeBorderColor: '#5329FF1A',
+											activeOutlineColor: 'transparent',
+											hoverBorderColor: '#5329FF1A',
+											optionActiveBg: 'transparent',
+											optionFontSize: 14,
+											optionSelectedBg: 'transparent',
+											optionSelectedColor: '#5329FF',
+										}
+									}
+								}}
+							>
 								{selection === 'vendor_code' &&
 									<Form.Item
-										name="vendor_code"
+										name="vendor_codes"
 										rules={[
 											{ required: true, message: 'Пожалуйста, выберите значение!' }
 										]}
 									>
-										<Select
-											size="large"
-											placeholder="Выберите артикул"
-											suffixIcon={<SelectIcon />}
-											options={filters.find(_ => _.shop.id === 0)?.articles.data.map((el, i) => ({
+										<MultiSelect
+											form={form}
+											optionsData={filters.find(_ => _.shop.id === 0)?.articles.data.map((el, i) => ({
 												key: el.value,
 												value: el.value,
 												label: el.name,
 											}))}
+											selectId='vendor_codes'
+											searchFieldPlaceholder='Поиск по названию артикула'
+											selectPlaceholder='Выберите артикулы'
 										/>
 									</Form.Item>}
 								{selection === 'brand_name' &&
 									<Form.Item
-										name="brand_name"
+										name="brand_names"
 										rules={[
 											{ required: true, message: 'Пожалуйста, выберите значение!' }
 										]}
 									>
-										<Select
-											size="large"
-											placeholder="Выберите бренд"
-											suffixIcon={<SelectIcon />}
-											options={filters.find(_ => _.shop.id === 0)?.brands.data.map((el, i) => ({
+										<MultiSelect
+											form={form}
+											optionsData={filters.find(_ => _.shop.id === 0)?.brands.data.map((el, i) => ({
 												key: el.value,
 												value: el.value,
 												label: el.name,
 											}))}
+											selectId='brand_names'
+											searchFieldPlaceholder='Поиск по названию бренда'
+											selectPlaceholder='Выберите бренды'
 										/>
 									</Form.Item>}
 							</ConfigProvider>
@@ -780,6 +783,7 @@ export default function ExpenseCopyModal({
 										size="large"
 										onClick={onCancel}
 										htmlType="button"
+										loading={loading}
 									>
 										Отменить
 									</Button>
@@ -805,6 +809,7 @@ export default function ExpenseCopyModal({
 										type="primary"
 										size="large"
 										htmlType="submit"
+										loading={loading}
 									>
 										{'Копировать расход'}
 									</Button>

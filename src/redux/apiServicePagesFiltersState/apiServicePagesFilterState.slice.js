@@ -9,12 +9,14 @@ const initialState = {
   activeWeeks: undefined,
   activeMonths: undefined,
   activeCategory: undefined,
+  activeExpenseCategory: undefined,
   skuFrequencyMode: 'Простой', // 'Простой' | 'Продвинутый'
   shops: undefined,
   selectedRange: {
     period: 30
   },
   filters: undefined,
+  expenseCategories: undefined,
   isFiltersLoaded: false
 };
 
@@ -22,6 +24,12 @@ const apiServicePagesFilterStateSlice = createSlice({
   name: 'filters',
   initialState,
   reducers: {
+    setExpenseCategories: (state, action) => {
+      return {
+        ...state,
+        expenseCategories: action.payload
+      };
+    },
     setActiveShop: (state, action) => {
       return {
         ...state,

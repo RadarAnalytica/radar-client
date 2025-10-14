@@ -67,6 +67,7 @@ export default function ExpenseMainModal({
 	setModalCreateCategoryOpen,
 	category,
 	handle,
+	loading,
 	...props
 }) {
 
@@ -660,6 +661,7 @@ export default function ExpenseMainModal({
 									>
 										<MultiSelect
 											form={form}
+											hasSelectAll
 											optionsData={shops?.map((el) => {
 												if (el.id === 0) {
 													return false
@@ -777,6 +779,7 @@ export default function ExpenseMainModal({
 										size="large"
 										onClick={onCancel}
 										htmlType="button"
+										loading={loading}
 									>
 										Отменить
 									</Button>
@@ -802,6 +805,7 @@ export default function ExpenseMainModal({
 										type="primary"
 										size="large"
 										htmlType="submit"
+										loading={loading}
 									>
 										{'Добавить расход'}
 									</Button>

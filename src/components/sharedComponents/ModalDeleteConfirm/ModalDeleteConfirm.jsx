@@ -67,12 +67,14 @@ export default function ModalDeleteConfirm({ onOk, onCancel, title, isLoading, t
               <button
                 className={`${styles.modal__actionButton} ${styles.modal__actionButton_cancel}`}
                 onClick={onCancel}
+                loading={isLoading}
               >
                 Отменить
               </button>
               <button
                 className={`${styles.modal__actionButton} ${styles.modal__actionButton_confirm}`}
                 onClick={onOk}
+                loading={isLoading}
               >
                 Удалить
               </button>

@@ -12,6 +12,7 @@ export const MultiSelect = (
         searchFieldPlaceholder, //string
         selectPlaceholder, //string
         hasSearch = true, //boolean
+        hasSelectAll = false, //boolean
     }
 ) => {
 
@@ -79,7 +80,7 @@ export const MultiSelect = (
                         }
                     }}
                 >
-                    {!searchState && <Button
+                    {!searchState && hasSelectAll && <Button
                         type='primary'
                         size='large'
                         onClick={action}

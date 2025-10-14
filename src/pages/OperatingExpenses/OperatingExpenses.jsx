@@ -20,11 +20,12 @@ import { EditIcon, CopyIcon, DeleteIcon, InfoIcon } from './shared/Icons';
 import TableWidget from './widgets/table/tableWidget';
 import { formatDate, parse } from 'date-fns';
 import { Tooltip as RadarTooltip } from 'radar-ui';
+import { useAppDispatch } from '@/redux/hooks';
+import { actions as filtersActions } from '@/redux/apiServicePagesFiltersState/apiServicePagesFilterState.slice';
 export default function OperatingExpenses() {
-
+	const dispatch = useAppDispatch();
 	const { authToken } = useContext(AuthContext);
-	const { activeBrand, selectedRange, shops } = useAppSelector((state) => state.filters);
-
+	const { activeBrand, selectedRange, shops, activeBrandName, activeArticle, activeExpenseCategory, expenseCategories } = useAppSelector((state) => state.filters);
 	const firstLoad = useRef(true);
 	const [loading, setLoading] = useState(true);
 	const [view, setView] = useState('expense'); // costs | category
@@ -108,6 +109,8 @@ export default function OperatingExpenses() {
 			const res = await ServiceFunctions.getOperatingExpensesCategoryGetAll(authToken, pagination);
 			// console.log('updateCategories', res);
 			setCategory(res.data);
+			dispatch(filtersActions.setExpenseCategories(res.data.map(_ => ({..._, value: _.name, key: _.id}))));
+			!activeExpenseCategory && dispatch(filtersActions.setActiveFilters({stateKey: 'activeExpenseCategory', data: {value: 'Все', id: 0}}));
 		} catch (error) {
 			// console.error('updateCategories error', error);
 			setCategory([]);
@@ -127,9 +130,19 @@ export default function OperatingExpenses() {
 		if (resetPagination) {
 			setExpPagination(pagination);
 		}
+		
+		const requestObject = {
+			page: pagination.page,
+			limit: pagination.limit,
+			period: selectedRange.period ? selectedRange.period : selectedRange,
+			shops: activeBrand.id === 0 ? undefined : [activeBrand.id],
+			brand_names: activeBrandName.map((el) => el.value !== 'Все' ? el.value : null).filter(Boolean),
+			vendor_codes: activeArticle.map((el) => el.value !== 'Все' ? el.value : null).filter(Boolean),
+			expense_categories: activeExpenseCategory && Array.isArray(activeExpenseCategory) ? activeExpenseCategory?.map((el) => el.value !== 'Все' ? el.id : null).filter(Boolean) : null,
+		}
 
 		try {
-			const res = await ServiceFunctions.getOperatingExpensesExpenseGetAll(authToken, pagination);
+			const res = await ServiceFunctions.getOperatingExpensesExpenseGetAll(authToken, requestObject);
 			setExpense(res.data)
 			setExpPagination({
 				page: res.page,
@@ -155,16 +168,13 @@ export default function OperatingExpenses() {
 
 		if (firstLoad.current) {
 			updateCategories().then(() => {
-				updateExpenses();
-			}).then(() => {
-				console.log('promise ')
 				firstLoad.current = false;
 				setLoading(false);
 			});
 			return
 		}
 
-		if (view === 'expense') {
+		if (view === 'expense' && expenseCategories) {
 			console.log('updateCosts');
 			updateExpenses();
 		}
@@ -173,7 +183,7 @@ export default function OperatingExpenses() {
 			console.log('updateArticles');
 			updateCategories();
 		}
-	}, [activeBrand, selectedRange, expPagination.page, categoryPagination.page])
+	}, [activeBrand, selectedRange, expPagination.page, categoryPagination.page, activeBrandName, activeArticle, activeExpenseCategory, expenseCategories])
 
 	const modalExpenseHandlerClose = () => {
 		setModalCreateExpenseOpen(false);
@@ -254,6 +264,8 @@ export default function OperatingExpenses() {
 		} finally {
 			setModalCreateExpenseOpen(false);
 			setCategoryLoading(false);
+			setExpenseCopy(null);
+			setModalCopyExpenseOpen(false);
 		}
 	}
 
@@ -274,7 +286,6 @@ export default function OperatingExpenses() {
 
 
 	const copyExpense = async (expenseId) => {
-		console.log('hit2')
 		try {
 			let expenseToCopy = expense.find((item) => item.id === expenseId);
 			console.log('expenseToCopy', expenseToCopy)
@@ -438,21 +449,9 @@ export default function OperatingExpenses() {
 
 				<div className={styles.controls}>
 					<Filters
-						shopSelect={true}
-						timeSelect={true}
 						isDataLoading={loading}
-						skuFrequency={false}
-						weekSelect={false}
-						weekOptions={null}
-						weekValue={null}
-						weekHandler={null}
-						monthSelect={false}
-						monthHandler={null}
-						monthValue={null}
-						tempPageCondition={null}
-					// operationCostsArticles={true}
-					// operationCostsArticlesData={[]}
-					// operationCostsArticlesHandler={}
+						groupSelect={false}
+						opExpensesArticles
 					/>
 				</div>
 
@@ -508,6 +507,7 @@ export default function OperatingExpenses() {
 						handle={handleExpanse}
 						expenseCopy={expenseCopy}
 						setExpenseCopy={setExpenseCopy}
+						loading={loading}
 					/>
 				}
 
@@ -519,19 +519,21 @@ export default function OperatingExpenses() {
 						category={category}
 						editData={expenseEdit}
 						handle={handleExpanse}
+						loading={loading}
 					/>
 				}
 
-				{/* {modalCopyExpenseOpen && expenseCopy &&
+				{modalCopyExpenseOpen && expenseCopy &&
 					<ExpenseCopyModal
 						open={modalCopyExpenseOpen}
 						onCancel={() => {setExpenseCopy(null); setModalCopyExpenseOpen(false)}}
 						setModalCreateCategoryOpen={setModalCreateCategoryOpen}
 						category={category}
 						editData={expenseCopy}
-						handle={handleExpanse}
+						handle={createExpense}
+						loading={loading}
 					/>
-				} */}
+				}
 
 				{modalCreateCategoryOpen && <ModalCreateCategory
 					open={modalCreateCategoryOpen}

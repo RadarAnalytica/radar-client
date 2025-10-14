@@ -74,7 +74,7 @@ const customCellExpenseRender = (
                         e.preventDefault();
 
                         let response;
-                        if (record.is_periodic) {
+                        if (record?.is_periodic) {
                             response = await ServiceFunctions.getPeriodicExpenseTemplate(authToken, record.periodic_expense_id);
                             const currItem = (data?.find((item) => item.id === record.id))
 
@@ -83,7 +83,7 @@ const customCellExpenseRender = (
                                 end_date: response.finished_at?.split('T')[0],
                                 frequency: response.period_type,
                                 week: response.period_type === 'week' ? response.period_values : null,
-                                month: response.period_type === 'month' ? response.period_values : null,
+                                month: response.period_type === 'month' ? response.period_values.toString() : null,
                                 periodic_expense_id: response.id,
                             })
                             setModalEditExpenseOpen(true);
@@ -97,7 +97,7 @@ const customCellExpenseRender = (
                 <Button
                     type="text"
                     icon={CopyIcon}
-                    onClick={(e) => {
+                    onClick={async (e) => {
                         e.stopPropagation();
                         e.preventDefault();
 
@@ -107,8 +107,8 @@ const customCellExpenseRender = (
                         }
 
                         let response;
-                        if (record.is_periodic) {
-                            response = await ServiceFunctions.getPeriodicExpenseTemplate(authToken, record.periodic_expense_id);
+                        if (record?.is_periodic) {
+                            response = await ServiceFunctions.getPeriodicExpenseTemplate(authToken, record?.periodic_expense_id);
 
                             setExpenseCopy({
                                 ...response,
@@ -118,6 +118,7 @@ const customCellExpenseRender = (
                                 week: response.period_type === 'week' ? response.period_values : null,
                                 month: response.period_type === 'month' ? response.period_values : null,
                                 periodic_expense_id: response.id,
+                                is_periodic: true,
                             })
                             setModalCopyExpenseOpen(true);
                             return

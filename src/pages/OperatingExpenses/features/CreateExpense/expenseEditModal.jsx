@@ -72,6 +72,7 @@ export default function ExpenseEditModal({
 	category,
 	editData,
 	handle,
+	loading,
 	...props
 }) {
 	const { shops, filters } = useAppSelector((state) => state.filters);
@@ -778,6 +779,7 @@ export default function ExpenseEditModal({
 										size="large"
 										onClick={onCancel}
 										htmlType="button"
+										loading={loading}
 									>
 										Отменить
 									</Button>
@@ -803,6 +805,7 @@ export default function ExpenseEditModal({
 										type="primary"
 										size="large"
 										htmlType="submit"
+										loading={loading}
 									>
 										{'Сохранить расход'}
 									</Button>
