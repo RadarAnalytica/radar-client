@@ -25,9 +25,15 @@ const BlogAdd = ({ categories, token, setActivePage }) => {
   const categoryFormSubmitHandler = async (fields) => {
     setCategoryFormStatus({ ...categoryFormStatus, isLoading: true });
     
-    const formData = new FormData();
-    const query = `name=${fields.categoryName}&slug=${fields.categorySlug}&description=${fields.categoryDescription}`;
+    let query = `name=${fields.categoryName}`;
+    if (fields.categorySlug) {
+      query += `&slug=${String(fields.categorySlug)}`;
+    }
+    if (fields.categoryDescription) {
+      query += `&description=${fields.categoryDescription}`;
+    }
 
+    const formData = new FormData();
     if (fields.iconFile?.file?.originFileObj) {
       formData.append('icon', fields.iconFile.file.originFileObj);
     }
@@ -55,13 +61,16 @@ const BlogAdd = ({ categories, token, setActivePage }) => {
     }
 
     setMainFormStatus({ ...statusInitialState, isLoading: true });
-    const formData = new FormData();
-    const query = `title=${fields.articleName}&slug=${fields.articleUrl}&category_id=${fields.category}&description=${fields.articleDescription}&is_published=${fields.is_published}&is_recommended=${fields.is_recommended}&is_popular=${fields.is_popular}`;
+    
+    let query = `title=${fields.articleName}&category_id=${fields.category}&description=${fields.articleDescription}&is_published=${Boolean(fields.is_published)}&is_recommended=${Boolean(fields.is_recommended)}&is_popular=${Boolean(fields.is_popular)}`;
+    if (fields.articleUrl) {
+      query += `&slug=${String(fields.articleUrl)}`;
+    }
 
+    const formData = new FormData();
     if (fields.textFile?.file?.originFileObj) {
       formData.append('document', fields.textFile.file.originFileObj);
     }
-
     if (fields.coverFile?.file?.originFileObj) {
       formData.append('cover_image', fields.coverFile.file.originFileObj);
     }
@@ -114,6 +123,21 @@ const BlogAdd = ({ categories, token, setActivePage }) => {
           >
             <Input
               placeholder='Введите название статьи'
+              size='large'
+            >
+            </Input>
+          </Form.Item>
+
+          {/* Url */}
+          <Form.Item
+            label='Url статьи'
+            name='articleUrl'
+            rules={[
+              { min: 3, message: 'Название должно быть длиннее 3х символов' },
+            ]}
+          >
+            <Input
+              placeholder='Введите url статьи'
               size='large'
             >
             </Input>

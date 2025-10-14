@@ -19,7 +19,7 @@ const BlogList = ({ posts, categories, setPostIdForUpdate }: BlogListProps) => {
             title={el.title}
             category={category}
             preview={el.image_url}
-            date={el.date}
+            created_at={el.created_at}
             description={el.description}
             is_published={el.is_published}
             is_recommended={el.is_recommended}

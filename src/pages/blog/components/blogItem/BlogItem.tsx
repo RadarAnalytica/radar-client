@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import { useContext, useState } from 'react';
 import styles from './blogItem.module.css';
 import { Button, ConfigProvider, Modal } from 'antd';
 import moment from 'moment';
@@ -12,7 +12,7 @@ interface BlogItemProps {
   title: string;
   category: { name: string };
   preview: string;
-  date: string;
+  created_at: string;
   description: string;
   is_published: boolean;
   allData: any;
@@ -29,7 +29,7 @@ const initState = {
   message: ''
 };
 
-const BlogItem = ({ title, category, preview, date, description, is_published, allData, setPostIdForUpdate, slug, is_recommended, is_popular, ...rest }: BlogItemProps) => {
+const BlogItem = ({ title, category, preview, created_at, description, is_published, allData, setPostIdForUpdate, slug, is_recommended, is_popular, ...rest }: BlogItemProps) => {
 
   const dispatch = useAppDispatch();
   const { authToken } = useContext(AuthContext);
@@ -87,14 +87,14 @@ const BlogItem = ({ title, category, preview, date, description, is_published, a
   return (
     <div className={styles.card}>
       <div className={styles.card__coverWrapper}>
-        <img src={`${URL}/static/blog/${preview}`} alt='' />
+        <img src={`${URL}/static/blog${preview}`} alt={title} />
       </div>
       <div className={styles.card__info}>
         <div className={styles.card__tagsWrapper}>
           <div className={styles.card__tag}>
             # {category?.name}
           </div>
-          <p className={`${styles.card__text} ${styles.card__text_gray}`}>{moment(date).format('DD.MM.YYYY')}</p>
+          <p className={`${styles.card__text} ${styles.card__text_gray}`}>{moment(created_at).format('DD.MM.YYYY')}</p>
         </div>
 
         <div className={styles.card__titleWrapper}>
