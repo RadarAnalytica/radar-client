@@ -1775,6 +1775,29 @@ export const ServiceFunctions = {
 			throw new Error(error);
 		}
 	},
+	getPeriodicExpenseTemplate: async(token, periodic_expense_id) => {
+		try {
+			const res = await fetch(
+				`${URL}/api/operating-expenses/periodic-expense/get?expense_id=${periodic_expense_id}`,
+				{
+					method: 'GET',
+					headers: {
+						'content-type': 'application/json',
+						authorization: 'JWT ' + token,
+					}
+				}
+			);
+
+			if (!res.ok){
+				throw new Error('Ошибка запроса');
+			}
+
+			return await res.json();
+		} catch(error) {
+			console.error('getAllOperatingExpensesExpense ', error);
+			throw new Error(error);
+		}
+	},
 	postOperatingExpensesExpenseCreate: async(token, expense, createExpenseUrl) => {
 		try {
 			const res = await fetch(
@@ -1796,6 +1819,30 @@ export const ServiceFunctions = {
 			return res.json();
 		} catch(error) {
 			console.error('postOperatingExpensesExpenseCreate ', error);
+			throw new Error(error);
+		}
+	},
+	patchOperatingExpensesExpense: async(token, expense, updateExpenseUrl) => {
+		try {
+			const res = await fetch(
+				`${URL}/api/${updateExpenseUrl}`,
+				{
+					method: 'PATCH',
+					headers: {
+						'content-type': 'application/json',
+						authorization: 'JWT ' + token,
+					},
+					body: JSON.stringify(expense),
+				}
+			);
+			if (!res.ok) {
+				throw new Error('Ошибка запроса');
+			}
+			const data = await res.json();
+			return data;
+
+		} catch(error) {
+			console.error('patchOperatingExpensesExpense ', error);
 			throw new Error(error);
 		}
 	},

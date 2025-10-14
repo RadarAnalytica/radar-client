@@ -13,6 +13,8 @@ import ModalDeleteConfirm from '@/components/sharedComponents/ModalDeleteConfirm
 import styles from './OperatingExpenses.module.css';
 import { EXPENSE_COLUMNS, CATEGORY_COLUMNS } from './config/config';
 import ExpenseMainModal from './features/CreateExpense/expenseMainModal';
+import ExpenseEditModal from './features/CreateExpense/expenseEditModal';
+import ExpenseCopyModal from './features/CreateExpense/expenseCopyModal';
 import ModalCreateCategory from './features/CreateCategory/CreateCategory';
 import { EditIcon, CopyIcon, DeleteIcon, InfoIcon } from './shared/Icons';
 import TableWidget from './widgets/table/tableWidget';
@@ -30,22 +32,24 @@ export default function OperatingExpenses() {
 
 	const [modalCreateExpenseOpen, setModalCreateExpenseOpen] = useState(false);
 	const [modalCreateCategoryOpen, setModalCreateCategoryOpen] = useState(false);
-
+	const [modalEditExpenseOpen, setModalEditExpenseOpen] = useState(false);
+	const [modalCopyExpenseOpen, setModalCopyExpenseOpen] = useState(false);
 	const [deleteExpenseId, setDeleteExpenseId] = useState(null);
 	const [deleteCategoryId, setDeleteCategoryId] = useState(null);
 
 	const [expense, setExpense] = useState([]);
-	const [ expPagination, setExpPagination] = useState({
+	const [expPagination, setExpPagination] = useState({
 		page: 1,
 		limit: 25,
 		total: 1,
 	});
-	const [ categoryPagination, setCategoryPagination] = useState({
+	const [categoryPagination, setCategoryPagination] = useState({
 		page: 1,
 		limit: 25,
 		total: 1,
 	});
 	const [expenseEdit, setExpenseEdit] = useState(null);
+	const [expenseCopy, setExpenseCopy] = useState(null);
 	const [highlightedExpenseId, setHighlightedExpenseId] = useState(null);
 
 	const expenseData = useMemo(() => {
@@ -90,11 +94,18 @@ export default function OperatingExpenses() {
 		return { data, columns }
 	}, [category]);
 
-	const updateCategories = async () => {
+	const updateCategories = async (resetPagination = false) => {
 		setLoading(true);
 		setCategoryLoading(true);
+
+		// Сбрасываем пагинацию если нужно
+		const pagination = resetPagination ? { page: 1, limit: 25, total: 1 } : categoryPagination;
+		if (resetPagination) {
+			setCategoryPagination(pagination);
+		}
+
 		try {
-			const res = await ServiceFunctions.getOperatingExpensesCategoryGetAll(authToken, categoryPagination);
+			const res = await ServiceFunctions.getOperatingExpensesCategoryGetAll(authToken, pagination);
 			// console.log('updateCategories', res);
 			setCategory(res.data);
 		} catch (error) {
@@ -108,10 +119,17 @@ export default function OperatingExpenses() {
 		}
 	};
 
-	const updateExpenses = async () => {
+	const updateExpenses = async (resetPagination = false) => {
 		setLoading(true);
+
+		// Сбрасываем пагинацию если нужно
+		const pagination = resetPagination ? { page: 1, limit: 25, total: 1 } : expPagination;
+		if (resetPagination) {
+			setExpPagination(pagination);
+		}
+
 		try {
-			const res = await ServiceFunctions.getOperatingExpensesExpenseGetAll(authToken, expPagination);
+			const res = await ServiceFunctions.getOperatingExpensesExpenseGetAll(authToken, pagination);
 			setExpense(res.data)
 			setExpPagination({
 				page: res.page,
@@ -177,14 +195,10 @@ export default function OperatingExpenses() {
 
 	const createCategory = async (category) => {
 		setCategoryLoading(true);
-		// console.log('createCategory', category)
-		// setModalCreateCategoryOpen(false);
 		try {
 			const res = await ServiceFunctions.postOperatingExpensesCategoryCreate(authToken, category);
-			// console.log('createCategory', res);
-			// 
-			setCategory((list) => [...list, res])
-			// 
+			// Обновляем данные с сбросом пагинации
+			await updateCategories(true);
 		} catch (error) {
 			console.error('createCategory error', error);
 		} finally {
@@ -194,25 +208,15 @@ export default function OperatingExpenses() {
 	};
 
 	const editCategory = async (category) => {
-		setLoading(true);
 		setModalCreateCategoryOpen(false);
 		try {
 			const res = await ServiceFunctions.patchOperatingExpensesCategory(authToken, category);
-			//
-			setCategory((list) => list.map((el) => {
-				if (el.id === category.id) {
-					return category
-				}
-				return el
-			}))
-			// 
+			// Обновляем данные без сброса пагинации
+			await updateCategories();
 		} catch (error) {
-			console.error('createArticle error', error);
+			console.error('editCategory error', error);
 		} finally {
 			setCategoryEdit(null);
-			// if (!firstLoad.current) {
-			setLoading(false);
-			// }
 		}
 	};
 
@@ -231,6 +235,7 @@ export default function OperatingExpenses() {
 	const handleExpanse = (expense) => {
 		console.log('handleExpanse', expense)
 		if (!!expenseEdit) {
+			console.log('editExpanse', expense)
 			editExpanse(expense);
 			return;
 		}
@@ -239,22 +244,37 @@ export default function OperatingExpenses() {
 	};
 
 	const createExpense = async (requestData) => {
-		const {requestObject, requestUrl} = requestData;
+		const { requestObject, requestUrl } = requestData;
 		console.log('requestObject', requestObject)
 		try {
 			const res = await ServiceFunctions.postOperatingExpensesExpenseCreate(authToken, requestObject, requestUrl);
-			updateExpenses();
+			await updateExpenses(true); // Сбрасываем пагинацию и обновляем данные
 		} catch (error) {
-			console.error('createCategory error', error);
+			console.error('createExpense error', error);
 		} finally {
 			setModalCreateExpenseOpen(false);
 			setCategoryLoading(false);
 		}
 	}
 
+	const editExpanse = async (requestData) => {
+		const { requestObject, requestUrl } = requestData;
+		console.log('editExpense requestObject', requestObject);
+		setModalCreateExpenseOpen(false);
+		try {
+			const res = await ServiceFunctions.patchOperatingExpensesExpense(authToken, requestObject, requestUrl);
+			await updateExpenses(); // Обновляем данные без сброса пагинации
+		} catch (error) {
+			console.error('editExpense error', error);
+		} finally {
+			setExpenseEdit(null);
+		}
+	}
+
 
 
 	const copyExpense = async (expenseId) => {
+		console.log('hit2')
 		try {
 			let expenseToCopy = expense.find((item) => item.id === expenseId);
 			console.log('expenseToCopy', expenseToCopy)
@@ -268,14 +288,14 @@ export default function OperatingExpenses() {
 
 			// Transform expense_categories: extract IDs if it's an array of objects
 			if (expenseData.expense_categories && Array.isArray(expenseData.expense_categories)) {
-				expenseData.expense_categories = expenseData.expense_categories.map(cat => 
+				expenseData.expense_categories = expenseData.expense_categories.map(cat =>
 					typeof cat === 'object' ? cat.id : cat
 				);
 			}
 
 			// Transform shop, vendor_code, brand_name: extract IDs if they are objects/arrays
 			if (expenseData.shop) {
-				expenseData.shop = Array.isArray(expenseData.shop) 
+				expenseData.shop = Array.isArray(expenseData.shop)
 					? expenseData.shop.map(s => s.id || s)
 					: [expenseData.shop.id || expenseData.shop];
 			}
@@ -293,51 +313,46 @@ export default function OperatingExpenses() {
 			const res = await ServiceFunctions.postOperatingExpensesExpenseCreate(authToken, expenseData, `/operating-expenses/expense/copy?expense_id=${expenseId}`);
 			console.log('copyExpense result', res);
 
-			// Add new expense to the list
-			setExpense((list) => [...list, res]);
+			// Обновляем данные с сбросом пагинации
+			await updateExpenses(true);
 
 			// Highlight the new expense
-			setHighlightedExpenseId(res.id);
-			console.log('Highlighted expense ID:', res.id);
+			if (res && res.id) {
+				setHighlightedExpenseId(res.id);
+				console.log('Highlighted expense ID:', res.id);
 
-			// Remove highlight after 2 seconds
-			setTimeout(() => {
-				setHighlightedExpenseId(null);
-			}, 2000);
+				// Remove highlight after 2 seconds
+				setTimeout(() => {
+					setHighlightedExpenseId(null);
+				}, 2000);
+			}
 		} catch (error) {
 			console.error('copyExpense error', error);
 		}
 	}
 
 	const deleteExpense = async (id, isPeriodic) => {
-		setLoading(true);
 		try {
 			const res = await ServiceFunctions.deleteOperatingExpensesExpenseDelete(authToken, id, isPeriodic);
-			//
-			setExpense((list) => list.filter((el) => el.id !== id));
-			// 
+			// Обновляем данные без сброса пагинации
+			await updateExpenses();
 		} catch (error) {
 			console.error('deleteExpense error', error);
 		} finally {
 			setDeleteExpenseId(null);
-			setLoading(false);
 		}
 	}
 
 	const deleteCategoryHandler = async (id) => {
 		console.log('deleteCategoryHandler');
-		setLoading(true);
 		try {
 			const res = await ServiceFunctions.deleteOperatingExpensesCategory(authToken, id);
-			//
-			console.log('id', id);
-			setCategory((list) => list.filter((el) => el.id !== id));
-			// 
+			// Обновляем данные без сброса пагинации
+			await updateCategories();
 		} catch (error) {
 			console.error('deleteCategoryHandler error', error);
 		} finally {
 			setDeleteCategoryId(null);
-			setLoading(false);
 		}
 	};
 
@@ -459,6 +474,10 @@ export default function OperatingExpenses() {
 							tableType='expense'
 							pagination={expPagination}
 							setPagination={setExpPagination}
+							setModalEditExpenseOpen={setModalEditExpenseOpen}
+							authToken={authToken}
+							setModalCopyExpenseOpen={setModalCopyExpenseOpen}
+							setExpenseCopy={setExpenseCopy}
 						/>
 					</div>
 				}
@@ -474,19 +493,45 @@ export default function OperatingExpenses() {
 							setDeleteCategoryId={setDeleteCategoryId}
 							pagination={categoryPagination}
 							setPagination={setCategoryPagination}
+
 						/>
 					</div>
 				}
 
-				{modalCreateExpenseOpen && <ExpenseMainModal
-					open={modalCreateExpenseOpen}
-					onCancel={modalExpenseHandlerClose}
-					setModalCreateCategoryOpen={setModalCreateCategoryOpen}
-					category={category}
-					zIndex={1000}
-					handle={handleExpanse}
-					editData={expenseEdit}
-				/>}
+				{modalCreateExpenseOpen &&
+					<ExpenseMainModal
+						open={modalCreateExpenseOpen}
+						onCancel={modalExpenseHandlerClose}
+						setModalCreateCategoryOpen={setModalCreateCategoryOpen}
+						category={category}
+						zIndex={1000}
+						handle={handleExpanse}
+						expenseCopy={expenseCopy}
+						setExpenseCopy={setExpenseCopy}
+					/>
+				}
+
+				{modalEditExpenseOpen && expenseEdit &&
+					<ExpenseEditModal
+						open={modalEditExpenseOpen}
+						onCancel={() => setModalEditExpenseOpen(false)}
+						setModalCreateCategoryOpen={setModalCreateCategoryOpen}
+						category={category}
+						editData={expenseEdit}
+						handle={handleExpanse}
+					/>
+				}
+
+				{/* {modalCopyExpenseOpen && expenseCopy &&
+					<ExpenseCopyModal
+						open={modalCopyExpenseOpen}
+						onCancel={() => {setExpenseCopy(null); setModalCopyExpenseOpen(false)}}
+						setModalCreateCategoryOpen={setModalCreateCategoryOpen}
+						category={category}
+						editData={expenseCopy}
+						handle={handleExpanse}
+					/>
+				} */}
 
 				{modalCreateCategoryOpen && <ModalCreateCategory
 					open={modalCreateCategoryOpen}
@@ -503,7 +548,7 @@ export default function OperatingExpenses() {
 					onCancel={() => setDeleteExpenseId(null)}
 					text={expenseData.data.find((el) => el.id === deleteExpenseId)?.is_periodic ? (
 						<div className={styles.deleteModal__text}>
-							Вы удаляете периодический расход. Это действие также удалит все созданне расходы по этому шаблону. 
+							Вы удаляете периодический расход. Это действие также удалит все созданне расходы по этому шаблону.
 							<RadarTooltip
 								text='Вы также можете запретить создавать новые расходы по этому шаблону. Для этого зайдите в редактирование планового расхода и установите/измените дату окончания расхода.'
 							>

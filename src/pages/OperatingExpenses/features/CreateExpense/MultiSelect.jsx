@@ -129,6 +129,8 @@ export const MultiSelect = (
             tagRender={tagRender}
             suffixIcon={icon}
             className={styles.plainSelect__select}
+            optionLabelProp="label"
+            fieldNames={{ label: 'label', value: 'value' }}
             options={optionsData?.filter((_) => _.label.toLowerCase().includes(searchState.toLowerCase()))
             }
             placeholder={selectPlaceholder}
@@ -140,7 +142,7 @@ export const MultiSelect = (
                 <>
                     {omittedValues.length > 1 && <p className={styles.plainSelect__multiLabel}>Выбрано: {omittedValues.length}</p>}
                     {omittedValues.length === 1 &&
-                        <p className={styles.plainSelect__multiLabel} title={omittedValues[0].value}>{omittedValues[0].value}</p>
+                        <p className={styles.plainSelect__multiLabel} title={omittedValues[0].label}>{omittedValues[0].label}</p>
                     }
                 </>
             )}
