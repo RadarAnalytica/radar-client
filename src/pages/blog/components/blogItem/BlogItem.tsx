@@ -85,7 +85,7 @@ const BlogItem = ({ title, category, preview, date, description, is_published, a
   };
 
   return (
-    <div to='/' className={styles.card}>
+    <div className={styles.card}>
       <div className={styles.card__coverWrapper}>
         <img src={`${URL}/static/blog/${preview}`} alt='' />
       </div>
