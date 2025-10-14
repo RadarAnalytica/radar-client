@@ -21,12 +21,13 @@ export const Filters = ({
   tempPageCondition,
   isDataLoading,
   maxCustomDate,
+  opExpensesArticles = false,
 }) => {
 
   // ------ это база ------//
   const { user, authToken } = useContext(AuthContext);
   const dispatch = useAppDispatch();
-  const { activeBrand, filters, shops } = useAppSelector(store => store.filters);
+  const { activeBrand, filters, shops, expenseCategories, activeExpenseCategory } = useAppSelector(store => store.filters);
   const filtersState = useAppSelector(store => store.filters);
 
 
@@ -82,6 +83,25 @@ export const Filters = ({
             <TempTimeSelect
               isDataLoading={isDataLoading}
               maxCustomDate={maxCustomDate}
+            />
+          </div>
+        }
+        {expenseCategories && activeExpenseCategory && opExpensesArticles &&
+          <div className={styles.filters__inputWrapper}>
+            <MultiSelect
+              dispatch={dispatch}
+              filterActions={filterActions}
+              params={{
+                stateKey: 'activeExpenseCategory',
+                data: expenseCategories,
+                enLabel: 'expenseCategories',
+                ruLabel: 'Статья',
+              }}
+              selectId={'expenseCategories'}
+              label={`Статья:`}
+              value={activeExpenseCategory}
+              optionsData={expenseCategories}
+              isDataLoading={isDataLoading}
             />
           </div>
         }

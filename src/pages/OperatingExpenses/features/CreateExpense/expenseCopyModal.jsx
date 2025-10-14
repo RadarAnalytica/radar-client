@@ -22,8 +22,6 @@ const getRequestObject = (values) => {
 	let requestUrl = '';
 	const formattedDateStart = formatDate(parse(values.date, 'dd.MM.yyyy', new Date()), 'yyyy-MM-dd');
 
-
-	if (values.type === 'plan') {
 		requestUrl = 'operating-expenses/periodic-expense/create';
 		let formattedDateEnd;
 		if (values.end_date) {
@@ -45,32 +43,21 @@ const getRequestObject = (values) => {
 					: [],
 			finished_at: formattedDateEnd,
 		}
-	}
-	if (values.type === 'once') {
-		requestUrl = 'operating-expenses/expense/create';
-		requestObject = {
-			expense_categories: values.expense_categories,
-			description: values.description,
-			value: values.value,
-			date: formattedDateStart,
-			shops: values.shops,
-			vendor_codes: values.vendor_codes,
-			brand_names: values.brand_names,
-		}
-	}
 	return { requestObject, requestUrl };
 }
 
-export default function ExpenseMainModal({
+export default function ExpenseCopyModal({
 	open = true,
 	onCancel,
 	setModalCreateCategoryOpen,
 	category,
+	editData,
 	handle,
+	expenseCopy,
+	setExpenseCopy,
 	loading,
 	...props
 }) {
-
 	const { shops, filters } = useAppSelector((state) => state.filters);
 	const [form] = Form.useForm();
 	const dateFrom = Form.useWatch('date', form);
@@ -96,7 +83,7 @@ export default function ExpenseMainModal({
 
 	const onFinish = (values) => {
 		console.log('onFinish', values)
-		handle(getRequestObject(values))
+		handle(getRequestObject(values, editData))
 	};
 
 	const cancelHandler = () => {
@@ -104,6 +91,37 @@ export default function ExpenseMainModal({
 		form.resetFields();
 	};
 
+	useEffect(() => {
+		if (editData) {
+			const selectionType = editData.shops ? 'shop' : editData.brand_names ? 'brand_name' : 'vendor_code';
+
+
+			const formattedDate = editData.date
+				? format(parse(editData.date, 'yyyy-MM-dd', new Date()), 'dd.MM.yyyy')
+				: null;
+
+			const formattedEndDate = editData.end_date
+				? format(parse(editData.end_date, 'yyyy-MM-dd', new Date()), 'dd.MM.yyyy')
+				: null;
+
+			form.setFieldsValue({
+				date: formattedDate,
+				expense_categories: editData.expense_categories?.map((el) => el.id),
+				selection: selectionType,
+				shops: editData.shops || [],
+				vendor_codes: editData.vendor_codes || [],
+				brand_names: editData.brand_names || [],
+				frequency: editData.frequency,
+				week: editData.week,
+				month: editData.month,
+				end_date: formattedEndDate,
+				description: editData.description,
+				value: editData.value,
+			})
+		}
+	}, [editData])
+
+	console.log('editDataCopy', editData);
 
 
 	return (
@@ -152,7 +170,7 @@ export default function ExpenseMainModal({
 				<div className={styles.modal__body}>
 					<header className={styles.modal__header}>
 						<h2 className={styles.modal__title}>
-							{'Добавление расхода'}
+							{'Копирование расхода'}
 						</h2>
 						<HowToLink
 							text='Как это работает?'
@@ -177,20 +195,7 @@ export default function ExpenseMainModal({
 							expense_categories: [],
 						}}
 					>
-
-						{/* Тип операции (разова / плановая) */}
-
-						<RadioGroup
-							label='Тип операции'
-							name='type'
-							options={[
-								{ value: 'once', label: 'Разовая' },
-								{ value: 'plan', label: 'Плановая' },
-							]}
-						/>
-
-
-
+						<p className={styles.modal__typeSubtitle}>{'Плановый расход'}</p>
 
 						{/* Выбор даты и суммы расхода */}
 						<Row className={styles.modal__part} gutter={16}>
@@ -262,7 +267,7 @@ export default function ExpenseMainModal({
 
 
 						{/* Допы для плановых расходов */}
-						{typeValue === 'plan' &&
+						{editData?.is_periodic &&
 							<Row className={styles.modal__part} gutter={16}>
 								<Col span={8}>
 									<ConfigProvider
@@ -619,7 +624,6 @@ export default function ExpenseMainModal({
 							{/* РАспределить на магазины, артикулы, бренды */}
 							<RadioGroup
 								name="selection"
-								//label='Тип операции'
 								options={[
 									{ value: 'shop', label: 'Магазины' },
 									{ value: 'vendor_code', label: 'Артикулы' },
@@ -807,7 +811,7 @@ export default function ExpenseMainModal({
 										htmlType="submit"
 										loading={loading}
 									>
-										{'Добавить расход'}
+										{'Копировать расход'}
 									</Button>
 								</ConfigProvider>
 							</Flex>

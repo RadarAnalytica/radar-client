@@ -5,6 +5,7 @@ import { EditIcon, CopyIcon, DeleteIcon, InfoIcon } from '../../shared/Icons';
 import moment from 'moment';
 import styles from './tableWidget.module.css';
 import { formatPrice } from '../../../../service/utils';
+import { ServiceFunctions } from '../../../../service/serviceFunctions';
 
 const customCellExpenseRender = (
     value,
@@ -15,8 +16,19 @@ const customCellExpenseRender = (
     setModalCreateExpenseOpen,
     setDeleteExpenseId,
     copyExpense,
-    data
+    data,
+    setModalEditExpenseOpen,
+    authToken,
+    setModalCopyExpenseOpen,
+    setExpenseCopy
 ) => {
+    if (dataIndex === 'is_periodic' && record.key !== 'summary' && record.is_periodic) {
+        return (
+            <div className={record.is_periodic ? styles.periodicBadge_periodic : styles.periodicBadge_static} title={record.is_periodic ? 'Периодический' : 'Разовый'}>
+                {record.is_periodic ? 'Плановый' : 'Разовый'}
+            </div>
+        )
+    }
     if (dataIndex === 'date' && record.key === 'summary') {
         return (
             <div className={`${styles.customCell} ${styles.customCell_summaryPadding}`}>
@@ -57,22 +69,71 @@ const customCellExpenseRender = (
                 <Button
                     type="text"
                     icon={EditIcon}
-                    onClick={() => {
-                        setExpenseEdit((data.find((item) => item.id === record.id)));
-                        setModalCreateExpenseOpen(true)
+                    onClick={async (e) => {
+                        e.stopPropagation();
+                        e.preventDefault();
+
+                        let response;
+                        if (record?.is_periodic) {
+                            response = await ServiceFunctions.getPeriodicExpenseTemplate(authToken, record.periodic_expense_id);
+                            const currItem = (data?.find((item) => item.id === record.id))
+
+                            setExpenseEdit({
+                                ...currItem,
+                                end_date: response.finished_at?.split('T')[0],
+                                frequency: response.period_type,
+                                week: response.period_type === 'week' ? response.period_values : null,
+                                month: response.period_type === 'month' ? response.period_values.toString() : null,
+                                periodic_expense_id: response.id,
+                            })
+                            setModalEditExpenseOpen(true);
+                            return
+                        }
+                        setExpenseEdit((data?.find((item) => item.id === record.id)));
+                        setModalEditExpenseOpen(true);
                     }}
                     title='Изменить'
                 ></Button>
                 <Button
                     type="text"
                     icon={CopyIcon}
-                    onClick={() => copyExpense(record.id)}
+                    onClick={async (e) => {
+                        e.stopPropagation();
+                        e.preventDefault();
+
+                        if (!record.is_periodic) {
+                            copyExpense(record.id);
+                            return
+                        }
+
+                        let response;
+                        if (record?.is_periodic) {
+                            response = await ServiceFunctions.getPeriodicExpenseTemplate(authToken, record?.periodic_expense_id);
+
+                            setExpenseCopy({
+                                ...response,
+                                end_date: response.finished_at?.split('T')[0],
+                                date: response.date_from,
+                                frequency: response.period_type,
+                                week: response.period_type === 'week' ? response.period_values : null,
+                                month: response.period_type === 'month' ? response.period_values : null,
+                                periodic_expense_id: response.id,
+                                is_periodic: true,
+                            })
+                            setModalCopyExpenseOpen(true);
+                            return
+                        }
+                    }}
                     title='Копировать'
                 ></Button>
                 <Button
                     type="text"
                     icon={DeleteIcon}
-                    onClick={() => setDeleteExpenseId(record.id)}
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        e.preventDefault();
+                        setDeleteExpenseId(record.id);
+                    }}
                     title='Удалить'
                 ></Button>
             </ConfigProvider>
@@ -94,24 +155,24 @@ const customCellCategoryRender = (
 ) => {
     if (dataIndex === 'action') {
         return (<Flex justify="start" gap={20}>
-			<ConfigProvider>
-				<Button
-					type="text"
-					icon={EditIcon}
-					onClick={() => {
-						setCategoryEdit((data.find((article) => article.id === record.id)));
-						setModalCreateCategoryOpen(true)
-					}}
-					title='Изменить'
-				></Button>
-				<Button
-					type="text"
-					icon={DeleteIcon}
-					onClick={() => setDeleteCategoryId(record.id)}
-					title='Удалить'
-				></Button>
-			</ConfigProvider>
-		</Flex>)
+            <ConfigProvider>
+                <Button
+                    type="text"
+                    icon={EditIcon}
+                    onClick={() => {
+                        setCategoryEdit((data.find((article) => article.id === record.id)));
+                        setModalCreateCategoryOpen(true)
+                    }}
+                    title='Изменить'
+                ></Button>
+                <Button
+                    type="text"
+                    icon={DeleteIcon}
+                    onClick={() => setDeleteCategoryId(record.id)}
+                    title='Удалить'
+                ></Button>
+            </ConfigProvider>
+        </Flex>)
     }
 }
 
@@ -127,7 +188,13 @@ export default function TableWidget({
     tableType,
     setCategoryEdit,
     setModalCreateCategoryOpen,
-    setDeleteCategoryId
+    setDeleteCategoryId,
+    pagination,
+    setPagination,
+    setModalEditExpenseOpen,
+    authToken,
+    setModalCopyExpenseOpen,
+    setExpenseCopy
 }) {
     const tableContainerRef = useRef(null);
 
@@ -140,13 +207,21 @@ export default function TableWidget({
                 <RadarTable
                     config={columns}
                     dataSource={data}
-
-                    pagination={false}
-                    paginationContainerStyle={{ display: 'none' }}
-
+                    pagination={{
+                        current: pagination.page,
+                        pageSize: pagination.limit,
+                        total: pagination.total,
+                        onChange: (page, pageSize) => {
+                            setPagination({
+                                ...pagination,
+                                page: page,
+                            })
+                        },
+                        showQuickJumper: true,
+                        hideOnSinglePage: true,
+                    }}
                     stickyHeader={true}
                     scrollContainerRef={tableContainerRef}
-
                     preset="radar-table-default"
                     customCellRender={{
                         idx: tableType === 'expense' ? [] : ['action'],
@@ -161,7 +236,11 @@ export default function TableWidget({
                                     setModalCreateExpenseOpen,
                                     setDeleteExpenseId,
                                     copyExpense,
-                                    data
+                                    data,
+                                    setModalEditExpenseOpen,
+                                    authToken,
+                                    setModalCopyExpenseOpen,
+                                    setExpenseCopy
                                 )
                             }
                             if (tableType === 'category') {
@@ -185,11 +264,11 @@ export default function TableWidget({
                         const baseClass = styles.bodyRowSpecial;
                         const isHighlighted = highlightedExpenseId && record.id === highlightedExpenseId;
                         const highlightClass = isHighlighted ? styles.highlightedRow : '';
-                        
+
                         if (isHighlighted) {
                             console.log('Highlighting row:', record.id, 'with class:', styles.highlightedRow);
                         }
-                        
+
                         return `${baseClass} ${highlightClass}`.trim();
                     }}
                 />

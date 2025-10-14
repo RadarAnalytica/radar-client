@@ -17,26 +17,27 @@ import { formatDate, parse } from 'date-fns';
 
 
 
-const getRequestObject = (values) => {
+const getRequestObject = (values, editData) => {
 	let requestObject = {}
 	let requestUrl = '';
 	const formattedDateStart = formatDate(parse(values.date, 'dd.MM.yyyy', new Date()), 'yyyy-MM-dd');
 
 
-	if (values.type === 'plan') {
-		requestUrl = 'operating-expenses/periodic-expense/create';
+	if (editData.is_periodic) {
+		requestUrl = 'operating-expenses/periodic-expense/update';
 		let formattedDateEnd;
 		if (values.end_date) {
 			formattedDateEnd = formatDate(parse(values.end_date, 'dd.MM.yyyy', new Date()), 'yyyy-MM-dd');
 		}
 		requestObject = {
+			type: 'plan',
 			expense_categories: values.expense_categories,
 			description: values.description,
 			value: values.value,
 			date_from: formattedDateStart,
-			vendor_codes: values.vendor_codes,
-			brand_names: values.brand_names,
-			shops: values.shops,
+			vendor_code: values.vendor_code,
+			brand_name: values.brand_name,
+			shop: values.shop,
 			period_type: values.frequency,
 			period_values: values.frequency === 'week'
 				? values.week
@@ -44,33 +45,36 @@ const getRequestObject = (values) => {
 					? values.month.split(',').map(n => parseInt(n.trim(), 10)).filter(n => !isNaN(n))
 					: [],
 			finished_at: formattedDateEnd,
+			id: editData?.periodic_expense_id,
 		}
 	}
-	if (values.type === 'once') {
-		requestUrl = 'operating-expenses/expense/create';
+	if (!editData.is_periodic) {
+		requestUrl = 'operating-expenses/expense/update';
 		requestObject = {
+			type: 'once',
 			expense_categories: values.expense_categories,
 			description: values.description,
 			value: values.value,
 			date: formattedDateStart,
-			shops: values.shops,
-			vendor_codes: values.vendor_codes,
-			brand_names: values.brand_names,
+			shop: values.shop,
+			vendor_code: values.vendor_code,
+			brand_name: values.brand_name,
+			id: editData?.id,
 		}
 	}
 	return { requestObject, requestUrl };
 }
 
-export default function ExpenseMainModal({
+export default function ExpenseEditModal({
 	open = true,
 	onCancel,
 	setModalCreateCategoryOpen,
 	category,
+	editData,
 	handle,
 	loading,
 	...props
 }) {
-
 	const { shops, filters } = useAppSelector((state) => state.filters);
 	const [form] = Form.useForm();
 	const dateFrom = Form.useWatch('date', form);
@@ -96,7 +100,7 @@ export default function ExpenseMainModal({
 
 	const onFinish = (values) => {
 		console.log('onFinish', values)
-		handle(getRequestObject(values))
+		handle(getRequestObject(values, editData))
 	};
 
 	const cancelHandler = () => {
@@ -104,6 +108,37 @@ export default function ExpenseMainModal({
 		form.resetFields();
 	};
 
+	useEffect(() => {
+		if (editData) {
+			const selectionType = editData.shop ? 'shop' : editData.brand_name ? 'brand_name' : 'vendor_code';
+
+
+			const formattedDate = editData.date
+				? format(parse(editData.date, 'yyyy-MM-dd', new Date()), 'dd.MM.yyyy')
+				: null;
+
+			const formattedEndDate = editData.end_date
+				? format(parse(editData.end_date, 'yyyy-MM-dd', new Date()), 'dd.MM.yyyy')
+				: null;
+
+			form.setFieldsValue({
+				date: formattedDate,
+				expense_categories: category.map((el) => editData.expense_categories.includes(el.name) ? el.id : false).filter(Boolean),
+				selection: selectionType,
+				shop: editData.shop?.id,
+				vendor_code: editData.vendor_code?.id,
+				brand_name: editData.brand_name?.id,
+				frequency: editData.frequency,
+				week: editData.week,
+				month: editData.month,
+				end_date: formattedEndDate,
+				description: editData.description,
+				value: editData.value,
+			})
+		}
+	}, [editData])
+
+	console.log('editData', editData);
 
 
 	return (
@@ -152,7 +187,7 @@ export default function ExpenseMainModal({
 				<div className={styles.modal__body}>
 					<header className={styles.modal__header}>
 						<h2 className={styles.modal__title}>
-							{'Добавление расхода'}
+							{'Редактирование расхода'}
 						</h2>
 						<HowToLink
 							text='Как это работает?'
@@ -177,20 +212,7 @@ export default function ExpenseMainModal({
 							expense_categories: [],
 						}}
 					>
-
-						{/* Тип операции (разова / плановая) */}
-
-						<RadioGroup
-							label='Тип операции'
-							name='type'
-							options={[
-								{ value: 'once', label: 'Разовая' },
-								{ value: 'plan', label: 'Плановая' },
-							]}
-						/>
-
-
-
+						<p className={styles.modal__typeSubtitle}>{!editData.is_periodic ? 'Разовый расход' : 'Плановый расход'}</p>
 
 						{/* Выбор даты и суммы расхода */}
 						<Row className={styles.modal__part} gutter={16}>
@@ -262,7 +284,7 @@ export default function ExpenseMainModal({
 
 
 						{/* Допы для плановых расходов */}
-						{typeValue === 'plan' &&
+						{editData?.is_periodic &&
 							<Row className={styles.modal__part} gutter={16}>
 								<Col span={8}>
 									<ConfigProvider
@@ -629,16 +651,17 @@ export default function ExpenseMainModal({
 
 
 							{/* Селекты магазинов, брендов, артикулов */}
-							{selection === 'shop' &&
-								<ConfigProvider
+							<ConfigProvider
 									renderEmpty={() => (<div>Нет данных</div>)}
 									theme={{
 										token: {
-											colorBgContainer: 'white',
+											colorBgContainer: 'white !important',
 											colorBorder: '#5329FF1A',
 											borderRadius: 8,
 											fontFamily: 'Mulish',
 											fontSize: 12,
+											fontWeight: 500,
+											controlHeightLG: 40,
 										},
 										components: {
 											Select: {
@@ -653,16 +676,20 @@ export default function ExpenseMainModal({
 										}
 									}}
 								>
+							
+							{selection === 'shop' &&
+								
 									<Form.Item
-										name="shops"
+										name="shop"
 										rules={[
 											{ required: true, message: 'Пожалуйста, выберите значение!' }
 										]}
 									>
-										<MultiSelect
-											form={form}
-											hasSelectAll
-											optionsData={shops?.map((el) => {
+										<Select
+											size="large"
+											placeholder="Выберите магазин"
+											suffixIcon={<SelectIcon />}
+											options={shops?.map((el) => {
 												if (el.id === 0) {
 													return false
 												} else {
@@ -674,71 +701,44 @@ export default function ExpenseMainModal({
 													}
 												}
 											}).filter(Boolean)}
-											selectId='shops'
-											searchFieldPlaceholder='Поиск по названию магазина'
-											selectPlaceholder='Выберите магазины'
 										/>
 									</Form.Item>
-								</ConfigProvider>}
-							<ConfigProvider
-								renderEmpty={() => (<div>Нет данных</div>)}
-								theme={{
-									token: {
-										colorBgContainer: 'white',
-										colorBorder: '#5329FF1A',
-										borderRadius: 8,
-										fontFamily: 'Mulish',
-										fontSize: 12,
-									},
-									components: {
-										Select: {
-											activeBorderColor: '#5329FF1A',
-											activeOutlineColor: 'transparent',
-											hoverBorderColor: '#5329FF1A',
-											optionActiveBg: 'transparent',
-											optionFontSize: 14,
-											optionSelectedBg: 'transparent',
-											optionSelectedColor: '#5329FF',
-										}
-									}
-								}}
-							>
+								
+							}
 								{selection === 'vendor_code' &&
 									<Form.Item
-										name="vendor_codes"
+										name="vendor_code"
 										rules={[
 											{ required: true, message: 'Пожалуйста, выберите значение!' }
 										]}
 									>
-										<MultiSelect
-											form={form}
-											optionsData={filters.find(_ => _.shop.id === 0)?.articles.data.map((el, i) => ({
+										<Select
+											size="large"
+											placeholder="Выберите артикул"
+											suffixIcon={<SelectIcon />}
+											options={filters.find(_ => _.shop.id === 0)?.articles.data.map((el, i) => ({
 												key: el.value,
 												value: el.value,
 												label: el.name,
 											}))}
-											selectId='vendor_codes'
-											searchFieldPlaceholder='Поиск по названию артикула'
-											selectPlaceholder='Выберите артикулы'
 										/>
 									</Form.Item>}
 								{selection === 'brand_name' &&
 									<Form.Item
-										name="brand_names"
+										name="brand_name"
 										rules={[
 											{ required: true, message: 'Пожалуйста, выберите значение!' }
 										]}
 									>
-										<MultiSelect
-											form={form}
-											optionsData={filters.find(_ => _.shop.id === 0)?.brands.data.map((el, i) => ({
+										<Select
+											size="large"
+											placeholder="Выберите бренд"
+											suffixIcon={<SelectIcon />}
+											options={filters.find(_ => _.shop.id === 0)?.brands.data.map((el, i) => ({
 												key: el.value,
 												value: el.value,
 												label: el.name,
 											}))}
-											selectId='brand_names'
-											searchFieldPlaceholder='Поиск по названию бренда'
-											selectPlaceholder='Выберите бренды'
 										/>
 									</Form.Item>}
 							</ConfigProvider>
@@ -807,7 +807,7 @@ export default function ExpenseMainModal({
 										htmlType="submit"
 										loading={loading}
 									>
-										{'Добавить расход'}
+										{'Сохранить расход'}
 									</Button>
 								</ConfigProvider>
 							</Flex>
