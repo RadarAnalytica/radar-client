@@ -105,20 +105,18 @@ const TrendingRequestsPage = () => {
                     </div>
                 </div>
 
-                {tableData &&
-                    <TableWidget
-                        rawData={tableData}
-                        loading={requestStatus.isLoading}
-                        tablePaginationState={tablePaginationState}
-                        setRequestState={setRequestState}
-                        requestState={requestState}
-                        setRequestStatus={setRequestStatus}
-                        initRequestStatus={initRequestStatus}
-                        sortState={sortState}
-                        setSortState={setSortState}
-                        initSortState={initSortState}
-                    />
-                }
+                <TableWidget
+                    rawData={tableData || []}
+                    loading={requestStatus.isLoading}
+                    tablePaginationState={tablePaginationState}
+                    setRequestState={setRequestState}
+                    requestState={requestState}
+                    setRequestStatus={setRequestStatus}
+                    initRequestStatus={initRequestStatus}
+                    sortState={sortState}
+                    setSortState={setSortState}
+                    initSortState={initSortState}
+                />
             </section>
 
             <ErrorModal

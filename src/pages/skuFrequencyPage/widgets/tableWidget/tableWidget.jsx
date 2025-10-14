@@ -81,11 +81,11 @@ const TableWidget = ({ tableConfig, setTableConfig }) => {
         });
     };
 
-    if (requestData.length === 0) {
+    if (!requestData?.length) {
         return (
-            <div className={styles.widget}>
-                <div className={`${styles.container} p-3`}>
-                    Ничего не найдено
+            <div className={`${styles.widget} ${styles.emptyContainer}`}>
+                <div className={`${styles.container}`}> 
+                    По заданным параметрам запроса данные не найдены
                 </div>
             </div>
         )
