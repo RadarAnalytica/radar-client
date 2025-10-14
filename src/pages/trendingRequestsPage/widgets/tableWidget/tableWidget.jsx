@@ -15,7 +15,6 @@ import wb_icon from './wb_icon.png';
 const customCellRender = (value, record, index, dataIndex) => {
 
     if (dataIndex === 'query') {
-        console.log(record);
         return (
             <div className={styles.customCell__query}>
                 <Link className={styles.customCell__queryTitle} to={`/trend-analysis?query=${value}`} target='_blank' title={value}>{value}</Link>

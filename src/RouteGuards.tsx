@@ -243,7 +243,7 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
 }
 
     // ---------4. Onboarding protection (user should be onboarded) ------//
-    if (onboardProtected && user && user.subscription_status && user.subscription_status.toLowerCase() === 'smart' && !user.is_onboarded) {
+    if (onboardProtected && user && user.subscription_status && user.subscription_status.toLowerCase() === 'test' && !user.is_onboarded) {
     switch(onboardGuardType) {
         case 'redirect': {
           return (<Navigate to={onboardRedirect} />);
