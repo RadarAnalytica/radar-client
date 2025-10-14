@@ -7,7 +7,7 @@
 }
 .widget__searchBlockWrapper {
     width: auto;
-    max-width: 60%;
+    max-width: 50%;
     flex-grow: 1;
     flex-shrink: 0;
     display: flex;

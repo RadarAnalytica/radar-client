@@ -67,6 +67,10 @@ const byGoodsFiltersSlice = createSlice({
                 filterElem[el] = value;
                 if (ident === 'week') state.byGoodsFilters.weekOrigin[el] = !state.byGoodsFilters.weekOrigin[el];
             }
+
+            if (ident === 'month') {
+                state.byGoodsFilters['week'] = state.byGoodsFilters.weekOrigin;
+            }
         },
 
     },

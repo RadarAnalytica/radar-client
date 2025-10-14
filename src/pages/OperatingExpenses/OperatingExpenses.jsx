@@ -12,33 +12,14 @@ import DataCollectWarningBlock from '@/components/sharedComponents/dataCollectWa
 import ModalDeleteConfirm from '@/components/sharedComponents/ModalDeleteConfirm';
 import styles from './OperatingExpenses.module.css';
 import { EXPENSE_COLUMNS, CATEGORY_COLUMNS } from './config/config';
-import ModalCreateExpense from './features/CreateExpense/CreateExpense';
+import ExpenseMainModal from './features/CreateExpense/expenseMainModal';
 import ModalCreateCategory from './features/CreateCategory/CreateCategory';
 import { EditIcon, CopyIcon, DeleteIcon, InfoIcon } from './shared/Icons';
+import TableWidget from './widgets/table/tableWidget';
 export default function OperatingExpenses() {
 
 	const { authToken } = useContext(AuthContext);
-	const { activeBrand, selectedRange } = useAppSelector( (state) => state.filters );
-	// const filters = useAppSelector((state) => state.filters)
-	const { shops } = useAppSelector((state) => state.shopsSlice);
-	const shopStatus = useMemo(() => {
-		if (!activeBrand || !shops) return null;
-
-		if (activeBrand.id === 0) {
-			return {
-				id: 0,
-				brand_name: 'Все',
-				is_active: shops.some((shop) => shop.is_primary_collect),
-				is_valid: true,
-				is_primary_collect: shops.some(
-					(shop) => shop.is_primary_collect
-				),
-				is_self_cost_set: !shops.some((shop) => !shop.is_self_cost_set),
-			};
-		}
-
-		return shops.find((shop) => shop.id === activeBrand.id);
-	}, [activeBrand, shops]);
+	const { activeBrand, selectedRange, shops } = useAppSelector((state) => state.filters);
 
 	const firstLoad = useRef(true);
 	const [loading, setLoading] = useState(true);
@@ -53,52 +34,17 @@ export default function OperatingExpenses() {
 
 	const [expense, setExpense] = useState([]);
 	const [expenseEdit, setExpenseEdit] = useState(null);
-	const [expenseCopy, setExpenseCopy] = useState(null);
+	const [highlightedExpenseId, setHighlightedExpenseId] = useState(null);
 
-	const actionExpenseRender = (value, row) => {
-		if (row.key == 'summary') {
-			return null;
-		}
-		return (<Flex justify="start" gap={20}>
-			<ConfigProvider>
-				<Button
-					type="text"
-					icon={EditIcon}
-					onClick={() => {
-						setExpenseEdit((expense.find((item) => item.id === row.id)));
-						setModalCreateExpenseOpen(true);
-					}}
-					title='Изменить'
-					></Button>
-				<Button
-					type="text"
-					icon={CopyIcon}
-					onClick={() => {
-						setExpenseCopy((expense.find((item) => item.id === row.id)));
-						setModalCreateExpenseOpen(true);
-					}}
-					title='Копировать'
-					></Button>
-				<Button
-					type="text"
-					icon={DeleteIcon}
-					onClick={() => setDeleteExpenseId(row.id)}
-					title='Удалить'
-				></Button>
-			</ConfigProvider>
-		</Flex>);
-	};
 
 	const expenseData = useMemo(() => {
 		const columns = EXPENSE_COLUMNS.map((column, i) => {
-			if (column.dataIndex == 'action'){
-				column.render = actionExpenseRender;
-			}
-			return ({ ...column, key: column.i });
-		});
+			return ({ ...column, key: column.i })
+		})
 
 		let data = expense?.map((item) => ({
 			...item,
+			key: item.id,
 			expense_categories: item.expense_categories.map((el) => el.name).join(', ')
 		}));
 
@@ -114,47 +60,22 @@ export default function OperatingExpenses() {
 			action: '-',
 		};
 		data.unshift(result);
-		return {data, columns};
+		return { data, columns };
 	}, [expense]);
 
 	const [categoryEdit, setCategoryEdit] = useState(null);
 	const [category, setCategory] = useState([]);
 	const [categoryLoading, setCategoryLoading] = useState(false);
 
-	const actionCategoryRender = (value, row) => {
-		return (<Flex justify="start" gap={20}>
-			<ConfigProvider>
-				<Button
-					type="text"
-					icon={EditIcon}
-					onClick={() => {
-						setCategoryEdit((category.find((article) => article.id === row.id)));
-						setModalCreateCategoryOpen(true);
-					}}
-					title='Изменить'
-					></Button>
-				<Button
-					type="text"
-					icon={DeleteIcon}
-					onClick={() => setDeleteCategoryId(row.id)}
-					title='Удалить'
-				></Button>
-			</ConfigProvider>
-		</Flex>);
-	};
-
 	const categoryData = useMemo(() => {
 		const columns = CATEGORY_COLUMNS.map((column, i) => {
-			if (column.dataIndex == 'action'){
-				column.render = actionCategoryRender;
-			}
-			return ({ ...column, key: column.i });
-		});
+			return ({ ...column, key: column.i })
+		})
 		let data = [];
-		if (category){
-			data = category.map((article) => ({...article, key: article.id}));
+		if (category) {
+			data = category.map((article) => ({ ...article, key: article.id }));
 		}
-		return {data, columns};
+		return { data, columns }
 	}, [category]);
 
 	const updateCategories = async () => {
@@ -164,7 +85,7 @@ export default function OperatingExpenses() {
 			const res = await ServiceFunctions.getOperatingExpensesCategoryGetAll(authToken);
 			// console.log('updateCategories', res);
 			setCategory(res.data);
-		} catch(error) {
+		} catch (error) {
 			// console.error('updateCategories error', error);
 			setCategory([]);
 		} finally {
@@ -179,15 +100,15 @@ export default function OperatingExpenses() {
 		setLoading(true);
 		try {
 			const res = await ServiceFunctions.getAllOperatingExpensesExpense(authToken);
-			console.log(res);
-			setExpense(res.data);
-		} catch(error) {
+			console.log(res)
+			setExpense(res.data)
+		} catch (error) {
 			console.error('updateExpenses error', error);
 			setExpense([]);
 		} finally {
 			console.log('updateExpenses', !firstLoad.current);
 			// if (!firstLoad.current) {
-				setLoading(false);
+			setLoading(false);
 			// }
 		}
 	};
@@ -196,10 +117,10 @@ export default function OperatingExpenses() {
 		setLoading(true);
 		try {
 			const res = await ServiceFunctions.getOperatingExpensesExpenseGetAll(authToken);
-			console.log(res);
-			setExpense(res.data);
-			return;
-		} catch(error) {
+			console.log(res)
+			setExpense(res.data)
+			return
+		} catch (error) {
 			console.error('updateExpenses error', error);
 			setExpense([]);
 		} finally {
@@ -211,36 +132,35 @@ export default function OperatingExpenses() {
 	};
 
 	useEffect(() => {
-		if (!activeBrand && !activeBrand?.is_primary_collect ){
-			return;
+		if (!activeBrand && !activeBrand?.is_primary_collect) {
+			return
 		}
 
 		if (firstLoad.current) {
 			updateCategories().then(() => {
 				updateExpenses();
 			}).then(() => {
-					console.log('promise ');
-					firstLoad.current = false;
-					setLoading(false);
-				});
-			return;
+				console.log('promise ')
+				firstLoad.current = false;
+				setLoading(false);
+			});
+			return
 		}
 
-		if (view === 'expense'){
+		if (view === 'expense') {
 			console.log('updateCosts');
 			updateExpenses();
 		}
 
-		if (view === 'category'){
+		if (view === 'category') {
 			console.log('updateArticles');
 			updateCategories();
 		}
-	}, [activeBrand, selectedRange]);
+	}, [activeBrand, selectedRange])
 
 	const modalExpenseHandlerClose = () => {
 		setModalCreateExpenseOpen(false);
 		setExpenseEdit(null);
-		setExpenseCopy(null);
 	};
 
 	const modalCategoryHandlerClose = () => {
@@ -263,10 +183,10 @@ export default function OperatingExpenses() {
 		try {
 			const res = await ServiceFunctions.postOperatingExpensesCategoryCreate(authToken, category);
 			// console.log('createCategory', res);
-			//
-			setCategory((list) => [...list, res]);
-			//
-		} catch(error) {
+			// 
+			setCategory((list) => [...list, res])
+			// 
+		} catch (error) {
 			console.error('createCategory error', error);
 		} finally {
 			setModalCreateCategoryOpen(false);
@@ -281,27 +201,27 @@ export default function OperatingExpenses() {
 			const res = await ServiceFunctions.patchOperatingExpensesCategory(authToken, category);
 			//
 			setCategory((list) => list.map((el) => {
-				if (el.id === category.id){
-					return category;
+				if (el.id === category.id) {
+					return category
 				}
-				return el;
-			}));
-			//
-		} catch(error) {
+				return el
+			}))
+			// 
+		} catch (error) {
 			console.error('createArticle error', error);
 		} finally {
 			setCategoryEdit(null);
 			// if (!firstLoad.current) {
-				setLoading(false);
+			setLoading(false);
 			// }
 		}
 	};
 
 	const handleCategory = (category) => {
 		setModalCreateCategoryOpen(false);
-		if (categoryEdit){
-			console.log('editCategory');
-			const editedCategory = {...categoryEdit, ...category};
+		if (!!categoryEdit) {
+			console.log('editCategory')
+			const editedCategory = { ...categoryEdit, ...category }
 			editCategory(editedCategory);
 			return;
 		}
@@ -310,8 +230,8 @@ export default function OperatingExpenses() {
 	};
 
 	const handleExpanse = (expense) => {
-		console.log('handleExpanse', expense);
-		if (expenseEdit){
+		console.log('handleExpanse', expense)
+		if (!!expenseEdit) {
 			editExpanse(expense);
 			return;
 		}
@@ -327,16 +247,73 @@ export default function OperatingExpenses() {
 		try {
 			const res = await ServiceFunctions.postOperatingExpensesExpenseCreate(authToken, expense);
 			// console.log('createCategory', res);
-			//
-			setExpense((list) => [...list, res]);
-			//
-		} catch(error) {
+			// 
+			setExpense((list) => [...list, res])
+			// 
+		} catch (error) {
 			console.error('createCategory error', error);
 		} finally {
 			setModalCreateExpenseOpen(false);
 			setCategoryLoading(false);
 		}
-	};
+	}
+
+
+
+	const copyExpense = async (expenseId) => {
+		try {
+			let expenseToCopy = expense.find((item) => item.id === expenseId);
+			console.log('expenseToCopy', expenseToCopy)
+			if (!expenseToCopy) {
+				console.error('Expense not found');
+				return;
+			}
+
+			// Prepare expense data for copying (remove id and any timestamps)
+			const { id, created_at, updated_at, ...expenseData } = expenseToCopy;
+
+			// Transform expense_categories: extract IDs if it's an array of objects
+			if (expenseData.expense_categories && Array.isArray(expenseData.expense_categories)) {
+				expenseData.expense_categories = expenseData.expense_categories.map(cat => 
+					typeof cat === 'object' ? cat.id : cat
+				);
+			}
+
+			// Transform shop, vendor_code, brand_name: extract IDs if they are objects/arrays
+			if (expenseData.shop) {
+				expenseData.shop = Array.isArray(expenseData.shop) 
+					? expenseData.shop.map(s => s.id || s)
+					: [expenseData.shop.id || expenseData.shop];
+			}
+			if (expenseData.vendor_code) {
+				expenseData.vendor_code = Array.isArray(expenseData.vendor_code)
+					? expenseData.vendor_code.map(v => v.id || v)
+					: [expenseData.vendor_code.id || expenseData.vendor_code];
+			}
+			if (expenseData.brand_name) {
+				expenseData.brand_name = Array.isArray(expenseData.brand_name)
+					? expenseData.brand_name.map(b => b.id || b)
+					: [expenseData.brand_name.id || expenseData.brand_name];
+			}
+
+			const res = await ServiceFunctions.postOperatingExpensesExpenseCreate(authToken, expenseData);
+			console.log('copyExpense result', res);
+
+			// Add new expense to the list
+			setExpense((list) => [...list, res]);
+
+			// Highlight the new expense
+			setHighlightedExpenseId(res.id);
+			console.log('Highlighted expense ID:', res.id);
+
+			// Remove highlight after 2 seconds
+			setTimeout(() => {
+				setHighlightedExpenseId(null);
+			}, 2000);
+		} catch (error) {
+			console.error('copyExpense error', error);
+		}
+	}
 
 	const deleteExpense = async (id) => {
 		setLoading(true);
@@ -344,14 +321,14 @@ export default function OperatingExpenses() {
 			const res = await ServiceFunctions.deleteOperatingExpensesExpenseDelete(authToken, id);
 			//
 			setExpense((list) => list.filter((el) => el.id !== id));
-			//
-		} catch(error) {
+			// 
+		} catch (error) {
 			console.error('deleteExpense error', error);
 		} finally {
 			setDeleteExpenseId(null);
 			setLoading(false);
 		}
-	};
+	}
 
 	const deletePeriodicExpense = async (id) => {
 		console.log('delete cost');
@@ -362,7 +339,7 @@ export default function OperatingExpenses() {
 			setExpense((list) => list.filter((el) => el.id !== id));
 			//
 			console.log('deleteExpense', res);
-		} catch(error) {
+		} catch (error) {
 			console.error('deleteExpense error', error);
 		} finally {
 			setDeleteExpenseId(null);
@@ -378,8 +355,8 @@ export default function OperatingExpenses() {
 			//
 			console.log('id', id);
 			setCategory((list) => list.filter((el) => el.id !== id));
-			//
-		} catch(error) {
+			// 
+		} catch (error) {
 			console.error('deleteCategoryHandler error', error);
 		} finally {
 			setDeleteCategoryId(null);
@@ -403,125 +380,62 @@ export default function OperatingExpenses() {
 						titlePrefix={null}
 						children={null}
 						videoReviewLink={null}
+						howToLink={'/'}
+						howToLinkText={'Как загрузить?'}
 					/>
 				</div>
 
 				{/*
-				{!loading && shopStatus && !shopStatus?.is_self_cost_set && (
+				{!loading && activeBrand && !activeBrand?.is_self_cost_set && (
 					<SelfCostWarningBlock />
 				)}
 				*/}
 
 				{!loading && (
 					<Flex justify="space-between">
-						<ConfigProvider
-							theme={{
-								token: {
-									fontFamily: '"Mulish", "Arial", sans-serif',
-									colorPrimary: 'rgba(83, 41, 255, 0.1)',
-								},
-								components: {
-									Button: {
-										controlHeightLG: 43,
-										paddingInlineLG: 20,
-										paddingBlockLG: 8,
-										contentFontSizeLG: 18,
-										primaryColor: '#1a1a1a',
-										colorPrimaryHover: 'rgba(83, 41, 255, 0.1)',
-										colorPrimaryActive:
-											'rgba(83, 41, 255, 0.3)',
-										defaultActiveColor: '#1a1a1a',
-										defaultColor: 'rgba(26, 26, 26, 0.5)',
-										// defaultActiveBg: 'rgba(83, 41, 255, 0.3)',
-										defaultHoverColor: '#1a1a1a',
-										defaultBorderColor: 'transparent',
-										defaultActiveBorderColor: 'transparent',
-										defaultBg: 'transparent',
-										defaultActiveBg: 'transparent',
-										defaultHoverBg: 'rgba(83, 41, 255, 0.1)',
-										defaultShadow: 'none',
-									},
-								},
-							}}
-						>
-							<Flex align="center" justify="flex-start">
-								<Button
-									size="large"
-									type={view === 'expense' ? 'primary' : 'default'}
-									onClick={() => { setView('expense'); }}
-								>
-									Расходы
-								</Button>
-								<Button
-									size="large"
-									type={view === 'expense' ? 'default' : 'primary'}
-									onClick={() => { setView('category'); }}
-								>
-									Статьи
-								</Button>
-							</Flex>
-						</ConfigProvider>
+						<Flex gap={4} align="center">
+							<button
+								className={view === 'expense' ? `${styles.segmented__button} ${styles.segmented__button_active}` : styles.segmented__button}
+								onClick={() => { setView('expense'); }}
+								style={{ fontWeight: 500, fontSize: 14 }}
+							>
+								Расходы
+							</button>
+							<button
+								className={view === 'category' ? `${styles.segmented__button} ${styles.segmented__button_active}` : styles.segmented__button}
+								onClick={() => { setView('category'); }}
+								style={{ fontWeight: 500, fontSize: 14 }}
+							>
+								Статьи
+							</button>
+						</Flex>
 						<Flex align="center" justify="flex-end" gap={11}>
 							<ConfigProvider
 								theme={{
 									token: {
-										colorBorder: '#00000033',
-										colorPrimary: '#5329FF',
+										colorPrimary: '#5329ff',
+										colorText: '#fff',
+										controlHeightLG: 38,
 									},
 									components: {
 										Button: {
-											defaultShadow: '',
-											controlHeightLG: 45,
+											primaryColor: '#fff',
 											paddingInlineLG: 16,
-											fontWeight: 600,
+											contentFontSizeLG: 16
 										},
 									},
 								}}
 							>
-								{view === 'expense' && (
-									<Flex gap={10} align='center'>
-										<Tooltip title={'Как загрузить'}>
-											{InfoIcon}
-										</Tooltip>
-										Как загрузить
-									</Flex>
-									// <Popover
-									// 	arrow={false}
-									// 	content={'Как загрузить'}
-									// 	// trigger="click"
-									// 	open={isPopoverOpen}
-									// 	placement="bottomRight"
-									// 	// onOpenChange={popoverHandler}
-									// >
-										// <ConfigProvider
-										// 	theme={{
-										// 		components: {
-										// 			Button: {
-										// 				fontSize: 16,
-										// 				fontWeight: 500,
-										// 			},
-										// 		},
-										// 	}}
-										// >
-										// 	<Button
-										// 		type="text"
-										// 		iconPosition="start"
-										// 		size="large"
-										// 		icon={InfoIcon}
-										// 	>
-										// 		Как загрузить
-										// 	</Button>
-										// </ConfigProvider>
-									// </Popover>
-								)}
-
 								<Button
 									type="primary"
-									iconPosition="start"
 									size="large"
 									onClick={modalHandler}
-									title={view === 'expense' ? 'Добавить расход' : 'Добавить статью'}
+									style={{ fontWeight: 600, fontSize: 14 }}
 								>
+									<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+										<path d="M9 1V9M9 17V9M9 9H1H17" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+									</svg>
+
 									Добавить
 								</Button>
 							</ConfigProvider>
@@ -529,56 +443,71 @@ export default function OperatingExpenses() {
 					</Flex>
 				)}
 
+
 				<div className={styles.controls}>
-						<Filters
-							shopSelect={true}
-							timeSelect={true}
-							isDataLoading={loading}
-							skuFrequency={false}
-							weekSelect={false}
-							weekOptions={null}
-							weekValue={null}
-							weekHandler={null}
-							monthSelect = {false}
-							monthHandler={null}
-							monthValue={null}
-							tempPageCondition={null}
-							// operationCostsArticles={true}
-							// operationCostsArticlesData={[]}
-							// operationCostsArticlesHandler={}
-						/>
+					<Filters
+						shopSelect={true}
+						timeSelect={true}
+						isDataLoading={loading}
+						skuFrequency={false}
+						weekSelect={false}
+						weekOptions={null}
+						weekValue={null}
+						weekHandler={null}
+						monthSelect={false}
+						monthHandler={null}
+						monthValue={null}
+						tempPageCondition={null}
+					// operationCostsArticles={true}
+					// operationCostsArticlesData={[]}
+					// operationCostsArticlesHandler={}
+					/>
 				</div>
 
-				{!loading && shops && shopStatus && !shopStatus?.is_primary_collect && (
-						<DataCollectWarningBlock />
+				{!loading && shops && activeBrand && !activeBrand?.is_primary_collect && (
+					<DataCollectWarningBlock />
 				)}
 
-				{!loading && shopStatus && shopStatus?.is_primary_collect && <div className={styles.container}>
-						<ReportTable
+				{!loading && activeBrand && activeBrand?.is_primary_collect && view === 'expense' &&
+					<div className={styles.container}>
+						<TableWidget
 							loading={loading}
-							columns={
-								view === 'expense' ? expenseData.columns : categoryData.columns
-							}
-							data={view === 'expense' ? expenseData.data : categoryData.data}
-							is_primary_collect={shopStatus?.is_primary_collect}
-							virtual={false}
+							columns={EXPENSE_COLUMNS}
+							data={expenseData.data}
+							setExpenseEdit={setExpenseEdit}
+							setModalCreateExpenseOpen={setModalCreateExpenseOpen}
+							setDeleteExpenseId={setDeleteExpenseId}
+							copyExpense={copyExpense}
+							highlightedExpenseId={highlightedExpenseId}
+							tableType='expense'
 						/>
-				</div>}
+					</div>
+				}
+				{!loading && activeBrand && activeBrand?.is_primary_collect && view === 'category' &&
+					<div className={styles.container}>
+						<TableWidget
+							loading={loading}
+							columns={CATEGORY_COLUMNS}
+							data={categoryData.data}
+							tableType='category'
+							setCategoryEdit={setCategoryEdit}
+							setModalCreateCategoryOpen={setModalCreateCategoryOpen}
+							setDeleteCategoryId={setDeleteCategoryId}
+						/>
+					</div>
+				}
 
-				{ modalCreateExpenseOpen && <ModalCreateExpense
+				{modalCreateExpenseOpen && <ExpenseMainModal
 					open={modalCreateExpenseOpen}
 					onCancel={modalExpenseHandlerClose}
 					setModalCreateCategoryOpen={setModalCreateCategoryOpen}
 					category={category}
 					zIndex={1000}
-					edit={expenseEdit}
-					copy={expenseCopy}
 					handle={handleExpanse}
-					state={() => ('edit' && expenseEdit) || ('copy' && expenseCopy)}
-					data={expenseEdit || expenseCopy}
-				/> }
+					editData={expenseEdit}
+				/>}
 
-				{ modalCreateCategoryOpen && <ModalCreateCategory
+				{modalCreateCategoryOpen && <ModalCreateCategory
 					open={modalCreateCategoryOpen}
 					onCancel={modalCategoryHandlerClose}
 					onSubmit={handleCategory}
@@ -586,7 +515,7 @@ export default function OperatingExpenses() {
 					data={categoryEdit}
 					confirmLoading={categoryLoading}
 					loading={categoryLoading}
-				/> }
+				/>}
 
 				{deleteExpenseId && <ModalDeleteConfirm
 					title={'Вы уверены, что хотите удалить расход?'}

@@ -26,20 +26,48 @@ import { actions as filterActions } from '../../redux/filtersRnp/filtersRnpSlice
 import HowToLink from '../../components/sharedComponents/howToLink/howToLink';
 import { useDemoMode } from "@/app/providers";
 import NoSubscriptionWarningBlock from '@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock';
+import Loader from '@/components/ui/Loader';
+import { useLoadingProgress } from '@/service/hooks/useLoadingProgress';
+
+const sortBySavedSortState = (data, activeBrand) => {
+	const { id } = activeBrand;
+	let savedSortState = localStorage.getItem(`RNP_SAVED_ORDER_${id}`);
+	if (!savedSortState) {
+		return data;
+	}
+	savedSortState = JSON.parse(savedSortState);
+	
+	// Создаем Map для быстрого поиска элементов по wb_id
+	const itemsMap = new Map();
+	data.forEach(item => {
+		itemsMap.set(item.article_data.wb_id, item);
+	});
+	
+	// Сортируем элементы, которые есть в savedSortState, в порядке savedSortState
+	const sortedItems = savedSortState
+		.map(wbId => itemsMap.get(wbId))
+		.filter(Boolean); // Убираем undefined (элементы, которых уже нет в data)
+	
+	// Добавляем новые элементы, которых не было в savedSortState, в конец
+	data.forEach(item => {
+		if (!savedSortState.includes(item.article_data.wb_id)) {
+			sortedItems.push(item);
+		}
+	});
+	
+	return sortedItems;
+}
 
 export default function Rnp() {
 	const { user, authToken } = useContext(AuthContext);
 	const { isDemoMode } = useDemoMode();
 	const dispatch = useAppDispatch();
-	const { selectedRange, activeBrand, shops } = useAppSelector((state) => state.filters);
+	const { selectedRange, activeBrand, shops, activeBrandName } = useAppSelector((state) => state.filters);
 	const filters = useAppSelector((state) => state.filters);
-
-	// const rnpSelected = useAppSelector((state) => state.rnpSelected);
-
 	const initLoad = useRef(true);
 	const pageContentRef = useRef(null);
-
 	const [loading, setLoading] = useState(true);
+	const progress = useLoadingProgress({ loading });
 	const [addRnpModalShow, setAddRnpModalShow] = useState(false);
 	const [page, setPage] = useState(1);
 	const [view, setView] = useState('articles');
@@ -50,7 +78,8 @@ export default function Rnp() {
 	const [expanded, setExpanded] = useState('collapsed');
 
 	const updateRnpListByArticle = async () => {
-		setLoading(true);
+		setLoading(rnpDataByArticle === null);
+		progress.start();
 		try {
 			if (activeBrand) {
 				const response = await ServiceFunctions.postRnpByArticle(
@@ -60,17 +89,21 @@ export default function Rnp() {
 					filters,
 					page
 				);
-				dataToRnpList(response);
+
+				progress.complete();
+				await setTimeout(() => {
+					dataToRnpList(response);
+					setLoading(false);
+				}, 500);
 			}
 		} catch (error) {
-			console.error('updateRnpListByArticle error', error);
-		} finally {
-			setLoading(false);
+			console.error('UpdateRnpListByArticle error', error);
 		}
 	};
 
 	const updateRnpListSummary = async () => {
-		setLoading(true);
+		setLoading(rnpDataTotal === null);
+		progress.start();
 		try {
 			if (activeBrand) {
 				const response = await ServiceFunctions.postRnpSummary(
@@ -80,13 +113,16 @@ export default function Rnp() {
 					filters,
 					page
 				);
-				dataToRnpTotalList(response);
+
+				progress.complete();
+				await setTimeout(() => {
+					dataToRnpTotalList(response);
+					setLoading(false);
+				}, 500);
 			}
 		} catch (error) {
 			console.error('updateRnpListSummary error', error);
 			setRnpDataTotal(null);
-		} finally {
-			setLoading(false);
 		}
 	};
 
@@ -109,7 +145,7 @@ export default function Rnp() {
 	};
 
 	const dataToRnpList = (response) => {
-
+		const { data } = response;
 		const list = response.data.map((article, i) => {
 			const tableConfig = getTableConfig(article);
 			const tableData = getTableData(article);
@@ -126,7 +162,9 @@ export default function Rnp() {
 			return item;
 		});
 
-		setRnpDataByArticle(list);
+		// Применяем сортировку согласно сохраненному порядку
+		const sortedList = activeBrand ? sortBySavedSortState(list, activeBrand) : list;
+		setRnpDataByArticle(sortedList);
 	};
 
 	const dataToRnpTotalList = (response) => {
@@ -218,8 +256,10 @@ export default function Rnp() {
 			localStorage.removeItem('RNP_EXPANDED_TABLE_ROWS_STATE');
 			localStorage.removeItem('RNP_EXPANDED_TOTAL_TABLE_ROWS_STATE');
 			localStorage.removeItem('RNP_EXPANDED_STATE');
-			localStorage.removeItem('SAVED_ORDER');
-		};
+			shops?.forEach((shop) => {
+				localStorage.removeItem(`RNP_SAVED_ORDER_${shop.id}`);
+			});
+		}
 	}, []);
 
 
@@ -258,12 +298,16 @@ export default function Rnp() {
 
 			<section ref={pageContentRef} className={styles.page__content}>
 				<div className={styles.page__headerWrapper}>
-					<Header title="Рука на пульсе (РНП)"></Header>
+					<Header 
+						title="Рука на пульсе (РНП)"
+						howToLink="/"
+						howToLinkText="Как загрузить?"
+					/>
 				</div>
 
 				{isDemoMode && <NoSubscriptionWarningBlock />}
 
-				{!loading && activeBrand && activeBrand.is_valid && activeBrand?.is_primary_collect && !activeBrand.is_self_cost_set && (
+				{!loading && activeBrand?.is_primary_collect && !activeBrand?.is_self_cost_set && (
 					<SelfCostWarningBlock
 						shopId={activeBrand.id}
 					/>
@@ -356,20 +400,7 @@ export default function Rnp() {
 						categorySelect={false}
 						maxCustomDate={new Date(Date.now() - 24 * 60 * 60 * 1000)}
 					/>
-					<HowToLink
-						text='Как использовать?'
-						target='_blank'
-						url='https://radar.usedocs.com/article/79433'
-					/>
 				</div>
-
-				{loading && ((!rnpDataByArticle && view === 'articles') || (view === 'total' && !rnpDataTotal)) && (
-					<div className={styles.loading}>
-						<div className={styles.loading__loader}>
-							<span className="loader"></span>
-						</div>
-					</div>
-				)}
 
 				{!loading && activeBrand && !activeBrand?.is_primary_collect && (
 					<>
@@ -379,32 +410,22 @@ export default function Rnp() {
 					</>
 				)}
 
-				{((rnpDataByArticle && view === 'articles') || (view === 'total' && rnpDataTotal)) && activeBrand && activeBrand?.is_primary_collect && (
+				<Loader loading={loading} progress={progress.value} />
+
+				{((rnpDataByArticle && view === 'articles') || (view === 'total' && rnpDataTotal)) && activeBrand?.is_primary_collect && (
 					<RnpList
 						view={view}
 						setView={viewHandler}
 						setAddRnpModalShow={setAddRnpModalShow}
 						rnpDataByArticle={rnpDataByArticle}
+						setRnpDataByArticle={setRnpDataByArticle}
 						rnpDataTotal={rnpDataTotal}
 						setDeleteRnpId={setDeleteRnpId}
 						expanded={expanded}
 						setExpanded={setExpanded}
 						loading={loading}
-					// page={page}
-					// setPage={setPage}
-					// paginationState={paginationState}
 					/>
 				)}
-
-				{/* {!loading && rnpDataByArticle?.length === 0 &&
-					<NoDataWidget
-						mainTitle='Здесь пока нет ни одного артикула'
-						mainText='Добавьте артикулы для отчета «Рука на пульсе»'
-						buttonTitle='Добавить'
-						action={() => setAddRnpModalShow(true)}
-						howLinkGroup={false}
-					/>
-				} */}
 
 				{addRnpModalShow && <AddRnpModal
 					isAddRnpModalVisible={addRnpModalShow}

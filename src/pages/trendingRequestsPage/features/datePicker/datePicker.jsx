@@ -76,9 +76,9 @@ export const DatePicker = ({ selectedDate, setSelectedDate, isExampleDataSet }) 
         <>
             <div className={styles.datePicker} ref={datePickerRef}>
                 <div className={isExampleDataSet ? `${styles.datePicker__select} ${styles.datePicker_bg}` : styles.datePicker__select} onClick={selectClickHandler}>
-                    <span>{selectedDate}</span>
-                    <svg width="14" height="9" viewBox="0 0 14 9" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M1 1L7 7L13 1" stroke="#8C8C8C" strokeWidth="2" strokeLinecap="round" />
+                    {selectedDate}
+                    <svg width="12" height="8" viewBox="0 0 12 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M0.800781 1.5L5.80078 6.5L10.8008 1.5" stroke="#8C8C8C" strokeWidth="1.5" strokeLinecap="round" />
                     </svg>
                 </div>
 

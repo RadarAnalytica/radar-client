@@ -44,18 +44,18 @@ export const getPastDays = (number, selectedRange) => {
         const pastDate = new Date(today.getTime() - i * 24 * 60 * 60 * 1000);
         const day = pastDate.getDate().toString().padStart(2, '0');
         const monthNames = [
-            'января',
-            'февраля',
-            'марта',
-            'апреля',
-            'мая',
-            'июня',
-            'июля',
-            'августа',
-            'сентября',
-            'октября',
-            'ноября',
-            'декабря',
+            'янв',
+            'фев',
+            'мар',
+            'апр',
+            'май',
+            'июн',
+            'июл',
+            'авг',
+            'сен',
+            'окт',
+            'ноя',
+            'дек',
         ];
         const month = monthNames[pastDate.getMonth()];
 
@@ -84,7 +84,7 @@ export const getChartData = (dataDashBoard, selectedRange, controlsState) => {
                     hoverBackgroundColor: 'rgba(240, 173, 0, 7)',
                     yAxisID: 'A',
                     data: dataDashBoard?.orderAmountList || [],
-                    xAxisID: 'x-1',
+                    xAxisID: 'x',
                 }
                 : {
                     label: 'Заказы',
@@ -354,6 +354,8 @@ export const getChartTooltip = (context, chartData) => {
 
 
 export const getChartOptions = (chartData, days) => {
+    const tickColor = '#6B7280'; // Цвет для меток на осях
+    
     const chartOptions = {
         responsive: true,
         maintainAspectRatio: false,
@@ -387,10 +389,27 @@ export const getChartOptions = (chartData, days) => {
                 suggestedMax: getMaxValue(chartData),
                 min: 0,
                 grid: {
-                    drawOnChartArea: false, // only want the grid lines for one axis to show up
+                    drawOnChartArea: false,
+                    tickLength: 0,
+                },
+                border: {
+                    color: 'white',
                 },
                 ticks: {
                     stepSize: getArrayStep(getMaxValue(chartData)),
+                    color: '#F0AD00',
+                    font: {
+                        size: 12,
+                        weight: 500,
+                    },
+                    tickMarkLength: 0,
+                    tickColor: 'transparent',
+                },
+                major: {
+                    enabled: false,
+                },
+                minor: {
+                    enabled: false,
                 },
             },
             B: {
@@ -401,17 +420,35 @@ export const getChartOptions = (chartData, days) => {
                 suggestedMax: getMaxAmount(chartData),
                 grid: {
                     drawOnChartArea: true,
+                    tickLength: 0,
+                },
+                border: {
+                    color: 'white',
                 },
                 ticks: {
                     stepSize: getArrayStep(getMaxAmount(chartData)),
+                    color: '#5329FF',
+                    font: {
+                        size: 12,
+                        weight: 500,
+                    },
+                    tickMarkLength: 0,
+                    tickColor: 'transparent',
+                },
+                major: {
+                    enabled: false,
+                },
+                minor: {
+                    enabled: false,
                 },
             },
             x: {
                 grid: {
                     drawOnChartArea: false,
+                    // display: false,
                 },
                 ticks: {
-                    display: false,
+                    // display: false,
                     autoSkip: true,
                     maxTicksLimit: days === 90 ? Math.ceil(92 / 13) : 30,
                 },

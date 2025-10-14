@@ -730,17 +730,12 @@ export function weeksList() {
 
 export function getSavedActiveWeeks(id) {
   const weeksListData = weeksList();
-  let savedActiveWeeks = localStorage.getItem('activeWeeks');
+  let savedActiveWeeks = localStorage.getItem(`SAVED_ACTIVE_WEEKS_${id}`);
   if (savedActiveWeeks) {
-    const data = JSON.parse(savedActiveWeeks);
-    if (id in data) {
-      return data[id];
-    }
-    savedActiveWeeks = weeksListData.slice(0, 12);
+    return JSON.parse(savedActiveWeeks);
   } else {
-    savedActiveWeeks = weeksListData.slice(0, 12);
+    return weeksListData.slice(0, 12);
   }
-  return savedActiveWeeks;
 }
 
 export const initialMonths = {

@@ -28,39 +28,22 @@ import { COLUMNS } from './columnsConfig';
 import TableWidget from './widgets/TableWidget/TableWidget';
 import { useDemoMode } from '@/app/providers/DemoDataProvider';
 import { fetchFilters } from '@/redux/apiServicePagesFiltersState/filterActions';
+import { useLoadingProgress } from '@/service/hooks/useLoadingProgress';
 
 export default function ReportWeek() {
 	const { user, authToken } = useContext(AuthContext);
 	const { isDemoMode } = useDemoMode();
 	const dispatch = useAppDispatch();
-  const { activeBrand, selectedRange, activeBrandName, activeArticle, activeGroup, activeWeeks, isFiltersLoaded, shops } = useAppSelector(
-    (state) => state.filters
-  );
+  const { activeBrand, selectedRange, activeBrandName, activeArticle, activeGroup, activeWeeks, isFiltersLoaded, shops } = useAppSelector(state => state.filters);
 	const filters = useAppSelector((state) => state.filters);
 	//const { shops } = useAppSelector((state) => state.shopsSlice);
 	const [loading, setLoading] = useState(true);
+	const progress = useLoadingProgress({ loading });
 	const [downloadLoading, setDownloadLoading] = useState(false);
 	const [isPopoverOpen, setIsPopoverOpen] = useState(false);
 	const [isConfigOpen, setConfigOpen] = useState(false);
 	const [tableRows, setTableRows] = useState(null);
-	const [progress, setProgress] = useState(0);
 	const [tableColumns, setTableColumns] = useState(COLUMNS);
-
-	useEffect(() => {
-		let interval = null;
-		if (loading) {
-			interval = setInterval(() => {
-				setProgress((state) => {
-					if (state > 90){
-						clearInterval(interval);
-						return state;
-					}
-					return Math.ceil(state + (90 / 15));
-				});
-			}, 1000);
-		}
-		return () => clearInterval(interval);
-	}, [loading]);
 
 	useEffect(() => {
 		localStorage.removeItem('reportWeekColumns');
@@ -109,7 +92,7 @@ export default function ReportWeek() {
 			try {
 				const columns = JSON.parse(savedColumnsWeek);
 				return columns.map((column) => COLUMNS.find((el) => {
-					if (typeof column == 'object'){
+					if (typeof column == 'object') {
 						return el.dataIndex == column.dataIndex;
 					}
 					return el.dataIndex == column;
@@ -122,53 +105,25 @@ export default function ReportWeek() {
 		return COLUMNS;
 	};
 
-	const shopStatus = useMemo(() => {
-			if (!activeBrand || !shops) return null;
-
-			if (activeBrand.id === 0) {
-					return {
-						id: 0,
-						brand_name: 'Все',
-						is_active: shops.some(shop => shop.is_primary_collect),
-						is_valid: true,
-						is_primary_collect: shops.some(shop => shop.is_primary_collect),
-						is_self_cost_set: !shops.some(shop => !shop.is_self_cost_set)
-					};
-			}
-
-			return shops.find(shop => shop.id === activeBrand.id);
-	}, [activeBrand, shops]);
-
 	useEffect(() => {
-		if (!activeBrand){
-			return;
-		}
-		let savedFilterWeek = JSON.parse(localStorage.getItem('activeWeeks')) || {};
-		savedFilterWeek[activeBrand.id] = activeWeeks;
-		localStorage.setItem(
-			'activeWeeks',
-			JSON.stringify(savedFilterWeek)
-		);
-	}, [activeWeeks]);
-
-	useEffect(() => {
-		if (isDemoMode && weekOptions && weekOptions.length > 0) {
+		if (isDemoMode && weekOptions?.length) {
 			dispatch(fetchFilters(authToken));
 		}
 	}, [isDemoMode, weekOptions]);
 
-	useEffect(() => {
-		dispatch(filterActions.setActiveFilters({
-			stateKey: 'activeWeeks',
-			data: weekOptions[0].value
-		}));
-	}, [filters.filters]);
+	// useEffect(() => {
+	// 	if (weekOptions?.length) {
+	// 		dispatch(filterActions.setActiveFilters({
+	// 			stateKey: 'activeWeeks',
+	// 			data: weekOptions.slice(0, 12),
+	// 		}));
+	// 	}
+	// }, [filters.filters, weekOptions]);
 
 	const updateDataReportWeek = async () => {
 		setLoading(true);
-		setProgress(0);
+		progress.start();
 		try {
-			if (activeBrand !== null && activeBrand !== undefined) {
 				const response = await ServiceFunctions.getReportWeek(
 					authToken,
 					selectedRange,
@@ -186,12 +141,10 @@ export default function ReportWeek() {
 					}
 				}
 
-				setProgress(100);
+				progress.complete();
 				await setTimeout(() => dataToTableData(weeks), 500);
-			}
 		} catch (e) {
 			console.error(e);
-			setProgress(100);
 			dataToTableData(null);
 		}
 	};
@@ -199,7 +152,7 @@ export default function ReportWeek() {
 	const dataToTableData = (weeks) => {
 		if (!weeks || weeks?.length === 0) {
 			setTableRows([]);
-			setProgress(null);
+			progress.complete();
 			setLoading(false);
 			return;
 		}
@@ -254,7 +207,7 @@ export default function ReportWeek() {
 
 		rows.unshift(summary);
 		setTableRows(rows);
-		setProgress(null);
+		progress.complete();
 		setLoading(false);
 	};
 
@@ -262,7 +215,7 @@ export default function ReportWeek() {
 		if (activeBrand && activeBrand.is_primary_collect && isFiltersLoaded) {
 			updateDataReportWeek();
 		}
-		if (activeBrand && !activeBrand.is_primary_collect && isFiltersLoaded){
+		if (activeBrand && !activeBrand.is_primary_collect && isFiltersLoaded) {
 			setLoading(false);
 		}
 	}, [activeBrand, selectedRange, activeBrandName, activeArticle, activeGroup, activeWeeks, isFiltersLoaded]);
@@ -329,7 +282,7 @@ export default function ReportWeek() {
 				activeWeeks
 			);
 			fileDownload(fileBlob, 'Отчет_по_неделям.xlsx');
-		} catch(e) {
+		} catch (e) {
 			console.error('Ошибка скачивания: ', error);
 		} finally {
 			setDownloadLoading(false);
@@ -339,14 +292,12 @@ export default function ReportWeek() {
 	return (
 		<main className={styles.page}>
 			<MobilePlug />
-			{/* ------ SIDE BAR ------ */}
+
 			<section className={styles.page__sideNavWrapper}>
 				<Sidebar />
 			</section>
 
-			{/* ------ CONTENT ------ */}
 			<section className={styles.page__content}>
-				{/* header */}
 				<div className={styles.page__headerWrapper}>
 					<Header title="По неделям"></Header>
 				</div>
@@ -421,20 +372,19 @@ export default function ReportWeek() {
 					</div>
 				</div>)}
 
-				{!loading && shops && user?.subscription_status && !shopStatus?.is_primary_collect && (
+				{!loading && shops && user?.subscription_status && !activeBrand?.is_primary_collect && (
 					<DataCollectWarningBlock
 						title='Ваши данные еще формируются и обрабатываются.'
 					/>
 				)}
 
-				{/* { shopStatus?.is_primary_collect && */}
 				<div className={styles.container}>
 					<TableWidget
 						loading={loading}
 						columns={tableColumns}
 						data={tableRows}
-						is_primary_collect={shopStatus?.is_primary_collect}
-						progress={progress}
+						is_primary_collect={activeBrand?.is_primary_collect}
+						progress={progress.value}
 						setTableColumns={setTableColumns}
 					/>
 				</div>

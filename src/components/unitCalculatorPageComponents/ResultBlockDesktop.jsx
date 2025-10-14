@@ -177,7 +177,7 @@ const ResultBlockDesktop = ({result, token, investValue, setInvestValue}) => {
                         <span>{result?.minimalPrice ? formatPrice(result?.minimalPrice, '₽') : '0 ₽'}</span>
                     </div>
                     <div className={styles.result__tableRow}>
-                        {'Максимальаня скидка'} <span>{result?.maximumDiscount ? formatPrice(result?.maximumDiscount, '%') : '0 %'}</span>
+                        {'Максимальная скидка'} <span>{result?.maximumDiscount ? formatPrice(result?.maximumDiscount, '%') : '0 %'}</span>
                     </div>
                 </div>
             </div>

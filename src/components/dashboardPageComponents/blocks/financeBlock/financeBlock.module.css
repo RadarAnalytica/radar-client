@@ -2,13 +2,13 @@
     background: white;
     box-shadow: 0px 0px 20px 0px #00000014;
     border-radius: 16px;
-    padding: 16px;
+    padding: 12px 20px;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
     gap: 16px;
-    grid-row: span 7;
+    grid-row: span 72;
     transition: all .1s ease-in-out;
     width: 100%;
     box-sizing: border-box;
@@ -20,8 +20,8 @@
 
 .block__title {
     font-family: Mulish;
-    font-weight: 700;
-    font-size: 24px;
+    font-weight: 600;
+    font-size: 22px;
     line-height: 100%;
     letter-spacing: 0%;
     margin: 0;
@@ -31,7 +31,7 @@
 
 .bar__loaderWrapper {
     width: 100%;
-    aspect-ratio: 1 / 1;
+    height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -70,32 +70,37 @@
 .block__tableRowTitle {
     width: 100%;
     font-family: Mulish;
-    font-weight: 600;
-    font-size: 16px;
+    font-weight: 500;
+    font-size: 14px;
     line-height: 100%;
     letter-spacing: 0%;
     color: #1A1A1A;
     display: flex;
+    align-items: center;
     gap: 10px;
 }
 
 .block__tableRowContent {
     width: 100%;
     display: grid;
-    grid-template-columns: 1fr 90px;
+    grid-template-columns: 1fr 100px;
     gap: 16px;
+    justify-items: end;
 }
 
 .block__mainData {
     font-family: Mulish;
     font-weight: 700;
-    font-size: 18px;
+    font-size: 14px;
     line-height: 100%;
     letter-spacing: 0%;
     text-align: right;
     color: #1A1A1A;
     margin: 0;
     padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
 }
 .block__mainData_small {
     @media (max-width: 1270px) {
@@ -107,6 +112,11 @@
     display: flex;
     justify-content: flex-end;
     align-items: center;
+    border-radius: 4px;
+    padding: 4px 0px 4px 8px;
+    width: fit-content;
+    gap: 4px;
+    min-height: 27px;
 }
 
 .block__mainSubData {

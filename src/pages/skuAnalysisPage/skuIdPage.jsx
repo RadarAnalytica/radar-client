@@ -14,8 +14,7 @@ import { ConfigProvider, Segmented } from 'antd';
 import { mainTableConfig, byColorTableConfig, byWarehouseTableConfig, bySizeTableConfig } from './shared';
 import ErrorModal from '../../components/sharedComponents/modals/errorModal/errorModal';
 import { useDemoMode } from "@/app/providers";
-import NoSubscriptionWarningBlock
-  from "@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock";
+import NoSubscriptionWarningBlock from "@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock";
 
 const segments = ['По цветам', 'По складам', 'По размерам'];
 const SkuIdPage = () => {
@@ -23,7 +22,7 @@ const SkuIdPage = () => {
     const { isDemoMode } = useDemoMode();
     const { selectedRange } = useAppSelector(store => store.filters);
     const { dataStatus, skuMainTableData, skuByColorTableData, skuByWarehouseTableData, skuBySizeTableData } = useAppSelector(store => store.skuAnalysis);
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const [tabsState, setTabsState] = useState(segments[0]);
     const params = useParams();
     const navigate = useNavigate();

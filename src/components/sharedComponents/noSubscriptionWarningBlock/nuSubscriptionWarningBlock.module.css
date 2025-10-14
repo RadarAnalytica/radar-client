@@ -1,184 +1,186 @@
 .block {
-    width: 100%;
-    box-shadow: 0px 0px 20px 0px #00000014;
-    background: #E4DEFF;
-    padding: 24px 32px;
-    border-radius: 12px;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: 1fr;
-    gap: 20px;
+  width: 100%;
+  box-shadow: 0px 0px 20px 0px #00000014;
+  background: #E4DEFF;
+  padding: 20px;
+  border-radius: 12px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr;
+  gap: 20px;
 }
 
 .block__column {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 20px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
 }
+
 .block__column_right {
-    background: white;
-    border-radius: 12px;
-    padding: 24px;
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
 }
 
 .block__titleWrapper {
-    width: 100%;
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    gap: 20px;
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 20px;
 }
 
 .block__iconWrapper {
-    width: 60px;
-    aspect-ratio: 1 / 1;
-    border-radius: 10px;
-    background: #CEC3FF;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  width: 40px;
+  aspect-ratio: 1 / 1;
+  border-radius: 10px;
+  background: #CEC3FF;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .block__title {
-    margin: 0;
-    padding: 0;
-    font-family: Mulish;
-    font-weight: 700;
-    font-size: 22px;
-    line-height: 100%;
-    letter-spacing: 0%;
-    color: #1A1A1A;
-
-    @media (max-width: 1600px) {
-        font-size: 18px;
-    }
+  margin: 0;
+  padding: 0;
+  font-family: Mulish;
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 120%;
+  letter-spacing: 0%;
+  color: #1A1A1A;
 }
 
 .block__text {
-    font-family: Mulish;
-    font-weight: 500;
-    font-size: 18px;
-    line-height: 150%;
-    letter-spacing: 0%;
-    color: #1A1A1A;
+  font-family: Mulish;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 150%;
+  letter-spacing: 0%;
+  color: #1A1A1A;
 
-    @media (max-width: 1600px) {
-        font-size: 16px;
-    }
+  @media (max-width: 1600px) {
+    font-size: 16px;
+  }
 }
 
 .block__text span {
-    color: #5329FF
+  color: #5329FF
 }
 
 .block__columnFooter {
-    width: 100%;
-    background: #EFEBFF;
-    border-radius: 12px;
-    padding: 12px;
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    gap: 20px;
+  width: 100%;
+  background: #EFEBFF;
+  border-radius: 12px;
+  padding: 12px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 20px;
 }
+
 .block__footerIconWrapper {
-    width: 32px;
-    min-width: 32px;
-    aspect-ratio: 1 / 1;
-    border-radius: 4px;
-    background: #1A1A1A;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  width: 32px;
+  min-width: 32px;
+  aspect-ratio: 1 / 1;
+  border-radius: 4px;
+  background: #1A1A1A;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .block__subtext {
-    margin: 0;
-    padding: 0;
-    font-family: Mulish;
-    font-weight: 500;
-    font-size: 15px;
-    line-height: 150%;
-    letter-spacing: 0%;
-
-    @media (max-width: 1600px) {
-        font-size: 13px;
-    }
+  margin: 0;
+  padding: 0;
+  font-family: Mulish;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 150%;
+  letter-spacing: 0%;
 }
+
 .block__actionButton {
-    width: 100%;
-    border: none;
-    background: #5329FF;
-    border-radius: 8px;
-    color: white;
-    padding: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  width: 100%;
+  border: none;
+  background: #5329FF;
+  border-radius: 8px;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .demoUserBlock {
-    width: 100%;
-    box-shadow: 0px 0px 20px 0px #00000014;
-    background: #EFECFE;
-    padding: 24px 32px;
-    border-radius: 12px;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: 1fr;
-    gap: 20px;
+  width: 100%;
+  box-shadow: 0px 0px 20px 0px #00000014;
+  background: #EFECFE;
+  padding: 20px;
+  border-radius: 12px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr;
+  gap: 20px;
 }
 
 .demoUserBlock__columnFooter {
-    background-color: white;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 4px 8px 4px 4px;
+  background-color: white;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 8px 4px 4px;
 }
 
 .demoUserBlock__welcomeBlock {
-    display: flex;
-    gap: 20px;
+  display: flex;
+  gap: 20px;
 }
 
 .demoUserBlock__welcomeTitle {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    min-height: 160px;
-    padding-bottom: 1px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 10px;
+  min-height: 130px;
 }
 
 .demoUserBlock__title {
-    font-weight: 600;
-    margin-bottom: 8px;
-    font-size: 22px;
+  font-weight: 600;
+  font-size: 18px;
 }
 
 .demoUserBlock__text {
-    font-weight: 600;
-    font-size: 18px;
+  font-weight: 600;
+  font-size: 14px;
+
+  p {
+    margin-bottom: 10px;
+  }
+}
+
+.demoUserBlock__subtext {
+  margin: 0;
+  padding: 0;
+  font-size: 12px;
 }
 
 .demoUserBlock__iconWrapper {
-    border-radius: 4px;
-    background-color: #5329FF26;
-    width: 40px;
-    min-width: 40px;
-    height: 40px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  border-radius: 4px;
+  background-color: #5329FF26;
+  width: 40px;
+  min-width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .demoUserBlock__column_right {
-    background: white;
-    border-radius: 12px;
-    padding: 16px;
-    gap: 0;
+  background: white;
+  border-radius: 12px;
+  padding: 16px;
+  gap: 0;
 }

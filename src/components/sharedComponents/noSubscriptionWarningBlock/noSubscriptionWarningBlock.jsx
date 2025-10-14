@@ -68,7 +68,7 @@ const NoSubscriptionWarningBlock = ({ className = '' }) => {
                     <p className={styles.block__title}>Добро пожаловать в сервис Радар-Аналитика!</p>
                 </div>
 
-                <p className={styles.block__text}>
+                <p className={`${styles.block__text} mb-0`}>
                     <b>У вас еще нет активной подписки,</b> а в сервисе представлены лишь тестовые данные для демонстрации функционала.
                 </p>
 
@@ -77,7 +77,6 @@ const NoSubscriptionWarningBlock = ({ className = '' }) => {
                         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M19 19L14.6569 14.6569M14.6569 14.6569C16.1046 13.2091 17 11.2091 17 9C17 4.58172 13.4183 1 9 1C4.58172 1 1 4.58172 1 9C1 13.4183 4.58172 17 9 17C11.2091 17 13.2091 16.1046 14.6569 14.6569Z" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                         </svg>
-
                     </div>
                     <p className={styles.block__subtext}>
                         Обязательно пройдитесь по всем разделам, чтобы увидеть, какие возможности доступны для работы с финансами и бизнес-показателями.
@@ -134,8 +133,8 @@ const NoSubscriptionWarningBlock = ({ className = '' }) => {
                         </svg>
                     </div>
                     <div className={styles.demoUserBlock__welcomeTitle}>
-                        <p className={styles.demoUserBlock__title}>Добро пожаловать в сервис Радар-Аналитика!</p>
-                        <p className={styles.demoUserBlock__text}>
+                        <p className={`${styles.demoUserBlock__title} mb-0`}>Добро пожаловать в сервис Радар-Аналитика!</p>
+                        <p className={`${styles.demoUserBlock__text} mb-0`}>
                             Пока у вас нет активной подписки, и доступны лишь тестовые данные для демонстрации функционала
                         </p>
 
@@ -143,7 +142,7 @@ const NoSubscriptionWarningBlock = ({ className = '' }) => {
                             <div>
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"> <g clipPath="url(#clip0_15589_68256)"> <path d="M21 21L16.6569 16.6569M16.6569 16.6569C18.1046 15.2091 19 13.2091 19 11C19 6.58172 15.4183 3 11 3C6.58172 3 3 6.58172 3 11C3 15.4183 6.58172 19 11 19C13.2091 19 15.2091 18.1046 16.6569 16.6569Z" stroke="#5329FF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/> </g> <defs> <clipPath id="clip0_15589_68256"> <rect width="24" height="24" fill="white"/> </clipPath> </defs> </svg>
                             </div>
-                            <p className={styles.block__subtext}>
+                            <p className={styles.demoUserBlock__subtext}>
                                 Обязательно загляните во все разделы, чтобы оценить функционал
                             </p>
                         </div>
@@ -152,7 +151,7 @@ const NoSubscriptionWarningBlock = ({ className = '' }) => {
             </div>
 
             <div className={`${styles.block__column} ${styles.demoUserBlock__column_right}`}>
-                <p className={styles.block__text}>
+                <p className={styles.demoUserBlock__text}>
                     Подключите магазин и активируйте 3-дневный тест, чтобы работать с реальными данными и оценить удобство сервиса.
                 </p>
 
@@ -169,7 +168,7 @@ const NoSubscriptionWarningBlock = ({ className = '' }) => {
                         size='large'
                         type='primary'
                         style={{
-                            height: 64,
+                            height: 46,
                             width: '100%',
                         }}
                         loading={requestStatus.isLoading}

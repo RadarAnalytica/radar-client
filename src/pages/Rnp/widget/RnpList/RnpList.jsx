@@ -268,21 +268,9 @@ function RnpListItem({ el, index, expanded, setExpanded, setDeleteRnpId, onReord
 	);
 }
 
-const sortItemsByOrder = (items, order) => {
-	// Создаем Map для быстрого поиска элементов по wb_id
-	const itemsMap = new Map();
-	items.forEach(item => {
-		itemsMap.set(item.article_data.wb_id, item);
-	});
-
-	// Сортируем согласно порядку в order
-	return order?.map(orderId => itemsMap.get(orderId)).filter(Boolean);
-};
-
-export default function RnpList({ view, expanded, setExpanded, setAddRnpModalShow, rnpDataByArticle, rnpDataTotal, setDeleteRnpId, loading }) {
+export default function RnpList({ view, expanded, setExpanded, setAddRnpModalShow, rnpDataByArticle, setRnpDataByArticle, rnpDataTotal, setDeleteRnpId, loading }) {
 	const { activeBrand } = useAppSelector((state) => state.filters);
 	const items = useMemo(() => rnpDataByArticle || [], [rnpDataByArticle]);
-	const [order, setOrder] = useState(null);
 
 
 	const ref = useRef(null);
@@ -294,25 +282,26 @@ export default function RnpList({ view, expanded, setExpanded, setAddRnpModalSho
 	// const [expanded, setExpanded] = useState([]);
 
 	const handleReorder = (draggedId, targetId) => {
-		const draggedIndex = order.findIndex(i => i === draggedId);
-		const targetIndex = order.findIndex(i => i === targetId);
+		const draggedIndex = items.findIndex(i => i.article_data.wb_id === draggedId);
+		const targetIndex = items.findIndex(i => i.article_data.wb_id === targetId);
 
 		if (draggedIndex !== -1 && targetIndex !== -1 && draggedIndex !== targetIndex) {
-			const newOrder = [...order];
-			const [removed] = newOrder.splice(draggedIndex, 1);
-			newOrder.splice(targetIndex, 0, removed);
-			setOrder(newOrder);
-			localStorage.setItem('SAVED_ORDER', JSON.stringify(newOrder));
+			const newItems = [...items];
+			const [removed] = newItems.splice(draggedIndex, 1);
+			newItems.splice(targetIndex, 0, removed);
+			setRnpDataByArticle(newItems);
+			const newOrder = newItems.map(item => item.article_data.wb_id);
+			localStorage.setItem(`RNP_SAVED_ORDER_${activeBrand.id}`, JSON.stringify(newOrder));
 		}
 	};
 
 	// Обработчик для drop-зон
 	const handleDropZoneDrop = (draggedId, dropZoneIndex) => {
-		const draggedIndex = order.findIndex(i => i === draggedId);
+		const draggedIndex = items.findIndex(i => i.article_data.wb_id === draggedId);
 
 		if (draggedIndex !== -1) {
-			const newOrder = [...order];
-			const [removed] = newOrder.splice(draggedIndex, 1);
+			const newItems = [...items];
+			const [removed] = newItems.splice(draggedIndex, 1);
 
 			// Если перетаскиваем в зону после перетаскиваемой карточки,
 			// нужно учесть что мы уже удалили один элемент
@@ -321,29 +310,31 @@ export default function RnpList({ view, expanded, setExpanded, setAddRnpModalSho
 				targetIndex = dropZoneIndex - 1;
 			}
 
-			newOrder.splice(targetIndex, 0, removed);
-			setOrder(newOrder);
-			localStorage.setItem('SAVED_ORDER', JSON.stringify(newOrder));
+			newItems.splice(targetIndex, 0, removed);
+			setRnpDataByArticle(newItems);
+			const newOrder = newItems.map(item => item.article_data.wb_id);
+			localStorage.setItem(`RNP_SAVED_ORDER_${activeBrand.id}`, JSON.stringify(newOrder));
 		}
 	};
 
 	// Обработчик для edge drop-зон (верх/низ)
 	const handleEdgeDropZoneDrop = (draggedId, position) => {
-		const draggedIndex = order.findIndex(i => i === draggedId);
+		const draggedIndex = items.findIndex(i => i.article_data.wb_id === draggedId);
 
 		if (draggedIndex !== -1) {
-			const newOrder = [...order];
-			const [removed] = newOrder.splice(draggedIndex, 1);
+			const newItems = [...items];
+			const [removed] = newItems.splice(draggedIndex, 1);
 
 			// Размещаем в начало или конец списка
 			if (position === 'top') {
-				newOrder.unshift(removed); // В начало
+				newItems.unshift(removed); // В начало
 			} else {
-				newOrder.push(removed); // В конец
+				newItems.push(removed); // В конец
 			}
 
-			setOrder(newOrder);
-			localStorage.setItem('SAVED_ORDER', JSON.stringify(newOrder));
+			setRnpDataByArticle(newItems);
+			const newOrder = newItems.map(item => item.article_data.wb_id);
+			localStorage.setItem(`RNP_SAVED_ORDER_${activeBrand.id}`, JSON.stringify(newOrder));
 		}
 	};
 
@@ -358,7 +349,7 @@ export default function RnpList({ view, expanded, setExpanded, setAddRnpModalSho
 				setExpanded([]);
 				// Определяем индекс перетаскиваемой карточки
 				const draggedId = source.data.id;
-				const draggedIndex = order.findIndex(i => i === draggedId);
+				const draggedIndex = items.findIndex(i => i.article_data.wb_id === draggedId);
 				setDraggedIndex(draggedIndex);
 				// Показываем drop-зоны при начале drag
 				setIsDragging(true);
@@ -421,26 +412,13 @@ export default function RnpList({ view, expanded, setExpanded, setAddRnpModalSho
 				setDraggedIndex(null);
 			},
 		});
-	}, [items, order, handleReorder]);
+	}, [items, handleReorder]);
 
 
 	useEffect(() => {
-		// удаляем старые данные из localStorage
+		// удаляем старые данные из localStorage (старый формат)
 		localStorage.removeItem('rnpOrder');
-		if (rnpDataByArticle) {
-			let SAVED_ORDER = localStorage.getItem('SAVED_ORDER');
-			if (SAVED_ORDER) {
-				try {
-					SAVED_ORDER = JSON.parse(SAVED_ORDER);
-				} catch {
-					SAVED_ORDER = rnpDataByArticle.map((el) => el.article_data.wb_id);
-				}
-				setOrder(SAVED_ORDER);
-			} else {
-				setOrder(rnpDataByArticle.map((el) => el.article_data.wb_id));
-			}
-		}
-	}, [rnpDataByArticle]);
+	}, [])
 
 	return (
 		<>
@@ -485,8 +463,8 @@ export default function RnpList({ view, expanded, setExpanded, setAddRnpModalSho
 							isDragging={isDragging}
 							onDrop={handleEdgeDropZoneDrop}
 						/>
-						{order && items?.length > 0 &&
-							sortItemsByOrder(items, order).map((el, i) => {
+						{items?.length > 0 &&
+							items.map((el, i) => {
 								// if (i === 0 && expanded?.length === 0) {
 								// 	setExpanded([el.article_data.wb_id]);
 								// }
@@ -515,10 +493,10 @@ export default function RnpList({ view, expanded, setExpanded, setAddRnpModalSho
 							})
 						}
 						{/* Drop-зона после последней карточки */}
-						{order && items?.length > 0 && (
+						{items?.length > 0 && (
 							<DropZone
-								index={order.length}
-								isActive={activeDropZone === order.length}
+								index={items.length}
+								isActive={activeDropZone === items.length}
 								isDragging={isDragging}
 								draggedIndex={draggedIndex}
 								onDrop={handleDropZoneDrop}

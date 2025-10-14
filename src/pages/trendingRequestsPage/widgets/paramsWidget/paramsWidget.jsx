@@ -49,7 +49,7 @@ const dynamicNormalizer = (dynamic, from, to) => {
         console.log(parseInt(from) * -1);
         result = {
             start: (parseInt(from) * -1) || null,
-            end: (parseInt(to) * -1 )|| null
+            end: (parseInt(to) * -1) || null
         };
         return result;
     }
@@ -57,8 +57,8 @@ const dynamicNormalizer = (dynamic, from, to) => {
 };
 
 export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, setRequestStatus, requestStatus, isParamsVisible, setIsParamsVisible, setSortState, initSortState }) => {
-  const { isDemoMode } = useDemoMode();
-  const [selectedDate, setSelectedDate] = useState(moment().subtract(30, 'days').format('DD.MM.YYYY'));
+    const { isDemoMode } = useDemoMode();
+    const [selectedDate, setSelectedDate] = useState(moment().subtract(30, 'days').format('DD.MM.YYYY'));
     const [searchState, setSearchState] = useState('');
     const [isExampleDataSet, setIsExampleDataSet] = useState(false);
     const [preferedItemsData, setPreferedItemsData] = useState([]);
@@ -177,10 +177,10 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
     // }
 
     useEffect(() => {
-      if (isDemoMode) {
-        setExampleData();
-        submitHandler(form.getFieldsValue());
-      }
+        if (isDemoMode) {
+            setExampleData();
+            submitHandler(form.getFieldsValue());
+        }
     }, [isDemoMode]);
 
     useEffect(() => {
@@ -198,7 +198,7 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
     useEffect(() => {
         let timeout;
         if (isExampleDataSet) {
-            timeout = setTimeout(() => {setIsExampleDataSet(false);}, 3000);
+            timeout = setTimeout(() => { setIsExampleDataSet(false); }, 3000);
         }
         return () => timeout && clearTimeout(timeout);
     }, [isExampleDataSet]);
@@ -311,19 +311,39 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
 
     const memoizedConfigProviderTheme = useMemo(() => ({
         token: {
-            colorPrimary: '#5329FF'
+            colorBgContainer: 'white',
+            borderRadius: 8,
+            fontFamily: 'Mulish',
+            fontSize: 12,
+            fontWeight: 500,
+            colorBorder: '#5329FF1A',
+            controlHeightLG: 38,
+            controlHeight: 38,
         },
         components: {
             Form: {
-                labelFontSize: 15
+                labelFontSize: 12
             },
             Select: {
+                activeBorderColor: '#5329FF1A',
                 activeOutlineColor: 'transparent',
+                hoverBorderColor: '#5329FF1A',
                 optionActiveBg: 'transparent',
-                optionFontSize: 16,
+                optionFontSize: 14,
                 optionSelectedBg: 'transparent',
                 optionSelectedColor: '#5329FF',
-                selectorBg: 'transparent'
+                controlHeightLG: 38,
+                colorBorder: '#5329FF1A',
+                fontSize: 14,
+            },
+            Input: {
+                activeBorderColor: '#5329FF1A',
+                hoverBorderColor: '#5329FF1A',
+                activeOutlineColor: 'transparent',
+                activeBg: 'transparent',
+                hoverBg: 'transparent',
+                activeBg: 'transparent',
+                activeShadow: 'transparent'
             }
         }
     }), []);
@@ -351,8 +371,9 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                             target='_blank'
                         />
                         <button className={isParamsVisible ? `${styles.widget__openButton} ${styles.widget__openButton_opened}` : `${styles.widget__openButton} ${styles.widget__openButton_closed}`}>
-                            <svg width="18" height="11" viewBox="0 0 18 11" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M1 1L9 9L17 1" stroke="#1A1A1A" strokeWidth="2" strokeLinecap="round" />
+                            {isParamsVisible ? 'Скрыть' : 'Раскрыть'}
+                            <svg width="12" height="8" viewBox="0 0 12 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M1 1L6 6L11 1" stroke="#5329FF" strokeWidth="1.5" strokeLinecap="round" />
                             </svg>
                         </button>
                     </div>
@@ -407,12 +428,11 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                             >
                                                 <Select
                                                     size='large'
-                                                    style={{ height: '44px' }}
                                                     placeholder='Изменение'
                                                     options={dynamicOptions}
                                                     suffixIcon={
-                                                        <svg width="14" height="9" viewBox="0 0 14 9" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                            <path d="M1 1L7 7L13 1" stroke="#8C8C8C" strokeWidth="2" strokeLinecap="round" />
+                                                        <svg width="12" height="8" viewBox="0 0 12 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <path d="M0.800781 1.5L5.80078 6.5L10.8008 1.5" stroke="#8C8C8C" strokeWidth="1.5" strokeLinecap="round" />
                                                         </svg>
                                                     }
                                                 />
@@ -444,7 +464,6 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                                             placeholder={'от 20'}
                                                             suffix={<>%</>}
                                                             type="number"
-                                                            style={{ height: '44px' }}
                                                         />
                                                     </Form.Item>
                                                     <Form.Item
@@ -472,7 +491,6 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                                             placeholder={'до 100'}
                                                             suffix={<>%</>}
                                                             type="number"
-                                                            style={{ height: '44px' }}
                                                         />
                                                     </Form.Item>
                                                 </>
@@ -505,11 +523,10 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                                     size='large'
                                                     placeholder='Изменение'
                                                     options={dynamicOptions}
-                                                    style={{ height: '44px' }}
                                                     className={isExampleDataSet ? styles.form__exampleDataInput : ''}
                                                     suffixIcon={
-                                                        <svg width="14" height="9" viewBox="0 0 14 9" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                            <path d="M1 1L7 7L13 1" stroke="#8C8C8C" strokeWidth="2" strokeLinecap="round" />
+                                                        <svg width="12" height="8" viewBox="0 0 12 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <path d="M0.800781 1.5L5.80078 6.5L10.8008 1.5" stroke="#8C8C8C" strokeWidth="1.5" strokeLinecap="round" />
                                                         </svg>
                                                     }
                                                 />
@@ -539,7 +556,6 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                                         <Input
                                                             size='large'
                                                             className={isExampleDataSet ? styles.form__exampleDataInput : ''}
-                                                            style={{ height: '44px' }}
                                                             placeholder={'от 20'}
                                                             suffix={<>%</>}
                                                             type="number"
@@ -566,7 +582,6 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                                     >
                                                         <Input
                                                             size='large'
-                                                            style={{ height: '44px' }}
                                                             placeholder={'до 100'}
                                                             suffix={<>%</>}
                                                             type="number"
@@ -598,10 +613,9 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                                     size='large'
                                                     placeholder='Изменение'
                                                     options={dynamicOptions}
-                                                    style={{ height: '44px' }}
                                                     suffixIcon={
-                                                        <svg width="14" height="9" viewBox="0 0 14 9" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                            <path d="M1 1L7 7L13 1" stroke="#8C8C8C" strokeWidth="2" strokeLinecap="round" />
+                                                        <svg width="12" height="8" viewBox="0 0 12 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <path d="M0.800781 1.5L5.80078 6.5L10.8008 1.5" stroke="#8C8C8C" strokeWidth="1.5" strokeLinecap="round" />
                                                         </svg>
                                                     }
                                                 />
@@ -629,7 +643,6 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                                     >
                                                         <Input
                                                             size='large'
-                                                            style={{ height: '44px' }}
                                                             placeholder={'от 20'}
                                                             suffix={<>%</>}
                                                             type="number"
@@ -656,7 +669,6 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                                     >
                                                         <Input
                                                             size='large'
-                                                            style={{ height: '44px' }}
                                                             placeholder={'до 100'}
                                                             suffix={<>%</>}
                                                             type="number"
@@ -699,7 +711,6 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                             >
                                                 <Input
                                                     size='large'
-                                                    style={{ height: '44px' }}
                                                     placeholder='от'
                                                     className={isExampleDataSet ? styles.form__exampleDataInput : ''}
                                                     type="number"
@@ -725,7 +736,6 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                             >
                                                 <Input
                                                     size='large'
-                                                    style={{ height: '44px' }}
                                                     placeholder='до'
                                                     type="number"
                                                 />
@@ -755,7 +765,6 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                             >
                                                 <Input
                                                     size='large'
-                                                    style={{ height: '44px' }}
                                                     placeholder='от'
                                                     type="number"
                                                 />
@@ -780,7 +789,6 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                             >
                                                 <Input
                                                     size='large'
-                                                    style={{ height: '44px' }}
                                                     placeholder='до'
                                                     type="number"
                                                 />
@@ -810,7 +818,6 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                             >
                                                 <Input
                                                     size='large'
-                                                    style={{ height: '44px' }}
                                                     placeholder='от'
                                                     type="number"
                                                 />
@@ -835,7 +842,6 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                             >
                                                 <Input
                                                     size='large'
-                                                    style={{ height: '44px' }}
                                                     placeholder='до'
                                                     type="number"
                                                 />
@@ -846,35 +852,35 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                         <label className={styles.form__doubledLabel}>Приоритетные предметы</label>
                                         <ConfigProvider
                                             renderEmpty={() => (<div style={{ cursor: 'default' }}>Нет данных</div>)}
-                                            theme={{
-                                                token: {
-                                                    colorBgContainer: 'white',
-                                                    //colorBorder: 'transparent',
-                                                    //borderRadius: 8,
-                                                    fontFamily: 'Mulish',
-                                                    fontSize: 14,
-                                                    controlHeightLG: 44
-                                                },
-                                                components: {
-                                                    Select: {
-                                                        //activeBorderColor: 'transparent',
-                                                        activeOutlineColor: 'transparent',
-                                                        //hoverBorderColor: 'transparent',
-                                                        optionActiveBg: 'transparent',
-                                                        optionFontSize: 16,
-                                                        optionSelectedBg: 'transparent',
-                                                        optionSelectedColor: '#5329FF',
-                                                        singleItemHeightLG: 44
-                                                    }
-                                                }
-                                            }}
+                                        // theme={{
+                                        //     token: {
+                                        //         colorBgContainer: 'white',
+                                        //         //colorBorder: 'transparent',
+                                        //         //borderRadius: 8,
+                                        //         fontFamily: 'Mulish',
+                                        //         fontSize: 14,
+                                        //         controlHeightLG: 44
+                                        //     },
+                                        //     components: {
+                                        //         Select: {
+                                        //             //activeBorderColor: 'transparent',
+                                        //             activeOutlineColor: 'transparent',
+                                        //             //hoverBorderColor: 'transparent',
+                                        //             optionActiveBg: 'transparent',
+                                        //             optionFontSize: 16,
+                                        //             optionSelectedBg: 'transparent',
+                                        //             optionSelectedColor: '#5329FF',
+                                        //             singleItemHeightLG: 44
+                                        //         }
+                                        //     }
+                                        // }}
                                         >
                                             <Form.Item
                                                 style={{ margin: 0, width: '100%' }}
                                                 name='prefered_items'
                                             >
                                                 <Select
-                                                    //style={{ height: '44px' }}
+
                                                     maxTagCount={0}
                                                     //maxTagCount='responsive'
                                                     //maxTagTextLength={20}
@@ -890,8 +896,8 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                                         }
                                                     }}
                                                     suffixIcon={
-                                                        <svg width="14" height="9" viewBox="0 0 14 9" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                            <path d="M1 1L7 7L13 1" stroke="#8C8C8C" strokeWidth="2" strokeLinecap="round" />
+                                                        <svg width="12" height="8" viewBox="0 0 12 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <path d="M0.800781 1.5L5.80078 6.5L10.8008 1.5" stroke="#8C8C8C" strokeWidth="1.5" strokeLinecap="round" />
                                                         </svg>
                                                     }
                                                     dropdownRender={renderPopup}
@@ -937,7 +943,6 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                             <Input
                                                 size='large'
                                                 placeholder='Введите слово/фразу'
-                                                style={{ height: '44px' }}
                                             />
                                         </Form.Item>
                                     </div>
@@ -948,8 +953,43 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                 <ConfigProvider
                                     theme={{
                                         token: {
+                                            colorPrimary: '#5329FF1A',
+                                            fontSize: 14,
+                                            fontWeight: 600,
+                                            controlHeightLG: 46,
+                                        },
+                                        components: {
+                                            Button: {
+                                                colorPrimaryHover: '#5329FF',
+                                                colorTextLightSolid: 'white',
+                                                defaultHoverColor: 'white',
+                                                defaultHoverBg: '#5329FF',
+                                                textHoverBg: 'white',
+                                                defaultBg: '#5329FF1A',
+                                                defaultBorderColor: 'white',
+                                                defaultActiveBorderColor: 'white',
+                                                defaultColor: '#5329FF'
+                                            }
+                                        }
+                                    }}
+                                >
+                                    <Button
+                                        type='default'
+                                        size='large'
+                                        onClick={resetFieldsHandler}
+                                        style={{ border: 'none'}}
+                                    >
+                                        Очистить
+                                    </Button>
+                                </ConfigProvider>
+                                <ConfigProvider
+                                    theme={{
+                                        token: {
                                             colorPrimary: '#5329FF',
-                                            colorText: '#5329FF'
+                                            colorText: '#5329FF',
+                                            fontSize: 14,
+                                            fontWeight: 600,
+                                            controlHeightLG: 46,
                                         },
                                         components: {
                                             Button: {
@@ -958,14 +998,6 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                         }
                                     }}
                                 >
-                                    <Button
-                                        type='text'
-                                        size='large'
-                                        onClick={resetFieldsHandler}
-                                    >
-                                        Очистить
-                                    </Button>
-                                </ConfigProvider>
                                 <Button
                                     style={{ width: '202px', height: '45px' }}
                                     htmlType='submit'
@@ -973,8 +1005,9 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                     size='large'
                                     className={isExampleDataSet ? styles.form__exampleDataButton : ''}
                                 >
-                                    Сформировать список
-                                </Button>
+                                        Сформировать список
+                                    </Button>
+                                </ConfigProvider>
                             </div>
                         </Form>
                     </ConfigProvider>

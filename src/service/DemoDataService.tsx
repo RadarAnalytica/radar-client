@@ -28,8 +28,6 @@ import ceoComparisonRaw from '../mock/ceo-comparison.json';
 import descriptionGeneratorKeywords from '../mock/description-generator-keywords.json';
 import rnpFiltersData from '../mock/rnp-filters.json';
 
-import { store } from '@/redux/store';
-
 export class DemoDataService {
   private static instance: DemoDataService;
 
@@ -43,7 +41,7 @@ export class DemoDataService {
   }
 
   // Получить данные для конкретного эндпоинта
-  public getDataForEndpoint(endpoint: string, params?: any): any {
+  public getDataForEndpoint(endpoint: string, filters?: any): any {
     endpoint = endpoint.split('?')[0];
 
     if (!endpoint) {
@@ -52,13 +50,13 @@ export class DemoDataService {
     }
 
     // Пробуем точное совпадение
-    const exactMatch = this.getExactMatch(endpoint);
+    const exactMatch = this.getExactMatch(endpoint, filters);
     if (exactMatch) {
       return exactMatch;
     }
 
     // Пробуем совпадение по паттерну для URL с динамическими параметрами
-    const patternMatch = this.getPatternMatch(endpoint);
+    const patternMatch = this.getPatternMatch(endpoint, filters);
     if (patternMatch) {
       return patternMatch;
     }
@@ -68,19 +66,19 @@ export class DemoDataService {
   }
 
   // Точное совпадение эндпоинтов
-  private getExactMatch(endpoint: string): any {
+  private getExactMatch(endpoint: string, filters?: any): any {
     const endpointMap: Record<string, () => any> = {
-      '/api/dashboard/': () => this.getDashboardData(),
+      '/api/dashboard/': () => this.getDashboardData(filters),
       '/api/prod_analytic/': () => this.getStockAnalysisData(),
-      '/api/periodic_reports/weekly_report': () => this.getWeeklyReportData(),
+      '/api/periodic_reports/weekly_report': () => this.getWeeklyReportData(filters),
       '/api/common/filters_new': () => this.getDemoFilters(),
       '/api/shop/all': () => this.getDemoShops(),
       '/api/supplier-analysis': () => this.getSupplierAnalysisData(),
-      '/api/rnp/by_article': () => this.getRnpByArticleData(),
-      '/api/rnp/summary': () => this.getRnpSummaryData(),
+      '/api/rnp/by_article': () => this.getRnpByArticleData(filters),
+      '/api/rnp/summary': () => this.getRnpSummaryData(filters),
       '/api/rnp/products': () => this.getRnpProductsData(),
       '/api/rnp/filters': () => this.getRnpFiltersData(),
-      '/api/profit_loss/report': () => this.getPlReportData(),
+      '/api/profit_loss/report': () => this.getPlReportData(filters),
       '/api/geo/': () => this.getGeoData(),
       '/api/abc_data/proceeds': () => this.getAbcDataProceeds(),
       '/api/abc_data/profit': () => this.getAbcDataProfit(),
@@ -92,6 +90,7 @@ export class DemoDataService {
       '/api/user/subscription/all': () => this.getSubscriptionsData(),
       '/api/blog/articles': () => this.getArticlesData(),
       '/api/product/self-costs': () => ({ message: "Success", updated_items: [{ product: 'Демо', cost: 100, fulfillment: 100 }] }),
+      '/api/msg/': () => ([]),
       'https://radarmarket.ru/api/web-service/monitoring-oracle/easy/get': () => this.getEasyMonitoringData(),
       'https://radarmarket.ru/api/web-service/monitoring-oracle/get': () => this.getMonitoringData(),
       'https://radarmarket.ru/api/web-service/trending-queries/get': () => this.getTrendingQueries(),
@@ -108,7 +107,7 @@ export class DemoDataService {
   }
 
   // Совпадение по паттерну для URL с параметрами
-  private getPatternMatch(endpoint: string): any {
+  private getPatternMatch(endpoint: string, filters?: any): any {
     // Паттерн для /api/product/product_groups/{id}
     const productGroupsIdMatch = endpoint.match(/^\/api\/product\/product_groups\/(\d+)$/);
     if (productGroupsIdMatch) {
@@ -166,18 +165,18 @@ export class DemoDataService {
     };
   }
 
-  private getFilterDays(): number {
-    const filters = store.getState().filters;
+  private getFilterDays(filters?: any): number {
+    if (!filters) return 30; // Default 30 days if no filters provided
     let days = filters.selectedRange?.period;
     if (filters.selectedRange?.from && filters.selectedRange?.to) {
       days = Math.round((Number(new Date(filters.selectedRange.to)) - Number(new Date(filters.selectedRange.from))) / 3600 / 24 / 1000);
     }
-    return days;
+    return days || 30;
   }
 
-  private getGeoData(): any {
+  private getGeoData(filters?: any): any {
     const data = this.getOriginalJson(geoData);
-    const days = this.getFilterDays();
+    const days = this.getFilterDays(filters);
     const denominator = 90 / days;
 
     data.geo_data.map(item => {
@@ -376,13 +375,13 @@ export class DemoDataService {
   }
 
   // Dashboard данные
-  private getDashboardData(): any {
+  private getDashboardData(filters?: any): any {
     const data = this.getOriginalJson(dashboardData);
-    let days = this.getFilterDays();
+    let days = this.getFilterDays(filters);
     let dayTo = new Date().toISOString().split('T')[0];
 
-    if (store.getState().filters?.selectedRange?.to) {
-      dayTo = store.getState().filters?.selectedRange?.to;
+    if (filters?.selectedRange?.to) {
+      dayTo = filters.selectedRange.to;
       days++;
     }
 
@@ -446,10 +445,9 @@ export class DemoDataService {
     return data;
   }
 
-  private getRnpByArticleData(): any {
+  private getRnpByArticleData(filters?: any): any {
     const data = this.getOriginalJson(rnpByArticleData);
-    const filters = store.getState().filters;
-    const days = this.getFilterDays();
+    const days = this.getFilterDays(filters);
 
     // Обновляем даты в by_date_data массиве для каждого элемента
     const updatedData = data.map((item: any) => {
@@ -485,10 +483,9 @@ export class DemoDataService {
     };
   }
 
-  private getRnpSummaryData(): any {
+  private getRnpSummaryData(filters?: any): any {
     let data = this.getOriginalJson(rnpSummaryData);
-    const filters = store.getState().filters;
-    const days = this.getFilterDays();
+    const days = this.getFilterDays(filters);
 
     // Обновляем даты в by_date_data массиве для каждого элемента
     if (Array.isArray(data.by_date_data)) {
@@ -541,14 +538,13 @@ export class DemoDataService {
   }
 
   // P&L Report данные
-  private getPlReportData(): PlReportDemoData {
-    const generatedData = this.generatePlReportData();
+  private getPlReportData(filters?: any): PlReportDemoData {
+    const generatedData = this.generatePlReportData(filters);
     return { data: generatedData };
   }
 
   // Генератор данных для P&L отчета
-  private generatePlReportData() {
-    const filters = store.getState().filters;
+  private generatePlReportData(filters?: any) {
     const monthFrom = filters?.activeMonths?.month_from;
     const monthTo = filters?.activeMonths?.month_to;
     const now = new Date();
@@ -970,11 +966,10 @@ export class DemoDataService {
   }
 
   // Weekly Report данные
-  private getWeeklyReportData(): WeeklyReportDemoData {
+  private getWeeklyReportData(filters?: any): WeeklyReportDemoData {
     const weeklyData = weeklyReportData as any[];
     const baseData = weeklyData[0]; // Берем базовые данные для генерации
-    const filters = store.getState().filters;
-    let activeWeeks = filters.activeWeeks || [];
+    let activeWeeks = filters?.activeWeeks || [];
 
     if (activeWeeks.length === 0) {
       return {

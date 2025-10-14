@@ -1,11 +1,11 @@
 export const getColor = (value) => {
   if (value >= 45) {
-    return 'rgba(0, 182, 155, 1)';
+    return {'color': 'rgba(0, 182, 155, 1)', 'backgroundColor': 'rgba(0, 182, 155, 0.1)'};
   }
   if (value <= 25) {
-    return 'rgba(249, 60, 101, 1)';
+    return {'color': 'rgba(249, 60, 101, 1)', 'backgroundColor': 'rgba(249, 60, 101, 0.1)'};
   }
-  return 'rgba(240, 173, 0, 1)';
+  return {'color': '#F0AD00', 'backgroundColor': '#F0AD000D'};
 };
 
 export const getFinanceData = (dataDashBoard) => {
@@ -172,6 +172,14 @@ export const getStorageData = (dataDashBoard) => {
   return storageData;
 };
 
+// Форматирование даты в коротком виде: "D мес"
+const formatDateShort = (dateInput) => {
+  const date = new Date(dateInput);
+  const day = date.getDate();
+  const months = ['янв','фев','мар','апр','май','июн','июл','авг','сен','окт','ноя','дек'];
+  return `${day} ${months[date.getMonth()]}`;
+};
+
 export const processSalesAndProfit = (salesAndProfit) => {
   if (!salesAndProfit || !salesAndProfit.length) return {
     labels: undefined,
@@ -182,9 +190,7 @@ export const processSalesAndProfit = (salesAndProfit) => {
     stepSizeRevenue: undefined
   };
 
-  const labels = salesAndProfit.map(item =>
-    new Date(item.date).toLocaleDateString('ru-RU', { day: 'numeric', month: 'long' })
-  );
+  const labels = salesAndProfit.map(item => formatDateShort(item.date));
   const dataRevenue = salesAndProfit.map(item => item.sales);
   const dataNetProfit = salesAndProfit.map(item => item.profit);
 
@@ -227,9 +233,7 @@ export const processMarginalityRoiChart = (marginalityRoiChart) => {
   const step = Math.ceil((maxValue - minValue) / 5);
 
   // Форматирование дат
-  const labels = marginalityRoiChart.map(item =>
-    new Date(item.date).toLocaleDateString('ru-RU', { day: 'numeric', month: 'long' })
-  );
+  const labels = marginalityRoiChart.map(item => formatDateShort(item.date));
 
   return {
     dataProfitability: roiValues,

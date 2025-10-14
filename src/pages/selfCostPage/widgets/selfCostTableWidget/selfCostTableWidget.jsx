@@ -3,6 +3,7 @@ import styles from './selfCostTableWidget.module.css';
 import { tableConfig } from '../../shared';
 import { TableRow } from '../../features';
 import { Pagination, ConfigProvider } from 'antd';
+import Loader from '@/components/ui/Loader';
 
 const initDataStatus = {
     isError: false,
@@ -13,6 +14,7 @@ const initDataStatus = {
 const SelfCostTableWidget = ({
     setIsSuccess,
     dataStatus,
+    progress,
     tableData,
     authToken,
     activeBrand,
@@ -21,10 +23,8 @@ const SelfCostTableWidget = ({
     setTableData,
     resetSearch
 }) => {
-
     const [paginationState, setPaginationState] = useState({ current: 1, total: 50, pageSize: 50 });
-
-
+    
     const paginationHandler = (page) => {
         setPaginationState({ ...paginationState, current: page });
     };
@@ -50,18 +50,7 @@ const SelfCostTableWidget = ({
         if (paginationPrevButton) {
          paginationPrevButton.setAttribute('title', 'Предыдущие 5 страниц');
         }
-     }, [paginationState]);
-
-
-    if (!tableData && dataStatus.isLoading) {
-        return (
-            <div className={styles.widget}>
-                <div className={styles.widget__loaderWrapper}>
-                    <span className='loader'></span>
-                </div>
-            </div>
-        );
-    }
+    }, [paginationState]);
 
     return (
         <div className={styles.widget}>
@@ -86,7 +75,9 @@ const SelfCostTableWidget = ({
 
                     {/* Тело таблицы */}
                     <div className={styles.table__body}>
-                        {/* Мапим данные о товарах */}
+                        {dataStatus.isLoading && <div className={styles.widget__loaderWrapper}>
+                            <Loader loading={dataStatus.isLoading} progress={progress.value} />    
+                        </div>}
                         {tableData && tableData.length > 0 && activeBrand && tableData?.map((product, id) => {
                             const minRange = (paginationState.current - 1) * paginationState.pageSize;
                             const maxRange = paginationState.current * paginationState.pageSize;
@@ -140,7 +131,6 @@ const SelfCostTableWidget = ({
                     total={paginationState.total}
                     pageSize={paginationState.pageSize}
                     showSizeChanger={false}
-                //showTotal={(total) => `Всего ${total} товаров`}
                 />
             </ConfigProvider>
         </div>

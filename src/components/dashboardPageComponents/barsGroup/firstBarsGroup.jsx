@@ -8,7 +8,8 @@ const FirstBarsGroup = ({ dataDashBoard, selectedRange, loading }) => {
 
     const daysRange = selectedRange.from && selectedRange.to ? differenceInDays(selectedRange.to, selectedRange.from, { unit: 'days' }) : selectedRange.period;
     return (
-        <div className={isSidebarHidden ? styles.group : styles.group_openSidebar}>
+        // <div className={isSidebarHidden ? styles.group : styles.group_openSidebar}>
+        <div className={styles.group}>
             <Bar
                 title='Заказы'
                 amount={dataDashBoard?.orderAmount}
@@ -50,13 +51,6 @@ const FirstBarsGroup = ({ dataDashBoard, selectedRange, loading }) => {
                     hasTooltip
                     tooltipText='Сумма реализации товара с учетом согласованной скидки продавца и СПП'
                 />
-                {/* <Bar
-                    fixed={false}
-                    title='Средний чек'
-                    averageBill={dataDashBoard?.averageBill}
-                    averageBillInPercent={dataDashBoard?.averageBillCompare}
-                    loading={loading}
-                /> */}
                 <Bar
                     fixed={false}
                     title='Процент выкупа'

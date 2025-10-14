@@ -326,25 +326,33 @@ const AiDescriptionGeneratorPage = () => {
       );
     }
   };
-  // ------------------------------------------------------------//
-  const onClose = () => {
+
+  const resetState = () => {
     form.resetFields();
     removeAllKeywords();
     setProductName('');
     setShortDescription('');
     setCompetitorsLinks('');
+  };
+
+  // ------------------------------------------------------------//
+  const onClose = () => {
+    if (!isDemoMode) {
+      resetState();
+      getGenerationsAmount();
+    }
+
     setNextStep(false);
     setIsModalOpen(false);
-    getGenerationsAmount();
   };
   const onCloseNew = () => {
-    form.resetFields();
-    setProductName('');
-    setShortDescription('');
-    setCompetitorsLinks('');
+    if (!isDemoMode) {
+      resetState();
+      getGenerationsAmount();
+    }
+
     setNextStep(false);
     setIsModalOpen(false);
-    getGenerationsAmount();
   };
   // Function to handle adding keywords
   const handleAddKeyword = (e) => {
@@ -365,10 +373,8 @@ const AiDescriptionGeneratorPage = () => {
     setIsVisible(!isVisible); // Toggle visibility on each click
   };
 
-  // Check if keywords already exist in context on mount
   useEffect(() => {
     if (keywords.length > 0) {
-      // If there are already keywords, set next step to true
       setNextStep(true);
     }
   }, [keywords, setNextStep]);
@@ -383,7 +389,7 @@ const AiDescriptionGeneratorPage = () => {
           const response = await ServiceFunctions.getUserGenerationsData(
             authToken,
             parsedId
-          ); // Fetch data
+          );
           setProductName(response.product_title);
           setShortDescription(response.short_description);
           setNextStep(true);
@@ -393,25 +399,25 @@ const AiDescriptionGeneratorPage = () => {
           setDescription(response.result); // Set the fetched data
           localStorage.removeItem('generatedId');
           setIsLoading(false);
-        } catch (err) {
-          // setError('Failed to fetch data');  // Handle error
-        } finally {
-          // setIsLoading(false);  // Stop loading
+        } catch (e) {
+          console.error(e);
         }
-      } else {
-        // setLoading(false);  // Stop loading if no ID found
       }
     };
 
     fetchData(); // Call the function on component mount
   }, [authToken]);
 
+  useEffect(() => setNextStep(false), []);
+
   const handleAddKeywordFile = () => {
     setModalisShowKeywordsFile(true);
   };
+
   const handleCloseAddKeywordFile = () => {
     setModalisShowKeywordsFile(false);
   };
+
   const handleSaveClick = async () => {
     setIsFileUpload(true);
     try {
@@ -460,8 +466,6 @@ const AiDescriptionGeneratorPage = () => {
                   Вам {amountGenerations === 1 ? 'доступнa' : 'доступно'}{' '}
                   <span style={{ color: '#74717f' }}>
                     {declineGeneration(amountGenerations)}
-                    {/* {amountGenerations.toString()}{' '}
-                    {amountGenerations === 1 ? 'генерация' : 'генераций'} */}
                   </span>
                 </p>
                 {!isDemoMode &&
@@ -556,9 +560,9 @@ const AiDescriptionGeneratorPage = () => {
                     { max: 255, message: 'Название не должно быть длиннее 255 символов.' },
                     () => ({
                       validator(_, value) {
-                        if (value && !value.trim()) {
-                          return Promise.reject(new Error('Пожалуйста, заполните поле корректно'));
-                        }
+                        const v = value.trim();
+                        if (!v) return Promise.reject(new Error('Пожалуйста, заполните поле корректно'));
+                        if (v.length < 3) return Promise.reject(new Error('Название должно содержать не менее 3 символов'));
                         return Promise.resolve();
                       },
                     }),

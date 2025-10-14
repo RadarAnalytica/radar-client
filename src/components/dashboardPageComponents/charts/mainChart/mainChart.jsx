@@ -118,6 +118,7 @@ const MainChart = ({ title, loading, dataDashBoard, selectedRange }) => {
                         setIsModalOpen={setIsModalOpen}
                         loading={loading}
                         chartData={chartData}
+                        height={320}
                     />
             }
 

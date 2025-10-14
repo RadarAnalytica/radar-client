@@ -7,10 +7,14 @@
     flex-direction: column;
     justify-content: space-between;
     align-items: flex-start;
-    gap: 16px;
-    grid-row: span 3;
+    gap: 4px;
+    grid-row: span 22;
     transition: all .1s ease-in-out;
     width: 100%;
+
+    @media (max-width: 1300px) {
+        margin-top: 12px;
+    }
 }
 
 .block:hover {
@@ -19,7 +23,7 @@
 
 .block__loaderWrapper {
     width: 100%;
-    aspect-ratio: 1 / 1;
+    height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -29,13 +33,13 @@
     width: 100%;
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 4px;
 }
 
 .block__title {
     font-family: Mulish;
     font-weight: 500;
-    font-size: 16px;
+    font-size: 14px;
     line-height: 100%;
     letter-spacing: 0%;
     color: #8C8C8C;
@@ -55,8 +59,8 @@
     margin: 0;
     padding: 0;
     font-family: Mulish;
-    font-weight: 700;
-    font-size: 24px;
+    font-weight: 600;
+    font-size: 22px;
     line-height: 100%;
     letter-spacing: 0%;
     color: #1A1A1A
@@ -64,15 +68,14 @@
 
 .block__button {
     border: none;
-    padding: 6px 10px;
     border-radius: 8px;
-    background: #5329FF0D;
+    background: transparent;
     display: flex;
     align-items: center;
     gap: 8px;
     font-family: Mulish;
     font-weight: 600;
-    font-size: 16px;
+    font-size: 14px;
     line-height: 160%;
     letter-spacing: 0%;
     color: #5329FF;
@@ -103,8 +106,8 @@
 
 .modal__title {
     font-family: Mulish;
-    font-weight: 700;
-    font-size: 24px;
+    font-weight: 600;
+    font-size: 22px;
     line-height: 100%;
     letter-spacing: 0%;
     color: #1A1A1A;
@@ -160,7 +163,7 @@
     gap: 10px;
     font-family: Mulish;
     font-weight: 600;
-    font-size: 16px;
+    font-size: 14px;
     line-height: 100%;
     letter-spacing: 0%;
     color: #1A1A1A;
@@ -225,7 +228,7 @@
     padding: 0;
     font-family: Mulish;
     font-weight: 500;
-    font-size: 16px;
+    font-size: 14px;
     line-height: 100%;
     letter-spacing: 0%;
     color: #8C8C8C;
@@ -264,7 +267,7 @@
     gap: 20px;
     font-family: Mulish;
     font-weight: 500;
-    font-size: 16px;
+    font-size: 14px;
     line-height: 100%;
     letter-spacing: 0%;
     color: #1A1A1A;
@@ -283,7 +286,7 @@
     gap: 20px;
     font-family: Mulish;
     font-weight: 500;
-    font-size: 16px;
+    font-size: 14px;
     line-height: 100%;
     letter-spacing: 0%;
     color: #1A1A1A;
@@ -296,7 +299,7 @@
 .table__rowTitle {
     font-family: Mulish;
     font-weight: 500;
-    font-size: 16px;
+    font-size: 14px;
     line-height: 100%;
     letter-spacing: 0%;
     color: #5329FF;

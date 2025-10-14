@@ -54,7 +54,10 @@ export const fetchApi = async (endpoint: string, options: RequestInit = {}) => {
   // Проверяем, находится ли пользователь в демо-режиме
   if (user?.subscription_status === null) {
     const demoService = DemoDataService.getInstance();
-    const demoData = demoService.getDataForEndpoint(endpoint);
+    const { store } = await import('../redux/store'); // Динамически импортируем store для получения filters без циклической зависимости
+    const filters = store.getState().filters;
+
+    const demoData = demoService.getDataForEndpoint(endpoint, filters);
 
     if (demoData?.data) {
       return createMockResponse(demoData.data);
