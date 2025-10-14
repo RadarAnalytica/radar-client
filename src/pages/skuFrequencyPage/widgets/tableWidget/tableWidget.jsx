@@ -81,6 +81,16 @@ const TableWidget = ({ tableConfig, setTableConfig }) => {
         });
     };
 
+    if (requestData.length === 0) {
+        return (
+            <div className={styles.widget}>
+                <div className={`${styles.container} p-3`}>
+                    Ничего не найдено
+                </div>
+            </div>
+        )
+    }
+
     return requestData && tableConfig && (
         <div className={styles.widget}>
             <div
