@@ -56,7 +56,16 @@
     inset: 0;
     background-color: white;
     z-index: 1;
-    height: 100vh;
+    height: calc(100vh - 450px);
+
+    &:after {
+        content: '';
+        position: absolute;
+        inset: auto 0;
+        height: 200px;
+        background-color: white;
+        z-index: 1;
+    }
 }
 
 .table {
@@ -178,10 +187,7 @@
     justify-content: flex-start;
     align-items: flex-start;
     padding: 0 17px;
-}
-
-.table__body_loading {
-    
+    overflow: hidden;
 }
 
 

@@ -48,11 +48,12 @@ const SelfCostPage = () => {
         const parsedData = await res.json();
         const { items, total } = parsedData.data;
 
+        setTableData([...items]);
+        setFilteredTableData([...items]);
+        setTotalItems(total || items.length);
         progress.complete();
+
         await setTimeout(() => {
-            setTableData([...items]);
-            setFilteredTableData([...items]);
-            setTotalItems(total || items.length);
             setDataStatus({ ...initDataStatus, isLoading: false });
             progress.reset();
         }, 500);
