@@ -57,7 +57,7 @@
   line-height: 160%;
   letter-spacing: 0%;
   cursor: pointer;
-  transition: all 0.15s;
+  transition: opacity 0.15s;
 }
 
 .modal__actionButton:hover {
@@ -68,7 +68,20 @@
   color: #1a1a1a;
   background: #1A1A1A08;
 }
+
+.modal__actionButton_cancel:hover {
+  color: #1a1a1a !important;
+  background: #1A1A1A08 !important;
+  opacity: 0.7;
+}
+
 .modal__actionButton_confirm {
   color: white;
   background: #F93C65;
+}
+
+.modal__actionButton_confirm:hover {
+  color: white !important;
+  background: #F93C65 !important;
+  opacity: 0.7;
 }

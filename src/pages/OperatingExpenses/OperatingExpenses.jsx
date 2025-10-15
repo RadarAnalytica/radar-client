@@ -22,6 +22,15 @@ import { formatDate, parse } from 'date-fns';
 import { Tooltip as RadarTooltip } from 'radar-ui';
 import { useAppDispatch } from '@/redux/hooks';
 import { actions as filtersActions } from '@/redux/apiServicePagesFiltersState/apiServicePagesFilterState.slice';
+
+
+const initAlertState = {
+	status: '',
+	isVisible: false,
+	message: '',
+};
+
+
 export default function OperatingExpenses() {
 	const dispatch = useAppDispatch();
 	const { authToken } = useContext(AuthContext);
@@ -37,7 +46,7 @@ export default function OperatingExpenses() {
 	const [modalCopyExpenseOpen, setModalCopyExpenseOpen] = useState(false);
 	const [deleteExpenseId, setDeleteExpenseId] = useState(null);
 	const [deleteCategoryId, setDeleteCategoryId] = useState(null);
-
+	const [alertState, setAlertState] = useState(initAlertState);
 	const [expense, setExpense] = useState([]);
 	const [expPagination, setExpPagination] = useState({
 		page: 1,
@@ -51,7 +60,6 @@ export default function OperatingExpenses() {
 	});
 	const [expenseEdit, setExpenseEdit] = useState(null);
 	const [expenseCopy, setExpenseCopy] = useState(null);
-	const [highlightedExpenseId, setHighlightedExpenseId] = useState(null);
 
 	const expenseData = useMemo(() => {
 		const columns = EXPENSE_COLUMNS.map((column, i) => {
@@ -109,8 +117,8 @@ export default function OperatingExpenses() {
 			const res = await ServiceFunctions.getOperatingExpensesCategoryGetAll(authToken, pagination);
 			// console.log('updateCategories', res);
 			setCategory(res.data);
-			dispatch(filtersActions.setExpenseCategories(res.data.map(_ => ({..._, value: _.name, key: _.id}))));
-			!activeExpenseCategory && dispatch(filtersActions.setActiveFilters({stateKey: 'activeExpenseCategory', data: {value: 'Все', id: 0}}));
+			dispatch(filtersActions.setExpenseCategories(res.data.map(_ => ({ ..._, value: _.name, key: _.id }))));
+			!activeExpenseCategory && dispatch(filtersActions.setActiveFilters({ stateKey: 'activeExpenseCategory', data: { value: 'Все', id: 0 } }));
 		} catch (error) {
 			// console.error('updateCategories error', error);
 			setCategory([]);
@@ -130,7 +138,7 @@ export default function OperatingExpenses() {
 		if (resetPagination) {
 			setExpPagination(pagination);
 		}
-		
+
 		const requestObject = {
 			page: pagination.page,
 			limit: pagination.limit,
@@ -154,7 +162,7 @@ export default function OperatingExpenses() {
 			console.error('updateExpenses error', error);
 			setExpense([]);
 		} finally {
-			console.log('updateExpenses', !firstLoad.current);
+			//console.log('updateExpenses', !firstLoad.current);
 			if (!firstLoad.current) {
 				setLoading(false);
 			}
@@ -175,12 +183,12 @@ export default function OperatingExpenses() {
 		}
 
 		if (view === 'expense' && expenseCategories) {
-			console.log('updateCosts');
+			//console.log('updateCosts');
 			updateExpenses();
 		}
 
 		if (view === 'category') {
-			console.log('updateArticles');
+			//console.log('updateArticles');
 			updateCategories();
 		}
 	}, [activeBrand, selectedRange, expPagination.page, categoryPagination.page, activeBrandName, activeArticle, activeExpenseCategory, expenseCategories])
@@ -233,7 +241,7 @@ export default function OperatingExpenses() {
 	const handleCategory = (category) => {
 		setModalCreateCategoryOpen(false);
 		if (!!categoryEdit) {
-			console.log('editCategory')
+			//console.log('editCategory')
 			const editedCategory = { ...categoryEdit, ...category }
 			editCategory(editedCategory);
 			return;
@@ -243,9 +251,9 @@ export default function OperatingExpenses() {
 	};
 
 	const handleExpanse = (expense) => {
-		console.log('handleExpanse', expense)
+		//console.log('handleExpanse', expense)
 		if (!!expenseEdit) {
-			console.log('editExpanse', expense)
+			//console.log('editExpanse', expense)
 			editExpanse(expense);
 			return;
 		}
@@ -255,7 +263,7 @@ export default function OperatingExpenses() {
 
 	const createExpense = async (requestData) => {
 		const { requestObject, requestUrl } = requestData;
-		console.log('requestObject', requestObject)
+		setLoading(true);
 		try {
 			const res = await ServiceFunctions.postOperatingExpensesExpenseCreate(authToken, requestObject, requestUrl);
 			await updateExpenses(true); // Сбрасываем пагинацию и обновляем данные
@@ -266,12 +274,13 @@ export default function OperatingExpenses() {
 			setCategoryLoading(false);
 			setExpenseCopy(null);
 			setModalCopyExpenseOpen(false);
+			setLoading(false);
 		}
 	}
 
 	const editExpanse = async (requestData) => {
 		const { requestObject, requestUrl } = requestData;
-		console.log('editExpense requestObject', requestObject);
+		setLoading(true);
 		setModalCreateExpenseOpen(false);
 		try {
 			const res = await ServiceFunctions.patchOperatingExpensesExpense(authToken, requestObject, requestUrl);
@@ -280,6 +289,7 @@ export default function OperatingExpenses() {
 			console.error('editExpense error', error);
 		} finally {
 			setExpenseEdit(null);
+			setLoading(false);
 		}
 	}
 
@@ -288,11 +298,11 @@ export default function OperatingExpenses() {
 	const copyExpense = async (expenseId) => {
 		try {
 			let expenseToCopy = expense.find((item) => item.id === expenseId);
-			console.log('expenseToCopy', expenseToCopy)
 			if (!expenseToCopy) {
 				console.error('Expense not found');
 				return;
 			}
+			setLoading(true);
 
 			// Prepare expense data for copying (remove id and any timestamps)
 			const { id, created_at, updated_at, ...expenseData } = expenseToCopy;
@@ -322,27 +332,25 @@ export default function OperatingExpenses() {
 			}
 
 			const res = await ServiceFunctions.postOperatingExpensesExpenseCreate(authToken, expenseData, `/operating-expenses/expense/copy?expense_id=${expenseId}`);
-			console.log('copyExpense result', res);
-
-			// Обновляем данные с сбросом пагинации
+			setAlertState({
+				status: 'success',
+				isVisible: true,
+				message: 'Расход успешно скопирован',
+			});
 			await updateExpenses(true);
-
-			// Highlight the new expense
-			if (res && res.id) {
-				setHighlightedExpenseId(res.id);
-				console.log('Highlighted expense ID:', res.id);
-
-				// Remove highlight after 2 seconds
-				setTimeout(() => {
-					setHighlightedExpenseId(null);
-				}, 2000);
-			}
 		} catch (error) {
 			console.error('copyExpense error', error);
+			setLoading(false);
+			setAlertState({
+				status: 'error',
+				isVisible: true,
+				message: 'Не удалось скопировать расход',
+			});
 		}
 	}
 
 	const deleteExpense = async (id, isPeriodic) => {
+		setLoading(true);
 		try {
 			const res = await ServiceFunctions.deleteOperatingExpensesExpenseDelete(authToken, id, isPeriodic);
 			// Обновляем данные без сброса пагинации
@@ -351,11 +359,12 @@ export default function OperatingExpenses() {
 			console.error('deleteExpense error', error);
 		} finally {
 			setDeleteExpenseId(null);
+			setLoading(false);
 		}
 	}
 
 	const deleteCategoryHandler = async (id) => {
-		console.log('deleteCategoryHandler');
+		setLoading(true);
 		try {
 			const res = await ServiceFunctions.deleteOperatingExpensesCategory(authToken, id);
 			// Обновляем данные без сброса пагинации
@@ -364,8 +373,18 @@ export default function OperatingExpenses() {
 			console.error('deleteCategoryHandler error', error);
 		} finally {
 			setDeleteCategoryId(null);
+			setLoading(false);
 		}
 	};
+
+	useEffect(() => {
+		let timeout;
+		if (alertState.isVisible) {
+			timeout = setTimeout(() => { setAlertState(initAlertState); }, 1500);
+		}
+
+		return () => clearTimeout(timeout);
+	}, [alertState]);
 
 	return (
 		<main className={styles.page}>
@@ -469,7 +488,6 @@ export default function OperatingExpenses() {
 							setModalCreateExpenseOpen={setModalCreateExpenseOpen}
 							setDeleteExpenseId={setDeleteExpenseId}
 							copyExpense={copyExpense}
-							highlightedExpenseId={highlightedExpenseId}
 							tableType='expense'
 							pagination={expPagination}
 							setPagination={setExpPagination}
@@ -477,6 +495,7 @@ export default function OperatingExpenses() {
 							authToken={authToken}
 							setModalCopyExpenseOpen={setModalCopyExpenseOpen}
 							setExpenseCopy={setExpenseCopy}
+							setAlertState={setAlertState}
 						/>
 					</div>
 				}
@@ -526,7 +545,7 @@ export default function OperatingExpenses() {
 				{modalCopyExpenseOpen && expenseCopy &&
 					<ExpenseCopyModal
 						open={modalCopyExpenseOpen}
-						onCancel={() => {setExpenseCopy(null); setModalCopyExpenseOpen(false)}}
+						onCancel={() => { setExpenseCopy(null); setModalCopyExpenseOpen(false) }}
 						setModalCreateCategoryOpen={setModalCreateCategoryOpen}
 						category={category}
 						editData={expenseCopy}
@@ -574,6 +593,26 @@ export default function OperatingExpenses() {
 				{loading && <div className={styles.loading}>
 					<span className='loader'></span>
 				</div>}
+
+				{alertState.isVisible &&
+					<div className={styles.page__alert}>
+						{alertState.status === 'success' && (
+							<svg width="16" height="16" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+								<rect width="32" height="32" rx="6.4" fill="#00B69B" fillOpacity="0.1" />
+								<path d="M14.1999 19.1063L23.1548 10.1333L24.5333 11.5135L14.1999 21.8666L8 15.6549L9.37753 14.2748L14.1999 19.1063Z" fill="#00B69B" />
+							</svg>)
+						}
+
+						{alertState.status === 'error' && (
+						<svg width="16" height="16" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+							<rect width="30" height="30" rx="5" fill="#F93C65" fillOpacity="0.1" />
+								<path d="M14.013 18.2567L13 7H17L15.987 18.2567H14.013ZM13.1818 23V19.8454H16.8182V23H13.1818Z" fill="#F93C65" />
+							</svg>
+						)}
+
+						{alertState.message}
+					</div>
+				}
 			</section>
 		</main>
 	);
