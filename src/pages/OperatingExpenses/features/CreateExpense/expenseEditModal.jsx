@@ -35,9 +35,9 @@ const getRequestObject = (values, editData) => {
 			description: values.description,
 			value: values.value,
 			date_from: formattedDateStart,
-			vendor_code: values.vendor_code,
-			brand_name: values.brand_name,
-			shop: values.shop,
+			vendor_codes: values.vendor_codes,
+			brand_names: values.brand_names,
+			shops: values.shops,
 			period_type: values.frequency,
 			period_values: values.frequency === 'week'
 				? values.week
@@ -109,7 +109,7 @@ export default function ExpenseEditModal({
 	};
 
 	useEffect(() => {
-		if (editData) {
+		if (editData && !editData.is_periodic) {
 			const selectionType = editData.shop ? 'shop' : editData.brand_name ? 'brand_name' : 'vendor_code';
 
 
@@ -128,6 +128,32 @@ export default function ExpenseEditModal({
 				shop: editData.shop?.id,
 				vendor_code: editData.vendor_code?.id,
 				brand_name: editData.brand_name?.id,
+				frequency: editData.frequency,
+				week: editData.week,
+				month: editData.month,
+				end_date: formattedEndDate,
+				description: editData.description,
+				value: editData.value,
+			})
+		}
+		if (editData && editData.is_periodic) {
+			const selectionType = editData.shops ? 'shop' : editData.brand_names ? 'brand_name' : 'vendor_code';
+
+			const formattedDate = editData.date
+				? format(parse(editData.date, 'yyyy-MM-dd', new Date()), 'dd.MM.yyyy')
+				: null;
+
+			const formattedEndDate = editData.end_date
+				? format(parse(editData.end_date, 'yyyy-MM-dd', new Date()), 'dd.MM.yyyy')
+				: null;
+
+			form.setFieldsValue({
+				date: formattedDate,
+				expense_categories: editData.expense_categories.map((el) => el.id),
+				selection: selectionType,
+				shops: editData.shops,
+				vendor_codes: editData.vendor_code?.id,
+				brand_names: editData.brand_name?.id,
 				frequency: editData.frequency,
 				week: editData.week,
 				month: editData.month,
@@ -206,7 +232,6 @@ export default function ExpenseEditModal({
 							selection: 'shop',
 							frequency: 'week',
 							week: [],
-							shops: [],
 							vendor_codes: [],
 							brand_names: [],
 							expense_categories: [],
@@ -452,6 +477,7 @@ export default function ExpenseEditModal({
 												selectId='week'
 												hasSearch={false}
 												selectPlaceholder='Выберите дни'
+												hasSelectAll
 											/>
 										</Form.Item>
 									</ConfigProvider>
@@ -649,99 +675,222 @@ export default function ExpenseEditModal({
 								]}
 							/>
 
-
-							{/* Селекты магазинов, брендов, артикулов */}
-							<ConfigProvider
-									renderEmpty={() => (<div>Нет данных</div>)}
-									theme={{
-										token: {
-											colorBgContainer: 'white !important',
-											colorBorder: '#5329FF1A',
-											borderRadius: 8,
-											fontFamily: 'Mulish',
-											fontSize: 12,
-											fontWeight: 500,
-											controlHeightLG: 40,
-										},
-										components: {
-											Select: {
-												activeBorderColor: '#5329FF1A',
-												activeOutlineColor: 'transparent',
-												hoverBorderColor: '#5329FF1A',
-												optionActiveBg: 'transparent',
-												optionFontSize: 14,
-												optionSelectedBg: 'transparent',
-												optionSelectedColor: '#5329FF',
-											}
-										}
-									}}
-								>
-							
-							{selection === 'shop' &&
-								
-									<Form.Item
-										name="shop"
-										rules={[
-											{ required: true, message: 'Пожалуйста, выберите значение!' }
-										]}
-									>
-										<Select
-											size="large"
-											placeholder="Выберите магазин"
-											suffixIcon={<SelectIcon />}
-											options={shops?.map((el) => {
-												if (el.id === 0) {
-													return false
-												} else {
-													return {
-														key: el.id,
-														value: el.id,
-														label: el.brand_name,
-														disabled: !el.is_active,
+							{editData.is_periodic &&
+								<>
+									{selection === 'shop' &&
+										<ConfigProvider
+											renderEmpty={() => (<div>Нет данных</div>)}
+											theme={{
+												token: {
+													colorBgContainer: 'white',
+													colorBorder: '#5329FF1A',
+													borderRadius: 8,
+													fontFamily: 'Mulish',
+													fontSize: 12,
+												},
+												components: {
+													Select: {
+														activeBorderColor: '#5329FF1A',
+														activeOutlineColor: 'transparent',
+														hoverBorderColor: '#5329FF1A',
+														optionActiveBg: 'transparent',
+														optionFontSize: 14,
+														optionSelectedBg: 'transparent',
+														optionSelectedColor: '#5329FF',
 													}
 												}
-											}).filter(Boolean)}
-										/>
-									</Form.Item>
-								
+											}}
+										>
+											<Form.Item
+												name="shops"
+												rules={[
+													{ required: true, message: 'Пожалуйста, выберите значение!' }
+												]}
+											>
+												<MultiSelect
+													form={form}
+													hasSelectAll
+													optionsData={shops?.map((el) => {
+														if (el.id === 0) {
+															return false
+														} else {
+															return {
+																key: el.id,
+																value: el.id,
+																label: el.brand_name,
+																disabled: !el.is_active,
+															}
+														}
+													}).filter(Boolean)}
+													selectId='shops'
+													searchFieldPlaceholder='Поиск по названию магазина'
+													selectPlaceholder='Выберите магазины'
+												/>
+											</Form.Item>
+										</ConfigProvider>}
+									<ConfigProvider
+										renderEmpty={() => (<div>Нет данных</div>)}
+										theme={{
+											token: {
+												colorBgContainer: 'white',
+												colorBorder: '#5329FF1A',
+												borderRadius: 8,
+												fontFamily: 'Mulish',
+												fontSize: 12,
+											},
+											components: {
+												Select: {
+													activeBorderColor: '#5329FF1A',
+													activeOutlineColor: 'transparent',
+													hoverBorderColor: '#5329FF1A',
+													optionActiveBg: 'transparent',
+													optionFontSize: 14,
+													optionSelectedBg: 'transparent',
+													optionSelectedColor: '#5329FF',
+												}
+											}
+										}}
+									>
+										{selection === 'vendor_code' &&
+											<Form.Item
+												name="vendor_codes"
+												rules={[
+													{ required: true, message: 'Пожалуйста, выберите значение!' }
+												]}
+											>
+												<MultiSelect
+													form={form}
+													optionsData={filters.find(_ => _.shop.id === 0)?.articles.data.map((el, i) => ({
+														key: el.value,
+														value: el.value,
+														label: el.name,
+													}))}
+													selectId='vendor_codes'
+													searchFieldPlaceholder='Поиск по названию артикула'
+													selectPlaceholder='Выберите артикулы'
+												/>
+											</Form.Item>}
+										{selection === 'brand_name' &&
+											<Form.Item
+												name="brand_names"
+												rules={[
+													{ required: true, message: 'Пожалуйста, выберите значение!' }
+												]}
+											>
+												<MultiSelect
+													form={form}
+													optionsData={filters.find(_ => _.shop.id === 0)?.brands.data.map((el, i) => ({
+														key: el.value,
+														value: el.value,
+														label: el.name,
+													}))}
+													selectId='brand_names'
+													searchFieldPlaceholder='Поиск по названию бренда'
+													selectPlaceholder='Выберите бренды'
+												/>
+											</Form.Item>}
+									</ConfigProvider>
+								</>
 							}
-								{selection === 'vendor_code' &&
-									<Form.Item
-										name="vendor_code"
-										rules={[
-											{ required: true, message: 'Пожалуйста, выберите значение!' }
-										]}
+
+
+							{!editData.is_periodic &&
+								<>
+									{/* Селекты магазинов, брендов, артикулов */}
+									<ConfigProvider
+										renderEmpty={() => (<div>Нет данных</div>)}
+										theme={{
+											token: {
+												colorBgContainer: 'white !important',
+												colorBorder: '#5329FF1A',
+												borderRadius: 8,
+												fontFamily: 'Mulish',
+												fontSize: 12,
+												fontWeight: 500,
+												controlHeightLG: 40,
+											},
+											components: {
+												Select: {
+													activeBorderColor: '#5329FF1A',
+													activeOutlineColor: 'transparent',
+													hoverBorderColor: '#5329FF1A',
+													optionActiveBg: 'transparent',
+													optionFontSize: 14,
+													optionSelectedBg: 'transparent',
+													optionSelectedColor: '#5329FF',
+												}
+											}
+										}}
 									>
-										<Select
-											size="large"
-											placeholder="Выберите артикул"
-											suffixIcon={<SelectIcon />}
-											options={filters.find(_ => _.shop.id === 0)?.articles.data.map((el, i) => ({
-												key: el.value,
-												value: el.value,
-												label: el.name,
-											}))}
-										/>
-									</Form.Item>}
-								{selection === 'brand_name' &&
-									<Form.Item
-										name="brand_name"
-										rules={[
-											{ required: true, message: 'Пожалуйста, выберите значение!' }
-										]}
-									>
-										<Select
-											size="large"
-											placeholder="Выберите бренд"
-											suffixIcon={<SelectIcon />}
-											options={filters.find(_ => _.shop.id === 0)?.brands.data.map((el, i) => ({
-												key: el.value,
-												value: el.value,
-												label: el.name,
-											}))}
-										/>
-									</Form.Item>}
-							</ConfigProvider>
+
+										{selection === 'shop' && editData && !editData.is_periodic &&
+
+											<Form.Item
+												name="shop"
+												rules={[
+													{ required: true, message: 'Пожалуйста, выберите значение!' }
+												]}
+											>
+												<Select
+													size="large"
+													placeholder="Выберите магазин"
+													suffixIcon={<SelectIcon />}
+													options={shops?.map((el) => {
+														if (el.id === 0) {
+															return false
+														} else {
+															return {
+																key: el.id,
+																value: el.id,
+																label: el.brand_name,
+																disabled: !el.is_active,
+															}
+														}
+													}).filter(Boolean)}
+												/>
+											</Form.Item>
+
+										}
+										{selection === 'vendor_code' &&
+											<Form.Item
+												name="vendor_code"
+												rules={[
+													{ required: true, message: 'Пожалуйста, выберите значение!' }
+												]}
+											>
+												<Select
+													size="large"
+													placeholder="Выберите артикул"
+													suffixIcon={<SelectIcon />}
+													options={filters.find(_ => _.shop.id === 0)?.articles.data.map((el, i) => ({
+														key: el.value,
+														value: el.value,
+														label: el.name,
+													}))}
+												/>
+											</Form.Item>}
+										{selection === 'brand_name' &&
+											<Form.Item
+												name="brand_name"
+												rules={[
+													{ required: true, message: 'Пожалуйста, выберите значение!' }
+												]}
+											>
+												<Select
+													size="large"
+													placeholder="Выберите бренд"
+													suffixIcon={<SelectIcon />}
+													options={filters.find(_ => _.shop.id === 0)?.brands.data.map((el, i) => ({
+														key: el.value,
+														value: el.value,
+														label: el.name,
+													}))}
+												/>
+											</Form.Item>}
+									</ConfigProvider>
+								</>
+							}
+
 						</div>
 						<ConfigProvider
 							theme={{

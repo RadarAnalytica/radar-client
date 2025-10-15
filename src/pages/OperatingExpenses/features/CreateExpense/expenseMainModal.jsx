@@ -418,6 +418,7 @@ export default function ExpenseMainModal({
 										>
 											<MultiSelect
 												form={form}
+												hasSelectAll
 												optionsData={[
 													{ value: 1, label: 'Понедельник' },
 													{ value: 2, label: 'Вторник' },
@@ -518,6 +519,7 @@ export default function ExpenseMainModal({
 								>
 									<MultiSelect
 										form={form}
+										hasSelectAll
 										optionsData={category.map((el, i) => ({
 											key: el.id,
 											value: el.id,

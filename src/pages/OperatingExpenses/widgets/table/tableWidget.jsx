@@ -20,7 +20,8 @@ const customCellExpenseRender = (
     setModalEditExpenseOpen,
     authToken,
     setModalCopyExpenseOpen,
-    setExpenseCopy
+    setExpenseCopy,
+    setAlertState
 ) => {
     if (dataIndex === 'is_periodic' && record.key !== 'summary' && record.is_periodic) {
         return (
@@ -75,23 +76,38 @@ const customCellExpenseRender = (
 
                         let response;
                         if (record?.is_periodic) {
-                            response = await ServiceFunctions.getPeriodicExpenseTemplate(authToken, record.periodic_expense_id);
-                            const currItem = (data?.find((item) => item.id === record.id))
+                            try {
+                                response = await ServiceFunctions.getPeriodicExpenseTemplate(authToken, record.periodic_expense_id);
 
-                            setExpenseEdit({
-                                ...currItem,
-                                end_date: response.finished_at?.split('T')[0],
-                                frequency: response.period_type,
-                                week: response.period_type === 'week' ? response.period_values : null,
-                                month: response.period_type === 'month' ? response.period_values.toString() : null,
-                                periodic_expense_id: response.id,
-                            })
-                            setModalEditExpenseOpen(true);
-                            return
+                                setExpenseEdit({
+                                    end_date: response.finished_at?.split('T')[0],
+                                    frequency: response.period_type,
+                                    week: response.period_type === 'week' ? response.period_values : null,
+                                    month: response.period_type === 'month' ? response.period_values.toString() : null,
+                                    periodic_expense_id: response.id,
+                                    is_periodic: true,
+                                    shops: response.shops,
+                                    vendor_codes: response.vendor_codes,
+                                    brand_names: response.brand_names,
+                                    value: response.value,
+                                    description: response.description,
+                                    expense_categories: response.expense_categories,
+                                    date: response.date_from,
+                                });
+                                setModalEditExpenseOpen(true);
+                                return
+                            } catch (error) {
+                                setAlertState({
+                                    status: 'error',
+                                    isVisible: true,
+                                    message: 'Не удалось получить шаблон расхода',
+                                });
+                            }
                         }
                         setExpenseEdit((data?.find((item) => item.id === record.id)));
                         setModalEditExpenseOpen(true);
-                    }}
+                    }
+                    }
                     title='Изменить'
                 ></Button>
                 <Button
@@ -108,20 +124,28 @@ const customCellExpenseRender = (
 
                         let response;
                         if (record?.is_periodic) {
-                            response = await ServiceFunctions.getPeriodicExpenseTemplate(authToken, record?.periodic_expense_id);
+                            try {
+                                response = await ServiceFunctions.getPeriodicExpenseTemplate(authToken, record?.periodic_expense_id);
 
-                            setExpenseCopy({
-                                ...response,
-                                end_date: response.finished_at?.split('T')[0],
-                                date: response.date_from,
-                                frequency: response.period_type,
-                                week: response.period_type === 'week' ? response.period_values : null,
-                                month: response.period_type === 'month' ? response.period_values : null,
-                                periodic_expense_id: response.id,
-                                is_periodic: true,
-                            })
-                            setModalCopyExpenseOpen(true);
-                            return
+                                setExpenseCopy({
+                                    ...response,
+                                    end_date: response.finished_at?.split('T')[0],
+                                    date: response.date_from,
+                                    frequency: response.period_type,
+                                    week: response.period_type === 'week' ? response.period_values : null,
+                                    month: response.period_type === 'month' ? response.period_values : null,
+                                    periodic_expense_id: response.id,
+                                    is_periodic: true,
+                                })
+                                setModalCopyExpenseOpen(true);
+                                return
+                            } catch (error) {
+                                setAlertState({
+                                    status: 'error',
+                                    isVisible: true,
+                                    message: 'Не удалось получить шаблон расхода',
+                                });
+                            }
                         }
                     }}
                     title='Копировать'
@@ -184,7 +208,6 @@ export default function TableWidget({
     setModalCreateExpenseOpen,
     setDeleteExpenseId,
     copyExpense,
-    highlightedExpenseId,
     tableType,
     setCategoryEdit,
     setModalCreateCategoryOpen,
@@ -194,7 +217,8 @@ export default function TableWidget({
     setModalEditExpenseOpen,
     authToken,
     setModalCopyExpenseOpen,
-    setExpenseCopy
+    setExpenseCopy,
+    setAlertState
 }) {
     const tableContainerRef = useRef(null);
 
@@ -240,7 +264,8 @@ export default function TableWidget({
                                     setModalEditExpenseOpen,
                                     authToken,
                                     setModalCopyExpenseOpen,
-                                    setExpenseCopy
+                                    setExpenseCopy,
+                                    setAlertState
                                 )
                             }
                             if (tableType === 'category') {
@@ -260,17 +285,7 @@ export default function TableWidget({
                     headerCellWrapperStyle={{
                         lineHeight: '122%',
                     }}
-                    bodyRowClassName={(record) => {
-                        const baseClass = styles.bodyRowSpecial;
-                        const isHighlighted = highlightedExpenseId && record.id === highlightedExpenseId;
-                        const highlightClass = isHighlighted ? styles.highlightedRow : '';
-
-                        if (isHighlighted) {
-                            console.log('Highlighting row:', record.id, 'with class:', styles.highlightedRow);
-                        }
-
-                        return `${baseClass} ${highlightClass}`.trim();
-                    }}
+                    bodyRowClassName={styles.bodyRowSpecial}
                 />
             </div>
         </div>
