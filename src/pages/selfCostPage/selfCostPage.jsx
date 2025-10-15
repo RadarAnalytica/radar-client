@@ -35,8 +35,8 @@ const SelfCostPage = () => {
     const filters = useAppSelector(store => store.filters);
     
     const getTableData = useCallback(async (authToken, shopId, filters, page = 1) => {
-        setDataStatus({ ...initDataStatus, isLoading: true });
         setSearchInputValue('');
+        setDataStatus({ ...initDataStatus, isLoading: true });
         progress.start();
 
         const res = await ServiceFunctions.getSelfCostData(authToken, shopId, filters, page, 50);

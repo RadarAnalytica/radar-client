@@ -85,7 +85,7 @@ const SelfCostTableWidget = ({
                                 <Loader loading={dataStatus.isLoading} progress={progress.value} />    
                             </div>
                         )}
-                        {tableData && tableData.length > 0 && activeBrand && tableData?.map((product, id) => {
+                        {!dataStatus.isLoading && tableData?.length > 0 && activeBrand && tableData?.map((product, id) => {
                             return (
                                 <TableRow
                                     key={product.product}
