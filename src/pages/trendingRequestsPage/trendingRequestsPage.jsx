@@ -7,8 +7,7 @@ import { ParamsWidget, TableWidget } from './widgets';
 import ErrorModal from '@/components/sharedComponents/modals/errorModal/errorModal';
 import { fetchApi } from "@/service/fetchApi";
 import { useDemoMode } from "@/app/providers";
-import NoSubscriptionWarningBlock
-  from "@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock";
+import NoSubscriptionWarningBlock from "@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock";
 
 const initRequestStatus = {
     isError: false,

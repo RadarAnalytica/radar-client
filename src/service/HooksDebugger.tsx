@@ -43,9 +43,18 @@ export const setupErrorBoundary = () => {
  * Хук для логирования рендеров компонента
  * Usage: вызвать внутри компонента
  */
-export const useRenderLogger = (componentName: string, props = {}) => {
+export const useRenderLogger = (componentName?: string, props = {}) => {
     const renderCount = useRef(0);
     const prevProps = useRef(props);
+    
+    // Автоматическое определение имени компонента, если не передано
+    const actualComponentName = componentName || (() => {
+        const error = new Error();
+        const stack = error.stack?.split('\n');
+        const componentLine = stack?.[2];
+        const match = componentLine?.match(/at (\w+)/);
+        return match?.[1] || 'Unknown';
+    })();
     
     useEffect(() => {
         renderCount.current += 1;
@@ -61,11 +70,11 @@ export const useRenderLogger = (componentName: string, props = {}) => {
         }, {});
         
         if (Object.keys(changedProps).length > 0) {
-            console.log(`[${componentName}] Render #${renderCount.current}`, {
+            console.log(`[${actualComponentName}] Render #${renderCount.current}`, {
                 changedProps
             });
         } else {
-            console.log(`[${componentName}] Render #${renderCount.current} - No prop changes`);
+            console.log(`[${actualComponentName}] Render #${renderCount.current} - No prop changes`);
         }
         
         prevProps.current = props;
