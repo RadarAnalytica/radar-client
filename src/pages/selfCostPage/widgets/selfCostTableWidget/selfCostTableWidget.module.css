@@ -52,8 +52,21 @@
 
 .widget__loaderWrapper {
     width: 100%;
-    position: absolute;
-    inset: 100px 0 0 0;
+    position: sticky;
+    inset: 0;
+    background-color: white;
+    z-index: 1;
+    height: calc(100vh - 450px);
+    min-height: 420px;
+
+    &:after {
+        content: '';
+        position: absolute;
+        inset: auto 0;
+        height: 200px;
+        background-color: white;
+        z-index: 1;
+    }
 }
 
 .table {
@@ -175,10 +188,8 @@
     justify-content: flex-start;
     align-items: flex-start;
     padding: 0 17px;
+    overflow: hidden;
 }
-
-
-
 
 
 /* Sort */

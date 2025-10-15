@@ -131,10 +131,10 @@ export const ServiceFunctions = {
 		return data;
 	},
 
-	getSelfCostData: async (token, idShop, filters) => {
+	getSelfCostData: async (token, idShop, filters, page = 1, per_page = 50) => {
 		const body = getRequestObject(filters, undefined, idShop);
 		const res = await fetchApi(
-			'/api/product/self-costs/list',
+			`/api/product/self-costs/list?page=${page}&per_page=${per_page}`,
 			{
 				method: 'POST',
 				headers: {

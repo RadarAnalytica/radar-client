@@ -29,38 +29,31 @@ const SelfCostPage = () => {
     const progress = useLoadingProgress({ loading: dataStatus.isLoading });
     const [tableData, setTableData] = useState(); // данные для рендера таблицы
     const [filteredTableData, setFilteredTableData] = useState(); // данные для рендера таблицы
+    const [totalItems, setTotalItems] = useState(0);
     const { authToken } = useContext(AuthContext);
     const { activeBrand, selectedRange, isFiltersLoaded, activeBrandName, activeArticle, activeGroup } = useAppSelector((state) => state.filters);
     const filters = useAppSelector(store => store.filters);
     
-    const getTableData = useCallback(async (authToken, shopId, filters) => {
+    const getTableData = useCallback(async (authToken, shopId, filters, page = 1) => {
+        setSearchInputValue('');
         setDataStatus({ ...initDataStatus, isLoading: true });
         progress.start();
 
-        const res = await ServiceFunctions.getSelfCostData(authToken, shopId, filters);
+        const res = await ServiceFunctions.getSelfCostData(authToken, shopId, filters, page, 50);
         if (!res.ok) {
             setDataStatus({ ...initDataStatus, isError: true, message: 'Что-то пошло не так :( Попробуйте оновить страницу' });
             return;
         }
 
         const parsedData = await res.json();
-        const { items } = parsedData.data;
-        // sorting the data
-        let sortedData = items.sort((a, b) => a.product - b.product);
-        sortedData = sortedData.sort((a, b) => {
-            if (a.photo && b.photo) {
-                return a.cost && b.cost ? 0 : a.cost ? -1 : b.cost ? 1 : 0;
-            }
-            if (!a.photo && !b.photo) {
-                return a.cost && b.cost ? 0 : a.cost ? -1 : b.cost ? 1 : 0;
-            }
-            return a.photo ? -1 : b.photo ? 1 : 0;
-        });
+        const { items, total } = parsedData.data;
 
+        setTableData([...items]);
+        setFilteredTableData([...items]);
+        setTotalItems(total || items.length);
         progress.complete();
+
         await setTimeout(() => {
-            setTableData([...sortedData]);
-            setFilteredTableData([...sortedData]);
             setDataStatus({ ...initDataStatus, isLoading: false });
             progress.reset();
         }, 500);
@@ -155,6 +148,9 @@ const SelfCostPage = () => {
                             activeBrand={activeBrand}
                             setTableData={setFilteredTableData}
                             resetSearch={resetSearch}
+                            getTableData={getTableData}
+                            filters={filters}
+                            totalItems={totalItems}
                         />
                     </>
                 }
@@ -176,7 +172,6 @@ const SelfCostPage = () => {
                 onClose={() => setDataStatus(initDataStatus)}
                 onCancel={() => setDataStatus(initDataStatus)}
             />
-
         </main>
     );
 };
