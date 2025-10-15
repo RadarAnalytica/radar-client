@@ -52,8 +52,11 @@
 
 .widget__loaderWrapper {
     width: 100%;
-    position: absolute;
-    inset: 100px 0 0 0;
+    position: sticky;
+    inset: 0;
+    background-color: white;
+    z-index: 1;
+    height: 100vh;
 }
 
 .table {
@@ -177,8 +180,9 @@
     padding: 0 17px;
 }
 
-
-
+.table__body_loading {
+    
+}
 
 
 /* Sort */

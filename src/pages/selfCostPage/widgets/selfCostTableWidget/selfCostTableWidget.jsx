@@ -21,17 +21,22 @@ const SelfCostTableWidget = ({
     getTableData,
     setDataStatus,
     setTableData,
-    resetSearch
+    resetSearch,
+    filters,
+    totalItems
 }) => {
-    const [paginationState, setPaginationState] = useState({ current: 1, total: 50, pageSize: 50 });
+    const [paginationState, setPaginationState] = useState({ current: 1, total: 0, pageSize: 50 });
     
     const paginationHandler = (page) => {
         setPaginationState({ ...paginationState, current: page });
+        if (getTableData && authToken && activeBrand) {
+            getTableData(authToken, activeBrand.id, filters, page);
+        }
     };
 
     useEffect(() => {
-        setPaginationState({ current: 1, total: tableData?.length, pageSize: 50 });
-    }, [tableData]);
+        setPaginationState(prev => ({ ...prev, current: 1, total: totalItems }));
+    }, [totalItems]);
 
     useEffect(() => {
         const paginationNextButton = document.querySelector('.ant-pagination-jump-next');
@@ -74,14 +79,14 @@ const SelfCostTableWidget = ({
                     </div>
 
                     {/* Тело таблицы */}
-                    <div className={styles.table__body}>
-                        {dataStatus.isLoading && <div className={styles.widget__loaderWrapper}>
-                            <Loader loading={dataStatus.isLoading} progress={progress.value} />    
-                        </div>}
+                    <div className={`${styles.table__body} ${dataStatus.isLoading ? styles.table__body_loading : ''}`}>
+                        {dataStatus.isLoading && (
+                            <div className={styles.widget__loaderWrapper}>
+                                <Loader loading={dataStatus.isLoading} progress={progress.value} />    
+                            </div>
+                        )}
                         {tableData && tableData.length > 0 && activeBrand && tableData?.map((product, id) => {
-                            const minRange = (paginationState.current - 1) * paginationState.pageSize;
-                            const maxRange = paginationState.current * paginationState.pageSize;
-                            return id >= minRange && id < maxRange && (
+                            return (
                                 <TableRow
                                     key={product.product}
                                     currentProduct={product}
