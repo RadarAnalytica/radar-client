@@ -1,8 +1,8 @@
 import { useState, useContext, useEffect } from "react";
 import { Table } from "antd";
-import ErrorModal from "../../../../components/sharedComponents/modals/errorModal/errorModal";
-import AuthContext from "../../../../service/AuthContext";
-import { URL } from "../../../../service/config";
+import ErrorModal from "@/components/sharedComponents/modals/errorModal/errorModal";
+import AuthContext from "@/service/AuthContext";
+import { URL } from "@/service/config";
 import { Link } from "react-router-dom";
 
 const initReqStatus = {
@@ -89,7 +89,7 @@ const TABLE_CONFIG = [
 
         return (
             <Link
-                to='/admin-referal'
+                to='/admin/referal'
                 state={{id: item.id}}
                 style={{
                     color: 'white',

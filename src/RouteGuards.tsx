@@ -240,24 +240,27 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
       }
     }
     return <Navigate to={expireRedirect} replace />;
-}
+  }
 
-    // ---------4. Onboarding protection (user should be onboarded) ------//
-    if (onboardProtected && user && user.subscription_status && user.subscription_status.toLowerCase() === 'smart' && !user.is_onboarded) {
+  if (onboardProtected 
+    && user?.subscription_status 
+    && (['smart', 'test'].includes(user?.subscription_status?.toLowerCase())) 
+    && !user.is_onboarded) 
+  {
     switch(onboardGuardType) {
-        case 'redirect': {
-          return (<Navigate to={onboardRedirect} />);
-        }
-        case 'fallback': {
+      case 'redirect': {
+        return (<Navigate to={onboardRedirect} />);
+      }
+      case 'fallback': {
         return (
           <Suspense fallback={<LoaderPage />}>
             {onboardFallback()}
           </Suspense>
         );
-        }
       }
+    }
 
-      return (<Navigate to={onboardRedirect} replace />);
+    return (<Navigate to={onboardRedirect} replace />);
   }
 
   // ----------5. User role protection ------------//

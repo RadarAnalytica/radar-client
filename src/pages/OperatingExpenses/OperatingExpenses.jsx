@@ -373,7 +373,6 @@ export default function OperatingExpenses() {
 			console.error('deleteCategoryHandler error', error);
 		} finally {
 			setDeleteCategoryId(null);
-			setLoading(false);
 		}
 	};
 

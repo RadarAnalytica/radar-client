@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import styles from './BlogAdd.module.css';
-import { Form, Input, Upload, Select, Button, ConfigProvider, Modal } from 'antd';
+import { Form, Input, Upload, Select, Button, ConfigProvider, Modal, Checkbox } from 'antd';
 import { InboxOutlined } from '@ant-design/icons';
-import { createBlogPost, createBlogCategory } from '../../../service/api/api';
-import { fetchPosts } from '../../../redux/blog/blogActions';
-import { useAppDispatch } from '../../../redux/hooks';
+import { createBlogPost, createBlogCategory } from '@/service/api/api';
+import { fetchPosts } from '@/redux/blog/blogActions';
+import { useAppDispatch } from '@/redux/hooks';
 
 const statusInitialState = { isLoading: false, isError: false, isSuccess: false, message: '' };
 
@@ -24,15 +24,24 @@ const BlogAdd = ({ categories, token, setActivePage }) => {
 
   const categoryFormSubmitHandler = async (fields) => {
     setCategoryFormStatus({ ...categoryFormStatus, isLoading: true });
-    const data = {
-      name: fields.categoryName,
-      description: fields.categoryDescription ? fields.categoryDescription : '',
-      slug: fields.categoryUrl
-    };
+    
+    let query = `name=${fields.categoryName}`;
+    if (fields.categorySlug) {
+      query += `&slug=${String(fields.categorySlug)}`;
+    }
+    if (fields.categoryDescription) {
+      query += `&description=${fields.categoryDescription}`;
+    }
+
+    const formData = new FormData();
+    if (fields.iconFile?.file?.originFileObj) {
+      formData.append('icon', fields.iconFile.file.originFileObj);
+    }
 
     try {
-      const res = await createBlogCategory(data, token);
-      setCategoriesState([res, ...categoriesState]);
+      const res = await createBlogCategory(formData, query, token);
+      const newCategory = res.data || res;
+      setCategoriesState([newCategory, ...categoriesState.filter(c => c.id !== 'add')]);
       setCategoryFormStatus(statusInitialState);
       setIsAddCategoryModalVisible(false);
       categoryForm.resetFields();
@@ -40,7 +49,7 @@ const BlogAdd = ({ categories, token, setActivePage }) => {
       setCategoryFormStatus({
         ...statusInitialState,
         isError: true,
-        message: error.message || 'Что-то пошло не так при создании статьи'
+        message: error.message || error.detail || 'Что-то пошло не так при создании категории статьи'
       });
       setIsAddCategoryModalVisible(false);
     }
@@ -50,14 +59,18 @@ const BlogAdd = ({ categories, token, setActivePage }) => {
     if (fields.category === 'add') {
       return setMainFormStatus({ ...statusInitialState, isLoading: false, isError: true, message: 'Пожалуйста, выберите категорию статьи!' });
     }
-    setMainFormStatus({ ...statusInitialState, isLoading: true });
-    const formData = new FormData();
-    const query = `title=${fields.articleName}&slug=${fields.articleUrl}&category_id=${fields.category}&description=${fields.articleDescription}`;
 
+    setMainFormStatus({ ...statusInitialState, isLoading: true });
+    
+    let query = `title=${fields.articleName}&category_id=${fields.category}&description=${fields.articleDescription}&is_published=${Boolean(fields.is_published)}&is_recommended=${Boolean(fields.is_recommended)}&is_popular=${Boolean(fields.is_popular)}`;
+    if (fields.articleUrl) {
+      query += `&slug=${String(fields.articleUrl)}`;
+    }
+
+    const formData = new FormData();
     if (fields.textFile?.file?.originFileObj) {
       formData.append('document', fields.textFile.file.originFileObj);
     }
-
     if (fields.coverFile?.file?.originFileObj) {
       formData.append('cover_image', fields.coverFile.file.originFileObj);
     }
@@ -67,10 +80,10 @@ const BlogAdd = ({ categories, token, setActivePage }) => {
       setMainFormStatus({...statusInitialState, isSuccess: true, message: 'Статья успешно создана'});
       mainForm.resetFields();
     } catch (error) {
-      setMainFormStatus({
+      setCategoryFormStatus({
         ...statusInitialState,
         isError: true,
-        message: error.message || 'Что-то пошло не так при создании статьи'
+        message: error.message || error.detail || 'Что-то пошло не так при создании категории статьи'
       });
     }
   };
@@ -115,17 +128,16 @@ const BlogAdd = ({ categories, token, setActivePage }) => {
             </Input>
           </Form.Item>
 
-
           {/* Url */}
           <Form.Item
-            label='url статьи'
+            label='Url статьи'
             name='articleUrl'
             rules={[
-              { required: true, message: 'Пожалуйста, заполните это поле' },
+              { min: 3, message: 'Название должно быть длиннее 3х символов' },
             ]}
           >
             <Input
-              placeholder='Введите адрес статьи'
+              placeholder='Введите url статьи'
               size='large'
             >
             </Input>
@@ -133,7 +145,7 @@ const BlogAdd = ({ categories, token, setActivePage }) => {
 
           {/* описание */}
           <Form.Item
-            label='описание статьи'
+            label='Описание статьи'
             name='articleDescription'
             rules={[
               { required: true, message: 'Пожалуйста, заполните это поле' },
@@ -145,7 +157,6 @@ const BlogAdd = ({ categories, token, setActivePage }) => {
             >
             </Input>
           </Form.Item>
-
 
           {/* Docx */}
           <Form.Item
@@ -166,7 +177,6 @@ const BlogAdd = ({ categories, token, setActivePage }) => {
             </Upload.Dragger>
           </Form.Item>
 
-
           {/* Cover */}
           <Form.Item
             label='Обложка статьи'
@@ -177,7 +187,7 @@ const BlogAdd = ({ categories, token, setActivePage }) => {
           >
             <Upload.Dragger
               maxCount={1}
-              accept=".png,.jpg,.jpeg,.JPG,.JPEG,.svg,.webp"
+              accept=".png,.jpg,.jpeg,.JPG,.JPEG"
             >
               <p className="ant-upload-drag-icon">
                 <InboxOutlined />
@@ -228,6 +238,32 @@ const BlogAdd = ({ categories, token, setActivePage }) => {
             </Form.Item>
           </ConfigProvider>
 
+          {/* Is Published */}
+          <Form.Item
+            label='Активная статья'
+            name='is_published'
+            valuePropName='checked'
+          >
+            <Checkbox>Опубликовать</Checkbox>
+          </Form.Item>
+
+          {/* Is Recommended */}
+          <Form.Item
+            label='Рекомендованная статья'
+            name='is_recommended'
+            valuePropName='checked'
+          >
+            <Checkbox>Рекомендовать</Checkbox>
+          </Form.Item>
+
+          {/* Is Popular */}
+          <Form.Item
+            label='Популярная статья'
+            name='is_popular'
+            valuePropName='checked'
+          >
+            <Checkbox>Популярная</Checkbox>
+          </Form.Item>
 
           {/* Submit */}
           <Button
@@ -265,6 +301,7 @@ const BlogAdd = ({ categories, token, setActivePage }) => {
         onCancel={() => setIsAddCategoryModalVisible(false)}
       >
         <div className={styles.form__modalBody}>
+          <h2>Создание категории</h2>
           <ConfigProvider
             theme={{
               token: {
@@ -300,13 +337,11 @@ const BlogAdd = ({ categories, token, setActivePage }) => {
                 >
                 </Input>
               </Form.Item>
+
               {/* Category slug */}
               <Form.Item
                 label='Url категории'
-                name='categoryUrl'
-                rules={[
-                  { required: true, message: 'Пожалуйста, заполните это поле' },
-                ]}
+                name='categorySlug'
               >
                 <Input
                   placeholder='Введите url категории'
@@ -314,6 +349,7 @@ const BlogAdd = ({ categories, token, setActivePage }) => {
                 >
                 </Input>
               </Form.Item>
+
               {/* Category description */}
               <Form.Item
                 label='Описание категории'
@@ -324,6 +360,25 @@ const BlogAdd = ({ categories, token, setActivePage }) => {
                   size='large'
                 >
                 </Input>
+              </Form.Item>
+
+              {/* Icon */}
+              <Form.Item
+                label='Иконка категории'
+                name='iconFile'
+                rules={[
+                  { required: true, message: 'Пожалуйста, заполните это поле' },
+                ]}
+              >
+                <Upload.Dragger
+                  maxCount={1}
+                  accept=".png,.svg"
+                >
+                  <p className="ant-upload-drag-icon">
+                    <InboxOutlined />
+                  </p>
+                  <p className="ant-upload-text">Кликните или перетащите файл</p>
+                </Upload.Dragger>
               </Form.Item>
 
               {/* Submit */}

@@ -7,8 +7,7 @@ import { ParamsWidget, TableWidget } from './widgets';
 import ErrorModal from '@/components/sharedComponents/modals/errorModal/errorModal';
 import { fetchApi } from "@/service/fetchApi";
 import { useDemoMode } from "@/app/providers";
-import NoSubscriptionWarningBlock
-  from "@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock";
+import NoSubscriptionWarningBlock from "@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock";
 
 const initRequestStatus = {
     isError: false,
@@ -50,7 +49,7 @@ const TrendingRequestsPage = () => {
             res = await res.json();
             setTableData(res.queries);
             setRequestStatus(initRequestStatus);
-            setTablePaginationState({ limit: res.limit, page: res.page, total_pages: res.limit * res.total_pages });
+            setTablePaginationState({ limit: res.limit, page: res.page, total_pages: res.total_pages });
             setIsParamsVisible(false);
         } catch {
             setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось получить данные таблицы. Попробуйте перезагрузить страницу.' });
@@ -105,20 +104,18 @@ const TrendingRequestsPage = () => {
                     </div>
                 </div>
 
-                {tableData &&
-                    <TableWidget
-                        rawData={tableData}
-                        loading={requestStatus.isLoading}
-                        tablePaginationState={tablePaginationState}
-                        setRequestState={setRequestState}
-                        requestState={requestState}
-                        setRequestStatus={setRequestStatus}
-                        initRequestStatus={initRequestStatus}
-                        sortState={sortState}
-                        setSortState={setSortState}
-                        initSortState={initSortState}
-                    />
-                }
+                <TableWidget
+                    rawData={tableData || []}
+                    loading={requestStatus.isLoading}
+                    tablePaginationState={tablePaginationState}
+                    setRequestState={setRequestState}
+                    requestState={requestState}
+                    setRequestStatus={setRequestStatus}
+                    initRequestStatus={initRequestStatus}
+                    sortState={sortState}
+                    setSortState={setSortState}
+                    initSortState={initSortState}
+                />
             </section>
 
             <ErrorModal

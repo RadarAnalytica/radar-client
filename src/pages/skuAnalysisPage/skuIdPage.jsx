@@ -22,7 +22,7 @@ const SkuIdPage = () => {
     const { isDemoMode } = useDemoMode();
     const { selectedRange } = useAppSelector(store => store.filters);
     const { dataStatus, skuMainTableData, skuByColorTableData, skuByWarehouseTableData, skuBySizeTableData } = useAppSelector(store => store.skuAnalysis);
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const [tabsState, setTabsState] = useState(segments[0]);
     const params = useParams();
     const navigate = useNavigate();

@@ -88,6 +88,7 @@ export class DemoDataService {
       '/api/ceo-comparison/raw': () => this.getCeoComparisonRaw(),
       '/api/description-generator/keywords': () => this.getDescriptionGeneratorKeywords(),
       '/api/user/subscription/all': () => this.getSubscriptionsData(),
+      '/api/blog/articles': () => this.getArticlesData(),
       '/api/product/self-costs': () => ({ message: "Success", updated_items: [{ product: 'Демо', cost: 100, fulfillment: 100 }] }),
       '/api/msg/': () => ([]),
       'https://radarmarket.ru/api/web-service/monitoring-oracle/easy/get': () => this.getEasyMonitoringData(),
@@ -273,7 +274,7 @@ export class DemoDataService {
     const oneYearLater = now;
     threeMonthsLater.setMonth(threeMonthsLater.getMonth() + 3);
     oneYearLater.setFullYear(oneYearLater.getFullYear() + 1);
-
+    
     return [
       {
           "id": 1,
@@ -288,6 +289,89 @@ export class DemoDataService {
           "validity_period": oneYearLater.toISOString()
       }
     ];
+  }
+
+  private getArticlesData(): any {
+    const articles = [
+      {
+        id: 1,
+        category_id: 1,
+        title: "Как увеличить продажи на маркетплейсах в 2025 году",
+        description: "Узнайте о лучших стратегиях и инструментах для роста продаж на популярных маркетплейсах",
+        slug: "kak-uvelichit-prodazhi-2025",
+        created_at: new Date(2025, 0, 15).toISOString(),
+        updated_at: new Date(2025, 0, 15).toISOString(),
+        is_published: true,
+        content: "Полное руководство по увеличению продаж на маркетплейсах...",
+        image_url: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800"
+      },
+      {
+        id: 2,
+        category_id: 1,
+        title: "ABC-анализ товаров: как правильно использовать",
+        description: "Разбираемся в методике ABC-анализа и как она помогает оптимизировать ассортимент",
+        slug: "abc-analiz-tovarov",
+        created_at: new Date(2025, 0, 10).toISOString(),
+        updated_at: new Date(2025, 0, 10).toISOString(),
+        is_published: true,
+        content: "ABC-анализ - это мощный инструмент для оптимизации товарного портфеля...",
+        image_url: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800"
+      },
+      {
+        id: 3,
+        category_id: 2,
+        title: "SEO-оптимизация карточек товаров на Wildberries",
+        description: "Пошаговое руководство по оптимизации карточек товаров для улучшения ранжирования",
+        slug: "seo-optimizaciya-wildberries",
+        created_at: new Date(2025, 0, 5).toISOString(),
+        updated_at: new Date(2025, 0, 5).toISOString(),
+        is_published: true,
+        content: "SEO-оптимизация карточек товаров - ключ к успеху на маркетплейсах...",
+        image_url: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800"
+      },
+      {
+        id: 4,
+        category_id: 1,
+        title: "Анализ конкурентов: инструменты и методы",
+        description: "Как правильно анализировать конкурентов и использовать полученные данные",
+        slug: "analiz-konkurentov",
+        created_at: new Date(2024, 11, 28).toISOString(),
+        updated_at: new Date(2024, 11, 28).toISOString(),
+        is_published: true,
+        content: "Анализ конкурентов помогает понять свои сильные и слабые стороны...",
+        image_url: "https://images.unsplash.com/photo-1553729459-efe14ef6055d?w=800"
+      },
+      {
+        id: 5,
+        category_id: 3,
+        title: "Управление остатками: как избежать переизбытка и дефицита",
+        description: "Эффективные стратегии управления складскими остатками",
+        slug: "upravlenie-ostatkami",
+        created_at: new Date(2024, 11, 20).toISOString(),
+        updated_at: new Date(2024, 11, 20).toISOString(),
+        is_published: true,
+        content: "Правильное управление остатками - залог успешного бизнеса...",
+        image_url: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=800"
+      },
+      {
+        id: 6,
+        category_id: 2,
+        title: "Как работать с отзывами покупателей",
+        description: "Стратегии работы с отзывами для повышения репутации и продаж",
+        slug: "rabota-s-otzyvami",
+        created_at: new Date(2024, 11, 15).toISOString(),
+        updated_at: new Date(2024, 11, 15).toISOString(),
+        is_published: true,
+        content: "Отзывы покупателей - важнейший фактор принятия решения о покупке...",
+        image_url: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800"
+      }
+    ];
+
+    return {
+      data: {
+        items: articles
+      }
+    };
   }
 
   // Dashboard данные

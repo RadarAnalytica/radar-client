@@ -278,10 +278,6 @@ select:not(.ant-input) {
   gap: 10px;
 }
 
-.pointer-events-none {
-  pointer-events: none;
-}
-
 .first-screen-action-button {
   border: none;
   background-color: var(--primary-color);

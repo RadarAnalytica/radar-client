@@ -17,19 +17,18 @@ import { useLoadingProgress } from '@/service/hooks/useLoadingProgress';
 const StockAnalysisPage = () => {
     const { authToken } = useContext(AuthContext);
     const { isDemoMode } = useDemoMode();
-    const { activeBrand, selectedRange, shops } = useAppSelector((state) => state.filters);
-    // const { shops } = useAppSelector((state) => state.shopsSlice);
+    const { activeBrand, selectedRange } = useAppSelector((state) => state.filters);
     const filters = useAppSelector((state) => state.filters);
     const [stockAnalysisData, setStockAnalysisData] = useState([]); // это базовые данные для таблицы
     const [stockAnalysisFilteredData, setStockAnalysisFilteredData] = useState(); // это данные для таблицы c учетом поиска
     const [hasSelfCostPrice, setHasSelfCostPrice] = useState(false);
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const progress = useLoadingProgress({ loading });
-    const [primaryCollect, setPrimaryCollect] = useState(null);
-    const [shopStatus, setShopStatus] = useState(null);
 
     const fetchAnalysisData = async () => {
         setLoading(true);
+        setStockAnalysisData([]);
+        setStockAnalysisFilteredData([]);
         progress.start();
         try {
             const data = await ServiceFunctions.getAnalysisData(
@@ -45,59 +44,39 @@ const StockAnalysisPage = () => {
                 setStockAnalysisFilteredData(data);
                 setHasSelfCostPrice(data.every(_ => _.costPriceOne !== null));
                 setLoading(false);
+                progress.reset();
             }, 500);
         } catch (error) {
             console.error(error);
         }
     };
 
-    // 2.1 Получаем данные по выбранному магазину и проверяем себестоимость
     useEffect(() => {
-        setPrimaryCollect(activeBrand?.is_primary_collect);
-        fetchAnalysisData();
-    }, []);
-
-    useEffect(() => {
-        if (activeBrand && activeBrand.id === 0 && shops) {
-            const allShop = {
-                id: 0,
-                brand_name: 'Все',
-                is_active: shops.some(_ => _.is_primary_collect),
-                is_valid: true,
-                is_primary_collect: shops.some(_ => _.is_primary_collect),
-                is_self_cost_set: !shops.some(_ => !_.is_self_cost_set)
-            };
-            setShopStatus(allShop);
+        if (filters.activeBrand) {
+            fetchAnalysisData();
         }
-
-        if (activeBrand && activeBrand.id !== 0 && shops) {
-            const currShop = shops.find(_ => _.id === activeBrand.id);
-            setShopStatus(currShop);
-        }
-
-        fetchAnalysisData();
-    }, [shops, filters]);
+    }, [filters]);
 
 
     return (
         <main className={styles.page}>
             <MobilePlug />
+
             <section className={styles.page__sideNavWrapper}>
                 <Sidebar />
             </section>
+            
             <section className={styles.page__content}>
                 <div className={styles.page__staticContentWrapper}>
                     <div className={styles.page__headerWrapper}>
                         <Header title='Аналитика по товарам' />
                     </div>
 
-                    {activeBrand && activeBrand.is_primary_collect && !activeBrand.is_self_cost_set && !loading &&
-                        <div>
-                            <SelfCostWarningBlock
-                                shopId={activeBrand.id}
-                                onUpdateDashboard={fetchAnalysisData} //
-                            />
-                        </div>
+                    {!loading && activeBrand?.is_primary_collect && !activeBrand?.is_self_cost_set &&
+                        <SelfCostWarningBlock
+                            shopId={activeBrand.id}
+                            onUpdateDashboard={fetchAnalysisData}
+                        />
                     }
 
                     {isDemoMode && <NoSubscriptionWarningBlock />}
@@ -109,7 +88,7 @@ const StockAnalysisPage = () => {
                         />
                     </div>
 
-                    {!activeBrand?.is_primary_collect &&
+                    {!loading && !activeBrand?.is_primary_collect &&
                         <DataCollectWarningBlock
                             title='Ваши данные еще формируются и обрабатываются.'
                         />

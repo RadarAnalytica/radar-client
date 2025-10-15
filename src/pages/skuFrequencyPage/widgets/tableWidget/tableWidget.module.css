@@ -52,3 +52,10 @@
     margin: 10px 20px;
 }
 
+.emptyContainer {
+    padding-right: 52px;
+
+    & > div {
+        padding: 1rem 24px;
+    }
+}

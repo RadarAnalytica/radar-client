@@ -67,6 +67,7 @@
   justify-content: space-between;
   padding: 0.5em 1em;
   font-weight: bold;
+  font-size: 14px;
 }
 
 .customDayPicker .rdp-dropdown {
@@ -74,11 +75,13 @@
   border-radius: 4px;
   background-color: rgba(0, 0, 0, 0.05);
   cursor: pointer;
+  font-size: 14px;
 }
 
 .customDayPicker .rdp-head {
   font-weight: 600;
   color: #8c8c8c;
+  font-size: 14px;
 }
 
 .customDayPicker .rdp-day {
@@ -104,11 +107,11 @@
 }
 
 .customDayPicker .rdp-day_button {
-  font-size: 16px !important;
+  font-size: 14px !important;
 }
 
 :global(.rdp-day_button) {
-  font-size: 16px !important;
+  font-size: 14px !important;
 }
 
 :global(.rdp-weekday) {
@@ -136,7 +139,7 @@
   border: none;
   cursor: pointer;
   color: #5329FF !important;
-  font-size: 1.5em;
+  font-size: 14px;
 }
 
 :global(.customDayPicker .rdp-caption,
@@ -173,6 +176,19 @@
 
   --rdp-range_end-date-background-color: var(--rdp-accent-color);
 
+  font-size: 14px !important;
+}
+
+:global(.rdp) {
+  font-size: 14px !important;
+}
+
+:global(.rdp-caption_label),
+:global(.rdp-nav_button),
+:global(.rdp-dropdown),
+:global(.rdp-head),
+:global(.rdp-day) {
+  font-size: 14px !important;
 }
 
 :global(.rdp-day_button) {
@@ -211,15 +227,11 @@
   border-radius: 8px;
   appearance: none;
   cursor: pointer;
-  /* padding: 0px 32px 0px 16px; */
-  font-family: Mulish;
   font-weight: 400;
-  font-size: 16px;
+  font-size: 14px;
   line-height: 1.5;
   letter-spacing: 0%;
   color: '#1A1A1A';
-  /* border: 1px  solid rgb(33, 37, 41); */
-  /* transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out; */
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
@@ -401,21 +413,22 @@
 
 .datePicker__select {
   width: 100%;
-  border: 1px solid rgb(217, 217, 217);
+  border: 1px solid #5329FF1A;
   border-radius: 8px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 44px;
+  height: 38px;
   padding: 0 10px;
   font-family: Mulish;
-  font-weight: 600;
-  font-size: 16px;
+  font-weight: 500;
+  font-size: 14px;
   line-height: 100%;
   letter-spacing: 0%;
   color: black;
   cursor: pointer;
   user-select: none;
+  background: white;
 }
 
 .datePicker__dropdown {

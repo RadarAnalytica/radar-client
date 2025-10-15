@@ -38,20 +38,20 @@ export const createBlogPost = async (data, query, token) => {
     }
 };
 
-export const createBlogCategory = async (data, token) => {
+export const createBlogCategory = async (data, query, token) => {
     try {
-        const response = await fetch(`${URL}/api/admin/blog/categories`, {
+        const response = await fetch(`${URL}/api/admin/blog/categories?${query}`, {
             method: 'POST',
             headers: {
-                'content-type': 'application/json',
+                'accept': 'application/json',
                 'authorization': 'JWT ' + token,
             },
-            body: JSON.stringify(data)
+            body: data
         });
 
         if (!response.ok) {
             const errorData = await response.json();
-            throw new Error(errorData.message || 'Ошибка при создании статьи');
+            throw new Error(errorData.message || 'Ошибка при создании категории');
         }
 
         return await response.json();

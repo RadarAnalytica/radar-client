@@ -52,6 +52,18 @@
     position: absolute;
     top: 8px;
     right: 8px;
+
+    @media (max-width: 1300px) {
+        width: 30px;
+        height: 30px;
+    }
+}
+
+.bar__iconWrapper svg {
+    @media (max-width: 1300px) {
+        width: 30px !important;
+        height: 30px !important;
+    }
 }
 
 .bar__mainData {

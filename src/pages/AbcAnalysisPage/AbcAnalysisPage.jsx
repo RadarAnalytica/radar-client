@@ -28,7 +28,7 @@ const AbcAnalysisPage = () => {
 	const [isNeedCost, setIsNeedCost] = useState([]);
 	const [viewType, setViewType] = useState('proceeds');
 	const [sorting, setSorting] = useState({ key: null, direction: 'desc' });
-	const [loading, setLoading] = useState(false);
+	const [loading, setLoading] = useState(true);
 	const progress = useLoadingProgress({ loading });
 	const [primaryCollect, setPrimaryCollect] = useState(null);
 	const [shopStatus, setShopStatus] = useState(null);
@@ -127,9 +127,6 @@ const AbcAnalysisPage = () => {
 				selectedRange,
 				activeBrand.id.toString()
 			);
-		} else {
-			progress.complete();
-			setLoading(false);
 		}
 	}, [viewType, page, sorting, activeBrand, selectedRange, isFiltersLoaded, activeBrandName, activeArticle, activeGroup]);
 
@@ -262,22 +259,22 @@ const AbcAnalysisPage = () => {
 
         		{isDemoMode && <NoSubscriptionWarningBlock />}
 
-				<div>
-					<Filters setLoading={setLoading} isDataLoading={loading} />
-				</div>
-
 				{!loading && shops && activeBrand?.is_primary_collect && !activeBrand.is_self_cost_set && (
-						<SelfCostWarningBlock
-							shopId={activeBrand.id}
-							onUpdateDashboard={handleUpdateAbcAnalysis}
-						/>
+					<SelfCostWarningBlock
+						shopId={activeBrand.id}
+						onUpdateDashboard={handleUpdateAbcAnalysis}
+					/>
 				)}
 
 				{!loading && shops && !shopStatus?.is_primary_collect && (
-						<DataCollectWarningBlock
-								title='Ваши данные еще формируются и обрабатываются.'
-						/>
+					<DataCollectWarningBlock
+							title='Ваши данные еще формируются и обрабатываются.'
+					/>
 				)}
+
+				<div className="pt-1">
+					<Filters setLoading={setLoading} isDataLoading={loading} />
+				</div>
 
 				<div className={styles.wrapper} ref={tableContainerRef}>
 					<Loader loading={loading} progress={progress.value} />
