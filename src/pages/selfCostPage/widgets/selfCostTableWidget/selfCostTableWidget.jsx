@@ -57,6 +57,7 @@ const SelfCostTableWidget = ({
         }
     }, [paginationState]);
 
+
     return (
         <div className={styles.widget}>
             <div className={styles.widget__container}>
@@ -79,13 +80,13 @@ const SelfCostTableWidget = ({
                     </div>
 
                     {/* Тело таблицы */}
-                    <div className={`${styles.table__body} ${dataStatus.isLoading ? styles.table__body_loading : ''}`}>
-                        {dataStatus.isLoading && (
-                            <div className={styles.widget__loaderWrapper}>
-                                <Loader loading={dataStatus.isLoading} progress={progress.value} />    
+                    <div className={styles.table__body}>
+                        {dataStatus.isLoading && (  
+                            <div className={`${styles.widget__loaderWrapper} ${progress.value !== null ? 'bg-white' : '' }`}>
+                                <Loader loading={dataStatus.isLoading} progress={progress.value} /> 
                             </div>
                         )}
-                        {!dataStatus.isLoading && tableData?.length > 0 && activeBrand && tableData?.map((product, id) => {
+                        {tableData?.length > 0 && activeBrand && tableData?.map((product, id) => {
                             return (
                                 <TableRow
                                     key={product.product}
