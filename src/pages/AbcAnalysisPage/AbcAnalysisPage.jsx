@@ -259,10 +259,6 @@ const AbcAnalysisPage = () => {
 
         		{isDemoMode && <NoSubscriptionWarningBlock />}
 
-				<div>
-					<Filters setLoading={setLoading} isDataLoading={loading} />
-				</div>
-
 				{!loading && shops && activeBrand?.is_primary_collect && !activeBrand.is_self_cost_set && (
 					<SelfCostWarningBlock
 						shopId={activeBrand.id}
@@ -275,6 +271,10 @@ const AbcAnalysisPage = () => {
 							title='Ваши данные еще формируются и обрабатываются.'
 					/>
 				)}
+
+				<div className="pt-1">
+					<Filters setLoading={setLoading} isDataLoading={loading} />
+				</div>
 
 				<div className={styles.wrapper} ref={tableContainerRef}>
 					<Loader loading={loading} progress={progress.value} />
