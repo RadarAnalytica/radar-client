@@ -363,7 +363,7 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                 }
                 {/* header */}
                 <div className={styles.widget__header} onClick={() => setIsParamsVisible(!isParamsVisible)}>
-                    <p className={styles.widget__title}>Параметры</p>
+                    <div className={styles.widget__title} role='button' tabIndex={0}>Параметры</div>
                     <div className={styles.widget__headerWrapper}>
                         <HowToLink
                             url='https://radar.usedocs.com/article/77127'
