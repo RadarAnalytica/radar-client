@@ -99,7 +99,6 @@ export default function ExpenseEditModal({
 
 
 	const onFinish = (values) => {
-		console.log('onFinish', values)
 		handle(getRequestObject(values, editData))
 	};
 
@@ -234,6 +233,7 @@ export default function ExpenseEditModal({
 							week: [],
 							vendor_codes: [],
 							brand_names: [],
+							shops: [],
 							expense_categories: [],
 						}}
 					>

@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext, useMemo, useRef } from 'react';
+import { useState, useEffect, useContext, useMemo, useRef, useLayoutEffect } from 'react';
 import { ConfigProvider, Button, Popover, Flex, Tooltip } from 'antd';
 import { useAppSelector } from '@/redux/hooks';
 import AuthContext from '@/service/AuthContext';
@@ -124,9 +124,7 @@ export default function OperatingExpenses() {
 			setCategory([]);
 		} finally {
 			setCategoryLoading(false);
-			if (!firstLoad.current) {
-				setLoading(false);
-			}
+			setLoading(false);
 		}
 	};
 
@@ -163,22 +161,22 @@ export default function OperatingExpenses() {
 			setExpense([]);
 		} finally {
 			//console.log('updateExpenses', !firstLoad.current);
-			if (!firstLoad.current) {
-				setLoading(false);
-			}
+			setLoading(false);
 		}
 	};
 
-	useEffect(() => {
-		if (!activeBrand && !activeBrand?.is_primary_collect) {
-			return
-		}
-
+	useLayoutEffect(() => {
 		if (firstLoad.current) {
 			updateCategories().then(() => {
 				firstLoad.current = false;
 				setLoading(false);
 			});
+			return
+		}
+	}, [])
+
+	useEffect(() => {
+		if (!activeBrand && !activeBrand?.is_primary_collect) {
 			return
 		}
 
@@ -189,7 +187,7 @@ export default function OperatingExpenses() {
 
 		if (view === 'category') {
 			//console.log('updateArticles');
-			updateCategories();
+			//updateCategories();
 		}
 	}, [activeBrand, selectedRange, expPagination.page, categoryPagination.page, activeBrandName, activeArticle, activeExpenseCategory, expenseCategories])
 
@@ -603,8 +601,8 @@ export default function OperatingExpenses() {
 						}
 
 						{alertState.status === 'error' && (
-						<svg width="16" height="16" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-							<rect width="30" height="30" rx="5" fill="#F93C65" fillOpacity="0.1" />
+							<svg width="16" height="16" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+								<rect width="30" height="30" rx="5" fill="#F93C65" fillOpacity="0.1" />
 								<path d="M14.013 18.2567L13 7H17L15.987 18.2567H14.013ZM13.1818 23V19.8454H16.8182V23H13.1818Z" fill="#F93C65" />
 							</svg>
 						)}
