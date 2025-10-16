@@ -672,7 +672,18 @@ export class DemoDataService {
         rub: this.generateRandomAmount(1560000, 2280000) * baseMultiplier,
         percent: this.generateRandomPercent(90, 98)
       },
-      operating_expenses: null,
+      operating_expenses: [
+        {
+          category: 'Заработная плата',
+          rub: this.generateRandomAmount(100000, 200000) * baseMultiplier,
+          percent: this.generateRandomPercent(0.01, 0.3)
+        },
+        {
+          category: 'Аренда',
+          rub: this.generateRandomAmount(100000, 200000) * baseMultiplier,
+          percent: this.generateRandomPercent(0.01, 0.3)
+        }
+      ],
       operating_profit: {
         rub: this.generateRandomAmount(180000, 420000) * baseMultiplier,
         percent: this.generateRandomPercent(10, 20)
@@ -758,7 +769,18 @@ export class DemoDataService {
           rub: this.generateRandomAmount(110000, 240000) * baseMultiplier,
           percent: this.generateRandomPercent(85, 98)
         },
-        operating_expenses: null,
+        operating_expenses: [
+          {
+            category: 'Заработная плата',
+            rub: this.generateRandomAmount(10000, 20000) * baseMultiplier,
+            percent: this.generateRandomPercent(0.01, 0.3)
+          },
+          {
+            category: 'Аренда',
+            rub: this.generateRandomAmount(10000, 20000) * baseMultiplier,
+            percent: this.generateRandomPercent(0.01, 0.3)
+          }
+        ],
         operating_profit: {
           rub: this.generateRandomAmount(-50000, 150000) * baseMultiplier,
           percent: this.generateRandomPercent(-40, 70)

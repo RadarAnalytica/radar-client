@@ -116,7 +116,27 @@ export default function ReportProfitLoss() {
 
 	const getData = (data, metricsOrder) => {
 		const tableData = [];
-		const childrenData = [];
+		const childrenData = {};
+
+		const getCellValue = (dataSource, key, parentKey, isParent, isChildren) => {
+			if (!isParent && !isChildren) {
+				return dataSource[key];
+			}
+
+			if (parentKey === 'operating_expenses') {
+				const expenseItem = dataSource.operating_expenses?.find(exp => exp.category === key);
+				return expenseItem || { rub: 0, percent: 0 };
+			}
+
+			if (key === 'operating_expenses') {
+				const accSum = dataSource.operating_expenses?.reduce((acc, exp) => acc + exp.rub, 0) || 0;
+				const accPercent = dataSource.operating_expenses?.reduce((acc, exp) => acc + exp.percent, 0) || 0;
+				return { rub: accSum, percent: accPercent };
+			}
+
+			return dataSource.direct_expenses[key];
+		};
+
 		metricsOrder.forEach((metric, index) => {
 			const { key, title, isChildren, isParent, parentKey } = metric;
 			let rowObject = {
@@ -124,40 +144,33 @@ export default function ReportProfitLoss() {
 				isParent,
 				id: index,
 				key: `${index}-${key}`,
+				originalKey: key,
 			};
+
 			data.forEach(item => {
-				if (isParent || isChildren) {
-					rowObject[item.year] = item.data.direct_expenses[key];
-				} else {
-					rowObject[item.year] = item.data[key];
-				}
+				rowObject[item.year] = getCellValue(item.data, key, parentKey, isParent, isChildren);
 
 				if (item.months) {
 					item.months.forEach(month => {
-						if (isChildren || isParent) {
-							rowObject[month.month_label] = month.data.direct_expenses[key];
-						} else {
-							rowObject[month.month_label] = month.data[key];
-						}
+						rowObject[month.month_label] = getCellValue(month.data, key, parentKey, isParent, isChildren);
 					});
 				}
 			});
 
 			if (isChildren) {
-				childrenData.push(rowObject);
+				childrenData[parentKey] = [...(childrenData[parentKey] || []), rowObject];
 			} else {
 				tableData.push(rowObject);
 			}
 		});
-		const finalDataSource = tableData.map(_ => {
-			if (_.isParent) {
-				return {
-					..._,
-					children: childrenData
-				};
-			}
-			return _;
+
+		const finalDataSource = tableData.map(row => {
+			return row.isChildren ? row : {
+				...row,
+				children: childrenData[row.originalKey] || [],
+			};
 		});
+
 		return finalDataSource;
 	};
 
@@ -185,10 +198,28 @@ export default function ReportProfitLoss() {
 			{ key: 'penalties', title: 'Штрафы', isChildren: true, parentKey: 'total_expenses' },
 			{ key: 'compensation', title: 'Компенсация' },
 			{ key: 'gross_margin', title: 'Маржинальная прибыль' },
+			{ key: 'operating_expenses', title: 'Операционные расходы', isParent: true },
 			{ key: 'operating_profit', title: 'Операционная прибыль (EBITDA)' },
 			{ key: 'tax', title: 'Налоги' },
 			{ key: 'net_profit', title: 'Чистая прибыль' },
 		];
+
+		try {
+			if (Array.isArray(data[0].data.operating_expenses) && data[0].data.operating_expenses.length > 0) {
+				const categories = [...new Set(data[0].data.operating_expenses.map(item => item.category))];
+				
+				categories.forEach(category => {
+					metricsOrder.push({
+						key: category,
+						title: category,
+						isChildren: true,
+						parentKey: 'operating_expenses'
+					});
+				});
+			}
+		} catch (error) {
+			console.warn('Operating expenses not found:', error);
+		}
 		
 		setData([...getData(data, metricsOrder)]);
 		setColumns(getConfig(data));
