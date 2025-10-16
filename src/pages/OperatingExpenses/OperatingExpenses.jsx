@@ -23,13 +23,11 @@ import { Tooltip as RadarTooltip } from 'radar-ui';
 import { useAppDispatch } from '@/redux/hooks';
 import { actions as filtersActions } from '@/redux/apiServicePagesFiltersState/apiServicePagesFilterState.slice';
 
-
 const initAlertState = {
 	status: '',
 	isVisible: false,
 	message: '',
 };
-
 
 export default function OperatingExpenses() {
 	const dispatch = useAppDispatch();
@@ -38,8 +36,6 @@ export default function OperatingExpenses() {
 	const firstLoad = useRef(true);
 	const [loading, setLoading] = useState(true);
 	const [view, setView] = useState('expense'); // costs | category
-	// const [isPopoverOpen, setIsPopoverOpen] = useState(false);
-
 	const [modalCreateExpenseOpen, setModalCreateExpenseOpen] = useState(false);
 	const [modalCreateCategoryOpen, setModalCreateCategoryOpen] = useState(false);
 	const [modalEditExpenseOpen, setModalEditExpenseOpen] = useState(false);
@@ -115,12 +111,10 @@ export default function OperatingExpenses() {
 
 		try {
 			const res = await ServiceFunctions.getOperatingExpensesCategoryGetAll(authToken, pagination);
-			// console.log('updateCategories', res);
 			setCategory(res.data);
 			dispatch(filtersActions.setExpenseCategories(res.data.map(_ => ({ ..._, value: _.name, key: _.id }))));
 			!activeExpenseCategory && dispatch(filtersActions.setActiveFilters({ stateKey: 'activeExpenseCategory', data: { value: 'Все', id: 0 } }));
 		} catch (error) {
-			// console.error('updateCategories error', error);
 			setCategory([]);
 		} finally {
 			setCategoryLoading(false);
@@ -189,7 +183,7 @@ export default function OperatingExpenses() {
 			//console.log('updateArticles');
 			//updateCategories();
 		}
-	}, [activeBrand, selectedRange, expPagination.page, categoryPagination.page, activeBrandName, activeArticle, activeExpenseCategory, expenseCategories])
+	}, [activeBrand, selectedRange, expPagination.page, categoryPagination.page, activeBrandName, activeArticle, activeExpenseCategory])
 
 	const modalExpenseHandlerClose = () => {
 		setModalCreateExpenseOpen(false);
@@ -290,8 +284,6 @@ export default function OperatingExpenses() {
 			setLoading(false);
 		}
 	}
-
-
 
 	const copyExpense = async (expenseId) => {
 		try {
