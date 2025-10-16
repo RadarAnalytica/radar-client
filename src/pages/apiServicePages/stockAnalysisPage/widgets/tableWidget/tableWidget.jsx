@@ -205,6 +205,7 @@ const TableWidget = ({ stockAnalysisFilteredData, loading, progress }) => {
                         preset='radar-table-simple'
                         stickyHeader
                         resizeable
+                        resizeThrottle={33}
                         onResize={onResizeGroup}
                         onSort={sortButtonClickHandler}
                         pagination={{
@@ -236,9 +237,9 @@ const TableWidget = ({ stockAnalysisFilteredData, loading, progress }) => {
                         }}
                         bodyCellWrapperStyle={{
                             padding: '5px 10px',
-                            minWidth: 'inherit',
-                            width: 'inherit',
-                            maxWidth: 'inherit',
+                            //minWidth: 'inherit',
+                            //width: 'inherit',
+                            //maxWidth: 'inherit',
                             border: 'none',
                         }}
                         bodyCellStyle={{
