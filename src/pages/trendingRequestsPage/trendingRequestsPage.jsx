@@ -71,6 +71,7 @@ const TrendingRequestsPage = () => {
         titlePrefix: tableData ? 'Поиск трендовых запросов' : undefined
     }), [tableData]);
 
+
     return (
         <main className={styles.page}>
             <MobilePlug />
@@ -104,18 +105,23 @@ const TrendingRequestsPage = () => {
                     </div>
                 </div>
 
-                <TableWidget
-                    rawData={tableData || []}
-                    loading={requestStatus.isLoading}
-                    tablePaginationState={tablePaginationState}
-                    setRequestState={setRequestState}
-                    requestState={requestState}
-                    setRequestStatus={setRequestStatus}
-                    initRequestStatus={initRequestStatus}
-                    sortState={sortState}
-                    setSortState={setSortState}
-                    initSortState={initSortState}
-                />
+                {!requestStatus.isLoading && (tableData?.length > 0 
+                    ? <TableWidget
+                        rawData={tableData}
+                        loading={requestStatus.isLoading}
+                        tablePaginationState={tablePaginationState}
+                        setRequestState={setRequestState}
+                        requestState={requestState}
+                        setRequestStatus={setRequestStatus}
+                        initRequestStatus={initRequestStatus}
+                        sortState={sortState}
+                        setSortState={setSortState}
+                        initSortState={initSortState}
+                    />
+                    : <div className={styles.page__contentEmpty}>
+                        По заданным параметрам запроса данные не найдены
+                    </div>
+                )}
             </section>
 
             <ErrorModal
