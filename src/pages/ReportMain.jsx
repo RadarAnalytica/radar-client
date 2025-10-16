@@ -142,7 +142,6 @@ const ReportMain = () => {
     return <NoSubscriptionPage title={'Финансовые отчеты'} />;
   }
 
-  console.log(data);
 
   return (
     <div className='dashboard-page notranslate'>
