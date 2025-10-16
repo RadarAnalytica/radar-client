@@ -75,17 +75,16 @@ const AbcAnalysisPage = () => {
 		} catch (e) {
 			console.error(e);
 			setDataAbcAnalysis([]);
+			progress.reset();
+			setLoading(false);
 		}
 	};
 
 	const tableData = useMemo(() => {
-		if (!dataAbcAnalysis && !dataAbcAnalysis?.results) {
-			return [];
-		}
-		return dataAbcAnalysis.results.map((el, i) => ({
+		return dataAbcAnalysis?.results?.length > 0 ? dataAbcAnalysis.results.map((el, i) => ({
 			key: i,
 			...el,
-		}));
+		})) : [];
 	}, [dataAbcAnalysis]);
 
 	const columnsList = useMemo(() => {
