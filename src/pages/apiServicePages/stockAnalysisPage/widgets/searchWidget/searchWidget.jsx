@@ -144,7 +144,8 @@ const SearchWidget = ({ stockAnalysisData, setStockAnalysisFilteredData, filters
             </div>
 
             <div className={styles.widget__buttonsWrapper}>
-                <ConfigProvider
+                {/* Скрыто 16.10.25 по Просьбе Вовы */}
+                {/* <ConfigProvider
                     wave={{ disabled: true }}
                     theme={{
                         token: {
@@ -176,7 +177,7 @@ const SearchWidget = ({ stockAnalysisData, setStockAnalysisFilteredData, filters
                         </svg>
                         Установить себестоимость
                     </Button>
-                </ConfigProvider>
+                </ConfigProvider> */}
 
                 {/* EXEL DOWNLOAD BUTTON */}
                 {user && user.subscription_status !== null && <ConfigProvider
