@@ -12,6 +12,7 @@ import NoSubscriptionWarningBlock from "@/components/sharedComponents/noSubscrip
 const initRequestStatus = {
     isError: false,
     isLoading: false,
+    isLoaded: false,
     isSuccess: false,
     message: ''
 };
@@ -48,7 +49,7 @@ const TrendingRequestsPage = () => {
             }
             res = await res.json();
             setTableData(res.queries);
-            setRequestStatus(initRequestStatus);
+            setRequestStatus({ ...initRequestStatus, isLoaded: true });
             setTablePaginationState({ limit: res.limit, page: res.page, total_pages: res.total_pages });
             setIsParamsVisible(false);
         } catch {
@@ -105,7 +106,7 @@ const TrendingRequestsPage = () => {
                     </div>
                 </div>
 
-                {!requestStatus.isLoading && (tableData?.length > 0 
+                {!requestStatus.isLoading && requestStatus.isLoaded && (tableData?.length > 0 
                     ? <TableWidget
                         rawData={tableData}
                         loading={requestStatus.isLoading}
