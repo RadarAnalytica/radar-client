@@ -52,13 +52,13 @@ const WeeklyReportByGoods = () => {
         </div>
 
         {isDemoMode &&
-          <div className='mb-1'>
+          <div className='mb-3'>
             <NoSubscriptionWarningBlock />
           </div>
         }
 
         {!user.is_report_downloaded &&
-          <div className='mb-1'>
+          <div className='mb-3'>
             <DemonstrationSection />
           </div>
         }
