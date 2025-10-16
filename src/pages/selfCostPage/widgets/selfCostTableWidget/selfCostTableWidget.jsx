@@ -23,14 +23,15 @@ const SelfCostTableWidget = ({
     setTableData,
     resetSearch,
     filters,
-    totalItems
+    totalItems,
+    searchInputValue
 }) => {
     const [paginationState, setPaginationState] = useState({ current: 1, total: 0, pageSize: 50 });
     
     const paginationHandler = (page) => {
         setPaginationState({ ...paginationState, current: page });
         if (getTableData && authToken && activeBrand) {
-            getTableData(authToken, activeBrand.id, filters, page);
+            getTableData(authToken, activeBrand.id, filters, page, searchInputValue || '');
         }
     };
 
