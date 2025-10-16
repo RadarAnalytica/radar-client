@@ -47,6 +47,8 @@ const StockAnalysisPage = () => {
                 progress.reset();
             }, 500);
         } catch (error) {
+            setLoading(false);
+            progress.reset();
             console.error(error);
         }
     };
