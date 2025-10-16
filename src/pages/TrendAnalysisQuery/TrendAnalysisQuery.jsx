@@ -15,7 +15,6 @@ import DownloadButton from '@/components/DownloadButton';
 import { Table as RadarTable } from 'radar-ui';
 
 
-
 const customCellRender = (value, record, index, dataIndex) => {
 	return <div className={styles.customCellRender}>{formatPrice(value, '')}</div>;
 };
@@ -23,7 +22,7 @@ const customCellRender = (value, record, index, dataIndex) => {
 export default function TrendAnalysisQuery() {
 	const { isDemoMode } = useDemoMode();
 	const { selectedRange } = useAppSelector(state => state.filters);
-	const [loading, setLoading] = useState(true);
+	const [loading, setLoading] = useState(false);
 	const [timeFrame, setTimeFrame] = useState('month');
 	const [data, setData] = useState(null);
 	const [downloadLoading, setDownloadLoading] = useState(false);
