@@ -448,15 +448,16 @@ export default function OperatingExpenses() {
 						</Flex>
 					</Flex>
 				)}
-
-
-				<div className={styles.controls}>
-					<Filters
-						isDataLoading={loading}
-						groupSelect={false}
-						opExpensesArticles
-					/>
-				</div>
+				
+				{view === 'expense' && 
+					<div className={styles.controls}>
+						<Filters
+							isDataLoading={loading}
+							groupSelect={false}
+							opExpensesArticles
+						/>
+					</div>
+				}
 
 				{!loading && shops && activeBrand && !activeBrand?.is_primary_collect && (
 					<DataCollectWarningBlock />
