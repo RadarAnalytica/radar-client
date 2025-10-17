@@ -79,7 +79,7 @@ export default function Rnp() {
 	const [expanded, setExpanded] = useState('collapsed');
 
 	const updateRnpListByArticle = async () => {
-		setLoading(rnpDataByArticle === null);
+		setLoading(true);
 		progress.start();
 		try {
 			if (activeBrand) {
@@ -95,6 +95,7 @@ export default function Rnp() {
 				await setTimeout(() => {
 					dataToRnpList(response);
 					setLoading(false);
+					progress.reset();
 				}, 500);
 			}
 		} catch (error) {
@@ -105,7 +106,7 @@ export default function Rnp() {
 	};
 
 	const updateRnpListSummary = async () => {
-		setLoading(rnpDataTotal === null);
+		setLoading(true);
 		progress.start();
 		try {
 			if (activeBrand) {
@@ -121,11 +122,14 @@ export default function Rnp() {
 				await setTimeout(() => {
 					dataToRnpTotalList(response);
 					setLoading(false);
+					progress.reset();
 				}, 500);
 			}
 		} catch (error) {
 			console.error('updateRnpListSummary error', error);
 			setRnpDataTotal(null);
+			setLoading(false);
+			progress.reset();
 		}
 	};
 
@@ -239,8 +243,6 @@ export default function Rnp() {
 		if (activeBrand && !activeBrand?.is_primary_collect) {
 			setLoading(false);
 		}
-
-		// }, [activeBrand, activeBrand, shops, filters, page, view, selectedRange]);
 	}, [filters, page, view, selectedRange]);
 
 	// Добавляем автоскролл к контейнеру страницы
@@ -253,10 +255,10 @@ export default function Rnp() {
 
 	useEffect(() => {
 		return () => {
-			if (selectedRange && (selectedRange.from || selectedRange.to)) {
+			if (selectedRange && (isToday(selectedRange.from) || isToday(selectedRange.to))) {
 				const defaultPeriod = { period: 7 };
-            	dispatch(filtersActions.setPeriod(defaultPeriod));
-            	localStorage.setItem('selectedRange', JSON.stringify(defaultPeriod));
+				dispatch(filtersActions.setPeriod(defaultPeriod));
+				localStorage.setItem('selectedRange', JSON.stringify(defaultPeriod));
 			}
 
 			localStorage.removeItem('RNP_EXPANDED_TABLE_ROWS_STATE');
@@ -318,6 +320,7 @@ export default function Rnp() {
 						shopId={activeBrand.id}
 					/>
 				)}
+
 				{!loading && ((rnpDataByArticle?.length > 0 && view === 'articles') || (view === 'total' && rnpDataTotal)) && (<ConfigProvider
 					theme={{
 						token: {
@@ -416,9 +419,13 @@ export default function Rnp() {
 					</>
 				)}
 
-				<Loader loading={loading} progress={progress.value} />
+				{loading && 
+					<div className={styles.loader__container}>
+						<Loader loading={loading} progress={progress.value} />
+					</div>
+				}
 
-				{((rnpDataByArticle && view === 'articles') || (view === 'total' && rnpDataTotal)) && activeBrand?.is_primary_collect && (
+				{!loading && ((rnpDataByArticle && view === 'articles') || (view === 'total' && rnpDataTotal)) && activeBrand?.is_primary_collect && (
 					<RnpList
 						view={view}
 						setView={viewHandler}
@@ -429,7 +436,6 @@ export default function Rnp() {
 						setDeleteRnpId={setDeleteRnpId}
 						expanded={expanded}
 						setExpanded={setExpanded}
-						loading={loading}
 					/>
 				)}
 
