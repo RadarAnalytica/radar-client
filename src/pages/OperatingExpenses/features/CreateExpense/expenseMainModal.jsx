@@ -154,10 +154,7 @@ export default function ExpenseMainModal({
 						<h2 className={styles.modal__title}>
 							{'Добавление расхода'}
 						</h2>
-						<HowToLink
-							text='Как это работает?'
-							link='/'
-						/>
+						{/* <HowToLink text='Как это работает?' link='#' /> */}
 					</header>
 
 					<Form
@@ -188,9 +185,6 @@ export default function ExpenseMainModal({
 								{ value: 'plan', label: 'Плановая' },
 							]}
 						/>
-
-
-
 
 						{/* Выбор даты и суммы расхода */}
 						<Row className={styles.modal__part} gutter={16}>
@@ -475,15 +469,6 @@ export default function ExpenseMainModal({
 							</Row>}
 						{/* -------------------*/}
 
-
-
-
-
-
-
-
-
-
 						{/* Выбор статьи */}
 						<div className={styles.modal__wrapper}>
 							<ConfigProvider
@@ -601,17 +586,6 @@ export default function ExpenseMainModal({
 							</ConfigProvider>
 						</div>
 						{/* -------------------*/}
-
-
-
-
-
-
-
-
-
-
-
 
 						<div className={styles.modal__part}>
 							<h3 className={styles.modal__subtitle}>

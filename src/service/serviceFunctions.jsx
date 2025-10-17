@@ -1821,6 +1821,7 @@ export const ServiceFunctions = {
 			throw new Error(error);
 		}
 	},
+	
 	patchOperatingExpensesExpense: async(token, expense, updateExpenseUrl) => {
 		try {
 			const res = await fetch(

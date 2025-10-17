@@ -23,9 +23,10 @@ const customCellExpenseRender = (
     setExpenseCopy,
     setAlertState
 ) => {
-    if (dataIndex === 'is_periodic' && record.key !== 'summary' && record.is_periodic) {
+
+    if (dataIndex === 'is_periodic' && record.key !== 'summary') {
         return (
-            <div className={record.is_periodic ? styles.periodicBadge_periodic : styles.periodicBadge_static} title={record.is_periodic ? 'Периодический' : 'Разовый'}>
+            <div className={record.is_periodic ? styles.periodicBadge_periodic : styles.periodicBadge_static} title={record.is_periodic ? 'Плановый' : 'Разовый'}>
                 {record.is_periodic ? 'Плановый' : 'Разовый'}
             </div>
         )
@@ -66,7 +67,7 @@ const customCellExpenseRender = (
     }
     if (dataIndex === 'action' && record.key !== 'summary') {
         return (<Flex justify="start" gap={20}>
-            <ConfigProvider>
+            <ConfigProvider renderEmpty={() => <div>Нет данных</div>}>
                 <Button
                     type="text"
                     icon={EditIcon}
