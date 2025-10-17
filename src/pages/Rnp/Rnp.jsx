@@ -23,6 +23,7 @@ import ErrorModal from '../../components/sharedComponents/modals/errorModal/erro
 import { Filters } from '@/components/sharedComponents/apiServicePagesFiltersComponent';
 import { fetchRnpFilters } from '../../redux/filtersRnp/filterRnpActions';
 import { actions as filterActions } from '../../redux/filtersRnp/filtersRnpSlice';
+import { actions as filtersActions } from '@/redux/apiServicePagesFiltersState/apiServicePagesFilterState.slice';
 import HowToLink from '../../components/sharedComponents/howToLink/howToLink';
 import { useDemoMode } from "@/app/providers";
 import NoSubscriptionWarningBlock from '@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock';
@@ -98,6 +99,8 @@ export default function Rnp() {
 			}
 		} catch (error) {
 			console.error('UpdateRnpListByArticle error', error);
+			setLoading(false);
+			progress.reset();
 		}
 	};
 
@@ -245,14 +248,17 @@ export default function Rnp() {
 		if (!pageContentRef.current) return;
 
 		const element = pageContentRef.current;
-
-		return autoScrollForElements({
-			element,
-		});
+		return autoScrollForElements({ element });
 	}, []);
 
 	useEffect(() => {
 		return () => {
+			if (selectedRange && (selectedRange.from || selectedRange.to)) {
+				const defaultPeriod = { period: 7 };
+            	dispatch(filtersActions.setPeriod(defaultPeriod));
+            	localStorage.setItem('selectedRange', JSON.stringify(defaultPeriod));
+			}
+
 			localStorage.removeItem('RNP_EXPANDED_TABLE_ROWS_STATE');
 			localStorage.removeItem('RNP_EXPANDED_TOTAL_TABLE_ROWS_STATE');
 			localStorage.removeItem('RNP_EXPANDED_STATE');

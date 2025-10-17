@@ -30,13 +30,11 @@ export const Filters = ({
   const { activeBrand, filters, shops, expenseCategories, activeExpenseCategory } = useAppSelector(store => store.filters);
   const filtersState = useAppSelector(store => store.filters);
 
-
   // ---- хэндлер выбора магазина -----------//
   const shopChangeHandler = (value) => {
     const selectedShop = shops?.find(_ => _.id === value);
     dispatch(filterActions.setActiveShop(selectedShop));
   };
-  //- -----------------------------------------//
 
 
   return (
