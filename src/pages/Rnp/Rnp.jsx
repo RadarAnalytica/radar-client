@@ -13,7 +13,7 @@ import { useAppSelector, useAppDispatch } from '../../redux/hooks';
 import { ServiceFunctions } from '../../service/serviceFunctions';
 import { RnpFilters } from './widget/RnpFilters/RnpFilters';
 import { COLUMNS, ROWS, renderFunction, getTableConfig, getTableData } from './config';
-import { format, isToday } from 'date-fns';
+import { format } from 'date-fns';
 import { ru } from 'date-fns/locale';
 import RnpList from './widget/RnpList/RnpList';
 import ModalDeleteConfirm from '../../components/sharedComponents/ModalDeleteConfirm/ModalDeleteConfirm';
@@ -254,20 +254,23 @@ export default function Rnp() {
 	}, []);
 
 	useEffect(() => {
-		return () => {
-			if (selectedRange && (isToday(selectedRange.from) || isToday(selectedRange.to))) {
+		if (selectedRange) {
+			const today = format(new Date(), 'yyyy-MM-dd');
+			if (selectedRange.to === today || selectedRange.from === today) {	
 				const defaultPeriod = { period: 7 };
 				dispatch(filtersActions.setPeriod(defaultPeriod));
 				localStorage.setItem('selectedRange', JSON.stringify(defaultPeriod));
 			}
+		}
 
+		return () => {
 			localStorage.removeItem('RNP_EXPANDED_TABLE_ROWS_STATE');
 			localStorage.removeItem('RNP_EXPANDED_TOTAL_TABLE_ROWS_STATE');
 			localStorage.removeItem('RNP_EXPANDED_STATE');
 			shops?.forEach((shop) => {
 				localStorage.removeItem(`RNP_SAVED_ORDER_${shop.id}`);
 			});
-		}
+		};
 	}, []);
 
 
