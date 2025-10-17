@@ -566,6 +566,7 @@ export default function OperatingExpenses() {
 					) : null}
 					onOk={() => deleteExpense(deleteExpenseId, expenseData.data.find((el) => el.id === deleteExpenseId)?.is_periodic)}
 					isLoading={loading}
+					buttonText='Удалить расход'
 				/>}
 
 				{deleteCategoryId && <ModalDeleteConfirm

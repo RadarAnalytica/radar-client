@@ -1,8 +1,9 @@
 import { ConfigProvider, Modal, Flex, Button, Form, Input, } from 'antd';
-import { SelectIcon } from '../../../../components/sharedComponents/apiServicePagesFiltersComponent/shared';
+import { SelectIcon } from '@/components/sharedComponents/apiServicePagesFiltersComponent/shared';
 import styles from '../../shared/styles/modals.module.css';
 import { CloseIcon } from '../../shared/Icons';
 import { useMemo, useState } from 'react';
+import { useAppSelector } from '@/redux/hooks';
 
 export default function ModalCreateCategory({
 	open = true,
@@ -13,10 +14,28 @@ export default function ModalCreateCategory({
 	...props
 }) {
 
+	const { expenseCategories } = useAppSelector(state => state.filters);
 	const [form] = Form.useForm();
 	const name = Form.useWatch('name', form);
 	const onFinish = (form) => {
 		onSubmit({ name: form.name.trim() });
+	};
+	const dublicateNameValidator = (_, value) => {
+		if (!value || !value.trim()) {
+			return Promise.resolve();
+		}
+		
+		const trimmedValue = value.trim();
+		if (data?.name && trimmedValue === data.name) {
+			return Promise.resolve();
+		}
+		
+		const isDuplicate = expenseCategories?.some(category => category.value === trimmedValue);
+		if (isDuplicate) {
+			return Promise.reject(new Error('Статья с таким названием уже существует!'));
+		}
+		
+		return Promise.resolve();
 	};
 
 	return (
@@ -90,13 +109,11 @@ export default function ModalCreateCategory({
 						initialValue={data?.name}
 						rules={[
 							{ required: true, message: 'Пожалуйста, введите значение!', min: 0 },
-							{ message: 'Название не должно быть больше 30 символов!', max: 30 }
+							{ message: 'Название не должно быть больше 30 символов!', max: 30 },
+							{ validator: dublicateNameValidator },
 						]}
 					>
-						<Input
-							size="large"
-						// onChange={(e) => { setName(e.target.value) }}
-						/>
+						<Input size="large" />
 					</Form.Item>
 					<ConfigProvider
 						theme={{

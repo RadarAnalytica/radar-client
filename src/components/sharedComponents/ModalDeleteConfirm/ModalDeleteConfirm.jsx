@@ -29,7 +29,7 @@ function ModalFooter({ onCancel, onOk }) {
   );
 }
 
-export default function ModalDeleteConfirm({ onOk, onCancel, title, isLoading, text }) {
+export default function ModalDeleteConfirm({ onOk, onCancel, title, isLoading, text, buttonText = 'Удалить' }) {
   return (
     <ConfigProvider
       theme={{
@@ -81,7 +81,7 @@ export default function ModalDeleteConfirm({ onOk, onCancel, title, isLoading, t
               className={`${styles.modal__actionButton} ${styles.modal__actionButton_confirm}`}
               loading={isLoading}
             >
-              Удалить
+              {buttonText}
             </Button>
           </div>
         </div>
