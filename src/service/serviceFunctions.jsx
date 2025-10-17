@@ -1211,7 +1211,7 @@ export const ServiceFunctions = {
 	getTrendAnalysisQuery: async (query, timeFrame, selectedRange) => {
 		let url = `https://radarmarket.ru/api/analytic/query-dynamics/${timeFrame}?query_string=${encodeURIComponent(query)}`;
 
-    if (timeFrame === 'day') {
+    	if (timeFrame === 'day') {
 			url += '&' + rangeApiFormat(selectedRange);
 		}
 
@@ -1223,9 +1223,9 @@ export const ServiceFunctions = {
 			}
 		);
 
-    if (!res.ok) {
-      throw new Error(`Ошибка запроса: ${res.status}`);
-    }
+		if (!res.ok) {
+			throw new Error(`Ошибка запроса: ${res.status}`);
+		}
 
 		const data = await res.json();
 		return data;

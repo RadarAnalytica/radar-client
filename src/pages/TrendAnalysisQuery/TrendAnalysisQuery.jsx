@@ -73,7 +73,7 @@ export default function TrendAnalysisQuery() {
 			return null;
 		}
 		if (urlQuery) {
-			return url.searchParams.get('query').trim();
+			return url.searchParams.get('query').trim().toLowerCase();
 		}
 		return null;
 	};
@@ -98,7 +98,7 @@ export default function TrendAnalysisQuery() {
 	const formQuery = Form.useWatch('query', form);
 
 	const submitQuery = (data) => {
-		const query = isDemoMode ? 'платье женское' : data?.query?.trim();
+		const query = isDemoMode ? 'платье женское' : data?.query?.trim().toLowerCase();
 		if (!query) return;
 		setQuery(query);
 		setTimeFrame('month');

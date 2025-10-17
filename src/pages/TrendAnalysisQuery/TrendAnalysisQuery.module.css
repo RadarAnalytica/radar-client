@@ -105,6 +105,8 @@
   gap: 8px;
   line-height: 160%;
   font-weight: 600;
+  height: 38px;
+  width: 96px;
 }
 
 .btn svg {
@@ -194,4 +196,6 @@
 
 .customCellRender {
   font-weight: 700;
+  height: 40px;
+  line-height: 40px;
 }
