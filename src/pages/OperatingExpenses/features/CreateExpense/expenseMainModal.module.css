@@ -61,8 +61,20 @@
     font-weight: 600;
     font-size: 14px;
     color: #1a1a1a;
+
+    &::before {
+      display: inline-block;
+      margin-inline-end: 4px;
+      color: #ff4d4f;
+      font-size: 12px;
+      font-family: SimSun, sans-serif;
+      line-height: 1;
+      content: "*";
+      transform: translateY(-50%); 
+      font-weight: 500;
+    }
   }
-  
+
   .info__icon {
     width: 20px;
   }
@@ -145,7 +157,6 @@
     transition: opacity 0.4s ease-in-out 0.2s, transform 0.4s ease-in-out 0.2s; /* при появлении без задержки */
   }
   
-  
   .customDayPicker {
     font-size: 14px !important;
   }
@@ -153,7 +164,7 @@
   .customDayPicker * {
     font-size: 14px !important;
   }
-
+  
   .customDayPicker .rdp-caption {
     display: flex;
     justify-content: space-between;

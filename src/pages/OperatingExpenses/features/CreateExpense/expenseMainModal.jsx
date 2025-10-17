@@ -16,7 +16,6 @@ import { MultiSelect } from './MultiSelect';
 import { formatDate, parse } from 'date-fns';
 
 
-
 const getRequestObject = (values) => {
 	let requestObject = {}
 	let requestUrl = '';
@@ -93,7 +92,6 @@ export default function ExpenseMainModal({
 		})()
 		: today;
 
-
 	const onFinish = (values) => {
 		console.log('onFinish', values)
 		handle(getRequestObject(values))
@@ -103,8 +101,6 @@ export default function ExpenseMainModal({
 		onCancel();
 		form.resetFields();
 	};
-
-
 
 	return (
 		<ConfigProvider
@@ -154,10 +150,7 @@ export default function ExpenseMainModal({
 						<h2 className={styles.modal__title}>
 							{'Добавление расхода'}
 						</h2>
-						<HowToLink
-							text='Как это работает?'
-							link='/'
-						/>
+						{/* <HowToLink text='Как это работает?' link='#' /> */}
 					</header>
 
 					<Form
@@ -189,9 +182,6 @@ export default function ExpenseMainModal({
 							]}
 						/>
 
-
-
-
 						{/* Выбор даты и суммы расхода */}
 						<Row className={styles.modal__part} gutter={16}>
 							<Col span={12}>
@@ -200,7 +190,7 @@ export default function ExpenseMainModal({
 									label="Дата"
 									formId='date'
 									minDate={minDateFrom}
-									maxDate={maxDateFrom}
+									maxDate={today}
 								/>
 							</Col>
 							<Col span={12}>
@@ -252,14 +242,6 @@ export default function ExpenseMainModal({
 							</Col>
 						</Row>
 						{/* -------------------*/}
-
-
-
-
-
-
-
-
 
 						{/* Допы для плановых расходов */}
 						{typeValue === 'plan' &&
@@ -475,15 +457,6 @@ export default function ExpenseMainModal({
 							</Row>}
 						{/* -------------------*/}
 
-
-
-
-
-
-
-
-
-
 						{/* Выбор статьи */}
 						<div className={styles.modal__wrapper}>
 							<ConfigProvider
@@ -552,13 +525,6 @@ export default function ExpenseMainModal({
 						</div>
 						{/* -------------------*/}
 
-
-
-
-
-
-
-
 						{/* Описание */}
 						<div className={styles.modal__part}>
 							<ConfigProvider
@@ -601,17 +567,6 @@ export default function ExpenseMainModal({
 							</ConfigProvider>
 						</div>
 						{/* -------------------*/}
-
-
-
-
-
-
-
-
-
-
-
 
 						<div className={styles.modal__part}>
 							<h3 className={styles.modal__subtitle}>
@@ -723,7 +678,8 @@ export default function ExpenseMainModal({
 											searchFieldPlaceholder='Поиск по названию артикула'
 											selectPlaceholder='Выберите артикулы'
 										/>
-									</Form.Item>}
+									</Form.Item>
+								}
 								{selection === 'brand_name' &&
 									<Form.Item
 										name="brand_names"
@@ -736,13 +692,14 @@ export default function ExpenseMainModal({
 											optionsData={filters.find(_ => _.shop.id === 0)?.brands.data.map((el, i) => ({
 												key: el.value,
 												value: el.value,
-												label: el.name,
+												label: el.value,
 											}))}
 											selectId='brand_names'
 											searchFieldPlaceholder='Поиск по названию бренда'
 											selectPlaceholder='Выберите бренды'
 										/>
-									</Form.Item>}
+									</Form.Item>
+								}
 							</ConfigProvider>
 						</div>
 						<ConfigProvider
@@ -809,7 +766,7 @@ export default function ExpenseMainModal({
 										htmlType="submit"
 										loading={loading}
 									>
-										{'Добавить расход'}
+										Добавить расход
 									</Button>
 								</ConfigProvider>
 							</Flex>

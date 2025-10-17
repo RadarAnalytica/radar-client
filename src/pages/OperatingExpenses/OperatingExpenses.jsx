@@ -68,21 +68,23 @@ export default function OperatingExpenses() {
 			expense_categories: item.expense_categories.map((el) => el.name).join(', ')
 		}));
 
-		const result = {
-			key: 'summary',
-			date: 'Итого:',
-			value: data.reduce((value, el) => (value += el.value), 0) || '-',
-			description: '-',
-			expense_categories: '-',
-			vendor_code: '-',
-			brand_name: '-',
-			shop: '-',
-			action: '-',
-		};
-		data.unshift(result);
+		if (data?.length > 0) {
+			const result = {
+				key: 'summary',
+				date: 'Итого:',
+				value: data.reduce((value, el) => (value += el.value), 0) || '-',
+				description: '-',
+				expense_categories: '-',
+				vendor_code: '-',
+				brand_name: '-',
+				shop: '-',
+				action: '-',
+			};
+			data.unshift(result);
+		}
+
 		return { data, columns };
 	}, [expense]);
-	// console.log('expenseData', expenseData)
 
 	const [categoryEdit, setCategoryEdit] = useState(null);
 	const [category, setCategory] = useState([]);
@@ -122,8 +124,8 @@ export default function OperatingExpenses() {
 		}
 	};
 
-	const updateExpenses = async (resetPagination = false) => {
-		setLoading(true);
+	const updateExpenses = async (resetPagination = false, showLoader = true) => {
+		setLoading(showLoader);
 
 		// Сбрасываем пагинацию если нужно
 		const pagination = resetPagination ? { page: 1, limit: 25, total: 1 } : expPagination;
@@ -154,7 +156,6 @@ export default function OperatingExpenses() {
 			console.error('updateExpenses error', error);
 			setExpense([]);
 		} finally {
-			//console.log('updateExpenses', !firstLoad.current);
 			setLoading(false);
 		}
 	};
@@ -175,7 +176,6 @@ export default function OperatingExpenses() {
 		}
 
 		if (view === 'expense' && expenseCategories) {
-			//console.log('updateCosts');
 			updateExpenses();
 		}
 
@@ -227,6 +227,7 @@ export default function OperatingExpenses() {
 			console.error('editCategory error', error);
 		} finally {
 			setCategoryEdit(null);
+			updateExpenses(false, false);
 		}
 	};
 
@@ -363,6 +364,7 @@ export default function OperatingExpenses() {
 			console.error('deleteCategoryHandler error', error);
 		} finally {
 			setDeleteCategoryId(null);
+			updateExpenses(false, false);
 		}
 	};
 
@@ -378,29 +380,22 @@ export default function OperatingExpenses() {
 	return (
 		<main className={styles.page}>
 			<MobilePlug />
-			{/* ------ SIDE BAR ------ */}
+
 			<section className={styles.page__sideNavWrapper}>
 				<Sidebar />
 			</section>
-			{/* ------ CONTENT ------ */}
+
 			<section className={styles.page__content}>
-				{/* header */}
 				<div className={styles.page__headerWrapper}>
 					<Header
 						title="Операционные расходы"
 						titlePrefix={null}
 						children={null}
 						videoReviewLink={null}
-						howToLink={'/'}
-						howToLinkText={'Как загрузить?'}
+						// howToLink={'#'}
+						// howToLinkText={'Как загрузить?'}
 					/>
 				</div>
-
-				{/*
-				{!loading && activeBrand && !activeBrand?.is_self_cost_set && (
-					<SelfCostWarningBlock />
-				)}
-				*/}
 
 				{!loading && (
 					<Flex justify="space-between">
@@ -500,7 +495,6 @@ export default function OperatingExpenses() {
 							setDeleteCategoryId={setDeleteCategoryId}
 							pagination={categoryPagination}
 							setPagination={setCategoryPagination}
-
 						/>
 					</div>
 				}
@@ -543,22 +537,24 @@ export default function OperatingExpenses() {
 					/>
 				}
 
-				{modalCreateCategoryOpen && <ModalCreateCategory
-					open={modalCreateCategoryOpen}
-					onCancel={modalCategoryHandlerClose}
-					onSubmit={handleCategory}
-					zIndex={1001}
-					data={categoryEdit}
-					confirmLoading={categoryLoading}
-					loading={categoryLoading}
-				/>}
+				{modalCreateCategoryOpen && 
+					<ModalCreateCategory
+						open={modalCreateCategoryOpen}
+						onCancel={modalCategoryHandlerClose}
+						onSubmit={handleCategory}
+						zIndex={1001}
+						data={categoryEdit}
+						confirmLoading={categoryLoading}
+						loading={categoryLoading}
+					/>
+				}
 
 				{deleteExpenseId && <ModalDeleteConfirm
 					title={'Вы уверены, что хотите удалить расход?'}
 					onCancel={() => setDeleteExpenseId(null)}
 					text={expenseData.data.find((el) => el.id === deleteExpenseId)?.is_periodic ? (
 						<div className={styles.deleteModal__text}>
-							Вы удаляете периодический расход. Это действие также удалит все созданне расходы по этому шаблону.
+							Вы удаляете периодический расход. Это действие также удалит все созданные расходы по этому шаблону.
 							<RadarTooltip
 								text='Вы также можете запретить создавать новые расходы по этому шаблону. Для этого зайдите в редактирование планового расхода и установите/измените дату окончания расхода.'
 							>
@@ -570,6 +566,7 @@ export default function OperatingExpenses() {
 					) : null}
 					onOk={() => deleteExpense(deleteExpenseId, expenseData.data.find((el) => el.id === deleteExpenseId)?.is_periodic)}
 					isLoading={loading}
+					buttonText='Удалить расход'
 				/>}
 
 				{deleteCategoryId && <ModalDeleteConfirm

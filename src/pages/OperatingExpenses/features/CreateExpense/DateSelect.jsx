@@ -33,14 +33,10 @@ export const DateSelect = (
     const [openCalendar, setOpenCalendar] = useState(false);
     const date = Form.useWatch([formId], form);
 
-  
-
-
-    const handleDayClick = (day) => {
+    const handleDayClick = (day, modifiers) => {
         setOpenCalendar(false);
         form?.setFieldValue([formId], format(day, 'dd.MM.yyyy'));
     }
-
 
     return (
         <ConfigProvider

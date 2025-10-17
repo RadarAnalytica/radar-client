@@ -1,8 +1,9 @@
 import { ConfigProvider, Modal, Flex, Button, Form, Input, } from 'antd';
-import { SelectIcon } from '../../../../components/sharedComponents/apiServicePagesFiltersComponent/shared';
+import { SelectIcon } from '@/components/sharedComponents/apiServicePagesFiltersComponent/shared';
 import styles from '../../shared/styles/modals.module.css';
 import { CloseIcon } from '../../shared/Icons';
 import { useMemo, useState } from 'react';
+import { useAppSelector } from '@/redux/hooks';
 
 export default function ModalCreateCategory({
 	open = true,
@@ -13,14 +14,28 @@ export default function ModalCreateCategory({
 	...props
 }) {
 
+	const { expenseCategories } = useAppSelector(state => state.filters);
 	const [form] = Form.useForm();
 	const name = Form.useWatch('name', form);
 	const onFinish = (form) => {
-		// if (!!data) {
-		// 	onSubmit({name: form.name.trim()});
-		// 	return
-		// }
 		onSubmit({ name: form.name.trim() });
+	};
+	const dublicateNameValidator = (_, value) => {
+		if (!value || !value.trim()) {
+			return Promise.resolve();
+		}
+		
+		const trimmedValue = value.trim();
+		if (data?.name && trimmedValue === data.name) {
+			return Promise.resolve();
+		}
+		
+		const isDuplicate = expenseCategories?.some(category => category.value === trimmedValue);
+		if (isDuplicate) {
+			return Promise.reject(new Error('Статья с таким названием уже существует!'));
+		}
+		
+		return Promise.resolve();
 	};
 
 	return (
@@ -72,13 +87,13 @@ export default function ModalCreateCategory({
 				closable={true}
 				closeIcon={
 					<svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-						<path d="M6 4.66688L10.6669 0L12 1.33312L7.33312 6L12 10.6669L10.6669 12L6 7.33312L1.33312 12L0 10.6669L4.66688 6L0 1.33312L1.33312 0L6 4.66688Z" fill="#1A1A1A" fill-opacity="0.5" />
+						<path d="M6 4.66688L10.6669 0L12 1.33312L7.33312 6L12 10.6669L10.6669 12L6 7.33312L1.33312 12L0 10.6669L4.66688 6L0 1.33312L1.33312 0L6 4.66688Z" fill="#1A1A1A" fillOpacity="0.5" />
 					</svg>
 
 				}
 				title={
 					<h2 className={styles.modal__title}>
-						{!!data ? 'Редактирование статьи расходов' : 'Добавление статьи расходов'}
+						{data?.id ? 'Редактирование статьи расходов' : 'Добавление статьи расходов'}
 					</h2>
 				}
 				footer={null}
@@ -94,13 +109,11 @@ export default function ModalCreateCategory({
 						initialValue={data?.name}
 						rules={[
 							{ required: true, message: 'Пожалуйста, введите значение!', min: 0 },
-							{ message: 'Название не должно быть больше 30 символов!', max: 30 }
+							{ message: 'Название не должно быть больше 30 символов!', max: 30 },
+							{ validator: dublicateNameValidator },
 						]}
 					>
-						<Input
-							size="large"
-						// onChange={(e) => { setName(e.target.value) }}
-						/>
+						<Input size="large" />
 					</Form.Item>
 					<ConfigProvider
 						theme={{
@@ -173,7 +186,7 @@ export default function ModalCreateCategory({
 									loading={loading}
 									disabled={!name?.trim()}
 								>
-									Добавить статью
+									{data?.id ? 'Изменить статью' : 'Добавить статью'}
 								</Button>
 							</ConfigProvider>
 						</Flex>

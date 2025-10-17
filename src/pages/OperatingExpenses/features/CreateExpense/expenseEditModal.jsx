@@ -163,8 +163,6 @@ export default function ExpenseEditModal({
 		}
 	}, [editData])
 
-	console.log('editData', editData);
-
 
 	return (
 		<ConfigProvider
@@ -214,10 +212,7 @@ export default function ExpenseEditModal({
 						<h2 className={styles.modal__title}>
 							{'Редактирование расхода'}
 						</h2>
-						<HowToLink
-							text='Как это работает?'
-							link='/'
-						/>
+						{/* <HowToLink text='Как это работает?' link='#' /> */}
 					</header>
 
 					<Form
@@ -299,14 +294,6 @@ export default function ExpenseEditModal({
 							</Col>
 						</Row>
 						{/* -------------------*/}
-
-
-
-
-
-
-
-
 
 						{/* Допы для плановых расходов */}
 						{editData?.is_periodic &&
@@ -592,18 +579,11 @@ export default function ExpenseEditModal({
 									}}
 									style={{ marginBottom: 16 }}
 								>
-									Добавить статью
+									Изменить статью
 								</Button>
 							</ConfigProvider>
 						</div>
 						{/* -------------------*/}
-
-
-
-
-
-
-
 
 						{/* Описание */}
 						<div className={styles.modal__part}>
@@ -647,16 +627,6 @@ export default function ExpenseEditModal({
 							</ConfigProvider>
 						</div>
 						{/* -------------------*/}
-
-
-
-
-
-
-
-
-
-
 
 
 						<div className={styles.modal__part}>
