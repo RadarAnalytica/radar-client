@@ -46,7 +46,6 @@ export const newTableConfig = [
         title: 'Частотность за 30 дней',
         dataIndex: 'frequency',
         sortable: true,
-        units: 'шт',
         fixed: false,
         width: 160,
         minWidth: 160,
@@ -65,7 +64,7 @@ export const newTableConfig = [
     },
     {
         key: 'g30',
-        title: 'Динамика за 30 дней',
+        title: 'Динамика за 30 дней, %',
         dataIndex: 'g30',
         sortable: true,
         units: '%',
@@ -76,7 +75,7 @@ export const newTableConfig = [
     },
     {
         key: 'g60',
-        title: 'Динамика за 60 дней',
+        title: 'Динамика за 60 дней, %',
         dataIndex: 'g60',
         sortable: true,
         units: '%',
@@ -87,7 +86,7 @@ export const newTableConfig = [
     },
     {
         key: 'g90',
-        title: 'Динамика за 90 дней',
+        title: 'Динамика за 90 дней, %',
         dataIndex: 'g90',
         sortable: true,
         units: '%',
@@ -101,7 +100,6 @@ export const newTableConfig = [
         title: 'Частотность за 30 дней на 1 артикул',
         dataIndex: 'freq_per_good',
         sortable: true,
-        units: 'шт',
         fixed: false,
         width: 160,
         minWidth: 160,

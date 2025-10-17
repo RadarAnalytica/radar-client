@@ -119,7 +119,13 @@
     gap: 8px;
 }
 
-.bodyRowSpecial:hover td div {
-    background-color: #FAFAFA !important;
-    transition: background-color 0.2s ease;
-  }
+.bodyRowSpecial {
+    height: 70px;
+
+    &:hover {
+        td div {
+            background-color: #FAFAFA !important;
+            transition: background-color 0.2s ease;
+        }
+    }
+}

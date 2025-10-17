@@ -76,6 +76,20 @@ export const TableWidget = React.memo(({ rawData, loading, tablePaginationState,
     const [isXScrolled, setIsXScrolled] = useState(false); // следим за скролом по Х
     const [isEndOfXScroll, setIsEndOfXScroll] = useState(false); // отслеживаем конец скролла по Х
     const [isExelLoading, setIsExelLoading] = useState(false);
+    const [currentTableConfig, setCurrentTableConfig] = useState(newTableConfig);
+
+    // Загружаем сохранённую конфигурацию из localStorage при монтировании
+    useEffect(() => {
+        const savedConfig = localStorage.getItem('TrendingRequestsTableConfig');
+        if (savedConfig) {
+            try {
+                const parsedConfig = JSON.parse(savedConfig);
+                setCurrentTableConfig(parsedConfig);
+            } catch (error) {
+                console.error('Error parsing saved table config:', error);
+            }
+        }
+    }, []);
 
     // задаем начальную дату
     useEffect(() => {
@@ -100,6 +114,47 @@ export const TableWidget = React.memo(({ rawData, loading, tablePaginationState,
             paginationPrevButton.setAttribute('title', 'Предыдущие 5 страниц');
         }
     }, [tablePaginationState]);
+
+    // хэндлер изменения ширины колонок
+    const onResizeGroup = useCallback((columnKey, width) => {
+        console.log('Column resized:', columnKey, width);
+
+        // Обновляем конфигурацию колонок с группированной структурой
+        const updateColumnWidth = (columns) => {
+            return columns.map(col => {
+                // Если это группа с children
+                if (col.children && col.children.length > 0) {
+                    const updatedChildren = updateColumnWidth(col.children);
+
+                    // Всегда пересчитываем ширину группы на основе суммы ширин дочерних колонок
+                    const totalWidth = updatedChildren.reduce((sum, child) => sum + (child.width || child.minWidth), 0);
+                    return { ...col, width: totalWidth, minWidth: totalWidth, children: updatedChildren };
+                }
+
+                // Если это листовая колонка
+                if (col.key === columnKey) {
+                    return { ...col, width: width, minWidth: width };
+                }
+
+                return col;
+            });
+        };
+
+        // Обновляем состояние
+        setCurrentTableConfig(prevConfig => {
+            const updatedConfig = updateColumnWidth(prevConfig);
+            const normalizedTableConfig = updatedConfig.map(item => ({
+                ...item,
+                render: undefined,
+                children: item.children ? item.children.map(child => ({
+                    ...child,
+                    render: undefined
+                })) : undefined
+            }));
+            localStorage.setItem('TrendingRequestsTableConfig', JSON.stringify(normalizedTableConfig));
+            return updatedConfig;
+        });
+    }, []);
 
     const paginationHandler = useCallback((page) => {
         setRequestState({ ...requestState, page });
@@ -346,12 +401,14 @@ export const TableWidget = React.memo(({ rawData, loading, tablePaginationState,
             </div>
 
             <div className={styles.widget__wrapper}>
-                {tableData && newTableConfig &&
+                {tableData && currentTableConfig &&
                     <div className={styles.widget} ref={containerRef}>
                         <RadarTable
                             preset='radar-table-default'
-                            config={newTableConfig}
+                            config={currentTableConfig}
                             dataSource={tableData}
+                            resizeable
+                            onResize={onResizeGroup}
                             sorting={{ sort_field: sortState?.sortedValue, sort_order: sortState?.sortType }}
                             onSort={sortButtonClickHandler}
                             pagination={{

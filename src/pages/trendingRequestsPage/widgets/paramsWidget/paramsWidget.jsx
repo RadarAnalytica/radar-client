@@ -461,7 +461,7 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                                     >
                                                         <Input
                                                             size='large'
-                                                            placeholder={'от 20'}
+                                                            placeholder={'от'}
                                                             suffix={<>%</>}
                                                             type="number"
                                                         />
@@ -488,7 +488,7 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                                     >
                                                         <Input
                                                             size='large'
-                                                            placeholder={'до 100'}
+                                                            placeholder={'до'}
                                                             suffix={<>%</>}
                                                             type="number"
                                                         />
@@ -556,7 +556,7 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                                         <Input
                                                             size='large'
                                                             className={isExampleDataSet ? styles.form__exampleDataInput : ''}
-                                                            placeholder={'от 20'}
+                                                            placeholder={'от'}
                                                             suffix={<>%</>}
                                                             type="number"
                                                         />
@@ -582,7 +582,7 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                                     >
                                                         <Input
                                                             size='large'
-                                                            placeholder={'до 100'}
+                                                            placeholder={'до'}
                                                             suffix={<>%</>}
                                                             type="number"
                                                         />
@@ -643,7 +643,7 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                                     >
                                                         <Input
                                                             size='large'
-                                                            placeholder={'от 20'}
+                                                            placeholder={'от'}
                                                             suffix={<>%</>}
                                                             type="number"
                                                         />
@@ -669,7 +669,7 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                                     >
                                                         <Input
                                                             size='large'
-                                                            placeholder={'до 100'}
+                                                            placeholder={'до'}
                                                             suffix={<>%</>}
                                                             type="number"
                                                         />
@@ -743,7 +743,7 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                         </div>
                                     </div>
                                     <div className={styles.form__doudleWrapper}>
-                                        <label className={styles.form__doubledLabel}>Количество артикулов по запросу, шт</label>
+                                        <label className={styles.form__doubledLabel}>Кол-во артикулов по запросу, шт</label>
                                         <div className={styles.form__twoInputsWrapper}>
                                             <Form.Item
                                                 style={{ margin: 0 }}
@@ -880,14 +880,13 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                                 name='prefered_items'
                                             >
                                                 <Select
-
                                                     maxTagCount={0}
                                                     //maxTagCount='responsive'
                                                     //maxTagTextLength={20}
                                                     showSearch={false}
                                                     mode='multiple'
                                                     size='large'
-                                                    placeholder='Выберите'
+                                                    placeholder='Выберите предметы'
                                                     getPopupContainer={(triggerNode) => triggerNode.parentNode}
                                                     tagRender={tagRender}
                                                     onDropdownVisibleChange={(open) => {
@@ -999,11 +998,10 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                     }}
                                 >
                                 <Button
-                                    style={{ width: '202px', height: '45px' }}
+                                    style={{ width: '187px', height: '46px' }}
                                     htmlType='submit'
                                     type='primary'
                                     size='large'
-                                    className={isExampleDataSet ? styles.form__exampleDataButton : ''}
                                 >
                                         Сформировать список
                                     </Button>
