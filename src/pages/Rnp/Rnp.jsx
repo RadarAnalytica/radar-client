@@ -78,7 +78,7 @@ export default function Rnp() {
 	const [error, setError] = useState(null);
 	const [expanded, setExpanded] = useState('collapsed');
 
-	const updateRnpListByArticle = async () => {
+	const updateRnpListByArticle = async (signal) => {
 		setLoading(true);
 		progress.start();
 		try {
@@ -88,7 +88,7 @@ export default function Rnp() {
 					selectedRange,
 					activeBrand.id,
 					filters,
-					page
+					signal
 				);
 
 				progress.complete();
@@ -100,12 +100,10 @@ export default function Rnp() {
 			}
 		} catch (error) {
 			console.error('UpdateRnpListByArticle error', error);
-			setLoading(false);
-			progress.reset();
 		}
 	};
 
-	const updateRnpListSummary = async () => {
+	const updateRnpListSummary = async (signal) => {
 		setLoading(true);
 		progress.start();
 		try {
@@ -115,7 +113,7 @@ export default function Rnp() {
 					selectedRange,
 					activeBrand.id,
 					filters,
-					page
+					signal
 				);
 
 				progress.complete();
@@ -128,8 +126,6 @@ export default function Rnp() {
 		} catch (error) {
 			console.error('updateRnpListSummary error', error);
 			setRnpDataTotal(null);
-			setLoading(false);
-			progress.reset();
 		}
 	};
 
@@ -228,21 +224,27 @@ export default function Rnp() {
 	};
 
 	useLayoutEffect(() => {
-		if (!activeBrand && !activeBrand?.is_primary_collect) {
+		const controller = new AbortController();
+
+		if (!activeBrand?.is_primary_collect) {
 			return;
 		}
 
 		if (activeBrand && activeBrand.is_primary_collect) {
 			if (view === 'articles') {
-				updateRnpListByArticle();
+				updateRnpListByArticle(controller.signal);
 			} else {
-				updateRnpListSummary();
+				updateRnpListSummary(controller.signal);
 			}
 		}
 
 		if (activeBrand && !activeBrand?.is_primary_collect) {
 			setLoading(false);
 		}
+
+		return () => {
+			controller.abort();
+		};
 	}, [filters, page, view, selectedRange]);
 
 	// Добавляем автоскролл к контейнеру страницы

@@ -134,7 +134,7 @@ export const ServiceFunctions = {
 	getSelfCostData: async (token, idShop, filters, page = 1, per_page = 50, searchInputValue = '') => {
 		const body = getRequestObject(filters, undefined, idShop);
 		const res = await fetchApi(
-			`/api/product/self-costs/list?page=${page}&per_page=${per_page}&search=${searchInputValue}`,
+			`/api/product/self-costs/list?page=${page}&per_page=${per_page}&search=${encodeURIComponent(searchInputValue)}`,
 			{
 				method: 'POST',
 				headers: {
@@ -1385,7 +1385,7 @@ export const ServiceFunctions = {
 						authorization: 'JWT ' + token,
 					},
 					body: JSON.stringify(body),
-					// signal
+					signal
 				}
 			);
 
@@ -1412,7 +1412,7 @@ export const ServiceFunctions = {
 						authorization: 'JWT ' + token,
 					},
 					body: JSON.stringify(body),
-					// signal
+					signal
 				}
 			);
 
