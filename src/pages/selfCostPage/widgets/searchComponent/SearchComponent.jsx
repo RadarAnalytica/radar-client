@@ -54,18 +54,16 @@ const SearchComponent = ({ searchInputValue, setSearchInputValue, handleSearch, 
                         spellCheck={false}
                         autoComplete='off'
                         suffix={
-                            searchInputValue && (
-                                <button
-                                    onClick={clearInputHandler}
-                                    className={styles.clearButton}
-                                    type="button"
-                                    aria-label="Очистить"
-                                >
-                                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M13 1L1 13M1 1L13 13" stroke="#999999" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                                    </svg>
-                                </button>
-                            )
+                            <button
+                                onClick={clearInputHandler}
+                                className={`${styles.clearButton} ${searchInputValue ? 'd-flex' : 'd-none'}`}
+                                type="button"
+                                aria-label="Очистить"
+                            >
+                                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M13 1L1 13M1 1L13 13" stroke="#999999" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                                </svg>
+                            </button>
                         }
                     />
                 </ConfigProvider>
