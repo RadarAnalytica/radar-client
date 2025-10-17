@@ -1,7 +1,7 @@
 import { Modal, Button, Flex, ConfigProvider } from "antd";
 import styles from "./ModalDeleteConfirm.module.css";
 
-function ModalFooter({onCancel, onOk}) {
+function ModalFooter({ onCancel, onOk }) {
   return (
     <ConfigProvider
       theme={{
@@ -14,7 +14,7 @@ function ModalFooter({onCancel, onOk}) {
             colorPrimary: '#5329ff',
             colorPrimaryBorder: '#5329ff',
             colorPrimaryHover: '#7a52ff',
-						colorPrimaryActive: '#3818d9',
+            colorPrimaryActive: '#3818d9',
             primaryActiveBorderColor: '#bcb6d9',
             colorDangerBg: 'green'
           },
@@ -29,7 +29,7 @@ function ModalFooter({onCancel, onOk}) {
   );
 }
 
-export default function ModalDeleteConfirm({onOk, onCancel, title}) {
+export default function ModalDeleteConfirm({ onOk, onCancel, title, isLoading, text, buttonText = 'Удалить' }) {
   return (
     <ConfigProvider
       theme={{
@@ -50,10 +50,42 @@ export default function ModalDeleteConfirm({onOk, onCancel, title}) {
         open={true}
         onOk={onOk}
         onCancel={onCancel}
-        title={title}
         closeIcon={false}
-        footer={<ModalFooter onOk={onOk} onCancel={onCancel}/>}
-      ></Modal>
+        footer={null}
+        centered
+        width={400}
+      >
+        <div className={styles.modal__body}>
+          <Button 
+            type="text" 
+            className={styles.modal__close} 
+            onClick={onCancel}
+            icon={
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M6 4.66688L10.6669 0L12 1.33312L7.33312 6L12 10.6669L10.6669 12L6 7.33312L1.33312 12L0 10.6669L4.66688 6L0 1.33312L1.33312 0L6 4.66688Z" fill="#1A1A1A" fillOpacity="0.5" />
+              </svg>
+            }
+          />
+          <p className={styles.modal__title}>{title}</p>
+          {text && <div className={styles.modal__text}>{text}</div>}
+          <div className={styles.modal__actionButtons}>
+            <Button
+              onClick={onCancel}
+              loading={isLoading}
+              className={`${styles.modal__actionButton} ${styles.modal__actionButton_cancel}`}
+            >
+              Отменить
+            </Button>
+            <Button
+              onClick={onOk}
+              className={`${styles.modal__actionButton} ${styles.modal__actionButton_confirm}`}
+              loading={isLoading}
+            >
+              {buttonText}
+            </Button>
+          </div>
+        </div>
+      </Modal>
     </ConfigProvider>
   );
 }

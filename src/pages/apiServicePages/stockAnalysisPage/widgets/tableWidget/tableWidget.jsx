@@ -85,10 +85,10 @@ const TableWidget = ({ stockAnalysisFilteredData, loading, progress }) => {
         if (stockAnalysisFilteredData) {
             if (sortState.sortedValue && sortState.sortType) {
                 setTableData([...sortTableDataFunc(sortState.sortType, sortState.sortedValue, stockAnalysisFilteredData)]);
-                setPaginationState({ ...paginationState, total: Math.ceil([...sortTableDataFunc(sortState.sortType, sortState.sortedValue, stockAnalysisFilteredData)].length / paginationState.pageSize) });
+                setPaginationState({ current: 1, pageSize: paginationState.pageSize, total: Math.ceil([...sortTableDataFunc(sortState.sortType, sortState.sortedValue, stockAnalysisFilteredData)].length / paginationState.pageSize) });
             } else {
                 setTableData(stockAnalysisFilteredData);
-                setPaginationState({ ...paginationState, total: Math.ceil(stockAnalysisFilteredData.length / paginationState.pageSize) });
+                setPaginationState({ current: 1, pageSize: paginationState.pageSize, total: Math.ceil(stockAnalysisFilteredData.length / paginationState.pageSize) });
             }
         }
     }, [stockAnalysisFilteredData]);
@@ -205,6 +205,7 @@ const TableWidget = ({ stockAnalysisFilteredData, loading, progress }) => {
                         preset='radar-table-simple'
                         stickyHeader
                         resizeable
+                        resizeThrottle={33}
                         onResize={onResizeGroup}
                         onSort={sortButtonClickHandler}
                         pagination={{
@@ -236,9 +237,9 @@ const TableWidget = ({ stockAnalysisFilteredData, loading, progress }) => {
                         }}
                         bodyCellWrapperStyle={{
                             padding: '5px 10px',
-                            minWidth: 'inherit',
-                            width: 'inherit',
-                            maxWidth: 'inherit',
+                            //minWidth: 'inherit',
+                            //width: 'inherit',
+                            //maxWidth: 'inherit',
                             border: 'none',
                         }}
                         bodyCellStyle={{

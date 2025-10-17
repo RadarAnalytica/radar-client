@@ -2,27 +2,73 @@
 import React, { useRef, useState, useEffect, useCallback, useMemo } from 'react';
 import styles from './tableWidget.module.css';
 // Возможно будет удобнее передавать конфиг пропсом
-import { tableConfig } from './config';
+import { tableConfig, newTableConfig } from './config';
 import { sortTableDataFunc } from './utils';
 import { formatPrice } from '../../../../service/utils';
 import { ConfigProvider, Pagination } from 'antd';
 import DownloadButton from '../../../../components/DownloadButton';
 import { fileDownload } from '../../../../service/utils';
 import { Link } from 'react-router-dom';
+import { Table as RadarTable } from 'radar-ui';
+import wb_icon from './wb_icon.png';
 
-/**
- * Краткое описание:
- *
- * Общая таблица (супертаблица) рендерится на основе конфига (tableConfig) и состоит из нескольких маленьких таблиц
- * Разделил их по наличию заголовка, кроме самой перой (Товар) - тут искуственно отделен первый столбец для реализации фиксации первого столбца при
- * горизонтальном скроле.
- *
- * 1. Сначала мапим весь конфиг (сами таблицы)
- * 2. Далее внутри для каждой таблицы мапим массив заголовков
- * 3. Далее под хэдером таблицы еще раз мапим массив заголовков и внутри для каждого заголовка мапим уже данные забирая только нужные для конкретного заголовка и конкретной
- * таблицы
- * 4. В процессе расставляем стили в зависимости от позиции таблицы, элемента и тд
- */
+const customCellRender = (value, record, index, dataIndex) => {
+
+    if (dataIndex === 'query') {
+        return (
+            <div className={styles.customCell__query}>
+                <Link className={styles.customCell__queryTitle} to={`/trend-analysis?query=${value}`} target='_blank' title={value}>{value}</Link>
+                <div className={styles.customCell__linksWrapper}>
+                    <Link
+                        className={styles.customCell__link}
+                        target='_blank'
+                        to={`https://wildberries.ru/catalog/0/search.aspx?search=${value}`}
+                        title='Перейти к товару на ВБ'
+                    >
+                        <img src={wb_icon} width={20} height={20} alt='wb_icon' />
+                    </Link>
+                    <CopyButton url={`https://wildberries.ru/catalog/0/search.aspx?search=${value}`} />
+                </div>
+            </div>
+        )
+    }
+    return <div>{value}</div>;
+};
+
+const CopyButton = React.memo(({ url }) => {
+
+    const [isCopied, setIsCopied] = useState(false);
+
+    const copyHandler = useCallback(() => {
+        navigator.clipboard.writeText(url).catch(err => console.log('Error'));
+        setIsCopied(true);
+    }, [url]);
+
+    useEffect(() => {
+        let timeout;
+        if (isCopied) {
+            timeout = setTimeout(() => setIsCopied(false), 3000);
+        }
+
+        return () => { timeout && clearTimeout(timeout); };
+    }, [isCopied]);
+
+    return (
+        <button className={styles.table__actionButton} onClick={copyHandler} title='Скопировать в буфер обмена'>
+            {!isCopied &&
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M11.8617 2.13847C10.804 1.0808 9.08918 1.0808 8.03151 2.13847L6.853 3.31698C6.60893 3.56106 6.2132 3.56106 5.96912 3.31698C5.72504 3.0729 5.72504 2.67717 5.96912 2.43309L7.14763 1.25458C8.69346 -0.291241 11.1997 -0.291241 12.7456 1.25458C14.2914 2.80041 14.2914 5.30669 12.7456 6.85251L11.567 8.03102C11.323 8.2751 10.9272 8.2751 10.6832 8.03102C10.4391 7.78695 10.4391 7.39122 10.6832 7.14714L11.8617 5.96863C12.9193 4.91096 12.9193 3.19614 11.8617 2.13847Z" fill="#8C8C8C" />
+                    <path d="M3.31747 5.96863C3.56154 6.21271 3.56154 6.60844 3.31747 6.85251L2.13896 8.03103C1.08129 9.0887 1.08129 10.8035 2.13896 11.8612C3.19663 12.9189 4.91145 12.9189 5.96912 11.8612L7.14763 10.6827C7.39171 10.4386 7.78743 10.4386 8.03151 10.6827C8.27559 10.9268 8.27559 11.3225 8.03151 11.5666L6.853 12.7451C5.30718 14.2909 2.8009 14.2909 1.25507 12.7451C-0.290753 11.1992 -0.290753 8.69297 1.25507 7.14714L2.43358 5.96863C2.67766 5.72455 3.07339 5.72455 3.31747 5.96863Z" fill="#8C8C8C" />
+                    <path d="M4.79058 8.32566C4.5465 8.56973 4.5465 8.96546 4.79058 9.20954C5.03466 9.45362 5.43039 9.45362 5.67447 9.20954L9.21 5.67401C9.45408 5.42993 9.45408 5.0342 9.21 4.79012C8.96592 4.54604 8.57019 4.54604 8.32612 4.79012L4.79058 8.32566Z" fill="#8C8C8C" />
+                </svg>
+
+            }
+            {isCopied && <div>{'Скопировано!'}</div>}
+        </button>
+    );
+});
+
+
 export const TableWidget = React.memo(({ rawData, loading, tablePaginationState, setRequestState, requestState, initRequestStatus, setRequestStatus, setSortState, sortState, initSortState }) => {
 
     const containerRef = useRef(null); // реф скролл-контейнера (используется чтобы седить за позицией скрола)
@@ -30,6 +76,20 @@ export const TableWidget = React.memo(({ rawData, loading, tablePaginationState,
     const [isXScrolled, setIsXScrolled] = useState(false); // следим за скролом по Х
     const [isEndOfXScroll, setIsEndOfXScroll] = useState(false); // отслеживаем конец скролла по Х
     const [isExelLoading, setIsExelLoading] = useState(false);
+    const [currentTableConfig, setCurrentTableConfig] = useState(newTableConfig);
+
+    // Загружаем сохранённую конфигурацию из localStorage при монтировании
+    useEffect(() => {
+        const savedConfig = localStorage.getItem('TrendingRequestsTableConfig');
+        if (savedConfig) {
+            try {
+                const parsedConfig = JSON.parse(savedConfig);
+                setCurrentTableConfig(parsedConfig);
+            } catch (error) {
+                console.error('Error parsing saved table config:', error);
+            }
+        }
+    }, []);
 
     // задаем начальную дату
     useEffect(() => {
@@ -54,6 +114,47 @@ export const TableWidget = React.memo(({ rawData, loading, tablePaginationState,
             paginationPrevButton.setAttribute('title', 'Предыдущие 5 страниц');
         }
     }, [tablePaginationState]);
+
+    // хэндлер изменения ширины колонок
+    const onResizeGroup = useCallback((columnKey, width) => {
+        console.log('Column resized:', columnKey, width);
+
+        // Обновляем конфигурацию колонок с группированной структурой
+        const updateColumnWidth = (columns) => {
+            return columns.map(col => {
+                // Если это группа с children
+                if (col.children && col.children.length > 0) {
+                    const updatedChildren = updateColumnWidth(col.children);
+
+                    // Всегда пересчитываем ширину группы на основе суммы ширин дочерних колонок
+                    const totalWidth = updatedChildren.reduce((sum, child) => sum + (child.width || child.minWidth), 0);
+                    return { ...col, width: totalWidth, minWidth: totalWidth, children: updatedChildren };
+                }
+
+                // Если это листовая колонка
+                if (col.key === columnKey) {
+                    return { ...col, width: width, minWidth: width };
+                }
+
+                return col;
+            });
+        };
+
+        // Обновляем состояние
+        setCurrentTableConfig(prevConfig => {
+            const updatedConfig = updateColumnWidth(prevConfig);
+            const normalizedTableConfig = updatedConfig.map(item => ({
+                ...item,
+                render: undefined,
+                children: item.children ? item.children.map(child => ({
+                    ...child,
+                    render: undefined
+                })) : undefined
+            }));
+            localStorage.setItem('TrendingRequestsTableConfig', JSON.stringify(normalizedTableConfig));
+            return updatedConfig;
+        });
+    }, []);
 
     const paginationHandler = useCallback((page) => {
         setRequestState({ ...requestState, page });
@@ -81,25 +182,21 @@ export const TableWidget = React.memo(({ rawData, loading, tablePaginationState,
     }, []);
 
     // хэндлер сортировки
-    const sortButtonClickHandler = useCallback((e, value) => {
-        const { id } = e.currentTarget;
+    const sortButtonClickHandler = useCallback((sort_field, sort_order) => {
 
         // выключаем сортировку если нажата уже активная клавиша
-        if (sortState.sortType === id && sortState.sortedValue === value) {
+        if (sortState.sortType === sort_order && sortState.sortedValue === sort_field) {
             setSortState(initSortState);
-            //setTableData(rawData)
             setRequestState({ ...requestState, sorting: { sort_field: 'frequency', sort_order: 'DESC' }, page: 1, limit: 25 });
             return;
         }
 
 
-        // включаем сортировку и сортируем дату
         setSortState({
-            sortedValue: value,
-            sortType: id,
+            sortedValue: sort_field,
+            sortType: sort_order,
         });
-        setRequestState({ ...requestState, sorting: { sort_field: value, sort_order: id }, page: 1, limit: 25 });
-        //setTableData([...sortTableDataFunc(id, value, rawData)])
+        setRequestState({ ...requestState, sorting: { sort_field, sort_order }, page: 1, limit: 25 });
     }, [sortState, rawData]);
 
     const downloadButtonHandler = useCallback(async () => {
@@ -156,12 +253,13 @@ export const TableWidget = React.memo(({ rawData, loading, tablePaginationState,
     return (
         <>
             <div className={styles.widget__dlButtonWrapper}>
+                <p className={styles.widget__dlButtonWrapperTitle}>Трендовые запросы</p>
                 <DownloadButton
                     loading={isExelLoading}
                     handleDownload={downloadButtonHandler}
                 />
             </div>
-            <div className={styles.widget__wrapper}>
+            <div className={styles.widget__wrapper} style={{ display: 'none' }}>
                 <div className={styles.widget} style={{ borderRadius: isEndOfXScroll ? '16px' : '' }} onScroll={scrollHandler} ref={containerRef}>
                     {/* Мапим таблицы в супертаблицу */}
                     {tableConfig.map((t, id) => {
@@ -274,7 +372,7 @@ export const TableWidget = React.memo(({ rawData, loading, tablePaginationState,
                                                     if (v.units === '%' && product[v.engName] >= 0) {
                                                         return (
                                                             <div className={styles.table__rowItem} key={id}>
-                                                                <span style={{ marginLeft: 8}}>{formatPrice(product[v.engName], v.units)}</span>
+                                                                <span style={{ marginLeft: 8 }}>{formatPrice(product[v.engName], v.units)}</span>
                                                             </div>
                                                         );
                                                     }
@@ -300,56 +398,40 @@ export const TableWidget = React.memo(({ rawData, loading, tablePaginationState,
                     })}
 
                 </div>
-                <ConfigProvider theme={memoizedPaginationTheme}>
-                    <Pagination
-                        defaultCurrent={1}
-                        current={tablePaginationState.page}
-                        onChange={paginationHandler}
-                        total={tablePaginationState.total_pages}
-                        pageSize={tablePaginationState.limit}
-                        showSizeChanger={false}
-                        hideOnSinglePage={true}
-                    //showTotal={(total) => `Всего ${total} товаров`}
-                    />
-                </ConfigProvider>
+            </div>
+
+            <div className={styles.widget__wrapper}>
+                {tableData && currentTableConfig &&
+                    <div className={styles.widget} ref={containerRef}>
+                        <RadarTable
+                            preset='radar-table-default'
+                            config={currentTableConfig}
+                            dataSource={tableData}
+                            resizeable
+                            onResize={onResizeGroup}
+                            sorting={{ sort_field: sortState?.sortedValue, sort_order: sortState?.sortType }}
+                            onSort={sortButtonClickHandler}
+                            pagination={{
+                                current: tablePaginationState.page,
+                                pageSize: tablePaginationState.limit,
+                                total: tablePaginationState.total_pages,
+                                onChange: (page, pageSize) => {
+                                    paginationHandler(page);
+                                },
+                                showQuickJumper: true,
+                                hideOnSinglePage: true,
+                            }}
+                            onSortChange={sortButtonClickHandler}
+                            scrollContainerRef={containerRef}
+                            customCellRender={{
+                                idx: ['query'],
+                                renderer: customCellRender
+                            }}
+                            bodyRowClassName={styles.bodyRowSpecial}
+                        />
+                    </div>
+                }
             </div>
         </>
-    );
-});
-
-const CopyButton = React.memo(({ url }) => {
-
-    const [isCopied, setIsCopied] = useState(false);
-
-    const copyHandler = useCallback(() => {
-        navigator.clipboard.writeText(url).catch(err => console.log('Error'));
-        setIsCopied(true);
-    }, [url]);
-
-    useEffect(() => {
-        let timeout;
-        if (isCopied) {
-            timeout = setTimeout(() => setIsCopied(false), 3000);
-        }
-
-        return () => { timeout && clearTimeout(timeout); };
-    }, [isCopied]);
-
-    return (
-        <button className={styles.table__actionButton} onClick={copyHandler} title='Скопировать'>
-            {!isCopied &&
-                <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ width: '12px', height: '12px' }}>
-                    <path d="M14.8301 3.16626C13.5609 1.89705 11.5031 1.89705 10.2339 3.16626L8.8197 4.58047C8.5268 4.87337 8.05193 4.87337 7.75904 4.58047C7.46614 4.28758 7.46614 3.81271 7.75904 3.51981L9.17325 2.1056C11.0282 0.250608 14.0358 0.250608 15.8908 2.1056C17.7458 3.96059 17.7458 6.96812 15.8908 8.82311L14.4766 10.2373C14.1837 10.5302 13.7088 10.5302 13.4159 10.2373C13.123 9.94443 13.123 9.46956 13.4159 9.17667L14.8301 7.76245C16.0993 6.49325 16.0993 4.43546 14.8301 3.16626Z" fill="#363538" />
-                    <path d="M4.57705 7.76246C4.86995 8.05535 4.86995 8.53022 4.57705 8.82312L3.16284 10.2373C1.89364 11.5065 1.89364 13.5643 3.16284 14.8335C4.43204 16.1027 6.48983 16.1027 7.75903 14.8335L9.17325 13.4193C9.46614 13.1264 9.94102 13.1264 10.2339 13.4193C10.5268 13.7122 10.5268 14.1871 10.2339 14.48L8.81969 15.8942C6.9647 17.7492 3.95717 17.7492 2.10218 15.8942C0.24719 14.0392 0.24719 11.0317 2.10218 9.17667L3.51639 7.76246C3.80929 7.46956 4.28416 7.46956 4.57705 7.76246Z" fill="#363538" />
-                    <path d="M6.34479 10.5909C6.0519 10.8838 6.0519 11.3587 6.34479 11.6515C6.63769 11.9444 7.11256 11.9444 7.40545 11.6515L11.6481 7.40891C11.941 7.11601 11.941 6.64114 11.6481 6.34825C11.3552 6.05535 10.8803 6.05535 10.5874 6.34825L6.34479 10.5909Z" fill="#363538" />
-                </svg>
-            }
-            {isCopied &&
-                <svg width="10" height="8" viewBox="0 0 10 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M8.87189 1.1936L3.19356 6.87193L1.30078 4.97916" stroke="#363538" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-
-            }
-        </button>
     );
 });

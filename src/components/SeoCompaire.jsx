@@ -155,7 +155,7 @@ const SeoCompaire = ({ compaireData, linksToSend }) => {
   };
 
   const handleKeywordClick = (keyword) => {
-    const url = `https://www.wildberries.ru/catalog/0/search.aspx?search=${keyword}`;
+    const url = `/trend-analysis?query=${keyword.replace(/ /g, '+')}`;
     window.open(url, '_blank');
   };
 

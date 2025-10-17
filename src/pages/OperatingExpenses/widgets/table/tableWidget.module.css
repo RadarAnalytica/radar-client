@@ -57,6 +57,27 @@
     padding: 7px 0;
 }
 
+.periodicBadge_periodic {
+    background-color: #5329FF0D;
+    border-radius: 4px;
+    padding: 4px 8px;
+    color: #5329FF;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 100%;
+    letter-spacing: 0%;
+}
+.periodicBadge_static {
+    background-color: #F0AD001A;
+    border-radius: 4px;
+    padding: 4px 8px;
+    color: #F0AD00;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 100%;
+    letter-spacing: 0%;
+}
+
 .bodyRowSpecial:hover td div {
     background-color: #FAFAFA !important;
     transition: background-color 0.2s ease;

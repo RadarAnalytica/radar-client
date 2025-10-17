@@ -67,6 +67,10 @@ const penaltyFiltersSlice = createSlice({
                 filterElem[el] = value;
                 if (ident === 'week') state.penaltyFilters.weekOrigin[el] = !state.penaltyFilters.weekOrigin[el];
             }
+
+            if (ident === 'month') {
+                state.penaltyFilters['week'] = state.penaltyFilters.weekOrigin;
+            }
         },
 
     },

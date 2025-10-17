@@ -39,7 +39,7 @@ const customCellRender = (value, record, index, dataIndex) => {
 	);
 };
 
-export default function RnpTable({ loading, columns, data, columns2, data2, expanded, el }) {
+export default function RnpTable({ columns, data, columns2, data2, expanded, el }) {
 	// table config
 	const [tableConfig, setTableConfig] = useState();
 	const [expandedRowKeys, setExpandedRowKeys] = useState([]);
@@ -113,12 +113,7 @@ export default function RnpTable({ loading, columns, data, columns2, data2, expa
 	};
 
 	return (
-		<div className={styles.container} >
-			<div className={styles.tableContainer}>
-				{loading && <div className={styles.loading}>
-					<span className='loader'></span>
-				</div>}
-			</div>
+		<div className={styles.container}>
 			{tableConfig &&
 				<div className={styles.tableContainer} ref={containerRef}>
 					<RadarTable

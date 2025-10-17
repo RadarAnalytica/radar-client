@@ -7,12 +7,12 @@ import { ParamsWidget, TableWidget } from './widgets';
 import ErrorModal from '@/components/sharedComponents/modals/errorModal/errorModal';
 import { fetchApi } from "@/service/fetchApi";
 import { useDemoMode } from "@/app/providers";
-import NoSubscriptionWarningBlock
-  from "@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock";
+import NoSubscriptionWarningBlock from "@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock";
 
 const initRequestStatus = {
     isError: false,
     isLoading: false,
+    isLoaded: false,
     isSuccess: false,
     message: ''
 };
@@ -49,8 +49,8 @@ const TrendingRequestsPage = () => {
             }
             res = await res.json();
             setTableData(res.queries);
-            setRequestStatus(initRequestStatus);
-            setTablePaginationState({ limit: res.limit, page: res.page, total_pages: res.limit * res.total_pages });
+            setRequestStatus({ ...initRequestStatus, isLoaded: true });
+            setTablePaginationState({ limit: res.limit, page: res.page, total_pages: res.total_pages });
             setIsParamsVisible(false);
         } catch {
             setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось получить данные таблицы. Попробуйте перезагрузить страницу.' });
@@ -71,6 +71,7 @@ const TrendingRequestsPage = () => {
         title: tableData ? 'Результаты' : 'Поиск трендовых запросов',
         titlePrefix: tableData ? 'Поиск трендовых запросов' : undefined
     }), [tableData]);
+
 
     return (
         <main className={styles.page}>
@@ -105,8 +106,8 @@ const TrendingRequestsPage = () => {
                     </div>
                 </div>
 
-                {tableData &&
-                    <TableWidget
+                {!requestStatus.isLoading && requestStatus.isLoaded && (tableData?.length > 0 
+                    ? <TableWidget
                         rawData={tableData}
                         loading={requestStatus.isLoading}
                         tablePaginationState={tablePaginationState}
@@ -118,7 +119,10 @@ const TrendingRequestsPage = () => {
                         setSortState={setSortState}
                         initSortState={initSortState}
                     />
-                }
+                    : <div className={styles.page__contentEmpty}>
+                        По заданным параметрам запроса данные не найдены
+                    </div>
+                )}
             </section>
 
             <ErrorModal

@@ -1,0 +1,55 @@
+.widget {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+.widget__searchBlockWrapper {
+    width: auto;
+    max-width: 60%;
+    flex-grow: 1;
+    flex-shrink: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+}
+
+.widget__buttonsWrapper {
+    flex-grow: 0;
+    flex-shrink: 0;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 20px;
+}
+
+.clearButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    margin: 0;
+    width: 20px;
+    height: 20px;
+    transition: opacity 0.2s ease;
+    opacity: 0.5;
+}
+
+.clearButton:hover {
+    opacity: 1;
+}
+
+.clearButton:active {
+    transform: scale(0.95);
+}
+
+.clearButton svg {
+    width: 14px;
+    height: 14px;
+}
+

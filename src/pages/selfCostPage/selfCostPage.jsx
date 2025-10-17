@@ -5,7 +5,7 @@ import Sidebar from '@/components/sharedComponents/sidebar/sidebar';
 import MobilePlug from '@/components/sharedComponents/mobilePlug/mobilePlug';
 import { Filters } from '@/components/sharedComponents/apiServicePagesFiltersComponent';
 import HowToLink from '@/components/sharedComponents/howToLink/howToLink';
-import { SelfCostTableWidget, SearchWidget } from './widgets';
+import { SelfCostTableWidget, SearchComponent } from './widgets';
 import AuthContext from '@/service/AuthContext';
 import ErrorModal from '@/components/sharedComponents/modals/errorModal/errorModal';
 import { useAppSelector } from '@/redux/hooks';
@@ -29,53 +29,45 @@ const SelfCostPage = () => {
     const progress = useLoadingProgress({ loading: dataStatus.isLoading });
     const [tableData, setTableData] = useState(); // данные для рендера таблицы
     const [filteredTableData, setFilteredTableData] = useState(); // данные для рендера таблицы
+    const [totalItems, setTotalItems] = useState(0);
     const { authToken } = useContext(AuthContext);
     const { activeBrand, selectedRange, isFiltersLoaded, activeBrandName, activeArticle, activeGroup } = useAppSelector((state) => state.filters);
     const filters = useAppSelector(store => store.filters);
     
-    const getTableData = useCallback(async (authToken, shopId, filters) => {
+    const getTableData = useCallback(async (authToken, shopId, filters, page = 1, searchValue = '') => {
         setDataStatus({ ...initDataStatus, isLoading: true });
         progress.start();
 
-        const res = await ServiceFunctions.getSelfCostData(authToken, shopId, filters);
+        const res = await ServiceFunctions.getSelfCostData(authToken, shopId, filters, page, 50, searchValue);
         if (!res.ok) {
             setDataStatus({ ...initDataStatus, isError: true, message: 'Что-то пошло не так :( Попробуйте оновить страницу' });
             return;
         }
 
         const parsedData = await res.json();
-        const { items } = parsedData.data;
-        // sorting the data
-        let sortedData = items.sort((a, b) => a.product - b.product);
-        sortedData = sortedData.sort((a, b) => {
-            if (a.photo && b.photo) {
-                return a.cost && b.cost ? 0 : a.cost ? -1 : b.cost ? 1 : 0;
-            }
-            if (!a.photo && !b.photo) {
-                return a.cost && b.cost ? 0 : a.cost ? -1 : b.cost ? 1 : 0;
-            }
-            return a.photo ? -1 : b.photo ? 1 : 0;
-        });
+        const { items, total } = parsedData.data;
 
+        setTableData([...items]);
+        setFilteredTableData([...items]);
+        setTotalItems(total || items.length);
         progress.complete();
+
         await setTimeout(() => {
-            setTableData([...sortedData]);
-            setFilteredTableData([...sortedData]);
             setDataStatus({ ...initDataStatus, isLoading: false });
             progress.reset();
         }, 500);
     }, []);
 
-    const noSearchAction = useCallback(() => {
-        getTableData(authToken, activeBrand.id, filters);
+    const handleSearch = useCallback((searchValue) => {
+        getTableData(authToken, activeBrand.id, filters, 1, searchValue);
     }, [authToken, activeBrand, filters, getTableData]);
 
     const resetSearch = useCallback(() => {
         if (searchInputValue) {
             setSearchInputValue('');
-            setFilteredTableData(tableData);
+            getTableData(authToken, activeBrand.id, filters, 1, '');
         }
-    }, [searchInputValue, tableData]);
+    }, [searchInputValue, authToken, activeBrand, filters, getTableData]);
 
     //задаем начальную дату
     useEffect(() => {
@@ -96,7 +88,6 @@ const SelfCostPage = () => {
 
     const memoizedDataStatus = useMemo(() => dataStatus, [dataStatus]);
     const memoizedFilteredTableData = useMemo(() => filteredTableData, [filteredTableData]);
-    const memoizedTableData = useMemo(() => tableData, [tableData]);
     const memoizedSearchInputValue = useMemo(() => searchInputValue, [searchInputValue]);
 
     return (
@@ -136,12 +127,11 @@ const SelfCostPage = () => {
                 {activeBrand && activeBrand.is_primary_collect &&
                     <>
                         <div className={styles.page__searchWrapper}>
-                            <SearchWidget
-                                tableData={memoizedTableData}
-                                setFilteredTableData={setFilteredTableData}
+                            <SearchComponent
                                 searchInputValue={memoizedSearchInputValue}
                                 setSearchInputValue={setSearchInputValue}
-                                noSearchAction={noSearchAction}
+                                handleSearch={handleSearch}
+                                isLoading={dataStatus.isLoading}
                             />
                         </div>
 
@@ -155,6 +145,10 @@ const SelfCostPage = () => {
                             activeBrand={activeBrand}
                             setTableData={setFilteredTableData}
                             resetSearch={resetSearch}
+                            getTableData={getTableData}
+                            filters={filters}
+                            totalItems={totalItems}
+                            searchInputValue={memoizedSearchInputValue}
                         />
                     </>
                 }
@@ -176,7 +170,6 @@ const SelfCostPage = () => {
                 onClose={() => setDataStatus(initDataStatus)}
                 onCancel={() => setDataStatus(initDataStatus)}
             />
-
         </main>
     );
 };

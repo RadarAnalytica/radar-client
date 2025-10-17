@@ -245,6 +245,16 @@ select:not(.ant-input) {
   border: 1px solid rgba(232, 232, 232, 1) !important;
 }
 
+/* Ant Design custom styles */
+.ant-form-item {
+  .ant-form-item-label {
+    & > .ant-form-item-required::before {
+      transform: translateY(-50%); 
+    }
+  }
+}
+/* End of Ant Design custom styles */
+
 .prime-btn {
   border: none;
   background-color: var(--primary-color);
@@ -276,10 +286,6 @@ select:not(.ant-input) {
   justify-content: flex-start;
   align-items: center;
   gap: 10px;
-}
-
-.pointer-events-none {
-  pointer-events: none;
 }
 
 .first-screen-action-button {

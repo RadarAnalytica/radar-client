@@ -11,3 +11,6 @@ Currently, two official plugins are available:
 npm install -D @types/react@^18.2.0 @types/react-dom@^18.2.0
 npm install -D @vitejs/plugin-react @types/node
 npm install -D @types/css-modules
+
+# Быстрая проверка билда (требуется установить serve)
+serve -s ./dist

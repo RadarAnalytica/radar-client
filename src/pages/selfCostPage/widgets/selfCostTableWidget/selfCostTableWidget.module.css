@@ -52,8 +52,10 @@
 
 .widget__loaderWrapper {
     width: 100%;
-    position: absolute;
-    inset: 100px 0 0 0;
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    height: 100%;
 }
 
 .table {
@@ -70,21 +72,12 @@
 }
 
 .table_leftMargin {
-    /* padding-left: 17px; */
     position: sticky;
     left: 0;
     z-index: 2;
 }
 
-.table_rightMargin {
-    /* padding-right: 17px; */
-}
-
-.table:first-of-type {
-    border: none
-}
-
-.table:last-of-type {
+.table:first-of-type, .table:last-of-type {
     border: none
 }
 
@@ -175,10 +168,8 @@
     justify-content: flex-start;
     align-items: flex-start;
     padding: 0 17px;
+    position: relative;
 }
-
-
-
 
 
 /* Sort */

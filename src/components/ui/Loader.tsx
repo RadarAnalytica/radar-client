@@ -12,16 +12,14 @@ const Loader = ({ loading, progress }: LoaderProps) => {
     return (
         <div className='container d-flex flex-column justify-content-center align-items-center h-100 w-100 p-3'>
             <span className='loader'></span>
-            {progress !== null && 
-                <div className={styles.loadingProgress}>
-                    <Progress
-                        percent={progress}
-                        size='small'
-                        showInfo={false}
-                        strokeColor='#5329FF'
-                    />
-                </div>
-            }
+            <div className={`${styles.loadingProgress} ${progress === null ? 'opacity-0' : ''}`}>
+                <Progress
+                    percent={progress}
+                    size='small'
+                    showInfo={false}
+                    strokeColor='#5329FF'
+                />
+            </div>
         </div>
     )
 }

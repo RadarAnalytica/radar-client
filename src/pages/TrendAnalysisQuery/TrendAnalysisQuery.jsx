@@ -10,11 +10,17 @@ import TrendAnalysisQueryChart from './widget/TrendAnalysisQueryChart';
 import { ServiceFunctions } from '@/service/serviceFunctions';
 import { formatPrice, fileDownload } from '@/service/utils';
 import { useDemoMode } from "@/app/providers";
-import NoSubscriptionWarningBlock
-  from "@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock";
+import NoSubscriptionWarningBlock from "@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock";
+import DownloadButton from '@/components/DownloadButton';
+import { Table as RadarTable } from 'radar-ui';
+
+
+const customCellRender = (value, record, index, dataIndex) => {
+	return <div className={styles.customCellRender}>{formatPrice(value, '')}</div>;
+};
 
 export default function TrendAnalysisQuery() {
-  const { isDemoMode } = useDemoMode();
+	const { isDemoMode } = useDemoMode();
 	const { selectedRange } = useAppSelector(state => state.filters);
 	const [loading, setLoading] = useState(false);
 	const [timeFrame, setTimeFrame] = useState('month');
@@ -35,14 +41,39 @@ export default function TrendAnalysisQuery() {
 		},
 	];
 
+	const NEW_COLUMNS = [
+		{
+			key: 'timeFrame',
+			title: timeFrame === 'month' ? 'Месяц' : 'День',
+			dataIndex: 'timeFrame',
+			sortable: false,
+			fixed: false,
+			fixedLeft: 0,
+			width: 200,
+			minWidth: 200,
+			hidden: false,
+		},
+		{
+			key: 'quantity',
+			title: 'Частотность запроса',
+			dataIndex: 'quantity',
+			sortable: false,
+			fixed: false,
+			width: 200,
+			minWidth: 200,
+			hidden: false,
+			units: ' ',
+		},
+	];
+
 	const initQuery = () => {
 		const url = new URL(location.href);
 		const urlQuery = url.searchParams.get('query');
-		if (window.history.state?.visited == urlQuery){
+		if (window.history.state?.visited == urlQuery) {
 			return null;
 		}
 		if (urlQuery) {
-			return url.searchParams.get('query').trim();
+			return url.searchParams.get('query').trim().toLowerCase();
 		}
 		return null;
 	};
@@ -51,12 +82,12 @@ export default function TrendAnalysisQuery() {
 
 	const updateHistoryState = () => {
 		const url = new URL(location.href);
-		if (query !== window.history.state?.visited && query){
+		if (query !== window.history.state?.visited && query) {
 			url.searchParams.set('query', query);
 		} else {
 			url.searchParams.delete('query');
 		}
-		window.history.pushState({visited: query}, '', url);
+		window.history.pushState({ visited: query }, '', url);
 	};
 
 	useEffect(() => {
@@ -64,21 +95,21 @@ export default function TrendAnalysisQuery() {
 	}, [query]);
 
 	const [form] = Form.useForm();
-  const formQuery = Form.useWatch('query', form);
+	const formQuery = Form.useWatch('query', form);
 
 	const submitQuery = (data) => {
-    const query = isDemoMode ? 'платье женское' : data?.query?.trim();
+		const query = isDemoMode ? 'платье женское' : data?.query?.trim().toLowerCase();
 		if (!query) return;
 		setQuery(query);
 		setTimeFrame('month');
 	};
 
-  useEffect(() => {
-    if (isDemoMode) {
-      form.setFieldValue('query', 'платье женское');
-      submitQuery();
-    }
-  }, [isDemoMode]);
+	useEffect(() => {
+		if (isDemoMode) {
+			form.setFieldValue('query', 'платье женское');
+			submitQuery();
+		}
+	}, [isDemoMode]);
 
 	useEffect(() => {
 		updateData();
@@ -106,10 +137,10 @@ export default function TrendAnalysisQuery() {
 	};
 
 	const checkQuery = (query) => {
-		if (!query){
+		if (!query) {
 			return true;
 		}
-		if (query?.trim()){
+		if (query?.trim()) {
 			return query.trim().length === 0;
 		}
 		return true;
@@ -122,13 +153,13 @@ export default function TrendAnalysisQuery() {
 		setLoading(true);
 
 		try {
-				const response = await ServiceFunctions.getTrendAnalysisQuery(
-					query,
-					timeFrame,
-					selectedRange,
-				);
+			const response = await ServiceFunctions.getTrendAnalysisQuery(
+				query,
+				timeFrame,
+				selectedRange,
+			);
 
-      mapResponseToData(response);
+			mapResponseToData(response);
 		} catch (e) {
 			console.error(e);
 			setData([]);
@@ -141,14 +172,14 @@ export default function TrendAnalysisQuery() {
 
 	const handleDownload = async () => {
 		setDownloadLoading(true);
-		try{
+		try {
 			const fileBlob = await ServiceFunctions.getDownloadTrendAnalysisQuery(
 				query,
 				timeFrame,
 				selectedRange,
 			);
 			fileDownload(fileBlob, `Статистика_запроса.xlsx`);
-		} catch(error) {
+		} catch (error) {
 			console.error('Ошибка скачивания: ', error);
 		} finally {
 			setDownloadLoading(false);
@@ -168,24 +199,32 @@ export default function TrendAnalysisQuery() {
 					<Header title="Анализ трендовой динамики запросов"></Header>
 				</div>
 
-        {isDemoMode && <NoSubscriptionWarningBlock />}
+				{isDemoMode && <NoSubscriptionWarningBlock />}
 
 				<ConfigProvider
 					theme={{
 						token: {
+							colorBgContainer: 'white',
+							borderRadius: 8,
+							fontFamily: 'Mulish',
+							fontSize: 12,
+							fontWeight: 500,
+							colorBorder: '#5329FF1A',
+							controlHeightLG: 38,
+							controlHeight: 38,
+						},
+						components: {
+							Input: {
+								activeBorderColor: '#5329FF1A',
+								hoverBorderColor: '#5329FF1A',
+								activeOutlineColor: 'transparent',
+								activeBg: 'transparent',
+								hoverBg: 'transparent',
+								activeBg: 'transparent',
+								activeShadow: 'transparent'
+							},
 							Form: {
 								itemMarginBottom: 0,
-							},
-							Input: {
-								controlHeightLG: 40,
-								paddingBlockLG: 7,
-								paddingInlineLG: 16,
-								borderRadiusLG: 8,
-								fontSize: 16,
-								lineHeight: 1,
-								colorBorder: '#5329FF80',
-								activeBorderColor: '#5329FF',
-								hoverBorderColor: '#5329FF',
 							},
 							Button: {
 								paddingInlineLg: 12,
@@ -207,10 +246,47 @@ export default function TrendAnalysisQuery() {
 								colorPrimaryHover: '#7a52ff',
 								colorPrimaryActive: '#3818d9',
 							},
-						},
+						}
+						// token: {
+						// 	Form: {
+						// 		itemMarginBottom: 0,
+						// 	},
+						// 	Input: {
+						// 		controlHeightLG: 40,
+						// 		paddingBlockLG: 7,
+						// 		paddingInlineLG: 16,
+						// 		borderRadiusLG: 8,
+						// 		fontSize: 16,
+						// 		lineHeight: 1,
+						// 		colorBorder: '#5329FF80',
+						// 		activeBorderColor: '#5329FF',
+						// 		hoverBorderColor: '#5329FF',
+						// 	},
+						// 	Button: {
+						// 		paddingInlineLg: 12,
+						// 		paddingBlockLg: 8,
+						// 		controlHeightLG: 40,
+						// 		defaultShadow: 'none',
+						// 		defaultBorderColor: 'transparent',
+						// 		defaultHoverBorderColor: 'transparent',
+						// 		defaultColor: '#1A1A1A80',
+						// 		defaultHoverColor: '#1A1A1A',
+						// 		defaultBg: 'transparent',
+						// 		defaultHoverBg: 'transparent',
+						// 		colorPrimary: '#5329FF',
+						// 		primaryColor: '#fff',
+						// 		colorPrimaryBg: '#5329FF',
+						// 		colorPrimaryBorder: '#5329FF',
+						// 		colorPrimaryBgHover: '#7a52ff',
+						// 		colorPrimaryBorderHover: '#7a52ff',
+						// 		colorPrimaryHover: '#7a52ff',
+						// 		colorPrimaryActive: '#3818d9',
+						// 	},
+						// },
 					}}
 				>
 					<div className={styles.control}>
+						<p className={styles.control__title}>Поисковой запрос</p>
 						<Form form={form} className={styles.form} onFinish={submitQuery}>
 							<Flex gap={8}>
 								<Form.Item
@@ -221,7 +297,12 @@ export default function TrendAnalysisQuery() {
 								>
 									<Input
 										size="large"
-										placeholder="Введите поисковый запрос, например: «платье»"
+										placeholder="Введите поисковый запрос"
+										prefix={
+											<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+												<path d="M9.12793 0C14.1687 0.000149462 18.2549 4.08714 18.2549 9.12793C18.2548 11.3852 17.4328 13.4488 16.0752 15.042L20 18.9678L19.4834 19.4834L18.9678 20L15.042 16.0752C13.4488 17.4328 11.3852 18.2548 9.12793 18.2549C4.08714 18.2549 0.000149459 14.1687 0 9.12793C0 4.08705 4.08705 0 9.12793 0ZM9.12793 1.46094C4.89354 1.46094 1.46094 4.89354 1.46094 9.12793C1.46109 13.3622 4.89363 16.7949 9.12793 16.7949C13.3621 16.7948 16.7948 13.3621 16.7949 9.12793C16.7949 4.89363 13.3622 1.46109 9.12793 1.46094Z" fill="#8C8C8C" />
+											</svg>
+										}
 										allowClear={{
 											clearIcon: (
 												<svg
@@ -268,6 +349,18 @@ export default function TrendAnalysisQuery() {
 									Найти
 								</Button>
 							</Flex>
+							<div className={styles.example}>
+								{'Например: '}
+								<button
+									className={styles.example__button}
+									onClick={() => {
+										form.setFieldValue('query', 'Шорты');
+										form.submit()
+									}}
+								>
+									Шорты
+								</button>
+							</div>
 						</Form>
 					</div>
 
@@ -289,115 +382,68 @@ export default function TrendAnalysisQuery() {
 					)}
 					{!loading && query && (
 						<>
-							<Flex justify="space-between" align="end">
-								<Flex>
-									<Button
-										size="large"
-										className={`${styles.btn_timeFrame} ${timeFrame === 'month'
-												? `${styles.btn_active}`
-												: ''}`}
-										onClick={() => setTimeFrame('month')}
-									>
-										По месяцам
-									</Button>
-									<Button
-										size="large"
-										className={`${styles.btn_timeFrame} ${timeFrame === 'day'
-												? `${styles.btn_active}`
-												: ''}
-										`}
-										onClick={() => setTimeFrame('day')}
-									>
-										По дням
-									</Button>
+							<div className={styles.control__header}>
+								<p className={styles.control__headerTitle}>Динамика запросов</p>
+								<Flex justify="space-between" align="end">
+									<Flex gap={4} align="center">
+										<button
+											className={timeFrame === 'month' ? `${styles.segmented__button} ${styles.segmented__button_active}` : styles.segmented__button}
+											onClick={() => setTimeFrame('month')}
+											style={{ fontWeight: 500, fontSize: 14 }}
+										>
+											По месяцам
+										</button>
+										<button
+											className={timeFrame === 'day' ? `${styles.segmented__button} ${styles.segmented__button_active}` : styles.segmented__button}
+											onClick={() => setTimeFrame('day')}
+											style={{ fontWeight: 500, fontSize: 14 }}
+										>
+											По дням
+										</button>
+									</Flex>
+									<Flex align="end" gap={16}>
+										{timeFrame === 'day' && <Filters
+											shopSelect={false}
+											timeSelect={true}
+											brandSelect={false}
+											articleSelect={false}
+											groupSelect={false}
+										/>}
+										<DownloadButton
+											loading={downloadLoading}
+											handleDownload={handleDownload}
+										/>
+									</Flex>
 								</Flex>
-								<Flex align="end" gap={16}>
-									{timeFrame === 'day' && <Filters
-										shopSelect={false}
-										timeSelect={true}
-										brandSelect={false}
-										articleSelect={false}
-										groupSelect={false}
-									/>}
-									<Button
-										className={styles.btn}
-										type="primary"
-										size="large"
-										icon={
-											<svg
-												width="18"
-												height="17"
-												viewBox="0 0 18 17"
-												fill="none"
-												xmlns="http://www.w3.org/2000/svg"
-											>
-												<path
-													d="M9.9 6.70002H14.4L9 12.1L3.6 6.70002H8.1V0.400024H9.9V6.70002ZM1.8 14.8H16.2V8.50002H18V15.7C18 15.9387 17.9052 16.1676 17.7364 16.3364C17.5676 16.5052 17.3387 16.6 17.1 16.6H0.9C0.661305 16.6 0.432387 16.5052 0.263604 16.3364C0.0948211 16.1676 0 15.9387 0 15.7V8.50002H1.8V14.8Z"
-													fill="currentColor"
-												/>
-											</svg>
-										}
-										loading={downloadLoading}
-										onClick={handleDownload}
-										disabled={isDemoMode}
-										title={isDemoMode ? 'Скачивание доступно после активации подписки' : 'Скачать таблицу в виде Excel-файла'}
-									>
-										Скачать Excel
-									</Button>
-								</Flex>
-							</Flex>
+							</div>
 							<div className={styles.container}>
 								<div className={styles.chart}>
 									<TrendAnalysisQueryChart data={data?.chart} />
 								</div>
-								<div className={styles.table}>
-									<ConfigProvider
-										renderEmpty={() => (
-											<div>Нет данных</div>
-										)}
-										theme={{
-											components: {
-												Table: {
-													headerColor: '#8c8c8c',
-													headerBg: '#f7f6fe',
-													headerBorderRadius: 20,
-													selectionColumnWidth: 32,
-													cellFontSize: 16,
-													borderColor: '#e8e8e8',
-													cellPaddingInline: 16,
-													cellPaddingBlock: 17,
-													bodySortBg: '#f7f6fe',
-													headerSortActiveBg:
-														'#e7e1fe',
-													headerSortHoverBg:
-														'#e7e1fe',
-													rowSelectedBg: '#f7f6fe',
-													rowSelectedHoverBg:
-														'#e7e1fe',
-													colorText: '#1A1A1A',
-													lineHeight: 1.2,
-													fontWeightStrong: 500,
-												},
-												Checkbox: {
-													colorBorder: '#ccc',
-													colorPrimary: '#5329ff',
-													colorPrimaryBorder:
-														'#5329ff',
-													colorPrimaryHover:
-														'#5329ff',
-												},
-											},
-										}}
-									>
-										<Table
-											columns={COLUMNS}
-											dataSource={data?.table}
-											pagination={false}
-											showSorterTooltip={false}
-											tableLayout='fixed'
-										></Table>
-									</ConfigProvider>
-								</div>
+
+
+
+
+
+								{data?.table &&
+									<div className={styles.table}>
+										<RadarTable
+											preset='radar-table-default'
+											config={NEW_COLUMNS}
+											dataSource={data.table}
+											bodyRowClassName={styles.bodyRowSpecial}
+											paginationContainerStyle={{ display: 'none' }}
+											bodyCellWrapperStyle={{
+												//fontWeight: 700,
+											}}
+											bodyCellWrapperClassName={styles.customBodyCellWrapperClassName}
+											customCellRender={{
+												idx: ['quantity'],
+												renderer: customCellRender
+											}}
+										/>
+									</div>
+								}
 							</div>
 						</>
 					)}

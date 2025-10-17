@@ -31,12 +31,13 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     if (value && value !== prevToken) {
+      const data = decode(value);
+
       setAuthToken(value);
-      setUser(decode(value));
+      setUser(data);
     }
 
     console.log('user', user);
-
   }, [value]);
 
   // To delete the cookie:

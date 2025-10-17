@@ -131,10 +131,10 @@ export const ServiceFunctions = {
 		return data;
 	},
 
-	getSelfCostData: async (token, idShop, filters) => {
+	getSelfCostData: async (token, idShop, filters, page = 1, per_page = 50, searchInputValue = '') => {
 		const body = getRequestObject(filters, undefined, idShop);
 		const res = await fetchApi(
-			'/api/product/self-costs/list',
+			`/api/product/self-costs/list?page=${page}&per_page=${per_page}&search=${encodeURIComponent(searchInputValue)}`,
 			{
 				method: 'POST',
 				headers: {
@@ -1211,7 +1211,7 @@ export const ServiceFunctions = {
 	getTrendAnalysisQuery: async (query, timeFrame, selectedRange) => {
 		let url = `https://radarmarket.ru/api/analytic/query-dynamics/${timeFrame}?query_string=${encodeURIComponent(query)}`;
 
-    if (timeFrame === 'day') {
+    	if (timeFrame === 'day') {
 			url += '&' + rangeApiFormat(selectedRange);
 		}
 
@@ -1223,9 +1223,9 @@ export const ServiceFunctions = {
 			}
 		);
 
-    if (!res.ok) {
-      throw new Error(`Ошибка запроса: ${res.status}`);
-    }
+		if (!res.ok) {
+			throw new Error(`Ошибка запроса: ${res.status}`);
+		}
 
 		const data = await res.json();
 		return data;
@@ -1385,7 +1385,7 @@ export const ServiceFunctions = {
 						authorization: 'JWT ' + token,
 					},
 					body: JSON.stringify(body),
-					// signal
+					signal
 				}
 			);
 
@@ -1412,7 +1412,7 @@ export const ServiceFunctions = {
 						authorization: 'JWT ' + token,
 					},
 					body: JSON.stringify(body),
-					// signal
+					signal
 				}
 			);
 
@@ -1427,7 +1427,7 @@ export const ServiceFunctions = {
 			throw new Error(error);
 		}
 	},
-	getRnpProducts: async(token, selectedRange, shopId, filters, page, search, signal) => {
+	getRnpProducts: async(token, selectedRange, shopId, filters, page, search) => {
 		try {
 			let body = getRnpRequestObject(filters, selectedRange, shopId);
 			const res = await fetchApi(
@@ -1439,7 +1439,6 @@ export const ServiceFunctions = {
 						authorization: 'JWT ' + token,
 					},
 					body: JSON.stringify(body),
-					signal
 				}
 			);
 
@@ -1557,10 +1556,10 @@ export const ServiceFunctions = {
 			throw new Error(error);
 		}
 	},
-	getOperatingExpensesCategoryGetAll: async(token) => {
+	getOperatingExpensesCategoryGetAll: async(token, pagination) => {
 		try {
 			const res = await fetch(
-				`${URL}/api/operating-expenses/category/get-all?page=1&limit=100`,
+				`${URL}/api/operating-expenses/category/get-all?page=${pagination.page}&limit=${pagination.limit}`,
 				{
 					method: 'GET',
 					headers: {
@@ -1711,16 +1710,17 @@ export const ServiceFunctions = {
 			throw new Error(error);
 		}
 	},
-	getOperatingExpensesExpenseGetAll: async(token) => {
+	getOperatingExpensesExpenseGetAll: async(token, requestObject) => {
 		try {
 			const res = await fetch(
-				`${URL}/api/operating-expenses/expense/get-all?page=1&limit=100`,
+				`${URL}/api/operating-expenses/expense/get-all`,
 				{
-					method: 'GET',
+					method: 'POST',
 					headers: {
 						'content-type': 'application/json',
 						authorization: 'JWT ' + token,
-					}
+					},
+					body: JSON.stringify(requestObject)
 				}
 			);
 
@@ -1774,10 +1774,33 @@ export const ServiceFunctions = {
 			throw new Error(error);
 		}
 	},
-	postOperatingExpensesExpenseCreate: async(token, expense) => {
+	getPeriodicExpenseTemplate: async (token, periodic_expense_id) => {
 		try {
 			const res = await fetch(
-				`${URL}/api/operating-expenses/expense/create`,
+				`${URL}/api/operating-expenses/periodic-expense/get?expense_id=${periodic_expense_id}`,
+				{
+					method: 'GET',
+					headers: {
+						'content-type': 'application/json',
+						authorization: 'JWT ' + token,
+					}
+				}
+			);
+
+			if (!res.ok){
+				throw new Error('Ошибка запроса');
+			}
+
+			return await res.json();
+		} catch(error) {
+			console.error('getAllOperatingExpensesExpense ', error);
+			throw new Error(error);
+		}
+	},
+	postOperatingExpensesExpenseCreate: async(token, expense, createExpenseUrl) => {
+		try {
+			const res = await fetch(
+				`${URL}/api/${createExpenseUrl}`,
 				{
 					method: 'POST',
 					headers: {
@@ -1798,11 +1821,36 @@ export const ServiceFunctions = {
 			throw new Error(error);
 		}
 	},
-	deleteOperatingExpensesExpenseDelete: async(token, id) => {
+	
+	patchOperatingExpensesExpense: async(token, expense, updateExpenseUrl) => {
+		try {
+			const res = await fetch(
+				`${URL}/api/${updateExpenseUrl}`,
+				{
+					method: 'PATCH',
+					headers: {
+						'content-type': 'application/json',
+						authorization: 'JWT ' + token,
+					},
+					body: JSON.stringify(expense),
+				}
+			);
+			if (!res.ok) {
+				throw new Error('Ошибка запроса');
+			}
+			const data = await res.json();
+			return data;
+
+		} catch(error) {
+			console.error('patchOperatingExpensesExpense ', error);
+			throw new Error(error);
+		}
+	},
+	deleteOperatingExpensesExpenseDelete: async(token, id, isPeriodic) => {
 		try {
 			// operating-expenses/expense/delete?expense_id
 			const res = await fetch(
-				`${URL}/api/operating-expenses/expense/delete?expense_id=${id}`,
+				`${URL}/api/operating-expenses/expense/delete?expense_id=${id}&delete_linked=${!!isPeriodic}`,
 				{
 					method: 'DELETE',
 					headers: {

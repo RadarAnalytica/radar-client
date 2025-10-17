@@ -142,13 +142,15 @@ const ReportMain = () => {
     return <NoSubscriptionPage title={'Финансовые отчеты'} />;
   }
 
+
   return (
     <div className='dashboard-page notranslate'>
       <MobilePlug />
+
       <div style={{ height: '100vh', zIndex: 999 }}>
         <Sidebar />
       </div>
-      {/* <SideNav /> */}
+
       <div className='dashboard-content pb-3' style={{ padding: '0 32px' }}>
         <div style={{ width: '100%', padding: '20px 0' }} className="container dash-container">
           <Header title={'Главная'} titlePrefix={'Отчёт'} />
@@ -456,7 +458,7 @@ const ReportMain = () => {
                             <img src={failcheck} alt='Fail' />
                           )}
                         </span>
-                        <span className={styles.reportText}>
+                        <span className={styles.reportText} title={row.foreign_country_report_name}>
                           {row.foreign_country_report_name}
                         </span>
                       </div>)}
@@ -472,7 +474,7 @@ const ReportMain = () => {
                           <img src={failgreycheck} alt='Fail' />
                         )}
                       </span>
-                      <span className={styles.reportText}>
+                      <span className={styles.reportText} title={row.storage_report_name}>
                         {row.storage_report_name === null ? (
                           <span className={styles.failGrey}>
                             Отчет по платному хранению

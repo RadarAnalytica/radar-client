@@ -46,7 +46,7 @@ export function useLoadingProgress({ loading, maxProgress = 90, steps = 15, inte
 
 	const control = useMemo(() => ({
 		value: progress,
-		start: () => setProgress(0),
+		start: () => progress === null ? setProgress(0) : null,
 		complete: () => setProgress(100),
 		reset: () => setProgress(null),
 	}), [progress]);

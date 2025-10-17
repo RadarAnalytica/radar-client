@@ -1,814 +1,945 @@
 [
-    {
+  {
       "year": 2025,
       "data": {
-        "realization": {
-          "rub": 103651415.91,
-          "percent": 69.99
-        },
-        "mp_discount": {
-          "rub": 38364143.28,
-          "percent": 25.91
-        },
-        "sales": {
-          "rub": 142015559.19,
-          "percent": 100
-        },
-        "direct_expenses": {
-          "cost": {
-            "rub": 768920,
-            "percent": 0.52
+          "realization": {
+              "rub": 72321587.31,
+              "percent": 71.92
           },
-          "logistic": {
-            "rub": 16048328.01,
-            "percent": 10.84
+          "mp_discount": {
+              "rub": 27093544.36,
+              "percent": 26.94
           },
-          "commission": {
-            "rub": 34502541.62,
-            "percent": 23.3
+          "sales": {
+              "rub": 99415131.67,
+              "percent": 100
           },
-          "penalties": {
-            "rub": 56247,
-            "percent": 0.04
+          "direct_expenses": {
+              "cost": {
+                  "rub": 476823,
+                  "percent": 0.47
+              },
+              "logistic": {
+                  "rub": 10355712.35,
+                  "percent": 10.3
+              },
+              "commission": {
+                  "rub": 22523260.03,
+                  "percent": 22.4
+              },
+              "penalties": {
+                  "rub": 25535,
+                  "percent": 0.03
+              },
+              "storage": {
+                  "rub": 665782.32,
+                  "percent": 0.66
+              },
+              "advert": {
+                  "rub": 68457061,
+                  "percent": 68.07
+              },
+              "other_retentions": {
+                  "rub": 68457061,
+                  "percent": 68.07
+              },
+              "paid_acceptance": {
+                  "rub": 155218.42,
+                  "percent": 0.15
+              },
+              "total_expenses": {
+                  "rub": 102659392.12,
+                  "percent": 102.08
+              }
           },
-          "storage": {
-            "rub": 801482.79,
-            "percent": 0.54
+          "compensation": {
+              "rub": 23417.73,
+              "percent": 0.02
           },
-          "advert": {
-            "rub": 68239702,
-            "percent": 46.08
+          "gross_margin": {
+              "rub": 98938308.67,
+              "percent": 98.38
           },
-          "other_retentions": {
-            "rub": 68239702,
-            "percent": 46.08
+          "operating_expenses": [
+              {
+                  "rub": 1531812,
+                  "percent": 1.52,
+                  "category": "test"
+              },
+              {
+                  "rub": 3212,
+                  "percent": 0,
+                  "category": "hh"
+              }
+          ],
+          "operating_profit": {
+              "rub": -2397724.71,
+              "percent": -2.38
           },
-          "paid_acceptance": {
-            "rub": 209827.56,
-            "percent": 0.14
+          "ebitda": {
+              "rub": -2397724.71,
+              "percent": -2.38
           },
-          "total_expenses": {
-            "rub": 120627048.98,
-            "percent": 81.46
+          "ebitda_margin": -3.26,
+          "tax": {
+              "rub": 3499491.43,
+              "percent": 3.48
+          },
+          "net_profit": {
+              "rub": 52813518.73,
+              "percent": 52.52
           }
-        },
-        "compensation": {
-          "rub": 83132.64,
-          "percent": 0.06
-        },
-        "gross_margin": {
-          "rub": 141246639.19,
-          "percent": 95.38
-        },
-        "operating_expenses": null,
-        "operating_profit": {
-          "rub": 22456067.56,
-          "percent": 15.16
-        },
-        "ebitda": {
-          "rub": 22456067.56,
-          "percent": 15.16
-        },
-        "ebitda_margin": 15.06,
-        "tax": {
-          "rub": 4338858.71,
-          "percent": 2.93
-        },
-        "net_profit": {
-          "rub": 67206533.12,
-          "percent": 45.38
-        }
       },
       "months": [
-        {
-          "month_label": "Январь 2025",
-          "data": {
-            "realization": {
-              "rub": 12779630.9,
-              "percent": 73.74
-            },
-            "mp_discount": {
-              "rub": 3746539.01,
-              "percent": 21.62
-            },
-            "sales": {
-              "rub": 16526169.91,
-              "percent": 100
-            },
-            "direct_expenses": {
-              "cost": {
-                "rub": 86700,
-                "percent": 0.5
-              },
-              "logistic": {
-                "rub": 1826662.36,
-                "percent": 10.54
-              },
-              "commission": {
-                "rub": 3536601.95,
-                "percent": 20.41
-              },
-              "penalties": {
-                "rub": 1415,
-                "percent": 0.01
-              },
-              "storage": {
-                "rub": 0,
-                "percent": 0
-              },
-              "advert": {
-                "rub": 958110,
-                "percent": 5.53
-              },
-              "other_retentions": {
-                "rub": 958110,
-                "percent": 5.53
-              },
-              "paid_acceptance": {
-                "rub": 0,
-                "percent": 0
-              },
-              "total_expenses": {
-                "rub": 6409489.31,
-                "percent": 36.98
+          {
+              "month_label": "Январь 2025",
+              "data": {
+                  "realization": {
+                      "rub": 9711269.66,
+                      "percent": 76.1
+                  },
+                  "mp_discount": {
+                      "rub": 2902737.1,
+                      "percent": 22.75
+                  },
+                  "sales": {
+                      "rub": 12614006.76,
+                      "percent": 100
+                  },
+                  "direct_expenses": {
+                      "cost": {
+                          "rub": 61166,
+                          "percent": 0.48
+                      },
+                      "logistic": {
+                          "rub": 1302100.03,
+                          "percent": 10.2
+                      },
+                      "commission": {
+                          "rub": 2548354.61,
+                          "percent": 19.97
+                      },
+                      "penalties": {
+                          "rub": -1328,
+                          "percent": -0.01
+                      },
+                      "storage": {
+                          "rub": 0,
+                          "percent": 0
+                      },
+                      "advert": {
+                          "rub": 958110,
+                          "percent": 7.51
+                      },
+                      "other_retentions": {
+                          "rub": 958110,
+                          "percent": 7.51
+                      },
+                      "paid_acceptance": {
+                          "rub": 0,
+                          "percent": 0
+                      },
+                      "total_expenses": {
+                          "rub": 4868402.64,
+                          "percent": 38.15
+                      }
+                  },
+                  "compensation": {
+                      "rub": 7297.63,
+                      "percent": 0.06
+                  },
+                  "gross_margin": {
+                      "rub": 12552840.76,
+                      "percent": 98.37
+                  },
+                  "operating_expenses": [],
+                  "operating_profit": {
+                      "rub": 7744276.12,
+                      "percent": 60.69
+                  },
+                  "ebitda": {
+                      "rub": 7744276.12,
+                      "percent": 60.69
+                  },
+                  "ebitda_margin": 61.4,
+                  "tax": {
+                      "rub": 471820.89,
+                      "percent": 3.7
+                  },
+                  "net_profit": {
+                      "rub": 7330694.62,
+                      "percent": 57.45
+                  }
               }
-            },
-            "compensation": {
-              "rub": 33830.17,
-              "percent": 0.2
-            },
-            "gross_margin": {
-              "rub": 16439469.91,
-              "percent": 94.86
-            },
-            "operating_expenses": null,
-            "operating_profit": {
-              "rub": 10118095.6,
-              "percent": 58.38
-            },
-            "ebitda": {
-              "rub": 10118095.6,
-              "percent": 58.38
-            },
-            "ebitda_margin": 61.22,
-            "tax": {
-              "rub": 554233.86,
-              "percent": 3.2
-            },
-            "net_profit": {
-              "rub": 8596297.08,
-              "percent": 49.6
-            }
-          }
-        },
-        {
-          "month_label": "Февраль 2025",
-          "data": {
-            "realization": {
-              "rub": 13903275,
-              "percent": 71.99
-            },
-            "mp_discount": {
-              "rub": 4657120.64,
-              "percent": 24.11
-            },
-            "sales": {
-              "rub": 18560395.64,
-              "percent": 100
-            },
-            "direct_expenses": {
-              "cost": {
-                "rub": 90110,
-                "percent": 0.47
-              },
-              "logistic": {
-                "rub": 1988512.87,
-                "percent": 10.3
-              },
-              "commission": {
-                "rub": 4023614.69,
-                "percent": 20.83
-              },
-              "penalties": {
-                "rub": 11876.51,
-                "percent": 0.06
-              },
-              "storage": {
-                "rub": 17732.56,
-                "percent": 0.09
-              },
-              "advert": {
-                "rub": 1839713,
-                "percent": 9.53
-              },
-              "other_retentions": {
-                "rub": 1839713,
-                "percent": 9.53
-              },
-              "paid_acceptance": {
-                "rub": 14853.06,
-                "percent": 0.08
-              },
-              "total_expenses": {
-                "rub": 7986412.69,
-                "percent": 41.35
+          },
+          {
+              "month_label": "Февраль 2025",
+              "data": {
+                  "realization": {
+                      "rub": 10679068.12,
+                      "percent": 73.87
+                  },
+                  "mp_discount": {
+                      "rub": 3618690.05,
+                      "percent": 25.03
+                  },
+                  "sales": {
+                      "rub": 14297758.17,
+                      "percent": 100
+                  },
+                  "direct_expenses": {
+                      "cost": {
+                          "rub": 67003,
+                          "percent": 0.46
+                      },
+                      "logistic": {
+                          "rub": 1398491.86,
+                          "percent": 9.67
+                      },
+                      "commission": {
+                          "rub": 2915484.07,
+                          "percent": 20.17
+                      },
+                      "penalties": {
+                          "rub": 5087,
+                          "percent": 0.04
+                      },
+                      "storage": {
+                          "rub": 17732.56,
+                          "percent": 0.12
+                      },
+                      "advert": {
+                          "rub": 1839713,
+                          "percent": 12.73
+                      },
+                      "other_retentions": {
+                          "rub": 1839713,
+                          "percent": 12.73
+                      },
+                      "paid_acceptance": {
+                          "rub": 14853.06,
+                          "percent": 0.1
+                      },
+                      "total_expenses": {
+                          "rub": 6258364.55,
+                          "percent": 43.29
+                      }
+                  },
+                  "compensation": {
+                      "rub": 25502.97,
+                      "percent": 0.18
+                  },
+                  "gross_margin": {
+                      "rub": 14230755.17,
+                      "percent": 98.44
+                  },
+                  "operating_expenses": [],
+                  "operating_profit": {
+                      "rub": 8077066.24,
+                      "percent": 55.87
+                  },
+                  "ebitda": {
+                      "rub": 8077066.24,
+                      "percent": 55.87
+                  },
+                  "ebitda_margin": 56.23,
+                  "tax": {
+                      "rub": 514897.52,
+                      "percent": 3.56
+                  },
+                  "net_profit": {
+                      "rub": 7999724.74,
+                      "percent": 55.34
+                  }
               }
-            },
-            "compensation": {
-              "rub": 77368.56,
-              "percent": 0.4
-            },
-            "gross_margin": {
-              "rub": 18470285.64,
-              "percent": 95.63
-            },
-            "operating_expenses": null,
-            "operating_profit": {
-              "rub": 10618445.08,
-              "percent": 54.98
-            },
-            "ebitda": {
-              "rub": 10618445.08,
-              "percent": 54.98
-            },
-            "ebitda_margin": 56.97,
-            "tax": {
-              "rub": 614004.68,
-              "percent": 3.18
-            },
-            "net_profit": {
-              "rub": 9529296.7,
-              "percent": 49.34
-            }
-          }
-        },
-        {
-          "month_label": "Март 2025",
-          "data": {
-            "realization": {
-              "rub": 15080491.83,
-              "percent": 71.93
-            },
-            "mp_discount": {
-              "rub": 5145418.29,
-              "percent": 24.54
-            },
-            "sales": {
-              "rub": 20225910.12,
-              "percent": 100
-            },
-            "direct_expenses": {
-              "cost": {
-                "rub": 100240,
-                "percent": 0.48
-              },
-              "logistic": {
-                "rub": 2116830.57,
-                "percent": 10.1
-              },
-              "commission": {
-                "rub": 4454290.15,
-                "percent": 21.25
-              },
-              "penalties": {
-                "rub": 8747.45,
-                "percent": 0.04
-              },
-              "storage": {
-                "rub": 107105.6,
-                "percent": 0.51
-              },
-              "advert": {
-                "rub": 8116944,
-                "percent": 38.72
-              },
-              "other_retentions": {
-                "rub": 8116944,
-                "percent": 38.72
-              },
-              "paid_acceptance": {
-                "rub": 9328.38,
-                "percent": 0.04
-              },
-              "total_expenses": {
-                "rub": 14913486.15,
-                "percent": 71.14
+          },
+          {
+              "month_label": "Март 2025",
+              "data": {
+                  "realization": {
+                      "rub": 11194902.43,
+                      "percent": 73.27
+                  },
+                  "mp_discount": {
+                      "rub": 3921980.06,
+                      "percent": 25.67
+                  },
+                  "sales": {
+                      "rub": 15116882.49,
+                      "percent": 100
+                  },
+                  "direct_expenses": {
+                      "cost": {
+                          "rub": 74225,
+                          "percent": 0.49
+                      },
+                      "logistic": {
+                          "rub": 1447396.85,
+                          "percent": 9.47
+                      },
+                      "commission": {
+                          "rub": 3136536.56,
+                          "percent": 20.53
+                      },
+                      "penalties": {
+                          "rub": 3498,
+                          "percent": 0.02
+                      },
+                      "storage": {
+                          "rub": 83113.25,
+                          "percent": 0.54
+                      },
+                      "advert": {
+                          "rub": 8116944,
+                          "percent": 53.13
+                      },
+                      "other_retentions": {
+                          "rub": 8116944,
+                          "percent": 53.13
+                      },
+                      "paid_acceptance": {
+                          "rub": 0,
+                          "percent": 0
+                      },
+                      "total_expenses": {
+                          "rub": 12861713.66,
+                          "percent": 84.18
+                      }
+                  },
+                  "compensation": {
+                      "rub": 2229.36,
+                      "percent": 0.01
+                  },
+                  "gross_margin": {
+                      "rub": 15042657.49,
+                      "percent": 98.46
+                  },
+                  "operating_expenses": [],
+                  "operating_profit": {
+                      "rub": 2341780.08,
+                      "percent": 15.33
+                  },
+                  "ebitda": {
+                      "rub": 2341780.08,
+                      "percent": 15.33
+                  },
+                  "ebitda_margin": 14.92,
+                  "tax": {
+                      "rub": 567387.89,
+                      "percent": 3.71
+                  },
+                  "net_profit": {
+                      "rub": 8814852.01,
+                      "percent": 57.69
+                  }
               }
-            },
-            "compensation": {
-              "rub": 1136.81,
-              "percent": 0.01
-            },
-            "gross_margin": {
-              "rub": 20125670.12,
-              "percent": 96
-            },
-            "operating_expenses": null,
-            "operating_profit": {
-              "rub": 5437605.4,
-              "percent": 25.94
-            },
-            "ebitda": {
-              "rub": 5437605.4,
-              "percent": 25.94
-            },
-            "ebitda_margin": 26.26,
-            "tax": {
-              "rub": 509815.83,
-              "percent": 2.43
-            },
-            "net_profit": {
-              "rub": 7886874.73,
-              "percent": 37.62
-            }
-          }
-        },
-        {
-          "month_label": "Апрель 2025",
-          "data": {
-            "realization": {
-              "rub": 10959657.87,
-              "percent": 70.94
-            },
-            "mp_discount": {
-              "rub": 3735485.15,
-              "percent": 24.18
-            },
-            "sales": {
-              "rub": 14695143.02,
-              "percent": 100
-            },
-            "direct_expenses": {
-              "cost": {
-                "rub": 76840,
-                "percent": 0.5
-              },
-              "logistic": {
-                "rub": 1682633.31,
-                "percent": 10.89
-              },
-              "commission": {
-                "rub": 3339067.95,
-                "percent": 21.61
-              },
-              "penalties": {
-                "rub": -640,
-                "percent": 0
-              },
-              "storage": {
-                "rub": 118970.68,
-                "percent": 0.77
-              },
-              "advert": {
-                "rub": 8457080,
-                "percent": 54.74
-              },
-              "other_retentions": {
-                "rub": 8457080,
-                "percent": 54.74
-              },
-              "paid_acceptance": {
-                "rub": 24866.36,
-                "percent": 0.16
-              },
-              "total_expenses": {
-                "rub": 13698818.3,
-                "percent": 88.68
+          },
+          {
+              "month_label": "Апрель 2025",
+              "data": {
+                  "realization": {
+                      "rub": 7157029.82,
+                      "percent": 72.89
+                  },
+                  "mp_discount": {
+                      "rub": 2546582.73,
+                      "percent": 25.94
+                  },
+                  "sales": {
+                      "rub": 9703612.55,
+                      "percent": 100
+                  },
+                  "direct_expenses": {
+                      "cost": {
+                          "rub": 42945,
+                          "percent": 0.44
+                      },
+                      "logistic": {
+                          "rub": 966021.09,
+                          "percent": 9.84
+                      },
+                      "commission": {
+                          "rub": 2030397.32,
+                          "percent": 20.68
+                      },
+                      "penalties": {
+                          "rub": -3068,
+                          "percent": -0.03
+                      },
+                      "storage": {
+                          "rub": 89148.6,
+                          "percent": 0.91
+                      },
+                      "advert": {
+                          "rub": 8457080,
+                          "percent": 86.13
+                      },
+                      "other_retentions": {
+                          "rub": 8457080,
+                          "percent": 86.13
+                      },
+                      "paid_acceptance": {
+                          "rub": 13862.15,
+                          "percent": 0.14
+                      },
+                      "total_expenses": {
+                          "rub": 11596386.16,
+                          "percent": 118.1
+                      }
+                  },
+                  "compensation": {
+                      "rub": 4305.45,
+                      "percent": 0.04
+                  },
+                  "gross_margin": {
+                      "rub": 9660667.55,
+                      "percent": 98.39
+                  },
+                  "operating_expenses": [],
+                  "operating_profit": {
+                      "rub": -1792830.86,
+                      "percent": -18.26
+                  },
+                  "ebitda": {
+                      "rub": -1792830.86,
+                      "percent": -18.26
+                  },
+                  "ebitda_margin": -19.51,
+                  "tax": {
+                      "rub": 361751.33,
+                      "percent": 3.68
+                  },
+                  "net_profit": {
+                      "rub": 5624492.54,
+                      "percent": 57.28
+                  }
               }
-            },
-            "compensation": {
-              "rub": 7936.92,
-              "percent": 0.05
-            },
-            "gross_margin": {
-              "rub": 14618303.02,
-              "percent": 94.63
-            },
-            "operating_expenses": null,
-            "operating_profit": {
-              "rub": 1139521.76,
-              "percent": 7.38
-            },
-            "ebitda": {
-              "rub": 1139521.76,
-              "percent": 7.38
-            },
-            "ebitda_margin": 6.78,
-            "tax": {
-              "rub": 511134.7,
-              "percent": 3.31
-            },
-            "net_profit": {
-              "rub": 7930936.9,
-              "percent": 51.34
-            }
-          }
-        },
-        {
-          "month_label": "Май 2025",
-          "data": {
-            "realization": {
-              "rub": 11910545.41,
-              "percent": 67.67
-            },
-            "mp_discount": {
-              "rub": 4981141.7,
-              "percent": 28.3
-            },
-            "sales": {
-              "rub": 16891687.11,
-              "percent": 100
-            },
-            "direct_expenses": {
-              "cost": {
-                "rub": 97160,
-                "percent": 0.55
-              },
-              "logistic": {
-                "rub": 2070150.61,
-                "percent": 11.76
-              },
-              "commission": {
-                "rub": 3857525.99,
-                "percent": 21.91
-              },
-              "penalties": {
-                "rub": 4392,
-                "percent": 0.02
-              },
-              "storage": {
-                "rub": 119776.97,
-                "percent": 0.68
-              },
-              "advert": {
-                "rub": 9698019,
-                "percent": 55.1
-              },
-              "other_retentions": {
-                "rub": 9698019,
-                "percent": 55.1
-              },
-              "paid_acceptance": {
-                "rub": 62665.02,
-                "percent": 0.36
-              },
-              "total_expenses": {
-                "rub": 15909689.59,
-                "percent": 90.38
+          },
+          {
+              "month_label": "Май 2025",
+              "data": {
+                  "realization": {
+                      "rub": 7564758.72,
+                      "percent": 70.02
+                  },
+                  "mp_discount": {
+                      "rub": 3148399.33,
+                      "percent": 29.14
+                  },
+                  "sales": {
+                      "rub": 10713158.05,
+                      "percent": 100
+                  },
+                  "direct_expenses": {
+                      "cost": {
+                          "rub": 46410,
+                          "percent": 0.43
+                      },
+                      "logistic": {
+                          "rub": 1206497.81,
+                          "percent": 11.17
+                      },
+                      "commission": {
+                          "rub": 2249745.17,
+                          "percent": 20.82
+                      },
+                      "penalties": {
+                          "rub": 3187,
+                          "percent": 0.03
+                      },
+                      "storage": {
+                          "rub": 87309.96,
+                          "percent": 0.81
+                      },
+                      "advert": {
+                          "rub": 9698019,
+                          "percent": 89.76
+                      },
+                      "other_retentions": {
+                          "rub": 9698019,
+                          "percent": 89.76
+                      },
+                      "paid_acceptance": {
+                          "rub": 52475.68,
+                          "percent": 0.49
+                      },
+                      "total_expenses": {
+                          "rub": 13343644.62,
+                          "percent": 123.5
+                      }
+                  },
+                  "compensation": {
+                      "rub": 1350.88,
+                      "percent": 0.01
+                  },
+                  "gross_margin": {
+                      "rub": 10666748.05,
+                      "percent": 98.73
+                  },
+                  "operating_expenses": [],
+                  "operating_profit": {
+                      "rub": -2487513.93,
+                      "percent": -23.02
+                  },
+                  "ebitda": {
+                      "rub": -2487513.93,
+                      "percent": -23.02
+                  },
+                  "ebitda_margin": -24.55,
+                  "tax": {
+                      "rub": 382452.64,
+                      "percent": 3.54
+                  },
+                  "net_profit": {
+                      "rub": 5945347.99,
+                      "percent": 55.03
+                  }
               }
-            },
-            "compensation": {
-              "rub": 5152.85,
-              "percent": 0.03
-            },
-            "gross_margin": {
-              "rub": 16794527.11,
-              "percent": 95.41
-            },
-            "operating_expenses": null,
-            "operating_profit": {
-              "rub": 1168831.51,
-              "percent": 6.64
-            },
-            "ebitda": {
-              "rub": 1168831.51,
-              "percent": 6.64
-            },
-            "ebitda_margin": 5.81,
-            "tax": {
-              "rub": 559868.53,
-              "percent": 3.18
-            },
-            "net_profit": {
-              "rub": 8674113.56,
-              "percent": 49.28
-            }
-          }
-        },
-        {
-          "month_label": "Июнь 2025",
-          "data": {
-            "realization": {
-              "rub": 10282307.13,
-              "percent": 66.56
-            },
-            "mp_discount": {
-              "rub": 4472804.79,
-              "percent": 28.95
-            },
-            "sales": {
-              "rub": 14755111.92,
-              "percent": 100
-            },
-            "direct_expenses": {
-              "cost": {
-                "rub": 78083,
-                "percent": 0.51
-              },
-              "logistic": {
-                "rub": 1784039.72,
-                "percent": 11.55
-              },
-              "commission": {
-                "rub": 3924380.32,
-                "percent": 25.4
-              },
-              "penalties": {
-                "rub": 12875.04,
-                "percent": 0.08
-              },
-              "storage": {
-                "rub": 121296.34,
-                "percent": 0.79
-              },
-              "advert": {
-                "rub": 12354975,
-                "percent": 79.97
-              },
-              "other_retentions": {
-                "rub": 12354975,
-                "percent": 79.97
-              },
-              "paid_acceptance": {
-                "rub": 46342.38,
-                "percent": 0.3
-              },
-              "total_expenses": {
-                "rub": 18321991.8,
-                "percent": 118.6
+          },
+          {
+              "month_label": "Июнь 2025",
+              "data": {
+                  "realization": {
+                      "rub": 6167369.76,
+                      "percent": 69.57
+                  },
+                  "mp_discount": {
+                      "rub": 2544709.03,
+                      "percent": 28.71
+                  },
+                  "sales": {
+                      "rub": 8712078.79,
+                      "percent": 100
+                  },
+                  "direct_expenses": {
+                      "cost": {
+                          "rub": 33756,
+                          "percent": 0.38
+                      },
+                      "logistic": {
+                          "rub": 963817.18,
+                          "percent": 10.87
+                      },
+                      "commission": {
+                          "rub": 2170654.63,
+                          "percent": 24.49
+                      },
+                      "penalties": {
+                          "rub": 8065,
+                          "percent": 0.09
+                      },
+                      "storage": {
+                          "rub": 91450.12,
+                          "percent": 1.03
+                      },
+                      "advert": {
+                          "rub": 12354975,
+                          "percent": 139.37
+                      },
+                      "other_retentions": {
+                          "rub": 12354975,
+                          "percent": 139.37
+                      },
+                      "paid_acceptance": {
+                          "rub": 40875.83,
+                          "percent": 0.46
+                      },
+                      "total_expenses": {
+                          "rub": 15663593.76,
+                          "percent": 176.7
+                      }
+                  },
+                  "compensation": {
+                      "rub": 0,
+                      "percent": 0
+                  },
+                  "gross_margin": {
+                      "rub": 8678322.79,
+                      "percent": 97.9
+                  },
+                  "operating_expenses": [],
+                  "operating_profit": {
+                      "rub": -6811124.02,
+                      "percent": -76.83
+                  },
+                  "ebitda": {
+                      "rub": -6811124.02,
+                      "percent": -76.83
+                  },
+                  "ebitda_margin": -79.79,
+                  "tax": {
+                      "rub": 287382.82,
+                      "percent": 3.24
+                  },
+                  "net_profit": {
+                      "rub": 4468574.83,
+                      "percent": 50.41
+                  }
               }
-            },
-            "compensation": {
-              "rub": 1075.25,
-              "percent": 0.01
-            },
-            "gross_margin": {
-              "rub": 14677028.92,
-              "percent": 95
-            },
-            "operating_expenses": null,
-            "operating_profit": {
-              "rub": -3386366.12,
-              "percent": -21.92
-            },
-            "ebitda": {
-              "rub": -3386366.12,
-              "percent": -21.92
-            },
-            "ebitda_margin": -24.17,
-            "tax": {
-              "rub": 439532.56,
-              "percent": 2.85
-            },
-            "net_profit": {
-              "rub": 6807927.17,
-              "percent": 44.07
-            }
-          }
-        },
-        {
-          "month_label": "Июль 2025",
-          "data": {
-            "realization": {
-              "rub": 10890762.22,
-              "percent": 70.28
-            },
-            "mp_discount": {
-              "rub": 4042163.68,
-              "percent": 26.09
-            },
-            "sales": {
-              "rub": 14932925.9,
-              "percent": 100
-            },
-            "direct_expenses": {
-              "cost": {
-                "rub": 86050,
-                "percent": 0.56
-              },
-              "logistic": {
-                "rub": 1748158.32,
-                "percent": 11.28
-              },
-              "commission": {
-                "rub": 4276316.3,
-                "percent": 27.6
-              },
-              "penalties": {
-                "rub": 4450,
-                "percent": 0.03
-              },
-              "storage": {
-                "rub": 126040.51,
-                "percent": 0.81
-              },
-              "advert": {
-                "rub": 14038519,
-                "percent": 90.6
-              },
-              "other_retentions": {
-                "rub": 14038519,
-                "percent": 90.6
-              },
-              "paid_acceptance": {
-                "rub": 46894.42,
-                "percent": 0.3
-              },
-              "total_expenses": {
-                "rub": 20326428.55,
-                "percent": 131.18
+          },
+          {
+              "month_label": "Июль 2025",
+              "data": {
+                  "realization": {
+                      "rub": 6780333.19,
+                      "percent": 72.1
+                  },
+                  "mp_discount": {
+                      "rub": 2504458.95,
+                      "percent": 26.63
+                  },
+                  "sales": {
+                      "rub": 9284792.14,
+                      "percent": 100
+                  },
+                  "direct_expenses": {
+                      "cost": {
+                          "rub": 36221,
+                          "percent": 0.39
+                      },
+                      "logistic": {
+                          "rub": 999447.84,
+                          "percent": 10.63
+                      },
+                      "commission": {
+                          "rub": 2525318.41,
+                          "percent": 26.85
+                      },
+                      "penalties": {
+                          "rub": 970,
+                          "percent": 0.01
+                      },
+                      "storage": {
+                          "rub": 90392.26,
+                          "percent": 0.96
+                      },
+                      "advert": {
+                          "rub": 14038519,
+                          "percent": 149.28
+                      },
+                      "other_retentions": {
+                          "rub": 14038519,
+                          "percent": 149.28
+                      },
+                      "paid_acceptance": {
+                          "rub": 33151.7,
+                          "percent": 0.35
+                      },
+                      "total_expenses": {
+                          "rub": 17724020.21,
+                          "percent": 188.47
+                      }
+                  },
+                  "compensation": {
+                      "rub": 4735.09,
+                      "percent": 0.05
+                  },
+                  "gross_margin": {
+                      "rub": 9248571.14,
+                      "percent": 98.34
+                  },
+                  "operating_expenses": [
+                      {
+                          "rub": 256620,
+                          "percent": 2.73,
+                          "category": "test"
+                      }
+                  ],
+                  "operating_profit": {
+                      "rub": -8314714.11,
+                      "percent": -88.41
+                  },
+                  "ebitda": {
+                      "rub": -8314714.11,
+                      "percent": -88.41
+                  },
+                  "ebitda_margin": -90.89,
+                  "tax": {
+                      "rub": 300786.64,
+                      "percent": 3.2
+                  },
+                  "net_profit": {
+                      "rub": 4419483.06,
+                      "percent": 46.99
+                  }
               }
-            },
-            "compensation": {
-              "rub": 9828.63,
-              "percent": 0.06
-            },
-            "gross_margin": {
-              "rub": 14846875.9,
-              "percent": 95.81
-            },
-            "operating_expenses": null,
-            "operating_profit": {
-              "rub": -5216117.72,
-              "percent": -33.66
-            },
-            "ebitda": {
-              "rub": -5216117.72,
-              "percent": -33.66
-            },
-            "ebitda_margin": -36.12,
-            "tax": {
-              "rub": 426408.05,
-              "percent": 2.75
-            },
-            "net_profit": {
-              "rub": 6594342.82,
-              "percent": 42.56
-            }
-          }
-        },
-        {
-          "month_label": "Август 2025",
-          "data": {
-            "realization": {
-              "rub": 9907773.21,
-              "percent": 72.53
-            },
-            "mp_discount": {
-              "rub": 3287712.93,
-              "percent": 24.07
-            },
-            "sales": {
-              "rub": 13195486.14,
-              "percent": 100
-            },
-            "direct_expenses": {
-              "cost": {
-                "rub": 83917,
-                "percent": 0.61
-              },
-              "logistic": {
-                "rub": 1538735.47,
-                "percent": 11.26
-              },
-              "commission": {
-                "rub": 3700622.5,
-                "percent": 27.09
-              },
-              "penalties": {
-                "rub": 10214,
-                "percent": 0.07
-              },
-              "storage": {
-                "rub": 138856.95,
-                "percent": 1.02
-              },
-              "advert": {
-                "rub": 11639016,
-                "percent": 85.2
-              },
-              "other_retentions": {
-                "rub": 11639016,
-                "percent": 85.2
-              },
-              "paid_acceptance": {
-                "rub": 2193.9,
-                "percent": 0.02
-              },
-              "total_expenses": {
-                "rub": 17113555.82,
-                "percent": 125.28
+          },
+          {
+              "month_label": "Август 2025",
+              "data": {
+                  "realization": {
+                      "rub": 6353312.64,
+                      "percent": 74.2
+                  },
+                  "mp_discount": {
+                      "rub": 2143859.64,
+                      "percent": 25.04
+                  },
+                  "sales": {
+                      "rub": 8497172.28,
+                      "percent": 100
+                  },
+                  "direct_expenses": {
+                      "cost": {
+                          "rub": 41166,
+                          "percent": 0.48
+                      },
+                      "logistic": {
+                          "rub": 957123.41,
+                          "percent": 11.18
+                      },
+                      "commission": {
+                          "rub": 2244063.69,
+                          "percent": 26.21
+                      },
+                      "penalties": {
+                          "rub": 5522,
+                          "percent": 0.06
+                      },
+                      "storage": {
+                          "rub": 104117.22,
+                          "percent": 1.22
+                      },
+                      "advert": {
+                          "rub": 11639016,
+                          "percent": 135.94
+                      },
+                      "other_retentions": {
+                          "rub": 11639016,
+                          "percent": 135.94
+                      },
+                      "paid_acceptance": {
+                          "rub": 0,
+                          "percent": 0
+                      },
+                      "total_expenses": {
+                          "rub": 14991008.32,
+                          "percent": 175.09
+                      }
+                  },
+                  "compensation": {
+                      "rub": 1220.81,
+                      "percent": 0.01
+                  },
+                  "gross_margin": {
+                      "rub": 8456006.28,
+                      "percent": 98.76
+                  },
+                  "operating_expenses": [
+                      {
+                          "rub": 1364,
+                          "percent": 0.02,
+                          "category": "hh"
+                      },
+                      {
+                          "rub": 537740,
+                          "percent": 6.28,
+                          "category": "test"
+                      }
+                  ],
+                  "operating_profit": {
+                      "rub": -6384196.82,
+                      "percent": -74.57
+                  },
+                  "ebitda": {
+                      "rub": -6384196.82,
+                      "percent": -74.57
+                  },
+                  "ebitda_margin": -76.42,
+                  "tax": {
+                      "rub": 267226.17,
+                      "percent": 3.12
+                  },
+                  "net_profit": {
+                      "rub": 3606273.37,
+                      "percent": 42.12
+                  }
               }
-            },
-            "compensation": {
-              "rub": 2285.01,
-              "percent": 0.02
-            },
-            "gross_margin": {
-              "rub": 13111569.14,
-              "percent": 95.98
-            },
-            "operating_expenses": null,
-            "operating_profit": {
-              "rub": -3766804.83,
-              "percent": -27.58
-            },
-            "ebitda": {
-              "rub": -3766804.83,
-              "percent": -27.58
-            },
-            "ebitda_margin": -29.69,
-            "tax": {
-              "rub": 358005.36,
-              "percent": 2.62
-            },
-            "net_profit": {
-              "rub": 5524833.65,
-              "percent": 40.44
-            }
-          }
-        },
-        {
-          "month_label": "Сентябрь 2025",
-          "data": {
-            "realization": {
-              "rub": 7936972.34,
-              "percent": 61.88
-            },
-            "mp_discount": {
-              "rub": 4295757.09,
-              "percent": 33.49
-            },
-            "sales": {
-              "rub": 12232729.43,
-              "percent": 100
-            },
-            "direct_expenses": {
-              "cost": {
-                "rub": 69820,
-                "percent": 0.54
-              },
-              "logistic": {
-                "rub": 1292604.78,
-                "percent": 10.08
-              },
-              "commission": {
-                "rub": 3390121.77,
-                "percent": 26.43
-              },
-              "penalties": {
-                "rub": 2917,
-                "percent": 0.02
-              },
-              "storage": {
-                "rub": 51703.19,
-                "percent": 0.4
-              },
-              "advert": {
-                "rub": 1137326,
-                "percent": 8.87
-              },
-              "other_retentions": {
-                "rub": 1137326,
-                "percent": 8.87
-              },
-              "paid_acceptance": {
-                "rub": 2684.04,
-                "percent": 0.02
-              },
-              "total_expenses": {
-                "rub": 5947176.78,
-                "percent": 46.37
+          },
+          {
+              "month_label": "Сентябрь 2025",
+              "data": {
+                  "realization": {
+                      "rub": 5204883.19,
+                      "percent": 63.37
+                  },
+                  "mp_discount": {
+                      "rub": 2904684.02,
+                      "percent": 35.36
+                  },
+                  "sales": {
+                      "rub": 8109567.21,
+                      "percent": 100
+                  },
+                  "direct_expenses": {
+                      "cost": {
+                          "rub": 58097,
+                          "percent": 0.71
+                      },
+                      "logistic": {
+                          "rub": 840623.44,
+                          "percent": 10.23
+                      },
+                      "commission": {
+                          "rub": 2091574.81,
+                          "percent": 25.47
+                      },
+                      "penalties": {
+                          "rub": 2052,
+                          "percent": 0.02
+                      },
+                      "storage": {
+                          "rub": 40147.03,
+                          "percent": 0.49
+                      },
+                      "advert": {
+                          "rub": 1186878,
+                          "percent": 14.45
+                      },
+                      "other_retentions": {
+                          "rub": 1186878,
+                          "percent": 14.45
+                      },
+                      "paid_acceptance": {
+                          "rub": 0,
+                          "percent": 0
+                      },
+                      "total_expenses": {
+                          "rub": 4219372.28,
+                          "percent": 51.37
+                      }
+                  },
+                  "compensation": {
+                      "rub": 0,
+                      "percent": 0
+                  },
+                  "gross_margin": {
+                      "rub": 8051470.21,
+                      "percent": 98.03
+                  },
+                  "operating_expenses": [
+                      {
+                          "rub": 1320,
+                          "percent": 0.02,
+                          "category": "hh"
+                      },
+                      {
+                          "rub": 525753,
+                          "percent": 6.4,
+                          "category": "test"
+                      }
+                  ],
+                  "operating_profit": {
+                      "rub": 3932393.96,
+                      "percent": 47.88
+                  },
+                  "ebitda": {
+                      "rub": 3932393.96,
+                      "percent": 47.88
+                  },
+                  "ebitda_margin": 47.97,
+                  "tax": {
+                      "rub": 273844.31,
+                      "percent": 3.33
+                  },
+                  "net_profit": {
+                      "rub": 3705057.49,
+                      "percent": 45.11
+                  }
               }
-            },
-            "compensation": {
-              "rub": 2924.24,
-              "percent": 0.02
-            },
-            "gross_margin": {
-              "rub": 12162909.43,
-              "percent": 94.83
-            },
-            "operating_expenses": null,
-            "operating_profit": {
-              "rub": 6342856.88,
-              "percent": 49.46
-            },
-            "ebitda": {
-              "rub": 6342856.88,
-              "percent": 49.46
-            },
-            "ebitda_margin": 51.38,
-            "tax": {
-              "rub": 365855.14,
-              "percent": 2.85
-            },
-            "net_profit": {
-              "rub": 5661910.5,
-              "percent": 44.15
-            }
+          },
+          {
+              "month_label": "Октябрь 2025",
+              "data": {
+                  "realization": {
+                      "rub": 1508659.78,
+                      "percent": 62.82
+                  },
+                  "mp_discount": {
+                      "rub": 857443.45,
+                      "percent": 35.71
+                  },
+                  "sales": {
+                      "rub": 2366103.23,
+                      "percent": 100
+                  },
+                  "direct_expenses": {
+                      "cost": {
+                          "rub": 15834,
+                          "percent": 0.66
+                      },
+                      "logistic": {
+                          "rub": 274192.84,
+                          "percent": 11.42
+                      },
+                      "commission": {
+                          "rub": 611130.76,
+                          "percent": 25.45
+                      },
+                      "penalties": {
+                          "rub": 1550,
+                          "percent": 0.06
+                      },
+                      "storage": {
+                          "rub": 62371.32,
+                          "percent": 2.6
+                      },
+                      "advert": {
+                          "rub": 167807,
+                          "percent": 6.99
+                      },
+                      "other_retentions": {
+                          "rub": 167807,
+                          "percent": 6.99
+                      },
+                      "paid_acceptance": {
+                          "rub": 0,
+                          "percent": 0
+                      },
+                      "total_expenses": {
+                          "rub": 1132885.92,
+                          "percent": 47.18
+                      }
+                  },
+                  "compensation": {
+                      "rub": 0,
+                      "percent": 0
+                  },
+                  "gross_margin": {
+                      "rub": 2350269.23,
+                      "percent": 97.87
+                  },
+                  "operating_expenses": [
+                      {
+                          "rub": 528,
+                          "percent": 0.02,
+                          "category": "hh"
+                      },
+                      {
+                          "rub": 211699,
+                          "percent": 8.82,
+                          "category": "test"
+                      }
+                  ],
+                  "operating_profit": {
+                      "rub": 1297138.63,
+                      "percent": 54.01
+                  },
+                  "ebitda": {
+                      "rub": 1297138.63,
+                      "percent": 54.01
+                  },
+                  "ebitda_margin": 52.12,
+                  "tax": {
+                      "rub": 71941.22,
+                      "percent": 3
+                  },
+                  "net_profit": {
+                      "rub": 899018.08,
+                      "percent": 37.44
+                  }
+              }
           }
-        }
       ]
-    }
-  ]
+  }
+]

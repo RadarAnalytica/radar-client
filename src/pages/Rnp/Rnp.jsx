@@ -13,7 +13,7 @@ import { useAppSelector, useAppDispatch } from '../../redux/hooks';
 import { ServiceFunctions } from '../../service/serviceFunctions';
 import { RnpFilters } from './widget/RnpFilters/RnpFilters';
 import { COLUMNS, ROWS, renderFunction, getTableConfig, getTableData } from './config';
-import { format, isToday } from 'date-fns';
+import { format } from 'date-fns';
 import { ru } from 'date-fns/locale';
 import RnpList from './widget/RnpList/RnpList';
 import ModalDeleteConfirm from '../../components/sharedComponents/ModalDeleteConfirm/ModalDeleteConfirm';
@@ -23,6 +23,7 @@ import ErrorModal from '../../components/sharedComponents/modals/errorModal/erro
 import { Filters } from '@/components/sharedComponents/apiServicePagesFiltersComponent';
 import { fetchRnpFilters } from '../../redux/filtersRnp/filterRnpActions';
 import { actions as filterActions } from '../../redux/filtersRnp/filtersRnpSlice';
+import { actions as filtersActions } from '@/redux/apiServicePagesFiltersState/apiServicePagesFilterState.slice';
 import HowToLink from '../../components/sharedComponents/howToLink/howToLink';
 import { useDemoMode } from "@/app/providers";
 import NoSubscriptionWarningBlock from '@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock';
@@ -77,8 +78,8 @@ export default function Rnp() {
 	const [error, setError] = useState(null);
 	const [expanded, setExpanded] = useState('collapsed');
 
-	const updateRnpListByArticle = async () => {
-		setLoading(rnpDataByArticle === null);
+	const updateRnpListByArticle = async (signal) => {
+		setLoading(true);
 		progress.start();
 		try {
 			if (activeBrand) {
@@ -87,13 +88,14 @@ export default function Rnp() {
 					selectedRange,
 					activeBrand.id,
 					filters,
-					page
+					signal
 				);
 
 				progress.complete();
 				await setTimeout(() => {
 					dataToRnpList(response);
 					setLoading(false);
+					progress.reset();
 				}, 500);
 			}
 		} catch (error) {
@@ -101,8 +103,8 @@ export default function Rnp() {
 		}
 	};
 
-	const updateRnpListSummary = async () => {
-		setLoading(rnpDataTotal === null);
+	const updateRnpListSummary = async (signal) => {
+		setLoading(true);
 		progress.start();
 		try {
 			if (activeBrand) {
@@ -111,13 +113,14 @@ export default function Rnp() {
 					selectedRange,
 					activeBrand.id,
 					filters,
-					page
+					signal
 				);
 
 				progress.complete();
 				await setTimeout(() => {
 					dataToRnpTotalList(response);
 					setLoading(false);
+					progress.reset();
 				}, 500);
 			}
 		} catch (error) {
@@ -221,15 +224,17 @@ export default function Rnp() {
 	};
 
 	useLayoutEffect(() => {
-		if (!activeBrand && !activeBrand?.is_primary_collect) {
+		const controller = new AbortController();
+
+		if (!activeBrand?.is_primary_collect) {
 			return;
 		}
 
 		if (activeBrand && activeBrand.is_primary_collect) {
 			if (view === 'articles') {
-				updateRnpListByArticle();
+				updateRnpListByArticle(controller.signal);
 			} else {
-				updateRnpListSummary();
+				updateRnpListSummary(controller.signal);
 			}
 		}
 
@@ -237,7 +242,9 @@ export default function Rnp() {
 			setLoading(false);
 		}
 
-		// }, [activeBrand, activeBrand, shops, filters, page, view, selectedRange]);
+		return () => {
+			controller.abort();
+		};
 	}, [filters, page, view, selectedRange]);
 
 	// Добавляем автоскролл к контейнеру страницы
@@ -245,13 +252,19 @@ export default function Rnp() {
 		if (!pageContentRef.current) return;
 
 		const element = pageContentRef.current;
-
-		return autoScrollForElements({
-			element,
-		});
+		return autoScrollForElements({ element });
 	}, []);
 
 	useEffect(() => {
+		if (selectedRange) {
+			const today = format(new Date(), 'yyyy-MM-dd');
+			if (selectedRange.to === today || selectedRange.from === today) {	
+				const defaultPeriod = { period: 7 };
+				dispatch(filtersActions.setPeriod(defaultPeriod));
+				localStorage.setItem('selectedRange', JSON.stringify(defaultPeriod));
+			}
+		}
+
 		return () => {
 			localStorage.removeItem('RNP_EXPANDED_TABLE_ROWS_STATE');
 			localStorage.removeItem('RNP_EXPANDED_TOTAL_TABLE_ROWS_STATE');
@@ -259,7 +272,7 @@ export default function Rnp() {
 			shops?.forEach((shop) => {
 				localStorage.removeItem(`RNP_SAVED_ORDER_${shop.id}`);
 			});
-		}
+		};
 	}, []);
 
 
@@ -312,6 +325,7 @@ export default function Rnp() {
 						shopId={activeBrand.id}
 					/>
 				)}
+
 				{!loading && ((rnpDataByArticle?.length > 0 && view === 'articles') || (view === 'total' && rnpDataTotal)) && (<ConfigProvider
 					theme={{
 						token: {
@@ -410,9 +424,13 @@ export default function Rnp() {
 					</>
 				)}
 
-				<Loader loading={loading} progress={progress.value} />
+				{loading && 
+					<div className={styles.loader__container}>
+						<Loader loading={loading} progress={progress.value} />
+					</div>
+				}
 
-				{((rnpDataByArticle && view === 'articles') || (view === 'total' && rnpDataTotal)) && activeBrand?.is_primary_collect && (
+				{!loading && ((rnpDataByArticle && view === 'articles') || (view === 'total' && rnpDataTotal)) && activeBrand?.is_primary_collect && (
 					<RnpList
 						view={view}
 						setView={viewHandler}
@@ -423,7 +441,6 @@ export default function Rnp() {
 						setDeleteRnpId={setDeleteRnpId}
 						expanded={expanded}
 						setExpanded={setExpanded}
-						loading={loading}
 					/>
 				)}
 
