@@ -53,7 +53,7 @@ export const newTableConfig = [
     },
     {
         key: 'goods_quantity',
-        title: 'Кол-во артикулов по запросу',
+        title: 'Кол-во артикулов по запросу, шт',
         dataIndex: 'goods_quantity',
         sortable: true,
         units: 'шт',
