@@ -1362,7 +1362,6 @@ export const ServiceFunctions = {
 			}
 
 			res = await res.json();
-			console.log(res);
 			setIsLoading(false);
 			res = res.map(_ => ({
 				..._,
