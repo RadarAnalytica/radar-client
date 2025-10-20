@@ -1,4 +1,4 @@
-.modal :global(.ant-modal-content){
+  .modal :global(.ant-modal-content){
     border-radius: 16px!important;
     padding: 24px!important;
   }

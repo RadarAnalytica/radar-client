@@ -4,8 +4,8 @@ import { Table as RadarTable } from 'radar-ui';
 import { EditIcon, CopyIcon, DeleteIcon, InfoIcon } from '../../shared/Icons';
 import moment from 'moment';
 import styles from './tableWidget.module.css';
-import { formatPrice } from '../../../../service/utils';
-import { ServiceFunctions } from '../../../../service/serviceFunctions';
+import { formatPrice } from '@/service/utils';
+import { ServiceFunctions } from '@/service/serviceFunctions';
 
 const customCellExpenseRender = (
     value,
@@ -47,7 +47,7 @@ const customCellExpenseRender = (
     }
     if (dataIndex === 'description' || dataIndex === 'expense_categories' || dataIndex === 'vendor_code' || dataIndex === 'brand_name') {
         return (
-            <div className={styles.customCell}>
+            <div className={`${styles.customCell} text-break`} title={value}>
                 {value || '-'}
             </div>
         )
@@ -164,8 +164,6 @@ const customCellExpenseRender = (
             </ConfigProvider>
         </Flex>)
     }
-
-
 }
 
 const customCellCategoryRender = (

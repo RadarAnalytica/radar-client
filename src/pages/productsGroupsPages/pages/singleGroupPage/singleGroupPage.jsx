@@ -14,6 +14,7 @@ import { useAppSelector, useAppDispatch } from '@/redux/hooks';
 import { fetchShops } from '@/redux/shops/shopsActions';
 import { fetchFilters } from '@/redux/apiServicePagesFiltersState/filterActions';
 import { fetchApi } from "@/service/fetchApi";
+import AlertWidget from '@/components/sharedComponents/AlertWidget/AlertWidget';
 
 const initDataFetchingStatus = {
     isLoading: false,
@@ -139,23 +140,15 @@ const SingleGroupPage = () => {
         }
     }, [shops]);
 
-    useEffect(() => {
-        let timeout;
-        if (alertState.isVisible) {
-            timeout = setTimeout(() => { setAlertState(initAlertState); }, 1500);
-        }
-    }, [alertState]);
-
     return (
         <main className={styles.page}>
             <MobilePlug />
-            {/* ------ SIDE BAR ------ */}
+
             <section className={styles.page__sideNavWrapper}>
                 <Sidebar />
             </section>
-            {/* ------ CONTENT ------ */}
+
             <section className={styles.page__content}>
-                {/* header */}
                 <div className={styles.page__headerWrapper}>
                     <Header
                         title={
@@ -184,6 +177,7 @@ const SingleGroupPage = () => {
                         <span className='loader'></span>
                     </div>
                 }
+
                 {!dataFetchingStatus.isLoading && groupData.products && groupData.products.length === 0 &&
                     <NoDataWidget
                         mainTitle='Здесь пока нет ни одного артикула'
@@ -193,6 +187,7 @@ const SingleGroupPage = () => {
                         type='sku'
                     />
                 }
+
                 {!dataFetchingStatus.isLoading && groupData.products && groupData.products.length > 0 &&
                     <SingleGroupWidget
                         setIsAddSkuModalVisible={setIsAddSkuModalVisible}
@@ -208,8 +203,12 @@ const SingleGroupPage = () => {
                     />
                 }
             </section>
-            {/* ---------------------- */}
 
+            <AlertWidget 
+                message={alertState.message} 
+                isVisible={alertState.isVisible} 
+                setIsVisible={(isVisible) => setAlertState({ ...alertState, isVisible })} 
+            />
 
             {/*  modals */}
             <AddSkuModal
@@ -246,14 +245,6 @@ const SingleGroupPage = () => {
                 groupData={groupData}
                 updateMainData={getGroupData}
             />
-
-            {alertState.isVisible && <div className={styles.page__successAlert}>
-                <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <rect width="32" height="32" rx="6.4" fill="#00B69B" fillOpacity="0.1" />
-                    <path d="M14.1999 19.1063L23.1548 10.1333L24.5333 11.5135L14.1999 21.8666L8 15.6549L9.37753 14.2748L14.1999 19.1063Z" fill="#00B69B" />
-                </svg>
-                {alertState.message}
-            </div>}
         </main>
     );
 };

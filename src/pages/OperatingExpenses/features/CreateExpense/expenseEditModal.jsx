@@ -509,15 +509,6 @@ export default function ExpenseEditModal({
 							</Row>}
 						{/* -------------------*/}
 
-
-
-
-
-
-
-
-
-
 						{/* Выбор статьи */}
 						<div className={styles.modal__wrapper}>
 							<ConfigProvider
@@ -899,6 +890,9 @@ export default function ExpenseEditModal({
 										onClick={onCancel}
 										htmlType="button"
 										loading={loading}
+										style={{
+											fontSize: 14,
+										}}
 									>
 										Отменить
 									</Button>
@@ -925,6 +919,9 @@ export default function ExpenseEditModal({
 										size="large"
 										htmlType="submit"
 										loading={loading}
+										style={{
+											fontSize: 14,
+										}}
 									>
 										{'Сохранить расход'}
 									</Button>

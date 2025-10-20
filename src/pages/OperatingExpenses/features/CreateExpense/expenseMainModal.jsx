@@ -187,7 +187,7 @@ export default function ExpenseMainModal({
 							<Col span={12}>
 								<DateSelect
 									form={form}
-									label="Дата"
+									label={typeValue === 'once' ? 'Дата' : 'Дата начала'}
 									formId='date'
 									minDate={minDateFrom}
 									maxDate={today}
@@ -223,7 +223,7 @@ export default function ExpenseMainModal({
 										label="Сумма, руб"
 										name='value'
 										rules={[
-											{ required: true, message: 'Пожалуйста, введите сумму расхода!' }
+											{ required: true, message: 'Пожалуйста, введите сумму расхода!' },
 										]}
 									>
 										<Input
@@ -231,6 +231,13 @@ export default function ExpenseMainModal({
 											type='number'
 											min={0}
 											onWheel={(e) => e.currentTarget.blur()}
+											onChange={(e) => {
+												let value = e.target.value;
+												if (value.length > 9) {
+													value = value.slice(0, 9);
+												}
+												form.setFieldValue('value', value ? Number(value) : '');
+											}}
 											suffix={<svg width="9" height="11" viewBox="0 0 9 11" fill="none" xmlns="http://www.w3.org/2000/svg">
 												<path opacity="0.5" d="M0.519063 6.685V5.586H5.30006C5.3794 5.586 5.47273 5.58133 5.58006 5.572C5.69206 5.56267 5.80873 5.544 5.93006 5.516C6.39673 5.404 6.74206 5.173 6.96606 4.823C7.19006 4.473 7.30206 4.07167 7.30206 3.619C7.30206 3.32967 7.2554 3.04967 7.16206 2.779C7.06873 2.50833 6.9194 2.27267 6.71406 2.072C6.5134 1.87133 6.25206 1.736 5.93006 1.666C5.81806 1.63333 5.7014 1.61467 5.58006 1.61C5.4634 1.60533 5.37006 1.603 5.30006 1.603H2.46506V0.42H5.34206C5.41206 0.42 5.5124 0.422333 5.64306 0.427C5.7784 0.431666 5.9254 0.448 6.08406 0.476C6.63006 0.56 7.0874 0.746666 7.45606 1.036C7.8294 1.32533 8.1094 1.68933 8.29606 2.128C8.48273 2.56667 8.57606 3.05433 8.57606 3.591C8.57606 4.389 8.36606 5.06333 7.94606 5.614C7.52606 6.16 6.9054 6.49833 6.08406 6.629C5.9254 6.65233 5.7784 6.66867 5.64306 6.678C5.5124 6.68267 5.41206 6.685 5.34206 6.685H0.519063ZM0.519063 8.904V7.875H6.11906V8.904H0.519063ZM1.56906 10.5V0.42H2.81506V10.5H1.56906Z" fill="#1A1A1A" />
 											</svg>
@@ -395,7 +402,7 @@ export default function ExpenseMainModal({
 											label="День недели"
 											name='week'
 											rules={[
-												{ required: true, message: 'Пожалуйста, выберите значение!' }
+												{ required: false, message: 'Пожалуйста, выберите значение!' }
 											]}
 										>
 											<MultiSelect
@@ -449,7 +456,6 @@ export default function ExpenseMainModal({
 											formId='end_date'
 											minDate={minDateTo}
 											maxDate={undefined}
-											required={false}
 											allowClear
 										/>
 									</ConfigProvider>
@@ -486,7 +492,7 @@ export default function ExpenseMainModal({
 									label="Статья"
 									name='expense_categories'
 									rules={[
-										{ required: false, message: 'Пожалуйста, выберите значение!' }
+										{ required: true, message: 'Пожалуйста, выберите значение!' }
 									]}
 									style={{ width: '100%' }}
 								>
@@ -739,6 +745,9 @@ export default function ExpenseMainModal({
 										onClick={onCancel}
 										htmlType="button"
 										loading={loading}
+										style={{
+											fontSize: 14,
+										}}
 									>
 										Отменить
 									</Button>
@@ -765,6 +774,9 @@ export default function ExpenseMainModal({
 										size="large"
 										htmlType="submit"
 										loading={loading}
+										style={{
+											fontSize: 14,
+										}}
 									>
 										Добавить расход
 									</Button>
