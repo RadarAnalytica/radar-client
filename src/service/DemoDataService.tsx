@@ -89,6 +89,8 @@ export class DemoDataService {
       '/api/description-generator/keywords': () => this.getDescriptionGeneratorKeywords(),
       '/api/user/subscription/all': () => this.getSubscriptionsData(),
       '/api/blog/articles': () => this.getArticlesData(),
+      '/api/operating-expenses/category/get-all': () => this.getOperatingExpensesCategoriesData(),
+      '/api/operating-expenses/expense/get-all': () => this.getOperatingExpensesData(),
       '/api/product/self-costs': () => ({ message: "Success", updated_items: [{ product: 'Демо', cost: 100, fulfillment: 100 }] }),
       '/api/msg/': () => ([]),
       'https://radarmarket.ru/api/web-service/monitoring-oracle/easy/get': () => this.getEasyMonitoringData(),
@@ -371,6 +373,95 @@ export class DemoDataService {
       data: {
         items: articles
       }
+    };
+  }
+
+  private getOperatingExpensesCategoriesData(): any {
+    return {
+      data: [
+          {
+              "id": 1,
+              "name": "Заработная плата"
+          },
+          {
+              "id": 2,
+              "name": "Аренда"
+          },
+          {
+              "id": 3,
+              "name": "Реклама и маркетинг"
+          }
+        ]
+    };
+  }
+
+  private getOperatingExpensesData() {
+    const today = new Date().toISOString().split('T')[0];
+
+    return {
+      data: [
+          {
+            "id": 1,
+            "expense_categories": [
+                {
+                    "id": 1,
+                    "name": "Заработная плата"
+                }
+            ],
+            "description": "Выдача заработной платы сотрудникам отдела маркетинга",
+            "value": 100000,
+            "vendor_code": null,
+            "brand_name": null,
+            "shop": {
+                "id": 1,
+                "name": "Демо магазин"
+            },
+            "date": today,
+            "periodic_expense_id": null,
+            "is_periodic": true,
+            "created_at": today,
+            "updated_at": today
+        },
+        {
+            "id": 2,
+            "expense_categories": [
+                {
+                    "id": 2,
+                    "name": "Аренда"
+                }
+            ],
+            "description": "Аренда офиса на три месяца",
+            "value": 45000,
+            "vendor_code": null,
+            "brand_name": null,
+            "shop": {
+                "id": 1,
+                "name": "Демо магазин"
+            },
+            "date": today,
+            "periodic_expense_id": null,
+            "is_periodic": false,
+            "created_at": today,
+            "updated_at": today
+        },
+        {
+            "id": 3,
+            "expense_categories": [],
+            "description": "Закупка оборудования",
+            "value": 80000,
+            "vendor_code": "101010101010",
+            "brand_name": null,
+            "shop": null,
+            "date": today,
+            "periodic_expense_id": null,
+            "is_periodic": false,
+            "created_at": today,
+            "updated_at": today
+        }
+      ],
+      page: 1,
+      total_pages: 1,
+      limit: 25,
     };
   }
 

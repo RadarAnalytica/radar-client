@@ -2,11 +2,11 @@ import React, { useState, useEffect, useContext } from 'react';
 import styles from './subscriptionModal.module.css';
 import { Modal, ConfigProvider } from 'antd';
 import { useNavigate } from 'react-router-dom';
-import { URL } from '../../../../service/config';
-import { ServiceFunctions } from '../../../../service/serviceFunctions';
+import { URL } from '@/service/config';
+import { ServiceFunctions } from '@/service/serviceFunctions';
 import { jwtDecode } from "jwt-decode";
-import AuthContext from '../../../../service/AuthContext';
-import { getDayDeclension } from '../../../../service/utils';
+import AuthContext from '@/service/AuthContext';
+import { getDayDeclension } from '@/service/utils';
 
 const SubscriptionModal = ({ visible, visibilityHandler }) => {
 
@@ -18,7 +18,6 @@ const SubscriptionModal = ({ visible, visibilityHandler }) => {
     user?.is_subscription_discount
   );
   const navigate = useNavigate();
-
 
   useEffect(() => {
     const loadCloudPaymentsScript = () => {

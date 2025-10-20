@@ -9,14 +9,14 @@ const initialState = {
   activeWeeks: undefined,
   activeMonths: undefined,
   activeCategory: undefined,
-  activeExpenseCategory: undefined,
+  activeExpenseCategory: [{ value: 'Все', id: 0 }],
   skuFrequencyMode: 'Простой', // 'Простой' | 'Продвинутый'
   shops: undefined,
   selectedRange: {
     period: 30
   },
   filters: undefined,
-  expenseCategories: undefined,
+  expenseCategories: [{ value: 'Все', id: 0, name: 'Все' }],
   isFiltersLoaded: false
 };
 

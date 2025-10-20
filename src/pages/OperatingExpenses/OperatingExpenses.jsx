@@ -22,6 +22,9 @@ import { formatDate, parse } from 'date-fns';
 import { Tooltip as RadarTooltip } from 'radar-ui';
 import { useAppDispatch } from '@/redux/hooks';
 import { actions as filtersActions } from '@/redux/apiServicePagesFiltersState/apiServicePagesFilterState.slice';
+import AlertWidget from '@/components/sharedComponents/AlertWidget/AlertWidget';
+import NoSubscriptionWarningBlock from '@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock';
+import { useDemoMode } from '@/app/providers';
 
 const initAlertState = {
 	status: '',
@@ -32,6 +35,7 @@ const initAlertState = {
 export default function OperatingExpenses() {
 	const dispatch = useAppDispatch();
 	const { authToken } = useContext(AuthContext);
+	const { isDemoMode } = useDemoMode();
 	const { activeBrand, selectedRange, shops, activeBrandName, activeArticle, activeExpenseCategory, expenseCategories } = useAppSelector((state) => state.filters);
 	const firstLoad = useRef(true);
 	const [loading, setLoading] = useState(true);
@@ -114,8 +118,11 @@ export default function OperatingExpenses() {
 		try {
 			const res = await ServiceFunctions.getOperatingExpensesCategoryGetAll(authToken, pagination);
 			setCategory(res.data);
-			dispatch(filtersActions.setExpenseCategories(res.data.map(_ => ({ ..._, value: _.name, key: _.id }))));
-			!activeExpenseCategory && dispatch(filtersActions.setActiveFilters({ stateKey: 'activeExpenseCategory', data: { value: 'Все', id: 0 } }));
+			const categories = [
+				{ value: 'Все', id: 0, name: 'Все', key: 0 },
+				...res.data.map(_ => ({ ..._, value: _.name, key: _.id }))
+			];
+			dispatch(filtersActions.setExpenseCategories(categories));
 		} catch (error) {
 			setCategory([]);
 		} finally {
@@ -166,23 +173,19 @@ export default function OperatingExpenses() {
 				firstLoad.current = false;
 				setLoading(false);
 			});
-			return
 		}
 	}, [])
 
 	useEffect(() => {
-		if (!activeBrand && !activeBrand?.is_primary_collect) {
-			return
-		}
+		if (!activeBrand?.is_primary_collect) return;
 
 		if (view === 'expense' && expenseCategories) {
 			updateExpenses();
 		}
 
-		if (view === 'category') {
-			//console.log('updateArticles');
-			//updateCategories();
-		}
+		// if (view === 'category') {
+		// 	updateCategories();
+		// }
 	}, [activeBrand, selectedRange, expPagination.page, categoryPagination.page, activeBrandName, activeArticle, activeExpenseCategory])
 
 	const modalExpenseHandlerClose = () => {
@@ -198,22 +201,26 @@ export default function OperatingExpenses() {
 	const modalHandler = () => {
 		if (view === 'expense') {
 			setModalCreateExpenseOpen(true);
-			return;
+		} else {
+			setModalCreateCategoryOpen(true);
 		}
-		setModalCreateCategoryOpen(true);
 	};
 
 	const createCategory = async (category) => {
 		setCategoryLoading(true);
 		try {
 			const res = await ServiceFunctions.postOperatingExpensesCategoryCreate(authToken, category);
-			// Обновляем данные с сбросом пагинации
-			await updateCategories(true);
+			await updateCategories(true); // Обновляем данные с сбросом пагинации
 		} catch (error) {
 			console.error('createCategory error', error);
 		} finally {
 			setModalCreateCategoryOpen(false);
 			setCategoryLoading(false);
+			setAlertState({
+				status: 'success',
+				isVisible: true,
+				message: 'Статья добавлена',
+			});
 		}
 	};
 
@@ -221,37 +228,35 @@ export default function OperatingExpenses() {
 		setModalCreateCategoryOpen(false);
 		try {
 			const res = await ServiceFunctions.patchOperatingExpensesCategory(authToken, category);
-			// Обновляем данные без сброса пагинации
-			await updateCategories();
+			await updateCategories(); // Обновляем данные без сброса пагинации
 		} catch (error) {
 			console.error('editCategory error', error);
 		} finally {
 			setCategoryEdit(null);
 			updateExpenses(false, false);
+			setAlertState({
+				status: 'success',
+				isVisible: true,
+				message: 'Статья обновлена',
+			});
 		}
 	};
 
 	const handleCategory = (category) => {
 		setModalCreateCategoryOpen(false);
-		if (!!categoryEdit) {
-			//console.log('editCategory')
-			const editedCategory = { ...categoryEdit, ...category }
-			editCategory(editedCategory);
-			return;
+		if (categoryEdit) {
+			editCategory({ ...categoryEdit, ...category });
+		} else {
+			createCategory(category);
 		}
-		createCategory(category);
-		// setExpenses((category) => category.push(article) );
 	};
 
 	const handleExpanse = (expense) => {
-		//console.log('handleExpanse', expense)
-		if (!!expenseEdit) {
-			//console.log('editExpanse', expense)
+		if (expenseEdit) {
 			editExpanse(expense);
-			return;
+		} else {
+			createExpense(expense);
 		}
-		createExpense(expense);
-		// setExpenses((category) => category.push(article) );
 	};
 
 	const createExpense = async (requestData) => {
@@ -268,6 +273,11 @@ export default function OperatingExpenses() {
 			setExpenseCopy(null);
 			setModalCopyExpenseOpen(false);
 			setLoading(false);
+			setAlertState({
+				status: 'success',
+				isVisible: true,
+				message: 'Расход добавлен',
+			});
 		}
 	}
 
@@ -283,6 +293,11 @@ export default function OperatingExpenses() {
 		} finally {
 			setExpenseEdit(null);
 			setLoading(false);
+			setAlertState({
+				status: 'success',
+				isVisible: true,
+				message: 'Расход обновлен',
+			});
 		}
 	}
 
@@ -323,11 +338,6 @@ export default function OperatingExpenses() {
 			}
 
 			const res = await ServiceFunctions.postOperatingExpensesExpenseCreate(authToken, expenseData, `/operating-expenses/expense/copy?expense_id=${expenseId}`);
-			setAlertState({
-				status: 'success',
-				isVisible: true,
-				message: 'Расход успешно скопирован',
-			});
 			await updateExpenses(true);
 		} catch (error) {
 			console.error('copyExpense error', error);
@@ -337,6 +347,12 @@ export default function OperatingExpenses() {
 				isVisible: true,
 				message: 'Не удалось скопировать расход',
 			});
+		} finally {
+			setAlertState({
+				status: 'success',
+				isVisible: true,
+				message: 'Расход скопирован',
+			});
 		}
 	}
 
@@ -344,13 +360,17 @@ export default function OperatingExpenses() {
 		setLoading(true);
 		try {
 			const res = await ServiceFunctions.deleteOperatingExpensesExpenseDelete(authToken, id, isPeriodic);
-			// Обновляем данные без сброса пагинации
-			await updateExpenses();
+			await updateExpenses(); // Обновляем данные без сброса пагинации
 		} catch (error) {
 			console.error('deleteExpense error', error);
 		} finally {
 			setDeleteExpenseId(null);
 			setLoading(false);
+			setAlertState({
+				status: 'success',
+				isVisible: true,
+				message: 'Расход удален',
+			});
 		}
 	}
 
@@ -358,24 +378,19 @@ export default function OperatingExpenses() {
 		setLoading(true);
 		try {
 			const res = await ServiceFunctions.deleteOperatingExpensesCategory(authToken, id);
-			// Обновляем данные без сброса пагинации
-			await updateCategories();
+			await updateCategories(); // Обновляем данные без сброса пагинации
 		} catch (error) {
 			console.error('deleteCategoryHandler error', error);
 		} finally {
 			setDeleteCategoryId(null);
 			updateExpenses(false, false);
+			setAlertState({
+				status: 'success',
+				isVisible: true,
+				message: 'Статья удалена',
+			});
 		}
 	};
-
-	useEffect(() => {
-		let timeout;
-		if (alertState.isVisible) {
-			timeout = setTimeout(() => { setAlertState(initAlertState); }, 1500);
-		}
-
-		return () => clearTimeout(timeout);
-	}, [alertState]);
 
 	return (
 		<main className={styles.page}>
@@ -396,6 +411,14 @@ export default function OperatingExpenses() {
 						// howToLinkText={'Как загрузить?'}
 					/>
 				</div>
+
+				{!loading && isDemoMode && (
+					<NoSubscriptionWarningBlock />
+				)}
+
+				{!loading && shops && activeBrand && !activeBrand?.is_primary_collect && !isDemoMode && (
+					<DataCollectWarningBlock />
+				)}
 
 				{!loading && (
 					<Flex justify="space-between">
@@ -448,21 +471,18 @@ export default function OperatingExpenses() {
 						</Flex>
 					</Flex>
 				)}
+				
+				{view === 'expense' && 
+					<div className={styles.controls}>
+						<Filters
+							isDataLoading={loading}
+							groupSelect={false}
+							opExpensesArticles
+						/>
+					</div>
+				}
 
-
-				<div className={styles.controls}>
-					<Filters
-						isDataLoading={loading}
-						groupSelect={false}
-						opExpensesArticles
-					/>
-				</div>
-
-				{!loading && shops && activeBrand && !activeBrand?.is_primary_collect && (
-					<DataCollectWarningBlock />
-				)}
-
-				{!loading && activeBrand && activeBrand?.is_primary_collect && view === 'expense' &&
+				{!loading && activeBrand?.is_primary_collect && view === 'expense' &&
 					<div className={styles.container}>
 						<TableWidget
 							loading={loading}
@@ -483,7 +503,7 @@ export default function OperatingExpenses() {
 						/>
 					</div>
 				}
-				{!loading && activeBrand && activeBrand?.is_primary_collect && view === 'category' &&
+				{!loading && activeBrand?.is_primary_collect && view === 'category' &&
 					<div className={styles.container}>
 						<TableWidget
 							loading={loading}
@@ -551,7 +571,6 @@ export default function OperatingExpenses() {
 
 				{deleteExpenseId && <ModalDeleteConfirm
 					title={'Вы уверены, что хотите удалить расход?'}
-					onCancel={() => setDeleteExpenseId(null)}
 					text={expenseData.data.find((el) => el.id === deleteExpenseId)?.is_periodic ? (
 						<div className={styles.deleteModal__text}>
 							Вы удаляете периодический расход. Это действие также удалит все созданные расходы по этому шаблону.
@@ -565,14 +584,15 @@ export default function OperatingExpenses() {
 						</div>
 					) : null}
 					onOk={() => deleteExpense(deleteExpenseId, expenseData.data.find((el) => el.id === deleteExpenseId)?.is_periodic)}
+					onCancel={() => setDeleteExpenseId(null)}
 					isLoading={loading}
 					buttonText='Удалить расход'
 				/>}
 
 				{deleteCategoryId && <ModalDeleteConfirm
 					title={'Вы уверены, что хотите удалить статью?'}
-					onCancel={() => setDeleteCategoryId(null)}
 					onOk={() => deleteCategoryHandler(deleteCategoryId)}
+					onCancel={() => setDeleteCategoryId(null)}
 					isLoading={loading}
 				/>}
 
@@ -580,25 +600,12 @@ export default function OperatingExpenses() {
 					<span className='loader'></span>
 				</div>}
 
-				{alertState.isVisible &&
-					<div className={styles.page__alert}>
-						{alertState.status === 'success' && (
-							<svg width="16" height="16" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-								<rect width="32" height="32" rx="6.4" fill="#00B69B" fillOpacity="0.1" />
-								<path d="M14.1999 19.1063L23.1548 10.1333L24.5333 11.5135L14.1999 21.8666L8 15.6549L9.37753 14.2748L14.1999 19.1063Z" fill="#00B69B" />
-							</svg>)
-						}
-
-						{alertState.status === 'error' && (
-							<svg width="16" height="16" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-								<rect width="30" height="30" rx="5" fill="#F93C65" fillOpacity="0.1" />
-								<path d="M14.013 18.2567L13 7H17L15.987 18.2567H14.013ZM13.1818 23V19.8454H16.8182V23H13.1818Z" fill="#F93C65" />
-							</svg>
-						)}
-
-						{alertState.message}
-					</div>
-				}
+				<AlertWidget 
+					isVisible={alertState.isVisible}
+					setIsVisible={(isVisible) => setAlertState({ ...alertState, isVisible })}
+					message={alertState.message}
+					type={alertState.status}
+				/>
 			</section>
 		</main>
 	);

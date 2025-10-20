@@ -4,16 +4,15 @@ import styles from './tableWidget.module.css';
 // Возможно будет удобнее передавать конфиг пропсом
 import { tableConfig, newTableConfig } from './config';
 import { sortTableDataFunc } from './utils';
-import { formatPrice } from '../../../../service/utils';
+import { formatPrice } from '@/service/utils';
 import { ConfigProvider, Pagination } from 'antd';
-import DownloadButton from '../../../../components/DownloadButton';
-import { fileDownload } from '../../../../service/utils';
+import DownloadButton from '@/components/DownloadButton';
+import { fileDownload } from '@/service/utils';
 import { Link } from 'react-router-dom';
 import { Table as RadarTable } from 'radar-ui';
 import wb_icon from './wb_icon.png';
 
 const customCellRender = (value, record, index, dataIndex) => {
-
     if (dataIndex === 'query') {
         return (
             <div className={styles.customCell__query}>
@@ -133,7 +132,12 @@ export const TableWidget = React.memo(({ rawData, loading, tablePaginationState,
 
                 // Если это листовая колонка
                 if (col.key === columnKey) {
-                    return { ...col, width: width, minWidth: width };
+                    // Ограничиваем ширину минимальным и максимальным значением
+                    const minWidth = 160;
+                    const maxWidth = 1200;
+                    const constrainedWidth = width < minWidth ? minWidth : width > maxWidth ? maxWidth : width;
+                    
+                    return { ...col, width: constrainedWidth, minWidth: constrainedWidth };
                 }
 
                 return col;
