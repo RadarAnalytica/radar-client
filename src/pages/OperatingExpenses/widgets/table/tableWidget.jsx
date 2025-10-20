@@ -164,8 +164,6 @@ const customCellExpenseRender = (
             </ConfigProvider>
         </Flex>)
     }
-
-
 }
 
 const customCellCategoryRender = (

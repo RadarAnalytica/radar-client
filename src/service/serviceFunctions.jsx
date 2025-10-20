@@ -1558,8 +1558,8 @@ export const ServiceFunctions = {
 	},
 	getOperatingExpensesCategoryGetAll: async(token, pagination) => {
 		try {
-			const res = await fetch(
-				`${URL}/api/operating-expenses/category/get-all?page=${pagination.page}&limit=${pagination.limit}`,
+			const res = await fetchApi(
+				`/api/operating-expenses/category/get-all?page=${pagination.page}&limit=${pagination.limit}`,
 				{
 					method: 'GET',
 					headers: {
@@ -1574,22 +1574,6 @@ export const ServiceFunctions = {
 			}
 
 			return res.json();
-			/*
-			const res = {
-				data: [
-					{
-						id: 1,
-						name: 'Статья1'
-					},
-					{
-						id: 2,
-						name: 'Статья2'
-					},
-				]
-			};
-
-			return res;
-			*/
 
 		} catch(error) {
 			console.error('getOperatingExpensesCategoryGetAll ', error);
@@ -1712,8 +1696,8 @@ export const ServiceFunctions = {
 	},
 	getOperatingExpensesExpenseGetAll: async(token, requestObject) => {
 		try {
-			const res = await fetch(
-				`${URL}/api/operating-expenses/expense/get-all`,
+			const res = await fetchApi(
+				`/api/operating-expenses/expense/get-all`,
 				{
 					method: 'POST',
 					headers: {

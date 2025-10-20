@@ -89,6 +89,8 @@ export class DemoDataService {
       '/api/description-generator/keywords': () => this.getDescriptionGeneratorKeywords(),
       '/api/user/subscription/all': () => this.getSubscriptionsData(),
       '/api/blog/articles': () => this.getArticlesData(),
+      '/api/operating-expenses/category/get-all': () => this.getOperatingExpensesCategoriesData(),
+      '/api/operating-expenses/expense/get-all': () => this.getOperatingExpensesData(),
       '/api/product/self-costs': () => ({ message: "Success", updated_items: [{ product: 'Демо', cost: 100, fulfillment: 100 }] }),
       '/api/msg/': () => ([]),
       'https://radarmarket.ru/api/web-service/monitoring-oracle/easy/get': () => this.getEasyMonitoringData(),
@@ -371,6 +373,78 @@ export class DemoDataService {
       data: {
         items: articles
       }
+    };
+  }
+
+  private getOperatingExpensesCategoriesData(): any {
+    return {
+      data: [
+          {
+              "id": 62,
+              "name": "444"
+          },
+          {
+              "id": 64,
+              "name": "4444"
+          },
+          {
+              "id": 61,
+              "name": "пав"
+          },
+          {
+              "id": 63,
+              "name": "пов"
+          }
+        ],
+        page: 1,
+        total_pages: 1,
+        limit: 25,
+    };
+  }
+
+  private getOperatingExpensesData() {
+    return {
+      "data": [
+        {
+            "id": 3046,
+            "expense_categories": [
+                {
+                    "id": 62,
+                    "name": "444"
+                }
+            ],
+            "description": "555",
+            "value": 555,
+            "vendor_code": null,
+            "brand_name": null,
+            "shop": {
+                "id": 238,
+                "name": "мелкая076"
+            },
+            "date": "2025-10-17",
+            "periodic_expense_id": null,
+            "is_periodic": false,
+            "created_at": "2025-10-17T12:28:46.650315",
+            "updated_at": "2025-10-17T12:28:46.650320"
+        },
+        {
+            "id": 3038,
+            "expense_categories": [],
+            "description": "123",
+            "value": 100,
+            "vendor_code": "1142/светло-фиолетовый",
+            "brand_name": null,
+            "shop": null,
+            "date": "2025-10-16",
+            "periodic_expense_id": null,
+            "is_periodic": false,
+            "created_at": "2025-10-16T14:35:01.937703",
+            "updated_at": "2025-10-16T14:35:01.937710"
+        }
+      ],
+      page: 1,
+      total_pages: 1,
+      limit: 25,
     };
   }
 
