@@ -1582,8 +1582,8 @@ export const ServiceFunctions = {
 	},
 	postOperatingExpensesCategoryCreate: async(token, category) => {
 		try {
-			const res = await fetch(
-				`${URL}/api/operating-expenses/category/create`,
+			const res = await fetchApi(
+				`/api/operating-expenses/category/create`,
 				{
 					method: 'POST',
 					headers: {
@@ -1606,8 +1606,8 @@ export const ServiceFunctions = {
 	},
 	patchOperatingExpensesCategory: async(token, category) => {
 		try {
-			const res = await fetch(
-				`${URL}/api/operating-expenses/category/update`,
+			const res = await fetchApi(
+				`/api/operating-expenses/category/update`,
 				{
 					method: 'PATCH',
 					headers: {
@@ -1630,8 +1630,8 @@ export const ServiceFunctions = {
 	},
 	deleteOperatingExpensesCategory: async(token, id) => {
 		try {
-			const res = await fetch(
-				`${URL}/api/operating-expenses/category/delete?category_id=${id}`,
+			const res = await fetchApi(
+				`/api/operating-expenses/category/delete?category_id=${id}`,
 				{
 					method: 'DELETE',
 					headers: {
@@ -1783,8 +1783,8 @@ export const ServiceFunctions = {
 	},
 	postOperatingExpensesExpenseCreate: async(token, expense, createExpenseUrl) => {
 		try {
-			const res = await fetch(
-				`${URL}/api/${createExpenseUrl}`,
+			const res = await fetchApi(
+				`/api/${createExpenseUrl}`,
 				{
 					method: 'POST',
 					headers: {
@@ -1808,8 +1808,8 @@ export const ServiceFunctions = {
 	
 	patchOperatingExpensesExpense: async(token, expense, updateExpenseUrl) => {
 		try {
-			const res = await fetch(
-				`${URL}/api/${updateExpenseUrl}`,
+			const res = await fetchApi(
+				`/api/${updateExpenseUrl}`,
 				{
 					method: 'PATCH',
 					headers: {
@@ -1832,9 +1832,8 @@ export const ServiceFunctions = {
 	},
 	deleteOperatingExpensesExpenseDelete: async(token, id, isPeriodic) => {
 		try {
-			// operating-expenses/expense/delete?expense_id
-			const res = await fetch(
-				`${URL}/api/operating-expenses/expense/delete?expense_id=${id}&delete_linked=${!!isPeriodic}`,
+			const res = await fetchApi(
+				`/api/operating-expenses/expense/delete?expense_id=${id}&delete_linked=${!!isPeriodic}`,
 				{
 					method: 'DELETE',
 					headers: {

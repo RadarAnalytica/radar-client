@@ -23,6 +23,8 @@ import { Tooltip as RadarTooltip } from 'radar-ui';
 import { useAppDispatch } from '@/redux/hooks';
 import { actions as filtersActions } from '@/redux/apiServicePagesFiltersState/apiServicePagesFilterState.slice';
 import AlertWidget from '@/components/sharedComponents/AlertWidget/AlertWidget';
+import NoSubscriptionWarningBlock from '@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock';
+import { useDemoMode } from '@/app/providers';
 
 const initAlertState = {
 	status: '',
@@ -33,6 +35,7 @@ const initAlertState = {
 export default function OperatingExpenses() {
 	const dispatch = useAppDispatch();
 	const { authToken } = useContext(AuthContext);
+	const { isDemoMode } = useDemoMode();
 	const { activeBrand, selectedRange, shops, activeBrandName, activeArticle, activeExpenseCategory, expenseCategories } = useAppSelector((state) => state.filters);
 	const firstLoad = useRef(true);
 	const [loading, setLoading] = useState(true);
@@ -115,8 +118,11 @@ export default function OperatingExpenses() {
 		try {
 			const res = await ServiceFunctions.getOperatingExpensesCategoryGetAll(authToken, pagination);
 			setCategory(res.data);
-			dispatch(filtersActions.setExpenseCategories(res.data.map(_ => ({ ..._, value: _.name, key: _.id }))));
-			!activeExpenseCategory && dispatch(filtersActions.setActiveFilters({ stateKey: 'activeExpenseCategory', data: { value: 'Все', id: 0 } }));
+			const categories = [
+				{ value: 'Все', id: 0, name: 'Все', key: 0 },
+				...res.data.map(_ => ({ ..._, value: _.name, key: _.id }))
+			];
+			dispatch(filtersActions.setExpenseCategories(categories));
 		} catch (error) {
 			setCategory([]);
 		} finally {
@@ -406,6 +412,14 @@ export default function OperatingExpenses() {
 					/>
 				</div>
 
+				{!loading && isDemoMode && (
+					<NoSubscriptionWarningBlock />
+				)}
+
+				{!loading && shops && activeBrand && !activeBrand?.is_primary_collect && !isDemoMode && (
+					<DataCollectWarningBlock />
+				)}
+
 				{!loading && (
 					<Flex justify="space-between">
 						<Flex gap={4} align="center">
@@ -467,10 +481,6 @@ export default function OperatingExpenses() {
 						/>
 					</div>
 				}
-
-				{!loading && shops && activeBrand && !activeBrand?.is_primary_collect && (
-					<DataCollectWarningBlock />
-				)}
 
 				{!loading && activeBrand?.is_primary_collect && view === 'expense' &&
 					<div className={styles.container}>

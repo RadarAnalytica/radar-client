@@ -380,66 +380,83 @@ export class DemoDataService {
     return {
       data: [
           {
-              "id": 62,
-              "name": "444"
+              "id": 1,
+              "name": "Заработная плата"
           },
           {
-              "id": 64,
-              "name": "4444"
+              "id": 2,
+              "name": "Аренда"
           },
           {
-              "id": 61,
-              "name": "пав"
-          },
-          {
-              "id": 63,
-              "name": "пов"
+              "id": 3,
+              "name": "Реклама и маркетинг"
           }
-        ],
-        page: 1,
-        total_pages: 1,
-        limit: 25,
+        ]
     };
   }
 
   private getOperatingExpensesData() {
+    const today = new Date().toISOString().split('T')[0];
+
     return {
-      "data": [
-        {
-            "id": 3046,
+      data: [
+          {
+            "id": 1,
             "expense_categories": [
                 {
-                    "id": 62,
-                    "name": "444"
+                    "id": 1,
+                    "name": "Заработная плата"
                 }
             ],
-            "description": "555",
-            "value": 555,
+            "description": "Выдача заработной платы сотрудникам отдела маркетинга",
+            "value": 100000,
             "vendor_code": null,
             "brand_name": null,
             "shop": {
-                "id": 238,
-                "name": "мелкая076"
+                "id": 1,
+                "name": "Демо магазин"
             },
-            "date": "2025-10-17",
+            "date": today,
             "periodic_expense_id": null,
-            "is_periodic": false,
-            "created_at": "2025-10-17T12:28:46.650315",
-            "updated_at": "2025-10-17T12:28:46.650320"
+            "is_periodic": true,
+            "created_at": today,
+            "updated_at": today
         },
         {
-            "id": 3038,
-            "expense_categories": [],
-            "description": "123",
-            "value": 100,
-            "vendor_code": "1142/светло-фиолетовый",
+            "id": 2,
+            "expense_categories": [
+                {
+                    "id": 2,
+                    "name": "Аренда"
+                }
+            ],
+            "description": "Аренда офиса на три месяца",
+            "value": 45000,
+            "vendor_code": null,
             "brand_name": null,
-            "shop": null,
-            "date": "2025-10-16",
+            "shop": {
+                "id": 1,
+                "name": "Демо магазин"
+            },
+            "date": today,
             "periodic_expense_id": null,
             "is_periodic": false,
-            "created_at": "2025-10-16T14:35:01.937703",
-            "updated_at": "2025-10-16T14:35:01.937710"
+            "created_at": today,
+            "updated_at": today
+        },
+        {
+            "id": 3,
+            "expense_categories": [],
+            "description": "Закупка оборудования",
+            "value": 80000,
+            "vendor_code": "101010101010",
+            "brand_name": null,
+            "shop": null,
+            "date": today,
+            "periodic_expense_id": null,
+            "is_periodic": false,
+            "created_at": today,
+            "updated_at": today
         }
       ],
       page: 1,
