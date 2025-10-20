@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useRef } from 'react';
 import AuthContext from '@/service/AuthContext';
 import styles from './filters.module.css';
-import { TimeSelect, PlainSelect, FrequencyModeSelect, ShopSelect, MultiSelect, MonthSelect, TempTimeSelect } from '../features';
+import { TimeSelect, PlainSelect, FrequencyModeSelect, ShopSelect, MultiSelect, MonthSelect } from '../features';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { actions as filterActions } from '@/redux/apiServicePagesFiltersState/apiServicePagesFilterState.slice';
 import { fetchShops } from '@/redux/shops/shopsActions';
@@ -68,17 +68,9 @@ export const Filters = ({
               isDataLoading={isDataLoading} />
           </div>
         }
-        {shops && activeBrand && timeSelect && tempPageCondition !== 'supplier' &&
+        {shops && activeBrand && timeSelect &&
           <div className={styles.filters__inputWrapper}>
             <TimeSelect
-              isDataLoading={isDataLoading}
-              maxCustomDate={maxCustomDate}
-            />
-          </div>
-        }
-        {timeSelect && tempPageCondition === 'supplier' &&
-          <div className={styles.filters__inputWrapper}>
-            <TempTimeSelect
               isDataLoading={isDataLoading}
               maxCustomDate={maxCustomDate}
             />
