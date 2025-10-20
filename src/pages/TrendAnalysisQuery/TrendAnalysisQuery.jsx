@@ -421,10 +421,6 @@ export default function TrendAnalysisQuery() {
 									<TrendAnalysisQueryChart data={data?.chart} />
 								</div>
 
-
-
-
-
 								{data?.table &&
 									<div className={styles.table}>
 										<RadarTable
