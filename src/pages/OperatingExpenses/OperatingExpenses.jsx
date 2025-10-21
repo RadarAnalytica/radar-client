@@ -169,13 +169,13 @@ export default function OperatingExpenses() {
 	};
 
 	useLayoutEffect(() => {
-		if (firstLoad.current) {
+		if (firstLoad.current && authToken) {
 			firstLoad.current = false; // Устанавливаем сразу, чтобы избежать двойного вызова в StrictMode
 			updateCategories().then(() => {
 				setLoading(false);
 			});
 		}
-	}, [])
+	}, [authToken]);
 
 	useEffect(() => {
 		// Не выполняем, если это первая загрузка (категории еще грузятся)
