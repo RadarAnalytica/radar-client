@@ -1,3 +1,7 @@
+:global(.radar-table__header-cell-text-wrapper) {
+    text-wrap: nowrap;
+}
+
 .container {
     position: relative;
     height: 100%;

@@ -436,12 +436,11 @@ export default function OperatingExpenses() {
 									type="primary"
 									size="large"
 									onClick={modalHandler}
-									style={{ fontWeight: 600, fontSize: 14 }}
+									style={{ fontWeight: 600, fontSize: 14, width: 121 }}
 								>
 									<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
 										<path d="M9 1V9M9 17V9M9 9H1H17" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
 									</svg>
-
 									Добавить
 								</Button>
 							</ConfigProvider>
@@ -560,7 +559,14 @@ export default function OperatingExpenses() {
 							</RadarTooltip>
 						</div>
 					) : null}
-					onOk={() => deleteExpense(deleteExpenseId, expenseData.data.find((el) => el.id === deleteExpenseId)?.is_periodic)}
+					onOk={() => {
+						const currentExpense = expenseData.data.find((el) => el.id === deleteExpenseId);
+						if (currentExpense.is_periodic) {
+							deleteExpense(currentExpense.periodic_expense_id, true);
+						} else {
+							deleteExpense(deleteExpenseId, false);
+						}
+					}}
 					onCancel={() => setDeleteExpenseId(null)}
 					isLoading={loading}
 					buttonText='Удалить расход'

@@ -756,3 +756,9 @@ export function getSavedActiveMonths(id) {
   }
   return savedActiveMonths;
 }
+
+export function log(...args) {
+  if (location.hostname === 'localhost') {
+    console.log(...args);
+  }
+}

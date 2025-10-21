@@ -764,9 +764,7 @@ export default function ExpenseMainModal({
 										onClick={onCancel}
 										htmlType="button"
 										loading={loading}
-										style={{
-											fontSize: 14,
-										}}
+										style={{ fontSize: 14, width: 101, height: 46 }}
 									>
 										Отменить
 									</Button>
@@ -793,9 +791,7 @@ export default function ExpenseMainModal({
 										size="large"
 										htmlType="submit"
 										loading={loading}
-										style={{
-											fontSize: 14,
-										}}
+										style={{ fontSize: 14, height: 46, width: 151 }}
 									>
 										Добавить расход
 									</Button>

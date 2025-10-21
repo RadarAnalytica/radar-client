@@ -6,6 +6,7 @@ import moment from 'moment';
 import styles from './tableWidget.module.css';
 import { formatPrice } from '@/service/utils';
 import { ServiceFunctions } from '@/service/serviceFunctions';
+import { useTableColumnResize } from '@/service/hooks';
 
 const customCellExpenseRender = (
     value,
@@ -220,6 +221,9 @@ export default function TableWidget({
     setAlertState
 }) {
     const tableContainerRef = useRef(null);
+    
+    // Используем хук для управления изменением размеров колонок
+    const { config: tableConfig, onResize: onResizeColumn } = useTableColumnResize(columns);
 
     return (
         <div className={styles.container}>
@@ -228,8 +232,10 @@ export default function TableWidget({
                     <span className='loader'></span>
                 </div>}
                 <RadarTable
-                    config={columns}
+                    config={tableConfig}
                     dataSource={data}
+                    resizeable
+                    onResize={onResizeColumn}
                     pagination={{
                         current: pagination.page,
                         pageSize: pagination.limit,

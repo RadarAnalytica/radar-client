@@ -780,6 +780,7 @@ export default function ExpenseCopyModal({
 										onClick={onCancel}
 										htmlType="button"
 										loading={loading}
+										style={{ fontSize: 14, width: 101, height: 46 }}
 									>
 										Отменить
 									</Button>
@@ -806,6 +807,7 @@ export default function ExpenseCopyModal({
 										size="large"
 										htmlType="submit"
 										loading={loading}
+										style={{ fontSize: 14, height: 46 }}
 									>
 										{'Копировать расход'}
 									</Button>

@@ -1831,7 +1831,7 @@ export const ServiceFunctions = {
 	},
 	deleteOperatingExpensesExpenseDelete: async(token, id, isPeriodic) => {
 		const url = isPeriodic 
-			? `/api/operating-expenses/periodic-expense/delete?periodic_expense_id=${id}&delete_linked=true` 
+			? `/api/operating-expenses/periodic-expense/delete?expense_id=${id}&delete_linked=true` 
 			: `/api/operating-expenses/expense/delete?expense_id=${id}`;
 
 		try {
