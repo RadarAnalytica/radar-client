@@ -112,8 +112,8 @@ function App() {
                 <Route path='/monitoring/request' element={<ProtectedRoute testPeriodProtected expireProtected routeRuName='Поиск прибыльной ниши'><SkuFrequencyRequestPage /></ProtectedRoute>} />
                 <Route path='/trend-analysis' element={<ProtectedRoute expireProtected routeRuName='Анализ трендовой динамики запросов'><TrendAnalysisQuery /></ProtectedRoute>} />
                 <Route path='/trending-requests' element={<ProtectedRoute expireProtected routeRuName='Поиск трендовых запросов'><TrendingRequestsPage /></ProtectedRoute>} />
-                <Route path='/groups' element={<ProtectedRoute expireProtected routeRuName='Группы товаров'><ProductGroupsPage /></ProtectedRoute>} />
-                <Route path='/groups/:group_id' element={<ProtectedRoute expireProtected routeRuName='Группа товаров'><SingleGroupPage /></ProtectedRoute>} />
+                <Route path='/groups' element={<ProtectedRoute expireProtected onboardProtected routeRuName='Группы товаров'><ProductGroupsPage /></ProtectedRoute>} />
+                <Route path='/groups/:group_id' element={<ProtectedRoute expireProtected onboardProtected routeRuName='Группа товаров'><SingleGroupPage /></ProtectedRoute>} />
                 <Route path='/selfcost' element={<ProtectedRoute expireProtected routeRuName='Себестоимость товаров'><SelfCostPage /></ProtectedRoute>} />
                 <Route path='/sku-analysis' element={<ProtectedRoute expireProtected routeRuName='Анализ артикула'><SkuAnalysisPage /></ProtectedRoute>} />
                 <Route path='/sku-analysis/:id' element={<ProtectedRoute testPeriodGuardType='redirect' testPeriodRedirect='/sku-analysis' expireProtected routeRuName='Анализ артикула'><SkuIdPage /></ProtectedRoute>} />
