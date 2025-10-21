@@ -114,7 +114,7 @@ function App() {
                 <Route path='/trending-requests' element={<ProtectedRoute expireProtected routeRuName='Поиск трендовых запросов'><TrendingRequestsPage /></ProtectedRoute>} />
                 <Route path='/groups' element={<ProtectedRoute expireProtected onboardProtected routeRuName='Группы товаров'><ProductGroupsPage /></ProtectedRoute>} />
                 <Route path='/groups/:group_id' element={<ProtectedRoute expireProtected onboardProtected routeRuName='Группа товаров'><SingleGroupPage /></ProtectedRoute>} />
-                <Route path='/selfcost' element={<ProtectedRoute expireProtected routeRuName='Себестоимость товаров'><SelfCostPage /></ProtectedRoute>} />
+                <Route path='/selfcost' element={<ProtectedRoute expireProtected onboardProtected routeRuName='Себестоимость товаров'><SelfCostPage /></ProtectedRoute>} />
                 <Route path='/sku-analysis' element={<ProtectedRoute expireProtected routeRuName='Анализ артикула'><SkuAnalysisPage /></ProtectedRoute>} />
                 <Route path='/sku-analysis/:id' element={<ProtectedRoute testPeriodGuardType='redirect' testPeriodRedirect='/sku-analysis' expireProtected routeRuName='Анализ артикула'><SkuIdPage /></ProtectedRoute>} />
                 <Route path='/dashboard' element={<ProtectedRoute expireProtected onboardProtected routeRuName='Сводка продаж'><DashboardPage /></ProtectedRoute>} />

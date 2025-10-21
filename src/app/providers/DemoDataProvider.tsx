@@ -10,7 +10,7 @@ interface DemoDataProviderProps {
 }
 
 export const DemoDataProvider: React.FC<DemoDataProviderProps> = ({ children }) => {
-  const { user } = useContext(AuthContext);
+  const { user } = useContext(AuthContext) || {};
   const [isDemoMode, setIsDemoMode] = useState<boolean>(false);
   const [isDemoUser, setIsDemoUser] = useState<boolean>(false);
   const [showDemoBanner, setShowDemoBanner] = useState<boolean>(false);
