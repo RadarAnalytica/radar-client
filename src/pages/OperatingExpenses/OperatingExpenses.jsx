@@ -215,16 +215,13 @@ export default function OperatingExpenses() {
 		try {
 			const res = await ServiceFunctions.postOperatingExpensesCategoryCreate(authToken, category);
 			await updateCategories(true); // Обновляем данные с сбросом пагинации
+			setAlertState({ message: 'Статья добавлена', status: 'success', isVisible: true });
 		} catch (error) {
 			console.error('createCategory error', error);
+			setAlertState({ message: 'Не удалось добавить статью', status: 'error', isVisible: true });
 		} finally {
 			setModalCreateCategoryOpen(false);
 			setCategoryLoading(false);
-			setAlertState({
-				status: 'success',
-				isVisible: true,
-				message: 'Статья добавлена',
-			});
 		}
 	};
 
@@ -233,16 +230,13 @@ export default function OperatingExpenses() {
 		try {
 			const res = await ServiceFunctions.patchOperatingExpensesCategory(authToken, category);
 			await updateCategories(); // Обновляем данные без сброса пагинации
+			setAlertState({ message: 'Статья обновлена', status: 'success', isVisible: true });
 		} catch (error) {
 			console.error('editCategory error', error);
+			setAlertState({ message: 'Не удалось обновить статью', status: 'error', isVisible: true });
 		} finally {
 			setCategoryEdit(null);
 			updateExpenses(false, false);
-			setAlertState({
-				status: 'success',
-				isVisible: true,
-				message: 'Статья обновлена',
-			});
 		}
 	};
 
@@ -269,19 +263,16 @@ export default function OperatingExpenses() {
 		try {
 			const res = await ServiceFunctions.postOperatingExpensesExpenseCreate(authToken, requestObject, requestUrl);
 			await updateExpenses(true); // Сбрасываем пагинацию и обновляем данные
+			setAlertState({ message: 'Расход добавлен', status: 'success', isVisible: true });
 		} catch (error) {
 			console.error('createExpense error', error);
+			setAlertState({ message: 'Не удалось добавить расход', status: 'error', isVisible: true });
 		} finally {
 			setModalCreateExpenseOpen(false);
 			setCategoryLoading(false);
 			setExpenseCopy(null);
 			setModalCopyExpenseOpen(false);
 			setLoading(false);
-			setAlertState({
-				status: 'success',
-				isVisible: true,
-				message: 'Расход добавлен',
-			});
 		}
 	}
 
@@ -292,28 +283,23 @@ export default function OperatingExpenses() {
 		try {
 			const res = await ServiceFunctions.patchOperatingExpensesExpense(authToken, requestObject, requestUrl);
 			await updateExpenses(); // Обновляем данные без сброса пагинации
+			setAlertState({ message: 'Расход обновлен', status: 'success', isVisible: true });
 		} catch (error) {
 			console.error('editExpense error', error);
+			setAlertState({ message: 'Не удалось обновить расход', status: 'error', isVisible: true });
 		} finally {
 			setExpenseEdit(null);
 			setLoading(false);
-			setAlertState({
-				status: 'success',
-				isVisible: true,
-				message: 'Расход обновлен',
-			});
 		}
 	}
 
 	const copyExpense = async (expenseId) => {
+		setLoading(true);
 		try {
 			let expenseToCopy = expense.find((item) => item.id === expenseId);
 			if (!expenseToCopy) {
-				console.error('Expense not found');
-				return;
+				throw new Error('Расход не найден');
 			}
-			setLoading(true);
-
 			// Prepare expense data for copying (remove id and any timestamps)
 			const { id, created_at, updated_at, ...expenseData } = expenseToCopy;
 
@@ -343,20 +329,12 @@ export default function OperatingExpenses() {
 
 			const res = await ServiceFunctions.postOperatingExpensesExpenseCreate(authToken, expenseData, `/operating-expenses/expense/copy?expense_id=${expenseId}`);
 			await updateExpenses(true);
+			setAlertState({ message: 'Расход скопирован', status: 'success', isVisible: true });
 		} catch (error) {
 			console.error('copyExpense error', error);
-			setLoading(false);
-			setAlertState({
-				status: 'error',
-				isVisible: true,
-				message: 'Не удалось скопировать расход',
-			});
+			setAlertState({ message: 'Не удалось скопировать расход', status: 'error', isVisible: true });
 		} finally {
-			setAlertState({
-				status: 'success',
-				isVisible: true,
-				message: 'Расход скопирован',
-			});
+			setLoading(false);
 		}
 	}
 
@@ -365,16 +343,13 @@ export default function OperatingExpenses() {
 		try {
 			const res = await ServiceFunctions.deleteOperatingExpensesExpenseDelete(authToken, id, isPeriodic);
 			await updateExpenses(); // Обновляем данные без сброса пагинации
+			setAlertState({ message: 'Расход удален', status: 'success', isVisible: true });
 		} catch (error) {
 			console.error('deleteExpense error', error);
+			setAlertState({ message: 'Не удалось удалить расход', status: 'error', isVisible: true });
 		} finally {
 			setDeleteExpenseId(null);
 			setLoading(false);
-			setAlertState({
-				status: 'success',
-				isVisible: true,
-				message: 'Расход удален',
-			});
 		}
 	}
 
@@ -383,16 +358,14 @@ export default function OperatingExpenses() {
 		try {
 			const res = await ServiceFunctions.deleteOperatingExpensesCategory(authToken, id);
 			await updateCategories(); // Обновляем данные без сброса пагинации
+			setAlertState({ message: 'Статья удалена', status: 'success', isVisible: true });
 		} catch (error) {
 			console.error('deleteCategoryHandler error', error);
+			setAlertState({ message: 'Не удалось удалить статью', status: 'error', isVisible: true });
 		} finally {
 			setDeleteCategoryId(null);
 			updateExpenses(false, false);
-			setAlertState({
-				status: 'success',
-				isVisible: true,
-				message: 'Статья удалена',
-			});
+			setLoading(false);
 		}
 	};
 

@@ -138,8 +138,34 @@ export default function ModalConfirm({
 							</Form.Item>
 						</Col>
 						<Col span={12}>
-							<Form.Item label="Сумма, руб">
-								<Input size="large" />
+							<Form.Item 
+								label="Сумма, руб"
+								name="value"
+								rules={[
+									{ required: true, message: 'Пожалуйста, введите сумму расхода!' },
+									{
+										validator: (_, value) => {
+											if (!value) {
+												return Promise.resolve();
+											}
+											// Проверяем, что число имеет не более 2 знаков после запятой
+											const decimalPart = String(value).split('.')[1];
+											if (decimalPart && decimalPart.length > 2) {
+												return Promise.reject(new Error('Максимум 2 знака после запятой'));
+											}
+											return Promise.resolve();
+										}
+									}
+								]}
+							>
+								<Input 
+									size="large"
+									type="number"
+									min={0}
+									step="0.01"
+									placeholder="0"
+									onWheel={(e) => e.currentTarget.blur()}
+								/>
 							</Form.Item>
 						</Col>
 					</Row>
