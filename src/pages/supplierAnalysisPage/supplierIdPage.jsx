@@ -75,10 +75,7 @@ const SupplierIdPage = () => {
             };
             // если все выше не прошло - проверяем
             supplierChecker(id);
-
         }
-
-
     }, [params, mainSupplierData]);
 
 

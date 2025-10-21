@@ -134,7 +134,7 @@ export const TableWidget = React.memo(({ rawData, loading, tablePaginationState,
                 if (col.key === columnKey) {
                     // Ограничиваем ширину минимальным и максимальным значением
                     const minWidth = 160;
-                    const maxWidth = 1200;
+                    const maxWidth = 400;
                     const constrainedWidth = width < minWidth ? minWidth : width > maxWidth ? maxWidth : width;
                     
                     return { ...col, width: constrainedWidth, minWidth: constrainedWidth };
