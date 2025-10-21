@@ -153,7 +153,7 @@ export default function OperatingExpenses() {
 
 		try {
 			const res = await ServiceFunctions.getOperatingExpensesExpenseGetAll(authToken, requestObject);
-			setExpense(res.data)
+			setExpense(res.data);
 			setExpPagination({
 				page: res.page,
 				limit: res.limit,
@@ -168,29 +168,17 @@ export default function OperatingExpenses() {
 		}
 	};
 
-	useLayoutEffect(() => {
-		if (firstLoad.current && authToken) {
-			firstLoad.current = false; // Устанавливаем сразу, чтобы избежать двойного вызова в StrictMode
-			updateCategories().then(() => {
-				setLoading(false);
-			});
+	useEffect(() => {
+		if (authToken) {
+			updateCategories();
 		}
 	}, [authToken]);
 
 	useEffect(() => {
-		// Не выполняем, если это первая загрузка (категории еще грузятся)
-		if (firstLoad.current) {
-			return;
-		}
-		
-		if (!activeBrand?.is_primary_collect) {
-			return;
-		}
-
-		if (view === 'expense' && expenseCategories) {
+		if (authToken && activeBrand?.is_primary_collect) {
 			updateExpenses();
 		}
-	}, [activeBrand, selectedRange, expPagination.page, categoryPagination.page, activeBrandName, activeArticle, activeExpenseCategory, view, expenseCategories])
+	}, [activeBrand, activeArticle, selectedRange, expPagination.page, activeExpenseCategory, expenseCategories, authToken]);
 
 	const modalExpenseHandlerClose = () => {
 		setModalCreateExpenseOpen(false);
