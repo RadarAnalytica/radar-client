@@ -124,6 +124,7 @@ export default function OperatingExpenses() {
 			];
 			dispatch(filtersActions.setExpenseCategories(categories));
 		} catch (error) {
+			console.error('updateCategories error', error);
 			setCategory([]);
 		} finally {
 			setCategoryLoading(false);
@@ -169,24 +170,27 @@ export default function OperatingExpenses() {
 
 	useLayoutEffect(() => {
 		if (firstLoad.current) {
+			firstLoad.current = false; // Устанавливаем сразу, чтобы избежать двойного вызова в StrictMode
 			updateCategories().then(() => {
-				firstLoad.current = false;
 				setLoading(false);
 			});
 		}
 	}, [])
 
 	useEffect(() => {
-		if (!activeBrand?.is_primary_collect) return;
+		// Не выполняем, если это первая загрузка (категории еще грузятся)
+		if (firstLoad.current) {
+			return;
+		}
+		
+		if (!activeBrand?.is_primary_collect) {
+			return;
+		}
 
 		if (view === 'expense' && expenseCategories) {
 			updateExpenses();
 		}
-
-		// if (view === 'category') {
-		// 	updateCategories();
-		// }
-	}, [activeBrand, selectedRange, expPagination.page, categoryPagination.page, activeBrandName, activeArticle, activeExpenseCategory])
+	}, [activeBrand, selectedRange, expPagination.page, categoryPagination.page, activeBrandName, activeArticle, activeExpenseCategory, view, expenseCategories])
 
 	const modalExpenseHandlerClose = () => {
 		setModalCreateExpenseOpen(false);

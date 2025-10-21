@@ -121,8 +121,6 @@ export default function ExpenseCopyModal({
 		}
 	}, [editData])
 
-	console.log('editDataCopy', editData);
-
 
 	return (
 		<ConfigProvider

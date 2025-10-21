@@ -1759,8 +1759,8 @@ export const ServiceFunctions = {
 	},
 	getPeriodicExpenseTemplate: async (token, periodic_expense_id) => {
 		try {
-			const res = await fetch(
-				`${URL}/api/operating-expenses/periodic-expense/get?expense_id=${periodic_expense_id}`,
+			const res = await fetchApi(
+				`/api/operating-expenses/periodic-expense/get?expense_id=${periodic_expense_id}`,
 				{
 					method: 'GET',
 					headers: {

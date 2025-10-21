@@ -965,14 +965,14 @@ export class DemoDataService {
   private getDemoFilters() {
     // Создаем демо-магазин
     const demoShop = {
-      id: 1,
+      id: 0,
       brand_name: 'Демо магазин',
       name: 'Демо магазин',
       is_active: true,
       is_valid: true,
       is_primary_collect: true,
       is_self_cost_set: true,
-      value: 'Демо магазин'
+      value: 'Демо магазин',
     };
 
     // Создаем структуру фильтров аналогично реальным данным

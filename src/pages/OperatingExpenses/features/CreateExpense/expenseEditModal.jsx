@@ -146,9 +146,15 @@ export default function ExpenseEditModal({
 				? format(parse(editData.end_date, 'yyyy-MM-dd', new Date()), 'dd.MM.yyyy')
 				: null;
 
+			const expenseCategories = typeof editData.expense_categories === 'string' 
+				? [editData.expense_categories] 
+				: Array.isArray(editData.expense_categories) 
+					? editData.expense_categories.map((el) => el.id)
+					: [];
+			
 			form.setFieldsValue({
 				date: formattedDate,
-				expense_categories: editData.expense_categories.map((el) => el.id),
+				expense_categories: expenseCategories,
 				selection: selectionType,
 				shops: editData.shops,
 				vendor_codes: editData.vendor_code?.id,

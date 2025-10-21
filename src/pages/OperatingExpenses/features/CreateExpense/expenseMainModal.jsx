@@ -14,13 +14,13 @@ import { RadioGroup } from './RadioGroup';
 import { DateSelect } from './DateSelect';
 import { MultiSelect } from './MultiSelect';
 import { formatDate, parse } from 'date-fns';
+import { useDemoMode } from '@/app/providers/DemoDataProvider';
 
 
 const getRequestObject = (values) => {
 	let requestObject = {}
 	let requestUrl = '';
 	const formattedDateStart = formatDate(parse(values.date, 'dd.MM.yyyy', new Date()), 'yyyy-MM-dd');
-
 
 	if (values.type === 'plan') {
 		requestUrl = 'operating-expenses/periodic-expense/create';
@@ -73,6 +73,7 @@ export default function ExpenseMainModal({
 	const { shops, filters } = useAppSelector((state) => state.filters);
 	const [form] = Form.useForm();
 	const dateFrom = Form.useWatch('date', form);
+	const { isDemoMode } = useDemoMode();
 
 	const selection = Form.useWatch('selection', form);
 	const frequency = Form.useWatch('frequency', form);
@@ -626,15 +627,15 @@ export default function ExpenseMainModal({
 											form={form}
 											hasSelectAll
 											optionsData={shops?.map((el) => {
-												if (el.id === 0) {
-													return false
+												if (el.id === 0 && !isDemoMode) {
+													return false;
 												} else {
 													return {
 														key: el.id,
 														value: el.id,
 														label: el.brand_name,
 														disabled: !el.is_active,
-													}
+													};
 												}
 											}).filter(Boolean)}
 											selectId='shops'
