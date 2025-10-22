@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Table as RadarTable } from 'radar-ui';
-import { useAppSelector } from '../../../../redux/hooks';
 import { Bar } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
