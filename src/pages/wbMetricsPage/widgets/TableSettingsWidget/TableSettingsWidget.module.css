@@ -1,0 +1,146 @@
+.modal {
+  border-radius: 12px;
+}
+
+.modal :global(.ant-modal-content) {
+  border-radius: 12px;
+  padding: 24px;
+}
+
+.modal :global(.ant-modal-header) {
+  border-bottom: 1px solid #f0f0f0;
+  padding-bottom: 16px;
+  margin-bottom: 24px;
+}
+
+.modal :global(.ant-modal-title) {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+.modal__content {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.modal__searchForm {
+  margin-bottom: 0;
+}
+
+.modal__input {
+  flex: 1;
+  margin-bottom: 0;
+}
+
+.modal__input :global(.ant-input) {
+  border-radius: 8px;
+  border: 1px solid #d9d9d9;
+}
+
+.modal__input :global(.ant-input:focus) {
+  border-color: #5329ff;
+  box-shadow: 0 0 0 2px rgba(83, 41, 255, 0.1);
+}
+
+.modal__checkboxes {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.modal__checkAllButton {
+  align-self: flex-start;
+  border-radius: 8px;
+  border: 1px solid #d9d9d9;
+  color: #1a1a1a;
+  font-weight: 500;
+}
+
+.modal__checkAllButton:hover {
+  border-color: #5329ff;
+  color: #5329ff;
+}
+
+.modal__form {
+  margin-bottom: 0;
+}
+
+.modal__checkboxList {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+  max-height: 300px;
+  overflow-y: auto;
+  padding: 16px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border: 1px solid #e8e8e8;
+}
+
+.modal__checkboxItem {
+  margin-bottom: 0;
+}
+
+.modal__checkboxItem :global(.ant-checkbox-wrapper) {
+  color: #1a1a1a;
+  font-size: 14px;
+}
+
+.modal__checkboxItem :global(.ant-checkbox-checked .ant-checkbox-inner) {
+  background-color: #5329ff;
+  border-color: #5329ff;
+}
+
+.modal__checkboxItem :global(.ant-checkbox:hover .ant-checkbox-inner) {
+  border-color: #5329ff;
+}
+
+.modal__buttons {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid #f0f0f0;
+}
+
+.modal__buttons :global(.ant-btn) {
+  border-radius: 8px;
+  font-weight: 500;
+  height: 40px;
+  padding: 0 16px;
+}
+
+.modal__buttons :global(.ant-btn-default) {
+  border-color: #d9d9d9;
+  color: #1a1a1a;
+}
+
+.modal__buttons :global(.ant-btn-default:hover) {
+  border-color: #5329ff;
+  color: #5329ff;
+}
+
+.modal__buttons :global(.ant-btn-primary) {
+  background: #5329ff;
+  border-color: #5329ff;
+}
+
+.modal__buttons :global(.ant-btn-primary:hover) {
+  background: #4a1eff;
+  border-color: #4a1eff;
+}
+
+@media (max-width: 768px) {
+  .modal__checkboxList {
+    grid-template-columns: 1fr;
+    max-height: 200px;
+  }
+  
+  .modal__buttons {
+    flex-direction: column;
+  }
+  
+  .modal__buttons :global(.ant-btn) {
+    width: 100%;
+  }
+}
