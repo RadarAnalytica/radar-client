@@ -1,7 +1,26 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Table as RadarTable } from 'radar-ui';
 import { useAppSelector } from '../../../../redux/hooks';
+import { Bar } from 'react-chartjs-2';
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+} from 'chart.js';
 import styles from './WbMetricsTable.module.css';
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 interface ControlDataItem {
   date: string;
@@ -45,12 +64,11 @@ const WbMetricsTable: React.FC<WbMetricsTableProps> = ({
   metricType,
   onPageChange
 }) => {
-  const { activeBrand } = useAppSelector((state) => state.filters);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(20);
   const tableContainerRef = useRef(null);
 
-  const getColorForPercentage = (percentage: number): string => {
+  const getColorForPercentage = (percentage: number, opacity: number = 1): string => {
     if (!data) return '#f0f0f0';
     
     const { min_control_value, max_control_value } = data;
@@ -60,16 +78,21 @@ const WbMetricsTable: React.FC<WbMetricsTableProps> = ({
     
     const normalizedValue = (percentage - min_control_value) / range;
     
-    if (normalizedValue <= 0.1) return '#ff4444'; // Красный
-    if (normalizedValue <= 0.2) return '#ff6666';
-    if (normalizedValue <= 0.3) return '#ff8888';
-    if (normalizedValue <= 0.4) return '#ffaa44'; // Оранжевый
-    if (normalizedValue <= 0.5) return '#ffcc44'; // Желтый
-    if (normalizedValue <= 0.6) return '#ffee44';
-    if (normalizedValue <= 0.7) return '#ccff44';
-    if (normalizedValue <= 0.8) return '#88ff44'; // Светло-зеленый
-    if (normalizedValue <= 0.9) return '#44ff44'; // Зеленый
-    return '#22ff22'; // Ярко-зеленый
+    const colorScale = [
+      `rgba(249, 62, 62, ${opacity})`, // Красный
+      `rgba(253, 107, 66, ${opacity})`,
+      `rgba(254, 143, 40, ${opacity})`,
+      `rgba(250, 179, 19, ${opacity})`, 
+      `rgba(242, 209, 2, ${opacity})`, // Желтый
+      `rgba(198, 211, 17, ${opacity})`,
+      `rgba(148, 208, 44, ${opacity})`,
+      `rgba(89, 212, 1, ${opacity})`,
+      `rgba(28, 215, 0, ${opacity})`, // Зеленый
+    ];
+    
+    const colors = metricType === 'drr' ? [...colorScale].reverse() : colorScale;
+    const index = Math.min(Math.floor(normalizedValue * colors.length), colors.length - 1);
+    return colors[index];
   };
 
   const formatDateHeader = (dateString: string): string => {
@@ -173,17 +196,68 @@ const WbMetricsTable: React.FC<WbMetricsTableProps> = ({
 
     // Рендер для графика
     if (dataIndex === 'chart') {
+      const chartData = value.slice(-15); // Последние 15 дней
+      
+      const chartConfig = {
+        labels: chartData.map((item: ControlDataItem) => {
+          const date = new Date(item.date);
+          return `${date.getDate()}.${date.getMonth() + 1}`;
+        }),
+        datasets: [
+          {
+            label: metricType === 'drr' ? 'ДРР %' : 'СПП %',
+            data: chartData.map((item: ControlDataItem) => item.percentage),
+            backgroundColor: chartData.map((item: ControlDataItem) => 
+              getColorForPercentage(item.percentage, 0.8)
+            ),
+            borderColor: chartData.map((item: ControlDataItem) => 
+              getColorForPercentage(item.percentage, 1)
+            ),
+            borderWidth: 1,
+          },
+        ],
+      };
+
+      const options = {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            display: false,
+          },
+          tooltip: {
+            callbacks: {
+              label: function(context: any) {
+                return `${context.dataset.label}: ${context.parsed.y}%`;
+              }
+            }
+          }
+        },
+        scales: {
+          x: {
+            display: false,
+          },
+          y: {
+            display: false,
+          },
+        },
+        elements: {
+          bar: {
+            borderWidth: 0,
+          }
+        },
+        datasets: {
+          bar: {
+            categoryPercentage: 1.0,
+            barPercentage: 0.8,
+            borderRadius: 2,
+          }
+        },
+      };
+
       return (
         <div className={styles.chartContainer}>
-          {value.slice(0, 15).map((item: ControlDataItem, index: number) => (
-            <div 
-              key={index}
-              className={styles.chartBar}
-              style={{ 
-                backgroundColor: getColorForPercentage(item.percentage),
-              }}
-            />
-          ))}
+          <Bar data={chartConfig} options={options} />
         </div>
       );
     }
@@ -193,7 +267,7 @@ const WbMetricsTable: React.FC<WbMetricsTableProps> = ({
       return (
         <div 
           className={styles.percentageCell}
-          style={{ backgroundColor: getColorForPercentage(value) }}
+          style={{ backgroundColor: getColorForPercentage(value, 0.2) }}
         >
           {value}%
         </div>

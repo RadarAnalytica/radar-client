@@ -22,7 +22,7 @@ const WbMetricsPage: React.FC = () => {
   const metricType = location.pathname.includes('/drr') ? 'drr' : 'spp';
   const { user, authToken } = useContext(AuthContext);
   const { isDemoMode } = useDemoMode();
-  const { activeBrand, selectedRange } = useAppSelector((state) => state.filters);
+  const { activeBrand, activeBrandName, activeArticle, activeGroup } = useAppSelector((state) => state.filters);
   
   const [loading, setLoading] = useState(true);
   const [tableConfig, setTableConfig] = useState<any[]>();
@@ -67,7 +67,7 @@ const WbMetricsPage: React.FC = () => {
     } else if (activeBrand && !activeBrand.is_primary_collect) {
       setLoading(false);
     }
-  }, [activeBrand, selectedRange, currentPage, metricType]);
+  }, [activeBrand, currentPage, activeBrandName, activeArticle, activeGroup, metricType]);
 
   const downloadHandler = async () => {
     // TODO: Implement Excel download
@@ -111,34 +111,13 @@ const WbMetricsPage: React.FC = () => {
     return [...baseColumns, ...dayColumns];
   };
 
-  const getColorForPercentage = (percentage: number): string => {
-    if (!data) return '#f0f0f0';
-    
-    const { min_control_value, max_control_value } = data;
-    const range = max_control_value - min_control_value;
-    const step = range / 9;
-    
-    const normalizedValue = (percentage - min_control_value) / range;
-    
-    if (normalizedValue <= 0.1) return '#ff4444'; // Красный
-    if (normalizedValue <= 0.2) return '#ff6666';
-    if (normalizedValue <= 0.3) return '#ff8888';
-    if (normalizedValue <= 0.4) return '#ffaa44'; // Оранжевый
-    if (normalizedValue <= 0.5) return '#ffcc44'; // Желтый
-    if (normalizedValue <= 0.6) return '#ffee44';
-    if (normalizedValue <= 0.7) return '#ccff44';
-    if (normalizedValue <= 0.8) return '#88ff44'; // Светло-зеленый
-    if (normalizedValue <= 0.9) return '#44ff44'; // Зеленый
-    return '#22ff22'; // Ярко-зеленый
-  };
-
   const formatDateHeader = (dateString: string): string => {
     const date = new Date(dateString);
     const dayNames = ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
     const dayName = dayNames[date.getDay()];
     const day = date.getDate();
     const month = date.getMonth() + 1;
-    return `${dayName}, ${day}.${month}`;
+    return `${dayName}, ${day}.${month < 10 ? '0' + month : month}`;
   };
 
   return (

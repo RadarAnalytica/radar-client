@@ -145,10 +145,9 @@ const sampleProducts: ProductData[] = [
 export const generateMockData = (metricType: 'drr' | 'spp', page: number = 1, perPage: number = 20): WbMetricsData => {
   const dates = generateDateRange(30);
   
-  // Для ДРР: диапазон от 0% до 50%
-  // Для СПП: диапазон от 0% до 30%
-  const minValue = 0;
-  const maxValue = metricType === 'drr' ? 50 : 30;
+  // Для обеих метрик: диапазон от 1% до 10%
+  const minValue = 1;
+  const maxValue = 10;
   
   // Генерируем данные для текущей страницы
   const startIndex = (page - 1) * perPage;
@@ -177,7 +176,7 @@ export const generateMockData = (metricType: 'drr' | 'spp', page: number = 1, pe
     max_control_value: maxValue,
     page,
     per_page: perPage,
-    total_count: 150 // Общее количество товаров
+    total_count: 150,
   };
 };
 
@@ -188,8 +187,8 @@ export const generateMultipleMockData = (metricType: 'drr' | 'spp', count: numbe
     const dates = generateDateRange(30);
     const product = sampleProducts[i % sampleProducts.length];
     
-    const minValue = 0;
-    const maxValue = metricType === 'drr' ? 50 : 30;
+    const minValue = 1;
+    const maxValue = 10;
     
     const controlData = generateControlData(dates, minValue, maxValue);
     
