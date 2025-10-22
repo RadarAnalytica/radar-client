@@ -138,13 +138,13 @@ export default function ReportProfitLoss() {
 		};
 
 		metricsOrder.forEach((metric, index) => {
-			const { key, title, isChildren, isParent, parentKey } = metric;
+			const { key, title, isChildren, isParent, parentKey, isExpanded } = metric;
 			let rowObject = {
 				article: title,
 				isParent,
 				id: index,
-				key: `${index}-${key}`,
-				originalKey: key,
+				key,
+				isExpanded,
 			};
 
 			data.forEach(item => {
@@ -167,7 +167,7 @@ export default function ReportProfitLoss() {
 		const finalDataSource = tableData.map(row => {
 			return row.isChildren ? row : {
 				...row,
-				children: childrenData[row.originalKey] || [],
+				children: childrenData[row.key] || [],
 			};
 		});
 
@@ -175,7 +175,7 @@ export default function ReportProfitLoss() {
 	};
 
 	const dataToTableData = (response) => {
-		if (!response || !response.data || response.data.length === 0) {
+		if (!response?.data?.length) {
 			setColumns([]);
 			setData([]);
 			return;
@@ -188,7 +188,7 @@ export default function ReportProfitLoss() {
 			{ key: 'sales', title: 'Фактические продажи' },
 			{ key: 'mp_discount', title: 'Скидка за счет МП' },
 			{ key: 'realization', title: 'Реализация' },
-			{ key: 'total_expenses', title: 'Прямые расходы', isParent: true },
+			{ key: 'total_expenses', title: 'Прямые расходы', isParent: true, isExpanded: true },
 			{ key: 'cost', title: 'Себестоимость', isChildren: true, parentKey: 'total_expenses' },
 			{ key: 'advert', title: 'Внутренняя реклама', isChildren: true, parentKey: 'total_expenses' },
 			{ key: 'storage', title: 'Хранение', isChildren: true, parentKey: 'total_expenses' },
@@ -198,7 +198,7 @@ export default function ReportProfitLoss() {
 			{ key: 'penalties', title: 'Штрафы', isChildren: true, parentKey: 'total_expenses' },
 			{ key: 'compensation', title: 'Компенсация' },
 			{ key: 'gross_margin', title: 'Маржинальная прибыль' },
-			{ key: 'operating_expenses', title: 'Операционные расходы', isParent: true },
+			{ key: 'operating_expenses', title: 'Операционные расходы', isParent: true, isExpanded: true },
 			{ key: 'operating_profit', title: 'Операционная прибыль (EBITDA)' },
 			{ key: 'tax', title: 'Налоги' },
 			{ key: 'net_profit', title: 'Чистая прибыль' },
@@ -223,11 +223,10 @@ export default function ReportProfitLoss() {
 		
 		setData([...getData(data, metricsOrder)]);
 		setColumns(getConfig(data));
-		setLoading(false);
 	};
 
 	const updateDataReportProfitLoss = async () => {
-		setLoading(true);	
+		setLoading(true);
 		progress.start();
 		try {
 			const response = await ServiceFunctions.getReportProfitLoss(
@@ -238,10 +237,16 @@ export default function ReportProfitLoss() {
 				activeMonths
 			);
 			progress.complete();
-			await setTimeout(() => dataToTableData(response), 500);
+			await setTimeout(() => {
+				dataToTableData(response);
+				progress.reset();
+				setLoading(false);
+			}, 500);
 		} catch (e) {
 			console.error(e);
 			dataToTableData(null);
+			progress.reset();
+			setLoading(false);
 		}
 	};
 
