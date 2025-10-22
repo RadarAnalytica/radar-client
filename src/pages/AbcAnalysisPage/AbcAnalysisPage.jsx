@@ -133,77 +133,10 @@ const AbcAnalysisPage = () => {
 		setPage(1);
 	}, [activeBrand, selectedRange, isFiltersLoaded, activeBrandName, activeArticle, activeGroup]);
 
-	//---------------------------------------------------------------------------------------//
 
-	// 2.1.1 Проверям изменился ли магазин при обновлении токена
 
-	// useEffect(() => {
-	// 	if (
-	// 		activeBrand &&
-	// 		activeBrand.is_primary_collect &&
-	// 		activeBrand.is_primary_collect !== primaryCollect
-	// 	) {
-	// 		setPrimaryCollect(activeBrand.is_primary_collect);
-	// 		updateDataAbcAnalysis(
-	// 			viewType,
-	// 			authToken,
-	// 			selectedRange,
-	// 			activeBrand.id.toString()
-	// 		);
-	// 	}
-	// }, [authToken]);
 
-	const handleUpdateAbcAnalysis = () => {
-		setTimeout(() => {
-			updateAbcAnalysisCaller();
-		}, 3000);
-	};
 
-	const updateAbcAnalysisCaller = async () => {
-		if (activeBrand !== undefined) {
-			updateDataAbcAnalysis(viewType, selectedRange, activeBrand, authToken);
-		}
-	};
-
-	useEffect(() => {
-		const calculateNextEvenHourPlus30 = () => {
-			const now = new Date();
-			let targetTime = new Date(now);
-
-			// Set to the next half hour
-			targetTime.setMinutes(
-				targetTime.getMinutes() <= 30 ? 30 : 60,
-				0,
-				0
-			);
-
-			// If we're already past an even hour + 30 minutes, move to the next even hour
-			if (
-				targetTime.getHours() % 2 !== 0 ||
-				(targetTime.getHours() % 2 === 0 && targetTime <= now)
-			) {
-				targetTime.setHours(targetTime.getHours() + 1);
-			}
-
-			// Ensure we're on an even hour
-			if (targetTime.getHours() % 2 !== 0) {
-				targetTime.setHours(targetTime.getHours() + 1);
-			}
-
-			return targetTime;
-		};
-
-		const targetTime = calculateNextEvenHourPlus30();
-		const timeToTarget = targetTime.getTime() - Date.now();
-
-		const intervalId = setTimeout(() => {
-			updateDataAbcAnalysis(viewType, authToken, selectedRange, activeBrand);
-		}, timeToTarget);
-
-		return () => {
-			clearTimeout(intervalId);
-		};
-	}, [dispatch, viewType, authToken, selectedRange, activeBrand]);
 
 	useEffect(() => {
 		if (activeBrand && activeBrand.id === 0 && shops) {
@@ -261,7 +194,6 @@ const AbcAnalysisPage = () => {
 				{!loading && shops && activeBrand?.is_primary_collect && !activeBrand.is_self_cost_set && (
 					<SelfCostWarningBlock
 						shopId={activeBrand.id}
-						onUpdateDashboard={handleUpdateAbcAnalysis}
 					/>
 				)}
 
