@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Table, Pagination, ConfigProvider } from 'antd';
+import React, { useState, useEffect, useRef } from 'react';
+import { Table as RadarTable } from 'radar-ui';
 import { useAppSelector } from '../../../../redux/hooks';
 import styles from './WbMetricsTable.module.css';
 
@@ -48,6 +48,7 @@ const WbMetricsTable: React.FC<WbMetricsTableProps> = ({
   const { activeBrand } = useAppSelector((state) => state.filters);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(20);
+  const tableContainerRef = useRef(null);
 
   const getColorForPercentage = (percentage: number): string => {
     if (!data) return '#f0f0f0';
@@ -88,8 +89,10 @@ const WbMetricsTable: React.FC<WbMetricsTableProps> = ({
       
       return {
         key: product.wb_id,
-        photo: product.photo,
-        name: product.name,
+        product: {
+          photo: product.photo,
+          name: product.name
+        },
         chart: control_data,
         ...control_data.reduce((acc, item, index) => {
           acc[`day_${index}`] = item.percentage;
@@ -100,49 +103,30 @@ const WbMetricsTable: React.FC<WbMetricsTableProps> = ({
   };
 
   const getTableColumns = () => {
+    // Используем переданные колонки или генерируем по умолчанию
+    if (columns && columns.length > 0) {
+      return columns;
+    }
+
     if (!data?.data || !Array.isArray(data.data) || data.data.length === 0) return [];
 
     const baseColumns = [
       {
-        key: 'photo',
-        title: 'Фото',
-        dataIndex: 'photo',
-        width: 80,
-        fixed: 'left' as const,
-        render: (photo: string) => (
-          <img 
-            src={photo} 
-            alt="Product" 
-            className={styles.productImage}
-          />
-        )
-      },
-      {
-        key: 'name',
-        title: 'Название',
-        dataIndex: 'name',
-        width: 200,
-        fixed: 'left' as const,
-        ellipsis: true
+        key: 'product',
+        title: 'Товар',
+        dataIndex: 'product',
+        width: 280,
+        fixed: true,
+        sortable: false,
+        hidden: false
       },
       {
         key: 'chart',
-        title: 'График',
+        title: 'Динамика',
         dataIndex: 'chart',
         width: 150,
-        render: (controlData: ControlDataItem[]) => (
-          <div className={styles.chartContainer}>
-            {controlData.slice(0, 15).map((item, index) => (
-              <div 
-                key={index}
-                className={styles.chartBar}
-                style={{ 
-                  backgroundColor: getColorForPercentage(item.percentage),
-                }}
-              />
-            ))}
-          </div>
-        )
+        sortable: false,
+        hidden: false
       }
     ];
 
@@ -153,14 +137,8 @@ const WbMetricsTable: React.FC<WbMetricsTableProps> = ({
       dataIndex: `day_${index}`,
       width: 80,
       align: 'center' as const,
-      render: (value: number) => (
-        <div 
-          className={styles.percentageCell}
-          style={{ backgroundColor: getColorForPercentage(value) }}
-        >
-          {value}%
-        </div>
-      )
+      sortable: false,
+      hidden: false
     })) || [];
 
     return [...baseColumns, ...dayColumns];
@@ -176,56 +154,86 @@ const WbMetricsTable: React.FC<WbMetricsTableProps> = ({
     }
   };
 
+  const customCellRender = (value: any, record: any, index: number, dataIndex: string) => {
+    // Рендер для товара (фото + название)
+    if (dataIndex === 'product') {
+      return (
+        <div className={styles.productCell}>
+          <img 
+            src={value.photo} 
+            alt="Product" 
+            className={styles.productImage}
+          />
+          <span className={styles.productName} title={value.name}>
+            {value.name}
+          </span>
+        </div>
+      );
+    }
+
+    // Рендер для графика
+    if (dataIndex === 'chart') {
+      return (
+        <div className={styles.chartContainer}>
+          {value.slice(0, 15).map((item: ControlDataItem, index: number) => (
+            <div 
+              key={index}
+              className={styles.chartBar}
+              style={{ 
+                backgroundColor: getColorForPercentage(item.percentage),
+              }}
+            />
+          ))}
+        </div>
+      );
+    }
+
+    // Рендер для колонок дней
+    if (dataIndex.startsWith('day_')) {
+      return (
+        <div 
+          className={styles.percentageCell}
+          style={{ backgroundColor: getColorForPercentage(value) }}
+        >
+          {value}%
+        </div>
+      );
+    }
+
+    // Обычный рендер
+    return <span title={value}>{value}</span>;
+  };
+
   return (
     <div className={styles.tableContainer}>
-      <ConfigProvider
-        theme={{
-          token: {
-            colorPrimary: '#5329ff',
-            colorText: '#1a1a1a',
-            fontSize: 14,
-            borderRadius: 8,
-          },
-          components: {
-            Table: {
-              headerBg: '#f8f9fa',
-              headerColor: '#1a1a1a',
-              rowHoverBg: '#f8f9fa',
-            },
-            Pagination: {
-              itemActiveBg: '#5329ff',
-              itemActiveColorDisabled: '#fff',
-            },
-          },
-        }}
-      >
-        <Table
-          columns={getTableColumns()}
-          dataSource={prepareTableData()}
-          loading={loading}
-          pagination={false}
-          scroll={{ x: 1200, y: 600 }}
-          size="middle"
-          className={styles.table}
-        />
-        
-        {data && (
-          <div className={styles.paginationContainer}>
-            <Pagination
-              current={currentPage}
-              pageSize={pageSize}
-              total={data.total_count}
-              onChange={handlePageChange}
-              showSizeChanger
-              showQuickJumper
-              showTotal={(total, range) => 
-                `${range[0]}-${range[1]} из ${total} товаров`
-              }
-              pageSizeOptions={['10', '20', '50', '100']}
-            />
+      <div className={styles.tableWrapper} ref={tableContainerRef}>
+        {loading && (
+          <div className={styles.loading}>
+            <span className='loader'></span>
           </div>
         )}
-      </ConfigProvider>
+        
+        {!loading && data && (
+          <RadarTable
+            config={getTableColumns()}
+            dataSource={prepareTableData()}
+            preset="radar-table-default"
+            scrollContainerRef={tableContainerRef}
+            stickyHeader
+            customCellRender={{
+              idx: getTableColumns().map(col => col.dataIndex),
+              renderer: customCellRender,
+            }}
+            pagination={{
+              current: currentPage,
+              pageSize: pageSize,
+              total: data.total_count,
+              onChange: handlePageChange
+            }}
+            style={{ fontFamily: 'Mulish' }}
+          />
+        )}
+      </div>
     </div>
   );
 };

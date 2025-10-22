@@ -26,7 +26,7 @@ const WbMetricsPage: React.FC = () => {
   const { activeBrand, selectedRange } = useAppSelector((state) => state.filters);
   
   const [loading, setLoading] = useState(true);
-  const [tableConfig, setTableConfig] = useState();
+  const [tableConfig, setTableConfig] = useState<any[]>();
   const [data, setData] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [perPage] = useState(20);
@@ -80,65 +80,33 @@ const WbMetricsPage: React.FC = () => {
     
     const baseColumns = [
       {
-        key: 'photo',
-        title: 'Фото',
-        dataIndex: 'photo',
-        width: 80,
-        fixed: 'left',
-        render: (photo: string) => (
-          <img 
-            src={photo} 
-            alt="Product" 
-            style={{ width: 40, height: 40, objectFit: 'cover', borderRadius: 4 }}
-          />
-        )
-      },
-      {
-        key: 'name',
-        title: 'Название',
-        dataIndex: 'name',
-        width: 200,
-        fixed: 'left'
+        key: 'product',
+        title: 'Товар',
+        dataIndex: 'product',
+        width: 280,
+        fixed: true,
+        sortable: false,
+        hidden: false
       },
       {
         key: 'chart',
-        title: 'График',
+        title: 'Динамика',
         dataIndex: 'chart',
         width: 150,
-        render: (controlData: any[]) => (
-          <div className={styles.chartContainer}>
-            {controlData.slice(0, 15).map((item, index) => (
-              <div 
-                key={index}
-                className={styles.chartBar}
-                style={{ 
-                  backgroundColor: getColorForPercentage(item.percentage),
-                  height: '12px',
-                  width: '8px',
-                  margin: '0 1px'
-                }}
-              />
-            ))}
-          </div>
-        )
+        sortable: false,
+        hidden: false
       }
     ];
 
-    // Добавляем колонки для каждого дня
-    const dayColumns = data.control_data?.map((item, index) => ({
+    // Добавляем колонки для каждого дня (берем из первого товара)
+    const dayColumns = data.data?.[0]?.control_data?.map((item, index) => ({
       key: `day_${index}`,
       title: formatDateHeader(item.date),
       dataIndex: `day_${index}`,
       width: 80,
       align: 'center' as const,
-      render: (value: number) => (
-        <div 
-          className={styles.percentageCell}
-          style={{ backgroundColor: getColorForPercentage(value) }}
-        >
-          {value}%
-        </div>
-      )
+      sortable: false,
+      hidden: false
     })) || [];
 
     return [...baseColumns, ...dayColumns];
@@ -221,14 +189,14 @@ const WbMetricsPage: React.FC = () => {
               />
               
               <TableSettingsWidget
-                tableConfig={tableConfig}
+                tableConfig={tableConfig || getTableConfig()}
                 setTableConfig={setTableConfig}
               />
             </div>
 
             <WbMetricsTable
               data={data}
-              columns={getTableConfig()}
+              columns={tableConfig || getTableConfig()}
               loading={loading}
               metricType={metricType}
               onPageChange={setCurrentPage}
