@@ -16,7 +16,6 @@ import TableSettingsWidget from './widgets/TableSettingsWidget/TableSettingsWidg
 import { generateMockData } from './mock/wbMetricsMockData';
 import styles from './wbMetricsPage.module.css';
 
-type MetricType = 'drr' | 'spp';
 
 const WbMetricsPage: React.FC = () => {
   const location = useLocation();
@@ -157,21 +156,32 @@ const WbMetricsPage: React.FC = () => {
             titlePrefix=""
             children=""
             videoReviewLink=""
-            howToLink="/"
+            howToLink="#"
             howToLinkText="Как использовать?"
           />
         </div>
 
         {isDemoMode && <NoSubscriptionWarningBlock />}
 
-        <div className={styles.page__filtersWrapper}>
-          <Filters
-            isDataLoading={loading}
-            articleSelect={false}
-            groupSelect={false}
-            tempPageCondition={true}
-            maxCustomDate={new Date(Date.now() - 24 * 60 * 60 * 1000)}
-          />
+        <div className={styles.page__controlsWrapper}>
+            <Filters
+                timeSelect={false}
+                isDataLoading={loading}
+                tempPageCondition={true}
+                maxCustomDate={new Date(Date.now() - 24 * 60 * 60 * 1000)}
+            />
+
+            <div className={styles.page__controlsButtonsWrapper}>
+                <TableSettingsWidget
+                    tableConfig={tableConfig || getTableConfig()}
+                    setTableConfig={setTableConfig}
+                />
+                
+                <DownloadButton
+                    handleDownload={downloadHandler}
+                    loading={false}
+                />
+            </div>
         </div>
 
         {loading && (
@@ -181,27 +191,13 @@ const WbMetricsPage: React.FC = () => {
         )}
 
         {!loading && data && (
-          <>
-            <div className={styles.page__controlsWrapper}>
-              <DownloadButton
-                handleDownload={downloadHandler}
-                loading={false}
-              />
-              
-              <TableSettingsWidget
-                tableConfig={tableConfig || getTableConfig()}
-                setTableConfig={setTableConfig}
-              />
-            </div>
-
             <WbMetricsTable
-              data={data}
-              columns={tableConfig || getTableConfig()}
-              loading={loading}
-              metricType={metricType}
-              onPageChange={setCurrentPage}
+                data={data}
+                columns={tableConfig || getTableConfig()}
+                loading={loading}
+                metricType={metricType}
+                onPageChange={setCurrentPage}
             />
-          </>
         )}
       </section>
     </main>

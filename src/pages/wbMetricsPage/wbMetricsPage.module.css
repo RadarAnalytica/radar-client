@@ -42,13 +42,20 @@
   width: 100%;
 }
 
-.page__filtersWrapper {
+.page__controlsWrapper {
   width: 100%;
   height: auto;
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
   gap: 20px;
+}
+
+.page__controlsButtonsWrapper {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  gap: 12px;
 }
 
 .page__tableSettingsBlock {
@@ -87,16 +94,4 @@
   text-align: center;
   min-width: 40px;
   display: inline-block;
-}
-
-@media (max-width: 768px) {
-  .page__content {
-    margin-left: 0;
-    padding: 16px;
-  }
-  
-  .page__controlsWrapper {
-    flex-direction: column;
-    align-items: stretch;
-  }
 }
