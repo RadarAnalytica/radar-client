@@ -169,16 +169,16 @@ export default function OperatingExpenses() {
 	};
 
 	useEffect(() => {
-		if (authToken) {
+		if (activeBrand?.is_primary_collect) {
 			updateCategories();
 		}
-	}, [authToken]);
+	}, [activeBrand]);
 
 	useEffect(() => {
-		if (authToken && activeBrand?.is_primary_collect) {
-			updateExpenses();
-		}
-	}, [activeBrand, activeArticle, selectedRange, expPagination.page, activeExpenseCategory, expenseCategories, authToken]);
+		if (activeBrand?.is_primary_collect) {
+            updateExpenses();
+        }
+    }, [activeBrand, activeArticle, selectedRange, expPagination.page, activeExpenseCategory]);
 
 	const modalExpenseHandlerClose = () => {
 		setModalCreateExpenseOpen(false);
@@ -446,7 +446,7 @@ export default function OperatingExpenses() {
 					</div>
 				}
 
-				{!loading && activeBrand?.is_primary_collect && view === 'expense' &&
+				{!loading && activeBrand?.is_primary_collect && view === 'expense' && expenseData.data?.length > 0 &&
 					<div className={styles.container}>
 						<TableWidget
 							loading={loading}
@@ -467,7 +467,7 @@ export default function OperatingExpenses() {
 						/>
 					</div>
 				}
-				{!loading && activeBrand?.is_primary_collect && view === 'category' &&
+				{!loading && activeBrand?.is_primary_collect && view === 'category' && categoryData.data?.length > 0 &&
 					<div className={styles.container}>
 						<TableWidget
 							loading={loading}

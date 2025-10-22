@@ -6,15 +6,17 @@ import { Provider } from 'react-redux';
 import { store } from './redux/store';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
+const isStrictMode = true; // TODO: проверять значение из .env
+const AppWrapper = isStrictMode ? React.StrictMode : React.Fragment;
 
 root.render(
   <Provider store={store}>
-    <React.StrictMode>
+    <AppWrapper>
       <Router>
         <Routes>
           <Route path='/*' element={<App />} />
         </Routes>
       </Router>
-    </React.StrictMode>
+    </AppWrapper>
   </Provider>
 );
