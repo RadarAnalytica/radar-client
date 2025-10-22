@@ -70,10 +70,9 @@ const customCellRender = (value, record, index, dataIndex) => {
 
 const TableWidget = ({ loading, columns, data, rowSelection = false, virtual = true, is_primary_collect, progress = null, setTableConfig }) => {
 	const tableContainerRef = useRef(null);
-
+	const expandedRows = [...data].filter(_ => _.isExpanded).map(_ => JSON.stringify(_)).filter(Boolean);
 
 	const onResize = (columnKey, newWidth) => {
-		// console.log('onResize', { columnKey, newWidth });
 		const mouseHandler = (e) => {
 			e.preventDefault();
 			e.stopPropagation();
@@ -117,26 +116,27 @@ const TableWidget = ({ loading, columns, data, rowSelection = false, virtual = t
 					</div>}
 				</div>}
 				{!loading &&
-				<RadarTable
-					resizeable
-					treeMode={true}
-					indentSize={30}
-					onResize={onResize}
-					layout='vertical'
-					preset='radar-table-default'
-					config={columns}
-					dataSource={data}
-					scrollContainerRef={tableContainerRef}
-					stickyHeader={true}
-					customCellRender={{
-						idx: [],
-						renderer: customCellRender,
-					}}
-					style={{ fontFamily: 'Mulish' }}
-					pagination={false}
-					paginationContainerStyle={{ display: 'none' }}
-					bodyRowClassName={styles.bodyRowSpecial}
-				/>
+					<RadarTable
+						resizeable
+						treeMode={true}
+						indentSize={30}
+						onResize={onResize}
+						layout='vertical'
+						preset='radar-table-default'
+						config={columns}
+						dataSource={data}
+						scrollContainerRef={tableContainerRef}
+						stickyHeader={true}
+						customCellRender={{
+							idx: [],
+							renderer: customCellRender,
+						}}
+						style={{ fontFamily: 'Mulish' }}
+						pagination={false}
+						paginationContainerStyle={{ display: 'none' }}
+						bodyRowClassName={styles.bodyRowSpecial}
+						defaultExpandedRowKeys={expandedRows}
+					/>
 				}
 			</div>
 		</div>
