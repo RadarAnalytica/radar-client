@@ -107,7 +107,6 @@ const SearchBlock = ({ supplierType = 'main' }) => {
                                 <path d="M1 1L7 7L13 1" stroke="#1A1A1A" strokeWidth="2" strokeLinecap="round" />
                             </svg>
                         }
-                        //onKeyDown={handleKeyDown}
                         notFoundContent={<div style={{ color: 'black' }}>
                             {!loadingOptions && !autocompleteOptions && 'Введите название поставщика'}
                             {!loadingOptions && autocompleteOptions && autocompleteOptions.length === 0 && 'Ничего не найдено'}

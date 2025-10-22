@@ -6,10 +6,6 @@
     background-color: #5329ff80 !important;
 }
 
-:global(.ant-select-selector) {
-    cursor: inherit !important;
-}
-
 /* search */
 .search {
     width: 100%;
