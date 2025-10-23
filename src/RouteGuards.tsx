@@ -144,7 +144,7 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   const navigate = useNavigate();
   const isCalculateEntryUrl = sessionStorage.getItem('isCalculateEntryUrl');
   const shops = useAppSelector((state) => state.filters.shops);
-  const isUserHasActiveShop = shops?.some((shop: any) => shop.is_active && shop.is_valid);
+  const isUserHasActiveShop = shops?.some((shop: any) => !shop.is_deleted && shop.is_valid);
   const isDemoUser = ['smart', 'test'].includes(user?.subscription_status?.toLowerCase());
 
   // -------this is test user object for dev purposes ------//
