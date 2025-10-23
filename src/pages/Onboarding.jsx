@@ -8,7 +8,7 @@ import { ServiceFunctions } from '../service/serviceFunctions';
 import AuthContext from '../service/AuthContext';
 import MobilePlug from '../components/sharedComponents/mobilePlug/mobilePlug';
 import { URL } from '../service/config';
-
+import Header from '../components/sharedComponents/header/header';
 import Modal from 'react-bootstrap/Modal';
 import DragDropFile from '../components/DragAndDropFiles';
 //import WbIcon from '../assets/WbIcon';
@@ -101,8 +101,12 @@ const Onboarding = () => {
           <Sidebar />
         </div>
         {/* <SideNav /> */}
-        <div className='boarding-content w-100' style={{ padding: '0 32px' }}>
-          <TopNav title={'Подключение API'} />
+        <div className='boarding-content w-100' style={{ padding: '20px 32px' }}>
+          <div
+            style={{ marginBottom: '20px' }}
+          >
+            <Header title={'Подключение API'} />
+          </div>
 
           <div
             className='container dash-container d-flex'
