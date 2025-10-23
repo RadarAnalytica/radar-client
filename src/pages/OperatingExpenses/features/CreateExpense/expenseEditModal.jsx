@@ -755,7 +755,7 @@ export default function ExpenseEditModal({
 											>
 												<MultiSelect
 													form={form}
-													optionsData={filters.find(_ => _.shop.id === 0)?.articles.data.map((el, i) => ({
+													optionsData={filters[0]?.articles.data.map((el, i) => ({
 														key: el.value,
 														value: el.value,
 														label: el.name,
@@ -774,7 +774,7 @@ export default function ExpenseEditModal({
 											>
 												<MultiSelect
 													form={form}
-													optionsData={filters.find(_ => _.shop.id === 0)?.brands.data.map((el, i) => ({
+													optionsData={filters[0]?.brands.data.map((el, i) => ({
 														key: el.value,
 														value: el.value,
 														label: el.name,

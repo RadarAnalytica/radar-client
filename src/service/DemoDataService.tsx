@@ -965,7 +965,7 @@ export class DemoDataService {
   private getDemoFilters() {
     // Создаем демо-магазин
     const demoShop = {
-      id: 0,
+      id: 1,
       brand_name: 'Демо магазин',
       name: 'Демо магазин',
       is_active: true,
