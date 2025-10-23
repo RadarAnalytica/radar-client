@@ -91,6 +91,7 @@ export class DemoDataService {
       '/api/blog/articles': () => this.getArticlesData(),
       '/api/operating-expenses/category/get-all': () => this.getOperatingExpensesCategoriesData(),
       '/api/operating-expenses/expense/get-all': () => this.getOperatingExpensesData(),
+      '/api/operating-expenses/periodic-expense/get': () => this.getPeriodicExpenseTemplateData(),
       '/api/product/self-costs': () => ({ message: "Success", updated_items: [{ product: 'Демо', cost: 100, fulfillment: 100 }] }),
       '/api/msg/': () => ([]),
       'https://radarmarket.ru/api/web-service/monitoring-oracle/easy/get': () => this.getEasyMonitoringData(),
@@ -451,7 +452,10 @@ export class DemoDataService {
             "value": 80000,
             "vendor_code": "101010101010",
             "brand_name": null,
-            "shop": null,
+            "shop": {
+                "id": 1,
+                "name": "Демо магазин"
+            },
             "date": today,
             "periodic_expense_id": null,
             "is_periodic": false,
@@ -462,6 +466,30 @@ export class DemoDataService {
       page: 1,
       total_pages: 1,
       limit: 25,
+    };
+  }
+
+  private getPeriodicExpenseTemplateData() {
+    const today = new Date().toISOString().split('T')[0];
+
+    return {
+      "id": 1,
+      "expense_categories": [
+          {
+              "id": 1,
+              "name": "Заработная плата"
+          }
+      ],
+      "description": "Выдача заработной платы сотрудникам отдела маркетинга",
+      "value": 100000,
+      "vendor_code": null,
+      "brand_name": null,
+      "shops": [1],
+      "date_from": today,
+      "periodic_expense_id": null,
+      "is_periodic": true,
+      "created_at": today,
+      "updated_at": today
     };
   }
 

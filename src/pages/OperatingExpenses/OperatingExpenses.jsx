@@ -96,13 +96,13 @@ export default function OperatingExpenses() {
 
 	const categoryData = useMemo(() => {
 		const columns = CATEGORY_COLUMNS.map((column, i) => {
-			return ({ ...column, key: column.i })
-		})
+			return ({ ...column, key: column.i });
+		});
 		let data = [];
 		if (category) {
 			data = category.map((article) => ({ ...article, key: article.id }));
 		}
-		return { data, columns }
+		return { data, columns };
 	}, [category]);
 
 	const updateCategories = async (resetPagination = false) => {
@@ -262,7 +262,7 @@ export default function OperatingExpenses() {
 			setModalCopyExpenseOpen(false);
 			setLoading(false);
 		}
-	}
+	};
 
 	const editExpanse = async (requestData) => {
 		const { requestObject, requestUrl } = requestData;
@@ -279,7 +279,7 @@ export default function OperatingExpenses() {
 			setExpenseEdit(null);
 			setLoading(false);
 		}
-	}
+	};
 
 	const copyExpense = async (expenseId) => {
 		setLoading(true);

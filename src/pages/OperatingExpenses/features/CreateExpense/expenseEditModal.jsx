@@ -111,7 +111,6 @@ export default function ExpenseEditModal({
 		if (editData && !editData.is_periodic) {
 			const selectionType = editData.shop ? 'shop' : editData.brand_name ? 'brand_name' : 'vendor_code';
 
-
 			const formattedDate = editData.date
 				? format(parse(editData.date, 'yyyy-MM-dd', new Date()), 'dd.MM.yyyy')
 				: null;
@@ -133,7 +132,7 @@ export default function ExpenseEditModal({
 				end_date: formattedEndDate,
 				description: editData.description,
 				value: editData.value,
-			})
+			});
 		}
 		if (editData && editData.is_periodic) {
 			const selectionType = editData.shops ? 'shop' : editData.brand_names ? 'brand_name' : 'vendor_code';
@@ -165,9 +164,9 @@ export default function ExpenseEditModal({
 				end_date: formattedEndDate,
 				description: editData.description,
 				value: editData.value,
-			})
+			});
 		}
-	}, [editData])
+	}, [editData]);
 
 
 	return (
@@ -857,7 +856,7 @@ export default function ExpenseEditModal({
 													size="large"
 													placeholder="Выберите артикул"
 													suffixIcon={<SelectIcon />}
-													options={filters.find(_ => _.shop.id === 0)?.articles.data.map((el, i) => ({
+													options={filters[0]?.articles.data.map((el, i) => ({
 														key: el.value,
 														value: el.value,
 														label: el.name,
@@ -875,7 +874,7 @@ export default function ExpenseEditModal({
 													size="large"
 													placeholder="Выберите бренд"
 													suffixIcon={<SelectIcon />}
-													options={filters.find(_ => _.shop.id === 0)?.brands.data.map((el, i) => ({
+													options={filters[0]?.brands.data.map((el, i) => ({
 														key: el.value,
 														value: el.value,
 														label: el.name,

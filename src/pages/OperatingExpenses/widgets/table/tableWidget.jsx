@@ -97,7 +97,7 @@ const customCellExpenseRender = (
                                     date: response.date_from,
                                 });
                                 setModalEditExpenseOpen(true);
-                                return
+                                return;
                             } catch (error) {
                                 setAlertState({
                                     status: 'error',
@@ -108,8 +108,7 @@ const customCellExpenseRender = (
                         }
                         setExpenseEdit((data?.find((item) => item.id === record.id)));
                         setModalEditExpenseOpen(true);
-                    }
-                    }
+                    }}
                     title='Изменить'
                 ></Button>
                 <Button
@@ -121,7 +120,7 @@ const customCellExpenseRender = (
 
                         if (!record.is_periodic) {
                             copyExpense(record.id);
-                            return
+                            return;
                         }
 
                         let response;
@@ -140,7 +139,7 @@ const customCellExpenseRender = (
                                     is_periodic: true,
                                 })
                                 setModalCopyExpenseOpen(true);
-                                return
+                                return;
                             } catch (error) {
                                 setAlertState({
                                     status: 'error',
