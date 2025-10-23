@@ -15,10 +15,11 @@ import ErrorModal from '../components/sharedComponents/modals/errorModal/errorMo
 import SuccessModal from '../components/sharedComponents/modals/successModal/successModal';
 import NoSubscriptionWarningBlock from '../components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock';
 import { useDemoMode } from "@/app/providers";
+import DemonstrationSection from '@/components/DemonstrationSection';
 
 const PrimeCost = () => {
   const [file, setFile] = useState();
-  const {isDemoMode} = useDemoMode();
+  const {isDemoMode} = useDemoMode(); 
   const { authToken, user } = useContext(AuthContext);
   const [show, setShow] = useState(false);
   const [costPriceShow, setCostPriceShow] = useState(false);
@@ -93,14 +94,18 @@ const PrimeCost = () => {
         </div>
 
         {isDemoMode &&
-          <NoSubscriptionWarningBlock />
+          <div className='mb-3'>
+            <NoSubscriptionWarningBlock />
+          </div>
         }
 
-        {!user.is_report_downloaded &&
-          <DemonstrationSection />
+        {user.is_report_downloaded &&
+          <div className='mb-3'>
+            <DemonstrationSection />
+          </div>
         }
 
-        <div className='container dash-container'>
+        <div className='container dash-container h-50 d-flex justify-content-center align-items-center'>
           <div className={styles.primeCost}>
             <div className={styles.primeCostBox}>
               <img src={primeCost} alt='primeCost' />
