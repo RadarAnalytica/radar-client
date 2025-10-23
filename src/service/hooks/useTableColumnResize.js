@@ -8,7 +8,7 @@ import { log } from '../utils';
  * @param {number} maxWidth - максимальная ширина колонки (по умолчанию 400)
  * @returns {Object} { config, onResize } - текущая конфигурация и обработчик изменения размера
  */
-export function useTableColumnResize(initialConfig, minWidth = 160, maxWidth = 400) {
+export function useTableColumnResize(initialConfig, minWidth = 0, maxWidth = 400) {
 	const [config, setConfig] = useState(initialConfig);
 
 	// Хэндлер изменения ширины колонок

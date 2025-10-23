@@ -24,6 +24,7 @@ import { useAppDispatch } from '@/redux/hooks';
 import { actions as filtersActions } from '@/redux/apiServicePagesFiltersState/apiServicePagesFilterState.slice';
 import AlertWidget from '@/components/sharedComponents/AlertWidget/AlertWidget';
 import NoSubscriptionWarningBlock from '@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock';
+import NoData from '@/components/sharedComponents/NoData/NoData';
 import { useDemoMode } from '@/app/providers';
 
 const initAlertState = {
@@ -381,10 +382,6 @@ export default function OperatingExpenses() {
 					<NoSubscriptionWarningBlock />
 				)}
 
-				{!loading && shops && activeBrand && !activeBrand?.is_primary_collect && !isDemoMode && (
-					<DataCollectWarningBlock />
-				)}
-
 				{!loading && (
 					<Flex justify="space-between">
 						<Flex gap={4} align="center">
@@ -446,29 +443,37 @@ export default function OperatingExpenses() {
 					</div>
 				}
 
-				{!loading && activeBrand?.is_primary_collect && view === 'expense' && expenseData.data?.length > 0 &&
-					<div className={styles.container}>
-						<TableWidget
-							loading={loading}
-							columns={EXPENSE_COLUMNS}
-							data={expenseData.data}
-							setExpenseEdit={setExpenseEdit}
-							setModalCreateExpenseOpen={setModalCreateExpenseOpen}
-							setDeleteExpenseId={setDeleteExpenseId}
-							copyExpense={copyExpense}
-							tableType='expense'
-							pagination={expPagination}
-							setPagination={setExpPagination}
-							setModalEditExpenseOpen={setModalEditExpenseOpen}
-							authToken={authToken}
-							setModalCopyExpenseOpen={setModalCopyExpenseOpen}
-							setExpenseCopy={setExpenseCopy}
-							setAlertState={setAlertState}
-						/>
-					</div>
-				}
-				{!loading && activeBrand?.is_primary_collect && view === 'category' && categoryData.data?.length > 0 &&
-					<div className={styles.container}>
+				{!loading && shops && activeBrand && !activeBrand?.is_primary_collect && !isDemoMode && view === 'expense' && (
+					<DataCollectWarningBlock />
+				)}
+
+				{/* Расходы */}
+				{!loading && activeBrand?.is_primary_collect && view === 'expense' && (
+					expenseData.data?.length > 0
+					? <TableWidget
+						loading={loading}
+						columns={EXPENSE_COLUMNS}
+						data={expenseData.data}
+						setExpenseEdit={setExpenseEdit}
+						setModalCreateExpenseOpen={setModalCreateExpenseOpen}
+						setDeleteExpenseId={setDeleteExpenseId}
+						copyExpense={copyExpense}
+						tableType='expense'
+						pagination={expPagination}
+						setPagination={setExpPagination}
+						setModalEditExpenseOpen={setModalEditExpenseOpen}
+						authToken={authToken}
+						setModalCopyExpenseOpen={setModalCopyExpenseOpen}
+						setExpenseCopy={setExpenseCopy}
+						setAlertState={setAlertState}
+					/> 
+					: <NoData />
+				)}
+
+				{/* Статьи */}
+				{!loading && activeBrand?.is_primary_collect && view === 'category' && (
+					categoryData.data?.length > 0 
+					? <div className={styles.container}>
 						<TableWidget
 							loading={loading}
 							columns={CATEGORY_COLUMNS}
@@ -480,8 +485,9 @@ export default function OperatingExpenses() {
 							pagination={categoryPagination}
 							setPagination={setCategoryPagination}
 						/>
-					</div>
-				}
+					</div> 
+					: <NoData />
+				)}
 
 				{modalCreateExpenseOpen &&
 					<ExpenseMainModal

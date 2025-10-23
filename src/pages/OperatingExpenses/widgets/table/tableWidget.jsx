@@ -233,7 +233,7 @@ export default function TableWidget({
                 <RadarTable
                     config={tableConfig}
                     dataSource={data}
-                    resizeable
+                    resizeable={tableType === 'expense'}
                     onResize={onResizeColumn}
                     pagination={{
                         current: pagination.page,

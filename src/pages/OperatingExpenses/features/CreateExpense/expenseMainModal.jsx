@@ -353,6 +353,7 @@ export default function ExpenseMainModal({
 											label="Число или день"
 											name='month'
 											rules={[
+												{ required: true, message: 'Пожалуйста, выберите значение!' },
 												{
 													validator: (_, value) => {
 														if (!value) {
@@ -382,7 +383,6 @@ export default function ExpenseMainModal({
 												}
 											]}
 										>
-
 											<Input
 												size="large"
 												type='text'
