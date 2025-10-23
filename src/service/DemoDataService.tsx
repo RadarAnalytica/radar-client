@@ -1122,26 +1122,28 @@ export class DemoDataService {
 
   // Weekly Report данные
   private getWeeklyReportData(filters?: any): WeeklyReportDemoData {
+    const currentDate = new Date();
     const weeklyData = weeklyReportData as any[];
     const baseData = weeklyData[0]; // Берем базовые данные для генерации
+    const currentWeekNumber = this.getWeekNumber(currentDate); // Получаем текущую дату и вычисляем количество недель от начала года
+    const dynamicWeeklyData = []; // Генерируем данные только для выбранных недель
     let activeWeeks = filters?.activeWeeks || [];
 
-    if (activeWeeks.length === 0) {
-      return {
-        data: [{weeks: [], year: new Date().getFullYear()}],
-        messsage: 'Success',
-      };
-    }
-
-    // Получаем текущую дату и вычисляем количество недель от начала года
-    const currentDate = new Date();
-    const currentWeekNumber = this.getWeekNumber(currentDate);
-
-    // Генерируем данные только для выбранных недель
-    const dynamicWeeklyData = [];
-
-    if (typeof activeWeeks === 'string') {
-      activeWeeks = [{ value: activeWeeks }];
+    // Если нет выбранных недель, или выбрано 'Все', то генерируем 42 недели от текущей даты
+    if (activeWeeks.length === 0 || activeWeeks[0]?.value === 'Все') {
+      activeWeeks = [];
+      
+      for (let i = 1; i <= 42; i++) {
+        const weekStartDate = new Date(currentDate);
+        const dayOfWeek = weekStartDate.getDay();
+        weekStartDate.setDate(weekStartDate.getDate() - (i * 7));
+        
+        const daysToMonday = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
+        weekStartDate.setDate(weekStartDate.getDate() + daysToMonday);
+        
+        const weekStartISO = weekStartDate.toISOString().split('T')[0];
+        activeWeeks.push({ value: weekStartISO });
+      }
     }
 
     for (const selectedWeek of activeWeeks) {

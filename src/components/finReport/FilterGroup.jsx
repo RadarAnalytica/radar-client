@@ -13,8 +13,6 @@ const NewFilterGroup = ({pageIdent, filtersData, isLoading, getData}) => {
     const { authToken } = useContext(AuthContext);
     const dispatch = useDispatch();
     const isDownloading = useSelector((state) => state.downloadReducer?.isDownloading);
-    // const [isLoading, setIsLoading] = useState(true);
-    // const { plFilters } = useSelector((state) => state?.plFiltersSlice);
     const [isCollapsed, setIsCollapsed] = useState(false);
     const [filters, setFilters] = useState(reportFilters[pageIdent]);
     const [weekOriginFilter, setWeekOriginFilter] = useState([]);
@@ -33,7 +31,6 @@ const NewFilterGroup = ({pageIdent, filtersData, isLoading, getData}) => {
     // }, [pageIdent])
 
     useEffect(() => {
-
         const filterData = async () => {
             // const result = await getFilters(authToken)
             setFilters((list) => {
