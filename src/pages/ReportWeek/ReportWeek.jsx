@@ -34,7 +34,7 @@ export default function ReportWeek() {
 	const { user, authToken } = useContext(AuthContext);
 	const { isDemoMode } = useDemoMode();
 	const dispatch = useAppDispatch();
-  const { activeBrand, selectedRange, activeBrandName, activeArticle, activeGroup, activeWeeks, isFiltersLoaded, shops } = useAppSelector(state => state.filters);
+  	const { activeBrand, selectedRange, activeBrandName, activeArticle, activeGroup, activeWeeks, isFiltersLoaded, shops } = useAppSelector(state => state.filters);
 	const filters = useAppSelector((state) => state.filters);
 	//const { shops } = useAppSelector((state) => state.shopsSlice);
 	const [loading, setLoading] = useState(true);
@@ -111,14 +111,14 @@ export default function ReportWeek() {
 		}
 	}, [isDemoMode, weekOptions]);
 
-	// useEffect(() => {
-	// 	if (weekOptions?.length) {
-	// 		dispatch(filterActions.setActiveFilters({
-	// 			stateKey: 'activeWeeks',
-	// 			data: weekOptions.slice(0, 12),
-	// 		}));
-	// 	}
-	// }, [filters.filters, weekOptions]);
+	useEffect(() => {
+		if (weekOptions?.length) {
+			dispatch(filterActions.setActiveFilters({
+				stateKey: 'activeWeeks',
+				data: weekOptions.slice(0, 12),
+			}));
+		}
+	}, [filters.filters, weekOptions]);
 
 	const updateDataReportWeek = async () => {
 		setLoading(true);

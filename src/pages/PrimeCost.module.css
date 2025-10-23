@@ -50,7 +50,11 @@
 }
 
 .primeCostBoxButton {
-  margin-top: 68px;
+  margin-top: 1.25rem;
+
+  button {
+    width: 100%;
+  }
 }
 
 .primeCostBoxButton button {
