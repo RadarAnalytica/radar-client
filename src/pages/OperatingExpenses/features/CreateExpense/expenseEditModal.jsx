@@ -22,7 +22,6 @@ const getRequestObject = (values, editData) => {
 	let requestUrl = '';
 	const formattedDateStart = formatDate(parse(values.date, 'dd.MM.yyyy', new Date()), 'yyyy-MM-dd');
 
-
 	if (editData.is_periodic) {
 		requestUrl = 'operating-expenses/periodic-expense/update';
 		let formattedDateEnd;
@@ -604,7 +603,7 @@ export default function ExpenseEditModal({
 									}}
 									style={{ marginBottom: 16 }}
 								>
-									Изменить статью
+									Добавить статью
 								</Button>
 							</ConfigProvider>
 						</div>

@@ -450,7 +450,7 @@ export class DemoDataService {
             "expense_categories": [],
             "description": "Закупка оборудования",
             "value": 80000,
-            "vendor_code": "101010101010",
+            "vendor_code": null,
             "brand_name": null,
             "shop": {
                 "id": 1,
@@ -480,6 +480,8 @@ export class DemoDataService {
               "name": "Заработная плата"
           }
       ],
+      "period_type": "month",
+      "period_values": [1],
       "description": "Выдача заработной платы сотрудникам отдела маркетинга",
       "value": 100000,
       "vendor_code": null,
