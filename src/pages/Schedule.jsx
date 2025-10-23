@@ -623,6 +623,7 @@ const Schedule = () => {
         <div className='container dash-container'>
           <NewFilterGroup pageIdent='charts' filtersData={chartsFilters} isLoading={isFiltersLoading} getData={updateScheduleChartData} />
         </div>
+        
         <div className={styles.ScheduleBody}>
           <ScheduleBigChart
             dataRevenue={dataRevenue}
