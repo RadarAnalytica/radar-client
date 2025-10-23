@@ -26,23 +26,23 @@ export const PlainSelect = (
             </label>
             <div className={styles.plainSelect__selectWrapper}>
                 <ConfigProvider
-                    renderEmpty={ () => (<div>Нет данных</div>)}
+                    renderEmpty={() => (<div>Нет данных</div>)}
                     theme={{
                         token: {
-                            //colorBgBase: '#EAEAF1',
-                            colorBgContainer: '#EAEAF1',
-                            colorBorder: 'transparent',
+                            colorBgContainer: 'white',
+                            colorBorder: '#5329FF1A',
                             borderRadius: 8,
                             fontFamily: 'Mulish',
-                            fontSize: 16,
+                            fontSize: 12,
+                            fontWeight: 500,
                         },
                         components: {
                             Select: {
-                                activeBorderColor: 'transparent',
+                                activeBorderColor: '#5329FF1A',
                                 activeOutlineColor: 'transparent',
-                                hoverBorderColor: 'transparent',
+                                hoverBorderColor: '#5329FF1A',
                                 optionActiveBg: 'transparent',
-                                optionFontSize: 16,
+                                optionFontSize: 14,
                                 optionSelectedBg: 'transparent',
                                 optionSelectedColor: '#5329FF',
                             }
