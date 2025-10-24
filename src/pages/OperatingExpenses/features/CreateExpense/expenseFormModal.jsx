@@ -738,14 +738,24 @@ export default function ExpenseFormModal({
 								Распределять на
 							</h3>
 
-							<RadioGroup
-								name="selection"
-								options={[
-									{ value: 'shop', label: 'Магазины' },
-									{ value: 'vendor_code', label: 'Артикулы' },
-									{ value: 'brand_name', label: 'Бренды' },
-								]}
-							/>
+						<RadioGroup
+							name="selection"
+							onChange={() => {
+								form.setFieldsValue({
+									shops: [],
+									vendor_codes: [],
+									brand_names: [],
+									shop: undefined,
+									vendor_code: undefined,
+									brand_name: undefined,
+								});
+							}}
+							options={[
+								{ value: 'shop', label: 'Магазины' },
+								{ value: 'vendor_code', label: 'Артикулы' },
+								{ value: 'brand_name', label: 'Бренды' },
+							]}
+						/>
 
 							{/* Для плановых расходов или режима создания - множественный выбор */}
 							{(isPeriodicExpense || mode === 'create') && (

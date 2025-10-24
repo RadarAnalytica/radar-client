@@ -6,6 +6,7 @@ export const RadioGroup = ({
     label,
     options,
     name,
+    onChange,
 }) => {
     return (
         <>
@@ -20,7 +21,10 @@ export const RadioGroup = ({
                     className={styles.modal__part}
                     name={name}
                 >
-                    <Radio.Group className={styles.customRadioGroup}>
+                    <Radio.Group 
+                        className={styles.customRadioGroup} 
+                        onChange={onChange}
+                    >
                         {options.map((option) => (
                             <Radio key={option.value} value={option.value}>{option.label}</Radio>
                         ))}
