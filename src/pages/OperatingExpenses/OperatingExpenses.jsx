@@ -39,10 +39,8 @@ export default function OperatingExpenses() {
 	const firstLoad = useRef(true);
 	const [loading, setLoading] = useState(true);
 	const [view, setView] = useState('expense'); // costs | category
-	const [modalCreateExpenseOpen, setModalCreateExpenseOpen] = useState(false);
+	const [expenseModal, setExpenseModal] = useState({ mode: null, isOpen: false, data: null });
 	const [modalCreateCategoryOpen, setModalCreateCategoryOpen] = useState(false);
-	const [modalEditExpenseOpen, setModalEditExpenseOpen] = useState(false);
-	const [modalCopyExpenseOpen, setModalCopyExpenseOpen] = useState(false);
 	const [deleteExpenseId, setDeleteExpenseId] = useState(null);
 	const [deleteCategoryId, setDeleteCategoryId] = useState(null);
 	const [alertState, setAlertState] = useState(initAlertState);
@@ -57,8 +55,6 @@ export default function OperatingExpenses() {
 		limit: 25,
 		total: 1,
 	});
-	const [expenseEdit, setExpenseEdit] = useState(null);
-	const [expenseCopy, setExpenseCopy] = useState(null);
 
 	const expenseData = useMemo(() => {
 		const columns = EXPENSE_COLUMNS.map((column, i) => {
@@ -180,8 +176,7 @@ export default function OperatingExpenses() {
     }, [activeBrand, activeArticle, selectedRange, expPagination.page, activeExpenseCategory]);
 
 	const modalExpenseHandlerClose = () => {
-		setModalCreateExpenseOpen(false);
-		setExpenseEdit(null);
+		setExpenseModal({ mode: null, isOpen: false, data: null });
 	};
 
 	const modalCategoryHandlerClose = () => {
@@ -191,7 +186,7 @@ export default function OperatingExpenses() {
 
 	const modalHandler = () => {
 		if (view === 'expense') {
-			setModalCreateExpenseOpen(true);
+			setExpenseModal({ mode: 'create', isOpen: true, data: null });
 		} else {
 			setModalCreateCategoryOpen(true);
 		}
@@ -237,7 +232,7 @@ export default function OperatingExpenses() {
 	};
 
 	const handleExpanse = (expense) => {
-		if (expenseEdit) {
+		if (expenseModal.mode === 'edit') {
 			editExpanse(expense);
 		} else {
 			createExpense(expense);
@@ -250,15 +245,15 @@ export default function OperatingExpenses() {
 		try {
 			const res = await ServiceFunctions.postOperatingExpensesExpenseCreate(authToken, requestObject, requestUrl);
 			await updateExpenses(true); // Сбрасываем пагинацию и обновляем данные
-			setAlertState({ message: 'Расход добавлен', status: 'success', isVisible: true });
+			const successMessage = expenseModal.mode === 'copy' ? 'Расход скопирован' : 'Расход добавлен';
+			setAlertState({ message: successMessage, status: 'success', isVisible: true });
 		} catch (error) {
 			console.error('createExpense error', error);
-			setAlertState({ message: 'Не удалось добавить расход', status: 'error', isVisible: true });
+			const errorMessage = expenseModal.mode === 'copy' ? 'Не удалось скопировать расход' : 'Не удалось добавить расход';
+			setAlertState({ message: errorMessage, status: 'error', isVisible: true });
 		} finally {
-			setModalCreateExpenseOpen(false);
+			setExpenseModal({ mode: null, isOpen: false, data: null });
 			setCategoryLoading(false);
-			setExpenseCopy(null);
-			setModalCopyExpenseOpen(false);
 			setLoading(false);
 		}
 	};
@@ -266,7 +261,6 @@ export default function OperatingExpenses() {
 	const editExpanse = async (requestData) => {
 		const { requestObject, requestUrl } = requestData;
 		setLoading(true);
-		setModalCreateExpenseOpen(false);
 		try {
 			const res = await ServiceFunctions.patchOperatingExpensesExpense(authToken, requestObject, requestUrl);
 			await updateExpenses(); // Обновляем данные без сброса пагинации
@@ -275,7 +269,7 @@ export default function OperatingExpenses() {
 			console.error('editExpense error', error);
 			setAlertState({ message: 'Не удалось обновить расход', status: 'error', isVisible: true });
 		} finally {
-			setExpenseEdit(null);
+			setExpenseModal({ mode: null, isOpen: false, data: null });
 			setLoading(false);
 		}
 	};
@@ -452,19 +446,15 @@ export default function OperatingExpenses() {
 						loading={loading}
 						columns={EXPENSE_COLUMNS}
 						data={expenseData.data}
-						setExpenseEdit={setExpenseEdit}
-						setModalCreateExpenseOpen={setModalCreateExpenseOpen}
+						setExpenseModal={setExpenseModal}
 						setDeleteExpenseId={setDeleteExpenseId}
 						copyExpense={copyExpense}
 						tableType='expense'
 						pagination={expPagination}
 						setPagination={setExpPagination}
-						setModalEditExpenseOpen={setModalEditExpenseOpen}
 						authToken={authToken}
-						setModalCopyExpenseOpen={setModalCopyExpenseOpen}
-						setExpenseCopy={setExpenseCopy}
 						setAlertState={setAlertState}
-					/> 
+					/>
 					: <NoData />
 				)}
 
@@ -487,29 +477,15 @@ export default function OperatingExpenses() {
 					: <NoData />
 				)}
 
-				{(modalCreateExpenseOpen || (modalEditExpenseOpen && expenseEdit) || (modalCopyExpenseOpen && expenseCopy)) &&
+				{expenseModal.isOpen && expenseModal.mode &&
 					<ExpenseFormModal
-						mode={
-							modalCreateExpenseOpen ? 'create' :
-							modalEditExpenseOpen && expenseEdit ? 'edit' :
-							modalCopyExpenseOpen && expenseCopy ? 'copy' : 'create'
-						}
-						open={modalCreateExpenseOpen || modalEditExpenseOpen || modalCopyExpenseOpen}
-						onCancel={() => {
-							if (modalCreateExpenseOpen) {
-								modalExpenseHandlerClose();
-							} else if (modalEditExpenseOpen) {
-								setModalEditExpenseOpen(false);
-								setExpenseEdit(null);
-							} else if (modalCopyExpenseOpen) {
-								setExpenseCopy(null);
-								setModalCopyExpenseOpen(false);
-							}
-						}}
+						mode={expenseModal.mode}
+						open={expenseModal.isOpen}
+						onCancel={modalExpenseHandlerClose}
 						setModalCreateCategoryOpen={setModalCreateCategoryOpen}
 						category={category}
-						editData={expenseEdit || expenseCopy}
-						handle={modalCopyExpenseOpen ? createExpense : handleExpanse}
+						editData={expenseModal.data}
+						handle={handleExpanse}
 						loading={loading}
 						zIndex={1000}
 					/>
