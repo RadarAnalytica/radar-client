@@ -15,20 +15,17 @@
     border-radius: 4px;
     background-color: #F7F6FE;
     transition: all .2s ease;
-    cursor: pointer;
     border: 1px solid transparent;
-}
-
-.schema__icon:hover {
-    border: 1px solid #5329FF80;
 }
 
 .schema__icon_adv {
     background-color: #5329FF4D;
+    cursor: pointer;
 }
 
 .schema__icon_adv:hover {
     transform: scale(1.1);
+    border: 1px solid #5329FF80;
 }
 
 

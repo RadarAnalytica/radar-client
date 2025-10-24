@@ -35,4 +35,11 @@ export const serpPageCustomTableCellRender = (value: any, record: any, index: nu
             </div>
         )
     }
+    if (dataIndex === 'rating') {
+        return (
+           <>
+           {value ? value.toFixed(1) : '–'}
+           </>
+        )
+    }
 }
