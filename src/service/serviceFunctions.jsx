@@ -574,6 +574,37 @@ export const ServiceFunctions = {
 		return await response.json();
 	},
 
+	getSERPQueryData: async (token, body) => {
+		const response = await fetchApi(`https://radarmarket.ru/api/web-service/search-map/get-query-data`, {
+			method: 'POST',
+			headers: {
+				'content-type': 'application/json',
+				authorization: 'JWT ' + token,
+			},
+			body: JSON.stringify(body),
+		});
+
+		if (!response.ok) {
+			throw new Error('Failed to fetch dashboard report');
+		}
+
+		return await response.json();
+	},
+	getSERPFiltersData: async (token) => {
+		const response = await fetchApi(`https://radarmarket.ru/api/web-service/search-map/get-regions`, {
+			method: 'GET',
+			headers: {
+				'content-type': 'application/json',
+				authorization: 'JWT ' + token,
+			},
+		});
+
+		if (!response.ok) {
+			throw new Error('Failed to fetch dashboard report');
+		}
+
+		return await response.json();
+	},
 	scheduleFilterFields: async (token) => {
 		const response = await fetch(`${URL}/api/report/get-charts-filters`, {
 			method: 'GET',
