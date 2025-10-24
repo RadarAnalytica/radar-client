@@ -222,21 +222,9 @@ export default function ExpenseMainModal({
 								<Form.Item
 									label="Сумма, руб"
 									name='value'
+									validateTrigger={['onBlur', 'onSubmit']}
 									rules={[
-										{ required: true, message: 'Пожалуйста, введите сумму расхода!' },
-										{
-											validator: (_, value) => {
-												if (!value) {
-													return Promise.resolve();
-												}
-												// Проверяем, что число имеет не более 2 знаков после запятой
-												const decimalPart = String(value).split('.')[1];
-												if (decimalPart && decimalPart.length > 2) {
-													return Promise.reject(new Error('Максимум 2 знака после запятой'));
-												}
-												return Promise.resolve();
-											}
-										}
+										{ required: true, message: 'Пожалуйста, введите корректную сумму расхода!' },
 									]}
 								>
 									<Input
@@ -258,7 +246,7 @@ export default function ExpenseMainModal({
 												parts[1] = parts[1].slice(0, 2);
 												value = parts.join('.');
 											}
-											form.setFieldValue('value', value ? parseFloat(value) : '');
+											form.setFieldValue('value', value);
 										}}
 										suffix={
 											<svg width="9" height="11" viewBox="0 0 9 11" fill="none" xmlns="http://www.w3.org/2000/svg">
