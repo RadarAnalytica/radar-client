@@ -97,8 +97,8 @@ const inputTheme = {
 
 const buttonTheme = {
     token: {
-        colorPrimary: '#EFECFE',
-        colorTextLightSolid: '#5329FF',
+        colorPrimary: '#5329FF',
+        colorTextLightSolid: 'white',
         fontSize: 12,
         controlHeightLG: 34,
         fontWeight: 600,
@@ -123,7 +123,7 @@ const SerpPage = () => {
     const [barsData, setBarsData] = useState<{ frequency: number; organic: number; ads: number, query: string } | null>(null);
     const [segmentedOptions, setSegmentedOptions] = useState(null);
     const [activeTableTab, setActiveTableTab] = useState(0);
-    const [searchInputValue, setSearchInputValue] = useState('Одеяло пуховое');
+    const [searchInputValue, setSearchInputValue] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [pagination, setPagination] = useState({
         current: 1,
@@ -337,7 +337,7 @@ const SerpPage = () => {
                                     }}
                                 >
                                     <svg width="16" height="16" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path fillRule="evenodd" clipRule="evenodd" d="M1.5 9.60353C1.5 5.25398 5.02601 1.72797 9.37556 1.72797C13.7251 1.72797 17.2511 5.25398 17.2511 9.60353C17.2511 13.9531 13.7251 17.4791 9.37556 17.4791C5.02601 17.4791 1.5 13.9531 1.5 9.60353ZM9.37556 0.227966C4.19758 0.227966 0 4.42555 0 9.60353C0 14.7815 4.19758 18.9791 9.37556 18.9791C11.6946 18.9791 13.8169 18.1371 15.4537 16.7423L19.4834 20.772L20.5441 19.7114L16.5143 15.6816C17.9092 14.0449 18.7511 11.9225 18.7511 9.60353C18.7511 4.42555 14.5535 0.227966 9.37556 0.227966Z" fill="#5329FF" />
+                                        <path fillRule="evenodd" clipRule="evenodd" d="M1.5 9.60353C1.5 5.25398 5.02601 1.72797 9.37556 1.72797C13.7251 1.72797 17.2511 5.25398 17.2511 9.60353C17.2511 13.9531 13.7251 17.4791 9.37556 17.4791C5.02601 17.4791 1.5 13.9531 1.5 9.60353ZM9.37556 0.227966C4.19758 0.227966 0 4.42555 0 9.60353C0 14.7815 4.19758 18.9791 9.37556 18.9791C11.6946 18.9791 13.8169 18.1371 15.4537 16.7423L19.4834 20.772L20.5441 19.7114L16.5143 15.6816C17.9092 14.0449 18.7511 11.9225 18.7511 9.60353C18.7511 4.42555 14.5535 0.227966 9.37556 0.227966Z" fill="currentColor" />
                                     </svg>
                                     Найти
                                 </Button>
@@ -479,7 +479,7 @@ const SerpPage = () => {
                             <div className={styles.page__summary}>
                                 <p className={styles.page__summaryItem}>Товаров: <span>{summaryData?.totalProduct || 0}</span></p>
                                 <p className={styles.page__summaryItem}>Обработано страниц поиска: <span>{summaryData?.totalPages || 0}</span></p>
-                                <p className={styles.page__summaryItem}>Собраны: <span>{moment(summaryData?.date).format('DD.MM.YYYY, HH:mm') || ''}</span></p>
+                                <p className={styles.page__summaryItem}>Собраны: <span>{moment(summaryData?.date).local().format('DD.MM.YYYY, HH:mm') || ''}</span></p>
                             </div>
                             <div className={styles.page__tableWrapper}>
                                 {tableData &&
