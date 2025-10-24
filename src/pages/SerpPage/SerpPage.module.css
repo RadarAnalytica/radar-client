@@ -58,7 +58,7 @@
 .page__searchBlock {
     width: 100%;
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: calc(50% + 106px) calc(50% - 106px);
     gap: 12px;
 }
 
