@@ -90,7 +90,7 @@ export class DemoDataService {
       '/api/user/subscription/all': () => this.getSubscriptionsData(),
       '/api/blog/articles': () => this.getArticlesData(),
       '/api/operating-expenses/category/get-all': () => this.getOperatingExpensesCategoriesData(),
-      '/api/operating-expenses/expense/get-all': () => this.getOperatingExpensesData(),
+      '/api/operating-expenses/expense/get-all': () => this.getOperatingExpensesData(filters),
       '/api/operating-expenses/periodic-expense/get': () => this.getPeriodicExpenseTemplateData(),
       '/api/product/self-costs': () => ({ message: "Success", updated_items: [{ product: 'Демо', cost: 100, fulfillment: 100 }] }),
       '/api/msg/': () => ([]),
@@ -396,73 +396,101 @@ export class DemoDataService {
     };
   }
 
-  private getOperatingExpensesData() {
+  private getOperatingExpensesData(filters?: any) {
     const today = new Date().toISOString().split('T')[0];
-
-    return {
-      data: [
+    const data = [
+      {
+        "id": 1,
+        "expense_categories": [
           {
             "id": 1,
-            "expense_categories": [
-                {
-                    "id": 1,
-                    "name": "Заработная плата"
-                }
-            ],
-            "description": "Выдача заработной платы сотрудникам отдела маркетинга",
-            "value": 100000,
-            "vendor_code": null,
-            "brand_name": null,
-            "shop": {
-                "id": 1,
-                "name": "Демо магазин"
-            },
-            "date": today,
-            "periodic_expense_id": null,
-            "is_periodic": true,
-            "created_at": today,
-            "updated_at": today
+            "name": "Заработная плата"
+          }
+        ],
+        "description": "Выдача заработной платы сотрудникам отдела маркетинга",
+        "value": 100000,
+        "vendor_code": null,
+        "brand_name": null,
+        "shop": {
+          "id": 1,
+          "name": "Демо магазин"
         },
-        {
-            "id": 2,
-            "expense_categories": [
-                {
-                    "id": 2,
-                    "name": "Аренда"
-                }
-            ],
-            "description": "Аренда офиса на три месяца",
-            "value": 45000,
-            "vendor_code": null,
-            "brand_name": null,
-            "shop": {
-                "id": 1,
-                "name": "Демо магазин"
-            },
-            "date": today,
-            "periodic_expense_id": null,
-            "is_periodic": false,
-            "created_at": today,
-            "updated_at": today
-        },
-        {
-            "id": 3,
-            "expense_categories": [],
-            "description": "Закупка оборудования",
-            "value": 80000,
-            "vendor_code": null,
-            "brand_name": null,
-            "shop": {
-                "id": 1,
-                "name": "Демо магазин"
-            },
-            "date": today,
-            "periodic_expense_id": null,
-            "is_periodic": false,
-            "created_at": today,
-            "updated_at": today
+        "date": today,
+        "periodic_expense_id": null,
+        "is_periodic": true,
+        "created_at": today,
+        "updated_at": today
+      },
+      {
+          "id": 2,
+          "expense_categories": [
+            {
+              "id": 2,
+              "name": "Аренда"
+            }
+          ],
+          "description": "Аренда офиса на три месяца",
+          "value": 45000,
+          "vendor_code": null,
+          "brand_name": null,
+          "shop": {
+            "id": 1,
+            "name": "Демо магазин"
+          },
+          "date": today,
+          "periodic_expense_id": null,
+          "is_periodic": false,
+          "created_at": today,
+          "updated_at": today
+      },
+      {
+          "id": 3,
+          "expense_categories": [
+            { 
+              "id": -1 
+            }
+          ],
+          "description": "Закупка оборудования",
+          "value": 80000,
+          "vendor_code": null,
+          "brand_name": null,
+          "shop": {
+            "id": 1,
+            "name": "Демо магазин"
+          },
+          "date": today,
+          "periodic_expense_id": null,
+          "is_periodic": false,
+          "created_at": today,
+          "updated_at": today
+      }
+    ];
+
+    // Проверяем, входит ли сегодняшняя дата в диапазон selectedRange
+    let filteredData = data;
+    
+    if (filters?.selectedRange && filters.selectedRange?.from && filters.selectedRange?.to) {
+      const todayDate = new Date(today);
+      const fromDate = filters.selectedRange.from ? new Date(filters.selectedRange.from) : null;
+      const toDate = filters.selectedRange.to ? new Date(filters.selectedRange.to) : null;
+      
+      if (fromDate && toDate) {
+        if (todayDate < fromDate || todayDate > toDate) {
+          filteredData = [];
         }
-      ],
+      }
+    }
+
+    // Фильтруем по категориям расходов
+    const activeExpenseCategory = filters?.activeExpenseCategory.map((item: any) => item.id).filter(Boolean);
+    if (activeExpenseCategory && activeExpenseCategory.length > 0 && activeExpenseCategory[0] !== 0) {
+      filteredData = filteredData.filter(expense => {
+        return expense.expense_categories.some(category => activeExpenseCategory.includes(category.id));
+      });
+    }
+
+    return {
+      data: filteredData,
       page: 1,
       total_pages: 1,
       limit: 25,
