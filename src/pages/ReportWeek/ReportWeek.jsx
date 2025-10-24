@@ -111,14 +111,6 @@ export default function ReportWeek() {
 		}
 	}, [isDemoMode, weekOptions]);
 
-	useEffect(() => {
-		if (weekOptions?.length) {
-			dispatch(filterActions.setActiveFilters({
-				stateKey: 'activeWeeks',
-				data: weekOptions.slice(0, 12),
-			}));
-		}
-	}, [filters.filters, weekOptions]);
 
 	const updateDataReportWeek = async () => {
 		setLoading(true);
