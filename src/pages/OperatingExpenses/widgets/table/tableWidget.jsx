@@ -222,7 +222,10 @@ export default function TableWidget({
     const tableContainerRef = useRef(null);
     
     // Используем хук для управления изменением размеров колонок
-    const { config: tableConfig, onResize: onResizeColumn } = useTableColumnResize(columns);
+    const { config: tableConfig, onResize: onResizeColumn } = useTableColumnResize(
+        columns, 
+        tableType ? `operatingExpenses-${tableType}` : 'operatingExpensesTableConfig'
+    );
 
     return (
         <div className={styles.container}>

@@ -78,7 +78,10 @@ export const TableWidget = React.memo(({ rawData, loading, tablePaginationState,
     const [isExelLoading, setIsExelLoading] = useState(false);
     
     // Используем хук для управления изменением размеров колонок
-    const { config: currentTableConfig, onResize: onResizeGroup } = useTableColumnResize(newTableConfig);
+    const { config: currentTableConfig, onResize: onResizeGroup } = useTableColumnResize(
+        newTableConfig, 
+        'trendingRequestsTableConfig'
+    );
 
     // задаем начальную дату
     useEffect(() => {
