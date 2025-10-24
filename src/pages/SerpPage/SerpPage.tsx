@@ -123,7 +123,7 @@ const SerpPage = () => {
     const [barsData, setBarsData] = useState<{ frequency: number; organic: number; ads: number, query: string } | null>(null);
     const [segmentedOptions, setSegmentedOptions] = useState(null);
     const [activeTableTab, setActiveTableTab] = useState(0);
-    const [searchInputValue, setSearchInputValue] = useState('Платье');
+    const [searchInputValue, setSearchInputValue] = useState('Одеяло пуховое');
     const [isLoading, setIsLoading] = useState(false);
     const [pagination, setPagination] = useState({
         current: 1,
@@ -193,12 +193,20 @@ const SerpPage = () => {
         setTableData(newTableData?.slice(0, 20));
     };
 
+    // search suggestions handler
+    const searchSuggestionsHandler = () => {
+        setSearchInputValue('Платья и сарафаны');
+        getPageData('Платья и сарафаны');
+    };
+
+
+    //services
     // query data fetch function
-    const getPageData = async () => {
+    const getPageData = async (suggestion: string | undefined = undefined) => {
         setIsLoading(true);
         try {
             const res: ISerpQueryResponse = await ServiceFunctions.getSERPQueryData(authToken, {
-                query: searchInputValue, dest: activeFilter.dest,
+                query: searchInputValue || suggestion || '', dest: activeFilter.dest,
             })
             setActiveTableTab(0);
             setQueryData(res.products.map((_, idx) => ({ ..._, pp: idx + 1 })));
@@ -335,6 +343,15 @@ const SerpPage = () => {
                                 </Button>
                             </ConfigProvider>
                         </div>
+                        <div className={styles.page__searchSuggestions}>
+                            Например:&nbsp;
+                            <button
+                                className={styles.page__searchSuggestionButton}
+                                onClick={searchSuggestionsHandler}
+                            >
+                                Платья и сарафаны
+                            </button>
+                        </div>
                     </div>
 
                     <div className={styles.page__filterWrapper}>
@@ -354,107 +371,138 @@ const SerpPage = () => {
 
 
 
+                {/* spinners (loading state) */}
+                {isLoading && (
+                    <>
+                        <div className={styles.page__barsBlock}>
+                            <div className={styles.page__bar}>
+                                <div className={styles.page__loaderWrapper} style={{ height: '88px' }}>
+                                    <span className='loader' />
+                                </div>
+                            </div>
+                            <div className={styles.page__bar}>
+                                <div className={styles.page__loaderWrapper} style={{ height: '88px' }}>
+                                    <span className='loader' />
+                                </div>
+                            </div>
+                        </div>
+                        <div className={styles.page__schemaWrapper}>
+                            <div className={`${styles.page__loaderWrapper} ${styles.page__loaderWrapper_shadow}`} style={{ height: '595px' }}>
+                                <span className='loader' />
+                            </div>
+                            <div className={`${styles.page__loaderWrapper} ${styles.page__loaderWrapper_shadow}`} style={{ height: '695px' }}>
+                                <span className='loader' />
+                            </div>
+                        </div>
+                    </>
+                )}
+
+
+
 
                 {/* bars */}
-                <div className={styles.page__barsBlock}>
-                    <div className={styles.page__bar}>
-                        <div className={styles.page__barHeader}>
-                            <h3 className={styles.page__barTitle}>Частотность ключа Одеяло пуховое</h3>
+                {!isLoading && barsData && (
+                    <div className={styles.page__barsBlock}>
+                        <div className={styles.page__bar}>
+                            <div className={styles.page__barHeader}>
+                                <h3 className={styles.page__barTitle}>Частотность ключа Одеяло пуховое</h3>
+                            </div>
+                            <div className={styles.page__barContent}>
+                                <p className={styles.page__barFrequency}>{formatPrice(barsData?.frequency || 0, '')}</p>
+                                {barsData?.query && <Link to={`https://www.wildberries.ru/catalog/0/search.aspx?search=${barsData?.query}`} target='_blank' className={styles.page__barLink}>
+                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M13.2367 2.29866C12.0468 1.10878 10.1177 1.10878 8.92779 2.29866L7.60196 3.62448C7.32738 3.89907 6.88218 3.89907 6.60759 3.62448C6.33301 3.3499 6.33301 2.9047 6.60759 2.63012L7.93342 1.30429C9.67247 -0.434763 12.492 -0.434763 14.2311 1.30429C15.9701 3.04334 15.9701 5.86291 14.2311 7.60196L12.9053 8.92778C12.6307 9.20237 12.1855 9.20237 11.9109 8.92778C11.6363 8.6532 11.6363 8.208 11.9109 7.93342L13.2367 6.60759C14.4266 5.41771 14.4266 3.48854 13.2367 2.29866Z" fill="#5329FF" />
+                                        <path d="M3.62448 6.60759C3.89907 6.88218 3.89907 7.32738 3.62448 7.60196L2.29866 8.92779C1.10878 10.1177 1.10878 12.0468 2.29866 13.2367C3.48854 14.4266 5.41771 14.4266 6.60759 13.2367L7.93342 11.9109C8.208 11.6363 8.6532 11.6363 8.92778 11.9109C9.20237 12.1855 9.20237 12.6307 8.92778 12.9053L7.60196 14.2311C5.86291 15.9701 3.04334 15.9701 1.30429 14.2311C-0.434763 12.492 -0.434763 9.67247 1.30429 7.93342L2.63012 6.60759C2.9047 6.33301 3.3499 6.33301 3.62448 6.60759Z" fill="#5329FF" />
+                                        <path d="M5.28174 9.25925C5.00715 9.53383 5.00715 9.97903 5.28174 10.2536C5.55633 10.5282 6.00152 10.5282 6.27611 10.2536L10.2536 6.27614C10.5282 6.00155 10.5282 5.55636 10.2536 5.28177C9.979 5.00718 9.5338 5.00718 9.25921 5.28177L5.28174 9.25925Z" fill="#5329FF" />
+                                    </svg>
+                                </Link>}
+                            </div>
                         </div>
-                        <div className={styles.page__barContent}>
-                            <p className={styles.page__barFrequency}>{formatPrice(barsData?.frequency || 0, '')}</p>
-                            {barsData?.query && <Link to={`https://www.wildberries.ru/catalog/0/search.aspx?search=${barsData?.query}`} target='_blank' className={styles.page__barLink}>
-                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M13.2367 2.29866C12.0468 1.10878 10.1177 1.10878 8.92779 2.29866L7.60196 3.62448C7.32738 3.89907 6.88218 3.89907 6.60759 3.62448C6.33301 3.3499 6.33301 2.9047 6.60759 2.63012L7.93342 1.30429C9.67247 -0.434763 12.492 -0.434763 14.2311 1.30429C15.9701 3.04334 15.9701 5.86291 14.2311 7.60196L12.9053 8.92778C12.6307 9.20237 12.1855 9.20237 11.9109 8.92778C11.6363 8.6532 11.6363 8.208 11.9109 7.93342L13.2367 6.60759C14.4266 5.41771 14.4266 3.48854 13.2367 2.29866Z" fill="#5329FF" />
-                                    <path d="M3.62448 6.60759C3.89907 6.88218 3.89907 7.32738 3.62448 7.60196L2.29866 8.92779C1.10878 10.1177 1.10878 12.0468 2.29866 13.2367C3.48854 14.4266 5.41771 14.4266 6.60759 13.2367L7.93342 11.9109C8.208 11.6363 8.6532 11.6363 8.92778 11.9109C9.20237 12.1855 9.20237 12.6307 8.92778 12.9053L7.60196 14.2311C5.86291 15.9701 3.04334 15.9701 1.30429 14.2311C-0.434763 12.492 -0.434763 9.67247 1.30429 7.93342L2.63012 6.60759C2.9047 6.33301 3.3499 6.33301 3.62448 6.60759Z" fill="#5329FF" />
-                                    <path d="M5.28174 9.25925C5.00715 9.53383 5.00715 9.97903 5.28174 10.2536C5.55633 10.5282 6.00152 10.5282 6.27611 10.2536L10.2536 6.27614C10.5282 6.00155 10.5282 5.55636 10.2536 5.28177C9.979 5.00718 9.5338 5.00718 9.25921 5.28177L5.28174 9.25925Z" fill="#5329FF" />
-                                </svg>
-                            </Link>}
-                        </div>
-                    </div>
-                    <div className={styles.page__bar}>
-                        <div className={styles.page__barHeader}>
-                            <h3 className={styles.page__barTitle}>Сводка на странице №1</h3>
-                            <div className={styles.page__serpReportWrapper}>
-                                <div className={styles.page__serpReport}>
-                                    <div className={`${styles.page__serpReportIcon} ${styles.page__serpReportIcon_orange}`} />
-                                    <span className={styles.page__serpReportPercent}>{formatPrice(barsData?.organic || 0, '%')}</span>
-                                    <span className={styles.page__serpReportDesc}>Органика</span>
+                        <div className={styles.page__bar}>
+                            <div className={styles.page__barHeader}>
+                                <h3 className={styles.page__barTitle}>Сводка на странице №1</h3>
+                                <div className={styles.page__serpReportWrapper}>
+                                    <div className={styles.page__serpReport}>
+                                        <div className={`${styles.page__serpReportIcon} ${styles.page__serpReportIcon_orange}`} />
+                                        <span className={styles.page__serpReportPercent}>{formatPrice(barsData?.organic || 0, '%')}</span>
+                                        <span className={styles.page__serpReportDesc}>Органика</span>
+                                    </div>
+                                    <div className={styles.page__serpReport}>
+                                        <div className={`${styles.page__serpReportIcon} ${styles.page__serpReportIcon_green}`} />
+                                        <span className={styles.page__serpReportPercent}>{formatPrice(barsData?.ads || 0, '%')}</span>
+                                        <span className={styles.page__serpReportDesc}>Рекламная позиция</span>
+                                    </div>
                                 </div>
-                                <div className={styles.page__serpReport}>
-                                    <div className={`${styles.page__serpReportIcon} ${styles.page__serpReportIcon_green}`} />
-                                    <span className={styles.page__serpReportPercent}>{formatPrice(barsData?.ads || 0, '%')}</span>
-                                    <span className={styles.page__serpReportDesc}>Рекламная позиция</span>
+                            </div>
+                            <div className={styles.page__barContent}>
+                                <div className={styles.page__barMiniChart}>
+                                    <div className={styles.page__barMiniChartLine}
+                                        style={{
+                                            width: `${barsData?.organic}%`,
+                                            backgroundColor: '#F0AD00',
+                                        }}
+                                    />
+                                    <div className={styles.page__barMiniChartLine}
+                                        style={{
+                                            width: `${barsData?.ads}%`,
+                                            backgroundColor: '#00B69B',
+                                        }}
+                                    />
                                 </div>
                             </div>
                         </div>
-                        <div className={styles.page__barContent}>
-                            <div className={styles.page__barMiniChart}>
-                                <div className={styles.page__barMiniChartLine}
-                                    style={{
-                                        width: `${barsData?.organic}%`,
-                                        backgroundColor: '#F0AD00',
-                                    }}
-                                />
-                                <div className={styles.page__barMiniChartLine}
-                                    style={{
-                                        width: `${barsData?.ads}%`,
-                                        backgroundColor: '#00B69B',
-                                    }}
-                                />
-                            </div>
-                        </div>
                     </div>
-                </div>
+                )}
 
 
                 {/* Table and schema */}
                 <div className={styles.page__schemaWrapper}>
 
                     {/* schema block */}
-                    {queryData && <SerpSchema products={queryData.slice(0, 100)} />}
+                    {!isLoading && queryData && <SerpSchema products={queryData.slice(0, 100)} />}
 
 
                     {/* table block */}
-                    <div className={styles.page__tableBlock}>
-                        <ConfigProvider theme={segmentedTheme}>
-                            <Segmented
-                                size='large'
-                                options={[
-                                    { value: 0, label: <SegmentedLabel type='all' label='Все' value={segmentedOptions?.all || 0} /> },
-                                    { value: 1, label: <SegmentedLabel type='organic' label='Органика' value={segmentedOptions?.organic || 0} /> },
-                                    { value: 2, label: <SegmentedLabel type='ads' label='Реклама' value={segmentedOptions?.ads || 0} /> }]}
-                                value={activeTableTab}
-                                onChange={tableTabChangeHandler}
-                            />
-                        </ConfigProvider>
-                        <div className={styles.page__summary}>
-                            <p className={styles.page__summaryItem}>Товаров: <span>{summaryData?.totalProduct || 0}</span></p>
-                            <p className={styles.page__summaryItem}>Обработано страниц поиска: <span>{summaryData?.totalPages || 0}</span></p>
-                            <p className={styles.page__summaryItem}>Собраны: <span>{moment(summaryData?.date).format('DD.MM.YYYY, HH:mm') || ''}</span></p>
-                        </div>
-                        <div className={styles.page__tableWrapper}>
-                            {tableData &&
-                                <RadarTable
-                                    config={serpPageTableConfig}
-                                    dataSource={tableData}
-                                    preset='radar-table-default'
-                                    pagination={{
-                                        current: pagination.current,
-                                        pageSize: pagination.pageSize,
-                                        total: pagination.total,
-                                        onChange: paginationHandler,
-                                        showQuickJumper: true,
-                                        hideOnSinglePage: true
-                                    }}
-                                    customCellRender={{
-                                        idx: ['ad', 'name'],
-                                        renderer: serpPageCustomTableCellRender,
-                                    }}
+                    {!isLoading && tableData && segmentedOptions && summaryData &&
+                        <div className={styles.page__tableBlock}>
+                            <ConfigProvider theme={segmentedTheme}>
+                                <Segmented
+                                    size='large'
+                                    options={[
+                                        { value: 0, label: <SegmentedLabel type='all' label='Все' value={segmentedOptions?.all || 0} /> },
+                                        { value: 1, label: <SegmentedLabel type='organic' label='Органика' value={segmentedOptions?.organic || 0} /> },
+                                        { value: 2, label: <SegmentedLabel type='ads' label='Реклама' value={segmentedOptions?.ads || 0} /> }]}
+                                    value={activeTableTab}
+                                    onChange={tableTabChangeHandler}
                                 />
-                            }
-                        </div>
-                    </div>
+                            </ConfigProvider>
+                            <div className={styles.page__summary}>
+                                <p className={styles.page__summaryItem}>Товаров: <span>{summaryData?.totalProduct || 0}</span></p>
+                                <p className={styles.page__summaryItem}>Обработано страниц поиска: <span>{summaryData?.totalPages || 0}</span></p>
+                                <p className={styles.page__summaryItem}>Собраны: <span>{moment(summaryData?.date).format('DD.MM.YYYY, HH:mm') || ''}</span></p>
+                            </div>
+                            <div className={styles.page__tableWrapper}>
+                                {tableData &&
+                                    <RadarTable
+                                        config={serpPageTableConfig}
+                                        dataSource={tableData}
+                                        preset='radar-table-default'
+                                        pagination={{
+                                            current: pagination.current,
+                                            pageSize: pagination.pageSize,
+                                            total: pagination.total,
+                                            onChange: paginationHandler,
+                                            showQuickJumper: true,
+                                            hideOnSinglePage: true
+                                        }}
+                                        customCellRender={{
+                                            idx: ['ad', 'name'],
+                                            renderer: serpPageCustomTableCellRender,
+                                        }}
+                                    />
+                                }
+                            </div>
+                        </div>}
                 </div>
             </section>
             {/* ---------------------- */}
