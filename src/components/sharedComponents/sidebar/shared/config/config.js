@@ -210,6 +210,13 @@ export const menuConfig = [
                 isActive: true,
                 isNew: false
             },
+            {
+                id: 3,
+                url: '/serp',
+                label: 'Проверка выдачи SERP',
+                isActive: true,
+                isNew: true
+            },
         ]
     },
 ];
