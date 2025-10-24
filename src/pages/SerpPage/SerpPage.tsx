@@ -88,7 +88,7 @@ const inputTheme = {
             activeBorderColor: '#5329FF1A',
             hoverBorderColor: '#5329FF1A',
             activeOutlineColor: 'transparent',
-            hoverBg: 'transparent',
+            hoverBg: 'white',
             activeShadow: 'transparent',
             activeBg: 'white',
         }
@@ -100,12 +100,12 @@ const buttonTheme = {
         colorPrimary: '#5329FF',
         colorTextLightSolid: 'white',
         fontSize: 12,
-        controlHeightLG: 34,
+        controlHeightLG: 38,
         fontWeight: 600,
     },
     Button: {
         defaultShadow: 'none',
-        primaryShadow: 'none'
+        primaryShadow: 'none',
     }
 }
 
@@ -309,7 +309,7 @@ const SerpPage = () => {
                                         </svg>
                                     }
                                     size='large'
-                                    placeholder='Поиск по SKU или артикулу'
+                                    placeholder='Введите поисковый запрос'
                                     value={searchInputValue}
                                     onKeyDown={(e) => inputKeydownHandler(e)}
                                     onChange={inputChangeHandler}
@@ -338,6 +338,7 @@ const SerpPage = () => {
                                         gap: 10,
                                         fontWeight: 600,
                                         lineHeight: '16px',
+                                        padding: '0 12.5px',
                                     }}
                                 >
                                     <svg width="16" height="16" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -500,7 +501,8 @@ const SerpPage = () => {
                                             showQuickJumper: true,
                                             hideOnSinglePage: true
                                         }}
-                                        bodyCellWrapperStyle={{ height: '75px'}}
+                                        headerCellWrapperStyle={{padding: '10px 25px 11px 12px' }}
+                                        bodyCellWrapperStyle={{ height: '70px', padding: '5px 12px'}}
                                         customCellRender={{
                                             idx: ['ad', 'name', 'rating'],
                                             renderer: serpPageCustomTableCellRender,
