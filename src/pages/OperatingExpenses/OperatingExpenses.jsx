@@ -12,9 +12,7 @@ import DataCollectWarningBlock from '@/components/sharedComponents/dataCollectWa
 import ModalDeleteConfirm from '@/components/sharedComponents/ModalDeleteConfirm';
 import styles from './OperatingExpenses.module.css';
 import { EXPENSE_COLUMNS, CATEGORY_COLUMNS } from './config/config';
-import ExpenseMainModal from './features/CreateExpense/expenseMainModal';
-import ExpenseEditModal from './features/CreateExpense/expenseEditModal';
-import ExpenseCopyModal from './features/CreateExpense/expenseCopyModal';
+import ExpenseFormModal from './features/CreateExpense/expenseFormModal';
 import ModalCreateCategory from './features/CreateCategory/CreateCategory';
 import { EditIcon, CopyIcon, DeleteIcon, InfoIcon } from './shared/Icons';
 import TableWidget from './widgets/table/tableWidget';
@@ -489,41 +487,31 @@ export default function OperatingExpenses() {
 					: <NoData />
 				)}
 
-				{modalCreateExpenseOpen &&
-					<ExpenseMainModal
-						open={modalCreateExpenseOpen}
-						onCancel={modalExpenseHandlerClose}
+				{(modalCreateExpenseOpen || (modalEditExpenseOpen && expenseEdit) || (modalCopyExpenseOpen && expenseCopy)) &&
+					<ExpenseFormModal
+						mode={
+							modalCreateExpenseOpen ? 'create' :
+							modalEditExpenseOpen && expenseEdit ? 'edit' :
+							modalCopyExpenseOpen && expenseCopy ? 'copy' : 'create'
+						}
+						open={modalCreateExpenseOpen || modalEditExpenseOpen || modalCopyExpenseOpen}
+						onCancel={() => {
+							if (modalCreateExpenseOpen) {
+								modalExpenseHandlerClose();
+							} else if (modalEditExpenseOpen) {
+								setModalEditExpenseOpen(false);
+								setExpenseEdit(null);
+							} else if (modalCopyExpenseOpen) {
+								setExpenseCopy(null);
+								setModalCopyExpenseOpen(false);
+							}
+						}}
 						setModalCreateCategoryOpen={setModalCreateCategoryOpen}
 						category={category}
+						editData={expenseEdit || expenseCopy}
+						handle={modalCopyExpenseOpen ? createExpense : handleExpanse}
+						loading={loading}
 						zIndex={1000}
-						handle={handleExpanse}
-						expenseCopy={expenseCopy}
-						setExpenseCopy={setExpenseCopy}
-						loading={loading}
-					/>
-				}
-
-				{modalEditExpenseOpen && expenseEdit &&
-					<ExpenseEditModal
-						open={modalEditExpenseOpen}
-						onCancel={() => setModalEditExpenseOpen(false)}
-						setModalCreateCategoryOpen={setModalCreateCategoryOpen}
-						category={category}
-						editData={expenseEdit}
-						handle={handleExpanse}
-						loading={loading}
-					/>
-				}
-
-				{modalCopyExpenseOpen && expenseCopy &&
-					<ExpenseCopyModal
-						open={modalCopyExpenseOpen}
-						onCancel={() => { setExpenseCopy(null); setModalCopyExpenseOpen(false) }}
-						setModalCreateCategoryOpen={setModalCreateCategoryOpen}
-						category={category}
-						editData={expenseCopy}
-						handle={createExpense}
-						loading={loading}
 					/>
 				}
 
