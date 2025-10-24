@@ -343,8 +343,8 @@ export default function TrendAnalysisQuery() {
 										</svg>
 									}
 									htmlType="submit"
-									// disabled={loading || (!formQuery && !(formQuery?.trim()))}
-									disabled={loading || checkQuery(formQuery)}
+									title={isDemoMode && 'Демонстрационный режим'}
+									disabled={loading || checkQuery(formQuery) || isDemoMode}
 								>
 									Найти
 								</Button>

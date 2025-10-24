@@ -278,6 +278,8 @@ const OptionsWidget = () => {
                                     size='large'
                                     style={{ height: 45, minWidth: 112 }}
                                     loading={isLoadingForButton}
+                                    title={isDemoMode ? 'Демонстрационный режим' : 'Применить параметры'}
+                                    disabled={isDemoMode}
                                 >
                                     Применить
                                 </Button>
@@ -350,6 +352,8 @@ const OptionsWidget = () => {
                                         size='large'
                                         style={{ height: 45, minWidth: 112 }}
                                         loading={isLoadingForButton}
+                                        title={isDemoMode ? 'Демонстрационный режим' : 'Применить параметры'}
+                                        disabled={isDemoMode}
                                     >
                                         Применить
                                     </Button>

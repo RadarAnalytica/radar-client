@@ -997,12 +997,14 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                         }
                                     }}
                                 >
-                                <Button
-                                    style={{ width: '187px', height: '46px' }}
-                                    htmlType='submit'
-                                    type='primary'
-                                    size='large'
-                                >
+                                    <Button
+                                        style={{ width: '187px', height: '46px' }}
+                                        htmlType='submit'
+                                        type='primary'
+                                        size='large'
+                                        title={isDemoMode ? 'Демонстрационный режим' : 'Сформировать список трендовых запросов'}
+                                        disabled={isDemoMode}
+                                    >
                                         Сформировать список
                                     </Button>
                                 </ConfigProvider>
