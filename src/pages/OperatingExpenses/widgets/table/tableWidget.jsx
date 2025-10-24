@@ -229,7 +229,7 @@ export default function TableWidget({
 
     return (
         <div className={styles.container}>
-            <div className={styles.tableContainer} ref={tableContainerRef}>
+            <div className={`${styles.tableContainer} scroll-container`} ref={tableContainerRef}>
                 {loading && <div className={styles.loading}>
                     <span className='loader'></span>
                 </div>}
