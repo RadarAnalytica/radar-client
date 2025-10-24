@@ -243,15 +243,12 @@ const SerpPage = () => {
     // filters data fetching
     useEffect(() => {
         const getFiltersData = async () => {
-            setIsLoading(true);
             try {
                 const res: ISerpFiltersData[] = await ServiceFunctions.getSERPFiltersData(authToken)
                 setFiltersData(res)
                 setActiveFilter(res.find((item) => item.city_name === 'Москва') || res[0]);
             } catch (error) {
                 console.error(error);
-            } finally {
-                setIsLoading(false);
             }
         }
         getFiltersData();
@@ -405,7 +402,7 @@ const SerpPage = () => {
                     <div className={styles.page__barsBlock}>
                         <div className={styles.page__bar}>
                             <div className={styles.page__barHeader}>
-                                <h3 className={styles.page__barTitle}>Частотность ключа Одеяло пуховое</h3>
+                                <h3 className={styles.page__barTitle}>Частотность ключа {barsData?.query}</h3>
                             </div>
                             <div className={styles.page__barContent}>
                                 <p className={styles.page__barFrequency}>{formatPrice(barsData?.frequency || 0, '')}</p>
