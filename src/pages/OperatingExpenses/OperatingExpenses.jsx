@@ -120,7 +120,7 @@ export default function OperatingExpenses() {
 			const res = await ServiceFunctions.getOperatingExpensesCategoryGetAll(authToken, pagination);
 			setCategory(res.data);
 			const categories = [
-				{ value: 'Все', id: 0, name: 'Все', key: 0 },
+				{ value: 'Без статьи', id: -1, name: 'Без статьи', key: 0 },
 				...res.data.map(_ => ({ ..._, value: _.name, key: _.id }))
 			];
 			dispatch(filtersActions.setExpenseCategories(categories));
