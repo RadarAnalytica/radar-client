@@ -308,6 +308,26 @@
 .page__tableWrapper {
     width: 100%;
     overflow: auto;
+    max-height: 90vh;
+    scrollbar-width: thin;
+    scrollbar-color: #5329ff80 transparent;
+}
+
+.page__tableWrapper::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+    border-radius: 6px;
+}
+
+.page__tableWrapper::-webkit-scrollbar-thumb {
+    border-radius: 6px;
+    background: #5329ff80;
+}
+
+.page__tableWrapper::-webkit-scrollbar-track {
+    background: transparent;
+    height: 50%;
+    margin: 40px;
 }
 
 

@@ -1,4 +1,4 @@
-import { useContext, useState, useEffect, SetStateAction } from 'react';
+import { useContext, useState, useEffect, useRef } from 'react';
 import Header from '@/components/sharedComponents/header/header';
 import styles from './SerpPage.module.css';
 import Sidebar from '@/components/sharedComponents/sidebar/sidebar';
@@ -88,7 +88,7 @@ const inputTheme = {
             activeBorderColor: '#5329FF1A',
             hoverBorderColor: '#5329FF1A',
             activeOutlineColor: 'transparent',
-            hoverBg: 'transparent',
+            hoverBg: 'white',
             activeShadow: 'transparent',
             activeBg: 'white',
         }
@@ -100,12 +100,12 @@ const buttonTheme = {
         colorPrimary: '#5329FF',
         colorTextLightSolid: 'white',
         fontSize: 12,
-        controlHeightLG: 34,
+        controlHeightLG: 38,
         fontWeight: 600,
     },
     Button: {
         defaultShadow: 'none',
-        primaryShadow: 'none'
+        primaryShadow: 'none',
     }
 }
 
@@ -131,6 +131,7 @@ const SerpPage = () => {
         total: 50,
     });
     const { authToken } = useContext(AuthContext);
+    const tableContainerRef = useRef<HTMLDivElement>(null);
 
 
     // handlers
@@ -162,11 +163,17 @@ const SerpPage = () => {
         let newTableData = queryData;
         if (activeTableTab === 1) {
             newTableData = newTableData?.filter((item) => !item.ad);
+            newTableData = [...newTableData]?.map((_, idx) => ({ ..._, pp: idx + 1 }));
         }
         if (activeTableTab === 2) {
             newTableData = newTableData?.filter((item) => item.ad);
+            newTableData = [...newTableData]?.map((_, idx) => ({ ..._, pp: idx + 1 }));
         }
         setTableData(newTableData?.slice((page - 1) * pagination.pageSize, page * pagination.pageSize));
+        tableContainerRef.current?.scrollTo({
+            top: 0,
+            behavior: 'smooth',
+        });
     };
 
     // table tab change handler
@@ -178,11 +185,11 @@ const SerpPage = () => {
         }
         if (tab === 1) {
             newTableData = queryData?.filter((item) => !item.ad);
-            newTableData = newTableData?.map((_, idx) => ({ ..._, pp: idx + 1 }));
+            newTableData = [...newTableData]?.map((_, idx) => ({ ..._, pp: idx + 1 }));
         }
         if (tab === 2) {
             newTableData = queryData?.filter((item) => item.ad);
-            newTableData = newTableData?.map((_, idx) => ({ ..._, pp: idx + 1 }));
+            newTableData = [...newTableData]?.map((_, idx) => ({ ..._, pp: idx + 1 }));
         }
 
         setPagination({
@@ -206,7 +213,7 @@ const SerpPage = () => {
         setIsLoading(true);
         try {
             const res: ISerpQueryResponse = await ServiceFunctions.getSERPQueryData(authToken, {
-                query: searchInputValue || suggestion || '', dest: activeFilter.dest,
+                query: suggestion || searchInputValue || '', dest: activeFilter.dest,
             })
             setActiveTableTab(0);
             setQueryData(res.products.map((_, idx) => ({ ..._, pp: idx + 1 })));
@@ -302,7 +309,7 @@ const SerpPage = () => {
                                         </svg>
                                     }
                                     size='large'
-                                    placeholder='Поиск по SKU или артикулу'
+                                    placeholder='Введите поисковый запрос'
                                     value={searchInputValue}
                                     onKeyDown={(e) => inputKeydownHandler(e)}
                                     onChange={inputChangeHandler}
@@ -331,6 +338,7 @@ const SerpPage = () => {
                                         gap: 10,
                                         fontWeight: 600,
                                         lineHeight: '16px',
+                                        padding: '0 12.5px',
                                     }}
                                 >
                                     <svg width="16" height="16" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -478,12 +486,13 @@ const SerpPage = () => {
                                 <p className={styles.page__summaryItem}>Обработано страниц поиска: <span>{summaryData?.totalPages || 0}</span></p>
                                 <p className={styles.page__summaryItem}>Собраны: <span>{moment(summaryData?.date).local().format('DD.MM.YYYY, HH:mm') || ''}</span></p>
                             </div>
-                            <div className={styles.page__tableWrapper}>
+                            <div className={styles.page__tableWrapper} ref={tableContainerRef}>
                                 {tableData &&
                                     <RadarTable
                                         config={serpPageTableConfig}
                                         dataSource={tableData}
                                         preset='radar-table-default'
+                                        stickyHeader
                                         pagination={{
                                             current: pagination.current,
                                             pageSize: pagination.pageSize,
@@ -492,8 +501,10 @@ const SerpPage = () => {
                                             showQuickJumper: true,
                                             hideOnSinglePage: true
                                         }}
+                                        headerCellWrapperStyle={{padding: '10px 25px 11px 12px', height: '35px' }}
+                                        bodyCellWrapperStyle={{ height: '70px', padding: '5px 12px'}}
                                         customCellRender={{
-                                            idx: ['ad', 'name'],
+                                            idx: ['ad', 'name', 'rating'],
                                             renderer: serpPageCustomTableCellRender,
                                         }}
                                     />

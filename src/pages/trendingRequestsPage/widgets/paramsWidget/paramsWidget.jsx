@@ -1002,7 +1002,7 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                         htmlType='submit'
                                         type='primary'
                                         size='large'
-                                        title={isDemoMode ? 'Демонстрационный режим' : 'Сформировать список трендовых запросов'}
+                                        title={isDemoMode ? 'Отображение данных будет доступно после оформления подписки' : 'Сформировать список трендовых запросов'}
                                         disabled={isDemoMode}
                                     >
                                         Сформировать список
