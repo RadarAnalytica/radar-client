@@ -112,17 +112,9 @@ const Onboarding = () => {
             {/* !header */}
 
             <div className={styles.page__blocks}>
-
-            </div>
-
-
-            
-            <div
-              className='container dash-container d-flex'
-              style={{ gap: '20px' }}
-            >
-              <div className='onboard-form-block col'>
-                <p style={{ fontWeight: 700, fontSize: 24, width: '90%' }}>
+              {/* left block */}
+              <div className={`${styles.page__block} ${styles.page__block_bg}`}>
+                <p className={styles.page__blockTitle}>
                   Укажите токен нового образца, чтобы продолжить пользоваться
                   всеми возможностями нашего сервиса
                 </p>
@@ -132,6 +124,15 @@ const Onboarding = () => {
                     label={'Название'}
                     callback={getBrand}
                     placeholder={'Ваш бренд или юр. лицо'}
+                    labelStyle={{
+                      fontSize: '12px',
+                    }}
+                    inputStyle={{
+                      height: '38px !important',
+                      maxHeight: '38px !important',
+                      minHeight: '38px',
+                      fontSize: '14px',
+                    }}
                   />
                 </Suspense>
                 <Suspense fallback={null}>
@@ -140,6 +141,15 @@ const Onboarding = () => {
                     label={'Токен'}
                     callback={getToken}
                     placeholder={'Пример: GJys67G7sbNw178F'}
+                    labelStyle={{
+                      fontSize: '12px',
+                    }}
+                    inputStyle={{
+                      height: '38px !important',
+                      maxHeight: '38px !important',
+                      minHeight: '38px',
+                      fontSize: '14px',
+                    }}
                   />
                 </Suspense>
                 <div
@@ -147,44 +157,47 @@ const Onboarding = () => {
                     display: 'flex',
                     alignItems: 'center',
                     position: 'relative',
-                    height: '100%'
+                    height: '100%',
+                    width: '100%'
                   }}>
                   <button
-                    className='prime-btn'
-                    style={{ height: '7vh' }}
+                    className={`prime-btn ${styles.page__button}`}
                     onClick={() => {
                       submitHandler();
                     }}
+                    disabled={!token.trim() || !brandName.trim()}
                   >
                     Начать работать
                   </button>
                 </div>
               </div>
-              <div className='onboard-description col'>
-                <p style={{ fontWeight: 700, fontSize: 24, width: '90%' }}>
+
+              {/* right block */}
+              <div className={styles.page__block}>
+                <p className={styles.page__blockTitle}>
                   Что такое токен и как его получить?
                 </p>
-                <p translate="no" className='no-translate'>
+                <p translate="no" className={`no-translate ${styles.page__blockText}`}>
                   Токен (или АРІ-ключ) - секретный ключ, который Wildberries
                   выдает поставщикам и используемый для получения данных без
                   доступа к личному кабинету.
                 </p>
-                <ol>
-                  <li translate="no" className='no-translate'>
+                <ol className={styles.page__list}>
+                  <li translate="no"  className={`no-translate ${styles.page__blockText}`}>
                     Зайдите в ваш Личный Кабинет на портале Поставщиков
                     Wildberries
                   </li>
-                  <li>
+                  <li className={`${styles.page__blockText}`}>
                     Перейдите в раздел «Доступ к АРІ», нажмите на кнопку «Создать
                     новый токен»
                   </li>
-                  <li>
+                  <li className={`${styles.page__blockText}`}>
                     Далее необходимо выбрать доступ, скругленные кнопки ниже
                     (Контент, Маркетплейс, Статистика, Аналитика, Продвижение,
                     Вопросы и отзывы, Цены и скидки). Важно: галочка
                     «Только на чтение» должна быть снята.
                   </li>
-                  <li translate="no" className='no-translate'>
+                  <li translate="no" className={`no-translate ${styles.page__blockText}`}>
                     Нажмите на кнопку «Скопировать» и вставьте токен в текстовое
                     поле «Токен Wildberries» и нажмите кнопку «Подключить».
                     Готово!
@@ -193,9 +206,7 @@ const Onboarding = () => {
               </div>
             </div>
 
-
-
-
+            {/* modals */}
             <Modal
               show={show}
               onHide={() => {
@@ -206,8 +217,8 @@ const Onboarding = () => {
               <Modal.Header closeButton>
                 <div className='d-flex align-items-center gap-2'>
                   <svg
-                    width='60'
-                    height='60'
+                    width='30'
+                    height='30'
                     viewBox='0 0 60 60'
                     fill='none'
                     xmlns='http://www.w3.org/2000/svg'
@@ -226,13 +237,13 @@ const Onboarding = () => {
                   </svg>
                   <div style={{ width: '100%' }}>
                     <div className='d-flex justify-content-between'>
-                      <h4 className='fw-bold mb-0'>Токен успешно добавлен</h4>
+                      <h4 className={styles.page__blockTitle}>Токен успешно добавлен</h4>
                     </div>
                   </div>
                 </div>
               </Modal.Header>
               <Modal.Body>
-                <p>
+                <p className={styles.page__blockText} style={{ lineHeight: '140%'}}>
                   Ваш токен успешно подключен к сервису и находится на проверке. В
                   ближайшее время данные начнут отображаться в разделе{' '}
                   <Link onClick={handleClose} className='link' style={{ padding: '0' }}>
@@ -360,7 +371,7 @@ const Onboarding = () => {
 
 
 
-       
+
       </>
     )
   );
@@ -371,138 +382,138 @@ export default Onboarding;
 
 const old = () => (
   <div className='onboarding-page'>
-  <MobilePlug />
-  <div style={{ height: '100vh' }}>
-    <Sidebar />
-  </div>
-  {/* <SideNav /> */}
-  <div className='boarding-content w-100' style={{ padding: '20px 32px' }}>
-    <div
-      style={{ marginBottom: '20px' }}
-    >
-      <Header title={'Подключение API'} />
+    <MobilePlug />
+    <div style={{ height: '100vh' }}>
+      <Sidebar />
     </div>
+    {/* <SideNav /> */}
+    <div className='boarding-content w-100' style={{ padding: '20px 32px' }}>
+      <div
+        style={{ marginBottom: '20px' }}
+      >
+        <Header title={'Подключение API'} />
+      </div>
 
-    <div
-      className='container dash-container d-flex'
-      style={{ gap: '20px' }}
-    >
-      <div className='onboard-form-block col'>
-        <p style={{ fontWeight: 700, fontSize: 24, width: '90%' }}>
-          Укажите токен нового образца, чтобы продолжить пользоваться
-          всеми возможностями нашего сервиса
-        </p>
-        <Suspense fallback={null}>
-          <InputField
-            type={'text'}
-            label={'Название'}
-            callback={getBrand}
-            placeholder={'Ваш бренд или юр. лицо'}
-          />
-        </Suspense>
-        <Suspense fallback={null}>
-          <InputField
-            type={'text'}
-            label={'Токен'}
-            callback={getToken}
-            placeholder={'Пример: GJys67G7sbNw178F'}
-          />
-        </Suspense>
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            position: 'relative',
-            height: '100%'
-          }}>
-          <button
-            className='prime-btn'
-            style={{ height: '7vh' }}
-            onClick={() => {
-              submitHandler();
-            }}
-          >
-            Начать работать
-          </button>
-        </div>
-      </div>
-      <div className='onboard-description col'>
-        <p style={{ fontWeight: 700, fontSize: 24, width: '90%' }}>
-          Что такое токен и как его получить?
-        </p>
-        <p translate="no" className='no-translate'>
-          Токен (или АРІ-ключ) - секретный ключ, который Wildberries
-          выдает поставщикам и используемый для получения данных без
-          доступа к личному кабинету.
-        </p>
-        <ol>
-          <li translate="no" className='no-translate'>
-            Зайдите в ваш Личный Кабинет на портале Поставщиков
-            Wildberries
-          </li>
-          <li>
-            Перейдите в раздел «Доступ к АРІ», нажмите на кнопку «Создать
-            новый токен»
-          </li>
-          <li>
-            Далее необходимо выбрать доступ, скругленные кнопки ниже
-            (Контент, Маркетплейс, Статистика, Аналитика, Продвижение,
-            Вопросы и отзывы, Цены и скидки). Важно: галочка
-            «Только на чтение» должна быть снята.
-          </li>
-          <li translate="no" className='no-translate'>
-            Нажмите на кнопку «Скопировать» и вставьте токен в текстовое
-            поле «Токен Wildberries» и нажмите кнопку «Подключить».
-            Готово!
-          </li>
-        </ol>
-      </div>
-    </div>
-  </div>
-  <Modal
-    show={show}
-    onHide={() => {
-      handleClose();
-    }}
-    className='add-token-modal'
-  >
-    <Modal.Header closeButton>
-      <div className='d-flex align-items-center gap-2'>
-        <svg
-          width='60'
-          height='60'
-          viewBox='0 0 60 60'
-          fill='none'
-          xmlns='http://www.w3.org/2000/svg'
-        >
-          <rect
-            width='60'
-            height='60'
-            rx='12'
-            fill='#00B69B'
-            fillOpacity='0.1'
-          />
-          <path
-            d='M26.6248 35.8244L43.4153 19L46 21.5878L26.6248 41L15 29.353L17.5829 26.7652L26.6248 35.8244Z'
-            fill='#00B69B'
-          />
-        </svg>
-        <div style={{ width: '100%' }}>
-          <div className='d-flex justify-content-between'>
-            <h4 className='fw-bold mb-0'>Токен успешно добавлен</h4>
+      <div
+        className='container dash-container d-flex'
+        style={{ gap: '20px' }}
+      >
+        <div className='onboard-form-block col'>
+          <p style={{ fontWeight: 700, fontSize: 24, width: '90%' }}>
+            Укажите токен нового образца, чтобы продолжить пользоваться
+            всеми возможностями нашего сервиса
+          </p>
+          <Suspense fallback={null}>
+            <InputField
+              type={'text'}
+              label={'Название'}
+              callback={getBrand}
+              placeholder={'Ваш бренд или юр. лицо'}
+            />
+          </Suspense>
+          <Suspense fallback={null}>
+            <InputField
+              type={'text'}
+              label={'Токен'}
+              callback={getToken}
+              placeholder={'Пример: GJys67G7sbNw178F'}
+            />
+          </Suspense>
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              position: 'relative',
+              height: '100%'
+            }}>
+            <button
+              className='prime-btn'
+              style={{ height: '7vh' }}
+              onClick={() => {
+                submitHandler();
+              }}
+            >
+              Начать работать
+            </button>
           </div>
         </div>
+        <div className='onboard-description col'>
+          <p style={{ fontWeight: 700, fontSize: 24, width: '90%' }}>
+            Что такое токен и как его получить?
+          </p>
+          <p translate="no" className='no-translate'>
+            Токен (или АРІ-ключ) - секретный ключ, который Wildberries
+            выдает поставщикам и используемый для получения данных без
+            доступа к личному кабинету.
+          </p>
+          <ol>
+            <li translate="no" className='no-translate'>
+              Зайдите в ваш Личный Кабинет на портале Поставщиков
+              Wildberries
+            </li>
+            <li>
+              Перейдите в раздел «Доступ к АРІ», нажмите на кнопку «Создать
+              новый токен»
+            </li>
+            <li>
+              Далее необходимо выбрать доступ, скругленные кнопки ниже
+              (Контент, Маркетплейс, Статистика, Аналитика, Продвижение,
+              Вопросы и отзывы, Цены и скидки). Важно: галочка
+              «Только на чтение» должна быть снята.
+            </li>
+            <li translate="no" className='no-translate'>
+              Нажмите на кнопку «Скопировать» и вставьте токен в текстовое
+              поле «Токен Wildberries» и нажмите кнопку «Подключить».
+              Готово!
+            </li>
+          </ol>
+        </div>
       </div>
-    </Modal.Header>
-    <Modal.Body>
-      <p>
-        Ваш токен успешно подключен к сервису и находится на проверке. В
-        ближайшее время данные начнут отображаться в разделе{' '}
-        <Link onClick={handleClose} className='link' style={{ padding: '0' }}>
-          Сводка продаж
-        </Link>
-      </p>
-      {/* <div className="d-flex justify-content-between">
+    </div>
+    <Modal
+      show={show}
+      onHide={() => {
+        handleClose();
+      }}
+      className='add-token-modal'
+    >
+      <Modal.Header closeButton>
+        <div className='d-flex align-items-center gap-2'>
+          <svg
+            width='60'
+            height='60'
+            viewBox='0 0 60 60'
+            fill='none'
+            xmlns='http://www.w3.org/2000/svg'
+          >
+            <rect
+              width='60'
+              height='60'
+              rx='12'
+              fill='#00B69B'
+              fillOpacity='0.1'
+            />
+            <path
+              d='M26.6248 35.8244L43.4153 19L46 21.5878L26.6248 41L15 29.353L17.5829 26.7652L26.6248 35.8244Z'
+              fill='#00B69B'
+            />
+          </svg>
+          <div style={{ width: '100%' }}>
+            <div className='d-flex justify-content-between'>
+              <h4 className='fw-bold mb-0'>Токен успешно добавлен</h4>
+            </div>
+          </div>
+        </div>
+      </Modal.Header>
+      <Modal.Body>
+        <p>
+          Ваш токен успешно подключен к сервису и находится на проверке. В
+          ближайшее время данные начнут отображаться в разделе{' '}
+          <Link onClick={handleClose} className='link' style={{ padding: '0' }}>
+            Сводка продаж
+          </Link>
+        </p>
+        {/* <div className="d-flex justify-content-between">
                 <div className="grey-block d-flex align-items-center">
                     <p className='col mb-0' style={{ fontSize: '14px' }}>
                         Для максимального использования всего функционала, внесите себестоимость ваших товаров
@@ -515,80 +526,80 @@ const old = () => (
                     </button>
                 </div>
             </div> */}
-    </Modal.Body>
-  </Modal>
+      </Modal.Body>
+    </Modal>
 
-  {/* SELFCOST */}
-  <Modal
-    show={costPriceShow}
-    onHide={handleCostPriceClose}
-    className='add-token-modal'
-  >
-    <Modal.Header closeButton>
-      <div className='d-flex align-items-center gap-2'>
-        <div style={{ width: '100%' }}>
-          <div className='d-flex justify-content-between'>
-            <h4 className='fw-bold mb-0'>
-              Установка себестоимости товара
-            </h4>
+    {/* SELFCOST */}
+    <Modal
+      show={costPriceShow}
+      onHide={handleCostPriceClose}
+      className='add-token-modal'
+    >
+      <Modal.Header closeButton>
+        <div className='d-flex align-items-center gap-2'>
+          <div style={{ width: '100%' }}>
+            <div className='d-flex justify-content-between'>
+              <h4 className='fw-bold mb-0'>
+                Установка себестоимости товара
+              </h4>
+            </div>
           </div>
         </div>
-      </div>
-    </Modal.Header>
-    <Modal.Body>
-      {file ? (
-        <div>
-          <div className='d-flex align-items-center justify-content-between w-100 mt-2 gap-2'>
-            <div className='d-flex gap-2'>
-              <svg
-                width='17'
-                height='23'
-                viewBox='0 0 17 23'
-                fill='none'
-                xmlns='http://www.w3.org/2000/svg'
-              >
-                <path
-                  d='M14 21.75H3C1.75736 21.75 0.75 20.7426 0.75 19.5V3.5C0.75 2.25736 1.75736 1.25 3 1.25H10.8588L16.25 6.32405V19.5C16.25 20.7426 15.2426 21.75 14 21.75Z'
-                  stroke='black'
-                  strokeOpacity='0.5'
-                  strokeWidth='1.5'
-                />
-              </svg>
-              <span>{file ? file.name : ''}</span>
+      </Modal.Header>
+      <Modal.Body>
+        {file ? (
+          <div>
+            <div className='d-flex align-items-center justify-content-between w-100 mt-2 gap-2'>
+              <div className='d-flex gap-2'>
+                <svg
+                  width='17'
+                  height='23'
+                  viewBox='0 0 17 23'
+                  fill='none'
+                  xmlns='http://www.w3.org/2000/svg'
+                >
+                  <path
+                    d='M14 21.75H3C1.75736 21.75 0.75 20.7426 0.75 19.5V3.5C0.75 2.25736 1.75736 1.25 3 1.25H10.8588L16.25 6.32405V19.5C16.25 20.7426 15.2426 21.75 14 21.75Z'
+                    stroke='black'
+                    strokeOpacity='0.5'
+                    strokeWidth='1.5'
+                  />
+                </svg>
+                <span>{file ? file.name : ''}</span>
+              </div>
+              <div>
+                <a
+                  href='#'
+                  className='link'
+                  onClick={() => setFile(null)}
+                  style={{ color: 'red', cursor: 'pointer' }}
+                >
+                  Удалить
+                </a>
+              </div>
             </div>
-            <div>
-              <a
-                href='#'
-                className='link'
-                onClick={() => setFile(null)}
-                style={{ color: 'red', cursor: 'pointer' }}
+            <div className='d-flex justify-content-center w-100 mt-2 gap-2'>
+              <button
+                onClick={() => {
+                  saveFileClickHandler(file, authToken, activeShop.id);
+                  setFile(null);
+                  handleCostPriceClose();
+                }}
+                className='prime-btn'
+                style={{ height: '52px' }}
               >
-                Удалить
+                Сохранить
+              </button>
+            </div>
+            <div className='d-flex justify-content-center w-100 mt-2 gap-2'>
+              <a href='#' className='link' onClick={handleCostPriceClose}>
+                Отмена
               </a>
             </div>
           </div>
-          <div className='d-flex justify-content-center w-100 mt-2 gap-2'>
-            <button
-              onClick={() => {
-                saveFileClickHandler(file, authToken, activeShop.id);
-                setFile(null);
-                handleCostPriceClose();
-              }}
-              className='prime-btn'
-              style={{ height: '52px' }}
-            >
-              Сохранить
-            </button>
-          </div>
-          <div className='d-flex justify-content-center w-100 mt-2 gap-2'>
-            <a href='#' className='link' onClick={handleCostPriceClose}>
-              Отмена
-            </a>
-          </div>
-        </div>
-      ) : (
-        <div className='d-flex flex-column align-items-center justify-content-around w-100'>
-          {/* <div className="file-block d-flex flex-column align-items-center justify-content-around w-100 mt-2 gap-2">
+        ) : (
+          <div className='d-flex flex-column align-items-center justify-content-around w-100'>
+            {/* <div className="file-block d-flex flex-column align-items-center justify-content-around w-100 mt-2 gap-2">
                             <svg width="64" height="48" viewBox="0 0 64 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M20 11C17.5147 11 15.5 13.0147 15.5 15.5V16C15.5 18.4853 17.5147 20.5 20 20.5C22.4853 20.5 24.5 18.4853 24.5 16V15.5C24.5 13.0147 22.4853 11 20 11Z" fill="#5329FF" />
                                 <path d="M11.5 47H53.5C58.4706 47 62.5 42.9706 62.5 38V30L47.8422 21.4198C44.3822 19.3944 39.9996 19.902 37.0941 22.6647L26.75 32.5L11.5 47Z" fill="#5329FF" />
@@ -601,21 +612,21 @@ const old = () => (
                                 Выбрать файл
                             </button>
                         </div> */}
-          <DragDropFile files={file} setFiles={setFile} />
-          <div className='d-flex justify-content-center w-100 mt-2 gap-2'>
-            <a
-              href='#'
-              className='link'
-              onClick={() =>
-                getFileClickHandler(authToken, activeShop.id)
-              }
-            >
-              Скачать шаблон
-            </a>
+            <DragDropFile files={file} setFiles={setFile} />
+            <div className='d-flex justify-content-center w-100 mt-2 gap-2'>
+              <a
+                href='#'
+                className='link'
+                onClick={() =>
+                  getFileClickHandler(authToken, activeShop.id)
+                }
+              >
+                Скачать шаблон
+              </a>
+            </div>
           </div>
-        </div>
-      )}
-    </Modal.Body>
-  </Modal>
-</div>
+        )}
+      </Modal.Body>
+    </Modal>
+  </div>
 )
