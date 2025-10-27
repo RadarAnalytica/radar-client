@@ -278,7 +278,7 @@ const OptionsWidget = () => {
                                     size='large'
                                     style={{ height: 45, minWidth: 112 }}
                                     loading={isLoadingForButton}
-                                    title={isDemoMode ? 'Демонстрационный режим' : 'Применить параметры'}
+                                    title={isDemoMode ? 'Отображение данных будет доступно после оформления подписки' : 'Применить параметры'}
                                     disabled={isDemoMode}
                                 >
                                     Применить
@@ -352,7 +352,7 @@ const OptionsWidget = () => {
                                         size='large'
                                         style={{ height: 45, minWidth: 112 }}
                                         loading={isLoadingForButton}
-                                        title={isDemoMode ? 'Демонстрационный режим' : 'Применить параметры'}
+                                        title={isDemoMode ? 'Отображение данных будет доступно после оформления подписки' : 'Применить параметры'}
                                         disabled={isDemoMode}
                                     >
                                         Применить

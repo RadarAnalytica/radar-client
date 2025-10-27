@@ -343,7 +343,7 @@ export default function TrendAnalysisQuery() {
 										</svg>
 									}
 									htmlType="submit"
-									title={isDemoMode && 'Демонстрационный режим'}
+									title={isDemoMode && 'Отображение данных будет доступно после оформления подписки'}
 									disabled={loading || checkQuery(formQuery) || isDemoMode}
 								>
 									Найти
