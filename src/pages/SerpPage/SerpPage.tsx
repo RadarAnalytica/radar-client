@@ -191,10 +191,12 @@ const SerpPage = () => {
         }
         if (tab === 1) {
             newTableData = queryData?.filter((item) => !item.ad);
+            console.log('organic length', newTableData.length)
             newTableData = [...newTableData]?.map((_, idx) => ({ ..._, pp: idx + 1 }));
         }
         if (tab === 2) {
             newTableData = queryData?.filter((item) => item.ad);
+            console.log('ads length', newTableData.length)
             newTableData = [...newTableData]?.map((_, idx) => ({ ..._, pp: idx + 1 }));
         }
 
@@ -221,13 +223,14 @@ const SerpPage = () => {
             const res: ISerpQueryResponse = await ServiceFunctions.getSERPQueryData(authToken, {
                 query: suggestion || searchInputValue || '', dest: activeFilter.dest,
             })
+
             setActiveTableTab(0);
             setQueryData(res.products.map((_, idx) => ({ ..._, pp: idx + 1 })));
             setTableData(res.products.map((_, idx) => ({ ..._, pp: idx + 1 })).slice(0, 20));
             setSegmentedOptions({
-                all: res.total_products,
-                organic: Math.round(res.total_products * (res.ad_percent.organic / 100)),
-                ads: res.total_products - Math.round(res.total_products * (res.ad_percent.organic / 100)),
+                all: res.products.length,
+                organic: res.products.filter(_ => !_.ad).length,
+                ads: res.products.filter(_ => _.ad).length,
             });
             setSummaryData({
                 totalProduct: res.total_products,
