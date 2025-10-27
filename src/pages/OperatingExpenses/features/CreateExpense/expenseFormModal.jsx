@@ -171,10 +171,13 @@ export default function ExpenseFormModal({
 
 	// Инициализация формы при редактировании или копировании
 	useEffect(() => {
+
+		console.log('editData', editData);
+
 		if (mode !== 'create' && editData) {
 			// Для разовых расходов при редактировании
 			if (mode === 'edit' && !editData.is_periodic) {
-				const selectionType = editData.shop ? 'shop' : editData.brand_name ? 'brand_name' : 'vendor_code';
+				const selectionType = editData.shop?.id ? 'shop' : editData.brand_name?.length > 0 ? 'brand_name' : 'vendor_code';
 
 				const formattedDate = editData.date
 					? format(parse(editData.date, 'yyyy-MM-dd', new Date()), 'dd.MM.yyyy')
@@ -202,7 +205,7 @@ export default function ExpenseFormModal({
 
 			// Для плановых расходов при редактировании или копировании
 			if ((mode === 'edit' && editData.is_periodic) || mode === 'copy') {
-				const selectionType = editData.shops ? 'shop' : editData.brand_names ? 'brand_name' : 'vendor_code';
+				const selectionType = editData.shops?.length > 0 ? 'shop' : editData.brand_names?.length > 0 ? 'brand_name' : 'vendor_code';
 
 				const formattedDate = editData.date
 					? format(parse(editData.date, 'yyyy-MM-dd', new Date()), 'dd.MM.yyyy')
@@ -920,6 +923,7 @@ export default function ExpenseFormModal({
 												size="large"
 												placeholder="Выберите магазин"
 												suffixIcon={<SelectIcon />}
+												defaultValue={editData.shop}
 												options={shops?.map((el) => {
 													if (el.id === 0) {
 														return false;
@@ -947,6 +951,7 @@ export default function ExpenseFormModal({
 												size="large"
 												placeholder="Выберите артикул"
 												suffixIcon={<SelectIcon />}
+												defaultValue={editData.vendor_code}
 												options={filters[0]?.articles.data.map((el, i) => ({
 													key: el.value,
 													value: el.value,
@@ -967,6 +972,7 @@ export default function ExpenseFormModal({
 												size="large"
 												placeholder="Выберите бренд"
 												suffixIcon={<SelectIcon />}
+												defaultValue={editData.brand_name}
 												options={filters[0]?.brands.data.map((el, i) => ({
 													key: el.value,
 													value: el.value,

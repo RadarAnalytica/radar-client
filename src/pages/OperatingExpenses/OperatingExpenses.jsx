@@ -58,8 +58,8 @@ export default function OperatingExpenses() {
 
 	const expenseData = useMemo(() => {
 		const columns = EXPENSE_COLUMNS.map((column, i) => {
-			return ({ ...column, key: column.i })
-		})
+			return ({ ...column, key: column.i });
+		});
 
 		let data = expense?.map((item) => ({
 			...item,
@@ -144,7 +144,7 @@ export default function OperatingExpenses() {
 			brand_names: activeBrandName.map((el) => el.value !== 'Все' ? el.value : null).filter(Boolean),
 			vendor_codes: activeArticle.map((el) => el.value !== 'Все' ? el.value : null).filter(Boolean),
 			expense_categories: activeExpenseCategory && Array.isArray(activeExpenseCategory) ? activeExpenseCategory?.map((el) => el.value !== 'Все' ? el.id : null).filter(Boolean) : null,
-		}
+		};
 
 		try {
 			const res = await ServiceFunctions.getOperatingExpensesExpenseGetAll(authToken, requestObject);
@@ -153,8 +153,8 @@ export default function OperatingExpenses() {
 				page: res.page,
 				limit: res.limit,
 				total: res.total_pages,
-			})
-			return
+			});
+			return;
 		} catch (error) {
 			console.error('updateExpenses error', error);
 			setExpense([]);
@@ -317,7 +317,7 @@ export default function OperatingExpenses() {
 		} finally {
 			setLoading(false);
 		}
-	}
+	};
 
 	const deleteExpense = async (id, isPeriodic) => {
 		setLoading(true);
@@ -332,7 +332,7 @@ export default function OperatingExpenses() {
 			setDeleteExpenseId(null);
 			setLoading(false);
 		}
-	}
+	};
 
 	const deleteCategoryHandler = async (id) => {
 		setLoading(true);
