@@ -851,7 +851,7 @@ export default function ExpenseFormModal({
 													optionsData={filters[0]?.articles.data.map((el, i) => ({
 														key: el.value,
 														value: el.value,
-														label: el.name,
+														label: el.value,
 													}))}
 													selectId='vendor_codes'
 													searchFieldPlaceholder='Поиск по названию артикула'
@@ -955,7 +955,7 @@ export default function ExpenseFormModal({
 												options={filters[0]?.articles.data.map((el, i) => ({
 													key: el.value,
 													value: el.value,
-													label: el.name,
+													label: el.value,
 												}))}
 											/>
 										</Form.Item>
