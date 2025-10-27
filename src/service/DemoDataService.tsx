@@ -27,6 +27,8 @@ import trendingQueriesDay from '../mock/trend-analysis-day.json';
 import ceoComparisonRaw from '../mock/ceo-comparison.json';
 import descriptionGeneratorKeywords from '../mock/description-generator-keywords.json';
 import rnpFiltersData from '../mock/rnp-filters.json';
+import serpRegions from '../mock/serp-regions.json';
+import serpQueryData from '../mock/serp-query-data.json'
 
 export class DemoDataService {
   private static instance: DemoDataService;
@@ -69,7 +71,7 @@ export class DemoDataService {
   private getExactMatch(endpoint: string, filters?: any): any {
     const endpointMap: Record<string, () => any> = {
       '/api/dashboard/': () => this.getDashboardData(filters),
-      '/api/prod_analytic/': () => this.getStockAnalysisData(),
+      '/api/prod_analytic/': () => this.getStockAnalysisData(filters),
       '/api/periodic_reports/weekly_report': () => this.getWeeklyReportData(filters),
       '/api/common/filters_new': () => this.getDemoFilters(),
       '/api/shop/all': () => this.getDemoShops(),
@@ -80,8 +82,8 @@ export class DemoDataService {
       '/api/rnp/filters': () => this.getRnpFiltersData(),
       '/api/profit_loss/report': () => this.getPlReportData(filters),
       '/api/geo/': () => this.getGeoData(),
-      '/api/abc_data/proceeds': () => this.getAbcDataProceeds(),
-      '/api/abc_data/profit': () => this.getAbcDataProfit(),
+      '/api/abc_data/proceeds': () => this.getAbcDataProceeds(filters),
+      '/api/abc_data/profit': () => this.getAbcDataProfit(filters),
       '/api/product/self-costs/list': () => this.getSelfCostsData(),
       '/api/product/product_groups': () => this.getProductGroupsData(),
       '/api/dashboard/turnover': () => this.getTurnOverData(),
@@ -90,7 +92,8 @@ export class DemoDataService {
       '/api/user/subscription/all': () => this.getSubscriptionsData(),
       '/api/blog/articles': () => this.getArticlesData(),
       '/api/operating-expenses/category/get-all': () => this.getOperatingExpensesCategoriesData(),
-      '/api/operating-expenses/expense/get-all': () => this.getOperatingExpensesData(),
+      '/api/operating-expenses/expense/get-all': () => this.getOperatingExpensesData(filters),
+      '/api/operating-expenses/periodic-expense/get': () => this.getPeriodicExpenseTemplateData(),
       '/api/product/self-costs': () => ({ message: "Success", updated_items: [{ product: 'Демо', cost: 100, fulfillment: 100 }] }),
       '/api/msg/': () => ([]),
       'https://radarmarket.ru/api/web-service/monitoring-oracle/easy/get': () => this.getEasyMonitoringData(),
@@ -98,6 +101,8 @@ export class DemoDataService {
       'https://radarmarket.ru/api/web-service/trending-queries/get': () => this.getTrendingQueries(),
       'https://radarmarket.ru/api/analytic/query-dynamics/month': () => this.getTrendingAnalysisMonth(),
       'https://radarmarket.ru/api/analytic/query-dynamics/day': () => this.getTrendingAnalysisDay(),
+      'https://radarmarket.ru/api/web-service/search-map/get-regions': () => this.getSERPRegions(),
+      'https://radarmarket.ru/api/web-service/search-map/get-query-data': () => this.getSERPQueryData(),
     };
 
     const dataGetter = endpointMap[endpoint];
@@ -210,9 +215,9 @@ export class DemoDataService {
     return turnOverData;
   }
 
-  private getAbcDataProceeds(): any {
+  private getAbcDataProceeds(filters?: any): any {
     const data = this.getOriginalJson(abcDataProceeds);
-    const days = this.getFilterDays();
+    const days = this.getFilterDays(filters);
     const denominator = 90 / days;
 
     data.results.map(item => {
@@ -222,9 +227,9 @@ export class DemoDataService {
     return data;
   }
 
-  private getAbcDataProfit(): any {
+  private getAbcDataProfit(filters?: any): any {
     const data = this.getOriginalJson(abcDataProfit);
-    const days = this.getFilterDays();
+    const days = this.getFilterDays(filters);
     const denominator = 90 / days;
 
     data.results.map(item => {
@@ -268,6 +273,14 @@ export class DemoDataService {
 
   private getDescriptionGeneratorKeywords(): any {
     return descriptionGeneratorKeywords;
+  }
+
+  private getSERPRegions(): any {
+    return serpRegions;
+  }
+
+  private getSERPQueryData(): any {
+    return serpQueryData;
   }
 
   private getSubscriptionsData(): any {
@@ -395,73 +408,130 @@ export class DemoDataService {
     };
   }
 
-  private getOperatingExpensesData() {
+  private getOperatingExpensesData(filters?: any) {
     const today = new Date().toISOString().split('T')[0];
-
-    return {
-      data: [
+    const data = [
+      {
+        "id": 1,
+        "expense_categories": [
           {
             "id": 1,
-            "expense_categories": [
-                {
-                    "id": 1,
-                    "name": "Заработная плата"
-                }
-            ],
-            "description": "Выдача заработной платы сотрудникам отдела маркетинга",
-            "value": 100000,
-            "vendor_code": null,
-            "brand_name": null,
-            "shop": {
-                "id": 1,
-                "name": "Демо магазин"
-            },
-            "date": today,
-            "periodic_expense_id": null,
-            "is_periodic": true,
-            "created_at": today,
-            "updated_at": today
+            "name": "Заработная плата"
+          }
+        ],
+        "description": "Выдача заработной платы сотрудникам отдела маркетинга",
+        "value": 100000,
+        "vendor_code": null,
+        "brand_name": null,
+        "shop": {
+          "id": 1,
+          "name": "Демо магазин"
         },
-        {
-            "id": 2,
-            "expense_categories": [
-                {
-                    "id": 2,
-                    "name": "Аренда"
-                }
-            ],
-            "description": "Аренда офиса на три месяца",
-            "value": 45000,
-            "vendor_code": null,
-            "brand_name": null,
-            "shop": {
-                "id": 1,
-                "name": "Демо магазин"
-            },
-            "date": today,
-            "periodic_expense_id": null,
-            "is_periodic": false,
-            "created_at": today,
-            "updated_at": today
-        },
-        {
-            "id": 3,
-            "expense_categories": [],
-            "description": "Закупка оборудования",
-            "value": 80000,
-            "vendor_code": "101010101010",
-            "brand_name": null,
-            "shop": null,
-            "date": today,
-            "periodic_expense_id": null,
-            "is_periodic": false,
-            "created_at": today,
-            "updated_at": today
+        "date": today,
+        "periodic_expense_id": null,
+        "is_periodic": true,
+        "created_at": today,
+        "updated_at": today
+      },
+      {
+          "id": 2,
+          "expense_categories": [
+            {
+              "id": 2,
+              "name": "Аренда"
+            }
+          ],
+          "description": "Аренда офиса на три месяца",
+          "value": 45000,
+          "vendor_code": null,
+          "brand_name": null,
+          "shop": {
+            "id": 1,
+            "name": "Демо магазин"
+          },
+          "date": today,
+          "periodic_expense_id": null,
+          "is_periodic": false,
+          "created_at": today,
+          "updated_at": today
+      },
+      {
+          "id": 3,
+          "expense_categories": [
+            { 
+              "id": -1 
+            }
+          ],
+          "description": "Закупка оборудования",
+          "value": 80000,
+          "vendor_code": null,
+          "brand_name": null,
+          "shop": {
+            "id": 1,
+            "name": "Демо магазин"
+          },
+          "date": today,
+          "periodic_expense_id": null,
+          "is_periodic": false,
+          "created_at": today,
+          "updated_at": today
+      }
+    ];
+
+    // Проверяем, входит ли сегодняшняя дата в диапазон selectedRange
+    let filteredData = data;
+    
+    if (filters?.selectedRange && filters.selectedRange?.from && filters.selectedRange?.to) {
+      const todayDate = new Date(today);
+      const fromDate = filters.selectedRange.from ? new Date(filters.selectedRange.from) : null;
+      const toDate = filters.selectedRange.to ? new Date(filters.selectedRange.to) : null;
+      
+      if (fromDate && toDate) {
+        if (todayDate < fromDate || todayDate > toDate) {
+          filteredData = [];
         }
-      ],
+      }
+    }
+
+    // Фильтруем по категориям расходов
+    const activeExpenseCategory = filters?.activeExpenseCategory.map((item: any) => item.id).filter(Boolean);
+    if (activeExpenseCategory && activeExpenseCategory.length > 0 && activeExpenseCategory[0] !== 0) {
+      filteredData = filteredData.filter(expense => {
+        return expense.expense_categories.some(category => activeExpenseCategory.includes(category.id));
+      });
+    }
+
+    return {
+      data: filteredData,
       page: 1,
       total_pages: 1,
       limit: 25,
+    };
+  }
+
+  private getPeriodicExpenseTemplateData() {
+    const today = new Date().toISOString().split('T')[0];
+
+    return {
+      "id": 1,
+      "expense_categories": [
+          {
+              "id": 1,
+              "name": "Заработная плата"
+          }
+      ],
+      "period_type": "month",
+      "period_values": [1],
+      "description": "Выдача заработной платы сотрудникам отдела маркетинга",
+      "value": 100000,
+      "vendor_code": null,
+      "brand_name": null,
+      "shops": [1],
+      "date_from": today,
+      "periodic_expense_id": null,
+      "is_periodic": true,
+      "created_at": today,
+      "updated_at": today
     };
   }
 
@@ -547,7 +617,7 @@ export class DemoDataService {
           item.by_date_data = [...item.by_date_data, ...item.by_date_data, ...item.by_date_data];
         }
 
-        item.by_date_data = item.by_date_data.slice(-(days + 1));
+        item.by_date_data = item.by_date_data.slice(0, days + 1);
         const diffDays = filters?.selectedRange?.to
           ? Math.round((Number(new Date()) - Number(new Date(filters.selectedRange.to))) / 86400000)
           : 0;
@@ -560,7 +630,14 @@ export class DemoDataService {
           return { ...dateItem, date: date.toISOString() };
         });
 
-        return { ...item, by_date_data: updatedByDateData };
+        // Пересчитываем summary_data на основе отфильтрованных дней
+        const recalculatedSummaryData = this.recalculateSummaryData(updatedByDateData);
+
+        return { 
+          ...item, 
+          by_date_data: updatedByDateData,
+          summary_data: recalculatedSummaryData || item.summary_data
+        };
       }
 
       return item;
@@ -584,7 +661,7 @@ export class DemoDataService {
         data.by_date_data = [...data.by_date_data, ...data.by_date_data, ...data.by_date_data];
       }
 
-      data.by_date_data = data.by_date_data.slice(-(days + 1));
+      data.by_date_data = data.by_date_data.slice(0, days + 1);
       const diffDays = filters?.selectedRange?.to
           ? Math.round((Number(new Date()) - Number(new Date(filters.selectedRange.to))) / 86400000)
           : 0;
@@ -597,7 +674,14 @@ export class DemoDataService {
         return { ...dateItem, date: date.toISOString() };
       });
 
-      data = { ...data, by_date_data: updatedByDateData };
+      // Пересчитываем summary_data на основе отфильтрованных дней
+      const recalculatedSummaryData = this.recalculateSummaryData(updatedByDateData);
+
+      data = { 
+        ...data, 
+        by_date_data: updatedByDateData,
+        summary_data: recalculatedSummaryData || data.summary_data
+      };
     }
 
     return { data };
@@ -612,9 +696,9 @@ export class DemoDataService {
   }
 
   // Stock Analysis данные
-  private getStockAnalysisData(): StockProductData[] {
+  private getStockAnalysisData(filters?: any): StockProductData[] {
     const products = this.getOriginalJson(stockAnalysis) as StockProductData[];
-    const days = this.getFilterDays();
+    const days = this.getFilterDays(filters);
     const denominator = 90 / days;
 
     products.map(item => {
@@ -961,11 +1045,11 @@ export class DemoDataService {
       .reverse();
   }
 
-  // Демо-фильтры на основе данных из stock-analysis.json
+  // Демо-фильтры
   private getDemoFilters() {
     // Создаем демо-магазин
     const demoShop = {
-      id: 0,
+      id: 1,
       brand_name: 'Демо магазин',
       name: 'Демо магазин',
       is_active: true,
@@ -1080,26 +1164,28 @@ export class DemoDataService {
 
   // Weekly Report данные
   private getWeeklyReportData(filters?: any): WeeklyReportDemoData {
+    const currentDate = new Date();
     const weeklyData = weeklyReportData as any[];
     const baseData = weeklyData[0]; // Берем базовые данные для генерации
+    const currentWeekNumber = this.getWeekNumber(currentDate); // Получаем текущую дату и вычисляем количество недель от начала года
+    const dynamicWeeklyData = []; // Генерируем данные только для выбранных недель
     let activeWeeks = filters?.activeWeeks || [];
 
-    if (activeWeeks.length === 0) {
-      return {
-        data: [{weeks: [], year: new Date().getFullYear()}],
-        messsage: 'Success',
-      };
-    }
-
-    // Получаем текущую дату и вычисляем количество недель от начала года
-    const currentDate = new Date();
-    const currentWeekNumber = this.getWeekNumber(currentDate);
-
-    // Генерируем данные только для выбранных недель
-    const dynamicWeeklyData = [];
-
-    if (typeof activeWeeks === 'string') {
-      activeWeeks = [{ value: activeWeeks }];
+    // Если нет выбранных недель, или выбрано 'Все', то генерируем 42 недели от текущей даты
+    if (activeWeeks.length === 0 || activeWeeks[0]?.value === 'Все') {
+      activeWeeks = [];
+      
+      for (let i = 1; i <= 42; i++) {
+        const weekStartDate = new Date(currentDate);
+        const dayOfWeek = weekStartDate.getDay();
+        weekStartDate.setDate(weekStartDate.getDate() - (i * 7));
+        
+        const daysToMonday = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
+        weekStartDate.setDate(weekStartDate.getDate() + daysToMonday);
+        
+        const weekStartISO = weekStartDate.toISOString().split('T')[0];
+        activeWeeks.push({ value: weekStartISO });
+      }
     }
 
     for (const selectedWeek of activeWeeks) {
@@ -1248,6 +1334,198 @@ export class DemoDataService {
     const month = (date.getMonth() + 1).toString().padStart(2, '0');
     const year = date.getFullYear();
     return `${day}.${month}.${year}`;
+  }
+
+  // Функция для пересчета summary_data на основе отфильтрованных дней
+  private recalculateSummaryData(byDateData: any[]): any {
+    if (!byDateData || byDateData.length === 0) {
+      return null;
+    }
+
+    const summaryData = {
+      expected_marginality_data: {
+        expected_marginality: 0,
+        plan_marginality: 0,
+        roi: 0,
+        profit_per_one: 0,
+        net_profit: 0,
+        drr_by_sales: 0,
+        drr_by_orders: 0,
+        orders_amount: 0,
+        orders_count: 0,
+        sales_count: 0,
+        sales_spp_amount: 0,
+        full_price: 0,
+        price_spp: 0,
+        discount: 0,
+        buyout: 0
+      },
+      rk_budget_data: {
+        ctr: 0,
+        impressions: 0,
+        clicks: 0,
+        cpc: 0,
+        cpm: 0,
+        rk_budget: 0,
+        cr: 0,
+        one_order_price: 0,
+        one_sale_price: 0
+      },
+      ark_budget_data: {
+        ctr: 0,
+        impressions: 0,
+        clicks: 0,
+        cpc: 0,
+        cpm: 0,
+        ark_budget: 0
+      },
+      auction_rk_budget_data: {
+        ctr: 0,
+        impressions: 0,
+        clicks: 0,
+        cpc: 0,
+        cpm: 0,
+        auction_rk_budget: 0
+      },
+      transition_data: {
+        transition: 0,
+        cart_addition_count: 0,
+        cart_addition_percentage: 0,
+        order_addition_percentage: 0
+      },
+      taxes_data: {
+        taxes: 0,
+        tax_per_one: 0,
+        logistics_per_one: 0,
+        commission_acquiring_per_one: 0,
+        commission_acquiring_percentage: 0,
+        storage_per_one: 0,
+        cost_per_one: 0
+      }
+    };
+
+    // Суммируем данные по всем дням
+    byDateData.forEach(dayData => {
+      if (dayData.rnp_data) {
+        const rnpData = dayData.rnp_data;
+
+        // Суммируем expected_marginality_data
+        if (rnpData.expected_marginality_data) {
+          const emd = rnpData.expected_marginality_data;
+          summaryData.expected_marginality_data.expected_marginality += emd.expected_marginality || 0;
+          summaryData.expected_marginality_data.plan_marginality += emd.plan_marginality || 0;
+          summaryData.expected_marginality_data.roi += emd.roi || 0;
+          summaryData.expected_marginality_data.profit_per_one += emd.profit_per_one || 0;
+          summaryData.expected_marginality_data.net_profit += emd.net_profit || 0;
+          summaryData.expected_marginality_data.drr_by_sales += emd.drr_by_sales || 0;
+          summaryData.expected_marginality_data.drr_by_orders += emd.drr_by_orders || 0;
+          summaryData.expected_marginality_data.orders_amount += emd.orders_amount || 0;
+          summaryData.expected_marginality_data.orders_count += emd.orders_count || 0;
+          summaryData.expected_marginality_data.sales_count += emd.sales_count || 0;
+          summaryData.expected_marginality_data.sales_spp_amount += emd.sales_spp_amount || 0;
+          summaryData.expected_marginality_data.full_price += emd.full_price || 0;
+          summaryData.expected_marginality_data.price_spp += emd.price_spp || 0;
+          summaryData.expected_marginality_data.discount += emd.discount || 0;
+          summaryData.expected_marginality_data.buyout += emd.buyout || 0;
+        }
+
+        // Суммируем rk_budget_data
+        if (rnpData.rk_budget_data) {
+          const rkbd = rnpData.rk_budget_data;
+          summaryData.rk_budget_data.ctr += rkbd.ctr || 0;
+          summaryData.rk_budget_data.impressions += rkbd.impressions || 0;
+          summaryData.rk_budget_data.clicks += rkbd.clicks || 0;
+          summaryData.rk_budget_data.cpc += rkbd.cpc || 0;
+          summaryData.rk_budget_data.cpm += rkbd.cpm || 0;
+          summaryData.rk_budget_data.rk_budget += rkbd.rk_budget || 0;
+          summaryData.rk_budget_data.cr += rkbd.cr || 0;
+          summaryData.rk_budget_data.one_order_price += rkbd.one_order_price || 0;
+          summaryData.rk_budget_data.one_sale_price += rkbd.one_sale_price || 0;
+        }
+
+        // Суммируем ark_budget_data
+        if (rnpData.ark_budget_data) {
+          const arkbd = rnpData.ark_budget_data;
+          summaryData.ark_budget_data.ctr += arkbd.ctr || 0;
+          summaryData.ark_budget_data.impressions += arkbd.impressions || 0;
+          summaryData.ark_budget_data.clicks += arkbd.clicks || 0;
+          summaryData.ark_budget_data.cpc += arkbd.cpc || 0;
+          summaryData.ark_budget_data.cpm += arkbd.cpm || 0;
+          summaryData.ark_budget_data.ark_budget += arkbd.ark_budget || 0;
+        }
+
+        // Суммируем auction_rk_budget_data
+        if (rnpData.auction_rk_budget_data) {
+          const arkbd = rnpData.auction_rk_budget_data;
+          summaryData.auction_rk_budget_data.ctr += arkbd.ctr || 0;
+          summaryData.auction_rk_budget_data.impressions += arkbd.impressions || 0;
+          summaryData.auction_rk_budget_data.clicks += arkbd.clicks || 0;
+          summaryData.auction_rk_budget_data.cpc += arkbd.cpc || 0;
+          summaryData.auction_rk_budget_data.cpm += arkbd.cpm || 0;
+          summaryData.auction_rk_budget_data.auction_rk_budget += arkbd.auction_rk_budget || 0;
+        }
+
+        // Суммируем transition_data
+        if (rnpData.transition_data) {
+          const td = rnpData.transition_data;
+          summaryData.transition_data.transition += td.transition || 0;
+          summaryData.transition_data.cart_addition_count += td.cart_addition_count || 0;
+          summaryData.transition_data.cart_addition_percentage += td.cart_addition_percentage || 0;
+          summaryData.transition_data.order_addition_percentage += td.order_addition_percentage || 0;
+        }
+
+        // Суммируем taxes_data
+        if (rnpData.taxes_data) {
+          const txd = rnpData.taxes_data;
+          summaryData.taxes_data.taxes += txd.taxes || 0;
+          summaryData.taxes_data.tax_per_one += txd.tax_per_one || 0;
+          summaryData.taxes_data.logistics_per_one += txd.logistics_per_one || 0;
+          summaryData.taxes_data.commission_acquiring_per_one += txd.commission_acquiring_per_one || 0;
+          summaryData.taxes_data.commission_acquiring_percentage += txd.commission_acquiring_percentage || 0;
+          summaryData.taxes_data.storage_per_one += txd.storage_per_one || 0;
+          summaryData.taxes_data.cost_per_one += txd.cost_per_one || 0;
+        }
+      }
+    });
+
+    // Вычисляем средние значения для процентов и коэффициентов
+    const daysCount = byDateData.length;
+    if (daysCount > 0) {
+      summaryData.expected_marginality_data.expected_marginality = Math.round((summaryData.expected_marginality_data.expected_marginality / daysCount) * 100) / 100;
+      summaryData.expected_marginality_data.plan_marginality = Math.round((summaryData.expected_marginality_data.plan_marginality / daysCount) * 100) / 100;
+      summaryData.expected_marginality_data.roi = Math.round((summaryData.expected_marginality_data.roi / daysCount) * 100) / 100;
+      summaryData.expected_marginality_data.drr_by_sales = Math.round((summaryData.expected_marginality_data.drr_by_sales / daysCount) * 100) / 100;
+      summaryData.expected_marginality_data.drr_by_orders = Math.round((summaryData.expected_marginality_data.drr_by_orders / daysCount) * 100) / 100;
+      summaryData.expected_marginality_data.discount = Math.round((summaryData.expected_marginality_data.discount / daysCount) * 100) / 100;
+      summaryData.expected_marginality_data.buyout = Math.round((summaryData.expected_marginality_data.buyout / daysCount) * 100) / 100;
+
+      summaryData.rk_budget_data.ctr = Math.round((summaryData.rk_budget_data.ctr / daysCount) * 100) / 100;
+      summaryData.rk_budget_data.cpc = Math.round((summaryData.rk_budget_data.cpc / daysCount) * 100) / 100;
+      summaryData.rk_budget_data.cpm = Math.round((summaryData.rk_budget_data.cpm / daysCount) * 100) / 100;
+      summaryData.rk_budget_data.cr = Math.round((summaryData.rk_budget_data.cr / daysCount) * 100) / 100;
+      summaryData.rk_budget_data.one_order_price = Math.round((summaryData.rk_budget_data.one_order_price / daysCount) * 100) / 100;
+      summaryData.rk_budget_data.one_sale_price = Math.round((summaryData.rk_budget_data.one_sale_price / daysCount) * 100) / 100;
+
+      summaryData.ark_budget_data.ctr = Math.round((summaryData.ark_budget_data.ctr / daysCount) * 100) / 100;
+      summaryData.ark_budget_data.cpc = Math.round((summaryData.ark_budget_data.cpc / daysCount) * 100) / 100;
+      summaryData.ark_budget_data.cpm = Math.round((summaryData.ark_budget_data.cpm / daysCount) * 100) / 100;
+
+      summaryData.auction_rk_budget_data.ctr = Math.round((summaryData.auction_rk_budget_data.ctr / daysCount) * 100) / 100;
+      summaryData.auction_rk_budget_data.cpc = Math.round((summaryData.auction_rk_budget_data.cpc / daysCount) * 100) / 100;
+      summaryData.auction_rk_budget_data.cpm = Math.round((summaryData.auction_rk_budget_data.cpm / daysCount) * 100) / 100;
+
+      summaryData.transition_data.cart_addition_percentage = Math.round((summaryData.transition_data.cart_addition_percentage / daysCount) * 100) / 100;
+      summaryData.transition_data.order_addition_percentage = Math.round((summaryData.transition_data.order_addition_percentage / daysCount) * 100) / 100;
+
+      summaryData.taxes_data.tax_per_one = Math.round((summaryData.taxes_data.tax_per_one / daysCount) * 100) / 100;
+      summaryData.taxes_data.logistics_per_one = Math.round((summaryData.taxes_data.logistics_per_one / daysCount) * 100) / 100;
+      summaryData.taxes_data.commission_acquiring_per_one = Math.round((summaryData.taxes_data.commission_acquiring_per_one / daysCount) * 100) / 100;
+      summaryData.taxes_data.commission_acquiring_percentage = Math.round((summaryData.taxes_data.commission_acquiring_percentage / daysCount) * 100) / 100;
+      summaryData.taxes_data.storage_per_one = Math.round((summaryData.taxes_data.storage_per_one / daysCount) * 100) / 100;
+      summaryData.taxes_data.cost_per_one = Math.round((summaryData.taxes_data.cost_per_one / daysCount) * 100) / 100;
+    }
+
+    return summaryData;
   }
 
   private getOriginalJson(json: any) {

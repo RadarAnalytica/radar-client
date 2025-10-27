@@ -1,0 +1,17 @@
+.noData {
+	background: white;
+	border-radius: 12px;
+	padding: 40px 20px;
+	text-align: center;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	min-height: 200px;
+}
+
+.noData p {
+	margin: 0;
+	font-size: 16px;
+	color: #666;
+	font-weight: 500;
+}

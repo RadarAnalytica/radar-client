@@ -15,6 +15,7 @@ import ErrorModal from '../components/sharedComponents/modals/errorModal/errorMo
 import SuccesModal from '../components/sharedComponents/modals/successModal/successModal';
 import NoSubscriptionWarningBlock from '../components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock';
 import { useDemoMode } from "@/app/providers";
+import DemonstrationSection from '@/components/DemonstrationSection';
 
 const ReportBuyBack = () => {
   const [file, setFile] = useState();
@@ -97,14 +98,18 @@ const ReportBuyBack = () => {
         </div>
 
         {isDemoMode &&
-          <NoSubscriptionWarningBlock />
+          <div className='mb-3'>
+            <NoSubscriptionWarningBlock />
+          </div>
         }
 
         {!user.is_report_downloaded &&
-          <DemonstrationSection />
+          <div className='mb-3'>
+            <DemonstrationSection />
+          </div>
         }
 
-        <div className='container dash-container'>
+        <div className='container dash-container h-50 d-flex justify-content-center align-items-center'>
           <div className={styles.primeCost}>
             <div className={styles.primeCostBox}>
               <img src={buyback} alt='buyback' />

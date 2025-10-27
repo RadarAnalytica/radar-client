@@ -72,7 +72,6 @@ const UnitCalculatorPageDesktop = () => {
         }
     };
 
-
     // -------------- cost of buyout ration calculations --------------------//
     useEffect(() => {
         setLastMileLogisticsPriceWBuyout(logisticsWithBuyoutPercentagePriceCalcFunc(lastMileLogisticsPrice, RETURN_PRICE, buyout_percentage));
@@ -190,17 +189,20 @@ const UnitCalculatorPageDesktop = () => {
                 <meta name="description" content='Расчет unit-экономики товара  онлайн на калькуляторе Radar Analytica — сервис аналитики маркетплейсов.' />
                 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=1.0, minimum-scale=1.0, maximum-scale=1.0" />
             </Helmet>
+
             <div className={styles.page__sidebarWrapper}>
                 <Sidebar />
             </div>
-            {/* <SideNav /> */}
+            
             <section className={styles.page__content} ref={sectionRef}>
                 <div className={styles.page__headerWrapper}>
                     <Header title={'Калькулятор unit-экономики товара'} />
                 </div>
+
                 <div className={styles.page__mobileHeaderWrapper}>
                     <MobileHeader title='Калькулятор unit-экономики товара' />
                 </div>
+
                 <ConfigProvider
                     theme={{
                         token: {
@@ -223,7 +225,6 @@ const UnitCalculatorPageDesktop = () => {
                 >
                     <div className={styles.page__mainContentWrapper}>
                         <div className={styles.page__formWrapper}>
-
                             <Form
                                 scrollToFirstError
                                 className={styles.form}
@@ -248,13 +249,10 @@ const UnitCalculatorPageDesktop = () => {
                                     PackageType: 'Короб'
                                 }}
                             >
-
-
                                 <BasicDataFormBlockDesktop form={form} setMpMainFee={setMpMainFee} isProductFromToken={isProductFromToken} setIsProductFromToken={setIsProductFromToken} />
                                 <LogisticsDataFormBlockDesktop form={form} current_storage_logistic_price={lastMileLogisticsPrice} buyout_log_price={lastMileLogisticsPriceWBuyout} storagePrice={storagePrice} />
                                 <MPFeesDataFormBlockDesktop mp_fee={mpMainFee} form={form} />
                                 <AdditionalOptionsDataFormBlockDesktop form={form} mpMainFee={mpMainFee} />
-
 
                                 <ConfigProvider
                                     theme={{
@@ -274,7 +272,6 @@ const UnitCalculatorPageDesktop = () => {
 
                             </Form>
                         </div>
-
 
                         <div className={styles.page__resultWrapper}>
                             <ResultBlockDesktop result={result} token={token} investValue={investValue} setInvestValue={setInvestValue} />

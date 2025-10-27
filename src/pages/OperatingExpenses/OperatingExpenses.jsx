@@ -12,9 +12,7 @@ import DataCollectWarningBlock from '@/components/sharedComponents/dataCollectWa
 import ModalDeleteConfirm from '@/components/sharedComponents/ModalDeleteConfirm';
 import styles from './OperatingExpenses.module.css';
 import { EXPENSE_COLUMNS, CATEGORY_COLUMNS } from './config/config';
-import ExpenseMainModal from './features/CreateExpense/expenseMainModal';
-import ExpenseEditModal from './features/CreateExpense/expenseEditModal';
-import ExpenseCopyModal from './features/CreateExpense/expenseCopyModal';
+import ExpenseFormModal from './features/CreateExpense/expenseFormModal';
 import ModalCreateCategory from './features/CreateCategory/CreateCategory';
 import { EditIcon, CopyIcon, DeleteIcon, InfoIcon } from './shared/Icons';
 import TableWidget from './widgets/table/tableWidget';
@@ -24,6 +22,7 @@ import { useAppDispatch } from '@/redux/hooks';
 import { actions as filtersActions } from '@/redux/apiServicePagesFiltersState/apiServicePagesFilterState.slice';
 import AlertWidget from '@/components/sharedComponents/AlertWidget/AlertWidget';
 import NoSubscriptionWarningBlock from '@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock';
+import NoData from '@/components/sharedComponents/NoData/NoData';
 import { useDemoMode } from '@/app/providers';
 
 const initAlertState = {
@@ -40,10 +39,8 @@ export default function OperatingExpenses() {
 	const firstLoad = useRef(true);
 	const [loading, setLoading] = useState(true);
 	const [view, setView] = useState('expense'); // costs | category
-	const [modalCreateExpenseOpen, setModalCreateExpenseOpen] = useState(false);
+	const [expenseModal, setExpenseModal] = useState({ mode: null, isOpen: false, data: null });
 	const [modalCreateCategoryOpen, setModalCreateCategoryOpen] = useState(false);
-	const [modalEditExpenseOpen, setModalEditExpenseOpen] = useState(false);
-	const [modalCopyExpenseOpen, setModalCopyExpenseOpen] = useState(false);
 	const [deleteExpenseId, setDeleteExpenseId] = useState(null);
 	const [deleteCategoryId, setDeleteCategoryId] = useState(null);
 	const [alertState, setAlertState] = useState(initAlertState);
@@ -58,13 +55,11 @@ export default function OperatingExpenses() {
 		limit: 25,
 		total: 1,
 	});
-	const [expenseEdit, setExpenseEdit] = useState(null);
-	const [expenseCopy, setExpenseCopy] = useState(null);
 
 	const expenseData = useMemo(() => {
 		const columns = EXPENSE_COLUMNS.map((column, i) => {
-			return ({ ...column, key: column.i })
-		})
+			return ({ ...column, key: column.i });
+		});
 
 		let data = expense?.map((item) => ({
 			...item,
@@ -96,13 +91,13 @@ export default function OperatingExpenses() {
 
 	const categoryData = useMemo(() => {
 		const columns = CATEGORY_COLUMNS.map((column, i) => {
-			return ({ ...column, key: column.i })
-		})
+			return ({ ...column, key: column.i });
+		});
 		let data = [];
 		if (category) {
 			data = category.map((article) => ({ ...article, key: article.id }));
 		}
-		return { data, columns }
+		return { data, columns };
 	}, [category]);
 
 	const updateCategories = async (resetPagination = false) => {
@@ -119,7 +114,7 @@ export default function OperatingExpenses() {
 			const res = await ServiceFunctions.getOperatingExpensesCategoryGetAll(authToken, pagination);
 			setCategory(res.data);
 			const categories = [
-				{ value: 'Все', id: 0, name: 'Все', key: 0 },
+				{ value: 'Без статьи', id: -1, name: 'Без статьи', key: 0 },
 				...res.data.map(_ => ({ ..._, value: _.name, key: _.id }))
 			];
 			dispatch(filtersActions.setExpenseCategories(categories));
@@ -149,7 +144,7 @@ export default function OperatingExpenses() {
 			brand_names: activeBrandName.map((el) => el.value !== 'Все' ? el.value : null).filter(Boolean),
 			vendor_codes: activeArticle.map((el) => el.value !== 'Все' ? el.value : null).filter(Boolean),
 			expense_categories: activeExpenseCategory && Array.isArray(activeExpenseCategory) ? activeExpenseCategory?.map((el) => el.value !== 'Все' ? el.id : null).filter(Boolean) : null,
-		}
+		};
 
 		try {
 			const res = await ServiceFunctions.getOperatingExpensesExpenseGetAll(authToken, requestObject);
@@ -158,8 +153,8 @@ export default function OperatingExpenses() {
 				page: res.page,
 				limit: res.limit,
 				total: res.total_pages,
-			})
-			return
+			});
+			return;
 		} catch (error) {
 			console.error('updateExpenses error', error);
 			setExpense([]);
@@ -181,8 +176,7 @@ export default function OperatingExpenses() {
     }, [activeBrand, activeArticle, selectedRange, expPagination.page, activeExpenseCategory]);
 
 	const modalExpenseHandlerClose = () => {
-		setModalCreateExpenseOpen(false);
-		setExpenseEdit(null);
+		setExpenseModal({ mode: null, isOpen: false, data: null });
 	};
 
 	const modalCategoryHandlerClose = () => {
@@ -192,7 +186,7 @@ export default function OperatingExpenses() {
 
 	const modalHandler = () => {
 		if (view === 'expense') {
-			setModalCreateExpenseOpen(true);
+			setExpenseModal({ mode: 'create', isOpen: true, data: null });
 		} else {
 			setModalCreateCategoryOpen(true);
 		}
@@ -238,7 +232,7 @@ export default function OperatingExpenses() {
 	};
 
 	const handleExpanse = (expense) => {
-		if (expenseEdit) {
+		if (expenseModal.mode === 'edit') {
 			editExpanse(expense);
 		} else {
 			createExpense(expense);
@@ -251,23 +245,22 @@ export default function OperatingExpenses() {
 		try {
 			const res = await ServiceFunctions.postOperatingExpensesExpenseCreate(authToken, requestObject, requestUrl);
 			await updateExpenses(true); // Сбрасываем пагинацию и обновляем данные
-			setAlertState({ message: 'Расход добавлен', status: 'success', isVisible: true });
+			const successMessage = expenseModal.mode === 'copy' ? 'Расход скопирован' : 'Расход добавлен';
+			setAlertState({ message: successMessage, status: 'success', isVisible: true });
 		} catch (error) {
 			console.error('createExpense error', error);
-			setAlertState({ message: 'Не удалось добавить расход', status: 'error', isVisible: true });
+			const errorMessage = expenseModal.mode === 'copy' ? 'Не удалось скопировать расход' : 'Не удалось добавить расход';
+			setAlertState({ message: errorMessage, status: 'error', isVisible: true });
 		} finally {
-			setModalCreateExpenseOpen(false);
+			setExpenseModal({ mode: null, isOpen: false, data: null });
 			setCategoryLoading(false);
-			setExpenseCopy(null);
-			setModalCopyExpenseOpen(false);
 			setLoading(false);
 		}
-	}
+	};
 
 	const editExpanse = async (requestData) => {
 		const { requestObject, requestUrl } = requestData;
 		setLoading(true);
-		setModalCreateExpenseOpen(false);
 		try {
 			const res = await ServiceFunctions.patchOperatingExpensesExpense(authToken, requestObject, requestUrl);
 			await updateExpenses(); // Обновляем данные без сброса пагинации
@@ -276,10 +269,10 @@ export default function OperatingExpenses() {
 			console.error('editExpense error', error);
 			setAlertState({ message: 'Не удалось обновить расход', status: 'error', isVisible: true });
 		} finally {
-			setExpenseEdit(null);
+			setExpenseModal({ mode: null, isOpen: false, data: null });
 			setLoading(false);
 		}
-	}
+	};
 
 	const copyExpense = async (expenseId) => {
 		setLoading(true);
@@ -324,7 +317,7 @@ export default function OperatingExpenses() {
 		} finally {
 			setLoading(false);
 		}
-	}
+	};
 
 	const deleteExpense = async (id, isPeriodic) => {
 		setLoading(true);
@@ -339,7 +332,7 @@ export default function OperatingExpenses() {
 			setDeleteExpenseId(null);
 			setLoading(false);
 		}
-	}
+	};
 
 	const deleteCategoryHandler = async (id) => {
 		setLoading(true);
@@ -379,10 +372,6 @@ export default function OperatingExpenses() {
 
 				{!loading && isDemoMode && (
 					<NoSubscriptionWarningBlock />
-				)}
-
-				{!loading && shops && activeBrand && !activeBrand?.is_primary_collect && !isDemoMode && (
-					<DataCollectWarningBlock />
 				)}
 
 				{!loading && (
@@ -446,29 +435,33 @@ export default function OperatingExpenses() {
 					</div>
 				}
 
-				{!loading && activeBrand?.is_primary_collect && view === 'expense' && expenseData.data?.length > 0 &&
-					<div className={styles.container}>
-						<TableWidget
-							loading={loading}
-							columns={EXPENSE_COLUMNS}
-							data={expenseData.data}
-							setExpenseEdit={setExpenseEdit}
-							setModalCreateExpenseOpen={setModalCreateExpenseOpen}
-							setDeleteExpenseId={setDeleteExpenseId}
-							copyExpense={copyExpense}
-							tableType='expense'
-							pagination={expPagination}
-							setPagination={setExpPagination}
-							setModalEditExpenseOpen={setModalEditExpenseOpen}
-							authToken={authToken}
-							setModalCopyExpenseOpen={setModalCopyExpenseOpen}
-							setExpenseCopy={setExpenseCopy}
-							setAlertState={setAlertState}
-						/>
-					</div>
-				}
-				{!loading && activeBrand?.is_primary_collect && view === 'category' && categoryData.data?.length > 0 &&
-					<div className={styles.container}>
+				{!loading && shops && activeBrand && !activeBrand?.is_primary_collect && !isDemoMode && view === 'expense' && (
+					<DataCollectWarningBlock />
+				)}
+
+				{/* Расходы */}
+				{!loading && activeBrand?.is_primary_collect && view === 'expense' && (
+					expenseData.data?.length > 0
+					? <TableWidget
+						loading={loading}
+						columns={EXPENSE_COLUMNS}
+						data={expenseData.data}
+						setExpenseModal={setExpenseModal}
+						setDeleteExpenseId={setDeleteExpenseId}
+						copyExpense={copyExpense}
+						tableType='expense'
+						pagination={expPagination}
+						setPagination={setExpPagination}
+						authToken={authToken}
+						setAlertState={setAlertState}
+					/>
+					: <NoData />
+				)}
+
+				{/* Статьи */}
+				{!loading && activeBrand?.is_primary_collect && view === 'category' && (
+					categoryData.data?.length > 0 
+					? <div className={styles.container}>
 						<TableWidget
 							loading={loading}
 							columns={CATEGORY_COLUMNS}
@@ -480,44 +473,21 @@ export default function OperatingExpenses() {
 							pagination={categoryPagination}
 							setPagination={setCategoryPagination}
 						/>
-					</div>
-				}
+					</div> 
+					: <NoData />
+				)}
 
-				{modalCreateExpenseOpen &&
-					<ExpenseMainModal
-						open={modalCreateExpenseOpen}
+				{expenseModal.isOpen && expenseModal.mode &&
+					<ExpenseFormModal
+						mode={expenseModal.mode}
+						open={expenseModal.isOpen}
 						onCancel={modalExpenseHandlerClose}
 						setModalCreateCategoryOpen={setModalCreateCategoryOpen}
 						category={category}
+						editData={expenseModal.data}
+						handle={handleExpanse}
+						loading={loading}
 						zIndex={1000}
-						handle={handleExpanse}
-						expenseCopy={expenseCopy}
-						setExpenseCopy={setExpenseCopy}
-						loading={loading}
-					/>
-				}
-
-				{modalEditExpenseOpen && expenseEdit &&
-					<ExpenseEditModal
-						open={modalEditExpenseOpen}
-						onCancel={() => setModalEditExpenseOpen(false)}
-						setModalCreateCategoryOpen={setModalCreateCategoryOpen}
-						category={category}
-						editData={expenseEdit}
-						handle={handleExpanse}
-						loading={loading}
-					/>
-				}
-
-				{modalCopyExpenseOpen && expenseCopy &&
-					<ExpenseCopyModal
-						open={modalCopyExpenseOpen}
-						onCancel={() => { setExpenseCopy(null); setModalCopyExpenseOpen(false) }}
-						setModalCreateCategoryOpen={setModalCreateCategoryOpen}
-						category={category}
-						editData={expenseCopy}
-						handle={createExpense}
-						loading={loading}
 					/>
 				}
 

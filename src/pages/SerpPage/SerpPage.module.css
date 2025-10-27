@@ -1,0 +1,349 @@
+/* Page */
+
+.page {
+    background-color: #F7F6FE;
+    height: 100vh;
+    overflow: hidden;
+    width: 100%;
+    display: flex;
+    box-sizing: border-box;
+    min-width: 1200px;
+}
+
+.page__content {
+    width: calc(100% - 74px);
+    padding: 20px 32px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
+    gap: 20px;
+    box-sizing: border-box;
+    height: 100%;
+    flex-grow: 0;
+    flex-shrink: 0;
+    overflow: auto;
+}
+
+.page__sideNavWrapper {
+    height: 100%;
+    width: auto;
+    overflow: visible;
+    display: flex;
+    justify-content: stretch;
+    align-items: stretch;
+    flex-grow: 1;
+    flex-shrink: 0;
+}
+
+.page__headerWrapper {
+    width: 100%;
+}
+
+.page__loaderWrapper {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.page__loaderWrapper_shadow {
+    box-shadow: 0px 0px 20px 0px #00000014;
+    background-color: white;
+    border-radius: 16px;
+    padding: 16px;
+}
+
+/* search & filters */
+.page__searchBlock {
+    width: 100%;
+    display: grid;
+    grid-template-columns: calc(50% + 100px) calc(50% - 100px);
+}
+
+.page__searchWrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.page__searchLabel {
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 140%;
+    letter-spacing: 0%;
+}
+
+.page__searchInputWrapper {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 12px;
+}
+
+.page__filterWrapper {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+}
+
+.page__searchSuggestions {
+    display: flex;
+    align-items: center;
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 140%;
+    letter-spacing: 0%;
+}
+
+.page__searchSuggestionButton {
+    background: transparent;
+    border: none;
+    color: #5329FF;
+    cursor: pointer;
+    transition: all .2s ease;
+}
+.page__searchSuggestionButton:hover {
+    opacity: 0.8;
+}
+.page__searchSuggestionButton:active {
+    opacity: 0.6;
+    transform: scale(0.95);
+}
+
+
+
+/* Bars block */
+
+.page__barsBlock {
+    width: 100%;
+    display: flex;
+    align-items: stretch;
+    gap: 12px;
+
+    @media (max-width: 1399px) {
+        display: grid;
+        grid-template-columns: 1fr 2fr;
+    }
+}
+
+
+.page__bar {
+    width: 50%;
+    flex-grow: 0;
+    flex-shrink: 1;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0px 0px 20px 0px #00000014;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    @media (max-width: 1399px) {
+        width: 100%;
+    }
+}
+
+.page__barHeader {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+}
+
+.page__barTitle {
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 160%;
+    letter-spacing: 0%;
+    color: #8C8C8C;
+    margin: 0;
+    padding: 0;
+}
+
+.page__barContent {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-center;
+}
+
+.page__barFrequency {
+    font-weight: 600;
+    font-size: 22px;
+    line-height: 90%;
+    letter-spacing: 0%;
+    margin: 0;
+    padding: 0;
+}
+
+.page__barLink {
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+    background-color: #F7F6FE;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    color: #5329FF;
+    transition: all .15s ease;
+}
+
+.page__barLink:hover {
+    transform: scale(1.1);
+    opacity: 0.8;
+}
+
+.page__barLink:active {
+    transform: scale(0.95);
+    opacity: 0.6;
+}
+
+.page__serpReportWrapper {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 32px;
+}
+
+.page__serpReport {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 9px;
+}
+
+.page__serpReportIcon {
+    width: 20px;
+    height: 20px;
+    border-radius: 3px;
+}
+
+.page__serpReportIcon_orange {
+    background-color: #F0AD00;
+}
+
+.page__serpReportIcon_green {
+    background-color: #00B69B;
+}
+
+.page__serpReportPercent {
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 100%;
+    letter-spacing: 0%;
+}
+
+.page__serpReportDesc {
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 100%;
+    letter-spacing: 0%;
+}
+
+.page__barMiniChart {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.page__barMiniChartLine {
+    height: 8px;
+    border-radius: 3px;
+}
+
+
+
+/* Table and schema */
+.page__schemaWrapper {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 157px 1fr;
+    gap: 12px;
+}
+
+.page__tableBlock {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 8px;
+    background-color: white;
+    border-radius: 16px;
+    box-shadow: 0px 0px 20px 0px #00000014;
+}
+
+.page__summary {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.page__summaryItem {
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    color: #8C8C8C;
+    margin: 0;
+    padding: 0;
+}
+
+.page__summaryItem span {
+    color: #1A1A1A;
+}
+
+.page__tableWrapper {
+    width: 100%;
+    overflow: auto;
+    max-height: 90vh;
+    scrollbar-width: thin;
+    scrollbar-color: #5329ff80 transparent;
+}
+
+.page__tableWrapper::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+    border-radius: 6px;
+}
+
+.page__tableWrapper::-webkit-scrollbar-thumb {
+    border-radius: 6px;
+    background: #5329ff80;
+}
+
+.page__tableWrapper::-webkit-scrollbar-track {
+    background: transparent;
+    height: 50%;
+    margin: 40px;
+}
+
+
+/* segmented label */
+
+.segmentedLabelWrapper {
+    height: 38px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.segmentedLabel {
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    margin: 0;
+    padding: 0;
+    color: inherit;
+}

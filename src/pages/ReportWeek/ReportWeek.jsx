@@ -34,7 +34,7 @@ export default function ReportWeek() {
 	const { user, authToken } = useContext(AuthContext);
 	const { isDemoMode } = useDemoMode();
 	const dispatch = useAppDispatch();
-  const { activeBrand, selectedRange, activeBrandName, activeArticle, activeGroup, activeWeeks, isFiltersLoaded, shops } = useAppSelector(state => state.filters);
+  	const { activeBrand, selectedRange, activeBrandName, activeArticle, activeGroup, activeWeeks, isFiltersLoaded, shops } = useAppSelector(state => state.filters);
 	const filters = useAppSelector((state) => state.filters);
 	//const { shops } = useAppSelector((state) => state.shopsSlice);
 	const [loading, setLoading] = useState(true);
@@ -111,14 +111,14 @@ export default function ReportWeek() {
 		}
 	}, [isDemoMode, weekOptions]);
 
-	// useEffect(() => {
-	// 	if (weekOptions?.length) {
-	// 		dispatch(filterActions.setActiveFilters({
-	// 			stateKey: 'activeWeeks',
-	// 			data: weekOptions.slice(0, 12),
-	// 		}));
-	// 	}
-	// }, [filters.filters, weekOptions]);
+	useEffect(() => {
+		if (isDemoMode && weekOptions?.length) {
+			dispatch(filterActions.setActiveFilters({
+				stateKey: 'activeWeeks',
+				data: weekOptions.slice(0, 12),
+			}));
+		}
+	}, [filters.filters, weekOptions, isDemoMode]);
 
 	const updateDataReportWeek = async () => {
 		setLoading(true);
@@ -194,15 +194,15 @@ export default function ReportWeek() {
 			...summary,
 			key: 'summary',
 			week_label: 'Итого за период',
-			drr: (summary.advert_amount / summary.revenue_rub) * 100,
-			avg_spp: summary.avg_spp / rows.length,
-			return_on_investment: summary.return_on_investment / rows.length,
-			marginality: summary.marginality / rows.length,
-			purchase_percent: summary.purchase_percent / rows.length,
-			logistics_per_product: summary.logistics_total_rub / summary.revenue_quantity,
-			cost_price_per_one: summary.cost_price / summary.revenue_quantity,
-			profit_per_one: summary.profit / summary.revenue_quantity,
-			avg_check: summary.revenue_rub / summary.revenue_quantity,
+			drr: summary.revenue_rub !== 0 ? (summary.advert_amount / summary.revenue_rub) * 100 : 0,
+			avg_spp: rows.length !== 0 ? summary.avg_spp / rows.length : 0,
+			return_on_investment: rows.length !== 0 ? summary.return_on_investment / rows.length : 0,
+			marginality: rows.length !== 0 ? summary.marginality / rows.length : 0,
+			purchase_percent: rows.length !== 0 ? summary.purchase_percent / rows.length : 0,
+			logistics_per_product: summary.revenue_quantity !== 0 ? summary.logistics_total_rub / summary.revenue_quantity : 0,
+			cost_price_per_one: summary.revenue_quantity !== 0 ? summary.cost_price / summary.revenue_quantity : 0,
+			profit_per_one: summary.revenue_quantity !== 0 ? summary.profit / summary.revenue_quantity : 0,
+			avg_check: summary.revenue_quantity !== 0 ? summary.revenue_rub / summary.revenue_quantity : 0,
 		};
 
 		rows.unshift(summary);

@@ -1,10 +1,11 @@
 import { useState, useRef, useEffect } from 'react';
 import { Form, Input, Checkbox, ConfigProvider, Tooltip, AutoComplete, Modal, Select } from 'antd';
 import { normilizeUnitsInputValue } from './UnitCalcUtils';
-import { getCalculatorSubjects } from '../../service/api/api';
+import { getCalculatorSubjects } from '@/service/api/api';
 import styles from './BasicDataFormBlockDesktop.module.css';
-import useDebouncedFunction from '../../service/hooks/useDebounce';
-import { useAppSelector } from '../../redux/hooks';
+import useDebouncedFunction from '@/service/hooks/useDebounce';
+import { useAppSelector } from '@/redux/hooks';
+import { sortByRelevance } from '@/service/utils';
 
 const BasicDataFormBlockDesktop = ({ form, setMpMainFee, isProductFromToken, setIsProductFromToken }) => {
     const [autocompleteOptions, setAutocompleteOptions] = useState();
@@ -17,7 +18,8 @@ const BasicDataFormBlockDesktop = ({ form, setMpMainFee, isProductFromToken, set
         const res = await getCalculatorSubjects({search_string: value.trim()});
 
         if (res.rows) {
-            setAutocompleteOptions(res.rows);
+            const sortedRows = sortByRelevance(res.rows, value.trim(), 'name');
+            setAutocompleteOptions(sortedRows);
         } else {
             setError(true);
         }

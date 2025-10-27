@@ -78,7 +78,7 @@ const AddRnpModal = ({ isAddRnpModalVisible, setIsAddRnpModalVisible, addRnp }) 
             const response = await ServiceFunctions.getRnpProducts(
                 authToken,
                 selectedRange,
-                activeBrand.id,
+                activeBrand?.id,
                 filters,
                 page,
                 search,

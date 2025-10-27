@@ -55,12 +55,10 @@
     justify-content: space-between;
     align-items: flex-start;
     gap: 20px;
-    /* overflow-y: scroll;
-    overflow-x: hidden; */
     overflow: auto;
     padding-right: 12px;
     padding-bottom: 30px;
-    scrollbar-color: #5329ff80 #5329ff80;
+    scrollbar-color: #5329ff80 transparent;
     scrollbar-width: thin;
 }
 

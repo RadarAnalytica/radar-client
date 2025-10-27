@@ -8,7 +8,7 @@ import { Helmet } from 'react-helmet-async';
 import UnderDevelopmentPlugPage from './pages/underDevelopmentPlugPage/underDevelopmentPlugPage';
 import NoSubscriptionPlugPage from './pages/noSubscriptionPlugPage/noSubscriptionPlugPage';
 import NoSubscriptionPage from './pages/NoSubscriptionPage';
-
+import { useAppSelector } from './redux/hooks';
 
 /**
  * -----------------------------------------------
@@ -143,26 +143,22 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const isCalculateEntryUrl = sessionStorage.getItem('isCalculateEntryUrl');
+  const shops = useAppSelector((state) => state.filters.shops);
+  const isUserHasActiveShop = shops?.some((shop: any) => !shop.is_deleted && shop.is_valid);
+  const isDemoUser = ['smart', 'test'].includes(user?.subscription_status?.toLowerCase());
 
   // -------this is test user object for dev purposes ------//
 
-//   let user = {
-//     email: "modinsv@yandex.ru",
-//     id: 2,
-//     is_confirmed: true,
-//     is_onboarded: false,
-//     is_report_downloaded: true,
-//     is_test_used: true,
-//     role: "admin",
-//     subscription_status: null
-//   }
-
- //const user = undefined
-/**
-  1. null
-  2. expired
-  3& smart + !onboardig
- */
+  // let user = {
+  //   email: "modinsv@yandex.ru",
+  //   id: 2,
+  //   is_confirmed: true,
+  //   is_onboarded: false,
+  //   is_report_downloaded: true,
+  //   is_test_used: true,
+  //   role: "admin",
+  //   subscription_status: null
+  // }
 
   //------- 0. Under development protection ----------//
   if (underDevProtected && process.env.NODE_ENV === 'production') {
@@ -243,10 +239,9 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   }
 
   if (onboardProtected 
-    && user?.subscription_status 
-    && (['smart', 'test'].includes(user?.subscription_status?.toLowerCase())) 
-    && !user.is_onboarded) 
-  {
+    && !user.is_onboarded 
+    && (isDemoUser || !isUserHasActiveShop)
+  ) {
     switch(onboardGuardType) {
       case 'redirect': {
         return (<Navigate to={onboardRedirect} />);
