@@ -171,9 +171,6 @@ export default function ExpenseFormModal({
 
 	// Инициализация формы при редактировании или копировании
 	useEffect(() => {
-
-		console.log('editData', editData);
-
 		if (mode !== 'create' && editData) {
 			// Для разовых расходов при редактировании
 			if (mode === 'edit' && !editData.is_periodic) {
@@ -191,9 +188,9 @@ export default function ExpenseFormModal({
 					date: formattedDate,
 					expense_categories: category.map((el) => editData.expense_categories.includes(el.name) ? el.id : false).filter(Boolean),
 					selection: selectionType,
-					shop: editData.shop?.id,
-					vendor_code: editData.vendor_code?.id,
-					brand_name: editData.brand_name?.id,
+					shop: editData.shop,
+					vendor_code: editData.vendor_code,
+					brand_name: editData.brand_name,
 					frequency: editData.frequency,
 					week: editData.week,
 					month: editData.month,
@@ -226,8 +223,8 @@ export default function ExpenseFormModal({
 					expense_categories: expenseCategories,
 					selection: selectionType,
 					shops: editData.shops || [],
-					vendor_codes: editData.vendor_codes || editData.vendor_code?.id || [],
-					brand_names: editData.brand_names || editData.brand_name?.id || [],
+					vendor_codes: editData.vendor_codes || editData.vendor_codes || [],
+					brand_names: editData.brand_names || editData.brand_names || [],
 					frequency: editData.frequency,
 					week: editData.week,
 					month: editData.month,
@@ -847,7 +844,7 @@ export default function ExpenseFormModal({
 											>
 												<MultiSelect
 													form={form}
-													hasSelectAll={mode === 'create'}
+													hasSelectAll
 													optionsData={filters[0]?.articles.data.map((el, i) => ({
 														key: el.value,
 														value: el.value,
@@ -869,7 +866,7 @@ export default function ExpenseFormModal({
 											>
 												<MultiSelect
 													form={form}
-													hasSelectAll={mode === 'create'}
+													hasSelectAll
 													optionsData={filters[0]?.brands.data.map((el, i) => ({
 														key: el.value,
 														value: el.value,
