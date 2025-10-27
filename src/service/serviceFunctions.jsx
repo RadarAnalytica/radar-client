@@ -20,7 +20,7 @@ export const getRequestObject = (filters, selectedRange, shopId) => {
 	}
 	// filters?.activeArticle.value !== 'Все'
 	if (filters.activeArticle && Array.isArray(filters.activeArticle) && !filters.activeArticle.some(_ => _.value === 'Все')) {
-		requestObject.articles = filters.activeArticle.map(_ => _.value);
+		requestObject.articles = filters.activeArticle.map(_ => _.name);
 	}
 	if (filters.activeGroup && Array.isArray(filters.activeGroup) && !filters.activeGroup.some(_ => _.value === 'Все')) {
 		requestObject.product_groups = filters.activeGroup.map(_ => _.id);
