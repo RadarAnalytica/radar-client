@@ -501,7 +501,7 @@ const SerpPage = () => {
                                             showQuickJumper: true,
                                             hideOnSinglePage: true
                                         }}
-                                        headerCellWrapperStyle={{padding: '10px 25px 11px 12px' }}
+                                        headerCellWrapperStyle={{padding: '10px 25px 11px 12px', height: '35px' }}
                                         bodyCellWrapperStyle={{ height: '70px', padding: '5px 12px'}}
                                         customCellRender={{
                                             idx: ['ad', 'name', 'rating'],
