@@ -12,7 +12,7 @@ export const chartCompareConfigObject = [
     { engName: 'avg_frequency', ruName: 'Среднедневная частотность', color: '#00AF4F', isControlTooltip: false, controlTooltipText: 'text', hasUnits: true, units: 'шт', isOnChart: true, isAnnotation: false, isControl: true, defaultActive: false },
     //{ engName: 'ad_booster', ruName: 'Реклама бустер', color: '#D54AFF', isControlTooltip: false, controlTooltipText: 'text', hasUnits: false, isOnChart: true, isAnnotation: false, isControl: true, defaultActive: false },
     //{ engName: 'ad_search', ruName: 'Реклама в поиске', color: '#F93C65', isControlTooltip: false, controlTooltipText: 'text', hasUnits: false, isOnChart: true, isAnnotation: false, isControl: true, defaultActive: false },
-    { engName: 'wb_id_frequency', ruName: 'Частотность артикула', color: '#F9A43C', isControlTooltip: false, hasUnits: false, isOnChart: true, isAnnotation: false, isControl: true, defaultActive: false },
+    //{ engName: 'wb_id_frequency', ruName: 'Частотность артикула', color: '#F9A43C', isControlTooltip: false, hasUnits: false, isOnChart: false, isAnnotation: false, isControl: false, defaultActive: false },
     { engName: 'promotions', ruName: 'Акции', color: '#FF0000', isControlTooltip: false, controlTooltipText: 'text', hasUnits: false, isOnChart: false, isAnnotation: true, isControl: true, defaultActive: true },
     { engName: 'seasonality', ruName: 'Сезоны продаж', color: '#88E473', isControlTooltip: false, hasUnits: false, isOnChart: false, isAnnotation: false, isControl: true, defaultActive: true },
 ];
