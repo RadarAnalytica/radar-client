@@ -27,6 +27,8 @@ import trendingQueriesDay from '../mock/trend-analysis-day.json';
 import ceoComparisonRaw from '../mock/ceo-comparison.json';
 import descriptionGeneratorKeywords from '../mock/description-generator-keywords.json';
 import rnpFiltersData from '../mock/rnp-filters.json';
+import serpRegions from '../mock/serp-regions.json';
+import serpQueryData from '../mock/serp-query-data.json'
 
 export class DemoDataService {
   private static instance: DemoDataService;
@@ -99,6 +101,8 @@ export class DemoDataService {
       'https://radarmarket.ru/api/web-service/trending-queries/get': () => this.getTrendingQueries(),
       'https://radarmarket.ru/api/analytic/query-dynamics/month': () => this.getTrendingAnalysisMonth(),
       'https://radarmarket.ru/api/analytic/query-dynamics/day': () => this.getTrendingAnalysisDay(),
+      'https://radarmarket.ru/api/web-service/search-map/get-regions': () => this.getSERPRegions(),
+      'https://radarmarket.ru/api/web-service/search-map/get-query-data': () => this.getSERPQueryData(),
     };
 
     const dataGetter = endpointMap[endpoint];
@@ -269,6 +273,14 @@ export class DemoDataService {
 
   private getDescriptionGeneratorKeywords(): any {
     return descriptionGeneratorKeywords;
+  }
+
+  private getSERPRegions(): any {
+    return serpRegions;
+  }
+
+  private getSERPQueryData(): any {
+    return serpQueryData;
   }
 
   private getSubscriptionsData(): any {

@@ -10,7 +10,8 @@ export const PlainSelect = (
         optionsData, //array
         handler, // (e) => void
         mode,
-        allowClear
+        allowClear,
+        disabled
     }
 ) => {
 
@@ -59,6 +60,7 @@ export const PlainSelect = (
                         id={selectId}
                         onChange={handler}
                         getPopupContainer={(triggerNode) => triggerNode.parentNode}
+                        disabled={disabled}
                     />
                 </ConfigProvider>
             </div>

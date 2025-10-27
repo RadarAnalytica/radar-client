@@ -14,6 +14,8 @@ import { ServiceFunctions } from '@/service/serviceFunctions';
 import moment from 'moment';
 import AuthContext from '@/service/AuthContext';
 import { serpPageCustomTableCellRender } from '@/shared';
+import { useDemoMode } from '@/app/providers';
+import NoSubscriptionWarningBlock from '@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock';
 
 
 
@@ -115,6 +117,7 @@ const buttonTheme = {
 const SerpPage = () => {
 
     // states and basics
+    const { isDemoMode } = useDemoMode()
     const [filtersData, setFiltersData] = useState<ISerpFiltersData[] | null>(null);
     const [activeFilter, setActiveFilter] = useState<ISerpFiltersData | null>(null);
     const [queryData, setQueryData] = useState<ISerpProduct[] | null>(null);
@@ -123,7 +126,7 @@ const SerpPage = () => {
     const [barsData, setBarsData] = useState<{ frequency: number; organic: number; ads: number, query: string } | null>(null);
     const [segmentedOptions, setSegmentedOptions] = useState(null);
     const [activeTableTab, setActiveTableTab] = useState(0);
-    const [searchInputValue, setSearchInputValue] = useState('');
+    const [searchInputValue, setSearchInputValue] = useState(isDemoMode ? 'Платья и сарафаны' : '');
     const [isLoading, setIsLoading] = useState(false);
     const [pagination, setPagination] = useState({
         current: 1,
@@ -132,6 +135,9 @@ const SerpPage = () => {
     });
     const { authToken } = useContext(AuthContext);
     const tableContainerRef = useRef<HTMLDivElement>(null);
+
+
+
 
 
     // handlers
@@ -221,7 +227,7 @@ const SerpPage = () => {
             setSegmentedOptions({
                 all: res.total_products,
                 organic: Math.round(res.total_products * (res.ad_percent.organic / 100)),
-                ads: Math.round(res.total_products * (res.ad_percent.ad / 100)),
+                ads: res.total_products - Math.round(res.total_products * (res.ad_percent.organic / 100)),
             });
             setSummaryData({
                 totalProduct: res.total_products,
@@ -237,7 +243,7 @@ const SerpPage = () => {
             setPagination({
                 current: 1,
                 pageSize: 20,
-                total: Math.ceil(res.total_products / 20),
+                total: isDemoMode ? 5 : Math.ceil(res.total_products / 20), // 5 cuz we have 100 items as demo
             });
         } catch (error) {
             console.error(error);
@@ -292,6 +298,8 @@ const SerpPage = () => {
                     />
                 </div>
 
+                {isDemoMode && <NoSubscriptionWarningBlock />}
+
 
                 {/* search & filters */}
                 <div className={styles.page__searchBlock}>
@@ -321,6 +329,7 @@ const SerpPage = () => {
                                             <path d="M8.71991 0.556763C9.01281 0.263923 9.48758 0.263887 9.78046 0.556763C10.0732 0.849645 10.0733 1.32444 9.78046 1.61731L6.39764 5.00012L9.78046 8.38293C10.0732 8.67584 10.0733 9.15064 9.78046 9.44348C9.48761 9.73633 9.01281 9.73623 8.71991 9.44348L5.3371 6.06067L1.95428 9.44348C1.66143 9.73627 1.18662 9.73621 0.893738 9.44348C0.600915 9.1506 0.600915 8.67581 0.893738 8.38293L4.27655 5.00012L0.893738 1.61731C0.600845 1.32442 0.600845 0.849656 0.893738 0.556763C1.18663 0.26387 1.66139 0.263869 1.95428 0.556763L5.3371 3.93958L8.71991 0.556763Z" fill="#8C8C8C" />
                                         </svg>)
                                     }}
+                                    disabled={isDemoMode}
                                 />
                             </ConfigProvider>
                             {/* SEARCH BUTTON */}
@@ -332,6 +341,8 @@ const SerpPage = () => {
                                     type='primary'
                                     size='large'
                                     onClick={searchButtonClickHandler}
+                                    loading={isLoading}
+                                    disabled={isDemoMode}
                                     style={{
                                         display: 'flex',
                                         alignItems: 'center',
@@ -370,6 +381,7 @@ const SerpPage = () => {
                             }}
                             mode={undefined}
                             allowClear={false}
+                            disabled={isDemoMode}
                         />
                     </div>
                 </div>
@@ -484,7 +496,7 @@ const SerpPage = () => {
                             <div className={styles.page__summary}>
                                 <p className={styles.page__summaryItem}>Товаров: <span>{summaryData?.totalProduct || 0}</span></p>
                                 <p className={styles.page__summaryItem}>Обработано страниц поиска: <span>{summaryData?.totalPages || 0}</span></p>
-                                <p className={styles.page__summaryItem}>Собраны: <span>{moment(summaryData?.date).local().format('DD.MM.YYYY, HH:mm') || ''}</span></p>
+                                <p className={styles.page__summaryItem}>Собраны: <span>{moment(`${summaryData?.date}+00:00`).local().format('DD.MM.YYYY, HH:mm') || ''}</span></p>
                             </div>
                             <div className={styles.page__tableWrapper} ref={tableContainerRef}>
                                 {tableData &&
@@ -492,7 +504,7 @@ const SerpPage = () => {
                                         config={serpPageTableConfig}
                                         dataSource={tableData}
                                         preset='radar-table-default'
-                                        stickyHeader
+                                        stickyHeader={-1}
                                         pagination={{
                                             current: pagination.current,
                                             pageSize: pagination.pageSize,
@@ -501,8 +513,8 @@ const SerpPage = () => {
                                             showQuickJumper: true,
                                             hideOnSinglePage: true
                                         }}
-                                        headerCellWrapperStyle={{padding: '10px 25px 11px 12px', height: '35px' }}
-                                        bodyCellWrapperStyle={{ height: '70px', padding: '5px 12px'}}
+                                        headerCellWrapperStyle={{ padding: '10px 25px 11px 12px', height: '35px' }}
+                                        bodyCellWrapperStyle={{ height: '70px', padding: '5px 12px' }}
                                         customCellRender={{
                                             idx: ['ad', 'name', 'rating'],
                                             renderer: serpPageCustomTableCellRender,
