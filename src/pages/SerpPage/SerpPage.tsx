@@ -227,7 +227,7 @@ const SerpPage = () => {
             setSegmentedOptions({
                 all: res.total_products,
                 organic: Math.round(res.total_products * (res.ad_percent.organic / 100)),
-                ads: Math.round(res.total_products * (res.ad_percent.ad / 100)),
+                ads: res.total_products - Math.round(res.total_products * (res.ad_percent.organic / 100)),
             });
             setSummaryData({
                 totalProduct: res.total_products,
@@ -496,7 +496,7 @@ const SerpPage = () => {
                             <div className={styles.page__summary}>
                                 <p className={styles.page__summaryItem}>Товаров: <span>{summaryData?.totalProduct || 0}</span></p>
                                 <p className={styles.page__summaryItem}>Обработано страниц поиска: <span>{summaryData?.totalPages || 0}</span></p>
-                                <p className={styles.page__summaryItem}>Собраны: <span>{moment(summaryData?.date).local().format('DD.MM.YYYY, HH:mm') || ''}</span></p>
+                                <p className={styles.page__summaryItem}>Собраны: <span>{moment(`${summaryData?.date}+00:00`).local().format('DD.MM.YYYY, HH:mm') || ''}</span></p>
                             </div>
                             <div className={styles.page__tableWrapper} ref={tableContainerRef}>
                                 {tableData &&
@@ -504,7 +504,7 @@ const SerpPage = () => {
                                         config={serpPageTableConfig}
                                         dataSource={tableData}
                                         preset='radar-table-default'
-                                        stickyHeader
+                                        stickyHeader={-1}
                                         pagination={{
                                             current: pagination.current,
                                             pageSize: pagination.pageSize,
