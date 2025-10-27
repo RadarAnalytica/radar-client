@@ -52,7 +52,11 @@ const createFiltersDTO = (data, shopsData) => {
         }
         b.wb_id?.forEach(a => {
           if (_.shop_data.is_primary_collect) {
-            allArticlesData.push({ name: a, value: a, brand: b.name ? b.name : brandObject.value, category: c.name });
+            allArticlesData.push({ 
+              name: a ? a : `Без названия&${_.shop_data.id}`, 
+              value: a ? a : `Без названия (${_.shop_data.brand_name})`, 
+              brand: b.name ? b.name : brandObject.value, category: c.name 
+            });
           }
         });
       });
@@ -115,7 +119,11 @@ const createFiltersDTO = (data, shopsData) => {
         if (!isBrandInList) {
           brandsData.push(brandObject);
         }
-        const items = item.wb_id.map(_ => ({ name: _, value: _, brand: item.name ? item.name : brandObject.value, category: c.name }));
+        const items = item.wb_id.map(_ => ({ 
+          name: _ ? _ : `Без названия&${i.shop_data.id}`, 
+          value: _ ? _ : `Без названия (${i.shop_data.brand_name})`, 
+          brand: item.name ? item.name : brandObject.value, category: c.name 
+        }));
         articlesData = [...articlesData, ...items];
       });
     });
