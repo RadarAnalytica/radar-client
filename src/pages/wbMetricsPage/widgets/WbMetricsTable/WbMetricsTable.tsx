@@ -65,6 +65,7 @@ const WbMetricsTable: React.FC<WbMetricsTableProps> = ({
 }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(20);
+  const [sortState, setSortState] = useState({ sort_field: undefined, sort_order: undefined });
   const tableContainerRef = useRef(null);
 
   const getColorForPercentage = (percentage: number, opacity: number = 1): string => {
@@ -289,7 +290,13 @@ const WbMetricsTable: React.FC<WbMetricsTableProps> = ({
         {!loading && data && (
           <RadarTable
             config={getTableColumns()}
-            dataSource={prepareTableData()}
+            dataSource={(sortState.sort_field === undefined || sortState.sort_order === undefined) ? [...prepareTableData()] : [...prepareTableData()].sort((a, b) => {
+              if (a.product.name.localeCompare(b.product.name) > 0) {
+                return sortState.sort_order === 'ASC' ? 1 : -1;
+              } else {
+                return sortState.sort_order === 'ASC' ? -1 : 1;
+              }
+            })}
             preset="radar-table-default"
             scrollContainerRef={tableContainerRef}
             stickyHeader
@@ -297,6 +304,7 @@ const WbMetricsTable: React.FC<WbMetricsTableProps> = ({
               idx: getTableColumns().map(col => col.dataIndex),
               renderer: customCellRender,
             }}
+            onSort={(sort_field, sort_order) => setSortState({ sort_field, sort_order })}
             pagination={{
               current: currentPage,
               pageSize: pageSize,

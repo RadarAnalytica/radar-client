@@ -84,7 +84,7 @@ const WbMetricsPage: React.FC = () => {
         dataIndex: 'product',
         width: 280,
         fixed: true,
-        sortable: false,
+        sortable: true,
         hidden: false
       },
       {
