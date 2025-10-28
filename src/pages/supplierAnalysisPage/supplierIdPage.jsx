@@ -44,6 +44,13 @@ const SupplierIdPage = () => {
     const isAnyDataLoading = useAppSelector(store => store.supplierAnalysis.isAnyDataLoading);
     const params = useParams();
     const navigate = useNavigate();
+    
+    // Максимальная дата для календаря - вчерашний день (блокируем сегодня)
+    const maxDate = (() => {
+        const yesterday = new Date();
+        yesterday.setDate(yesterday.getDate() - 1);
+        return yesterday;
+    })();
 
     //Проверяем наличие базовых данных поставщика и запрашиваем их если их нет
     useEffect(() => {
@@ -126,6 +133,7 @@ const SupplierIdPage = () => {
                             groupSelect={false}
                             tempPageCondition='supplier'
                             isDataLoading={isAnyDataLoading}
+                            maxCustomDate={maxDate}
                         />
                     </div>
                     <BarsWidget

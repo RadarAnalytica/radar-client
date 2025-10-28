@@ -6,9 +6,7 @@ const ITEMS_PER_PAGE = 15;
 
 const RevenueStorageChart = ({ revenueByWarehouse, dataRevenueStorage, labels, max, isLoading }) => {
     const [currentPage, setCurrentPage] = useState(0);
-    console.log(revenueByWarehouse, "revenueByWarehouse")
-    console.log(dataRevenueStorage, "dataRevenueStorage")
-    console.log(labels, "labels")
+
     // Обработка и сортировка данных
     const { sortedData, totalPages, maxRevenue } = useMemo(() => {
         let dataArray = [];
