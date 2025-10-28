@@ -35,8 +35,28 @@ const MarginChartBlock = ({ dataDashBoard, loading }) => {
         step = 25;
     }
 
-    const marginMin = dataProfitPlus ? Math.round([...dataProfitPlus].sort((a, b) => a - b)[0]) : 0;
-    const marginMax = dataProfitPlus ? Math.ceil([...dataProfitPlus].sort((a, b) => b - a)[0] / 100) * 100 : 100;
+    // Вычисляем отдельные диапазоны для ROI и маржинальности
+    const roiMin = dataProfitability && dataProfitability.length > 0 ? Math.min(...dataProfitability) : 0;
+    const roiMax = dataProfitability && dataProfitability.length > 0 ? Math.max(...dataProfitability) : 0;
+    
+    const marginMin = dataProfitPlus && dataProfitPlus.length > 0 ? Math.min(...dataProfitPlus) : 0;
+    const marginMax = dataProfitPlus && dataProfitPlus.length > 0 ? Math.max(...dataProfitPlus) : 100;
+    
+    // Нормализуем оси так, чтобы ноль был точно посередине графика для обеих осей
+    
+    // Для ROI: находим максимальное отклонение от нуля
+    const roiMaxAbs = Math.max(Math.abs(roiMin), Math.abs(roiMax));
+    
+    // Для маржинальности: находим максимальное отклонение от нуля
+    const marginMaxAbs = Math.max(Math.abs(marginMin), Math.abs(marginMax));
+    
+    // Устанавливаем симметричные диапазоны относительно нуля
+    const roiAxisMin = -roiMaxAbs;
+    const roiAxisMax = roiMaxAbs;
+    
+    const marginAxisMin = -marginMaxAbs;
+    const marginAxisMax = marginMaxAbs;
+    
     const data = {
         labels: labels,
         datasets: [
@@ -159,6 +179,8 @@ const MarginChartBlock = ({ dataDashBoard, loading }) => {
             A: {
                 id: 'A',
                 position: 'left',
+                min: roiAxisMin,
+                max: roiAxisMax,
                 grid: {
                     drawOnChartArea: true, // only want the grid lines for one axis to show up
                     tickLength: 0,
@@ -167,7 +189,6 @@ const MarginChartBlock = ({ dataDashBoard, loading }) => {
                     color: 'white',
                 },
                 ticks: {
-                    //stepSize: step,
                     tickLength: 0,
                     color: '#5329FF',
                 },
@@ -176,7 +197,8 @@ const MarginChartBlock = ({ dataDashBoard, loading }) => {
                 id: 'B',
                 type: 'linear',
                 position: 'right',
-                suggestedMax: marginMax,
+                min: marginAxisMin,
+                max: marginAxisMax,
                 grid: {
                     drawOnChartArea: false,
                     tickLength: 0,
@@ -185,7 +207,6 @@ const MarginChartBlock = ({ dataDashBoard, loading }) => {
                     color: 'white',
                 },
                 ticks: {
-                    stepSize: Math.round((marginMax - marginMin) / 5),
                     color: '#F0AD00',
                 },
             },
