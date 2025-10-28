@@ -1,10 +1,11 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect, useLayoutEffect } from 'react';
 import styles from './tableWidget.module.css';
 import { tableConfig, sortTableDataFunc } from '../../shared';
 import { formatPrice } from '../../../../../service/utils';
 import { Tooltip, Pagination, ConfigProvider, Progress } from 'antd';
 import { Table as RadarTable } from 'radar-ui';
 import { newTableConfig } from '../../shared/configs/newTableConfig';
+import { CURR_SA_TABLE_CONF_VER } from '../../shared/configs/newTableConfig'
 
 /**
  * Краткое описание:
@@ -42,10 +43,10 @@ const customCellRender = (value, record, index, dataIndex) => {
         return (
             <div className={styles.productCustomCell}>
                 <div className={styles.productCustomCellImgWrapper}>
-                    <img 
-                        src={record.photo} 
-                        width={30} 
-                        height={40} 
+                    <img
+                        src={record.photo}
+                        width={30}
+                        height={40}
                         alt='Product'
                         onError={(e) => { e.target.style.display = 'none'; }}
                     ></img>
@@ -75,10 +76,10 @@ const customCellRender = (value, record, index, dataIndex) => {
 const TableWidget = ({ stockAnalysisFilteredData, loading, progress }) => {
 
     const containerRef = useRef(null); // реф скролл-контейнера (используется чтобы седить за позицией скрола)
-    const [tableData, setTableData] = useState(); // данные для рендера таблицы
+    const [tableData, setTableData] = useState([]); // данные для рендера таблицы
     const [sortState, setSortState] = useState(initSortState); // стейт сортировки (см initSortState)
     const [paginationState, setPaginationState] = useState({ current: 1, total: 50, pageSize: 25 });
-    const [ tableConfig, setTableConfig ] = useState();
+    const [tableConfig, setTableConfig] = useState(newTableConfig);
 
     // задаем начальную дату
     useEffect(() => {
@@ -118,48 +119,54 @@ const TableWidget = ({ stockAnalysisFilteredData, loading, progress }) => {
 
     const onResizeGroup = (columnKey, width) => {
         // Минимальная ширина колонки, чтобы контент не скрывался полностью
-        const MIN_COLUMN_WIDTH = 80;
-        
+        const MIN_COLUMN_WIDTH = 0;
+
         // Обновляем конфигурацию колонок с группированной структурой
         const updateColumnWidth = (columns) => {
-          return columns.map(col => {
-            // Если это группа с children
-            if (col.children && col.children.length > 0) {
-              const updatedChildren = updateColumnWidth(col.children);
+            return columns.map(col => {
+                // Если это группа с children
+                if (col.children && col.children.length > 0) {
+                    const updatedChildren = updateColumnWidth(col.children);
 
-              // Всегда пересчитываем ширину группы на основе суммы ширин дочерних колонок
-              const totalWidth = updatedChildren.reduce((sum, child) => {
-                if (child.hidden) return sum; // Пропускаем скрытые колонки
-                return sum + (child.width || child.minWidth || 200);
-              }, 0);
-              return { ...col, width: totalWidth, minWidth: totalWidth, children: updatedChildren };
-            }
+                    // Всегда пересчитываем ширину группы на основе суммы ширин дочерних колонок
+                    const totalWidth = updatedChildren.reduce((sum, child) => {
+                        if (child.hidden) return sum; // Пропускаем скрытые колонки
+                        return sum + (child.width || child.minWidth || 200);
+                    }, 0);
+                    return { ...col, width: totalWidth, minWidth: totalWidth, children: updatedChildren };
+                }
 
-            // Если это листовая колонка
-            if (col.key === columnKey) {
-              // Применяем минимальную ширину
-              const newWidth = Math.max(width, MIN_COLUMN_WIDTH);
-              return { ...col, width: newWidth, minWidth: newWidth };
-            }
+                // Если это листовая колонка
+                if (col.key === columnKey) {
+                    // Применяем минимальную ширину
+                    const newWidth = Math.max(width, MIN_COLUMN_WIDTH);
+                    return { ...col, width: newWidth, minWidth: newWidth };
+                }
 
-            return col;
-          });
+                return col;
+            });
         };
 
         // Обновляем состояние
         setTableConfig(prevConfig => {
             const updatedConfig = updateColumnWidth(prevConfig);
             localStorage.setItem('STOCK_ANALYSIS_TABLE_CONFIG', JSON.stringify(updatedConfig));
+            localStorage.setItem('SA_CONF_VER', CURR_SA_TABLE_CONF_VER);
             return updatedConfig;
         });
     };
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         let savedTableConfig = localStorage.getItem('STOCK_ANALYSIS_TABLE_CONFIG');
-        if (savedTableConfig) {
+        let tableConfigVer = localStorage.getItem('SA_CONF_VER');
+        if (savedTableConfig && tableConfigVer) {
             try {
                 savedTableConfig = JSON.parse(savedTableConfig);
-                setTableConfig(savedTableConfig);
+                if (tableConfigVer === CURR_SA_TABLE_CONF_VER) {
+                    setTableConfig(savedTableConfig);
+                } else {
+                    setTableConfig(newTableConfig);
+                }
             } catch (error) {
                 console.error('Error parsing saved table config:', error);
                 setTableConfig(newTableConfig);

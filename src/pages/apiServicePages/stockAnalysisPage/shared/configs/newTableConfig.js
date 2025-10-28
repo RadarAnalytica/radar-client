@@ -1,3 +1,4 @@
+export const CURR_SA_TABLE_CONF_VER = '1'
 export const newTableConfig = [
     {
         title: 'О товаре',
