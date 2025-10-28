@@ -1886,9 +1886,9 @@ export const ServiceFunctions = {
 		}
 	},
 
-	getControlMetrics: async(token, metricType, filters, page = 1, per_page = 50, search = '') => {
+	getControlMetrics: async(token, metricType, filters = {}, page = 1, per_page = 50, search = '') => {
 		try {
-			const filtersRequestObject = getFiltersRequestObject(filters);
+			const filtersRequestObject = getFiltersRequestObject(filters, null, filters.activeBrand?.id);
 			const res = await fetchApi(
 				`/api/control/${metricType}?page=${page}&per_page=${per_page}&search=${search}`,
 				{

@@ -14,7 +14,7 @@ import Loader from '@/components/ui/Loader';
 import DownloadButton from '@/components/DownloadButton';
 import WbMetricsTable from './widgets/WbMetricsTable/WbMetricsTable';
 import TableSettingsWidget from './widgets/TableSettingsWidget/TableSettingsWidget';
-import { generateMockData } from './mock/wbMetricsMockData';
+import NoData from '@/components/sharedComponents/NoData/NoData';
 import { 
   getDefaultTableConfig, 
   loadTableConfig, 
@@ -140,7 +140,7 @@ const WbMetricsPage: React.FC = () => {
           </div>
         )}
 
-        {!loading && data && tableConfig.length > 0 && (
+        {!loading && data && tableConfig.length > 0 ? (
             <WbMetricsTable
                 data={data}
                 columns={tableConfig}
@@ -149,7 +149,7 @@ const WbMetricsPage: React.FC = () => {
                 pageData={pageData}
                 setPageData={setPageData}
             />
-        )}
+        ) : <NoData />}
       </section>
     </main>
   );

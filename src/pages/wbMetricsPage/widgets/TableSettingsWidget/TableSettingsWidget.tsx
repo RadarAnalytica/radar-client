@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, ConfigProvider, Modal, Form, Checkbox } from 'antd';
 import { ColumnConfig } from '../../config/tableConfig';
 import styles from './TableSettingsWidget.module.css';
@@ -13,6 +13,7 @@ const TableSettingsWidget: React.FC<TableSettingsWidgetProps> = ({
   setTableConfig
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [checkAllButtonState, setCheckAllButtonState] = useState('Снять все');
   const [form] = Form.useForm();
 
   // Фильтруем только колонки, которые можно переключать
@@ -53,6 +54,8 @@ const TableSettingsWidget: React.FC<TableSettingsWidgetProps> = ({
         form.setFieldValue(_, false);
       });
     }
+
+    setCheckAllButtonState(type === 'select' ? 'Снять все' : 'Выбрать все');
   };
 
   return (
@@ -84,22 +87,25 @@ const TableSettingsWidget: React.FC<TableSettingsWidgetProps> = ({
       <Modal
         title="Настройки таблицы"
         open={isModalOpen}
-        onCancel={handleCancel}
-        onOk={() => form.submit()}
-        cancelText="Отмена"
         width={600}
+        onOk={() => form.submit()}
+        onCancel={handleCancel}
         okText="Применить"
+        cancelText="Отмена"
+        okButtonProps={{ className: `${styles.modal__okButton} ant-btn-lg` }}
+        cancelButtonProps={{ className: `${styles.modal__cancelButton} ant-btn-lg` }}
         className={styles.modal}
       >
         <div className={`${styles.modal__content} scroll-container`}>
           <div className={styles.modal__checkboxes}>
-            <Button
-              type="default"
+            <div
+              role="button"
+              tabIndex={0}
               onClick={checkAllHandler}
               className={styles.modal__checkAllButton}
             >
-              Выбрать все / Снять все
-            </Button>
+              {checkAllButtonState}
+            </div>
             
             <Form
               form={form}

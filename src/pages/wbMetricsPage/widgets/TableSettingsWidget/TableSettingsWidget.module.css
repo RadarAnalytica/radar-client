@@ -1,22 +1,66 @@
 .modal {
   border-radius: 12px;
-}
 
-.modal :global(.ant-modal-content) {
-  border-radius: 12px;
-  padding: 24px;
-}
+  .modal__checkAllButton {
+    padding: 0;
+    border: none;
+    font-size: 14px;
+    font-weight: 600;
+    color: rgba(83, 41, 255, 1);
 
-.modal :global(.ant-modal-header) {
-  border-bottom: 1px solid #f0f0f0;
-  padding-bottom: 16px;
-  margin-bottom: 24px;
-}
+    &:hover {
+      text-decoration: underline;
+    }
+  }
 
-.modal :global(.ant-modal-title) {
-  font-size: 18px;
-  font-weight: 600;
-  color: #1a1a1a;
+  .modal__okButton {
+    width: 112px;
+    height: 44px;
+    background: #5329FF !important;
+    &:hover {
+      background: #7a52ff !important;
+    }
+  }
+
+  .modal__cancelButton {
+    width: 100px;
+    height: 44px;
+    border-color: #e7e1fe !important;
+    background: #e7e1fe !important;
+    color: #5329FF !important;
+    &:hover {
+      color: #5329FF !important;
+      border-color: #f3f0ff !important;
+      background: #f3f0ff !important;
+    }
+  }
+
+  .modal__cancelButton {
+    background: #fff;
+    color: rgba(83, 41, 255, 1);
+  }
+
+  :global(.ant-modal-header) {
+    margin-bottom: 0 !important;
+    border-bottom: none !important;
+  }
+
+  :global(.ant-modal-content) {
+    border-radius: 12px;
+    padding: 24px;
+  }
+
+  :global(.ant-modal-header) {
+    border-bottom: 1px solid #f0f0f0;
+    padding-bottom: 16px;
+    margin-bottom: 24px;
+  }
+
+  :global(.ant-modal-title) {
+    font-size: 18px;
+    font-weight: 600;
+    color: #1a1a1a;
+  }
 }
 
 .modal__content {
@@ -58,6 +102,7 @@
   background: #f8f9fa;
   border-radius: 8px;
   border: 1px solid #e8e8e8;
+  margin-bottom: 0.5rem;
 }
 
 .modal__checkboxItem {

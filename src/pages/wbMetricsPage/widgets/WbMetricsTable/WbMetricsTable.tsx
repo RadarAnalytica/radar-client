@@ -173,7 +173,7 @@ const WbMetricsTable: React.FC<WbMetricsTableProps> = ({
             pagination={{
               current: pageData.page,
               pageSize: pageData.per_page,
-              total: pageData.total_count,
+              total: Math.ceil(pageData.total_count / pageData.per_page),
               onChange: handlePageChange
             }}
             style={{ fontFamily: 'Mulish' }}
