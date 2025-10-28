@@ -169,20 +169,34 @@ export const menuConfig = [
             },
             {
                 id: 3,
-                url: '/stock-analysis',
+                url: '/control/spp',
                 label: 'Аналитика по товарам',
                 isActive: true,
                 isNew: false
             },
             {
                 id: 4,
+                url: '/control/drr',
+                label: 'Контроль ДРР',
+                isActive: true,
+                isNew: true
+            },
+            {
+                id: 5,
+                url: '/control/spp',
+                label: 'Контроль СПП',
+                isActive: true,
+                isNew: true
+            },
+            {
+                id: 6,
                 url: '/selfcost',
                 label: 'Себестоимость',
                 isActive: true,
                 hasTopBorder: true,
             },
             {
-                id: 5,
+                id: 7,
                 url: '/groups',
                 label: 'Группы товаров',
                 isActive: true,

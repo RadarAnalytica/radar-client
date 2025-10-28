@@ -1,4 +1,30 @@
 // Типы для демо-режима
+export interface ControlDataItem {
+  date: string;
+  percentage: number;
+}
+
+export interface ProductData {
+  name: string;
+  wb_id: number;
+  vendor_code: string;
+  barcode: string;
+  brand: string;
+  category: string;
+  photo: string;
+}
+
+export interface WbMetricsData {
+  data: {
+    product: ProductData;
+    control_data: ControlDataItem[];
+  }[];
+  min_control_value: number;
+  max_control_value: number;
+  page: number;
+  per_page: number;
+  total_count: number;
+}
 
 export interface DemoModeContextType {
   isDemoMode: boolean;

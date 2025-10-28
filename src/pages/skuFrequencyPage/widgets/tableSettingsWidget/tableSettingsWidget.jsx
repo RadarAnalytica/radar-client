@@ -60,6 +60,7 @@ const TableSettingsWidget = ({ tableConfig, setTableConfig }) => {
         let normalizedArray = array.map(_ => _.children).flat().filter(_ => _.title?.toLowerCase().includes(searchState.toLowerCase()));
         return normalizedArray;
     }, [tableConfig, searchState]);
+
     const сheckAllHandler = () => {
         const values = form.getFieldsValue();
         const keysArr = Object.keys(values);
@@ -307,7 +308,7 @@ const TableSettingsWidget = ({ tableConfig, setTableConfig }) => {
                                             value={el?.dataIndex}
                                             initialValue={!el?.hidden}
                                         >
-                                            <Checkbox >
+                                            <Checkbox>
                                                 <div
                                                     className={styles.modal__checkboxLabelWrapper} title={el.title}
                                                     onDoubleClick={(e) => e.preventDefault()}

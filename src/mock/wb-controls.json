@@ -1,0 +1,92 @@
+[
+    {
+      "name": "Смартфон Samsung Galaxy A54 5G 128GB",
+      "wb_id": 123456789,
+      "vendor_code": "SM-A546B",
+      "barcode": "8806094567890",
+      "brand": "Samsung",
+      "category": "Смартфоны",
+      "photo": "https://placeholder.apptor.studio/40/40/product1.png"
+    },
+    {
+      "name": "Наушники Apple AirPods Pro 2",
+      "wb_id": 987654321,
+      "vendor_code": "AP-PRO-2",
+      "barcode": "194253000000",
+      "brand": "Apple",
+      "category": "Аудио",
+      "photo": "https://placeholder.apptor.studio/40/40/product2.png"
+    },
+    {
+      "name": "Ноутбук ASUS VivoBook 15 X515EA",
+      "wb_id": 456789123,
+      "vendor_code": "X515EA-BQ1234",
+      "barcode": "4712900000000",
+      "brand": "ASUS",
+      "category": "Ноутбуки",
+      "photo": "https://placeholder.apptor.studio/40/40/product3.png"
+    },
+    {
+      "name": "Кроссовки Nike Air Max 270",
+      "wb_id": 789123456,
+      "vendor_code": "AH8050-100",
+      "barcode": "194253000000",
+      "brand": "Nike",
+      "category": "Обувь",
+      "photo": "https://placeholder.apptor.studio/40/40/product4.png"
+    },
+    {
+      "name": "Кофемашина De'Longhi Magnifica S",
+      "wb_id": 321654987,
+      "vendor_code": "ECAM22.110.SB",
+      "barcode": "8004395000000",
+      "brand": "De'Longhi",
+      "category": "Бытовая техника",
+      "photo": "https://placeholder.apptor.studio/40/40/product5.png"
+    },
+    {
+      "name": "Планшет iPad Air 5 64GB",
+      "wb_id": 555666777,
+      "vendor_code": "IPAD-AIR-5",
+      "barcode": "194253000001",
+      "brand": "Apple",
+      "category": "Планшеты",
+      "photo": "https://placeholder.apptor.studio/40/40/product6.png"
+    },
+    {
+      "name": "Умные часы Apple Watch Series 9",
+      "wb_id": 111222333,
+      "vendor_code": "AW-S9-45MM",
+      "barcode": "194253000002",
+      "brand": "Apple",
+      "category": "Умные часы",
+      "photo": "https://placeholder.apptor.studio/40/40/product7.png"
+    },
+    {
+      "name": "Игровая консоль PlayStation 5",
+      "wb_id": 444555666,
+      "vendor_code": "PS5-STD",
+      "barcode": "711719000000",
+      "brand": "Sony",
+      "category": "Игровые консоли",
+      "photo": "https://placeholder.apptor.studio/40/40/product8.png"
+    },
+    {
+      "name": "Телевизор LG OLED 55\"",
+      "wb_id": 777888999,
+      "vendor_code": "OLED55C3",
+      "barcode": "8806094567891",
+      "brand": "LG",
+      "category": "Телевизоры",
+      "photo": "https://placeholder.apptor.studio/40/40/product9.png"
+    },
+    {
+      "name": "Холодильник Bosch KGN39VLE0R",
+      "wb_id": 333444555,
+      "vendor_code": "KGN39VLE0R",
+      "barcode": "4242000000000",
+      "brand": "Bosch",
+      "category": "Бытовая техника",
+      "photo": "https://placeholder.apptor.studio/40/40/product10.png"
+    }
+]
