@@ -52,7 +52,7 @@ const BarsWidget = () => {
                                     }}
                                 >
                                     <Tooltip
-                                        title='test'
+                                        title={compareDictionary[i].tooltipText}
                                         arrow={false}
                                         color='white'
                                     >
