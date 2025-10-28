@@ -4,7 +4,10 @@ import type {
   SupplierAnalysisDemoData,
   WeeklyReportDemoData,
   DemoApiResponse,
-  PlReportDemoData
+  PlReportDemoData,
+  WbMetricsData,
+  ProductData,
+  ControlDataItem
 } from '../types/demo';
 
 import stockAnalysis from '../mock/stock-analysis.json';
@@ -28,7 +31,8 @@ import ceoComparisonRaw from '../mock/ceo-comparison.json';
 import descriptionGeneratorKeywords from '../mock/description-generator-keywords.json';
 import rnpFiltersData from '../mock/rnp-filters.json';
 import serpRegions from '../mock/serp-regions.json';
-import serpQueryData from '../mock/serp-query-data.json'
+import serpQueryData from '../mock/serp-query-data.json';
+import wbControlsData from '../mock/wb-controls.json';
 
 export class DemoDataService {
   private static instance: DemoDataService;
@@ -94,6 +98,8 @@ export class DemoDataService {
       '/api/operating-expenses/category/get-all': () => this.getOperatingExpensesCategoriesData(),
       '/api/operating-expenses/expense/get-all': () => this.getOperatingExpensesData(filters),
       '/api/operating-expenses/periodic-expense/get': () => this.getPeriodicExpenseTemplateData(),
+      '/api/control/spp': () => this.getWbControlsData(filters),
+      '/api/control/drr': () => this.getWbControlsData(filters),
       '/api/product/self-costs': () => ({ message: "Success", updated_items: [{ product: 'Демо', cost: 100, fulfillment: 100 }] }),
       '/api/msg/': () => ([]),
       'https://radarmarket.ru/api/web-service/monitoring-oracle/easy/get': () => this.getEasyMonitoringData(),
@@ -214,6 +220,65 @@ export class DemoDataService {
   private getTurnOverData(): any {
     return turnOverData;
   }
+
+  private getWbControlsData(filters?: any, count: number = 30): WbMetricsData {
+    const generateRandomPercentage = (min: number, max: number): number => {
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    };
+    
+    const generateDateRange = (days: number): string[] => {
+      const dates: string[] = [];
+      const today = new Date();
+      
+      for (let i = 0; i < days; i++) {
+        const date = new Date(today);
+        date.setDate(date.getDate() - i);
+        dates.push(date.toISOString().split('T')[0]);
+      }
+      
+      return dates.reverse();
+    };
+    
+    const generateControlData = (dates: string[], minValue: number, maxValue: number): ControlDataItem[] => {
+      return dates.map(date => ({
+        date,
+        percentage: generateRandomPercentage(minValue, maxValue)
+      }));
+    };
+    
+    const sampleProducts = wbControlsData;
+    const dates = generateDateRange(count);
+    const minValue = 1;
+    const maxValue = 10;
+    const startIndex = 0;
+    const endIndex = count;
+    
+    const products = [];
+    for (let i = startIndex; i < endIndex; i++) {
+      const productIndex = i % sampleProducts.length;
+      const product = {
+        ...sampleProducts[productIndex],
+        wb_id: sampleProducts[productIndex].wb_id + i,
+        name: `${sampleProducts[productIndex].name} ${i + 1}`
+      };
+      
+      const controlData = generateControlData(dates, minValue, maxValue);
+      
+      products.push({
+        product,
+        control_data: controlData
+      });
+    }
+    
+    return {
+      data: products,
+      min_control_value: minValue,
+      max_control_value: maxValue,
+      page: 1,
+      per_page: count,
+      total_count: count,
+    };
+  };
 
   private getAbcDataProceeds(filters?: any): any {
     const data = this.getOriginalJson(abcDataProceeds);

@@ -13,7 +13,7 @@ const TableSettingsWidget: React.FC<TableSettingsWidgetProps> = ({
   setTableConfig
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [checkAllButtonState, setCheckAllButtonState] = useState('Снять все');
+  const [isAllButtonState, setIsAllButtonState] = useState(false);
   const [form] = Form.useForm();
 
   // Фильтруем только колонки, которые можно переключать
@@ -43,20 +43,31 @@ const TableSettingsWidget: React.FC<TableSettingsWidgetProps> = ({
   const checkAllHandler = () => {
     const values = form.getFieldsValue();
     const keysArr = Object.keys(values);
-    const type = keysArr.some(_ => !values[_]) ? 'select' : 'deselect';
+    setIsAllButtonState(keysArr.some(_ => values[_]));
+  };
 
-    if (type === 'select') {
-      keysArr.forEach(_ => {
-        form.setFieldValue(_, true);
-      });
-    } else {
+  const switchAllHandler = () => {
+    const values = form.getFieldsValue();
+    const keysArr = Object.keys(values);
+
+    if (isAllButtonState) {
       keysArr.forEach(_ => {
         form.setFieldValue(_, false);
       });
+    } else {
+      keysArr.forEach(_ => {
+        form.setFieldValue(_, true);
+      });
     }
 
-    setCheckAllButtonState(type === 'select' ? 'Снять все' : 'Выбрать все');
+    setIsAllButtonState(!isAllButtonState);
   };
+
+  useEffect(() => {
+    if (isModalOpen) {
+      checkAllHandler();
+    }
+  }, [isModalOpen]);
 
   return (
     <>
@@ -101,10 +112,10 @@ const TableSettingsWidget: React.FC<TableSettingsWidgetProps> = ({
             <div
               role="button"
               tabIndex={0}
-              onClick={checkAllHandler}
+              onClick={switchAllHandler}
               className={styles.modal__checkAllButton}
             >
-              {checkAllButtonState}
+              {isAllButtonState ? 'Снять все' : 'Выбрать все'}
             </div>
             
             <Form
@@ -124,7 +135,7 @@ const TableSettingsWidget: React.FC<TableSettingsWidgetProps> = ({
                     valuePropName="checked"
                     className={styles.modal__checkboxItem}
                   >
-                    <Checkbox>{col.title}</Checkbox>
+                    <Checkbox onChange={checkAllHandler}>{col.title}</Checkbox>
                   </Form.Item>
                 ))}
               </div>

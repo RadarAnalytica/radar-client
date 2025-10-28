@@ -71,7 +71,7 @@ const WbMetricsTable: React.FC<WbMetricsTableProps> = ({
   const tableContainerRef = useRef(null);
 
   const prepareTableData = () => {
-    if (!data?.data || !Array.isArray(data.data)) return [];
+    if (!Array.isArray(data?.data)) return [];
 
     return data.data.map((item: any) => {
       const { product, control_data } = item;

@@ -46,7 +46,6 @@ const WbMetricsPage: React.FC = () => {
     progress.start();
     
     try {
-      // const mockData = generateMockData(metricType, currentPage, perPage);
       const response = await ServiceFunctions.getControlMetrics(authToken, metricType, filters, pageData.page, pageData.per_page);
       setPageData({ page: response.page, per_page: response.per_page, total_count: response.total_count });
       progress.complete();
@@ -126,7 +125,6 @@ const WbMetricsPage: React.FC = () => {
                     tableConfig={tableConfig}
                     setTableConfig={handleTableConfigChange}
                 />
-                
                 <DownloadButton
                     handleDownload={downloadHandler}
                     loading={false}
@@ -140,7 +138,7 @@ const WbMetricsPage: React.FC = () => {
           </div>
         )}
 
-        {!loading && data && tableConfig.length > 0 ? (
+        {!loading && data?.data?.length > 0 ? (
             <WbMetricsTable
                 data={data}
                 columns={tableConfig}
