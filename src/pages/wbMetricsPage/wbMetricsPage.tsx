@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
 import AuthContext from '@/service/AuthContext';
 import MobilePlug from '@/components/sharedComponents/mobilePlug/mobilePlug';
@@ -15,6 +15,13 @@ import DownloadButton from '@/components/DownloadButton';
 import WbMetricsTable from './widgets/WbMetricsTable/WbMetricsTable';
 import TableSettingsWidget from './widgets/TableSettingsWidget/TableSettingsWidget';
 import { generateMockData } from './mock/wbMetricsMockData';
+import { 
+  getDefaultTableConfig, 
+  loadTableConfig, 
+  saveTableConfig, 
+  mergeTableConfig,
+  type ColumnConfig 
+} from './config/tableConfig';
 import styles from './wbMetricsPage.module.css';
 
 
@@ -27,7 +34,7 @@ const WbMetricsPage: React.FC = () => {
   const { activeBrand, activeBrandName, activeArticle, activeGroup } = filters;
   
   const [loading, setLoading] = useState(true);
-  const [tableConfig, setTableConfig] = useState<any[]>();
+  const [tableConfig, setTableConfig] = useState<ColumnConfig[]>([]);
   const [data, setData] = useState(null);
   const [pageData, setPageData] = useState({ page: 1, per_page: 50, total_count: 0 });
   
@@ -63,55 +70,25 @@ const WbMetricsPage: React.FC = () => {
     }
   }, [activeBrand, pageData.page, activeBrandName, activeArticle, activeGroup, metricType]);
 
+  // Инициализация конфигурации таблицы при загрузке данных
+  useEffect(() => {
+    if (data?.data?.[0]?.control_data) {
+      const defaultConfig = getDefaultTableConfig(data.data[0].control_data);
+      const savedConfig = loadTableConfig();
+      const mergedConfig = mergeTableConfig(defaultConfig, savedConfig);
+      setTableConfig(mergedConfig);
+    }
+  }, [data]);
+
+  // Обработчик изменения конфигурации таблицы
+  const handleTableConfigChange = (newConfig: ColumnConfig[]) => {
+    setTableConfig(newConfig);
+    saveTableConfig(newConfig);
+  };
+
   const downloadHandler = async () => {
     // TODO: Implement Excel download
     console.log('Download Excel for', metricType);
-  };
-
-  const getTableConfig = () => {
-    if (!data) return [];
-    
-    const baseColumns = [
-      {
-        key: 'product',
-        title: 'Товар',
-        dataIndex: 'product',
-        width: 280,
-        fixed: true,
-        sortable: true,
-        hidden: false
-      },
-      {
-        key: 'chart',
-        title: 'Динамика',
-        dataIndex: 'chart',
-        width: 150,
-        sortable: false,
-        hidden: false
-      }
-    ];
-
-    // Добавляем колонки для каждого дня (берем из первого товара)
-    const dayColumns = data.data?.[0]?.control_data?.map((item, index) => ({
-      key: `day_${index}`,
-      title: formatDateHeader(item.date),
-      dataIndex: `day_${index}`,
-      width: 80,
-      align: 'center' as const,
-      sortable: false,
-      hidden: false
-    })) || [];
-
-    return [...baseColumns, ...dayColumns];
-  };
-
-  const formatDateHeader = (dateString: string): string => {
-    const date = new Date(dateString);
-    const dayNames = ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
-    const dayName = dayNames[date.getDay()];
-    const day = date.getDate();
-    const month = date.getMonth() + 1;
-    return `${dayName}, ${day}.${month < 10 ? '0' + month : month}`;
   };
 
   return (
@@ -146,8 +123,8 @@ const WbMetricsPage: React.FC = () => {
 
             <div className={styles.page__controlsButtonsWrapper}>
                 <TableSettingsWidget
-                    tableConfig={tableConfig || getTableConfig()}
-                    setTableConfig={setTableConfig}
+                    tableConfig={tableConfig}
+                    setTableConfig={handleTableConfigChange}
                 />
                 
                 <DownloadButton
@@ -163,10 +140,10 @@ const WbMetricsPage: React.FC = () => {
           </div>
         )}
 
-        {!loading && data && (
+        {!loading && data && tableConfig.length > 0 && (
             <WbMetricsTable
                 data={data}
-                columns={tableConfig || getTableConfig()}
+                columns={tableConfig}
                 loading={loading}
                 metricType={metricType}
                 pageData={pageData}

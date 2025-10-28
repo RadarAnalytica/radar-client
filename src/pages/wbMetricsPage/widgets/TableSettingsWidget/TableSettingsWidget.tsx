@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { Button, ConfigProvider, Modal, Form, Checkbox, Flex, Input } from 'antd';
+import { Button, ConfigProvider, Modal, Form, Checkbox } from 'antd';
+import { ColumnConfig } from '../../config/tableConfig';
 import styles from './TableSettingsWidget.module.css';
 
 interface TableSettingsWidgetProps {
-  tableConfig: any[];
-  setTableConfig: (config: any[]) => void;
+  tableConfig: ColumnConfig[];
+  setTableConfig: (config: ColumnConfig[]) => void;
 }
 
 const TableSettingsWidget: React.FC<TableSettingsWidgetProps> = ({
@@ -14,12 +15,20 @@ const TableSettingsWidget: React.FC<TableSettingsWidgetProps> = ({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [form] = Form.useForm();
 
+  // Фильтруем только колонки, которые можно переключать
+  const toggleableColumns = tableConfig.filter(col => col.canToggle);
+
   const handleSubmit = (values: any) => {
-    // Обновляем конфигурацию таблицы
-    const updatedConfig = tableConfig.map(col => ({
-      ...col,
-      hidden: !values[col.dataIndex]
-    }));
+    // Обновляем конфигурацию таблицы, изменяя только переключаемые колонки
+    const updatedConfig = tableConfig.map(col => {
+      if (col.canToggle) {
+        return {
+          ...col,
+          hidden: !values[col.dataIndex]
+        };
+      }
+      return col;
+    });
     
     setTableConfig(updatedConfig);
     setIsModalOpen(false);
@@ -96,15 +105,15 @@ const TableSettingsWidget: React.FC<TableSettingsWidgetProps> = ({
               form={form}
               onFinish={handleSubmit}
               className={styles.modal__form}
-              initialValues={tableConfig.reduce((acc, col) => {
+              initialValues={toggleableColumns.reduce((acc, col) => {
                 acc[col.dataIndex] = !col.hidden;
                 return acc;
-              }, {})}
+              }, {} as Record<string, boolean>)}
             >
               <div className={styles.modal__checkboxList}>
-                {tableConfig.map((col, index) => (
+                {toggleableColumns.map((col) => (
                   <Form.Item
-                    key={index}
+                    key={col.key}
                     name={col.dataIndex}
                     valuePropName="checked"
                     className={styles.modal__checkboxItem}

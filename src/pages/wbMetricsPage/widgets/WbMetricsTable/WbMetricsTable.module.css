@@ -5,6 +5,30 @@
   border-radius: 12px;
 }
 
+.labelCell {
+  width: 100%;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+:global(.vendor_code-cell) {
+  max-width: 120px;
+}
+
+:global(.barcode-cell) {
+  max-width: 100px;
+}
+
+:global(.brand-cell) {
+  max-width: 150px;
+}
+
+:global(.category-cell) {
+  width: 100%;
+  white-space: wrap;
+}
+
 .tableWrapper {
   min-height: 250px;
   max-height: calc(100vh - 260px);
