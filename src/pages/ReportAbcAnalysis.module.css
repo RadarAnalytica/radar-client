@@ -45,9 +45,7 @@
   background-color: #FFFFFF;
   box-shadow: 0px 0px 20px 0px #0000000A;
   border: none;
-  /* min-height: 250px; */
   width: calc(100%/6 - 10px);
-  /* max-height: 250px; */
 }
 
 .header {
@@ -208,61 +206,10 @@
   background-color: #FFFFFF;
   box-shadow: 0px 0px 20px 0px #0000000A;
   border: none;
-  /* min-height: 250px; */
-  /* min-width: 630px; */
   width: calc(50% - 5px);
-  /* max-height: 250px; */
   margin-top: auto;
+  max-height: 600px;
 }
-
-/* .containerRevenue{
-    border-radius: 12px;
-    padding: 16px;
-    background-color: #FFFFFF;
-    box-shadow: 0px 0px 20px 0px #0000000A;
-    border: none;
-    min-height: 250px;
-    min-width: 1275px;
-    max-height: 250px;
-    display: flex;
-  }
-  .tableHeader{
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    
-  }
-  .tableHeader>div{
-   color: #8C8C8C;
-  }
-  .tableRow{
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    
-  }
-  .tableRow>div{
-   margin-top: 10px;
-   border-bottom: 1px solid #E8E8E8;
-  }
-.article{
-    width: 10%;
-}
-.product{
-    width: 35%;
-}
-.profit{
-    width: 10%;
-}
-.profitAmount{
-    width: 13%;
-}
-.category{
-    width: 17%;
-}
-.generalCategory{
-    width: 15%;
-} */
 
 
 /* YourStyles.module.css */
@@ -274,13 +221,11 @@
   box-shadow: 0px 0px 20px 0px #0000000A;
   border: none;
   min-height: 250px;
-  /* min-width: 1275px; */
-  /* min-width: 100%; */
+  max-height: 600px;
   width: 100%;
-  max-height: 300px;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  overflow: auto;
 }
 
 .containerRevenue.expanded {
@@ -295,12 +240,11 @@
   box-shadow: 0px 0px 20px 0px #0000000A;
   border: none;
   min-height: 250px;
-  /* min-width: 1275px; */
+  max-height: 600px;
   width: 100%;
-  max-height: 300px;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  overflow: auto;
 }
 
 .containerProfit.expanded {
@@ -310,7 +254,6 @@
 
 .rowsWrapper {
   min-height: 200px;
-  max-height: 250px;
   overflow: auto;
 }
 
@@ -420,8 +363,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 32px;
-  width: 32px;
+  height: 30px;
+  width: 30px;
   max-width: 40px;
   border-radius: 8px;
 }

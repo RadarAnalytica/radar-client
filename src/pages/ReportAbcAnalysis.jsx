@@ -18,7 +18,7 @@ import NoSubscriptionWarningBlock from '../components/sharedComponents/noSubscri
 import { useDemoMode } from "@/app/providers";
 
 const ReportAbcAnalysis = () => {
-  const {isDemoMode} = useDemoMode();
+  const { isDemoMode } = useDemoMode();
   const [isRevenueLoading, setIsRevenueLoading] = useState(false);
   const dispatch = useDispatch();
   const { abcFilters, isFiltersLoading } = useSelector((state) => state?.abcFiltersSlice);
@@ -92,7 +92,7 @@ const ReportAbcAnalysis = () => {
         }
 
         <div className='container dash-container'>
-          <NewFilterGroup pageIdent='abc' filtersData={abcFilters} isLoading={isFiltersLoading} getData={applyFilters}/>
+          <NewFilterGroup pageIdent='abc' filtersData={abcFilters} isLoading={isFiltersLoading} getData={applyFilters} />
         </div>
 
         <div
@@ -101,84 +101,84 @@ const ReportAbcAnalysis = () => {
           <div className={styles.tabs}>
             <button
               className={`${styles.tab} ${activeTab === 'revenue' ? styles.active : ''
-              }`}
+                }`}
               onClick={() => handleTabClick('revenue')}
             >
               По выручке
             </button>
             <button
               className={`${styles.tab} ${activeTab === 'profit' ? styles.active : ''
-              }`}
+                }`}
               onClick={() => handleTabClick('profit')}
             >
               По прибыли
             </button>
           </div>
           {activeTab === 'revenue' && (
-            <div
-              className={`${styles.containerRevenue} ${isOpenFilters ? styles.expanded : ''
-              }`}
-            >
-              <div className={styles.rowHeader}>
                 <div
-                  className={styles.article}
-                  style={{color: '#8C8C8C'}}
+                  className={`${styles.containerRevenue} ${isOpenFilters ? styles.expanded : ''
+                    }`}
                 >
-                  Артикул
-                </div>
-                <div
-                  className={styles.product}
-                  style={{color: '#8C8C8C'}}
-                >
-                  Товар
-                </div>
-                <div
-                  className={styles.size}
-                  style={{color: '#8C8C8C'}}
-                >
-                  Размер
-                </div>
-                <div className={styles.profit} style={{color: '#8C8C8C'}}>
-                  Выручка
-                </div>
-                <div
-                  className={styles.profitAmount}
-                  style={{color: '#8C8C8C'}}
-                >
-                  Доля выручки
-                </div>
-                <div
-                  className={styles.category}
-                  style={{color: '#8C8C8C'}}
-                >
-                  Категория по&nbsp;выручке
-                </div>
-                <div
-                  className={styles.generalCategory}
-                  style={{color: '#8C8C8C'}}
-                >
-                  Общая категория
-                </div>
-              </div>
-              {isRevenueLoading ? (
-                <div
-                  className='d-flex flex-column align-items-center justify-content-center'
-                  style={{height: '100px', marginTop: '40px'}}
-                >
-                  <span className='loader'></span>
-                </div>
-              ) : (!dataRevenue || dataRevenue.length === 0) ? (
-                <div className={styles.loaderContainer}>
-                  Ничего не найдено
-                </div>
-              ) : (
-                <div
-                  className={`${styles.rowsWrapper} ${isOpenFilters ? styles.expanded : ''
-                  }`}
-                >
-                  {dataRevenue.map((item, index) => (
-                    <div key={index} className={styles.row}>
-                      <div className={styles.article}>
+                  <div className={styles.rowHeader}>
+                    <div
+                      className={styles.article}
+                      style={{ color: '#8C8C8C' }}
+                    >
+                      Артикул
+                    </div>
+                    <div
+                      className={styles.product}
+                      style={{ color: '#8C8C8C' }}
+                    >
+                      Товар
+                    </div>
+                    <div
+                      className={styles.size}
+                      style={{ color: '#8C8C8C' }}
+                    >
+                      Размер
+                    </div>
+                    <div className={styles.profit} style={{ color: '#8C8C8C' }}>
+                      Выручка
+                    </div>
+                    <div
+                      className={styles.profitAmount}
+                      style={{ color: '#8C8C8C' }}
+                    >
+                      Доля выручки
+                    </div>
+                    <div
+                      className={styles.category}
+                      style={{ color: '#8C8C8C' }}
+                    >
+                      Категория по&nbsp;выручке
+                    </div>
+                    <div
+                      className={styles.generalCategory}
+                      style={{ color: '#8C8C8C' }}
+                    >
+                      Общая категория
+                    </div>
+                  </div>
+                  {isRevenueLoading ? (
+                    <div
+                      className='d-flex flex-column align-items-center justify-content-center'
+                      style={{ height: '100px', marginTop: '40px' }}
+                    >
+                      <span className='loader'></span>
+                    </div>
+                  ) : (!dataRevenue || dataRevenue.length === 0) ? (
+                    <div className={styles.loaderContainer}>
+                      Ничего не найдено
+                    </div>
+                  ) : (
+                    <div
+                      className={`${styles.rowsWrapper} ${isOpenFilters ? styles.expanded : ''
+                        }`}
+                    >
+                      {dataRevenue.map((item, index) => (
+                        <div key={index} className={styles.row}>
+                          <div className={styles.article}>
                             <span
                               onClick={() => toggleRow(item.wb_id)}
                               style={{
@@ -207,242 +207,244 @@ const ReportAbcAnalysis = () => {
                               />
                             </span>
 
-                        {expandedRows[item.wb_id] &&
-                          item.items.map((product, i) => (
-                            <div key={i} style={{padding: '8px 0 '}}>
-                              {product.barcode}
-                            </div>
-                          ))}
-                      </div>
+                            {expandedRows[item.wb_id] &&
+                              item.items.map((product, i) => (
+                                <div key={i} style={{ padding: '8px 0' }}>
+                                  {product.barcode}
+                                </div>
+                              ))}
+                          </div>
 
-                      <div className={styles.product}>
-                        {expandedRows[item.wb_id] ? (
-                          <>
-                            <div
-                              className={styles.productName}
-                              title={item.title}
-                            >
-                              {item.title}
-                            </div>
-                            {' '}
-                            {item.items.map((product, i) => (
+                          <div className={styles.product}>
+                            {expandedRows[item.wb_id] ? (
+                              <>
+                                <div
+                                  className={styles.productName}
+                                  title={item.title}
+                                >
+                                  {item.title}
+                                </div>{' '}
+                                {item.items.map((product, i) => (
+                                  <div
+                                    key={i}
+                                    className={styles.productName}
+                                    title={product.title}
+                                  >
+                                    {product.title}
+                                  </div>
+                                ))}
+                              </>
+                            ) : (
                               <div
-                                key={i}
                                 className={styles.productName}
-                                title={product.title}
+                                title={item.title}
                               >
-                                {product.title}
+                                {item.title}
                               </div>
-                            ))}
-                          </>
-                        ) : (
-                          <div
-                            className={styles.productName}
-                            title={item.title}
-                          >
-                            {item.title}
+                            )}
                           </div>
-                        )}
-                      </div>
 
-                      <div className={styles.size}>
-                        {expandedRows[item.wb_id] ? (
-                          <>
-                            <div
-                              className={styles.size}
-                              title={item.size}
-                              style={{width: '90%'}}
-                            >
-                              {item.size}
-                            </div>
-                            {' '}
-                            {item.items.map((product, i) => (
+                          <div className={styles.size}>
+                            {expandedRows[item.wb_id] ? (
+                              <>
+                                <div
+                                  className={styles.size}
+                                  title={item.size}
+                                  style={{ width: '90%' }}
+                                >
+                                  {item.size}
+                                </div>{' '}
+                                {item.items.map((product, i) => (
+                                  <div
+                                    key={i}
+                                    className={styles.size}
+                                    title={product.size}
+                                    style={{ width: '90%' }}
+                                  >
+                                    {product.size}
+                                  </div>
+                                ))}
+                              </>
+                            ) : (
                               <div
-                                key={i}
                                 className={styles.size}
-                                title={product.size}
-                                style={{width: '90%'}}
+                                title={item.size}
+                                style={{ width: '90%' }}
                               >
-                                {product.size}
+                                {item.size}
                               </div>
-                            ))}
-                          </>
-                        ) : (
-                          <div
-                            className={styles.size}
-                            title={item.size}
-                            style={{width: '90%'}}
-                          >
-                            {item.size}
+                            )}
                           </div>
-                        )}
-                      </div>
 
-                      <div className={styles.profit}>
-                        {expandedRows[item.wb_id] ? (
-                          <>
-                            <div>{formatPrice(item.proceeds, '₽')}</div>
-                            {' '}
-                            {item.items.map((product, i) => (
-                              <div key={i}>
-                                {formatPrice(product.proceeds, '₽')}
-                              </div>
-                            ))}
-                          </>
-                        ) : (
-                          <div>{formatPrice(item.proceeds, '₽')}</div>
-                        )}
-                      </div>
+                          <div className={styles.profit}>
+                            {expandedRows[item.wb_id] ? (
+                              <>
+                                <div>{formatPrice(item.proceeds, '₽')}</div>{' '}
+                                {item.items.map((product, i) => (
+                                  <div key={i}>
+                                    {formatPrice(product.proceeds, '₽')}
+                                  </div>
+                                ))}
+                              </>
+                            ) : (
+                              <div>{formatPrice(item.proceeds, '₽')}</div>
+                            )}
+                          </div>
 
-                      <div className={styles.profitAmount}>
-                        {expandedRows[item.wb_id] ? (
-                          <>
-                            <div>{item.proceeds_percent}%</div>
-                            {' '}
-                            {item.items.map((product, i) => (
-                              <div key={i}>{product.proceeds_percent}%</div>
-                            ))}
-                          </>
-                        ) : (
-                          <div>{item.proceeds_percent}%</div>
-                        )}
-                      </div>
+                          <div className={styles.profitAmount}>
+                            {expandedRows[item.wb_id] ? (
+                              <>
+                                <div>{item.proceeds_percent}%</div>{' '}
+                                {item.items.map((product, i) => (
+                                  <div key={i} style={{ padding: '8px 0' }}>{product.proceeds_percent}%</div>
+                                ))}
+                              </>
+                            ) : (
+                              <div>{item.proceeds_percent}%</div>
+                            )}
+                          </div>
 
-                      <div className={styles.category}>
-                        {expandedRows[item.wb_id] ? (
-                          <>
-                            <div
-                              className={styles.categoryColoredItem}
-                              style={{
-                                backgroundColor:
-                                  colorMap[item.proceed_abc] ||
-                                  'transparent',
-                                padding: '4px 16px',
-                                borderRadius: '8px',
-                                marginRight: '75%',
-                              }}
-                            >
-                              {item.proceed_abc}
-                            </div>
-                            {' '}
-                            {item.items.map((product, i) => (
-                              <div key={i} style={{padding: '6px 0'}}>
+                          <div className={styles.category}>
+                            {expandedRows[item.wb_id] ? (
+                              <>
+                                <div style={{ padding: '4px 0 4.5px 0' }}>
+                                  <div
+                                    className={styles.categoryColoredItem}
+                                    style={{
+                                      backgroundColor:
+                                        colorMap[item.proceed_abc] ||
+                                        'transparent',
+                                      height: '30px',
+                                      width: '30px',
+                                      borderRadius: '8px',
+                                      marginRight: '75%',
+                                    }}
+                                  >
+                                    {item.proceed_abc}
+                                  </div>{' '}
+                                </div>
+                                {item.items.map((product, i) => (
+                                  <div key={i} style={{ padding: '4px 0 4.5px 0' }}>
+                                    <div
+                                      className={styles.categoryColoredItem}
+                                      style={{
+                                        backgroundColor:
+                                          colorMap[product.proceed_abc] ||
+                                          'transparent',
+                                        height: '30px',
+                                        width: '30px',
+                                        borderRadius: '6px',
+                                        marginRight: '75%',
+
+                                      }}
+                                    >
+                                      {product.proceed_abc}
+                                    </div>
+                                  </div>
+                                ))}
+                              </>
+                            ) : (
+                              <div style={{ padding: '4px 0 4.5px 0' }}>
                                 <div
                                   className={styles.categoryColoredItem}
                                   style={{
                                     backgroundColor:
-                                      colorMap[product.proceed_abc] ||
-                                      'transparent',
-                                    padding: '4px 16px',
-                                    borderRadius: '8px',
+                                      colorMap[item.proceed_abc] || 'transparent',
+                                    height: '30px',
+                                    width: '30px',
+                                    borderRadius: '6px',
                                     marginRight: '75%',
                                   }}
                                 >
-                                  {product.proceed_abc}
+                                  {item.proceed_abc}
                                 </div>
                               </div>
-                            ))}
-                          </>
-                        ) : (
-                          <div
-                            className={styles.categoryColoredItem}
-                            style={{
-                              backgroundColor:
-                                colorMap[item.proceed_abc] || 'transparent',
-                              //padding: '4px 16px',
-                              //borderRadius: '8px',
-                              //marginRight: '75%',
-                            }}
-                          >
-                            {item.proceed_abc}
+                            )}
                           </div>
-                        )}
-                      </div>
 
-                      <div className={styles.generalCategory}>
-                        {expandedRows[item.wb_id] ? (
-                          <>
-                            <div>{item.common_abc}</div>
-                            {' '}
-                            {item.items.map((product, i) => (
-                              <div key={i}>{product.common_abc}</div>
-                            ))}
-                          </>
-                        ) : (
-                          <div>{item.common_abc}</div>
-                        )}
-                      </div>
+                          <div className={styles.generalCategory}>
+                            {expandedRows[item.wb_id] ? (
+                              <>
+                                <div>{item.common_abc}</div>{' '}
+                                {item.items.map((product, i) => (
+                                  <div key={i}>{product.common_abc}</div>
+                                ))}
+                              </>
+                            ) : (
+                              <div>{item.common_abc}</div>
+                            )}
+                          </div>
+                        </div>
+                      ))}
                     </div>
-                  ))}
+                  )}
                 </div>
               )}
-            </div>
-          )}
-          {activeTab === 'profit' && (
-            <div
-              className={`${styles.containerProfit} ${isOpenFilters ? styles.expanded : ''
-              }`}
-            >
-              <div className={styles.rowHeader}>
+              {activeTab === 'profit' && (
                 <div
-                  className={styles.article}
-                  style={{color: '#8C8C8C'}}
+                  className={`${styles.containerProfit} ${isOpenFilters ? styles.expanded : ''
+                    }`}
                 >
-                  Артикул
-                </div>
-                <div
-                  className={styles.product}
-                  style={{color: '#8C8C8C'}}
-                >
-                  Товар
-                </div>
-                <div
-                  className={styles.size}
-                  style={{color: '#8C8C8C'}}
-                >
-                  Размер
-                </div>
-                <div className={styles.profit} style={{color: '#8C8C8C'}}>
-                  Прибыль
-                </div>
-                <div
-                  className={styles.profitAmount}
-                  style={{color: '#8C8C8C'}}
-                >
-                  Доля прибыли
-                </div>
-                <div
-                  className={styles.category}
-                  style={{color: '#8C8C8C'}}
-                >
-                  Категория по&nbsp;прибыли
-                </div>
-                <div
-                  className={styles.generalCategory}
-                  style={{color: '#8C8C8C'}}
-                >
-                  Общая категория
-                </div>
-              </div>
-              {isRevenueLoading ? (
-                <div
-                  className='d-flex flex-column align-items-center justify-content-center'
-                  style={{height: '100px', marginTop: '40px'}}
-                >
-                  <span className='loader'></span>
-                </div>
-              ) : (!dataRevenue || dataRevenue.length === 0) ? (
-                <div className={styles.loaderContainer}>
-                  Ничего не найдено
-                </div>
-              ) : (
-                <div
-                  className={`${styles.rowsWrapper} ${isOpenFilters ? styles.expanded : ''
-                  }`}
-                >
-                  {dataRevenue.map((item, index) => (
-                    <div key={index} className={styles.row}>
-                      <div className={styles.article}>
+                  <div className={styles.rowHeader}>
+                    <div
+                      className={styles.article}
+                      style={{ color: '#8C8C8C' }}
+                    >
+                      Артикул
+                    </div>
+                    <div
+                      className={styles.product}
+                      style={{ color: '#8C8C8C' }}
+                    >
+                      Товар
+                    </div>
+                    <div
+                      className={styles.size}
+                      style={{ color: '#8C8C8C' }}
+                    >
+                      Размер
+                    </div>
+                    <div className={styles.profit} style={{ color: '#8C8C8C' }}>
+                      Прибыль
+                    </div>
+                    <div
+                      className={styles.profitAmount}
+                      style={{ color: '#8C8C8C' }}
+                    >
+                      Доля прибыли
+                    </div>
+                    <div
+                      className={styles.category}
+                      style={{ color: '#8C8C8C' }}
+                    >
+                      Категория по&nbsp;прибыли
+                    </div>
+                    <div
+                      className={styles.generalCategory}
+                      style={{ color: '#8C8C8C' }}
+                    >
+                      Общая категория
+                    </div>
+                  </div>
+                  {isRevenueLoading ? (
+                    <div
+                      className='d-flex flex-column align-items-center justify-content-center'
+                      style={{ height: '100px', marginTop: '40px' }}
+                    >
+                      <span className='loader'></span>
+                    </div>
+                  ) : (!dataRevenue || dataRevenue.length === 0) ? (
+                    <div className={styles.loaderContainer}>
+                      Ничего не найдено
+                    </div>
+                  ) : (
+                    <div
+                      className={`${styles.rowsWrapper} ${isOpenFilters ? styles.expanded : ''
+                        }`}
+                    >
+                      {dataRevenue.map((item, index) => (
+                        <div key={index} className={styles.row}>
+                          <div className={styles.article}>
                             <span
                               onClick={() => toggleRow(item.wb_id)}
                               style={{
@@ -470,177 +472,179 @@ const ReportAbcAnalysis = () => {
                                 }}
                               />
                             </span>
-                        {expandedRows[item.wb_id] &&
-                          item.items.map((product, i) => (
-                            <div key={i} style={{padding: '8px 0 '}}>
-                              {product.barcode}
-                            </div>
-                          ))}
-                      </div>
+                            {expandedRows[item.wb_id] &&
+                              item.items.map((product, i) => (
+                                <div key={i} style={{ padding: '8px 0 ' }}>
+                                  {product.barcode}
+                                </div>
+                              ))}
+                          </div>
 
-                      <div className={styles.product}>
-                        {expandedRows[item.wb_id] ? (
-                          <>
-                            <div
-                              className={styles.productName}
-                              title={item.title}
-                            >
-                              {item.title}
-                            </div>
-                            {item.items.map((product, i) => (
+                          <div className={styles.product}>
+                            {expandedRows[item.wb_id] ? (
+                              <>
+                                <div
+                                  className={styles.productName}
+                                  title={item.title}
+                                >
+                                  {item.title}
+                                </div>
+                                {item.items.map((product, i) => (
+                                  <div
+                                    key={i}
+                                    className={styles.productName}
+                                    title={product.title}
+                                  >
+                                    {product.title}
+                                  </div>
+                                ))}
+                              </>
+                            ) : (
                               <div
-                                key={i}
                                 className={styles.productName}
-                                title={product.title}
+                                title={item.title}
                               >
-                                {product.title}
+                                {item.title}
                               </div>
-                            ))}
-                          </>
-                        ) : (
-                          <div
-                            className={styles.productName}
-                            title={item.title}
-                          >
-                            {item.title}
+                            )}
                           </div>
-                        )}
-                      </div>
 
-                      <div className={styles.size}>
-                        {expandedRows[item.wb_id] ? (
-                          <>
-                            <div
-                              className={styles.size}
-                              title={item.size}
-                              style={{width: '90%'}}
-                            >
-                              {item.size}
-                            </div>
-                            {' '}
-                            {item.items.map((product, i) => (
+                          <div className={styles.size}>
+                            {expandedRows[item.wb_id] ? (
+                              <>
+                                <div
+                                  className={styles.size}
+                                  title={item.size}
+                                  style={{ width: '90%' }}
+                                >
+                                  {item.size}
+                                </div>{' '}
+                                {item.items.map((product, i) => (
+                                  <div
+                                    key={i}
+                                    className={styles.size}
+                                    title={product.size}
+                                    style={{ width: '90%' }}
+                                  >
+                                    {product.size}
+                                  </div>
+                                ))}
+                              </>
+                            ) : (
                               <div
-                                key={i}
                                 className={styles.size}
-                                title={product.size}
-                                style={{width: '90%'}}
+                                title={item.size}
+                                style={{ width: '90%' }}
                               >
-                                {product.size}
+                                {item.size}
                               </div>
-                            ))}
-                          </>
-                        ) : (
-                          <div
-                            className={styles.size}
-                            title={item.size}
-                            style={{width: '90%'}}
-                          >
-                            {item.size}
+                            )}
                           </div>
-                        )}
-                      </div>
 
-                      <div className={styles.profit}>
-                        {expandedRows[item.wb_id] ? (
-                          <>
-                            <div>{formatPrice(item.profit, '₽')}</div>
+                          <div className={styles.profit}>
+                            {expandedRows[item.wb_id] ? (
+                              <>
+                                <div>{formatPrice(item.profit, '₽')}</div>
 
-                            {item.items.map((product, i) => (
-                              <div key={i}>
-                                {formatPrice(product.profit, '₽')}
-                              </div>
-                            ))}
-                          </>
-                        ) : (
-                          <div>{formatPrice(item.profit, '₽')}</div>
-                        )}
-                      </div>
+                                {item.items.map((product, i) => (
+                                  <div key={i}>
+                                    {formatPrice(product.profit, '₽')}
+                                  </div>
+                                ))}
+                              </>
+                            ) : (
+                              <div>{formatPrice(item.profit, '₽')}</div>
+                            )}
+                          </div>
 
-                      <div className={styles.profitAmount}>
-                        {expandedRows[item.wb_id] ? (
-                          <>
-                            <div>{item.profit_percent}%</div>
-                            {item.items.map((product, i) => (
-                              <div key={i}>{product.profit_percent}%</div>
-                            ))}
-                          </>
-                        ) : (
-                          <div>{item.profit_percent}%</div>
-                        )}
-                      </div>
+                          <div className={styles.profitAmount}>
+                            {expandedRows[item.wb_id] ? (
+                              <>
+                                <div>{item.profit_percent}%</div>
+                                {item.items.map((product, i) => (
+                                  <div key={i}>{product.profit_percent}%</div>
+                                ))}
+                              </>
+                            ) : (
+                              <div>{item.profit_percent}%</div>
+                            )}
+                          </div>
 
-                      <div className={styles.category}>
-                        {expandedRows[item.wb_id] ? (
-                          <>
-                            <div
-                              className={styles.categoryColoredItem}
-                              style={{
-                                backgroundColor:
-                                  colorMap[item.profit_abc] ||
-                                  'transparent',
-                                // padding: '4px 16px',
-                                // borderRadius: '8px',
-                                // marginRight: '75%',
-                              }}
-                            >
-                              {item.profit_abc}
-                            </div>
-                            {' '}
-                            {item.items.map((product, i) => (
-                              <div key={i} style={{padding: '6px 0'}}>
+                          <div className={styles.category}>
+                            {expandedRows[item.wb_id] ? (
+                              <>
+                                <div style={{ padding: '4px 0 4.5px 0' }}>
+                                  <div
+                                    className={styles.categoryColoredItem}
+                                    style={{
+                                      backgroundColor:
+                                        colorMap[item.profit_abc] ||
+                                        'transparent',
+                                      height: '30px',
+                                      width: '30px',
+                                      borderRadius: '6px',
+                                    }}
+                                  >
+                                    {item.profit_abc}
+                                  </div>{' '}
+                                </div>
+                                {item.items.map((product, i) => (
+                                  <div key={i} style={{ padding: '4px 0 4.5px 0' }}>
+                                    <div
+                                      className={styles.categoryColoredItem}
+                                      style={{
+                                        backgroundColor:
+                                          colorMap[product.proceed_abc] ||
+                                          'transparent',
+                                        height: '30px',
+                                        width: '30px',
+                                        borderRadius: '6px',
+                                      }}
+                                    >
+                                      {product.profit_abc}
+                                    </div>
+                                  </div>
+                                ))}
+                              </>
+                            ) : (
+                              <div style={{ padding: '4px 0 4.5px 0' }}>
                                 <div
                                   className={styles.categoryColoredItem}
                                   style={{
                                     backgroundColor:
-                                      colorMap[product.proceed_abc] ||
-                                      'transparent',
+                                      colorMap[item.proceed_abc] || 'transparent',
                                     // padding: '4px 16px',
                                     // borderRadius: '8px',
                                     // marginRight: '75%',
                                   }}
                                 >
-                                  {product.profit_abc}
+                                  {item.profit_abc}
                                 </div>
                               </div>
-                            ))}
-                          </>
-                        ) : (
-                          <div
-                            className={styles.categoryColoredItem}
-                            style={{
-                              backgroundColor:
-                                colorMap[item.proceed_abc] || 'transparent',
-                              // padding: '4px 16px',
-                              // borderRadius: '8px',
-                              // marginRight: '75%',
-                            }}
-                          >
-                            {item.profit_abc}
+                            )}
                           </div>
-                        )}
-                      </div>
 
-                      <div className={styles.generalCategory}>
-                        {expandedRows[item.wb_id] ? (
-                          <>
-                            <div>{item.common_abc}</div>
+                          <div className={styles.generalCategory}>
+                            {expandedRows[item.wb_id] ? (
+                              <>
+                                <div>{item.common_abc}</div>
 
-                            {item.items.map((product, i) => (
-                              <div key={i}>{product.common_abc}</div>
-                            ))}
-                          </>
-                        ) : (
-                          <div>{item.common_abc}</div>
-                        )}
-                      </div>
+                                {item.items.map((product, i) => (
+                                  <div key={i}>{product.common_abc}</div>
+                                ))}
+                              </>
+                            ) : (
+                              <div>{item.common_abc}</div>
+                            )}
+                          </div>
+                        </div>
+                      ))}
                     </div>
-                  ))}
+                  )}
                 </div>
               )}
-            </div>
-          )}
         </div>
-        <BottomNavigation/>
+        <BottomNavigation />
       </div>
     </div>
   );
