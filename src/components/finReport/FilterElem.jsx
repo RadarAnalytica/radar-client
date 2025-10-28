@@ -18,7 +18,7 @@ const FilterElem = ({title, pageIdent, filterIdent, items, isLoading, widthData,
   // const [isLoading, setIsLoading] = useState(startLoading);
 
   useEffect(() => {
-    const current = [];
+    let current = [];
     // const storageItem = localStorage.getItem(pageIdent)
 
     // let currentPageData = JSON.parse(storageItem)
@@ -26,7 +26,6 @@ const FilterElem = ({title, pageIdent, filterIdent, items, isLoading, widthData,
     // let currentFilterData = currentPageData[filterIdent] ? currentPageData[filterIdent] : []
     let counter = 0;
     for (let elem of items ? Object.keys(items) : []) {
-
       current.push({
         key: `${filterIdent}${counter}`,
         value: elem,
@@ -37,6 +36,10 @@ const FilterElem = ({title, pageIdent, filterIdent, items, isLoading, widthData,
     // if (filterIdent === 'year' || filterIdent === 'month') {
     //   changeWeekFilter();
     // }
+    
+    if (filterIdent === 'week' && pageIdent === 'abc') {
+      current = [...current].reverse();
+    }
     setOptions(current);
   }, [items, filterIdent, pageIdent]);
 
