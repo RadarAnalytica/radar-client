@@ -26,12 +26,25 @@
     background: #f8f9fa;
   }
 
+  :global(.radar-table-pagination-container) {
+    z-index: 2;
+  }
+
   :global(.radar-table-pagination) {
     padding: 16px 24px;
     border-top: 1px solid #f0f0f0;
     background: #fafafa;
     display: flex;
     justify-content: center;
+  }
+
+  :global(.radar-table__body-cell) {
+    z-index: 1;
+    background-color: white;
+  }
+
+  :global(.radar-table__header) {
+    z-index: 2;
   }
 
   :global(.radar-table__header-cell-wrapper) {
@@ -102,7 +115,7 @@
 }
 
 .percentageCell {
-  width: 50px;
+  min-width: 50px;
   height: 27px;
   border-radius: 8px;
   display: flex;
@@ -113,4 +126,5 @@
   font-size: 14px;
   text-align: center;
   font-family: Manrope;
+  padding: 4px;
 }

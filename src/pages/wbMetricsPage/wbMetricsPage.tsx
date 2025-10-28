@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { useParams, useLocation } from 'react-router-dom';
-import AuthContext from '../../service/AuthContext';
-import MobilePlug from '../../components/sharedComponents/mobilePlug/mobilePlug';
-import Sidebar from '../../components/sharedComponents/sidebar/sidebar';
-import Header from '../../components/sharedComponents/header/header';
+import { useLocation } from 'react-router-dom';
+import AuthContext from '@/service/AuthContext';
+import MobilePlug from '@/components/sharedComponents/mobilePlug/mobilePlug';
+import Sidebar from '@/components/sharedComponents/sidebar/sidebar';
+import Header from '@/components/sharedComponents/header/header';
 import { Filters } from '@/components/sharedComponents/apiServicePagesFiltersComponent';
-import { useAppSelector } from '../../redux/hooks';
+import { useAppSelector } from '@/redux/hooks';
+import { ServiceFunctions } from '@/service/serviceFunctions';
 import { useDemoMode } from "@/app/providers";
 import NoSubscriptionWarningBlock from '@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock';
 import { useLoadingProgress } from '@/service/hooks/useLoadingProgress';
@@ -20,37 +21,30 @@ import styles from './wbMetricsPage.module.css';
 const WbMetricsPage: React.FC = () => {
   const location = useLocation();
   const metricType = location.pathname.includes('/drr') ? 'drr' : 'spp';
-  const { user, authToken } = useContext(AuthContext);
+  const { authToken } = useContext(AuthContext);
   const { isDemoMode } = useDemoMode();
-  const { activeBrand, activeBrandName, activeArticle, activeGroup } = useAppSelector((state) => state.filters);
+  const filters = useAppSelector((state) => state.filters);
+  const { activeBrand, activeBrandName, activeArticle, activeGroup } = filters;
   
   const [loading, setLoading] = useState(true);
   const [tableConfig, setTableConfig] = useState<any[]>();
   const [data, setData] = useState(null);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [perPage] = useState(20);
+  const [pageData, setPageData] = useState({ page: 1, per_page: 50, total_count: 0 });
   
   const progress = useLoadingProgress({ loading });
-
   const pageTitle = metricType === 'drr' ? 'Контроль ДРР' : 'Контроль СПП';
-  const pageDescription = metricType === 'drr' 
-    ? 'Доля Рекламных Расходов' 
-    : 'Скидка Постоянного Покупателя';
 
   const loadData = async () => {
     setLoading(true);
     progress.start();
     
     try {
-      // Здесь будет реальный API вызов
-      // const response = await ServiceFunctions.getWbMetrics(authToken, selectedRange, activeBrand.id, metricType);
-      
-      // Пока используем моковые данные
-      const mockData = generateMockData(metricType, currentPage, perPage);
-      
+      // const mockData = generateMockData(metricType, currentPage, perPage);
+      const response = await ServiceFunctions.getControlMetrics(authToken, metricType, filters, pageData.page, pageData.per_page);
+      setPageData({ page: response.page, per_page: response.per_page, total_count: response.total_count });
       progress.complete();
       await setTimeout(() => {
-        setData(mockData);
+        setData(response);
         setLoading(false);
         progress.reset();
       }, 500);
@@ -67,7 +61,7 @@ const WbMetricsPage: React.FC = () => {
     } else if (activeBrand && !activeBrand.is_primary_collect) {
       setLoading(false);
     }
-  }, [activeBrand, currentPage, activeBrandName, activeArticle, activeGroup, metricType]);
+  }, [activeBrand, pageData.page, activeBrandName, activeArticle, activeGroup, metricType]);
 
   const downloadHandler = async () => {
     // TODO: Implement Excel download
@@ -175,7 +169,8 @@ const WbMetricsPage: React.FC = () => {
                 columns={tableConfig || getTableConfig()}
                 loading={loading}
                 metricType={metricType}
-                onPageChange={setCurrentPage}
+                pageData={pageData}
+                setPageData={setPageData}
             />
         )}
       </section>

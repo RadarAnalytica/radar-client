@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import { Table as RadarTable } from 'radar-ui';
 import { Bar } from 'react-chartjs-2';
 import {
@@ -53,7 +53,8 @@ interface WbMetricsTableProps {
   columns: any[];
   loading: boolean;
   metricType: 'drr' | 'spp';
-  onPageChange?: (page: number) => void;
+  pageData: { page: number, per_page: number, total_count: number };
+  setPageData: (pageData: { page: number, per_page: number, total_count: number }) => void;
 }
 
 const WbMetricsTable: React.FC<WbMetricsTableProps> = ({
@@ -61,10 +62,10 @@ const WbMetricsTable: React.FC<WbMetricsTableProps> = ({
   columns,
   loading,
   metricType,
-  onPageChange
+  pageData,
+  setPageData
 }) => {
-  const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(20);
+
   const [sortState, setSortState] = useState({ sort_field: undefined, sort_order: undefined });
   const tableContainerRef = useRef(null);
 
@@ -107,12 +108,13 @@ const WbMetricsTable: React.FC<WbMetricsTableProps> = ({
   const prepareTableData = () => {
     if (!data?.data || !Array.isArray(data.data)) return [];
 
-    return data.data.map((item) => {
+    return data.data.map((item: any) => {
       const { product, control_data } = item;
       
       return {
         key: product.wb_id,
         product: {
+          wb_id: product.wb_id,
           photo: product.photo,
           name: product.name
         },
@@ -126,11 +128,6 @@ const WbMetricsTable: React.FC<WbMetricsTableProps> = ({
   };
 
   const getTableColumns = () => {
-    // Используем переданные колонки или генерируем по умолчанию
-    if (columns && columns.length > 0) {
-      return columns;
-    }
-
     if (!data?.data || !Array.isArray(data.data) || data.data.length === 0) return [];
 
     const baseColumns = [
@@ -140,7 +137,7 @@ const WbMetricsTable: React.FC<WbMetricsTableProps> = ({
         dataIndex: 'product',
         width: 280,
         fixed: true,
-        sortable: false,
+        sortable: true,
         hidden: false
       },
       {
@@ -167,24 +164,18 @@ const WbMetricsTable: React.FC<WbMetricsTableProps> = ({
     return [...baseColumns, ...dayColumns];
   };
 
-  const handlePageChange = (page: number, size?: number) => {
-    setCurrentPage(page);
-    if (size) {
-      setPageSize(size);
-    }
-    if (onPageChange) {
-      onPageChange(page);
-    }
+  const handlePageChange = (page: number) => {
+    setPageData({ ...pageData, page: page });
   };
 
   const customCellRender = (value: any, record: any, index: number, dataIndex: string) => {
     // Рендер для товара (фото + название)
     if (dataIndex === 'product') {
       return (
-        <div className={styles.productCell}>
+        <div className={styles.productCell} data-id={value.wb_id}>
           <img 
-            src={value.photo} 
-            alt="Product" 
+            src={value.photo}
+            alt={value.name}
             className={styles.productImage}
           />
           <span className={styles.productName} title={value.name}>
@@ -269,7 +260,7 @@ const WbMetricsTable: React.FC<WbMetricsTableProps> = ({
           className={styles.percentageCell}
           style={{ backgroundColor: getColorForPercentage(value, 0.2) }}
         >
-          {value}%
+          {value !== undefined ? `${value}%` : '-'}
         </div>
       );
     }
@@ -306,9 +297,9 @@ const WbMetricsTable: React.FC<WbMetricsTableProps> = ({
             }}
             onSort={(sort_field, sort_order) => setSortState({ sort_field, sort_order })}
             pagination={{
-              current: currentPage,
-              pageSize: pageSize,
-              total: data.total_count,
+              current: pageData.page,
+              pageSize: pageData.per_page,
+              total: pageData.total_count,
               onChange: handlePageChange
             }}
             style={{ fontFamily: 'Mulish' }}

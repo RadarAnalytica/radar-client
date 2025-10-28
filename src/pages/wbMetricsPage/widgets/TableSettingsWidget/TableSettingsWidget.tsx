@@ -77,10 +77,12 @@ const TableSettingsWidget: React.FC<TableSettingsWidgetProps> = ({
         open={isModalOpen}
         onCancel={handleCancel}
         onOk={() => form.submit()}
+        cancelText="Отмена"
         width={600}
+        okText="Применить"
         className={styles.modal}
       >
-        <div className={styles.modal__content}>
+        <div className={`${styles.modal__content} scroll-container`}>
           <div className={styles.modal__checkboxes}>
             <Button
               type="default"
