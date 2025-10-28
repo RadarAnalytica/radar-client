@@ -27,6 +27,7 @@ interface ISerpProduct {
     number: number;
     ad: boolean;
     price: number;
+    price_spp: number;
     base_price: number;
     feedbacks: number;
     rating: number;
