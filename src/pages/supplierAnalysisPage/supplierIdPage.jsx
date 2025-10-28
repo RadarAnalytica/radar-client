@@ -140,6 +140,7 @@ const SupplierIdPage = () => {
                     />
                 </div>
 
+                {/* Основная таблица */}
                 <div className={styles.page__tableWrapper}>
                     <TableWidget
                         id={mainSupplierData?.supplier_id}
@@ -150,6 +151,7 @@ const SupplierIdPage = () => {
                         containerHeight='90vh'
                     />
                 </div>
+                {/* Товары поставщика */}
                 <div className={styles.page__tableWrapper}>
                     <GoodsTableCustomHeader id={mainSupplierData?.supplier_id} />
                     <TableWidget
@@ -162,6 +164,7 @@ const SupplierIdPage = () => {
                         hasPagination
                     />
                 </div>
+                {/* Продажи по категориям поставщика */}
                 <div className={styles.page__tableWrapper}>
                     <TableWidget
                         tableConfig={salesTableConfig}
@@ -174,11 +177,13 @@ const SupplierIdPage = () => {
                         hasPagination
                     />
                 </div>
+                {/* Структура заказов по складам и размерам */}
                 <div className={styles.page__tableWrapper}>
                     <OrdersTableCustomHeader />
                     <TableTabsWrapper />
                 </div>
 
+                {/* Распределение товарных остатков по складам */}
                 <div className={styles.page__additionalWrapper}>
                     <StockChartWidget
                         //downloadButton
