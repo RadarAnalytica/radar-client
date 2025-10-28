@@ -165,7 +165,7 @@ const Onboarding = () => {
                     onClick={() => {
                       submitHandler();
                     }}
-                    disabled={!token.trim() || !brandName.trim()}
+                    // disabled={!token.trim() || !brandName.trim()}
                   >
                     Начать работать
                   </button>
