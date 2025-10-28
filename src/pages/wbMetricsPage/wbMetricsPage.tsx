@@ -138,16 +138,17 @@ const WbMetricsPage: React.FC = () => {
           </div>
         )}
 
-        {!loading && data?.data?.length > 0 ? (
-            <WbMetricsTable
-                data={data}
-                columns={tableConfig}
-                loading={loading}
-                metricType={metricType}
-                pageData={pageData}
-                setPageData={setPageData}
-            />
-        ) : <NoData />}
+        {!loading && (data?.data?.length > 0
+          ? <WbMetricsTable
+              data={data}
+              columns={tableConfig}
+              loading={loading}
+              metricType={metricType}
+              pageData={pageData}
+              setPageData={setPageData}
+          />
+          : <NoData />
+        )}
       </section>
     </main>
   );
