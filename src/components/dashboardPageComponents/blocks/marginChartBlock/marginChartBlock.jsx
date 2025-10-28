@@ -42,20 +42,34 @@ const MarginChartBlock = ({ dataDashBoard, loading }) => {
     const marginMin = dataProfitPlus && dataProfitPlus.length > 0 ? Math.min(...dataProfitPlus) : 0;
     const marginMax = dataProfitPlus && dataProfitPlus.length > 0 ? Math.max(...dataProfitPlus) : 100;
     
-    // Нормализуем оси так, чтобы ноль был точно посередине графика для обеих осей
+    // Проверяем наличие отрицательных значений в обеих осях
+    const hasNegativeROI = roiMin < 0;
+    const hasNegativeMargin = marginMin < 0;
     
-    // Для ROI: находим максимальное отклонение от нуля
-    const roiMaxAbs = Math.max(Math.abs(roiMin), Math.abs(roiMax));
+    let roiAxisMin, roiAxisMax, marginAxisMin, marginAxisMax;
     
-    // Для маржинальности: находим максимальное отклонение от нуля
-    const marginMaxAbs = Math.max(Math.abs(marginMin), Math.abs(marginMax));
-    
-    // Устанавливаем симметричные диапазоны относительно нуля
-    const roiAxisMin = -roiMaxAbs;
-    const roiAxisMax = roiMaxAbs;
-    
-    const marginAxisMin = -marginMaxAbs;
-    const marginAxisMax = marginMaxAbs;
+    // Если нет отрицательных значений в обеих осях, располагаем 0 внизу
+    if (!hasNegativeROI && !hasNegativeMargin) {
+        roiAxisMin = 0;
+        roiAxisMax = roiMax;
+        marginAxisMin = 0;
+        marginAxisMax = marginMax;
+    } else {
+        // Нормализуем оси так, чтобы ноль был точно посередине графика для обеих осей
+        
+        // Для ROI: находим максимальное отклонение от нуля
+        const roiMaxAbs = Math.max(Math.abs(roiMin), Math.abs(roiMax));
+        
+        // Для маржинальности: находим максимальное отклонение от нуля
+        const marginMaxAbs = Math.max(Math.abs(marginMin), Math.abs(marginMax));
+        
+        // Устанавливаем симметричные диапазоны относительно нуля
+        roiAxisMin = -roiMaxAbs;
+        roiAxisMax = roiMaxAbs;
+        
+        marginAxisMin = -marginMaxAbs;
+        marginAxisMax = marginMaxAbs;
+    }
     
     const data = {
         labels: labels,
