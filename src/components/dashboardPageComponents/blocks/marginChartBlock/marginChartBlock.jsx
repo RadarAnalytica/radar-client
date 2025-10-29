@@ -57,33 +57,48 @@ const MarginChartBlock = ({ dataDashBoard, loading }) => {
     const marginMin = dataProfitPlus && dataProfitPlus.length > 0 ? Math.min(...dataProfitPlus) : 0;
     const marginMax = dataProfitPlus && dataProfitPlus.length > 0 ? Math.max(...dataProfitPlus) : 100;
     
-    // Проверяем наличие отрицательных значений в обеих осях
-    const hasNegativeROI = roiMin < 0;
-    const hasNegativeMargin = marginMin < 0;
+    // Вычисляем относительную позицию нуля для каждой оси (доля от низа графика)
+    // p = (0 - min) / (max - min) показывает, на какой высоте графика находится ноль
+    const p_roi = roiMin < 0 ? -roiMin / (roiMax - roiMin) : 0;
+    const p_margin = marginMin < 0 ? -marginMin / (marginMax - marginMin) : 0;
+    
+    // Выбираем максимальную позицию, чтобы обе оси уместили свои данные
+    const p = Math.max(p_roi, p_margin);
     
     let roiAxisMin, roiAxisMax, marginAxisMin, marginAxisMax;
     
-    // Если нет отрицательных значений в обеих осях, располагаем 0 внизу
-    if (!hasNegativeROI && !hasNegativeMargin) {
+    if (p === 0) {
+        // Нет отрицательных значений, располагаем 0 внизу
         roiAxisMin = 0;
         roiAxisMax = roiMax;
         marginAxisMin = 0;
         marginAxisMax = marginMax;
     } else {
-        // Нормализуем оси так, чтобы ноль был точно посередине графика для обеих осей
+        // Корректируем оси так, чтобы ноль был на одной высоте для обеих
         
-        // Для ROI: находим максимальное отклонение от нуля
-        const roiMaxAbs = Math.max(Math.abs(roiMin), Math.abs(roiMax));
+        // Для ROI: используем min из данных, вычисляем необходимый max
+        // Формула: max = min * (1 - 1/p)
+        const calculatedRoiMax = roiMin * (1 - 1/p);
+        if (calculatedRoiMax >= roiMax) {
+            // Можем использовать реальный min
+            roiAxisMin = roiMin;
+            roiAxisMax = calculatedRoiMax;
+        } else {
+            // Нужно скорректировать min, чтобы уместить max
+            // Формула: min = -max * p / (1 - p)
+            roiAxisMin = -roiMax * p / (1 - p);
+            roiAxisMax = roiMax;
+        }
         
-        // Для маржинальности: находим максимальное отклонение от нуля
-        const marginMaxAbs = Math.max(Math.abs(marginMin), Math.abs(marginMax));
-        
-        // Устанавливаем симметричные диапазоны относительно нуля
-        roiAxisMin = -roiMaxAbs;
-        roiAxisMax = roiMaxAbs;
-        
-        marginAxisMin = -marginMaxAbs;
-        marginAxisMax = marginMaxAbs;
+        // Для маржинальности: аналогично
+        const calculatedMarginMax = marginMin * (1 - 1/p);
+        if (calculatedMarginMax >= marginMax) {
+            marginAxisMin = marginMin;
+            marginAxisMax = calculatedMarginMax;
+        } else {
+            marginAxisMin = -marginMax * p / (1 - p);
+            marginAxisMax = marginMax;
+        }
     }
     
     const data = {
