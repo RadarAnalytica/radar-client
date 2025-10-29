@@ -35,6 +35,7 @@ import { RadarBar } from '@/shared';
 const MainContent = React.memo(({
     shopStatus,
     loading,
+    isFiltersLoading,
     dataDashBoard,
     selectedRange,
     activeBrand,
@@ -43,26 +44,29 @@ const MainContent = React.memo(({
     updateDataDashBoard,
     isSidebarHidden
 }) => {
-    if (!shopStatus?.is_primary_collect) return null;
+    const isLoading = loading || isFiltersLoading;
+    
+    // Если фильтры загружены и shopStatus не подходит, не рендерим
+    if (!isFiltersLoading && !shopStatus?.is_primary_collect) return null;
 
     return (
         <div className={styles.page__mainContentWrapper}>
             <FirstBarsGroup
                 dataDashBoard={dataDashBoard}
                 selectedRange={selectedRange}
-                loading={loading}
+                loading={isLoading}
             />
 
             <MainChart
                 title='Заказы и продажи'
-                loading={loading}
+                loading={isLoading}
                 dataDashBoard={dataDashBoard}
                 selectedRange={selectedRange}
             />
 
             <SecondBarsGroup
                 dataDashBoard={dataDashBoard}
-                loading={loading}
+                loading={isLoading}
                 selectedRange={selectedRange}
                 activeBrand={activeBrand}
                 authToken={authToken}
@@ -71,61 +75,61 @@ const MainContent = React.memo(({
 
             <div className={styles.page__chartGroup}>
                 <FinanceBlock
-                    loading={loading}
+                    loading={isLoading}
                     dataDashBoard={dataDashBoard}
                 />
                 <ProfitBlock
-                    loading={loading}
+                    loading={isLoading}
                     dataDashBoard={dataDashBoard}
                 />
 
                 <div className={styles.page__doubleBlockWrapper}>
                     <TaxTableBlock
-                        loading={loading}
+                        loading={isLoading}
                         dataDashBoard={dataDashBoard}
                         updateDashboard={updateDataDashBoard}
                     />
                     <RevenueStructChartBlock
-                        loading={loading}
+                        loading={isLoading}
                         dataDashBoard={dataDashBoard}
                     />
                 </div>
 
                 <MarginChartBlock
-                    loading={loading}
+                    loading={isLoading}
                     dataDashBoard={dataDashBoard}
                 />
                 {/* <ProfitChartBlock
-                    loading={loading}
+                    loading={isLoading}
                     dataDashBoard={dataDashBoard}
                 /> */}
 
                 <StorageRevenueChartBlock
-                    loading={loading}
+                    loading={isLoading}
                     dataDashBoard={dataDashBoard}
                 />
                 <StorageBlock
-                    loading={loading}
+                    loading={isLoading}
                     dataDashBoard={dataDashBoard}
                 />
 
 
 
                 {/* <CostsBlock
-                    loading={loading}
+                    loading={isLoading}
                     dataDashBoard={dataDashBoard}
                 /> */}
             </div>
 
             {/* <StockAnalysisBlock
                 data={dataDashBoard?.stockAnalysis}
-                loading={loading}
+                loading={isLoading}
             /> */}
 
             <AbcDataBlock
                 titles={['Группа А', 'Группа В', 'Группа С']}
                 data={dataDashBoard?.ABCAnalysis}
-                loading={loading}
+                loading={isLoading}
             />
         </div>
     );
@@ -228,6 +232,7 @@ const _DashboardPage = () => {
                 <MainContent
                     shopStatus={shopStatus}
                     loading={pageState.loading}
+                    isFiltersLoading={!isFiltersLoaded}
                     dataDashBoard={pageState.dataDashBoard}
                     selectedRange={selectedRange}
                     activeBrand={activeBrand}
