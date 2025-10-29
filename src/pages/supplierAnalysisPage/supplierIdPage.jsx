@@ -124,7 +124,7 @@ const SupplierIdPage = () => {
                         dataType='metaData'
                         id={mainSupplierData?.supplier_id}
                     />
-                    <div className={styles.page__filtersWrapper}>
+                    <div className={`${styles.page__filtersWrapper} ${isDemoMode && 'pe-none'}`}>
                         <Filters
                             setLoading={() => {}}
                             shopSelect={false}

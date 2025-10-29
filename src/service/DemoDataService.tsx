@@ -32,6 +32,28 @@ import rnpFiltersData from '../mock/rnp-filters.json';
 import serpRegions from '../mock/serp-regions.json';
 import wbControlsData from '../mock/wb-controls.json';
 import serpQueryData from '../mock/serp-query-data.json';
+// supplier analysis imports
+import supplierAnalysisMetaData from '../mock/supplier-analysis/supplier-meta.json';
+import supplierAnalysisIndicatorsData from '../mock/supplier-analysis/supplier-indicators.json';
+import supplierAnalysisChartsData from '../mock/supplier-analysis/supplier-charts.json';
+import supplierAnalysisByDateData from '../mock/supplier-analysis/supplier-by-date.json';
+import supplierAnalysisBySubjectData from '../mock/supplier-analysis/supplier-by-subject.json';
+import supplierAnalysisByWarehouseData from '../mock/supplier-analysis/supplier-by-warehouse.json';
+import supplierAnalysisByProductData from '../mock/supplier-analysis/supplier-by-product.json';
+import supplierAnalysisBySizeData from '../mock/supplier-analysis/supplier-by-size.json';
+import supplierAnalysisRevenueData from '../mock/supplier-analysis/revenue.json';
+import supplierAnalysisOrdersData from '../mock/supplier-analysis/orders.json';
+import supplierAnalysisAvgPriceData from '../mock/supplier-analysis/avg-price.json';
+import supplierAnalysisAvgDiscountData from '../mock/supplier-analysis/avg-discount.json';
+import supplierAnalysisStockQuantityData from '../mock/supplier-analysis/stock-quantity.json';
+// sku analysis imports
+import skuAnalysisMetaData from '../mock/sku-analysis/product-meta.json';
+import skuAnalysisIndicatorsData from '../mock/sku-analysis/indicators.json';
+import skuAnalysisChartsData from '../mock/sku-analysis/charts.json';
+import skuAnalysisByDateData from '../mock/sku-analysis/by-date.json';
+import skuAnalysisByColorData from '../mock/sku-analysis/by-color.json';
+import skuAnalysisByWarehouseData from '../mock/sku-analysis/by-warehouse.json';
+import skuAnalysisBySizeData from '../mock/sku-analysis/by-size.json';
 
 export class DemoDataService {
   private static instance: DemoDataService;
@@ -108,6 +130,29 @@ export class DemoDataService {
       'https://radarmarket.ru/api/analytic/query-dynamics/day': () => this.getTrendingAnalysisDay(),
       'https://radarmarket.ru/api/web-service/search-map/get-regions': () => this.getSERPRegions(),
       'https://radarmarket.ru/api/web-service/search-map/get-query-data': () => this.getSERPQueryData(),
+      // supplier analysis routes
+      'https://radarmarket.ru/api/web-service/supplier-analysis/supplier-meta': () => supplierAnalysisMetaData,
+      'https://radarmarket.ru/api/web-service/supplier-analysis/supplier-indicators': () => supplierAnalysisIndicatorsData,
+      'https://radarmarket.ru/api/web-service/supplier-analysis/supplier-charts': () => supplierAnalysisChartsData,
+      'https://radarmarket.ru/api/web-service/supplier-analysis/supplier-by-date': () => supplierAnalysisByDateData,
+      'https://radarmarket.ru/api/web-service/supplier-analysis/supplier-by-subject': () => supplierAnalysisBySubjectData,
+      'https://radarmarket.ru/api/web-service/supplier-analysis/supplier-by-warehouse': () => supplierAnalysisByWarehouseData,
+      'https://radarmarket.ru/api/web-service/supplier-analysis/supplier-by-product': () => supplierAnalysisByProductData,
+      'https://radarmarket.ru/api/web-service/supplier-analysis/comparison/revenue': () => supplierAnalysisRevenueData,
+      'https://radarmarket.ru/api/web-service/supplier-analysis/comparison/orders': () => supplierAnalysisOrdersData,
+      'https://radarmarket.ru/api/web-service/supplier-analysis/comparison/avg-price': () => supplierAnalysisAvgPriceData,
+      'https://radarmarket.ru/api/web-service/supplier-analysis/comparison/avg-discount': () => supplierAnalysisAvgDiscountData,
+      'https://radarmarket.ru/api/web-service/supplier-analysis/comparison/stock-quantity': () => supplierAnalysisStockQuantityData,
+      'https://radarmarket.ru/api/web-service/supplier-analysis/comparison/by-size': () => supplierAnalysisBySizeData,
+      'https://radarmarket.ru/api/web-service/supplier-analysis/comparison/warehouse-quantity': () => [],
+      // sku analysis routes
+      'https://radarmarket.ru/api/web-service/product-analysis/product-meta': () => skuAnalysisMetaData,
+      'https://radarmarket.ru/api/web-service/product-analysis/indicators': () => skuAnalysisIndicatorsData,
+      'https://radarmarket.ru/api/web-service/product-analysis/charts': () => skuAnalysisChartsData,
+      'https://radarmarket.ru/api/web-service/product-analysis/table/by-date': () => skuAnalysisByDateData,
+      'https://radarmarket.ru/api/web-service/product-analysis/table/by-color': () => skuAnalysisByColorData,
+      'https://radarmarket.ru/api/web-service/product-analysis/table/by-warehouse': () => skuAnalysisByWarehouseData,
+      'https://radarmarket.ru/api/web-service/product-analysis/table/by-size': () => skuAnalysisBySizeData,
     };
 
     const dataGetter = endpointMap[endpoint];

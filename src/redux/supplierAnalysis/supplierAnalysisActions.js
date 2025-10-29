@@ -1,5 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { actions as supplierAnalysisActions } from './supplierAnalysisSlice';
+import { fetchApi } from '@/service/fetchApi';
 
 const createMainChartDataDTO = (data) => {
   let DTO = {
@@ -34,7 +35,7 @@ export const fetchSupplierAnalysisMetaData = createAsyncThunk(
     dispatch(supplierAnalysisActions.setDataFetchingStatus({ dataType: 'metaData', statusObject: { isLoading: true, isError: false, isSuccess: false, message: '' } }));
     dispatch(supplierAnalysisActions.setIsAnyDataLoading(true));
     try {
-      let res = await fetch(`https://radarmarket.ru/api/web-service/supplier-analysis/supplier-meta`, {
+      let res = await fetchApi(`https://radarmarket.ru/api/web-service/supplier-analysis/supplier-meta`, {
         method: 'POST',
         headers: {
           'content-type': 'application/json',
@@ -61,7 +62,7 @@ export const fetchSupplierAnalysisIndicatorsData = createAsyncThunk(
     dispatch(supplierAnalysisActions.setIsAnyDataLoading(true));
     try {
 
-      let res = await fetch(`https://radarmarket.ru/api/web-service/supplier-analysis/supplier-indicators`, {
+      let res = await fetchApi(`https://radarmarket.ru/api/web-service/supplier-analysis/supplier-indicators`, {
         method: 'POST',
         headers: {
           'content-type': 'application/json',
@@ -87,7 +88,7 @@ export const fetchSupplierAnalysisMainChartData = createAsyncThunk(
     dispatch(supplierAnalysisActions.setIsAnyDataLoading(true));
     try {
 
-      const res = await fetch(`https://radarmarket.ru/api/web-service/supplier-analysis/supplier-charts`, {
+      const res = await fetchApi(`https://radarmarket.ru/api/web-service/supplier-analysis/supplier-charts`, {
         method: 'POST',
         headers: {
           'content-type': 'application/json',
@@ -113,7 +114,7 @@ export const fetchSupplierAnalysisByDatesTableData = createAsyncThunk(
     dispatch(supplierAnalysisActions.setIsAnyDataLoading(true));
     try {
 
-      const res = await fetch(`https://radarmarket.ru/api/web-service/supplier-analysis/supplier-by-date`, {
+      const res = await fetchApi(`https://radarmarket.ru/api/web-service/supplier-analysis/supplier-by-date`, {
         method: 'POST',
         headers: {
           'content-type': 'application/json',
@@ -139,7 +140,7 @@ export const fetchSupplierAnalysisBrandsData = createAsyncThunk(
     //dispatch(supplierAnalysisActions.setIsAnyDataLoading(true))
     try {
 
-      const res = await fetch(`https://radarmarket.ru/api/web-service/supplier-analysis/supplier-brands`, {
+      const res = await fetchApi(`https://radarmarket.ru/api/web-service/supplier-analysis/supplier-brands`, {
         method: 'POST',
         headers: {
           'content-type': 'application/json',
@@ -168,7 +169,7 @@ export const fetchSupplierAnalysisByBrandTableData = createAsyncThunk(
     dispatch(supplierAnalysisActions.setIsAnyDataLoading(true));
     try {
 
-      const res = await fetch(`https://radarmarket.ru/api/web-service/supplier-analysis/supplier-by-product`, {
+      const res = await fetchApi(`https://radarmarket.ru/api/web-service/supplier-analysis/supplier-by-product`, {
         method: 'POST',
         headers: {
           'content-type': 'application/json',
@@ -194,7 +195,7 @@ export const fetchSupplierAnalysisBySubjectsTableData = createAsyncThunk(
     dispatch(supplierAnalysisActions.setIsAnyDataLoading(true));
     try {
 
-      const res = await fetch(`https://radarmarket.ru/api/web-service/supplier-analysis/supplier-by-subject`, {
+      const res = await fetchApi(`https://radarmarket.ru/api/web-service/supplier-analysis/supplier-by-subject`, {
         method: 'POST',
         headers: {
           'content-type': 'application/json',
@@ -220,7 +221,7 @@ export const fetchSupplierAnalysisByWarehousesTableData = createAsyncThunk(
     dispatch(supplierAnalysisActions.setIsAnyDataLoading(true));
     try {
 
-      const res = await fetch(`https://radarmarket.ru/api/web-service/supplier-analysis/supplier-by-warehouse`, {
+      const res = await fetchApi(`https://radarmarket.ru/api/web-service/supplier-analysis/supplier-by-warehouse`, {
         method: 'POST',
         headers: {
           'content-type': 'application/json',
@@ -246,7 +247,7 @@ export const fetchSupplierAnalysisBySizesTableData = createAsyncThunk(
     dispatch(supplierAnalysisActions.setIsAnyDataLoading(true));
     try {
 
-      const res = await fetch(`https://radarmarket.ru/api/web-service/supplier-analysis/supplier-by-size`, {
+      const res = await fetchApi(`https://radarmarket.ru/api/web-service/supplier-analysis/supplier-by-size`, {
         method: 'POST',
         headers: {
           'content-type': 'application/json',
@@ -272,7 +273,7 @@ export const fetchSupplierAnalysisByWharehousesComparsionData = createAsyncThunk
     dispatch(supplierAnalysisActions.setIsAnyDataLoading(true));
     try {
 
-      const res = await fetch(`https://radarmarket.ru/api/web-service/supplier-analysis/comparison/warehouse-quantity`, {
+      const res = await fetchApi(`https://radarmarket.ru/api/web-service/supplier-analysis/comparison/warehouse-quantity`, {
         method: 'POST',
         headers: {
           'content-type': 'application/json',
@@ -298,7 +299,7 @@ export const fetchSupplierAnalysisByIncomingOrdersComparsionData = createAsyncTh
     dispatch(supplierAnalysisActions.setIsAnyDataLoading(true));
     try {
 
-      const res = await fetch(`https://radarmarket.ru/api/web-service/supplier-analysis/comparison/revenue`, {
+      const res = await fetchApi(`https://radarmarket.ru/api/web-service/supplier-analysis/comparison/revenue`, {
         method: 'POST',
         headers: {
           'content-type': 'application/json',
@@ -324,7 +325,7 @@ export const fetchSupplierAnalysisByOrderedProductsComparsionData = createAsyncT
     dispatch(supplierAnalysisActions.setIsAnyDataLoading(true));
     try {
 
-      const res = await fetch(`https://radarmarket.ru/api/web-service/supplier-analysis/comparison/orders`, {
+      const res = await fetchApi(`https://radarmarket.ru/api/web-service/supplier-analysis/comparison/orders`, {
         method: 'POST',
         headers: {
           'content-type': 'application/json',
@@ -350,7 +351,7 @@ export const fetchSupplierAnalysisByAvgPricesComparsionData = createAsyncThunk(
     dispatch(supplierAnalysisActions.setIsAnyDataLoading(true));
     try {
 
-      const res = await fetch(`https://radarmarket.ru/api/web-service/supplier-analysis/comparison/avg-price`, {
+      const res = await fetchApi(`https://radarmarket.ru/api/web-service/supplier-analysis/comparison/avg-price`, {
         method: 'POST',
         headers: {
           'content-type': 'application/json',
@@ -376,7 +377,7 @@ export const fetchSupplierAnalysisByAvgDiscountsComparsionData = createAsyncThun
     dispatch(supplierAnalysisActions.setIsAnyDataLoading(true));
         try {
 
-      const res = await fetch(`https://radarmarket.ru/api/web-service/supplier-analysis/comparison/avg-discount`, {
+      const res = await fetchApi(`https://radarmarket.ru/api/web-service/supplier-analysis/comparison/avg-discount`, {
         method: 'POST',
         headers: {
           'content-type': 'application/json',
@@ -402,7 +403,7 @@ export const fetchSupplierAnalysisByStockSizeComparsionData = createAsyncThunk(
     dispatch(supplierAnalysisActions.setIsAnyDataLoading(true));
     try {
 
-      const res = await fetch(`https://radarmarket.ru/api/web-service/supplier-analysis/comparison/stock-quantity`, {
+      const res = await fetchApi(`https://radarmarket.ru/api/web-service/supplier-analysis/comparison/stock-quantity`, {
         method: 'POST',
         headers: {
           'content-type': 'application/json',

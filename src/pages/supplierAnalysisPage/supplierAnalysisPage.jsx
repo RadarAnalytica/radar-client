@@ -9,7 +9,7 @@ const SupplierAnalysisPage = () => {
   const {isDemoMode} = useDemoMode();
 
   if (isDemoMode) {
-    location.href = '/supplier-analysis/1280805';
+    location.href = '/supplier-analysis/16892';
     return null;
   }
 
