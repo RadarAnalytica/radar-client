@@ -48,6 +48,7 @@ export default function OperatingExpenses() {
 	const [deleteCategoryId, setDeleteCategoryId] = useState(null);
 	const [alertState, setAlertState] = useState(initAlertState);
 	const [expense, setExpense] = useState([]);
+	const [totalSum, setTotalSum] = useState(0);
 	const [expPagination, setExpPagination] = useState({
 		page: 1,
 		limit: 25,
@@ -74,7 +75,7 @@ export default function OperatingExpenses() {
 			const result = {
 				key: 'summary',
 				date: 'Итого:',
-				value: data.reduce((value, el) => (value += el.value), 0) || '-',
+				value: totalSum || '-',
 				description: '-',
 				expense_categories: '-',
 				vendor_code: '-',
@@ -159,6 +160,7 @@ export default function OperatingExpenses() {
 		try {
 			const res = await ServiceFunctions.getOperatingExpensesExpenseGetAll(authToken, requestObject);
 			setExpense(res.data);
+			setTotalSum(res.total_sum || 0);
 			progress.complete();
 			setExpPagination({
 				page: res.page,
@@ -451,7 +453,9 @@ export default function OperatingExpenses() {
 				}
 
 				{/* Заглушка для не активированных брендов */}
-				{!activeBrand?.is_primary_collect && <DataCollectWarningBlock />}
+				{activeBrand && !activeBrand?.is_primary_collect && 
+					<DataCollectWarningBlock />
+				}
 
 				{/* Лоадер */}
 				{loading && <Loader loading={loading} progress={progress.value} />}

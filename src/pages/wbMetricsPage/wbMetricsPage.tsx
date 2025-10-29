@@ -133,7 +133,9 @@ const WbMetricsPage: React.FC = () => {
             </div>
         </div>
 
-        {!activeBrand?.is_primary_collect && <DataCollectWarningBlock />}
+        {activeBrand && !activeBrand?.is_primary_collect && 
+          <DataCollectWarningBlock />
+        }
 
         {loading && (
           <div className={styles.loader__container}>
