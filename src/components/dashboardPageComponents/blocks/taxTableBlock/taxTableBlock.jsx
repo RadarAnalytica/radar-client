@@ -6,6 +6,7 @@ import { RedoOutlined } from '@ant-design/icons';
 import AuthContext from '../../../../service/AuthContext';
 import { useAppSelector } from '../../../../redux/hooks';
 import { ServiceFunctions } from '../../../../service/serviceFunctions';
+import { RadarLoader } from '../../../../shared/ui/RadarLoader/RadarLoader';
 
 const taxOption = ['УСН Д-Р', 'УСН-доходы', 'Не считать налог', 'Считать от РС'];
 
@@ -45,9 +46,7 @@ const TaxTableBlock = ({ dataDashBoard, loading, updateDashboard }) => {
     if (loading) {
         return (
             <div className={styles.block}>
-                <div className={styles.bar__loaderWrapper}>
-                    <span className='loader'></span>
-                </div>
+               <RadarLoader loaderStyle={{ height: '342px' }} />
             </div>
         );
     }
@@ -163,7 +162,7 @@ const TaxTableBlock = ({ dataDashBoard, loading, updateDashboard }) => {
 
                 <div className={styles.block__content}>
                     <div className={styles.block__row}>
-                        <p className={styles.block__rowTitle}>WB реализовал</p>
+                        <p className={styles.block__rowTitle}>WB реализация</p>
                         <p className={styles.block__rowData}>{formatPrice(data.wbRealization, '₽')}</p>
                     </div>
                     <div className={styles.block__row}>

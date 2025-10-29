@@ -13,26 +13,17 @@
     } */
 }
 
-.group_openSidebar {
-    width: 100%;
+.group__wrapper {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    grid-template-rows: auto;
-    gap: 20px;
-    justify-items: stretch;
-    justify-content: stretch;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
     box-sizing: border-box;
-
-    @media (max-width: 1400px) {
-        grid-template-columns: repeat(2, 1fr);
-    }
 }
 
-.group__wrapper {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: flex-start;
+.group__3cols {
+    grid-column: span 4;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
     gap: 12px;
     box-sizing: border-box;
 }

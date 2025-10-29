@@ -79,7 +79,7 @@ export function filterArraysNoData(obj, days) {
 
 
 // func that format any value to display (e.g, prices, percents...)
-export const formatPrice = (value, literal) => {
+export const formatPrice = (value, literal, hasPlusSymbol = false) => {
   // define a value to return
   let formattedPriceString = '0';
   // checking if value exists
@@ -100,6 +100,10 @@ export const formatPrice = (value, literal) => {
     // adding a literal (like "шт" or "₽") to the string
     if (literal) {
       formattedPriceString += ` ${literal}`;
+    }
+
+    if (hasPlusSymbol && number > 0) {
+      formattedPriceString = `+${formattedPriceString}`;
     }
   }
   return formattedPriceString;

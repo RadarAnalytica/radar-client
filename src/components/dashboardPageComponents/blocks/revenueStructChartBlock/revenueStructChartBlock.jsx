@@ -3,6 +3,7 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Doughnut } from 'react-chartjs-2';
 import { processStructureData } from '../blockUtils';
 import { useAppSelector } from '../../../../redux/hooks';
+import { RadarLoader } from '../../../../shared/ui/RadarLoader/RadarLoader';
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 const RevenueStructChartBlock = ({ dataDashBoard, loading }) => {
@@ -132,9 +133,7 @@ const RevenueStructChartBlock = ({ dataDashBoard, loading }) => {
     if (loading) {
         return (
             <div className={styles.block}>
-                <div className={styles.bar__loaderWrapper}>
-                    <span className='loader'></span>
-                </div>
+               <RadarLoader loaderStyle={{ height: '407px' }} />
             </div>
         );
     }
