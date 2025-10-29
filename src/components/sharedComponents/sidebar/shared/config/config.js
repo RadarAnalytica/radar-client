@@ -169,7 +169,7 @@ export const menuConfig = [
             },
             {
                 id: 3,
-                url: '/control/spp',
+                url: '/stock-analysis',
                 label: 'Аналитика по товарам',
                 isActive: true,
                 isNew: false

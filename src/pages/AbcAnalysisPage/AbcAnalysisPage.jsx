@@ -119,23 +119,21 @@ const AbcAnalysisPage = () => {
 
 	useEffect(() => {
 		setPrimaryCollect(activeBrand?.is_primary_collect);
-		if (activeBrand && activeBrand.is_primary_collect && viewType && isFiltersLoaded) {
+		if (activeBrand?.is_primary_collect && viewType && isFiltersLoaded) {
 			updateDataAbcAnalysis(
 				viewType,
 				authToken,
 				selectedRange,
 				activeBrand.id.toString()
 			);
+		} else {
+			setLoading(false);
 		}
 	}, [viewType, page, sorting, activeBrand, selectedRange, isFiltersLoaded, activeBrandName, activeArticle, activeGroup]);
 
 	useEffect(() => {
 		setPage(1);
 	}, [activeBrand, selectedRange, isFiltersLoaded, activeBrandName, activeArticle, activeGroup]);
-
-
-
-
 
 
 	useEffect(() => {

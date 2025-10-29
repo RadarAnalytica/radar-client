@@ -15,6 +15,7 @@ import DownloadButton from '@/components/DownloadButton';
 import WbMetricsTable from './widgets/WbMetricsTable/WbMetricsTable';
 import TableSettingsWidget from './widgets/TableSettingsWidget/TableSettingsWidget';
 import NoData from '@/components/sharedComponents/NoData/NoData';
+import DataCollectWarningBlock from '@/components/sharedComponents/dataCollectWarningBlock/dataCollectWarningBlock';
 import { 
   getDefaultTableConfig, 
   loadTableConfig, 
@@ -62,9 +63,9 @@ const WbMetricsPage: React.FC = () => {
   };
 
   useEffect(() => {
-    if (activeBrand && activeBrand.is_primary_collect) {
+    if (activeBrand?.is_primary_collect) {
       loadData();
-    } else if (activeBrand && !activeBrand.is_primary_collect) {
+    } else {
       setLoading(false);
     }
   }, [activeBrand, pageData.page, activeBrandName, activeArticle, activeGroup, metricType]);
@@ -111,6 +112,8 @@ const WbMetricsPage: React.FC = () => {
         </div>
 
         {isDemoMode && <NoSubscriptionWarningBlock />}
+
+        {!activeBrand?.is_primary_collect && <DataCollectWarningBlock />}
 
         <div className={styles.page__controlsWrapper}>
             <Filters
