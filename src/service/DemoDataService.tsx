@@ -4,7 +4,9 @@ import type {
   SupplierAnalysisDemoData,
   WeeklyReportDemoData,
   DemoApiResponse,
-  PlReportDemoData
+  PlReportDemoData,
+  WbMetricsData,
+  ControlDataItem
 } from '../types/demo';
 
 import stockAnalysis from '../mock/stock-analysis.json';
@@ -27,6 +29,9 @@ import trendingQueriesDay from '../mock/trend-analysis-day.json';
 import ceoComparisonRaw from '../mock/ceo-comparison.json';
 import descriptionGeneratorKeywords from '../mock/description-generator-keywords.json';
 import rnpFiltersData from '../mock/rnp-filters.json';
+import serpRegions from '../mock/serp-regions.json';
+import wbControlsData from '../mock/wb-controls.json';
+import serpQueryData from '../mock/serp-query-data.json';
 
 export class DemoDataService {
   private static instance: DemoDataService;
@@ -92,6 +97,8 @@ export class DemoDataService {
       '/api/operating-expenses/category/get-all': () => this.getOperatingExpensesCategoriesData(),
       '/api/operating-expenses/expense/get-all': () => this.getOperatingExpensesData(filters),
       '/api/operating-expenses/periodic-expense/get': () => this.getPeriodicExpenseTemplateData(),
+      '/api/control/spp': () => this.getWbControlsData(filters),
+      '/api/control/drr': () => this.getWbControlsData(filters),
       '/api/product/self-costs': () => ({ message: "Success", updated_items: [{ product: 'Демо', cost: 100, fulfillment: 100 }] }),
       '/api/msg/': () => ([]),
       'https://radarmarket.ru/api/web-service/monitoring-oracle/easy/get': () => this.getEasyMonitoringData(),
@@ -99,6 +106,8 @@ export class DemoDataService {
       'https://radarmarket.ru/api/web-service/trending-queries/get': () => this.getTrendingQueries(),
       'https://radarmarket.ru/api/analytic/query-dynamics/month': () => this.getTrendingAnalysisMonth(),
       'https://radarmarket.ru/api/analytic/query-dynamics/day': () => this.getTrendingAnalysisDay(),
+      'https://radarmarket.ru/api/web-service/search-map/get-regions': () => this.getSERPRegions(),
+      'https://radarmarket.ru/api/web-service/search-map/get-query-data': () => this.getSERPQueryData(),
     };
 
     const dataGetter = endpointMap[endpoint];
@@ -211,6 +220,65 @@ export class DemoDataService {
     return turnOverData;
   }
 
+  private getWbControlsData(filters?: any, count: number = 30): WbMetricsData {
+    const generateRandomPercentage = (min: number, max: number): number => {
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    };
+
+    const generateDateRange = (days: number): string[] => {
+      const dates: string[] = [];
+      const today = new Date();
+
+      for (let i = 0; i < days; i++) {
+        const date = new Date(today);
+        date.setDate(date.getDate() - i);
+        dates.push(date.toISOString().split('T')[0]);
+      }
+
+      return dates.reverse();
+    };
+
+    const generateControlData = (dates: string[], minValue: number, maxValue: number): ControlDataItem[] => {
+      return dates.map(date => ({
+        date,
+        percentage: generateRandomPercentage(minValue, maxValue)
+      }));
+    };
+
+    const sampleProducts = wbControlsData;
+    const dates = generateDateRange(count);
+    const minValue = 1;
+    const maxValue = 10;
+    const startIndex = 0;
+    const endIndex = count;
+
+    const products = [];
+    for (let i = startIndex; i < endIndex; i++) {
+      const productIndex = i % sampleProducts.length;
+      const product = {
+        ...sampleProducts[productIndex],
+        wb_id: sampleProducts[productIndex].wb_id + i,
+        name: `${sampleProducts[productIndex].name} ${i + 1}`
+      };
+
+      const controlData = generateControlData(dates, minValue, maxValue);
+
+      products.push({
+        product,
+        control_data: controlData
+      });
+    }
+
+    return {
+      data: products,
+      min_control_value: minValue,
+      max_control_value: maxValue,
+      page: 1,
+      per_page: count,
+      total_count: count,
+    };
+  };
+
   private getAbcDataProceeds(filters?: any): any {
     const data = this.getOriginalJson(abcDataProceeds);
     const days = this.getFilterDays(filters);
@@ -269,6 +337,14 @@ export class DemoDataService {
 
   private getDescriptionGeneratorKeywords(): any {
     return descriptionGeneratorKeywords;
+  }
+
+  private getSERPRegions(): any {
+    return serpRegions;
+  }
+
+  private getSERPQueryData(): any {
+    return serpQueryData;
   }
 
   private getSubscriptionsData(): any {
@@ -1192,7 +1268,7 @@ export class DemoDataService {
         const weekLabel = `${weekNumber} неделя (${startDateStr} - ${endDateStr})`;
 
         // Генерируем случайные данные на основе базовых данных
-        const generatedData = this.generateRandomWeeklyData(baseData, weekNumber, currentWeekNumber);
+        const generatedData = this.generateRandomWeeklyData(baseData);
 
         dynamicWeeklyData.push({
           week: weekNumber,
@@ -1212,87 +1288,107 @@ export class DemoDataService {
   }
 
   // Генерация случайных данных для недели на основе базовых данных
-  private generateRandomWeeklyData(baseData: any, weekNumber: number, currentWeek: number): any {
+  private generateRandomWeeklyData(baseData: any): any {
     // Функция для генерации случайного числа в диапазоне
     const randomInRange = (min: number, max: number) => Math.random() * (max - min) + min;
 
     // Функция для генерации случайного числа с вариацией от базового значения
-    const randomVariation = (baseValue: number, variationPercent: number = 0.3) => {
+    const randomVariation = (baseValue: number, variationPercent: number) => {
       const variation = baseValue * variationPercent;
       return Math.max(0, baseValue + randomInRange(-variation, variation));
     };
 
-    // Чем дальше от текущей недели, тем больше вариация
-    const weeksDiff = currentWeek - weekNumber;
-    const variationMultiplier = 1 + (weeksDiff * 0.1);
+    // Функция для генерации пары связанных значений (rub/quantity или rub/percent)
+    const generatePair = (value1: number, value2: number) => {
+      const randomMultiplier = randomInRange(0.25, 0.5);
+      const result1 = Math.round(randomVariation(value1, randomMultiplier));
+      const result2 = Math.round(randomVariation(value2, randomMultiplier));
+
+      if (result1 === 0 || result2 === 0) {
+        return { first: 0, second: 0 };
+      }
+
+      return { first: result1, second: result2 };
+    };
+
+    const roundToTwo = (v: number) => Math.round(v * 100) / 100;
+
+    const revenue = generatePair(baseData.data.revenue.rub, baseData.data.revenue.quantity);
+    const purchases = generatePair(baseData.data.purchases.rub, baseData.data.purchases.quantity);
+    const returnData = generatePair(baseData.data.return.rub, baseData.data.return.quantity);
+    const wbCommission = generatePair(baseData.data.wb_commission.rub, baseData.data.wb_commission.percent);
+    const acquiring = generatePair(baseData.data.acquiring.rub, baseData.data.acquiring.percent);
+    const logisticsStraight = generatePair(baseData.data.logistics_straight.rub, baseData.data.logistics_straight.percent);
+    const logisticsReverse = generatePair(baseData.data.logistics_reverse.rub, baseData.data.logistics_reverse.percent);
+    const logisticsTotal = generatePair(baseData.data.logistics_total.rub, baseData.data.logistics_total.percent);
 
     return {
       revenue: {
-        rub: Math.round(randomVariation(baseData.data.revenue.rub, 0.2 * variationMultiplier)),
-        quantity: Math.round(randomVariation(baseData.data.revenue.quantity, 0.15 * variationMultiplier))
+        rub: revenue.first,
+        quantity: revenue.second
       },
       purchases: {
-        rub: Math.round(randomVariation(baseData.data.purchases.rub, 0.25 * variationMultiplier)),
-        quantity: Math.round(randomVariation(baseData.data.purchases.quantity, 0.2 * variationMultiplier))
+        rub: purchases.first,
+        quantity: purchases.second
       },
       return: {
-        rub: Math.round(randomVariation(baseData.data.return.rub, 0.3 * variationMultiplier)),
-        quantity: Math.round(randomVariation(baseData.data.return.quantity, 0.25 * variationMultiplier))
+        rub: returnData.first,
+        quantity: returnData.second
       },
-      avg_check: Math.round(randomVariation(baseData.data.avg_check, 0.1 * variationMultiplier) * 100) / 100,
-      purchase_percent: Math.round(randomVariation(baseData.data.purchase_percent, 0.15 * variationMultiplier) * 100) / 100,
-      avg_spp: Math.round(randomVariation(baseData.data.avg_spp, 0.2 * variationMultiplier) * 100) / 100,
-      cost_price: Math.round(randomVariation(baseData.data.cost_price, 0.3 * variationMultiplier)),
-      cost_price_percent: Math.round(randomVariation(baseData.data.cost_price_percent, 0.2 * variationMultiplier) * 100) / 100,
-      cost_price_per_one: Math.round(randomVariation(baseData.data.cost_price_per_one, 0.25 * variationMultiplier) * 100) / 100,
-      deliveries: Math.round(randomVariation(baseData.data.deliveries, 0.2 * variationMultiplier)),
-      payment: Math.round(randomVariation(baseData.data.payment, 0.2 * variationMultiplier) * 100) / 100,
-      profit: Math.round(randomVariation(baseData.data.profit, 0.25 * variationMultiplier) * 100) / 100,
-      profit_per_one: Math.round(randomVariation(baseData.data.profit_per_one, 0.2 * variationMultiplier) * 100) / 100,
-      marginality: Math.round(randomVariation(baseData.data.marginality, 0.15 * variationMultiplier) * 100) / 100,
-      return_on_investment: Math.round(randomVariation(baseData.data.return_on_investment, 0.2 * variationMultiplier) * 100) / 100,
+      avg_check: roundToTwo(randomVariation(baseData.data.avg_check, 0.2)),
+      purchase_percent: roundToTwo(randomVariation(baseData.data.purchase_percent, 0.2)),
+      avg_spp: roundToTwo(randomVariation(baseData.data.avg_spp, 0.2)),
+      cost_price: Math.round(randomVariation(baseData.data.cost_price, 0.3)),
+      cost_price_percent: roundToTwo(randomVariation(baseData.data.cost_price_percent, 0.2)),
+      cost_price_per_one: roundToTwo(randomVariation(baseData.data.cost_price_per_one, 0.3)),
+      deliveries: Math.round(randomVariation(baseData.data.deliveries, 0.2)),
+      payment: roundToTwo(randomVariation(baseData.data.payment, 0.2)),
+      profit: roundToTwo(randomVariation(baseData.data.profit, 0.3)),
+      profit_per_one: roundToTwo(randomVariation(baseData.data.profit_per_one, 0.2)),
+      marginality: roundToTwo(randomVariation(baseData.data.marginality, 0.2)),
+      return_on_investment: roundToTwo(randomVariation(baseData.data.return_on_investment, 0.2)),
       wb_commission: {
-        rub: Math.round(randomVariation(baseData.data.wb_commission.rub, 0.15 * variationMultiplier) * 100) / 100,
-        percent: Math.round(randomVariation(baseData.data.wb_commission.percent, 0.1 * variationMultiplier) * 100) / 100
+        rub: wbCommission.first,
+        percent: wbCommission.second
       },
       acquiring: {
-        rub: Math.round(randomVariation(baseData.data.acquiring.rub, 0.2 * variationMultiplier) * 100) / 100,
-        percent: Math.round(randomVariation(baseData.data.acquiring.percent, 0.15 * variationMultiplier) * 100) / 100
+        rub: acquiring.first,
+        percent: acquiring.second
       },
       logistics_straight: {
-        rub: Math.round(randomVariation(baseData.data.logistics_straight.rub, 0.2 * variationMultiplier) * 100) / 100,
-        percent: Math.round(randomVariation(baseData.data.logistics_straight.percent, 0.15 * variationMultiplier) * 100) / 100
+        rub: logisticsStraight.first,
+        percent: logisticsStraight.second
       },
       logistics_reverse: {
-        rub: Math.round(randomVariation(baseData.data.logistics_reverse.rub, 0.25 * variationMultiplier) * 100) / 100,
-        percent: Math.round(randomVariation(baseData.data.logistics_reverse.percent, 0.2 * variationMultiplier) * 100) / 100
+        rub: logisticsReverse.first,
+        percent: logisticsReverse.second
       },
-      logistics_per_product: Math.round(randomVariation(baseData.data.logistics_per_product, 0.2 * variationMultiplier) * 100) / 100,
+      logistics_per_product: roundToTwo(randomVariation(baseData.data.logistics_per_product, 0.2)),
       logistics_total: {
-        rub: Math.round(randomVariation(baseData.data.logistics_total.rub, 0.2 * variationMultiplier) * 100) / 100,
-        percent: Math.round(randomVariation(baseData.data.logistics_total.percent, 0.15 * variationMultiplier) * 100) / 100
+        rub: logisticsTotal.first,
+        percent: logisticsTotal.second
       },
-      // Генерируем все avg_spp_rub_percent поля
-      ...this.generateAvgSppPercentFields(baseData, variationMultiplier)
+      compensation_defects_rub: roundToTwo(randomVariation(baseData.data.compensation_defects.rub, 0.2)),
+      compensation_defects_quantity: Math.round(randomVariation(baseData.data.compensation_defects.quantity, 0.5)),
+      compensation_damage_rub: roundToTwo(randomVariation(baseData.data.compensation_damage.rub, 0.2)),
+      compensation_damage_quantity: Math.round(randomVariation(baseData.data.compensation_damage.quantity, 0.5)),
+      penalties: roundToTwo(randomVariation(baseData.data.penalties, 0.2)),
+      additional_payments: roundToTwo(randomVariation(baseData.data.additional_payments, 0.2)),
+      storage_rub: roundToTwo(randomVariation(baseData.data.storage.rub, 0.2)),
+      storage_percent: roundToTwo(randomVariation(baseData.data.storage.percent, 0.2)),
+      other_retentions_rub: roundToTwo(randomVariation(baseData.data.other_retentions.rub, 0.2)),
+      other_retentions_percent: roundToTwo(randomVariation(baseData.data.other_retentions.percent, 0.2)),
+      acceptance_rub: roundToTwo(randomVariation(baseData.data.acceptance.rub, 0.2)),
+      acceptance_percent: roundToTwo(randomVariation(baseData.data.acceptance.percent, 0.2)),
+      compensation_penalties_rub: roundToTwo(randomVariation(baseData.data.compensation_penalties.rub, 0.2)),
+      compensation_penalties_percent: roundToTwo(randomVariation(baseData.data.compensation_penalties.percent, 0.2)),
+      sold_by_wb: roundToTwo(randomVariation(baseData.data.sold_by_wb, 0.2)),
+      tax_base: roundToTwo(randomVariation(baseData.data.tax_base, 0.2)),
+      tax: roundToTwo(randomVariation(baseData.data.tax, 0.2)),
+      advert_amount: roundToTwo(randomVariation(baseData.data.advert_amount, 0.2)),
+      drr: roundToTwo(randomVariation(baseData.data.drr, 0.2)),
+      wb_retentions_amount: roundToTwo(randomVariation(baseData.data.wb_retentions_amount, 0.2)),
     };
-  }
-
-  // Генерация полей avg_spp_rub_percent (1-100)
-  private generateAvgSppPercentFields(baseData: any, variationMultiplier: number): any {
-    const fields: any = {};
-    const baseValue = baseData.data.avg_spp_rub_percent || 0;
-
-    for (let i = 1; i <= 100; i++) {
-      const fieldName = `avg_spp_rub_percent_${i}`;
-      const randomVariation = (baseValue: number, variationPercent: number) => {
-        const variation = baseValue * variationPercent;
-        return Math.max(0, baseValue + (Math.random() * variation * 2 - variation));
-      };
-
-      fields[fieldName] = Math.round(randomVariation(baseValue, 0.3 * variationMultiplier) * 100) / 100;
-    }
-
-    return fields;
   }
 
   // Получение даты начала недели по номеру недели в году

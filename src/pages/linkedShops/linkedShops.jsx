@@ -52,7 +52,7 @@ const LinkedShopsPage = () => {
 
             <section className={styles.page__content}>
                 <div className={styles.page__headerWrapper}>
-                    <Header title='Подключенные магазины' />
+                    <Header title='Подключенные магазины' howToLink='https://radar.usedocs.com/article/79862' howToLinkText='Как подключить АПИ?' />
                 </div>
 
                 {isDemoMode && <NoSubscriptionWarningBlock />}

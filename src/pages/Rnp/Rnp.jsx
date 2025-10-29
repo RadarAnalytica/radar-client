@@ -100,6 +100,8 @@ export default function Rnp() {
 			}
 		} catch (error) {
 			console.error('UpdateRnpListByArticle error', error);
+			progress.reset();
+			setLoading(false);
 		}
 	};
 
@@ -126,6 +128,8 @@ export default function Rnp() {
 		} catch (error) {
 			console.error('updateRnpListSummary error', error);
 			setRnpDataTotal(null);
+			progress.reset();
+			setLoading(false);
 		}
 	};
 
@@ -226,19 +230,13 @@ export default function Rnp() {
 	useLayoutEffect(() => {
 		const controller = new AbortController();
 
-		if (!activeBrand?.is_primary_collect) {
-			return;
-		}
-
-		if (activeBrand && activeBrand.is_primary_collect) {
+		if (activeBrand?.is_primary_collect) {
 			if (view === 'articles') {
 				updateRnpListByArticle(controller.signal);
 			} else {
 				updateRnpListSummary(controller.signal);
 			}
-		}
-
-		if (activeBrand && !activeBrand?.is_primary_collect) {
+		} else {
 			setLoading(false);
 		}
 

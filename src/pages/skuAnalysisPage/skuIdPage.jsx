@@ -20,7 +20,7 @@ const segments = ['По цветам', 'По складам', 'По размер
 const SkuIdPage = () => {
     const dispatch = useAppDispatch();
     const { isDemoMode } = useDemoMode();
-    const { selectedRange } = useAppSelector(store => store.filters);
+    const { selectedRange, isFiltersLoaded } = useAppSelector(store => store.filters);
     const { dataStatus, skuMainTableData, skuByColorTableData, skuByWarehouseTableData, skuBySizeTableData } = useAppSelector(store => store.skuAnalysis);
     const [loading, setLoading] = useState(true);
     const [tabsState, setTabsState] = useState(segments[0]);
@@ -29,7 +29,7 @@ const SkuIdPage = () => {
 
     useEffect(() => {
         const loadSkuAnalysisData = async () => {
-            if (!params?.id) return;
+            if (!params?.id || !isFiltersLoaded) return;
 
             try {
                 dispatch(skuAnalysisActions.setDataStatus({ isLoading: true, isError: false, message: '' }));
@@ -55,7 +55,7 @@ const SkuIdPage = () => {
         };
 
         loadSkuAnalysisData();
-    }, [params, selectedRange]);
+    }, [params, selectedRange, isFiltersLoaded]);
 
     return (
         <main className={styles.page}>

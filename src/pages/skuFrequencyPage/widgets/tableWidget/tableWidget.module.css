@@ -30,9 +30,10 @@
     padding: 0;
     box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.08);
     position: relative;
-    overflow-x: auto;
+    overflow: auto;
     scrollbar-width: thin;
     scrollbar-color: #5329ff80 transparent;
+    max-height: 90vh;
 }
 
 .container::-webkit-scrollbar {

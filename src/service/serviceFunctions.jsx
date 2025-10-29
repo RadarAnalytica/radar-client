@@ -20,7 +20,7 @@ export const getRequestObject = (filters, selectedRange, shopId) => {
 	}
 	// filters?.activeArticle.value !== 'Все'
 	if (filters.activeArticle && Array.isArray(filters.activeArticle) && !filters.activeArticle.some(_ => _.value === 'Все')) {
-		requestObject.articles = filters.activeArticle.map(_ => _.value);
+		requestObject.articles = filters.activeArticle.map(_ => _.name);
 	}
 	if (filters.activeGroup && Array.isArray(filters.activeGroup) && !filters.activeGroup.some(_ => _.value === 'Все')) {
 		requestObject.product_groups = filters.activeGroup.map(_ => _.id);
@@ -31,7 +31,7 @@ export const getRequestObject = (filters, selectedRange, shopId) => {
 	return requestObject;
 };
 
-export const getRnpRequestObject = (filters, selectedRange, shopId) => {
+export const getFiltersRequestObject = (filters, selectedRange, shopId) => {
 	let requestObject = {
 		articles: null,
 		product_groups: null,
@@ -45,7 +45,6 @@ export const getRnpRequestObject = (filters, selectedRange, shopId) => {
 	if (filters.activeBrandName && Array.isArray(filters.activeBrandName) && !filters.activeBrandName.some(_ => _.value === 'Все')) {
 		requestObject.brands = filters.activeBrandName.map(_ => _.name);
 	}
-	// filters?.activeArticle.value !== 'Все'
 	if (filters.activeArticle && Array.isArray(filters.activeArticle) && !filters.activeArticle.some(_ => _.value === 'Все')) {
 		requestObject.articles = filters.activeArticle.map(_ => _.value);
 	}
@@ -1405,7 +1404,7 @@ export const ServiceFunctions = {
 	},
 	postRnpByArticle: async(token, selectedRange, shopId, filters, signal) => {
 		try {
-			let body = getRnpRequestObject(filters, selectedRange, shopId);
+			let body = getFiltersRequestObject(filters, selectedRange, shopId);
 			const res = await fetchApi(
 				'/api/rnp/by_article?page=1&per_page=25',
 				{
@@ -1432,7 +1431,7 @@ export const ServiceFunctions = {
 	},
 	postRnpSummary: async(token, selectedRange, shopId, filters, signal) => {
 		try {
-			let body = getRnpRequestObject(filters, selectedRange, shopId);
+			let body = getFiltersRequestObject(filters, selectedRange, shopId);
 			const res = await fetchApi(
 				'/api/rnp/summary',
 				{
@@ -1459,7 +1458,7 @@ export const ServiceFunctions = {
 	},
 	getRnpProducts: async(token, selectedRange, shopId, filters, page, search) => {
 		try {
-			let body = getRnpRequestObject(filters, selectedRange, shopId);
+			let body = getFiltersRequestObject(filters, selectedRange, shopId);
 			const res = await fetchApi(
 				`/api/rnp/products?page=${page}&per_page=25${search ? `&search=${search}` : ''}` ,
 				{
@@ -1860,6 +1859,7 @@ export const ServiceFunctions = {
 			throw new Error(error);
 		}
 	},
+
 	deleteOperatingExpensesExpenseDelete: async(token, id, isPeriodic) => {
 		const url = isPeriodic 
 			? `/api/operating-expenses/periodic-expense/delete?expense_id=${id}&delete_linked=true` 
@@ -1882,6 +1882,30 @@ export const ServiceFunctions = {
 
 		} catch(error) {
 			console.error('deleteOperatingExpensesCategory ', error);
+			throw new Error(error);
+		}
+	},
+
+	getControlMetrics: async(token, metricType, filters = {}, page = 1, per_page = 50, search = '') => {
+		try {
+			const filtersRequestObject = getFiltersRequestObject(filters, null, filters.activeBrand?.id);
+			const res = await fetchApi(
+				`/api/control/${metricType}?page=${page}&per_page=${per_page}&search=${search}`,
+				{
+					method: 'POST',
+					headers: {
+						'content-type': 'application/json',
+						authorization: 'JWT ' + token,
+					},
+					body: JSON.stringify(filtersRequestObject),
+				}
+			);
+			if (!res.ok) {
+				throw new Error('Ошибка запроса');
+			}
+			return res.json();
+		} catch(error) {
+			console.error('Get wb metrics error:', error);
 			throw new Error(error);
 		}
 	},

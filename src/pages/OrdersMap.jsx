@@ -71,8 +71,10 @@ const OrdersMap = () => {
 
   useEffect(() => {
     setPrimaryCollect(activeBrand?.is_primary_collect);
-    if (activeBrand && activeBrand.is_primary_collect && isFiltersLoaded) {
+    if (activeBrand?.is_primary_collect && isFiltersLoaded) {
       updateGeoData();
+    } else {
+      setLoading(false);
     }
   }, [activeBrand, selectedRange, isFiltersLoaded, activeBrandName, activeArticle, activeGroup]);
 

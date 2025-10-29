@@ -12,6 +12,7 @@ interface IProduct {
     number: number;
     ad: boolean;
     price: number;
+    price_spp: number;
     base_price: number;
     feedbacks: number;
     rating: number;
@@ -80,9 +81,9 @@ const TooltipContent = ({ product }: { product: IProduct }) => {
                 <div className={styles.tooltipContent__column}>
                     <p className={styles.tooltipContent__title} style={{ color: '#8C8C8C', lineHeight: '140%' }}>Дополнительно</p>
                     <p className={styles.tooltipContent__columnItem}>Цена: <span>{formatPrice(product.base_price, '₽')}</span></p>
-                    <p className={styles.tooltipContent__columnItem}>Цена со скидкой: <span style={{ color: '#5329FF' }}>{formatPrice(product.price, '₽')}</span></p>
+                    <p className={styles.tooltipContent__columnItem}>Цена со скидкой: <span style={{ color: '#5329FF' }}>{formatPrice(product.price_spp, '₽')}</span></p>
                     <p className={styles.tooltipContent__columnItem}>Фото: <span>{product.pics}</span></p>
-                    <p className={styles.tooltipContent__columnItem}>Рейтинг: <span>{product.rating}</span></p>
+                    <p className={styles.tooltipContent__columnItem}>Рейтинг: <span>{product.rating === 0.0 ? '—' : product.rating.toFixed(1)}</span></p>
                     <p className={styles.tooltipContent__columnItem}>Отзывы: <span>{product.feedbacks}</span></p>
                 </div>
             </div>

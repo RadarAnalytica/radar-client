@@ -119,23 +119,21 @@ const AbcAnalysisPage = () => {
 
 	useEffect(() => {
 		setPrimaryCollect(activeBrand?.is_primary_collect);
-		if (activeBrand && activeBrand.is_primary_collect && viewType && isFiltersLoaded) {
+		if (activeBrand?.is_primary_collect && viewType && isFiltersLoaded) {
 			updateDataAbcAnalysis(
 				viewType,
 				authToken,
 				selectedRange,
 				activeBrand.id.toString()
 			);
+		} else {
+			setLoading(false);
 		}
 	}, [viewType, page, sorting, activeBrand, selectedRange, isFiltersLoaded, activeBrandName, activeArticle, activeGroup]);
 
 	useEffect(() => {
 		setPage(1);
 	}, [activeBrand, selectedRange, isFiltersLoaded, activeBrandName, activeArticle, activeGroup]);
-
-
-
-
 
 
 	useEffect(() => {
@@ -192,20 +190,16 @@ const AbcAnalysisPage = () => {
         		{isDemoMode && <NoSubscriptionWarningBlock />}
 
 				{!loading && shops && activeBrand?.is_primary_collect && !activeBrand.is_self_cost_set && (
-					<SelfCostWarningBlock
-						shopId={activeBrand.id}
-					/>
-				)}
-
-				{!loading && shops && !shopStatus?.is_primary_collect && (
-					<DataCollectWarningBlock
-							title='Ваши данные еще формируются и обрабатываются.'
-					/>
+					<SelfCostWarningBlock shopId={activeBrand.id} />
 				)}
 
 				<div className="pt-1">
 					<Filters setLoading={setLoading} isDataLoading={loading} />
 				</div>
+
+				{activeBrand && !activeBrand?.is_primary_collect && 
+					<DataCollectWarningBlock />
+				}
 
 				<div className={styles.wrapper} ref={tableContainerRef}>
 					<Loader loading={loading} progress={progress.value} />

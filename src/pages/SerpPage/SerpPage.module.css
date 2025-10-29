@@ -58,8 +58,7 @@
 .page__searchBlock {
     width: 100%;
     display: grid;
-    grid-template-columns: calc(50% + 106px) calc(50% - 106px);
-    gap: 12px;
+    grid-template-columns: calc(50% + 100px) calc(50% - 100px);
 }
 
 .page__searchWrapper {
@@ -72,7 +71,6 @@
 .page__searchLabel {
     font-weight: 500;
     font-size: 12px;
-    leading-trim: NONE;
     line-height: 140%;
     letter-spacing: 0%;
 }
@@ -308,6 +306,26 @@
 .page__tableWrapper {
     width: 100%;
     overflow: auto;
+    max-height: 90vh;
+    scrollbar-width: thin;
+    scrollbar-color: #5329ff80 transparent;
+}
+
+.page__tableWrapper::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+    border-radius: 6px;
+}
+
+.page__tableWrapper::-webkit-scrollbar-thumb {
+    border-radius: 6px;
+    background: #5329ff80;
+}
+
+.page__tableWrapper::-webkit-scrollbar-track {
+    background: transparent;
+    height: 50%;
+    margin: 40px;
 }
 
 

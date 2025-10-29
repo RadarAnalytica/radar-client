@@ -44,6 +44,13 @@ const SupplierIdPage = () => {
     const isAnyDataLoading = useAppSelector(store => store.supplierAnalysis.isAnyDataLoading);
     const params = useParams();
     const navigate = useNavigate();
+    
+    // Максимальная дата для календаря - вчерашний день (блокируем сегодня)
+    const maxDate = (() => {
+        const yesterday = new Date();
+        yesterday.setDate(yesterday.getDate() - 1);
+        return yesterday;
+    })();
 
     //Проверяем наличие базовых данных поставщика и запрашиваем их если их нет
     useEffect(() => {
@@ -126,6 +133,7 @@ const SupplierIdPage = () => {
                             groupSelect={false}
                             tempPageCondition='supplier'
                             isDataLoading={isAnyDataLoading}
+                            maxCustomDate={maxDate}
                         />
                     </div>
                     <BarsWidget
@@ -140,6 +148,7 @@ const SupplierIdPage = () => {
                     />
                 </div>
 
+                {/* Основная таблица */}
                 <div className={styles.page__tableWrapper}>
                     <TableWidget
                         id={mainSupplierData?.supplier_id}
@@ -150,6 +159,7 @@ const SupplierIdPage = () => {
                         containerHeight='90vh'
                     />
                 </div>
+                {/* Товары поставщика */}
                 <div className={styles.page__tableWrapper}>
                     <GoodsTableCustomHeader id={mainSupplierData?.supplier_id} />
                     <TableWidget
@@ -162,6 +172,7 @@ const SupplierIdPage = () => {
                         hasPagination
                     />
                 </div>
+                {/* Продажи по категориям поставщика */}
                 <div className={styles.page__tableWrapper}>
                     <TableWidget
                         tableConfig={salesTableConfig}
@@ -174,11 +185,13 @@ const SupplierIdPage = () => {
                         hasPagination
                     />
                 </div>
+                {/* Структура заказов по складам и размерам */}
                 <div className={styles.page__tableWrapper}>
                     <OrdersTableCustomHeader />
                     <TableTabsWrapper />
                 </div>
 
+                {/* Распределение товарных остатков по складам */}
                 <div className={styles.page__additionalWrapper}>
                     <StockChartWidget
                         //downloadButton
