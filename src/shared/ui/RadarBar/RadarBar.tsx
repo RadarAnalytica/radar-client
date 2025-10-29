@@ -4,6 +4,7 @@ import { Tooltip as RadarTooltip } from 'radar-ui';
 import { formatPrice } from '../../../service/utils';
 import { Link } from 'react-router-dom';
 import { ConfigProvider, Tooltip } from 'antd';
+import { RadarLoader } from '../RadarLoader/RadarLoader';
 
 
 
@@ -65,6 +66,7 @@ interface RadarBarProps {
         absoluteValue?: number | string; // pcs / rubles / etc
         absoluteValueUnits?: string; // units of the absolute value (eg "шт", "%" or whatever)
     }
+    isLoading: boolean
 }
 
 //component
@@ -78,13 +80,23 @@ export const RadarBar: React.FC<RadarBarProps> = ({
     hasColoredBackground = false,
     linkParams,
     actionButtonParams,
-    compareValue
+    compareValue,
+    isLoading
 }) => {
+
+
+    if (isLoading) {
+        return (
+            <div className={styles.bar}>
+                <RadarLoader loaderStyle={{ height: '114px' }} />
+            </div>
+        )
+    }
     return (
         <div className={`${styles.bar} ${hasColoredBackground && compareValue?.comparativeValue && isValueBelowZero(compareValue?.comparativeValue) ? styles.bar_negative : ''}`}>
             {/* header */}
             <div className={styles.bar__header}>
-                <div className={`${styles.bar__side} ${styles.bar__side_left}`} style={{ alignItems: 'flex-start' }}>
+                <div className={`${styles.bar__side} ${styles.bar__side_left}`} style={{ alignItems: 'flex-start', flexWrap: 'nowrap' }}>
                     <span className={styles.bar__title}>{title}</span>
                     {tooltipText &&
                         <ConfigProvider
@@ -121,32 +133,34 @@ export const RadarBar: React.FC<RadarBarProps> = ({
 
             {/* bottom */}
             <div className={styles.bar__bottom}>
-                <div className={`${styles.bar__side} ${styles.bar__side_left}`}>
+                <div className={`${styles.bar__side} ${styles.bar__side_left}`} style={{ gap: 0 }}>
                     {mainValue !== undefined &&
-                        <span className={styles.bar__mainValue}>{formatPrice(mainValue?.toString(), mainValueUnits)}</span>
+                        <div className={styles.bar__mainValue}>{formatPrice(mainValue?.toString(), mainValueUnits)}</div>
                     }
                     {compareValue && (compareValue.comparativeValue !== undefined || compareValue.absoluteValue !== undefined) &&
                         <div className={styles.bar__compareValuesBlock} style={getColorByValue(compareValue.comparativeValue)}>
                             {compareValue.comparativeValue !== undefined &&
-                                <span className={styles.bar__comparativeValue}>{formatPrice(compareValue.comparativeValue.toString(), '%')}</span>
+                                <div className={styles.bar__comparativeValue}>{formatPrice(compareValue.comparativeValue.toString(), '%', true)}</div>
                             }
                             {compareValue.absoluteValue !== undefined &&
                                 <div className={styles.bar__middleLine}></div>
                             }
                             {compareValue.absoluteValue !== undefined &&
-                                <span className={styles.bar__absoluteValue}>{formatPrice(compareValue.absoluteValue.toString(), compareValue.absoluteValueUnits || ' ')}</span>
+                                <div className={styles.bar__absoluteValue}>{formatPrice(compareValue.absoluteValue.toString(), compareValue.absoluteValueUnits || ' ')}</div>
                             }
                         </div>
                     }
                 </div>
-                <div className={`${styles.bar__side} ${styles.bar__side_right}`}>
-                    {linkParams &&
-                        <Link to={linkParams.url || '/'} className={styles.bar__link}>{linkParams.text || 'Подробнее'}</Link>
-                    }
-                    {actionButtonParams &&
-                        <button className={styles.bar__link} onClick={actionButtonParams.action}>{actionButtonParams.text || 'Подробнее'}</button>
-                    }
-                </div>
+                {(linkParams || actionButtonParams) &&
+                    <div className={`${styles.bar__side} ${styles.bar__side_right}`}>
+                        {linkParams &&
+                            <Link to={linkParams.url || '/'} className={styles.bar__link}>{linkParams.text || 'Подробнее'}</Link>
+                        }
+                        {actionButtonParams &&
+                            <button className={styles.bar__link} onClick={actionButtonParams.action}>{actionButtonParams.text || 'Подробнее'}</button>
+                        }
+                    </div>
+                }
             </div>
 
         </div>

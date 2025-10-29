@@ -49,6 +49,7 @@ const SecondBarsGroup = ({ dataDashBoard, loading, selectedRange, activeBrand, a
                     absoluteValue: dataDashBoard?.previousOrderAmount,
                     absoluteValueUnits: '₽'
                 }}
+                isLoading={loading}
             />
             {/* <Bar
                 title='Возвраты'
@@ -72,6 +73,7 @@ const SecondBarsGroup = ({ dataDashBoard, loading, selectedRange, activeBrand, a
                     absoluteValue: dataDashBoard?.previousReturnAmount,
                     absoluteValueUnits: '₽'
                 }}
+                isLoading={loading}
             />
             <RadarBar
                 title='Расходы на логистику'
@@ -81,6 +83,7 @@ const SecondBarsGroup = ({ dataDashBoard, loading, selectedRange, activeBrand, a
                 compareValue={{
                     comparativeValue: dataDashBoard?.logisticsCompare
                 }}
+                isLoading={loading}
             />
 
             {/* <SmallBar
@@ -102,6 +105,7 @@ const SecondBarsGroup = ({ dataDashBoard, loading, selectedRange, activeBrand, a
                 compareValue={{
                     comparativeValue: dataDashBoard?.storageDataCompare
                 }}
+                isLoading={loading}
             />
 
             {/* <SmallBar
@@ -114,6 +118,7 @@ const SecondBarsGroup = ({ dataDashBoard, loading, selectedRange, activeBrand, a
                 tooltipText=''
                 mainValue={dataDashBoard?.paid_acceptance}
                 mainValueUnits='₽'
+                isLoading={loading}
             />
 
             {/* <SmallBar
@@ -136,6 +141,7 @@ const SecondBarsGroup = ({ dataDashBoard, loading, selectedRange, activeBrand, a
                 compareValue={{
                     comparativeValue: dataDashBoard?.commissionWBCompare
                 }}
+                isLoading={loading}
             />
 
             {/* <SmallBar
@@ -147,6 +153,7 @@ const SecondBarsGroup = ({ dataDashBoard, loading, selectedRange, activeBrand, a
                 title='Налог'
                 mainValue={dataDashBoard?.tax_amount}
                 mainValueUnits='₽'
+                isLoading={loading}
             />
 
             {/* <SmallBar
@@ -166,6 +173,7 @@ const SecondBarsGroup = ({ dataDashBoard, loading, selectedRange, activeBrand, a
                 compareValue={{
                     comparativeValue: dataDashBoard?.advertPercent,
                 }}
+                isLoading={loading}
             />
 
             {/* <SmallBar
@@ -180,6 +188,7 @@ const SecondBarsGroup = ({ dataDashBoard, loading, selectedRange, activeBrand, a
                 tooltipText={!dataDashBoard?.penalty ? 'В выбранном периоде штрафов и расходов на платную приемку нет' : ''}
                 mainValue={dataDashBoard?.penalty}
                 mainValueUnits='₽'
+                isLoading={loading}
             />
 
             {/* <SmallBar
@@ -191,6 +200,7 @@ const SecondBarsGroup = ({ dataDashBoard, loading, selectedRange, activeBrand, a
                 title='Компенсации'
                 mainValue={dataDashBoard?.compensation}
                 mainValueUnits='₽'
+                isLoading={loading}
             />
 
 
@@ -202,10 +212,11 @@ const SecondBarsGroup = ({ dataDashBoard, loading, selectedRange, activeBrand, a
                 tooltipText='Логистика на единицу проданного товара'
             /> */}
             <RadarBar
-                title='Средняя стоимость логистики на 1 шт'
+                title='Ср. стоимость логистики на 1 шт'
                 tooltipText='Логистика на единицу проданного товара'
                 mainValue={dataDashBoard?.logistic_per_one}
                 mainValueUnits='₽'
+                isLoading={loading}
             />
 
             {/* Средняя прибыль на 1 шт */}
@@ -228,6 +239,7 @@ const SecondBarsGroup = ({ dataDashBoard, loading, selectedRange, activeBrand, a
                 compareValue={{
                     comparativeValue: dataDashBoard?.profit_per_one_compare
                 }}
+                isLoading={loading}
             />
 
 
@@ -252,6 +264,7 @@ const SecondBarsGroup = ({ dataDashBoard, loading, selectedRange, activeBrand, a
                     compareValue={{
                         comparativeValue: dataDashBoard?.lostSalesAmountCompare,
                     }}
+                    isLoading={loading}
                 />
 
                 {/* <SmallBar
@@ -271,6 +284,7 @@ const SecondBarsGroup = ({ dataDashBoard, loading, selectedRange, activeBrand, a
                     compareValue={{
                         comparativeValue: dataDashBoard?.costPriceAmountCompare,
                     }}
+                    isLoading={loading}
                 />
                 <TurnoverBlock
                     loading={loading}
@@ -279,6 +293,7 @@ const SecondBarsGroup = ({ dataDashBoard, loading, selectedRange, activeBrand, a
                     activeBrand={activeBrand}
                     authToken={authToken}
                     filters={filters}
+                    turnoverCompare={dataDashBoard?.turnoverCompare}
                 />
             </div>
         </div>

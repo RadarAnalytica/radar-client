@@ -80,14 +80,14 @@ const MainContent = React.memo(({
                 />
 
                 <div className={styles.page__doubleBlockWrapper}>
-                    <RevenueStructChartBlock
-                        loading={loading}
-                        dataDashBoard={dataDashBoard}
-                    />
                     <TaxTableBlock
                         loading={loading}
                         dataDashBoard={dataDashBoard}
                         updateDashboard={updateDataDashBoard}
+                    />
+                    <RevenueStructChartBlock
+                        loading={loading}
+                        dataDashBoard={dataDashBoard}
                     />
                 </div>
 
@@ -140,7 +140,7 @@ const _DashboardPage = () => {
 
     const [pageState, setPageState] = useState({
         dataDashBoard: null,
-        loading: false,
+        loading: true,
         primaryCollect: null,
         shopStatus: null
     });

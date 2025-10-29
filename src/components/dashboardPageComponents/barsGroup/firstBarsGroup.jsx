@@ -22,16 +22,15 @@ const FirstBarsGroup = ({ dataDashBoard, selectedRange, loading }) => {
             <RadarBar
                 title='Чистая прибыль'
                 tooltipText='text'
-                midValue={dataDashBoard?.orderCount}
-                midValueUnits='шт'
-                mainValue={dataDashBoard?.orderAmount}
+                mainValue={dataDashBoard?.netProfit}
                 mainValueUnits='₽'
                 hasColoredBackground
                 compareValue={{
-                    comparativeValue: dataDashBoard?.orderAmountCompare,
-                    absoluteValue: dataDashBoard?.previousOrderAmount,
+                    comparativeValue: dataDashBoard?.netProfitCompare,
+                    absoluteValue: dataDashBoard?.previousNetProfit,
                     absoluteValueUnits: '₽'
                 }}
+                isLoading={loading}
             />
             {/* <Bar
                 title='Продажи'
@@ -47,7 +46,7 @@ const FirstBarsGroup = ({ dataDashBoard, selectedRange, loading }) => {
             /> */}
             <RadarBar
                 title='Продажи'
-                tooltipText='text'
+                tooltipText='Количество проданных товаров (без возвратов)'
                 midValue={dataDashBoard?.saleCount}
                 midValueUnits='шт'
                 mainValue={dataDashBoard?.saleAmount}
@@ -58,6 +57,7 @@ const FirstBarsGroup = ({ dataDashBoard, selectedRange, loading }) => {
                     absoluteValue: dataDashBoard?.previousSaleAmount,
                     absoluteValueUnits: '₽'
                 }}
+                isLoading={loading}
             />
             {/* <Bar
                 title='Возвраты'
@@ -71,7 +71,7 @@ const FirstBarsGroup = ({ dataDashBoard, selectedRange, loading }) => {
             /> */}
             <RadarBar
                 title='WB Реализовал'
-                tooltipText='text'
+                //tooltipText='Сумма реализации товара с учетом согласованной скидки продавца и СПП'
                 midValueUnits='₽'
                 mainValue={dataDashBoard?.taxInfo?.wbRealization}
                 mainValueUnits='₽'
@@ -79,6 +79,7 @@ const FirstBarsGroup = ({ dataDashBoard, selectedRange, loading }) => {
                 compareValue={{
                     comparativeValue: dataDashBoard?.taxInfo?.wbRealizationCompare,
                 }}
+                isLoading={loading}
             />
             <div className={styles.group__wrapper}>
                 {/* <Bar
@@ -98,6 +99,7 @@ const FirstBarsGroup = ({ dataDashBoard, selectedRange, loading }) => {
                     compareValue={{
                         comparativeValue: dataDashBoard?.buyoutPercentCompare,
                     }}
+                    isLoading={loading}
                 />
                 {/* <Bar
                     fixed={false}
@@ -110,11 +112,12 @@ const FirstBarsGroup = ({ dataDashBoard, selectedRange, loading }) => {
                     title='ROI'
                     tooltipText='text'
                     mainValue={dataDashBoard?.roi}
-                    mainValueUnits='₽'
+                    mainValueUnits='%'
                     hasColoredBackground
                     compareValue={{
                         comparativeValue: dataDashBoard?.roiCompare,
                     }}
+                    isLoading={loading}
                 />
             </div>
         </div>

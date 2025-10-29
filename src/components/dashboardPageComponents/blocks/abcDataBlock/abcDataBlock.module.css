@@ -50,13 +50,15 @@
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    gap: 6px;
-    font-family: Mulish;
+    gap: 10px;
+    border-radius: 8px;
+    padding: 4px 8px;
     font-weight: 600;
-    font-size: 14px;
+    font-size: 12px;
     line-height: 160%;
     letter-spacing: 0%;
     color: #5329FF;
+    background: #5329FF0D;
 }
 
 .block__table {
@@ -106,9 +108,8 @@
 }
 
 .block__tableCellPercentData {
-    font-weight: 500;
-    font-size: 14px;
-    leading-trim: NONE;
+    font-weight: 600 !important;
+    font-size: 12px !important;
     line-height: 100%;
     letter-spacing: 0%;
     padding: 4px 8px;

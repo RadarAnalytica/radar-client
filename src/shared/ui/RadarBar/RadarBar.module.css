@@ -10,6 +10,12 @@
     flex-shrink: 1;
     flex-grow: 1;
     gap: 4px;
+    transition: all .1s ease-in-out;
+    border: 1px solid white;
+}
+
+.bar:hover {
+    transform: scale(101.5%);
 }
 
 .bar_negative {
@@ -26,7 +32,8 @@
 .bar__bottom {
     display: flex;
     justify-content: space-between;
-    gap: 16px;
+    /* gap: 16px; */
+    flex-wrap: wrap;
 }
 
 .bar__side {
@@ -37,6 +44,7 @@
 
 .bar__side_left {
     justify-content: flex-start;
+    flex-wrap: wrap-reverse;
 }
 
 .bar__side_right {
@@ -49,7 +57,7 @@
     line-height: 120%;
     letter-spacing: 0%;
     color: #8C8C8C;
-    max-width: 220px;
+    max-width: 225px;
 }
 
 .bar__midValue {
@@ -72,6 +80,7 @@
     white-space: nowrap;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
+    margin-right: 8px;
 }
 
 .bar__link {
@@ -104,6 +113,10 @@
     gap: 6px;
     border-radius: 8px;
     padding: 4px 8px;
+    overflow: hidden;
+    flex-shrink: 2;
+    flex-grow: 0;
+    width: fit-content;
 }
 
 .bar__comparativeValue {
@@ -121,8 +134,17 @@
     line-height: 140%;
     letter-spacing: 0%;
     color: #1A1A1A50 !important;
-    text-wrap: nowrap;
     white-space: nowrap;
+    text-overflow: ellipsis;
+    line-clamp: 1;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    max-width: 100%;
+    text-wrap: nowrap;
+    text-overflow: ellipsis;
+    line-clamp: 1;
+    text-overflow: ellipsis;
 }
 
 .bar__middleLine {

@@ -197,6 +197,7 @@ const TurnoverBlock = ({ loading, turnover, turnoverCompare, selectedRange, acti
                         setIsModalVisible(true);
                     }
                 }}
+                isLoading={loading}
             />
 
             <Modal

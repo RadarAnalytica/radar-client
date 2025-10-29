@@ -1,9 +1,12 @@
+import { useState } from 'react';
 import styles from './marginChartBlock.module.css';
 import { processMarginalityRoiChart } from '../blockUtils';
 import roi from '../../../../assets/roi.svg';
 import { Chart } from 'react-chartjs-2';
 import { CategoryScale, LinearScale, Chart as ChartJS, Filler, BarController, PointElement, BarElement, LineElement, LineController, Tooltip } from 'chart.js';
 import { verticalDashedLinePlugin } from '../../../../service/utils';
+import { RadarLoader } from '../../../../shared/ui/RadarLoader/RadarLoader';
+import { ConfigProvider, Checkbox } from 'antd';
 
 ChartJS.register(
     CategoryScale,
@@ -19,6 +22,18 @@ ChartJS.register(
 );
 
 const MarginChartBlock = ({ dataDashBoard, loading }) => {
+
+    const [controlsState, setControlsState] = useState({
+        isMarginActive: true,
+        isRoiActive: true,
+    });
+
+    const controlsCheckboxHandler = (e) => {
+        setControlsState({
+            ...controlsState,
+            [e.target.value]: e.target.checked
+        });
+    };
 
     let { dataProfitability,
         dataProfitPlus,
@@ -74,42 +89,79 @@ const MarginChartBlock = ({ dataDashBoard, loading }) => {
     const data = {
         labels: labels,
         datasets: [
-            {
-                label: 'ROI',
-                data: dataProfitability,
-                borderColor: '#5329FF',
-                borderWidth: 2,
-                fill: false,
-                tension: 0.4,
-                //type: 'line',
-                pointBackgroundColor: '#5329FF',
-                pointBorderColor: 'white',
-                pointRadius: 4,
-                pointBorderWidth: 1,
-                yAxisID: 'A',
-            },
-            {
-                label: 'Маржинальность по прибыли',
-                data: dataProfitPlus,
-                type: 'bar',
-                backgroundColor: function (context) {
-                    const chart = context.chart;
-                    const { ctx, chartArea } = chart;
-                    if (!chartArea) {
-                        return null;
-                    }
-                    const gradient = ctx.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
-                    gradient.addColorStop(0, '#F0AD00');
-                    gradient.addColorStop(0.7, '#F0AD0080');
-
-                    return gradient;
+            controlsState.isRoiActive
+                ? {
+                    label: 'ROI',
+                    data: dataProfitability,
+                    borderColor: '#5329FF',
+                    borderWidth: 2,
+                    fill: false,
+                    tension: 0.4,
+                    //type: 'line',
+                    pointBackgroundColor: '#5329FF',
+                    pointBorderColor: 'white',
+                    pointRadius: 4,
+                    pointBorderWidth: 1,
+                    yAxisID: 'A',
+                }
+                : {
+                    label: 'ROI',
+                    data: [],
+                    borderColor: '#5329FF',
+                    borderWidth: 2,
+                    fill: false,
+                    tension: 0.4,
+                    pointBackgroundColor: '#5329FF',
+                    pointBorderColor: 'white',
+                    pointRadius: 4,
+                    pointBorderWidth: 1,
+                    yAxisID: 'A',
                 },
-                borderWidth: 0,
-                barPercentage: 0.3,
-                borderRadius: { topLeft: 3, topRight: 3, bottomLeft: 3, bottomRight: 3 },
-                categoryPercentage: 1,
-                yAxisID: 'B',
-            }
+            controlsState.isMarginActive
+                ? {
+                    label: 'Маржинальность по прибыли',
+                    data: dataProfitPlus,
+                    type: 'bar',
+                    backgroundColor: function (context) {
+                        const chart = context.chart;
+                        const { ctx, chartArea } = chart;
+                        if (!chartArea) {
+                            return null;
+                        }
+                        const gradient = ctx.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
+                        gradient.addColorStop(0, '#F0AD00');
+                        gradient.addColorStop(0.7, '#F0AD0080');
+
+                        return gradient;
+                    },
+                    borderWidth: 0,
+                    barPercentage: 0.3,
+                    borderRadius: { topLeft: 3, topRight: 3, bottomLeft: 3, bottomRight: 3 },
+                    categoryPercentage: 1,
+                    yAxisID: 'B',
+                }
+                : {
+                    label: 'Маржинальность по прибыли',
+                    data: [],
+                    type: 'bar',
+                    backgroundColor: function (context) {
+                        const chart = context.chart;
+                        const { ctx, chartArea } = chart;
+                        if (!chartArea) {
+                            return null;
+                        }
+                        const gradient = ctx.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
+                        gradient.addColorStop(0, '#F0AD00');
+                        gradient.addColorStop(0.7, '#F0AD0080');
+
+                        return gradient;
+                    },
+                    borderWidth: 0,
+                    barPercentage: 0.3,
+                    borderRadius: { topLeft: 3, topRight: 3, bottomLeft: 3, bottomRight: 3 },
+                    categoryPercentage: 1,
+                    yAxisID: 'B',
+                }
 
 
         ],
@@ -250,9 +302,7 @@ const MarginChartBlock = ({ dataDashBoard, loading }) => {
     if (loading) {
         return (
             <div className={styles.block}>
-                <div className={styles.bar__loaderWrapper}>
-                    <span className='loader'></span>
-                </div>
+               <RadarLoader loaderStyle={{ height: '407px' }} />
             </div>
         );
     }
@@ -261,14 +311,58 @@ const MarginChartBlock = ({ dataDashBoard, loading }) => {
         <div className={styles.block}>
             <p className={styles.block__title}>Рентабельность и маржинальность</p>
             <div className={styles.block__legend}>
-                <div className={styles.block__legendWrapper}>
+            <div className={styles.controls__controlWrapper}>
+                <ConfigProvider
+                    theme={{
+                        token: {
+                            colorPrimary: '#F0AD00',
+                            controlInteractiveSize: 20,
+                        }
+                    }}
+                >
+                    <Checkbox
+                        size='large'
+                        checked={controlsState.isMarginActive}
+                        value='isMarginActive'
+                        onChange={controlsCheckboxHandler}
+                    >
+                        <label className={styles.controls__label}>
+                        Маржинальность по прибыли, %
+                        </label>
+                    </Checkbox>
+                </ConfigProvider>
+            </div>
+
+            <div className={styles.controls__controlWrapper}>
+                <ConfigProvider
+                    theme={{
+                        token: {
+                            colorPrimary: '#5329FF',
+                            controlInteractiveSize: 20,
+                        }
+                    }}
+                >
+                    <Checkbox
+                        size='large'
+                        checked={controlsState.isRoiActive}
+                        value='isRoiActive'
+                        onChange={controlsCheckboxHandler}
+                    >
+                        <label className={styles.controls__label}>
+                        ROI, %
+                        </label>
+                    </Checkbox>
+                </ConfigProvider>
+            </div>
+
+                {/* <div className={styles.block__legendWrapper}>
                     <div style={{ width: '20px', height: '20px', aspectRatio: '1 / 1', borderRadius: 3, background: '#F0AD00' }}></div>
                     <p className={styles.block__legendItemText}>Маржинальность по прибыли, %</p>
                 </div>
                 <div className={styles.block__legendWrapper}>
                     <img src={roi} />
                     <p className={styles.block__legendItemText}>ROI, %</p>
-                </div>
+                </div> */}
             </div>
             <div className={styles.block__chart}>
                 <Chart type='line' data={data} options={options} />

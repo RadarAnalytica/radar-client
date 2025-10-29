@@ -10,6 +10,8 @@
     transition: all .1s ease-in-out;
     width: 100%;
     overflow: hidden;
+    min-height: 407px;
+    max-height: 417px;
 }
 
 .block:hover {
