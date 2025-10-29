@@ -113,8 +113,6 @@ const WbMetricsPage: React.FC = () => {
 
         {isDemoMode && <NoSubscriptionWarningBlock />}
 
-        {!activeBrand?.is_primary_collect && <DataCollectWarningBlock />}
-
         <div className={styles.page__controlsWrapper}>
             <Filters
                 timeSelect={false}
@@ -135,13 +133,15 @@ const WbMetricsPage: React.FC = () => {
             </div>
         </div>
 
+        {!activeBrand?.is_primary_collect && <DataCollectWarningBlock />}
+
         {loading && (
           <div className={styles.loader__container}>
             <Loader loading={loading} progress={progress.value} />
           </div>
         )}
 
-        {!loading && (data?.data?.length > 0
+        {!loading && activeBrand?.is_primary_collect && (data?.data?.length > 0
           ? <WbMetricsTable
               data={data}
               columns={tableConfig}

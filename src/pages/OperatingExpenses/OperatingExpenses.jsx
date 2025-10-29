@@ -179,13 +179,17 @@ export default function OperatingExpenses() {
 	useEffect(() => {
 		if (activeBrand?.is_primary_collect) {
 			updateCategories();
+		} else {
+			setCategoryLoading(false);
 		}
 	}, [activeBrand]);
 
 	useEffect(() => {
 		if (activeBrand?.is_primary_collect) {
             updateExpenses();
-        }
+        } else {
+			setLoading(false);
+		}
     }, [activeBrand, activeArticle, selectedRange, expPagination.page, activeExpenseCategory]);
 
 	const modalExpenseHandlerClose = () => {
@@ -383,9 +387,7 @@ export default function OperatingExpenses() {
 					/>
 				</div>
 
-				{!loading && isDemoMode && (
-					<NoSubscriptionWarningBlock />
-				)}
+				{isDemoMode && <NoSubscriptionWarningBlock />}
 
 				{!loading && (
 					<Flex justify="space-between">
@@ -448,10 +450,10 @@ export default function OperatingExpenses() {
 					</div>
 				}
 
-				{!loading && shops && activeBrand && !activeBrand?.is_primary_collect && !isDemoMode && view === 'expense' && (
-					<DataCollectWarningBlock />
-				)}
+				{/* Заглушка для не активированных брендов */}
+				{!activeBrand?.is_primary_collect && <DataCollectWarningBlock />}
 
+				{/* Лоадер */}
 				{loading && <Loader loading={loading} progress={progress.value} />}
 
 				{/* Расходы */}
