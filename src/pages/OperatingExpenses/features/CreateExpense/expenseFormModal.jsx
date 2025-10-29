@@ -192,7 +192,7 @@ export default function ExpenseFormModal({
 					date: formattedDate,
 					expense_categories: expenseCategory,
 					selection: selectionType,
-					shop: editData.shop,
+					shop: editData.shop?.id ? [editData.shop.id] : null,
 					vendor_code: editData.vendor_code,
 					brand_name: editData.brand_name,
 					frequency: editData.frequency,

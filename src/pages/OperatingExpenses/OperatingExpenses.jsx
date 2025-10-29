@@ -24,6 +24,8 @@ import AlertWidget from '@/components/sharedComponents/AlertWidget/AlertWidget';
 import NoSubscriptionWarningBlock from '@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock';
 import NoData from '@/components/sharedComponents/NoData/NoData';
 import { useDemoMode } from '@/app/providers';
+import { useLoadingProgress } from '@/service/hooks/useLoadingProgress';
+import Loader from '@/components/ui/Loader';
 
 const initAlertState = {
 	status: '',
@@ -38,6 +40,7 @@ export default function OperatingExpenses() {
 	const { activeBrand, selectedRange, shops, activeBrandName, activeArticle, activeExpenseCategory, expenseCategories } = useAppSelector((state) => state.filters);
 	const firstLoad = useRef(true);
 	const [loading, setLoading] = useState(true);
+	const progress = useLoadingProgress({ loading });
 	const [view, setView] = useState('expense'); // costs | category
 	const [expenseModal, setExpenseModal] = useState({ mode: null, isOpen: false, data: null });
 	const [modalCreateCategoryOpen, setModalCreateCategoryOpen] = useState(false);
@@ -103,6 +106,7 @@ export default function OperatingExpenses() {
 	const updateCategories = async (resetPagination = false) => {
 		setLoading(true);
 		setCategoryLoading(true);
+		progress.start();
 
 		// Сбрасываем пагинацию если нужно
 		const pagination = resetPagination ? { page: 1, limit: 25, total: 1 } : categoryPagination;
@@ -118,10 +122,15 @@ export default function OperatingExpenses() {
 				...res.data.map(_ => ({ ..._, value: _.name, key: _.id }))
 			];
 			dispatch(filtersActions.setExpenseCategories(categories));
+			progress.complete();
+			setTimeout(() => {
+				progress.reset();
+				setLoading(false);
+				setCategoryLoading(false);
+			}, 500);
 		} catch (error) {
 			console.error('updateCategories error', error);
 			setCategory([]);
-		} finally {
 			setCategoryLoading(false);
 			setLoading(false);
 		}
@@ -129,6 +138,7 @@ export default function OperatingExpenses() {
 
 	const updateExpenses = async (resetPagination = false, showLoader = true) => {
 		setLoading(showLoader);
+		progress.start();
 
 		// Сбрасываем пагинацию если нужно
 		const pagination = resetPagination ? { page: 1, limit: 25, total: 1 } : expPagination;
@@ -149,16 +159,19 @@ export default function OperatingExpenses() {
 		try {
 			const res = await ServiceFunctions.getOperatingExpensesExpenseGetAll(authToken, requestObject);
 			setExpense(res.data);
+			progress.complete();
 			setExpPagination({
 				page: res.page,
 				limit: res.limit,
 				total: res.total_pages,
 			});
-			return;
+			setTimeout(() => {
+				progress.reset();
+				setLoading(false);
+			}, 500);
 		} catch (error) {
 			console.error('updateExpenses error', error);
 			setExpense([]);
-		} finally {
 			setLoading(false);
 		}
 	};
@@ -439,6 +452,8 @@ export default function OperatingExpenses() {
 					<DataCollectWarningBlock />
 				)}
 
+				{loading && <Loader loading={loading} progress={progress.value} />}
+
 				{/* Расходы */}
 				{!loading && activeBrand?.is_primary_collect && view === 'expense' && (
 					expenseData.data?.length > 0
@@ -536,10 +551,6 @@ export default function OperatingExpenses() {
 					onCancel={() => setDeleteCategoryId(null)}
 					isLoading={loading}
 				/>}
-
-				{loading && <div className={styles.loading}>
-					<span className='loader'></span>
-				</div>}
 
 				<AlertWidget 
 					isVisible={alertState.isVisible}
