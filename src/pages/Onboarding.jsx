@@ -161,11 +161,10 @@ const Onboarding = () => {
                     width: '100%'
                   }}>
                   <button
-                    className={`prime-btn ${styles.page__button}`}
+                    className={`${styles.page__button}`}
                     onClick={() => {
                       submitHandler();
                     }}
-                    disabled={!token.trim() || !brandName.trim()}
                   >
                     Начать работать
                   </button>
