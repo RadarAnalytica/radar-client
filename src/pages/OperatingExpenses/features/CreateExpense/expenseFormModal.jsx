@@ -43,7 +43,7 @@ const getRequestObject = (values, editData, mode) => {
 		}
 
 		requestObject = {
-			expense_categories: values.expense_categories,
+			expense_categories: values.expense_categories ? [values.expense_categories] : [],
 			description: values.description,
 			value: values.value,
 			date_from: formattedDateStart,
@@ -72,7 +72,7 @@ const getRequestObject = (values, editData, mode) => {
 			: 'operating-expenses/expense/create';
 
 		requestObject = {
-			expense_categories: values.expense_categories,
+			expense_categories: values.expense_categories ? [values.expense_categories] : [],
 			description: values.description,
 			value: values.value,
 			date: formattedDateStart,
@@ -184,9 +184,13 @@ export default function ExpenseFormModal({
 					? format(parse(editData.end_date, 'yyyy-MM-dd', new Date()), 'dd.MM.yyyy')
 					: null;
 
+				const expenseCategory = editData.expense_categories
+					? category.find((el) => el.name === editData.expense_categories)?.id
+					: null;
+
 				form.setFieldsValue({
 					date: formattedDate,
-					expense_categories: category.map((el) => editData.expense_categories.includes(el.name) ? el.id : false).filter(Boolean),
+					expense_categories: expenseCategory,
 					selection: selectionType,
 					shop: editData.shop,
 					vendor_code: editData.vendor_code,
@@ -212,15 +216,15 @@ export default function ExpenseFormModal({
 					? format(parse(editData.end_date, 'yyyy-MM-dd', new Date()), 'dd.MM.yyyy')
 					: null;
 
-				const expenseCategories = typeof editData.expense_categories === 'string'
-					? [editData.expense_categories]
-					: Array.isArray(editData.expense_categories)
-						? editData.expense_categories.map((el) => el.id || el)
-						: [];
+				const expenseCategory = typeof editData.expense_categories === 'string'
+					? editData.expense_categories
+					: Array.isArray(editData.expense_categories) && editData.expense_categories.length > 0
+						? (editData.expense_categories[0]?.id || editData.expense_categories[0])
+						: null;
 
 				form.setFieldsValue({
 					date: formattedDate,
-					expense_categories: expenseCategories,
+					expense_categories: expenseCategory,
 					selection: selectionType,
 					shops: editData.shops || [],
 					vendor_codes: editData.vendor_codes || editData.vendor_codes || [],
@@ -299,7 +303,7 @@ export default function ExpenseFormModal({
 							vendor_codes: [],
 							brand_names: [],
 							shops: [],
-							expense_categories: [],
+							expense_categories: null,
 						}}
 					>
 						{/* Тип операции (только для режима создания) */}
@@ -655,17 +659,15 @@ export default function ExpenseFormModal({
 									]}
 									style={{ width: '100%' }}
 								>
-									<MultiSelect
-										form={form}
-										optionsData={category.map((el, i) => ({
+									<Select
+										size="large"
+										placeholder="Выберите статью"
+										suffixIcon={<SelectIcon />}
+										options={category.map((el, i) => ({
 											key: el.id,
 											value: el.id,
 											label: el.name,
 										}))}
-										selectId='expense_categories'
-										searchFieldPlaceholder='Поиск по названию статьи'
-										selectPlaceholder='Выберите статьи'
-										hasSelectAll={mode === 'create' || isPeriodicExpense}
 									/>
 								</Form.Item>
 							</ConfigProvider>
