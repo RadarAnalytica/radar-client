@@ -96,6 +96,7 @@ const AddRnpModal = ({ isAddRnpModalVisible, setIsAddRnpModalVisible, addRnp }) 
             if (error.message !== 'Отмена запроса') {
                 console.error('updaternpDataArticle error', error);
             }
+            setLoading(false);
         }
     };
 
@@ -182,7 +183,7 @@ const AddRnpModal = ({ isAddRnpModalVisible, setIsAddRnpModalVisible, addRnp }) 
                             }
                         }}
                     >
-                        {loading && <div className={styles.loading}><span className='loader'></span></div>}
+                        {loading && !rnpSelected && <div className={styles.loading}><span className='loader'></span></div>}
 
                         {!loading && !isDemoMode && shopStatus && !shopStatus?.is_primary_collect && (
                             <div className={styles.data_collect}>
