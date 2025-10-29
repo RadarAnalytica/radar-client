@@ -1368,6 +1368,26 @@ export class DemoDataService {
         rub: logisticsTotal.first,
         percent: logisticsTotal.second
       },
+      compensation_defects_rub: roundToTwo(randomVariation(baseData.data.compensation_defects.rub, 0.2)),
+      compensation_defects_quantity: roundToTwo(randomVariation(baseData.data.compensation_defects.quantity, 0.2)),
+      compensation_damage_rub: roundToTwo(randomVariation(baseData.data.compensation_damage.rub, 0.2)),
+      compensation_damage_quantity: roundToTwo(randomVariation(baseData.data.compensation_damage.quantity, 0.2)),
+      penalties: roundToTwo(randomVariation(baseData.data.penalties, 0.2)),
+      additional_payments: roundToTwo(randomVariation(baseData.data.additional_payments, 0.2)),
+      storage_rub: roundToTwo(randomVariation(baseData.data.storage.rub, 0.2)),
+      storage_percent: roundToTwo(randomVariation(baseData.data.storage.percent, 0.2)),
+      other_retentions_rub: roundToTwo(randomVariation(baseData.data.other_retentions.rub, 0.2)),
+      other_retentions_percent: roundToTwo(randomVariation(baseData.data.other_retentions.percent, 0.2)),
+      acceptance_rub: roundToTwo(randomVariation(baseData.data.acceptance.rub, 0.2)),
+      acceptance_percent: roundToTwo(randomVariation(baseData.data.acceptance.percent, 0.2)),
+      compensation_penalties_rub: roundToTwo(randomVariation(baseData.data.compensation_penalties.rub, 0.2)),
+      compensation_penalties_percent: roundToTwo(randomVariation(baseData.data.compensation_penalties.percent, 0.2)),
+      sold_by_wb: roundToTwo(randomVariation(baseData.data.sold_by_wb, 0.2)),
+      tax_base: roundToTwo(randomVariation(baseData.data.tax_base, 0.2)),
+      tax: roundToTwo(randomVariation(baseData.data.tax, 0.2)),
+      advert_amount: roundToTwo(randomVariation(baseData.data.advert_amount, 0.2)),
+      drr: roundToTwo(randomVariation(baseData.data.drr, 0.2)),
+      wb_retentions_amount: roundToTwo(randomVariation(baseData.data.wb_retentions_amount, 0.2)),
     };
   }
 
