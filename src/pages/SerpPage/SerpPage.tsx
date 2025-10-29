@@ -127,7 +127,7 @@ const SerpPage = () => {
     const [barsData, setBarsData] = useState<{ frequency: number; organic: number; ads: number, query: string } | null>(null);
     const [segmentedOptions, setSegmentedOptions] = useState(null);
     const [activeTableTab, setActiveTableTab] = useState(0);
-    const [searchInputValue, setSearchInputValue] = useState(isDemoMode ? 'Платья и сарафаны' : '');
+    const [searchInputValue, setSearchInputValue] = useState(isDemoMode ? 'Платье женское' : '');
     const [isLoading, setIsLoading] = useState(false);
     const [pagination, setPagination] = useState({
         current: 1,
@@ -211,8 +211,8 @@ const SerpPage = () => {
 
     // search suggestions handler
     const searchSuggestionsHandler = () => {
-        setSearchInputValue('Платья и сарафаны');
-        getPageData('Платья и сарафаны');
+        setSearchInputValue('Платье женское');
+        getPageData('Платье женское');
     };
 
 
@@ -369,7 +369,7 @@ const SerpPage = () => {
                                 className={styles.page__searchSuggestionButton}
                                 onClick={searchSuggestionsHandler}
                             >
-                                Платья и сарафаны
+                                Платье женское
                             </button>
                         </div>
                     </div>
