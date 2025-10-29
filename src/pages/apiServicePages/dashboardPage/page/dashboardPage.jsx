@@ -29,6 +29,7 @@ import TurnoverBlock from '@/components/dashboardPageComponents/blocks/turnoverB
 // import StockAnalysisBlock from '@/components/dashboardPageComponents/blocks/stockAnalysisBlock/stockAnalysisBlock'
 import NoSubscriptionWarningBlock from '@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock';
 import { useDemoMode } from "@/app/providers";
+import { RadarBar } from '@/shared';
 
 
 const MainContent = React.memo(({
@@ -62,39 +63,18 @@ const MainContent = React.memo(({
             <SecondBarsGroup
                 dataDashBoard={dataDashBoard}
                 loading={loading}
+                selectedRange={selectedRange}
+                activeBrand={activeBrand}
+                authToken={authToken}
+                filters={filters}
             />
 
-            {/* <div className={isSidebarHidden ? styles.page__chartGroup : styles.page__chartGroup_oneLine}> */}
             <div className={styles.page__chartGroup}>
                 <FinanceBlock
                     loading={loading}
                     dataDashBoard={dataDashBoard}
                 />
-                <TurnoverBlock
-                    loading={loading}
-                    turnover={dataDashBoard?.turnover}
-                    selectedRange={selectedRange}
-                    activeBrand={activeBrand}
-                    authToken={authToken}
-                    filters={filters}
-                />
-                <MarginChartBlock
-                    loading={loading}
-                    dataDashBoard={dataDashBoard}
-                />
-                <ProfitChartBlock
-                    loading={loading}
-                    dataDashBoard={dataDashBoard}
-                />
                 <ProfitBlock
-                    loading={loading}
-                    dataDashBoard={dataDashBoard}
-                />
-                <StorageRevenueChartBlock
-                    loading={loading}
-                    dataDashBoard={dataDashBoard}
-                />
-                <StorageBlock
                     loading={loading}
                     dataDashBoard={dataDashBoard}
                 />
@@ -111,10 +91,30 @@ const MainContent = React.memo(({
                     />
                 </div>
 
-                <CostsBlock
+                <MarginChartBlock
                     loading={loading}
                     dataDashBoard={dataDashBoard}
                 />
+                {/* <ProfitChartBlock
+                    loading={loading}
+                    dataDashBoard={dataDashBoard}
+                /> */}
+
+                <StorageRevenueChartBlock
+                    loading={loading}
+                    dataDashBoard={dataDashBoard}
+                />
+                <StorageBlock
+                    loading={loading}
+                    dataDashBoard={dataDashBoard}
+                />
+
+
+
+                {/* <CostsBlock
+                    loading={loading}
+                    dataDashBoard={dataDashBoard}
+                /> */}
             </div>
 
             {/* <StockAnalysisBlock
@@ -198,10 +198,11 @@ const _DashboardPage = () => {
 
             <section className={styles.page__content}>
                 <div className={styles.page__headerWrapper}>
-                    <Header 
+                    <Header
                         title='Сводка продаж'
                         howToLink="https://radar.usedocs.com/article/75916"
                         howToLinkText="Как проверить данные?"
+                        hasShadow={false}
                     />
                 </div>
 

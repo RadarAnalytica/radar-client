@@ -2,15 +2,14 @@ import styles from './barsGroup.module.css';
 import Bar from '../bars/bar';
 import { differenceInDays } from 'date-fns';
 import { useAppSelector } from '../../../redux/hooks';
+import { RadarBar } from '../../../shared/ui/RadarBar/RadarBar';
 
 const FirstBarsGroup = ({ dataDashBoard, selectedRange, loading }) => {
-    const { isSidebarHidden } = useAppSelector(store => store.utils);
 
     const daysRange = selectedRange.from && selectedRange.to ? differenceInDays(selectedRange.to, selectedRange.from, { unit: 'days' }) : selectedRange.period;
     return (
-        // <div className={isSidebarHidden ? styles.group : styles.group_openSidebar}>
         <div className={styles.group}>
-            <Bar
+            {/* <Bar
                 title='Заказы'
                 amount={dataDashBoard?.orderAmount}
                 amountPerDay={dataDashBoard?.orderAmount / daysRange}
@@ -19,8 +18,22 @@ const FirstBarsGroup = ({ dataDashBoard, selectedRange, loading }) => {
                 quantityPerDay={dataDashBoard?.orderCount / daysRange}
                 quantityInPercent={dataDashBoard?.orderCountCompare}
                 loading={loading}
+            /> */}
+            <RadarBar
+                title='Чистая прибыль'
+                tooltipText='text'
+                midValue={dataDashBoard?.orderCount}
+                midValueUnits='шт'
+                mainValue={dataDashBoard?.orderAmount}
+                mainValueUnits='₽'
+                hasColoredBackground
+                compareValue={{
+                    comparativeValue: dataDashBoard?.orderAmountCompare,
+                    absoluteValue: dataDashBoard?.previousOrderAmount,
+                    absoluteValueUnits: '₽'
+                }}
             />
-            <Bar
+            {/* <Bar
                 title='Продажи'
                 amount={dataDashBoard?.saleAmount}
                 amountPerDay={dataDashBoard?.saleAmount / daysRange}
@@ -31,8 +44,22 @@ const FirstBarsGroup = ({ dataDashBoard, selectedRange, loading }) => {
                 loading={loading}
                 hasTooltip
                 tooltipText='Количество проданных товаров (без возвратов)'
+            /> */}
+            <RadarBar
+                title='Продажи'
+                tooltipText='text'
+                midValue={dataDashBoard?.saleCount}
+                midValueUnits='шт'
+                mainValue={dataDashBoard?.saleAmount}
+                mainValueUnits='₽'
+                hasColoredBackground
+                compareValue={{
+                    comparativeValue: dataDashBoard?.saleAmountCompare,
+                    absoluteValue: dataDashBoard?.previousSaleAmount,
+                    absoluteValueUnits: '₽'
+                }}
             />
-            <Bar
+            {/* <Bar
                 title='Возвраты'
                 amount={dataDashBoard?.returnAmount}
                 amountPerDay={dataDashBoard?.returnAmount / daysRange}
@@ -41,22 +68,53 @@ const FirstBarsGroup = ({ dataDashBoard, selectedRange, loading }) => {
                 quantityPerDay={dataDashBoard?.returnCount / daysRange}
                 quantityInPercent={dataDashBoard?.returnCountCompare}
                 loading={loading}
+            /> */}
+            <RadarBar
+                title='WB Реализовал'
+                tooltipText='text'
+                midValueUnits='₽'
+                mainValue={dataDashBoard?.taxInfo?.wbRealization}
+                mainValueUnits='₽'
+                hasColoredBackground
+                compareValue={{
+                    comparativeValue: dataDashBoard?.taxInfo?.wbRealizationCompare,
+                }}
             />
             <div className={styles.group__wrapper}>
-                <Bar
+                {/* <Bar
                     fixed={false}
                     title='WB Реализовал'
                     averageBill={dataDashBoard?.taxInfo?.wbRealization}
                     loading={loading}
                     hasTooltip
                     tooltipText='Сумма реализации товара с учетом согласованной скидки продавца и СПП'
+                /> */}
+                <RadarBar
+                    title='Процент выкупа'
+                    tooltipText='text'
+                    mainValue={dataDashBoard?.buyoutPercent}
+                    mainValueUnits='%'
+                    hasColoredBackground
+                    compareValue={{
+                        comparativeValue: dataDashBoard?.buyoutPercentCompare,
+                    }}
                 />
-                <Bar
+                {/* <Bar
                     fixed={false}
                     title='Процент выкупа'
                     buyOut={dataDashBoard?.buyoutPercent}
                     butOutInPercent={dataDashBoard?.buyoutPercentCompare}
                     loading={loading}
+                /> */}
+                <RadarBar
+                    title='ROI'
+                    tooltipText='text'
+                    mainValue={dataDashBoard?.roi}
+                    mainValueUnits='₽'
+                    hasColoredBackground
+                    compareValue={{
+                        comparativeValue: dataDashBoard?.roiCompare,
+                    }}
                 />
             </div>
         </div>
