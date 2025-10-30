@@ -343,8 +343,8 @@ export default function TrendAnalysisQuery() {
 										</svg>
 									}
 									htmlType="submit"
-									// disabled={loading || (!formQuery && !(formQuery?.trim()))}
-									disabled={loading || checkQuery(formQuery)}
+									title={isDemoMode && 'Отображение данных будет доступно после оформления подписки'}
+									disabled={loading || checkQuery(formQuery) || isDemoMode}
 								>
 									Найти
 								</Button>
@@ -420,10 +420,6 @@ export default function TrendAnalysisQuery() {
 								<div className={styles.chart}>
 									<TrendAnalysisQueryChart data={data?.chart} />
 								</div>
-
-
-
-
 
 								{data?.table &&
 									<div className={styles.table}>

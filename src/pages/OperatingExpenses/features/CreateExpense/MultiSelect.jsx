@@ -23,11 +23,9 @@ export const MultiSelect = (
 
 
     const renderPopup = (menu) => {
-        let action;
-        if (currentFormValue?.length < optionsData.length && !searchState) {
+        let action = () => { form.setFieldsValue({ [selectId]: [] }) };
+        if (Array.isArray(optionsData) && optionsData.length > currentFormValue?.length && !searchState) {
             action = () => { form.setFieldsValue({ [selectId]: optionsData.map(_ => _.value) }) };
-        } else if (currentFormValue?.length === optionsData.length) {
-            action = () => { form.setFieldsValue({ [selectId]: [] }) };
         }
 
         return (

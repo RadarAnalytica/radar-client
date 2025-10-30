@@ -78,7 +78,7 @@ const AddRnpModal = ({ isAddRnpModalVisible, setIsAddRnpModalVisible, addRnp }) 
             const response = await ServiceFunctions.getRnpProducts(
                 authToken,
                 selectedRange,
-                activeBrand.id,
+                activeBrand?.id,
                 filters,
                 page,
                 search,
@@ -194,8 +194,8 @@ const AddRnpModal = ({ isAddRnpModalVisible, setIsAddRnpModalVisible, addRnp }) 
 
                         {/* shopStatus && shopStatus?.is_primary_collect */}
 
-                        {!loading && shopStatus && localrnpDataArticle && localrnpDataArticle?.data?.length == 0 && (<div className={styles.empty}>Ничего не найдено</div>)}
-                        {!loading && shopStatus && localrnpDataArticle && localrnpDataArticle?.data?.length > 0 && (<div className={styles.modal__container}>
+                        {!loading && shopStatus && shopStatus?.is_primary_collect && localrnpDataArticle && localrnpDataArticle?.data?.length == 0 && (<div className={styles.empty}>Ничего не найдено</div>)}
+                        {!loading && shopStatus && shopStatus?.is_primary_collect && localrnpDataArticle && localrnpDataArticle?.data?.length > 0 && (<div className={styles.modal__container}>
                             {localrnpDataArticle?.data?.map((el, i) => (
                                 <Flex key={i} className={styles.item} gap={20}>
                                     {(rnpSelected.length >= 25 && !rnpSelected.includes(el.wb_id)) &&

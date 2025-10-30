@@ -94,7 +94,7 @@ const ReportBuyBack = () => {
 
       <div className='dashboard-content pb-3' style={{ padding: '0 32px' }}>
         <div style={{ width: '100%', padding: '20px 0' }} className="container dash-container">
-          <Header title={'Себестоимость'} titlePrefix={'Отчёт'} />
+          <Header title={'Самовыкупы'} titlePrefix={'Отчёт'} />
         </div>
 
         {isDemoMode &&

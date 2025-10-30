@@ -17,6 +17,8 @@ const InputField = ({
   minLength,
   maxLength,
   onKeyDown,
+  labelStyle = {},
+  inputStyle = {}
 }) => {
   const [shown, setShown] = useState(false);
 
@@ -24,7 +26,7 @@ const InputField = ({
 
   return (
     <div className='input-field mb-2'>
-      <label htmlFor='' className='mb-0 mt-1 p-0'>
+      <label htmlFor='' className='mb-0 mt-1 p-0' style={labelStyle}>
         <span style={{ color: 'red', marginRight: '' }}>
           {required ? '* ' : null}
         </span>
@@ -52,8 +54,9 @@ const InputField = ({
                     minHeight: '4vh',
                     backgroundColor: 'rgba(255, 0, 0, 0.05)',
                     border: '1px solid rgba(255, 0, 0, 0.2) !important',
+                    ...inputStyle
                   }
-                : { minHeight: '4vh' }
+                : { minHeight: '4vh', ...inputStyle }
             }
           />
           {emailErrorText ? (

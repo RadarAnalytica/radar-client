@@ -24,7 +24,8 @@ const Header = ({
     children,
     videoReviewLink,
     howToLink,
-    howToLinkText
+    howToLinkText,
+    hasShadow = true
 }) => {
     const dispatch = useAppDispatch();
     const { user, logout, authToken } = useContext(AuthContext);
@@ -72,7 +73,7 @@ const Header = ({
                 />
             }
             <header className={styles.header}>
-                <div className={styles.header__titleBlock}>
+                <div className={styles.header__titleBlock} style={{ boxShadow: hasShadow ? '0px 0px 20px 0px #00000014' : 'none' }}>
                     {typeof title === 'string' ?
                         <h1 className={styles.header__title}>
                             {titlePrefix &&
@@ -98,7 +99,7 @@ const Header = ({
                 </div>
                 {children && children}
                 {user &&
-                    <div className={styles.header__menu}>
+                    <div className={styles.header__menu} style={{ filter: hasShadow ? 'drop-shadow(0px 0px 20px #00000014)' : 'none' }}>
                         <Popover
                             {...popoverOptions}
                             className={styles.header__popover}

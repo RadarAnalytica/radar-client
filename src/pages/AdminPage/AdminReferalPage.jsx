@@ -13,7 +13,6 @@ import moment from 'moment';
 import { useLocation } from 'react-router-dom';
 import { URL } from '../../service/config';
 
-
 const initStatus = {
     isLoading: false,
     isError: false,
@@ -79,13 +78,15 @@ const accountRefill = async (token, reqData, setStatus, initStatus, setData, set
         });
 
         if (!res.ok) {
-            setStatus({ ...initStatus, isError: true, message: 'Не удалось получить данные' });
+            const errorData = await res.json();
+            setStatus({ ...initStatus, isError: true, message: errorData.detail || 'Не удалось получить данные' });
             return;
         }
         await fetchUserData(token, reqData.referrer_id, setStatus, initStatus, setData);
         setStatus(initStatus);
         setSuccessRefill(true);
-    } catch {
+    } catch (error) {
+        console.error('Error in accountRefill:', error);
         setStatus({ ...initStatus, isError: true, message: 'Не удалось получить данные' });
     }
 };

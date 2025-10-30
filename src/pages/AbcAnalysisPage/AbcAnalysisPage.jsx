@@ -197,7 +197,9 @@ const AbcAnalysisPage = () => {
 					<Filters setLoading={setLoading} isDataLoading={loading} />
 				</div>
 
-				{!activeBrand?.is_primary_collect && <DataCollectWarningBlock />}
+				{activeBrand && !activeBrand?.is_primary_collect && 
+					<DataCollectWarningBlock />
+				}
 
 				<div className={styles.wrapper} ref={tableContainerRef}>
 					<Loader loading={loading} progress={progress.value} />

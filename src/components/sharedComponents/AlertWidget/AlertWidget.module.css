@@ -1,0 +1,19 @@
+.alertWidget {
+    padding: 12px;
+    box-shadow: 0px 0px 20px 0px #00000014;
+    border-radius: 12px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 12px;
+    font-family: Mulish;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    color: #1A1A1A;
+    position: fixed;
+    right: 52px;
+    top: 115px;
+    background: white;
+}

@@ -4,16 +4,16 @@ import styles from './tableWidget.module.css';
 // Возможно будет удобнее передавать конфиг пропсом
 import { tableConfig, newTableConfig } from './config';
 import { sortTableDataFunc } from './utils';
-import { formatPrice } from '../../../../service/utils';
+import { formatPrice } from '@/service/utils';
 import { ConfigProvider, Pagination } from 'antd';
-import DownloadButton from '../../../../components/DownloadButton';
-import { fileDownload } from '../../../../service/utils';
+import DownloadButton from '@/components/DownloadButton';
+import { fileDownload } from '@/service/utils';
 import { Link } from 'react-router-dom';
 import { Table as RadarTable } from 'radar-ui';
 import wb_icon from './wb_icon.png';
+import { useTableColumnResize } from '@/service/hooks';
 
 const customCellRender = (value, record, index, dataIndex) => {
-
     if (dataIndex === 'query') {
         return (
             <div className={styles.customCell__query}>
@@ -76,20 +76,12 @@ export const TableWidget = React.memo(({ rawData, loading, tablePaginationState,
     const [isXScrolled, setIsXScrolled] = useState(false); // следим за скролом по Х
     const [isEndOfXScroll, setIsEndOfXScroll] = useState(false); // отслеживаем конец скролла по Х
     const [isExelLoading, setIsExelLoading] = useState(false);
-    const [currentTableConfig, setCurrentTableConfig] = useState(newTableConfig);
-
-    // Загружаем сохранённую конфигурацию из localStorage при монтировании
-    useEffect(() => {
-        const savedConfig = localStorage.getItem('TrendingRequestsTableConfig');
-        if (savedConfig) {
-            try {
-                const parsedConfig = JSON.parse(savedConfig);
-                setCurrentTableConfig(parsedConfig);
-            } catch (error) {
-                console.error('Error parsing saved table config:', error);
-            }
-        }
-    }, []);
+    
+    // Используем хук для управления изменением размеров колонок
+    const { config: currentTableConfig, onResize: onResizeGroup } = useTableColumnResize(
+        newTableConfig, 
+        'trendingRequestsTableConfig'
+    );
 
     // задаем начальную дату
     useEffect(() => {
@@ -114,47 +106,6 @@ export const TableWidget = React.memo(({ rawData, loading, tablePaginationState,
             paginationPrevButton.setAttribute('title', 'Предыдущие 5 страниц');
         }
     }, [tablePaginationState]);
-
-    // хэндлер изменения ширины колонок
-    const onResizeGroup = useCallback((columnKey, width) => {
-        console.log('Column resized:', columnKey, width);
-
-        // Обновляем конфигурацию колонок с группированной структурой
-        const updateColumnWidth = (columns) => {
-            return columns.map(col => {
-                // Если это группа с children
-                if (col.children && col.children.length > 0) {
-                    const updatedChildren = updateColumnWidth(col.children);
-
-                    // Всегда пересчитываем ширину группы на основе суммы ширин дочерних колонок
-                    const totalWidth = updatedChildren.reduce((sum, child) => sum + (child.width || child.minWidth), 0);
-                    return { ...col, width: totalWidth, minWidth: totalWidth, children: updatedChildren };
-                }
-
-                // Если это листовая колонка
-                if (col.key === columnKey) {
-                    return { ...col, width: width, minWidth: width };
-                }
-
-                return col;
-            });
-        };
-
-        // Обновляем состояние
-        setCurrentTableConfig(prevConfig => {
-            const updatedConfig = updateColumnWidth(prevConfig);
-            const normalizedTableConfig = updatedConfig.map(item => ({
-                ...item,
-                render: undefined,
-                children: item.children ? item.children.map(child => ({
-                    ...child,
-                    render: undefined
-                })) : undefined
-            }));
-            localStorage.setItem('TrendingRequestsTableConfig', JSON.stringify(normalizedTableConfig));
-            return updatedConfig;
-        });
-    }, []);
 
     const paginationHandler = useCallback((page) => {
         setRequestState({ ...requestState, page });
@@ -190,7 +141,6 @@ export const TableWidget = React.memo(({ rawData, loading, tablePaginationState,
             setRequestState({ ...requestState, sorting: { sort_field: 'frequency', sort_order: 'DESC' }, page: 1, limit: 25 });
             return;
         }
-
 
         setSortState({
             sortedValue: sort_field,

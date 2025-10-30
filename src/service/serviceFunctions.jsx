@@ -31,7 +31,7 @@ export const getRequestObject = (filters, selectedRange, shopId) => {
 	return requestObject;
 };
 
-export const getRnpRequestObject = (filters, selectedRange, shopId) => {
+export const getFiltersRequestObject = (filters, selectedRange, shopId) => {
 	let requestObject = {
 		articles: null,
 		product_groups: null,
@@ -45,7 +45,6 @@ export const getRnpRequestObject = (filters, selectedRange, shopId) => {
 	if (filters.activeBrandName && Array.isArray(filters.activeBrandName) && !filters.activeBrandName.some(_ => _.value === 'Все')) {
 		requestObject.brands = filters.activeBrandName.map(_ => _.name);
 	}
-	// filters?.activeArticle.value !== 'Все'
 	if (filters.activeArticle && Array.isArray(filters.activeArticle) && !filters.activeArticle.some(_ => _.value === 'Все')) {
 		requestObject.articles = filters.activeArticle.map(_ => _.value);
 	}
@@ -574,6 +573,37 @@ export const ServiceFunctions = {
 		return await response.json();
 	},
 
+	getSERPQueryData: async (token, body) => {
+		const response = await fetchApi(`https://radarmarket.ru/api/web-service/search-map/get-query-data`, {
+			method: 'POST',
+			headers: {
+				'content-type': 'application/json',
+				authorization: 'JWT ' + token,
+			},
+			body: JSON.stringify(body),
+		});
+
+		if (!response.ok) {
+			throw new Error('Failed to fetch dashboard report');
+		}
+
+		return await response.json();
+	},
+	getSERPFiltersData: async (token) => {
+		const response = await fetchApi(`https://radarmarket.ru/api/web-service/search-map/get-regions`, {
+			method: 'GET',
+			headers: {
+				'content-type': 'application/json',
+				authorization: 'JWT ' + token,
+			},
+		});
+
+		if (!response.ok) {
+			throw new Error('Failed to fetch dashboard report');
+		}
+
+		return await response.json();
+	},
 	scheduleFilterFields: async (token) => {
 		const response = await fetch(`${URL}/api/report/get-charts-filters`, {
 			method: 'GET',
@@ -1362,7 +1392,6 @@ export const ServiceFunctions = {
 			}
 
 			res = await res.json();
-			console.log(res);
 			setIsLoading(false);
 			res = res.map(_ => ({
 				..._,
@@ -1375,7 +1404,7 @@ export const ServiceFunctions = {
 	},
 	postRnpByArticle: async(token, selectedRange, shopId, filters, signal) => {
 		try {
-			let body = getRnpRequestObject(filters, selectedRange, shopId);
+			let body = getFiltersRequestObject(filters, selectedRange, shopId);
 			const res = await fetchApi(
 				'/api/rnp/by_article?page=1&per_page=25',
 				{
@@ -1402,7 +1431,7 @@ export const ServiceFunctions = {
 	},
 	postRnpSummary: async(token, selectedRange, shopId, filters, signal) => {
 		try {
-			let body = getRnpRequestObject(filters, selectedRange, shopId);
+			let body = getFiltersRequestObject(filters, selectedRange, shopId);
 			const res = await fetchApi(
 				'/api/rnp/summary',
 				{
@@ -1429,7 +1458,7 @@ export const ServiceFunctions = {
 	},
 	getRnpProducts: async(token, selectedRange, shopId, filters, page, search) => {
 		try {
-			let body = getRnpRequestObject(filters, selectedRange, shopId);
+			let body = getFiltersRequestObject(filters, selectedRange, shopId);
 			const res = await fetchApi(
 				`/api/rnp/products?page=${page}&per_page=25${search ? `&search=${search}` : ''}` ,
 				{
@@ -1558,8 +1587,8 @@ export const ServiceFunctions = {
 	},
 	getOperatingExpensesCategoryGetAll: async(token, pagination) => {
 		try {
-			const res = await fetch(
-				`${URL}/api/operating-expenses/category/get-all?page=${pagination.page}&limit=${pagination.limit}`,
+			const res = await fetchApi(
+				`/api/operating-expenses/category/get-all?page=${pagination.page}&limit=${pagination.limit}`,
 				{
 					method: 'GET',
 					headers: {
@@ -1574,22 +1603,6 @@ export const ServiceFunctions = {
 			}
 
 			return res.json();
-			/*
-			const res = {
-				data: [
-					{
-						id: 1,
-						name: 'Статья1'
-					},
-					{
-						id: 2,
-						name: 'Статья2'
-					},
-				]
-			};
-
-			return res;
-			*/
 
 		} catch(error) {
 			console.error('getOperatingExpensesCategoryGetAll ', error);
@@ -1598,8 +1611,8 @@ export const ServiceFunctions = {
 	},
 	postOperatingExpensesCategoryCreate: async(token, category) => {
 		try {
-			const res = await fetch(
-				`${URL}/api/operating-expenses/category/create`,
+			const res = await fetchApi(
+				`/api/operating-expenses/category/create`,
 				{
 					method: 'POST',
 					headers: {
@@ -1622,8 +1635,8 @@ export const ServiceFunctions = {
 	},
 	patchOperatingExpensesCategory: async(token, category) => {
 		try {
-			const res = await fetch(
-				`${URL}/api/operating-expenses/category/update`,
+			const res = await fetchApi(
+				`/api/operating-expenses/category/update`,
 				{
 					method: 'PATCH',
 					headers: {
@@ -1646,8 +1659,8 @@ export const ServiceFunctions = {
 	},
 	deleteOperatingExpensesCategory: async(token, id) => {
 		try {
-			const res = await fetch(
-				`${URL}/api/operating-expenses/category/delete?category_id=${id}`,
+			const res = await fetchApi(
+				`/api/operating-expenses/category/delete?category_id=${id}`,
 				{
 					method: 'DELETE',
 					headers: {
@@ -1712,8 +1725,8 @@ export const ServiceFunctions = {
 	},
 	getOperatingExpensesExpenseGetAll: async(token, requestObject) => {
 		try {
-			const res = await fetch(
-				`${URL}/api/operating-expenses/expense/get-all`,
+			const res = await fetchApi(
+				`/api/operating-expenses/expense/get-all`,
 				{
 					method: 'POST',
 					headers: {
@@ -1776,8 +1789,8 @@ export const ServiceFunctions = {
 	},
 	getPeriodicExpenseTemplate: async (token, periodic_expense_id) => {
 		try {
-			const res = await fetch(
-				`${URL}/api/operating-expenses/periodic-expense/get?expense_id=${periodic_expense_id}`,
+			const res = await fetchApi(
+				`/api/operating-expenses/periodic-expense/get?expense_id=${periodic_expense_id}`,
 				{
 					method: 'GET',
 					headers: {
@@ -1799,8 +1812,8 @@ export const ServiceFunctions = {
 	},
 	postOperatingExpensesExpenseCreate: async(token, expense, createExpenseUrl) => {
 		try {
-			const res = await fetch(
-				`${URL}/api/${createExpenseUrl}`,
+			const res = await fetchApi(
+				`/api/${createExpenseUrl}`,
 				{
 					method: 'POST',
 					headers: {
@@ -1824,8 +1837,8 @@ export const ServiceFunctions = {
 	
 	patchOperatingExpensesExpense: async(token, expense, updateExpenseUrl) => {
 		try {
-			const res = await fetch(
-				`${URL}/api/${updateExpenseUrl}`,
+			const res = await fetchApi(
+				`/api/${updateExpenseUrl}`,
 				{
 					method: 'PATCH',
 					headers: {
@@ -1846,11 +1859,15 @@ export const ServiceFunctions = {
 			throw new Error(error);
 		}
 	},
+
 	deleteOperatingExpensesExpenseDelete: async(token, id, isPeriodic) => {
+		const url = isPeriodic 
+			? `/api/operating-expenses/periodic-expense/delete?expense_id=${id}&delete_linked=true` 
+			: `/api/operating-expenses/expense/delete?expense_id=${id}`;
+
 		try {
-			// operating-expenses/expense/delete?expense_id
-			const res = await fetch(
-				`${URL}/api/operating-expenses/expense/delete?expense_id=${id}&delete_linked=${!!isPeriodic}`,
+			const res = await fetchApi(
+				url,
 				{
 					method: 'DELETE',
 					headers: {
@@ -1865,6 +1882,30 @@ export const ServiceFunctions = {
 
 		} catch(error) {
 			console.error('deleteOperatingExpensesCategory ', error);
+			throw new Error(error);
+		}
+	},
+
+	getControlMetrics: async(token, metricType, filters = {}, page = 1, per_page = 50, search = '') => {
+		try {
+			const filtersRequestObject = getFiltersRequestObject(filters, null, filters.activeBrand?.id);
+			const res = await fetchApi(
+				`/api/control/${metricType}?page=${page}&per_page=${per_page}&search=${search}`,
+				{
+					method: 'POST',
+					headers: {
+						'content-type': 'application/json',
+						authorization: 'JWT ' + token,
+					},
+					body: JSON.stringify(filtersRequestObject),
+				}
+			);
+			if (!res.ok) {
+				throw new Error('Ошибка запроса');
+			}
+			return res.json();
+		} catch(error) {
+			console.error('Get wb metrics error:', error);
 			throw new Error(error);
 		}
 	},

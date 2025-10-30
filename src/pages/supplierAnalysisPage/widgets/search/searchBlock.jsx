@@ -2,12 +2,12 @@ import React, { useState, useEffect, useRef } from 'react';
 import styles from './searchBlock.module.css';
 import { ConfigProvider, Button, AutoComplete } from 'antd';
 import { useNavigate } from 'react-router-dom';
-import ErrorModal from '../../../../components/sharedComponents/modals/errorModal/errorModal';
-import useDebouncedFunction from '../../../../service/hooks/useDebounce';
-import { ServiceFunctions } from '../../../../service/serviceFunctions';
-import { useAppDispatch, useAppSelector } from '../../../../redux/hooks';
-import { actions as supplierActions } from '../../../../redux/supplierAnalysis/supplierAnalysisSlice';
-import { selectMainSupplierData, selectCompareSupplierData } from '../../../../redux/supplierAnalysis/supplierAnalysisSelectors';
+import ErrorModal from '@/components/sharedComponents/modals/errorModal/errorModal';
+import useDebouncedFunction from '@/service/hooks/useDebounce';
+import { ServiceFunctions } from '@/service/serviceFunctions';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import { actions as supplierActions } from '@/redux/supplierAnalysis/supplierAnalysisSlice';
+import { selectMainSupplierData, selectCompareSupplierData } from '@/redux/supplierAnalysis/supplierAnalysisSelectors';
 
 
 const requestInitState = {
@@ -107,7 +107,6 @@ const SearchBlock = ({ supplierType = 'main' }) => {
                                 <path d="M1 1L7 7L13 1" stroke="#1A1A1A" strokeWidth="2" strokeLinecap="round" />
                             </svg>
                         }
-                        //onKeyDown={handleKeyDown}
                         notFoundContent={<div style={{ color: 'black' }}>
                             {!loadingOptions && !autocompleteOptions && 'Введите название поставщика'}
                             {!loadingOptions && autocompleteOptions && autocompleteOptions.length === 0 && 'Ничего не найдено'}

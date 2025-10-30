@@ -7,6 +7,7 @@ import { jwtDecode } from "jwt-decode";
 import axios from "axios";
 import AuthContext from '../../../../service/AuthContext';
 import { ServiceFunctions } from '../../../../service/serviceFunctions';
+import { useDemoMode } from "@/app/providers";
 
 
 export const pricing = [
@@ -45,14 +46,12 @@ export const pricing = [
 ];
 
 export const PricingScreen = () => {
-
-
     // ------------ states and vars ---------------//
     const { user, logout, authToken } = useContext(AuthContext);
     const [modalItem, setModalItem] = useState(undefined);
     const [isScriptLoaded, setIsScriptLoaded] = useState(false);
     const [isWidgetActive, setIsWidgetActive] = useState(false);
-    // const [selectedPeriod, setSelectedPeriod] = useState('1month');
+    const { isDemoMode } = useDemoMode();
     const [trialExpired, setTrialExpired] = useState(user?.is_test_used);
     const [subscriptionDiscount, setSubscriptionDiscount] = useState(
         user?.is_subscription_discount
@@ -179,6 +178,11 @@ export const PricingScreen = () => {
 
      // -------------------------------- pay function -------------------------------//
      const pay = async (_) => {
+        if (isDemoMode) {
+            await logout();
+            return;
+        }
+
         const selectedPeriod = _.value;
         const refresh_result = await refreshUserToken();
         // console.log('refresh_result', refresh_result);
@@ -451,7 +455,16 @@ export const PricingScreen = () => {
                 <div className={styles.screen__cards}>
                     {pricing.map((_, id) => {
                         return (
-                            <PricingCard key={id} item={_} setModalItem={setModalItem} action={() => {setIsWidgetActive(true); pay(_);}} isWidgetActive={isWidgetActive} />
+                            <PricingCard 
+                                key={id} 
+                                item={_} 
+                                setModalItem={setModalItem} 
+                                action={() => {
+                                    setIsWidgetActive(true);
+                                    pay(_);
+                                }}
+                                isWidgetActive={isWidgetActive}
+                            />
                         );
                     })}
                 </div>

@@ -4,23 +4,20 @@ import { Table as RadarTable } from 'radar-ui';
 import { EditIcon, CopyIcon, DeleteIcon, InfoIcon } from '../../shared/Icons';
 import moment from 'moment';
 import styles from './tableWidget.module.css';
-import { formatPrice } from '../../../../service/utils';
-import { ServiceFunctions } from '../../../../service/serviceFunctions';
+import { formatPrice } from '@/service/utils';
+import { ServiceFunctions } from '@/service/serviceFunctions';
+import { useTableColumnResize } from '@/service/hooks';
 
 const customCellExpenseRender = (
     value,
     record,
     index,
     dataIndex,
-    setExpenseEdit,
-    setModalCreateExpenseOpen,
+    setExpenseModal,
     setDeleteExpenseId,
     copyExpense,
     data,
-    setModalEditExpenseOpen,
     authToken,
-    setModalCopyExpenseOpen,
-    setExpenseCopy,
     setAlertState
 ) => {
 
@@ -47,7 +44,7 @@ const customCellExpenseRender = (
     }
     if (dataIndex === 'description' || dataIndex === 'expense_categories' || dataIndex === 'vendor_code' || dataIndex === 'brand_name') {
         return (
-            <div className={styles.customCell}>
+            <div className={`${styles.customCell} text-break`} title={value}>
                 {value || '-'}
             </div>
         )
@@ -59,8 +56,11 @@ const customCellExpenseRender = (
             </div>
         )
     }
-    if (dataIndex === 'shop') {
-        return (<>{value?.name || '-'}</>)
+    if (dataIndex === 'shops') {
+        return (<>{value?.length > 0 ? value[0]?.name : '-'}</>)
+    }
+    if (dataIndex === 'vendor_codes' || dataIndex === 'brand_names') {
+        return (<>{value?.length > 0 ? value[0] : '-'}</>)
     }
     if (dataIndex === 'action' && record.key === 'summary') {
         return null;
@@ -80,23 +80,26 @@ const customCellExpenseRender = (
                             try {
                                 response = await ServiceFunctions.getPeriodicExpenseTemplate(authToken, record.periodic_expense_id);
 
-                                setExpenseEdit({
-                                    end_date: response.finished_at?.split('T')[0],
-                                    frequency: response.period_type,
-                                    week: response.period_type === 'week' ? response.period_values : null,
-                                    month: response.period_type === 'month' ? response.period_values.toString() : null,
-                                    periodic_expense_id: response.id,
-                                    is_periodic: true,
-                                    shops: response.shops,
-                                    vendor_codes: response.vendor_codes,
-                                    brand_names: response.brand_names,
-                                    value: response.value,
-                                    description: response.description,
-                                    expense_categories: response.expense_categories,
-                                    date: response.date_from,
+                                setExpenseModal({
+                                    mode: 'edit',
+                                    isOpen: true,
+                                    data: {
+                                        end_date: response.finished_at?.split('T')[0],
+                                        frequency: response.period_type,
+                                        week: response.period_type === 'week' ? response.period_values : null,
+                                        month: response.period_type === 'month' ? response.period_values.toString() : null,
+                                        periodic_expense_id: response.id,
+                                        is_periodic: true,
+                                        shops: response.shops,
+                                        vendor_codes: response.vendor_codes,
+                                        brand_names: response.brand_names,
+                                        value: response.value,
+                                        description: response.description,
+                                        expense_categories: response.expense_categories,
+                                        date: response.date_from,
+                                    }
                                 });
-                                setModalEditExpenseOpen(true);
-                                return
+                                return;
                             } catch (error) {
                                 setAlertState({
                                     status: 'error',
@@ -105,10 +108,12 @@ const customCellExpenseRender = (
                                 });
                             }
                         }
-                        setExpenseEdit((data?.find((item) => item.id === record.id)));
-                        setModalEditExpenseOpen(true);
-                    }
-                    }
+                        setExpenseModal({
+                            mode: 'edit',
+                            isOpen: true,
+                            data: data?.find((item) => item.id === record.id)
+                        });
+                    }}
                     title='Изменить'
                 ></Button>
                 <Button
@@ -120,7 +125,7 @@ const customCellExpenseRender = (
 
                         if (!record.is_periodic) {
                             copyExpense(record.id);
-                            return
+                            return;
                         }
 
                         let response;
@@ -128,18 +133,21 @@ const customCellExpenseRender = (
                             try {
                                 response = await ServiceFunctions.getPeriodicExpenseTemplate(authToken, record?.periodic_expense_id);
 
-                                setExpenseCopy({
-                                    ...response,
-                                    end_date: response.finished_at?.split('T')[0],
-                                    date: response.date_from,
-                                    frequency: response.period_type,
-                                    week: response.period_type === 'week' ? response.period_values : null,
-                                    month: response.period_type === 'month' ? response.period_values : null,
-                                    periodic_expense_id: response.id,
-                                    is_periodic: true,
-                                })
-                                setModalCopyExpenseOpen(true);
-                                return
+                                setExpenseModal({
+                                    mode: 'copy',
+                                    isOpen: true,
+                                    data: {
+                                        ...response,
+                                        end_date: response.finished_at?.split('T')[0],
+                                        date: response.date_from,
+                                        frequency: response.period_type,
+                                        week: response.period_type === 'week' ? response.period_values : null,
+                                        month: response.period_type === 'month' ? response.period_values : null,
+                                        periodic_expense_id: response.id,
+                                        is_periodic: true,
+                                    }
+                                });
+                                return;
                             } catch (error) {
                                 setAlertState({
                                     status: 'error',
@@ -164,8 +172,6 @@ const customCellExpenseRender = (
             </ConfigProvider>
         </Flex>)
     }
-
-
 }
 
 const customCellCategoryRender = (
@@ -205,8 +211,7 @@ export default function TableWidget({
     loading,
     columns,
     data,
-    setExpenseEdit,
-    setModalCreateExpenseOpen,
+    setExpenseModal,
     setDeleteExpenseId,
     copyExpense,
     tableType,
@@ -215,23 +220,28 @@ export default function TableWidget({
     setDeleteCategoryId,
     pagination,
     setPagination,
-    setModalEditExpenseOpen,
     authToken,
-    setModalCopyExpenseOpen,
-    setExpenseCopy,
     setAlertState
 }) {
     const tableContainerRef = useRef(null);
+    
+    // Используем хук для управления изменением размеров колонок
+    const { config: tableConfig, onResize: onResizeColumn } = useTableColumnResize(
+        columns, 
+        tableType ? `operatingExpenses-${tableType}` : 'operatingExpensesTableConfig'
+    );
 
     return (
         <div className={styles.container}>
-            <div className={styles.tableContainer} ref={tableContainerRef}>
+            <div className={`${styles.tableContainer} scroll-container`} ref={tableContainerRef}>
                 {loading && <div className={styles.loading}>
                     <span className='loader'></span>
                 </div>}
                 <RadarTable
-                    config={columns}
+                    config={tableConfig}
                     dataSource={data}
+                    resizeable={tableType === 'expense'}
+                    onResize={onResizeColumn}
                     pagination={{
                         current: pagination.page,
                         pageSize: pagination.limit,
@@ -257,15 +267,11 @@ export default function TableWidget({
                                     record,
                                     index,
                                     dataIndex,
-                                    setExpenseEdit,
-                                    setModalCreateExpenseOpen,
+                                    setExpenseModal,
                                     setDeleteExpenseId,
                                     copyExpense,
                                     data,
-                                    setModalEditExpenseOpen,
                                     authToken,
-                                    setModalCopyExpenseOpen,
-                                    setExpenseCopy,
                                     setAlertState
                                 )
                             }

@@ -186,7 +186,7 @@ export default function ModalCreateCategory({
 									loading={loading}
 									disabled={!name?.trim()}
 								>
-									{data?.id ? 'Изменить статью' : 'Добавить статью'}
+									{data?.id ? 'Сохранить статью' : 'Добавить статью'}
 								</Button>
 							</ConfigProvider>
 						</Flex>

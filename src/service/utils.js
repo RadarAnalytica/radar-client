@@ -79,7 +79,7 @@ export function filterArraysNoData(obj, days) {
 
 
 // func that format any value to display (e.g, prices, percents...)
-export const formatPrice = (value, literal) => {
+export const formatPrice = (value, literal, hasPlusSymbol = false) => {
   // define a value to return
   let formattedPriceString = '0';
   // checking if value exists
@@ -100,6 +100,10 @@ export const formatPrice = (value, literal) => {
     // adding a literal (like "шт" or "₽") to the string
     if (literal) {
       formattedPriceString += ` ${literal}`;
+    }
+
+    if (hasPlusSymbol && number > 0) {
+      formattedPriceString = `+${formattedPriceString}`;
     }
   }
   return formattedPriceString;
@@ -755,4 +759,54 @@ export function getSavedActiveMonths(id) {
     savedActiveMonths = initialMonths;
   }
   return savedActiveMonths;
+}
+
+export function log(...args) {
+  if (location.hostname === 'localhost') {
+    console.log(...args);
+  }
+}
+
+/**
+ * Сортирует массив результатов поиска по релевантности к поисковому запросу
+ * @param {Array} items - Массив объектов для сортировки
+ * @param {string} searchTerm - Поисковый запрос
+ * @param {string} fieldName - Название поля объекта, по которому производится сортировка (по умолчанию 'name')
+ * @returns {Array} - Отсортированный массив
+ */
+export function sortByRelevance(items, searchTerm, fieldName = 'name') {
+  if (!searchTerm || !items || items.length === 0) {
+    return items;
+  }
+
+  const searchLower = searchTerm.trim().toLowerCase();
+
+  return [...items].sort((a, b) => {
+    const nameA = (a[fieldName] || '').toLowerCase();
+    const nameB = (b[fieldName] || '').toLowerCase();
+
+    // 1. Точное совпадение - наивысший приоритет
+    if (nameA === searchLower) return -1;
+    if (nameB === searchLower) return 1;
+
+    // 2. Начинается с искомой строки
+    const startsWithA = nameA.startsWith(searchLower);
+    const startsWithB = nameB.startsWith(searchLower);
+    if (startsWithA && !startsWithB) return -1;
+    if (startsWithB && !startsWithA) return 1;
+
+    // 3. Совпадает с началом слова (после пробела)
+    const wordStartA = nameA.includes(` ${searchLower}`);
+    const wordStartB = nameB.includes(` ${searchLower}`);
+    if (wordStartA && !wordStartB) return -1;
+    if (wordStartB && !wordStartA) return 1;
+
+    // 4. Позиция первого вхождения (чем раньше, тем лучше)
+    const indexA = nameA.indexOf(searchLower);
+    const indexB = nameB.indexOf(searchLower);
+    if (indexA !== indexB) return indexA - indexB;
+
+    // 5. По длине строки (короче = более релевантно)
+    return nameA.length - nameB.length;
+  });
 }

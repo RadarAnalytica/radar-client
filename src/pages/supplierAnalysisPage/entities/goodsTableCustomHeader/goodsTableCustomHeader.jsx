@@ -58,20 +58,20 @@ const GoodsTableCustomHeader = ({ id }) => {
                 }}
             >
                 {supplierBrands &&
-                <Select
-                    style={{ width: 240 }}
-                    size='large'
-                    getPopupContainer={(triggerNode) => triggerNode.parentNode}
-                    suffixIcon={
-                        <svg width="14" height="9" viewBox="0 0 14 9" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M1 1L7 7L13 1" stroke="#8C8C8C" strokeWidth="2" strokeLinecap="round" />
-                        </svg>
-                    }
-                    variant="filled"
-                    options={supplierBrands?.map(_ => ({value: _.brand_id, label: _.brand_name}))}
-                    value={[{value: supplierCurrentBrand, label: supplierBrands?.find(_=>_?.brand_id === supplierCurrentBrand)?.brand_name || ''}]}
-                    onChange={(value) => dispatch(supplierAnalysisActions.setSupplierCurrentBrand(value))}
-                />
+                    <Select
+                        style={{ width: 240 }}
+                        size='large'
+                        getPopupContainer={(triggerNode) => triggerNode.parentNode}
+                        suffixIcon={
+                            <svg width="14" height="9" viewBox="0 0 14 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M1 1L7 7L13 1" stroke="#8C8C8C" strokeWidth="2" strokeLinecap="round" />
+                            </svg>
+                        }
+                        variant="filled"
+                        options={supplierBrands?.map(_ => ({ value: _.brand_id, label: _.brand_name }))}
+                        value={[{ value: supplierCurrentBrand, label: supplierBrands?.find(_ => _?.brand_id === supplierCurrentBrand)?.brand_name || '' }]}
+                        onChange={(value) => dispatch(supplierAnalysisActions.setSupplierCurrentBrand(value))}
+                    />
                 }
             </ConfigProvider>
         </div>

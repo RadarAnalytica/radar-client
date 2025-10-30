@@ -8,7 +8,7 @@ class ErrorBoundary extends React.Component {
   constructor(props) {
     super(props);
     this.state = { hasError: false, error: null, errorInfo: null };
-    this.enabled = true; // ручное включение/отключение ErrorBoundary
+    this.enabled = location.hostname !== 'localhost'; // ручное включение/отключение ErrorBoundary
   }
 
   static getDerivedStateFromError(error) {

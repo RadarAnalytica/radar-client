@@ -198,7 +198,7 @@ export default function ReportProfitLoss() {
 			{ key: 'penalties', title: 'Штрафы', isChildren: true, parentKey: 'total_expenses' },
 			{ key: 'compensation', title: 'Компенсация' },
 			{ key: 'gross_margin', title: 'Маржинальная прибыль' },
-			{ key: 'operating_expenses', title: 'Операционные расходы', isParent: true },
+			// { key: 'operating_expenses', title: 'Операционные расходы', isParent: true, isExpanded: false },
 			{ key: 'operating_profit', title: 'Операционная прибыль (EBITDA)' },
 			{ key: 'tax', title: 'Налоги' },
 			{ key: 'net_profit', title: 'Чистая прибыль' },
