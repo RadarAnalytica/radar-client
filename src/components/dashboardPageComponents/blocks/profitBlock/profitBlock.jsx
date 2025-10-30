@@ -37,7 +37,8 @@ const ProfitBlock = ({ dataDashBoard, loading }) => {
                                     <ConfigProvider
                                         theme={{
                                             token: {
-                                                colorTextLightSolid: '#1A1A1A'
+                                                colorTextLightSolid: '#1A1A1A',
+                                                fontSize: 12,
                                             }
                                         }}
                                     >

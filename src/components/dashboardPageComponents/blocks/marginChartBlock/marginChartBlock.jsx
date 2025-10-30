@@ -294,8 +294,10 @@ const MarginChartBlock = ({ dataDashBoard, loading }) => {
             x: {
                 stacked: true,
                 grid: {
-                    //drawOnChartArea: false,
-                    display: false,
+                    drawOnChartArea: false,
+                    drawTicks: true,
+                    tickLength: 4,
+                    color: '#E0E0E0',
                 },
                 ticks: {
                     color: '#8C8C8C',

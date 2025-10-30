@@ -70,7 +70,10 @@
     grid-template-columns: 1fr 1fr;
     gap: 12px;
     min-height: 407px;
-    /* height: 100%; */
+
+    @media (max-width: 1360px) {
+        grid-column: span 2;
+    }
 }
 
 .page__controlsWrapper {

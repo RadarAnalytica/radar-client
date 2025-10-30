@@ -93,7 +93,10 @@ export const RadarBar: React.FC<RadarBarProps> = ({
         )
     }
     return (
-        <div className={`${styles.bar} ${hasColoredBackground && compareValue?.comparativeValue && isValueBelowZero(compareValue?.comparativeValue) ? styles.bar_negative : ''}`}>
+        // Расскоментируй когда будет нужно вернуть красный фон у карточки при отрицательном сравнительном значении
+        // <div className={`${styles.bar} ${hasColoredBackground && compareValue?.comparativeValue && isValueBelowZero(compareValue?.comparativeValue) ? styles.bar_negative : ''}`}>
+       // а этот дивв удали
+       <div className={`${styles.bar}`}>
             {/* header */}
             <div className={styles.bar__header}>
                 <div className={`${styles.bar__side} ${styles.bar__side_left}`} style={{ alignItems: 'flex-start', flexWrap: 'nowrap' }}>
@@ -133,7 +136,7 @@ export const RadarBar: React.FC<RadarBarProps> = ({
 
             {/* bottom */}
             <div className={styles.bar__bottom}>
-                <div className={`${styles.bar__side} ${styles.bar__side_left}`} style={{ gap: 0 }}>
+                <div className={`${styles.bar__side} ${styles.bar__side_left}`} style={{ gap: 4 }}>
                     {mainValue !== undefined &&
                         <div className={styles.bar__mainValue}>{formatPrice(mainValue?.toString(), mainValueUnits)}</div>
                     }

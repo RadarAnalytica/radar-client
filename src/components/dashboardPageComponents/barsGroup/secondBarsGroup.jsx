@@ -1,4 +1,4 @@
-import styles from './barsGroup.module.css';
+import styles from './secondBarsGroup.module.css';
 import SmallBar from '../bars/smallBar';
 import { useAppSelector } from '../../../redux/hooks';
 import { RadarBar } from '../../../shared/ui/RadarBar/RadarBar';
