@@ -206,7 +206,6 @@ const SupplierIdPage = () => {
                     <StockChartCustomHeader />
                     <ChartTabsWrapper />
                 </div>
-
             </section>
             {/* ---------------------- */}
         </main>
@@ -299,11 +298,8 @@ const ChartTabsWrapper = () => {
     useEffect(() => {
         setConfig(getStockChartProps(stockChartTab));
     }, [stockChartTab]);
-    return (
-            <StockChartWidget
-                {...config}
-            />
-    );
+    
+    return <StockChartWidget {...config} />;
 };
 
 export default SupplierIdPage;

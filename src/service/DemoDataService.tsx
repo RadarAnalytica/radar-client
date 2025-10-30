@@ -143,7 +143,7 @@ export class DemoDataService {
       'https://radarmarket.ru/api/web-service/supplier-analysis/comparison/avg-price': () => supplierAnalysisAvgPriceData,
       'https://radarmarket.ru/api/web-service/supplier-analysis/comparison/avg-discount': () => supplierAnalysisAvgDiscountData,
       'https://radarmarket.ru/api/web-service/supplier-analysis/comparison/stock-quantity': () => supplierAnalysisStockQuantityData,
-      'https://radarmarket.ru/api/web-service/supplier-analysis/comparison/by-size': () => supplierAnalysisBySizeData,
+      'https://radarmarket.ru/api/web-service/supplier-analysis/supplier-by-size': () => supplierAnalysisBySizeData,
       'https://radarmarket.ru/api/web-service/supplier-analysis/comparison/warehouse-quantity': () => [],
       // sku analysis routes
       'https://radarmarket.ru/api/web-service/product-analysis/product-meta': () => skuAnalysisMetaData,

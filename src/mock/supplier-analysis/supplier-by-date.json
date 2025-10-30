@@ -61,7 +61,7 @@
     },
     {
         "date": "2025-10-04",
-        "revenue": 1606136,
+        "revenue": 3606136,
         "orders": 2367,
         "avg_check": 679,
         "stock_quantity": 235487,
@@ -109,7 +109,7 @@
     },
     {
         "date": "2025-10-08",
-        "revenue": 58249855,
+        "revenue": 18249855,
         "orders": 58565,
         "avg_check": 995,
         "stock_quantity": 251288,
