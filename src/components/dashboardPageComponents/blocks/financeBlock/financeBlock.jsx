@@ -3,7 +3,6 @@ import { getFinanceData } from '../blockUtils';
 import { formatPrice } from '../../../../service/utils';
 import { getRateIcon } from '../../shared/barUtils';
 import { Tooltip, ConfigProvider } from 'antd';
-import { RadarLoader } from '../../../../shared/ui/RadarLoader/RadarLoader';
 
 const getRateStyle = (amount, styles) => {
     let style = '';
@@ -37,7 +36,9 @@ const FinanceBlock = ({ dataDashBoard, loading }) => {
     if (loading) {
         return (
             <div className={styles.block}>
-                    <RadarLoader loaderStyle={{ height: '220px' }} />
+                <div className={styles.bar__loaderWrapper}>
+                    <span className='loader'></span>
+                </div>
             </div>
         );
     }
@@ -79,8 +80,8 @@ const FinanceBlock = ({ dataDashBoard, loading }) => {
                             <div className={styles.block__tableRowContent}>
                                 <p className={i.amount > 1000000000 ? `${styles.block__mainData} ${styles.block__mainData_small}` : styles.block__mainData}>{formatPrice(i.amount, units)}</p>
                                 <div className={styles.block__secDataWrapper} style={{ backgroundColor: getRateStyle(parseInt(i.rate), styles).bgColor }}>
-                                    <p className={getRateStyle(parseInt(i.rate), styles).style}>{formatPrice(i.rate, '%', true)}</p>
-                                    {/* {getRateIcon(i.rate)} */}
+                                    <p className={getRateStyle(parseInt(i.rate), styles).style}>{formatPrice(i.rate, '%')}</p>
+                                    {getRateIcon(i.rate)}
                                 </div>
                             </div>
                         </div>

@@ -2,7 +2,6 @@ import styles from './storageBlock.module.css';
 import { Link } from 'react-router-dom';
 import { getStorageData } from '../blockUtils';
 import { formatPrice } from '../../../../service/utils';
-import { RadarLoader } from '../../../../shared/ui/RadarLoader/RadarLoader';
 
 const StorageBlock = ({ dataDashBoard, loading }) => {
 
@@ -12,7 +11,9 @@ const StorageBlock = ({ dataDashBoard, loading }) => {
     if (loading) {
         return (
             <div className={styles.block}>
-                <RadarLoader loaderStyle={{ height: '407px' }} />
+                <div className={styles.bar__loaderWrapper}>
+                    <span className='loader'></span>
+                </div>
             </div>
         );
     }

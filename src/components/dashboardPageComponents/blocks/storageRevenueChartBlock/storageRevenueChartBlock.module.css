@@ -1,5 +1,6 @@
 .block {
     background: white;
+    box-shadow: 0px 0px 20px 0px #00000014;
     border-radius: 16px;
     padding: 16px;
     display: flex;
@@ -7,11 +8,11 @@
     justify-content: flex-start;
     align-items: flex-start;
     gap: 10px;
+    grid-row: span 102;
     transition: all .1s ease-in-out;
     width: 100%;
     overflow: hidden;
-    min-height: 407px;
-    max-height: 417px;
+    margin-top: 12px;
 }
 
 .block:hover {

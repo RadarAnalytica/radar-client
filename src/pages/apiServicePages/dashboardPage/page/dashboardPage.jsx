@@ -29,13 +29,11 @@ import TurnoverBlock from '@/components/dashboardPageComponents/blocks/turnoverB
 // import StockAnalysisBlock from '@/components/dashboardPageComponents/blocks/stockAnalysisBlock/stockAnalysisBlock'
 import NoSubscriptionWarningBlock from '@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock';
 import { useDemoMode } from "@/app/providers";
-import { RadarBar } from '@/shared';
 
 
 const MainContent = React.memo(({
     shopStatus,
     loading,
-    isFiltersLoading,
     dataDashBoard,
     selectedRange,
     activeBrand,
@@ -44,92 +42,90 @@ const MainContent = React.memo(({
     updateDataDashBoard,
     isSidebarHidden
 }) => {
-    const isLoading = loading || isFiltersLoading;
-    
-    // Если фильтры загружены и shopStatus не подходит, не рендерим
-    if (!isFiltersLoading && !shopStatus?.is_primary_collect) return null;
+    if (!shopStatus?.is_primary_collect) return null;
 
     return (
         <div className={styles.page__mainContentWrapper}>
             <FirstBarsGroup
                 dataDashBoard={dataDashBoard}
                 selectedRange={selectedRange}
-                loading={isLoading}
+                loading={loading}
             />
 
             <MainChart
                 title='Заказы и продажи'
-                loading={isLoading}
+                loading={loading}
                 dataDashBoard={dataDashBoard}
                 selectedRange={selectedRange}
             />
 
             <SecondBarsGroup
                 dataDashBoard={dataDashBoard}
-                loading={isLoading}
-                selectedRange={selectedRange}
-                activeBrand={activeBrand}
-                authToken={authToken}
-                filters={filters}
+                loading={loading}
             />
 
+            {/* <div className={isSidebarHidden ? styles.page__chartGroup : styles.page__chartGroup_oneLine}> */}
             <div className={styles.page__chartGroup}>
                 <FinanceBlock
-                    loading={isLoading}
+                    loading={loading}
+                    dataDashBoard={dataDashBoard}
+                />
+                <TurnoverBlock
+                    loading={loading}
+                    turnover={dataDashBoard?.turnover}
+                    selectedRange={selectedRange}
+                    activeBrand={activeBrand}
+                    authToken={authToken}
+                    filters={filters}
+                />
+                <MarginChartBlock
+                    loading={loading}
+                    dataDashBoard={dataDashBoard}
+                />
+                <ProfitChartBlock
+                    loading={loading}
                     dataDashBoard={dataDashBoard}
                 />
                 <ProfitBlock
-                    loading={isLoading}
+                    loading={loading}
+                    dataDashBoard={dataDashBoard}
+                />
+                <StorageRevenueChartBlock
+                    loading={loading}
+                    dataDashBoard={dataDashBoard}
+                />
+                <StorageBlock
+                    loading={loading}
                     dataDashBoard={dataDashBoard}
                 />
 
                 <div className={styles.page__doubleBlockWrapper}>
+                    <RevenueStructChartBlock
+                        loading={loading}
+                        dataDashBoard={dataDashBoard}
+                    />
                     <TaxTableBlock
-                        loading={isLoading}
+                        loading={loading}
                         dataDashBoard={dataDashBoard}
                         updateDashboard={updateDataDashBoard}
                     />
-                    <RevenueStructChartBlock
-                        loading={isLoading}
-                        dataDashBoard={dataDashBoard}
-                    />
                 </div>
 
-                <MarginChartBlock
-                    loading={isLoading}
+                <CostsBlock
+                    loading={loading}
                     dataDashBoard={dataDashBoard}
                 />
-                {/* <ProfitChartBlock
-                    loading={isLoading}
-                    dataDashBoard={dataDashBoard}
-                /> */}
-
-                <StorageRevenueChartBlock
-                    loading={isLoading}
-                    dataDashBoard={dataDashBoard}
-                />
-                <StorageBlock
-                    loading={isLoading}
-                    dataDashBoard={dataDashBoard}
-                />
-
-
-
-                {/* <CostsBlock
-                    loading={isLoading}
-                    dataDashBoard={dataDashBoard}
-                /> */}
             </div>
 
             {/* <StockAnalysisBlock
                 data={dataDashBoard?.stockAnalysis}
-                loading={isLoading}
+                loading={loading}
             /> */}
 
             <AbcDataBlock
                 titles={['Группа А', 'Группа В', 'Группа С']}
                 data={dataDashBoard?.ABCAnalysis}
-                loading={isLoading}
+                loading={loading}
             />
         </div>
     );
@@ -144,7 +140,7 @@ const _DashboardPage = () => {
 
     const [pageState, setPageState] = useState({
         dataDashBoard: null,
-        loading: true,
+        loading: false,
         primaryCollect: null,
         shopStatus: null
     });
@@ -202,11 +198,10 @@ const _DashboardPage = () => {
 
             <section className={styles.page__content}>
                 <div className={styles.page__headerWrapper}>
-                    <Header
+                    <Header 
                         title='Сводка продаж'
                         howToLink="https://radar.usedocs.com/article/75916"
                         howToLinkText="Как проверить данные?"
-                        hasShadow={false}
                     />
                 </div>
 
@@ -232,7 +227,6 @@ const _DashboardPage = () => {
                 <MainContent
                     shopStatus={shopStatus}
                     loading={pageState.loading}
-                    isFiltersLoading={!isFiltersLoaded}
                     dataDashBoard={pageState.dataDashBoard}
                     selectedRange={selectedRange}
                     activeBrand={activeBrand}

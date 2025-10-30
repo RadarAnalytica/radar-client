@@ -3,7 +3,6 @@ import styles from './turnoverBlock.module.css';
 import { formatPrice } from '../../../../service/utils';
 import { Tooltip, ConfigProvider, Modal } from 'antd';
 import { ServiceFunctions } from '../../../../service/serviceFunctions';
-import { RadarBar } from '../../../../shared/ui/RadarBar/RadarBar';
 
 export const addSkuTableConfig = {
     tableName: null,
@@ -80,7 +79,7 @@ export const sortTableDataFunc = (sortType, sortedValue, dataToSort) => {
 };
 
 
-const TurnoverBlock = ({ loading, turnover, turnoverCompare, selectedRange, activeBrand, authToken, filters }) => {
+const TurnoverBlock = ({ loading, turnover, selectedRange, activeBrand, authToken, filters }) => {
     const [initData, setInitData] = useState([]);
     const [tableData, setTableData] = useState([]);
     const [isModalVisible, setIsModalVisible] = useState(false);
@@ -171,34 +170,45 @@ const TurnoverBlock = ({ loading, turnover, turnoverCompare, selectedRange, acti
     }, [isModalVisible, selectedRange, activeBrand]);
 
 
-    // if (loading) {
-    //     return (
-    //         <div className={styles.block}>
-    //             <div className={styles.block__loaderWrapper}>
-    //                 <span className='loader'></span>
-    //             </div>
-    //         </div>
-    //     );
-    // }
+    if (loading) {
+        return (
+            <div className={styles.block}>
+                <div className={styles.block__loaderWrapper}>
+                    <span className='loader'></span>
+                </div>
+            </div>
+        );
+    }
     return (
-        <>
-            <RadarBar
-                title='Оборачиваемость товара'
-                tooltipText=''
-                mainValue={turnover}
-                mainValueUnits='дн.'
-                hasColoredBackground
-                compareValue={{
-                    comparativeValue: turnoverCompare,
-                }}
-                actionButtonParams={{
-                    text: 'По артикулам',
-                    action: () => {
-                        setIsModalVisible(true);
-                    }
-                }}
-                isLoading={loading}
-            />
+        <div className={styles.block}>
+            <div className={styles.block__header}>
+                <p className={styles.block__title}>Оборачиваемость товара</p>
+                <ConfigProvider
+                    theme={{
+                        token: {
+                            colorTextLightSolid: '#1A1A1A'
+                        }
+                    }}
+                >
+                    <Tooltip
+                        arrow={false}
+                        color='white'
+                        title={'Показатель, который показывает, за сколько дней продаются запасы. Он помогает оценить эффективность управления запасами'}
+                    >
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ cursor: 'pointer' }}>
+                            <rect x="0.75" y="0.75" width="18.5" height="18.5" rx="9.25" stroke="black" strokeOpacity="0.1" strokeWidth="1.5" />
+                            <path d="M9.064 15V7.958H10.338V15H9.064ZM8.952 6.418V5.046H10.464V6.418H8.952Z" fill="#1A1A1A" fillOpacity="0.5" />
+                        </svg>
+                    </Tooltip>
+                </ConfigProvider>
+            </div>
+
+            <div className={styles.block__body}>
+                {turnover !== null && turnover !== undefined && <p className={styles.block__mainData}>{formatPrice(turnover, 'дн.')}</p>}
+                <button className={styles.block__button} onClick={() => setIsModalVisible(true)}>
+                    Смотреть по артикулам
+                </button>
+            </div>
 
             <Modal
                 open={isModalVisible}
@@ -363,7 +373,7 @@ const TurnoverBlock = ({ loading, turnover, turnoverCompare, selectedRange, acti
                     </div>
                 </div>
             </Modal>
-        </>
+        </div>
     );
 };
 
