@@ -63,7 +63,7 @@
 .bar__midValue {
     font-weight: 500;
     font-size: 14px;
-    line-height: 160%;
+    line-height: 145%;
     letter-spacing: 0%;
     color: #1A1A1A;
     text-wrap: nowrap;
@@ -73,14 +73,14 @@
 .bar__mainValue {
     font-weight: 600;
     font-size: 22px;
-    line-height: 160%;
+    line-height: 140%;
     letter-spacing: 0%;
     color: #1A1A1A;
     text-wrap: nowrap;
     white-space: nowrap;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
-    margin-right: 8px;
+    margin-right: 4px; /* margin equals gap for flex-wrap case */ 
 }
 
 .bar__link {

@@ -190,6 +190,10 @@ const _DashboardPage = () => {
             setPageState(prev => ({ ...prev, primaryCollect: activeBrand.is_primary_collect }));
             updateDataDashBoard(selectedRange, activeBrand.id, authToken);
         }
+
+        if (activeBrand && !activeBrand.is_primary_collect && isFiltersLoaded) {
+            setPageState(prev => ({ ...prev, loading: false }));
+        }
     }, [activeBrand, selectedRange, isFiltersLoaded, activeBrandName, activeArticle, activeGroup]);
 
     return (
