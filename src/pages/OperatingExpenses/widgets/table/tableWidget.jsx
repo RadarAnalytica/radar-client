@@ -56,8 +56,11 @@ const customCellExpenseRender = (
             </div>
         )
     }
-    if (dataIndex === 'shop') {
-        return (<>{value?.name || '-'}</>)
+    if (dataIndex === 'shops') {
+        return (<>{value?.length > 0 ? value[0]?.name : '-'}</>)
+    }
+    if (dataIndex === 'vendor_codes' || dataIndex === 'brand_names') {
+        return (<>{value?.length > 0 ? value[0] : '-'}</>)
     }
     if (dataIndex === 'action' && record.key === 'summary') {
         return null;

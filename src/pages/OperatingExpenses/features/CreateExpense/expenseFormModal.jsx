@@ -3,7 +3,7 @@ import { SelectIcon } from '@/components/sharedComponents/apiServicePagesFilters
 import styles from './expenseMainModal.module.css';
 import { CloseIcon, InfoIcon } from '../../shared/Icons';
 import { TimeSelect } from '@/components/sharedComponents/apiServicePagesFiltersComponent/features/timeSelect/timeSelect';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useAppSelector } from '@/redux/hooks';
 import { DayPicker } from 'react-day-picker';
 import { format } from 'date-fns';
@@ -26,10 +26,25 @@ import { useDemoMode } from '@/app/providers/DemoDataProvider';
 const getRequestObject = (values, editData, mode) => {
 	let requestObject = {};
 	let requestUrl = '';
+	let distributeItems = [];
 	const formattedDateStart = formatDate(parse(values.date, 'dd.MM.yyyy', new Date()), 'yyyy-MM-dd');
 
 	// Определяем тип расхода
 	const isPeriodicExpense = mode === 'create' ? values.type === 'plan' : editData?.is_periodic;
+
+	if (!editData?.is_periodic && mode === 'edit') {
+		values.shops = values.shops ? [values.shops] : [];
+		values.vendor_codes = values.vendor_codes ? [values.vendor_codes] : [];
+		values.brand_names = values.brand_names ? [values.brand_names] : [];
+	}
+
+	if (values.shops?.length > 0) {
+		distributeItems = values.shops.filter(Boolean).map(el => JSON.parse(el));
+	} else if (values.vendor_codes?.length > 0) {
+		distributeItems = values.vendor_codes.filter(Boolean).map(el => JSON.parse(el));
+	} else if (values.brand_names?.length > 0) {
+		distributeItems = values.brand_names.filter(Boolean).map(el => JSON.parse(el));
+	}
 
 	if (isPeriodicExpense) {
 		// Плановый расход
@@ -47,9 +62,6 @@ const getRequestObject = (values, editData, mode) => {
 			description: values.description,
 			value: values.value,
 			date_from: formattedDateStart,
-			vendor_codes: values.vendor_codes || [],
-			brand_names: values.brand_names || [],
-			shops: values.shops || [],
 			period_type: values.frequency,
 			period_values: values.frequency === 'week'
 				? values.week
@@ -59,6 +71,7 @@ const getRequestObject = (values, editData, mode) => {
 						: values.month.split(',').map(n => parseInt(n.trim(), 10)).filter(n => !isNaN(n))
 					: [],
 			finished_at: formattedDateEnd,
+			items: distributeItems,
 		};
 
 		// Добавляем id для редактирования
@@ -76,19 +89,8 @@ const getRequestObject = (values, editData, mode) => {
 			description: values.description,
 			value: values.value,
 			date: formattedDateStart,
+			items: distributeItems,
 		};
-
-		// Для режима создания используем множественный выбор
-		if (mode === 'create') {
-			requestObject.shops = values.shops || [];
-			requestObject.vendor_codes = values.vendor_codes || [];
-			requestObject.brand_names = values.brand_names || [];
-		} else {
-			// Для режима редактирования используем одиночный выбор
-			requestObject.shop = values.shop;
-			requestObject.vendor_code = values.vendor_code;
-			requestObject.brand_name = values.brand_name;
-		}
 
 		// Добавляем id для редактирования
 		if (mode === 'edit' && editData?.id) {
@@ -128,6 +130,13 @@ export default function ExpenseFormModal({
 	const selection = Form.useWatch('selection', form);
 	const frequency = Form.useWatch('frequency', form);
 	const typeValue = Form.useWatch('type', form);
+
+	// Options для selects Распределить по магазинам/брендам/артикулам
+	const [distributeOptions, setDistributeOptions] = useState({ 
+		shops: [],
+		brands: [],
+		vendor_codes: [],
+	});
 
 	// Определяем, является ли расход плановым
 	const isPeriodicExpense = mode === 'create' ? typeValue === 'plan' : editData?.is_periodic;
@@ -169,13 +178,53 @@ export default function ExpenseFormModal({
 		copy: 'Копировать расход',
 	};
 
+	useEffect(() => {
+		if (Array.isArray(filters)) {
+			const targetFilters = filters.slice(1);
+			let shops = [], brands = [], vendor_codes = [];
+
+			targetFilters.forEach(filter => {
+				const brandsOptions = filter.brands?.data?.map(brand => ({
+					shop: filter.shop?.id,
+					brand_name: brand.value,
+				}));
+				const vendorCodesOptions = filter.articles?.data?.map(article => ({
+					shop: filter.shop?.id,
+					brand_name: article.brand,
+					vendor_code: article.value,
+				}));
+				shops.push({ ...filter.shop, shop: filter.shop?.id });
+				brands.push(...brandsOptions);
+				vendor_codes.push(...vendorCodesOptions);
+			});
+
+			setDistributeOptions({ shops, brands, vendor_codes });
+		}
+	}, [filters]);
+
+	useEffect(() => {
+		if (mode !== 'create' && editData && distributeOptions.shops.length > 0) {
+			if (editData.vendor_codes?.length > 0) {
+				const targetVendorCodes = distributeOptions.vendor_codes.filter(el => editData.vendor_codes.includes(el.vendor_code)).map(el => JSON.stringify(el));
+				form.setFieldValue('vendor_codes', targetVendorCodes);
+			} else if (editData.brand_names?.length > 0) {
+				const targetBrands = distributeOptions.brands.filter(el => editData.brand_names.includes(el.brand_name)).map(el => JSON.stringify(el));
+				form.setFieldValue('brand_names', targetBrands);
+			} else if (editData.shops?.length > 0) {
+				const targetShops = editData.shops.map(el => JSON.stringify({ shop: el?.id || el }));
+				form.setFieldValue('shops', targetShops);
+			}
+		}
+	}, [distributeOptions, form, editData, mode]);
+
 	// Инициализация формы при редактировании или копировании
 	useEffect(() => {
 		if (mode !== 'create' && editData) {
+			const selectionType = editData.vendor_codes?.length > 0 ? 'vendor_codes' : editData.brand_names?.length > 0 ? 'brand_names' : 'shops';
+			form.setFieldsValue({ selection: selectionType });
+
 			// Для разовых расходов при редактировании
 			if (mode === 'edit' && !editData.is_periodic) {
-				const selectionType = editData.shop?.id ? 'shop' : editData.brand_name?.length > 0 ? 'brand_name' : 'vendor_code';
-
 				const formattedDate = editData.date
 					? format(parse(editData.date, 'yyyy-MM-dd', new Date()), 'dd.MM.yyyy')
 					: null;
@@ -191,10 +240,6 @@ export default function ExpenseFormModal({
 				form.setFieldsValue({
 					date: formattedDate,
 					expense_categories: expenseCategory,
-					selection: selectionType,
-					shop: editData.shop?.id ? [editData.shop.id] : null,
-					vendor_code: editData.vendor_code,
-					brand_name: editData.brand_name,
 					frequency: editData.frequency,
 					week: editData.week,
 					month: editData.month,
@@ -206,8 +251,6 @@ export default function ExpenseFormModal({
 
 			// Для плановых расходов при редактировании или копировании
 			if ((mode === 'edit' && editData.is_periodic) || mode === 'copy') {
-				const selectionType = editData.shops?.length > 0 ? 'shop' : editData.brand_names?.length > 0 ? 'brand_name' : 'vendor_code';
-
 				const formattedDate = editData.date
 					? format(parse(editData.date, 'yyyy-MM-dd', new Date()), 'dd.MM.yyyy')
 					: null;
@@ -225,10 +268,6 @@ export default function ExpenseFormModal({
 				form.setFieldsValue({
 					date: formattedDate,
 					expense_categories: expenseCategory,
-					selection: selectionType,
-					shops: editData.shops || [],
-					vendor_codes: editData.vendor_codes || editData.vendor_codes || [],
-					brand_names: editData.brand_names || editData.brand_names || [],
 					frequency: editData.frequency,
 					week: editData.week,
 					month: editData.month,
@@ -297,7 +336,7 @@ export default function ExpenseFormModal({
 						initialValues={{
 							type: 'once',
 							date: format(new Date(), 'dd.MM.yyyy'),
-							selection: 'shop',
+							selection: 'shops',
 							frequency: 'week',
 							week: [],
 							vendor_codes: [],
@@ -740,29 +779,26 @@ export default function ExpenseFormModal({
 								Распределять на
 							</h3>
 
-						<RadioGroup
-							name="selection"
-							onChange={() => {
-								form.setFieldsValue({
-									shops: [],
-									vendor_codes: [],
-									brand_names: [],
-									shop: undefined,
-									vendor_code: undefined,
-									brand_name: undefined,
-								});
-							}}
-							options={[
-								{ value: 'shop', label: 'Магазины' },
-								{ value: 'vendor_code', label: 'Артикулы' },
-								{ value: 'brand_name', label: 'Бренды' },
-							]}
-						/>
+							<RadioGroup
+								name="selection"
+								onChange={() => {
+									form.setFieldsValue({
+										shops: [],
+										vendor_codes: [],
+										brand_names: [],
+									});
+								}}
+								options={[
+									{ value: 'shops', label: 'Магазины' },
+									{ value: 'vendor_codes', label: 'Артикулы' },
+									{ value: 'brand_names', label: 'Бренды' },
+								]}
+							/>
 
 							{/* Для плановых расходов или режима создания - множественный выбор */}
 							{(isPeriodicExpense || mode === 'create') && (
 								<>
-									{selection === 'shop' && (
+									{selection === 'shops' && (
 										<ConfigProvider
 											renderEmpty={() => (<div>Нет данных</div>)}
 											theme={{
@@ -795,17 +831,11 @@ export default function ExpenseFormModal({
 												<MultiSelect
 													form={form}
 													hasSelectAll
-													optionsData={shops?.map((el) => {
-														if ((isDemoMode || el.id !== 0) && el.is_primary_collect) {
-															return {
-																key: el.id,
-																value: el.id,
-																label: el.brand_name,
-																disabled: !el.is_active,
-															};
-														}
-														return false;
-													}).filter(Boolean)}
+													optionsData={distributeOptions.shops?.map(el => ({
+														key: el.shop,
+														value: JSON.stringify({ shop: el.shop }),
+														label: el.brand_name,
+													}))}
 													selectId='shops'
 													searchFieldPlaceholder='Поиск по названию магазина'
 													selectPlaceholder='Выберите магазины'
@@ -837,7 +867,7 @@ export default function ExpenseFormModal({
 											}
 										}}
 									>
-										{selection === 'vendor_code' && (
+										{selection === 'vendor_codes' && (
 											<Form.Item
 												name="vendor_codes"
 												rules={[
@@ -847,10 +877,10 @@ export default function ExpenseFormModal({
 												<MultiSelect
 													form={form}
 													hasSelectAll
-													optionsData={filters[0]?.articles.data.map((el, i) => ({
-														key: el.value,
-														value: el.value,
-														label: el.value,
+													optionsData={distributeOptions.vendor_codes?.map(el => ({
+														key: el.vendor_code,
+														value: JSON.stringify(el),
+														label: el.vendor_code,
 													}))}
 													selectId='vendor_codes'
 													searchFieldPlaceholder='Поиск по названию артикула'
@@ -859,7 +889,7 @@ export default function ExpenseFormModal({
 											</Form.Item>
 										)}
 
-										{selection === 'brand_name' && (
+										{selection === 'brand_names' && (
 											<Form.Item
 												name="brand_names"
 												rules={[
@@ -869,10 +899,10 @@ export default function ExpenseFormModal({
 												<MultiSelect
 													form={form}
 													hasSelectAll
-													optionsData={filters[0]?.brands.data.map((el, i) => ({
-														key: el.value,
-														value: el.value,
-														label: el.value,
+													optionsData={distributeOptions.brands?.map(el => ({
+														key: el.brand_name,
+														value: JSON.stringify(el),
+														label: el.brand_name,
 													}))}
 													selectId='brand_names'
 													searchFieldPlaceholder='Поиск по названию бренда'
@@ -911,9 +941,9 @@ export default function ExpenseFormModal({
 										}
 									}}
 								>
-									{selection === 'shop' && (
+									{selection === 'shops' && (
 										<Form.Item
-											name="shop"
+											name="shops"
 											rules={[
 												{ required: true, message: 'Пожалуйста, выберите значение!' }
 											]}
@@ -922,26 +952,18 @@ export default function ExpenseFormModal({
 												size="large"
 												placeholder="Выберите магазин"
 												suffixIcon={<SelectIcon />}
-												defaultValue={editData.shop}
-												options={shops?.map((el) => {
-													if (el.id === 0) {
-														return false;
-													} else {
-														return {
-															key: el.id,
-															value: el.id,
-															label: el.brand_name,
-															disabled: !el.is_active,
-														};
-													}
-												}).filter(Boolean)}
+												options={distributeOptions.shops?.map(el => ({
+													key: el.shop,
+													value: JSON.stringify({ shop: el.shop }),
+													label: el.brand_name,
+												}))}
 											/>
 										</Form.Item>
 									)}
 
-									{selection === 'vendor_code' && (
+									{selection === 'vendor_codes' && (
 										<Form.Item
-											name="vendor_code"
+											name="vendor_codes"
 											rules={[
 												{ required: true, message: 'Пожалуйста, выберите значение!' }
 											]}
@@ -950,19 +972,18 @@ export default function ExpenseFormModal({
 												size="large"
 												placeholder="Выберите артикул"
 												suffixIcon={<SelectIcon />}
-												defaultValue={editData.vendor_code}
-												options={filters[0]?.articles.data.map((el, i) => ({
-													key: el.value,
-													value: el.value,
-													label: el.value,
+												options={distributeOptions.vendor_codes?.map(el => ({
+													key: el.vendor_code,
+													value: JSON.stringify(el),
+													label: el.vendor_code,
 												}))}
 											/>
 										</Form.Item>
 									)}
 
-									{selection === 'brand_name' && (
+									{selection === 'brand_names' && (
 										<Form.Item
-											name="brand_name"
+											name="brand_names"
 											rules={[
 												{ required: true, message: 'Пожалуйста, выберите значение!' }
 											]}
@@ -971,11 +992,10 @@ export default function ExpenseFormModal({
 												size="large"
 												placeholder="Выберите бренд"
 												suffixIcon={<SelectIcon />}
-												defaultValue={editData.brand_name}
-												options={filters[0]?.brands.data.map((el, i) => ({
-													key: el.value,
-													value: el.value,
-													label: el.value,
+												options={distributeOptions.brands?.map(el => ({
+													key: el.brand_name,
+													value: JSON.stringify(el),
+													label: el.brand_name,
 												}))}
 											/>
 										</Form.Item>
