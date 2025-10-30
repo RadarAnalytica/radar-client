@@ -667,54 +667,54 @@ export const newTableConfig = [
             },
         ].map(_ => ({..._, maxWidth: _.width * 2})),
     },
-    {
-        title: 'Заказы',
-        fixed: false,
-        width: 200,
-        minWidth: 200,
-        hidden: false,
-        dataIndex: 'orders',
-        key: 'orders',
-        style: {
-            zIndex: 2,
-            color: 'black',
-            fontSize: '18px',
-            borderRight: '1px solid #E8E8E8',
-        },
-        children: [
-            {
-                title: 'Количество',
-                dataIndex: 'orderQuantity',
-                sortable: true,
-                width: 120,
-                minWidth: 120,
-                maxWidth: 240,
-                key: 'orderQuantity',
-                units: 'шт',
-                style: {
-                    background: '#F7F6FE',
-                    verticalAlign: 'middle',
-                    fontSize: '14px',
-                }
-            },
-            {
-                title: 'Сумма',
-                dataIndex: 'orderSum',
-                sortable: true,
-                width: 120,
-                minWidth: 120,
-                maxWidth: 200,
-                key: 'orderSum',
-                units: '₽',
-                style: {
-                    background: '#F7F6FE',
-                    verticalAlign: 'middle',
-                    fontSize: '14px',
-                    borderRight: '1px solid #E8E8E8',
-                }
-            },
-        ].map(_ => ({..._, maxWidth: _.width * 2})),
-    },
+    // {
+    //     title: 'Заказы',
+    //     fixed: false,
+    //     width: 200,
+    //     minWidth: 200,
+    //     hidden: false,
+    //     dataIndex: 'orders',
+    //     key: 'orders',
+    //     style: {
+    //         zIndex: 2,
+    //         color: 'black',
+    //         fontSize: '18px',
+    //         borderRight: '1px solid #E8E8E8',
+    //     },
+    //     children: [
+    //         {
+    //             title: 'Количество',
+    //             dataIndex: 'orderQuantity',
+    //             sortable: true,
+    //             width: 120,
+    //             minWidth: 120,
+    //             maxWidth: 240,
+    //             key: 'orderQuantity',
+    //             units: 'шт',
+    //             style: {
+    //                 background: '#F7F6FE',
+    //                 verticalAlign: 'middle',
+    //                 fontSize: '14px',
+    //             }
+    //         },
+    //         {
+    //             title: 'Сумма',
+    //             dataIndex: 'orderSum',
+    //             sortable: true,
+    //             width: 120,
+    //             minWidth: 120,
+    //             maxWidth: 200,
+    //             key: 'orderSum',
+    //             units: '₽',
+    //             style: {
+    //                 background: '#F7F6FE',
+    //                 verticalAlign: 'middle',
+    //                 fontSize: '14px',
+    //                 borderRight: '1px solid #E8E8E8',
+    //             }
+    //         },
+    //     ].map(_ => ({..._, maxWidth: _.width * 2})),
+    // },
     {
         title: 'Выкупы',
         fixed: false,
@@ -808,21 +808,21 @@ export const newTableConfig = [
             borderRight: '1px solid #E8E8E8',
         },
         children: [
-            {
-                title: 'Заказов',
-                dataIndex: 'orderCountDay',
-                sortable: false,
-                width: 120,
-                minWidth: 120,
-                maxWidth: 200,
-                key: 'orderCountDay',
-                units: 'шт/день',
-                style: {
-                    background: '#F7F6FE',
-                    verticalAlign: 'middle',
-                    fontSize: '14px',
-                }
-            },
+            // {
+            //     title: 'Заказов',
+            //     dataIndex: 'orderCountDay',
+            //     sortable: false,
+            //     width: 120,
+            //     minWidth: 120,
+            //     maxWidth: 200,
+            //     key: 'orderCountDay',
+            //     units: 'шт/день',
+            //     style: {
+            //         background: '#F7F6FE',
+            //         verticalAlign: 'middle',
+            //         fontSize: '14px',
+            //     }
+            // },
             {
                 title: 'Продаж',
                 dataIndex: 'saleCountDay',

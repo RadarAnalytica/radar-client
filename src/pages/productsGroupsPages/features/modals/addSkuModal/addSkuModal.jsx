@@ -144,7 +144,7 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, groupData,
             setIsAddSkuModalVisible(false);
             getGroupData(authToken, groupData.id);
             setAlertState({ isVisible: true, message: 'Артикул успешно добавлен' });
-            dispatch(fetchFilters(authToken));
+            dispatch(fetchFilters({authToken, shopsData: shops}));
             //setGroupData(parsedRes.data)
             //setDataFetchingStatus(initDataFetchingStatus)
         } catch {

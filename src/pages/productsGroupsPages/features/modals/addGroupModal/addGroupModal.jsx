@@ -49,7 +49,7 @@ const AddGroupModal = ({ isAddGroupModalVisible, setIsAddGroupModalVisible, data
 
             const parsedData = await res.json();
             setDataFetchingStatus(initDataFetchingStatus);
-            dispatch(fetchFilters(authToken));
+            dispatch(fetchFilters({ authToken, shopsData: shops }));
             setIsAddGroupModalVisible(false);
 
             if (parsedData.data?.id) {

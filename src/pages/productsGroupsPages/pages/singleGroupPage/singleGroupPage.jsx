@@ -117,7 +117,7 @@ const SingleGroupPage = () => {
                 });
                 return;
             }
-            dispatch(fetchFilters(authToken));
+            dispatch(fetchFilters({ authToken, shopsData: shops }));
             navigate('/groups');
         } catch (e) {
             console.error('Error:', e);
