@@ -2,6 +2,7 @@ import styles from './profitBlock.module.css';
 import { getProfitData } from '../blockUtils';
 import { formatPrice } from '../../../../service/utils';
 import { Tooltip, ConfigProvider } from 'antd';
+import { RadarLoader } from '../../../../shared/ui/RadarLoader/RadarLoader';
 
 
 const tooltipData = {
@@ -16,9 +17,7 @@ const ProfitBlock = ({ dataDashBoard, loading }) => {
     if (loading) {
         return (
             <div className={styles.block}>
-                <div className={styles.bar__loaderWrapper}>
-                    <span className='loader'></span>
-                </div>
+                 <RadarLoader loaderStyle={{ height: '220px' }} />
             </div>
         );
     }
