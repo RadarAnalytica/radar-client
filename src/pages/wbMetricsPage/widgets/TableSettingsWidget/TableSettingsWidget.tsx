@@ -43,7 +43,7 @@ const TableSettingsWidget: React.FC<TableSettingsWidgetProps> = ({
   const checkAllHandler = () => {
     const values = form.getFieldsValue();
     const keysArr = Object.keys(values);
-    setIsAllButtonState(keysArr.some(_ => values[_]));
+    setIsAllButtonState(!keysArr.some(_ => values[_]));
   };
 
   const switchAllHandler = () => {
@@ -107,7 +107,7 @@ const TableSettingsWidget: React.FC<TableSettingsWidgetProps> = ({
         onOk={() => form.submit()}
         onCancel={handleCancel}
         okText="Применить"
-        cancelText="Отмена"
+        cancelText="Отменить"
         okButtonProps={{ className: `${styles.modal__okButton} ant-btn-lg` }}
         cancelButtonProps={{ className: `${styles.modal__cancelButton} ant-btn-lg` }}
         className={styles.modal}

@@ -84,12 +84,12 @@
   }
 
   :global(.radar-table__header-cell-wrapper) {
-    justify-content: center;
+    height: 35px;
   }
 
   :global(.radar-table__body-cell-wrapper) {
     justify-content: center;
-    transform: translateX(-6px);
+    height: 70px;
   }
 
   :global(.radar-table__header-cell-text-wrapper) {
@@ -123,8 +123,6 @@
 }
 
 .productImage {
-  width: 40px;
-  height: 40px;
   object-fit: cover;
   border-radius: 4px;
   border: 1px solid #e8e8e8;

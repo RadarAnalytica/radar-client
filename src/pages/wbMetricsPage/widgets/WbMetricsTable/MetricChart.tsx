@@ -44,7 +44,7 @@ const MetricChart: React.FC<MetricChartProps> = ({
       }
     }
 
-    return chartData.slice(-MIN_CHART_DAYS);
+    return chartData.slice(0, MIN_CHART_DAYS);
   };
 
   const chartData = prepareChartData();

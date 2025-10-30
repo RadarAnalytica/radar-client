@@ -108,6 +108,8 @@ const WbMetricsTable: React.FC<WbMetricsTableProps> = ({
           <img 
             src={value.photo}
             alt={value.name}
+            width={30}
+            height={40}
             className={styles.productImage}
           />
           <span className={styles.productName} title={value.name}>
@@ -174,7 +176,8 @@ const WbMetricsTable: React.FC<WbMetricsTableProps> = ({
               current: pageData.page,
               pageSize: pageData.per_page,
               total: Math.ceil(pageData.total_count / pageData.per_page),
-              onChange: handlePageChange
+              onChange: handlePageChange,
+              showQuickJumper: true,
             }}
             style={{ fontFamily: 'Mulish' }}
           />
