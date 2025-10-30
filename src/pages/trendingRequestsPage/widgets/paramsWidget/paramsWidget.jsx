@@ -146,6 +146,7 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
     }, [selectedDate, setRequestState]);
 
     const setExampleData = () => {
+        form.resetFields();
         setSelectedDate(moment().subtract(3, 'days').format('DD.MM.YYYY'));
         form.setFieldValue('dynamic_60_days', 'Рост');
         form.setFieldValue('dynamic_60_days_from', 100);
@@ -154,27 +155,6 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
         setIsExampleDataSet(true);
         setIsParamsVisible(true);
     };
-
-    // Прямой запрос, не удалять. Старина М, 06.06.25
-    // const getPreferedItems = async () => {
-    //     preferedItemsData.length === 0 && setRequestStatus({ ...initRequestStatus, isLoading: true })
-    //     try {
-    //         let res = await fetch(`https://radarmarket.ru/api/web-service/trending-queries/subjects-tree`, {
-    //             headers: {
-    //                 'content-type': 'application/json',
-    //                 'cache-control': 'public, must-revalidate, max-age=86400'
-    //             }
-    //         })
-    //         if (!res.ok) {
-    //             return setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось получить список предметов. Попробуйте перезагрузить страницу.' })
-    //         }
-    //         res = await res.json()
-    //         setPreferedItemsData(res)
-    //         setRequestStatus(initRequestStatus)
-    //     } catch {
-    //         setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось получить список предметов. Попробуйте перезагрузить страницу.' })
-    //     }
-    // }
 
     useEffect(() => {
         if (isDemoMode) {

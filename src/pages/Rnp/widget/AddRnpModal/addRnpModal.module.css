@@ -78,7 +78,7 @@
 
 .loading{
     width: 100%;
-    min-height: 300px;
+    min-height: 480px;
     display: flex;
     flex-flow: column;
     justify-content: center;
