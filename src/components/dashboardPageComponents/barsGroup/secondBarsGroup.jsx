@@ -46,7 +46,7 @@ const SecondBarsGroup = ({ dataDashBoard, loading, selectedRange, activeBrand, a
                 hasColoredBackground
                 compareValue={{
                     comparativeValue: dataDashBoard?.orderAmountCompare,
-                    absoluteValue: dataDashBoard?.previousOrderAmount,
+                    absoluteValue: dataDashBoard?.prev_order_amount,
                     absoluteValueUnits: '₽'
                 }}
                 isLoading={loading}
@@ -70,7 +70,7 @@ const SecondBarsGroup = ({ dataDashBoard, loading, selectedRange, activeBrand, a
                 hasColoredBackground
                 compareValue={{
                     comparativeValue: dataDashBoard?.returnAmountCompare,
-                    absoluteValue: dataDashBoard?.previousReturnAmount,
+                    absoluteValue: dataDashBoard?.prev_return_amount,
                     absoluteValueUnits: '₽'
                 }}
                 isLoading={loading}

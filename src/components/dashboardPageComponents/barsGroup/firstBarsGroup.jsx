@@ -27,7 +27,7 @@ const FirstBarsGroup = ({ dataDashBoard, selectedRange, loading }) => {
                 hasColoredBackground
                 compareValue={{
                     comparativeValue: dataDashBoard?.netProfitCompare,
-                    absoluteValue: dataDashBoard?.previousNetProfit,
+                    absoluteValue: dataDashBoard?.prev_net_profit,
                     absoluteValueUnits: '₽'
                 }}
                 isLoading={loading}
@@ -54,7 +54,7 @@ const FirstBarsGroup = ({ dataDashBoard, selectedRange, loading }) => {
                 hasColoredBackground
                 compareValue={{
                     comparativeValue: dataDashBoard?.saleAmountCompare,
-                    absoluteValue: dataDashBoard?.previousSaleAmount,
+                    absoluteValue: dataDashBoard?.prev_sale_amount,
                     absoluteValueUnits: '₽'
                 }}
                 isLoading={loading}
