@@ -19,8 +19,6 @@ const AddRnpModal = ({ isAddRnpModalVisible, setIsAddRnpModalVisible, addRnp }) 
     const { authToken } = useContext(AuthContext);
     const { isDemoMode } = useDemoMode();
     const { shops, selectedRange } = useAppSelector( (state) => state.filtersRnpAdd );
-    const filters = useAppSelector((state) => state.filtersRnpAdd);
-    console.log('filters', filters)
     const { activeBrandName, activeBrand } = useAppSelector((state) => state.filtersRnpAdd);
     const [rnpSelected, setRnpSelected] = useState(null);
 
