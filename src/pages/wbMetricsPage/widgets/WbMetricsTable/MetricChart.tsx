@@ -15,10 +15,8 @@ interface MetricChartProps {
   maxControlValue: number;
 }
 
-const CHART_DAYS = 15;
+const MIN_CHART_DAYS = 15;
 const MIN_VISIBLE_PERCENTAGE = 0.015; // 1.5% от высоты графика
-const SCALE_MULTIPLIER = 2;
-const MIN_MAX_VALUE = 0.5;
 
 const MetricChart: React.FC<MetricChartProps> = ({
   data,
@@ -30,8 +28,8 @@ const MetricChart: React.FC<MetricChartProps> = ({
     let chartData = [...data];
 
     // Дополняем до 15 элементов, если данных меньше
-    if (chartData.length < CHART_DAYS) {
-      const missingCount = CHART_DAYS - chartData.length;
+    if (chartData.length < MIN_CHART_DAYS) {
+      const missingCount = MIN_CHART_DAYS - chartData.length;
       const startDate = chartData.length > 0
         ? new Date(chartData[chartData.length - 1].date)
         : new Date();
@@ -46,26 +44,11 @@ const MetricChart: React.FC<MetricChartProps> = ({
       }
     }
 
-    return chartData.slice(-CHART_DAYS);
-  };
-
-  const calculateScaleParams = (chartData: ControlDataItem[]) => {
-    const validPercentages = chartData
-      .map(item => item.percentage)
-      .filter((p): p is number => p !== null && p !== undefined && typeof p === 'number');
-
-    const averagePercentage = validPercentages.length > 0
-      ? validPercentages.reduce((sum, val) => sum + val, 0) / validPercentages.length
-      : 50;
-
-    const maxYValue = Math.max(averagePercentage * SCALE_MULTIPLIER, MIN_MAX_VALUE);
-    const minVisibleValue = maxYValue * MIN_VISIBLE_PERCENTAGE;
-
-    return { maxYValue, minVisibleValue };
+    return chartData.slice(-MIN_CHART_DAYS);
   };
 
   const chartData = prepareChartData();
-  const { maxYValue, minVisibleValue } = calculateScaleParams(chartData);
+  const minPercentage = maxControlValue * MIN_VISIBLE_PERCENTAGE;
 
   const chartConfig = {
     labels: chartData.map(item => {
@@ -77,7 +60,7 @@ const MetricChart: React.FC<MetricChartProps> = ({
         label: metricType === 'drr' ? 'ДРР %' : 'СПП %',
         data: chartData.map(item => {
           if (item.percentage === null || item.percentage === undefined) return null;
-          return Math.max(item.percentage, minVisibleValue);
+          return Math.max(item.percentage, minPercentage);
         }),
         backgroundColor: chartData.map(item =>
           item.percentage === null || item.percentage === undefined
@@ -99,24 +82,15 @@ const MetricChart: React.FC<MetricChartProps> = ({
     maintainAspectRatio: false,
     plugins: {
       legend: { display: false },
-      tooltip: {
-        callbacks: {
-          label: (context: any) => {
-            const originalValue = chartData[context.dataIndex]?.percentage;
-            if (originalValue === null || originalValue === undefined) {
-              return `${context.dataset.label}: нет данных`;
-            }
-            return `${context.dataset.label}: ${originalValue}%`;
-          },
-        },
-      },
+      tooltip: { enabled: false },
     },
     scales: {
       x: { display: false },
       y: {
         display: false,
+        beginAtZero: true,
         min: 0,
-        max: maxYValue,
+        max: maxControlValue,
       },
     },
     elements: {

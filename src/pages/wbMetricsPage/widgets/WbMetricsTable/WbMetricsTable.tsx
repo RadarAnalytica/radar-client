@@ -119,7 +119,7 @@ const WbMetricsTable: React.FC<WbMetricsTableProps> = ({
 
     // Рендер для графика
     if (dataIndex === 'chart') {
-      return (
+        return (
         <MetricChart
           data={value}
           metricType={metricType}

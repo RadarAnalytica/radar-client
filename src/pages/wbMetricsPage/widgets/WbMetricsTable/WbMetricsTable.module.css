@@ -12,6 +12,18 @@
   white-space: nowrap;
 }
 
+:global(.day-header-cell) {
+  border-right: 1px solid #e2dff1 !important;
+
+  &:last-child {
+    border-right: none !important;
+  }
+}
+
+:global(.day-header-cell.--weekend) {
+  background-color: #eeebfe !important;
+}
+
 :global(.vendor_code-cell) {
   max-width: 120px;
 }

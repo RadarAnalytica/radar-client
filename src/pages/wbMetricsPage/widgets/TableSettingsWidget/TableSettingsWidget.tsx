@@ -65,9 +65,14 @@ const TableSettingsWidget: React.FC<TableSettingsWidgetProps> = ({
 
   useEffect(() => {
     if (isModalOpen) {
+      const values = toggleableColumns.reduce((acc, col) => {
+        acc[col.dataIndex] = !col.hidden;
+        return acc;
+      }, {} as Record<string, boolean>);
+      form.setFieldsValue(values);
       checkAllHandler();
     }
-  }, [isModalOpen]);
+  }, [isModalOpen, tableConfig]);
 
   return (
     <>
@@ -96,7 +101,7 @@ const TableSettingsWidget: React.FC<TableSettingsWidgetProps> = ({
       </ConfigProvider>
 
       <Modal
-        title="Настройки таблицы"
+        title="Настройки столбцов"
         open={isModalOpen}
         width={600}
         onOk={() => form.submit()}
