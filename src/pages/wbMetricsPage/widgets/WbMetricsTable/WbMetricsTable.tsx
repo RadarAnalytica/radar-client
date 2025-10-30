@@ -100,6 +100,14 @@ const WbMetricsTable: React.FC<WbMetricsTableProps> = ({
     setPageData({ ...pageData, page: page });
   };
 
+  const handleSort = (sort_field: string, sort_order: string) => {
+    setSortState({ sort_field, sort_order });
+    tableContainerRef.current?.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  };
+
   const customCellRender = (value: any, record: any, index: number, dataIndex: string) => {
     // Рендер для товара (фото + название)
     if (dataIndex === 'product') {
@@ -171,7 +179,7 @@ const WbMetricsTable: React.FC<WbMetricsTableProps> = ({
               idx: columns.map(col => col.dataIndex),
               renderer: customCellRender,
             }}
-            onSort={(sort_field, sort_order) => setSortState({ sort_field, sort_order })}
+            onSort={handleSort}
             pagination={{
               current: pageData.page,
               pageSize: pageData.per_page,
