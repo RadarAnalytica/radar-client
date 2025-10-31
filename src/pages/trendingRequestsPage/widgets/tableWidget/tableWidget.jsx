@@ -2,7 +2,7 @@
 import React, { useRef, useState, useEffect, useCallback, useMemo } from 'react';
 import styles from './tableWidget.module.css';
 // Возможно будет удобнее передавать конфиг пропсом
-import { tableConfig, newTableConfig } from './config';
+import { tableConfig, newTableConfig, CURR_TRENDING_REQUESTS_TABLE_CONFIG_VER } from './config';
 import { sortTableDataFunc } from './utils';
 import { formatPrice } from '@/service/utils';
 import { ConfigProvider, Pagination } from 'antd';
@@ -80,7 +80,10 @@ export const TableWidget = React.memo(({ rawData, loading, tablePaginationState,
     // Используем хук для управления изменением размеров колонок
     const { config: currentTableConfig, onResize: onResizeGroup } = useTableColumnResize(
         newTableConfig, 
-        'trendingRequestsTableConfig'
+        'trendingRequestsTableConfig',
+        0,
+        400,
+        CURR_TRENDING_REQUESTS_TABLE_CONFIG_VER
     );
 
     // задаем начальную дату
