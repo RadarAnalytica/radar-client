@@ -24,7 +24,7 @@ import {
 // import downloadIcon from '../images/Download.svg';
 import DataCollectWarningBlock from '@/components/sharedComponents/dataCollectWarningBlock/dataCollectWarningBlock';
 import NoSubscriptionWarningBlock from '@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock';
-import { COLUMNS } from './columnsConfig';
+import { COLUMNS, CURR_REPORT_WEEK_COLUMNS_CONFIG_VER } from './columnsConfig';
 import TableWidget from './widgets/TableWidget/TableWidget';
 import { useDemoMode } from '@/app/providers/DemoDataProvider';
 import { fetchFilters } from '@/redux/apiServicePagesFiltersState/filterActions';
@@ -47,9 +47,37 @@ export default function ReportWeek() {
 
 	useEffect(() => {
 		localStorage.removeItem('reportWeekColumns');
-		const savedTableColumns = localStorage.getItem('reportWeekTableConfig');
-		if (savedTableColumns) {
-			setTableColumns(JSON.parse(savedTableColumns));
+		const savedTableConfigData = localStorage.getItem('reportWeekTableConfig');
+		if (savedTableConfigData) {
+			try {
+				const parsed = JSON.parse(savedTableConfigData);
+				
+				// Проверяем версию конфига
+				if (parsed.version === CURR_REPORT_WEEK_COLUMNS_CONFIG_VER) {
+					setTableColumns(parsed.config);
+				} else {
+					// Версия не совпадает, используем дефолтный конфиг
+					console.log('Report Week config version mismatch, using default config');
+					setTableColumns(COLUMNS);
+					localStorage.setItem('reportWeekTableConfig', JSON.stringify({
+						version: CURR_REPORT_WEEK_COLUMNS_CONFIG_VER,
+						config: COLUMNS
+					}));
+				}
+			} catch (error) {
+				console.error('Error parsing saved table config:', error);
+				setTableColumns(COLUMNS);
+				localStorage.setItem('reportWeekTableConfig', JSON.stringify({
+					version: CURR_REPORT_WEEK_COLUMNS_CONFIG_VER,
+					config: COLUMNS
+				}));
+			}
+		} else {
+			setTableColumns(COLUMNS);
+			localStorage.setItem('reportWeekTableConfig', JSON.stringify({
+				version: CURR_REPORT_WEEK_COLUMNS_CONFIG_VER,
+				config: COLUMNS
+			}));
 		}
 	}, []);
 
@@ -230,7 +258,10 @@ export default function ReportWeek() {
 
 	const configClear = () => {
 		tableColumnsHandler(COLUMNS);
-		localStorage.setItem('reportWeekTableConfig', JSON.stringify(COLUMNS));
+		localStorage.setItem('reportWeekTableConfig', JSON.stringify({
+			version: CURR_REPORT_WEEK_COLUMNS_CONFIG_VER,
+			config: COLUMNS
+		}));
 		setIsPopoverOpen(false);
 	};
 
@@ -386,6 +417,7 @@ export default function ReportWeek() {
 						is_primary_collect={activeBrand?.is_primary_collect}
 						progress={progress.value}
 						setTableColumns={setTableColumns}
+						configVersion={CURR_REPORT_WEEK_COLUMNS_CONFIG_VER}
 					/>
 				</div>
 			</section>
