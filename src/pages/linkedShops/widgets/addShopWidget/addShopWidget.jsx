@@ -7,6 +7,7 @@ import { useAppDispatch } from '../../../../redux/hooks';
 import { fetchFilters } from '../../../../redux/apiServicePagesFiltersState/filterActions';
 import { fetchShops } from '../../../../redux/shops/shopsActions';
 import { URL } from '../../../../service/config';
+import { Link } from 'react-router-dom';
 
 const initRequestStatus = {
     isLoading: false,
@@ -49,17 +50,17 @@ export const AddShopWidget = ({ authToken, setStatusBarState }) => {
             tkn: fields.token,
             authToken
         };
-        setAddShopRequestStatus({...initRequestStatus, isLoading: true});
+        setAddShopRequestStatus({ ...initRequestStatus, isLoading: true });
         try {
             let res = await addShop(addShopData);
             if (!res.ok) {
                 res = await res.json();
-                setAddShopRequestStatus({...initRequestStatus, isLoading: false, isError: true, message: res.message || 'Не удалось добавить магазин'});
+                setAddShopRequestStatus({ ...initRequestStatus, isLoading: false, isError: true, message: res.message || 'Не удалось добавить магазин' });
                 return;
             }
-            setAddShopRequestStatus({...initRequestStatus, isLoading: false, isSuccess: true, message: 'Магазин успешно добавлен'});
+            setAddShopRequestStatus({ ...initRequestStatus, isLoading: false, isSuccess: true, message: 'Магазин успешно добавлен' });
         } catch {
-            setAddShopRequestStatus({...initRequestStatus, isLoading: false, isError: true, message: 'Что-то пошло не так :('});
+            setAddShopRequestStatus({ ...initRequestStatus, isLoading: false, isError: true, message: 'Что-то пошло не так :(' });
         }
     };
 
@@ -125,9 +126,9 @@ export const AddShopWidget = ({ authToken, setStatusBarState }) => {
                 footer={null}
                 width={700}
                 centered
-                onOk={() => {setIsModalVisible(false); form.resetFields();}}
-                onClose={() => {setIsModalVisible(false); form.resetFields();}}
-                onCancel={() => {setIsModalVisible(false); form.resetFields();}}
+                onOk={() => { setIsModalVisible(false); form.resetFields(); }}
+                onClose={() => { setIsModalVisible(false); form.resetFields(); }}
+                onCancel={() => { setIsModalVisible(false); form.resetFields(); }}
                 closeIcon={
                     <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M10 7.77813L17.7781 0L20 2.22187L12.2219 10L20 17.7781L17.7781 20L10 12.2219L2.22187 20L0 17.7781L7.77813 10L0 2.22187L2.22187 0L10 7.77813Z" fill="#1A1A1A" fillOpacity="0.5" />
@@ -211,6 +212,10 @@ export const AddShopWidget = ({ authToken, setStatusBarState }) => {
                             >
                                 Сохранить
                             </Button>
+                            <div className={styles.widget__buttonHelper}>
+                                Тяжело разобраться?
+                                <Link to='https://radar.usedocs.com/article/79862' target='_blank'>Полная инструкция</Link>
+                            </div>
                         </Form>
                     </ConfigProvider>
                 </div>

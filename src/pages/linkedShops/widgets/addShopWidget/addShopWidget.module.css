@@ -39,6 +39,24 @@
     color: #1A1A1A;
 }
 
+.widget__buttonHelper {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    color: #8C8C8C;
+    margin-top: 5px;
+}
+
+.widget__buttonHelper>a {
+    color: #5329FF;
+    text-decoration: none;
+}
+
 
 /* modal */
 .modal {
