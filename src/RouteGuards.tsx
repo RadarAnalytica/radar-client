@@ -144,8 +144,11 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   const navigate = useNavigate();
   const isCalculateEntryUrl = sessionStorage.getItem('isCalculateEntryUrl');
   const shops = useAppSelector((state) => state.filters.shops);
-  const isUserHasActiveShop = shops?.some((shop: any) => !shop.is_deleted && shop.is_valid);
-  const isDemoUser = ['smart', 'test'].includes(user?.subscription_status?.toLowerCase());
+  const isSubscribedUser = ['smart', 'test'].includes(user?.subscription_status?.toLowerCase());
+  const isUserHasActiveShop = shops?.some((shop: any) => 
+    !shop.is_deleted && 
+    (shop.is_valid || shop.is_primary_collect)
+  );
 
   // -------this is test user object for dev purposes ------//
 
@@ -238,7 +241,10 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
     return <Navigate to={expireRedirect} replace />;
   }
 
-  if (onboardProtected && (isDemoUser || isUserHasActiveShop === false)) {
+  if (onboardProtected && 
+    !user.is_onboarded && 
+    (isSubscribedUser || isUserHasActiveShop === false)
+  ) {
     switch(onboardGuardType) {
       case 'redirect': {
         return (<Navigate to={onboardRedirect} />);
