@@ -43,7 +43,7 @@ const TableSettingsWidget: React.FC<TableSettingsWidgetProps> = ({
   const checkAllHandler = () => {
     const values = form.getFieldsValue();
     const keysArr = Object.keys(values);
-    setIsAllButtonState(!keysArr.some(_ => values[_]));
+    setIsAllButtonState(!keysArr.some(_ => !values[_]));
   };
 
   const switchAllHandler = () => {
