@@ -20,6 +20,7 @@ const AddRnpModal = ({ isAddRnpModalVisible, setIsAddRnpModalVisible, addRnp }) 
     const { isDemoMode } = useDemoMode();
     const { shops, selectedRange } = useAppSelector( (state) => state.filtersRnpAdd );
     const { activeBrandName, activeBrand } = useAppSelector((state) => state.filtersRnpAdd);
+    const filters = useAppSelector((state) => state.filtersRnpAdd);
     const [rnpSelected, setRnpSelected] = useState(null);
 
     const shopStatus = useMemo(() => {
@@ -111,7 +112,6 @@ const AddRnpModal = ({ isAddRnpModalVisible, setIsAddRnpModalVisible, addRnp }) 
 
     useEffect(() => {
         if (activeBrand && activeBrandName) {
-            console.log('hit')
             updateData();
         }
     }, [search, activeBrand, activeBrandName, page]);
