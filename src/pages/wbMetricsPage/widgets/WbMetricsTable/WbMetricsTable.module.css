@@ -20,6 +20,10 @@
   }
 }
 
+:global(.chart-column .radar-table__header-cell-wrapper) {
+  justify-content: center;
+}
+
 :global(.day-header-cell.--weekend) {
   background-color: #eeebfe !important;
 }

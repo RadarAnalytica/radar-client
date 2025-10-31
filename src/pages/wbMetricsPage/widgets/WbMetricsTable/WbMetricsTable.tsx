@@ -134,13 +134,13 @@ const WbMetricsTable: React.FC<WbMetricsTableProps> = ({
     // Рендер для графика
     if (dataIndex === 'chart') {
         return (
-        <MetricChart
-          data={value}
-          metricType={metricType}
-          minControlValue={data?.min_control_value ?? 0}
-          maxControlValue={data?.max_control_value ?? 100}
-        />
-      );
+          <MetricChart
+            data={value}
+            metricType={metricType}
+            minControlValue={data?.min_control_value ?? 0}
+            maxControlValue={data?.max_control_value ?? 100}
+          />
+        );
     }
 
     // Рендер для колонок дней

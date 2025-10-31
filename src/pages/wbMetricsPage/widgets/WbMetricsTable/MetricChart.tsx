@@ -15,7 +15,7 @@ interface MetricChartProps {
   maxControlValue: number;
 }
 
-const MIN_CHART_DAYS = 15;
+const MIN_CHART_DAYS = 14;
 const MIN_VISIBLE_PERCENTAGE = 0.015; // 1.5% от высоты графика
 
 const MetricChart: React.FC<MetricChartProps> = ({
