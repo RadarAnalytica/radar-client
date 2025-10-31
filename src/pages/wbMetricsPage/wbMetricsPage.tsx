@@ -72,18 +72,18 @@ const WbMetricsPage: React.FC = () => {
 
   // Инициализация конфигурации таблицы при загрузке данных
   useEffect(() => {
-    if (data?.data?.[0]?.control_data) {
+    if (data?.data[0]?.control_data) {
       const defaultConfig = getDefaultTableConfig(data.data[0].control_data);
-      const savedConfig = loadTableConfig();
+      const savedConfig = loadTableConfig(metricType);
       const mergedConfig = mergeTableConfig(defaultConfig, savedConfig);
       setTableConfig(mergedConfig);
     }
-  }, [data]);
+  }, [data, metricType]);
 
   // Обработчик изменения конфигурации таблицы
   const handleTableConfigChange = (newConfig: ColumnConfig[]) => {
     setTableConfig(newConfig);
-    saveTableConfig(newConfig);
+    saveTableConfig(newConfig, metricType);
   };
 
   const downloadHandler = async () => {
@@ -106,7 +106,7 @@ const WbMetricsPage: React.FC = () => {
             titlePrefix=""
             children=""
             videoReviewLink=""
-            howToLink="#"
+            howToLink={null}
             howToLinkText="Как использовать?"
           />
         </div>
@@ -126,10 +126,10 @@ const WbMetricsPage: React.FC = () => {
                     tableConfig={tableConfig}
                     setTableConfig={handleTableConfigChange}
                 />
-                <DownloadButton
+                {/* <DownloadButton
                     handleDownload={downloadHandler}
                     loading={false}
-                />
+                /> */}
             </div>
         </div>
 
