@@ -89,8 +89,8 @@ export const ServiceFunctions = {
 			},
 			body: JSON.stringify({ brand_name, token, is_active: true }),
 		});
-		const data = await res.json();
-		return data;
+
+		return res;
 	},
 
 	refreshUser: async (authToken) => {

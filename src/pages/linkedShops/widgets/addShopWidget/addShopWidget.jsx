@@ -53,12 +53,13 @@ export const AddShopWidget = ({ authToken, setStatusBarState }) => {
         try {
             let res = await addShop(addShopData);
             if (!res.ok) {
-                setAddShopRequestStatus({...initRequestStatus, isLoading: false, isError: true, message: 'Не удалось добавить магазин'});
+                res = await res.json();
+                setAddShopRequestStatus({...initRequestStatus, isLoading: false, isError: true, message: res.message || 'Не удалось добавить магазин'});
                 return;
             }
             setAddShopRequestStatus({...initRequestStatus, isLoading: false, isSuccess: true, message: 'Магазин успешно добавлен'});
         } catch {
-            setAddShopRequestStatus({...initRequestStatus, isLoading: false, isError: true, message: 'Не удалось добавить магазин'});
+            setAddShopRequestStatus({...initRequestStatus, isLoading: false, isError: true, message: 'Что-то пошло не так :('});
         }
     };
 
