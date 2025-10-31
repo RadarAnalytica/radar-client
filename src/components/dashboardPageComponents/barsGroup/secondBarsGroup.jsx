@@ -171,7 +171,7 @@ const SecondBarsGroup = ({ dataDashBoard, loading, selectedRange, activeBrand, a
                 mainValueUnits='₽'
                 hasColoredBackground
                 compareValue={{
-                    comparativeValue: dataDashBoard?.advertPercent,
+                    comparativeValue: dataDashBoard?.advertAmountCompare,
                 }}
                 isLoading={loading}
             />
