@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { useAppSelector } from '@/redux/hooks';
 import { useDispatch } from 'react-redux';
 import AuthContext from '@/service/AuthContext';
@@ -6,18 +6,20 @@ import { fetchFilters } from '@/redux/apiServicePagesFiltersState/filterActions'
 // import { URL } from '@/service/config';
 import { fetchApi } from '@/service/fetchApi';
 import type { RootState, AppDispatch } from '@/redux/store.types';
+import LoaderPage from '@/pages/LoaderPage';
 
 const FiltersProvider = ({ children }: { children: React.ReactNode }) => {
 
-    const { authToken } = useContext(AuthContext);
-    const dispatch = useDispatch<AppDispatch>();
-    const { activeBrand, shops } = useAppSelector((store: RootState) => store.filters);
-    const { messages } = useAppSelector((state: RootState) => state.messagesSlice);
-    const prevMessages = useRef<any[] | null>(null);
+  const { authToken } = useContext(AuthContext);
+  const dispatch = useDispatch<AppDispatch>();
+  const { activeBrand, shops } = useAppSelector((store: RootState) => store.filters);
+  const { messages } = useAppSelector((state: RootState) => state.messagesSlice);
+  const prevMessages = useRef<any[] | null>(null);
+  const [isFiltersLoading, setIsFiltersLoading] = useState(false);
 
   const getFiltersData = async () => {
     if (!authToken) return;
-
+    setIsFiltersLoading(true);
     try {
       let shopsResponse = await fetchApi('/api/shop/all', {
         method: 'GET',
@@ -33,13 +35,15 @@ const FiltersProvider = ({ children }: { children: React.ReactNode }) => {
       }
 
       // @ts-ignore
-      dispatch(fetchFilters({
+      await dispatch(fetchFilters({
         authToken,
         shopsData
         //shopsData: null
       }));
     } catch (error) {
       console.error("FiltersProvider: Error fetching initial data:", error);
+    } finally {
+      setIsFiltersLoading(false);
     }
   };
 
@@ -104,7 +108,10 @@ const FiltersProvider = ({ children }: { children: React.ReactNode }) => {
 
 
     return (
-        <>{children}</>
+      <>
+        {children}
+        {isFiltersLoading && <LoaderPage />}
+      </>
     );
 };
 
