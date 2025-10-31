@@ -56,6 +56,8 @@ interface WbMetricsTableProps {
   metricType: 'drr' | 'spp';
   pageData: { page: number, per_page: number, total_count: number };
   setPageData: (pageData: { page: number, per_page: number, total_count: number }) => void;
+  sortState: { sort_field: string, sort_order: string };
+  setSortState: (sortState: { sort_field: string, sort_order: string }) => void;
 }
 
 const WbMetricsTable: React.FC<WbMetricsTableProps> = ({
@@ -64,10 +66,11 @@ const WbMetricsTable: React.FC<WbMetricsTableProps> = ({
   loading,
   metricType,
   pageData,
-  setPageData
+  setPageData,
+  sortState,
+  setSortState
 }) => {
 
-  const [sortState, setSortState] = useState({ sort_field: undefined, sort_order: undefined });
   const tableContainerRef = useRef(null);
 
   const prepareTableData = () => {
@@ -101,6 +104,7 @@ const WbMetricsTable: React.FC<WbMetricsTableProps> = ({
   };
 
   const handleSort = (sort_field: string, sort_order: string) => {
+    setPageData({ ...pageData, page: 1 });
     setSortState({ sort_field, sort_order });
     tableContainerRef.current?.scrollTo({
       top: 0,
@@ -145,12 +149,12 @@ const WbMetricsTable: React.FC<WbMetricsTableProps> = ({
         <div 
           className={styles.percentageCell}
           style={{ 
-            backgroundColor: value !== undefined 
+            backgroundColor: value !== null 
               ? getColorForPercentage(value, data.min_control_value, data.max_control_value, metricType, 0.2)
               : 'transparent'
           }}
         >
-          {value !== undefined ? `${value}%` : '-'}
+          {value !== null ? `${value}%` : '-'}
         </div>
       );
     }
