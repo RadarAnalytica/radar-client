@@ -115,15 +115,13 @@ const WbMetricsTable: React.FC<WbMetricsTableProps> = ({
   const customCellRender = (value: any, record: any, index: number, dataIndex: string) => {
     // Рендер для товара (фото + название)
     if (dataIndex === 'product') {
+      const imageSize = { width: 30, height: 40 };
       return (
         <div className={styles.productCell} data-id={value.wb_id}>
-          <img 
-            src={value.photo}
-            alt={value.name}
-            width={30}
-            height={40}
-            className={styles.productImage}
-          />
+          {value.photo 
+            ? <img src={value.photo} alt={value.name} {...imageSize} className={styles.productImage} />
+            : <div className={styles.productImage} style={imageSize} />
+          }
           <span className={styles.productName} title={value.name}>
             {value.name}
           </span>
