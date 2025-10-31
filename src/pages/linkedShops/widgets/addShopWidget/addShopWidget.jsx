@@ -7,6 +7,7 @@ import { useAppDispatch } from '../../../../redux/hooks';
 import { fetchFilters } from '../../../../redux/apiServicePagesFiltersState/filterActions';
 import { fetchShops } from '../../../../redux/shops/shopsActions';
 import { URL } from '../../../../service/config';
+import { useDemoMode } from "@/app/providers";
 
 const initRequestStatus = {
     isLoading: false,
@@ -20,6 +21,7 @@ export const AddShopWidget = ({ authToken, setStatusBarState }) => {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [addShopRequestStatus, setAddShopRequestStatus] = useState(initRequestStatus);
     const [form] = Form.useForm();
+    const { isDemoMode } = useDemoMode();
 
 
     const getFiltersData = async () => {
@@ -114,6 +116,8 @@ export const AddShopWidget = ({ authToken, setStatusBarState }) => {
                     type='primary'
                     style={{ width: 150, height: 60, fontWeight: 700, marginTop: 16, flexShrink: 0 }}
                     onClick={() => setIsModalVisible(true)}
+                    disabled={isDemoMode}
+                    title={isDemoMode && 'Функция доступна для пользователей с подпиской'}
                 >
                     Подключить
                 </Button>
