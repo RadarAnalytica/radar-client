@@ -1,3 +1,5 @@
+export const CURR_STOCK_ANALYSIS_TABLE_CONFIG_VER = '2';
+
 export const newTableConfig = [
     {
         title: 'О товаре',

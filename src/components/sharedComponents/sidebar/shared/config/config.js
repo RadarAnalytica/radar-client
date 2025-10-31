@@ -149,6 +149,21 @@ export const menuConfig = [
     },
     {
         id: 3,
+        name: 'advertising',
+        label: 'Моя реклама',
+        icon: menuIcons.seo,
+        children: [
+            {
+                id: 1,
+                url: '/control/drr',
+                label: 'Контроль ДРР',
+                isActive: true,
+                isNew: true
+            },
+        ]
+    },
+    {
+        id: 4,
         name: 'goods',
         label: 'Мои товары',
         icon: menuIcons.goods,
@@ -205,7 +220,7 @@ export const menuConfig = [
         ]
     },
     {
-        id: 4,
+        id: 5,
         name: 'seo',
         label: 'SEO',
         icon: menuIcons.seo,
