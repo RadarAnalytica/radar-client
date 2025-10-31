@@ -6,11 +6,17 @@ import styles from './RnpTable.module.css';
 import { RadarRateMark } from '@/shared';
 
 const customCellRender = (value, record, index, dataIndex) => {
-	console.log('value', value);
-	console.log(typeof value);
-	console.log(typeof value === 'object');
 	if (dataIndex === 'summary') {
-		// return <div className={styles.customCellBold}>{formatPrice(value, '')}</div>;
+		return (
+			<>
+				{typeof value === 'object' ?
+					<div className={`${styles.customCell_WithRateMark}`}>
+						<div className={styles.customCellBold}>{formatPrice(value.value, '')}</div>
+						{value.comparison_percentage && <RadarRateMark value={value.comparison_percentage} units='%' />}
+					</div> :
+					<div className={styles.customCell}>{formatPrice(value, '')}</div>}
+			</>
+		)
 	}
 	if (dataIndex === 'period' && record.isParent && value !== 'Переходы (шт)') {
 		return <div className={styles.customCellBold}>
@@ -39,12 +45,12 @@ const customCellRender = (value, record, index, dataIndex) => {
 	}
 	return (
 		<>
-			{typeof value === 'object' ? 
-			<div className={`${styles.customCell_WithRateMark}`}>
-				<div className={styles.customCell}>{formatPrice(value.value, '')}</div>
-				{value.comparison_percentage && <RadarRateMark value={value.comparison_percentage} units='%' />}
-			</div> : 
-			<div className={styles.customCell}>{formatPrice(value, '')}</div>}
+			{typeof value === 'object' ?
+				<div className={`${styles.customCell_WithRateMark}`}>
+					<div className={styles.customCell}>{formatPrice(value.value, '')}</div>
+					{value.comparison_percentage && <RadarRateMark value={value.comparison_percentage} units='%' />}
+				</div> :
+				<div className={styles.customCell}>{formatPrice(value, '')}</div>}
 		</>
 	);
 };
