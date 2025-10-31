@@ -12,7 +12,7 @@ const customCellRender = (value, record, index, dataIndex) => {
 				{typeof value === 'object' ?
 					<div className={`${styles.customCell_WithRateMark}`}>
 						<div className={styles.customCellBold}>{formatPrice(value.value, '')}</div>
-						{value.comparison_percentage && <RadarRateMark value={value.comparison_percentage} units='%' />}
+						{(value.comparison_percentage !== undefined && value.comparison_percentage !== null) && <RadarRateMark value={value.comparison_percentage} units='%' />}
 					</div> :
 					<div className={styles.customCell}>{formatPrice(value, '')}</div>}
 			</>
@@ -48,7 +48,7 @@ const customCellRender = (value, record, index, dataIndex) => {
 			{typeof value === 'object' ?
 				<div className={`${styles.customCell_WithRateMark}`}>
 					<div className={styles.customCell}>{formatPrice(value.value, '')}</div>
-					{value.comparison_percentage && <RadarRateMark value={value.comparison_percentage} units='%' />}
+					{(value.comparison_percentage !== undefined && value.comparison_percentage !== null) && <RadarRateMark value={value.comparison_percentage} units='%' />}
 				</div> :
 				<div className={styles.customCell}>{formatPrice(value, '')}</div>}
 		</>
