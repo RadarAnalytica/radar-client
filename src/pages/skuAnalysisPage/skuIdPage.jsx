@@ -83,7 +83,7 @@ const SkuIdPage = () => {
                     {isDemoMode && <NoSubscriptionWarningBlock />}
 
                     <ItemWidget />
-                    <div>
+                    <div className={isDemoMode && 'pe-none'}>
                         <Filters
                             setLoading={setLoading}
                             shopSelect={false}

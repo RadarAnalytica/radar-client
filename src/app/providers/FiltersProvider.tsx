@@ -1,11 +1,16 @@
-import React, { useContext, useEffect, useRef } from 'react';
+import React, { createContext, useContext, useEffect, useRef, useState } from 'react';
 import { useAppSelector } from '@/redux/hooks';
 import { useDispatch } from 'react-redux';
 import AuthContext from '@/service/AuthContext';
 import { fetchFilters } from '@/redux/apiServicePagesFiltersState/filterActions';
-// import { URL } from '@/service/config';
 import { fetchApi } from '@/service/fetchApi';
 import type { RootState, AppDispatch } from '@/redux/store.types';
+
+interface FiltersContextType {
+  isFiltersLoading: boolean;
+}
+
+const FiltersContext = createContext<FiltersContextType | undefined>(undefined);
 
 const FiltersProvider = ({ children }: { children: React.ReactNode }) => {
 
@@ -14,41 +19,37 @@ const FiltersProvider = ({ children }: { children: React.ReactNode }) => {
     const { activeBrand, shops } = useAppSelector((store: RootState) => store.filters);
     const { messages } = useAppSelector((state: RootState) => state.messagesSlice);
     const prevMessages = useRef<any[] | null>(null);
+    const [isFiltersLoading, setIsFiltersLoading] = useState(false);
 
-  const getFiltersData = async () => {
-    if (!authToken) return;
+    const getFiltersData = async () => {
+      if (!authToken) return;
+      setIsFiltersLoading(true);
+      try {
+        let shopsResponse = await fetchApi('/api/shop/all', {
+          method: 'GET',
+          headers: {
+            'content-type': 'application/json',
+            authorization: 'JWT ' + authToken,
+          }
+        });
 
-    try {
-      let shopsResponse = await fetchApi('/api/shop/all', {
-        method: 'GET',
-        headers: {
-          'content-type': 'application/json',
-          authorization: 'JWT ' + authToken,
+        let shopsData = null;
+        if (shopsResponse?.ok) {
+          shopsData = await shopsResponse.json();
         }
-      });
 
-      let shopsData = null;
-      if (shopsResponse?.ok) {
-        shopsData = await shopsResponse.json();
+        // @ts-ignore
+        await dispatch(fetchFilters({
+          authToken,
+          shopsData
+          //shopsData: null
+        }));
+      } catch (error) {
+        console.error("FiltersProvider: Error fetching initial data:", error);
+      } finally {
+        setIsFiltersLoading(false);
       }
-
-      // @ts-ignore
-      dispatch(fetchFilters({
-        authToken,
-        shopsData
-        //shopsData: null
-      }));
-    } catch (error) {
-      console.error("FiltersProvider: Error fetching initial data:", error);
-    }
-  };
-
-    // Получаем данные магазинов
-    // useEffect(() => {
-    //     if (!shops || shops.length === 0) {
-    //         getFiltersData();
-    //     }
-    // }, []);
+    };
 
     // Отслеживаем изменения authToken
     useEffect(() => {
@@ -102,10 +103,23 @@ const FiltersProvider = ({ children }: { children: React.ReactNode }) => {
         return () => { interval && clearInterval(interval); };
     }, [activeBrand]);
 
+    const contextValue: FiltersContextType = {
+        isFiltersLoading,
+    };
 
     return (
-        <>{children}</>
+        <FiltersContext.Provider value={contextValue}>
+            {children}
+        </FiltersContext.Provider>
     );
+};
+
+export const useFilters = (): FiltersContextType => {
+    const context = useContext(FiltersContext);
+    if (context === undefined) {
+        throw new Error('useFilters must be used within a FiltersProvider');
+    }
+    return context;
 };
 
 export default FiltersProvider;

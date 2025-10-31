@@ -3,11 +3,20 @@ import { ConfigProvider, Table, Button, Tooltip } from 'antd';
 import { Table as RadarTable, Tooltip as RadarTooltip } from 'radar-ui';
 import { formatPrice } from '../../../../service/utils';
 import styles from './RnpTable.module.css';
+import { RadarRateMark } from '@/shared';
 
 const customCellRender = (value, record, index, dataIndex) => {
-
 	if (dataIndex === 'summary') {
-		return <div className={styles.customCellBold}>{formatPrice(value, '')}</div>;
+		return (
+			<>
+				{typeof value === 'object' ?
+					<div className={`${styles.customCell_WithRateMark}`}>
+						<div className={styles.customCellBold}>{formatPrice(value.value, '')}</div>
+						{(value.comparison_percentage !== undefined && value.comparison_percentage !== null) && <RadarRateMark value={value.comparison_percentage} units='%' />}
+					</div> :
+					<div className={styles.customCell}>{formatPrice(value, '')}</div>}
+			</>
+		)
 	}
 	if (dataIndex === 'period' && record.isParent && value !== 'Переходы (шт)') {
 		return <div className={styles.customCellBold}>
@@ -17,7 +26,7 @@ const customCellRender = (value, record, index, dataIndex) => {
 	if (dataIndex === 'period' && record.isParent && value === 'Переходы (шт)') {
 		return <div className={styles.customCellBoldTooltip}>
 			<>{value}</>
-				{/* {value === 'Переходы (шт)' &&
+			{/* {value === 'Переходы (шт)' &&
 					<Tooltip
 						title="Отображены только значения из аналитики рекламных кампаний"
 						color="#FFFFFF"
@@ -35,7 +44,14 @@ const customCellRender = (value, record, index, dataIndex) => {
 		return <div className={`${styles.customCell} ${styles.customCellIdent}`} data-rnp-is-last-child={record.isLastChild ? 'lastChild' : ''}>{value}</div>;
 	}
 	return (
-		<div className={styles.customCell}>{value}</div>
+		<>
+			{typeof value === 'object' ?
+				<div className={`${styles.customCell_WithRateMark}`}>
+					<div className={styles.customCell}>{formatPrice(value.value, '')}</div>
+					{(value.comparison_percentage !== undefined && value.comparison_percentage !== null) && <RadarRateMark value={value.comparison_percentage} units='%' />}
+				</div> :
+				<div className={styles.customCell}>{formatPrice(value, '')}</div>}
+		</>
 	);
 };
 
@@ -142,7 +158,7 @@ export default function RnpTable({ columns, data, columns2, data2, expanded, el 
 						headerCellWrapperClassName={styles.headerCellWrapperCustomClassName}
 
 						customCellRender={{
-							idx: ['summary', 'period'],
+							idx: [],
 							renderer: customCellRender,
 						}}
 					/>

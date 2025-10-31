@@ -36,6 +36,7 @@ const WbMetricsPage: React.FC = () => {
   
   const [loading, setLoading] = useState(true);
   const [tableConfig, setTableConfig] = useState<ColumnConfig[]>([]);
+  const [sortState, setSortState] = useState({ sort_field: undefined, sort_order: undefined });
   const [data, setData] = useState(null);
   const [pageData, setPageData] = useState({ page: 1, per_page: 50, total_count: 0 });
   
@@ -47,7 +48,7 @@ const WbMetricsPage: React.FC = () => {
     progress.start();
     
     try {
-      const response = await ServiceFunctions.getControlMetrics(authToken, metricType, filters, pageData.page, pageData.per_page);
+      const response = await ServiceFunctions.getControlMetrics(authToken, metricType, filters, pageData.page, pageData.per_page, sortState);
       setPageData({ page: response.page, per_page: response.per_page, total_count: response.total_count });
       progress.complete();
       await setTimeout(() => {
@@ -68,22 +69,22 @@ const WbMetricsPage: React.FC = () => {
     } else {
       setLoading(false);
     }
-  }, [activeBrand, pageData.page, activeBrandName, activeArticle, activeGroup, metricType]);
+  }, [activeBrand, pageData.page, activeBrandName, activeArticle, activeGroup, metricType, sortState]);
 
   // Инициализация конфигурации таблицы при загрузке данных
   useEffect(() => {
-    if (data?.data?.[0]?.control_data) {
+    if (data?.data[0]?.control_data) {
       const defaultConfig = getDefaultTableConfig(data.data[0].control_data);
-      const savedConfig = loadTableConfig();
+      const savedConfig = loadTableConfig(metricType);
       const mergedConfig = mergeTableConfig(defaultConfig, savedConfig);
       setTableConfig(mergedConfig);
     }
-  }, [data]);
+  }, [data, metricType]);
 
   // Обработчик изменения конфигурации таблицы
   const handleTableConfigChange = (newConfig: ColumnConfig[]) => {
     setTableConfig(newConfig);
-    saveTableConfig(newConfig);
+    saveTableConfig(newConfig, metricType);
   };
 
   const downloadHandler = async () => {
@@ -106,7 +107,7 @@ const WbMetricsPage: React.FC = () => {
             titlePrefix=""
             children=""
             videoReviewLink=""
-            howToLink="#"
+            howToLink={null}
             howToLinkText="Как использовать?"
           />
         </div>
@@ -126,10 +127,10 @@ const WbMetricsPage: React.FC = () => {
                     tableConfig={tableConfig}
                     setTableConfig={handleTableConfigChange}
                 />
-                <DownloadButton
+                {/* <DownloadButton
                     handleDownload={downloadHandler}
                     loading={false}
-                />
+                /> */}
             </div>
         </div>
 
@@ -151,6 +152,8 @@ const WbMetricsPage: React.FC = () => {
               metricType={metricType}
               pageData={pageData}
               setPageData={setPageData}
+              sortState={sortState}
+              setSortState={setSortState}
           />
           : <NoData />
         )}

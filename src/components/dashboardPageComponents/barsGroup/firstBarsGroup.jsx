@@ -50,7 +50,7 @@ const FirstBarsGroup = ({ dataDashBoard, selectedRange, loading }) => {
                 mainValueUnits='₽'
                 hasColoredBackground
                 compareValue={{
-                    comparativeValue: dataDashBoard?.taxInfo?.wbRealizationCompare,
+                    comparativeValue: dataDashBoard?.wb_realization_compare,
                 }}
                 isLoading={loading}
             />
@@ -76,7 +76,7 @@ const FirstBarsGroup = ({ dataDashBoard, selectedRange, loading }) => {
                     mainValueUnits='%'
                     hasColoredBackground
                     compareValue={{
-                        comparativeValue: dataDashBoard?.roiCompare,
+                        comparativeValue: dataDashBoard?.roi_compare,
                     }}
                     isLoading={loading}
                 />

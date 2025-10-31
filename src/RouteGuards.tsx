@@ -144,8 +144,11 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   const navigate = useNavigate();
   const isCalculateEntryUrl = sessionStorage.getItem('isCalculateEntryUrl');
   const shops = useAppSelector((state) => state.filters.shops);
-  const isUserHasActiveShop = shops?.some((shop: any) => !shop.is_deleted && shop.is_valid);
-  const isDemoUser = ['smart', 'test'].includes(user?.subscription_status?.toLowerCase());
+  const isSubscribedUser = !user.is_onboarded && ['smart', 'test'].includes(user?.subscription_status?.toLowerCase());
+  const isUserHasActiveShop = shops?.some((shop: any) => 
+    !shop.is_deleted && 
+    (shop.is_valid || shop.is_primary_collect)
+  );
 
   // -------this is test user object for dev purposes ------//
 
@@ -205,16 +208,16 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
 
   // ---------2. Test period protection ------//
   if (testPeriodProtected && user && user.subscription_status === null) {
-     switch(testPeriodGuardType) {
+    switch(testPeriodGuardType) {
        case 'redirect': {
          return (<Navigate to={testPeriodRedirect} />);
         }
         case 'fallback': {
           return (
             <Suspense fallback={<LoaderPage />}>
-            {testPeriodFallback({title: routeRuName, pathname: pathname.substring(1)})}
-          </Suspense>
-        );
+              {testPeriodFallback({title: routeRuName, pathname: pathname.substring(1)})}
+            </Suspense>
+          );
       }
     }
 
@@ -238,10 +241,7 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
     return <Navigate to={expireRedirect} replace />;
   }
 
-  if (onboardProtected 
-    && !user.is_onboarded 
-    && (isDemoUser || !isUserHasActiveShop)
-  ) {
+  if (onboardProtected && (isSubscribedUser || isUserHasActiveShop === false)) {
     switch(onboardGuardType) {
       case 'redirect': {
         return (<Navigate to={onboardRedirect} />);

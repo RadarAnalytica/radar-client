@@ -171,7 +171,7 @@ const SecondBarsGroup = ({ dataDashBoard, loading, selectedRange, activeBrand, a
                 mainValueUnits='₽'
                 hasColoredBackground
                 compareValue={{
-                    comparativeValue: dataDashBoard?.advertPercent,
+                    comparativeValue: dataDashBoard?.advertAmountCompare,
                 }}
                 isLoading={loading}
             />
@@ -262,7 +262,7 @@ const SecondBarsGroup = ({ dataDashBoard, loading, selectedRange, activeBrand, a
                     mainValue={dataDashBoard?.lostSalesAmount}
                     mainValueUnits='₽'
                     compareValue={{
-                        comparativeValue: dataDashBoard?.lostSalesAmountCompare,
+                        comparativeValue: dataDashBoard?.lost_sales_amount_compare,
                     }}
                     isLoading={loading}
                 />
@@ -293,7 +293,7 @@ const SecondBarsGroup = ({ dataDashBoard, loading, selectedRange, activeBrand, a
                     activeBrand={activeBrand}
                     authToken={authToken}
                     filters={filters}
-                    turnoverCompare={dataDashBoard?.turnoverCompare}
+                    turnoverCompare={dataDashBoard?.turnover_compare}
                 />
             </div>
         </div>

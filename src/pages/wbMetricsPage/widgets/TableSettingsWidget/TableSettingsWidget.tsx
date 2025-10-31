@@ -43,7 +43,7 @@ const TableSettingsWidget: React.FC<TableSettingsWidgetProps> = ({
   const checkAllHandler = () => {
     const values = form.getFieldsValue();
     const keysArr = Object.keys(values);
-    setIsAllButtonState(keysArr.some(_ => values[_]));
+    setIsAllButtonState(!keysArr.some(_ => !values[_]));
   };
 
   const switchAllHandler = () => {
@@ -65,9 +65,14 @@ const TableSettingsWidget: React.FC<TableSettingsWidgetProps> = ({
 
   useEffect(() => {
     if (isModalOpen) {
+      const values = toggleableColumns.reduce((acc, col) => {
+        acc[col.dataIndex] = !col.hidden;
+        return acc;
+      }, {} as Record<string, boolean>);
+      form.setFieldsValue(values);
       checkAllHandler();
     }
-  }, [isModalOpen]);
+  }, [isModalOpen, tableConfig]);
 
   return (
     <>
@@ -96,13 +101,13 @@ const TableSettingsWidget: React.FC<TableSettingsWidgetProps> = ({
       </ConfigProvider>
 
       <Modal
-        title="Настройки таблицы"
+        title="Настройки столбцов"
         open={isModalOpen}
         width={600}
         onOk={() => form.submit()}
         onCancel={handleCancel}
         okText="Применить"
-        cancelText="Отмена"
+        cancelText="Отменить"
         okButtonProps={{ className: `${styles.modal__okButton} ant-btn-lg` }}
         cancelButtonProps={{ className: `${styles.modal__cancelButton} ant-btn-lg` }}
         className={styles.modal}

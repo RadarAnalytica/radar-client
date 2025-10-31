@@ -269,9 +269,9 @@ let configItemTemplate = {
   sortable: false,
   fixed: false,
   fixedLeft: 0,
-  width: 120,
-  minWidth: 120,
-  maxWidth: 240,
+  width: 180,
+  minWidth: 180,
+  maxWidth: 360,
   hidden: false,
   units: ' ',
   style: {
@@ -351,9 +351,9 @@ export const getTableConfig = (initialData) => {
       title: 'Итого',
       key: 'summary',
       dataIndex: 'summary',
-      width: 100,
-      minWidth: 100,
-      maxWidth: 200,
+      width: 180,
+      minWidth: 180,
+      maxWidth: 360,
       units: ' '
     },
   ];

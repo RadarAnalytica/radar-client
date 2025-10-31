@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { actions as skuAnalysisActions } from './skuAnalysisSlice';
-
+import { fetchApi } from '@/service/fetchApi';
 
 export const fetchSkuAnalysisMainChartData = createAsyncThunk(
     'skuChartData',
@@ -13,7 +13,7 @@ export const fetchSkuAnalysisMainChartData = createAsyncThunk(
         if (reqData.selectedRange.from && reqData.selectedRange.to) {
              queryString += `&date_from=${reqData.selectedRange.from}&date_to=${reqData.selectedRange.to}`;
         }
-        const res = await fetch(`https://radarmarket.ru/api/web-service/product-analysis/charts${queryString}`, {
+        const res = await fetchApi(`https://radarmarket.ru/api/web-service/product-analysis/charts${queryString}`, {
           method: 'GET',
           headers: {
             'content-type': 'application/json',
@@ -44,7 +44,7 @@ export const fetchSkuAnalysisSkuData = createAsyncThunk(
         if (reqData.selectedRange.from && reqData.selectedRange.to) {
             queryString += `&date_from=${reqData.selectedRange.from}&date_to=${reqData.selectedRange.to}`;
         }
-        const res = await fetch(`https://radarmarket.ru/api/web-service/product-analysis/product-meta${queryString}`, {
+        const res = await fetchApi(`https://radarmarket.ru/api/web-service/product-analysis/product-meta${queryString}`, {
           method: 'GET',
           headers: {
             'content-type': 'application/json',
@@ -74,7 +74,7 @@ export const fetchSkuAnalysisIndicatorsData = createAsyncThunk(
         if (reqData.selectedRange.from && reqData.selectedRange.to) {
             queryString += `&date_from=${reqData.selectedRange.from}&date_to=${reqData.selectedRange.to}`;
         }
-        const res = await fetch(`https://radarmarket.ru/api/web-service/product-analysis/indicators${queryString}`, {
+        const res = await fetchApi(`https://radarmarket.ru/api/web-service/product-analysis/indicators${queryString}`, {
           method: 'GET',
           headers: {
             'content-type': 'application/json',
@@ -104,7 +104,7 @@ export const fetchSkuAnalysisMainTableData = createAsyncThunk(
         if (reqData.selectedRange.from && reqData.selectedRange.to) {
             queryString += `&date_from=${reqData.selectedRange.from}&date_to=${reqData.selectedRange.to}`;
         }
-        const res = await fetch(`https://radarmarket.ru/api/web-service/product-analysis/table/by-date${queryString}`, {
+        const res = await fetchApi(`https://radarmarket.ru/api/web-service/product-analysis/table/by-date${queryString}`, {
           method: 'GET',
           headers: {
             'content-type': 'application/json',
@@ -134,7 +134,7 @@ export const fetchSkuAnalysisByColorTableData = createAsyncThunk(
         if (reqData.selectedRange.from && reqData.selectedRange.to) {
             queryString += `&date_from=${reqData.selectedRange.from}&date_to=${reqData.selectedRange.to}`;
         }
-        const res = await fetch(`https://radarmarket.ru/api/web-service/product-analysis/table/by-color${queryString}`, {
+        const res = await fetchApi(`https://radarmarket.ru/api/web-service/product-analysis/table/by-color${queryString}`, {
           method: 'GET',
           headers: {
             'content-type': 'application/json',
@@ -164,7 +164,7 @@ export const fetchSkuAnalysisByWarehousesTableData = createAsyncThunk(
         if (reqData.selectedRange.from && reqData.selectedRange.to) {
             queryString += `&date_from=${reqData.selectedRange.from}&date_to=${reqData.selectedRange.to}`;
         }
-        const res = await fetch(`https://radarmarket.ru/api/web-service/product-analysis/table/by-warehouse${queryString}`, {
+        const res = await fetchApi(`https://radarmarket.ru/api/web-service/product-analysis/table/by-warehouse${queryString}`, {
           method: 'GET',
           headers: {
             'content-type': 'application/json',
@@ -194,7 +194,7 @@ export const fetchSkuAnalysisBySizeTableData = createAsyncThunk(
         if (reqData.selectedRange.from && reqData.selectedRange.to) {
             queryString += `&date_from=${reqData.selectedRange.from}&date_to=${reqData.selectedRange.to}`;
         }
-        const res = await fetch(`https://radarmarket.ru/api/web-service/product-analysis/table/by-size${queryString}`, {
+        const res = await fetchApi(`https://radarmarket.ru/api/web-service/product-analysis/table/by-size${queryString}`, {
           method: 'GET',
           headers: {
             'content-type': 'application/json',

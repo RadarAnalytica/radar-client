@@ -14,20 +14,22 @@
   }
 
   .modal__okButton {
-    width: 112px;
-    height: 44px;
+    width: 110px;
+    height: 46px;
     background: #5329FF !important;
+    font-size: 14px;
     &:hover {
       background: #7a52ff !important;
     }
   }
 
   .modal__cancelButton {
-    width: 100px;
-    height: 44px;
+    width: 101px;
+    height: 46px;
     border-color: #e7e1fe !important;
     background: #e7e1fe !important;
     color: #5329FF !important;
+    font-size: 14px;
     &:hover {
       color: #5329FF !important;
       border-color: #f3f0ff !important;
@@ -57,7 +59,7 @@
   }
 
   :global(.ant-modal-title) {
-    font-size: 18px;
+    font-size: 22px;
     font-weight: 600;
     color: #1a1a1a;
   }
@@ -96,12 +98,6 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 12px;
-  max-height: 300px;
-  overflow-y: auto;
-  padding: 16px;
-  background: #f8f9fa;
-  border-radius: 8px;
-  border: 1px solid #e8e8e8;
   margin-bottom: 0.5rem;
 }
 
@@ -109,18 +105,25 @@
   margin-bottom: 0;
 }
 
-.modal__checkboxItem :global(.ant-checkbox-wrapper) {
-  color: #1a1a1a;
-  font-size: 14px;
+/* Стили для квадратного чекбокса */
+:global(.ant-checkbox-inner) {
+  width: 20px !important;
+  height: 20px !important;
+  border-radius: 3px !important;
+  border-color: #5329ff;
 }
 
-.modal__checkboxItem :global(.ant-checkbox-checked .ant-checkbox-inner) {
+:global(.ant-checkbox-checked .ant-checkbox-inner) {
+  width: 20px !important;
+  height: 20px !important;
+  border-radius: 3px !important;
   background-color: #5329ff;
   border-color: #5329ff;
-}
 
-.modal__checkboxItem :global(.ant-checkbox:hover .ant-checkbox-inner) {
-  border-color: #5329ff;
+  &::after {
+    top: 49% !important;
+    inset-inline-start: 27% !important;
+  }
 }
 
 @media (max-width: 768px) {
