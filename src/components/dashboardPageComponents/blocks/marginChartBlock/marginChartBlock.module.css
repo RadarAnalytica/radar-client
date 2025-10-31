@@ -11,6 +11,11 @@
     flex-shrink: 1;
     width: 100%;
     overflow: hidden;
+
+    @media (max-width: 1360px) {
+        grid-column: span 2;
+        height: 407px;
+    }
 }
 
 .block:hover {

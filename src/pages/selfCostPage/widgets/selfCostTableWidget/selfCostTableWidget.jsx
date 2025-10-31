@@ -82,9 +82,9 @@ const SelfCostTableWidget = ({
 
                     {/* Тело таблицы */}
                     <div className={styles.table__body}>
-                        {dataStatus.isLoading && (  
+                        {dataStatus.isLoading && (
                             <div className={`${styles.widget__loaderWrapper} ${progress.value !== null ? 'bg-white' : '' }`}>
-                                <Loader loading={dataStatus.isLoading} progress={progress.value} /> 
+                                <Loader loading={dataStatus.isLoading} progress={progress.value} />
                             </div>
                         )}
                         {tableData?.length > 0 && activeBrand && tableData?.map((product, id) => {

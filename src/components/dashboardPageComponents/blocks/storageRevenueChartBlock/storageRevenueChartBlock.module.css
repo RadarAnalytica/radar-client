@@ -12,6 +12,10 @@
     overflow: hidden;
     min-height: 407px;
     max-height: 417px;
+
+    @media (max-width: 1360px) {
+        grid-column: span 2;
+    }
 }
 
 .block:hover {

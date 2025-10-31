@@ -74,10 +74,10 @@ export const getProfitData = (dataDashBoard) => {
         name: 'Процент выкупа',
         value: dataDashBoard?.buyoutPercent || '0',
       },
-      {
-        name: 'ROI',
-        value: dataDashBoard?.roi || '0',
-      },
+      // {
+      //   name: 'ROI',
+      //   value: dataDashBoard?.roi || '0',
+      // },
       {
         name: 'Рентабельность ВП',
         value: dataDashBoard?.grossProfitAbility || '0',

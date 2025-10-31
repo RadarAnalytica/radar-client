@@ -11,6 +11,13 @@
     width: 100%;
     min-height: 407px;
     max-height: 417px;
+
+    @media (max-width: 1360px) {
+        grid-column: span 2;
+        height: 315px;
+        min-height: 315px;
+        max-height: 315px;
+    }
 }
 
 .block:hover {

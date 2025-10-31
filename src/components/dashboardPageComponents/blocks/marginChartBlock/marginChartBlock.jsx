@@ -260,8 +260,8 @@ const MarginChartBlock = ({ dataDashBoard, loading }) => {
             A: {
                 id: 'A',
                 position: 'left',
-                min: roiAxisMin,
-                max: roiAxisMax,
+                min: roiAxisMin === 0 ? roiAxisMin : roiAxisMin - 10,
+                max: roiAxisMax + 10,
                 grid: {
                     drawOnChartArea: true, // only want the grid lines for one axis to show up
                     tickLength: 0,
@@ -278,8 +278,8 @@ const MarginChartBlock = ({ dataDashBoard, loading }) => {
                 id: 'B',
                 type: 'linear',
                 position: 'right',
-                min: marginAxisMin,
-                max: marginAxisMax,
+                min: marginAxisMin === 0 ? marginAxisMin : marginAxisMin - 10,
+                max: marginAxisMax + 10,
                 grid: {
                     drawOnChartArea: false,
                     tickLength: 0,
@@ -294,8 +294,10 @@ const MarginChartBlock = ({ dataDashBoard, loading }) => {
             x: {
                 stacked: true,
                 grid: {
-                    //drawOnChartArea: false,
-                    display: false,
+                    drawOnChartArea: false,
+                    drawTicks: true,
+                    tickLength: 4,
+                    color: '#E0E0E0',
                 },
                 ticks: {
                     color: '#8C8C8C',

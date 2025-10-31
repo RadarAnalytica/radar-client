@@ -123,6 +123,7 @@ function App() {
                 <Route path='/abc-data' element={<ProtectedRoute expireProtected onboardProtected routeRuName='ABC-анализ'><AbcAnalysisPage /></ProtectedRoute>} />
                 <Route path='/rank-analysis' element={<ProtectedRoute expireProtected routeRuName='Сравнение SEO'><SeoPage /></ProtectedRoute>} />
                 <Route path='/ai-generator' element={<ProtectedRoute expireProtected routeRuName='Генерация описания AI'><AiDescriptionGeneratorPage /></ProtectedRoute>} />
+                <Route path='/serp' element={<ProtectedRoute expireProtected routeRuName='SERP'><SerpPage /></ProtectedRoute>} />
                 <Route path='/stock-analysis' element={<ProtectedRoute expireProtected onboardProtected routeRuName='Аналитика по товарам'><StockAnalysisPage /></ProtectedRoute>} />
                 <Route path='/orders-map' element={<ProtectedRoute expireProtected onboardProtected routeRuName='География заказов и продаж'><OrdersMap /></ProtectedRoute>} />
                 <Route path='/linked-shops' element={<ProtectedRoute expireProtected onboardProtected routeRuName='Подключенные магазины'><LinkedShopsPage /></ProtectedRoute>} />
@@ -148,11 +149,11 @@ function App() {
                 <Route path='/report-profit-loss' element={<ProtectedRoute onboardProtected expireProtected routeRuName='Отчет о прибыли и убытках'><ReportProfitLoss /></ProtectedRoute>} />
                 <Route path='/report-week' element={<ProtectedRoute expireProtected onboardProtected routeRuName='По неделям'><ReportWeek /></ProtectedRoute>} />
                 <Route path='/operating-expenses' element={<ProtectedRoute expireProtected onboardProtected routeRuName='Операционные расходы'><OperatingExpenses /></ProtectedRoute>} />
-                <Route path='/referal' element={<ProtectedRoute expireProtected onboardProtected routeRuName='Реферальная программа'><ReferalPage /></ProtectedRoute>} />
+                <Route path='/referal' element={<ProtectedRoute expireProtected routeRuName='Реферальная программа'><ReferalPage /></ProtectedRoute>} />
                 <Route path='/rnp' element={<ProtectedRoute expireProtected onboardProtected routeRuName='Рука на пульсе (РНП)'><Rnp /></ProtectedRoute>} />
                 <Route path='/serp' element={<ProtectedRoute expireProtected onboardProtected routeRuName='SERP'><SerpPage /></ProtectedRoute>} />
-                <Route path='/control/drr' element={<ProtectedRoute expireProtected onboardProtected routeRuName='Контроль ДРР'><WbMetricsPage /></ProtectedRoute>} />
-                <Route path='/control/spp' element={<ProtectedRoute expireProtected onboardProtected routeRuName='Контроль СПП'><WbMetricsPage /></ProtectedRoute>} />
+                <Route path='/control/drr' element={<ProtectedRoute expireProtected onboardProtected routeRuName='Контроль ДРР'><WbMetricsPage key='drr' /></ProtectedRoute>} />
+                <Route path='/control/spp' element={<ProtectedRoute expireProtected onboardProtected routeRuName='Контроль СПП'><WbMetricsPage key='spp' /></ProtectedRoute>} />
                 {/* Public routes */}
                 <Route path='/admin/article/demo/:slugOrId' element={<Suspense fallback={<LoaderPage />}><ArticleViewPage /></Suspense>} />
                 <Route path='/calculate' element={<Suspense fallback={<LoaderPage />}>{deviceRegexp.test(userAgent) ? <UnitCalculatorPage /> : <UnitCalculatorPageDesktop />}</Suspense>} />

@@ -51,28 +51,59 @@
 
 .page__block {
     border-radius: 16px;
-    padding: 20px;
+    padding: 24px 32px;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: stretch;
     width: 100%;
-    gap: 12px;
+    gap: 15px;
 }
 
 .page__block_bg {
     background-color: white;
     border-radius: 16px;
-    box-shadow: 0px 0px 20px 0px #00000014;
-    padding: 20px;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
 }
 
+.page__block_border {
+    border: 1px solid #00000012;
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+.page__blockHeaderWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.page__blockHeaderWrapper_horizontal {
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+}
+
+.page__officialBar {
+    background-color: #5329FF0D;
+    border-radius: 8px;
+    padding: 4px;
+    padding-right: 8px;
+    font-weight: 600;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+}
+
 .page__blockTitle {
-    font-weight: 700;
+    font-weight: 600;
     font-size: 18px;
     line-height: 100%;
     letter-spacing: 0%;
@@ -82,8 +113,8 @@
 }
 
 .page__button {
-    padding: 0 10px;
     font-size: 14px;
+    padding: 0 10px;
     height: 46px;
     border-radius: 8px;
     background-color: #5329FF;
@@ -97,20 +128,152 @@
     justify-content: center;
     align-items: center;
     gap: 8px;
+    width: 100%;
+    margin-top: 5px;
 }
 
 .page__blockText {
     font-weight: 500;
     font-size: 14px;
-    line-height: 100%;
+    line-height: 160%;
     letter-spacing: 0%;
     margin: 0;
     padding: 0;
     color: #1A1A1A;
 }
 
+.page__blockText span {
+    font-weight: 700;
+}
+
 .page__list {
     display: flex;
     flex-direction: column;
     gap: 8px;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    padding-left: 14px;
+
+}
+
+.page__buttonHelper {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    color: #8C8C8C;
+    margin-top: 5px;
+}
+
+.page__buttonHelper>a {
+    color: #5329FF;
+    text-decoration: none;
+}
+
+
+/* modal */
+
+.modal__body {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.modal__title {
+    font-weight: 600;
+    font-size: 22px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    margin: 0;
+    padding: 0;
+}
+
+.modal__validityBar {
+    padding: 8px 16px;
+    border-radius: 8px;
+    background-color: #00B69B0D;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: fit-content;
+}
+
+.modal__validityBar p {
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 140%;
+    letter-spacing: 0%;
+    margin: 0;
+    padding: 0;
+    color: #00B69B;
+}
+
+.modal__validityBar span {
+    color: #1A1A1A;
+}
+
+.modal__validityBar:before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: #00B69B;
+}
+
+.modal__tags {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.modal__tag {
+    padding: 8px 16px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 140%;
+    letter-spacing: 0%;
+    color: #1A1A1A;
+    background-color: #5329FF0D;
+    gap: 8px;
+}
+
+.modal__footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+}
+
+.modal__tooltip {
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    color: #8C8C8C;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+}
+
+.modal__button {
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 160%;
+    letter-spacing: 0%;
+    background-color: #5329FF;
+    border: none;
+    color: white;
+    padding: 12px 16px;
 }

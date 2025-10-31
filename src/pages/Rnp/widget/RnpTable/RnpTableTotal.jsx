@@ -28,7 +28,7 @@ const customCellRender = (value, record, index, dataIndex) => {
 						<path d="M9.064 15V7.958H10.338V15H9.064ZM8.952 6.418V5.046H10.464V6.418H8.952Z" fill="#1A1A1A" fillOpacity="0.5" />
 					</svg>
 				</Tooltip>
-			} */}
+				} */}
 		</div>;
 	}
 	if (dataIndex === 'period' && !record.isParent) {

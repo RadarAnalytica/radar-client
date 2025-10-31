@@ -111,7 +111,8 @@ const MainChartModal = ({ isModalOpen, setIsModalOpen, loading, chartData }) => 
     };
     const renderCustomTooltip = () => {
         if (clickedIndex === null) return null;
-        const total = chartData[clickedIndex];
+        const total = detailChartData?.[clickedIndex] ?? 0;
+
 
         const isLeftSide = clickedIndex > 11;
         const tooltipStyle = {
@@ -127,24 +128,23 @@ const MainChartModal = ({ isModalOpen, setIsModalOpen, loading, chartData }) => 
             padding: '10px',
             boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
         };
-
         return (
             <div className="custom-tooltip" style={tooltipStyle}>
                 <div className="custom-tooltip-header">
                     <div className="tooltip-color"></div>
-                    <div className="tooltip-title-period">
-                        {`Заказы с ${clickedIndex}:00 до ${1 + clickedIndex}:00, шт`}
+                    <div className="tooltip-title-period" style={{ fontSize: 14 }}>
+                        {`Заказы с ${clickedIndex}:00 до ${1 + clickedIndex}:00`}
                     </div>
                 </div>
                 <div className="custom-tooltip-amount-wrapper">
-                    <div className="custom-tooltip-amount-title">Всего</div>
-                    <div className="custom-tooltip-amount" style={{ fontWeight: '700' }}>{total}</div>
+                    <div className="custom-tooltip-amount-title" style={{ fontSize: 14 }}>Всего</div>
+                    <div className="custom-tooltip-amount" style={{ fontWeight: '700', fontSize: 14 }}>{total}</div>
                 </div>
                 <div className="custom-tooltip-period">
-                    {detailChartLabels[clickedIndex.toString()].map((time, i) => (
+                    {detailChartLabels[clickedIndex.toString()]?.map((time, i) => (
                         <div key={i} style={{ display: 'flex', justifyContent: 'space-between' }}>
-                            <span style={{ marginLeft: '5px' }}>{detailChartLabels[clickedIndex.toString()][i]['time']}</span>
-                            <span style={{ marginRight: '5px' }}>{detailChartLabels[clickedIndex.toString()][i]['count']}</span>
+                            <span style={{ marginLeft: '5px', fontSize: 12 }}>{detailChartLabels[clickedIndex.toString()][i]['time']}</span>
+                            <span style={{ marginRight: '5px', fontSize: 12 }}>{detailChartLabels[clickedIndex.toString()][i]['count']}</span>
                         </div>
                     ))}
                 </div>

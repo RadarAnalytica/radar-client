@@ -8,16 +8,10 @@
     justify-content: stretch;
     box-sizing: border-box;
 
-    /* @media (max-width: 1366px) {
-        grid-template-columns: repeat(2, 1fr);
-    } */
-}
-
-.group__wrapper {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
-    box-sizing: border-box;
+   
+    @media (max-width: 1360px) {
+        grid-template-columns: repeat(3, 1fr);
+    }
 }
 
 .group__3cols {
@@ -26,4 +20,7 @@
     grid-template-columns: repeat(3, 1fr);
     gap: 12px;
     box-sizing: border-box;
+    @media (max-width: 1360px) {
+        grid-column: span 3;
+    }
 }

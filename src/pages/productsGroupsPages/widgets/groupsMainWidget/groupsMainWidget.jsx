@@ -6,7 +6,7 @@ import { Checkbox, ConfigProvider, message } from 'antd';
 import { Link } from 'react-router-dom';
 import AuthContext from '@/service/AuthContext';
 import { GroupEditModal, ConfirmationModal } from '../../features';
-import { useAppDispatch } from '@/redux/hooks';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { fetchFilters } from '@/redux/apiServicePagesFiltersState/filterActions';
 import { fetchApi } from "@/service/fetchApi";
 
@@ -25,6 +25,7 @@ const GroupsMainWidget = ({ setIsAddGroupModalVisible, groupsMainData, getGroups
     const [isEditGroupModalVisible, setIsEditGroupModalVisible] = useState(false);
     const [confirmationModalState, setConfirmationModalState] = useState(initConfirmationState);
     const [editedGroupId, setEditedGroupId] = useState();
+    const { shops } = useAppSelector((state) => state.shopsSlice);
     const dispatch = useAppDispatch();
     const checkAll = tableData && tableData.length === checkedList.length;
     const indeterminate = tableData && checkedList.length > 0 && checkedList.length < tableData.length;
@@ -63,7 +64,7 @@ const GroupsMainWidget = ({ setIsAddGroupModalVisible, groupsMainData, getGroups
                 return;
             }
             setAlertState({isVisible: true, message: 'Группа успешно удалена'});
-            dispatch(fetchFilters(authToken));
+            dispatch(fetchFilters({authToken, shopsData: shops}));
             getGroupsData(authToken);
         } catch (e) {
             console.error('Error:', e);

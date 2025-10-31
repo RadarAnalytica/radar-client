@@ -1,4 +1,4 @@
-import styles from './barsGroup.module.css';
+import styles from './secondBarsGroup.module.css';
 import SmallBar from '../bars/smallBar';
 import { useAppSelector } from '../../../redux/hooks';
 import { RadarBar } from '../../../shared/ui/RadarBar/RadarBar';
@@ -262,7 +262,7 @@ const SecondBarsGroup = ({ dataDashBoard, loading, selectedRange, activeBrand, a
                     mainValue={dataDashBoard?.lostSalesAmount}
                     mainValueUnits='₽'
                     compareValue={{
-                        comparativeValue: dataDashBoard?.lostSalesAmountCompare,
+                        comparativeValue: dataDashBoard?.lost_sales_amount_compare,
                     }}
                     isLoading={loading}
                 />
@@ -293,7 +293,7 @@ const SecondBarsGroup = ({ dataDashBoard, loading, selectedRange, activeBrand, a
                     activeBrand={activeBrand}
                     authToken={authToken}
                     filters={filters}
-                    turnoverCompare={dataDashBoard?.turnoverCompare}
+                    turnoverCompare={dataDashBoard?.turnover_compare}
                 />
             </div>
         </div>

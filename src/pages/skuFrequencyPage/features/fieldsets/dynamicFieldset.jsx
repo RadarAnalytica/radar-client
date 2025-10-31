@@ -460,7 +460,7 @@ const DynamicFieldset = ({ form }) => {
 
 
                     {/* ------------------------------------- month select -------------------------------------------*/}
-                    <div className={styles.form__dynamicSelectBlock}>
+                    {/* <div className={styles.form__dynamicSelectBlock}>
                         <label className={styles.form__doubledLabel} style={{whiteSpace: 'nowrap'}}>
                             Месяцы роста запросов
                             <svg width="21" height="13" viewBox="0 0 21 13" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ margin: '0 0 3px 5px' }}>
@@ -571,8 +571,7 @@ const DynamicFieldset = ({ form }) => {
                                 </Form.Item>
                             </ConfigProvider>
                         </div>
-                    </div>
-
+                    </div> */}
                 </ConfigProvider>
             </div>
         </fieldset>

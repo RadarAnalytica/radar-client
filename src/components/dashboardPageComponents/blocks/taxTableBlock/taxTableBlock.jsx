@@ -135,6 +135,7 @@ const TaxTableBlock = ({ dataDashBoard, loading, updateDashboard }) => {
                                     onChange={(e) => {
                                         setTaxRate((prevValue) => e.target.value.replace(/[^0-9.-]+|\.(?=\D)/g, ''));
                                     }}
+                                    suffix={<span style={{ fontSize: 14, opacity: 0.5 }}>%</span>}
                                     onFocus={() => { setIsButtonVisible(true); }}
                                 />
                             </ConfigProvider>

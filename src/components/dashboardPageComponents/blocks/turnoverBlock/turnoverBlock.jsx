@@ -345,7 +345,8 @@ const TurnoverBlock = ({ loading, turnover, turnoverCompare, selectedRange, acti
                         <ConfigProvider
                             theme={{
                                 token: {
-                                    colorTextLightSolid: '#1A1A1A'
+                                    colorTextLightSolid: '#1A1A1A',
+                                    fontSize: 12,
                                 }
                             }}
                         >
