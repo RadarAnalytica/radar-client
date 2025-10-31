@@ -238,10 +238,7 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
     return <Navigate to={expireRedirect} replace />;
   }
 
-  if (onboardProtected 
-    && !user.is_onboarded 
-    && (isDemoUser || isUserHasActiveShop === false)
-  ) {
+  if (onboardProtected && (isDemoUser || isUserHasActiveShop === false)) {
     switch(onboardGuardType) {
       case 'redirect': {
         return (<Navigate to={onboardRedirect} />);
