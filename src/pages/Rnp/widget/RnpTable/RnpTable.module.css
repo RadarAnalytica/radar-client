@@ -63,6 +63,7 @@
   display: -webkit-box !important;
   -webkit-box-orient: vertical !important;
   -webkit-line-clamp: 1 !important;
+  white-space: nowrap !important;
 }
 .customCellBoldTooltip {
   width: 100%;
@@ -80,10 +81,21 @@
     display: -webkit-box !important;
     -webkit-box-orient: vertical !important;
     -webkit-line-clamp: 1 !important;
+    line-clamp: 1 !important;
+    line-height: 160% !important;
   }
   .customCellIdent {
     padding-left: 30px;
   }
+
+.customCell_WithRateMark {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  box-sizing: border-box;
+}
 
 
 :global(.radar-table-default__body-row):has(div > .customCell[data-rnp-is-last-child="lastChild"]) > td > div {
