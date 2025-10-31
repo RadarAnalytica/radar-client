@@ -40,16 +40,15 @@
 }
 
 .widget__buttonHelper {
-    width: 100%;
+    width: fit-content;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 8px;
-    font-size: 14px;
-    font-weight: 500;
+    font-size: 18px;
+    font-weight: 700;
     text-decoration: none;
     color: #8C8C8C;
-    margin-top: 5px;
 }
 
 .widget__buttonHelper>a {

@@ -209,17 +209,17 @@ export const AddShopWidget = ({ authToken, setStatusBarState }) => {
                                     style={{ height: 55 }}
                                 />
                             </Form.Item>
+                            <div className={styles.widget__buttonHelper}>
+                                <Link to='https://radar.usedocs.com/article/79862' target='_blank'>Где найти токен?</Link>
+                            </div>
                             <Button
                                 htmlType='submit'
                                 type='primary'
-                                style={{ height: 63, fontSize: 16, fontWeight: 700, width: '100%', marginTop: 24 }}
+                                style={{ height: 63, fontSize: 16, fontWeight: 700, width: '100%' }}
                             >
                                 Сохранить
                             </Button>
-                            <div className={styles.widget__buttonHelper}>
-                                Тяжело разобраться?
-                                <Link to='https://radar.usedocs.com/article/79862' target='_blank'>Полная инструкция</Link>
-                            </div>
+                          
                         </Form>
                     </ConfigProvider>
                 </div>
