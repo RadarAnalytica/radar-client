@@ -82,13 +82,13 @@
 }
 
 .page__button {
-    font-size: 14px !important;
+    padding: 0 10px;
+    font-size: 14px;
     height: 46px;
     border-radius: 8px;
     background-color: #5329FF;
     color: white;
     font-weight: 600;
-    font-size: 16px;
     line-height: 100%;
     letter-spacing: 0%;
     border: none;

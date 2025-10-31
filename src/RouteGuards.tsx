@@ -205,16 +205,16 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
 
   // ---------2. Test period protection ------//
   if (testPeriodProtected && user && user.subscription_status === null) {
-     switch(testPeriodGuardType) {
+    switch(testPeriodGuardType) {
        case 'redirect': {
          return (<Navigate to={testPeriodRedirect} />);
         }
         case 'fallback': {
           return (
             <Suspense fallback={<LoaderPage />}>
-            {testPeriodFallback({title: routeRuName, pathname: pathname.substring(1)})}
-          </Suspense>
-        );
+              {testPeriodFallback({title: routeRuName, pathname: pathname.substring(1)})}
+            </Suspense>
+          );
       }
     }
 
@@ -240,7 +240,7 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
 
   if (onboardProtected 
     && !user.is_onboarded 
-    && (isDemoUser || !isUserHasActiveShop)
+    && (isDemoUser || isUserHasActiveShop === false)
   ) {
     switch(onboardGuardType) {
       case 'redirect': {
