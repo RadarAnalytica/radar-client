@@ -2,7 +2,7 @@ import styles from "./positionCheckCustomCellRender.module.css";
 import { Link } from "react-router-dom";
 import wb_icon from './wb_icon.png'
 
-export const positionCheckTableCustomCellRender = (value: any, record: any, index: number, dataIndex: string, serpButtonHandler: (key: string, cellId: string) => void, isExpandedSerp: boolean) => {
+export const positionCheckTableCustomCellRender = (value: any, record: any, index: number, dataIndex: string, serpButtonHandler: (buttonRef: HTMLButtonElement, rowKey: string) => void, isExpandedSerp: boolean) => {
 
     if (dataIndex === 'query' && record.rowWithSpan) {
         return <div id={record.cellId} style={{ width: '100%', height: '100%', border: '2px solid red' }}></div>
@@ -12,7 +12,14 @@ export const positionCheckTableCustomCellRender = (value: any, record: any, inde
     }
     if (dataIndex === 'serp' && record.isParent) {
         return (
-            <button className={styles.serpCell} onClick={() => {serpButtonHandler(record.rowKey, record.serpCellId); console.log('button clicked', record.rowKey, record.serpCellId)}}>
+            <button 
+                className={styles.serpCell} 
+                ref={(ref) => {
+                    if (ref) {
+                        ref.onclick = () => serpButtonHandler(ref, record.rowKey);
+                    }
+                }}
+            >
                 SERP
             </button>
         )

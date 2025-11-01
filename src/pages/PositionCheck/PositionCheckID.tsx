@@ -1,4 +1,5 @@
 import React, { useRef } from 'react';
+import ReactDOM from 'react-dom/client';
 import styles from "./PositionCheckID.module.css";
 import Header from '@/components/sharedComponents/header/header';
 import MobilePlug from '@/components/sharedComponents/mobilePlug/mobilePlug';
@@ -71,11 +72,6 @@ const mockTableData = [
         rowKey: 'r1',
         serpCellId: 'cellr1',
         children: [
-            {
-                rowWithSpan: true,
-                rowKey: 'r1.0',
-                cellId: 'cellr1'
-            },
             {
                 query: 'test query 1.1',
                 frequency: 200,
@@ -152,87 +148,94 @@ const PositionCheckID = () => {
     const [expandedRowKeys, setExpandedRowKeys] = useState([]);
     const [tableData, setTableData] = useState(mockTableData);
     const [ isExpandedSerp, setIsExpandedSerp] = useState(false);
+    const addedRowsRef = useRef<Record<string, { customRow: HTMLTableRowElement, hiddenRows: HTMLTableRowElement[] }>>({});
     const tableContainerRef = useRef<HTMLDivElement>(null);
     const navigate = useNavigate();
 
-    useEffect(() => {
-        const loadSkuAnalysisData = async () => {
-            if (!params?.id || !isFiltersLoaded) return;
-
-            try {
-                dispatch(skuAnalysisActions.setDataStatus({ isLoading: true, isError: false, message: '' }));
-
-                // await Promise.all([
-                //     dispatch(fetchSkuAnalysisSkuData({ id: params.id, selectedRange })),
-                //     dispatch(fetchSkuAnalysisMainChartData({ id: params.id, selectedRange })),
-                //     dispatch(fetchSkuAnalysisIndicatorsData({ id: params.id, selectedRange })),
-                //     dispatch(fetchSkuAnalysisMainTableData({ id: params.id, selectedRange })),
-                //     dispatch(fetchSkuAnalysisByColorTableData({ id: params.id, selectedRange })),
-                //     dispatch(fetchSkuAnalysisByWarehousesTableData({ id: params.id, selectedRange })),
-                //     dispatch(fetchSkuAnalysisBySizeTableData({ id: params.id, selectedRange }))
-                // ]);
-
-                dispatch(skuAnalysisActions.setDataStatus({ isLoading: false, isError: false, message: '' }));
-            } catch (error) {
-                dispatch(skuAnalysisActions.setDataStatus({
-                    isLoading: false,
-                    isError: true,
-                    message: 'Failed to load SKU analysis data. Please try again.'
-                }));
-            }
-        };
-
-        loadSkuAnalysisData();
-    }, [params, selectedRange, isFiltersLoaded]);
-
+    
     const handleExpandedRowsChange = (keys: string[]) => {
+        // Находим строки, которые были свернуты
+        const collapsedKeys = expandedRowKeys.filter(key => !keys.includes(key));
+        
+        // Удаляем добавленные строки для свернутых родителей
+        collapsedKeys.forEach(key => {
+            const addedRowData = addedRowsRef.current[key];
+            if (addedRowData) {
+                // Удаляем кастомную строку
+                addedRowData.customRow.remove();
+                
+                // Показываем скрытые строки
+                addedRowData.hiddenRows.forEach(row => {
+                    row.style.display = '';
+                });
+                
+                // Удаляем из ref
+                delete addedRowsRef.current[key];
+            }
+        });
+        
         setExpandedRowKeys(keys);
     };
 
-    const serpButtonHandler = async (key: string, cellId: string) => {
-        const currentRow = tableData.find((row: any) => row.rowKey === key);
+    const serpButtonHandler = (buttonRef: HTMLButtonElement, rowKey: string) => {
+        const currentRow = tableData.find((row: any) => row.rowKey === rowKey);
         if (!currentRow) return;
-        const currentChildrenLength = currentRow.children?.length || 1;
-        console.log('currentChildrenLength', currentChildrenLength);
-        console.log('currentRow.rowKey', currentRow.rowKey);
+        
+        // Если уже добавлена кастомная строка, не делаем ничего
+        if (addedRowsRef.current[rowKey]) return;
+        
+        // Раскрываем строку
         setExpandedRowKeys(prev => [...prev, currentRow.rowKey]);
 
-        const func = () => {
-            const currentCellWrapper = document.getElementById(cellId);
-            console.log('currentCellWrapper', currentCellWrapper);
-            if (!currentCellWrapper) return;
-            // const currentCell = currentCellWrapper.closest('td').querySelector('div');
-            const currentCell = currentCellWrapper.closest('td')
-            console.log('currentCell', currentCell);
-            if (!currentCell) return;
-            currentCell.setAttribute('colSpan', '5');
-            // currentCell.setAttribute('rowSpan', currentChildrenLength.toString());
-            console.log('currentCell', currentCell);
+        // Находим tr в которой лежит кнопка
+        const currentTr = buttonRef.closest('tr');
+        if (!currentTr) return;
 
-            // скрывать три строки после этой
-            let nextCell = currentCell.nextElementSibling;
-            for (let i = 0; i < 4 && nextCell; i++) {
-                (nextCell as HTMLElement).style.display = 'none';
-                nextCell = nextCell.nextElementSibling;
+        console.log('currentTr', currentTr);
+
+        // Ждем рендеринг раскрытых строк
+        setTimeout(() => {
+            const hiddenRows: HTMLTableRowElement[] = [];
+            
+            // Скрываем следующие 3 строки
+            let nextTr = currentTr.nextElementSibling;
+            for (let i = 0; i < 3 && nextTr; i++) {
+                (nextTr as HTMLElement).style.display = 'none';
+                hiddenRows.push(nextTr as HTMLTableRowElement);
+                nextTr = nextTr.nextElementSibling;
             }
 
-            let tr = currentCell.closest('tr');
-            if (tr) {
-                console.log('tr', tr);
-                let next = tr.nextElementSibling;
-                for (let i = 0; i < 3 && next; i++) {
-                    (next as HTMLElement).style.display = 'none';
-                    next = next.nextElementSibling;
-                }
-            }
+            // Создаем новую строку с кастомным рендером
+            const newRow = document.createElement('tr');
+            const newCell = document.createElement('td');
+            newCell.colSpan = 5;
+            newCell.style.padding = '20px';
+            newCell.style.backgroundColor = '#f5f5f5';
+            
+            // Создаем контейнер для React компонента
+            const container = document.createElement('div');
+            newCell.appendChild(container);
+            newRow.appendChild(newCell);
 
-            currentCellWrapper.style.minHeight = '200px'
-
-        }
-
-        const timeout = setTimeout(func, 100);
-       
-        return () => clearTimeout(timeout);
+            // Вставляем новую строку после текущей
+            currentTr.after(newRow);
+            
+            // Рендерим React компонент в контейнер
+            const root = ReactDOM.createRoot(container);
+            root.render(
+                <div style={{ minHeight: '200px', border: '2px solid red', padding: '20px' }}>
+                    <h3>Кастомный React компонент</h3>
+                    <p>Row Key: {rowKey}</p>
+                    {/* Здесь можете вставить любой свой компонент */}
+                </div>
+            );
+            
+            // Сохраняем ссылки для последующего удаления
+            addedRowsRef.current[rowKey] = {
+                customRow: newRow,
+                hiddenRows: hiddenRows
+            };
+        }, 100);
     };
 
     return (
