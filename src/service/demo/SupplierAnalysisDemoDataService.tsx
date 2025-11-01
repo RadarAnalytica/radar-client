@@ -42,7 +42,6 @@ export class SupplierAnalysisDemoDataService extends DemoDataService {
 
     // Получаем request object (body) из options
     const requestObject = this.getRequestObject(options);
-    console.log('requestObject', endpoint, requestObject);
 
     // Пробуем точное совпадение для supplier analysis маршрутов
     const exactMatch = this.getExactMatch(endpoint, filters, requestObject);
