@@ -12,7 +12,7 @@ const FirstBarsGroup = ({ dataDashBoard, selectedRange, loading }) => {
             <div className={styles.group__lgBarWrapper}>
             <RadarBar
                 title='Чистая прибыль'
-                //tooltipText='text'
+                tooltipText='Прибыль, остающаяся после уплаты налогов, сборов, отчислений'
                 mainValue={dataDashBoard?.netProfit}
                 mainValueUnits='₽'
                 hasColoredBackground
@@ -44,7 +44,7 @@ const FirstBarsGroup = ({ dataDashBoard, selectedRange, loading }) => {
             <div className={styles.group__sBarWrapper}>
             <RadarBar
                 title='WB Реализовал'
-                //tooltipText='Сумма реализации товара с учетом согласованной скидки продавца и СПП'
+                tooltipText='Сумма реализации товара с учетом согласованной скидки продавца и СПП'
                 midValueUnits='₽'
                 mainValue={dataDashBoard?.taxInfo?.wbRealization}
                 mainValueUnits='₽'
