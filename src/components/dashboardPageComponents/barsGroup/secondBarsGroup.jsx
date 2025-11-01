@@ -185,7 +185,7 @@ const SecondBarsGroup = ({ dataDashBoard, loading, selectedRange, activeBrand, a
             /> */}
             <RadarBar
                 title='Штрафы WB и прочие удержания'
-                tooltipText={!dataDashBoard?.penalty ? 'В выбранном периоде штрафов и расходов на платную приемку нет' : ''}
+                tooltipText={'К прочим удержания отнесены: платежи по договору займа, предоставление услуг по подписке «Джем», страхование заказов, услуги по размещению рекламного материала, списания за отзывы, утилизации товара'}
                 mainValue={dataDashBoard?.penalty}
                 mainValueUnits='₽'
                 isLoading={loading}
