@@ -148,7 +148,7 @@ function App() {
                 <Route path='/product/:id' element={<ProtectedRoute><StockAnalysisGlitter /></ProtectedRoute>} />
                 <Route path='/report-profit-loss' element={<ProtectedRoute onboardProtected expireProtected routeRuName='Отчет о прибыли и убытках'><ReportProfitLoss /></ProtectedRoute>} />
                 <Route path='/report-week' element={<ProtectedRoute expireProtected onboardProtected routeRuName='По неделям'><ReportWeek /></ProtectedRoute>} />
-                <Route path='/operating-expenses' element={<ProtectedRoute expireProtected onboardProtected routeRuName='Операционные расходы'><OperatingExpenses /></ProtectedRoute>} />
+                {/* <Route path='/operating-expenses' element={<ProtectedRoute expireProtected onboardProtected routeRuName='Операционные расходы'><OperatingExpenses /></ProtectedRoute>} /> */}
                 <Route path='/referal' element={<ProtectedRoute expireProtected routeRuName='Реферальная программа'><ReferalPage /></ProtectedRoute>} />
                 <Route path='/rnp' element={<ProtectedRoute expireProtected onboardProtected routeRuName='Рука на пульсе (РНП)'><Rnp /></ProtectedRoute>} />
                 <Route path='/serp' element={<ProtectedRoute expireProtected onboardProtected routeRuName='SERP'><SerpPage /></ProtectedRoute>} />

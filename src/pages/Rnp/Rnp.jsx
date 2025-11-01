@@ -311,8 +311,8 @@ export default function Rnp() {
 				<div className={styles.page__headerWrapper}>
 					<Header 
 						title="Рука на пульсе (РНП)"
-						howToLink="/"
-						howToLinkText="Как загрузить?"
+						howToLink="https://radar.usedocs.com/article/79433"
+						howToLinkText="Как проверить данные?"
 					/>
 				</div>
 
