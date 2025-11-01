@@ -31,7 +31,7 @@ import DemonstrationSection from '../components/DemonstrationSection';
 
 const ReportMain = () => {
   const { isDemoMode } = useDemoMode();
-  const { user, authToken } = useContext(AuthContext);
+  const { user, authToken, setUser } = useContext(AuthContext);
   const fileInputRef = useRef(null);
   const [selectedFile, setSelectedFile] = useState(null);
   const [show, setShow] = useState(false);
@@ -47,6 +47,7 @@ const ReportMain = () => {
     try {
       const result = await ServiceFunctions.getListOfReports(authToken);
       setData(result);
+      return result;
     } catch (error) {
       console.error('Error fetching data:', error);
     }
@@ -114,6 +115,10 @@ const ReportMain = () => {
     try {
       await ServiceFunctions.deleteReport(authToken, id);
       await getListOfReports();
+      const list = await getListOfReports();
+      if (list.length === 0) {
+        await setUser({ ...user, is_report_downloaded: false });
+      }
     } catch (error) {
       console.error('Error fetching data:', error);
     }
