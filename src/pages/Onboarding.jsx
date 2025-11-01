@@ -31,6 +31,13 @@ const initRequestStatus = {
   message: ''
 };
 
+const initRequestStatus = {
+  isLoading: false,
+  isSuccess: false,
+  isError: false,
+  message: ''
+};
+
 const Onboarding = () => {
   const { user, authToken, setUser, logout } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -87,6 +94,12 @@ const Onboarding = () => {
       return;
     }
   };
+
+  useEffect(() => {
+    if (reqStatus.isSuccess) {
+      handleShow();
+    }
+  }, [reqStatus]);
 
   useEffect(() => {
     if (location.search) {
