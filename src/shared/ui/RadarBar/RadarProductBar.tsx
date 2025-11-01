@@ -35,16 +35,22 @@ export const RadarProductBar: React.FC<IRadarProductBarProps> = ({ data, isLoadi
                     if (id === 0) {
                         return (
                             <div className={styles.head__mainPhotoWrapper} key={id}>
-                                <img src={i} alt='' width={138} height={182} className={styles.head__galleryMainImage} onError={(e) => {
-                                    (e.target as HTMLImageElement).style.display = 'none';
-                                }} />
+                                <img src={i} alt='' width={138} height={182} className={styles.head__galleryMainImage}
+                                    onError={(e) => {
+                                        (e.target as HTMLImageElement).style.display = 'none';
+                                    }}
+                                />
                             </div>
                         );
                     } else {
 
                         return id < 4 && (
                             <div className={styles.head__secPhotoWrapper} key={id}>
-                                <img src={i} alt='' width={39} height={54} className={styles.head__galleryImage} />
+                                <img src={i} alt='' width={39} height={54} className={styles.head__galleryImage}
+                                    onError={(e) => {
+                                        (e.target as HTMLImageElement).style.display = 'none';
+                                    }}
+                                />
                             </div>);
                     }
                 })}

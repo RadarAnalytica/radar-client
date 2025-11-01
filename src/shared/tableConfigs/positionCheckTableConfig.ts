@@ -1,0 +1,43 @@
+export const positionCheckTableConfig = [
+    {
+        key: 'query',
+        title: 'Название',
+        dataIndex: 'query',
+        hidden: false,
+        width: 385,
+        minWidth: 385,
+    },
+    {
+        key: 'frequency',
+        title: 'Частота',
+        dataIndex: 'frequency',
+        hidden: false,
+        width: 160,
+        minWidth: 160,
+    },
+    {
+        key: 'total_goods',
+        title: 'Товаров',
+        dataIndex: 'total_goods',
+        hidden: false,
+        width: 160,
+        minWidth: 160,
+    },
+    {
+        key: 'complexity',
+        title: 'Сложность',
+        dataIndex: 'complexity',
+        hidden: false,
+        width: 160,
+        minWidth: 160,
+    },
+    {
+        key: 'serp',
+        title: '',
+        dataIndex: 'serp',
+        hidden: false,
+        units: '₽',
+        width: 160,
+        minWidth: 160,
+    },
+]

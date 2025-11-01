@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import styles from "./PositionCheckID.module.css";
 import Header from '@/components/sharedComponents/header/header';
 import MobilePlug from '@/components/sharedComponents/mobilePlug/mobilePlug';
@@ -10,17 +10,34 @@ import { useDemoMode } from '@/app/providers';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { actions as skuAnalysisActions } from '@/redux/skuAnalysis/skuAnalysisSlice';
-import { fetchSkuAnalysisSkuData, fetchSkuAnalysisMainChartData, fetchSkuAnalysisIndicatorsData, fetchSkuAnalysisMainTableData, fetchSkuAnalysisByColorTableData, fetchSkuAnalysisByWarehousesTableData, fetchSkuAnalysisBySizeTableData } from '@/redux/skuAnalysis/skuAnalysisActions';
-import { Filters } from '@/components/sharedComponents/apiServicePagesFiltersComponent';
-import { ItemWidget, BarsWidget, MainChartWidget, TableWidget } from './widgets';
-import { mainTableConfig, byColorTableConfig, byWarehouseTableConfig, bySizeTableConfig } from './shared';
 import { ConfigProvider, Segmented } from 'antd';
 import ErrorModal from '@/components/sharedComponents/modals/errorModal/errorModal';
 import NoSubscriptionWarningBlock from '@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock';
-import { RadarBar, RadarProductBar } from '@/shared';
-import { LinkProps } from 'react-router-dom';
+import { RadarBar, RadarProductBar, positionCheckTableConfig, positionCheckTableCustomCellRender } from '@/shared';
 import { formatPrice } from '@/service/utils';
-import moment from 'moment';
+import { PositionCheckFilters } from '@/widgets';
+import DownloadButton from '@/components/DownloadButton';
+import { Table as RadarTable } from 'radar-ui';
+
+// antd segmented theme
+const segmentedTheme = {
+    token: {
+        fontSize: 12,
+        fontWeight: 500,
+    },
+    components: {
+        Segmented: {
+            itemActiveBg: '#5329FF1A',
+            itemSelectedBg: '#5329FF1A',
+            trackBg: 'transparent',
+            trackPadding: 0,
+            itemHoverBg: '#5329FF10',
+            itemColor: '#1A1A1A80',
+            itemSelectedColor: '#1A1A1A',
+            itemHoverColor: '#1A1A1A',
+        }
+    }
+}
 
 const mockMainData = {
     "wb_id": 361059312,
@@ -44,6 +61,84 @@ const mockMainData = {
     "evaluation": 4.5
 }
 
+const mockTableData = [
+    {
+        query: 'test query',
+        frequency: 100,
+        total_goods: 100,
+        complexity: 'Низкая',
+        isParent: true,
+        rowKey: 'r1',
+        serpCellId: 'cellr1',
+        children: [
+            {
+                rowWithSpan: true,
+                rowKey: 'r1.0',
+                cellId: 'cellr1'
+            },
+            {
+                query: 'test query 1.1',
+                frequency: 200,
+                total_goods: 200,
+                complexity: 'Средняя',
+                rowKey: 'r1.1',
+            },
+            {
+                query: 'test query 1.2',
+                frequency: 300,
+                total_goods: 300,
+                complexity: 'Высокая',
+                rowKey: 'r1.2',
+            },
+            {
+                query: 'test query 1.3',
+                frequency: 400,
+                total_goods: 400,
+                complexity: 'Низкая',
+                rowKey: 'r1.3',
+            },
+        ]
+    },
+    {
+        query: 'test query 2',
+        frequency: 200,
+        total_goods: 200,
+        complexity: 'Средняя',
+        isParent: true,
+        rowKey: 'r2',
+        children: [
+            {
+                query: 'test query 2.1',
+                frequency: 200,
+                total_goods: 200,
+                complexity: 'Средняя',
+                rowKey: 'r2.1',
+            },
+            {
+                query: 'test query 2.2',
+                frequency: 300,
+                total_goods: 300,
+                complexity: 'Высокая',
+                rowKey: 'r2.2',
+            },
+            {
+                query: 'test query 2.3',
+                frequency: 400,
+                total_goods: 400,
+                complexity: 'Низкая',
+                rowKey: 'r2.3',
+            },
+        ]
+    },
+    {
+        query: 'test query 3',
+        frequency: 300,
+        total_goods: 300,
+        complexity: 'Высокая',
+        rowKey: 'r3',
+    },
+];
+
 const PositionCheckID = () => {
     const params = useParams();
     const dispatch = useAppDispatch();
@@ -51,6 +146,13 @@ const PositionCheckID = () => {
     const { selectedRange, isFiltersLoaded } = useAppSelector(store => store.filters);
     const { dataStatus, skuMainTableData, skuByColorTableData, skuByWarehouseTableData, skuBySizeTableData } = useAppSelector(store => store.skuAnalysis);
     const [loading, setLoading] = useState(true);
+    const [requestObject, setRequestObject] = useState<Record<string, any>>({});
+    const [tableType, setTableType] = useState<'Кластеры' | 'По запросам'>('Кластеры');
+    const [pagination, setPagination] = useState({ current: 1, pageSize: 10, total: 0 });
+    const [expandedRowKeys, setExpandedRowKeys] = useState([]);
+    const [tableData, setTableData] = useState(mockTableData);
+    const [ isExpandedSerp, setIsExpandedSerp] = useState(false);
+    const tableContainerRef = useRef<HTMLDivElement>(null);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -82,6 +184,56 @@ const PositionCheckID = () => {
 
         loadSkuAnalysisData();
     }, [params, selectedRange, isFiltersLoaded]);
+
+    const handleExpandedRowsChange = (keys: string[]) => {
+        setExpandedRowKeys(keys);
+    };
+
+    const serpButtonHandler = async (key: string, cellId: string) => {
+        const currentRow = tableData.find((row: any) => row.rowKey === key);
+        if (!currentRow) return;
+        const currentChildrenLength = currentRow.children?.length || 1;
+        console.log('currentChildrenLength', currentChildrenLength);
+        console.log('currentRow.rowKey', currentRow.rowKey);
+        setExpandedRowKeys(prev => [...prev, currentRow.rowKey]);
+
+        const func = () => {
+            const currentCellWrapper = document.getElementById(cellId);
+            console.log('currentCellWrapper', currentCellWrapper);
+            if (!currentCellWrapper) return;
+            // const currentCell = currentCellWrapper.closest('td').querySelector('div');
+            const currentCell = currentCellWrapper.closest('td')
+            console.log('currentCell', currentCell);
+            if (!currentCell) return;
+            currentCell.setAttribute('colSpan', '5');
+            // currentCell.setAttribute('rowSpan', currentChildrenLength.toString());
+            console.log('currentCell', currentCell);
+
+            // скрывать три строки после этой
+            let nextCell = currentCell.nextElementSibling;
+            for (let i = 0; i < 4 && nextCell; i++) {
+                (nextCell as HTMLElement).style.display = 'none';
+                nextCell = nextCell.nextElementSibling;
+            }
+
+            let tr = currentCell.closest('tr');
+            if (tr) {
+                console.log('tr', tr);
+                let next = tr.nextElementSibling;
+                for (let i = 0; i < 3 && next; i++) {
+                    (next as HTMLElement).style.display = 'none';
+                    next = next.nextElementSibling;
+                }
+            }
+
+            currentCellWrapper.style.minHeight = '200px'
+
+        }
+
+        const timeout = setTimeout(func, 100);
+       
+        return () => clearTimeout(timeout);
+    };
 
     return (
         <main className={styles.page}>
@@ -145,31 +297,54 @@ const PositionCheckID = () => {
                         </div>
                     </div>
                 </div>
+                {/* Bars */}
                 <div className={styles.page__barsWrapper}>
                     <RadarBar title='Видимость' isLoading={dataStatus.isLoading} mainValue={42.91} mainValueUnits='%' />
                     <RadarBar title='Средняя позиция' isLoading={dataStatus.isLoading} mainValue={98} mainValueUnits='' />
                     <RadarBar title='Просмотры в месяц, шт' isLoading={dataStatus.isLoading} mainValue={10283} mainValueUnits='' />
                 </div>
-                <div>
-                    {/* <Filters
-                        shopSelect={false}
-                        brandSelect={false}
-                        articleSelect={false}
-                        groupSelect={false}
-                        isDataLoading={dataStatus.isLoading}
-                    /> */}
+                {/* Filters */}
+                <div className={styles.page__filtersWrapper}>
+                    <PositionCheckFilters submitHandler={(formData) => { setRequestObject(formData); }} />
+                    <DownloadButton handleDownload={() => { }} loading={false} />
                 </div>
-                <BarsWidget />
-                <MainChartWidget id={params?.id} />
-
+                {/* Table */}
                 <div className={styles.page__tableWrapper}>
-                    <TableWidget
-                        tableConfig={mainTableConfig}
-                        data={skuMainTableData}
-                        tinyRows
-                    />
-                </div>
+                    <ConfigProvider theme={segmentedTheme}>
+                        <Segmented options={['Кластеры', 'По запросам']} size='large' value={tableType} onChange={(value) => setTableType(value as 'Кластеры' | 'По запросам')} />
+                    </ConfigProvider>
+                    <div className={styles.page__summary}>
+                        <p className={styles.page__summaryItem}>Найдено ключей: <span>65</span></p>
+                        <p className={styles.page__summaryItem}>Кластеров: <span>15</span></p>
+                    </div>
 
+                    <div className={styles.page__tableWrapper} ref={tableContainerRef}>
+                        <RadarTable
+                            rowKey={(record) => record.rowKey}
+                            config={positionCheckTableConfig}
+                            dataSource={mockTableData}
+                            preset='radar-table-default'
+                            stickyHeader={-1}
+                            pagination={{
+                                current: pagination.current,
+                                pageSize: pagination.pageSize,
+                                total: pagination.total,
+                                //onChange: paginationHandler,
+                                showQuickJumper: true,
+                                hideOnSinglePage: true
+                            }}
+                            treeMode
+                            indentSize={45}
+                            expandedRowKeys={expandedRowKeys}
+                            onExpandedRowsChange={handleExpandedRowsChange}
+                            bodyCellWrapperStyle={{ borderBottom: 'none', padding: '10.5px 12px' }}
+                            customCellRender={{
+                                idx: ['query', 'serp'],
+                                renderer: (value, record, index, dataIndex) => positionCheckTableCustomCellRender(value, record, index, dataIndex, serpButtonHandler, isExpandedSerp),
+                            }}
+                        />
+                    </div>
+                </div>
             </section>
             {/* ---------------------- */}
             <ErrorModal
