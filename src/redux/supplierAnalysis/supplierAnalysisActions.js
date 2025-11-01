@@ -34,6 +34,7 @@ export const fetchSupplierAnalysisMetaData = createAsyncThunk(
   async (reqData, { dispatch }) => {
     dispatch(supplierAnalysisActions.setDataFetchingStatus({ dataType: 'metaData', statusObject: { isLoading: true, isError: false, isSuccess: false, message: '' } }));
     dispatch(supplierAnalysisActions.setIsAnyDataLoading(true));
+    
     try {
       let res = await fetchApi(`https://radarmarket.ru/api/web-service/supplier-analysis/supplier-meta`, {
         method: 'POST',
@@ -60,8 +61,8 @@ export const fetchSupplierAnalysisIndicatorsData = createAsyncThunk(
   async (reqData, { dispatch }) => {
     dispatch(supplierAnalysisActions.setDataFetchingStatus({ dataType: 'indicatorsData', statusObject: { isLoading: true, isError: false, isSuccess: false, message: '' } }));
     dispatch(supplierAnalysisActions.setIsAnyDataLoading(true));
+    
     try {
-
       let res = await fetchApi(`https://radarmarket.ru/api/web-service/supplier-analysis/supplier-indicators`, {
         method: 'POST',
         headers: {
@@ -86,8 +87,8 @@ export const fetchSupplierAnalysisMainChartData = createAsyncThunk(
   async (reqData, { dispatch }) => {
     dispatch(supplierAnalysisActions.setDataFetchingStatus({ dataType: 'mainChartData', statusObject: { isLoading: true, isError: false, isSuccess: false, message: '' } }));
     dispatch(supplierAnalysisActions.setIsAnyDataLoading(true));
+    
     try {
-
       const res = await fetchApi(`https://radarmarket.ru/api/web-service/supplier-analysis/supplier-charts`, {
         method: 'POST',
         headers: {
@@ -112,8 +113,8 @@ export const fetchSupplierAnalysisByDatesTableData = createAsyncThunk(
   async (reqData, { dispatch }) => {
     reqData.hasLoadingStatus && dispatch(supplierAnalysisActions.setDataFetchingStatus({ dataType: 'byDatesTableData', statusObject: { isLoading: true, isError: false, isSuccess: false, message: '' } }));
     dispatch(supplierAnalysisActions.setIsAnyDataLoading(true));
+    
     try {
-
       const res = await fetchApi(`https://radarmarket.ru/api/web-service/supplier-analysis/supplier-by-date`, {
         method: 'POST',
         headers: {
@@ -139,7 +140,6 @@ export const fetchSupplierAnalysisBrandsData = createAsyncThunk(
     //dispatch(supplierAnalysisActions.setDataFetchingStatus({dataType: 'byDatesTableData', statusObject: {isLoading: true, isError: false, isSuccess: false, message: ''}}))
     //dispatch(supplierAnalysisActions.setIsAnyDataLoading(true))
     try {
-
       const res = await fetchApi(`https://radarmarket.ru/api/web-service/supplier-analysis/supplier-brands`, {
         method: 'POST',
         headers: {
@@ -167,8 +167,8 @@ export const fetchSupplierAnalysisByBrandTableData = createAsyncThunk(
   async (reqData, { dispatch }) => {
     reqData.hasLoadingStatus && dispatch(supplierAnalysisActions.setDataFetchingStatus({ dataType: 'byBrandsTableData', statusObject: { isLoading: true, isError: false, isSuccess: false, message: '' } }));
     dispatch(supplierAnalysisActions.setIsAnyDataLoading(true));
+    
     try {
-
       const res = await fetchApi(`https://radarmarket.ru/api/web-service/supplier-analysis/supplier-by-product`, {
         method: 'POST',
         headers: {
@@ -193,8 +193,8 @@ export const fetchSupplierAnalysisBySubjectsTableData = createAsyncThunk(
   async (reqData, { dispatch }) => {
     reqData.hasLoadingStatus && dispatch(supplierAnalysisActions.setDataFetchingStatus({ dataType: 'bySubjectsTableData', statusObject: { isLoading: true, isError: false, isSuccess: false, message: '' } }));
     dispatch(supplierAnalysisActions.setIsAnyDataLoading(true));
+    
     try {
-
       const res = await fetchApi(`https://radarmarket.ru/api/web-service/supplier-analysis/supplier-by-subject`, {
         method: 'POST',
         headers: {
@@ -219,8 +219,8 @@ export const fetchSupplierAnalysisByWarehousesTableData = createAsyncThunk(
   async (reqData, { dispatch }) => {
     reqData.hasLoadingStatus && dispatch(supplierAnalysisActions.setDataFetchingStatus({ dataType: 'byWarehousesTableData', statusObject: { isLoading: true, isError: false, isSuccess: false, message: '' } }));
     dispatch(supplierAnalysisActions.setIsAnyDataLoading(true));
+    
     try {
-
       const res = await fetchApi(`https://radarmarket.ru/api/web-service/supplier-analysis/supplier-by-warehouse`, {
         method: 'POST',
         headers: {
@@ -245,8 +245,8 @@ export const fetchSupplierAnalysisBySizesTableData = createAsyncThunk(
   async (reqData, { dispatch }) => {
     reqData.hasLoadingStatus && dispatch(supplierAnalysisActions.setDataFetchingStatus({ dataType: 'bySizesTableData', statusObject: { isLoading: true, isError: false, isSuccess: false, message: '' } }));
     dispatch(supplierAnalysisActions.setIsAnyDataLoading(true));
+    
     try {
-
       const res = await fetchApi(`https://radarmarket.ru/api/web-service/supplier-analysis/supplier-by-size`, {
         method: 'POST',
         headers: {
@@ -271,8 +271,8 @@ export const fetchSupplierAnalysisByWharehousesComparsionData = createAsyncThunk
   async (reqData, { dispatch }) => {
     reqData.hasLoadingStatus && dispatch(supplierAnalysisActions.setDataFetchingStatus({ dataType: 'byWharehousesComparsionData', statusObject: { isLoading: true, isError: false, isSuccess: false, message: '' } }));
     dispatch(supplierAnalysisActions.setIsAnyDataLoading(true));
+    
     try {
-
       const res = await fetchApi(`https://radarmarket.ru/api/web-service/supplier-analysis/comparison/warehouse-quantity`, {
         method: 'POST',
         headers: {
@@ -297,8 +297,8 @@ export const fetchSupplierAnalysisByIncomingOrdersComparsionData = createAsyncTh
   async (reqData, { dispatch }) => {
     reqData.hasLoadingStatus && dispatch(supplierAnalysisActions.setDataFetchingStatus({ dataType: 'byIncomingOrdersComparsionData', statusObject: { isLoading: true, isError: false, isSuccess: false, message: '' } }));
     dispatch(supplierAnalysisActions.setIsAnyDataLoading(true));
+    
     try {
-
       const res = await fetchApi(`https://radarmarket.ru/api/web-service/supplier-analysis/comparison/revenue`, {
         method: 'POST',
         headers: {

@@ -124,17 +124,19 @@ const SupplierIdPage = () => {
                         dataType='metaData'
                         id={mainSupplierData?.supplier_id}
                     />
-                    <div className={`${styles.page__filtersWrapper} ${isDemoMode && 'pe-none'}`}>
-                        <Filters
-                            setLoading={() => {}}
-                            shopSelect={false}
-                            brandSelect={false}
-                            articleSelect={false}
-                            groupSelect={false}
-                            tempPageCondition='supplier'
-                            isDataLoading={isAnyDataLoading}
-                            maxCustomDate={maxDate}
-                        />
+                    <div className={styles.page__filtersWrapper} title={isDemoMode && 'Данный фильтр недоступен в демо-режиме'}>
+                        <div className={`${styles.page__filtersWrapper__filters} ${isDemoMode && 'pe-none'}`}>
+                            <Filters
+                                setLoading={() => {}}
+                                shopSelect={false}
+                                brandSelect={false}
+                                articleSelect={false}
+                                groupSelect={false}
+                                tempPageCondition='supplier'
+                                isDataLoading={isAnyDataLoading}
+                                maxCustomDate={maxDate}
+                            />
+                        </div>
                     </div>
                     <BarsWidget
                         dataHandler={fetchSupplierAnalysisIndicatorsData}
