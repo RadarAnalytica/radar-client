@@ -24,7 +24,6 @@ import {
   type ColumnConfig 
 } from './config/tableConfig';
 import styles from './wbMetricsPage.module.css';
-import FilterLoader from '@/components/ui/FilterLoader';
 
 
 const WbMetricsPage: React.FC = () => {
@@ -67,8 +66,6 @@ const WbMetricsPage: React.FC = () => {
   useEffect(() => {
     if (activeBrand?.is_primary_collect) {
       loadData();
-    } else {
-      setLoading(false);
     }
   }, [activeBrand, pageData.page, activeBrandName, activeArticle, activeGroup, metricType, sortState]);
 
@@ -96,7 +93,6 @@ const WbMetricsPage: React.FC = () => {
   return (
     <main className={styles.page}>
       <MobilePlug />
-      <FilterLoader />
 
       <section className={styles.page__sideNavWrapper}>
         <Sidebar />

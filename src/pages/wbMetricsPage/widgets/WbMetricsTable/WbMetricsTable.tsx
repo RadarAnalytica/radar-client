@@ -165,12 +165,6 @@ const WbMetricsTable: React.FC<WbMetricsTableProps> = ({
   return (
     <div className={styles.tableContainer}>
       <div className={styles.tableWrapper} ref={tableContainerRef}>
-        {loading && (
-          <div className={styles.loading}>
-            <span className='loader'></span>
-          </div>
-        )}
-        
         {!loading && data && (
           <RadarTable
             config={columns}
