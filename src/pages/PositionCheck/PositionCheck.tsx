@@ -3,26 +3,44 @@ import styles from "./PositionCheck.module.css";
 import Sidebar from "@/components/sharedComponents/sidebar/sidebar";
 import Header from "@/components/sharedComponents/header/header";
 import { SearchBlock } from "@/features";
+import { useAppSelector, useAppDispatch } from "@/redux/hooks";
+import { useNavigate } from "react-router-dom";
+import { actions as skuAnalysisActions } from "@/redux/skuAnalysis/skuAnalysisSlice";
+import ErrorModal from "@/components/sharedComponents/modals/errorModal/errorModal";
+import { useState } from "react";
 
-// const runSearch = () => {
-//     let normilizedId: string;
-//     if (/^(|\d+)$/.test(inputValue)) {
-//         normilizedId = inputValue;
-//     } else {
-//         const startId = inputValue.indexOf('wildberries.ru/catalog/') + 'wildberries.ru/catalog/'.length;
-//         const endId = inputValue.indexOf('/detail.aspx');
-//         if (startId === -1 || endId === -1) {
-//             setRequestStatus({ ...requestInitState, isError: true, message: 'Не верный формат артикула. Вставьте только числа или ссылку вида: https://www.wildberries.ru/catalog/ID/detail.aspx' });
-//             setInputValue('');
-//             return;
-//         }
-//         normilizedId = inputValue.substring(startId, endId);
-//     }
+// model
+const requestInitState = {
+    isLoading: false,
+    isError: false,
+    isSuccess: false,
+    message: ''
+};
 
-//     navigate(`/sku-analysis/${normilizedId}`);
-// };
 
+// comp
 const PositionCheckPage = () => {
+    const dispatch = useAppDispatch();
+    const { skuSearchHistory } = useAppSelector(store => store.skuAnalysis);
+    const navigate = useNavigate();
+    const [requestStatus, setRequestStatus] = useState(requestInitState);
+
+    const submitHandler = (inputValue: string) => {
+        let normilizedId: string;
+        if (/^(|\d+)$/.test(inputValue)) {
+            normilizedId = inputValue;
+        } else {
+            const startId = inputValue.indexOf('wildberries.ru/catalog/') + 'wildberries.ru/catalog/'.length;
+            const endId = inputValue.indexOf('/detail.aspx');
+            if (startId === -1 || endId === -1) {
+                setRequestStatus({ ...requestInitState, isError: true, message: 'Не верный формат артикула. Вставьте только числа или ссылку вида: https://www.wildberries.ru/catalog/ID/detail.aspx' });
+                return;
+            }
+            normilizedId = inputValue.substring(startId, endId);
+        }
+
+        navigate(`/position-check/${normilizedId}`);
+    };
 
     return (
         <main className={styles.page}>
@@ -47,11 +65,21 @@ const PositionCheckPage = () => {
                 </div>
                 {/* !header */}
                 <SearchBlock
-                    title='Проверка позиций'
-                    searchHistory={['1234567890', '1234567891', '1234567892']}
+                    title='Поиск по товару'
+                    searchHistory={skuSearchHistory}
+                    submitHandler={submitHandler}
+                    clearSearchHistoryHandler={() => dispatch(skuAnalysisActions.resetSkuSearchHistory())}
                 />
             </section>
             {/* ---------------------- */}
+            <ErrorModal
+                footer={null}
+                open={requestStatus.isError}
+                onOk={() => setRequestStatus(requestInitState)}
+                onClose={() => setRequestStatus(requestInitState)}
+                onCancel={() => setRequestStatus(requestInitState)}
+                message={requestStatus.message}
+            />
         </main>
     );
 };

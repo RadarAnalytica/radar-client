@@ -30,6 +30,7 @@ import { Link } from 'react-router-dom';
 const ItemHead = () => {
 
     const { skuMainData, dataStatus } = useAppSelector(store => store.skuAnalysis);
+
     if (dataStatus.isLoading) {
         return (
             <div className={styles.head}>
