@@ -1,6 +1,7 @@
 import styles from './abcDataBlock.module.css';
 import { Link } from 'react-router-dom';
 import { formatPrice } from '../../../../service/utils';
+import { RadarLoader } from '../../../../shared/ui/RadarLoader/RadarLoader';
 // import { getColor } from '../blockUtils';
 
 const AbcDataBlock = ({ titles, data, loading }) => {
@@ -8,9 +9,7 @@ const AbcDataBlock = ({ titles, data, loading }) => {
     if (loading) {
         return (
             <div className={styles.block}>
-                <div className={styles.bar__loaderWrapper}>
-                    <span className='loader'></span>
-                </div>
+                <RadarLoader loaderStyle={{ height: '213px' }} />
             </div>
         );
     }

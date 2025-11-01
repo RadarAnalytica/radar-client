@@ -93,7 +93,8 @@
     justify-content: flex-start;
     align-items: flex-start;
     gap: 16px;
-    height: calc(100vh - 80px)
+    height: calc(100vh - 80px);
+    overflow: hidden;
 }
 
 .modal__header {

@@ -1,6 +1,5 @@
 .block {
     background: white;
-    box-shadow: 0px 0px 20px 0px #00000014;
     border-radius: 16px;
     padding: 12px 20px;
     display: flex;
@@ -8,7 +7,6 @@
     justify-content: flex-start;
     align-items: flex-start;
     gap: 16px;
-    grid-row: span 72;
     transition: all .1s ease-in-out;
     width: 100%;
     box-sizing: border-box;
@@ -49,7 +47,7 @@
     width: 100%;
     display: grid;
     grid-template-columns: 2fr 3fr;
-    padding: 8px;
+    padding: 5px 8px;
     border-bottom: 1px solid #E8E8E8;
     cursor: pointer;
     transition: all .2s ease-in-out;
@@ -101,6 +99,7 @@
     display: flex;
     align-items: center;
     justify-content: flex-end;
+    white-space: nowrap;
 }
 .block__mainData_small {
     @media (max-width: 1270px) {
@@ -112,21 +111,19 @@
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    border-radius: 4px;
-    padding: 4px 0px 4px 8px;
+    border-radius: 8px;
+    padding: 2px 6px;
     width: fit-content;
     gap: 4px;
     min-height: 27px;
 }
 
 .block__mainSubData {
-    font-family: Mulish;
     font-weight: 600;
-    font-size: 14px;
+    font-size: 12px;
     line-height: 100%;
     letter-spacing: 0%;
     margin: 0;
-    padding: 0;
 }
 
 .block__mainSubData_green {

@@ -1,4 +1,4 @@
-export const TABLE_CONFIG_VERSION = '1.0.0';
+export const TABLE_CONFIG_VERSION = '1.0.1';
 export const TABLE_CONFIG_STORAGE_KEY = 'wbMetrics_tableConfig';
 
 export interface ColumnConfig {
@@ -9,8 +9,9 @@ export interface ColumnConfig {
   fixed?: boolean;
   sortable: boolean;
   hidden: boolean;
-  canToggle?: boolean; // Можно ли скрывать/показывать колонку
+  canToggle?: boolean;
   align?: 'left' | 'center' | 'right';
+  className?: string;
 }
 
 export interface TableConfigData {
@@ -28,7 +29,7 @@ export const getDefaultTableConfig = (controlData?: any[]): ColumnConfig[] => {
       fixed: true,
       sortable: true,
       hidden: false,
-      canToggle: false, // Всегда видима
+      canToggle: false,
     },
     {
       key: 'vendor_code',
@@ -73,21 +74,26 @@ export const getDefaultTableConfig = (controlData?: any[]): ColumnConfig[] => {
       width: 150,
       sortable: false,
       hidden: false,
-      canToggle: false, // Всегда видима
+      canToggle: false,
+      className: 'chart-column',
     },
   ];
 
   // Добавляем колонки для каждого дня
-  const dayColumns: ColumnConfig[] = (controlData || []).map((item, index) => ({
-    key: `day_${index}`,
-    title: formatDateHeader(item.date),
-    dataIndex: `day_${index}`,
-    width: 80,
-    align: 'center' as const,
-    sortable: false,
-    hidden: false,
-    canToggle: false, // Дни всегда видимы
-  }));
+  const dayColumns: ColumnConfig[] = (controlData || []).map((item, index) => {
+    const wd = item.date ? new Date(item.date).getDay() : null;
+    return {
+      key: `day_${index}`,
+      title: formatDateHeader(item.date),
+      dataIndex: `day_${index}`,
+      width: 80,
+      align: 'center' as const,
+      sortable: false,
+      hidden: false,
+      canToggle: false,
+      className: wd === 0 || wd === 6 ? 'day-header-cell --weekend' : 'day-header-cell',
+    };
+  });
 
   return [...baseColumns, ...dayColumns];
 };
@@ -101,32 +107,29 @@ const formatDateHeader = (dateString: string): string => {
   return `${dayName}, ${day}.${month < 10 ? '0' + month : month}`;
 };
 
-export const saveTableConfig = (columns: ColumnConfig[]): void => {
+export const getTableConfigStorageKey = (metricType: string) => `wbMetrics_tableConfig__${metricType}`;
+
+export const saveTableConfig = (columns: ColumnConfig[], metricType: string): void => {
   try {
     const configData: TableConfigData = {
       version: TABLE_CONFIG_VERSION,
       columns,
     };
-    localStorage.setItem(TABLE_CONFIG_STORAGE_KEY, JSON.stringify(configData));
+    localStorage.setItem(getTableConfigStorageKey(metricType), JSON.stringify(configData));
   } catch (error) {
     console.error('Error saving table config:', error);
   }
 };
 
-export const loadTableConfig = (): ColumnConfig[] | null => {
+export const loadTableConfig = (metricType: string): ColumnConfig[] | null => {
   try {
-    const savedData = localStorage.getItem(TABLE_CONFIG_STORAGE_KEY);
+    const savedData = localStorage.getItem(getTableConfigStorageKey(metricType));
     if (!savedData) return null;
-
     const configData: TableConfigData = JSON.parse(savedData);
-    
-    // Проверка версии конфига
     if (configData.version !== TABLE_CONFIG_VERSION) {
-      console.log('Table config version mismatch, using default config');
-      localStorage.removeItem(TABLE_CONFIG_STORAGE_KEY);
+      localStorage.removeItem(getTableConfigStorageKey(metricType));
       return null;
     }
-
     return configData.columns;
   } catch (error) {
     console.error('Error loading table config:', error);

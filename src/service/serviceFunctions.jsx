@@ -89,7 +89,6 @@ export const ServiceFunctions = {
 			},
 			body: JSON.stringify({ brand_name, token, is_active: true }),
 		});
-
 		return res;
 	},
 
@@ -1886,18 +1885,22 @@ export const ServiceFunctions = {
 		}
 	},
 
-	getControlMetrics: async(token, metricType, filters = {}, page = 1, per_page = 50, search = '') => {
+	getControlMetrics: async(token, metricType, filters = {}, page = 1, per_page = 50, sorting = {}) => {
 		try {
-			const filtersRequestObject = getFiltersRequestObject(filters, null, filters.activeBrand?.id);
+			const requestObject = {
+				...getFiltersRequestObject(filters, { period: 30 }), 
+				shop: filters.activeBrand?.id,
+				sorting,
+			};
 			const res = await fetchApi(
-				`/api/control/${metricType}?page=${page}&per_page=${per_page}&search=${search}`,
+				`/api/control/${metricType}?page=${page}&per_page=${per_page}`,
 				{
 					method: 'POST',
 					headers: {
 						'content-type': 'application/json',
 						authorization: 'JWT ' + token,
 					},
-					body: JSON.stringify(filtersRequestObject),
+					body: JSON.stringify(requestObject),
 				}
 			);
 			if (!res.ok) {

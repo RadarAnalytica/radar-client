@@ -11,8 +11,51 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 const ProfitChartBlock = ({ dataDashBoard, loading }) => {
 
     const { labels, dataRevenue, dataNetProfit, minDataRevenue, maxDataRevenue, stepSizeRevenue } = processSalesAndProfit(dataDashBoard?.salesAndProfit);
-    //console.log('minDataRevenue', minDataRevenue)
-    //console.log('maxDataRevenue', maxDataRevenue)
+    
+    // Вычисляем диапазоны
+    const minDataProfit = dataNetProfit && dataNetProfit.length > 0 ? Math.min(...dataNetProfit) : 0;
+    const maxDataProfit = dataNetProfit && dataNetProfit.length > 0 ? Math.max(...dataNetProfit) : 0;
+    
+    // Проверяем наличие отрицательных значений в обеих осях
+    const hasNegativeRevenue = (minDataRevenue || 0) < 0;
+    const hasNegativeProfit = (minDataProfit || 0) < 0;
+    
+    let revenueMin, revenueMax, profitMin, profitMax;
+    
+    // Если нет отрицательных значений в обеих осях, располагаем 0 внизу
+    if (!hasNegativeRevenue && !hasNegativeProfit) {
+        revenueMin = 0;
+        revenueMax = maxDataRevenue || 0;
+        profitMin = 0;
+        profitMax = maxDataProfit || 0;
+        
+        // Округляем для красоты
+        revenueMax = Math.ceil(revenueMax / 10000) * 10000;
+        profitMax = Math.ceil(profitMax / 100000) * 100000;
+    } else {
+        // Нормализуем оси так, чтобы ноль был точно посередине графика
+        
+        // Для выручки: найдем максимальное отклонение от нуля
+        const revenueMaxAbs = Math.max(Math.abs(minDataRevenue || 0), Math.abs(maxDataRevenue || 0));
+        
+        // Для прибыли: найдем максимальное отклонение от нуля
+        const profitMaxAbs = Math.max(Math.abs(minDataProfit || 0), Math.abs(maxDataProfit || 0));
+        
+        // Устанавливаем симметричные диапазоны относительно нуля
+        revenueMin = -revenueMaxAbs;
+        revenueMax = revenueMaxAbs;
+        
+        profitMin = -profitMaxAbs;
+        profitMax = profitMaxAbs;
+        
+        // Округляем для красоты
+        revenueMin = Math.floor(revenueMin / 10000) * 10000;
+        revenueMax = Math.ceil(revenueMax / 10000) * 10000;
+        profitMin = Math.floor(profitMin / 100000) * 100000;
+        profitMax = Math.ceil(profitMax / 100000) * 100000;
+    }
+    
+
     const data = {
         labels: labels ? labels : [],
         datasets: [
@@ -120,10 +163,9 @@ const ProfitChartBlock = ({ dataDashBoard, loading }) => {
                 }
             },
             A: {
-                //beginAtZero: true,
-                //min: minDataRevenue,
                 position: 'left',
-                max: maxDataRevenue,
+                min: revenueMin,
+                max: revenueMax,
                 grid: {
                     drawOnChartArea: true,
                     tickLength: 0,
@@ -140,10 +182,9 @@ const ProfitChartBlock = ({ dataDashBoard, loading }) => {
                 }
             },
             B: {
-                //beginAtZero: true,
-                //min: minDataRevenue,
                 position: 'right',
-                max: maxDataRevenue,
+                min: profitMin,
+                max: profitMax,
                 grid: {
                     drawOnChartArea: false,
                     tickLength: 0,

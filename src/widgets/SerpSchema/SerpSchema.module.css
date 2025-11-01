@@ -16,6 +16,7 @@
     background-color: #F7F6FE;
     transition: all .2s ease;
     border: 1px solid transparent;
+    cursor: pointer;
 }
 
 .schema__icon_adv {
@@ -23,7 +24,7 @@
     cursor: pointer;
 }
 
-.schema__icon_adv:hover {
+.schema__icon:hover {
     transform: scale(1.1);
     border: 1px solid #5329FF80;
 }

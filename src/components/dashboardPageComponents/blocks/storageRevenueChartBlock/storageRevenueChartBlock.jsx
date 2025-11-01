@@ -2,6 +2,7 @@ import styles from './storageRevenueChartBlock.module.css';
 import { Bar } from 'react-chartjs-2';
 import { processRevenueData } from '../blockUtils';
 import { useState, useMemo } from 'react';
+import { RadarLoader } from '../../../../shared/ui/RadarLoader/RadarLoader';
 
 const ITEMS_PER_PAGE = 15;
 
@@ -159,9 +160,7 @@ const StorageRevenueChartBlock = ({ dataDashBoard, loading }) => {
     if (loading) {
         return (
             <div className={styles.block}>
-                <div className={styles.bar__loaderWrapper}>
-                    <span className='loader'></span>
-                </div>
+              <RadarLoader loaderStyle={{ height: '407px' }} />
             </div>
         );
     }

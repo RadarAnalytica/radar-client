@@ -56,6 +56,8 @@ interface WbMetricsTableProps {
   metricType: 'drr' | 'spp';
   pageData: { page: number, per_page: number, total_count: number };
   setPageData: (pageData: { page: number, per_page: number, total_count: number }) => void;
+  sortState: { sort_field: string, sort_order: string };
+  setSortState: (sortState: { sort_field: string, sort_order: string }) => void;
 }
 
 const WbMetricsTable: React.FC<WbMetricsTableProps> = ({
@@ -64,10 +66,11 @@ const WbMetricsTable: React.FC<WbMetricsTableProps> = ({
   loading,
   metricType,
   pageData,
-  setPageData
+  setPageData,
+  sortState,
+  setSortState
 }) => {
 
-  const [sortState, setSortState] = useState({ sort_field: undefined, sort_order: undefined });
   const tableContainerRef = useRef(null);
 
   const prepareTableData = () => {
@@ -100,16 +103,25 @@ const WbMetricsTable: React.FC<WbMetricsTableProps> = ({
     setPageData({ ...pageData, page: page });
   };
 
+  const handleSort = (sort_field: string, sort_order: string) => {
+    setPageData({ ...pageData, page: 1 });
+    setSortState({ sort_field, sort_order });
+    tableContainerRef.current?.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  };
+
   const customCellRender = (value: any, record: any, index: number, dataIndex: string) => {
     // Рендер для товара (фото + название)
     if (dataIndex === 'product') {
+      const imageSize = { width: 30, height: 40 };
       return (
         <div className={styles.productCell} data-id={value.wb_id}>
-          <img 
-            src={value.photo}
-            alt={value.name}
-            className={styles.productImage}
-          />
+          {value.photo 
+            ? <img src={value.photo} alt={value.name} {...imageSize} className={styles.productImage} />
+            : <div className={styles.productImage} style={imageSize} />
+          }
           <span className={styles.productName} title={value.name}>
             {value.name}
           </span>
@@ -119,14 +131,14 @@ const WbMetricsTable: React.FC<WbMetricsTableProps> = ({
 
     // Рендер для графика
     if (dataIndex === 'chart') {
-      return (
-        <MetricChart
-          data={value}
-          metricType={metricType}
-          minControlValue={data?.min_control_value ?? 0}
-          maxControlValue={data?.max_control_value ?? 100}
-        />
-      );
+        return (
+          <MetricChart
+            data={value}
+            metricType={metricType}
+            minControlValue={data?.min_control_value ?? 0}
+            maxControlValue={data?.max_control_value ?? 100}
+          />
+        );
     }
 
     // Рендер для колонок дней
@@ -135,12 +147,12 @@ const WbMetricsTable: React.FC<WbMetricsTableProps> = ({
         <div 
           className={styles.percentageCell}
           style={{ 
-            backgroundColor: value !== undefined 
+            backgroundColor: value !== null 
               ? getColorForPercentage(value, data.min_control_value, data.max_control_value, metricType, 0.2)
               : 'transparent'
           }}
         >
-          {value !== undefined ? `${value}%` : '-'}
+          {value !== null ? `${value}%` : '-'}
         </div>
       );
     }
@@ -149,6 +161,7 @@ const WbMetricsTable: React.FC<WbMetricsTableProps> = ({
     return <span className={`${styles.labelCell} ${dataIndex}-cell`} title={value}>{value}</span>;
   };
 
+  
   return (
     <div className={styles.tableContainer}>
       <div className={styles.tableWrapper} ref={tableContainerRef}>
@@ -169,12 +182,14 @@ const WbMetricsTable: React.FC<WbMetricsTableProps> = ({
               idx: columns.map(col => col.dataIndex),
               renderer: customCellRender,
             }}
-            onSort={(sort_field, sort_order) => setSortState({ sort_field, sort_order })}
+            sorting={sortState}
+            onSort={handleSort}
             pagination={{
               current: pageData.page,
               pageSize: pageData.per_page,
               total: Math.ceil(pageData.total_count / pageData.per_page),
-              onChange: handlePageChange
+              onChange: handlePageChange,
+              showQuickJumper: true,
             }}
             style={{ fontFamily: 'Mulish' }}
           />

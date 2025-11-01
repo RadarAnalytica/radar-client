@@ -18,7 +18,8 @@ import { useDemoMode } from "@/app/providers";
 const AddRnpModal = ({ isAddRnpModalVisible, setIsAddRnpModalVisible, addRnp }) => {
     const { authToken } = useContext(AuthContext);
     const { isDemoMode } = useDemoMode();
-    const { shops, activeBrand, selectedRange } = useAppSelector( (state) => state.filtersRnpAdd );
+    const { shops, selectedRange } = useAppSelector( (state) => state.filtersRnpAdd );
+    const { activeBrandName, activeBrand } = useAppSelector((state) => state.filtersRnpAdd);
     const filters = useAppSelector((state) => state.filtersRnpAdd);
     const [rnpSelected, setRnpSelected] = useState(null);
 
@@ -93,6 +94,9 @@ const AddRnpModal = ({ isAddRnpModalVisible, setIsAddRnpModalVisible, addRnp }) 
             setLocalrnpDataArticle(response);
             setLoading(false);
         } catch (error) {
+            // cтавим пустой массив чтоб лоадер скрылся
+            setRnpSelected([]);
+            setLoading(false);
             if (error.message !== 'Отмена запроса') {
                 console.error('updaternpDataArticle error', error);
             }
@@ -107,21 +111,14 @@ const AddRnpModal = ({ isAddRnpModalVisible, setIsAddRnpModalVisible, addRnp }) 
     }, [isAddRnpModalVisible]);
 
     useEffect(() => {
-        if (page !== 1) {
-            setPage(1);
-        } else {
+        if (activeBrand && activeBrandName) {
             updateData();
         }
-    }, [search, activeBrand?.id, filters]);
+    }, [search, activeBrand, activeBrandName, page]);
 
     useEffect(() => {
-        if (isFirstMount.current) {
-            isFirstMount.current = false;
-            return;
-        }
-        
-        updateData();
-    }, [page]);
+        setPage(1)
+    }, [activeBrand, activeBrandName]);
 
 
     if (!isAddRnpModalVisible) return null;
@@ -165,6 +162,7 @@ const AddRnpModal = ({ isAddRnpModalVisible, setIsAddRnpModalVisible, addRnp }) 
                     </div>
                     <div className={loading ? styles.hide : styles.control}><AddRnpModalSearch loading={loading} submitSearch={setSearch} /></div>
                     {/* loader */}
+                    {(loading || !rnpSelected) && <div className={styles.loading}><span className='loader'></span></div>}
                     <ConfigProvider
                         theme={{
                             token: {
@@ -182,7 +180,6 @@ const AddRnpModal = ({ isAddRnpModalVisible, setIsAddRnpModalVisible, addRnp }) 
                             }
                         }}
                     >
-                        {loading && <div className={styles.loading}><span className='loader'></span></div>}
 
                         {!loading && !isDemoMode && shopStatus && !shopStatus?.is_primary_collect && (
                             <div className={styles.data_collect}>

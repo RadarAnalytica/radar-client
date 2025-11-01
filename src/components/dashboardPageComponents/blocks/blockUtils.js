@@ -33,11 +33,11 @@ export const getFinanceData = (dataDashBoard) => {
         amount: dataDashBoard?.ebitda_margin || '0',
         rate: dataDashBoard?.ebitda_margin_compare || '0',
       },
-      {
-        name: 'Чистая прибыль',
-        amount: dataDashBoard?.netProfit || '0',
-        rate: dataDashBoard?.netProfitCompare || '0',
-      },
+      // {
+      //   name: 'Чистая прибыль',
+      //   amount: dataDashBoard?.netProfit || '0',
+      //   rate: dataDashBoard?.netProfitCompare || '0',
+      // },
       // {
       //   name: 'Себестоимость продаж',
       //   amount: dataDashBoard?.costPriceAmount || '0',
@@ -74,10 +74,10 @@ export const getProfitData = (dataDashBoard) => {
         name: 'Процент выкупа',
         value: dataDashBoard?.buyoutPercent || '0',
       },
-      {
-        name: 'ROI',
-        value: dataDashBoard?.roi || '0',
-      },
+      // {
+      //   name: 'ROI',
+      //   value: dataDashBoard?.roi || '0',
+      // },
       {
         name: 'Рентабельность ВП',
         value: dataDashBoard?.grossProfitAbility || '0',

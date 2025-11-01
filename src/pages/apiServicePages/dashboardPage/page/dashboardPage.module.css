@@ -17,7 +17,7 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: stretch;
-    gap: 20px;
+    gap: 12px;
     box-sizing: border-box;
     height: 100%;
     overflow: auto;
@@ -45,18 +45,14 @@
 }
 .page__headerWrapper {
     width: 100%;
+    margin-bottom: 8px;
 }
 .page__chartGroup {
     width: 100%;
     display: grid;
-    column-gap: 12px;
+    gap: 12px;
     grid-template-columns: 1fr 1fr;
-    grid-auto-rows: 4px;
     box-sizing: border-box;
-
-    @media (max-width: 1300px) {
-        grid-template-columns: 1fr;
-    }
 }
 
 .page__chartGroup_oneLine {
@@ -70,12 +66,14 @@
 
 .page__doubleBlockWrapper {
     width: 100%;
-    grid-row: span 105;
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 12px;
-    margin-top: 12px;
-    height: 100%;
+    min-height: 407px;
+
+    @media (max-width: 1360px) {
+        grid-column: span 2;
+    }
 }
 
 .page__controlsWrapper {
@@ -84,4 +82,10 @@
     justify-content: space-between;
     align-items: flex-end;
     gap: 20px;
+}
+
+.page__testWrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 12px;
 }

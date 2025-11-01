@@ -39,7 +39,7 @@ const customCellRender = (value, record, index, dataIndex) => {
     );
 };
 
-export default function TableWidget({ loading, columns, data, rowSelection = false, virtual = true, is_primary_collect, progress = null, setTableColumns }) {
+export default function TableWidget({ loading, columns, data, rowSelection = false, virtual = true, is_primary_collect, progress = null, setTableColumns, configVersion }) {
     const tableContainerRef = useRef(null);
     const [sortState, setSortState] = useState({ sort_field: undefined, sort_order: undefined });
 
@@ -63,7 +63,10 @@ export default function TableWidget({ loading, columns, data, rowSelection = fal
             }
             return col;
         });
-        localStorage.setItem('reportWeekTableConfig', JSON.stringify(newConfig));
+        localStorage.setItem('reportWeekTableConfig', JSON.stringify({
+            version: configVersion,
+            config: newConfig
+        }));
         setTableColumns(newConfig);
         document.removeEventListener('mousemove', mouseHandler);
     };

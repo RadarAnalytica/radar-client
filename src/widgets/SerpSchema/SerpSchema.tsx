@@ -40,8 +40,22 @@ export const SerpSchema = ({ products }: { products: IProduct[] }) => {
                             <div className={`${styles.schema__icon} ${styles.schema__icon_adv}`} />
                         </Popover>
                     )
+                } else {
+                    return (
+                        <Popover
+                            title={<TooltipContent product={_} />}
+                            placement='rightBottom'
+                            color='white'
+                            arrow={false}
+                            key={index}
+                            destroyTooltipOnHide
+                            style={{ width: '424px' }}
+                        >
+                            <div className={`${styles.schema__icon}`} />
+                        </Popover>
+                    )
                 }
-                return (<div className={styles.schema__icon} key={index} />)
+                //return (<div className={styles.schema__icon} key={index} />)
             })}
         </div>
     );
@@ -75,7 +89,7 @@ const TooltipContent = ({ product }: { product: IProduct }) => {
             <div className={styles.tooltipContent__body}>
                 <div className={styles.tooltipContent__column}>
                     <p className={styles.tooltipContent__title} style={{ color: '#8C8C8C', lineHeight: '140%' }}>Реклама</p>
-                    <p className={styles.tooltipContent__columnItem}>Тип: <span>Реклама</span></p>
+                    <p className={styles.tooltipContent__columnItem}>Тип: <span>{product.ad ? 'Реклама' : 'Органика'}</span></p>
                     <p className={styles.tooltipContent__columnItem}>Позиция: <span>{product.number}</span></p>
                 </div>
                 <div className={styles.tooltipContent__column}>
