@@ -64,8 +64,12 @@ const WbMetricsPage: React.FC = () => {
   };
 
   useEffect(() => {
-    if (activeBrand?.is_primary_collect) {
-      loadData();
+    if (activeBrand) {
+      if (activeBrand?.is_primary_collect) {
+        loadData();
+      } else {
+        setLoading(false);
+      }
     }
   }, [activeBrand, pageData.page, activeBrandName, activeArticle, activeGroup, metricType, sortState]);
 
