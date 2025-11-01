@@ -93,7 +93,7 @@ export const menuConfig = [
                 url: '/rnp',
                 label: 'Рука на пульсе (РНП)',
                 isActive: true,
-                isNew: true,
+                isNew: false,
             },
             {
                 id: 2,
@@ -172,14 +172,7 @@ export const menuConfig = [
                 id: 1,
                 url: '/orders-map',
                 label: 'География заказов',
-                isActive: true,
-                isNew: false
-            },
-            {
-                id: 2,
-                url: '/abc-data',
-                label: 'ABC-анализ',
-                isActive: true,
+                isActive: false,
                 isNew: false
             },
             {
@@ -191,27 +184,27 @@ export const menuConfig = [
             },
             {
                 id: 4,
-                url: '/control/drr',
-                label: 'Контроль ДРР',
-                isActive: true,
-                isNew: true
-            },
-            {
-                id: 5,
                 url: '/control/spp',
                 label: 'Контроль СПП',
                 isActive: true,
                 isNew: true
             },
             {
-                id: 6,
+                id: 2,
+                url: '/abc-data',
+                label: 'ABC-анализ',
+                isActive: true,
+                isNew: false
+            },
+            {
+                id: 5,
                 url: '/selfcost',
                 label: 'Себестоимость',
                 isActive: true,
                 hasTopBorder: true,
             },
             {
-                id: 7,
+                id: 6,
                 url: '/groups',
                 label: 'Группы товаров',
                 isActive: true,
