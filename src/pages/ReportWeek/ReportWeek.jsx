@@ -179,6 +179,9 @@ export default function ReportWeek() {
 			return row;
 		});
 
+
+		
+
 		rows.forEach(row => {
 			Object.keys(row).forEach(key => {
 				if (!summary[key]) {
