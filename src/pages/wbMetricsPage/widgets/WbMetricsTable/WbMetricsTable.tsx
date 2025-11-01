@@ -161,6 +161,7 @@ const WbMetricsTable: React.FC<WbMetricsTableProps> = ({
     return <span className={`${styles.labelCell} ${dataIndex}-cell`} title={value}>{value}</span>;
   };
 
+  
   return (
     <div className={styles.tableContainer}>
       <div className={styles.tableWrapper} ref={tableContainerRef}>
@@ -181,6 +182,7 @@ const WbMetricsTable: React.FC<WbMetricsTableProps> = ({
               idx: columns.map(col => col.dataIndex),
               renderer: customCellRender,
             }}
+            sorting={sortState}
             onSort={handleSort}
             pagination={{
               current: pageData.page,
