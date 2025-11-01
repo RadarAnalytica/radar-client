@@ -15,6 +15,7 @@ import supplierAnalysisAvgPriceData from './mock/supplier-analysis/avg-price.jso
 import supplierAnalysisAvgDiscountData from './mock/supplier-analysis/avg-discount.json';
 import supplierAnalysisStockQuantityData from './mock/supplier-analysis/stock-quantity.json';
 import supplierAnalysisBrandsData from './mock/supplier-analysis/supplier-brands.json';
+import supplierAnalysisWarehouseQuantityData from './mock/supplier-analysis/warehouse-quantity.json';
 
 export class SupplierAnalysisDemoDataService extends DemoDataService {
   private static supplierInstance: SupplierAnalysisDemoDataService;
@@ -71,7 +72,7 @@ export class SupplierAnalysisDemoDataService extends DemoDataService {
       'https://radarmarket.ru/api/web-service/supplier-analysis/comparison/stock-quantity': () => supplierAnalysisStockQuantityData,
       'https://radarmarket.ru/api/web-service/supplier-analysis/supplier-by-size': () => supplierAnalysisBySizeData,
       'https://radarmarket.ru/api/web-service/supplier-analysis/supplier-brands': () => supplierAnalysisBrandsData,
-      'https://radarmarket.ru/api/web-service/supplier-analysis/comparison/warehouse-quantity': () => [],
+      'https://radarmarket.ru/api/web-service/supplier-analysis/comparison/warehouse-quantity': () => supplierAnalysisWarehouseQuantityData,
     };
 
     const dataGetter = endpointMap[endpoint];
