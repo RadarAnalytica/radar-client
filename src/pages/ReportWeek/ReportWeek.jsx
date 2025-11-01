@@ -195,7 +195,7 @@ export default function ReportWeek() {
 				week_label: el.week_label,
 			};
 			Object.keys(el.data).forEach(key => {
-				if (typeof el.data[key] === 'object') {
+				if (el.data[key].rub || el.data[key].percent) {
 					Object.keys(el.data[key]).forEach(k => {
 						row[`${key}_${k}`] = el.data[key][k];
 					});
@@ -207,16 +207,26 @@ export default function ReportWeek() {
 			return row;
 		});
 
+
+
+
 		rows.forEach(row => {
 			Object.keys(row).forEach(key => {
 				if (!summary[key]) {
-					summary[key] = row[key];
+					if (typeof row[key] === 'object') {
+						summary[key] = row[key].value;
+					} else {
+						summary[key] = row[key];
+					}
 				} else {
-					summary[key] += row[key];
+					if (typeof row[key] === 'object') {
+						summary[key] += row[key].value;
+					} else {
+						summary[key] += row[key];
+					}
 				}
 			});
 		});
-
 		// приcвоение расчетных значений
 		summary = {
 			...summary,
