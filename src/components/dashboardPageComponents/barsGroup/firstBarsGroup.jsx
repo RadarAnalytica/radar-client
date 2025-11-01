@@ -58,7 +58,7 @@ const FirstBarsGroup = ({ dataDashBoard, selectedRange, loading }) => {
             <div className={styles.group__xsBarWrapper}>
                 <RadarBar
                     title='Процент выкупа'
-                    //tooltipText='text'
+                    tooltipText='Доля заказов, которые были оплачены и получены покупателями, от общего числа созданных заказов.'
                     mainValue={dataDashBoard?.buyoutPercent}
                     mainValueUnits='%'
                     hasColoredBackground
@@ -71,7 +71,7 @@ const FirstBarsGroup = ({ dataDashBoard, selectedRange, loading }) => {
             <div className={styles.group__xsBarWrapper}>
                 <RadarBar
                     title='ROI'
-                    //tooltipText='text'
+                    tooltipText='Показывает общую рентабельность ваших вложений. Насколько прибыльны или убыточны ваши продажи с учетом всех затрат'
                     mainValue={dataDashBoard?.roi}
                     mainValueUnits='%'
                     hasColoredBackground

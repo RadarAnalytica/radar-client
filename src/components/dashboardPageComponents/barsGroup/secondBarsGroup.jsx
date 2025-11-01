@@ -40,6 +40,7 @@ const SecondBarsGroup = ({ dataDashBoard, loading, selectedRange, activeBrand, a
             <RadarBar
                 title='Заказы'
                 midValue={dataDashBoard?.orderCount}
+                tooltipText='Общие сумма и количество созданных и оплаченных заказов за выбранный период'
                 midValueUnits='шт'
                 mainValue={dataDashBoard?.orderAmount}
                 mainValueUnits='₽'
@@ -63,6 +64,7 @@ const SecondBarsGroup = ({ dataDashBoard, loading, selectedRange, activeBrand, a
             /> */}
             <RadarBar
                 title='Возвраты'
+                tooltipText='Стоимость и количество товаров, которые покупатели вернули по различным причинам'
                 midValue={dataDashBoard?.returnCount}
                 midValueUnits='шт'
                 mainValue={dataDashBoard?.returnAmount}
@@ -115,7 +117,7 @@ const SecondBarsGroup = ({ dataDashBoard, loading, selectedRange, activeBrand, a
             /> */}
             <RadarBar
                 title='Платная приемка'
-                tooltipText=''
+                tooltipText='Услуга маркетплейса по проверке и приему вашего товара на склад'
                 mainValue={dataDashBoard?.paid_acceptance}
                 mainValueUnits='₽'
                 isLoading={loading}
@@ -168,6 +170,7 @@ const SecondBarsGroup = ({ dataDashBoard, loading, selectedRange, activeBrand, a
             <RadarBar
                 title='Реклама (ДРР)'
                 mainValue={dataDashBoard?.advertAmount}
+                tooltipText='Показатель эффективности маркетинга - сумма рекламных затрат'
                 mainValueUnits='₽'
                 hasColoredBackground
                 compareValue={{
@@ -184,7 +187,7 @@ const SecondBarsGroup = ({ dataDashBoard, loading, selectedRange, activeBrand, a
                 mainData={dataDashBoard?.penalty}
             /> */}
             <RadarBar
-                title='Штрафы WB и прочие удержания'
+                title='Штрафы и прочие удержания'
                 tooltipText={'К прочим удержания отнесены: платежи по договору займа, предоставление услуг по подписке «Джем», страхование заказов, услуги по размещению рекламного материала, списания за отзывы, утилизации товара'}
                 mainValue={dataDashBoard?.penalty}
                 mainValueUnits='₽'
@@ -198,6 +201,7 @@ const SecondBarsGroup = ({ dataDashBoard, loading, selectedRange, activeBrand, a
             /> */}
             <RadarBar
                 title='Компенсации'
+                tooltipText='Выплаты от маркетплейса за брак, потерю или повреждение вашего товара на их складах, а также за нарушение сроков выплат'
                 mainValue={dataDashBoard?.compensation}
                 mainValueUnits='₽'
                 isLoading={loading}
@@ -278,7 +282,7 @@ const SecondBarsGroup = ({ dataDashBoard, loading, selectedRange, activeBrand, a
             /> */}
                 <RadarBar
                     title='Себестоимость проданных товаров'
-                    tooltipText=''
+                    tooltipText='Суммарная себестоимость проданных товаров (основана на данных раздела "Себестоимость"'
                     mainValue={dataDashBoard?.costPriceAmount}
                     mainValueUnits='₽'
                     compareValue={{
