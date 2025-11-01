@@ -1,4 +1,4 @@
-export const CURR_STOCK_ANALYSIS_TABLE_CONFIG_VER = '2';
+export const CURR_STOCK_ANALYSIS_TABLE_CONFIG_VER = '3';
 
 export const newTableConfig = [
     {
@@ -114,6 +114,209 @@ export const newTableConfig = [
                 minWidth: 120,
                 maxWidth: 300,
                 key: 'category',
+                style: {
+                    background: '#F7F6FE',
+                    verticalAlign: 'middle',
+                    fontSize: '14px',
+                    borderRight: '1px solid #E8E8E8',
+                }
+            },
+        ].map(_ => ({..._, maxWidth: _.width * 2})),
+    },
+    // Прибыль
+    {
+        title: 'Прибыль',
+        fixed: false,
+        width: 800,
+        minWidth: 800,
+        hidden: false,
+        dataIndex: 'profit',
+        key: 'profit',
+        style: {
+            zIndex: 2,
+            color: 'black',
+            fontSize: '18px',
+            borderRight: '1px solid #E8E8E8',
+        },
+        children: [
+            {
+                title: 'К выплате',
+                dataIndex: 'toPayoff',
+                sortable: true,
+                width: 120,
+                minWidth: 120,
+                maxWidth: 240,
+                key: 'toPayoff',
+                units: '₽',
+                style: {
+                    background: '#F7F6FE',
+                    verticalAlign: 'middle',
+                    fontSize: '14px',
+                }
+            },
+            {
+                title: 'Маржинальная прибыль',
+                dataIndex: 'marginalProfit',
+                sortable: false,
+                width: 120,
+                minWidth: 120,
+                maxWidth: 320,
+                key: 'marginalProfit',
+                units: '₽',
+                style: {
+                    background: '#F7F6FE',
+                    verticalAlign: 'middle',
+                    fontSize: '14px',
+                }
+            },
+            {
+                title: 'Средняя прибыль',
+                dataIndex: 'averageProfit',
+                sortable: false,
+                width: 120,
+                minWidth: 120,
+                maxWidth: 280,
+                key: 'averageProfit',
+                units: '₽',
+                style: {
+                    background: '#F7F6FE',
+                    verticalAlign: 'middle',
+                    fontSize: '14px',
+                }
+            },
+            {
+                title: 'Рентабельность реализованной продукции',
+                dataIndex: 'profitabilityOfProductsSold',
+                sortable: false,
+                width: 200,
+                minWidth: 200,
+                maxWidth: 520,
+                key: 'profitabilityOfProductsSold',
+                units: '%',
+                style: {
+                    background: '#F7F6FE',
+                    verticalAlign: 'middle',
+                    fontSize: '14px',
+                }
+            },
+            {
+                title: 'Маржинальность',
+                dataIndex: 'marginal',
+                sortable: false,
+                width: 120,
+                minWidth: 120,
+                maxWidth: 280,
+                key: 'marginal',
+                units: '%',
+                style: {
+                    background: '#F7F6FE',
+                    verticalAlign: 'middle',
+                    fontSize: '14px',
+                }
+            },
+            {
+                title: 'Годовая рентабельность товарных запасов',
+                dataIndex: 'annualReturnOnInventory',
+                sortable: false,
+                width: 200,
+                minWidth: 200,
+                maxWidth: 560,
+                key: 'annualReturnOnInventory',
+                units: '%',
+                style: {
+                    background: '#F7F6FE',
+                    verticalAlign: 'middle',
+                    fontSize: '14px',
+                }
+            },
+            {
+                title: 'Упущенная выручка',
+                dataIndex: 'lostRevenue',
+                sortable: false,
+                width: 200,
+                minWidth: 200,
+                maxWidth: 320,
+                key: 'lostRevenue',
+                units: '₽',
+                style: {
+                    background: '#F7F6FE',
+                    verticalAlign: 'middle',
+                    fontSize: '14px',
+                    borderRight: '1px solid #E8E8E8',
+                }
+            },
+        ].map(_ => ({..._, maxWidth: _.width * 2})),
+    },
+    // Выкупы
+    {
+        title: 'Выкупы',
+        fixed: false,
+        width: 400,
+        minWidth: 400,
+        hidden: false,
+        dataIndex: 'buyouts',
+        key: 'buyouts',
+        style: {
+            zIndex: 2,
+            color: 'black',
+            fontSize: '18px',
+            borderRight: '1px solid #E8E8E8',
+        },
+        children: [
+            {
+                title: 'Выкуплено',
+                dataIndex: 'purchased',
+                sortable: true,
+                width: 120,
+                minWidth: 120,
+                maxWidth: 220,
+                key: 'purchased',
+                units: 'шт',
+                style: {
+                    background: '#F7F6FE',
+                    verticalAlign: 'middle',
+                    fontSize: '14px',
+                }
+            },
+            {
+                title: 'Не выкуплено',
+                dataIndex: 'notPurchased',
+                sortable: true,
+                width: 120,
+                minWidth: 120,
+                maxWidth: 240,
+                key: 'notPurchased',
+                units: 'шт',
+                style: {
+                    background: '#F7F6FE',
+                    verticalAlign: 'middle',
+                    fontSize: '14px',
+                }
+            },
+            {
+                title: 'Процент выкупа',
+                dataIndex: 'purchasedPercent',
+                sortable: true,
+                width: 160,
+                minWidth: 160,
+                maxWidth: 280,
+                key: 'purchasedPercent',
+                units: '%',
+                style: {
+                    background: '#F7F6FE',
+                    verticalAlign: 'middle',
+                    fontSize: '14px',
+                }
+            },
+            {
+                title: 'Завершены',
+                dataIndex: 'completed',
+                sortable: true,
+                width: 120,
+                minWidth: 120,
+                maxWidth: 220,
+                key: 'completed',
+                units: 'шт',
                 style: {
                     background: '#F7F6FE',
                     verticalAlign: 'middle',
@@ -439,129 +642,6 @@ export const newTableConfig = [
         ].map(_ => ({..._, maxWidth: _.width * 2})),
     },
     {
-        title: 'Прибыль',
-        fixed: false,
-        width: 800,
-        minWidth: 800,
-        hidden: false,
-        dataIndex: 'profit',
-        key: 'profit',
-        style: {
-            zIndex: 2,
-            color: 'black',
-            fontSize: '18px',
-            borderRight: '1px solid #E8E8E8',
-        },
-        children: [
-            {
-                title: 'К выплате',
-                dataIndex: 'toPayoff',
-                sortable: true,
-                width: 120,
-                minWidth: 120,
-                maxWidth: 240,
-                key: 'toPayoff',
-                units: '₽',
-                style: {
-                    background: '#F7F6FE',
-                    verticalAlign: 'middle',
-                    fontSize: '14px',
-                }
-            },
-            {
-                title: 'Маржинальная прибыль',
-                dataIndex: 'marginalProfit',
-                sortable: false,
-                width: 120,
-                minWidth: 120,
-                maxWidth: 320,
-                key: 'marginalProfit',
-                units: '₽',
-                style: {
-                    background: '#F7F6FE',
-                    verticalAlign: 'middle',
-                    fontSize: '14px',
-                }
-            },
-            {
-                title: 'Средняя прибыль',
-                dataIndex: 'averageProfit',
-                sortable: false,
-                width: 120,
-                minWidth: 120,
-                maxWidth: 280,
-                key: 'averageProfit',
-                units: '₽',
-                style: {
-                    background: '#F7F6FE',
-                    verticalAlign: 'middle',
-                    fontSize: '14px',
-                }
-            },
-            {
-                title: 'Рентабельность реализованной продукции',
-                dataIndex: 'profitabilityOfProductsSold',
-                sortable: false,
-                width: 200,
-                minWidth: 200,
-                maxWidth: 520,
-                key: 'profitabilityOfProductsSold',
-                units: '%',
-                style: {
-                    background: '#F7F6FE',
-                    verticalAlign: 'middle',
-                    fontSize: '14px',
-                }
-            },
-            {
-                title: 'Маржинальность',
-                dataIndex: 'marginal',
-                sortable: false,
-                width: 120,
-                minWidth: 120,
-                maxWidth: 280,
-                key: 'marginal',
-                units: '%',
-                style: {
-                    background: '#F7F6FE',
-                    verticalAlign: 'middle',
-                    fontSize: '14px',
-                }
-            },
-            {
-                title: 'Годовая рентабельность товарных запасов',
-                dataIndex: 'annualReturnOnInventory',
-                sortable: false,
-                width: 200,
-                minWidth: 200,
-                maxWidth: 560,
-                key: 'annualReturnOnInventory',
-                units: '%',
-                style: {
-                    background: '#F7F6FE',
-                    verticalAlign: 'middle',
-                    fontSize: '14px',
-                }
-            },
-            {
-                title: 'Упущенная выручка',
-                dataIndex: 'lostRevenue',
-                sortable: false,
-                width: 200,
-                minWidth: 200,
-                maxWidth: 320,
-                key: 'lostRevenue',
-                units: '₽',
-                style: {
-                    background: '#F7F6FE',
-                    verticalAlign: 'middle',
-                    fontSize: '14px',
-                    borderRight: '1px solid #E8E8E8',
-                }
-            },
-        ].map(_ => ({..._, maxWidth: _.width * 2})),
-    },
-    {
         title: 'АВС анализ',
         fixed: false,
         width: 200,
@@ -717,84 +797,6 @@ export const newTableConfig = [
     //         },
     //     ].map(_ => ({..._, maxWidth: _.width * 2})),
     // },
-    {
-        title: 'Выкупы',
-        fixed: false,
-        width: 400,
-        minWidth: 400,
-        hidden: false,
-        dataIndex: 'buyouts',
-        key: 'buyouts',
-        style: {
-            zIndex: 2,
-            color: 'black',
-            fontSize: '18px',
-            borderRight: '1px solid #E8E8E8',
-        },
-        children: [
-            {
-                title: 'Выкуплено',
-                dataIndex: 'purchased',
-                sortable: true,
-                width: 120,
-                minWidth: 120,
-                maxWidth: 220,
-                key: 'purchased',
-                units: 'шт',
-                style: {
-                    background: '#F7F6FE',
-                    verticalAlign: 'middle',
-                    fontSize: '14px',
-                }
-            },
-            {
-                title: 'Не выкуплено',
-                dataIndex: 'notPurchased',
-                sortable: true,
-                width: 120,
-                minWidth: 120,
-                maxWidth: 240,
-                key: 'notPurchased',
-                units: 'шт',
-                style: {
-                    background: '#F7F6FE',
-                    verticalAlign: 'middle',
-                    fontSize: '14px',
-                }
-            },
-            {
-                title: 'Процент выкупа',
-                dataIndex: 'purchasedPercent',
-                sortable: true,
-                width: 160,
-                minWidth: 160,
-                maxWidth: 280,
-                key: 'purchasedPercent',
-                units: '%',
-                style: {
-                    background: '#F7F6FE',
-                    verticalAlign: 'middle',
-                    fontSize: '14px',
-                }
-            },
-            {
-                title: 'Завершены',
-                dataIndex: 'completed',
-                sortable: true,
-                width: 120,
-                minWidth: 120,
-                maxWidth: 220,
-                key: 'completed',
-                units: 'шт',
-                style: {
-                    background: '#F7F6FE',
-                    verticalAlign: 'middle',
-                    fontSize: '14px',
-                    borderRight: '1px solid #E8E8E8',
-                }
-            },
-        ].map(_ => ({..._, maxWidth: _.width * 2})),
-    },
     {
         title: 'Скорость',
         fixed: false,

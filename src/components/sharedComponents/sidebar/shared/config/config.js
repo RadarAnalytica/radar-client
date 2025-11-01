@@ -142,7 +142,7 @@ export const menuConfig = [
                 id: 8,
                 url: '/operating-expenses',
                 label: 'Операционные расходы',
-                isActive: true,
+                isActive: false,
                 isNew: true
             },
         ]
@@ -219,6 +219,13 @@ export const menuConfig = [
         icon: menuIcons.seo,
         children: [
             {
+                id: 3,
+                url: '/serp',
+                label: 'Проверка выдачи SERP',
+                isActive: true,
+                isNew: true
+            },
+            {
                 id: 1,
                 url: '/ai-generator',
                 label: 'Генерация описания',
@@ -231,13 +238,6 @@ export const menuConfig = [
                 label: 'Сравнение SEO с ТОПами',
                 isActive: true,
                 isNew: false
-            },
-            {
-                id: 3,
-                url: '/serp',
-                label: 'Проверка выдачи SERP',
-                isActive: true,
-                isNew: true
             },
         ]
     },
