@@ -1,9 +1,9 @@
 import { useFilters } from '@/app/providers/FiltersProvider';
 
-const FilterLoader = () => {
+const FilterLoader = ({ hide = false }: { hide: boolean }) => {
     const { isFiltersLoading } = useFilters();
 
-    if (!isFiltersLoading) return null;
+    if (!isFiltersLoading || hide) return null;
 
     return (
         <div className='position-absolute top-0 start-0 w-100 h-100 d-flex flex-column align-items-center justify-content-center'>

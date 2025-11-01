@@ -29,6 +29,7 @@ import { useDemoMode } from "@/app/providers";
 import NoSubscriptionWarningBlock from '@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock';
 import Loader from '@/components/ui/Loader';
 import { useLoadingProgress } from '@/service/hooks/useLoadingProgress';
+import FilterLoader from '@/components/ui/FilterLoader';
 
 const sortBySavedSortState = (data, activeBrand) => {
 	const { id } = activeBrand;
@@ -302,6 +303,7 @@ export default function Rnp() {
 	return (
 		<main className={styles.page}>
 			<MobilePlug />
+			<FilterLoader hide={loading} />
 
 			<section className={styles.page__sideNavWrapper}>
 				<Sidebar />
