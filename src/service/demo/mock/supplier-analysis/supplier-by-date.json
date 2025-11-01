@@ -349,14 +349,14 @@
     },
     {
         "date": "2025-10-28",
-        "revenue": 0,
-        "orders": 0,
-        "avg_check": 0,
-        "stock_quantity": 0,
-        "goods_quantity": 0,
-        "goods_with_sales_quantity": 0,
-        "avg_price": 0,
-        "brands_quantity": 0,
-        "brands_with_sales_quantity": 0
+        "revenue": 2342342,
+        "orders": 2342,
+        "avg_check": 1000,
+        "stock_quantity": 234234,
+        "goods_quantity": 234,
+        "goods_with_sales_quantity": 234,
+        "avg_price": 1000,
+        "brands_quantity": 3,
+        "brands_with_sales_quantity": 3
     }
 ]

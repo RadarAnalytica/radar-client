@@ -1,10 +1,10 @@
 [
     {
-        "label": "2025-09-29",
+        "label": "Актобе WB",
         "item": [
             {
                 "supplier_id": 16892,
-                "value": 3651
+                "value": 99
             },
             {
                 "supplier_id": 0,
@@ -13,11 +13,11 @@
         ]
     },
     {
-        "label": "2025-09-30",
+        "label": "Алексин WB",
         "item": [
             {
                 "supplier_id": 16892,
-                "value": 3799
+                "value": 26926
             },
             {
                 "supplier_id": 0,
@@ -26,11 +26,11 @@
         ]
     },
     {
-        "label": "2025-10-01",
+        "label": "Алматы Атакент WB",
         "item": [
             {
                 "supplier_id": 16892,
-                "value": 3874
+                "value": 31
             },
             {
                 "supplier_id": 0,
@@ -39,11 +39,11 @@
         ]
     },
     {
-        "label": "2025-10-02",
+        "label": "Барнаул СЦ 2",
         "item": [
             {
                 "supplier_id": 16892,
-                "value": 4691
+                "value": 10
             },
             {
                 "supplier_id": 0,
@@ -52,11 +52,11 @@
         ]
     },
     {
-        "label": "2025-10-03",
+        "label": "Белая Дача WB",
         "item": [
             {
                 "supplier_id": 16892,
-                "value": 21119
+                "value": 48
             },
             {
                 "supplier_id": 0,
@@ -65,11 +65,11 @@
         ]
     },
     {
-        "label": "2025-10-04",
+        "label": "Владимир WB",
         "item": [
             {
                 "supplier_id": 16892,
-                "value": 2367
+                "value": 9916
             },
             {
                 "supplier_id": 0,
@@ -78,11 +78,11 @@
         ]
     },
     {
-        "label": "2025-10-05",
+        "label": "Волгоградская обл.WB",
         "item": [
             {
                 "supplier_id": 16892,
-                "value": 2441
+                "value": 16295
             },
             {
                 "supplier_id": 0,
@@ -91,11 +91,11 @@
         ]
     },
     {
-        "label": "2025-10-06",
+        "label": "Воронеж WB",
         "item": [
             {
                 "supplier_id": 16892,
-                "value": 2637
+                "value": 383
             },
             {
                 "supplier_id": 0,
@@ -104,11 +104,11 @@
         ]
     },
     {
-        "label": "2025-10-07",
+        "label": "Екатеринбург WB",
         "item": [
             {
                 "supplier_id": 16892,
-                "value": 22130
+                "value": 8876
             },
             {
                 "supplier_id": 0,
@@ -117,11 +117,11 @@
         ]
     },
     {
-        "label": "2025-10-08",
+        "label": "Казань WB",
         "item": [
             {
                 "supplier_id": 16892,
-                "value": 58565
+                "value": 44698
             },
             {
                 "supplier_id": 0,
@@ -130,11 +130,11 @@
         ]
     },
     {
-        "label": "2025-10-09",
+        "label": "Коледино WB",
         "item": [
             {
                 "supplier_id": 16892,
-                "value": 19930
+                "value": 11032
             },
             {
                 "supplier_id": 0,
@@ -143,11 +143,11 @@
         ]
     },
     {
-        "label": "2025-10-10",
+        "label": "Котовск WB",
         "item": [
             {
                 "supplier_id": 16892,
-                "value": 6796
+                "value": 4448
             },
             {
                 "supplier_id": 0,
@@ -156,11 +156,11 @@
         ]
     },
     {
-        "label": "2025-10-11",
+        "label": "Краснодар WB",
         "item": [
             {
                 "supplier_id": 16892,
-                "value": 2372
+                "value": 14394
             },
             {
                 "supplier_id": 0,
@@ -169,11 +169,11 @@
         ]
     },
     {
-        "label": "2025-10-12",
+        "label": "Невинномысск WB",
         "item": [
             {
                 "supplier_id": 16892,
-                "value": 2754
+                "value": 30759
             },
             {
                 "supplier_id": 0,
@@ -182,11 +182,11 @@
         ]
     },
     {
-        "label": "2025-10-13",
+        "label": "Новосибирск WB",
         "item": [
             {
                 "supplier_id": 16892,
-                "value": 2655
+                "value": 7
             },
             {
                 "supplier_id": 0,
@@ -195,11 +195,11 @@
         ]
     },
     {
-        "label": "2025-10-14",
+        "label": "Обухово WB",
         "item": [
             {
                 "supplier_id": 16892,
-                "value": 2606
+                "value": 1
             },
             {
                 "supplier_id": 0,
@@ -208,11 +208,11 @@
         ]
     },
     {
-        "label": "2025-10-15",
+        "label": "Пенза WB",
         "item": [
             {
                 "supplier_id": 16892,
-                "value": 5569
+                "value": 6253
             },
             {
                 "supplier_id": 0,
@@ -221,11 +221,11 @@
         ]
     },
     {
-        "label": "2025-10-16",
+        "label": "Подольск WB",
         "item": [
             {
                 "supplier_id": 16892,
-                "value": 2146
+                "value": 3808
             },
             {
                 "supplier_id": 0,
@@ -234,11 +234,11 @@
         ]
     },
     {
-        "label": "2025-10-17",
+        "label": "Рязанская обл. WB",
         "item": [
             {
                 "supplier_id": 16892,
-                "value": 2193
+                "value": 2012
             },
             {
                 "supplier_id": 0,
@@ -247,11 +247,11 @@
         ]
     },
     {
-        "label": "2025-10-18",
+        "label": "Самарская обл. WB",
         "item": [
             {
                 "supplier_id": 16892,
-                "value": 1686
+                "value": 14967
             },
             {
                 "supplier_id": 0,
@@ -260,11 +260,11 @@
         ]
     },
     {
-        "label": "2025-10-19",
+        "label": "Санкт-Петербург WB",
         "item": [
             {
                 "supplier_id": 16892,
-                "value": 977
+                "value": 190
             },
             {
                 "supplier_id": 0,
@@ -273,11 +273,11 @@
         ]
     },
     {
-        "label": "2025-10-20",
+        "label": "Сарапул WB",
         "item": [
             {
                 "supplier_id": 16892,
-                "value": 2172
+                "value": 32410
             },
             {
                 "supplier_id": 0,
@@ -286,11 +286,11 @@
         ]
     },
     {
-        "label": "2025-10-21",
+        "label": "Свердловская обл. WB",
         "item": [
             {
                 "supplier_id": 16892,
-                "value": 4523
+                "value": 7328
             },
             {
                 "supplier_id": 0,
@@ -299,11 +299,11 @@
         ]
     },
     {
-        "label": "2025-10-22",
+        "label": "Склад Астана Карагандинское шоссе",
         "item": [
             {
                 "supplier_id": 16892,
-                "value": 568
+                "value": 32
             },
             {
                 "supplier_id": 0,
@@ -312,11 +312,11 @@
         ]
     },
     {
-        "label": "2025-10-23",
+        "label": "Склад Чашниково",
         "item": [
             {
                 "supplier_id": 16892,
-                "value": 2562
+                "value": 29
             },
             {
                 "supplier_id": 0,
@@ -325,11 +325,11 @@
         ]
     },
     {
-        "label": "2025-10-24",
+        "label": "СЦ Ереван",
         "item": [
             {
                 "supplier_id": 16892,
-                "value": 2274
+                "value": 39
             },
             {
                 "supplier_id": 0,
@@ -338,50 +338,11 @@
         ]
     },
     {
-        "label": "2025-10-25",
+        "label": "Электросталь WB",
         "item": [
             {
                 "supplier_id": 16892,
-                "value": 3386
-            },
-            {
-                "supplier_id": 0,
-                "value": 0
-            }
-        ]
-    },
-    {
-        "label": "2025-10-26",
-        "item": [
-            {
-                "supplier_id": 16892,
-                "value": 1813
-            },
-            {
-                "supplier_id": 0,
-                "value": 0
-            }
-        ]
-    },
-    {
-        "label": "2025-10-27",
-        "item": [
-            {
-                "supplier_id": 16892,
-                "value": 2809
-            },
-            {
-                "supplier_id": 0,
-                "value": 0
-            }
-        ]
-    },
-    {
-        "label": "2025-10-28",
-        "item": [
-            {
-                "supplier_id": 16892,
-                "value": 0
+                "value": 107238
             },
             {
                 "supplier_id": 0,
