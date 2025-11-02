@@ -1,40 +1,9 @@
-import React, { useEffect, useState, Suspense } from 'react';
-import RestorePass from '../containers/RestorePass';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import { URL } from '../service/config';
-import styles from './ResetPage.module.css'
+import React, { Suspense } from 'react';
+import styles from './RequestRestLink.module.css'
+import EmailForReset from '../containers/EmailForReset';
 import { Link } from 'react-router-dom';
 
-const ResetPage = () => {
-
-    const navigate = useNavigate();
-
-
-    const loca = document.location.href;
-    const array = loca ? loca.split('/') : [];
-    const reverseArr = array.reverse();
-
-    const email = reverseArr && reverseArr.length ? reverseArr[1] : null;
-    const code = reverseArr && reverseArr.length ? reverseArr[0] : null;
-
-    const [confirmed, setConfirmed] = useState(false);
-
-    // useEffect(() => {
-    //     if (email && code) {
-    //         const postData = { email, code };
-
-    //         axios.patch(`${URL}/api/user/confirm-reset`, postData)
-    //             .then(response => {
-    //                 console.log('Успешно подтверждено', response.data);
-    //                 setConfirmed(true)
-    //             })
-    //             .catch(error => {
-    //                 console.error('Ошибка при подтверждении', error);
-    //             });
-    //     }
-    // }, [email, code]);
-
+const RequestResetLink = () => {
     return (
         <main className={styles.page}>
             <div className={styles.page__wrapper}>
@@ -67,12 +36,12 @@ const ResetPage = () => {
                         </Link>
                     </header>
                     <Suspense fallback={null}>
-                       <RestorePass email={email} />
+                        <EmailForReset />
                     </Suspense>
                 </div>
             </div>
         </main>
-    )
+    );
 };
 
-export default ResetPage;
+export default RequestResetLink;

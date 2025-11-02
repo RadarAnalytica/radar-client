@@ -6,6 +6,7 @@ import { URL } from '../service/config';
 import ErrorModal from '../components/sharedComponents/modals/errorModal/errorModal';
 import SuccessModal from '../components/sharedComponents/modals/successModal/successModal';
 import styles from './EmailForReset.module.css';
+import { ConfigProvider, Form, Input, Button } from 'antd';
 
 const initRequestStatus = {
     isLoading: false,
@@ -16,33 +17,13 @@ const initRequestStatus = {
 
 const EmailForReset = () => {
 
-    const [email, setEmail] = useState();
-    const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
-    const [emailErrorText, setEmailErrorText] = useState();
     const [requestState, setRequestState] = useState(initRequestStatus);
+    const [form] = Form.useForm()
 
-    const navigate = useNavigate();
 
-    const emailHandler = (e) => {
-        const { value } = e.target;
-        setEmail(value);
-        if (!value) {
-            setEmailErrorText('Пожалуйста, заполните это поле!');
-            setIsSubmitDisabled(true);
-            return;
-        }
-        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
-            setEmailErrorText('Пожалуйста, введите корректный Email');
-            setIsSubmitDisabled(true);
-            return;
-        }
-        setEmailErrorText('');
-        setIsSubmitDisabled(false);
-    };
-
-    const submitHandler = async () => {
+    const submitHandler = async (fields) => {
         setRequestState({ ...initRequestStatus, isLoading: true });
-
+        const {email} = fields;
         try {
             let res = await fetch(`${URL}/api/user/reset`, {
                 method: 'POST',
@@ -56,8 +37,8 @@ const EmailForReset = () => {
                 res = await res.json();
                 return setRequestState({ ...initRequestStatus, isError: true, message: res?.detail && typeof (res.detail) === 'string' ? res.detail : 'Что-то пошло не так :(' });
             }
-            setRequestState({...initRequestStatus, isSuccess: true, message: 'success'});
-            setEmail('');
+            setRequestState({ ...initRequestStatus, isSuccess: true, message: 'success' });
+            form.resetFields();
         } catch (e) {
             console.log(e);
             setRequestState({ ...initRequestStatus, isError: true, message: res.detail || 'Что-то пошло не так :(' });
@@ -65,34 +46,78 @@ const EmailForReset = () => {
     };
 
     return (
-        <div className='signin-form'>
-            <div className='d-flex flex-column align-items-center'>
-                <a href={`${URL}`}>
-                    <img src={logo} alt="" className='logo' />
-                </a>
-                <h1 style={{ fontWeight: 700, fontSize: '24px' }} className='mt-3'>Восстановление пароля</h1>
-            </div>
-            <div className='fields-container'>
-                <InputField
-                    type={'text'}
-                    placeholder={'Указанный при регистрации'}
-                    label={'Email'}
-                    callback={emailHandler}
-                    required={true}
-                    emailErrorText={emailErrorText}
-                />
-            </div>
-            <button className={styles.button}
-                disabled={isSubmitDisabled || requestState.isLoading}
-                onClick={submitHandler}
-            >Получить ссылку</button>
-            <div style={{ display: 'flex', justifyContent: 'center' }}>
-                <p className='clue-text'>
-                    <button className='link' style={{ marginRight: '20px' }} onClick={() => { window.location.href = `${URL}/signup`; }}>Регистрация</button>
-                    <button className='link' onClick={() => { window.location.href = `${URL}/signin`; }}>Вход</button>
-                </p>
-            </div>
+        <ConfigProvider
+            theme={{
+                token: {
+                    colorPrimary: '#6083E7',
+                    //controlHeightLG: 60,
+                    colorBorder: '#E0EBFF',
+                    fontFamily: 'Manrope'
+                },
+                components: {
+                    Form: {
+                        labelColor: '#8F8F8F',
+                        labelFontSize: 16
+                    },
+                    Select: {
+                        optionFontSize: 14
+                    }
+                }
+            }}
+        >
+            <Form
+                form={form}
+                scrollToFirstError
+                layout='vertical'
+                className={styles.form}
+                onFinish={submitHandler}
+            >
+                <Form.Item
+                    className={styles.form__item}
+                    name='email'
+                    label='E-mail *'
+                    rules={[
+                        { required: true, message: 'Пожалуйста, заполните это поле!' },
+                        { type: 'email', message: 'Пожалуйста, введите корректный email!' },
+                    ]}
+                >
+                    <Input
+                        className={styles.form__input}
+                        size='large'
+                        placeholder='Указанный при регистрации'
+                        // disabled={isDemoMode}
+                    />
+                </Form.Item>
 
+                <ConfigProvider
+                    theme={{
+                        token: {
+                            //controlHeightLG: 68
+                        }
+                    }}
+                >
+                    <Button
+                        htmlType='submit'
+                        type='primary'
+                        size='large'
+                        className={styles.form__button}
+                        loading={requestState.isLoading}
+                        disabled={requestState.isError}
+                    >
+                        Получить ссылку
+                    </Button>
+                </ConfigProvider>
+                <div className={styles.form__textWrapper}>
+                    <div className={styles.form__text}>
+                        Если у вас ещё нет личного кабинета, <Link href='https://radar-analytica.ru/signup' style={{ color: '#6083E7' }}>Зарегистрируйтесь</Link>
+                    </div>
+                    <div className={styles.form__text}>
+                        Вспомнили пароль? <Link href='https://radar-analytica.ru/signin' style={{ color: '#6083E7' }}>Вход</Link>
+                    </div>
+                </div>
+            </Form>
+
+            {/* modal */}
             <ErrorModal
                 open={requestState.isError}
                 onOk={() => setRequestState(initRequestStatus)}
@@ -103,14 +128,14 @@ const EmailForReset = () => {
             />
             <SuccessModal
                 open={requestState.isSuccess}
-                onOk={() => { location.href = '/signin'; }}
-                onClose={() => { location.href = '/signin'; }}
-                onCancel={() => { location.href = '/signin'; }}
+                onOk={() => { location.href = 'https://radar-analytica.ru/signin'; }}
+                onClose={() => { location.href = 'https://radar-analytica.ru/signin'; }}
+                onCancel={() => { location.href = 'https://radar-analytica.ru/signin'; }}
                 footer={null}
                 message={'Ссылка на сброс пароля была направлена на Вашу почту'}
             />
-        </div>
-    );
-};
+        </ConfigProvider>
+    )
+}
 
 export default EmailForReset;
