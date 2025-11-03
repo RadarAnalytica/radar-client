@@ -32,6 +32,11 @@
     gap: 8px;
 }
 
+.search__wrapper_vertical {
+    flex-direction: column;
+    align-items: flex-end;
+}
+
 .search__input {
     height: 38px
 }

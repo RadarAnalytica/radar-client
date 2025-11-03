@@ -78,6 +78,7 @@ const SerpPage = React.lazy(() => import("./pages/SerpPage/SerpPage"));
 const WbMetricsPage = React.lazy(() => import('./pages/wbMetricsPage/wbMetricsPage'));
 const PositionCheckPage = React.lazy(() => import("@/pages/PositionCheck/PositionCheck"));
 const PositionCheckIDPage = React.lazy(() => import("@/pages/PositionCheck/PositionCheckID"));
+const KeywordsSelectionPage = React.lazy(() => import("@/pages/KeywordsSelectionPage/KeywordsSelectionPage"));
 
 // During migration, allow missing props on ProtectedRoute
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -128,6 +129,7 @@ function App() {
                 <Route path='/serp' element={<ProtectedRoute expireProtected routeRuName='SERP'><SerpPage /></ProtectedRoute>} />
                 <Route path='/position-check' element={<ProtectedRoute expireProtected routeRuName='Проверка позиций'><PositionCheckPage /></ProtectedRoute>} />
                 <Route path='/position-check/:id' element={<ProtectedRoute testPeriodGuardType='redirect' testPeriodRedirect='/position-check' expireProtected routeRuName='Проверка позиций'><PositionCheckIDPage /></ProtectedRoute>} />
+                <Route path='/keywords-selection' element={<ProtectedRoute expireProtected routeRuName='Подбор ключевых запросов'><KeywordsSelectionPage /></ProtectedRoute>} />
                 <Route path='/stock-analysis' element={<ProtectedRoute expireProtected onboardProtected routeRuName='Аналитика по товарам'><StockAnalysisPage /></ProtectedRoute>} />
                 <Route path='/orders-map' element={<ProtectedRoute expireProtected onboardProtected routeRuName='География заказов и продаж'><OrdersMap /></ProtectedRoute>} />
                 <Route path='/linked-shops' element={<ProtectedRoute expireProtected onboardProtected routeRuName='Подключенные магазины'><LinkedShopsPage /></ProtectedRoute>} />
