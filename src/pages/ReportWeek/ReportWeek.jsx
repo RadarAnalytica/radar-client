@@ -263,7 +263,13 @@ export default function ReportWeek() {
 				}
 			}, 0);
 
-			// Если выберут вариант с тултипом то присвоить какой-нить ключ и обновить cellRender вместо удаления строки
+
+
+			// Вариант с тултипом
+			if (summaryValue === 0) {
+				rows[currentRowIndex].noData = true;
+			}
+			// Вариант с удалением строки
 			if (summaryValue === 0) {
 				rows.splice(currentRowIndex, 1);
 			}
