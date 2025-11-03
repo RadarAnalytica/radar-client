@@ -6,3 +6,4 @@ export { RadarProductBar } from './ui/RadarBar/RadarProductBar';
 export { RadarLoader } from './ui/RadarLoader/RadarLoader';
 export { positionCheckTableConfig } from './tableConfigs/positionCheckTableConfig';
 export { positionCheckTableCustomCellRender } from './customTableCells/positionCheckTableCustomCellRender';
+export { innerTableConfig } from './tableConfigs/positionCheckTableConfig';

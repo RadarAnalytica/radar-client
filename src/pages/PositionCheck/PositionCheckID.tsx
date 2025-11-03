@@ -19,6 +19,7 @@ import { formatPrice } from '@/service/utils';
 import { PositionCheckFilters } from '@/widgets';
 import DownloadButton from '@/components/DownloadButton';
 import { Table as RadarTable } from 'radar-ui';
+import { DoubleTable } from '@/widgets';
 
 // antd segmented theme
 const segmentedTheme = {
@@ -181,8 +182,19 @@ const PositionCheckID = () => {
         const currentRow = tableData.find((row: any) => row.rowKey === rowKey);
         if (!currentRow) return;
         
-        // Если уже добавлена кастомная строка, не делаем ничего
-        if (addedRowsRef.current[rowKey]) return;
+        // Тоггл: если уже раскрыто — закрываем и очищаем кастомные элементы
+        if (expandedRowKeys.includes(rowKey)) {
+            setExpandedRowKeys(prev => prev.filter(key => key !== rowKey));
+            const addedRowData = addedRowsRef.current[rowKey];
+            if (addedRowData) {
+                addedRowData.customRow.remove();
+                addedRowData.hiddenRows.forEach(row => {
+                    row.style.display = '';
+                });
+                delete addedRowsRef.current[rowKey];
+            }
+            return;
+        }
         
         // Раскрываем строку
         setExpandedRowKeys(prev => [...prev, currentRow.rowKey]);
@@ -321,7 +333,9 @@ const PositionCheckID = () => {
                         <p className={styles.page__summaryItem}>Кластеров: <span>15</span></p>
                     </div>
 
-                    <div className={styles.page__tableWrapper} ref={tableContainerRef}>
+                    <DoubleTable />
+
+                    {/* <div className={styles.page__tableWrapper} ref={tableContainerRef}>
                         <RadarTable
                             rowKey={(record) => record.rowKey}
                             config={positionCheckTableConfig}
@@ -343,10 +357,18 @@ const PositionCheckID = () => {
                             bodyCellWrapperStyle={{ borderBottom: 'none', padding: '10.5px 12px' }}
                             customCellRender={{
                                 idx: ['query', 'serp'],
-                                renderer: (value, record, index, dataIndex) => positionCheckTableCustomCellRender(value, record, index, dataIndex, serpButtonHandler, isExpandedSerp),
+                                renderer: (value, record, index, dataIndex) => positionCheckTableCustomCellRender(
+                                    value,
+                                    record,
+                                    index,
+                                    dataIndex,
+                                    serpButtonHandler,
+                                    isExpandedSerp,
+                                    expandedRowKeys.includes(record.rowKey)
+                                ),
                             }}
                         />
-                    </div>
+                    </div> */}
                 </div>
             </section>
             {/* ---------------------- */}

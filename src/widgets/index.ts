@@ -3,3 +3,4 @@ export { ExternalHeader } from './ExternalHeader/Header';
 export { ExternalFooter } from './ExternalFooter/Footer';
 export { SerpSchema } from './SerpSchema/SerpSchema';
 export { PositionCheckFilters } from './PositionCheckFilters/PositionCheckFilters';
+export { DoubleTable } from './DoubleTable/DoubleTable';
