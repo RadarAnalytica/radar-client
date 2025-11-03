@@ -268,10 +268,8 @@ export default function ReportWeek() {
 				rows.splice(currentRowIndex, 1);
 			}
 		}
-		rows.splice(0, 1);
+
 		if (rows.length > 0) {
-
-
 			// приcвоение расчетных значений
 			summary = {
 				...summary,
