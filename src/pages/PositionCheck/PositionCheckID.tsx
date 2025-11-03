@@ -140,8 +140,8 @@ const PositionCheckID = () => {
     const dispatch = useAppDispatch();
     const { isDemoMode } = useDemoMode();
     const { selectedRange, isFiltersLoaded } = useAppSelector(store => store.filters);
-    const { dataStatus, skuMainTableData, skuByColorTableData, skuByWarehouseTableData, skuBySizeTableData } = useAppSelector(store => store.skuAnalysis);
-    const [loading, setLoading] = useState(true);
+    //const { dataStatus, skuMainTableData, skuByColorTableData, skuByWarehouseTableData, skuBySizeTableData } = useAppSelector(store => store.skuAnalysis);
+    const [loading, setLoading] = useState(false);
     const [requestObject, setRequestObject] = useState<Record<string, any>>({});
     const [tableType, setTableType] = useState<'Кластеры' | 'По запросам'>('Кластеры');
     const [pagination, setPagination] = useState({ current: 1, pageSize: 10, total: 0 });
@@ -274,7 +274,7 @@ const PositionCheckID = () => {
 
                 <div className={styles.page__productBarWrapper}>
                     {/* Photo block */}
-                    <RadarProductBar data={mockMainData} isLoading={dataStatus.isLoading} />
+                    <RadarProductBar data={mockMainData} isLoading={loading} />
                     {/* Additional data */}
                     <div className={styles.info}>
                         <div className={styles.info__column}>
@@ -302,9 +302,9 @@ const PositionCheckID = () => {
                 </div>
                 {/* Bars */}
                 <div className={styles.page__barsWrapper}>
-                    <RadarBar title='Видимость' isLoading={dataStatus.isLoading} mainValue={42.91} mainValueUnits='%' />
-                    <RadarBar title='Средняя позиция' isLoading={dataStatus.isLoading} mainValue={98} mainValueUnits='' />
-                    <RadarBar title='Просмотры в месяц, шт' isLoading={dataStatus.isLoading} mainValue={10283} mainValueUnits='' />
+                    <RadarBar title='Видимость' isLoading={loading} mainValue={42.91} mainValueUnits='%' />
+                    <RadarBar title='Средняя позиция' isLoading={loading} mainValue={98} mainValueUnits='' />
+                    <RadarBar title='Просмотры в месяц, шт' isLoading={loading} mainValue={10283} mainValueUnits='' />
                 </div>
                 {/* Filters */}
                 <div className={styles.page__filtersWrapper}>
@@ -350,8 +350,8 @@ const PositionCheckID = () => {
                 </div>
             </section>
             {/* ---------------------- */}
-            <ErrorModal
-                open={dataStatus.isError}
+            {/* <ErrorModal
+                open={false}
                 footer={null}
                 onOk={() => {
                     dispatch(skuAnalysisActions.setDataStatus({ isLoading: false, isError: false, message: '' }));
@@ -366,7 +366,7 @@ const PositionCheckID = () => {
                     navigate('/sku-analysis');
                 }}
                 message={dataStatus.message}
-            />
+            /> */}
         </main>
     );
 };
