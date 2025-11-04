@@ -380,7 +380,7 @@ const SerpPage = () => {
                             label='Регион'
                             value={activeFilter?.dest}
                             optionsData={filtersData?.map((item) => ({ value: item.dest, label: item.city_name }))}
-                            handler={(value) => {
+                            handler={(value: number) => {
                                 setActiveFilter(filtersData?.find((item) => item.dest === value) || null);
                             }}
                             mode={undefined}

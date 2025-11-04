@@ -9,7 +9,6 @@
     box-sizing: border-box;
     min-width: 1200px;
 }
-
 .page__content {
     width: calc(100% - 74px);
     padding: 20px 32px;
@@ -24,7 +23,6 @@
     flex-grow: 0;
     flex-shrink: 0;
 }
-
 .page__sideNavWrapper {
     height: 100%;
     width: auto;
@@ -35,7 +33,6 @@
     flex-grow: 1;
     flex-shrink: 0;
 }
-
 .page__headerWrapper {
     width: 100%;
 }
