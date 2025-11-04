@@ -1,4 +1,4 @@
-import { DemoDataService } from './DemoDataService';
+import { DemoDataService } from './demo/DemoDataService';
 import { URL } from './config';
 
 // Получение текущего пользователя из контекста
@@ -57,7 +57,7 @@ export const fetchApi = async (endpoint: string, options: RequestInit = {}) => {
     const { store } = await import('../redux/store'); // Динамически импортируем store для получения filters без циклической зависимости
     const filters = store.getState().filters;
 
-    const demoData = demoService.getDataForEndpoint(endpoint, filters);
+    const demoData = await demoService.getDataForEndpoint(endpoint, filters, options);
 
     if (demoData?.data) {
       return createMockResponse(demoData.data);

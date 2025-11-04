@@ -7,3 +7,4 @@ export { RadarLoader } from './ui/RadarLoader/RadarLoader';
 export { positionCheckTableConfig } from './tableConfigs/positionCheckTableConfig';
 export { positionCheckTableCustomCellRender } from './customTableCells/positionCheckTableCustomCellRender';
 export { innerTableConfig } from './tableConfigs/positionCheckTableConfig';
+export { RadarRateMark } from './ui/RadarRateMark/RadarRateMark';

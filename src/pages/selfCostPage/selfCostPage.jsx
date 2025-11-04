@@ -15,6 +15,7 @@ import { useDemoMode } from "@/app/providers";
 import NoSubscriptionWarningBlock from "@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock";
 import { useLoadingProgress } from '@/service/hooks/useLoadingProgress';
 import AlertWidget from '@/components/sharedComponents/AlertWidget/AlertWidget';
+import FilterLoader from '@/components/ui/FilterLoader';
 
 const initDataStatus = {
     isError: false,
@@ -84,6 +85,7 @@ const SelfCostPage = () => {
     return (
         <main className={styles.page}>
             <MobilePlug />
+            <FilterLoader antiloading={dataStatus.isLoading} />
 
             <section className={styles.page__sideNavWrapper}>
                 <Sidebar />

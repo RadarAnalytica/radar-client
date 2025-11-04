@@ -8,6 +8,7 @@ import { ServiceFunctions } from '@/service/serviceFunctions';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { actions as supplierActions } from '@/redux/supplierAnalysis/supplierAnalysisSlice';
 import { selectMainSupplierData, selectCompareSupplierData } from '@/redux/supplierAnalysis/supplierAnalysisSelectors';
+import { useDemoMode } from '@/app/providers';
 
 
 const requestInitState = {
@@ -19,6 +20,7 @@ const requestInitState = {
 
 const SearchBlock = ({ supplierType = 'main' }) => {
     const dispatch = useAppDispatch();
+    const { isDemoMode } = useDemoMode();
     const mainSupplierData = useAppSelector(selectMainSupplierData);
     const compareSupplierData = useAppSelector(selectCompareSupplierData);
     const [requestStatus, setRequestStatus] = useState(requestInitState);
@@ -97,6 +99,7 @@ const SearchBlock = ({ supplierType = 'main' }) => {
                         ref={ref}
                         showSearch
                         size='large'
+                        disabled={isDemoMode}
                         placeholder={supplierType === 'main' ? 'Введите название поставщика' : supplierType === 'compare' ? 'Поставщик для сравнения' : ''}
                         className={styles.search__input}
                         style={{ background: currentData ? '#F2F2F2' : '', width: '100%' }}

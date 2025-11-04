@@ -297,8 +297,8 @@ const SerpPage = () => {
                         titlePrefix=''
                         children={''}
                         videoReviewLink=''
-                        howToLink=''
-                        howToLinkText=''
+                        howToLink='https://radar.usedocs.com/article/79937'
+                        howToLinkText='Как использовать раздел'
                     />
                 </div>
 

@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import styles from './tableWidget.module.css';
-import { tableConfig, sortTableDataFunc } from '../../shared';
+import { tableConfig, sortTableDataFunc, CURR_STOCK_ANALYSIS_TABLE_CONFIG_VER } from '../../shared';
 import { formatPrice } from '../../../../../service/utils';
 import { Tooltip, Pagination, ConfigProvider, Progress } from 'antd';
 import { Table as RadarTable } from 'radar-ui';
@@ -149,23 +149,46 @@ const TableWidget = ({ stockAnalysisFilteredData, loading, progress }) => {
         // Обновляем состояние
         setTableConfig(prevConfig => {
             const updatedConfig = updateColumnWidth(prevConfig);
-            localStorage.setItem('STOCK_ANALYSIS_TABLE_CONFIG', JSON.stringify(updatedConfig));
+            localStorage.setItem('STOCK_ANALYSIS_TABLE_CONFIG', JSON.stringify({
+                version: CURR_STOCK_ANALYSIS_TABLE_CONFIG_VER,
+                config: updatedConfig
+            }));
             return updatedConfig;
         });
     };
 
     useEffect(() => {
-        let savedTableConfig = localStorage.getItem('STOCK_ANALYSIS_TABLE_CONFIG');
-        if (savedTableConfig) {
+        let savedTableConfigData = localStorage.getItem('STOCK_ANALYSIS_TABLE_CONFIG');
+        if (savedTableConfigData) {
             try {
-                savedTableConfig = JSON.parse(savedTableConfig);
-                setTableConfig(savedTableConfig);
+                const parsed = JSON.parse(savedTableConfigData);
+                
+                // Проверяем версию конфига
+                if (parsed.version === CURR_STOCK_ANALYSIS_TABLE_CONFIG_VER) {
+                    setTableConfig(parsed.config);
+                } else {
+                    // Версия не совпадает, используем дефолтный конфиг
+                    console.log('Table config version mismatch, using default config');
+                    setTableConfig(newTableConfig);
+                    localStorage.setItem('STOCK_ANALYSIS_TABLE_CONFIG', JSON.stringify({
+                        version: CURR_STOCK_ANALYSIS_TABLE_CONFIG_VER,
+                        config: newTableConfig
+                    }));
+                }
             } catch (error) {
                 console.error('Error parsing saved table config:', error);
                 setTableConfig(newTableConfig);
+                localStorage.setItem('STOCK_ANALYSIS_TABLE_CONFIG', JSON.stringify({
+                    version: CURR_STOCK_ANALYSIS_TABLE_CONFIG_VER,
+                    config: newTableConfig
+                }));
             }
         } else {
             setTableConfig(newTableConfig);
+            localStorage.setItem('STOCK_ANALYSIS_TABLE_CONFIG', JSON.stringify({
+                version: CURR_STOCK_ANALYSIS_TABLE_CONFIG_VER,
+                config: newTableConfig
+            }));
         }
     }, []);
 

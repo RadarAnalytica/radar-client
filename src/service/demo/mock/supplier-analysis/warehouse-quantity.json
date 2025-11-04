@@ -1,0 +1,353 @@
+[
+    {
+        "label": "Актобе WB",
+        "item": [
+            {
+                "supplier_id": 16892,
+                "value": 99
+            },
+            {
+                "supplier_id": 0,
+                "value": 0
+            }
+        ]
+    },
+    {
+        "label": "Алексин WB",
+        "item": [
+            {
+                "supplier_id": 16892,
+                "value": 26926
+            },
+            {
+                "supplier_id": 0,
+                "value": 0
+            }
+        ]
+    },
+    {
+        "label": "Алматы Атакент WB",
+        "item": [
+            {
+                "supplier_id": 16892,
+                "value": 31
+            },
+            {
+                "supplier_id": 0,
+                "value": 0
+            }
+        ]
+    },
+    {
+        "label": "Барнаул СЦ 2",
+        "item": [
+            {
+                "supplier_id": 16892,
+                "value": 10
+            },
+            {
+                "supplier_id": 0,
+                "value": 0
+            }
+        ]
+    },
+    {
+        "label": "Белая Дача WB",
+        "item": [
+            {
+                "supplier_id": 16892,
+                "value": 48
+            },
+            {
+                "supplier_id": 0,
+                "value": 0
+            }
+        ]
+    },
+    {
+        "label": "Владимир WB",
+        "item": [
+            {
+                "supplier_id": 16892,
+                "value": 9916
+            },
+            {
+                "supplier_id": 0,
+                "value": 0
+            }
+        ]
+    },
+    {
+        "label": "Волгоградская обл.WB",
+        "item": [
+            {
+                "supplier_id": 16892,
+                "value": 16295
+            },
+            {
+                "supplier_id": 0,
+                "value": 0
+            }
+        ]
+    },
+    {
+        "label": "Воронеж WB",
+        "item": [
+            {
+                "supplier_id": 16892,
+                "value": 383
+            },
+            {
+                "supplier_id": 0,
+                "value": 0
+            }
+        ]
+    },
+    {
+        "label": "Екатеринбург WB",
+        "item": [
+            {
+                "supplier_id": 16892,
+                "value": 8876
+            },
+            {
+                "supplier_id": 0,
+                "value": 0
+            }
+        ]
+    },
+    {
+        "label": "Казань WB",
+        "item": [
+            {
+                "supplier_id": 16892,
+                "value": 44698
+            },
+            {
+                "supplier_id": 0,
+                "value": 0
+            }
+        ]
+    },
+    {
+        "label": "Коледино WB",
+        "item": [
+            {
+                "supplier_id": 16892,
+                "value": 11032
+            },
+            {
+                "supplier_id": 0,
+                "value": 0
+            }
+        ]
+    },
+    {
+        "label": "Котовск WB",
+        "item": [
+            {
+                "supplier_id": 16892,
+                "value": 4448
+            },
+            {
+                "supplier_id": 0,
+                "value": 0
+            }
+        ]
+    },
+    {
+        "label": "Краснодар WB",
+        "item": [
+            {
+                "supplier_id": 16892,
+                "value": 14394
+            },
+            {
+                "supplier_id": 0,
+                "value": 0
+            }
+        ]
+    },
+    {
+        "label": "Невинномысск WB",
+        "item": [
+            {
+                "supplier_id": 16892,
+                "value": 30759
+            },
+            {
+                "supplier_id": 0,
+                "value": 0
+            }
+        ]
+    },
+    {
+        "label": "Новосибирск WB",
+        "item": [
+            {
+                "supplier_id": 16892,
+                "value": 7
+            },
+            {
+                "supplier_id": 0,
+                "value": 0
+            }
+        ]
+    },
+    {
+        "label": "Обухово WB",
+        "item": [
+            {
+                "supplier_id": 16892,
+                "value": 1
+            },
+            {
+                "supplier_id": 0,
+                "value": 0
+            }
+        ]
+    },
+    {
+        "label": "Пенза WB",
+        "item": [
+            {
+                "supplier_id": 16892,
+                "value": 6253
+            },
+            {
+                "supplier_id": 0,
+                "value": 0
+            }
+        ]
+    },
+    {
+        "label": "Подольск WB",
+        "item": [
+            {
+                "supplier_id": 16892,
+                "value": 3808
+            },
+            {
+                "supplier_id": 0,
+                "value": 0
+            }
+        ]
+    },
+    {
+        "label": "Рязанская обл. WB",
+        "item": [
+            {
+                "supplier_id": 16892,
+                "value": 2012
+            },
+            {
+                "supplier_id": 0,
+                "value": 0
+            }
+        ]
+    },
+    {
+        "label": "Самарская обл. WB",
+        "item": [
+            {
+                "supplier_id": 16892,
+                "value": 14967
+            },
+            {
+                "supplier_id": 0,
+                "value": 0
+            }
+        ]
+    },
+    {
+        "label": "Санкт-Петербург WB",
+        "item": [
+            {
+                "supplier_id": 16892,
+                "value": 190
+            },
+            {
+                "supplier_id": 0,
+                "value": 0
+            }
+        ]
+    },
+    {
+        "label": "Сарапул WB",
+        "item": [
+            {
+                "supplier_id": 16892,
+                "value": 32410
+            },
+            {
+                "supplier_id": 0,
+                "value": 0
+            }
+        ]
+    },
+    {
+        "label": "Свердловская обл. WB",
+        "item": [
+            {
+                "supplier_id": 16892,
+                "value": 7328
+            },
+            {
+                "supplier_id": 0,
+                "value": 0
+            }
+        ]
+    },
+    {
+        "label": "Склад Астана Карагандинское шоссе",
+        "item": [
+            {
+                "supplier_id": 16892,
+                "value": 32
+            },
+            {
+                "supplier_id": 0,
+                "value": 0
+            }
+        ]
+    },
+    {
+        "label": "Склад Чашниково",
+        "item": [
+            {
+                "supplier_id": 16892,
+                "value": 29
+            },
+            {
+                "supplier_id": 0,
+                "value": 0
+            }
+        ]
+    },
+    {
+        "label": "СЦ Ереван",
+        "item": [
+            {
+                "supplier_id": 16892,
+                "value": 39
+            },
+            {
+                "supplier_id": 0,
+                "value": 0
+            }
+        ]
+    },
+    {
+        "label": "Электросталь WB",
+        "item": [
+            {
+                "supplier_id": 16892,
+                "value": 107238
+            },
+            {
+                "supplier_id": 0,
+                "value": 0
+            }
+        ]
+    }
+]

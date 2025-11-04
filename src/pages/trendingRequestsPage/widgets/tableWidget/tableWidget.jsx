@@ -1,11 +1,9 @@
 // Dont forget to renew imports
-import React, { useRef, useState, useEffect, useCallback, useMemo } from 'react';
+import React, { useRef, useState, useEffect, useCallback } from 'react';
 import styles from './tableWidget.module.css';
 // Возможно будет удобнее передавать конфиг пропсом
-import { tableConfig, newTableConfig } from './config';
-import { sortTableDataFunc } from './utils';
+import { tableConfig, newTableConfig, CURR_TRENDING_REQUESTS_TABLE_CONFIG_VER } from './config';
 import { formatPrice } from '@/service/utils';
-import { ConfigProvider, Pagination } from 'antd';
 import DownloadButton from '@/components/DownloadButton';
 import { fileDownload } from '@/service/utils';
 import { Link } from 'react-router-dom';
@@ -30,17 +28,17 @@ const customCellRender = (value, record, index, dataIndex) => {
                     <CopyButton url={`https://wildberries.ru/catalog/0/search.aspx?search=${value}`} />
                 </div>
             </div>
-        )
+        );
     }
     return <div>{value}</div>;
 };
 
-const CopyButton = React.memo(({ url }) => {
+const CopyButton = React.memo(({ url }) => { // eslint-disable-line react/prop-types
 
     const [isCopied, setIsCopied] = useState(false);
 
     const copyHandler = useCallback(() => {
-        navigator.clipboard.writeText(url).catch(err => console.log('Error'));
+        navigator.clipboard.writeText(url).catch(_err => console.log('Error'));
         setIsCopied(true);
     }, [url]);
 
@@ -50,7 +48,11 @@ const CopyButton = React.memo(({ url }) => {
             timeout = setTimeout(() => setIsCopied(false), 3000);
         }
 
-        return () => { timeout && clearTimeout(timeout); };
+        return () => {
+            if (timeout) {
+                clearTimeout(timeout);
+            }
+        };
     }, [isCopied]);
 
     return (
@@ -67,10 +69,12 @@ const CopyButton = React.memo(({ url }) => {
         </button>
     );
 });
+CopyButton.displayName = 'CopyButton';
 
 
+// eslint-disable-next-line react/prop-types
 export const TableWidget = React.memo(({ rawData, loading, tablePaginationState, setRequestState, requestState, initRequestStatus, setRequestStatus, setSortState, sortState, initSortState }) => {
-
+    /* eslint-disable react/prop-types */
     const containerRef = useRef(null); // реф скролл-контейнера (используется чтобы седить за позицией скрола)
     const [tableData, setTableData] = useState(); // данные для рендера таблицы
     const [isXScrolled, setIsXScrolled] = useState(false); // следим за скролом по Х
@@ -80,7 +84,10 @@ export const TableWidget = React.memo(({ rawData, loading, tablePaginationState,
     // Используем хук для управления изменением размеров колонок
     const { config: currentTableConfig, onResize: onResizeGroup } = useTableColumnResize(
         newTableConfig, 
-        'trendingRequestsTableConfig'
+        'trendingRequestsTableConfig',
+        0,
+        400,
+        CURR_TRENDING_REQUESTS_TABLE_CONFIG_VER
     );
 
     // задаем начальную дату
@@ -147,7 +154,7 @@ export const TableWidget = React.memo(({ rawData, loading, tablePaginationState,
             sortType: sort_order,
         });
         setRequestState({ ...requestState, sorting: { sort_field, sort_order }, page: 1, limit: 25 });
-    }, [sortState, rawData]);
+    }, [sortState, initSortState, requestState, setRequestState, setSortState]);
 
     const downloadButtonHandler = useCallback(async () => {
         setIsExelLoading(true);
@@ -174,21 +181,6 @@ export const TableWidget = React.memo(({ rawData, loading, tablePaginationState,
             setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось скачать таблицу.' });
         }
     }, [requestState, initRequestStatus, setRequestStatus]);
-
-    const memoizedPaginationTheme = useMemo(() => ({
-        token: {
-            colorText: '#5329FF',
-            lineWidth: 0,
-            colorPrimary: '#5329FF'
-        },
-        components: {
-            Pagination: {
-                itemActiveBg: '#EEEAFF',
-                itemBg: '#F7F7F7',
-                itemColor: '#8C8C8C',
-            }
-        }
-    }), []);
 
     if (loading) {
         return (
@@ -221,16 +213,6 @@ export const TableWidget = React.memo(({ rawData, loading, tablePaginationState,
                         return (
                             // Добавляем тень накладывающемуся столбцу при скролле вправо
                             <div className={tableStyle} key={id} style={{ boxShadow: id === 0 && isXScrolled ? '10px 0 10px -5px rgba(0, 0, 0, 0.1)' : 'none' }}>
-
-                                {/* Заголовок таблицы. Марджин нужен для второй таблицы у которой нет заголовка (разделено для реализации наложения при боковом скроле) */}
-                                {/* <p
-                            className={id === 0 ? `${styles.table__title} ${styles.table__title_bigMargin}` : styles.table__title}
-                            style={{ marginTop: t.tableName ? 0 : 24 }}
-                        >
-                            {t.tableName}
-                        </p> */}
-
-                                {/* Хэдер */}
                                 <div className={styles.table__headerWrapper}>
                                     <div className={headerStyle}>
                                         {/* Мапим массив значений заголовков */}
@@ -284,7 +266,6 @@ export const TableWidget = React.memo(({ rawData, loading, tablePaginationState,
                                                         return (
                                                             <div className={`${styles.table__rowItem} ${styles.table__rowItem_wide}`} key={id}>
                                                                 <div className={styles.table__mainTitleWrapper}>
-                                                                    {/* <p className={styles.table__rowTitle}>{product[v.engName]}</p> */}
                                                                     <Link
                                                                         className={styles.table__rowTitle}
                                                                         style={{ textDecoration: 'none' }}
@@ -365,7 +346,7 @@ export const TableWidget = React.memo(({ rawData, loading, tablePaginationState,
                                 current: tablePaginationState.page,
                                 pageSize: tablePaginationState.limit,
                                 total: tablePaginationState.total_pages,
-                                onChange: (page, pageSize) => {
+                                onChange: (page, _pageSize) => {
                                     paginationHandler(page);
                                 },
                                 showQuickJumper: true,
@@ -385,3 +366,5 @@ export const TableWidget = React.memo(({ rawData, loading, tablePaginationState,
         </>
     );
 });
+
+TableWidget.displayName = 'TableWidget';

@@ -124,17 +124,19 @@ const SupplierIdPage = () => {
                         dataType='metaData'
                         id={mainSupplierData?.supplier_id}
                     />
-                    <div className={styles.page__filtersWrapper}>
-                        <Filters
-                            setLoading={() => {}}
-                            shopSelect={false}
-                            brandSelect={false}
-                            articleSelect={false}
-                            groupSelect={false}
-                            tempPageCondition='supplier'
-                            isDataLoading={isAnyDataLoading}
-                            maxCustomDate={maxDate}
-                        />
+                    <div className={styles.page__filtersWrapper} title={isDemoMode && 'Данный фильтр недоступен в демо-режиме'}>
+                        <div className={`${styles.page__filtersWrapper__filters} ${isDemoMode && 'pe-none'}`}>
+                            <Filters
+                                setLoading={() => {}}
+                                shopSelect={false}
+                                brandSelect={false}
+                                articleSelect={false}
+                                groupSelect={false}
+                                tempPageCondition='supplier'
+                                isDataLoading={isAnyDataLoading}
+                                maxCustomDate={maxDate}
+                            />
+                        </div>
                     </div>
                     <BarsWidget
                         dataHandler={fetchSupplierAnalysisIndicatorsData}
@@ -206,7 +208,6 @@ const SupplierIdPage = () => {
                     <StockChartCustomHeader />
                     <ChartTabsWrapper />
                 </div>
-
             </section>
             {/* ---------------------- */}
         </main>
@@ -299,11 +300,8 @@ const ChartTabsWrapper = () => {
     useEffect(() => {
         setConfig(getStockChartProps(stockChartTab));
     }, [stockChartTab]);
-    return (
-            <StockChartWidget
-                {...config}
-            />
-    );
+    
+    return <StockChartWidget {...config} />;
 };
 
 export default SupplierIdPage;

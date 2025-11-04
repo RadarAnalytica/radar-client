@@ -20,6 +20,16 @@ import {
 import NoSubscriptionPage from './NoSubscriptionPage';
 import Sidebar from '../components/sharedComponents/sidebar/sidebar';
 import { Modal as AntdModal } from 'antd';
+import ErrorModal from '../components/sharedComponents/modals/errorModal/errorModal';
+
+
+
+const initRequestStatus = {
+  isLoading: false,
+  isSuccess: false,
+  isError: false,
+  message: ''
+};
 
 const Onboarding = () => {
   const { user, authToken, setUser, logout } = useContext(AuthContext);
@@ -32,7 +42,7 @@ const Onboarding = () => {
   const [data, setData] = useState();
   const [show, setShow] = useState(false);
   const [costPriceShow, setCostPriceShow] = useState(false);
-
+  const [reqStatus, setReqStatus] = useState(initRequestStatus);
   const getBrand = (e) => setBrandName(e.target.value);
   const getToken = (e) => setToken(e.target.value);
 
@@ -51,15 +61,20 @@ const Onboarding = () => {
 
   const handleCostPriceClose = () => setCostPriceShow(false);
 
-  const submitHandler = (e) => {
+  const submitHandler = async (e) => {
     if (!token && !user) {
       e.preventDefault();
     } else {
-      ServiceFunctions.updateToken(brandName, token, authToken)
-        .then((data) => {
-          console.log('Токен успешно добавлен');
-        })
-        .finally(handleShow());
+      let res = await ServiceFunctions.updateToken(brandName, token, authToken)
+      if (!res.ok) {
+        res = await res.json();
+        console.log(res);
+        setReqStatus({ ...initRequestStatus, isError: true, message: res.message || 'Не удалось добавить магазин' });
+        return;
+      } else {
+        setReqStatus({ ...initRequestStatus, isSuccess: true, message: 'Токен успешно добавлен' });
+        return
+      }
     }
   };
   const checkIdQueryParam = () => {
@@ -74,10 +89,22 @@ const Onboarding = () => {
   };
 
   useEffect(() => {
+    if (reqStatus.isSuccess) {
+      handleShow();
+    }
+  }, [reqStatus]);
+
+  useEffect(() => {
     if (location.search) {
       checkIdQueryParam();
     }
   }, [location.search]);
+
+  useEffect(() => {
+    if (reqStatus.isSuccess) {
+      handleShow();
+    }
+  }, [reqStatus]);
 
   useEffect(() => {
     ServiceFunctions.getAllShops(authToken).then((data) => setData(data));
@@ -87,6 +114,7 @@ const Onboarding = () => {
     if (show) {
       setTimeout(() => {
         handleClose();
+        setReqStatus(initRequestStatus);
       }, 4000);
     }
   }, [show]);
@@ -193,7 +221,7 @@ const Onboarding = () => {
                 </div>
                 <div className={styles.page__buttonHelper}>
                   Тяжело разобраться?
-                  <Link href='/'>Полная инструкция</Link>
+                  <Link to='https://radar.usedocs.com/article/79862' target='_blank'>Полная инструкция</Link>
                 </div>
               </div>
 
@@ -215,23 +243,16 @@ const Onboarding = () => {
                 </p>
                 <ol className={styles.page__list}>
                   <li translate="no" className={`no-translate ${styles.page__blockText}`}>
-                    Зайдите в ваш <span>Личный Кабинет</span> на портале Поставщиков
-                    Wildberries
+                    Зайдите в ваш <span>Личный Кабинет</span> на портале Поставщиков Wildberries.
                   </li>
                   <li className={`${styles.page__blockText}`}>
-                    Перейдите в раздел <span>«Доступ к АРІ»</span>, нажмите на кнопку <span>«Создать
-                      новый токен»</span>
+                    Перейдите в раздел <span>«Доступ к API»</span> и нажмите кнопку <span>«Создать новый токен».</span>
                   </li>
                   <li className={`${styles.page__blockText}`}>
-                    Далее необходимо выбрать доступ, скругленные кнопки ниже
-                    (Контент, Маркетплейс, Статистика, Аналитика, Продвижение,
-                    Вопросы и отзывы, Цены и скидки). <span>Важно:</span> галочка
-                    «Только на чтение» должна быть снята.
+                    Далее необходимо выбрать сервис, для которого будет сформирован токен — выберите <span>Радар-Аналитику.</span>
                   </li>
                   <li translate="no" className={`no-translate ${styles.page__blockText}`}>
-                    Нажмите на кнопку <span>«Скопировать»</span> и вставьте токен в текстовое
-                    поле <span>«Токен Wildberries»</span> и нажмите кнопку <span>«Подключить»</span>.
-                    Готово!
+                    После выбора сервиса <span>не нужно проставлять доступы</span> — Wildberries автоматически установит все необходимые разрешения. Нажмите <span>«Создать»</span> и скопируйте полученный токен.
                   </li>
                 </ol>
               </div>
@@ -396,6 +417,15 @@ const Onboarding = () => {
                 )}
               </Modal.Body>
             </Modal>
+
+            <ErrorModal
+              open={reqStatus.isError}
+              onClose={() => setReqStatus(initRequestStatus)}
+              onCancel={() => setReqStatus(initRequestStatus)}
+              onOk={() => setReqStatus(initRequestStatus)}
+              message={reqStatus.message}
+              footer={null}
+            />
 
             {/* <SettingsModal /> */}
           </section>

@@ -77,6 +77,8 @@ function sorter(a, b, key) {
 	return Number(v1 - v2);
 }
 
+export const CURR_REPORT_WEEK_COLUMNS_CONFIG_VER = '2';
+
 export const COLUMNS = [
 	{title: 'Неделя', dataIndex: 'week_label', fixed: true, width: 200, minWidth: 200, sortable: false},
 	{title: 'Выкупы, руб', dataIndex: 'purchases_rub', sortable: true, width: 150, minWidth: 150, tooltipText: 'Сумма проданных товаров с учетом согласованной скидки продавца'},

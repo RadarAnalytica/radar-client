@@ -35,21 +35,21 @@ const dynamicOptions = [
 const dynamicNormalizer = (dynamic, from, to) => {
     let result = {
         start: null,
-        end: null
+        end: null,
     };
-    if (!dynamic || (!from && !to)) { return result; }
     if (dynamic === 'Рост') {
         result = {
-            start: parseInt(from) || null,
-            end: parseInt(to) || null
+            start: parseInt(from),
+            end: parseInt(to),
+            mode: '+',
         };
         return result;
     }
     if (dynamic === 'Падение') {
-        console.log(parseInt(from) * -1);
         result = {
-            start: (parseInt(from) * -1) || null,
-            end: (parseInt(to) * -1) || null
+            start: parseInt(from),
+            end: parseInt(to),
+            mode: '-',
         };
         return result;
     }

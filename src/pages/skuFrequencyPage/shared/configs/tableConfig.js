@@ -1,3 +1,4 @@
+export const CURR_MONITORING_TABLE_CONFIG_VER = '3'
 export const radarTableConfig = [
     {
         title: '',

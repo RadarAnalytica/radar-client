@@ -93,7 +93,7 @@ export const menuConfig = [
                 url: '/rnp',
                 label: 'Рука на пульсе (РНП)',
                 isActive: true,
-                isNew: true,
+                isNew: false,
             },
             {
                 id: 2,
@@ -142,13 +142,28 @@ export const menuConfig = [
                 id: 8,
                 url: '/operating-expenses',
                 label: 'Операционные расходы',
-                isActive: true,
+                isActive: false,
                 isNew: true
             },
         ]
     },
     {
         id: 3,
+        name: 'advertising',
+        label: 'Моя реклама',
+        icon: menuIcons.seo,
+        children: [
+            {
+                id: 1,
+                url: '/control/drr',
+                label: 'Контроль ДРР',
+                isActive: true,
+                isNew: true
+            },
+        ]
+    },
+    {
+        id: 4,
         name: 'goods',
         label: 'Мои товары',
         icon: menuIcons.goods,
@@ -157,14 +172,7 @@ export const menuConfig = [
                 id: 1,
                 url: '/orders-map',
                 label: 'География заказов',
-                isActive: true,
-                isNew: false
-            },
-            {
-                id: 2,
-                url: '/abc-data',
-                label: 'ABC-анализ',
-                isActive: true,
+                isActive: false,
                 isNew: false
             },
             {
@@ -176,27 +184,27 @@ export const menuConfig = [
             },
             {
                 id: 4,
-                url: '/control/drr',
-                label: 'Контроль ДРР',
-                isActive: true,
-                isNew: true
-            },
-            {
-                id: 5,
                 url: '/control/spp',
                 label: 'Контроль СПП',
                 isActive: true,
                 isNew: true
             },
             {
-                id: 6,
+                id: 2,
+                url: '/abc-data',
+                label: 'ABC-анализ',
+                isActive: true,
+                isNew: false
+            },
+            {
+                id: 5,
                 url: '/selfcost',
                 label: 'Себестоимость',
                 isActive: true,
                 hasTopBorder: true,
             },
             {
-                id: 7,
+                id: 6,
                 url: '/groups',
                 label: 'Группы товаров',
                 isActive: true,
@@ -205,11 +213,18 @@ export const menuConfig = [
         ]
     },
     {
-        id: 4,
+        id: 5,
         name: 'seo',
         label: 'SEO',
         icon: menuIcons.seo,
         children: [
+            {
+                id: 3,
+                url: '/serp',
+                label: 'Проверка выдачи SERP',
+                isActive: true,
+                isNew: true
+            },
             {
                 id: 1,
                 url: '/ai-generator',
@@ -223,13 +238,6 @@ export const menuConfig = [
                 label: 'Сравнение SEO с ТОПами',
                 isActive: true,
                 isNew: false
-            },
-            {
-                id: 3,
-                url: '/serp',
-                label: 'Проверка выдачи SERP',
-                isActive: true,
-                isNew: true
             },
         ]
     },

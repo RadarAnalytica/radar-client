@@ -1,4 +1,4 @@
-  .bodyRowSpecial:hover td div {
+  .bodyRowSpecial:hover td > div {
     background-color: #FAFAFA !important;
     transition: all 0.2s ease;
   }
@@ -27,6 +27,22 @@
     width: 100%;
     justify-content: space-between;
     align-items: center;
+  }
+
+  .noDataCell {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .customCell {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
   }
 
   .container {

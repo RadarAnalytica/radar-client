@@ -18,7 +18,7 @@ export const tableConfig = [
     },
 
 ];
-
+export const CURR_TRENDING_REQUESTS_TABLE_CONFIG_VER = '1';
 export const newTableConfig = [
     {
         key: 'query',
