@@ -35,6 +35,7 @@ const RevenueStructChartBlock = ({ dataDashBoard, loading }) => {
                 borderWidth: 1,
                 cutout: '90%',
                 borderRadius: 11,
+                hoverOffset: 6,
             },
         ],
     };
@@ -61,13 +62,20 @@ const RevenueStructChartBlock = ({ dataDashBoard, loading }) => {
                     }
                 }
             },
-            onHover: (event) => {
-                event.native.target.style.cursor = 'pointer';
-            },
+        },
+        onHover: (event, elements) => {
+            const target = event?.native?.target || (event?.chart && event.chart.canvas);
+            if (!target) return;
+            target.style.cursor = elements && elements.length ? 'pointer' : 'default';
         },
         cutout: '100%',
         layout: {
-            padding: 0,
+            padding: {
+                top: 10,
+                right: 10,
+                bottom: 10,
+                left: 10,
+            },
         },
         displayCenterText: true,
     };
@@ -127,6 +135,73 @@ const RevenueStructChartBlock = ({ dataDashBoard, loading }) => {
             });
 
             ctx.save();
+        }
+    });
+
+    // Tooltip shadow plugin: draws soft shadow behind default canvas tooltip
+    ChartJS.register({
+        id: 'tooltipShadow',
+        beforeDraw: (chart) => {
+            const tooltip = chart.tooltip;
+            if (!tooltip || tooltip.opacity === 0) return;
+
+            const ctx = chart.ctx;
+            const x = tooltip.x;
+            const y = tooltip.y;
+            const width = tooltip.width;
+            const height = tooltip.height;
+            const radius = (tooltip.options && tooltip.options.borderRadius) || 8;
+
+            if (x == null || y == null || width == null || height == null) return;
+
+            ctx.save();
+            ctx.shadowColor = 'rgba(0, 0, 0, 0.12)';
+            ctx.shadowBlur = 24;
+            ctx.shadowOffsetX = 0;
+            ctx.shadowOffsetY = 8;
+
+            // Draw rounded rect slightly offset to ensure shadow is visible
+            const rectX = x;
+            const rectY = y;
+            const rectW = width;
+            const rectH = height;
+
+            const r = Math.min(radius, rectW / 2, rectH / 2);
+            ctx.beginPath();
+            ctx.moveTo(rectX + r, rectY);
+            ctx.arcTo(rectX + rectW, rectY, rectX + rectW, rectY + rectH, r);
+            ctx.arcTo(rectX + rectW, rectY + rectH, rectX, rectY + rectH, r);
+            ctx.arcTo(rectX, rectY + rectH, rectX, rectY, r);
+            ctx.arcTo(rectX, rectY, rectX + rectW, rectY, r);
+            ctx.closePath();
+            // Fill with white so it sits under the default tooltip; the tooltip will redraw its own border/text
+            ctx.fillStyle = '#FFFFFF';
+            ctx.fill();
+            ctx.restore();
+        }
+    });
+
+    // Active arc shadow: redraws hovered arc with soft shadow
+    ChartJS.register({
+        id: 'activeArcShadow',
+        afterDatasetsDraw: (chart) => {
+            const getActive = chart.getActiveElements ? chart.getActiveElements() : [];
+            if (!getActive || getActive.length === 0) return;
+
+            const ctx = chart.ctx;
+            getActive.forEach(({ datasetIndex, index }) => {
+                const meta = chart.getDatasetMeta(datasetIndex);
+                const element = meta && meta.data && meta.data[index];
+                if (!element) return;
+
+                ctx.save();
+                ctx.shadowColor = 'rgba(0, 0, 0, 0.18)';
+                ctx.shadowBlur = 16;
+                ctx.shadowOffsetX = 0;
+                ctx.shadowOffsetY = 8;
+                element.draw(ctx);
+                ctx.restore();
+            });
         }
     });
 
