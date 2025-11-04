@@ -1,7 +1,8 @@
 import styles from './KeywordSelectionFilters.module.css';
-import { Form, Select, ConfigProvider, Input, Segmented } from 'antd';
+import { Form, Select, ConfigProvider, Input, Segmented, Checkbox } from 'antd';
 import { SelectIcon } from '@/components/sharedComponents/apiServicePagesFiltersComponent/shared/selectIcon/selectIcon';
 import { useState } from 'react';
+import DownloadButton from '@/components/DownloadButton';
 
 
 // antd theme
@@ -33,7 +34,19 @@ const theme = {
             hoverBorderColor: '#5329FF1A',
             activeOutlineColor: 'transparent',
             activeShadow: 'transparent'
-        }
+        },
+    }
+}
+
+const checkboxTheme = {
+    token: {
+        fontSize: 14,
+        fontWeight: 500,
+        controlHeight: 20,
+        controlInteractiveSize: 20,
+        borderRadiusSM: 3,
+        colorPrimary: '#5329FF',
+        colorBgContainer: 'transparent',
     }
 }
 
@@ -46,7 +59,8 @@ interface IKeywordSelectionFiltersForm {
 
 export const KeywordSelectionFilters: React.FC<IKeywordSelectionFiltersForm> = ({ submitHandler }) => {
     const [form] = Form.useForm();
-    const [keywordDropdownOpen, setKeywordDropdownOpen] = useState(false);
+    const [keywordDropdownIncludeOpen, setKeywordDropdownIncludeOpen] = useState(false);
+    const [keywordDropdownExcludeOpen, setKeywordDropdownExcludeOpen] = useState(false);
     return (
         <div className={styles.filters}>
             <ConfigProvider
@@ -63,43 +77,6 @@ export const KeywordSelectionFilters: React.FC<IKeywordSelectionFiltersForm> = (
                         frequency_to: '',
                     }}
                 >
-                    {/* Region select */}
-                    <Form.Item
-                        name="region"
-                        label="Регион"
-                        className={styles.filters__formItem}
-                    >
-                        <Select
-                            options={[
-                                { label: 'Москва', value: 1 },
-                                { label: 'Санкт-Петербург', value: 2 },
-                                { label: 'Екатеринбург', value: 3 },
-                                { label: 'Новосибирск', value: 4 },
-                                { label: 'Красноярск', value: 5 },
-                                { label: 'Самара', value: 6 },
-                                { label: 'Ростов-на-Дону', value: 7 },
-                                { label: 'Уфа', value: 8 },
-                                { label: ' Казань', value: 9 },
-                            ]}
-                            getPopupContainer={(triggerNode) => triggerNode.parentNode}
-                            size='large'
-                            suffixIcon={<SelectIcon />}
-                            className={styles.filters__select}
-                        />
-                    </Form.Item>
-                    {/* type select */}
-                    <Form.Item
-                        name="type"
-                        label="Тип выдачи (?)"
-                        className={styles.filters__formItem}
-                    >
-                        <Select
-                            options={[]}
-                            size='large'
-                            suffixIcon={<SelectIcon />}
-                            className={styles.filters__select}
-                        />
-                    </Form.Item>
                     {/* Frequency block */}
                     <div className={styles.filters__block}>
                         <label>Частота</label>
@@ -126,10 +103,88 @@ export const KeywordSelectionFilters: React.FC<IKeywordSelectionFiltersForm> = (
                             </Form.Item>
                         </div>
                     </div>
-                    {/* Keyword select */}
+                    {/* Items block */}
+                    <div className={styles.filters__block}>
+                        <label>Товаров</label>
+                        <div className={styles.filters__blockWrapper}>
+                            <Form.Item
+                                name="items_from"
+                                className={styles.filters__formItem}
+                            >
+                                <Input
+                                    size='large'
+                                    className={styles.filters__select}
+                                    prefix={<span style={{ color: '#8C8C8C' }}>От</span>}
+                                />
+                            </Form.Item>
+                            <Form.Item
+                                name="items_to"
+                                className={styles.filters__formItem}
+                            >
+                                <Input
+                                    size='large'
+                                    className={styles.filters__select}
+                                    prefix={<span style={{ color: '#8C8C8C' }}>До</span>}
+                                />
+                            </Form.Item>
+                        </div>
+                    </div>
+                    {/* Items block */}
+                    <div className={styles.filters__block}>
+                        <label>Сложность</label>
+                        <div className={styles.filters__blockWrapper}>
+                            <Form.Item
+                                name="complexity_from"
+                                className={styles.filters__formItem}
+                            >
+                                <Input
+                                    size='large'
+                                    className={styles.filters__select}
+                                    prefix={<span style={{ color: '#8C8C8C' }}>От</span>}
+                                />
+                            </Form.Item>
+                            <Form.Item
+                                name="complexity_to"
+                                className={styles.filters__formItem}
+                            >
+                                <Input
+                                    size='large'
+                                    className={styles.filters__select}
+                                    prefix={<span style={{ color: '#8C8C8C' }}>До</span>}
+                                />
+                            </Form.Item>
+                        </div>
+                    </div>
+                    {/* Words block */}
+                    <div className={styles.filters__block}>
+                        <label>Сложность</label>
+                        <div className={styles.filters__blockWrapper}>
+                            <Form.Item
+                                name="words_from"
+                                className={styles.filters__formItem}
+                            >
+                                <Input
+                                    size='large'
+                                    className={styles.filters__select}
+                                    prefix={<span style={{ color: '#8C8C8C' }}>От</span>}
+                                />
+                            </Form.Item>
+                            <Form.Item
+                                name="words_to"
+                                className={styles.filters__formItem}
+                            >
+                                <Input
+                                    size='large'
+                                    className={styles.filters__select}
+                                    prefix={<span style={{ color: '#8C8C8C' }}>До</span>}
+                                />
+                            </Form.Item>
+                        </div>
+                    </div>
+                    {/* Keywords to include select */}
                     <Form.Item
-                        name="keyword"
-                        label="Ключевое слово"
+                        name="keywords_to_include"
+                        label="Включить"
                         className={styles.filters__formItem}
                     >
                         <Select
@@ -138,26 +193,69 @@ export const KeywordSelectionFilters: React.FC<IKeywordSelectionFiltersForm> = (
                             suffixIcon={<SelectIcon />}
                             className={styles.filters__select}
                             getPopupContainer={(triggerNode) => triggerNode.parentNode}
-                            open={keywordDropdownOpen}
-                            onDropdownVisibleChange={setKeywordDropdownOpen}
+                            open={keywordDropdownIncludeOpen}
+                            onDropdownVisibleChange={setKeywordDropdownIncludeOpen}
                             dropdownRender={() =>
                                 <KeywordSelectDropdown
                                     handler={(matchType, keywords) => {
-                                        form.setFieldValue('keyword', keywords);
-                                        form.setFieldValue('match_type', matchType);
-                                        setKeywordDropdownOpen(false);
+                                        form.setFieldValue('keywords_to_include', keywords);
+                                        form.setFieldValue('include_match_type', matchType);
+                                        setKeywordDropdownIncludeOpen(false);
                                     }}
                                 />
                             }
                             dropdownStyle={{ minWidth: 'max-content' }}
                         />
                     </Form.Item>
+                    {/* Keywords to exclude select */}
+                    <Form.Item
+                        name="keywords_to_exclude"
+                        label="Исключить"
+                        className={styles.filters__formItem}
+                    >
+                        <Select
+                            options={[]}
+                            size='large'
+                            suffixIcon={<SelectIcon />}
+                            className={styles.filters__select}
+                            getPopupContainer={(triggerNode) => triggerNode.parentNode}
+                            open={keywordDropdownExcludeOpen}
+                            onDropdownVisibleChange={setKeywordDropdownExcludeOpen}
+                            dropdownRender={() =>
+                                <KeywordSelectDropdown
+                                    handler={(matchType, keywords) => {
+                                        form.setFieldValue('keywords_to_exclude', keywords);
+                                        form.setFieldValue('exclude_match_type', matchType);
+                                        setKeywordDropdownExcludeOpen(false);
+                                    }}
+                                />
+                            }
+                            dropdownStyle={{ minWidth: 'max-content' }}
+                        />
+                    </Form.Item>
+                    {/* Accept checkbox */}
+                    <ConfigProvider theme={checkboxTheme}>
+                        <Form.Item
+                            name="accept_filters_to_keywords"
+                            className={`${styles.filters__formItem} ${styles.filters__formItem_checkbox}`}
+                        >
+                            <Checkbox
+                            >
+                                Применить фильтры ко вложенным ключам
+                            </Checkbox>
+                        </Form.Item>
+                    </ConfigProvider>
                     <button
                         className={styles.filters__resetButton}
                         onClick={() => { form.resetFields(); }}
                     >
                         Сбросить
                     </button>
+
+                    {/* Download button */}
+                    <div className={styles.filters__downloadButtonWrapper}>
+                        <DownloadButton handleDownload={() => { }} loading={false} />
+                    </div>
                 </Form>
             </ConfigProvider>
         </div>

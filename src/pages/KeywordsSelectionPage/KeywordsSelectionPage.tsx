@@ -10,6 +10,7 @@ import { ConfigProvider, Segmented } from "antd";
 import DownloadButton from "@/components/DownloadButton";
 import { DoubleTable, KeywordSelectionFilters } from "@/widgets";
 import ReactDOM from 'react-dom/client';
+import { formatPrice } from "@/service/utils";
 
 
 // model
@@ -371,7 +372,6 @@ const PositionCheckPage = () => {
                 {/* Filters */}
                 <div className={styles.page__filtersWrapper}>
                     <KeywordSelectionFilters submitHandler={(formData) => { setRequestObject(formData); }} />
-                    <DownloadButton handleDownload={() => { }} loading={false} />
                 </div>
                 {/* Table */}
                 <div className={styles.page__tableWrapper}>
@@ -391,7 +391,10 @@ const PositionCheckPage = () => {
                                 gridRow: `span 8`,
                                 gridColumn: `span 20`,
                             }}
-                        />
+                        >
+                            <p className={styles.page__chartItemTitle}>Кластеры</p>
+                            <p className={styles.page__chartItemValue}>{formatPrice(1000000, '')}</p>
+                        </div>
                         {Chart().map(_ => (
                             <React.Fragment key={_.name}>
                                 {_}
@@ -431,7 +434,7 @@ const Chart = () => {
     const arrayToRender = [];
     const sortedData = mockChartData.sort((a, b) => b.value - a.value)
     const maxValue = sortedData[0].value
-    
+
     // Вычисляем прозрачность от 10% до 3% в зависимости от индекса
     const getOpacity = (idx: number) => {
         const maxIdx = Math.max(0, sortedData.length - 1);
@@ -479,7 +482,10 @@ const Chart = () => {
                         gridRow: `span ${currRowSpan}`,
                         gridColumn: `span ${currColSpan}`,
                     }}
-                />
+                >
+                    <p className={styles.page__chartItemTitle}>{_.name}</p>
+                    <p className={styles.page__chartItemValue}>{formatPrice(_.value, '')}</p>
+                </div>
             )
             currentRow += 1
             maxColSpan = 32 / currentRow
@@ -508,7 +514,10 @@ const Chart = () => {
                         gridRow: `span ${currRowSpan}`,
                         gridColumn: `span ${currColSpan}`,
                     }}
-                />
+                >
+                    <p className={styles.page__chartItemTitle}>{_.name}</p>
+                    <p className={styles.page__chartItemValue}>{formatPrice(_.value, '')}</p>
+                </div>
             )
         }
         isSecondRowFirstElement = false
