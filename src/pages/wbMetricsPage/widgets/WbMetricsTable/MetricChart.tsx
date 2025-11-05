@@ -65,12 +65,12 @@ const MetricChart: React.FC<MetricChartProps> = ({
         backgroundColor: chartData.map(item =>
           item.percentage === null || item.percentage === undefined
             ? 'rgba(240, 240, 240, 0.8)'
-            : getColorForPercentage(item.percentage, minControlValue, maxControlValue, metricType, 0.8)
+            : getColorForPercentage(item.percentage, minControlValue, maxControlValue, metricType)
         ),
         borderColor: chartData.map(item =>
           item.percentage === null || item.percentage === undefined
             ? 'rgba(240, 240, 240, 1)'
-            : getColorForPercentage(item.percentage, minControlValue, maxControlValue, metricType, 1)
+            : getColorForPercentage(item.percentage, minControlValue, maxControlValue, metricType)
         ),
         borderWidth: 1,
       },

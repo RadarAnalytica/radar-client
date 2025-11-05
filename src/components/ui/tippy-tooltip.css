@@ -1,0 +1,16 @@
+.radar-tippy-tooltip {
+  .tippy-box {
+    background-color: white !important;
+    color: #1a1a1a !important;
+    border: 1px solid #e0e0e0 !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+    border-radius: 4px !important;
+  }
+
+  .tippy-content {
+    padding: 8px 12px !important;
+    font-size: 14px !important;
+    max-width: 300px !important;
+    word-wrap: break-word !important;
+  }
+}
