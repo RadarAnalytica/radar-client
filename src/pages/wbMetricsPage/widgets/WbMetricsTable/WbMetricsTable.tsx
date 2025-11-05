@@ -73,7 +73,7 @@ const WbMetricsTable: React.FC<WbMetricsTableProps> = ({
   sortState,
   setSortState
 }) => {
-
+  console.log(data)
   const tableContainerRef = useRef(null);
 
   const prepareTableData = () => {
@@ -194,8 +194,8 @@ const WbMetricsTable: React.FC<WbMetricsTableProps> = ({
           <RadarTable
             config={tableConfig}
             dataSource={sortTableData(prepareTableData(), sortState)}
-            resizeable
-            onResize={onResizeColumn}
+            //resizeable
+            //onResize={onResizeColumn}
             preset="radar-table-default"
             scrollContainerRef={tableContainerRef}
             stickyHeader
