@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useRef } from 'react';
 import { Table as RadarTable } from 'radar-ui';
 import {
   Chart as ChartJS,
@@ -12,6 +12,9 @@ import {
 import MetricChart from './MetricChart';
 import { getColorForPercentage, sortTableData } from './utils';
 import styles from './WbMetricsTable.module.css';
+import { useTableColumnResize } from '@/service/hooks/useTableColumnResize';
+import TippyTooltip from '@/components/ui/TippyTooltip';
+import { getTableConfigStorageKey } from '../../config/tableConfig';
 
 ChartJS.register(
   CategoryScale,
@@ -122,9 +125,11 @@ const WbMetricsTable: React.FC<WbMetricsTableProps> = ({
             ? <img src={value.photo} alt={value.name} {...imageSize} className={styles.productImage} />
             : <div className={styles.productImage} style={imageSize} />
           }
-          <span className={styles.productName} title={value.name}>
-            {value.name}
-          </span>
+          <TippyTooltip content={value.name}>
+            <span className={styles.productName}>
+              {value.name}
+            </span>
+          </TippyTooltip>
         </div>
       );
     }
@@ -143,23 +148,40 @@ const WbMetricsTable: React.FC<WbMetricsTableProps> = ({
 
     // Рендер для колонок дней
     if (dataIndex.startsWith('day_')) {
+      let tooltipContent;
+      if (metricType === 'drr') {
+        tooltipContent = value === 0 ? 'По данному товару реклама не активна или имеет минимальные значения' : 'Продажи по данному товару не зафиксированы';
+      } else if (value === null) {
+        tooltipContent = 'Продажи по данному товару не зафиксированы';
+      }
+  
       return (
-        <div 
-          className={styles.percentageCell}
-          style={{ 
-            backgroundColor: value !== null 
-              ? getColorForPercentage(value, data.min_control_value, data.max_control_value, metricType, 0.2)
-              : 'transparent'
-          }}
-        >
-          {value !== null ? `${value}%` : '-'}
-        </div>
+        <TippyTooltip content={tooltipContent}>
+          <div 
+            className={styles.percentageCell}
+            style={{ 
+              backgroundColor: value !== null 
+                ? getColorForPercentage(value, data.min_control_value, data.max_control_value, metricType, 0.2)
+                : 'transparent'
+            }}
+          >
+            {value !== null ? `${value}%` : '-'}
+          </div>
+        </TippyTooltip>
       );
     }
 
     // Обычный рендер
-    return <span className={`${styles.labelCell} ${dataIndex}-cell`} title={value}>{value}</span>;
+    return (
+      <TippyTooltip content={value}>
+        <span className={`${styles.labelCell} ${dataIndex}-cell`}>
+          {value}
+        </span>
+      </TippyTooltip>
+    );
   };
+
+  // const { config: tableConfig, onResize: onResizeColumn } = useTableColumnResize(columns, getTableConfigStorageKey(metricType));
 
   
   return (
@@ -175,6 +197,8 @@ const WbMetricsTable: React.FC<WbMetricsTableProps> = ({
           <RadarTable
             config={columns}
             dataSource={sortTableData(prepareTableData(), sortState)}
+            resizeable={false}
+            // onResize={onResizeColumn}
             preset="radar-table-default"
             scrollContainerRef={tableContainerRef}
             stickyHeader
@@ -184,7 +208,7 @@ const WbMetricsTable: React.FC<WbMetricsTableProps> = ({
             }}
             sorting={sortState}
             onSort={handleSort}
-            pagination={{
+            pagination={pageData.total_count < pageData.per_page ? null : {
               current: pageData.page,
               pageSize: pageData.per_page,
               total: Math.ceil(pageData.total_count / pageData.per_page),

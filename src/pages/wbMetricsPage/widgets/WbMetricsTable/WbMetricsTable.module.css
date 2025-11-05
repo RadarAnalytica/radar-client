@@ -32,10 +32,6 @@
   max-width: 120px;
 }
 
-:global(.barcode-cell) {
-  max-width: 100px;
-}
-
 :global(.brand-cell) {
   max-width: 150px;
 }

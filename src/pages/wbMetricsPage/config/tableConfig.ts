@@ -1,4 +1,4 @@
-export const TABLE_CONFIG_VERSION = '1.0.1';
+export const TABLE_CONFIG_VERSION = '1.0.2';
 export const TABLE_CONFIG_STORAGE_KEY = 'wbMetrics_tableConfig';
 
 export interface ColumnConfig {
@@ -27,7 +27,7 @@ export const getDefaultTableConfig = (controlData?: any[]): ColumnConfig[] => {
       dataIndex: 'product',
       width: 280,
       fixed: true,
-      sortable: true,
+      sortable: false,
       hidden: false,
       canToggle: false,
     },
@@ -36,7 +36,7 @@ export const getDefaultTableConfig = (controlData?: any[]): ColumnConfig[] => {
       title: 'Артикул',
       dataIndex: 'vendor_code',
       width: 120,
-      sortable: true,
+      sortable: false,
       hidden: false,
       canToggle: true,
     },
@@ -45,7 +45,7 @@ export const getDefaultTableConfig = (controlData?: any[]): ColumnConfig[] => {
       title: 'SKU',
       dataIndex: 'barcode',
       width: 120,
-      sortable: true,
+      sortable: false,
       hidden: false,
       canToggle: true,
     },
@@ -54,7 +54,7 @@ export const getDefaultTableConfig = (controlData?: any[]): ColumnConfig[] => {
       title: 'Бренд',
       dataIndex: 'brand',
       width: 150,
-      sortable: true,
+      sortable: false,
       hidden: false,
       canToggle: true,
     },
@@ -63,7 +63,7 @@ export const getDefaultTableConfig = (controlData?: any[]): ColumnConfig[] => {
       title: 'Категория',
       dataIndex: 'category',
       width: 200,
-      sortable: true,
+      sortable: false,
       hidden: false,
       canToggle: true,
     },
