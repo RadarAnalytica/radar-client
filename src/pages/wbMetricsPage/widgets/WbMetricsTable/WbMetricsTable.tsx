@@ -73,7 +73,6 @@ const WbMetricsTable: React.FC<WbMetricsTableProps> = ({
   sortState,
   setSortState
 }) => {
-  console.log(data)
   const tableContainerRef = useRef(null);
 
   const prepareTableData = () => {

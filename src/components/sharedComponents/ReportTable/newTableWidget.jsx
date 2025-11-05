@@ -19,7 +19,7 @@ const customCellRender = (value, record, index, dataIndex) => {
 		if (typeof value === 'object') {
 			return (
 				<div className={styles.customCell} data-year-attribute={yearAttribute}>
-					<span className={styles.customCellValueRub} title={formatPrice(value.rub.value, '₽')}><b>{formatPrice(value.rub.value, '₽')}</b></span>
+					<span className={styles.customCellValueText} title={formatPrice(value.rub.value, '₽')}><b>{formatPrice(value.rub.value, '₽')}</b></span>
 					{!yearAttribute && value.rub.comparison_percentage !== null && value.rub.comparison_percentage !== undefined && <RadarRateMark value={value.rub.comparison_percentage} units='%' />}
 				</div>
 			);
