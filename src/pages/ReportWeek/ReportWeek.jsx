@@ -228,7 +228,7 @@ export default function ReportWeek() {
 			});
 		});
 
-		// "42 неделя (13.10.2025 - 19.10.2025)" → проверяем, попадает ли сегодня в интервал
+		//проверяем, попадает ли сегодня в интервал
 		const parseDdMmYyyy = (str) => {
 			const [dd, mm, yyyy] = str.split('.').map(Number);
 			return new Date(yyyy, mm - 1, dd);
@@ -269,10 +269,11 @@ export default function ReportWeek() {
 			if (summaryValue === 0) {
 				rows[currentRowIndex].noData = true;
 			}
+
 			// Вариант с удалением строки
-			if (summaryValue === 0) {
-				rows.splice(currentRowIndex, 1);
-			}
+			// if (summaryValue === 0) {
+			// 	rows.splice(currentRowIndex, 1);
+			// }
 		}
 
 		if (rows.length > 0) {

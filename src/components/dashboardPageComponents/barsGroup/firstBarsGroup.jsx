@@ -12,7 +12,7 @@ const FirstBarsGroup = ({ dataDashBoard, selectedRange, loading }) => {
             <div className={styles.group__lgBarWrapper}>
             <RadarBar
                 title='Чистая прибыль'
-                //tooltipText='text'
+                tooltipText='Прибыль, остающаяся после уплаты налогов, сборов, отчислений'
                 mainValue={dataDashBoard?.netProfit}
                 mainValueUnits='₽'
                 hasColoredBackground
@@ -44,7 +44,7 @@ const FirstBarsGroup = ({ dataDashBoard, selectedRange, loading }) => {
             <div className={styles.group__sBarWrapper}>
             <RadarBar
                 title='WB Реализовал'
-                //tooltipText='Сумма реализации товара с учетом согласованной скидки продавца и СПП'
+                tooltipText='Сумма реализации товара с учетом согласованной скидки продавца и СПП'
                 midValueUnits='₽'
                 mainValue={dataDashBoard?.taxInfo?.wbRealization}
                 mainValueUnits='₽'
@@ -58,7 +58,7 @@ const FirstBarsGroup = ({ dataDashBoard, selectedRange, loading }) => {
             <div className={styles.group__xsBarWrapper}>
                 <RadarBar
                     title='Процент выкупа'
-                    //tooltipText='text'
+                    tooltipText='Доля заказов, которые были оплачены и получены покупателями, от общего числа созданных заказов.'
                     mainValue={dataDashBoard?.buyoutPercent}
                     mainValueUnits='%'
                     hasColoredBackground
@@ -71,7 +71,7 @@ const FirstBarsGroup = ({ dataDashBoard, selectedRange, loading }) => {
             <div className={styles.group__xsBarWrapper}>
                 <RadarBar
                     title='ROI'
-                    //tooltipText='text'
+                    tooltipText='Показывает общую рентабельность ваших вложений. Насколько прибыльны или убыточны ваши продажи с учетом всех затрат'
                     mainValue={dataDashBoard?.roi}
                     mainValueUnits='%'
                     hasColoredBackground
