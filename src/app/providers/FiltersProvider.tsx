@@ -95,7 +95,7 @@ const FiltersProvider = ({ children }: { children: React.ReactNode }) => {
     useEffect(() => {
         activeBrand && localStorage.setItem('activeShop', JSON.stringify(activeBrand));
         let interval: NodeJS.Timeout;
-        if (activeBrand && !activeBrand.is_primary_collect) {
+        if (activeBrand && !activeBrand.is_primary_collect && activeBrand.id !== 0) {
             interval = setInterval(() => {
                 getFiltersData();
             }, 30000);
