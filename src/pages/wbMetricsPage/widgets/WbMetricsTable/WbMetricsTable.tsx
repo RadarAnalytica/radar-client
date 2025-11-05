@@ -59,8 +59,8 @@ interface WbMetricsTableProps {
   metricType: 'drr' | 'spp';
   pageData: { page: number, per_page: number, total_count: number };
   setPageData: (pageData: { page: number, per_page: number, total_count: number }) => void;
-  sortState: { sort_field: string, sort_order: string };
-  setSortState: (sortState: { sort_field: string, sort_order: string }) => void;
+  sortState: { sort_field: string, sort_order: "ASC" | "DESC" };
+  setSortState: (sortState: { sort_field: string, sort_order: "ASC" | "DESC" }) => void;
 }
 
 const WbMetricsTable: React.FC<WbMetricsTableProps> = ({
@@ -106,7 +106,7 @@ const WbMetricsTable: React.FC<WbMetricsTableProps> = ({
     setPageData({ ...pageData, page: page });
   };
 
-  const handleSort = (sort_field: string, sort_order: string) => {
+  const handleSort = (sort_field: string, sort_order: "ASC" | "DESC") => {
     setPageData({ ...pageData, page: 1 });
     setSortState({ sort_field, sort_order });
     tableContainerRef.current?.scrollTo({
