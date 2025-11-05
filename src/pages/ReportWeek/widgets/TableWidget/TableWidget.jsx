@@ -34,12 +34,19 @@ const customCellRender = (value, record, index, dataIndex) => {
             </div>
         );
     }
+    if (record.key === 'summary' && dataIndex !== 'week_label') {
+        return (
+            <div className={styles.customCell}>
+                {formatPrice(value, '')}
+            </div>
+        );
+    }
 
     if (typeof value === 'object') {
         return (
             <div className={styles.customCell}>
                 {formatPrice(value.value, '')}
-                <RadarRateMark value={value.comparison_percentage} units='%'/>
+                {value.comparison_percentage !== null && value.comparison_percentage !== undefined && <RadarRateMark value={value.comparison_percentage} units='%'/>}
             </div>
         );
     }
