@@ -146,7 +146,7 @@ const WbMetricsPage: React.FC = () => {
           </div>
         )}
 
-        {!loading && activeBrand?.is_primary_collect && (data?.data?.length > 0
+        {!loading && activeBrand && activeBrand?.is_primary_collect && (data?.data?.length > 0
           ? <WbMetricsTable
               data={data}
               columns={tableConfig}
