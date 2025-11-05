@@ -1,0 +1,67 @@
+.onboardingWidget {
+    width: 100%;
+    background: #EFECFE;
+    padding: 16px;
+    border-radius: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    border: 1px solid #5329FF33;
+}
+
+.onboardingWidget__header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.onboardingWidget__textWrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.onboardingWidget__title {
+    font-weight: 600;
+    font-size: 18px;
+    margin: 0;
+    padding: 0;
+}
+
+
+.onboardingWidget__text {
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 140%;
+    letter-spacing: 0%;
+    margin: 0;
+    padding: 0;
+}
+
+.onboardingWidget__actionButton {
+    border: none;
+    background: #5329FF;
+    border-radius: 8px;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+    flex-grow: 0;
+    text-decoration: none;
+    padding: 12px 16px;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 160%;
+    letter-spacing: 0%;
+    opacity: 1;
+    transition: all .2s ease-in-out;
+}
+
+.onboardingWidget__actionButton:hover {
+    opacity: .8;
+}
+.onboardingWidget__actionButton:active {
+    transform: scale(.98);
+}
