@@ -149,7 +149,7 @@ const WbMetricsTable: React.FC<WbMetricsTableProps> = ({
     // Рендер для колонок дней
     if (dataIndex.startsWith('day_')) {
       let tooltipContent;
-      if (metricType === 'drr') {
+      if (metricType === 'drr' && !value) {
         tooltipContent = value === 0 ? 'По данному товару реклама не активна или имеет минимальные значения' : 'Продажи по данному товару не зафиксированы';
       } else if (value === null) {
         tooltipContent = 'Продажи по данному товару не зафиксированы';
@@ -191,7 +191,7 @@ const WbMetricsTable: React.FC<WbMetricsTableProps> = ({
           <RadarTable
             config={columns}
             dataSource={sortTableData(prepareTableData(), sortState)}
-            resizeable={false}
+            // resizeable
             // onResize={onResizeColumn}
             preset="radar-table-default"
             scrollContainerRef={tableContainerRef}
