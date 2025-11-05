@@ -175,10 +175,10 @@ const RestorePass = ({ email }) => {
         </ConfigProvider>
         <div className={styles.form__textWrapper}>
           <div className={styles.form__text}>
-            Если у вас ещё нет личного кабинета, <Link href='https://radar-analytica.ru/signup' style={{ color: '#6083E7' }}>Зарегистрируйтесь</Link>
+            Если у вас ещё нет личного кабинета, <Link to='https://radar-analytica.ru/signup' style={{ color: '#6083E7', textDecoration: 'none' }}>Зарегистрируйтесь</Link>
           </div>
           <div className={styles.form__text}>
-            Вспомнили пароль? <Link href='https://radar-analytica.ru/signin' style={{ color: '#6083E7' }}>Вход</Link>
+            Вспомнили пароль? <Link to='https://radar-analytica.ru/signin' style={{ color: '#6083E7', textDecoration: 'none' }}>Вход</Link>
           </div>
         </div>
       </Form>
