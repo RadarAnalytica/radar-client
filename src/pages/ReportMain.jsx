@@ -146,14 +146,14 @@ const ReportMain = () => {
 
 
   return (
-    <div className='dashboard-page notranslate'>
+    <div className={styles.page}>
       <MobilePlug />
 
       <div style={{ height: '100vh', zIndex: 999 }}>
         <Sidebar />
       </div>
 
-      <div className='dashboard-content pb-3' style={{ padding: '0 32px' }}>
+      <div className={styles.page__content} style={{ padding: '0 32px' }}>
         <div style={{ width: '100%', padding: '20px 0' }} className="container dash-container">
           <Header title={'Главная'} titlePrefix={'Отчёт'} />
         </div>
@@ -294,22 +294,8 @@ const ReportMain = () => {
                       </ul>
                     </div>
                   </div>
-                  <div
-                    style={{
-                      background: 'black',
-                      display: 'flex',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                    }}
-                  >
-                    <div
-                      style={{
-                        position: 'relative',
-                        width: '100%',
-                        maxWidth: '800px',
-                        paddingBottom: '56.25%',
-                      }}
-                    >
+                  <div className={styles.videoWrapper}>
+                    <div className={styles.videoContainer}>
                       <iframe
                         style={{
                           position: 'absolute',
@@ -317,7 +303,6 @@ const ReportMain = () => {
                           left: 0,
                           width: '100%',
                           height: '100%',
-                          // border: '1px solid #C4C4C4',
                         }}
                         src='https://play.boomstream.com/ebiWkmCg?title=0&start=1'
                         frameBorder='0'
