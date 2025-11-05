@@ -214,6 +214,9 @@ const SecondBarsGroup = ({ dataDashBoard, loading, selectedRange, activeBrand, a
                 mainValue={dataDashBoard?.compensation}
                 mainValueUnits='₽'
                 isLoading={loading}
+                compareValue={{
+                    comparativeValue: dataDashBoard?.compensation_compare
+                }}
             />
 
 
