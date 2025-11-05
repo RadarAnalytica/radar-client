@@ -262,7 +262,7 @@ const NoSubscriptionWarningBlock = ({ className = '', isOnMainPage = false }) =>
           {requestStatus.isSuccess && requestStatus.message}
         </Button>
       </ConfigProvider>
-      
+
       <SubscriptionModal
         visible={isModalVisible}
         visibilityHandler={setIsModalVisible}
@@ -281,7 +281,7 @@ const NoSubscriptionWarningBlock = ({ className = '', isOnMainPage = false }) =>
   );
 
   let toRender = regularBlock;
-  if (user?.subscription_status === null && !user?.is_onboarded && !user?.is_test_used) {
+  if (user?.subscription_status === null && !user?.is_onboarded && !user?.is_test_used && isOnMainPage) {
     toRender = demoUserMainPageBlock;
   }
   if (isDemoUser && !isOnMainPage) {
