@@ -93,7 +93,6 @@ const FiltersProvider = ({ children }: { children: React.ReactNode }) => {
 
     // обновляем раз в 30 секунд магазины если данные не собраны
     useEffect(() => {
-        console.log('activeBrand', activeBrand);
         activeBrand && localStorage.setItem('activeShop', JSON.stringify(activeBrand));
         let interval: NodeJS.Timeout;
         if (activeBrand && !activeBrand.is_primary_collect && activeBrand.id !== 0) {
