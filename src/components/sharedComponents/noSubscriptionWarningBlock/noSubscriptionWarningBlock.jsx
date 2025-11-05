@@ -276,7 +276,7 @@ const NoSubscriptionWarningBlock = ({ className = '', isOnMainPage = false }) =>
       >
         <Button
           className={styles.demoUserMPBlock__actionButton}
-          onClick={testPeriodActivationMainPage}
+          onClick={testPeriodActivation}
           size='large'
           type='primary'
           style={{
@@ -290,6 +290,12 @@ const NoSubscriptionWarningBlock = ({ className = '', isOnMainPage = false }) =>
           {requestStatus.isSuccess && requestStatus.message}
         </Button>
       </ConfigProvider>
+
+      <SubscriptionModal
+        visible={isModalVisible}
+        visibilityHandler={setIsModalVisible}
+      />
+
 
       <ErrorModal
         footer={null}

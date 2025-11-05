@@ -25,7 +25,6 @@ export default function MainPage() {
                 <div className={styles.page__headerWrapper}>
                     <Header title='Главная' />
                 </div>
-
                 {user?.subscription_status === null && !user?.is_onboarded && !user?.is_test_used && <NoSubscriptionWarningBlock isOnMainPage />}
                 {user?.subscription_status === 'Test' && !user?.is_onboarded && <OnboardingWidget />}
                 <VideoWidgetOneLine />
