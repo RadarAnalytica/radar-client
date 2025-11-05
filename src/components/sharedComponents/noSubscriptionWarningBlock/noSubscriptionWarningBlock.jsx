@@ -53,34 +53,7 @@ const NoSubscriptionWarningBlock = ({ className = '', isOnMainPage = false }) =>
     //   setRequestStatus({...INIT_REQUEST_STATUS, isError: true, message: error.message});
     // }
   };
-  const testPeriodActivationMainPage = async () => {
-    setRequestStatus({...INIT_REQUEST_STATUS, isLoading: true});
-    try {
-      let response = await fetch(`${URL}/api/user/subscription`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          authorization: 'JWT ' + authToken,
-        },
-        body: JSON.stringify({
-          ...user,
-          test: true
-        })
-      });
-    
-      if (!response.ok) {
-        setRequestStatus({...INIT_REQUEST_STATUS, isError: true, message: 'Не удалось активировать тестовый период'});
-        return;
-      }
-    
-      setRequestStatus({...INIT_REQUEST_STATUS, isSuccess: true, message: 'Тестовый период активирован'});
-      return;
-    
-    } catch (error) {
-      console.error(error);
-      setRequestStatus({...INIT_REQUEST_STATUS, isError: true, message: error.message});
-    }
-  };
+
 
   useEffect(() => {
     if (requestStatus.isSuccess) {
@@ -275,7 +248,7 @@ const NoSubscriptionWarningBlock = ({ className = '', isOnMainPage = false }) =>
       >
         <Button
           className={styles.demoUserMPBlock__actionButton}
-          onClick={testPeriodActivationMainPage}
+          onClick={testPeriodActivation}
           size='large'
           type='primary'
           style={{
@@ -289,6 +262,12 @@ const NoSubscriptionWarningBlock = ({ className = '', isOnMainPage = false }) =>
           {requestStatus.isSuccess && requestStatus.message}
         </Button>
       </ConfigProvider>
+      
+      <SubscriptionModal
+        visible={isModalVisible}
+        visibilityHandler={setIsModalVisible}
+      />
+
 
       <ErrorModal
         footer={null}
