@@ -115,15 +115,13 @@ const WbMetricsTable: React.FC<WbMetricsTableProps> = ({
   const customCellRender = (value: any, record: any, index: number, dataIndex: string) => {
     // Рендер для товара (фото + название)
     if (dataIndex === 'product') {
+      const imageSize = { width: 30, height: 40 };
       return (
         <div className={styles.productCell} data-id={value.wb_id}>
-          <img 
-            src={value.photo}
-            alt={value.name}
-            width={30}
-            height={40}
-            className={styles.productImage}
-          />
+          {value.photo 
+            ? <img src={value.photo} alt={value.name} {...imageSize} className={styles.productImage} />
+            : <div className={styles.productImage} style={imageSize} />
+          }
           <span className={styles.productName} title={value.name}>
             {value.name}
           </span>
@@ -134,13 +132,13 @@ const WbMetricsTable: React.FC<WbMetricsTableProps> = ({
     // Рендер для графика
     if (dataIndex === 'chart') {
         return (
-        <MetricChart
-          data={value}
-          metricType={metricType}
-          minControlValue={data?.min_control_value ?? 0}
-          maxControlValue={data?.max_control_value ?? 100}
-        />
-      );
+          <MetricChart
+            data={value}
+            metricType={metricType}
+            minControlValue={data?.min_control_value ?? 0}
+            maxControlValue={data?.max_control_value ?? 100}
+          />
+        );
     }
 
     // Рендер для колонок дней
@@ -163,15 +161,10 @@ const WbMetricsTable: React.FC<WbMetricsTableProps> = ({
     return <span className={`${styles.labelCell} ${dataIndex}-cell`} title={value}>{value}</span>;
   };
 
+  
   return (
     <div className={styles.tableContainer}>
       <div className={styles.tableWrapper} ref={tableContainerRef}>
-        {loading && (
-          <div className={styles.loading}>
-            <span className='loader'></span>
-          </div>
-        )}
-        
         {!loading && data && (
           <RadarTable
             config={columns}
@@ -183,6 +176,7 @@ const WbMetricsTable: React.FC<WbMetricsTableProps> = ({
               idx: columns.map(col => col.dataIndex),
               renderer: customCellRender,
             }}
+            sorting={sortState}
             onSort={handleSort}
             pagination={{
               current: pageData.page,

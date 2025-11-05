@@ -297,8 +297,8 @@ const SerpPage = () => {
                         titlePrefix=''
                         children={''}
                         videoReviewLink=''
-                        howToLink=''
-                        howToLinkText=''
+                        howToLink='https://radar.usedocs.com/article/79937'
+                        howToLinkText='Как использовать раздел'
                     />
                 </div>
 
@@ -380,7 +380,7 @@ const SerpPage = () => {
                             label='Регион'
                             value={activeFilter?.dest}
                             optionsData={filtersData?.map((item) => ({ value: item.dest, label: item.city_name }))}
-                            handler={(value) => {
+                            handler={(value: number) => {
                                 setActiveFilter(filtersData?.find((item) => item.dest === value) || null);
                             }}
                             mode={undefined}

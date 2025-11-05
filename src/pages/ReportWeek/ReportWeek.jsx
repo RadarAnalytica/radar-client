@@ -24,7 +24,7 @@ import {
 // import downloadIcon from '../images/Download.svg';
 import DataCollectWarningBlock from '@/components/sharedComponents/dataCollectWarningBlock/dataCollectWarningBlock';
 import NoSubscriptionWarningBlock from '@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock';
-import { COLUMNS } from './columnsConfig';
+import { COLUMNS, CURR_REPORT_WEEK_COLUMNS_CONFIG_VER } from './columnsConfig';
 import TableWidget from './widgets/TableWidget/TableWidget';
 import { useDemoMode } from '@/app/providers/DemoDataProvider';
 import { fetchFilters } from '@/redux/apiServicePagesFiltersState/filterActions';
@@ -34,7 +34,7 @@ export default function ReportWeek() {
 	const { user, authToken } = useContext(AuthContext);
 	const { isDemoMode } = useDemoMode();
 	const dispatch = useAppDispatch();
-  	const { activeBrand, selectedRange, activeBrandName, activeArticle, activeGroup, activeWeeks, isFiltersLoaded, shops } = useAppSelector(state => state.filters);
+	const { activeBrand, selectedRange, activeBrandName, activeArticle, activeGroup, activeWeeks, isFiltersLoaded, shops } = useAppSelector(state => state.filters);
 	const filters = useAppSelector((state) => state.filters);
 	//const { shops } = useAppSelector((state) => state.shopsSlice);
 	const [loading, setLoading] = useState(true);
@@ -47,9 +47,37 @@ export default function ReportWeek() {
 
 	useEffect(() => {
 		localStorage.removeItem('reportWeekColumns');
-		const savedTableColumns = localStorage.getItem('reportWeekTableConfig');
-		if (savedTableColumns) {
-			setTableColumns(JSON.parse(savedTableColumns));
+		const savedTableConfigData = localStorage.getItem('reportWeekTableConfig');
+		if (savedTableConfigData) {
+			try {
+				const parsed = JSON.parse(savedTableConfigData);
+
+				// Проверяем версию конфига
+				if (parsed.version === CURR_REPORT_WEEK_COLUMNS_CONFIG_VER) {
+					setTableColumns(parsed.config);
+				} else {
+					// Версия не совпадает, используем дефолтный конфиг
+					console.log('Report Week config version mismatch, using default config');
+					setTableColumns(COLUMNS);
+					localStorage.setItem('reportWeekTableConfig', JSON.stringify({
+						version: CURR_REPORT_WEEK_COLUMNS_CONFIG_VER,
+						config: COLUMNS
+					}));
+				}
+			} catch (error) {
+				console.error('Error parsing saved table config:', error);
+				setTableColumns(COLUMNS);
+				localStorage.setItem('reportWeekTableConfig', JSON.stringify({
+					version: CURR_REPORT_WEEK_COLUMNS_CONFIG_VER,
+					config: COLUMNS
+				}));
+			}
+		} else {
+			setTableColumns(COLUMNS);
+			localStorage.setItem('reportWeekTableConfig', JSON.stringify({
+				version: CURR_REPORT_WEEK_COLUMNS_CONFIG_VER,
+				config: COLUMNS
+			}));
 		}
 	}, []);
 
@@ -124,25 +152,25 @@ export default function ReportWeek() {
 		setLoading(true);
 		progress.start();
 		try {
-				const response = await ServiceFunctions.getReportWeek(
-					authToken,
-					selectedRange,
-					activeBrand.id,
-					filters,
-					activeWeeks
-				);
+			const response = await ServiceFunctions.getReportWeek(
+				authToken,
+				selectedRange,
+				activeBrand.id,
+				filters,
+				activeWeeks
+			);
 
-				// Собираем общий массив неделей по всем годам из ответа
-				let weeks = [];
+			// Собираем общий массив неделей по всем годам из ответа
+			let weeks = [];
 
-				for (const year of response.data) {
-					for (const week of year.weeks) {
-						weeks.push(week);
-					}
+			for (const year of response.data) {
+				for (const week of year.weeks) {
+					weeks.push(week);
 				}
+			}
 
-				progress.complete();
-				await setTimeout(() => dataToTableData(weeks), 500);
+			progress.complete();
+			await setTimeout(() => dataToTableData(weeks), 500);
 		} catch (e) {
 			console.error(e);
 			dataToTableData(null);
@@ -199,23 +227,73 @@ export default function ReportWeek() {
 				}
 			});
 		});
-		// приcвоение расчетных значений
-		summary = {
-			...summary,
-			key: 'summary',
-			week_label: 'Итого за период',
-			drr: summary.revenue_rub !== 0 ? (summary.advert_amount / summary.revenue_rub) * 100 : 0,
-			avg_spp: rows.length !== 0 ? summary.avg_spp / rows.length : 0,
-			return_on_investment: rows.length !== 0 ? summary.return_on_investment / rows.length : 0,
-			marginality: rows.length !== 0 ? summary.marginality / rows.length : 0,
-			purchase_percent: rows.length !== 0 ? summary.purchase_percent / rows.length : 0,
-			logistics_per_product: summary.revenue_quantity !== 0 ? summary.logistics_total_rub / summary.revenue_quantity : 0,
-			cost_price_per_one: summary.revenue_quantity !== 0 ? summary.cost_price / summary.revenue_quantity : 0,
-			profit_per_one: summary.revenue_quantity !== 0 ? summary.profit / summary.revenue_quantity : 0,
-			avg_check: summary.revenue_quantity !== 0 ? summary.revenue_rub / summary.revenue_quantity : 0,
+
+		// "42 неделя (13.10.2025 - 19.10.2025)" → проверяем, попадает ли сегодня в интервал
+		const parseDdMmYyyy = (str) => {
+			const [dd, mm, yyyy] = str.split('.').map(Number);
+			return new Date(yyyy, mm - 1, dd);
 		};
 
-		rows.unshift(summary);
+		const isTodayInWeekLabel = (weekLabel) => {
+			// достаем диапазон внутри скобок: "13.10.2025 - 19.10.2025"
+			const m = weekLabel.match(/\(([^)]+)\)/);
+			if (!m) return false;
+
+			const [fromStr, toStr] = m[1].split('-').map(s => s.trim());
+			const from = parseDdMmYyyy(fromStr);
+			const to = parseDdMmYyyy(toStr);
+
+			// нормализуем к полуночи и сравниваем включительно
+			const today = new Date();
+			today.setHours(0, 0, 0, 0);
+			from.setHours(0, 0, 0, 0);
+			to.setHours(0, 0, 0, 0);
+
+			return today >= from && today <= to;
+		};
+
+		// нахождение объекта с текущей неделей
+		const currentRowIndex = rows.findIndex(r => isTodayInWeekLabel(r.week_label));
+		if (currentRowIndex !== -1) {
+			const summaryValue = Object.keys(rows[currentRowIndex]).reduce((acc, key) => {
+				if (typeof rows[currentRowIndex][key] === 'object') {
+					acc += rows[currentRowIndex][key].value;
+				} else {
+					return acc;
+				}
+			}, 0);
+
+
+
+			// Вариант с тултипом
+			if (summaryValue === 0) {
+				rows[currentRowIndex].noData = true;
+			}
+			// Вариант с удалением строки
+			if (summaryValue === 0) {
+				rows.splice(currentRowIndex, 1);
+			}
+		}
+
+		if (rows.length > 0) {
+			// приcвоение расчетных значений
+			summary = {
+				...summary,
+				key: 'summary',
+				week_label: 'Итого за период',
+				drr: summary.revenue_rub !== 0 ? (summary.advert_amount / summary.revenue_rub) * 100 : 0,
+				avg_spp: rows.length !== 0 ? summary.avg_spp / rows.length : 0,
+				return_on_investment: rows.length !== 0 ? summary.return_on_investment / rows.length : 0,
+				marginality: rows.length !== 0 ? summary.marginality / rows.length : 0,
+				purchase_percent: rows.length !== 0 ? summary.purchase_percent / rows.length : 0,
+				logistics_per_product: summary.revenue_quantity !== 0 ? summary.logistics_total_rub / summary.revenue_quantity : 0,
+				cost_price_per_one: summary.revenue_quantity !== 0 ? summary.cost_price / summary.revenue_quantity : 0,
+				profit_per_one: summary.revenue_quantity !== 0 ? summary.profit / summary.revenue_quantity : 0,
+				avg_check: summary.revenue_quantity !== 0 ? summary.revenue_rub / summary.revenue_quantity : 0,
+			};
+
+			rows.unshift(summary);
+		}
 		setTableRows(rows);
 		progress.complete();
 		setLoading(false);
@@ -240,7 +318,10 @@ export default function ReportWeek() {
 
 	const configClear = () => {
 		tableColumnsHandler(COLUMNS);
-		localStorage.setItem('reportWeekTableConfig', JSON.stringify(COLUMNS));
+		localStorage.setItem('reportWeekTableConfig', JSON.stringify({
+			version: CURR_REPORT_WEEK_COLUMNS_CONFIG_VER,
+			config: COLUMNS
+		}));
 		setIsPopoverOpen(false);
 	};
 
@@ -396,6 +477,7 @@ export default function ReportWeek() {
 						is_primary_collect={activeBrand?.is_primary_collect}
 						progress={progress.value}
 						setTableColumns={setTableColumns}
+						configVersion={CURR_REPORT_WEEK_COLUMNS_CONFIG_VER}
 					/>
 				</div>
 			</section>

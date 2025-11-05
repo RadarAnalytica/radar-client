@@ -1,0 +1,87 @@
+[
+    {
+        "week": 39,
+        "week_label": "39 неделя (22.09.2025 - 28.09.2025)",
+        "data": {
+            "revenue": {
+                "rub": 2500231.14,
+                "quantity": 1001
+            },
+            "purchases": {
+                "rub": 2676941.09,
+                "quantity": 1051
+            },
+            "return": {
+                "rub": 176709.95,
+                "quantity": 50
+            },
+            "avg_check": 2497.73,
+            "purchase_percent": 49.95,
+            "avg_spp": 36.23,
+            "cost_price": 2500,
+            "cost_price_percent": 30,
+            "cost_price_per_one": 2500,
+            "deliveries": 2004,
+            "payment": 1259794.8299999998,
+            "profit": 1184207.14,
+            "profit_per_one": 1183.02,
+            "marginality": 47.36,
+            "return_on_investment": 121.9,
+            "wb_commission": {
+                "rub": 696213.31,
+                "percent": 27.85
+            },
+            "acquiring": {
+                "rub": 31208.36,
+                "percent": 1.25
+            },
+            "logistics_straight": {
+                "rub": 223846.62,
+                "percent": 8.95
+            },
+            "logistics_reverse": {
+                "rub": 48650,
+                "percent": 1.95
+            },
+            "logistics_per_product": 272.22,
+            "logistics_total": {
+                "rub": 272496.62,
+                "percent": 10.9
+            },
+            "storage": {
+                "rub": 731.83,
+                "percent": 0.03
+            },
+            "other_retentions": {
+                "rub": 969541.76,
+                "percent": 38.78
+            },
+            "acceptance": {
+                "rub": 954,
+                "percent": 12
+            },
+            "compensation_defects": {
+                "rub": 579,
+                "quantity": 9
+            },
+            "compensation_damage": {
+                "rub": 1534.02,
+                "quantity": 2
+            },
+            "penalties": 100,
+            "additional_payments": 50,
+            "compensation_penalties": {
+                "rub": 1534.02,
+                "percent": 0.06
+            },
+            "tax_type": "Считать от РС",
+            "tax_rate": 0.06,
+            "sold_by_wb": 1594326.65,
+            "tax_base": 1259794.83,
+            "tax": 75587.69,
+            "advert_amount": 1931,
+            "drr": 0.08,
+            "wb_retentions_amount": 971472.76
+        }
+    }
+]

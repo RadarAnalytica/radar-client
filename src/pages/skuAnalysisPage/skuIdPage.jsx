@@ -83,15 +83,17 @@ const SkuIdPage = () => {
                     {isDemoMode && <NoSubscriptionWarningBlock />}
 
                     <ItemWidget />
-                    <div className={isDemoMode && 'pe-none'}>
-                        <Filters
-                            setLoading={setLoading}
-                            shopSelect={false}
-                            brandSelect={false}
-                            articleSelect={false}
-                            groupSelect={false}
-                            isDataLoading={dataStatus.isLoading}
-                        />
+                    <div className={styles.page__filtersWrapper} title={isDemoMode && 'Данный фильтр недоступен в демо-режиме'}>
+                        <div className={`${styles.page__filtersWrapper__filters} ${isDemoMode && 'pe-none'}`}>
+                            <Filters
+                                setLoading={setLoading}
+                                shopSelect={false}
+                                brandSelect={false}
+                                articleSelect={false}
+                                groupSelect={false}
+                                isDataLoading={dataStatus.isLoading}
+                            />
+                        </div>
                     </div>
                     <BarsWidget />
                     <MainChartWidget id={params?.id} />

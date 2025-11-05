@@ -9,7 +9,7 @@ import { useAppSelector, useAppDispatch } from '@/redux/hooks';
 import DownloadButton from '@/components/DownloadButton';
 import { actions as reqActions } from '@/redux/requestsMonitoring/requestsMonitoringSlice';
 import { actions as filterActions } from '@/redux/apiServicePagesFiltersState/apiServicePagesFilterState.slice';
-import { radarTableConfig } from './shared';
+import { radarTableConfig, CURR_MONITORING_TABLE_CONFIG_VER } from './shared';
 import HowToLink from '@/components/sharedComponents/howToLink/howToLink';
 import { ServiceFunctions } from '@/service/serviceFunctions';
 import { fileDownload } from '@/service/utils';
@@ -52,18 +52,38 @@ const SkuFrequencyPage = () => {
     }, []);
 
     useEffect(() => {
-        let savedTableConfig = localStorage.getItem('MonitoringTableConfig');
+        let savedTableConfigData = localStorage.getItem('MonitoringTableConfig');
 
-        if (savedTableConfig) {
+        if (savedTableConfigData) {
             try {
-                savedTableConfig = JSON.parse(savedTableConfig);
-                setTableConfig(savedTableConfig);
+                const parsed = JSON.parse(savedTableConfigData);
+                
+                // Проверяем версию конфига
+                if (parsed.version === CURR_MONITORING_TABLE_CONFIG_VER) {
+                    setTableConfig(parsed.config);
+                } else {
+                    // Версия не совпадает, используем дефолтный конфиг
+                    console.log('Table config version mismatch, using default config');
+                    setTableConfig(radarTableConfig);
+                    localStorage.setItem('MonitoringTableConfig', JSON.stringify({
+                        version: CURR_MONITORING_TABLE_CONFIG_VER,
+                        config: radarTableConfig
+                    }));
+                }
             } catch (error) {
                 console.error('Error parsing saved table config:', error);
                 setTableConfig(radarTableConfig);
+                localStorage.setItem('MonitoringTableConfig', JSON.stringify({
+                    version: CURR_MONITORING_TABLE_CONFIG_VER,
+                    config: radarTableConfig
+                }));
             }
         } else {
             setTableConfig(radarTableConfig);
+            localStorage.setItem('MonitoringTableConfig', JSON.stringify({
+                version: CURR_MONITORING_TABLE_CONFIG_VER,
+                config: radarTableConfig
+            }));
         }
     }, []);
 

@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { ConfigProvider, Table, Button, Progress } from 'antd';
 import { useRef, useMemo, useCallback, useState } from 'react';
 import { Table as RadarTable, Tooltip as RadarTooltip } from 'radar-ui';
-import { Tooltip }from 'antd';
+import { Tooltip } from 'antd';
 import styles from './TableWidget.module.css';
 import { RadarRateMark } from '@/shared';
 import { formatPrice } from '@/service/utils';
@@ -25,7 +25,7 @@ const customCellRender = (value, record, index, dataIndex) => {
                     }}
                 >
                     <Tooltip title='Суммарные показатели за период'>
-                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" style={{cursor: 'pointer'}}>
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ cursor: 'pointer' }}>
                             <rect x="0.75" y="0.75" width="18.5" height="18.5" rx="9.25" stroke="black" strokeOpacity="0.1" strokeWidth="1.5" />
                             <path d="M9.064 15V7.958H10.338V15H9.064ZM8.952 6.418V5.046H10.464V6.418H8.952Z" fill="#1A1A1A" fillOpacity="0.5" />
                         </svg>
@@ -42,6 +42,32 @@ const customCellRender = (value, record, index, dataIndex) => {
         );
     }
 
+    // Вариант с отображением tooltip при отсутствии данных за текущий период
+    if (dataIndex === 'week_label' && record.noData) {
+        return (
+        <div className={styles.noDataCell}>
+            {value}
+            <ConfigProvider
+                theme={{
+                    components: {
+                        Tooltip: {
+                            colorBgSpotlight: '#ffffff',
+                            colorTextLightSolid: '#F93C65',
+                            colorBorder: '#d9d9d9'
+                        }
+                    }
+                }}
+            >
+                <Tooltip title='Данные за этот период еще собираются. Попробуйте позже'>
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ cursor: 'pointer' }}>
+                        <rect x="0.75" y="0.75" width="18.5" height="18.5" rx="9.25" stroke="black" strokeOpacity="0.1" strokeWidth="1.5" stroke="#F93C65" />
+                        <path d="M9.064 15V7.958H10.338V15H9.064ZM8.952 6.418V5.046H10.464V6.418H8.952Z" fill="#F93C65" fillOpacity="0.5" />
+                    </svg>
+                </Tooltip>
+            </ConfigProvider>
+        </div>)
+    }
+
     if (typeof value === 'object') {
         return (
             <div className={styles.customCell}>
@@ -51,6 +77,8 @@ const customCellRender = (value, record, index, dataIndex) => {
         );
     }
 
+  
+
     return (
         <>
             {value}
@@ -58,7 +86,7 @@ const customCellRender = (value, record, index, dataIndex) => {
     );
 };
 
-export default function TableWidget({ loading, columns, data, rowSelection = false, virtual = true, is_primary_collect, progress = null, setTableColumns }) {
+export default function TableWidget({ loading, columns, data, rowSelection = false, virtual = true, is_primary_collect, progress = null, setTableColumns, configVersion }) {
     const tableContainerRef = useRef(null);
     const [sortState, setSortState] = useState({ sort_field: undefined, sort_order: undefined });
 
@@ -82,7 +110,10 @@ export default function TableWidget({ loading, columns, data, rowSelection = fal
             }
             return col;
         });
-        localStorage.setItem('reportWeekTableConfig', JSON.stringify(newConfig));
+        localStorage.setItem('reportWeekTableConfig', JSON.stringify({
+            version: configVersion,
+            config: newConfig
+        }));
         setTableColumns(newConfig);
         document.removeEventListener('mousemove', mouseHandler);
     };

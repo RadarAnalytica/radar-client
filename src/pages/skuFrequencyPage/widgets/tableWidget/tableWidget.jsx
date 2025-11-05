@@ -6,6 +6,7 @@ import { actions as reqsMonitoringActions } from '@/redux/requestsMonitoring/req
 import ErrorModal from '@/components/sharedComponents/modals/errorModal/errorModal';
 import { Table as RadarTable } from 'radar-ui';
 import { cellRender } from '../../shared/configs/cellRender';
+import { CURR_MONITORING_TABLE_CONFIG_VER } from '../../shared';
 
 const TableWidget = ({ tableConfig, setTableConfig }) => {
     const dispatch = useAppDispatch();
@@ -76,7 +77,10 @@ const TableWidget = ({ tableConfig, setTableConfig }) => {
         // Обновляем состояние
         setTableConfig(prevConfig => {
             const updatedConfig = updateColumnWidth(prevConfig);
-            localStorage.setItem('MonitoringTableConfig', JSON.stringify(updatedConfig));
+            localStorage.setItem('MonitoringTableConfig', JSON.stringify({
+                version: CURR_MONITORING_TABLE_CONFIG_VER,
+                config: updatedConfig
+            }));
             return updatedConfig;
         });
     };
@@ -115,7 +119,10 @@ const TableWidget = ({ tableConfig, setTableConfig }) => {
                         dispatch(reqsMonitoringActions.updateRequestObject({ sorting: { sort_field, sort_order } }));
                     }}
                     onColumnReorder={(newConfig) => {
-                        localStorage.setItem('MonitoringTableConfig', JSON.stringify(newConfig));
+                        localStorage.setItem('MonitoringTableConfig', JSON.stringify({
+                            version: CURR_MONITORING_TABLE_CONFIG_VER,
+                            config: newConfig
+                        }));
                         setTableConfig((prev) => newConfig);
                     }}
                     pagination={{

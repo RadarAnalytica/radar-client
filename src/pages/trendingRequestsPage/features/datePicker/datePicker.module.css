@@ -16,6 +16,14 @@
   background-color: #A994FF !important;
 }
 
+.arrowIcon {
+  transform: rotate(0deg);
+  transition: transform 0.3s ease;
+}
+.arrowIcon_open {
+  transform: rotate(180deg);
+}
+
 
 .calendarContainer {
   position: relative;

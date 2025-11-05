@@ -89,6 +89,12 @@ const Onboarding = () => {
   };
 
   useEffect(() => {
+    if (reqStatus.isSuccess) {
+      handleShow();
+    }
+  }, [reqStatus]);
+
+  useEffect(() => {
     if (location.search) {
       checkIdQueryParam();
     }

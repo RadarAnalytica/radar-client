@@ -58,6 +58,11 @@ export const ShopSelect = (
                         onChange={handler}
                         getPopupContainer={(triggerNode) => triggerNode.parentNode}
                         disabled={isDataLoading}
+                        onDropdownVisibleChange={(open) => {
+                            if (!open) {
+                                dispatch(filterActions.setActiveShop(null));
+                            }
+                        }}
                     />
                 </ConfigProvider>
             </div>

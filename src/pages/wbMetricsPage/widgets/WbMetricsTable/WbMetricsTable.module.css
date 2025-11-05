@@ -20,6 +20,10 @@
   }
 }
 
+:global(.chart-column .radar-table__header-cell-wrapper) {
+  justify-content: center;
+}
+
 :global(.day-header-cell.--weekend) {
   background-color: #eeebfe !important;
 }
@@ -120,6 +124,7 @@
   align-items: center;
   gap: 12px;
   padding: 8px 0;
+  width: 100%;
 }
 
 .productImage {
@@ -127,6 +132,7 @@
   border-radius: 4px;
   border: 1px solid #e8e8e8;
   flex-shrink: 0;
+  background-color: #D9D9D9;
 }
 
 .productName {

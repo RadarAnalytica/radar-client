@@ -9,8 +9,9 @@ export interface ColumnConfig {
   fixed?: boolean;
   sortable: boolean;
   hidden: boolean;
-  canToggle?: boolean; // Можно ли скрывать/показывать колонку
+  canToggle?: boolean;
   align?: 'left' | 'center' | 'right';
+  className?: string;
 }
 
 export interface TableConfigData {
@@ -28,7 +29,7 @@ export const getDefaultTableConfig = (controlData?: any[]): ColumnConfig[] => {
       fixed: true,
       sortable: true,
       hidden: false,
-      canToggle: false, // Всегда видима
+      canToggle: false,
     },
     {
       key: 'vendor_code',
@@ -73,7 +74,8 @@ export const getDefaultTableConfig = (controlData?: any[]): ColumnConfig[] => {
       width: 150,
       sortable: false,
       hidden: false,
-      canToggle: false, // Всегда видима
+      canToggle: false,
+      className: 'chart-column',
     },
   ];
 
