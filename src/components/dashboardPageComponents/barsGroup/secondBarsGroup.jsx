@@ -121,6 +121,9 @@ const SecondBarsGroup = ({ dataDashBoard, loading, selectedRange, activeBrand, a
                 mainValue={dataDashBoard?.paid_acceptance}
                 mainValueUnits='₽'
                 isLoading={loading}
+                compareValue={{
+                    comparativeValue: dataDashBoard?.paid_acceptance_compare
+                }}
             />
 
             {/* <SmallBar
@@ -156,6 +159,9 @@ const SecondBarsGroup = ({ dataDashBoard, loading, selectedRange, activeBrand, a
                 mainValue={dataDashBoard?.tax_amount}
                 mainValueUnits='₽'
                 isLoading={loading}
+                compareValue={{
+                    comparativeValue: dataDashBoard?.taxCompare
+                }}
             />
 
             {/* <SmallBar
@@ -192,6 +198,9 @@ const SecondBarsGroup = ({ dataDashBoard, loading, selectedRange, activeBrand, a
                 mainValue={dataDashBoard?.penalty}
                 mainValueUnits='₽'
                 isLoading={loading}
+                compareValue={{
+                    comparativeValue: dataDashBoard?.penalty_compare
+                }}
             />
 
             {/* <SmallBar
@@ -221,6 +230,9 @@ const SecondBarsGroup = ({ dataDashBoard, loading, selectedRange, activeBrand, a
                 mainValue={dataDashBoard?.logistic_per_one}
                 mainValueUnits='₽'
                 isLoading={loading}
+                compareValue={{
+                    comparativeValue: dataDashBoard?.logistic_per_one_compare
+                }}
             />
 
             {/* Средняя прибыль на 1 шт */}
