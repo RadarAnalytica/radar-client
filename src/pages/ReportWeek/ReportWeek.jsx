@@ -34,7 +34,7 @@ export default function ReportWeek() {
 	const { user, authToken } = useContext(AuthContext);
 	const { isDemoMode } = useDemoMode();
 	const dispatch = useAppDispatch();
-  	const { activeBrand, selectedRange, activeBrandName, activeArticle, activeGroup, activeWeeks, isFiltersLoaded, shops } = useAppSelector(state => state.filters);
+	const { activeBrand, selectedRange, activeBrandName, activeArticle, activeGroup, activeWeeks, isFiltersLoaded, shops } = useAppSelector(state => state.filters);
 	const filters = useAppSelector((state) => state.filters);
 	//const { shops } = useAppSelector((state) => state.shopsSlice);
 	const [loading, setLoading] = useState(true);
@@ -51,7 +51,7 @@ export default function ReportWeek() {
 		if (savedTableConfigData) {
 			try {
 				const parsed = JSON.parse(savedTableConfigData);
-				
+
 				// Проверяем версию конфига
 				if (parsed.version === CURR_REPORT_WEEK_COLUMNS_CONFIG_VER) {
 					setTableColumns(parsed.config);
@@ -152,25 +152,25 @@ export default function ReportWeek() {
 		setLoading(true);
 		progress.start();
 		try {
-				const response = await ServiceFunctions.getReportWeek(
-					authToken,
-					selectedRange,
-					activeBrand.id,
-					filters,
-					activeWeeks
-				);
+			const response = await ServiceFunctions.getReportWeek(
+				authToken,
+				selectedRange,
+				activeBrand.id,
+				filters,
+				activeWeeks
+			);
 
-				// Собираем общий массив неделей по всем годам из ответа
-				let weeks = [];
+			// Собираем общий массив неделей по всем годам из ответа
+			let weeks = [];
 
-				for (const year of response.data) {
-					for (const week of year.weeks) {
-						weeks.push(week);
-					}
+			for (const year of response.data) {
+				for (const week of year.weeks) {
+					weeks.push(week);
 				}
+			}
 
-				progress.complete();
-				await setTimeout(() => dataToTableData(weeks), 500);
+			progress.complete();
+			await setTimeout(() => dataToTableData(weeks), 500);
 		} catch (e) {
 			console.error(e);
 			dataToTableData(null);
@@ -195,7 +195,7 @@ export default function ReportWeek() {
 				week_label: el.week_label,
 			};
 			Object.keys(el.data).forEach(key => {
-				if (typeof el.data[key] === 'object') {
+				if (el.data[key].rub || el.data[key].percent) {
 					Object.keys(el.data[key]).forEach(k => {
 						row[`${key}_${k}`] = el.data[key][k];
 					});
@@ -207,12 +207,23 @@ export default function ReportWeek() {
 			return row;
 		});
 
+
+
+
 		rows.forEach(row => {
 			Object.keys(row).forEach(key => {
 				if (!summary[key]) {
-					summary[key] = row[key];
+					if (typeof row[key] === 'object') {
+						summary[key] = row[key].value;
+					} else {
+						summary[key] = row[key];
+					}
 				} else {
-					summary[key] += row[key];
+					if (typeof row[key] === 'object') {
+						summary[key] += row[key].value;
+					} else {
+						summary[key] += row[key];
+					}
 				}
 			});
 		});
@@ -246,11 +257,12 @@ export default function ReportWeek() {
 		if (currentRowIndex !== -1) {
 			const summaryValue = Object.keys(rows[currentRowIndex]).reduce((acc, key) => {
 				if (typeof rows[currentRowIndex][key] === 'object') {
-					acc += rows[currentRowIndex][key];
+					acc += rows[currentRowIndex][key].value;
 				} else {
 					return acc;
 				}
 			}, 0);
+
 
 
 			// Вариант с тултипом

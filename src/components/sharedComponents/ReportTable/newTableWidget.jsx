@@ -2,6 +2,7 @@ import { ConfigProvider, Table, Button, Progress } from 'antd';
 import { useRef, useMemo, useCallback, useState, useEffect, forwardRef, useImperativeHandle } from 'react';
 import { Table as RadarTable } from 'radar-ui';
 import { formatPrice } from '../../../service/utils';
+import { RadarRateMark } from '@/shared';
 import styles from './newTableWidget.module.css';
 
 const years = ['2020', '2021', '2022', '2023', '2024', '2025', '2026', '2027', '2028', '2029', '2030'];
@@ -18,8 +19,8 @@ const customCellRender = (value, record, index, dataIndex) => {
 		if (typeof value === 'object') {
 			return (
 				<div className={styles.customCell} data-year-attribute={yearAttribute}>
-					<span className={styles.customCellValueRub} title={formatPrice(value.rub, '₽')}><b>{formatPrice(value.rub, '₽')}</b></span>
-					<span className={styles.customCellValuePercent} title={formatPrice(value.percent, '%')}><b>{formatPrice(value.percent, '%')}</b></span>
+					<span className={styles.customCellValueRub} title={formatPrice(value.rub.value, '₽')}><b>{formatPrice(value.rub.value, '₽')}</b></span>
+					{!yearAttribute && value.rub.comparison_percentage !== null && value.rub.comparison_percentage !== undefined && <RadarRateMark value={value.rub.comparison_percentage} units='%' />}
 				</div>
 			);
 		}
@@ -45,16 +46,16 @@ const customCellRender = (value, record, index, dataIndex) => {
 	) {
 		return (
 			<div className={styles.customCell} data-year-attribute={yearAttribute}>
-				<span className={styles.customCellValueRub} style={{ color: 'rgba(0, 0, 0, .5)'}} title={formatPrice(value.rub, '₽')}>{formatPrice(value.rub, '₽')}</span>
-				<span className={styles.customCellValuePercent} style={{ color: 'rgba(0, 0, 0, .5)'}} title={formatPrice(value.percent, '%')}>{formatPrice(value.percent, '%')}</span>
+				<span className={styles.customCellValueText} style={{ color: 'rgba(0, 0, 0, .5)'}} title={formatPrice(value.rub.value, '₽')}><b>{formatPrice(value.rub.value, '₽')}</b></span>
+				{!yearAttribute && value.rub.comparison_percentage !== null && value.rub.comparison_percentage !== undefined && <RadarRateMark value={value.rub.comparison_percentage} units='%' />}
 			</div>
 		);
 	}
 	if (typeof value === 'object') {
 		return (
 			<div className={styles.customCell} data-year-attribute={yearAttribute}>
-				<span className={styles.customCellValueRub} title={formatPrice(value.rub, '₽')}>{formatPrice(value.rub, '₽')}</span>
-				{record.article !== 'Фактические продажи' && <span className={styles.customCellValuePercent} title={formatPrice(value.percent, '%')}>{formatPrice(value.percent, '%')}</span>}
+				<span className={styles.customCellValueText} title={formatPrice(value.rub.value, '₽')}><b>{formatPrice(value.rub.value, '₽')}</b></span>
+				{!yearAttribute && value.rub.comparison_percentage !== null && value.rub.comparison_percentage !== undefined && <RadarRateMark value={value.rub.comparison_percentage} units='%' />}
 			</div>
 		);
 	}
@@ -71,7 +72,6 @@ const customCellRender = (value, record, index, dataIndex) => {
 const TableWidget = ({ loading, columns, data, rowSelection = false, virtual = true, is_primary_collect, progress = null, setTableConfig }) => {
 	const tableContainerRef = useRef(null);
 	const expandedRows = [...data].filter(_ => _.isExpanded).map(_ => JSON.stringify(_)).filter(Boolean);
-
 	const onResize = (columnKey, newWidth) => {
 		const mouseHandler = (e) => {
 			e.preventDefault();

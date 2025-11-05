@@ -47,7 +47,7 @@ const isValueBelowZero = (value: number | string) => {
 //props model
 interface RadarBarProps {
     title: string; // title of the bar
-    tooltipText: string; // tooltip text of the bar + triggers visibility of the tooltip
+    tooltipText?: string; // tooltip text of the bar + triggers visibility of the tooltip
     midValue?: number | string; // mid value of the bar
     midValueUnits?: string; // units of the mid value (eg "шт", "%" or whatever)
     mainValue?: number | string; // main value of the bar

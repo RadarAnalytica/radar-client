@@ -24,7 +24,6 @@ import {
   type ColumnConfig 
 } from './config/tableConfig';
 import styles from './wbMetricsPage.module.css';
-import FilterLoader from '@/components/ui/FilterLoader';
 
 
 const WbMetricsPage: React.FC = () => {
@@ -65,10 +64,12 @@ const WbMetricsPage: React.FC = () => {
   };
 
   useEffect(() => {
-    if (activeBrand?.is_primary_collect) {
-      loadData();
-    } else {
-      setLoading(false);
+    if (activeBrand) {
+      if (activeBrand?.is_primary_collect) {
+        loadData();
+      } else {
+        setLoading(false);
+      }
     }
   }, [activeBrand, pageData.page, activeBrandName, activeArticle, activeGroup, metricType, sortState]);
 
@@ -82,6 +83,10 @@ const WbMetricsPage: React.FC = () => {
     }
   }, [data, metricType]);
 
+  const canShowTable = useMemo(() => {
+    return !loading && activeBrand && activeBrand?.is_primary_collect && tableConfig?.length > 0;
+  }, [loading, activeBrand, tableConfig]);
+
   // Обработчик изменения конфигурации таблицы
   const handleTableConfigChange = (newConfig: ColumnConfig[]) => {
     setTableConfig(newConfig);
@@ -92,11 +97,11 @@ const WbMetricsPage: React.FC = () => {
     // TODO: Implement Excel download
     console.log('Download Excel for', metricType);
   };
+  
 
   return (
     <main className={styles.page}>
       <MobilePlug />
-      <FilterLoader />
 
       <section className={styles.page__sideNavWrapper}>
         <Sidebar />
@@ -146,7 +151,7 @@ const WbMetricsPage: React.FC = () => {
           </div>
         )}
 
-        {!loading && activeBrand?.is_primary_collect && (data?.data?.length > 0
+        {canShowTable && (data?.data?.length > 0
           ? <WbMetricsTable
               data={data}
               columns={tableConfig}

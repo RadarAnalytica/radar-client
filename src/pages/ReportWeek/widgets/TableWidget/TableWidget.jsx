@@ -2,8 +2,10 @@ import { useEffect } from 'react';
 import { ConfigProvider, Table, Button, Progress } from 'antd';
 import { useRef, useMemo, useCallback, useState } from 'react';
 import { Table as RadarTable, Tooltip as RadarTooltip } from 'radar-ui';
-import { Tooltip }from 'antd';
+import { Tooltip } from 'antd';
 import styles from './TableWidget.module.css';
+import { RadarRateMark } from '@/shared';
+import { formatPrice } from '@/service/utils';
 
 
 const customCellRender = (value, record, index, dataIndex) => {
@@ -29,6 +31,13 @@ const customCellRender = (value, record, index, dataIndex) => {
                         </svg>
                     </Tooltip>
                 </ConfigProvider>
+            </div>
+        );
+    }
+    if (record.key === 'summary' && dataIndex !== 'week_label') {
+        return (
+            <div className={styles.customCell}>
+                {formatPrice(value, '')}
             </div>
         );
     }
@@ -63,7 +72,7 @@ const customCellRender = (value, record, index, dataIndex) => {
         return (
             <div className={styles.customCell}>
                 {formatPrice(value.value, '')}
-                <RadarRateMark value={value.comparison_percentage} units='%' />
+                {value.comparison_percentage !== null && value.comparison_percentage !== undefined && <RadarRateMark value={value.comparison_percentage} units='%'/>}
             </div>
         );
     }
@@ -154,7 +163,7 @@ export default function TableWidget({ loading, columns, data, rowSelection = fal
                             }
                         })}
                         customCellRender={{
-                            idx: ['week_label'],
+                            idx: [],
                             renderer: customCellRender,
                         }}
                         scrollContainerRef={tableContainerRef}

@@ -1,0 +1,132 @@
+.page {
+    width: 100%;
+    margin: 0 auto;
+    min-height: 100dvh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    background: linear-gradient(76.56deg, #ECF2FF 8.09%, #FEF0E7 89.79%);
+}
+
+.page__wrapper {
+    padding: 20px;
+    height: 100%;
+    max-height: 100dvh;
+    width: 100%;
+    max-width: 1920px;
+    margin: 0 auto;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    overflow: auto;
+
+    @media (max-width: 1920px) {
+        border-radius: 0;
+    }
+
+    @media (max-width: 1440px) {
+        /* padding: 0; */
+    }
+
+    @media (max-width: 1050px) {
+        max-height: unset;
+    }
+}
+
+.page__formWrapper {
+    width: 100%;
+    max-width: 546px;
+    min-width: 546px;
+    background-color: white;
+    border-radius: 20px;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    gap: 30px;
+   
+
+    @media (max-width: 1440px) {
+        width: 100%;
+        max-width: 546px;
+        min-width: unset;
+    }
+
+    @media (max-width: 800px) {
+        width: 100%;
+        min-width: unset;
+    }
+    @media (max-width: 600px) {
+        border-radius: 16px;
+        padding: 20px;
+        gap: 16px;
+    }
+}
+
+.formWrapper__headerTitle {
+    font-weight: 600;
+    font-size: 32px;
+    line-height: 120%;
+    letter-spacing: 0px;
+    margin: 0;
+    padding: 0;
+
+    @media (max-width: 1680px) {
+        font-size: 30px;
+    }
+    @media (max-width: 1380px) {
+        font-size: 28px;
+    }
+    @media (max-width: 680px) {
+        font-size: 24px;
+    }
+}
+
+.fromWrapper__header {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    gap: 30px;
+
+    @media (max-width: 360px) {
+        flex-direction: column-reverse;
+        gap: 16px;
+    }
+}
+
+.logo {
+
+    width: 128px;
+    height: 47px;
+    transform: scale(1);
+    -webkit-transform: scale(1);
+    transition: transform 0.4s cubic-bezier(0.22, 1.15, 0.45, 0.95);
+}
+
+.logo:hover {
+    transform: scale(1.05);
+    -webkit-transform: scale(1.05);
+}
+
+.logo_adaptive {
+    @media (max-width: 1440px) {
+        width: 136px;
+        height: 48px;
+    }
+
+    @media (max-width: 1050px) {
+        width: 146px;
+        height: 54px;
+    }
+
+    @media (max-width: 600px) {
+        width: 98px;
+        height: 36px;
+    }
+}

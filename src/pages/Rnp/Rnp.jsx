@@ -29,6 +29,7 @@ import { useDemoMode } from "@/app/providers";
 import NoSubscriptionWarningBlock from '@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock';
 import Loader from '@/components/ui/Loader';
 import { useLoadingProgress } from '@/service/hooks/useLoadingProgress';
+import NoData from '@/components/sharedComponents/NoData/NoData';
 
 const sortBySavedSortState = (data, activeBrand) => {
 	const { id } = activeBrand;
@@ -101,7 +102,6 @@ export default function Rnp() {
 		} catch (error) {
 			console.error('UpdateRnpListByArticle error', error);
 			progress.reset();
-			setLoading(false);
 		}
 	};
 
@@ -129,7 +129,6 @@ export default function Rnp() {
 			console.error('updateRnpListSummary error', error);
 			setRnpDataTotal(null);
 			progress.reset();
-			setLoading(false);
 		}
 	};
 
@@ -230,14 +229,16 @@ export default function Rnp() {
 	useLayoutEffect(() => {
 		const controller = new AbortController();
 
-		if (activeBrand?.is_primary_collect) {
-			if (view === 'articles') {
-				updateRnpListByArticle(controller.signal);
+		if (activeBrand) {
+			if (activeBrand?.is_primary_collect) {
+				if (view === 'articles') {
+					updateRnpListByArticle(controller.signal);
+				} else {
+					updateRnpListSummary(controller.signal);
+				}
 			} else {
-				updateRnpListSummary(controller.signal);
+				setLoading(false);
 			}
-		} else {
-			setLoading(false);
 		}
 
 		return () => {
@@ -248,9 +249,10 @@ export default function Rnp() {
 	// Добавляем автоскролл к контейнеру страницы
 	useEffect(() => {
 		if (!pageContentRef.current) return;
-
 		const element = pageContentRef.current;
-		return autoScrollForElements({ element });
+		return () => {
+			autoScrollForElements({ element });
+		};
 	}, []);
 
 	useEffect(() => {
@@ -428,7 +430,7 @@ export default function Rnp() {
 					</div>
 				}
 
-				{!loading && ((rnpDataByArticle && view === 'articles') || (view === 'total' && rnpDataTotal)) && activeBrand?.is_primary_collect && (
+				{!loading && ((rnpDataByArticle && view === 'articles') || (view === 'total' && rnpDataTotal)) && (
 					<RnpList
 						view={view}
 						setView={viewHandler}
@@ -440,6 +442,10 @@ export default function Rnp() {
 						expanded={expanded}
 						setExpanded={setExpanded}
 					/>
+				)}
+
+				{!loading && activeBrand && ((view === 'articles' && !rnpDataByArticle) || (view === 'total' && !rnpDataTotal)) && (
+					<NoData />
 				)}
 
 				{addRnpModalShow && <AddRnpModal

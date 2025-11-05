@@ -28,14 +28,6 @@
   background-color: #eeebfe !important;
 }
 
-:global(.vendor_code-cell) {
-  max-width: 120px;
-}
-
-:global(.brand-cell) {
-  max-width: 150px;
-}
-
 :global(.category-cell) {
   width: 100%;
   white-space: wrap;
