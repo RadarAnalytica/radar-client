@@ -128,7 +128,7 @@ export const AuthProvider = ({ children }) => {
   const logout = async () => {
 
     if (user?.email === 'demo@radar.ru') {
-      //window.location.replace(`${URL}/signup`);
+      window.location.replace(`${URL}/signup`);
     } else {
       setAuthToken(null);
       setUser(null);
@@ -138,7 +138,7 @@ export const AuthProvider = ({ children }) => {
       document.cookie = `radar=;max-age=-1;expires=Thu, 01 Jan 1970 00:00:00 GMT;domain=.${window.location.hostname}`;
       // Delete cookie using the hook's deleteCookie function
       deleteCookie();
-      //window.location.replace(URL);
+      window.location.replace(URL);
     }
   };
 
