@@ -16,11 +16,13 @@ const INIT_REQUEST_STATUS = {
 };
 
 const NoSubscriptionWarningBlock = ({ className = '', isOnMainPage = false }) => {
-  const { user, authToken, logout } = useContext(AuthContext);
+  const { 
+    user, 
+    authToken, 
+    logout } = useContext(AuthContext);
   const [requestStatus, setRequestStatus] = useState(INIT_REQUEST_STATUS);
   const [isModalVisible, setIsModalVisible] = useState(false);
-  // const {isDemoUser} = useDemoMode();
-  const isDemoUser = true;
+  const {isDemoUser} = useDemoMode();
 
   const testPeriodActivation = async () => {
     setIsModalVisible(true);
@@ -245,7 +247,7 @@ const NoSubscriptionWarningBlock = ({ className = '', isOnMainPage = false }) =>
       >
         <Button
           className={styles.demoUserMPBlock__actionButton}
-          onClick={logout}
+          onClick={testPeriodActivation}
           size='large'
           type='primary'
           style={{
@@ -272,10 +274,11 @@ const NoSubscriptionWarningBlock = ({ className = '', isOnMainPage = false }) =>
   );
 
   let toRender = regularBlock;
+  if (user?.subscription_status === null && !user?.is_onboarded && !user?.is_test_used) {
+    toRender = demoUserMainPageBlock;
+  }
   if (isDemoUser && !isOnMainPage) {
     toRender = demoUserBlock;
-  } else if (isDemoUser && isOnMainPage) {
-    toRender = demoUserMainPageBlock;
   }
   return toRender;
 };
