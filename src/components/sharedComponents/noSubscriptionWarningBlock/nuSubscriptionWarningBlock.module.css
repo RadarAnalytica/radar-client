@@ -150,6 +150,8 @@
 .demoUserBlock__title {
   font-weight: 600;
   font-size: 18px;
+  margin: 0;
+  padding: 0;
 }
 
 .demoUserBlock__text {
@@ -183,4 +185,53 @@
   border-radius: 12px;
   padding: 16px;
   gap: 0;
+}
+
+/* MAIN PAGE BLOCK */
+
+
+.demoUserMPBlock {
+  width: 100%;
+  background: #EFECFE;
+  padding: 16px;
+  border-radius: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  border: 1px solid #5329FF33;
+}
+
+.demoUserMPBlock__header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.demoUserMPBlock__textWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.demoUserMPBlock__text {
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 140%;
+  letter-spacing: 0%;
+  margin: 0;
+  padding: 0;
+}
+
+.demoUserMPBlock__actionButton {
+  width: min-content;
+  border: none;
+  background: #5329FF;
+  border-radius: 8px;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  flex-grow: 0;
 }
