@@ -26,8 +26,8 @@ export default function MainPage() {
                     <Header title='Главная' />
                 </div>
 
-                {isDemoMode && <NoSubscriptionWarningBlock isOnMainPage />}
-                {!isDemoMode && !user?.is_onboarded && <OnboardingWidget />}
+                {user?.subscription_status === null && !user?.is_onboarded && !user?.is_test_used && <NoSubscriptionWarningBlock isOnMainPage />}
+                {user?.subscription_status === 'Test' && !user?.is_onboarded && <OnboardingWidget />}
                 <VideoWidgetOneLine />
                 <Banner.Top />
                 <FeaturesWidget />
