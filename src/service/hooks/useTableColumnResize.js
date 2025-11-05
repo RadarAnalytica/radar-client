@@ -59,12 +59,16 @@ export function useTableColumnResize(initialConfig, storageKey = null, minWidth 
 	const [config, setConfig] = useState(loadConfig);
 	const prevVersionRef = useRef(version);
 
+	// useEffect(() => {
+	// 	setConfig(loadConfig());
+	// }, [initialConfig, loadConfig]);
+
 	// Проверка версии при изменении версии в коде
 	useEffect(() => {
-		if (!storageKey || !version) return;
+		if (!storageKey) return;
 
 		// Если версия изменилась в коде
-		if (prevVersionRef.current !== version) {
+		if (version && prevVersionRef.current !== version) {
 			console.log(`Version changed from ${prevVersionRef.current} to ${version}`);
 			
 			try {
@@ -99,6 +103,8 @@ export function useTableColumnResize(initialConfig, storageKey = null, minWidth 
 			}
 			
 			prevVersionRef.current = version;
+		} else {
+			setConfig(loadConfig());
 		}
 	}, [version, storageKey, initialConfig, loadConfig]);
 

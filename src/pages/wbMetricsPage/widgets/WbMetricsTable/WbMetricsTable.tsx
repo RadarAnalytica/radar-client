@@ -181,18 +181,21 @@ const WbMetricsTable: React.FC<WbMetricsTableProps> = ({
     );
   };
 
-  // const { config: tableConfig, onResize: onResizeColumn } = useTableColumnResize(columns, getTableConfigStorageKey(metricType));
-
+  const { config: tableConfig, onResize: onResizeColumn } = useTableColumnResize(
+    columns, 
+    getTableConfigStorageKey(metricType)
+  );
+  
   
   return (
     <div className={styles.tableContainer}>
       <div className={styles.tableWrapper} ref={tableContainerRef}>
         {!loading && data && (
           <RadarTable
-            config={columns}
+            config={tableConfig}
             dataSource={sortTableData(prepareTableData(), sortState)}
-            // resizeable
-            // onResize={onResizeColumn}
+            resizeable
+            onResize={onResizeColumn}
             preset="radar-table-default"
             scrollContainerRef={tableContainerRef}
             stickyHeader

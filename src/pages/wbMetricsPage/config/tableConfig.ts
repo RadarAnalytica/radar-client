@@ -6,6 +6,7 @@ export interface ColumnConfig {
   title: string;
   dataIndex: string;
   width: number;
+  minWidth?: number;
   fixed?: boolean;
   sortable: boolean;
   hidden: boolean;

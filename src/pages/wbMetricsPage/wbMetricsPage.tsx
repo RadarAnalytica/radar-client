@@ -83,6 +83,10 @@ const WbMetricsPage: React.FC = () => {
     }
   }, [data, metricType]);
 
+  const canShowTable = useMemo(() => {
+    return !loading && activeBrand && activeBrand?.is_primary_collect && tableConfig?.length > 0;
+  }, [loading, activeBrand, tableConfig]);
+
   // Обработчик изменения конфигурации таблицы
   const handleTableConfigChange = (newConfig: ColumnConfig[]) => {
     setTableConfig(newConfig);
@@ -93,6 +97,7 @@ const WbMetricsPage: React.FC = () => {
     // TODO: Implement Excel download
     console.log('Download Excel for', metricType);
   };
+  
 
   return (
     <main className={styles.page}>
@@ -146,7 +151,7 @@ const WbMetricsPage: React.FC = () => {
           </div>
         )}
 
-        {!loading && activeBrand && activeBrand?.is_primary_collect && (data?.data?.length > 0
+        {canShowTable && (data?.data?.length > 0
           ? <WbMetricsTable
               data={data}
               columns={tableConfig}
