@@ -10,7 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import { ConfigProvider, Segmented } from 'antd';
 import ErrorModal from '@/components/sharedComponents/modals/errorModal/errorModal';
 import NoSubscriptionWarningBlock from '@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock';
-import { RadarBar, RadarProductBar } from '@/shared';
+import { RadarBar, RadarProductBar, RadarLoader } from '@/shared';
 import { formatPrice } from '@/service/utils';
 import { PositionCheckFilters } from '@/widgets';
 import DownloadButton from '@/components/DownloadButton';
@@ -82,100 +82,56 @@ const segmentedTheme = {
 
 const initialRequestStatus = { isLoading: false, isError: false, isSuccess: false, message: '' };
 
-const mockMainData = {
-    "wb_id": 361059312,
-    "wb_id_url": "https://www.wildberries.ru/catalog/361059312/detail.aspx",
-    "wb_id_name": "Женский эротический костюм (сетка, цвет 7027, один размер)",
-    "photo_urls": [
-        "https://basket-21.wbbasket.ru/vol3610/part361059/361059312/images/c246x328/1.webp",
-        "https://basket-21.wbbasket.ru/vol3610/part361059/361059312/images/c246x328/2.webp",
-        "https://basket-21.wbbasket.ru/vol3610/part361059/361059312/images/c246x328/3.webp"
-    ],
-    "subject_name": "Платья эротик",
-    "price": 1076.19,
-    "brand_name": "",
-    "brand_url": "https://www.wildberries.ru/brands/uknown",
-    "supplier_name": "环球智慧供应链（深圳）有限公司",
-    "supplier_url": "https://www.wildberries.ru/seller/4205242",
-    "created_date": "2025-03-17",
-    "color_amount": 1,
-    "color_revenue_percent": 100,
-    "color_balance_percent": 100,
-    "evaluation": 4.5
+const formDataToRequestObjectDto = (formData: Record<string, any>) => {
+    let requestObject = {
+        dest: formData.region,
+        feed_type: formData.type,
+        frequency: {
+            start: formData.frequency_from || null,
+            end: formData.frequency_to || null,
+        },
+        keywords_filter: null
+    }
+
+    if (formData.keyword) {
+        requestObject.keywords_filter = {
+            keywords_match: formData.match_type === 'Содержит' ? 'part' : 'full',
+            keywords: formData.keyword.split(',').map((keyword: string) => keyword.trim()),
+        }
+    }
+    return requestObject;
 }
 
-const mockTableData = [
-    {
-        query: 'test query',
-        frequency: 100,
-        total_goods: 100,
-        complexity: 'Низкая',
-        isParent: true,
-        rowKey: 'r1',
-        serpCellId: 'cellr1',
-        children: [
-            {
-                query: 'test query 1.1',
-                frequency: 200,
-                total_goods: 200,
-                complexity: 'Средняя',
-                rowKey: 'r1.1',
-            },
-            {
-                query: 'test query 1.2',
-                frequency: 300,
-                total_goods: 300,
-                complexity: 'Высокая',
-                rowKey: 'r1.2',
-            },
-            {
-                query: 'test query 1.3',
-                frequency: 400,
-                total_goods: 400,
-                complexity: 'Низкая',
-                rowKey: 'r1.3',
-            },
-        ]
-    },
-    {
-        query: 'test query 2',
-        frequency: 200,
-        total_goods: 200,
-        complexity: 'Средняя',
-        isParent: true,
-        rowKey: 'r2',
-        children: [
-            {
-                query: 'test query 2.1',
-                frequency: 200,
-                total_goods: 200,
-                complexity: 'Средняя',
-                rowKey: 'r2.1',
-            },
-            {
-                query: 'test query 2.2',
-                frequency: 300,
-                total_goods: 300,
-                complexity: 'Высокая',
-                rowKey: 'r2.2',
-            },
-            {
-                query: 'test query 2.3',
-                frequency: 400,
-                total_goods: 400,
-                complexity: 'Низкая',
-                rowKey: 'r2.3',
-            },
-        ]
-    },
-    {
-        query: 'test query 3',
-        frequency: 300,
-        total_goods: 300,
-        complexity: 'Высокая',
-        rowKey: 'r3',
-    },
-];
+
+const mainDataToTableDataDto = (mainData: IPositionCheckMainTableData, tableType: 'Кластеры' | 'По запросам') => {
+    if (!mainData) return [];
+    const { preset_data } = mainData;
+
+    if (tableType === 'Кластеры') {
+        return preset_data.map((preset, idx) => ({
+            rowKey: 'parent' + preset.query + '_' + idx,
+            ...preset,
+            isParent: preset.queries_data && preset.queries_data.length > 0 ? true : false,
+            children: preset.queries_data.map((query, queryIdx) => ({
+                rowKey: query.query + '_' + queryIdx,
+                ...query,
+            }))
+        }))
+    }
+
+    if (tableType === 'По запросам') {
+        return preset_data.map((preset) => {
+            if (preset.queries_data && preset.queries_data.length > 0) {
+                return [...preset.queries_data.map((query, queryIdx) => ({
+                    rowKey: query.query + '_' + queryIdx,
+                    ...query,
+                }))]
+            }
+            return null;
+        }).filter((item) => item !== null).flat();
+    }
+}
+
 
 const PositionCheckID = () => {
     const { authToken } = useContext(AuthContext);
@@ -184,17 +140,16 @@ const PositionCheckID = () => {
     const { isDemoMode } = useDemoMode();
     const [metaAndRegionsRequestStatus, setMetaAndRegionsRequestStatus] = useState<{ isLoading: boolean, isError: boolean, isSuccess: boolean, message: string }>(initialRequestStatus);
     const [mainTableRequestStatus, setMainTableRequestStatus] = useState<{ isLoading: boolean, isError: boolean, isSuccess: boolean, message: string }>(initialRequestStatus);
-    const [requestObject, setRequestObject] = useState<Record<string, any>>({
-        dest: -1257786, // Moscow
-    });
+    const [requestObject, setRequestObject] = useState<Record<string, any>>();
     const [tableType, setTableType] = useState<'Кластеры' | 'По запросам'>('Кластеры');
-    const [regionsData, setRegionsData] = useState<any[]>([{dest: -1257786, city_name: 'Москва', region_name: "Центральный ФО",}]);
+    const [regionsData, setRegionsData] = useState<any[]>([{ dest: -1257786, city_name: 'Москва', region_name: "Центральный ФО", }]);
     const [productMetaData, setProductMetaData] = useState<IProductPositionMetaData | null>(null);
     const [mainTableData, setMainTableData] = useState<IPositionCheckMainTableData | null>(null);
-    const getPositionCheckProductMetaData = async () => {
+
+    const getPositionCheckProductMetaData = async (authToken: string, paramsId: string) => {
         setMetaAndRegionsRequestStatus({ ...initialRequestStatus, isLoading: true });
         try {
-            const res = await ServiceFunctions.getPositionCheckProductMetaData(authToken, params?.id);
+            const res = await ServiceFunctions.getPositionCheckProductMetaData(authToken, paramsId);
             if (!res.ok) {
                 setMetaAndRegionsRequestStatus({ ...initialRequestStatus, isError: true, message: 'Ошибка запроса' });
                 return;
@@ -210,18 +165,13 @@ const PositionCheckID = () => {
 
     }
 
-    const getRegionsData = async (paramsId: string) => {
+    const getRegionsData = async (authToken: string, paramsId: string) => {
         setMainTableRequestStatus({ ...initialRequestStatus, isLoading: true });
         try {
-            const res = await ServiceFunctions.getSERPFiltersData(authToken)
-            if (!res.ok) {
-                setMainTableRequestStatus({ ...initialRequestStatus, isError: true, message: 'Ошибка запроса' });
-                return;
-            }
+            let res = await ServiceFunctions.getSERPFiltersData(authToken)
             setRegionsData(res)
             const initRequestObject = {
                 dest: res.find((item: Record<string, any>) => item.city_name === 'Москва')?.dest || -1257786,
-                wb_id: paramsId,
                 feed_type: 'both',
                 frequency: {
                     start: null,
@@ -238,6 +188,9 @@ const PositionCheckID = () => {
     }
 
     const getPositionCheckMainTableData = async (requestObject: Record<string, any>, authToken: string) => {
+        if (!mainTableRequestStatus.isLoading) {
+            setMainTableRequestStatus({ ...initialRequestStatus, isLoading: true });
+        };
         try {
             const res = await ServiceFunctions.getPositionCheckMainTableData(authToken, requestObject);
             if (!res.ok) {
@@ -246,21 +199,22 @@ const PositionCheckID = () => {
 
             const data: IPositionCheckMainTableData = await res.json();
             setMainTableData(data);
+            setMainTableRequestStatus({ ...initialRequestStatus });
         } catch (error) {
-            throw new Error('Ошибка запроса 2');
+            setMainTableRequestStatus({ ...initialRequestStatus, isError: true, message: 'Ошибка запроса' });
         }
     }
 
     useEffect(() => {
         if (params?.id && authToken) {
-            getRegionsData(params.id)
-            getPositionCheckProductMetaData()
+            getRegionsData(authToken, params.id)
+            getPositionCheckProductMetaData(authToken, params.id)
         }
     }, [params])
 
     useEffect(() => {
-        if (requestObject) {
-            getPositionCheckMainTableData(requestObject, authToken)
+        if (requestObject && params?.id) {
+            getPositionCheckMainTableData({ ...requestObject, wb_id: params.id }, authToken)
         }
     }, [requestObject])
 
@@ -301,58 +255,72 @@ const PositionCheckID = () => {
 
                 {isDemoMode && <NoSubscriptionWarningBlock />}
 
-                {productMetaData && <div className={styles.page__productBarWrapper}>
+                {<div className={styles.page__productBarWrapper}>
                     {/* Photo block */}
                     <RadarProductBar data={productMetaData} isLoading={metaAndRegionsRequestStatus.isLoading} />
                     {/* Additional data */}
-                    <div className={styles.info}>
+                    {metaAndRegionsRequestStatus.isLoading &&
+                        <div className={styles.info}><RadarLoader loaderStyle={{ height: '138px' }} /></div>
+                    }
+                    {productMetaData && !metaAndRegionsRequestStatus.isLoading && <div className={styles.info}>
                         <div className={styles.info__column}>
                             <p className={styles.info__row}>
-                                Артикул <span className={styles.info__color_black}>{productMetaData.wb_id}</span>
+                                Артикул <span className={styles.info__color_black}>{productMetaData?.wb_id}</span>
                             </p>
                             <p className={styles.info__row}>
-                                Предмет <span className={styles.info__color_purple}>{productMetaData.subject_name}</span>
+                                Предмет <span className={styles.info__color_purple}>{productMetaData?.subject_name}</span>
                             </p>
                             <p className={styles.info__row}>
-                                Оценка <span className={styles.info__color_black}>{productMetaData.rating.toFixed(1)}</span>
+                                Оценка <span className={styles.info__color_black}>{productMetaData?.rating.toFixed(1)}</span>
                             </p>
                         </div>
 
                         <div className={styles.info__column}>
                             <p className={styles.info__row}>
-                                Отзывы <span className={styles.info__color_black}>{formatPrice(productMetaData.feedbacks, '')}</span>
+                                Отзывы <span className={styles.info__color_black}>{formatPrice(productMetaData?.feedbacks || 0, '')}</span>
                             </p>
-                            <Link className={styles.info__link} to={mockMainData.supplier_url} target='_blank'>
-                                Продавец <span className={styles.info__color_purple}>{mockMainData.supplier_name}</span>
+                            <Link className={styles.info__link} to={productMetaData?.supplier_url} target='_blank'>
+                                Продавец <span className={styles.info__color_purple}>{productMetaData?.supplier_name}</span>
                             </Link>
-                            <Link to={mockMainData.wb_id_url} target='_blank' className={styles.info__mainLink}>Посмотреть на WB</Link>
+                            <Link to={productMetaData?.wb_id_url} target='_blank' className={styles.info__mainLink}>Посмотреть на WB</Link>
                         </div>
-                    </div>
+                    </div>}
                 </div>}
                 {/* Bars */}
                 <div className={styles.page__barsWrapper}>
-                    <RadarBar title='Видимость' isLoading={metaAndRegionsRequestStatus.isLoading} mainValue={productMetaData?.visibility} mainValueUnits='%' />
-                    <RadarBar title='Средняя позиция' isLoading={metaAndRegionsRequestStatus.isLoading} mainValue={productMetaData?.avg_place} mainValueUnits='' />
-                    <RadarBar title='Просмотры в месяц, шт' isLoading={metaAndRegionsRequestStatus.isLoading} mainValue={productMetaData?.shows} mainValueUnits='' />
+                    <RadarBar title='Видимость' isLoading={metaAndRegionsRequestStatus.isLoading} mainValue={productMetaData?.visibility || 0} mainValueUnits='%' />
+                    <RadarBar title='Средняя позиция' isLoading={metaAndRegionsRequestStatus.isLoading} mainValue={productMetaData?.avg_place || 0} mainValueUnits='' />
+                    <RadarBar title='Просмотры в месяц, шт' isLoading={metaAndRegionsRequestStatus.isLoading} mainValue={productMetaData?.shows || 0} mainValueUnits='' />
                 </div>
                 {/* Filters */}
-                <div className={styles.page__filtersWrapper}>
-                    <PositionCheckFilters submitHandler={(formData) => { setRequestObject(formData); }} />
+                {!metaAndRegionsRequestStatus.isLoading && <div className={styles.page__filtersWrapper}>
+                    <PositionCheckFilters submitHandler={(formData) => {
+                        setRequestObject(formDataToRequestObjectDto(formData));
+                    }} isLoading={mainTableRequestStatus.isLoading} regionsData={regionsData} />
                     <DownloadButton handleDownload={() => { }} loading={false} />
-                </div>
+                </div>}
                 {/* Table */}
-                <div className={styles.page__tableWrapper}>
-                    <ConfigProvider theme={segmentedTheme}>
-                        <Segmented options={['Кластеры', 'По запросам']} size='large' value={tableType} onChange={(value) => setTableType(value as 'Кластеры' | 'По запросам')} />
-                    </ConfigProvider>
-                    <div className={styles.page__summary}>
-                        <p className={styles.page__summaryItem}>Найдено ключей: <span>65</span></p>
-                        <p className={styles.page__summaryItem}>Кластеров: <span>15</span></p>
+                {mainTableRequestStatus.isLoading && <div className={styles.page__tableWrapper}>
+                    <RadarLoader loaderStyle={{ height: '50vh' }} />
+                </div>}
+                {mainTableData && !mainTableRequestStatus.isLoading &&
+                    <div className={styles.page__tableWrapper}>
+                        <ConfigProvider theme={segmentedTheme}>
+                            <Segmented options={['Кластеры', 'По запросам']} size='large' value={tableType} onChange={(value) => setTableType(value as 'Кластеры' | 'По запросам')} />
+                        </ConfigProvider>
+                        <div className={styles.page__summary}>
+                            <p className={styles.page__summaryItem}>Найдено ключей: <span>{mainTableData?.queries_count}</span></p>
+                            <p className={styles.page__summaryItem}>Кластеров: <span>{mainTableData?.presets_count}</span></p>
+                        </div>
+
+                        <DoubleTable 
+                            tableData={mainDataToTableDataDto(mainTableData, tableType)} 
+                            dest={requestObject?.dest || -1257786} 
+                            authToken={authToken} 
+                            tableType={tableType}
+                        />
                     </div>
-
-                    <DoubleTable />
-
-                </div>
+                }
             </section>
             {/* ---------------------- */}
             <ErrorModal

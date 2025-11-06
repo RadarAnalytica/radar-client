@@ -1985,5 +1985,19 @@ export interface IPositionCheckMainTableData {
 			);
 			return res;
 	},
+	getSERPDataForPositionCheck: async (token, requestObject) => {
+			const res = await fetchApi(
+				`https://radarmarket.ru/api/web-service/position-track/search-map`,
+				{
+					method: 'POST',
+					headers: {
+						'content-type': 'application/json',
+						authorization: 'JWT ' + token,
+					},
+					body: JSON.stringify(requestObject),
+				}
+			);
+			return res;
+	},
 };
 

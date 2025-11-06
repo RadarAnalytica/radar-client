@@ -1,15 +1,15 @@
 import styles from "./positionCheckCustomCellRender.module.css";
 import wb_icon from './wb_icon.png'
 
-export const positionCheckTableCustomCellRender = (value: any, record: any, index: number, dataIndex: string, serpButtonHandler: (buttonRef: HTMLButtonElement, rowKey: string) => void, isExpandedSerp: boolean, isExpanded?: boolean) => {
+export const positionCheckTableCustomCellRender = (value: any, record: any, index: number, dataIndex: string, serpButtonHandler: (buttonRef: HTMLButtonElement, rowKey: string) => void, isExpanded?: boolean, tableType?: 'Кластеры' | 'По запросам') => {
 
     if (dataIndex === 'query' && record.rowWithSpan) {
-        return <div id={record.cellId} style={{ width: '100%', height: '100%', border: '2px solid red' }}></div>
+        return <div id={record.cellId} style={{ width: '100%', height: '100%'}}></div>
     }
     if (record.rowWithSpan) {
         return null
     }
-    if (dataIndex === 'serp' && record.isParent) {
+    if (dataIndex === 'serp' && ((record.isParent && tableType === 'Кластеры') || (!record.isParent && tableType === 'По запросам'))) {
         return (
             <button
                 className={styles.serpCell}
@@ -30,7 +30,7 @@ export const positionCheckTableCustomCellRender = (value: any, record: any, inde
     if (dataIndex === 'query' && record.isParent) {
         return (
             <div className={styles.nameCell}>
-                <p className={styles.nameCell__title} title={value}>{value}</p>
+                <p className={styles.nameCell__title} style={{ fontWeight: '700' }} title={value}>{value}</p>
             </div>
         )
     }
