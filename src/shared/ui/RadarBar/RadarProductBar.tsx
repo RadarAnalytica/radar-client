@@ -6,8 +6,8 @@ import { RadarLoader } from "@/shared";
 
 interface IRadarProductBarProps {
     data: {
-        photo_urls?: string[];
-        wb_id_name?: string;
+        wb_id_image_link?: string | string[];
+        name?: string;
         price?: number;
         wb_id_url?: string;
     }
@@ -31,7 +31,7 @@ export const RadarProductBar: React.FC<IRadarProductBarProps> = ({ data, isLoadi
     return (
         <div className={styles.head}>
             <div className={styles.head__gallery}>
-                {data?.photo_urls?.map((i, id) => {
+                {data?.wb_id_image_link && Array.isArray(data.wb_id_image_link) && data.wb_id_image_link.map((i, id) => {
                     if (id === 0) {
                         return (
                             <div className={styles.head__mainPhotoWrapper} key={id}>
@@ -54,10 +54,21 @@ export const RadarProductBar: React.FC<IRadarProductBarProps> = ({ data, isLoadi
                             </div>);
                     }
                 })}
+                {
+                    data?.wb_id_image_link && typeof data.wb_id_image_link === 'string' && (
+                        <div className={styles.head__mainPhotoWrapper}>
+                            <img src={data.wb_id_image_link} alt='' width={138} height={182} className={styles.head__galleryMainImage}
+                                onError={(e) => {
+                                    (e.target as HTMLImageElement).style.display = 'none';
+                                }}
+                            />
+                        </div>
+                    )
+                }
             </div>
 
             <div className={styles.head__titleWrapper}>
-                <p className={styles.head__title}>{data?.wb_id_name}</p>
+                <p className={styles.head__title}>{data?.name}</p>
                 <div className={styles.head__priceWrapper}>
                     <p className={styles.head__text}>Цена реализации</p>
                     <p className={styles.head__title}>{formatPrice(data?.price, '₽')}</p>
