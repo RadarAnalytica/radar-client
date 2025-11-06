@@ -1,25 +1,64 @@
-import React, { useRef } from 'react';
-import ReactDOM from 'react-dom/client';
+import { useContext, useEffect, useLayoutEffect, useState } from 'react';
 import styles from "./PositionCheckID.module.css";
 import Header from '@/components/sharedComponents/header/header';
 import MobilePlug from '@/components/sharedComponents/mobilePlug/mobilePlug';
 import Sidebar from '@/components/sharedComponents/sidebar/sidebar';
 import Breadcrumbs from '@/components/sharedComponents/header/headerBreadcrumbs/breadcrumbs';
 import { Link, useParams } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { useDemoMode } from '@/app/providers';
-import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { actions as skuAnalysisActions } from '@/redux/skuAnalysis/skuAnalysisSlice';
 import { ConfigProvider, Segmented } from 'antd';
 import ErrorModal from '@/components/sharedComponents/modals/errorModal/errorModal';
 import NoSubscriptionWarningBlock from '@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock';
-import { RadarBar, RadarProductBar, positionCheckTableConfig, positionCheckTableCustomCellRender } from '@/shared';
+import { RadarBar, RadarProductBar, RadarLoader } from '@/shared';
 import { formatPrice } from '@/service/utils';
 import { PositionCheckFilters } from '@/widgets';
 import DownloadButton from '@/components/DownloadButton';
-import { Table as RadarTable } from 'radar-ui';
 import { DoubleTable } from '@/widgets';
+import { ServiceFunctions } from '@/service/serviceFunctions';
+import AuthContext from '@/service/AuthContext';
+
+
+// Types
+export interface IProductPositionMetaData {
+    wb_id: number;
+    wb_id_url: string;
+    wb_id_image_link: string;
+    name: string;
+    price: number;
+    subject_name: string;
+    supplier_name: string;
+    supplier_url: string;
+    feedbacks: number;
+    rating: number;
+    visibility: number;
+    avg_place: number;
+    shows: number;
+}
+
+export interface IQueryData {
+    query: string;
+    frequency: number;
+    total_goods: number;
+    complexity: number;
+    shows: number;
+}
+
+export interface IPresetData {
+    query: string;
+    frequency: number;
+    total_goods: number;
+    complexity: number;
+    shows: number;
+    queries_data: IQueryData[];
+}
+
+export interface IPositionCheckMainTableData {
+    presets_count: number;
+    queries_count: number;
+    keywords: string[];
+    preset_data: IPresetData[];
+}
 
 // antd segmented theme
 const segmentedTheme = {
@@ -41,214 +80,146 @@ const segmentedTheme = {
     }
 }
 
-const mockMainData = {
-    "wb_id": 361059312,
-    "wb_id_url": "https://www.wildberries.ru/catalog/361059312/detail.aspx",
-    "wb_id_name": "Женский эротический костюм (сетка, цвет 7027, один размер)",
-    "photo_urls": [
-        "https://basket-21.wbbasket.ru/vol3610/part361059/361059312/images/c246x328/1.webp",
-        "https://basket-21.wbbasket.ru/vol3610/part361059/361059312/images/c246x328/2.webp",
-        "https://basket-21.wbbasket.ru/vol3610/part361059/361059312/images/c246x328/3.webp"
-    ],
-    "subject_name": "Платья эротик",
-    "price": 1076.19,
-    "brand_name": "",
-    "brand_url": "https://www.wildberries.ru/brands/uknown",
-    "supplier_name": "环球智慧供应链（深圳）有限公司",
-    "supplier_url": "https://www.wildberries.ru/seller/4205242",
-    "created_date": "2025-03-17",
-    "color_amount": 1,
-    "color_revenue_percent": 100,
-    "color_balance_percent": 100,
-    "evaluation": 4.5
+const initialRequestStatus = { isLoading: false, isError: false, isSuccess: false, message: '' };
+
+const formDataToRequestObjectDto = (formData: Record<string, any>) => {
+    let requestObject = {
+        dest: formData.region,
+        feed_type: formData.type,
+        frequency: {
+            start: formData.frequency_from || null,
+            end: formData.frequency_to || null,
+        },
+        keywords_filter: null
+    }
+
+    if (formData.keyword) {
+        requestObject.keywords_filter = {
+            keywords_match: formData.match_type === 'Содержит' ? 'part' : 'full',
+            keywords: formData.keyword.split(',').map((keyword: string) => keyword.trim()),
+        }
+    }
+    return requestObject;
 }
 
-const mockTableData = [
-    {
-        query: 'test query',
-        frequency: 100,
-        total_goods: 100,
-        complexity: 'Низкая',
-        isParent: true,
-        rowKey: 'r1',
-        serpCellId: 'cellr1',
-        children: [
-            {
-                query: 'test query 1.1',
-                frequency: 200,
-                total_goods: 200,
-                complexity: 'Средняя',
-                rowKey: 'r1.1',
-            },
-            {
-                query: 'test query 1.2',
-                frequency: 300,
-                total_goods: 300,
-                complexity: 'Высокая',
-                rowKey: 'r1.2',
-            },
-            {
-                query: 'test query 1.3',
-                frequency: 400,
-                total_goods: 400,
-                complexity: 'Низкая',
-                rowKey: 'r1.3',
-            },
-        ]
-    },
-    {
-        query: 'test query 2',
-        frequency: 200,
-        total_goods: 200,
-        complexity: 'Средняя',
-        isParent: true,
-        rowKey: 'r2',
-        children: [
-            {
-                query: 'test query 2.1',
-                frequency: 200,
-                total_goods: 200,
-                complexity: 'Средняя',
-                rowKey: 'r2.1',
-            },
-            {
-                query: 'test query 2.2',
-                frequency: 300,
-                total_goods: 300,
-                complexity: 'Высокая',
-                rowKey: 'r2.2',
-            },
-            {
-                query: 'test query 2.3',
-                frequency: 400,
-                total_goods: 400,
-                complexity: 'Низкая',
-                rowKey: 'r2.3',
-            },
-        ]
-    },
-    {
-        query: 'test query 3',
-        frequency: 300,
-        total_goods: 300,
-        complexity: 'Высокая',
-        rowKey: 'r3',
-    },
-];
+
+const mainDataToTableDataDto = (mainData: IPositionCheckMainTableData, tableType: 'Кластеры' | 'По запросам') => {
+    if (!mainData) return [];
+    const { preset_data } = mainData;
+
+    if (tableType === 'Кластеры') {
+        return preset_data.map((preset, idx) => ({
+            rowKey: 'parent' + preset.query + '_' + idx,
+            ...preset,
+            isParent: preset.queries_data && preset.queries_data.length > 0 ? true : false,
+            children: preset.queries_data.map((query, queryIdx) => ({
+                rowKey: query.query + '_' + queryIdx,
+                ...query,
+            }))
+        }))
+    }
+
+    if (tableType === 'По запросам') {
+        return preset_data.map((preset) => {
+            if (preset.queries_data && preset.queries_data.length > 0) {
+                return [...preset.queries_data.map((query, queryIdx) => ({
+                    rowKey: query.query + '_' + queryIdx,
+                    ...query,
+                }))]
+            }
+            return null;
+        }).filter((item) => item !== null).flat();
+    }
+}
+
 
 const PositionCheckID = () => {
+    const { authToken } = useContext(AuthContext);
     const params = useParams();
-    const dispatch = useAppDispatch();
-    const { isDemoMode } = useDemoMode();
-    const { selectedRange, isFiltersLoaded } = useAppSelector(store => store.filters);
-    //const { dataStatus, skuMainTableData, skuByColorTableData, skuByWarehouseTableData, skuBySizeTableData } = useAppSelector(store => store.skuAnalysis);
-    const [loading, setLoading] = useState(false);
-    const [requestObject, setRequestObject] = useState<Record<string, any>>({});
-    const [tableType, setTableType] = useState<'Кластеры' | 'По запросам'>('Кластеры');
-    const [pagination, setPagination] = useState({ current: 1, pageSize: 10, total: 0 });
-    const [expandedRowKeys, setExpandedRowKeys] = useState([]);
-    const [tableData, setTableData] = useState(mockTableData);
-    const [ isExpandedSerp, setIsExpandedSerp] = useState(false);
-    const addedRowsRef = useRef<Record<string, { customRow: HTMLTableRowElement, hiddenRows: HTMLTableRowElement[] }>>({});
-    const tableContainerRef = useRef<HTMLDivElement>(null);
     const navigate = useNavigate();
+    const { isDemoMode } = useDemoMode();
+    const [metaAndRegionsRequestStatus, setMetaAndRegionsRequestStatus] = useState<{ isLoading: boolean, isError: boolean, isSuccess: boolean, message: string }>(initialRequestStatus);
+    const [mainTableRequestStatus, setMainTableRequestStatus] = useState<{ isLoading: boolean, isError: boolean, isSuccess: boolean, message: string }>(initialRequestStatus);
+    const [requestObject, setRequestObject] = useState<Record<string, any>>();
+    const [tableType, setTableType] = useState<'Кластеры' | 'По запросам'>('Кластеры');
+    const [regionsData, setRegionsData] = useState<any[]>([{ dest: -1257786, city_name: 'Москва', region_name: "Центральный ФО", }]);
+    const [productMetaData, setProductMetaData] = useState<IProductPositionMetaData | null>(null);
+    const [mainTableData, setMainTableData] = useState<IPositionCheckMainTableData | null>(null);
 
-    
-    const handleExpandedRowsChange = (keys: string[]) => {
-        // Находим строки, которые были свернуты
-        const collapsedKeys = expandedRowKeys.filter(key => !keys.includes(key));
-        
-        // Удаляем добавленные строки для свернутых родителей
-        collapsedKeys.forEach(key => {
-            const addedRowData = addedRowsRef.current[key];
-            if (addedRowData) {
-                // Удаляем кастомную строку
-                addedRowData.customRow.remove();
-                
-                // Показываем скрытые строки
-                addedRowData.hiddenRows.forEach(row => {
-                    row.style.display = '';
-                });
-                
-                // Удаляем из ref
-                delete addedRowsRef.current[key];
+    const getPositionCheckProductMetaData = async (authToken: string, paramsId: string) => {
+        setMetaAndRegionsRequestStatus({ ...initialRequestStatus, isLoading: true });
+        try {
+            const res = await ServiceFunctions.getPositionCheckProductMetaData(authToken, paramsId);
+            if (!res.ok) {
+                setMetaAndRegionsRequestStatus({ ...initialRequestStatus, isError: true, message: 'Ошибка запроса' });
+                return;
             }
-        });
-        
-        setExpandedRowKeys(keys);
-    };
 
-    const serpButtonHandler = (buttonRef: HTMLButtonElement, rowKey: string) => {
-        const currentRow = tableData.find((row: any) => row.rowKey === rowKey);
-        if (!currentRow) return;
-        
-        // Тоггл: если уже раскрыто — закрываем и очищаем кастомные элементы
-        if (expandedRowKeys.includes(rowKey)) {
-            setExpandedRowKeys(prev => prev.filter(key => key !== rowKey));
-            const addedRowData = addedRowsRef.current[rowKey];
-            if (addedRowData) {
-                addedRowData.customRow.remove();
-                addedRowData.hiddenRows.forEach(row => {
-                    row.style.display = '';
-                });
-                delete addedRowsRef.current[rowKey];
-            }
-            return;
+            const data: IProductPositionMetaData = await res.json();
+            setProductMetaData(data);
+        } catch (error) {
+            console.error(error);
+        } finally {
+            setMetaAndRegionsRequestStatus({ ...initialRequestStatus, isLoading: false });
         }
-        
-        // Раскрываем строку
-        setExpandedRowKeys(prev => [...prev, currentRow.rowKey]);
 
-        // Находим tr в которой лежит кнопка
-        const currentTr = buttonRef.closest('tr');
-        if (!currentTr) return;
+    }
 
-        console.log('currentTr', currentTr);
+    const getRegionsData = async (authToken: string, paramsId: string) => {
+        setMainTableRequestStatus({ ...initialRequestStatus, isLoading: true });
+        try {
+            let res = await ServiceFunctions.getSERPFiltersData(authToken)
+            setRegionsData(res)
+            const initRequestObject = {
+                dest: res.find((item: Record<string, any>) => item.city_name === 'Москва')?.dest || -1257786,
+                feed_type: 'both',
+                frequency: {
+                    start: null,
+                    end: null,
+                },
+                keywords_filter: null
+            }
+            setRequestObject(initRequestObject);
+        } catch (error) {
+            console.error(error);
+            return;
+        } finally {
+        }
+    }
 
-        // Ждем рендеринг раскрытых строк
-        setTimeout(() => {
-            const hiddenRows: HTMLTableRowElement[] = [];
-            
-            // Скрываем следующие 3 строки
-            let nextTr = currentTr.nextElementSibling;
-            for (let i = 0; i < 3 && nextTr; i++) {
-                (nextTr as HTMLElement).style.display = 'none';
-                hiddenRows.push(nextTr as HTMLTableRowElement);
-                nextTr = nextTr.nextElementSibling;
+    const getPositionCheckMainTableData = async (requestObject: Record<string, any>, authToken: string) => {
+        if (!mainTableRequestStatus.isLoading) {
+            setMainTableRequestStatus({ ...initialRequestStatus, isLoading: true });
+        };
+        try {
+            const res = await ServiceFunctions.getPositionCheckMainTableData(authToken, requestObject);
+            if (!res.ok) {
+                throw new Error('Ошибка запроса');
             }
 
-            // Создаем новую строку с кастомным рендером
-            const newRow = document.createElement('tr');
-            const newCell = document.createElement('td');
-            newCell.colSpan = 5;
-            newCell.style.padding = '20px';
-            newCell.style.backgroundColor = '#f5f5f5';
-            
-            // Создаем контейнер для React компонента
-            const container = document.createElement('div');
-            newCell.appendChild(container);
-            newRow.appendChild(newCell);
+            const data: IPositionCheckMainTableData = await res.json();
+            setMainTableData(data);
+            setMainTableRequestStatus({ ...initialRequestStatus });
+        } catch (error) {
+            setMainTableRequestStatus({ ...initialRequestStatus, isError: true, message: 'Ошибка запроса' });
+        }
+    }
 
-            // Вставляем новую строку после текущей
-            currentTr.after(newRow);
-            
-            // Рендерим React компонент в контейнер
-            const root = ReactDOM.createRoot(container);
-            root.render(
-                <div style={{ minHeight: '200px', border: '2px solid red', padding: '20px' }}>
-                    <h3>Кастомный React компонент</h3>
-                    <p>Row Key: {rowKey}</p>
-                    {/* Здесь можете вставить любой свой компонент */}
-                </div>
-            );
-            
-            // Сохраняем ссылки для последующего удаления
-            addedRowsRef.current[rowKey] = {
-                customRow: newRow,
-                hiddenRows: hiddenRows
-            };
-        }, 100);
-    };
+    useEffect(() => {
+        if (params?.id && authToken) {
+            getRegionsData(authToken, params.id)
+            getPositionCheckProductMetaData(authToken, params.id)
+        }
+    }, [params])
+
+    useEffect(() => {
+        if (requestObject && params?.id) {
+            getPositionCheckMainTableData({ ...requestObject, wb_id: params.id }, authToken)
+        }
+    }, [requestObject])
+
+
+
 
     return (
         <main className={styles.page}>
@@ -284,111 +255,94 @@ const PositionCheckID = () => {
 
                 {isDemoMode && <NoSubscriptionWarningBlock />}
 
-                <div className={styles.page__productBarWrapper}>
+                {<div className={styles.page__productBarWrapper}>
                     {/* Photo block */}
-                    <RadarProductBar data={mockMainData} isLoading={loading} />
+                    <RadarProductBar data={productMetaData} isLoading={metaAndRegionsRequestStatus.isLoading} />
                     {/* Additional data */}
-                    <div className={styles.info}>
+                    {metaAndRegionsRequestStatus.isLoading &&
+                        <div className={styles.info}><RadarLoader loaderStyle={{ height: '138px' }} /></div>
+                    }
+                    {productMetaData && !metaAndRegionsRequestStatus.isLoading && <div className={styles.info}>
                         <div className={styles.info__column}>
                             <p className={styles.info__row}>
-                                Артикул <span className={styles.info__color_black}>{mockMainData.wb_id}</span>
+                                Артикул <span className={styles.info__color_black}>{productMetaData?.wb_id}</span>
                             </p>
                             <p className={styles.info__row}>
-                                Предмет <span className={styles.info__color_purple}>{mockMainData.subject_name}</span>
+                                Предмет <span className={styles.info__color_purple}>{productMetaData?.subject_name}</span>
                             </p>
                             <p className={styles.info__row}>
-                                Оценка <span className={styles.info__color_black}>{mockMainData.evaluation}</span>
+                                Оценка <span className={styles.info__color_black}>{productMetaData?.rating.toFixed(1)}</span>
                             </p>
                         </div>
 
                         <div className={styles.info__column}>
                             <p className={styles.info__row}>
-                                Отзывы <span className={styles.info__color_black}>{formatPrice(mockMainData.color_balance_percent, '%')}</span>
+                                Отзывы <span className={styles.info__color_black}>{formatPrice(productMetaData?.feedbacks || 0, '')}</span>
                             </p>
-                            <Link className={styles.info__link} to={mockMainData.supplier_url} target='_blank'>
-                                Продавец <span className={styles.info__color_purple}>{mockMainData.supplier_name}</span>
+                            <Link className={styles.info__link} to={productMetaData?.supplier_url} target='_blank'>
+                                Продавец <span className={styles.info__color_purple}>{productMetaData?.supplier_name}</span>
                             </Link>
-                            <Link to={mockMainData.wb_id_url} target='_blank' className={styles.info__mainLink}>Посмотреть на WB</Link>
+                            <Link to={productMetaData?.wb_id_url} target='_blank' className={styles.info__mainLink}>Посмотреть на WB</Link>
                         </div>
-                    </div>
-                </div>
+                    </div>}
+                </div>}
                 {/* Bars */}
                 <div className={styles.page__barsWrapper}>
-                    <RadarBar title='Видимость' isLoading={loading} mainValue={42.91} mainValueUnits='%' />
-                    <RadarBar title='Средняя позиция' isLoading={loading} mainValue={98} mainValueUnits='' />
-                    <RadarBar title='Просмотры в месяц, шт' isLoading={loading} mainValue={10283} mainValueUnits='' />
+                    <RadarBar title='Видимость' isLoading={metaAndRegionsRequestStatus.isLoading} mainValue={productMetaData?.visibility || 0} mainValueUnits='%' />
+                    <RadarBar title='Средняя позиция' isLoading={metaAndRegionsRequestStatus.isLoading} mainValue={productMetaData?.avg_place || 0} mainValueUnits='' />
+                    <RadarBar title='Просмотры в месяц, шт' isLoading={metaAndRegionsRequestStatus.isLoading} mainValue={productMetaData?.shows || 0} mainValueUnits='' />
                 </div>
                 {/* Filters */}
-                <div className={styles.page__filtersWrapper}>
-                    <PositionCheckFilters submitHandler={(formData) => { setRequestObject(formData); }} />
+                {!metaAndRegionsRequestStatus.isLoading && <div className={styles.page__filtersWrapper}>
+                    <PositionCheckFilters submitHandler={(formData) => {
+                        setRequestObject(formDataToRequestObjectDto(formData));
+                    }} isLoading={mainTableRequestStatus.isLoading} regionsData={regionsData} />
                     <DownloadButton handleDownload={() => { }} loading={false} />
-                </div>
+                </div>}
                 {/* Table */}
-                <div className={styles.page__tableWrapper}>
-                    <ConfigProvider theme={segmentedTheme}>
-                        <Segmented options={['Кластеры', 'По запросам']} size='large' value={tableType} onChange={(value) => setTableType(value as 'Кластеры' | 'По запросам')} />
-                    </ConfigProvider>
-                    <div className={styles.page__summary}>
-                        <p className={styles.page__summaryItem}>Найдено ключей: <span>65</span></p>
-                        <p className={styles.page__summaryItem}>Кластеров: <span>15</span></p>
-                    </div>
+                {mainTableRequestStatus.isLoading && <div className={styles.page__tableWrapper}>
+                    <RadarLoader loaderStyle={{ height: '50vh' }} />
+                </div>}
+                {mainTableData && !mainTableRequestStatus.isLoading &&
+                    <div className={styles.page__tableWrapper}>
+                        <ConfigProvider theme={segmentedTheme}>
+                            <Segmented options={['Кластеры', 'По запросам']} size='large' value={tableType} onChange={(value) => setTableType(value as 'Кластеры' | 'По запросам')} />
+                        </ConfigProvider>
+                        <div className={styles.page__summary}>
+                            <p className={styles.page__summaryItem}>Найдено ключей: <span>{mainTableData?.queries_count}</span></p>
+                            <p className={styles.page__summaryItem}>Кластеров: <span>{mainTableData?.presets_count}</span></p>
+                        </div>
 
-                    <DoubleTable />
-
-                    {/* <div className={styles.page__tableWrapper} ref={tableContainerRef}>
-                        <RadarTable
-                            rowKey={(record) => record.rowKey}
-                            config={positionCheckTableConfig}
-                            dataSource={mockTableData}
-                            preset='radar-table-default'
-                            stickyHeader={-1}
-                            pagination={{
-                                current: pagination.current,
-                                pageSize: pagination.pageSize,
-                                total: pagination.total,
-                                //onChange: paginationHandler,
-                                showQuickJumper: true,
-                                hideOnSinglePage: true
-                            }}
-                            treeMode
-                            indentSize={45}
-                            expandedRowKeys={expandedRowKeys}
-                            onExpandedRowsChange={handleExpandedRowsChange}
-                            bodyCellWrapperStyle={{ borderBottom: 'none', padding: '10.5px 12px' }}
-                            customCellRender={{
-                                idx: ['query', 'serp'],
-                                renderer: (value, record, index, dataIndex) => positionCheckTableCustomCellRender(
-                                    value,
-                                    record,
-                                    index,
-                                    dataIndex,
-                                    serpButtonHandler,
-                                    isExpandedSerp,
-                                    expandedRowKeys.includes(record.rowKey)
-                                ),
-                            }}
+                        <DoubleTable 
+                            tableData={mainDataToTableDataDto(mainTableData, tableType)} 
+                            dest={requestObject?.dest || -1257786} 
+                            authToken={authToken} 
+                            tableType={tableType}
                         />
-                    </div> */}
-                </div>
+                    </div>
+                }
             </section>
             {/* ---------------------- */}
-            {/* <ErrorModal
+            <ErrorModal
                 open={false}
                 footer={null}
                 onOk={() => {
-                    dispatch(skuAnalysisActions.setDataStatus({ isLoading: false, isError: false, message: '' }));
-                    navigate('/sku-analysis');
+                    setMetaAndRegionsRequestStatus(initialRequestStatus);
+                    setMainTableRequestStatus(initialRequestStatus);
+                    navigate('/position-check');
                 }}
                 onClose={() => {
-                    dispatch(skuAnalysisActions.setDataStatus({ isLoading: false, isError: false, message: '' }));
-                    navigate('/sku-analysis');
+                    setMetaAndRegionsRequestStatus(initialRequestStatus);
+                    setMainTableRequestStatus(initialRequestStatus);
+                    navigate('/position-check');
                 }}
                 onCancel={() => {
-                    dispatch(skuAnalysisActions.setDataStatus({ isLoading: false, isError: false, message: '' }));
-                    navigate('/sku-analysis');
+                    setMetaAndRegionsRequestStatus(initialRequestStatus);
+                    setMainTableRequestStatus(initialRequestStatus);
+                    navigate('/position-check');
                 }}
-                message={dataStatus.message}
-            /> */}
+                message={metaAndRegionsRequestStatus.message}
+            />
         </main>
     );
 };

@@ -12,6 +12,17 @@
     display: flex;
     flex-direction: column;
     gap: 13px;
+    position: relative;
+}
+
+.page__loaderWrapper {
+    position: absolute;
+    inset: 0;
+    background: rgba(255,255,255,.75);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 99;
 }
 
 

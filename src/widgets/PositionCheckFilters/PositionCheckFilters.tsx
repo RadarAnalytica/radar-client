@@ -1,7 +1,7 @@
 import styles from './PositionCheckFilters.module.css';
 import { Form, Select, ConfigProvider, Input, Segmented } from 'antd';
 import { SelectIcon } from '@/components/sharedComponents/apiServicePagesFiltersComponent/shared/selectIcon/selectIcon';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 
 // antd theme
@@ -40,13 +40,16 @@ const theme = {
 // model 
 interface IPositionCheckFiltersForm {
     submitHandler: (formData: Record<string, any>) => void;
+    isLoading: boolean;
+    regionsData: Record<string, any>[];
 }
 
 
 
-export const PositionCheckFilters: React.FC<IPositionCheckFiltersForm> = ({ submitHandler }) => {
+export const PositionCheckFilters: React.FC<IPositionCheckFiltersForm> = ({ submitHandler, isLoading, regionsData }) => {
     const [form] = Form.useForm();
     const [keywordDropdownOpen, setKeywordDropdownOpen] = useState(false);
+
     return (
         <div className={styles.filters}>
             <ConfigProvider
@@ -58,9 +61,15 @@ export const PositionCheckFilters: React.FC<IPositionCheckFiltersForm> = ({ subm
                     layout='vertical'
                     form={form}
                     onFinish={submitHandler}
+                    onValuesChange={() => {
+                        form.submit()
+                    }}
+                    disabled={isLoading}
                     initialValues={{
+                        region: -1257786, // Moscow
                         frequency_from: '',
                         frequency_to: '',
+                        type: 'both',
                     }}
                 >
                     {/* Region select */}
@@ -70,17 +79,7 @@ export const PositionCheckFilters: React.FC<IPositionCheckFiltersForm> = ({ subm
                         className={styles.filters__formItem}
                     >
                         <Select
-                            options={[
-                                { label: 'Москва', value: 1 },
-                                { label: 'Санкт-Петербург', value: 2 },
-                                { label: 'Екатеринбург', value: 3 },
-                                { label: 'Новосибирск', value: 4 },
-                                { label: 'Красноярск', value: 5 },
-                                { label: 'Самара', value: 6 },
-                                { label: 'Ростов-на-Дону', value: 7 },
-                                { label: 'Уфа', value: 8 },
-                                { label: ' Казань', value: 9 },
-                            ]}
+                            options={regionsData?.map((region) => ({ label: region.city_name, value: region.dest }))}
                             getPopupContainer={(triggerNode) => triggerNode.parentNode}
                             size='large'
                             suffixIcon={<SelectIcon />}
@@ -94,7 +93,11 @@ export const PositionCheckFilters: React.FC<IPositionCheckFiltersForm> = ({ subm
                         className={styles.filters__formItem}
                     >
                         <Select
-                            options={[]}
+                            options={[
+                                {value: 'both', label: 'Органика+Реклама'},
+                                {value: 'organic', label: 'Органика'},
+                                {value: 'ad', label: 'Реклама'},
+                            ]}
                             size='large'
                             suffixIcon={<SelectIcon />}
                             className={styles.filters__select}
