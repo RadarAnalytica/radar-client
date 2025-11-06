@@ -1564,5 +1564,9 @@
     "compensation": 15037.88,
     "logistic_per_one": 270.58,
     "profit_per_one": 1250.00,
-    "profit_per_one_compare": "+18%"
+    "profit_per_one_compare": "+18%",
+    "paid_acceptance_compare": "+10%",
+    "penalty_compare": "-10%",
+    "compensation_compare": "+0%",
+    "logistic_per_one_compare": "-35%"
 }

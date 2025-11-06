@@ -73,7 +73,7 @@ const RestorePass = ({ email }) => {
         scrollToFirstError
         layout='vertical'
         className={styles.form}
-        onFinish={submitHandler}
+        onFinish={updatePass}
       >
         <Form.Item
           className={styles.form__item}
