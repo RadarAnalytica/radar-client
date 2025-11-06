@@ -6,7 +6,7 @@ export const getColorForPercentage = (
   opacity: number = 1
 ): string => {
   const range = maxValue - minValue;
-  if (range === 0) return `rgba(240, 240, 240, ${opacity})`;
+  if (range === 0) return `rgba(240, 240, 240, 1)`;
 
   const normalizedValue = (percentage - minValue) / range;
 

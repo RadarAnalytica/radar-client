@@ -18,6 +18,7 @@ export const AuthProvider = ({ children }) => {
       if (token) {
         return jwtDecode(token);
       }
+      
     } catch (error) {
       console.error('Error decoding token:', error);
       // deleteCookie('radar');
