@@ -747,7 +747,8 @@ export class DemoDataService {
         return { 
           ...item, 
           by_date_data: updatedByDateData,
-          summary_data: recalculatedSummaryData || item.summary_data
+          //summary_data: recalculatedSummaryData || item.summary_data
+          summary_data: item.summary_data
         };
       }
 
@@ -791,7 +792,8 @@ export class DemoDataService {
       data = { 
         ...data, 
         by_date_data: updatedByDateData,
-        summary_data: recalculatedSummaryData || data.summary_data
+        //summary_data: recalculatedSummaryData || data.summary_data
+        summary_data: data.summary_data
       };
     }
 
@@ -901,90 +903,90 @@ export class DemoDataService {
 
     return {
       realization: {
-        rub: this.generateRandomAmount(1200000, 1800000) * baseMultiplier,
+        rub: {value: this.generateRandomAmount(1200000, 1800000) * baseMultiplier,},
         percent: this.generateRandomPercent(65, 75)
       },
       mp_discount: {
-        rub: this.generateRandomAmount(360000, 600000) * baseMultiplier,
+        rub: {value:this.generateRandomAmount(360000, 600000) * baseMultiplier,},
         percent: this.generateRandomPercent(20, 30)
       },
       sales: {
-        rub: this.generateRandomAmount(1680000, 2400000) * baseMultiplier,
+        rub: {value: this.generateRandomAmount(1680000, 2400000) * baseMultiplier,},
         percent: 100
       },
       direct_expenses: {
         cost: {
-          rub: this.generateRandomAmount(6000, 12000) * baseMultiplier,
+          rub: {value: this.generateRandomAmount(6000, 12000) * baseMultiplier,},
           percent: this.generateRandomPercent(0.3, 0.7)
         },
         logistic: {
-          rub: this.generateRandomAmount(180000, 240000) * baseMultiplier,
+          rub: {value: this.generateRandomAmount(180000, 240000) * baseMultiplier,},
           percent: this.generateRandomPercent(10, 15)
         },
         commission: {
-          rub: this.generateRandomAmount(360000, 480000) * baseMultiplier,
+          rub: {value: this.generateRandomAmount(360000, 480000) * baseMultiplier,},
           percent: this.generateRandomPercent(20, 25)
         },
         penalties: {
-          rub: this.generateRandomAmount(600, 1200) * baseMultiplier,
+          rub: {value: this.generateRandomAmount(600, 1200) * baseMultiplier,},
           percent: this.generateRandomPercent(0.02, 0.1)
         },
         storage: {
-          rub: this.generateRandomAmount(6000, 18000) * baseMultiplier,
+          rub: {value: this.generateRandomAmount(6000, 18000) * baseMultiplier,},
           percent: this.generateRandomPercent(0.3, 1.0)
         },
         advert: {
-          rub: this.generateRandomAmount(720000, 960000) * baseMultiplier,
+          rub: {value: this.generateRandomAmount(720000, 960000) * baseMultiplier,},
           percent: this.generateRandomPercent(40, 50)
         },
         other_retentions: {
-          rub: this.generateRandomAmount(720000, 960000) * baseMultiplier,
+          rub: {value: this.generateRandomAmount(720000, 960000) * baseMultiplier,},
           percent: this.generateRandomPercent(40, 50)
         },
         paid_acceptance: {
-          rub: this.generateRandomAmount(1200, 3600) * baseMultiplier,
+          rub: {value: this.generateRandomAmount(1200, 3600) * baseMultiplier,},
           percent: this.generateRandomPercent(0.05, 0.2)
         },
         total_expenses: {
-          rub: this.generateRandomAmount(1440000, 1920000) * baseMultiplier,
+          rub: {value: this.generateRandomAmount(1440000, 1920000) * baseMultiplier,},
           percent: this.generateRandomPercent(80, 90)
         }
       },
       compensation: {
-        rub: this.generateRandomAmount(600, 1800) * baseMultiplier,
+        rub: {value: this.generateRandomAmount(600, 1800) * baseMultiplier,},
         percent: this.generateRandomPercent(0.03, 0.1)
       },
       gross_margin: {
-        rub: this.generateRandomAmount(1560000, 2280000) * baseMultiplier,
+        rub: {value: this.generateRandomAmount(1560000, 2280000) * baseMultiplier,},
         percent: this.generateRandomPercent(90, 98)
       },
       operating_expenses: [
         {
           category: 'Заработная плата',
-          rub: this.generateRandomAmount(100000, 200000) * baseMultiplier,
+          rub: {value: this.generateRandomAmount(100000, 200000) * baseMultiplier,},
           percent: this.generateRandomPercent(0.01, 0.3)
         },
         {
           category: 'Аренда',
-          rub: this.generateRandomAmount(100000, 200000) * baseMultiplier,
+          rub: {value: this.generateRandomAmount(100000, 200000) * baseMultiplier,},
           percent: this.generateRandomPercent(0.01, 0.3)
         }
       ],
       operating_profit: {
-        rub: this.generateRandomAmount(180000, 420000) * baseMultiplier,
+        rub: {value: this.generateRandomAmount(180000, 420000) * baseMultiplier,},
         percent: this.generateRandomPercent(10, 20)
       },
       ebitda: {
-        rub: this.generateRandomAmount(180000, 420000) * baseMultiplier,
+        rub: {value: this.generateRandomAmount(180000, 420000) * baseMultiplier,},
         percent: this.generateRandomPercent(10, 20)
       },
       ebitda_margin: this.generateRandomPercent(10, 20),
       tax: {
-        rub: this.generateRandomAmount(36000, 72000) * baseMultiplier,
+        rub: {value: this.generateRandomAmount(36000, 72000) * baseMultiplier,},
         percent: this.generateRandomPercent(2, 4)
       },
       net_profit: {
-        rub: this.generateRandomAmount(600000, 960000) * baseMultiplier,
+        rub: {value: this.generateRandomAmount(600000, 960000) * baseMultiplier,},
         percent: this.generateRandomPercent(30, 50)
       }
     };
@@ -998,90 +1000,90 @@ export class DemoDataService {
       month_label: monthInfo.label,
       data: {
         realization: {
-          rub: this.generateRandomAmount(80000, 200000) * baseMultiplier,
+          rub: {value: this.generateRandomAmount(80000, 200000) * baseMultiplier, comparison_percentage: this.generateRandomPercent(60, 80)},
           percent: this.generateRandomPercent(60, 80)
         },
         mp_discount: {
-          rub: this.generateRandomAmount(20000, 60000) * baseMultiplier,
+          rub: {value: this.generateRandomAmount(20000, 60000) * baseMultiplier, comparison_percentage: this.generateRandomPercent(15, 35)},
           percent: this.generateRandomPercent(15, 35)
         },
         sales: {
-          rub: this.generateRandomAmount(120000, 250000) * baseMultiplier,
+          rub: {value: this.generateRandomAmount(120000, 250000) * baseMultiplier, comparison_percentage: 100},
           percent: 100
         },
         direct_expenses: {
           cost: {
-            rub: this.generateRandomAmount(500, 1500) * baseMultiplier,
+            rub: {value: this.generateRandomAmount(500, 1500) * baseMultiplier, comparison_percentage: this.generateRandomPercent(0.3, 0.8)},
             percent: this.generateRandomPercent(0.3, 0.8)
           },
           logistic: {
-            rub: this.generateRandomAmount(10000, 25000) * baseMultiplier,
+            rub: {value: this.generateRandomAmount(10000, 25000) * baseMultiplier, comparison_percentage: this.generateRandomPercent(8, 15)},
             percent: this.generateRandomPercent(8, 15)
           },
           commission: {
-            rub: this.generateRandomAmount(25000, 50000) * baseMultiplier,
+            rub: {value: this.generateRandomAmount(25000, 50000) * baseMultiplier, comparison_percentage: this.generateRandomPercent(15, 30)},
             percent: this.generateRandomPercent(15, 30)
           },
           penalties: {
-            rub: this.generateRandomAmount(100, 2000) * baseMultiplier,
+            rub: {value: this.generateRandomAmount(100, 2000) * baseMultiplier, comparison_percentage: this.generateRandomPercent(0.01, 0.15)},
             percent: this.generateRandomPercent(0.01, 0.15)
           },
           storage: {
-            rub: this.generateRandomAmount(500, 2000) * baseMultiplier,
+            rub: {value: this.generateRandomAmount(500, 2000) * baseMultiplier, comparison_percentage: this.generateRandomPercent(0.3, 1.5)},
             percent: this.generateRandomPercent(0.3, 1.5)
           },
           advert: {
-            rub: this.generateRandomAmount(50000, 150000) * baseMultiplier,
+            rub: {value: this.generateRandomAmount(50000, 150000) * baseMultiplier, comparison_percentage: this.generateRandomPercent(30, 80)},
             percent: this.generateRandomPercent(30, 80)
           },
           other_retentions: {
-            rub: this.generateRandomAmount(50000, 150000) * baseMultiplier,
+            rub: {value: this.generateRandomAmount(50000, 150000) * baseMultiplier, comparison_percentage: this.generateRandomPercent(30, 80)},
             percent: this.generateRandomPercent(30, 80)
           },
           paid_acceptance: {
-            rub: this.generateRandomAmount(100, 800) * baseMultiplier,
+            rub: {value: this.generateRandomAmount(100, 800) * baseMultiplier, comparison_percentage: this.generateRandomPercent(0.05, 0.5)},
             percent: this.generateRandomPercent(0.05, 0.5)
           },
           total_expenses: {
-            rub: this.generateRandomAmount(100000, 200000) * baseMultiplier,
+            rub: {value: this.generateRandomAmount(100000, 200000) * baseMultiplier, comparison_percentage: this.generateRandomPercent(70, 120)},
             percent: this.generateRandomPercent(70, 120)
           }
         },
         compensation: {
-          rub: this.generateRandomAmount(500, 5000) * baseMultiplier,
+          rub: {value: this.generateRandomAmount(500, 5000) * baseMultiplier, comparison_percentage: this.generateRandomPercent(0.01, 0.3)},
           percent: this.generateRandomPercent(0.01, 0.3)
         },
         gross_margin: {
-          rub: this.generateRandomAmount(110000, 240000) * baseMultiplier,
+          rub: {value: this.generateRandomAmount(110000, 240000) * baseMultiplier, comparison_percentage: this.generateRandomPercent(85, 98)},
           percent: this.generateRandomPercent(85, 98)
         },
         operating_expenses: [
           {
             category: 'Заработная плата',
-            rub: this.generateRandomAmount(10000, 20000) * baseMultiplier,
+            rub: {value: this.generateRandomAmount(10000, 20000) * baseMultiplier, comparison_percentage: this.generateRandomPercent(0.01, 0.3)},
             percent: this.generateRandomPercent(0.01, 0.3)
           },
           {
             category: 'Аренда',
-            rub: this.generateRandomAmount(10000, 20000) * baseMultiplier,
+            rub: {value: this.generateRandomAmount(10000, 20000) * baseMultiplier, comparison_percentage: this.generateRandomPercent(0.01, 0.3)},
             percent: this.generateRandomPercent(0.01, 0.3)
           }
         ],
         operating_profit: {
-          rub: this.generateRandomAmount(-50000, 150000) * baseMultiplier,
+          rub: {value: this.generateRandomAmount(-50000, 150000) * baseMultiplier, comparison_percentage: this.generateRandomPercent(-40, 70)},
           percent: this.generateRandomPercent(-40, 70)
         },
         ebitda: {
-          rub: this.generateRandomAmount(-50000, 150000) * baseMultiplier,
+          rub: {value: this.generateRandomAmount(-50000, 150000) * baseMultiplier, comparison_percentage: this.generateRandomPercent(-40, 70)},
           percent: this.generateRandomPercent(-40, 70)
         },
         ebitda_margin: this.generateRandomPercent(-40, 70),
         tax: {
-          rub: this.generateRandomAmount(2000, 8000) * baseMultiplier,
+          rub: {value: this.generateRandomAmount(2000, 8000) * baseMultiplier, comparison_percentage: this.generateRandomPercent(1.5, 4)},
           percent: this.generateRandomPercent(1.5, 4)
         },
         net_profit: {
-          rub: this.generateRandomAmount(30000, 120000) * baseMultiplier,
+          rub: {value: this.generateRandomAmount(30000, 120000) * baseMultiplier, comparison_percentage: this.generateRandomPercent(20, 60)},
           percent: this.generateRandomPercent(20, 60)
         }
       }
@@ -1355,7 +1357,7 @@ export class DemoDataService {
         return { first: 0, second: 0 };
       }
 
-      return { first: result1, second: result2 };
+      return { first: {value: result1, comparison_percentage: this.generateRandomPercent(-10, 10)}, second: {value: result2, comparison_percentage: this.generateRandomPercent(-10, 10)} };
     };
 
     const roundToTwo = (v: number) => Math.round(v * 100) / 100;
@@ -1541,7 +1543,7 @@ export class DemoDataService {
         const rnpData = dayData.rnp_data;
 
         // Суммируем expected_marginality_data
-        if (rnpData.expected_marginality_data) {
+        if (rnpData.expected_marginality_data.value) {
           const emd = rnpData.expected_marginality_data;
           summaryData.expected_marginality_data.expected_marginality += emd.expected_marginality || 0;
           summaryData.expected_marginality_data.plan_marginality += emd.plan_marginality || 0;
@@ -1561,7 +1563,7 @@ export class DemoDataService {
         }
 
         // Суммируем rk_budget_data
-        if (rnpData.rk_budget_data) {
+        if (rnpData.rk_budget_data.value) {
           const rkbd = rnpData.rk_budget_data;
           summaryData.rk_budget_data.ctr += rkbd.ctr || 0;
           summaryData.rk_budget_data.impressions += rkbd.impressions || 0;
@@ -1575,7 +1577,7 @@ export class DemoDataService {
         }
 
         // Суммируем ark_budget_data
-        if (rnpData.ark_budget_data) {
+        if (rnpData.ark_budget_data.value) {
           const arkbd = rnpData.ark_budget_data;
           summaryData.ark_budget_data.ctr += arkbd.ctr || 0;
           summaryData.ark_budget_data.impressions += arkbd.impressions || 0;
@@ -1586,7 +1588,7 @@ export class DemoDataService {
         }
 
         // Суммируем auction_rk_budget_data
-        if (rnpData.auction_rk_budget_data) {
+        if (rnpData.auction_rk_budget_data.value) {
           const arkbd = rnpData.auction_rk_budget_data;
           summaryData.auction_rk_budget_data.ctr += arkbd.ctr || 0;
           summaryData.auction_rk_budget_data.impressions += arkbd.impressions || 0;
@@ -1597,7 +1599,7 @@ export class DemoDataService {
         }
 
         // Суммируем transition_data
-        if (rnpData.transition_data) {
+        if (rnpData.transition_data.value) {
           const td = rnpData.transition_data;
           summaryData.transition_data.transition += td.transition || 0;
           summaryData.transition_data.cart_addition_count += td.cart_addition_count || 0;
