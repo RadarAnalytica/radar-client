@@ -13,8 +13,8 @@ import MetricChart from './MetricChart';
 import { getColorForPercentage, sortTableData } from './utils';
 import styles from './WbMetricsTable.module.css';
 import { useTableColumnResize } from '@/service/hooks/useTableColumnResize';
+import { TABLE_CONFIG_VERSION } from '../../config/tableConfig';
 import TippyTooltip from '@/components/ui/TippyTooltip';
-import { getTableConfigStorageKey } from '../../config/tableConfig';
 
 ChartJS.register(
   CategoryScale,
@@ -183,7 +183,10 @@ const WbMetricsTable: React.FC<WbMetricsTableProps> = ({
 
   const { config: tableConfig, onResize: onResizeColumn } = useTableColumnResize(
     columns, 
-    getTableConfigStorageKey(metricType)
+    `wbMetrics_sizeColumnsConfig__${metricType}`,
+    0,
+    400,
+    TABLE_CONFIG_VERSION
   );
   
   
@@ -205,7 +208,7 @@ const WbMetricsTable: React.FC<WbMetricsTableProps> = ({
             }}
             sorting={sortState}
             onSort={handleSort}
-            pagination={pageData.total_count < pageData.per_page ? null : {
+            pagination={pageData.total_count <= pageData.per_page ? null : {
               current: pageData.page,
               pageSize: pageData.per_page,
               total: Math.ceil(pageData.total_count / pageData.per_page),
