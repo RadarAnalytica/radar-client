@@ -732,7 +732,7 @@ export class DemoDataService {
         const diffDays = filters?.selectedRange?.to
           ? Math.round((Number(new Date()) - Number(new Date(filters.selectedRange.to))) / 86400000)
           : 0;
-
+        console.log('diffDays', diffDays);
         const updatedByDateData = item.by_date_data.map((dateItem: any, index: number) => {
           // Генерируем дату от вчерашнего или последнего выбранного дня и назад
           const date = new Date();
@@ -769,11 +769,12 @@ export class DemoDataService {
 
     // Обновляем даты в by_date_data массиве для каждого элемента
     if (Array.isArray(data.by_date_data)) {
-      if (days > 30) {
-        data.by_date_data = [...data.by_date_data, ...data.by_date_data, ...data.by_date_data];
-      }
-
-      data.by_date_data = data.by_date_data.slice(0, days + 1);
+      console.log('l1', data.by_date_data.length);
+      console.log('days',days);
+      // Циклически повторяем элементы из исходного массива (7 элементов) для заполнения нужного количества дней
+      const originalData = [...data.by_date_data];
+      data.by_date_data = Array.from({ length: days + 1}, (_, i) => originalData[i % originalData.length]);
+      console.log('l2', data.by_date_data.length);
       const diffDays = filters?.selectedRange?.to
           ? Math.round((Number(new Date()) - Number(new Date(filters.selectedRange.to))) / 86400000)
           : 0;
@@ -794,6 +795,7 @@ export class DemoDataService {
         by_date_data: updatedByDateData,
         //summary_data: recalculatedSummaryData || data.summary_data
         summary_data: data.summary_data
+        //summary_data: []
       };
     }
 
@@ -1000,90 +1002,90 @@ export class DemoDataService {
       month_label: monthInfo.label,
       data: {
         realization: {
-          rub: {value: this.generateRandomAmount(80000, 200000) * baseMultiplier, comparison_percentage: this.generateRandomPercent(60, 80)},
-          percent: this.generateRandomPercent(60, 80)
+          rub: {value: this.generateRandomAmount(80000, 200000) * baseMultiplier, comparison_percentage: this.generateRandomPercent(-10, 10)},
+          percent: this.generateRandomPercent(-10, 10)
         },
         mp_discount: {
-          rub: {value: this.generateRandomAmount(20000, 60000) * baseMultiplier, comparison_percentage: this.generateRandomPercent(15, 35)},
-          percent: this.generateRandomPercent(15, 35)
+          rub: {value: this.generateRandomAmount(20000, 60000) * baseMultiplier, comparison_percentage: this.generateRandomPercent(-10, 10)},
+          percent: this.generateRandomPercent(-10, 10)
         },
         sales: {
-          rub: {value: this.generateRandomAmount(120000, 250000) * baseMultiplier, comparison_percentage: 100},
+          rub: {value: this.generateRandomAmount(120000, 250000) * baseMultiplier, comparison_percentage: this.generateRandomPercent(-10, 10)},
           percent: 100
         },
         direct_expenses: {
           cost: {
-            rub: {value: this.generateRandomAmount(500, 1500) * baseMultiplier, comparison_percentage: this.generateRandomPercent(0.3, 0.8)},
+            rub: {value: this.generateRandomAmount(500, 1500) * baseMultiplier, comparison_percentage: this.generateRandomPercent(-10, 10)},
             percent: this.generateRandomPercent(0.3, 0.8)
           },
           logistic: {
-            rub: {value: this.generateRandomAmount(10000, 25000) * baseMultiplier, comparison_percentage: this.generateRandomPercent(8, 15)},
+            rub: {value: this.generateRandomAmount(10000, 25000) * baseMultiplier, comparison_percentage: this.generateRandomPercent(-10, 10)},
             percent: this.generateRandomPercent(8, 15)
           },
           commission: {
-            rub: {value: this.generateRandomAmount(25000, 50000) * baseMultiplier, comparison_percentage: this.generateRandomPercent(15, 30)},
+            rub: {value: this.generateRandomAmount(25000, 50000) * baseMultiplier, comparison_percentage: this.generateRandomPercent(-10, 10)},
             percent: this.generateRandomPercent(15, 30)
           },
           penalties: {
-            rub: {value: this.generateRandomAmount(100, 2000) * baseMultiplier, comparison_percentage: this.generateRandomPercent(0.01, 0.15)},
+            rub: {value: this.generateRandomAmount(100, 2000) * baseMultiplier, comparison_percentage: this.generateRandomPercent(-10, 10)},
             percent: this.generateRandomPercent(0.01, 0.15)
           },
           storage: {
-            rub: {value: this.generateRandomAmount(500, 2000) * baseMultiplier, comparison_percentage: this.generateRandomPercent(0.3, 1.5)},
+            rub: {value: this.generateRandomAmount(500, 2000) * baseMultiplier, comparison_percentage: this.generateRandomPercent(-10, 10)},
             percent: this.generateRandomPercent(0.3, 1.5)
           },
           advert: {
-            rub: {value: this.generateRandomAmount(50000, 150000) * baseMultiplier, comparison_percentage: this.generateRandomPercent(30, 80)},
+            rub: {value: this.generateRandomAmount(50000, 150000) * baseMultiplier, comparison_percentage: this.generateRandomPercent(-10, 10)},
             percent: this.generateRandomPercent(30, 80)
           },
           other_retentions: {
-            rub: {value: this.generateRandomAmount(50000, 150000) * baseMultiplier, comparison_percentage: this.generateRandomPercent(30, 80)},
+            rub: {value: this.generateRandomAmount(50000, 150000) * baseMultiplier, comparison_percentage: this.generateRandomPercent(-10, 10)},
             percent: this.generateRandomPercent(30, 80)
           },
           paid_acceptance: {
-            rub: {value: this.generateRandomAmount(100, 800) * baseMultiplier, comparison_percentage: this.generateRandomPercent(0.05, 0.5)},
-            percent: this.generateRandomPercent(0.05, 0.5)
+            rub: {value: this.generateRandomAmount(100, 800) * baseMultiplier, comparison_percentage: this.generateRandomPercent(-10, 10)}, 
+            percent: this.generateRandomPercent(-10, 10)
           },
           total_expenses: {
-            rub: {value: this.generateRandomAmount(100000, 200000) * baseMultiplier, comparison_percentage: this.generateRandomPercent(70, 120)},
-            percent: this.generateRandomPercent(70, 120)
+            rub: {value: this.generateRandomAmount(100000, 200000) * baseMultiplier, comparison_percentage: this.generateRandomPercent(-10, 10)},
+            percent: this.generateRandomPercent(-10, 10)
           }
         },
         compensation: {
-          rub: {value: this.generateRandomAmount(500, 5000) * baseMultiplier, comparison_percentage: this.generateRandomPercent(0.01, 0.3)},
+          rub: {value: this.generateRandomAmount(500, 5000) * baseMultiplier, comparison_percentage: this.generateRandomPercent(-10, 10)},
           percent: this.generateRandomPercent(0.01, 0.3)
         },
         gross_margin: {
-          rub: {value: this.generateRandomAmount(110000, 240000) * baseMultiplier, comparison_percentage: this.generateRandomPercent(85, 98)},
+          rub: {value: this.generateRandomAmount(110000, 240000) * baseMultiplier, comparison_percentage: this.generateRandomPercent(-10, 10)},
           percent: this.generateRandomPercent(85, 98)
         },
         operating_expenses: [
           {
             category: 'Заработная плата',
-            rub: {value: this.generateRandomAmount(10000, 20000) * baseMultiplier, comparison_percentage: this.generateRandomPercent(0.01, 0.3)},
+            rub: {value: this.generateRandomAmount(10000, 20000) * baseMultiplier, comparison_percentage: this.generateRandomPercent(-10, 10)},
             percent: this.generateRandomPercent(0.01, 0.3)
           },
           {
             category: 'Аренда',
-            rub: {value: this.generateRandomAmount(10000, 20000) * baseMultiplier, comparison_percentage: this.generateRandomPercent(0.01, 0.3)},
+            rub: {value: this.generateRandomAmount(10000, 20000) * baseMultiplier, comparison_percentage: this.generateRandomPercent(-10, 10)},
             percent: this.generateRandomPercent(0.01, 0.3)
           }
         ],
         operating_profit: {
-          rub: {value: this.generateRandomAmount(-50000, 150000) * baseMultiplier, comparison_percentage: this.generateRandomPercent(-40, 70)},
+          rub: {value: this.generateRandomAmount(-50000, 150000) * baseMultiplier, comparison_percentage: this.generateRandomPercent(-10, 10)},
           percent: this.generateRandomPercent(-40, 70)
         },
         ebitda: {
-          rub: {value: this.generateRandomAmount(-50000, 150000) * baseMultiplier, comparison_percentage: this.generateRandomPercent(-40, 70)},
+          rub: {value: this.generateRandomAmount(-50000, 150000) * baseMultiplier, comparison_percentage: this.generateRandomPercent(-10, 10)},
           percent: this.generateRandomPercent(-40, 70)
         },
-        ebitda_margin: this.generateRandomPercent(-40, 70),
+        ebitda_margin: this.generateRandomPercent(-10, 10),
         tax: {
-          rub: {value: this.generateRandomAmount(2000, 8000) * baseMultiplier, comparison_percentage: this.generateRandomPercent(1.5, 4)},
+          rub: {value: this.generateRandomAmount(2000, 8000) * baseMultiplier, comparison_percentage: this.generateRandomPercent(-10, 10)},
           percent: this.generateRandomPercent(1.5, 4)
         },
         net_profit: {
-          rub: {value: this.generateRandomAmount(30000, 120000) * baseMultiplier, comparison_percentage: this.generateRandomPercent(20, 60)},
+          rub: {value: this.generateRandomAmount(30000, 120000) * baseMultiplier, comparison_percentage: this.generateRandomPercent(-10, 10)},
           percent: this.generateRandomPercent(20, 60)
         }
       }
@@ -1541,82 +1543,81 @@ export class DemoDataService {
     byDateData.forEach(dayData => {
       if (dayData.rnp_data) {
         const rnpData = dayData.rnp_data;
-
         // Суммируем expected_marginality_data
-        if (rnpData.expected_marginality_data.value) {
+        if (rnpData.expected_marginality_data) {
           const emd = rnpData.expected_marginality_data;
-          summaryData.expected_marginality_data.expected_marginality += emd.expected_marginality || 0;
-          summaryData.expected_marginality_data.plan_marginality += emd.plan_marginality || 0;
-          summaryData.expected_marginality_data.roi += emd.roi || 0;
-          summaryData.expected_marginality_data.profit_per_one += emd.profit_per_one || 0;
-          summaryData.expected_marginality_data.net_profit += emd.net_profit || 0;
-          summaryData.expected_marginality_data.drr_by_sales += emd.drr_by_sales || 0;
-          summaryData.expected_marginality_data.drr_by_orders += emd.drr_by_orders || 0;
-          summaryData.expected_marginality_data.orders_amount += emd.orders_amount || 0;
-          summaryData.expected_marginality_data.orders_count += emd.orders_count || 0;
-          summaryData.expected_marginality_data.sales_count += emd.sales_count || 0;
-          summaryData.expected_marginality_data.sales_spp_amount += emd.sales_spp_amount || 0;
-          summaryData.expected_marginality_data.full_price += emd.full_price || 0;
-          summaryData.expected_marginality_data.price_spp += emd.price_spp || 0;
-          summaryData.expected_marginality_data.discount += emd.discount || 0;
-          summaryData.expected_marginality_data.buyout += emd.buyout || 0;
+          summaryData.expected_marginality_data.expected_marginality += emd.expected_marginality.value || 0;
+          summaryData.expected_marginality_data.plan_marginality += emd.plan_marginality.value || 0;
+          summaryData.expected_marginality_data.roi += emd.roi.value || 0;
+          summaryData.expected_marginality_data.profit_per_one += emd.profit_per_one.value || 0;
+          summaryData.expected_marginality_data.net_profit += emd.net_profit.value || 0;
+          summaryData.expected_marginality_data.drr_by_sales += emd.drr_by_sales.value || 0;
+          summaryData.expected_marginality_data.drr_by_orders += emd.drr_by_orders.value || 0;
+          summaryData.expected_marginality_data.orders_amount += emd.orders_amount.value || 0;
+          summaryData.expected_marginality_data.orders_count += emd.orders_count.value || 0;
+          summaryData.expected_marginality_data.sales_count += emd.sales_count.value || 0;
+          summaryData.expected_marginality_data.sales_spp_amount += emd.sales_spp_amount.value || 0;
+          summaryData.expected_marginality_data.full_price += emd.full_price.value || 0;
+          summaryData.expected_marginality_data.price_spp += emd.price_spp.value || 0;
+          summaryData.expected_marginality_data.discount += emd.discount.value || 0;
+          summaryData.expected_marginality_data.buyout += emd.buyout.value || 0;
         }
 
         // Суммируем rk_budget_data
-        if (rnpData.rk_budget_data.value) {
+        if (rnpData.rk_budget_data) {
           const rkbd = rnpData.rk_budget_data;
-          summaryData.rk_budget_data.ctr += rkbd.ctr || 0;
-          summaryData.rk_budget_data.impressions += rkbd.impressions || 0;
-          summaryData.rk_budget_data.clicks += rkbd.clicks || 0;
-          summaryData.rk_budget_data.cpc += rkbd.cpc || 0;
-          summaryData.rk_budget_data.cpm += rkbd.cpm || 0;
-          summaryData.rk_budget_data.rk_budget += rkbd.rk_budget || 0;
-          summaryData.rk_budget_data.cr += rkbd.cr || 0;
-          summaryData.rk_budget_data.one_order_price += rkbd.one_order_price || 0;
-          summaryData.rk_budget_data.one_sale_price += rkbd.one_sale_price || 0;
+          summaryData.rk_budget_data.ctr += rkbd.ctr.value || 0;
+          summaryData.rk_budget_data.impressions += rkbd.impressions.value || 0;
+          summaryData.rk_budget_data.clicks += rkbd.clicks.value || 0;
+          summaryData.rk_budget_data.cpc += rkbd.cpc.value || 0;
+          summaryData.rk_budget_data.cpm += rkbd.cpm.value || 0;
+          summaryData.rk_budget_data.rk_budget += rkbd.rk_budget.value || 0;
+          summaryData.rk_budget_data.cr += rkbd.cr.value || 0;
+          summaryData.rk_budget_data.one_order_price += rkbd.one_order_price.value || 0;
+          summaryData.rk_budget_data.one_sale_price += rkbd.one_sale_price.value || 0;
         }
 
         // Суммируем ark_budget_data
-        if (rnpData.ark_budget_data.value) {
+        if (rnpData.ark_budget_data) {
           const arkbd = rnpData.ark_budget_data;
-          summaryData.ark_budget_data.ctr += arkbd.ctr || 0;
-          summaryData.ark_budget_data.impressions += arkbd.impressions || 0;
-          summaryData.ark_budget_data.clicks += arkbd.clicks || 0;
-          summaryData.ark_budget_data.cpc += arkbd.cpc || 0;
-          summaryData.ark_budget_data.cpm += arkbd.cpm || 0;
-          summaryData.ark_budget_data.ark_budget += arkbd.ark_budget || 0;
+          summaryData.ark_budget_data.ctr += arkbd.ctr.value || 0;
+          summaryData.ark_budget_data.impressions += arkbd.impressions.value || 0;
+          summaryData.ark_budget_data.clicks += arkbd.clicks.value || 0;
+          summaryData.ark_budget_data.cpc += arkbd.cpc.value || 0;
+          summaryData.ark_budget_data.cpm += arkbd.cpm.value || 0;
+          summaryData.ark_budget_data.ark_budget += arkbd.ark_budget.value || 0;
         }
 
         // Суммируем auction_rk_budget_data
-        if (rnpData.auction_rk_budget_data.value) {
+        if (rnpData.auction_rk_budget_data) {
           const arkbd = rnpData.auction_rk_budget_data;
-          summaryData.auction_rk_budget_data.ctr += arkbd.ctr || 0;
-          summaryData.auction_rk_budget_data.impressions += arkbd.impressions || 0;
-          summaryData.auction_rk_budget_data.clicks += arkbd.clicks || 0;
-          summaryData.auction_rk_budget_data.cpc += arkbd.cpc || 0;
-          summaryData.auction_rk_budget_data.cpm += arkbd.cpm || 0;
-          summaryData.auction_rk_budget_data.auction_rk_budget += arkbd.auction_rk_budget || 0;
+          summaryData.auction_rk_budget_data.ctr += arkbd.ctr.value || 0;
+          summaryData.auction_rk_budget_data.impressions += arkbd.impressions.value || 0;
+          summaryData.auction_rk_budget_data.clicks += arkbd.clicks.value || 0;
+          summaryData.auction_rk_budget_data.cpc += arkbd.cpc.value || 0;
+          summaryData.auction_rk_budget_data.cpm += arkbd.cpm.value || 0;
+          summaryData.auction_rk_budget_data.auction_rk_budget += arkbd.auction_rk_budget.value || 0;
         }
 
         // Суммируем transition_data
-        if (rnpData.transition_data.value) {
+        if (rnpData.transition_data) {
           const td = rnpData.transition_data;
-          summaryData.transition_data.transition += td.transition || 0;
-          summaryData.transition_data.cart_addition_count += td.cart_addition_count || 0;
-          summaryData.transition_data.cart_addition_percentage += td.cart_addition_percentage || 0;
-          summaryData.transition_data.order_addition_percentage += td.order_addition_percentage || 0;
+          summaryData.transition_data.transition += td.transition.value || 0;
+          summaryData.transition_data.cart_addition_count += td.cart_addition_count.value || 0;
+          summaryData.transition_data.cart_addition_percentage += td.cart_addition_percentage.value || 0;
+          summaryData.transition_data.order_addition_percentage += td.order_addition_percentage.value || 0;
         }
 
         // Суммируем taxes_data
         if (rnpData.taxes_data) {
           const txd = rnpData.taxes_data;
-          summaryData.taxes_data.taxes += txd.taxes || 0;
-          summaryData.taxes_data.tax_per_one += txd.tax_per_one || 0;
+          summaryData.taxes_data.taxes += txd.taxes.value || 0;
+          summaryData.taxes_data.tax_per_one += txd.tax_per_one.value || 0;
           summaryData.taxes_data.logistics_per_one += txd.logistics_per_one || 0;
-          summaryData.taxes_data.commission_acquiring_per_one += txd.commission_acquiring_per_one || 0;
-          summaryData.taxes_data.commission_acquiring_percentage += txd.commission_acquiring_percentage || 0;
-          summaryData.taxes_data.storage_per_one += txd.storage_per_one || 0;
-          summaryData.taxes_data.cost_per_one += txd.cost_per_one || 0;
+          summaryData.taxes_data.commission_acquiring_per_one += txd.commission_acquiring_per_one.value || 0;
+          summaryData.taxes_data.commission_acquiring_percentage += txd.commission_acquiring_percentage.value || 0;
+          summaryData.taxes_data.storage_per_one += txd.storage_per_one.value || 0;
+          summaryData.taxes_data.cost_per_one += txd.cost_per_one.value || 0;
         }
       }
     });
