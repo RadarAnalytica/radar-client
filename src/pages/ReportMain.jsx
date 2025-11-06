@@ -164,7 +164,7 @@ const ReportMain = () => {
           </div>
         }
 
-        {!user.is_report_downloaded &&
+        {!user?.is_report_downloaded &&
           <div className='mb-3'>
             <DemonstrationSection />
           </div>

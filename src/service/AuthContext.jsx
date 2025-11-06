@@ -126,19 +126,20 @@ export const AuthProvider = ({ children }) => {
   // useEffect(() => {
   //     user && user.id ? ServiceFunctions.getOneUser(user.id, authToken.token).then(data => setUserImage(data.image)) : setUserImage()
   // }, [])
+
   const logout = async () => {
+    document.cookie = `radar=;max-age=-1;expires=Thu, 01 Jan 1970 00:00:00 GMT;domain=${URL.split('://')[1]}`;
+    document.cookie = `radar=;max-age=-1;expires=Thu, 01 Jan 1970 00:00:00 GMT;domain=.${URL.split('://')[1]}`;
+    document.cookie = `radar=;max-age=-1;expires=Thu, 01 Jan 1970 00:00:00 GMT;domain=${window.location.hostname}`;
+    document.cookie = `radar=;max-age=-1;expires=Thu, 01 Jan 1970 00:00:00 GMT;domain=.${window.location.hostname}`;
+    // Delete cookie using the hook's deleteCookie function
+    deleteCookie();
 
     if (user?.email === 'demo@radar.ru') {
       window.location.replace(`${URL}/signup`);
     } else {
       setAuthToken(null);
       setUser(null);
-      document.cookie = `radar=;max-age=-1;expires=Thu, 01 Jan 1970 00:00:00 GMT;domain=${URL.split('://')[1]}`;
-      document.cookie = `radar=;max-age=-1;expires=Thu, 01 Jan 1970 00:00:00 GMT;domain=.${URL.split('://')[1]}`;
-      document.cookie = `radar=;max-age=-1;expires=Thu, 01 Jan 1970 00:00:00 GMT;domain=${window.location.hostname}`;
-      document.cookie = `radar=;max-age=-1;expires=Thu, 01 Jan 1970 00:00:00 GMT;domain=.${window.location.hostname}`;
-      // Delete cookie using the hook's deleteCookie function
-      deleteCookie();
       window.location.replace(URL);
     }
   };
