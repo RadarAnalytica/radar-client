@@ -521,12 +521,14 @@ export class DemoDataService {
         ],
         "description": "Выдача заработной платы сотрудникам отдела маркетинга",
         "value": 100000,
-        "vendor_code": null,
-        "brand_name": null,
-        "shop": {
-          "id": 1,
-          "name": "Демо магазин"
-        },
+        "vendor_codes": [],
+        "brand_names": [],
+        "shops": [
+          {
+            "id": 1,
+            "name": "Демо магазин"
+          },
+        ],
         "date": today,
         "periodic_expense_id": null,
         "is_periodic": true,
@@ -543,12 +545,14 @@ export class DemoDataService {
           ],
           "description": "Аренда офиса на три месяца",
           "value": 45000,
-          "vendor_code": null,
-          "brand_name": null,
-          "shop": {
-            "id": 1,
-            "name": "Демо магазин"
-          },
+          "vendor_codes": [],
+          "brand_names": ['Демо-бренд'],
+          "shops": [
+            {
+              "id": 1,
+              "name": "Демо магазин"
+            },
+          ],
           "date": today,
           "periodic_expense_id": null,
           "is_periodic": false,
@@ -564,12 +568,14 @@ export class DemoDataService {
           ],
           "description": "Закупка оборудования",
           "value": 80000,
-          "vendor_code": null,
-          "brand_name": null,
-          "shop": {
-            "id": 1,
-            "name": "Демо магазин"
-          },
+          "vendor_codes": ['Демо-артикул'],
+          "brand_names": ['Демо-бренд'],
+          "shops": [
+            {
+              "id": 1,
+              "name": "Демо магазин"
+            },
+          ],
           "date": today,
           "periodic_expense_id": null,
           "is_periodic": false,
@@ -598,6 +604,16 @@ export class DemoDataService {
     if (activeExpenseCategory && activeExpenseCategory.length > 0 && activeExpenseCategory[0] !== 0) {
       filteredData = filteredData.filter(expense => {
         return expense.expense_categories.some(category => activeExpenseCategory.includes(category.id));
+      });
+    }
+    if (filters.activeBrandName[0]?.id) {
+      filteredData = filteredData.filter(expense => {
+        return expense.brand_names[0] === filters.activeBrandName[0]?.value;
+      });
+    }
+    if (filters.activeArticle[0]?.id) {
+      filteredData = filteredData.filter(expense => {
+        return expense.vendor_codes[0] === filters.activeArticle[0]?.value;
       });
     }
 
