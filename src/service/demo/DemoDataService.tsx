@@ -892,11 +892,12 @@ export class DemoDataService {
       // Генерируем месяцы для текущего года
       const monthsData = this.generateMonthsForYear(year, yearStartMonth, yearEndMonth);
       const monthsDataWithData = monthsData.map((month) => this.generateMonthPlData(month));
+      const monthsCount = yearEndMonth - yearStartMonth + 1;
 
       // Добавляем колонку года с сумарными данными
       result.push({
         year: year,
-        data: this.generateYearPlData(),
+        data: this.generateYearPlData(monthsCount),
         months: monthsDataWithData,
       });
     }
@@ -924,7 +925,7 @@ export class DemoDataService {
   }
 
   // Генерация данных за год
-  private generateYearPlData() {
+  private generateYearPlData(months: number) {
     const baseMultiplier = this.generateRandomPercent(0.8, 1);
 
     return {
@@ -986,18 +987,30 @@ export class DemoDataService {
         rub: {value: this.generateRandomAmount(1560000, 2280000) * baseMultiplier,},
         percent: this.generateRandomPercent(90, 98)
       },
-      operating_expenses: [
-        {
-          category: 'Заработная плата',
-          rub: {value: this.generateRandomAmount(100000, 200000) * baseMultiplier,},
-          percent: this.generateRandomPercent(0.01, 0.3)
-        },
-        {
-          category: 'Аренда',
-          rub: {value: this.generateRandomAmount(100000, 200000) * baseMultiplier,},
-          percent: this.generateRandomPercent(0.01, 0.3)
+      operating_expenses: {
+        items: [
+          {
+            category: 'Заработная плата',
+            rub: {
+              value: 200000 * months, 
+              comparison_percentage: 10
+            },
+            percent: 10
+          },
+          {
+            category: 'Аренда',
+            rub: {
+              value: 100000 * months, 
+              comparison_percentage: 10
+            },
+            percent: 10
+          }
+        ],
+        total: {
+          rub: {value: 300000 * months, comparison_percentage: 10},
+          percent: 10
         }
-      ],
+      },
       operating_profit: {
         rub: {value: this.generateRandomAmount(180000, 420000) * baseMultiplier,},
         percent: this.generateRandomPercent(10, 20)
@@ -1083,18 +1096,33 @@ export class DemoDataService {
           rub: {value: this.generateRandomAmount(110000, 240000) * baseMultiplier, comparison_percentage: this.generateRandomPercent(-10, 10)},
           percent: this.generateRandomPercent(85, 98)
         },
-        operating_expenses: [
-          {
-            category: 'Заработная плата',
-            rub: {value: this.generateRandomAmount(10000, 20000) * baseMultiplier, comparison_percentage: this.generateRandomPercent(-10, 10)},
-            percent: this.generateRandomPercent(0.01, 0.3)
-          },
-          {
-            category: 'Аренда',
-            rub: {value: this.generateRandomAmount(10000, 20000) * baseMultiplier, comparison_percentage: this.generateRandomPercent(-10, 10)},
-            percent: this.generateRandomPercent(0.01, 0.3)
+        operating_expenses: {
+          items: [
+            {
+              category: 'Заработная плата',
+              rub: {
+                value: 200000, 
+                comparison_percentage: 10
+              },
+              percent: 10
+            },
+            {
+              category: 'Аренда',
+              rub: {
+                value: 100000, 
+                comparison_percentage: 10
+              },
+              percent: 10
+            }
+          ],
+          total: {
+            rub: {
+              value: 300000, 
+              comparison_percentage: 10
+            },
+            percent: 10
           }
-        ],
+        },
         operating_profit: {
           rub: {value: this.generateRandomAmount(-50000, 150000) * baseMultiplier, comparison_percentage: this.generateRandomPercent(-10, 10)},
           percent: this.generateRandomPercent(-40, 70)
