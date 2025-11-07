@@ -3,12 +3,14 @@ import { Link } from 'react-router-dom';
 import styles from './ErrorBoundary.module.css';
 import logo from '@/assets/logo.png';
 import cover from '@/assets/mobile_plug_cover.png';
+import { reportError } from '@/service/errorReporting/errorReporter';
 
 class ErrorBoundary extends React.Component {
   constructor(props) {
     super(props);
     this.state = { hasError: false, error: null, errorInfo: null };
     this.enabled = location.hostname !== 'localhost'; // ручное включение/отключение ErrorBoundary
+    this.enabled = true;  
     // this.enabled = location.hostname !== 'test-server-pro.ru' && location.hostname !== 'localhost';
   }
 
@@ -25,6 +27,17 @@ class ErrorBoundary extends React.Component {
       error: error,
       errorInfo: errorInfo
     });
+
+    if (this.enabled) {
+      reportError({
+        error_text: error?.message || String(error),
+        stack_trace: error?.stack || errorInfo?.componentStack || null,
+        extra: {
+          componentStack: errorInfo?.componentStack || null,
+          boundaryName: this.props?.name || 'ErrorBoundary',
+        },
+      });
+    }
   }
 
   render() {
