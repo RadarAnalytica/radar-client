@@ -63,13 +63,21 @@ export class DemoDataService {
       if (supplierMatch) return supplierMatch;
     }
 
-    // SKU Analysis маршруты
-    if (endpoint.includes('/product-analysis/')) {
-      const { SkuAnalysisDemoDataService } = await import('./SkuAnalysisDemoDataService');
-      const skuService = SkuAnalysisDemoDataService.getInstance();
-      const skuMatch = skuService.getDataForEndpoint(endpoint, filters, options);
-      if (skuMatch) return skuMatch;
-    }
+      // SKU Analysis маршруты
+      if (endpoint.includes('/product-analysis/')) {
+        const { SkuAnalysisDemoDataService } = await import('./SkuAnalysisDemoDataService');
+        const skuService = SkuAnalysisDemoDataService.getInstance();
+        const skuMatch = skuService.getDataForEndpoint(endpoint, filters, options);
+        if (skuMatch) return skuMatch;
+      }
+
+      // Position Check маршруты
+      if (endpoint.includes('/position-track/')) {
+        const { PositionCheckDemoDataService } = await import('./PositionCheckDemoDataService');
+        const positionCheckService = PositionCheckDemoDataService.getInstance();
+        const positionCheckMatch = positionCheckService.getDataForEndpoint(endpoint, filters, options);
+        if (positionCheckMatch) return positionCheckMatch;
+      }
 
     // Пробуем точное совпадение
     const exactMatch = this.getExactMatch(endpoint, filters);

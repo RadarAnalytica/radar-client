@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import MobilePlug from "@/components/sharedComponents/mobilePlug/mobilePlug";
 import styles from "./PositionCheck.module.css";
 import Sidebar from "@/components/sharedComponents/sidebar/sidebar";
@@ -7,7 +8,7 @@ import { useAppSelector, useAppDispatch } from "@/redux/hooks";
 import { useNavigate } from "react-router-dom";
 import { actions as skuAnalysisActions } from "@/redux/skuAnalysis/skuAnalysisSlice";
 import ErrorModal from "@/components/sharedComponents/modals/errorModal/errorModal";
-import { useState } from "react";
+import { useDemoMode } from "@/app/providers";
 
 // model
 const requestInitState = {
@@ -24,6 +25,8 @@ const PositionCheckPage = () => {
     const { skuSearchHistory } = useAppSelector(store => store.skuAnalysis);
     const navigate = useNavigate();
     const [requestStatus, setRequestStatus] = useState(requestInitState);
+    const { isDemoMode } = useDemoMode();
+
 
     const submitHandler = (inputValue: string) => {
         let normilizedId: string;
@@ -41,6 +44,12 @@ const PositionCheckPage = () => {
 
         navigate(`/position-check/${normilizedId}`);
     };
+
+    useEffect(() => {
+        if (isDemoMode) {
+            navigate('/position-check/236309615');
+        }
+    }, [isDemoMode]);
 
     return (
         <main className={styles.page}>
