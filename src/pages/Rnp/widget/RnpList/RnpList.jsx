@@ -225,14 +225,6 @@ function RnpListItem({ el, index, expanded, setExpanded, setDeleteRnpId, onReord
 			return;
 		}
 
-		// Находим ближайший прокручиваемый контейнер
-		let scrollContainer = headerElement.closest('[class*="page__content"]');
-		if (!scrollContainer) {
-			scrollContainer = headerElement.closest('[class*="list_container"]');
-		}
-		if (!scrollContainer) {
-			scrollContainer = window;
-		}
 
 		const observer = new IntersectionObserver(
 			([entry]) => {
@@ -240,7 +232,7 @@ function RnpListItem({ el, index, expanded, setExpanded, setDeleteRnpId, onReord
 				setIsStuck(shouldStick);
 			},
 			{
-				root: scrollContainer === window ? null : scrollContainer,
+				root: null,
 				threshold: [0, 1],
 				rootMargin: '0px 0px -1px 0px',
 			}
@@ -250,7 +242,7 @@ function RnpListItem({ el, index, expanded, setExpanded, setDeleteRnpId, onReord
 
 		// Первоначальная проверка
 		const initialRect = sentinelElement.getBoundingClientRect();
-		const initialRootRect = scrollContainer === window ? { top: 0 } : scrollContainer.getBoundingClientRect();
+		const initialRootRect = { top: 0 }
 		setIsStuck(initialRect.top < initialRootRect.top);
 
 		return () => {
