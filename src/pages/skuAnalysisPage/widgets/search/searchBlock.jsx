@@ -44,7 +44,7 @@ const SearchBlock = () => {
             }
             normilizedId = inputValue.substring(startId, endId);
         }
-
+        dispatch(skuAnalysisActions.skuSearchHistoryAdd(normilizedId));
         navigate(`/sku-analysis/${normilizedId}`);
     };
 
