@@ -41,7 +41,7 @@ const PositionCheckPage = () => {
             }
             normilizedId = inputValue.substring(startId, endId);
         }
-
+        dispatch(skuAnalysisActions.skuSearchHistoryAdd(normilizedId));
         navigate(`/position-check/${normilizedId}`);
     };
 
