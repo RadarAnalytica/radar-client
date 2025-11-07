@@ -179,19 +179,23 @@ export default function OperatingExpenses() {
 	};
 
 	useEffect(() => {
-		if (activeBrand?.is_primary_collect) {
-			updateCategories();
-		} else {
-			setCategoryLoading(false);
+		if (activeBrand) {
+			if (activeBrand?.is_primary_collect) {
+				updateCategories();
+			} else {
+				setCategoryLoading(false);
+			}
 		}
 	}, [activeBrand]);
 
 	useEffect(() => {
-		if (activeBrand?.is_primary_collect) {
-            updateExpenses();
-        } else {
-			setLoading(false);
-		}
+		if (activeBrand) {
+			if (activeBrand?.is_primary_collect) {
+            	updateExpenses();
+			} else {
+				setLoading(false);
+			}
+        }
     }, [activeBrand, activeArticle, selectedRange, expPagination.page, activeExpenseCategory]);
 
 	const modalExpenseHandlerClose = () => {
@@ -461,7 +465,7 @@ export default function OperatingExpenses() {
 				{loading && <Loader loading={loading} progress={progress.value} />}
 
 				{/* Расходы */}
-				{!loading && activeBrand?.is_primary_collect && view === 'expense' && (
+				{!loading && activeBrand && activeBrand?.is_primary_collect && view === 'expense' && (
 					expenseData.data?.length > 0
 					? <TableWidget
 						loading={loading}
@@ -480,7 +484,7 @@ export default function OperatingExpenses() {
 				)}
 
 				{/* Статьи */}
-				{!loading && activeBrand?.is_primary_collect && view === 'category' && (
+				{!loading && activeBrand && activeBrand?.is_primary_collect && view === 'category' && (
 					categoryData.data?.length > 0 
 					? <div className={styles.container}>
 						<TableWidget
