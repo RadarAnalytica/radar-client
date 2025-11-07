@@ -571,7 +571,7 @@ export default function RnpList({ view, expanded, setExpanded, setAddRnpModalSho
 				)}
 				{view === 'total' && (
 					<>
-						{rnpDataTotal && <div className={styles.item_content}>
+						{rnpDataTotal && <div className={`${styles.item_content} ${styles.item_content_total}`}>
 							{loading && <div className={styles.loading_container}>
 								<span className='loader'></span>
 							</div>}

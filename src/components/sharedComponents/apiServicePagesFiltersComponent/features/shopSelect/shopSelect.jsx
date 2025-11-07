@@ -60,7 +60,7 @@ export const ShopSelect = (
                         disabled={isDataLoading}
                         onDropdownVisibleChange={(open) => {
                             if (!open) {
-                                dispatch(filterActions.setActiveShop(null));
+                                //dispatch(filterActions.setActiveShop(null));
                             }
                         }}
                     />
