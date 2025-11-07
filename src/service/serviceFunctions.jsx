@@ -1885,7 +1885,7 @@ export const ServiceFunctions = {
 		}
 	},
 
-	getControlMetrics: async (token, metricType, filters = {}, page = 1, per_page = 50, search = '') => {
+	getControlMetrics: async (token, metricType, filters = {}, page = 1, per_page = 50, sorting = {}) => {
 		try {
 			const requestObject = {
 				...getFiltersRequestObject(filters, { period: 30 }), 
