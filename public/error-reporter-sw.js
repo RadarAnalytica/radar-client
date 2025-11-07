@@ -1,7 +1,7 @@
 /* eslint-disable no-restricted-globals */
 /* eslint-disable no-undef */
 
-const DEBUG = true;
+const DEBUG = location.hostname === 'localhost';
 const DB_NAME = "error-reporter-db";
 const DB_VERSION = 1;
 const STORE_NAME = "queue";
@@ -118,6 +118,17 @@ async function getAllEnvelopes() {
 }
 
 let syncScheduled = false;
+let scheduledTimeoutId = null;
+let scheduledTargetTime = 0;
+
+function clearScheduledTimeout() {
+  console.log('clearScheduledTimeout');
+  if (scheduledTimeoutId !== null) {
+    clearTimeout(scheduledTimeoutId);
+    scheduledTimeoutId = null;
+    scheduledTargetTime = 0;
+  }
+}
 
 async function flushQueue() {
   log("Flushing queue");
@@ -133,6 +144,7 @@ async function flushQueue() {
   if (envelopes.length === 0) {
     log("Queue is empty");
     syncScheduled = false;
+    clearScheduledTimeout();
     return;
   }
 
@@ -162,7 +174,7 @@ async function flushQueue() {
         extra: envelope.extra,
       };
 
-      const response = await fetch("/api/error-report", {
+      const response = await fetch("/api/error-report/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
@@ -209,6 +221,7 @@ async function flushQueue() {
     // Если были готовые элементы и они все отправились, но могут быть новые
     // Не планируем повторный sync, он будет вызван при добавлении нового элемента
     syncScheduled = false;
+    clearScheduledTimeout();
   } else {
     // Все элементы в будущем, планируем sync на нужное время
     const waitTime = Math.max(0, earliestRetry - Date.now());
@@ -218,26 +231,29 @@ async function flushQueue() {
 }
 
 function scheduleSync(delay = 0) {
-  if (syncScheduled && delay > 0) {
-    log("Sync already scheduled, skipping");
+  if (delay > 0) {
+    log(`Scheduling sync with delay ${delay}ms`);
+    const targetTime = Date.now() + delay;
+
+    if (scheduledTimeoutId !== null) {
+      if (targetTime >= scheduledTargetTime) {
+        log("Existing delayed sync is sooner, skipping reschedule");
+        return Promise.resolve();
+      }
+      clearScheduledTimeout();
+    }
+
+    scheduledTargetTime = targetTime;
+    scheduledTimeoutId = setTimeout(() => {
+      scheduledTimeoutId = null;
+      scheduledTargetTime = 0;
+      scheduleSync(0);
+    }, delay);
     return Promise.resolve();
   }
 
-  if (delay > 0) {
-    log(`Scheduling sync with delay ${delay}ms`);
-    syncScheduled = true;
-    setTimeout(() => {
-      syncScheduled = false;
-      self.registration.sync
-        .register("error-report-sync")
-        .then(() => {
-          log("Delayed sync registered");
-        })
-        .catch((error) => {
-          console.error("Failed to register delayed sync", error);
-          syncScheduled = false;
-        });
-    }, delay);
+  if (syncScheduled) {
+    log("Sync already registered, skipping immediate registration");
     return Promise.resolve();
   }
 
@@ -246,10 +262,11 @@ function scheduleSync(delay = 0) {
     .register("error-report-sync")
     .then(() => {
       log("Sync registered immediately");
-      syncScheduled = false;
     })
     .catch((error) => {
       console.error("Failed to register sync", error);
+    })
+    .finally(() => {
       syncScheduled = false;
     });
 }

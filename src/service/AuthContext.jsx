@@ -39,7 +39,6 @@ export const AuthProvider = ({ children }) => {
     console.log('user', user);
   }, [value]);
 
-  throw new Error('test error');
 
   // To delete the cookie:
   // deleteCookie();

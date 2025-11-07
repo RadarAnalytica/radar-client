@@ -148,7 +148,7 @@ function scheduleLocalRetry(envelope: ErrorReportEnvelope) {
 
 async function sendDirectly(envelope: ErrorReportEnvelope) {
   try {
-    const response = await fetch("/api/error-report", {
+    const response = await fetch("/api/error-report/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

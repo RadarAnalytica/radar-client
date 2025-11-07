@@ -1,4 +1,5 @@
 import React from 'react';
+import Cookies from "js-cookie";
 import { Link } from 'react-router-dom';
 import styles from './ErrorBoundary.module.css';
 import logo from '@/assets/logo.png';
@@ -34,7 +35,7 @@ class ErrorBoundary extends React.Component {
         stack_trace: error?.stack || errorInfo?.componentStack || null,
         extra: {
           componentStack: errorInfo?.componentStack || null,
-          boundaryName: this.props?.name || 'ErrorBoundary',
+          jwt: Cookies.get('radar') || null,
         },
       });
     }
