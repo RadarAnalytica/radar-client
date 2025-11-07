@@ -156,7 +156,6 @@ export default function RnpTable({ columns, data, columns2, data2, expanded, el 
 						bodyRowClassName={styles.bodyRowSpecial}
 						bodyCellWrapperStyle={{ borderBottom: 'none', padding: '10.5px 12px' }}
 						headerCellWrapperClassName={styles.headerCellWrapperCustomClassName}
-
 						customCellRender={{
 							idx: [],
 							renderer: customCellRender,

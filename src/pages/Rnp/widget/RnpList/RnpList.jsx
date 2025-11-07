@@ -120,7 +120,10 @@ function DropZone({ index, isActive, isDragging, draggedIndex, onDrop }) {
 function RnpListItem({ el, index, expanded, setExpanded, setDeleteRnpId, onReorder, isDragging }) {
 	const ref = useRef(null);
 	const gripRef = useRef(null);
+	const headerRef = useRef(null);
+	const sentinelRef = useRef(null);
 	const [closestEdge, setClosestEdge] = useState(null);
+	const [isStuck, setIsStuck] = useState(false);
 
 	const expandHandler = (value) => {
 		const timeout = setTimeout(() => {
@@ -206,20 +209,74 @@ function RnpListItem({ el, index, expanded, setExpanded, setDeleteRnpId, onReord
 		);
 	}, [el, onReorder]);
 
+	// Отслеживание скролла для sticky хэдера
+	useEffect(() => {
+		if (!headerRef.current || !sentinelRef.current || expanded !== el.article_data.wb_id) {
+			setIsStuck(false);
+			return;
+		}
+
+		const headerElement = headerRef.current;
+		const sentinelElement = sentinelRef.current;
+		const isSticky = headerElement.classList.contains(styles.item__header_sticky);
+
+		if (!isSticky) {
+			setIsStuck(false);
+			return;
+		}
+
+		// Находим ближайший прокручиваемый контейнер
+		let scrollContainer = headerElement.closest('[class*="page__content"]');
+		if (!scrollContainer) {
+			scrollContainer = headerElement.closest('[class*="list_container"]');
+		}
+		if (!scrollContainer) {
+			scrollContainer = window;
+		}
+
+		const observer = new IntersectionObserver(
+			([entry]) => {
+				const shouldStick = !entry.isIntersecting;
+				setIsStuck(shouldStick);
+			},
+			{
+				root: scrollContainer === window ? null : scrollContainer,
+				threshold: [0, 1],
+				rootMargin: '0px 0px -1px 0px',
+			}
+		);
+
+		observer.observe(sentinelElement);
+
+		// Первоначальная проверка
+		const initialRect = sentinelElement.getBoundingClientRect();
+		const initialRootRect = scrollContainer === window ? { top: 0 } : scrollContainer.getBoundingClientRect();
+		setIsStuck(initialRect.top < initialRootRect.top);
+
+		return () => {
+			observer.disconnect();
+		};
+	}, [expanded, el.article_data.wb_id]);
+
 
 	return (
 		<div className={`${styles.item} ${isDragging ? styles.dragging : ''}`} ref={ref}>
 			<div className={styles.item_content}>
-				{closestEdge === 'top' && (
-					<div className={styles.edge_top}></div>
-				)}
-				<header>
+			{closestEdge === 'top' && (
+				<div className={styles.edge_top}></div>
+			)}
+			<div ref={sentinelRef} className={styles.item__header_sentinel} aria-hidden="true"></div>
+			<header 
+					ref={headerRef}
+					className={`${styles.item__header} ${expanded === el.article_data.wb_id ? styles.item__header_sticky : ''} ${isStuck ? styles.item__header_scrolled : ''}`}
+				>
 					<Flex gap={20} align="center">
 						<Button
 							className={styles.item__button}
 							icon={grip}
 							ref={gripRef}
 							onClick={() => setExpanded([])}
+							disabled={expanded === el.article_data.wb_id }
 						/>
 						<div className={styles.item__product}>
 							<RnpItem
