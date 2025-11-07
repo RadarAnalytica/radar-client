@@ -203,6 +203,16 @@ export default function ExpenseFormModal({
 	}, [filters]);
 
 	useEffect(() => {
+		if (isDemoMode) {
+			setDistributeOptions({ 
+				shops: [{ shop: 1, brand_name: 'Демо магазин' }], 
+				brands: [{ shop: 1, brand_name: 'Демо-бренд' }], 
+				vendor_codes: [{ shop: 1, brand_name: 'Демо-бренд', vendor_code: 'Демо-артикул' }] 
+			});
+		}
+	}, [isDemoMode]);
+
+	useEffect(() => {
 		if (mode !== 'create' && editData && distributeOptions.shops.length > 0) {
 			if (editData.vendor_codes?.length > 0) {
 				const targetVendorCodes = distributeOptions.vendor_codes.filter(el => editData.vendor_codes.includes(el.vendor_code)).map(el => JSON.stringify(el));
