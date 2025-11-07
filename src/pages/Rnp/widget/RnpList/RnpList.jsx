@@ -228,8 +228,9 @@ function RnpListItem({ el, index, expanded, setExpanded, setDeleteRnpId, onReord
 
 		const observer = new IntersectionObserver(
 			([entry]) => {
-				const shouldStick = !entry.isIntersecting;
-				setIsStuck(shouldStick);
+				// const shouldStick = !entry.isIntersecting;
+				// setIsStuck(shouldStick);
+				headerElement.style.boxShadow = entry.isIntersecting ? 'none' : '0 0 20px 0 rgba(0, 0, 0, 0.08)';
 			},
 			{
 				root: null,
