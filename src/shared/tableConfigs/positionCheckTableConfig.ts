@@ -65,32 +65,24 @@ export const innerTableConfig = [
         title: 'Просмотры/мес',
         dataIndex: 'shows',
         hidden: false,
-        width: 160,
-        minWidth: 160,
     },
     {
         key: 'feedbacks',
         title: 'Отзывы',
         dataIndex: 'feedbacks',
         hidden: false,
-        width: 160,
-        minWidth: 160,
     },
     {
         key: 'rating',
         title: 'Рейтинг товара',
         dataIndex: 'rating',
         hidden: false,
-        width: 160,
-        minWidth: 160,
     },
     {
         key: 'price',
         title: 'Цена',
         dataIndex: 'price',
         hidden: false,
-        width: 160,
-        minWidth: 160,
     },
    
     {
@@ -98,7 +90,5 @@ export const innerTableConfig = [
         title: '№ в выдаче',
         dataIndex: 'number',
         hidden: false,
-        width: 160,
-        minWidth: 160,
     },
 ]

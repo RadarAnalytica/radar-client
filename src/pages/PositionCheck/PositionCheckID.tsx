@@ -157,10 +157,9 @@ const PositionCheckID = () => {
 
             const data: IProductPositionMetaData = await res.json();
             setProductMetaData(data);
+            setMetaAndRegionsRequestStatus(initialRequestStatus);
         } catch (error) {
             console.error(error);
-        } finally {
-            setMetaAndRegionsRequestStatus({ ...initialRequestStatus, isLoading: false });
         }
 
     }
@@ -183,7 +182,6 @@ const PositionCheckID = () => {
         } catch (error) {
             console.error(error);
             return;
-        } finally {
         }
     }
 
@@ -194,12 +192,12 @@ const PositionCheckID = () => {
         try {
             const res = await ServiceFunctions.getPositionCheckMainTableData(authToken, requestObject);
             if (!res.ok) {
-                throw new Error('Ошибка запроса');
+                setMainTableRequestStatus({ ...initialRequestStatus, isError: true, message: 'Ошибка запроса' });
             }
 
             const data: IPositionCheckMainTableData = await res.json();
             setMainTableData(data);
-            setMainTableRequestStatus({ ...initialRequestStatus });
+            setMainTableRequestStatus(initialRequestStatus);
         } catch (error) {
             setMainTableRequestStatus({ ...initialRequestStatus, isError: true, message: 'Ошибка запроса' });
         }
@@ -207,13 +205,13 @@ const PositionCheckID = () => {
 
     useEffect(() => {
         if (params?.id && authToken) {
-            getRegionsData(authToken, params.id)
             getPositionCheckProductMetaData(authToken, params.id)
+            getRegionsData(authToken, params.id)
         }
     }, [params])
 
     useEffect(() => {
-        if (requestObject && params?.id) {
+        if (requestObject && params?.id && !metaAndRegionsRequestStatus.isError) {
             getPositionCheckMainTableData({ ...requestObject, wb_id: params.id }, authToken)
         }
     }, [requestObject])
@@ -324,7 +322,7 @@ const PositionCheckID = () => {
             </section>
             {/* ---------------------- */}
             <ErrorModal
-                open={false}
+                open={metaAndRegionsRequestStatus.isError || mainTableRequestStatus.isError}
                 footer={null}
                 onOk={() => {
                     setMetaAndRegionsRequestStatus(initialRequestStatus);
@@ -341,7 +339,7 @@ const PositionCheckID = () => {
                     setMainTableRequestStatus(initialRequestStatus);
                     navigate('/position-check');
                 }}
-                message={metaAndRegionsRequestStatus.message}
+                message={metaAndRegionsRequestStatus.message || mainTableRequestStatus.message || 'Что-то пошло не так. Попробуйте одновить страницу.'}
             />
         </main>
     );
