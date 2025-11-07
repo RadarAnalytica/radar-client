@@ -117,6 +117,7 @@ export default function ReportProfitLoss() {
 	const getData = (data, metricsOrder) => {
 		const tableData = [];
 		const childrenData = {};
+		const defaultExpenseItem = { rub: { value: 0, comparison_percentage: 0 }, percent: 0 };
 
 		const getCellValue = (dataSource, key, parentKey, isParent, isChildren) => {
 			if (!isParent && !isChildren) {
@@ -124,14 +125,13 @@ export default function ReportProfitLoss() {
 			}
 
 			if (parentKey === 'operating_expenses') {
-				const expenseItem = dataSource.operating_expenses?.find(exp => exp.category === key);
-				return expenseItem || { rub: 0, percent: 0 };
+				const expenseItem = dataSource.operating_expenses?.items?.find(exp => exp.category === key);
+				return expenseItem || defaultExpenseItem;
 			}
 
 			if (key === 'operating_expenses') {
-				const accSum = dataSource.operating_expenses?.reduce((acc, exp) => acc + exp.rub, 0) || 0;
-				const accPercent = dataSource.operating_expenses?.reduce((acc, exp) => acc + exp.percent, 0) || 0;
-				return { rub: accSum, percent: accPercent };
+				const expenseItem = dataSource.operating_expenses.total;
+				return expenseItem || defaultExpenseItem;
 			}
 
 			return dataSource.direct_expenses[key];
