@@ -207,8 +207,7 @@ export default function ReportProfitLoss() {
 		try {
 			if (Array.isArray(data[0].data.operating_expenses?.items) && data[0].data.operating_expenses?.items?.length > 0) {
 				const categories = [...new Set(data[0].data.operating_expenses?.items?.map(item => item.category))];
-				
-				categories.forEach(category => {
+				categories.sort().forEach(category => {
 					metricsOrder.push({
 						key: category,
 						title: category,
