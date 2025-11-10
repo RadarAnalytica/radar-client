@@ -23,9 +23,9 @@ export const MultiSelect = (
 
 
     const renderPopup = (menu) => {
-        let action = () => { form.setFieldsValue({ [selectId]: [] }) };
-        if (Array.isArray(optionsData) && optionsData.length > currentFormValue?.length && !searchState) {
-            action = () => { form.setFieldsValue({ [selectId]: optionsData.map(_ => _.value) }) };
+        let action = () => form.setFieldsValue({ [selectId]: [] });
+        if (Array.isArray(optionsData) && optionsData.length > (currentFormValue?.length || 0) && !searchState) {
+            action = () => form.setFieldsValue({ [selectId]: optionsData.map(_ => _.value) });
         }
 
         return (
@@ -85,8 +85,8 @@ export const MultiSelect = (
                         disabled={optionsData.length === 0}
                         style={{ fontSize: 14, width: '100%' }}
                     >
-                        {currentFormValue?.length < optionsData.length && 'Выбрать все'}
-                        {currentFormValue?.length === optionsData.length && 'Снять все'}
+                        {(currentFormValue?.length || 0) < optionsData.length && 'Выбрать все'}
+                        {(currentFormValue?.length || 0) === optionsData.length && 'Снять все'}
                     </Button>}
                 </ConfigProvider>
             </>

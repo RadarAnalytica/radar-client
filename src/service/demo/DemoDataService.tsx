@@ -622,6 +622,7 @@ export class DemoDataService {
       page: 1,
       total_pages: 1,
       limit: 25,
+      total_sum: 225000,
     };
   }
 
