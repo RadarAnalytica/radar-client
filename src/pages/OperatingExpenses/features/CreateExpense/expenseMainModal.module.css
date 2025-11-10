@@ -15,6 +15,10 @@
     margin-bottom: 16px;
   }
 
+  .modal :global(.ant-tag p) {
+    max-width: none;
+  }
+
   .modal__header {
     display: flex;
     flex-direction: column;
@@ -113,7 +117,6 @@
   :global(.rc-virtual-list-scrollbar-thumb) {
     background-color: #A994FF !important;
   }
-  
   
   .calendarContainer {
     position: relative;

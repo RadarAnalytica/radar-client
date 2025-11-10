@@ -1,0 +1,770 @@
+{
+    "presets_count": 27,
+    "queries_count": 70,
+    "keywords": [
+        "базовая",
+        "базовые",
+        "для",
+        "майка",
+        "мужская",
+        "мужские",
+        "мужское",
+        "мужской",
+        "мужчин",
+        "облегающая",
+        "обтягивающая",
+        "однотонная",
+        "парня",
+        "плотная",
+        "приталенная",
+        "приталенные",
+        "рукавом",
+        "спортивная",
+        "твое",
+        "твоё",
+        "укороченная",
+        "футболка",
+        "футболки",
+        "футболку",
+        "хлопок",
+        "черная",
+        "черные",
+        "чёрная",
+        "чёрные"
+    ],
+    "preset_data": [
+        {
+            "query": "футболка мужская",
+            "frequency": 78345,
+            "total_goods": 282232,
+            "complexity": 99.44,
+            "shows": 0,
+            "queries_data": [
+                {
+                    "query": "футболка мужская",
+                    "frequency": 78345,
+                    "total_goods": 282232,
+                    "complexity": 99.44,
+                    "shows": 0
+                },
+                {
+                    "query": "футболки мужские",
+                    "frequency": 12202,
+                    "total_goods": 282232,
+                    "complexity": 99.92,
+                    "shows": 0
+                },
+                {
+                    "query": "мужская футболка",
+                    "frequency": 5040,
+                    "total_goods": 282232,
+                    "complexity": 99.96,
+                    "shows": 0
+                },
+                {
+                    "query": "мужские футболки",
+                    "frequency": 2934,
+                    "total_goods": 281802,
+                    "complexity": 99.98,
+                    "shows": 0
+                },
+                {
+                    "query": "футболка  мужская",
+                    "frequency": 31,
+                    "total_goods": 280029,
+                    "complexity": 100.0,
+                    "shows": 0
+                },
+                {
+                    "query": "футболка для мужчин",
+                    "frequency": 0,
+                    "total_goods": 281926,
+                    "complexity": 100.0,
+                    "shows": 0
+                },
+                {
+                    "query": "футболка для парня",
+                    "frequency": 0,
+                    "total_goods": 281800,
+                    "complexity": 100.0,
+                    "shows": 0
+                },
+                {
+                    "query": "футболка мужские",
+                    "frequency": 0,
+                    "total_goods": 281926,
+                    "complexity": 100.0,
+                    "shows": 0
+                },
+                {
+                    "query": "футболка мужской",
+                    "frequency": 0,
+                    "total_goods": 280029,
+                    "complexity": 100.0,
+                    "shows": 0
+                },
+                {
+                    "query": "футболку мужская",
+                    "frequency": 0,
+                    "total_goods": 280029,
+                    "complexity": 100.0,
+                    "shows": 0
+                }
+            ]
+        },
+        {
+            "query": "твое",
+            "frequency": 32266,
+            "total_goods": 114906,
+            "complexity": 99.44,
+            "shows": 0,
+            "queries_data": [
+                {
+                    "query": "твое",
+                    "frequency": 32266,
+                    "total_goods": 114906,
+                    "complexity": 99.44,
+                    "shows": 0
+                },
+                {
+                    "query": "твоё",
+                    "frequency": 3104,
+                    "total_goods": 115420,
+                    "complexity": 99.94,
+                    "shows": 0
+                }
+            ]
+        },
+        {
+            "query": "твое мужское",
+            "frequency": 27442,
+            "total_goods": 1495,
+            "complexity": 63.28,
+            "shows": 0,
+            "queries_data": [
+                {
+                    "query": "твое мужское",
+                    "frequency": 27442,
+                    "total_goods": 1495,
+                    "complexity": 63.28,
+                    "shows": 0
+                },
+                {
+                    "query": "твоё мужское",
+                    "frequency": 0,
+                    "total_goods": 1266,
+                    "complexity": 100.0,
+                    "shows": 0
+                }
+            ]
+        },
+        {
+            "query": "черная футболка",
+            "frequency": 23219,
+            "total_goods": 121163,
+            "complexity": 99.62,
+            "shows": 14764,
+            "queries_data": [
+                {
+                    "query": "черная футболка",
+                    "frequency": 23219,
+                    "total_goods": 121163,
+                    "complexity": 99.62,
+                    "shows": 14764
+                },
+                {
+                    "query": "футболка черная",
+                    "frequency": 19600,
+                    "total_goods": 121173,
+                    "complexity": 99.68,
+                    "shows": 13757
+                },
+                {
+                    "query": "черные футболки",
+                    "frequency": 404,
+                    "total_goods": 120148,
+                    "complexity": 100.0,
+                    "shows": 404
+                },
+                {
+                    "query": "футболки черные",
+                    "frequency": 322,
+                    "total_goods": 120148,
+                    "complexity": 100.0,
+                    "shows": 302
+                },
+                {
+                    "query": "чёрные футболки",
+                    "frequency": 0,
+                    "total_goods": 0,
+                    "complexity": 100.0,
+                    "shows": 0
+                }
+            ]
+        },
+        {
+            "query": "футболка мужская черная",
+            "frequency": 15835,
+            "total_goods": 120401,
+            "complexity": 99.74,
+            "shows": 4678,
+            "queries_data": [
+                {
+                    "query": "футболка мужская черная",
+                    "frequency": 15835,
+                    "total_goods": 120401,
+                    "complexity": 99.74,
+                    "shows": 4678
+                },
+                {
+                    "query": "черная футболка мужская",
+                    "frequency": 14489,
+                    "total_goods": 120499,
+                    "complexity": 99.76,
+                    "shows": 4719
+                },
+                {
+                    "query": "футболка черная мужская",
+                    "frequency": 9978,
+                    "total_goods": 120556,
+                    "complexity": 99.84,
+                    "shows": 2668
+                },
+                {
+                    "query": "черная мужская футболка",
+                    "frequency": 933,
+                    "total_goods": 119365,
+                    "complexity": 99.98,
+                    "shows": 66
+                },
+                {
+                    "query": "черные футболки мужские",
+                    "frequency": 354,
+                    "total_goods": 119365,
+                    "complexity": 100.0,
+                    "shows": 0
+                },
+                {
+                    "query": "футболка мужская чёрная",
+                    "frequency": 309,
+                    "total_goods": 119365,
+                    "complexity": 100.0,
+                    "shows": 39
+                },
+                {
+                    "query": "чёрная футболка мужская",
+                    "frequency": 242,
+                    "total_goods": 119990,
+                    "complexity": 100.0,
+                    "shows": 108
+                },
+                {
+                    "query": "футболки мужские черные",
+                    "frequency": 42,
+                    "total_goods": 119365,
+                    "complexity": 100.0,
+                    "shows": 0
+                },
+                {
+                    "query": "мужская черная футболка",
+                    "frequency": 0,
+                    "total_goods": 119365,
+                    "complexity": 100.0,
+                    "shows": 0
+                },
+                {
+                    "query": "футболка чёрная мужская",
+                    "frequency": 0,
+                    "total_goods": 119365,
+                    "complexity": 100.0,
+                    "shows": 0
+                },
+                {
+                    "query": "мужская футболка черная",
+                    "frequency": 0,
+                    "total_goods": 119365,
+                    "complexity": 100.0,
+                    "shows": 0
+                }
+            ]
+        },
+        {
+            "query": "футболка",
+            "frequency": 13484,
+            "total_goods": 130281,
+            "complexity": 99.8,
+            "shows": 0,
+            "queries_data": [
+                {
+                    "query": "футболка",
+                    "frequency": 13484,
+                    "total_goods": 130281,
+                    "complexity": 99.8,
+                    "shows": 0
+                },
+                {
+                    "query": "футболки",
+                    "frequency": 2990,
+                    "total_goods": 130331,
+                    "complexity": 99.96,
+                    "shows": 0
+                },
+                {
+                    "query": "футболка с",
+                    "frequency": 51,
+                    "total_goods": 130340,
+                    "complexity": 100.0,
+                    "shows": 0
+                }
+            ]
+        },
+        {
+            "query": "чёрная футболка",
+            "frequency": 5646,
+            "total_goods": 120148,
+            "complexity": 99.9,
+            "shows": 3974,
+            "queries_data": [
+                {
+                    "query": "чёрная футболка",
+                    "frequency": 5646,
+                    "total_goods": 120148,
+                    "complexity": 99.9,
+                    "shows": 3974
+                }
+            ]
+        },
+        {
+            "query": "приталенная футболка",
+            "frequency": 4661,
+            "total_goods": 72334,
+            "complexity": 99.88,
+            "shows": 4251,
+            "queries_data": [
+                {
+                    "query": "приталенная футболка",
+                    "frequency": 4661,
+                    "total_goods": 72334,
+                    "complexity": 99.88,
+                    "shows": 4251
+                },
+                {
+                    "query": "приталенные футболки",
+                    "frequency": 109,
+                    "total_goods": 72066,
+                    "complexity": 100.0,
+                    "shows": 109
+                }
+            ]
+        },
+        {
+            "query": "футболка чёрная",
+            "frequency": 3726,
+            "total_goods": 120148,
+            "complexity": 99.94,
+            "shows": 2971,
+            "queries_data": [
+                {
+                    "query": "футболка чёрная",
+                    "frequency": 3726,
+                    "total_goods": 120148,
+                    "complexity": 99.94,
+                    "shows": 2971
+                }
+            ]
+        },
+        {
+            "query": "твое футболка мужская",
+            "frequency": 2551,
+            "total_goods": 44179,
+            "complexity": 99.88,
+            "shows": 0,
+            "queries_data": [
+                {
+                    "query": "твое футболка мужская",
+                    "frequency": 2551,
+                    "total_goods": 44179,
+                    "complexity": 99.88,
+                    "shows": 0
+                },
+                {
+                    "query": "футболка мужская твое",
+                    "frequency": 2501,
+                    "total_goods": 44179,
+                    "complexity": 99.88,
+                    "shows": 0
+                },
+                {
+                    "query": "твое мужское футболка",
+                    "frequency": 679,
+                    "total_goods": 48631,
+                    "complexity": 99.98,
+                    "shows": 160
+                },
+                {
+                    "query": "футболки твое мужские",
+                    "frequency": 173,
+                    "total_goods": 44179,
+                    "complexity": 100.0,
+                    "shows": 0
+                },
+                {
+                    "query": "футболки мужские твое",
+                    "frequency": 0,
+                    "total_goods": 44179,
+                    "complexity": 100.0,
+                    "shows": 0
+                }
+            ]
+        },
+        {
+            "query": "футболка приталенная",
+            "frequency": 2480,
+            "total_goods": 72334,
+            "complexity": 99.94,
+            "shows": 1588,
+            "queries_data": [
+                {
+                    "query": "футболка приталенная",
+                    "frequency": 2480,
+                    "total_goods": 72334,
+                    "complexity": 99.94,
+                    "shows": 1588
+                }
+            ]
+        },
+        {
+            "query": "футболка твое мужская",
+            "frequency": 2291,
+            "total_goods": 44179,
+            "complexity": 99.9,
+            "shows": 0,
+            "queries_data": [
+                {
+                    "query": "футболка твое мужская",
+                    "frequency": 2291,
+                    "total_goods": 44179,
+                    "complexity": 99.9,
+                    "shows": 0
+                }
+            ]
+        },
+        {
+            "query": "базовая футболка мужская",
+            "frequency": 1184,
+            "total_goods": 120374,
+            "complexity": 99.98,
+            "shows": 0,
+            "queries_data": [
+                {
+                    "query": "базовая футболка мужская",
+                    "frequency": 1184,
+                    "total_goods": 120374,
+                    "complexity": 99.98,
+                    "shows": 0
+                },
+                {
+                    "query": "футболка базовая мужская",
+                    "frequency": 977,
+                    "total_goods": 120374,
+                    "complexity": 99.98,
+                    "shows": 0
+                },
+                {
+                    "query": "футболка мужская базовая",
+                    "frequency": 360,
+                    "total_goods": 120374,
+                    "complexity": 100.0,
+                    "shows": 59
+                },
+                {
+                    "query": "базовые футболки мужские",
+                    "frequency": 274,
+                    "total_goods": 120374,
+                    "complexity": 100.0,
+                    "shows": 0
+                }
+            ]
+        },
+        {
+            "query": "футболка твое",
+            "frequency": 752,
+            "total_goods": 1173,
+            "complexity": 98.72,
+            "shows": 0,
+            "queries_data": [
+                {
+                    "query": "футболка твое",
+                    "frequency": 752,
+                    "total_goods": 1173,
+                    "complexity": 98.72,
+                    "shows": 0
+                },
+                {
+                    "query": "твое футболки",
+                    "frequency": 0,
+                    "total_goods": 1119,
+                    "complexity": 100.0,
+                    "shows": 0
+                }
+            ]
+        },
+        {
+            "query": "футболка мужская черная плотная",
+            "frequency": 517,
+            "total_goods": 35409,
+            "complexity": 99.98,
+            "shows": 473,
+            "queries_data": [
+                {
+                    "query": "футболка мужская черная плотная",
+                    "frequency": 517,
+                    "total_goods": 35409,
+                    "complexity": 99.98,
+                    "shows": 473
+                }
+            ]
+        },
+        {
+            "query": "футболки черные мужские",
+            "frequency": 262,
+            "total_goods": 119365,
+            "complexity": 100.0,
+            "shows": 0,
+            "queries_data": [
+                {
+                    "query": "футболки черные мужские",
+                    "frequency": 262,
+                    "total_goods": 119365,
+                    "complexity": 100.0,
+                    "shows": 0
+                }
+            ]
+        },
+        {
+            "query": "футболка мужская приталенная",
+            "frequency": 213,
+            "total_goods": 36473,
+            "complexity": 99.98,
+            "shows": 179,
+            "queries_data": [
+                {
+                    "query": "футболка мужская приталенная",
+                    "frequency": 213,
+                    "total_goods": 36473,
+                    "complexity": 99.98,
+                    "shows": 179
+                }
+            ]
+        },
+        {
+            "query": "майка мужская с рукавом",
+            "frequency": 189,
+            "total_goods": 110958,
+            "complexity": 100.0,
+            "shows": 0,
+            "queries_data": [
+                {
+                    "query": "майка мужская с рукавом",
+                    "frequency": 189,
+                    "total_goods": 110958,
+                    "complexity": 100.0,
+                    "shows": 0
+                }
+            ]
+        },
+        {
+            "query": "футболка мужская однотонная",
+            "frequency": 98,
+            "total_goods": 118972,
+            "complexity": 100.0,
+            "shows": 0,
+            "queries_data": [
+                {
+                    "query": "футболка мужская однотонная",
+                    "frequency": 98,
+                    "total_goods": 118972,
+                    "complexity": 100.0,
+                    "shows": 0
+                }
+            ]
+        },
+        {
+            "query": "плотная футболка мужская",
+            "frequency": 77,
+            "total_goods": 119125,
+            "complexity": 100.0,
+            "shows": 0,
+            "queries_data": [
+                {
+                    "query": "плотная футболка мужская",
+                    "frequency": 77,
+                    "total_goods": 119125,
+                    "complexity": 100.0,
+                    "shows": 0
+                },
+                {
+                    "query": "футболка плотная мужская",
+                    "frequency": 0,
+                    "total_goods": 119730,
+                    "complexity": 100.0,
+                    "shows": 0
+                }
+            ]
+        },
+        {
+            "query": "футболка мужская хлопок плотная",
+            "frequency": 43,
+            "total_goods": 84798,
+            "complexity": 100.0,
+            "shows": 0,
+            "queries_data": [
+                {
+                    "query": "футболка мужская хлопок плотная",
+                    "frequency": 43,
+                    "total_goods": 84798,
+                    "complexity": 100.0,
+                    "shows": 0
+                }
+            ]
+        },
+        {
+            "query": "обтягивающая футболка мужская спортивная",
+            "frequency": 36,
+            "total_goods": 32859,
+            "complexity": 100.0,
+            "shows": 18,
+            "queries_data": [
+                {
+                    "query": "обтягивающая футболка мужская спортивная",
+                    "frequency": 36,
+                    "total_goods": 32859,
+                    "complexity": 100.0,
+                    "shows": 18
+                }
+            ]
+        },
+        {
+            "query": "футболка облегающая мужская",
+            "frequency": 0,
+            "total_goods": 41747,
+            "complexity": 100.0,
+            "shows": 0,
+            "queries_data": [
+                {
+                    "query": "обтягивающая футболка мужская",
+                    "frequency": 2848,
+                    "total_goods": 42775,
+                    "complexity": 99.86,
+                    "shows": 1554
+                },
+                {
+                    "query": "футболка обтягивающая мужская",
+                    "frequency": 832,
+                    "total_goods": 43667,
+                    "complexity": 99.96,
+                    "shows": 738
+                },
+                {
+                    "query": "футболка мужская обтягивающая",
+                    "frequency": 659,
+                    "total_goods": 43489,
+                    "complexity": 99.96,
+                    "shows": 659
+                },
+                {
+                    "query": "облегающая футболка мужская",
+                    "frequency": 35,
+                    "total_goods": 41747,
+                    "complexity": 100.0,
+                    "shows": 35
+                },
+                {
+                    "query": "футболка облегающая мужская",
+                    "frequency": 0,
+                    "total_goods": 41747,
+                    "complexity": 100.0,
+                    "shows": 0
+                }
+            ]
+        },
+        {
+            "query": "футболка плотная",
+            "frequency": 0,
+            "total_goods": 112799,
+            "complexity": 100.0,
+            "shows": 0,
+            "queries_data": [
+                {
+                    "query": "футболка плотная",
+                    "frequency": 0,
+                    "total_goods": 112799,
+                    "complexity": 100.0,
+                    "shows": 0
+                },
+                {
+                    "query": "плотная футболка",
+                    "frequency": 0,
+                    "total_goods": 111629,
+                    "complexity": 100.0,
+                    "shows": 0
+                }
+            ]
+        },
+        {
+            "query": "футболка черная однотонная мужская",
+            "frequency": 0,
+            "total_goods": 58994,
+            "complexity": 100.0,
+            "shows": 0,
+            "queries_data": [
+                {
+                    "query": "футболка мужская черная однотонная",
+                    "frequency": 1327,
+                    "total_goods": 58994,
+                    "complexity": 99.96,
+                    "shows": 0
+                },
+                {
+                    "query": "футболка черная однотонная мужская",
+                    "frequency": 0,
+                    "total_goods": 58994,
+                    "complexity": 100.0,
+                    "shows": 0
+                }
+            ]
+        },
+        {
+            "query": "футболка укороченная мужская",
+            "frequency": 0,
+            "total_goods": 115095,
+            "complexity": 100.0,
+            "shows": 0,
+            "queries_data": [
+                {
+                    "query": "футболка укороченная мужская",
+                    "frequency": 0,
+                    "total_goods": 115095,
+                    "complexity": 100.0,
+                    "shows": 0
+                }
+            ]
+        },
+        {
+            "query": "черная обтягивающая футболка",
+            "frequency": 0,
+            "total_goods": 24375,
+            "complexity": 100.0,
+            "shows": 0,
+            "queries_data": [
+                {
+                    "query": "черная обтягивающая футболка",
+                    "frequency": 0,
+                    "total_goods": 24375,
+                    "complexity": 100.0,
+                    "shows": 0
+                }
+            ]
+        }
+    ]
+}

@@ -1,94 +1,53 @@
-import React, { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import ReactDOM from 'react-dom/client';
 import styles from './DoubleTable.module.css';
 import { Table as RadarTable } from 'radar-ui';
-import { innerTableConfig, positionCheckTableConfig, positionCheckTableCustomCellRender } from '@/shared';
-import DownloadButton from '@/components/DownloadButton';
-import { Link } from 'react-router-dom';
+import { innerTableConfig, positionCheckTableConfig, positionCheckTableCustomCellRender, RadarLoader } from '@/shared';
+import { ServiceFunctions } from '@/service/serviceFunctions';
 import wb_icon from '../../assets/wb_small_main_icon.png';
 
-const mockTableData = [
-    {
-        query: 'test query',
-        frequency: 100,
-        total_goods: 100,
-        complexity: 'Низкая',
-        isParent: true,
-        rowKey: 'r1',
-        serpCellId: 'cellr1',
-        children: [
-            {
-                query: 'test query 1.1',
-                frequency: 200,
-                total_goods: 200,
-                complexity: 'Средняя',
-                rowKey: 'r1.1',
-            },
-            {
-                query: 'test query 1.2',
-                frequency: 300,
-                total_goods: 300,
-                complexity: 'Высокая',
-                rowKey: 'r1.2',
-            },
-            {
-                query: 'test query 1.3',
-                frequency: 400,
-                total_goods: 400,
-                complexity: 'Низкая',
-                rowKey: 'r1.3',
-            },
-        ]
-    },
-    {
-        query: 'test query 2',
-        frequency: 200,
-        total_goods: 200,
-        complexity: 'Средняя',
-        isParent: true,
-        rowKey: 'r2',
-        children: [
-            {
-                query: 'test query 2.1',
-                frequency: 200,
-                total_goods: 200,
-                complexity: 'Средняя',
-                rowKey: 'r2.1',
-            },
-            {
-                query: 'test query 2.2',
-                frequency: 300,
-                total_goods: 300,
-                complexity: 'Высокая',
-                rowKey: 'r2.2',
-            },
-            {
-                query: 'test query 2.3',
-                frequency: 400,
-                total_goods: 400,
-                complexity: 'Низкая',
-                rowKey: 'r2.3',
-            },
-        ]
-    },
-    {
-        query: 'test query 3',
-        frequency: 300,
-        total_goods: 300,
-        complexity: 'Высокая',
-        rowKey: 'r3',
-    },
-];
 
-export const DoubleTable = () => {
 
-    const [pagination, setPagination] = useState({ current: 1, pageSize: 10, total: 0 });
+interface IDoubleTableProps {
+    tableData: any[];
+    dest: number;
+    authToken: string;
+    tableType: 'Кластеры' | 'По запросам';
+}
+
+export const DoubleTable: React.FC<IDoubleTableProps> = ({ tableData, dest, authToken, tableType }) => {
+
+    const [pagination, setPagination] = useState({ current: 1, pageSize: 10, total: Math.ceil(tableData.length / 20) });
     const [expandedRowKeys, setExpandedRowKeys] = useState([]);
-    const [tableData, setTableData] = useState(mockTableData);
-    const [isExpandedSerp, setIsExpandedSerp] = useState(false);
     const addedRowsRef = useRef<Record<string, { customRow: HTMLTableRowElement, hiddenRows: HTMLTableRowElement[] }>>({});
     const tableContainerRef = useRef<HTMLDivElement>(null);
+    const [isLoading, setIsLoading] = useState(false);
 
+
+    const getSerpData = async (query: string) => {
+        const res = await ServiceFunctions.getSERPDataForPositionCheck(authToken, { dest, query });
+        if (!res.ok) {
+            setIsLoading(false);
+            return undefined;
+
+        }
+        setIsLoading(false);
+        return await res.json();
+    }
+
+
+    //pagination handler
+    const paginationHandler = (page: number) => {
+        setExpandedRowKeys([]);
+        setPagination({
+            ...pagination,
+            current: page,
+        });
+        tableContainerRef.current?.scrollTo({
+            top: 0,
+            behavior: 'smooth',
+        });
+    };
 
     const handleExpandedRowsChange = (keys: string[]) => {
         // Находим строки, которые были свернуты
@@ -140,15 +99,25 @@ export const DoubleTable = () => {
         if (!currentTr) return;
 
         // Ждем рендеринг раскрытых строк
-        setTimeout(() => {
+        setTimeout(async () => {
+            setIsLoading(true);
             const hiddenRows: HTMLTableRowElement[] = [];
-
             // Скрываем следующие 3 строки
             let nextTr = currentTr.nextElementSibling;
-            for (let i = 0; i < 3 && nextTr; i++) {
-                (nextTr as HTMLElement).style.display = 'none';
-                hiddenRows.push(nextTr as HTMLTableRowElement);
-                nextTr = nextTr.nextElementSibling;
+            if (currentRow.children?.length) {
+                for (let i = 0; i < currentRow.children.length && nextTr; i++) {
+                    (nextTr as HTMLElement).style.display = 'none';
+                    hiddenRows.push(nextTr as HTMLTableRowElement);
+                    nextTr = nextTr.nextElementSibling;
+                }
+
+            }
+
+
+
+            const serpData = await getSerpData(currentRow.query);
+            if (!serpData) {
+                return;
             }
 
             // Создаем новую строку с кастомным рендером
@@ -170,7 +139,7 @@ export const DoubleTable = () => {
             // Рендерим React компонент в контейнер
             const root = ReactDOM.createRoot(container);
             root.render(
-                <InnerTable />
+                <InnerTable tableData={serpData} />
             );
 
             // Сохраняем ссылки для последующего удаления
@@ -180,19 +149,25 @@ export const DoubleTable = () => {
             };
         }, 0);
     };
+
+    // Получаем данные для текущей страницы
+    const startIndex = (pagination.current - 1) * pagination.pageSize;
+    const endIndex = startIndex + pagination.pageSize;
+    const paginatedData = tableData.slice(startIndex, endIndex);
+
     return (
         <div className={styles.page__tableWrapper} ref={tableContainerRef}>
             <RadarTable
                 rowKey={(record) => record.rowKey}
                 config={positionCheckTableConfig}
-                dataSource={mockTableData}
+                dataSource={paginatedData}
                 preset='radar-table-default'
                 stickyHeader={-1}
                 pagination={{
                     current: pagination.current,
                     pageSize: pagination.pageSize,
                     total: pagination.total,
-                    //onChange: paginationHandler,
+                    onChange: paginationHandler,
                     showQuickJumper: true,
                     hideOnSinglePage: true
                 }}
@@ -200,7 +175,7 @@ export const DoubleTable = () => {
                 indentSize={45}
                 expandedRowKeys={expandedRowKeys}
                 onExpandedRowsChange={handleExpandedRowsChange}
-                bodyCellWrapperStyle={{ borderBottom: 'none', padding: '10.5px 12px' }}
+                bodyCellWrapperStyle={{ borderBottom: tableType === 'Кластеры' ? 'none' : '1px solid #E8E8E8', padding: '10.5px 12px' }}
                 customCellRender={{
                     idx: ['query', 'serp'],
                     renderer: (value, record, index, dataIndex) => positionCheckTableCustomCellRender(
@@ -209,44 +184,22 @@ export const DoubleTable = () => {
                         index,
                         dataIndex,
                         serpButtonHandler,
-                        isExpandedSerp,
-                        expandedRowKeys.includes(record.rowKey)
+                        expandedRowKeys.includes(record.rowKey),
+                        tableType as 'Кластеры' | 'По запросам'
                     ),
                 }}
             />
+            <div className={styles.page__loaderWrapper} style={{ display: isLoading ? 'flex' : 'none' }}>
+                <RadarLoader loaderStyle={{ height: '100%' }} />
+            </div>
         </div>
     )
 }
 
-export const innerTableMockData = [
-    {
-        product_name: 'Женское платье, модель 7027',
-        views_per_month: 12840,
-        reviews: 356,
-        rating: 4.7,
-        price: 1799,
-        position: 1,
-    },
-    {
-        product_name: 'Костюм спортивный, арт. A123',
-        views_per_month: 9340,
-        reviews: 128,
-        rating: 4.4,
-        price: 2490,
-        position: 5,
-    },
-    {
-        product_name: 'Футболка базовая, цвет белый',
-        views_per_month: 15230,
-        reviews: 812,
-        rating: 4.8,
-        price: 799,
-        position: 12,
-    },
-];
+
 
 export const innerTableCustomCellRender = (value: any, record: any, index: number, dataIndex: string) => {
-    if (dataIndex === 'product_name') {
+    if (dataIndex === 'name') {
         return (
             <div className={styles.nameCell}>
                 <div className={styles.nameCell__header}>
@@ -270,8 +223,15 @@ export const innerTableCustomCellRender = (value: any, record: any, index: numbe
     }
 }
 
+const interTableDataToTableDataDto = (tableData: any[]) => {
+    return tableData.map((row, idx) => ({
+        ...row,
+        rowKey: 'inner' + row.query + '_' + idx,
+    }));
+}
 
-const InnerTable = () => {
+
+const InnerTable = ({ tableData }: { tableData: any[] }) => {
     return (
         <div className={styles.innerTable}>
             <div className={styles.innerTable__header}>
@@ -281,7 +241,7 @@ const InnerTable = () => {
             <div className={styles.innerTable__tableWrapper}>
                 <RadarTable
                     config={innerTableConfig}
-                    dataSource={innerTableMockData}
+                    dataSource={interTableDataToTableDataDto(tableData || [])}
                     headerCellWrapperStyle={{
                         borderTop: '1px solid #E8E8E8',
                         borderBottom: '1px solid #E8E8E8',
@@ -300,7 +260,7 @@ const InnerTable = () => {
                         height: '76px'
                     }}
                     customCellRender={{
-                        idx: ['product_name'],
+                        idx: ['name'],
                         renderer: (value, record, index, dataIndex) => innerTableCustomCellRender(value, record, index, dataIndex),
                     }}
                     paginationContainerStyle={{ display: 'none' }}

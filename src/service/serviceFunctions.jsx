@@ -212,22 +212,22 @@ export const ServiceFunctions = {
 		return data;
 	},
 
-  getProductGroupsList: async (token) => {
-    const res = await fetchApi('/api/product/product_groups', {
-      method: 'GET',
-      headers: {
-        'content-type': 'application/json',
-        'authorization': 'JWT ' + token
-      },
-    });
+	getProductGroupsList: async (token) => {
+		const res = await fetchApi('/api/product/product_groups', {
+			method: 'GET',
+			headers: {
+				'content-type': 'application/json',
+				'authorization': 'JWT ' + token
+			},
+		});
 
-    if (res.status !== 200) {
-      throw new Error(`Ошибка запроса: ${res.status}`);
-    }
+		if (res.status !== 200) {
+			throw new Error(`Ошибка запроса: ${res.status}`);
+		}
 
-    const data = await res.json();
-    return data;
-  },
+		const data = await res.json();
+		return data;
+	},
 
 	getAbcData: async (viewType, token, selectedRange, idShop, filters, page, sorting) => {
 		//let rangeParams = rangeApiFormat(day);
@@ -287,11 +287,11 @@ export const ServiceFunctions = {
 			body: JSON.stringify(competitorsLinks),
 		});
 
-    if (!res.ok) {
-      throw new Error('Что-то пошло не так! Попробуйте еще раз');
-    }
+		if (!res.ok) {
+			throw new Error('Что-то пошло не так! Попробуйте еще раз');
+		}
 
-    return await res.json();
+		return await res.json();
 	},
 
 	postAiDescriptionGenerator: async (
@@ -588,13 +588,14 @@ export const ServiceFunctions = {
 
 		return await response.json();
 	},
-	getSERPFiltersData: async (token) => {
+	getSERPFiltersData: async (token, signal) => {
 		const response = await fetchApi(`https://radarmarket.ru/api/web-service/search-map/get-regions`, {
 			method: 'GET',
 			headers: {
 				'content-type': 'application/json',
 				authorization: 'JWT ' + token,
 			},
+			signal,
 		});
 
 		if (!response.ok) {
@@ -718,7 +719,7 @@ export const ServiceFunctions = {
 			isError: false,
 			message: ''
 		};
-		setStatus({...initStatus, isLoading: true});
+		setStatus({ ...initStatus, isLoading: true });
 		try {
 			let res = await fetchApi(`https://radarmarket.ru${url}`, {
 				method: 'POST',
@@ -729,15 +730,15 @@ export const ServiceFunctions = {
 			});
 
 			if (!res.ok) {
-				setStatus({...initStatus, isError: true, message: 'Не удалось скачать файл1'});
-        return;
+				setStatus({ ...initStatus, isError: true, message: 'Не удалось скачать файл1' });
+				return;
 			}
 
-      res = await res.blob();
-      return res;
+			res = await res.blob();
+			return res;
 
 		} catch {
-			setStatus({...initStatus, isError: true, message: 'Не удалось скачать файл2'});
+			setStatus({ ...initStatus, isError: true, message: 'Не удалось скачать файл2' });
 		}
 	},
 
@@ -1160,11 +1161,11 @@ export const ServiceFunctions = {
 		const body = getRequestObject(filters, selectedRange, shopId);
 		body.week_starts = [];
 
-		if (Array.isArray(activeWeeks) && activeWeeks.length > 0 && !activeWeeks.find((week) => week.value === 'Все')){
+		if (Array.isArray(activeWeeks) && activeWeeks.length > 0 && !activeWeeks.find((week) => week.value === 'Все')) {
 			body.week_starts = activeWeeks.map((week) => week.value);
 		}
 
-		if (!Array.isArray(activeWeeks) && activeWeeks?.value){
+		if (!Array.isArray(activeWeeks) && activeWeeks?.value) {
 			body.week_starts = [activeWeeks.value];
 		}
 
@@ -1189,7 +1190,7 @@ export const ServiceFunctions = {
 		const body = getRequestObject(filters, null, shopId);
 		body.week_starts = [];
 
-		if (!activeWeeks.find((week) => week.value === 'Все')){
+		if (!activeWeeks.find((week) => week.value === 'Все')) {
 			body.week_starts = activeWeeks.map((week) => week.value);
 		}
 
@@ -1240,16 +1241,16 @@ export const ServiceFunctions = {
 	getTrendAnalysisQuery: async (query, timeFrame, selectedRange) => {
 		let url = `https://radarmarket.ru/api/analytic/query-dynamics/${timeFrame}?query_string=${encodeURIComponent(query)}`;
 
-    	if (timeFrame === 'day') {
+		if (timeFrame === 'day') {
 			url += '&' + rangeApiFormat(selectedRange);
 		}
 
 		const res = await fetch(url, {
-				method: 'GET',
-				headers: {
-					'content-type': 'application/json',
-				},
-			}
+			method: 'GET',
+			headers: {
+				'content-type': 'application/json',
+			},
+		}
 		);
 
 		if (!res.ok) {
@@ -1303,7 +1304,7 @@ export const ServiceFunctions = {
 
 		return data;
 	},
-	getReferalData: async(token, page) => {
+	getReferalData: async (token, page) => {
 		try {
 			const res = await fetch(
 				`${URL}/api/referral_system?page=${page}&per_page=25`,
@@ -1316,19 +1317,19 @@ export const ServiceFunctions = {
 				}
 			);
 
-			if (res.status !== 200){
+			if (res.status !== 200) {
 				throw new Error('Ощибка запроса');
 			}
 
 			return res.json();
 
-		} catch(error) {
+		} catch (error) {
 			console.error('getReferalData ', error);
 			throw new Error(error);
 		}
 
 	},
-	getWithdrawalRequest: async(token) => {
+	getWithdrawalRequest: async (token) => {
 		try {
 			const res = await fetch(
 				`${URL}/api/user/withdrawal_request`,
@@ -1341,18 +1342,18 @@ export const ServiceFunctions = {
 				}
 			);
 
-			if (res.status !== 200){
+			if (res.status !== 200) {
 				throw new Error('Ошибка запроса');
 			}
 
 			return res.json();
 
-		} catch(error) {
+		} catch (error) {
 			console.error('getWithdrawalRequest ', error);
 			throw new Error(error);
 		}
 	},
-	getProductGroups: async(token, groupId) => {
+	getProductGroups: async (token, groupId) => {
 		try {
 			const res = await fetch(`${URL}/api/product/product_groups/${groupId}`, {
 				headers: {
@@ -1361,13 +1362,13 @@ export const ServiceFunctions = {
 				},
 			});
 
-			if (!res.ok){
+			if (!res.ok) {
 				throw new Error('Ошибка запроса');
 			}
 
 			return res.json();
 
-		} catch(error) {
+		} catch (error) {
 			console.log('getProductGroups error:', error);
 			throw new Error(error);
 		}
@@ -1401,7 +1402,7 @@ export const ServiceFunctions = {
 			setIsLoading(false);
 		}
 	},
-	postRnpByArticle: async(token, selectedRange, shopId, filters, signal) => {
+	postRnpByArticle: async (token, selectedRange, shopId, filters, signal) => {
 		try {
 			let body = getFiltersRequestObject(filters, selectedRange, shopId);
 			const res = await fetchApi(
@@ -1417,18 +1418,18 @@ export const ServiceFunctions = {
 				}
 			);
 
-			if (res.status !== 200){
+			if (res.status !== 200) {
 				throw new Error('Ошибка запроса');
 			}
 
 			return res.json();
 
-		} catch(error) {
+		} catch (error) {
 			console.error('postRnpByArticle ', error);
 			throw new Error(error);
 		}
 	},
-	postRnpSummary: async(token, selectedRange, shopId, filters, signal) => {
+	postRnpSummary: async (token, selectedRange, shopId, filters, signal) => {
 		try {
 			let body = getFiltersRequestObject(filters, selectedRange, shopId);
 			const res = await fetchApi(
@@ -1444,22 +1445,22 @@ export const ServiceFunctions = {
 				}
 			);
 
-			if (res.status !== 200){
+			if (res.status !== 200) {
 				throw new Error('Ошибка запроса');
 			}
 
 			return res.json();
 
-		} catch(error) {
+		} catch (error) {
 			console.error('postRnpSummary ', error);
 			throw new Error(error);
 		}
 	},
-	getRnpProducts: async(token, selectedRange, shopId, filters, page, search) => {
+	getRnpProducts: async (token, selectedRange, shopId, filters, page, search) => {
 		try {
 			let body = getFiltersRequestObject(filters, selectedRange, shopId);
 			const res = await fetchApi(
-				`/api/rnp/products?page=${page}&per_page=25${search ? `&search=${search}` : ''}` ,
+				`/api/rnp/products?page=${page}&per_page=25${search ? `&search=${search}` : ''}`,
 				{
 					method: 'POST',
 					headers: {
@@ -1470,20 +1471,20 @@ export const ServiceFunctions = {
 				}
 			);
 
-			if (res.status !== 200){
+			if (res.status !== 200) {
 				throw new Error('Ошибка запроса');
 			}
 
 			return res.json();
 
-		} catch(error) {
+		} catch (error) {
 			if (error !== 'Отмена запроса') {
 				console.error('getRnpProducts ', error);
 			}
 			throw new Error(error);
 		}
 	},
-	deleteRnpId: async(token, id) => {
+	deleteRnpId: async (token, id) => {
 		try {
 			const res = await fetch(
 				`${URL}/api/rnp/${id}`,
@@ -1496,18 +1497,18 @@ export const ServiceFunctions = {
 				}
 			);
 
-			if (res.status !== 200){
+			if (res.status !== 200) {
 				throw new Error('Ошибка запроса');
 			}
 
 			return res.json();
 
-		} catch(error) {
+		} catch (error) {
 			console.error('deleteRnpId ', error);
 			throw new Error(error);
 		}
 	},
-	postUpdateRnpProducts: async(token, idList) => {
+	postUpdateRnpProducts: async (token, idList) => {
 		try {
 			const res = await fetch(
 				`${URL}/api/rnp/`,
@@ -1523,8 +1524,8 @@ export const ServiceFunctions = {
 				}
 			);
 
-			if (res.status !== 200){
-				if (res.status == 400){
+			if (res.status !== 200) {
+				if (res.status == 400) {
 					return res.json();
 				}
 				throw new Error('Ошибка запроса');
@@ -1532,12 +1533,12 @@ export const ServiceFunctions = {
 
 			return res.json();
 
-		} catch(error) {
+		} catch (error) {
 			console.error('postUpdateRnpProducts ', error);
 			throw new Error(error);
 		}
 	},
-	getRnpFilters: async(token) => {
+	getRnpFilters: async (token) => {
 		try {
 			const res = await fetchApi(
 				`/api/rnp/filters`,
@@ -1550,18 +1551,18 @@ export const ServiceFunctions = {
 				}
 			);
 
-			if (res.status !== 200){
+			if (res.status !== 200) {
 				throw new Error('Ошибка запроса');
 			}
 
 			return res.json();
 
-		} catch(error) {
+		} catch (error) {
 			console.error('getRnpFilters ', error);
 			throw new Error(error);
 		}
 	},
-	getOperatingExpensesCategoryGet: async(token, id) => {
+	getOperatingExpensesCategoryGet: async (token, id) => {
 		try {
 			const res = await fetch(
 				`${URL}/api/operating-expenses/category/get`,
@@ -1574,17 +1575,17 @@ export const ServiceFunctions = {
 				}
 			);
 
-			if (res.status !== 200){
+			if (res.status !== 200) {
 				throw new Error('Ошибка запроса');
 			}
 
 			return res.json();
-		} catch(error) {
+		} catch (error) {
 			console.error('getOperatingExpensesCategory ', error);
 			throw new Error(error);
 		}
 	},
-	getOperatingExpensesCategoryGetAll: async(token, pagination) => {
+	getOperatingExpensesCategoryGetAll: async (token, pagination) => {
 		try {
 			const res = await fetchApi(
 				`/api/operating-expenses/category/get-all?page=${pagination.page}&limit=${pagination.limit}`,
@@ -1597,18 +1598,18 @@ export const ServiceFunctions = {
 				}
 			);
 
-			if (res.status !== 200){
+			if (res.status !== 200) {
 				throw new Error('Ошибка запроса');
 			}
 
 			return res.json();
 
-		} catch(error) {
+		} catch (error) {
 			console.error('getOperatingExpensesCategoryGetAll ', error);
 			throw new Error(error);
 		}
 	},
-	postOperatingExpensesCategoryCreate: async(token, category) => {
+	postOperatingExpensesCategoryCreate: async (token, category) => {
 		try {
 			const res = await fetchApi(
 				`/api/operating-expenses/category/create`,
@@ -1627,12 +1628,12 @@ export const ServiceFunctions = {
 			}
 
 			return res.json();
-		} catch(error) {
+		} catch (error) {
 			console.error('postOperatingExpensesCategoryCreate ', error);
 			throw new Error(error);
 		}
 	},
-	patchOperatingExpensesCategory: async(token, category) => {
+	patchOperatingExpensesCategory: async (token, category) => {
 		try {
 			const res = await fetchApi(
 				`/api/operating-expenses/category/update`,
@@ -1651,12 +1652,12 @@ export const ServiceFunctions = {
 			}
 
 			return res.json();
-		} catch(error) {
+		} catch (error) {
 			console.error('aptchOperationConstsEditArticle ', error);
 			throw new Error(error);
 		}
 	},
-	deleteOperatingExpensesCategory: async(token, id) => {
+	deleteOperatingExpensesCategory: async (token, id) => {
 		try {
 			const res = await fetchApi(
 				`/api/operating-expenses/category/delete?category_id=${id}`,
@@ -1672,12 +1673,12 @@ export const ServiceFunctions = {
 				throw new Error('Ошибка запроса');
 			}
 
-		} catch(error) {
+		} catch (error) {
 			console.error('deleteOperatingExpensesCategory ', error);
 			throw new Error(error);
 		}
 	},
-	getOperatingExpensesExpense: async(token) => {
+	getOperatingExpensesExpense: async (token) => {
 		try {
 			const res = {
 				data: [
@@ -1717,12 +1718,12 @@ export const ServiceFunctions = {
 				]
 			};
 			return res;
-		} catch(error) {
+		} catch (error) {
 			console.error('getOperationConstsArticles ', error);
 			throw new Error(error);
 		}
 	},
-	getOperatingExpensesExpenseGetAll: async(token, requestObject) => {
+	getOperatingExpensesExpenseGetAll: async (token, requestObject) => {
 		try {
 			const res = await fetchApi(
 				`/api/operating-expenses/expense/get-all`,
@@ -1736,7 +1737,7 @@ export const ServiceFunctions = {
 				}
 			);
 
-			if (!res.ok){
+			if (!res.ok) {
 				throw new Error('Ошибка запроса');
 			}
 
@@ -1781,7 +1782,7 @@ export const ServiceFunctions = {
 			};
 			return res;
 			*/
-		} catch(error) {
+		} catch (error) {
 			console.error('getAllOperatingExpensesExpense ', error);
 			throw new Error(error);
 		}
@@ -1799,17 +1800,17 @@ export const ServiceFunctions = {
 				}
 			);
 
-			if (!res.ok){
+			if (!res.ok) {
 				throw new Error('Ошибка запроса');
 			}
 
 			return await res.json();
-		} catch(error) {
+		} catch (error) {
 			console.error('getAllOperatingExpensesExpense ', error);
 			throw new Error(error);
 		}
 	},
-	postOperatingExpensesExpenseCreate: async(token, expense, createExpenseUrl) => {
+	postOperatingExpensesExpenseCreate: async (token, expense, createExpenseUrl) => {
 		try {
 			const res = await fetchApi(
 				`/api/${createExpenseUrl}`,
@@ -1828,13 +1829,13 @@ export const ServiceFunctions = {
 			}
 
 			return res.json();
-		} catch(error) {
+		} catch (error) {
 			console.error('postOperatingExpensesExpenseCreate ', error);
 			throw new Error(error);
 		}
 	},
-	
-	patchOperatingExpensesExpense: async(token, expense, updateExpenseUrl) => {
+
+	patchOperatingExpensesExpense: async (token, expense, updateExpenseUrl) => {
 		try {
 			const res = await fetchApi(
 				`/api/${updateExpenseUrl}`,
@@ -1853,15 +1854,15 @@ export const ServiceFunctions = {
 			const data = await res.json();
 			return data;
 
-		} catch(error) {
+		} catch (error) {
 			console.error('patchOperatingExpensesExpense ', error);
 			throw new Error(error);
 		}
 	},
 
-	deleteOperatingExpensesExpenseDelete: async(token, id, isPeriodic) => {
-		const url = isPeriodic 
-			? `/api/operating-expenses/periodic-expense/delete?expense_id=${id}&delete_linked=true` 
+	deleteOperatingExpensesExpenseDelete: async (token, id, isPeriodic) => {
+		const url = isPeriodic
+			? `/api/operating-expenses/periodic-expense/delete?expense_id=${id}&delete_linked=true`
 			: `/api/operating-expenses/expense/delete?expense_id=${id}`;
 
 		try {
@@ -1879,13 +1880,13 @@ export const ServiceFunctions = {
 				throw new Error('Ошибка запроса');
 			}
 
-		} catch(error) {
+		} catch (error) {
 			console.error('deleteOperatingExpensesCategory ', error);
 			throw new Error(error);
 		}
 	},
 
-	getControlMetrics: async(token, metricType, filters = {}, page = 1, per_page = 50, sorting = {}) => {
+	getControlMetrics: async (token, metricType, filters = {}, page = 1, per_page = 50, sorting = {}) => {
 		try {
 			const requestObject = {
 				...getFiltersRequestObject(filters, { period: 30 }), 
@@ -1907,10 +1908,99 @@ export const ServiceFunctions = {
 				throw new Error('Ошибка запроса');
 			}
 			return res.json();
-		} catch(error) {
+		} catch (error) {
 			console.error('Get wb metrics error:', error);
 			throw new Error(error);
 		}
+	},
+	/**
+	 * 
+	 * // Response type for function below (getPositionCheckProductMetaData)
+export interface IProductPositionData {
+	wb_id: number;
+	wb_id_url: string;
+	wb_id_image_link: string;
+	name: string;
+	price: number;
+	subject_name: string;
+	supplier_name: string;
+	supplier_url: string;
+	feedbacks: number;
+	rating: number;
+	visibility: number;
+	avg_place: number;
+	shows: number;
+}
+	 */
+	getPositionCheckProductMetaData: async (token, productId, signal) => {
+			const res = await fetchApi(
+				`https://radarmarket.ru/api/web-service/position-track/meta/${productId}`,
+				{
+					method: 'GET',
+					headers: {
+						'content-type': 'application/json',
+						authorization: 'JWT ' + token,
+					},
+					signal,
+				}
+			);
+			return res;
+	},
+	/*//
+	Response type for function below (getPositionCheckMainTableData)\
+	
+	export interface IQueryData {
+    query: string;
+    frequency: number;
+    total_goods: number;
+    complexity: number;
+    shows: number;
+}
+
+export interface IPresetData {
+    query: string;
+    frequency: number;
+    total_goods: number;
+    complexity: number;
+    shows: number;
+    queries_data: IQueryData[];
+}
+
+export interface IPositionCheckMainTableData {
+    presets_count: number;
+    queries_count: number;
+    keywords: string[];
+    preset_data: IPresetData[];
+}
+	*/
+	getPositionCheckMainTableData: async (token, requestObject, signal) => {
+			const res = await fetchApi(
+				`https://radarmarket.ru/api/web-service/position-track/get-position-track`,
+				{
+					method: 'POST',
+					headers: {
+						'content-type': 'application/json',
+						authorization: 'JWT ' + token,
+					},
+					body: JSON.stringify(requestObject),
+					signal,
+				}
+			);
+			return res;
+	},
+	getSERPDataForPositionCheck: async (token, requestObject) => {
+			const res = await fetchApi(
+				`https://radarmarket.ru/api/web-service/position-track/search-map`,
+				{
+					method: 'POST',
+					headers: {
+						'content-type': 'application/json',
+						authorization: 'JWT ' + token,
+					},
+					body: JSON.stringify(requestObject),
+				}
+			);
+			return res;
 	},
 };
 
