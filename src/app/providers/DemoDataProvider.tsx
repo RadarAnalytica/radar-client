@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import AuthContext from '../../service/AuthContext';
 import { DemoDataService } from '@/service/demo/DemoDataService';
-import type { DemoModeContextType, DemoData } from '../../types/demo';
+import type { DemoModeContextType } from '../../types/demo';
 
 const DemoModeContext = createContext<DemoModeContextType | undefined>(undefined);
 
