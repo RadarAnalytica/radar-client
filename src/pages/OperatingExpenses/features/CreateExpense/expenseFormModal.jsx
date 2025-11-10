@@ -184,6 +184,8 @@ export default function ExpenseFormModal({
 			let shops = [], brands = [], vendor_codes = [];
 
 			targetFilters.forEach(filter => {
+				if (!filter.shop?.is_primary_collect) return;
+
 				const brandsOptions = filter.brands?.data?.map(brand => ({
 					shop: filter.shop?.id,
 					brand_name: brand.value,
@@ -193,6 +195,7 @@ export default function ExpenseFormModal({
 					brand_name: article.brand,
 					vendor_code: article.value,
 				}));
+				
 				shops.push({ ...filter.shop, shop: filter.shop?.id });
 				brands.push(...brandsOptions);
 				vendor_codes.push(...vendorCodesOptions);
@@ -201,6 +204,16 @@ export default function ExpenseFormModal({
 			setDistributeOptions({ shops, brands, vendor_codes });
 		}
 	}, [filters]);
+
+	useEffect(() => {
+		if (isDemoMode) {
+			setDistributeOptions({ 
+				shops: [{ shop: 1, brand_name: 'Демо магазин' }], 
+				brands: [{ shop: 1, brand_name: 'Демо-бренд' }], 
+				vendor_codes: [{ shop: 1, brand_name: 'Демо-бренд', vendor_code: 'Демо-артикул' }] 
+			});
+		}
+	}, [isDemoMode]);
 
 	useEffect(() => {
 		if (mode !== 'create' && editData && distributeOptions.shops.length > 0) {

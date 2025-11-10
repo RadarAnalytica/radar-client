@@ -21,7 +21,7 @@
 
 .tableContainer {
     position: relative;
-    height: auto;
+    max-height: calc(100vh - 280px);
     overflow: auto;
 }
 

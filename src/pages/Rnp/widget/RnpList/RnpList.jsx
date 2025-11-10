@@ -207,19 +207,24 @@ function RnpListItem({ el, index, expanded, setExpanded, setDeleteRnpId, onReord
 	}, [el, onReorder]);
 
 
+
+
 	return (
 		<div className={`${styles.item} ${isDragging ? styles.dragging : ''}`} ref={ref}>
 			<div className={styles.item_content}>
-				{closestEdge === 'top' && (
-					<div className={styles.edge_top}></div>
-				)}
-				<header>
+			{closestEdge === 'top' && (
+				<div className={styles.edge_top}></div>
+			)}
+			<header 	
+					className={`${styles.item__header}`}
+				>
 					<Flex gap={20} align="center">
 						<Button
 							className={styles.item__button}
 							icon={grip}
 							ref={gripRef}
 							onClick={() => setExpanded([])}
+							disabled={expanded === el.article_data.wb_id }
 						/>
 						<div className={styles.item__product}>
 							<RnpItem
@@ -514,7 +519,7 @@ export default function RnpList({ view, expanded, setExpanded, setAddRnpModalSho
 				)}
 				{view === 'total' && (
 					<>
-						{rnpDataTotal && <div className={styles.item_content}>
+						{rnpDataTotal && <div className={`${styles.item_content} ${styles.item_content_total}`}>
 							{loading && <div className={styles.loading_container}>
 								<span className='loader'></span>
 							</div>}

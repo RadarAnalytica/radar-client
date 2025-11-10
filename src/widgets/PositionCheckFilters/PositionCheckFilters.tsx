@@ -1,7 +1,8 @@
 import styles from './PositionCheckFilters.module.css';
 import { Form, Select, ConfigProvider, Input, Segmented } from 'antd';
 import { SelectIcon } from '@/components/sharedComponents/apiServicePagesFiltersComponent/shared/selectIcon/selectIcon';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+import { useDemoMode } from '@/app/providers';
 
 
 // antd theme
@@ -47,6 +48,7 @@ interface IPositionCheckFiltersForm {
 
 
 export const PositionCheckFilters: React.FC<IPositionCheckFiltersForm> = ({ submitHandler, isLoading, regionsData }) => {
+    const { isDemoMode } = useDemoMode();
     const [form] = Form.useForm();
     const [keywordDropdownOpen, setKeywordDropdownOpen] = useState(false);
 
@@ -64,7 +66,7 @@ export const PositionCheckFilters: React.FC<IPositionCheckFiltersForm> = ({ subm
                     onValuesChange={() => {
                         form.submit()
                     }}
-                    disabled={isLoading}
+                    disabled={isDemoMode || isLoading}
                     initialValues={{
                         region: -1257786, // Moscow
                         frequency_from: '',

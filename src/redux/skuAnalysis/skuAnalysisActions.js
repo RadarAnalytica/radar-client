@@ -4,7 +4,7 @@ import { fetchApi } from '@/service/fetchApi';
 
 export const fetchSkuAnalysisMainChartData = createAsyncThunk(
     'skuChartData',
-    async (reqData, { dispatch }) => {
+    async (reqData, { dispatch, signal }) => {
       try {
         let queryString = `?wb_id=${reqData.id}`;
         if (reqData.selectedRange.period) {
@@ -18,6 +18,7 @@ export const fetchSkuAnalysisMainChartData = createAsyncThunk(
           headers: {
             'content-type': 'application/json',
           },
+          signal,
         });
         if (!res.ok) {
           const data = await res.json();
@@ -25,9 +26,11 @@ export const fetchSkuAnalysisMainChartData = createAsyncThunk(
         }
         const data = await res.json();
         //dispatch(skuAnalysisActions.setDataStatus({isLoading: false, isError: false, message: ''}))
-        dispatch(skuAnalysisActions.skuSearchHistoryAdd(reqData.id));
         return data;
       } catch (e) {
+        if (signal?.aborted || e?.name === 'AbortError') {
+          return;
+        }
         dispatch(skuAnalysisActions.setDataStatus({isLoading: false, isError: true, message: 'Что-то пошло не так :('}));
       }
     }
@@ -35,7 +38,7 @@ export const fetchSkuAnalysisMainChartData = createAsyncThunk(
 
 export const fetchSkuAnalysisSkuData = createAsyncThunk(
     'skuMainData',
-    async (reqData, { dispatch }) => {
+    async (reqData, { dispatch, signal }) => {
       try {
         let queryString = `?wb_id=${reqData.id}`;
         if (reqData.selectedRange.period) {
@@ -49,6 +52,7 @@ export const fetchSkuAnalysisSkuData = createAsyncThunk(
           headers: {
             'content-type': 'application/json',
           },
+          signal,
         });
         if (!res.ok) {
           const data = await res.json();
@@ -56,16 +60,18 @@ export const fetchSkuAnalysisSkuData = createAsyncThunk(
         }
         const data = await res.json();
         //dispatch(skuAnalysisActions.setDataStatus({isLoading: false, isError: false, message: ''}))
-        dispatch(skuAnalysisActions.skuSearchHistoryAdd(reqData.id));
         return data;
-      } catch {
+      } catch (e) {
+        if (signal?.aborted || e?.name === 'AbortError') {
+          return;
+        }
         dispatch(skuAnalysisActions.setDataStatus({isLoading: false, isError: true, message: 'Что-то пошло не так :('}));
       }
     }
 );
 export const fetchSkuAnalysisIndicatorsData = createAsyncThunk(
     'skuIndicatorsData',
-    async (reqData, { dispatch }) => {
+    async (reqData, { dispatch, signal }) => {
       try {
         let queryString = `?wb_id=${reqData.id}`;
         if (reqData.selectedRange.period) {
@@ -79,6 +85,7 @@ export const fetchSkuAnalysisIndicatorsData = createAsyncThunk(
           headers: {
             'content-type': 'application/json',
           },
+          signal,
         });
         if (!res.ok) {
           const data = await res.json();
@@ -86,16 +93,18 @@ export const fetchSkuAnalysisIndicatorsData = createAsyncThunk(
         }
         const data = await res.json();
         //dispatch(skuAnalysisActions.setDataStatus({isLoading: false, isError: false, message: ''}))
-        dispatch(skuAnalysisActions.skuSearchHistoryAdd(reqData.id));
         return data;
-      } catch {
+      } catch (e) {
+        if (signal?.aborted || e?.name === 'AbortError') {
+          return;
+        }
         dispatch(skuAnalysisActions.setDataStatus({isLoading: false, isError: true, message: 'Что-то пошло не так :('}));
       }
     }
 );
 export const fetchSkuAnalysisMainTableData = createAsyncThunk(
     'skuMainTableData',
-    async (reqData, { dispatch }) => {
+    async (reqData, { dispatch, signal }) => {
       try {
         let queryString = `?wb_id=${reqData.id}`;
         if (reqData.selectedRange.period) {
@@ -109,6 +118,7 @@ export const fetchSkuAnalysisMainTableData = createAsyncThunk(
           headers: {
             'content-type': 'application/json',
           },
+          signal,
         });
         if (!res.ok) {
           const data = await res.json();
@@ -116,16 +126,18 @@ export const fetchSkuAnalysisMainTableData = createAsyncThunk(
         }
         const data = await res.json();
         //dispatch(skuAnalysisActions.setDataStatus({isLoading: false, isError: false, message: ''}))
-        dispatch(skuAnalysisActions.skuSearchHistoryAdd(reqData.id));
         return data;
-      } catch {
+      } catch (e) {
+        if (signal?.aborted || e?.name === 'AbortError') {
+          return;
+        }
         dispatch(skuAnalysisActions.setDataStatus({isLoading: false, isError: true, message: 'Что-то пошло не так :('}));
       }
     }
 );
 export const fetchSkuAnalysisByColorTableData = createAsyncThunk(
     'skuByColorTableData',
-    async (reqData, { dispatch }) => {
+    async (reqData, { dispatch, signal }) => {
       try {
         let queryString = `?wb_id=${reqData.id}`;
         if (reqData.selectedRange.period) {
@@ -139,6 +151,7 @@ export const fetchSkuAnalysisByColorTableData = createAsyncThunk(
           headers: {
             'content-type': 'application/json',
           },
+          signal,
         });
         if (!res.ok) {
           const data = await res.json();
@@ -146,16 +159,18 @@ export const fetchSkuAnalysisByColorTableData = createAsyncThunk(
         }
         const data = await res.json();
         //dispatch(skuAnalysisActions.setDataStatus({isLoading: false, isError: false, message: ''}))
-        dispatch(skuAnalysisActions.skuSearchHistoryAdd(reqData.id));
         return data;
-      } catch {
+      } catch (e) {
+        if (signal?.aborted || e?.name === 'AbortError') {
+          return;
+        }
         dispatch(skuAnalysisActions.setDataStatus({isLoading: false, isError: true, message: 'Что-то пошло не так :('}));
       }
     }
 );
 export const fetchSkuAnalysisByWarehousesTableData = createAsyncThunk(
     'skuByWarehouseTableData',
-    async (reqData, { dispatch }) => {
+    async (reqData, { dispatch, signal }) => {
       try {
         let queryString = `?wb_id=${reqData.id}`;
         if (reqData.selectedRange.period) {
@@ -169,6 +184,7 @@ export const fetchSkuAnalysisByWarehousesTableData = createAsyncThunk(
           headers: {
             'content-type': 'application/json',
           },
+          signal,
         });
         if (!res.ok) {
           const data = await res.json();
@@ -176,16 +192,18 @@ export const fetchSkuAnalysisByWarehousesTableData = createAsyncThunk(
         }
         const data = await res.json();
         //dispatch(skuAnalysisActions.setDataStatus({isLoading: false, isError: false, message: ''}))
-        dispatch(skuAnalysisActions.skuSearchHistoryAdd(reqData.id));
         return data;
-      } catch {
+      } catch (e) {
+        if (signal?.aborted || e?.name === 'AbortError') {
+          return;
+        }
         dispatch(skuAnalysisActions.setDataStatus({isLoading: false, isError: true, message: 'Что-то пошло не так :('}));
       }
     }
 );
 export const fetchSkuAnalysisBySizeTableData = createAsyncThunk(
     'skuBySizeTableData',
-    async (reqData, { dispatch }) => {
+    async (reqData, { dispatch, signal }) => {
       try {
         let queryString = `?wb_id=${reqData.id}`;
         if (reqData.selectedRange.period) {
@@ -199,6 +217,7 @@ export const fetchSkuAnalysisBySizeTableData = createAsyncThunk(
           headers: {
             'content-type': 'application/json',
           },
+          signal,
         });
         if (!res.ok) {
           const data = await res.json();
@@ -206,9 +225,11 @@ export const fetchSkuAnalysisBySizeTableData = createAsyncThunk(
         }
         const data = await res.json();
         //dispatch(skuAnalysisActions.setDataStatus({isLoading: false, isError: false, message: ''}))
-        dispatch(skuAnalysisActions.skuSearchHistoryAdd(reqData.id));
         return data;
-      } catch {
+      } catch (e) {
+        if (signal?.aborted || e?.name === 'AbortError') {
+          return;
+        }
         dispatch(skuAnalysisActions.setDataStatus({isLoading: false, isError: true, message: 'Что-то пошло не так :('}));
       }
     }

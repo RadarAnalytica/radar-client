@@ -54,6 +54,7 @@ export default function OperatingExpenses() {
 		limit: 25,
 		total: 1,
 	});
+	const prevPageRef = useRef(expPagination.page);
 	const [categoryPagination, setCategoryPagination] = useState({
 		page: 1,
 		limit: 25,
@@ -162,11 +163,7 @@ export default function OperatingExpenses() {
 			setExpense(res.data);
 			setTotalSum(res.total_sum || 0);
 			progress.complete();
-			setExpPagination({
-				page: res.page,
-				limit: res.limit,
-				total: res.total_pages,
-			});
+			setExpPagination((prev) => ({ ...prev, total: res.total_pages }));
 			setTimeout(() => {
 				progress.reset();
 				setLoading(false);
@@ -179,19 +176,28 @@ export default function OperatingExpenses() {
 	};
 
 	useEffect(() => {
-		if (activeBrand?.is_primary_collect) {
-			updateCategories();
-		} else {
-			setCategoryLoading(false);
-		}
-	}, [activeBrand]);
+		if (activeBrand) {
+			if (activeBrand?.is_primary_collect) {
+            	updateCategories();
+			} else {
+				setCategoryLoading(false);
+			}
+        }
+    }, [activeBrand, categoryPagination.page]);
 
 	useEffect(() => {
-		if (activeBrand?.is_primary_collect) {
-            updateExpenses();
-        } else {
-			setLoading(false);
-		}
+		if (activeBrand) {
+			if (activeBrand?.is_primary_collect) {
+				if (prevPageRef.current === expPagination.page) {
+                    setExpPagination((prev) => (prev.page === 1 ? prev : { ...prev, page: 1 }));
+                } else {
+                    prevPageRef.current = expPagination.page;
+                }
+            	updateExpenses();
+			} else {
+				setLoading(false);
+			}
+        }
     }, [activeBrand, activeArticle, selectedRange, expPagination.page, activeExpenseCategory]);
 
 	const modalExpenseHandlerClose = () => {
@@ -461,7 +467,7 @@ export default function OperatingExpenses() {
 				{loading && <Loader loading={loading} progress={progress.value} />}
 
 				{/* Расходы */}
-				{!loading && activeBrand?.is_primary_collect && view === 'expense' && (
+				{!loading && activeBrand && activeBrand?.is_primary_collect && view === 'expense' && (
 					expenseData.data?.length > 0
 					? <TableWidget
 						loading={loading}
@@ -480,7 +486,7 @@ export default function OperatingExpenses() {
 				)}
 
 				{/* Статьи */}
-				{!loading && activeBrand?.is_primary_collect && view === 'category' && (
+				{!loading && activeBrand && activeBrand?.is_primary_collect && view === 'category' && (
 					categoryData.data?.length > 0 
 					? <div className={styles.container}>
 						<TableWidget

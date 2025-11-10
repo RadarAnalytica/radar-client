@@ -28,24 +28,34 @@ const SkuIdPage = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
+        if (!params?.id || !isFiltersLoaded) return undefined;
+
+        let isActive = true;
+
+        dispatch(skuAnalysisActions.setDataStatus({ isLoading: true, isError: false, message: '' }));
+
+        const requests = [
+            dispatch(fetchSkuAnalysisSkuData({ id: params.id, selectedRange })),
+            dispatch(fetchSkuAnalysisMainChartData({ id: params.id, selectedRange })),
+            dispatch(fetchSkuAnalysisIndicatorsData({ id: params.id, selectedRange })),
+            dispatch(fetchSkuAnalysisMainTableData({ id: params.id, selectedRange })),
+            dispatch(fetchSkuAnalysisByColorTableData({ id: params.id, selectedRange })),
+            dispatch(fetchSkuAnalysisByWarehousesTableData({ id: params.id, selectedRange })),
+            dispatch(fetchSkuAnalysisBySizeTableData({ id: params.id, selectedRange }))
+        ];
+
         const loadSkuAnalysisData = async () => {
-            if (!params?.id || !isFiltersLoaded) return;
-
             try {
-                dispatch(skuAnalysisActions.setDataStatus({ isLoading: true, isError: false, message: '' }));
+                await Promise.all(requests);
 
-                await Promise.all([
-                    dispatch(fetchSkuAnalysisSkuData({ id: params.id, selectedRange })),
-                    dispatch(fetchSkuAnalysisMainChartData({ id: params.id, selectedRange })),
-                    dispatch(fetchSkuAnalysisIndicatorsData({ id: params.id, selectedRange })),
-                    dispatch(fetchSkuAnalysisMainTableData({ id: params.id, selectedRange })),
-                    dispatch(fetchSkuAnalysisByColorTableData({ id: params.id, selectedRange })),
-                    dispatch(fetchSkuAnalysisByWarehousesTableData({ id: params.id, selectedRange })),
-                    dispatch(fetchSkuAnalysisBySizeTableData({ id: params.id, selectedRange }))
-                ]);
-
-                dispatch(skuAnalysisActions.setDataStatus({ isLoading: false, isError: false, message: '' }));
+                if (isActive) {
+                    dispatch(skuAnalysisActions.setDataStatus({ isLoading: false, isError: false, message: '' }));
+                }
             } catch (error) {
+                if (!isActive || error?.name === 'AbortError') {
+                    return;
+                }
+
                 dispatch(skuAnalysisActions.setDataStatus({
                     isLoading: false,
                     isError: true,
@@ -55,7 +65,16 @@ const SkuIdPage = () => {
         };
 
         loadSkuAnalysisData();
-    }, [params, selectedRange, isFiltersLoaded]);
+
+        return () => {
+            isActive = false;
+            requests.forEach((request) => {
+                if (typeof request?.abort === 'function') {
+                    request.abort();
+                }
+            });
+        };
+    }, [dispatch, params, selectedRange, isFiltersLoaded]);
 
     return (
         <main className={styles.page}>

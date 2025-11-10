@@ -1,4 +1,4 @@
-import { useContext, useEffect, useLayoutEffect, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import styles from "./PositionCheckID.module.css";
 import Header from '@/components/sharedComponents/header/header';
 import MobilePlug from '@/components/sharedComponents/mobilePlug/mobilePlug';
@@ -145,30 +145,44 @@ const PositionCheckID = () => {
     const [regionsData, setRegionsData] = useState<any[]>([{ dest: -1257786, city_name: 'Москва', region_name: "Центральный ФО", }]);
     const [productMetaData, setProductMetaData] = useState<IProductPositionMetaData | null>(null);
     const [mainTableData, setMainTableData] = useState<IPositionCheckMainTableData | null>(null);
+    const abortControllersRef = useRef<{ product: AbortController | null, regions: AbortController | null, mainTable: AbortController | null }>({
+        product: null,
+        regions: null,
+        mainTable: null,
+    });
 
     const getPositionCheckProductMetaData = async (authToken: string, paramsId: string) => {
+        const controller = new AbortController();
+        abortControllersRef.current.product = controller;
         setMetaAndRegionsRequestStatus({ ...initialRequestStatus, isLoading: true });
         try {
-            const res = await ServiceFunctions.getPositionCheckProductMetaData(authToken, paramsId);
+            const res = await ServiceFunctions.getPositionCheckProductMetaData(authToken, paramsId, controller.signal);
             if (!res.ok) {
                 setMetaAndRegionsRequestStatus({ ...initialRequestStatus, isError: true, message: 'Ошибка запроса' });
                 return;
             }
 
             const data: IProductPositionMetaData = await res.json();
+            if (controller.signal.aborted) return;
             setProductMetaData(data);
+            setMetaAndRegionsRequestStatus(initialRequestStatus);
         } catch (error) {
+            if ((error as any)?.name === 'AbortError') {
+                return;
+            }
             console.error(error);
-        } finally {
-            setMetaAndRegionsRequestStatus({ ...initialRequestStatus, isLoading: false });
+            setMetaAndRegionsRequestStatus({ ...initialRequestStatus, isError: true, message: 'Ошибка запроса' });
         }
 
     }
 
-    const getRegionsData = async (authToken: string, paramsId: string) => {
+    const getRegionsData = async (authToken: string, _paramsId?: string) => {
+        const controller = new AbortController();
+        abortControllersRef.current.regions = controller;
         setMainTableRequestStatus({ ...initialRequestStatus, isLoading: true });
         try {
-            let res = await ServiceFunctions.getSERPFiltersData(authToken)
+            let res = await ServiceFunctions.getSERPFiltersData(authToken, controller.signal)
+            if (controller.signal.aborted) return;
             setRegionsData(res)
             const initRequestObject = {
                 dest: res.find((item: Record<string, any>) => item.city_name === 'Москва')?.dest || -1257786,
@@ -181,44 +195,61 @@ const PositionCheckID = () => {
             }
             setRequestObject(initRequestObject);
         } catch (error) {
+            if ((error as any)?.name === 'AbortError') {
+                return;
+            }
             console.error(error);
+            setMainTableRequestStatus({ ...initialRequestStatus, isError: true, message: 'Ошибка запроса' });
             return;
-        } finally {
         }
     }
 
     const getPositionCheckMainTableData = async (requestObject: Record<string, any>, authToken: string) => {
+        const controller = new AbortController();
+        abortControllersRef.current.mainTable = controller;
         if (!mainTableRequestStatus.isLoading) {
             setMainTableRequestStatus({ ...initialRequestStatus, isLoading: true });
         };
         try {
-            const res = await ServiceFunctions.getPositionCheckMainTableData(authToken, requestObject);
+            const res = await ServiceFunctions.getPositionCheckMainTableData(authToken, requestObject, controller.signal);
             if (!res.ok) {
-                throw new Error('Ошибка запроса');
+                setMainTableRequestStatus({ ...initialRequestStatus, isError: true, message: 'Ошибка запроса' });
+                return;
             }
 
             const data: IPositionCheckMainTableData = await res.json();
+            if (controller.signal.aborted) return;
             setMainTableData(data);
-            setMainTableRequestStatus({ ...initialRequestStatus });
+            setMainTableRequestStatus(initialRequestStatus);
         } catch (error) {
+            if ((error as any)?.name === 'AbortError') {
+                return;
+            }
+            console.error(error);
             setMainTableRequestStatus({ ...initialRequestStatus, isError: true, message: 'Ошибка запроса' });
         }
     }
 
     useEffect(() => {
         if (params?.id && authToken) {
-            getRegionsData(authToken, params.id)
             getPositionCheckProductMetaData(authToken, params.id)
+            getRegionsData(authToken, params.id)
         }
-    }, [params])
+    }, [params?.id])
 
     useEffect(() => {
-        if (requestObject && params?.id) {
+        if (requestObject && params?.id && authToken && !metaAndRegionsRequestStatus.isError) {
             getPositionCheckMainTableData({ ...requestObject, wb_id: params.id }, authToken)
         }
     }, [requestObject])
 
-
+    useEffect(() => {
+        return () => {
+            abortControllersRef?.current?.product?.abort();
+            abortControllersRef?.current?.regions?.abort();
+            abortControllersRef?.current?.mainTable?.abort();
+        }
+    }, [])
 
 
     return (
@@ -324,7 +355,7 @@ const PositionCheckID = () => {
             </section>
             {/* ---------------------- */}
             <ErrorModal
-                open={false}
+                open={metaAndRegionsRequestStatus.isError || mainTableRequestStatus.isError}
                 footer={null}
                 onOk={() => {
                     setMetaAndRegionsRequestStatus(initialRequestStatus);
@@ -341,7 +372,7 @@ const PositionCheckID = () => {
                     setMainTableRequestStatus(initialRequestStatus);
                     navigate('/position-check');
                 }}
-                message={metaAndRegionsRequestStatus.message}
+                message={metaAndRegionsRequestStatus.message || mainTableRequestStatus.message || 'Что-то пошло не так. Попробуйте одновить страницу.'}
             />
         </main>
     );

@@ -588,13 +588,14 @@ export const ServiceFunctions = {
 
 		return await response.json();
 	},
-	getSERPFiltersData: async (token) => {
+	getSERPFiltersData: async (token, signal) => {
 		const response = await fetchApi(`https://radarmarket.ru/api/web-service/search-map/get-regions`, {
 			method: 'GET',
 			headers: {
 				'content-type': 'application/json',
 				authorization: 'JWT ' + token,
 			},
+			signal,
 		});
 
 		if (!response.ok) {
@@ -1885,7 +1886,7 @@ export const ServiceFunctions = {
 		}
 	},
 
-	getControlMetrics: async (token, metricType, filters = {}, page = 1, per_page = 50, search = '') => {
+	getControlMetrics: async (token, metricType, filters = {}, page = 1, per_page = 50, sorting = {}) => {
 		try {
 			const requestObject = {
 				...getFiltersRequestObject(filters, { period: 30 }), 
@@ -1931,7 +1932,7 @@ export interface IProductPositionData {
 	shows: number;
 }
 	 */
-	getPositionCheckProductMetaData: async (token, productId) => {
+	getPositionCheckProductMetaData: async (token, productId, signal) => {
 			const res = await fetchApi(
 				`https://radarmarket.ru/api/web-service/position-track/meta/${productId}`,
 				{
@@ -1940,6 +1941,7 @@ export interface IProductPositionData {
 						'content-type': 'application/json',
 						authorization: 'JWT ' + token,
 					},
+					signal,
 				}
 			);
 			return res;
@@ -1971,7 +1973,7 @@ export interface IPositionCheckMainTableData {
     preset_data: IPresetData[];
 }
 	*/
-	getPositionCheckMainTableData: async (token, requestObject) => {
+	getPositionCheckMainTableData: async (token, requestObject, signal) => {
 			const res = await fetchApi(
 				`https://radarmarket.ru/api/web-service/position-track/get-position-track`,
 				{
@@ -1981,6 +1983,7 @@ export interface IPositionCheckMainTableData {
 						authorization: 'JWT ' + token,
 					},
 					body: JSON.stringify(requestObject),
+					signal,
 				}
 			);
 			return res;
