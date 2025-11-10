@@ -5,6 +5,7 @@ import { formatPrice } from '../../../../../service/utils';
 import { Tooltip, Pagination, ConfigProvider, Progress } from 'antd';
 import { Table as RadarTable } from 'radar-ui';
 import { newTableConfig } from '../../shared/configs/newTableConfig';
+import Loader from '@/components/ui/Loader';
 
 /**
  * Краткое описание:
@@ -78,7 +79,7 @@ const TableWidget = ({ stockAnalysisFilteredData, loading, progress }) => {
     const [tableData, setTableData] = useState(); // данные для рендера таблицы
     const [sortState, setSortState] = useState(initSortState); // стейт сортировки (см initSortState)
     const [paginationState, setPaginationState] = useState({ current: 1, total: 50, pageSize: 25 });
-    const [ tableConfig, setTableConfig ] = useState();
+    const [tableConfig, setTableConfig] = useState();
 
     // задаем начальную дату
     useEffect(() => {
@@ -197,25 +198,9 @@ const TableWidget = ({ stockAnalysisFilteredData, loading, progress }) => {
         current?.scrollTo({ top: 0, behavior: 'smooth', duration: 100 });
     }, [paginationState.current]);
 
+
     if (loading) {
-        return (
-            <div className={styles.widget}>
-                <div className={styles.widget__loaderWrapper}>
-                    <span className='loader'></span>
-                    {progress !== null &&
-                        <div className={styles.loadingProgress}>
-                            <Progress
-                                percent={progress}
-                                size='small'
-                                showInfo={false}
-                                strokeColor='#5329FF'
-                                strokeLinecap={1}
-                            />
-                        </div>
-                    }
-                </div>
-            </div>
-        );
+        return <Loader loading={loading} progress={progress} />;
     }
 
     return (
