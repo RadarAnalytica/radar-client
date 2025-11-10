@@ -184,6 +184,8 @@ export default function ExpenseFormModal({
 			let shops = [], brands = [], vendor_codes = [];
 
 			targetFilters.forEach(filter => {
+				if (!filter.shop?.is_primary_collect) return;
+
 				const brandsOptions = filter.brands?.data?.map(brand => ({
 					shop: filter.shop?.id,
 					brand_name: brand.value,
@@ -193,6 +195,7 @@ export default function ExpenseFormModal({
 					brand_name: article.brand,
 					vendor_code: article.value,
 				}));
+				
 				shops.push({ ...filter.shop, shop: filter.shop?.id });
 				brands.push(...brandsOptions);
 				vendor_codes.push(...vendorCodesOptions);
