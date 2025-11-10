@@ -22,7 +22,7 @@ const FiltersProvider = ({ children }: { children: React.ReactNode }) => {
     const [isFiltersLoading, setIsFiltersLoading] = useState(false);
 
     const getFiltersData = async () => {
-      if (!authToken) return;
+      // if (!authToken) return;
       setIsFiltersLoading(true);
       try {
         let shopsResponse = await fetchApi('/api/shop/all', {
@@ -53,10 +53,10 @@ const FiltersProvider = ({ children }: { children: React.ReactNode }) => {
 
     // Отслеживаем изменения authToken
     useEffect(() => {
-        if (user) {
-            getFiltersData();
-        }
-    }, [user]);
+      if (authToken && !activeBrand) {
+        getFiltersData();
+      }
+    }, [authToken]);
 
     //Данные магазина [A-Za-z0-9]+ успешно собраны\. Результаты доступны на страницах сервиса
     useEffect(() => {
