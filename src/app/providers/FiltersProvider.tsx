@@ -53,10 +53,10 @@ const FiltersProvider = ({ children }: { children: React.ReactNode }) => {
 
     // Отслеживаем изменения authToken
     useEffect(() => {
-      if (authToken && !activeBrand) {
+      if (authToken && !activeBrand && !isFiltersLoading) {
         getFiltersData();
       }
-    }, [authToken]);
+    }, [authToken, isFiltersLoading]);
 
     //Данные магазина [A-Za-z0-9]+ успешно собраны\. Результаты доступны на страницах сервиса
     useEffect(() => {
