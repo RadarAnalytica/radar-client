@@ -54,6 +54,7 @@ export default function OperatingExpenses() {
 		limit: 25,
 		total: 1,
 	});
+	const prevPageRef = useRef(expPagination.page);
 	const [categoryPagination, setCategoryPagination] = useState({
 		page: 1,
 		limit: 25,
@@ -181,16 +182,21 @@ export default function OperatingExpenses() {
 	useEffect(() => {
 		if (activeBrand) {
 			if (activeBrand?.is_primary_collect) {
-				updateCategories();
+            	updateCategories();
 			} else {
-				setCategoryLoading(false);
+				setLoading(false);
 			}
-		}
-	}, [activeBrand]);
+        }
+    }, [categoryPagination.page]);
 
 	useEffect(() => {
 		if (activeBrand) {
 			if (activeBrand?.is_primary_collect) {
+				if (prevPageRef.current === expPagination.page) {
+					setExpPagination({ ...expPagination, page: 1 });
+				} else {
+					prevPageRef.current = expPagination.page;
+				}
             	updateExpenses();
 			} else {
 				setLoading(false);
