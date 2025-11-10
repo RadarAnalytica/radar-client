@@ -79,6 +79,7 @@ const WbMetricsPage = React.lazy(() => import('./pages/wbMetricsPage/wbMetricsPa
 const PositionCheckPage = React.lazy(() => import("@/pages/PositionCheck/PositionCheck"));
 const PositionCheckIDPage = React.lazy(() => import("@/pages/PositionCheck/PositionCheckID"));
 const KeywordsSelectionPage = React.lazy(() => import("@/pages/KeywordsSelectionPage/KeywordsSelectionPage"));
+const PositionTrackingMainPage = React.lazy(() => import("@/pages/PositionTracking/PositionTrackingMainPage"));
 
 // During migration, allow missing props on ProtectedRoute
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -160,6 +161,7 @@ function App() {
                 <Route path='/serp' element={<ProtectedRoute expireProtected onboardProtected routeRuName='SERP'><SerpPage /></ProtectedRoute>} />
                 <Route path='/control/drr' element={<ProtectedRoute expireProtected onboardProtected routeRuName='Контроль ДРР'><WbMetricsPage key='drr' /></ProtectedRoute>} />
                 <Route path='/control/spp' element={<ProtectedRoute expireProtected onboardProtected routeRuName='Контроль СПП'><WbMetricsPage key='spp' /></ProtectedRoute>} />
+                <Route path='/position-tracking' element={<ProtectedRoute expireProtected routeRuName='Трекинг позиций'><PositionTrackingMainPage /></ProtectedRoute>} />
                 {/* Public routes */}
                 <Route path='/admin/article/demo/:slugOrId' element={<Suspense fallback={<LoaderPage />}><ArticleViewPage /></Suspense>} />
                 <Route path='/calculate' element={<Suspense fallback={<LoaderPage />}>{deviceRegexp.test(userAgent) ? <UnitCalculatorPage /> : <UnitCalculatorPageDesktop />}</Suspense>} />

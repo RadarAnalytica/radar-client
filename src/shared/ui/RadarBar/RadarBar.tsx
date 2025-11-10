@@ -60,6 +60,7 @@ interface RadarBarProps {
     actionButtonParams?: {
         text: string;
         action: () => void;
+        style?: React.CSSProperties;
     }
     compareValue?: {
         comparativeValue?: number | string; // %
@@ -160,7 +161,7 @@ export const RadarBar: React.FC<RadarBarProps> = ({
                             <Link to={linkParams.url || '/'} className={styles.bar__link}>{linkParams.text || 'Подробнее'}</Link>
                         }
                         {actionButtonParams &&
-                            <button className={styles.bar__link} onClick={actionButtonParams.action}>{actionButtonParams.text || 'Подробнее'}</button>
+                            <button className={styles.bar__link} style={actionButtonParams.style || {}} onClick={actionButtonParams.action}>{actionButtonParams.text || 'Подробнее'}</button>
                         }
                     </div>
                 }
