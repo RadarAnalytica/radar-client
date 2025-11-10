@@ -7,7 +7,7 @@
 
 .tableContainer {
   position: relative;
-  height: 100%;
+  max-height: 80vh;
   width: 100%;
   overflow: auto;
   /* Firefox scrollbar */

@@ -375,7 +375,6 @@ export const getTableConfig = (initialData) => {
 
 
 export const getTableData = (initialData) => {
-  console.log('initialData', initialData);
   const childrenData = [];
   const tableData = [];
   metricsOrder.forEach((item, index) => {
