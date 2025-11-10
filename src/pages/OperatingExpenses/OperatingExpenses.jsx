@@ -163,11 +163,7 @@ export default function OperatingExpenses() {
 			setExpense(res.data);
 			setTotalSum(res.total_sum || 0);
 			progress.complete();
-			setExpPagination({
-				page: res.page,
-				limit: res.limit,
-				total: res.total_pages,
-			});
+			setExpPagination((prev) => ({ ...prev, total: res.total_pages }));
 			setTimeout(() => {
 				progress.reset();
 				setLoading(false);
@@ -187,16 +183,16 @@ export default function OperatingExpenses() {
 				setLoading(false);
 			}
         }
-    }, [categoryPagination.page]);
+    }, [activeBrand, categoryPagination.page]);
 
 	useEffect(() => {
 		if (activeBrand) {
 			if (activeBrand?.is_primary_collect) {
 				if (prevPageRef.current === expPagination.page) {
-					setExpPagination({ ...expPagination, page: 1 });
-				} else {
-					prevPageRef.current = expPagination.page;
-				}
+                    setExpPagination((prev) => (prev.page === 1 ? prev : { ...prev, page: 1 }));
+                } else {
+                    prevPageRef.current = expPagination.page;
+                }
             	updateExpenses();
 			} else {
 				setLoading(false);
