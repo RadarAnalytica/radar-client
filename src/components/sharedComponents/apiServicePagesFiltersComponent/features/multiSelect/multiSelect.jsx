@@ -4,6 +4,13 @@ import { SelectIcon } from '../../shared';
 import { Select, ConfigProvider, Input, Button, Tag } from 'antd';
 import { Link } from 'react-router-dom';
 
+
+const getOnlyUniqueOptions = (options) => {
+    return options.filter((option, index, self) =>
+        index === self.findIndex((t) => t.value === option.value)
+    );
+};
+
 export const MultiSelect = (
     {
         selectId, //string
@@ -183,9 +190,9 @@ export const MultiSelect = (
                         tagRender={tagRender}
                         suffixIcon={icon}
                         className={styles.plainSelect__select}
-                        options={optionsData
+                        options={getOnlyUniqueOptions(optionsData)
                             .filter((_) => typeof _.value === 'string' ? _.value.toLowerCase().includes(searchState.toLowerCase()) : true)
-                            .map((option, id) => ({ ...option, key: option.id || option.value}))
+                            .map((option, id) => ({ ...option, key: JSON.stringify(option)}))
                         }
                         value={(Array.isArray(selectState) ? selectState : [])}
                         id={selectId}

@@ -16,7 +16,7 @@ const FiltersProvider = ({ children }: { children: React.ReactNode }) => {
 
     const { authToken } = useContext(AuthContext);
     const dispatch = useDispatch<AppDispatch>();
-    const { activeBrand, shops } = useAppSelector((store: RootState) => store.filters);
+    const { activeBrand } = useAppSelector((store: RootState) => store.filters);
     const { messages } = useAppSelector((state: RootState) => state.messagesSlice);
     const prevMessages = useRef<any[] | null>(null);
     const [isFiltersLoading, setIsFiltersLoading] = useState(false);
@@ -53,7 +53,7 @@ const FiltersProvider = ({ children }: { children: React.ReactNode }) => {
 
     // Отслеживаем изменения authToken
     useEffect(() => {
-        if (authToken && (!shops || shops.length === 0)) {
+        if (authToken) {
             getFiltersData();
         }
     }, [authToken]);
