@@ -180,7 +180,7 @@ export default function OperatingExpenses() {
 			if (activeBrand?.is_primary_collect) {
             	updateCategories();
 			} else {
-				setLoading(false);
+				setCategoryLoading(false);
 			}
         }
     }, [activeBrand, categoryPagination.page]);
