@@ -2,6 +2,7 @@
 /* eslint-disable no-undef */
 
 const DEBUG = location.hostname === 'localhost';
+const REPORT_URL = DEBUG ? "http://localhost:8080/api/error-report/" : "/api/error-report/";
 const DB_NAME = "error-reporter-db";
 const DB_VERSION = 1;
 const STORE_NAME = "queue";
@@ -9,12 +10,12 @@ const RETRY_DELAYS = [
   5000,
   10000,
   20000,
-  40000,
-  80000,
-  160000,
-  320000,
-  640000,
-];
+  60000,
+  120000,
+  240000,
+  480000,
+  960000,
+]; // 5s, 10s, 20s, 1m, 2m, 4m, 8m, 16m
 
 const log = (...args) => {
   if (DEBUG) {
@@ -170,11 +171,11 @@ async function flushQueue() {
         page_url: envelope.page_url,
         user_agent: envelope.user_agent,
         stack_trace: envelope.stack_trace,
-        session_id: envelope.session_id,
+        user: envelope.user,
         extra: envelope.extra,
       };
 
-      const response = await fetch("/api/error-report/", {
+      const response = await fetch(REPORT_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",

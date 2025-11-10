@@ -6,7 +6,7 @@ type ErrorReportPayload = {
   page_url: string;
   user_agent?: string | null;
   stack_trace?: string | null;
-  session_id?: string | null;
+  user?: { id: number, email: string } | null;
   extra?: Record<string, unknown> | null;
 };
 
@@ -21,19 +21,18 @@ type SyncManager = {
   register: (tag: string) => Promise<void>;
 };
 
-const isBrowser = typeof window !== "undefined";
-const DEBUG = isBrowser && (window as any).__ERROR_REPORTER_DEBUG__ !== false;
+const DEBUG = location.hostname === 'localhost';
 
 const RETRY_DELAYS = [
   5000,
   10000,
   20000,
-  40000,
-  80000,
-  160000,
-  320000,
-  640000,
-];
+  60000,
+  120000,
+  240000,
+  480000,
+  960000,
+]; // 5s, 10s, 20s, 1m, 2m, 4m, 8m, 16m
 
 const LOCAL_QUEUE_KEY = "__error_reporter_queue__";
 
@@ -45,14 +44,7 @@ function debugLog(...args: unknown[]) {
   }
 }
 
-function ensureBrowser() {
-  if (!isBrowser) {
-    throw new Error("errorReporter can only be used in a browser context");
-  }
-}
-
 function normalizePayload(payload: Partial<ErrorReportPayload>): ErrorReportEnvelope {
-  ensureBrowser();
   const pageUrl = window.location?.href ?? "";
   const userAgent = navigator?.userAgent ?? null;
 
@@ -65,7 +57,7 @@ function normalizePayload(payload: Partial<ErrorReportPayload>): ErrorReportEnve
     page_url: payload.page_url?.slice(0, 2_048) ?? pageUrl.slice(0, 2_048),
     user_agent: payload.user_agent?.slice(0, 1_024) ?? userAgent?.slice(0, 1_024) ?? null,
     stack_trace: payload.stack_trace?.slice(0, 25_000) ?? null,
-    session_id: payload.session_id?.slice(0, 255) ?? null,
+    user: payload.user ?? null,
     extra: payload.extra ?? null,
     createdAt: Date.now(),
     attempt: 0,
@@ -73,7 +65,7 @@ function normalizePayload(payload: Partial<ErrorReportPayload>): ErrorReportEnve
 }
 
 function supportsServiceWorker() {
-  return isBrowser && "serviceWorker" in navigator;
+  return "serviceWorker" in navigator;
 }
 
 function supportsBackgroundSync() {
@@ -159,7 +151,7 @@ async function sendDirectly(envelope: ErrorReportEnvelope) {
         page_url: envelope.page_url,
         user_agent: envelope.user_agent,
         stack_trace: envelope.stack_trace,
-        session_id: envelope.session_id,
+        user: envelope.user,
         extra: envelope.extra,
       }),
     });
@@ -235,7 +227,7 @@ async function handOffToServiceWorker(envelope: ErrorReportEnvelope) {
 }
 
 export async function initErrorReporter() {
-  if (!isBrowser || isInitialized) {
+  if (isInitialized) {
     return;
   }
 
@@ -269,8 +261,6 @@ export async function initErrorReporter() {
 }
 
 export async function reportError(payload: Partial<ErrorReportPayload>) {
-  if (!isBrowser) return;
-
   const normalized = normalizePayload(payload);
   debugLog("Reporting error", normalized);
 
@@ -290,14 +280,10 @@ export async function reportError(payload: Partial<ErrorReportPayload>) {
 }
 
 // Expose debug API on window for manual testing
-if (isBrowser) {
-  (window as any).__errorReporter = {
-    init: initErrorReporter,
-    report: reportError,
-    flushLocalQueue,
-    readLocalQueue,
-    handOffToServiceWorker,
-  };
-}
-
-
+(window as any).__errorReporter = {
+  init: initErrorReporter,
+  report: reportError,
+  flushLocalQueue,
+  readLocalQueue,
+  handOffToServiceWorker,
+};
