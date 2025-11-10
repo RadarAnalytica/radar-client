@@ -14,7 +14,7 @@ const FiltersContext = createContext<FiltersContextType | undefined>(undefined);
 
 const FiltersProvider = ({ children }: { children: React.ReactNode }) => {
 
-    const { authToken } = useContext(AuthContext);
+    const { authToken, user } = useContext(AuthContext);
     const dispatch = useDispatch<AppDispatch>();
     const { activeBrand } = useAppSelector((store: RootState) => store.filters);
     const { messages } = useAppSelector((state: RootState) => state.messagesSlice);
@@ -53,10 +53,10 @@ const FiltersProvider = ({ children }: { children: React.ReactNode }) => {
 
     // Отслеживаем изменения authToken
     useEffect(() => {
-        if (authToken) {
+        if (user) {
             getFiltersData();
         }
-    }, [authToken]);
+    }, [user]);
 
     //Данные магазина [A-Za-z0-9]+ успешно собраны\. Результаты доступны на страницах сервиса
     useEffect(() => {
