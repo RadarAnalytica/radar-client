@@ -5,6 +5,7 @@ import MobilePlug from '@/components/sharedComponents/mobilePlug/mobilePlug';
 import { PositionTrackingMainPageWidget } from '@/widgets/PositionTrackingMainPageWidget/PositionTrackingMainPageWidget';
 import { RadarBar } from '@/shared';
 import { PlainSelect } from '@/components/sharedComponents/apiServicePagesFiltersComponent/features/plainSelect/plainSelect';
+import { MainChart } from '@/features';
 const PositionTrackingMainPage = () => {
     return (
         <main className={styles.page}>
@@ -71,31 +72,40 @@ const PositionTrackingMainPage = () => {
                 <div className={styles.page__container}>
                     <p className={styles.page__title}>Динамика</p>
                     <div className={styles.page__selectWrapper}>
-                            <PlainSelect
-                                selectId='brandSelect'
-                                label=''
-                                value={1}
-                                optionsData={[{ value: 1, label: '1' }, { value: 2, label: '2' }]}
-                                handler={(value: number) => {
-                                    //setActiveFilter(filtersData?.find((item) => item.dest === value) || null);
-                                }}
-                                mode={undefined}
-                                allowClear={false}
-                                disabled={false}
-                            />
-                            <PlainSelect
-                                selectId='brandSelect'
-                                label=''
-                                value={1}
-                                optionsData={[{ value: 1, label: '1' }, { value: 2, label: '2' }]}
-                                handler={(value: number) => {
-                                    //setActiveFilter(filtersData?.find((item) => item.dest === value) || null);
-                                }}
-                                mode={undefined}
-                                allowClear={false}
-                                disabled={false}
-                            />
+                        <PlainSelect
+                            selectId='brandSelect'
+                            label=''
+                            value={1}
+                            optionsData={[{ value: 1, label: '1' }, { value: 2, label: '2' }]}
+                            handler={(value: number) => {
+                                //setActiveFilter(filtersData?.find((item) => item.dest === value) || null);
+                            }}
+                            mode={undefined}
+                            allowClear={false}
+                            disabled={false}
+                        />
+                        <PlainSelect
+                            selectId='brandSelect'
+                            label=''
+                            value={1}
+                            optionsData={[{ value: 1, label: '1' }, { value: 2, label: '2' }]}
+                            handler={(value: number) => {
+                                //setActiveFilter(filtersData?.find((item) => item.dest === value) || null);
+                            }}
+                            mode={undefined}
+                            allowClear={false}
+                            disabled={false}
+                        />
                     </div>
+                </div>
+
+                <div className={styles.page__chartWrapper}>
+                    <MainChart
+                        loading={false}
+                        chartData={[]}
+                        hasControls={true}
+                        controlsOptions={[]}
+                    />
                 </div>
             </section>
             {/* ---------------------- */}

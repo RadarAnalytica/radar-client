@@ -71,3 +71,9 @@
     align-items: center;
     gap: 16px;
 }
+
+.page__chartWrapper {
+    width: 100%;
+    background: white;
+    border-radius: 16px;
+}
