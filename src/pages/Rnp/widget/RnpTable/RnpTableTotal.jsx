@@ -72,7 +72,7 @@ export default function RnpTableTotal({ loading, columns, data, columns2, data2,
 						behavior: 'smooth'
 					});
 				}
-				return { ...col, width: newWidth, minWidth: newWidth };
+				return { ...col, width: newWidth };
 			}
 			return col;
 		});

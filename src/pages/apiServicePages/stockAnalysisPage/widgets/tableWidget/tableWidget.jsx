@@ -118,8 +118,6 @@ const TableWidget = ({ stockAnalysisFilteredData, loading, progress }) => {
     };
 
     const onResizeGroup = (columnKey, width) => {
-        // Минимальная ширина колонки, чтобы контент не скрывался полностью
-        const MIN_COLUMN_WIDTH = 80;
         
         // Обновляем конфигурацию колонок с группированной структурой
         const updateColumnWidth = (columns) => {
@@ -133,14 +131,14 @@ const TableWidget = ({ stockAnalysisFilteredData, loading, progress }) => {
                 if (child.hidden) return sum; // Пропускаем скрытые колонки
                 return sum + (child.width || child.minWidth || 200);
               }, 0);
-              return { ...col, width: totalWidth, minWidth: totalWidth, children: updatedChildren };
+              return { ...col, width: totalWidth, children: updatedChildren, minWidth: totalWidth };
             }
 
             // Если это листовая колонка
             if (col.key === columnKey) {
               // Применяем минимальную ширину
-              const newWidth = Math.max(width, MIN_COLUMN_WIDTH);
-              return { ...col, width: newWidth, minWidth: newWidth };
+              const newWidth = width;
+              return { ...col, width: newWidth };
             }
 
             return col;
@@ -202,6 +200,8 @@ const TableWidget = ({ stockAnalysisFilteredData, loading, progress }) => {
     if (loading) {
         return <Loader loading={loading} progress={progress} />;
     }
+
+    console.log('tableConfig', tableConfig);
 
     return (
         <div className={styles.widget__container}>
@@ -266,6 +266,7 @@ const TableWidget = ({ stockAnalysisFilteredData, loading, progress }) => {
                         resizeable
                         onResize={onResizeGroup}
                         onSort={sortButtonClickHandler}
+                        style={{ width: 'max-content', tableLayout: 'fixed' }}
                         pagination={{
                             current: paginationState.current,
                             pageSize: paginationState.pageSize,

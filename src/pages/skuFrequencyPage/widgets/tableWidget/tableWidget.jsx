@@ -49,7 +49,7 @@ const TableWidget = ({ tableConfig, setTableConfig }) => {
         );
     }
 
-    const onResizeGroup = (columnKey, width) => {
+    const onResizeGroup = (columnKey, newWidth) => {
         // Обновляем конфигурацию колонок с группированной структурой
         const updateColumnWidth = (columns) => {
           return columns.map(col => {
@@ -60,14 +60,14 @@ const TableWidget = ({ tableConfig, setTableConfig }) => {
               // Всегда пересчитываем ширину группы на основе суммы ширин дочерних колонок
               const totalWidth = updatedChildren.reduce((sum, child) => {
                 if (child.hidden) return sum; // Пропускаем скрытые колонки
-                return sum + (child.width || child.minWidth || 200);
+                return sum + (child.width || 200);
               }, 0);
-              return { ...col, width: totalWidth, minWidth: totalWidth, children: updatedChildren };
+              return { ...col, width: totalWidth, children: updatedChildren };
             }
 
             // Если это листовая колонка
             if (col.key === columnKey) {
-              return { ...col, width: width, minWidth: width };
+              return { ...col, width: newWidth };
             }
 
             return col;
