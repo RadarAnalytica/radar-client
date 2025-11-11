@@ -1,4 +1,4 @@
-export const TABLE_CONFIG_VERSION = '1.0.2';
+export const TABLE_CONFIG_VERSION = '1.0.6';
 export const TABLE_CONFIG_STORAGE_KEY = 'wbMetrics_tableConfig';
 
 export interface ColumnConfig {
@@ -36,7 +36,7 @@ export const getDefaultTableConfig = (controlData?: any[]): ColumnConfig[] => {
       key: 'vendor_code',
       title: 'Артикул',
       dataIndex: 'vendor_code',
-      width: 120,
+      width: 250,
       sortable: false,
       hidden: false,
       canToggle: true,
@@ -45,7 +45,7 @@ export const getDefaultTableConfig = (controlData?: any[]): ColumnConfig[] => {
       key: 'barcode',
       title: 'SKU',
       dataIndex: 'barcode',
-      width: 120,
+      width: 150,
       sortable: false,
       hidden: false,
       canToggle: true,
@@ -78,7 +78,7 @@ export const getDefaultTableConfig = (controlData?: any[]): ColumnConfig[] => {
       canToggle: false,
       className: 'chart-column',
     },
-  ];
+  ].map(_ => ({ ..._, key: _.dataIndex, maxWidth: _.width * 2, minWidth: _.width }));
 
   // Добавляем колонки для каждого дня
   const dayColumns: ColumnConfig[] = (controlData || []).map((item, index) => {
@@ -88,6 +88,7 @@ export const getDefaultTableConfig = (controlData?: any[]): ColumnConfig[] => {
       title: formatDateHeader(item.date),
       dataIndex: `day_${index}`,
       width: 80,
+      minWidth: 80,
       align: 'center' as const,
       sortable: false,
       hidden: false,
@@ -111,6 +112,7 @@ const formatDateHeader = (dateString: string): string => {
 export const getTableConfigStorageKey = (metricType: string) => `wbMetrics_tableConfig__${metricType}`;
 
 export const saveTableConfig = (columns: ColumnConfig[], metricType: string): void => {
+  console.log('columns', columns);
   try {
     const configData: TableConfigData = {
       version: TABLE_CONFIG_VERSION,
