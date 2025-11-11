@@ -51,6 +51,8 @@ const FirstBarsGroup = ({ dataDashBoard, selectedRange, loading }) => {
                 hasColoredBackground
                 compareValue={{
                     comparativeValue: dataDashBoard?.wb_realization_compare,
+                    absoluteValue: dataDashBoard?.prev_wb_realization,
+                    absoluteValueUnits: '₽'
                 }}
                 isLoading={loading}
             />
@@ -64,6 +66,8 @@ const FirstBarsGroup = ({ dataDashBoard, selectedRange, loading }) => {
                     hasColoredBackground
                     compareValue={{
                         comparativeValue: dataDashBoard?.buyoutPercentCompare,
+                        absoluteValue: dataDashBoard?.prev_buyoutPercent,
+                        absoluteValueUnits: '%'
                     }}
                     isLoading={loading}
                 />
@@ -77,6 +81,8 @@ const FirstBarsGroup = ({ dataDashBoard, selectedRange, loading }) => {
                     hasColoredBackground
                     compareValue={{
                         comparativeValue: dataDashBoard?.roi_compare,
+                        absoluteValue: dataDashBoard?.prev_roi,
+                        absoluteValueUnits: '%'
                     }}
                     isLoading={loading}
                 />

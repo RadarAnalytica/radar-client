@@ -84,7 +84,7 @@ const SecondBarsGroup = ({ dataDashBoard, loading, selectedRange, activeBrand, a
                 hasColoredBackground
                 compareValue={{
                     comparativeValue: dataDashBoard?.logisticsCompare,
-                    absoluteValue: dataDashBoard?.prev_logisticsCompare,
+                    absoluteValue: dataDashBoard?.prev_logistics,
                     absoluteValueUnits: '₽'
                 }}
                 isLoading={loading}
@@ -107,7 +107,9 @@ const SecondBarsGroup = ({ dataDashBoard, loading, selectedRange, activeBrand, a
                 mainValue={dataDashBoard?.storageData}
                 hasColoredBackground
                 compareValue={{
-                    comparativeValue: dataDashBoard?.storageDataCompare
+                    comparativeValue: dataDashBoard?.storageDataCompare,
+                    absoluteValue: dataDashBoard?.prev_storageData,
+                     absoluteValueUnits: '₽'
                 }}
                 isLoading={loading}
             />
@@ -125,7 +127,7 @@ const SecondBarsGroup = ({ dataDashBoard, loading, selectedRange, activeBrand, a
                 isLoading={loading}
                 compareValue={{
                     comparativeValue: dataDashBoard?.paid_acceptance_compare,
-                    absoluteValue: dataDashBoard?.prev_paid_acceptance_compare,
+                    absoluteValue: dataDashBoard?.prev_paid_acceptance,
                     absoluteValueUnits: '₽'
                 }}
             />
@@ -149,7 +151,7 @@ const SecondBarsGroup = ({ dataDashBoard, loading, selectedRange, activeBrand, a
                 hasColoredBackground
                 compareValue={{
                     comparativeValue: dataDashBoard?.commissionWBCompare,
-                    absoluteValue: dataDashBoard?.prev_commissionWBCompare,
+                    absoluteValue: dataDashBoard?.prev_commissionWB,
                     absoluteValueUnits: '₽'
                 }}
                 isLoading={loading}
@@ -166,7 +168,9 @@ const SecondBarsGroup = ({ dataDashBoard, loading, selectedRange, activeBrand, a
                 mainValueUnits='₽'
                 isLoading={loading}
                 compareValue={{
-                    comparativeValue: dataDashBoard?.taxCompare
+                    comparativeValue: dataDashBoard?.taxCompare,
+                    absoluteValue: dataDashBoard?.prev_tax,
+                    absoluteValueUnits: '₽'
                 }}
             />
 
@@ -187,6 +191,8 @@ const SecondBarsGroup = ({ dataDashBoard, loading, selectedRange, activeBrand, a
                 hasColoredBackground
                 compareValue={{
                     comparativeValue: dataDashBoard?.advertAmountCompare,
+                    absoluteValue: dataDashBoard?.prev_advertAmount,
+                    absoluteValueUnits: '₽'
                 }}
                 isLoading={loading}
             />
@@ -205,7 +211,9 @@ const SecondBarsGroup = ({ dataDashBoard, loading, selectedRange, activeBrand, a
                 mainValueUnits='₽'
                 isLoading={loading}
                 compareValue={{
-                    comparativeValue: dataDashBoard?.penalty_compare
+                    comparativeValue: dataDashBoard?.penalty_compare,
+                    absoluteValue: dataDashBoard?.prev_penalty,
+                    absoluteValueUnits: '₽'
                 }}
             />
 
@@ -221,7 +229,9 @@ const SecondBarsGroup = ({ dataDashBoard, loading, selectedRange, activeBrand, a
                 mainValueUnits='₽'
                 isLoading={loading}
                 compareValue={{
-                    comparativeValue: dataDashBoard?.compensation_compare
+                    comparativeValue: dataDashBoard?.compensation_compare,
+                    absoluteValue: dataDashBoard?.prev_compensation,
+                    absoluteValueUnits: '₽'
                 }}
             />
 
@@ -240,7 +250,9 @@ const SecondBarsGroup = ({ dataDashBoard, loading, selectedRange, activeBrand, a
                 mainValueUnits='₽'
                 isLoading={loading}
                 compareValue={{
-                    comparativeValue: dataDashBoard?.logistic_per_one_compare
+                    comparativeValue: dataDashBoard?.logistic_per_one_compare,
+                    absoluteValue: dataDashBoard?.prev_logistic_per_one,
+                    absoluteValueUnits: '₽'
                 }}
             />
 
@@ -262,7 +274,9 @@ const SecondBarsGroup = ({ dataDashBoard, loading, selectedRange, activeBrand, a
                 mainValue={dataDashBoard?.profit_per_one}
                 mainValueUnits='₽'
                 compareValue={{
-                    comparativeValue: dataDashBoard?.profit_per_one_compare
+                    comparativeValue: dataDashBoard?.profit_per_one_compare,
+                    absoluteValue: dataDashBoard?.prev_profit_per_one,
+                    absoluteValueUnits: '₽'
                 }}
                 isLoading={loading}
             />
@@ -288,6 +302,8 @@ const SecondBarsGroup = ({ dataDashBoard, loading, selectedRange, activeBrand, a
                     mainValueUnits='₽'
                     compareValue={{
                         comparativeValue: dataDashBoard?.lost_sales_amount_compare,
+                        absoluteValue: dataDashBoard?.prev_lost_sales_amount,
+                        absoluteValueUnits: '₽'
                     }}
                     isLoading={loading}
                 />
@@ -308,6 +324,8 @@ const SecondBarsGroup = ({ dataDashBoard, loading, selectedRange, activeBrand, a
                     mainValueUnits='₽'
                     compareValue={{
                         comparativeValue: dataDashBoard?.costPriceAmountCompare,
+                        absoluteValue: dataDashBoard?.prev_costPriceAmount,
+                        absoluteValueUnits: '₽'
                     }}
                     isLoading={loading}
                 />
@@ -319,6 +337,7 @@ const SecondBarsGroup = ({ dataDashBoard, loading, selectedRange, activeBrand, a
                     authToken={authToken}
                     filters={filters}
                     turnoverCompare={dataDashBoard?.turnover_compare}
+                    prevTurnover={dataDashBoard?.prev_turnover}
                 />
             </div>
         </div>
