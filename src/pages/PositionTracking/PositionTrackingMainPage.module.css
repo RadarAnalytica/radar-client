@@ -77,3 +77,18 @@
     background: white;
     border-radius: 16px;
 }
+
+.page__tableConfig {
+    padding-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.page__tableWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    background: white;
+    border-radius: 16px;
+}

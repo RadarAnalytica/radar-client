@@ -6,7 +6,32 @@ import { PositionTrackingMainPageWidget } from '@/widgets/PositionTrackingMainPa
 import { RadarBar } from '@/shared';
 import { PlainSelect } from '@/components/sharedComponents/apiServicePagesFiltersComponent/features/plainSelect/plainSelect';
 import { MainChart } from '@/features';
+import { Table as RadarTable } from 'radar-ui';
+import { Segmented, ConfigProvider } from 'antd';
+import { useState } from 'react';
+
+// antd config providers themes
+const segmentedTheme = {
+    token: {
+        fontSize: 14,
+        fontWeight: 500,
+    },
+    components: {
+        Segmented: {
+            itemActiveBg: '#5329FF1A',
+            itemSelectedBg: '#5329FF1A',
+            trackBg: 'transparent',
+            trackPadding: 0,
+            itemHoverBg: '#5329FF10',
+            itemColor: '#1A1A1A80',
+            itemSelectedColor: '#1A1A1A',
+            itemHoverColor: '#1A1A1A',
+        }
+    }
+}
+
 const PositionTrackingMainPage = () => {
+    const [activeFilter, setActiveFilter] = useState('По просмотрам');
     return (
         <main className={styles.page}>
             <MobilePlug />
@@ -105,6 +130,24 @@ const PositionTrackingMainPage = () => {
                         chartData={[]}
                         hasControls={true}
                         controlsOptions={[]}
+                    />
+                </div>
+                <div className={styles.page__tableConfig}>
+                    <p className={styles.page__title}>Лучшие товары</p>
+                    <ConfigProvider theme={segmentedTheme}>
+                        <Segmented 
+                        options={['По просмотрам', 'По ключам', 'По средней позиции']} 
+                        value={activeFilter}
+                        onChange={(value) => {
+                            //setActiveFilter(filtersData?.find((item) => item.dest === value) || null);
+                        }}
+                        />
+                    </ConfigProvider>
+                </div>
+                <div className={styles.page__tableWrapper}>
+                    <RadarTable
+                        config={[]}
+                        dataSource={[]}
                     />
                 </div>
             </section>
