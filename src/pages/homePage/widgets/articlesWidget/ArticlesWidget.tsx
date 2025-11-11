@@ -4,7 +4,7 @@ import articles from './articles.json';
 
 export const ArticlesWidget = () => {
     return (
-        <div className={`${styles.widget} scroll-container`}>
+        <div className={styles.widget}>
             <div className={styles.widget__badge}>
                 <div className={styles.widget__badge__icon}>
                     <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">

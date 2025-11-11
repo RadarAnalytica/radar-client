@@ -6,21 +6,17 @@
 }
 
 .card {
+    font-family: Manrope;
     width: 100%;
     min-height: 200px;
     background-color: white;
-    border-radius: 20px;
+    border-radius: 16px;
     overflow: hidden;
     display: flex;
     justify-content: space-between;
     align-items: stretch;
     position: relative;
-    transform: scale(100%);
-    transition: transform 0.4s cubic-bezier(0.22, 1.15, 0.45, 0.95);
-}
-
-.card_full {
-    grid-column: span 2;
+    padding: 16px;
 }
 
 .card:hover {
@@ -28,90 +24,58 @@
 }
 
 .card__infoBlock {
-    width: 100%;
-    max-width: 50%;
+    width: calc(50% - 10px);
     height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    padding: 24px;
-    flex-grow: 1;
-    flex-shrink: 1;
-    z-index: 1;
-    gap: 10px;
-    border-radius: 20px;
-    backdrop-filter: blur(20px);
-    background-color: #FFFFFF75;
-    transition: all .3s;
-
-    @media (max-width: 1300px) {
-        max-width: 60%;
-        box-shadow: 0 0 25px 0 #00000020;
-    }
+    gap: 8px;
+    background-color: white;
 }
 
 .card__cover {
-    overflow: hidden;
-    flex-grow: 0;
-    flex-shrink: 0;
     position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 0;
+    inset: 0 0 0 50%;
+    display: flex;
+    flex-direction: row-reverse;
 }
 
 .card__cover img {
     height: 100%;
     object-fit: cover;
-    object-position: center right;
+    object-position: left;
+    max-width: 100%;
 }
 
 .card__title {
-    font-family: Mulish;
     font-weight: 700;
-    font-size: 18px;
-    line-height: 140%;
-    letter-spacing: 0%;
+    font-size: 14px;
     margin: 0;
-    padding: 0;
 }
 
-.card__text {
-    font-family: Mulish;
-    font-weight: 500;
-    font-size: 16px;
-    line-height: 140%;
-    letter-spacing: 0px;
-    margin: 0;
-    padding: 0;
+.card_full {
+    grid-column: span 2;
+    min-height: 140px;
 
-    @media (max-width: 1440px) {
-        font-size: 14px;
+    .card__cover img {
+        object-position: top right;
+    }
+
+    .card__title {
+        font-size: 18px;
     }
 }
-
-
 
 .link {
-    font-family: Mulish;
+    width: 103px;
+    height: 33px;
     font-weight: 600;
-    font-size: 18px;
-    line-height: 100%;
-    letter-spacing: 0%;
+    font-size: 12px;
     text-decoration: none;
     color: #5329FF;
-    padding: 16px 24px;
-    border-radius: 10px;
-    background-color: #F7F6FE;
-    width: max-content;
-    transition: all .4s cubic-bezier(0.77, 0, 0.175, 1);
-   
-
-
-    @media (max-width: 1440px) {
-        font-size: 16px;
-    }
+    padding: 8px 12px;
+    border-radius: 8px;
+    background-color: #5329FF1A;
 }
 
 .link:hover {

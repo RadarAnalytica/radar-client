@@ -3,6 +3,10 @@
     background-color: white;
     border-radius: 16px;    
     padding: 20px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
 
     .widget__badge {
         width: 100%;
@@ -12,7 +16,6 @@
         padding: 19px 16px;
         background-color: #F0AD001A;
         border-radius: 8px;
-        margin-bottom: 8px;
 
         .widget__badge__content {
             display: flex;
@@ -33,9 +36,15 @@
     }
 
     .widget__articles {
+        padding-top: 8px;
         display: flex;
         flex-direction: column;
         gap: 8px;
+        flex: 1;
+        overflow-y: auto;
+        min-height: 0;
+        scrollbar-width: thin;
+        scrollbar-color: #5329ff80 transparent;
 
         .widget__article {
             display: flex;
