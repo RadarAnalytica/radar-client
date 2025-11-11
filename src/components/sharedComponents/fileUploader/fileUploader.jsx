@@ -5,6 +5,7 @@ import uploadIcon from '../../../pages/images/upload.svg';
 import AuthContext from '../../../service/AuthContext';
 import { URL } from '../../../service/config';
 import ErrorModal from '../modals/errorModal/errorModal';
+import { useDemoMode } from "@/app/providers";
 
 
 /** Ответ начальной загрузки файлов
@@ -44,14 +45,15 @@ const checkFinalStatus = async (token) => {
 
         res = await res.json();
         return res?.data?.items;
-    } catch {
-
+    } catch (error) {
+        console.error(error);
     }
 };
 
 const FileUploader = ({ setShow, setError, getListOfReports }) => {
 
     const { authToken } = useContext(AuthContext);
+    const { isDemoMode } = useDemoMode();
     const [fileList, setFileList] = useState([]);
     const [uploadStatus, setUploadStatus] = useState(initUploadStatus);
     const [progressBarState, setProgressBarState] = useState(0);
@@ -558,7 +560,7 @@ const FileUploader = ({ setShow, setError, getListOfReports }) => {
 
 
     return (
-        <div className={styles.uploader}>
+        <div className={`${styles.uploader} ${isDemoMode ? 'pe-none' : ''}`}>
             <ConfigProvider
                 theme={{
                     token: {
@@ -568,11 +570,7 @@ const FileUploader = ({ setShow, setError, getListOfReports }) => {
                     },
                 }}
             >
-
-
                 {/* дропзона + список файлов */}
-
-
                 <Upload.Dragger
                     accept='.xlsx,.zip'
                     name='file_uploader'
@@ -668,6 +666,7 @@ const FileUploader = ({ setShow, setError, getListOfReports }) => {
                         <p className={styles.uploader__title}>Загрузите отчеты</p>
                         <img src={uploadIcon} alt='upload' />
                         <p className={styles.uploader__text}>Перетащите мышкой файлы или <span>загрузите с компьютера</span></p>
+                        {isDemoMode && <span className="small"><span className="text-danger">*</span>Будет доступно после активации подписки</span>}
                     </div>
 
                 </Upload.Dragger>
@@ -733,10 +732,7 @@ const FileUploader = ({ setShow, setError, getListOfReports }) => {
                 }
             </ConfigProvider>
 
-
             {/* modals */}
-
-
             {/* error modal */}
             <ErrorModal
                 footer={null}
