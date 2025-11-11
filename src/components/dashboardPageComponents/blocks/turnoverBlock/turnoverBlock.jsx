@@ -191,7 +191,7 @@ const TurnoverBlock = ({ loading, turnover, turnoverCompare, selectedRange, acti
                 compareValue={{
                     comparativeValue: turnoverCompare,
                     absoluteValue: prevTurnover,
-                    absoluteValueUnits: '₽'
+                    absoluteValueUnits: 'дн.'
                 }}
                 actionButtonParams={{
                     text: 'По артикулам',

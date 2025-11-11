@@ -302,7 +302,7 @@ const SecondBarsGroup = ({ dataDashBoard, loading, selectedRange, activeBrand, a
                     mainValueUnits='₽'
                     compareValue={{
                         comparativeValue: dataDashBoard?.lost_sales_amount_compare,
-                        absoluteValue: dataDashBoard?.prev_lost_sales_amount,
+                        absoluteValue: dataDashBoard?.prev_lostSalesAmount,
                         absoluteValueUnits: '₽'
                     }}
                     isLoading={loading}
