@@ -26,6 +26,7 @@ import NoData from '@/components/sharedComponents/NoData/NoData';
 import { useDemoMode } from '@/app/providers';
 import { useLoadingProgress } from '@/service/hooks/useLoadingProgress';
 import Loader from '@/components/ui/Loader';
+import SuccessModal from '@/components/sharedComponents/modals/successModal/successModal';
 
 const initAlertState = {
 	status: '',
@@ -44,6 +45,7 @@ export default function OperatingExpenses() {
 	const [view, setView] = useState('expense'); // costs | category
 	const [expenseModal, setExpenseModal] = useState({ mode: null, isOpen: false, data: null });
 	const [modalCreateCategoryOpen, setModalCreateCategoryOpen] = useState(false);
+	const [isPlanExpenseCreated, setIsPlanExpenseCreated] = useState(false);
 	const [deleteExpenseId, setDeleteExpenseId] = useState(null);
 	const [deleteCategoryId, setDeleteCategoryId] = useState(null);
 	const [alertState, setAlertState] = useState(initAlertState);
@@ -256,11 +258,12 @@ export default function OperatingExpenses() {
 		}
 	};
 
-	const handleExpanse = (expense) => {
+	const handleExpanse = async (expense) => {
 		if (expenseModal.mode === 'edit') {
-			editExpanse(expense);
+			await editExpanse(expense);
 		} else {
-			createExpense(expense);
+			await createExpense(expense);
+			if (expense.requestUrl?.includes('periodic-expense')) setIsPlanExpenseCreated(true);
 		}
 	};
 
@@ -563,6 +566,13 @@ export default function OperatingExpenses() {
 					onCancel={() => setDeleteCategoryId(null)}
 					isLoading={loading}
 				/>}
+
+				<SuccessModal
+					title={'Плановый расход создан и сохранен'}
+					message={'Ваш расход добавлен, но может не отображаться, если вы выбрали дату из будущего периода. В этом случае расход появится в списке в день, на который он запланирован.'}
+					open={isPlanExpenseCreated}
+					onCancel={() => setIsPlanExpenseCreated(false)}
+				/>
 
 				<AlertWidget 
 					isVisible={alertState.isVisible}

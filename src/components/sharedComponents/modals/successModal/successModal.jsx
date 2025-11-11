@@ -2,7 +2,6 @@ import styles from './successModal.module.css';
 import { Modal } from "antd";
 
 const SuccessModal = ({ title, message, ...rest }) => {
-
     return (
         <Modal
             {...rest}
