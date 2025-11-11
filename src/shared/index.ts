@@ -8,3 +8,5 @@ export { positionCheckTableConfig } from './tableConfigs/positionCheckTableConfi
 export { positionCheckTableCustomCellRender } from './customTableCells/positionCheckTableCustomCellRender';
 export { innerTableConfig } from './tableConfigs/positionCheckTableConfig';
 export { RadarRateMark } from './ui/RadarRateMark/RadarRateMark';
+export { keywordsSelectionTableConfig } from './tableConfigs/keywordsSelectionTableConfig';
+export { keywordsSelectionTableCustomCellRender } from './customTableCells/keywordsSelectionTableCustomCellRender';
