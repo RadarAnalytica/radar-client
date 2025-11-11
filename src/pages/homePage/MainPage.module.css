@@ -20,7 +20,14 @@
     box-sizing: border-box;
     height: 100%;
     overflow-y: scroll;
-    
+
+    .page__content__widgets {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 20px;
+        grid-template-rows: min-content;
+        align-items: start;
+    }
 }
 .page__sideNavWrapper {
     height: 100%;

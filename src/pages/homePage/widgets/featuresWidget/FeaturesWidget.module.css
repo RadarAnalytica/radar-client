@@ -1,6 +1,5 @@
 .widget {
     width: 100%;
-    padding: 20px 0;
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 20px;
@@ -18,6 +17,10 @@
     position: relative;
     transform: scale(100%);
     transition: transform 0.4s cubic-bezier(0.22, 1.15, 0.45, 0.95);
+}
+
+.card_full {
+    grid-column: span 2;
 }
 
 .card:hover {
