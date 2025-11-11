@@ -95,8 +95,8 @@ export const RadarBar: React.FC<RadarBarProps> = ({
     return (
         // Расскоментируй когда будет нужно вернуть красный фон у карточки при отрицательном сравнительном значении
         // <div className={`${styles.bar} ${hasColoredBackground && compareValue?.comparativeValue && isValueBelowZero(compareValue?.comparativeValue) ? styles.bar_negative : ''}`}>
-       // а этот дивв удали
-       <div className={`${styles.bar}`}>
+        // а этот дивв удали
+        <div className={`${styles.bar}`}>
             {/* header */}
             <div className={styles.bar__header}>
                 <div className={`${styles.bar__side} ${styles.bar__side_left}`} style={{ alignItems: 'flex-start', flexWrap: 'nowrap' }}>
@@ -141,17 +141,32 @@ export const RadarBar: React.FC<RadarBarProps> = ({
                         <div className={styles.bar__mainValue}>{formatPrice(mainValue?.toString(), mainValueUnits)}</div>
                     }
                     {compareValue && (compareValue.comparativeValue !== undefined || compareValue.absoluteValue !== undefined) &&
-                        <div className={styles.bar__compareValuesBlock} style={getColorByValue(compareValue.comparativeValue)}>
-                            {compareValue.comparativeValue !== undefined &&
-                                <div className={styles.bar__comparativeValue}>{formatPrice(compareValue.comparativeValue.toString(), '%', true)}</div>
-                            }
-                            {compareValue.absoluteValue !== undefined &&
-                                <div className={styles.bar__middleLine}></div>
-                            }
-                            {compareValue.absoluteValue !== undefined &&
-                                <div className={styles.bar__absoluteValue}>{formatPrice(compareValue.absoluteValue.toString(), compareValue.absoluteValueUnits || ' ')}</div>
-                            }
-                        </div>
+                        <ConfigProvider
+                            theme={{
+                                token: {
+                                    colorTextLightSolid: '#1A1A1A',
+                                    fontSize: 12,
+                                }
+                            }}
+                        >
+                            <Tooltip
+                                arrow={false}
+                                color='white'
+                                title={'Значение предыдущего периода'}
+                            >
+                                <div className={styles.bar__compareValuesBlock} style={getColorByValue(compareValue.comparativeValue)}>
+                                    {compareValue.comparativeValue !== undefined &&
+                                        <div className={styles.bar__comparativeValue}>{formatPrice(compareValue.comparativeValue.toString(), '%', true)}</div>
+                                    }
+                                    {compareValue.absoluteValue !== undefined &&
+                                        <div className={styles.bar__middleLine}></div>
+                                    }
+                                    {compareValue.absoluteValue !== undefined &&
+                                        <div className={styles.bar__absoluteValue}>{formatPrice(compareValue.absoluteValue.toString(), compareValue.absoluteValueUnits || ' ')}</div>
+                                    }
+                                </div>
+                            </Tooltip>
+                        </ConfigProvider>
                     }
                 </div>
                 {(linkParams || actionButtonParams) &&

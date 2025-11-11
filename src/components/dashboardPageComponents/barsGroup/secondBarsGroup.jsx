@@ -83,7 +83,9 @@ const SecondBarsGroup = ({ dataDashBoard, loading, selectedRange, activeBrand, a
                 mainValue={dataDashBoard?.logistics}
                 hasColoredBackground
                 compareValue={{
-                    comparativeValue: dataDashBoard?.logisticsCompare
+                    comparativeValue: dataDashBoard?.logisticsCompare,
+                    absoluteValue: dataDashBoard?.prev_logisticsCompare,
+                    absoluteValueUnits: '₽'
                 }}
                 isLoading={loading}
             />
@@ -122,7 +124,9 @@ const SecondBarsGroup = ({ dataDashBoard, loading, selectedRange, activeBrand, a
                 mainValueUnits='₽'
                 isLoading={loading}
                 compareValue={{
-                    comparativeValue: dataDashBoard?.paid_acceptance_compare
+                    comparativeValue: dataDashBoard?.paid_acceptance_compare,
+                    absoluteValue: dataDashBoard?.prev_paid_acceptance,
+                    absoluteValueUnits: '₽'
                 }}
             />
 
@@ -144,7 +148,9 @@ const SecondBarsGroup = ({ dataDashBoard, loading, selectedRange, activeBrand, a
                 mainValueUnits='₽'
                 hasColoredBackground
                 compareValue={{
-                    comparativeValue: dataDashBoard?.commissionWBCompare
+                    comparativeValue: dataDashBoard?.commissionWBCompare,
+                    absoluteValue: dataDashBoard?.prev_commissionWB,
+                    absoluteValueUnits: '₽'
                 }}
                 isLoading={loading}
             />

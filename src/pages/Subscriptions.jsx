@@ -47,7 +47,7 @@ const Subscriptions = () => {
   useEffect(() => {
     const checkSubscriptions = async () => {
       const data = await fetchSubscriptions();
-      if (data.length === 0 && (user.test_days_left === null || user.test_days_left === undefined || user.test_days_left < 0)) {
+      if (data.length === 0) {
         navigate('/tariffs');
       }
     };
@@ -218,7 +218,7 @@ const Subscriptions = () => {
           })}
 
           {/* тестовый период */}
-          {user && user.test_days_left !== null && user.test_days_left !== undefined && user.test_days_left >= 0 &&
+          {/* {user && user.test_days_left !== null && user.test_days_left !== undefined && user.test_days_left >= 0 &&
             <div className="sub-card">
               <div className="sub-card-row">
                 <div className="sub-card-content-wrap">
@@ -239,7 +239,7 @@ const Subscriptions = () => {
                   width={120}
                 />
               </div>
-            </div>}
+            </div>} */}
         </div>
       </div>
 
