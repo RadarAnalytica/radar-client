@@ -2002,5 +2002,18 @@ export interface IPositionCheckMainTableData {
 			);
 			return res;
 	},
+	getKeywordsSelectionPageData: async (requestObject) => {
+			const res = await fetchApi(
+				`https://radarmarket.ru/api/web-service/keyword-selection/search`,
+				{
+					method: 'POST',
+					headers: {
+						'content-type': 'application/json',
+					},
+					body: JSON.stringify(requestObject),
+				}
+			);
+			return res;
+	},
 };
 
