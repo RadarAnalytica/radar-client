@@ -125,7 +125,7 @@ const SecondBarsGroup = ({ dataDashBoard, loading, selectedRange, activeBrand, a
                 isLoading={loading}
                 compareValue={{
                     comparativeValue: dataDashBoard?.paid_acceptance_compare,
-                    absoluteValue: dataDashBoard?.prev_paid_acceptance,
+                    absoluteValue: dataDashBoard?.prev_paid_acceptance_compare,
                     absoluteValueUnits: '₽'
                 }}
             />
@@ -149,7 +149,7 @@ const SecondBarsGroup = ({ dataDashBoard, loading, selectedRange, activeBrand, a
                 hasColoredBackground
                 compareValue={{
                     comparativeValue: dataDashBoard?.commissionWBCompare,
-                    absoluteValue: dataDashBoard?.prev_commissionWB,
+                    absoluteValue: dataDashBoard?.prev_commissionWBCompare,
                     absoluteValueUnits: '₽'
                 }}
                 isLoading={loading}
