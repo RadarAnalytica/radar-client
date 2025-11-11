@@ -28,6 +28,7 @@
         height: 600px;
         grid-template-rows: minmax(0, 1fr);
         align-items: stretch;
+        margin-bottom: 20px;
     }
 }
 .page__sideNavWrapper {
