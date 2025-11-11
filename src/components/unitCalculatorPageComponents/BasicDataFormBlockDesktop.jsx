@@ -76,10 +76,10 @@ const BasicDataFormBlockDesktop = ({ form, setMpMainFee, isProductFromToken, set
         // setIsOptionClicked(true)
         setIsProductFromToken(null);
         // setInputValue(value);
-        // const currentOption = autocompleteOptions.find(_ => _.name === value)
-        // if (currentOption) {
-        //     setMpMainFee(currentOption.fbo)
-        // }
+        const currentOption = autocompleteOptions.find(_ => _.name === value)
+        if (currentOption) {
+            setMpMainFee(currentOption.fbo)
+        }
     };
 
     return (
