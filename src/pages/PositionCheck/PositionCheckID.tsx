@@ -83,7 +83,8 @@ const segmentedTheme = {
 
 const initialRequestStatus = { isLoading: false, isError: false, isSuccess: false, message: '' };
 
-const formDataToRequestObjectDto = (formData: Record<string, any>) => {
+const formDataToRequestObjectDto = (formData: Record<string, any>, prevRequestObject: Record<string, any>) => {
+    console.log(formData)
     let requestObject = {
         dest: formData.region,
         feed_type: formData.type,
@@ -91,7 +92,8 @@ const formDataToRequestObjectDto = (formData: Record<string, any>) => {
             start: formData.frequency_from || null,
             end: formData.frequency_to || null,
         },
-        keywords_filter: null
+        keywords_filter: null,
+        shouldUpdateMetadata: prevRequestObject?.dest && prevRequestObject?.dest !== formData.region ? true : false,
     }
 
     if (formData.keyword) {
@@ -152,12 +154,12 @@ const PositionCheckID = () => {
         mainTable: null,
     });
 
-    const getPositionCheckProductMetaData = async (authToken: string, paramsId: string) => {
+    const getPositionCheckProductMetaData = async (authToken: string, paramsId: string, dest: number = -1257786) => {
         const controller = new AbortController();
         abortControllersRef.current.product = controller;
         setMetaAndRegionsRequestStatus({ ...initialRequestStatus, isLoading: true });
         try {
-            const res = await ServiceFunctions.getPositionCheckProductMetaData(authToken, paramsId, controller.signal);
+            const res = await ServiceFunctions.getPositionCheckProductMetaData(authToken, paramsId, controller.signal, dest);
             if (!res.ok) {
                 setMetaAndRegionsRequestStatus({ ...initialRequestStatus, isError: true, message: 'Ошибка запроса' });
                 return;
@@ -241,6 +243,9 @@ const PositionCheckID = () => {
     useEffect(() => {
         if (requestObject && params?.id && authToken && !metaAndRegionsRequestStatus.isError) {
             getPositionCheckMainTableData({ ...requestObject, wb_id: params.id }, authToken)
+            if (requestObject.shouldUpdateMetadata) {
+                getPositionCheckProductMetaData(authToken, params.id, requestObject.dest)
+            }
         }
     }, [requestObject])
 
@@ -327,7 +332,7 @@ const PositionCheckID = () => {
                 {/* Filters */}
                 {!metaAndRegionsRequestStatus.isLoading && <div className={styles.page__filtersWrapper}>
                     <PositionCheckFilters submitHandler={(formData) => {
-                        setRequestObject(formDataToRequestObjectDto(formData));
+                        setRequestObject(formDataToRequestObjectDto(formData, requestObject));
                     }} isLoading={mainTableRequestStatus.isLoading} regionsData={regionsData} />
                     {/* <DownloadButton handleDownload={() => { }} loading={false} /> */}
                 </div>}

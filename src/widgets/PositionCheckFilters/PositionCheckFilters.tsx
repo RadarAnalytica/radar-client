@@ -72,6 +72,7 @@ export const PositionCheckFilters: React.FC<IPositionCheckFiltersForm> = ({ subm
                         frequency_from: '',
                         frequency_to: '',
                         type: 'both',
+                        match_type: 'Содержит',
                     }}
                 >
                     {/* Region select */}
@@ -159,6 +160,12 @@ export const PositionCheckFilters: React.FC<IPositionCheckFiltersForm> = ({ subm
                             dropdownStyle={{ minWidth: 'max-content' }}
                         />
                     </Form.Item>
+                    <Form.Item
+                        name="match_type"
+                        label="Ключевое слово"
+                        className={styles.filters__formItem}
+                        hidden
+                    ><></></Form.Item>
                     <button
                         className={styles.filters__resetButton}
                         onClick={() => { form.resetFields(); }}
