@@ -1,0 +1,17 @@
+.actionsCell {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 16px;
+}
+
+.actionsCell button {
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    transition: all .1s ease-in-out;
+}
+
+.actionsCell button:hover {
+    transform: scale(103%);
+}

@@ -1,0 +1,299 @@
+/* Page */
+
+.page {
+    background-color: #F7F6FE;
+    height: 100vh;
+    overflow: hidden;
+    width: 100%;
+    display: flex;
+    box-sizing: border-box;
+    min-width: 1200px;
+}
+
+.page__content {
+    width: calc(100% - 74px);
+    padding: 20px 32px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
+    gap: 20px;
+    box-sizing: border-box;
+    height: 100%;
+    overflow: auto;
+    flex-grow: 0;
+    flex-shrink: 0;
+}
+
+.page__sideNavWrapper {
+    height: 100%;
+    width: auto;
+    overflow: visible;
+    display: flex;
+    justify-content: stretch;
+    align-items: stretch;
+    flex-grow: 1;
+    flex-shrink: 0;
+}
+
+.page__headerWrapper {
+    width: 100%;
+}
+
+.page__barsWrapper {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.page__container {
+    width: 100%;
+    padding-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.page__title {
+    margin: 0;
+    padding: 0;
+    font-weight: 600;
+    font-size: 22px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    color: #1A1A1A;
+}
+
+.page__selectWrapper {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.page__chartWrapper {
+    width: 100%;
+    background: white;
+    border-radius: 16px;
+}
+
+.page__tableConfig {
+    padding-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.page__tableWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    background: white;
+    border-radius: 16px;
+    padding: 8px;
+    overflow: hidden;
+}
+
+.page__tableContainer {
+    width: 100%;
+    overflow: auto;
+}
+
+.page__skuBlock {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 420px;
+    grid-template-rows: 130px;
+    gap: 20px;
+}
+
+.page__miniChart {
+    width: 100%;
+    background: white;
+    border-radius: 16px;
+    padding: 16px;
+}
+
+.page__miniChartHeader {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+}
+
+.page__miniChartTitle {
+    margin: 0;
+    padding: 0;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 160%;
+    color: #8C8C8C;
+}
+
+.page__miniChartValues {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
+.page__miniChartMainValue {
+    font-weight: 600;
+    font-size: 22px;
+    line-height: 100%;
+    color: #1A1A1A;
+}
+
+.page__miniChartCanvas {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.page__activityChart {
+    width: 100%;
+    background: white;
+    border-radius: 16px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.page__activityChartHeader {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.page__activityChartTitle {
+    margin: 0;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 130%;
+    color: #1A1A1A;
+}
+
+.page__activityChartSubtitle {
+    margin: 4px 0 0;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 160%;
+    color: #8C8C8C;
+}
+
+.page__activityChartLegend {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.page__activityChartLegendItem {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 500;
+    font-size: 14px;
+    color: #8C8C8C;
+}
+
+.page__activityChartLegendDot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+}
+
+.page__activityChartCanvas {
+    position: relative;
+    width: 100%;
+    height: 360px;
+}
+
+.page__markTooltip {
+    position: absolute;
+    transform: translate(-50%, -100%);
+    background: #FFFFFF;
+    border: 1px solid #E5E9F0;
+    box-shadow: 0px 12px 32px rgba(26, 26, 26, 0.08);
+    border-radius: 12px;
+    padding: 12px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    pointer-events: auto;
+    z-index: 2;
+    min-width: 180px;
+}
+
+.page__markTooltipTitle {
+    margin: 0;
+    font-weight: 600;
+    font-size: 14px;
+    color: #1A1A1A;
+}
+
+.page__markTooltipButton {
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    text-align: left;
+    font-weight: 600;
+    font-size: 14px;
+    color: #FF5470;
+    cursor: pointer;
+}
+
+.page__markTooltipButton:hover {
+    color: #E13B57;
+}
+
+.page__summary {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.page__summaryItem {
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    color: #8C8C8C;
+    margin: 0;
+    padding: 0;
+}
+
+.page__summaryItem span {
+    color: #1A1A1A;
+}
+
+
+/* modal */
+.addModal {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.addModal__title {
+    margin: 0;
+    padding: 0;
+    font-weight: 600;
+    font-size: 22px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    color: #1A1A1A;
+}
+
+.addModal__buttonsWrapper {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 12px;
+}
