@@ -301,24 +301,31 @@ const PositionCheckID = () => {
                     }
                     {productMetaData && !metaAndRegionsRequestStatus.isLoading && <div className={styles.info}>
                         <div className={styles.info__column}>
-                            <p className={styles.info__row}>
-                                Артикул <span className={styles.info__color_black}>{productMetaData?.wb_id}</span>
-                            </p>
-                            <p className={styles.info__row}>
-                                Предмет <span className={styles.info__color_purple}>{productMetaData?.subject_name}</span>
-                            </p>
-                            <p className={styles.info__row}>
-                                Оценка <span className={styles.info__color_black}>{productMetaData?.rating.toFixed(1)}</span>
-                            </p>
+                            <div className={styles.info__row}>
+                                <p className={styles.info__rowTitle}>Артикул</p>
+                                <span className={`${styles.info__color_black} ${styles.info__rowTitle}`}>{productMetaData?.wb_id}</span>
+                            </div>
+                            <div className={styles.info__row}>
+                                <p className={styles.info__rowTitle}>Предмет</p>
+                                <span className={`${styles.info__color_purple} ${styles.info__rowTitle}`}>{productMetaData?.subject_name}</span>
+                            </div>
+                            <div className={styles.info__row}>
+                                <p className={styles.info__rowTitle}>Оценка</p>
+                                <span className={`${styles.info__color_black} ${styles.info__rowTitle}`}>{productMetaData?.rating.toFixed(1)}</span>
+                            </div>
                         </div>
 
                         <div className={styles.info__column}>
-                            <p className={styles.info__row}>
-                                Отзывы <span className={styles.info__color_black}>{formatPrice(productMetaData?.feedbacks || 0, '')}</span>
-                            </p>
-                            <Link className={styles.info__link} to={productMetaData?.supplier_url} target='_blank'>
-                                Продавец <span className={styles.info__color_purple}>{productMetaData?.supplier_name}</span>
-                            </Link>
+                            <div className={styles.info__row}>
+                                <p className={styles.info__rowTitle}>Отзывы</p>
+                                <span className={`${styles.info__color_black} ${styles.info__rowTitle}`}>{formatPrice(productMetaData?.feedbacks || 0, '')}</span>
+                            </div>
+                            <div className={styles.info__row}>
+                                <p className={styles.info__rowTitle}>Продавец</p>
+                                <Link className={styles.info__link} to={productMetaData?.supplier_url} target='_blank'>
+                                    <span className={`${styles.info__color_purple} ${styles.info__rowTitle}`}>{productMetaData?.supplier_name}</span>
+                                </Link>
+                            </div>
                             <Link to={productMetaData?.wb_id_url} target='_blank' className={styles.info__mainLink}>Посмотреть на WB</Link>
                         </div>
                     </div>}
@@ -350,10 +357,10 @@ const PositionCheckID = () => {
                             <p className={styles.page__summaryItem}>Кластеров: <span>{mainTableData?.presets_count}</span></p>
                         </div>
 
-                        <DoubleTable 
-                            tableData={mainDataToTableDataDto(mainTableData, tableType)} 
-                            dest={requestObject?.dest || -1257786} 
-                            authToken={authToken} 
+                        <DoubleTable
+                            tableData={mainDataToTableDataDto(mainTableData, tableType)}
+                            dest={requestObject?.dest || -1257786}
+                            authToken={authToken}
                             tableType={tableType}
                             tableConfig={positionCheckTableConfig}
                             page={'position'}
