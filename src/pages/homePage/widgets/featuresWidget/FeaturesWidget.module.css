@@ -55,14 +55,31 @@
 
 .card_full {
     grid-column: span 2;
+    height: 140px;
     min-height: 140px;
 
+    .card__infoBlock {
+        width: calc(60% - 10px);
+        position: relative;
+        z-index: 1;
+        background-color: transparent;
+    }
+
     .card__cover img {
+        inset: 0 0 0 40%;
         object-position: top right;
     }
 
     .card__title {
         font-size: 18px;
+    }
+
+    @media (max-width: 1300px) {
+        height: auto;
+
+        .card__infoBlock {
+            width: calc(50% - 10px);
+        }
     }
 }
 
