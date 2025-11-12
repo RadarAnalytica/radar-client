@@ -116,7 +116,7 @@ export const PositionCheckFilters: React.FC<IPositionCheckFiltersForm> = ({ subm
                                 <Input
                                     size='large'
                                     className={styles.filters__select}
-                                    prefix={<span style={{ color: '#8C8C8C' }}>От</span>}
+                                    prefix={<span style={{ color: '#8C8C8C75' }}>От</span>}
                                 />
                             </Form.Item>
                             <Form.Item
@@ -126,7 +126,7 @@ export const PositionCheckFilters: React.FC<IPositionCheckFiltersForm> = ({ subm
                                 <Input
                                     size='large'
                                     className={styles.filters__select}
-                                    prefix={<span style={{ color: '#8C8C8C' }}>До</span>}
+                                    prefix={<span style={{ color: '#8C8C8C75' }}>До</span>}
                                 />
                             </Form.Item>
                         </div>
@@ -145,9 +145,11 @@ export const PositionCheckFilters: React.FC<IPositionCheckFiltersForm> = ({ subm
                             getPopupContainer={(triggerNode) => triggerNode.parentNode}
                             open={keywordDropdownOpen}
                             onDropdownVisibleChange={setKeywordDropdownOpen}
+                            placeholder='Выбрать'
                             dropdownRender={() =>
                                 <KeywordSelectDropdown
                                     handler={(matchType, keywords) => {
+                                        if (!keywords) {return setKeywordDropdownOpen(false);}
                                         form.setFieldValue('keyword', keywords);
                                         form.setFieldValue('match_type', matchType);
                                         setKeywordDropdownOpen(false);
@@ -224,6 +226,7 @@ const KeywordSelectDropdown: React.FC<IKeywordSelectDropdownProps> = ({ handler 
             <button
                 className={styles.keywordSelectDropdown__button}
                 onClick={() => handler(selectedTab, inputValue)}
+                disabled={!inputValue || inputValue.trim().length <= 2}
             >
                 Применить
             </button>

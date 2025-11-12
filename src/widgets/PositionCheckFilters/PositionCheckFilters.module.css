@@ -102,3 +102,9 @@
     align-items: center;
     gap: 8px;
 }
+
+.keywordSelectDropdown__button {
+    opacity: 0.5;
+    cursor: not-allowed;
+    filter: grayscale(100%);
+}

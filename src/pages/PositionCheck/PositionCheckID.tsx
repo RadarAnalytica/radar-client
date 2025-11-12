@@ -13,7 +13,7 @@ import NoSubscriptionWarningBlock from '@/components/sharedComponents/noSubscrip
 import { RadarBar, RadarProductBar, RadarLoader } from '@/shared';
 import { formatPrice } from '@/service/utils';
 import { PositionCheckFilters } from '@/widgets';
-import DownloadButton from '@/components/DownloadButton';
+// import DownloadButton from '@/components/DownloadButton';
 import { DoubleTable } from '@/widgets';
 import { ServiceFunctions } from '@/service/serviceFunctions';
 import AuthContext from '@/service/AuthContext';
@@ -329,7 +329,7 @@ const PositionCheckID = () => {
                     <PositionCheckFilters submitHandler={(formData) => {
                         setRequestObject(formDataToRequestObjectDto(formData));
                     }} isLoading={mainTableRequestStatus.isLoading} regionsData={regionsData} />
-                    <DownloadButton handleDownload={() => { }} loading={false} />
+                    {/* <DownloadButton handleDownload={() => { }} loading={false} /> */}
                 </div>}
                 {/* Table */}
                 {mainTableRequestStatus.isLoading && <div className={styles.page__tableWrapper}>

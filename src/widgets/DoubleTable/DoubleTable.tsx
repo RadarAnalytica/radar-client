@@ -40,6 +40,12 @@ export const DoubleTable: React.FC<IDoubleTableProps> = ({ tableData, dest, auth
 
     //pagination handler
     const paginationHandler = (page: number) => {
+        expandedRowKeys.forEach(key => {
+            const serpRow = document.getElementById('serp-row-' + key);
+            if (serpRow) {
+                serpRow.remove();
+            }
+        });
         setExpandedRowKeys([]);
         setPagination({
             ...pagination,
@@ -134,6 +140,7 @@ export const DoubleTable: React.FC<IDoubleTableProps> = ({ tableData, dest, auth
             const container = document.createElement('div');
             newCell.appendChild(container);
             newRow.appendChild(newCell);
+            newRow.setAttribute('id', 'serp-row-' + currentRow.rowKey);
 
             // Вставляем новую строку после текущей
             currentTr.after(newRow);
@@ -152,10 +159,30 @@ export const DoubleTable: React.FC<IDoubleTableProps> = ({ tableData, dest, auth
         }, 0);
     };
 
+
+
     // Получаем данные для текущей страницы
     const startIndex = (pagination.current - 1) * pagination.pageSize;
     const endIndex = startIndex + pagination.pageSize;
     const paginatedData = tableData.slice(startIndex, endIndex);
+
+    useEffect(() => {
+        setPagination({
+            ...pagination,
+            total: Math.ceil(tableData.length / 10)
+        });
+    }, [tableData]);
+
+
+    useEffect(() => {
+        expandedRowKeys.forEach(key => {
+            const serpRow = document.getElementById('serp-row-' + key);
+            if (serpRow) {
+                serpRow.remove();
+            }
+        });
+        setExpandedRowKeys([]);
+    }, [tableType]);
 
     return (
         <div className={styles.page__tableWrapper} ref={tableContainerRef}>
