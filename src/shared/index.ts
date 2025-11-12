@@ -14,3 +14,5 @@ export { positionTrackingProjectsTableConfig } from './tableConfigs/positionTrac
 export { positionTrackingProjectsCustomCellRender } from './customTableCells/positionTrackingProjectsCustomCellRender';
 export { positionTrackingSkuTableConfig } from './tableConfigs/positionTrackingSkuTableConfig';
 export { positionTrackingSkuTableCustomCellRender } from './customTableCells/positionTrackingSkuTableCustomCellRender';
+export { keywordsSelectionTableConfig } from './tableConfigs/keywordsSelectionTableConfig';
+export { keywordsSelectionTableCustomCellRender } from './customTableCells/keywordsSelectionTableCustomCellRender';

@@ -187,6 +187,7 @@ const WbMetricsTable: React.FC<WbMetricsTableProps> = ({
     400,
     TABLE_CONFIG_VERSION
   );
+
   
   
   return (
@@ -194,7 +195,7 @@ const WbMetricsTable: React.FC<WbMetricsTableProps> = ({
       <div className={styles.tableWrapper} ref={tableContainerRef}>
         {!loading && data && (
           <RadarTable
-            config={tableConfig}
+            config={tableConfig as any}
             dataSource={sortTableData(prepareTableData(), sortState)}
             resizeable
             onResize={onResizeColumn}
@@ -214,7 +215,7 @@ const WbMetricsTable: React.FC<WbMetricsTableProps> = ({
               onChange: handlePageChange,
               showQuickJumper: true,
             }}
-            style={{ fontFamily: 'Mulish' }}
+            style={{ fontFamily: 'Mulish', width: 'max-content', tableLayout: 'fixed' }}
           />
         )}
       </div>

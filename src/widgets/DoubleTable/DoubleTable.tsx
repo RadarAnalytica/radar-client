@@ -2,7 +2,7 @@ import { useRef, useState, useEffect } from 'react';
 import ReactDOM from 'react-dom/client';
 import styles from './DoubleTable.module.css';
 import { Table as RadarTable } from 'radar-ui';
-import { innerTableConfig, positionCheckTableConfig, positionCheckTableCustomCellRender, RadarLoader } from '@/shared';
+import { innerTableConfig, positionCheckTableCustomCellRender, RadarLoader, keywordsSelectionTableCustomCellRender } from '@/shared';
 import { ServiceFunctions } from '@/service/serviceFunctions';
 import wb_icon from '../../assets/wb_small_main_icon.png';
 
@@ -11,11 +11,13 @@ import wb_icon from '../../assets/wb_small_main_icon.png';
 interface IDoubleTableProps {
     tableData: any[];
     dest: number;
-    authToken: string;
+    authToken?: string;
     tableType: 'Кластеры' | 'По запросам';
+    tableConfig: any[];
+    page: 'position' | 'keywords';
 }
 
-export const DoubleTable: React.FC<IDoubleTableProps> = ({ tableData, dest, authToken, tableType }) => {
+export const DoubleTable: React.FC<IDoubleTableProps> = ({ tableData, dest, authToken, tableType, tableConfig, page }) => {
 
     const [pagination, setPagination] = useState({ current: 1, pageSize: 10, total: Math.ceil(tableData.length / 20) });
     const [expandedRowKeys, setExpandedRowKeys] = useState([]);
@@ -25,7 +27,7 @@ export const DoubleTable: React.FC<IDoubleTableProps> = ({ tableData, dest, auth
 
 
     const getSerpData = async (query: string) => {
-        const res = await ServiceFunctions.getSERPDataForPositionCheck(authToken, { dest, query });
+        const res = await ServiceFunctions.getSERPDataForPositionCheck(authToken ?? '', { dest, query });
         if (!res.ok) {
             setIsLoading(false);
             return undefined;
@@ -159,7 +161,7 @@ export const DoubleTable: React.FC<IDoubleTableProps> = ({ tableData, dest, auth
         <div className={styles.page__tableWrapper} ref={tableContainerRef}>
             <RadarTable
                 rowKey={(record) => record.rowKey}
-                config={positionCheckTableConfig}
+                config={tableConfig}
                 dataSource={paginatedData}
                 preset='radar-table-default'
                 stickyHeader={-1}
@@ -178,15 +180,31 @@ export const DoubleTable: React.FC<IDoubleTableProps> = ({ tableData, dest, auth
                 bodyCellWrapperStyle={{ borderBottom: tableType === 'Кластеры' ? 'none' : '1px solid #E8E8E8', padding: '10.5px 12px' }}
                 customCellRender={{
                     idx: ['query', 'serp'],
-                    renderer: (value, record, index, dataIndex) => positionCheckTableCustomCellRender(
-                        value,
-                        record,
-                        index,
-                        dataIndex,
-                        serpButtonHandler,
-                        expandedRowKeys.includes(record.rowKey),
-                        tableType as 'Кластеры' | 'По запросам'
-                    ),
+                    renderer: (value, record, index, dataIndex) => {
+                        if (page === 'position') {
+                            return positionCheckTableCustomCellRender(
+                                value,
+                                record,
+                                index,
+                                dataIndex,
+                                serpButtonHandler,
+                                expandedRowKeys.includes(record.rowKey),
+                                tableType as 'Кластеры' | 'По запросам'
+                            )
+                        }
+
+                        if (page === 'keywords') {
+                            return keywordsSelectionTableCustomCellRender(
+                                value,
+                                record,
+                                index,
+                                dataIndex,
+                                serpButtonHandler,
+                                expandedRowKeys.includes(record.rowKey),
+                                tableType as 'Кластеры' | 'По запросам'
+                            )
+                        }
+                    }
                 }}
             />
             <div className={styles.page__loaderWrapper} style={{ display: isLoading ? 'flex' : 'none' }}>

@@ -65,7 +65,7 @@ export function useTableColumnResize(
 
 	// Загрузка конфигурации из localStorage
 	const loadConfig = useCallback((): TableColumn[] => {
-		if (!storageKey) return initialConfig;
+		if (!storageKey || initialConfig.length === 0) return initialConfig;
 
 		try {
 			const stored = localStorage.getItem(storageKey);
@@ -84,9 +84,12 @@ export function useTableColumnResize(
 
 			// Загружаем сохраненные ширины
 			const storedWidths = parsed.widths || parsed as Record<string, number>;
+			if (!storedWidths || Object.keys(storedWidths).length === 0) {
+				return initialConfig;
+			}
 			return processColumns(initialConfig, col => {
-				const width = col.key && storedWidths[col.key];
-				return width ? { ...col, width, minWidth: width } : col;
+				const newWidth = col.key && storedWidths[col.key];
+				return newWidth ? { ...col, width: newWidth } : col;
 			});
 		} catch (error) {
 			console.error('Error loading column widths:', error);
@@ -143,7 +146,7 @@ export function useTableColumnResize(
 
 	// Сохранение конфигурации в localStorage
 	useEffect(() => {
-		if (!storageKey) return;
+		if (!storageKey || config.length === 0) return;
 
 		try {
 			const widths: Record<string, number> = {};
@@ -157,7 +160,6 @@ export function useTableColumnResize(
 				});
 			};
 			extractWidths(config);
-			
 			// Сохраняем с версией, если она указана
 			const dataToSave: StoredConfig = version ? { version, widths } : widths;
 			localStorage.setItem(storageKey, JSON.stringify(dataToSave));
@@ -178,8 +180,8 @@ export function useTableColumnResize(
 
 		setConfig(prevConfig => processColumns(prevConfig, col => {
 			if (col.key === columnKey) {
-				const constrainedWidth = Math.max(minWidth, Math.min(maxWidth, width));
-				return { ...col, width: constrainedWidth, minWidth: constrainedWidth };
+				//const constrainedWidth = Math.max(minWidth, Math.min(maxWidth, width));
+				return { ...col, width: width, minWidth: width };
 			}
 			return col;
 		}));

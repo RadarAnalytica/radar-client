@@ -110,13 +110,6 @@ export const menuConfig = [
                 isNew: false
             },
             {
-                id: 5,
-                url: '/operations-costs',
-                label: 'Операционные расходы',
-                isActive: false,
-                isNew: true
-            },
-            {
                 id: 6,
                 url: '/report-week',
                 label: 'Отчет по неделям',
@@ -138,13 +131,13 @@ export const menuConfig = [
                 isActive: true,
                 isNew: false
             },
-            {
-                id: 8,
-                url: '/operating-expenses',
-                label: 'Операционные расходы',
-                isActive: true,
-                isNew: true
-            },
+            // {
+            //     id: 8,
+            //     url: '/operating-expenses',
+            //     label: 'Операционные расходы',
+            //     isActive: true,
+            //     isNew: true
+            // },
         ]
     },
     {
@@ -190,21 +183,28 @@ export const menuConfig = [
                 isNew: true
             },
             {
-                id: 2,
+                id: 5,
                 url: '/abc-data',
                 label: 'ABC-анализ',
                 isActive: true,
                 isNew: false
             },
             {
-                id: 5,
-                url: '/selfcost',
-                label: 'Себестоимость',
+                id: 6,
+                url: '/operations-expenses',
+                label: 'Операционные расходы',
                 isActive: true,
+                isNew: true,
                 hasTopBorder: true,
             },
             {
-                id: 6,
+                id: 7,
+                url: '/selfcost',
+                label: 'Себестоимость',
+                isActive: true,
+            },
+            {
+                id: 8,
                 url: '/groups',
                 label: 'Группы товаров',
                 isActive: true,

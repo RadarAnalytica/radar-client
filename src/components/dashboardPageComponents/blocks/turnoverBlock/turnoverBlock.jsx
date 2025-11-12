@@ -80,7 +80,7 @@ export const sortTableDataFunc = (sortType, sortedValue, dataToSort) => {
 };
 
 
-const TurnoverBlock = ({ loading, turnover, turnoverCompare, selectedRange, activeBrand, authToken, filters }) => {
+const TurnoverBlock = ({ loading, turnover, turnoverCompare, selectedRange, activeBrand, authToken, filters, prevTurnover }) => {
     const [initData, setInitData] = useState([]);
     const [tableData, setTableData] = useState([]);
     const [isModalVisible, setIsModalVisible] = useState(false);
@@ -190,6 +190,8 @@ const TurnoverBlock = ({ loading, turnover, turnoverCompare, selectedRange, acti
                 hasColoredBackground
                 compareValue={{
                     comparativeValue: turnoverCompare,
+                    absoluteValue: prevTurnover,
+                    absoluteValueUnits: 'дн.'
                 }}
                 actionButtonParams={{
                     text: 'По артикулам',

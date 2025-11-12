@@ -1,15 +1,17 @@
 import React from 'react';
+import Cookies from "js-cookie";
 import { Link } from 'react-router-dom';
 import styles from './ErrorBoundary.module.css';
 import logo from '@/assets/logo.png';
 import cover from '@/assets/mobile_plug_cover.png';
+import { reportError } from '@/service/errorReporting/errorReporter';
+import { jwtDecode } from 'jwt-decode';
 
 class ErrorBoundary extends React.Component {
   constructor(props) {
     super(props);
     this.state = { hasError: false, error: null, errorInfo: null };
-    this.enabled = location.hostname !== 'localhost'; // ручное включение/отключение ErrorBoundary
-    // this.enabled = location.hostname !== 'test-server-pro.ru' && location.hostname !== 'localhost';
+    this.enabled = location.hostname !== 'test-server-pro.ru' && location.hostname !== 'localhost';
   }
 
   static getDerivedStateFromError(error) {
@@ -25,6 +27,15 @@ class ErrorBoundary extends React.Component {
       error: error,
       errorInfo: errorInfo
     });
+
+    if (this.enabled) {
+      const user = jwtDecode(Cookies.get('radar'));
+      reportError({
+        error_text: error?.message || String(error),
+        stack_trace: error?.stack || errorInfo?.componentStack || null,
+        user: user ? { id: user?.id, email: user?.email } : null,
+      });
+    }
   }
 
   render() {

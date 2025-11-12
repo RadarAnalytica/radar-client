@@ -14,15 +14,15 @@ const FiltersContext = createContext<FiltersContextType | undefined>(undefined);
 
 const FiltersProvider = ({ children }: { children: React.ReactNode }) => {
 
-    const { authToken } = useContext(AuthContext);
+    const { authToken, user } = useContext(AuthContext);
     const dispatch = useDispatch<AppDispatch>();
-    const { activeBrand, shops } = useAppSelector((store: RootState) => store.filters);
+    const { activeBrand } = useAppSelector((store: RootState) => store.filters);
     const { messages } = useAppSelector((state: RootState) => state.messagesSlice);
     const prevMessages = useRef<any[] | null>(null);
     const [isFiltersLoading, setIsFiltersLoading] = useState(false);
 
     const getFiltersData = async () => {
-      if (!authToken) return;
+      // if (!authToken) return;
       setIsFiltersLoading(true);
       try {
         let shopsResponse = await fetchApi('/api/shop/all', {
@@ -53,10 +53,10 @@ const FiltersProvider = ({ children }: { children: React.ReactNode }) => {
 
     // Отслеживаем изменения authToken
     useEffect(() => {
-        if (authToken && (!shops || shops.length === 0)) {
-            getFiltersData();
-        }
-    }, [authToken]);
+      if (authToken && !activeBrand && !isFiltersLoading) {
+        getFiltersData();
+      }
+    }, [authToken, isFiltersLoading]);
 
     //Данные магазина [A-Za-z0-9]+ успешно собраны\. Результаты доступны на страницах сервиса
     useEffect(() => {

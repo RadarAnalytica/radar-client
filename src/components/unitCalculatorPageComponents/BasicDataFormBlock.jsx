@@ -74,10 +74,11 @@ const BasicDataFormBlock = ({ form, setMpMainFee, isProductFromToken, setIsProdu
         setIsOptionClicked(true);
         setIsProductFromToken(null);
         setInputValue(value);
-        // const currentOption = autocompleteOptions.find(_ => _.name === value)
-        // if (currentOption) {
-            // setMpMainFee(currentOption.fbo)
-        // }
+        const currentOption = autocompleteOptions.find(_ => _.name === value)
+        console.log('currentOption', currentOption);
+        if (currentOption) {
+            setMpMainFee(currentOption.fbo)
+        }
     };
 
     return (

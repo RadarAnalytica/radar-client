@@ -195,7 +195,7 @@ export default function ReportProfitLoss() {
 			{ key: 'paid_acceptance', title: 'Платная приемка', isChildren: true, parentKey: 'total_expenses' },
 			{ key: 'commission', title: 'Комиссия', isChildren: true, parentKey: 'total_expenses' },
 			{ key: 'logistic', title: 'Логистика', isChildren: true, parentKey: 'total_expenses' },
-			{ key: 'penalties', title: 'Штрафы', isChildren: true, parentKey: 'total_expenses' },
+			{ key: 'penalties', title: 'Штрафы и прочие удержания', isChildren: true, parentKey: 'total_expenses', tooltipText: 'К прочим удержания отнесены: платежи по договору займа, предоставление услуг по подписке «Джем», страхование заказов, услуги по размещению рекламного материала, списания за отзывы, утилизации товара' },
 			{ key: 'compensation', title: 'Компенсация' },
 			{ key: 'gross_margin', title: 'Маржинальная прибыль' },
 			{ key: 'operating_expenses', title: 'Операционные расходы', isParent: true, isExpanded: false },

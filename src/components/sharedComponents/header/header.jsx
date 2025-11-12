@@ -57,7 +57,7 @@ const Header = ({
 
     return (
         <div className={styles.headerWrapper}>
-            {user && user.test_days_left !== undefined && user.test_days_left !== null && user.test_days_left >= 0 &&
+            {/* {user && user.test_days_left !== undefined && user.test_days_left !== null && user.test_days_left >= 0 &&
                 <StatusBanner
                     icon={
                         <svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -71,7 +71,7 @@ const Header = ({
                         </p>
                     }
                 />
-            }
+            } */}
             <header className={styles.header}>
                 <div className={styles.header__titleBlock} style={{ boxShadow: hasShadow ? '0px 0px 20px 0px #00000014' : 'none' }}>
                     {typeof title === 'string' ?

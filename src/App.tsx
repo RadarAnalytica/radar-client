@@ -11,6 +11,7 @@ import { ProtectedRoute } from "./RouteGuards";
 import { FiltersProvider } from "./app/index";
 import { DemoDataProvider } from "./app/providers/DemoDataProvider";
 import ErrorBoundary from "./components/sharedComponents/ErrorBoundary/ErrorBoundary";
+import { initErrorReporter } from "./service/errorReporting/errorReporter";
 
 const StockAnalysisGlitter = React.lazy(() => import("./components/StockAnalysisGlitter"));
 const Subscriptions = React.lazy(() => import("./pages/Subscriptions"));
@@ -98,6 +99,12 @@ function App() {
   // нужно для определения какую страницу калькулятора показывать
   const { userAgent } = navigator;
   const deviceRegexp = /android|iphone|kindle|ipad/i;
+
+  React.useEffect(() => {
+    initErrorReporter().catch((error) => {
+      console.error("Failed to initialize error reporter", error);
+    });
+  }, []);
 
   return (
     <ErrorBoundary>

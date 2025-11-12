@@ -17,6 +17,7 @@ import DownloadButton from '@/components/DownloadButton';
 import { DoubleTable } from '@/widgets';
 import { ServiceFunctions } from '@/service/serviceFunctions';
 import AuthContext from '@/service/AuthContext';
+import { positionCheckTableConfig } from '@/shared';
 
 
 // Types
@@ -349,6 +350,8 @@ const PositionCheckID = () => {
                             dest={requestObject?.dest || -1257786} 
                             authToken={authToken} 
                             tableType={tableType}
+                            tableConfig={positionCheckTableConfig}
+                            page={'position'}
                         />
                     </div>
                 }

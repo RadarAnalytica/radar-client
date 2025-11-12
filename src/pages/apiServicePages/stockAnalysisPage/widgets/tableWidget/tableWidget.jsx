@@ -5,6 +5,7 @@ import { formatPrice } from '../../../../../service/utils';
 import { Tooltip, Pagination, ConfigProvider, Progress } from 'antd';
 import { Table as RadarTable } from 'radar-ui';
 import { newTableConfig } from '../../shared/configs/newTableConfig';
+import Loader from '@/components/ui/Loader';
 
 /**
  * Краткое описание:
@@ -78,7 +79,7 @@ const TableWidget = ({ stockAnalysisFilteredData, loading, progress }) => {
     const [tableData, setTableData] = useState(); // данные для рендера таблицы
     const [sortState, setSortState] = useState(initSortState); // стейт сортировки (см initSortState)
     const [paginationState, setPaginationState] = useState({ current: 1, total: 50, pageSize: 25 });
-    const [ tableConfig, setTableConfig ] = useState();
+    const [tableConfig, setTableConfig] = useState();
 
     // задаем начальную дату
     useEffect(() => {
@@ -117,8 +118,6 @@ const TableWidget = ({ stockAnalysisFilteredData, loading, progress }) => {
     };
 
     const onResizeGroup = (columnKey, width) => {
-        // Минимальная ширина колонки, чтобы контент не скрывался полностью
-        const MIN_COLUMN_WIDTH = 80;
         
         // Обновляем конфигурацию колонок с группированной структурой
         const updateColumnWidth = (columns) => {
@@ -132,14 +131,14 @@ const TableWidget = ({ stockAnalysisFilteredData, loading, progress }) => {
                 if (child.hidden) return sum; // Пропускаем скрытые колонки
                 return sum + (child.width || child.minWidth || 200);
               }, 0);
-              return { ...col, width: totalWidth, minWidth: totalWidth, children: updatedChildren };
+              return { ...col, width: totalWidth, children: updatedChildren, minWidth: totalWidth };
             }
 
             // Если это листовая колонка
             if (col.key === columnKey) {
               // Применяем минимальную ширину
-              const newWidth = Math.max(width, MIN_COLUMN_WIDTH);
-              return { ...col, width: newWidth, minWidth: newWidth };
+              const newWidth = width;
+              return { ...col, width: newWidth };
             }
 
             return col;
@@ -197,26 +196,12 @@ const TableWidget = ({ stockAnalysisFilteredData, loading, progress }) => {
         current?.scrollTo({ top: 0, behavior: 'smooth', duration: 100 });
     }, [paginationState.current]);
 
+
     if (loading) {
-        return (
-            <div className={styles.widget}>
-                <div className={styles.widget__loaderWrapper}>
-                    <span className='loader'></span>
-                    {progress !== null &&
-                        <div className={styles.loadingProgress}>
-                            <Progress
-                                percent={progress}
-                                size='small'
-                                showInfo={false}
-                                strokeColor='#5329FF'
-                                strokeLinecap={1}
-                            />
-                        </div>
-                    }
-                </div>
-            </div>
-        );
+        return <Loader loading={loading} progress={progress} />;
     }
+
+    console.log('tableConfig', tableConfig);
 
     return (
         <div className={styles.widget__container}>
@@ -281,6 +266,7 @@ const TableWidget = ({ stockAnalysisFilteredData, loading, progress }) => {
                         resizeable
                         onResize={onResizeGroup}
                         onSort={sortButtonClickHandler}
+                        style={{ width: 'max-content', tableLayout: 'fixed' }}
                         pagination={{
                             current: paginationState.current,
                             pageSize: paginationState.pageSize,
