@@ -119,13 +119,11 @@
     gap: 8px;
 }
 
-:global(.radar-table__header-row) {
-    & > th {
-        height: 46px;
-    }
+.widget :global(.radar-table__header-row > th) {
+    height: 46px;
 }
 
-:global(.radar-table__body-cell) {
+.widget :global(.radar-table__body-cell) {
     height: 70px !important;
 }
 
