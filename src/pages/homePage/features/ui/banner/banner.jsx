@@ -83,7 +83,6 @@ const Top = () => {
 };
 
 const Bottom = () => {
-
     return (
         <div className={styles.bottomWrapper}>
             <div className={styles.bottomContainer}>

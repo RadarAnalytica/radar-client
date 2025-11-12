@@ -6,25 +6,22 @@ import { VIDEOS } from './config';
 export const VideoWidgetOneLine = () => {
     return (
         <div className={styles.widget}>
-            {VIDEOS.map((_, id) => <VideoComp item={_} key={id} />)}
+            <h2 className={styles.widget__title}>
+                Наши видеоинструкции
+            </h2>
 
-            <div className={styles.description}>
-                <div className={styles.description__bullet}>
-                    Анализ ниши и трендов
+            <div className={styles.widget__videos}>
+                {VIDEOS.map((_, id) => <VideoComp item={_} key={id} />)}
+
+                <div className={styles.description}>
+                    Находите прибыльные ниши, товары и растущие тренды — в два клика.
                 </div>
-                Находите прибыльные ниши, товары и растущие тренды — в два клика.
-            </div>
-            <div className={styles.description}>
-                <div className={styles.description__bullet}>
-                    Аналитика ваших финансов
+                <div className={styles.description}>
+                    Аналитика личных продаж по API-ключу, расшифровка еженедельных отчётов, ОПиУ-отчёты, ABC-анализ и юнит-экономика.
                 </div>
-                Аналитика личных продаж по API-ключу, расшифровка еженедельных отчётов, ОПиУ-отчёты, ABC-анализ и юнит-экономика.
-            </div>
-            <div className={styles.description}>
-                <div className={styles.description__bullet}>
-                    Анализ конкурентов
+                <div className={styles.description}>
+                    Следите за показателями ваших конкурентов и анализируйте потенциал их ниш.
                 </div>
-                Следите за показателями ваших конкурентов и анализируйте потенциал их ниш.
             </div>
         </div>
     );
