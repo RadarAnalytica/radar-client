@@ -15,7 +15,7 @@ export const FeaturesWidget = () => {
                         Подключите отчет РНП и контролируйте 60+ бизнес-метрик ежедневно
                     </p>
                     <Link
-                        to='#'
+                        to='/rnp'
                         className={styles.link}
                     >
                         Попробовать
@@ -34,7 +34,7 @@ export const FeaturesWidget = () => {
                         Найдите прибыльный товар с высоким спросом всего за 5 минут
                     </p>
                     <Link
-                        to='#'
+                        to='/monitoring'
                         className={styles.link}
                     >
                         Попробовать
@@ -53,8 +53,7 @@ export const FeaturesWidget = () => {
                         Узнайте, приносит ли магазин прибыль — оцифруйте все данные по API за пару кликов
                     </p>
                     <Link
-                        to='#'
-                        target='_blank'
+                        to='/linked-shops'
                         className={styles.link}
                     >
                         Попробовать
@@ -97,7 +96,7 @@ export const FeaturesWidget = () => {
                         Более 5 новых инструментов в разделе SEO
                     </p>
                     <Link
-                        to='#'
+                        to='/serp'
                         className={styles.link}
                     >
                         Попробовать
