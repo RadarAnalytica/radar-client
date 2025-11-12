@@ -8,17 +8,64 @@ import { RadarBar } from '@/shared';
 import { PlainSelect } from '@/components/sharedComponents/apiServicePagesFiltersComponent/features/plainSelect/plainSelect';
 // import { MainChart } from '@/features';
 import { Table as RadarTable } from 'radar-ui';
-import { Segmented, ConfigProvider } from 'antd';
+import { Segmented, ConfigProvider, Button, Modal } from 'antd';
 import { positionTrackingTableConfig } from '@/shared';
 import { positionTrackingTableCustomCellRender } from '@/shared';
 import MainChart from '@/components/dashboardPageComponents/charts/mainChart/mainChart';
-import { Modal } from 'antd';
+import { SearchBlock } from '@/features';
+import { useNavigate } from 'react-router-dom';
 
 const chartMockData = {
     orderCountList: [12, 18, 16, 20, 15, 22, 19, 24, 21, 18, 23, 17, 16, 22, 25, 19, 18, 21, 20, 23, 24, 26, 22, 19, 21, 18, 20, 22, 24, 23],
     orderAmountList: [12000, 14500, 13200, 15800, 14100, 16700, 15400, 17600, 16900, 15000, 17300, 16000, 15200, 16800, 18200, 15900, 15500, 16300, 16100, 17200, 17800, 18500, 17400, 16200, 16800, 15600, 16400, 17000, 17700, 18100],
     saleCountList: [9, 14, 12, 15, 11, 17, 13, 18, 16, 13, 17, 12, 11, 16, 18, 14, 13, 15, 14, 17, 18, 19, 16, 14, 15, 13, 14, 16, 18, 17],
     saleAmountList: [9800, 11200, 10500, 12100, 10700, 13200, 11800, 13800, 13000, 11400, 13600, 12300, 11500, 12900, 14100, 12200, 11800, 12500, 12300, 13400, 13900, 14600, 13300, 12400, 12800, 11600, 12200, 12900, 13500, 14000],
+};
+
+const modalCancelButtonTheme = {
+    token: {
+        colorPrimary: '#5329FF',
+        fontSize: 16,
+        fontWeight: 600,
+        fontFamily: 'Mulish',
+        controlHeight: 44,
+        borderRadius: 12,
+    },
+    components: {
+        Button: {
+            paddingInline: 24,
+            paddingBlock: 10,
+            colorBorder: '#E4DCFF',
+            colorBgContainer: '#F3EEFF',
+            colorBgContainerHover: '#E9E1FF',
+            colorBgContainerDisabled: '#F3EEFF',
+            colorText: '#5329FF',
+            colorTextHover: '#3C1DE0',
+            colorBorderHover: '#D1C2FF',
+            colorBgTextActive: '#E2D8FF',
+            boxShadow: 'none',
+        },
+    },
+};
+
+const modalPrimaryButtonTheme = {
+    token: {
+        colorPrimary: '#5329FF',
+        fontSize: 16,
+        fontWeight: 600,
+        fontFamily: 'Mulish',
+        controlHeight: 44,
+        borderRadius: 12,
+    },
+    components: {
+        Button: {
+            paddingInline: 24,
+            paddingBlock: 10,
+            colorPrimaryHover: '#6942FF',
+            colorPrimaryActive: '#421BCF',
+            boxShadow: 'none',
+        },
+    },
 };
 
 // antd config providers themes
@@ -70,6 +117,8 @@ const tableMockData = [
 
 const PositionTrackingMainPage = () => {
     const [activeFilter, setActiveFilter] = useState('По просмотрам');
+    const [isAddModalVisible, setIsAddModalVisible] = useState(false);
+    const navigate = useNavigate();
     return (
         <main className={styles.page}>
             <MobilePlug />
@@ -94,7 +143,7 @@ const PositionTrackingMainPage = () => {
                 {/* !header */}
 
                 {/* main widget */}
-                <PositionTrackingMainPageWidget hasAddBlock={true} />
+                <PositionTrackingMainPageWidget hasAddBlock={true} setIsAddModalVisible={setIsAddModalVisible} />
 
                 {/* info bars */}
                 <div className={styles.page__barsWrapper}>
@@ -104,7 +153,7 @@ const PositionTrackingMainPage = () => {
                         isLoading={false}
                         actionButtonParams={{
                             text: 'Добавить новый товар к отслеживаню',
-                            action: () => { },
+                            action: () => {setIsAddModalVisible(true)},
                             style: {
                                 backgroundColor: 'transparent',
                                 alignSelf: 'flex-end'
@@ -122,7 +171,7 @@ const PositionTrackingMainPage = () => {
                         isLoading={false}
                         actionButtonParams={{
                             text: 'Управлять',
-                            action: () => { },
+                            action: () => {navigate(`/position-tracking/projects`)},
                             style: {
                                 backgroundColor: 'transparent',
                                 alignSelf: 'flex-end'
@@ -167,18 +216,18 @@ const PositionTrackingMainPage = () => {
                         title=''
                         loading={false}
                         dataDashBoard={chartMockData}
-                        selectedRange={{ period: 30}}
+                        selectedRange={{ period: 30 }}
                     />
                 </div>
                 <div className={styles.page__tableConfig}>
                     <p className={styles.page__title}>Лучшие товары</p>
                     <ConfigProvider theme={segmentedTheme}>
-                        <Segmented 
-                        options={['По просмотрам', 'По ключам', 'По средней позиции']} 
-                        value={activeFilter}
-                        onChange={(value) => {
-                            setActiveFilter(value);
-                        }}
+                        <Segmented
+                            options={['По просмотрам', 'По ключам', 'По средней позиции']}
+                            value={activeFilter}
+                            onChange={(value) => {
+                                setActiveFilter(value);
+                            }}
                         />
                     </ConfigProvider>
                 </div>
@@ -195,16 +244,48 @@ const PositionTrackingMainPage = () => {
                     />
                 </div>
 
-            <Modal
-                open={true}
-                onCancel={() => {}}
-                footer={null}
-                centered
-            >
-                <div>
-                    <p>Hello</p>
-                </div>
-            </Modal>
+                <Modal
+                    open={isAddModalVisible}
+                    onCancel={() => setIsAddModalVisible(false)}
+                    onClose={() => setIsAddModalVisible(false)}
+                    onOk={() => setIsAddModalVisible(false)}
+                    footer={null}
+                    centered
+                    width={600}
+                >
+                    <div className={styles.addModal}>
+                        <p className={styles.addModal__title}>Добавление товара</p>
+                        <SearchBlock
+                            style={{ padding: 0 }}
+                            submitHandler={(value) => {
+                                navigate(`/position-tracking/projects`);
+                            }}
+                        />
+
+                        <PlainSelect
+                            selectId='brandSelect'
+                            label='Проект'
+                            value={1}
+                            optionsData={[{ value: 1, label: 'Москва' }, { value: 2, label: 'Санкт-Петербург' }]}
+                            handler={(value: number) => {
+                                //setActiveFilter(filtersData?.find((item) => item.dest === value) || null);
+                            }}
+                            mode={undefined}
+                            allowClear={false}
+                            disabled={false}
+                            style={{ width: '100%', maxWidth: '100%' }}
+                        />
+
+                        <div className={styles.addModal__buttonsWrapper}>
+                            <ConfigProvider theme={modalCancelButtonTheme}>
+                                <Button variant='outlined' onClick={() => setIsAddModalVisible(false)}>Отмена</Button>
+                            </ConfigProvider>
+                            <ConfigProvider theme={modalPrimaryButtonTheme}>
+                                <Button type='primary' onClick={() => {setIsAddModalVisible(false); navigate(`/position-tracking/projects`)}}>Добавить</Button>
+                            </ConfigProvider>
+                        </div>
+                    </div>
+                </Modal>
             </section>
             {/* ---------------------- */}
         </main>

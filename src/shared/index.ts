@@ -10,3 +10,7 @@ export { innerTableConfig } from './tableConfigs/positionCheckTableConfig';
 export { RadarRateMark } from './ui/RadarRateMark/RadarRateMark';
 export { positionTrackingTableConfig } from './tableConfigs/positionTrackingTableConfig';
 export { positionTrackingTableCustomCellRender } from './customTableCells/positionTrackingTableCustomCellRender';
+export { positionTrackingProjectsTableConfig } from './tableConfigs/positionTrackingProjectsTableConfig';
+export { positionTrackingProjectsCustomCellRender } from './customTableCells/positionTrackingProjectsCustomCellRender';
+export { positionTrackingSkuTableConfig } from './tableConfigs/positionTrackingSkuTableConfig';
+export { positionTrackingSkuTableCustomCellRender } from './customTableCells/positionTrackingSkuTableCustomCellRender';

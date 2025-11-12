@@ -37,9 +37,11 @@ const antdTheme = {
 
 interface IPositionTrackingMainPageWidgetProps {
     hasAddBlock?: boolean;
+    setIsAddModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
 }
 export const PositionTrackingMainPageWidget: React.FC<IPositionTrackingMainPageWidgetProps> = ({
     hasAddBlock = false,
+    setIsAddModalVisible,
 }) => {
 
 
@@ -53,6 +55,7 @@ export const PositionTrackingMainPageWidget: React.FC<IPositionTrackingMainPageW
                             <Form
                                 layout='horizontal'
                                 className={styles.addBlock__form}
+                                onFinish={() => setIsAddModalVisible(true)}
                             >
                                 <Form.Item
                                     name="sku"
