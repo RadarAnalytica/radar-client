@@ -239,7 +239,18 @@ export const DoubleTable: React.FC<IDoubleTableProps> = ({ tableData, dest, auth
                 sorting={{ sort_field: sortState.column, sort_order: sortState.order as 'ASC' | 'DESC' }}
                 expandedRowKeys={expandedRowKeys}
                 onExpandedRowsChange={handleExpandedRowsChange}
-                bodyCellWrapperStyle={{ borderBottom: tableType === 'Кластеры' ? 'none' : '1px solid #E8E8E8', padding: '10.5px 12px' }}
+                bodyRowClassName={styles.bodyRowSpecial}
+                bodyCellWrapperStyle={{ 
+                    borderBottom: tableType === 'Кластеры' ? 'none' : '1px solid #E8E8E8', 
+                    padding: '10.5px 12px',
+                    height: '45px'
+                }}
+                headerCellWrapperStyle={{
+                    height: '35px'
+                }}
+                paginationContainerStyle={{
+                   border: 'none'
+                }}
                 customCellRender={{
                     idx: ['query', 'serp'],
                     renderer: (value, record, index, dataIndex) => {
@@ -314,7 +325,7 @@ const interTableDataToTableDataDto = (tableData: any[]) => {
 const InnerTable = ({ tableData }: { tableData: any[] }) => {
     return (
         <div className={styles.innerTable}>
-            <div className={styles.innerTable__header}>
+            <div className={styles.innerTable__header} style={{ height: '70px'}}>
                 <p className={styles.innerTable__headerTitle}>Поисковая выдача по ключу</p>
                 {/* <DownloadButton handleDownload={() => { }} loading={false} /> */}
             </div>
@@ -329,8 +340,10 @@ const InnerTable = ({ tableData }: { tableData: any[] }) => {
                         color: '#8C8C8C',
                         fontWeight: 500,
                         padding: '12px 16px',
+                        height: '51px'
 
                     }}
+                    bodyRowClassName={styles.bodyRowInner}
                     bodyCellWrapperStyle={{
                         borderBottom: '1px solid #E8E8E8',
                         backgroundColor: 'transparent',

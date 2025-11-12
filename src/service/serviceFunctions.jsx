@@ -1932,9 +1932,9 @@ export interface IProductPositionData {
 	shows: number;
 }
 	 */
-	getPositionCheckProductMetaData: async (token, productId, signal) => {
+	getPositionCheckProductMetaData: async (token, productId, signal, dest) => {
 			const res = await fetchApi(
-				`https://radarmarket.ru/api/web-service/position-track/meta/${productId}?dest=-1257786`,
+				`https://radarmarket.ru/api/web-service/position-track/meta/${productId}?dest=${dest}`,
 				{
 					method: 'GET',
 					headers: {
