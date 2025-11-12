@@ -352,6 +352,7 @@ const PositionCheckID = () => {
                             tableType={tableType}
                             tableConfig={positionCheckTableConfig}
                             page={'position'}
+                            hasSort={true}
                         />
                     </div>
                 }

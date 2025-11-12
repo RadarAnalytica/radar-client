@@ -15,12 +15,14 @@ interface IDoubleTableProps {
     tableType: 'Кластеры' | 'По запросам';
     tableConfig: any[];
     page: 'position' | 'keywords';
+    hasSort?: boolean;
 }
 
-export const DoubleTable: React.FC<IDoubleTableProps> = ({ tableData, dest, authToken, tableType, tableConfig, page }) => {
+export const DoubleTable: React.FC<IDoubleTableProps> = ({ tableData, dest, authToken, tableType, tableConfig, page, hasSort = false }) => {
 
     const [pagination, setPagination] = useState({ current: 1, pageSize: 10, total: Math.ceil(tableData.length / 20) });
     const [expandedRowKeys, setExpandedRowKeys] = useState([]);
+    const [sortState, setSortState] = useState({ column: 'frequency', order: 'DESC' });
     const addedRowsRef = useRef<Record<string, { customRow: HTMLTableRowElement, hiddenRows: HTMLTableRowElement[] }>>({});
     const tableContainerRef = useRef<HTMLDivElement>(null);
     const [isLoading, setIsLoading] = useState(false);
@@ -35,6 +37,25 @@ export const DoubleTable: React.FC<IDoubleTableProps> = ({ tableData, dest, auth
         }
         setIsLoading(false);
         return await res.json();
+    }
+
+    const sortHandler = (column: string, order: 'ASC' | 'DESC') => {
+        setPagination({
+            ...pagination,
+            current: 1,
+        });
+        expandedRowKeys.forEach(key => {
+            const serpRow = document.getElementById('serp-row-' + key);
+            if (serpRow) {
+                serpRow.remove();
+            }
+        });
+        setExpandedRowKeys([]);
+        setSortState({ column, order });
+        tableContainerRef.current?.scrollTo({
+            top: 0,
+            behavior: 'smooth',
+        });
     }
 
 
@@ -58,6 +79,7 @@ export const DoubleTable: React.FC<IDoubleTableProps> = ({ tableData, dest, auth
     };
 
     const handleExpandedRowsChange = (keys: string[]) => {
+        console.log(keys)
         // Находим строки, которые были свернуты
         const collapsedKeys = expandedRowKeys.filter(key => !keys.includes(key));
 
@@ -78,7 +100,7 @@ export const DoubleTable: React.FC<IDoubleTableProps> = ({ tableData, dest, auth
             }
         });
 
-        setExpandedRowKeys(keys);
+        setExpandedRowKeys([keys[keys.length - 1]]);
     };
 
     const serpButtonHandler = (buttonRef: HTMLButtonElement, rowKey: string) => {
@@ -98,9 +120,15 @@ export const DoubleTable: React.FC<IDoubleTableProps> = ({ tableData, dest, auth
             }
             return;
         }
-
+        expandedRowKeys.forEach(key => {
+            const serpRow = document.getElementById('serp-row-' + key);
+            if (serpRow) {
+                serpRow.remove();
+            }
+        });
+        setExpandedRowKeys([]);
         // Раскрываем строку
-        setExpandedRowKeys(prev => [...prev, currentRow.rowKey]);
+        setExpandedRowKeys([currentRow.rowKey]);
 
         // Находим tr в которой лежит кнопка
         const currentTr = buttonRef.closest('tr');
@@ -162,9 +190,13 @@ export const DoubleTable: React.FC<IDoubleTableProps> = ({ tableData, dest, auth
 
 
     // Получаем данные для текущей страницы
+    const sortedData = (!hasSort || !sortState.order) ? tableData : tableData?.sort((a, b) => {
+       return sortState.order === 'ASC' ? a[sortState.column] - b[sortState.column] : b[sortState.column] - a[sortState.column];
+
+    })
     const startIndex = (pagination.current - 1) * pagination.pageSize;
     const endIndex = startIndex + pagination.pageSize;
-    const paginatedData = tableData.slice(startIndex, endIndex);
+    const paginatedData = sortedData.slice(startIndex, endIndex);
 
     useEffect(() => {
         setPagination({
@@ -202,6 +234,9 @@ export const DoubleTable: React.FC<IDoubleTableProps> = ({ tableData, dest, auth
                 }}
                 treeMode
                 indentSize={45}
+                resizeable
+                onSort={(column, order) => sortHandler(column, order)}
+                sorting={{ sort_field: sortState.column, sort_order: sortState.order as 'ASC' | 'DESC' }}
                 expandedRowKeys={expandedRowKeys}
                 onExpandedRowsChange={handleExpandedRowsChange}
                 bodyCellWrapperStyle={{ borderBottom: tableType === 'Кластеры' ? 'none' : '1px solid #E8E8E8', padding: '10.5px 12px' }}
