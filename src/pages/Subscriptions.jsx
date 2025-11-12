@@ -182,13 +182,13 @@ const Subscriptions = () => {
             const paymentDateEndString = item.validity_period;
             const paymentDateValue = new Date(Date.parse(paymentDateEndString));
             paymentDateValue.setDate(paymentDateValue.getDate() + 1);
-            const paymentDate = `${paymentDateValue.getDate()} ${months[paymentDateValue.getMonth()]}`;
+            const paymentDate = `${paymentDateValue.getDate()} ${months[paymentDateValue.getMonth()]} ${paymentDateValue.getFullYear()} года`;
 
             const activeTillPeriodValue = new Date(Date.parse(paymentDateEndString));
-            const activeTillPeriod = `${activeTillPeriodValue.getDate()} ${months[activeTillPeriodValue.getMonth()]}`;
+            const activeTillPeriod = `${activeTillPeriodValue.getDate()} ${months[activeTillPeriodValue.getMonth()]} ${activeTillPeriodValue.getFullYear()} года`;
 
             return (
-              <div className="sub-card">
+              <div className="sub-card" key={item.id}>
                 <div className="sub-card-row">
                   <div className="sub-card-content-wrap">
                     <img src={TestSub} alt="subImg" />
