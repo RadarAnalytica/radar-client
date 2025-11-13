@@ -143,33 +143,35 @@ export const RadarBar: React.FC<RadarBarProps> = ({
                         <div className={styles.bar__mainValue}>{formatPrice(mainValue?.toString(), mainValueUnits)}</div>
                     }
                     {compareValue && (compareValue.comparativeValue !== undefined || compareValue.absoluteValue !== undefined) &&
-                        <ConfigProvider
-                            theme={{
-                                token: {
-                                    colorTextLightSolid: '#1A1A1A',
-                                    fontSize: 12,
-                                }
-                            }}
-                        >
-                            <Tooltip
-                                arrow={false}
-                                color='white'
-                                title={compareValue.tooltipText}
-                              
-                            >
-                                <div className={styles.bar__compareValuesBlock} style={{...getColorByValue(compareValue.comparativeValue), cursor: compareValue.tooltipText ? 'pointer' : 'default'}}>
-                                    {compareValue.comparativeValue !== undefined &&
-                                        <div className={styles.bar__comparativeValue}>{formatPrice(compareValue.comparativeValue.toString(), '%', true)}</div>
-                                    }
-                                    {compareValue.absoluteValue !== undefined &&
-                                        <div className={styles.bar__middleLine}></div>
-                                    }
-                                    {compareValue.absoluteValue !== undefined &&
-                                        <div className={styles.bar__absoluteValue}>{formatPrice(compareValue.absoluteValue.toString(), compareValue.absoluteValueUnits || ' ')}</div>
-                                    }
-                                </div>
-                            </Tooltip>
-                        </ConfigProvider>
+
+                        <div className={styles.bar__compareValuesBlock} style={{ ...getColorByValue(compareValue.comparativeValue) }}>
+                            {compareValue.comparativeValue !== undefined &&
+                                <div className={styles.bar__comparativeValue}>{formatPrice(compareValue.comparativeValue.toString(), '%', true)}</div>
+                            }
+                            {compareValue.absoluteValue !== undefined &&
+                                <div className={styles.bar__middleLine}></div>
+                            }
+                            {compareValue.absoluteValue !== undefined &&
+                                <ConfigProvider
+                                    theme={{
+                                        token: {
+                                            colorTextLightSolid: '#1A1A1A',
+                                            fontSize: 12,
+                                        }
+                                    }}
+                                >
+                                    <Tooltip
+                                        arrow={false}
+                                        color='white'
+                                        title={compareValue.tooltipText}
+
+                                    >
+                                        <div className={styles.bar__absoluteValue} style={{ cursor: compareValue.tooltipText ? 'pointer' : 'default' }}>{formatPrice(compareValue.absoluteValue.toString(), compareValue.absoluteValueUnits || ' ')}</div>
+                                    </Tooltip>
+                                </ConfigProvider>
+                            }
+                        </div>
+
                     }
                 </div>
                 {(linkParams || actionButtonParams) &&
