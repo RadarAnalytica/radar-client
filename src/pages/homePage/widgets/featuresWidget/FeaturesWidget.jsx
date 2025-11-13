@@ -84,7 +84,7 @@ export const FeaturesWidget = () => {
                 </div>
             </div>
 
-            <div className={`${styles.card} ${styles.card_full} ${styles.card__seo}`}>
+            <div className={`${styles.card} ${styles.card__seo}`}>
                 <div className={styles.card__infoBlock}>
                     <div className={styles.card__newIcon}>
                         <svg width="39" height="25" viewBox="0 0 39 25" fill="none" xmlns="http://www.w3.org/2000/svg">

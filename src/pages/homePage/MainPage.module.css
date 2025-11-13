@@ -25,16 +25,18 @@
     flex-shrink: 0;
 
     .page__content__widgets {
-        display: grid;
-        grid-template-columns: 2fr 1fr;
+        display: flex;
         gap: 20px;
         height: 580px;
-        grid-template-rows: minmax(0, 1fr);
         align-items: stretch;
         margin-bottom: 20px;
 
         @media (max-width: 1366px) {
             height: 780px;
+        }
+
+        @media (max-width: 1280px) {
+            height: 800px;
         }
     }
 }
