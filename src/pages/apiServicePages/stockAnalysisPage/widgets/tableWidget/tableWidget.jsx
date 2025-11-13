@@ -5,6 +5,7 @@ import { formatPrice } from '../../../../../service/utils';
 import { Tooltip, Pagination, ConfigProvider, Progress } from 'antd';
 import { Table as RadarTable } from 'radar-ui';
 import { newTableConfig } from '../../shared/configs/newTableConfig';
+import { RadarRateMark } from '@/shared';
 import Loader from '@/components/ui/Loader';
 
 /**
@@ -37,7 +38,40 @@ const getABCBarOptions = (value) => {
     return bgColor;
 }
 
+const comparsionsList = {
+    "saleSum": "sale_sum_comparison",
+    "quantity": "quantity_comparison",
+    "lessReturns": "less_returns_comparison",
+    "costGoodsSold": "sold_cost_comparison",
+    "sold_cost": "sold_cost_comparison",
+    "returnsSum": "returns_sum_comparison",
+    "returnsQuantity": "returns_quantity_comparison",
+    "returnsCostSold": "return_cost_comparison",
+    "return_cost": "return_cost_comparison",
+    "toClient": "to_client_comparison",
+    "to_client_sum": "to_client_sum_comparison",
+    "fromClient": "from_client_comparison",
+    "from_client_sum": "from_client_sum_comparison",
+    "commissionWB": "commission_wb_comparison",
+    "fines": "fines_comparison",
+    "additionalPayment": "additional_payment_comparison",
+    "toPayoff": "to_payoff_comparison",
+    "marginalProfit": "marginal_profit_comparison",
+    "averageProfit": "average_profit_comparison",
+    "profitabilityOfProductsSold": "profitability_of_products_sold_comparison",
+    "marginal": "marginal_comparison",
+    "annualReturnOnInventory": "annual_return_on_inventory_comparison",
+    "lostRevenue": "lost_revenue_comparison",
+    "purchased": "purchased_comparison",
+    "notPurchased": "not_purchased_comparison",
+    "purchasedPercent": "purchased_percent_comparison",
+    "completed": "completed_comparison",
+    "saleCountDay": "sale_count_day_comparison"
+  }
+
 const customCellRender = (value, record, index, dataIndex) => {
+    const comparsionKey = comparsionsList[dataIndex]
+    const comparsion = record[comparsionKey]
     const rightBorders = ['category', 'sold_cost', 'return_cost', 'product_cost_stock', 'from_client_sum', 'additionalPayment', 'lostRevenue', 'byProfit', 'minDiscountPrice', 'orderSum', 'completed', 'saleCountDay'];
     if (dataIndex === 'productName') {
         return (
@@ -69,6 +103,7 @@ const customCellRender = (value, record, index, dataIndex) => {
 
     return <div className={styles.customCell} data-border-right={rightBorders.includes(dataIndex)} title={typeof value === 'number' ? formatPrice(value, newTableConfig.map(item => item.children).flat().find(item => item.dataIndex === dataIndex)?.units || '') : value}>
         {typeof value === 'number' ? formatPrice(value, newTableConfig.map(item => item.children).flat().find(item => item.dataIndex === dataIndex)?.units || '') : value}
+        {comparsion !== null && comparsion !== undefined && <RadarRateMark value={comparsion} units='%' />}
     </div>;
 };
 
@@ -201,7 +236,6 @@ const TableWidget = ({ stockAnalysisFilteredData, loading, progress }) => {
         return <Loader loading={loading} progress={progress} />;
     }
 
-    console.log('tableConfig', tableConfig);
 
     return (
         <div className={styles.widget__container}>
