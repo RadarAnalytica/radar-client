@@ -84,7 +84,6 @@ const segmentedTheme = {
 const initialRequestStatus = { isLoading: false, isError: false, isSuccess: false, message: '' };
 
 const formDataToRequestObjectDto = (formData: Record<string, any>, prevRequestObject: Record<string, any>) => {
-    console.log(formData)
     let requestObject = {
         dest: formData.region,
         feed_type: formData.type,

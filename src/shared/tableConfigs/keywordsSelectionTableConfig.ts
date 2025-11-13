@@ -14,6 +14,7 @@ export const keywordsSelectionTableConfig = [
         hidden: false,
         width: 160,
         minWidth: 160,
+        sortable: true
     },
     {
         key: 'total_goods',

@@ -1,8 +1,10 @@
 import styles from './KeywordSelectionFilters.module.css';
 import { Form, Select, ConfigProvider, Input, Segmented, Checkbox, Flex } from 'antd';
 import { SelectIcon } from '@/components/sharedComponents/apiServicePagesFiltersComponent/shared/selectIcon/selectIcon';
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import DownloadButton from '@/components/DownloadButton';
+import useDebouncedFunction from '@/service/hooks/useDebounce';
+import { useDemoMode } from '@/app/providers';
 
 
 // antd theme
@@ -33,7 +35,9 @@ const theme = {
             activeBorderColor: '#5329FF1A',
             hoverBorderColor: '#5329FF1A',
             activeOutlineColor: 'transparent',
-            activeShadow: 'transparent'
+            activeShadow: 'transparent',
+            controlHeight: 38,
+            controlHeightLG: 38,
         },
     }
 }
@@ -53,14 +57,22 @@ const checkboxTheme = {
 // model 
 interface IKeywordSelectionFiltersForm {
     submitHandler: (formData: Record<string, any>) => void;
+    loading: boolean,
 }
 
 
 
-export const KeywordSelectionFilters: React.FC<IKeywordSelectionFiltersForm> = ({ submitHandler }) => {
+export const KeywordSelectionFilters: React.FC<IKeywordSelectionFiltersForm> = ({ submitHandler, loading }) => {
     const [form] = Form.useForm();
     const [keywordDropdownIncludeOpen, setKeywordDropdownIncludeOpen] = useState(false);
     const [keywordDropdownExcludeOpen, setKeywordDropdownExcludeOpen] = useState(false);
+    const { isDemoMode } = useDemoMode();
+
+    const handleSubmit = useCallback(() => {
+        form.submit();
+    }, [form]);
+
+    const debouncedSubmit = useDebouncedFunction(handleSubmit, 500);
 
     const numberOnlyRule = { pattern: /^\d*$/, message: '' };
     const createFromValidator = (toField: string) => ({
@@ -91,6 +103,7 @@ export const KeywordSelectionFilters: React.FC<IKeywordSelectionFiltersForm> = (
     const handleNumberInputChange = (fieldName: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
         const digitsOnlyValue = event.target.value.replace(/\D/g, '');
         form.setFieldValue(fieldName, digitsOnlyValue);
+        debouncedSubmit();
     };
 
 
@@ -105,11 +118,24 @@ export const KeywordSelectionFilters: React.FC<IKeywordSelectionFiltersForm> = (
                     layout='vertical'
                     form={form}
                     onFinish={submitHandler}
+                    disabled={isDemoMode || loading}
+                    onValuesChange={(changedValues) => {
+                        // Не вызываем submit для числовых полей, они обрабатываются через дебаунс
+                        const numericFields = [
+                            'frequency_from', 'frequency_to',
+                            'items_from', 'items_to',
+                            'complexity_from', 'complexity_to',
+                            'words_from', 'words_to'
+                        ];
+                        const hasNumericFieldChange = numericFields.some(field => field in changedValues);
+                        if (!hasNumericFieldChange) {
+                            form.submit();
+                        }
+                    }}
                     onKeyDown={(e) => {
                         if (e.key === 'Enter') {
                             e.preventDefault();
                             e.stopPropagation();
-                            console.log('form.getFieldsValue()', form.getFieldsValue())
                             submitHandler(form.getFieldsValue());
                         }
                     }}
@@ -129,7 +155,7 @@ export const KeywordSelectionFilters: React.FC<IKeywordSelectionFiltersForm> = (
                                 <Input
                                     size='large'
                                     className={styles.filters__select}
-                                    prefix={<span style={{ color: '#8C8C8C' }}>От</span>}
+                                    prefix={<span style={{ color: '#8C8C8C75' }}>От</span>}
                                     inputMode='numeric'
                                     onChange={handleNumberInputChange('frequency_from')}
                                 />
@@ -143,7 +169,7 @@ export const KeywordSelectionFilters: React.FC<IKeywordSelectionFiltersForm> = (
                                 <Input
                                     size='large'
                                     className={styles.filters__select}
-                                    prefix={<span style={{ color: '#8C8C8C' }}>До</span>}
+                                    prefix={<span style={{ color: '#8C8C8C75' }}>До</span>}
                                     inputMode='numeric'
                                     onChange={handleNumberInputChange('frequency_to')}
                                 />
@@ -163,7 +189,7 @@ export const KeywordSelectionFilters: React.FC<IKeywordSelectionFiltersForm> = (
                                 <Input
                                     size='large'
                                     className={styles.filters__select}
-                                    prefix={<span style={{ color: '#8C8C8C' }}>От</span>}
+                                    prefix={<span style={{ color: '#8C8C8C75' }}>От</span>}
                                     inputMode='numeric'
                                     onChange={handleNumberInputChange('items_from')}
                                 />
@@ -177,7 +203,7 @@ export const KeywordSelectionFilters: React.FC<IKeywordSelectionFiltersForm> = (
                                 <Input
                                     size='large'
                                     className={styles.filters__select}
-                                    prefix={<span style={{ color: '#8C8C8C' }}>До</span>}
+                                    prefix={<span style={{ color: '#8C8C8C75' }}>До</span>}
                                     inputMode='numeric'
                                     onChange={handleNumberInputChange('items_to')}
                                 />
@@ -197,7 +223,7 @@ export const KeywordSelectionFilters: React.FC<IKeywordSelectionFiltersForm> = (
                                 <Input
                                     size='large'
                                     className={styles.filters__select}
-                                    prefix={<span style={{ color: '#8C8C8C' }}>От</span>}
+                                    prefix={<span style={{ color: '#8C8C8C75' }}>От</span>}
                                     inputMode='numeric'
                                     onChange={handleNumberInputChange('complexity_from')}
                                 />
@@ -211,7 +237,7 @@ export const KeywordSelectionFilters: React.FC<IKeywordSelectionFiltersForm> = (
                                 <Input
                                     size='large'
                                     className={styles.filters__select}
-                                    prefix={<span style={{ color: '#8C8C8C' }}>До</span>}
+                                    prefix={<span style={{ color: '#8C8C8C75' }}>До</span>}
                                     inputMode='numeric'
                                     onChange={handleNumberInputChange('complexity_to')}
                                 />
@@ -220,7 +246,7 @@ export const KeywordSelectionFilters: React.FC<IKeywordSelectionFiltersForm> = (
                     </div>
                     {/* Words block */}
                     <div className={styles.filters__block}>
-                        <label>Сложность</label>
+                        <label>Слов</label>
                         <div className={styles.filters__blockWrapper}>
                             <Form.Item
                                 name="words_from"
@@ -231,7 +257,7 @@ export const KeywordSelectionFilters: React.FC<IKeywordSelectionFiltersForm> = (
                                 <Input
                                     size='large'
                                     className={styles.filters__select}
-                                    prefix={<span style={{ color: '#8C8C8C' }}>От</span>}
+                                    prefix={<span style={{ color: '#8C8C8C75' }}>От</span>}
                                     inputMode='numeric'
                                     onChange={handleNumberInputChange('words_from')}
                                 />
@@ -245,7 +271,7 @@ export const KeywordSelectionFilters: React.FC<IKeywordSelectionFiltersForm> = (
                                 <Input
                                     size='large'
                                     className={styles.filters__select}
-                                    prefix={<span style={{ color: '#8C8C8C' }}>До</span>}
+                                    prefix={<span style={{ color: '#8C8C8C75' }}>До</span>}
                                     inputMode='numeric'
                                     onChange={handleNumberInputChange('words_to')}
                                 />
@@ -260,6 +286,7 @@ export const KeywordSelectionFilters: React.FC<IKeywordSelectionFiltersForm> = (
                     >
                         <Select
                             options={[]}
+                            placeholder='Выберите слова'
                             size='large'
                             suffixIcon={<SelectIcon />}
                             className={styles.filters__select}
@@ -286,6 +313,7 @@ export const KeywordSelectionFilters: React.FC<IKeywordSelectionFiltersForm> = (
                     >
                         <Select
                             options={[]}
+                            placeholder='Выберите слова'
                             size='large'
                             suffixIcon={<SelectIcon />}
                             className={styles.filters__select}
@@ -304,9 +332,26 @@ export const KeywordSelectionFilters: React.FC<IKeywordSelectionFiltersForm> = (
                             dropdownStyle={{ minWidth: 'max-content' }}
                         />
                     </Form.Item>
+                    {/* hidden fields */}
+                    <Form.Item
+                        name="include_match_type"
+                        className={styles.filters__formItem}
+                        hidden
+                    >
+                        <Input
+                        />
+                    </Form.Item>
+                    <Form.Item
+                        name="exclude_match_type"
+                        className={styles.filters__formItem}
+                        hidden
+                    >
+                        <Input
+                        />
+                    </Form.Item>
                     {/* Accept checkbox */}
                     <Flex gap={8} style={{ gridColumn: 'span 3' }}>
-                        <ConfigProvider theme={checkboxTheme}>
+                        {/* <ConfigProvider theme={checkboxTheme}>
                             <Form.Item
                                 name="accept_filters_to_keywords"
                                 className={`${styles.filters__formItem} ${styles.filters__formItem_checkbox}`}
@@ -317,7 +362,7 @@ export const KeywordSelectionFilters: React.FC<IKeywordSelectionFiltersForm> = (
                                     Применить фильтры ко вложенным ключам
                                 </Checkbox>
                             </Form.Item>
-                        </ConfigProvider>
+                        </ConfigProvider> */}
                         <button
                             className={styles.filters__resetButton}
                             onClick={() => { form.resetFields(); }}
@@ -372,7 +417,7 @@ const KeywordSelectDropdown: React.FC<IKeywordSelectDropdownProps> = ({ handler 
         <div className={styles.keywordSelectDropdown}>
             <ConfigProvider theme={segmentedTheme}>
                 <Segmented
-                    options={['Все слова' , 'Любое слово']}
+                    options={['Все слова', 'Любое слово']}
                     size='large'
                     value={selectedTab}
                     onChange={(value) => setSelectedTab(value as 'Все слова' | 'Любое слово')}
@@ -390,6 +435,7 @@ const KeywordSelectDropdown: React.FC<IKeywordSelectDropdownProps> = ({ handler 
             <button
                 className={styles.keywordSelectDropdown__button}
                 onClick={() => handler(selectedTab, inputValue)}
+                disabled={!inputValue || inputValue.length <= 2}
             >
                 Применить
             </button>
