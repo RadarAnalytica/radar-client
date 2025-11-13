@@ -21,7 +21,7 @@ interface IDoubleTableProps {
 
 export const DoubleTable: React.FC<IDoubleTableProps> = ({ tableData, dest, authToken, tableType, tableConfig, page, hasSort = false }) => {
 
-    const [pagination, setPagination] = useState({ current: 1, pageSize: 10, total: Math.ceil(tableData.length / 20) });
+    const [pagination, setPagination] = useState({ current: 1, pageSize: 10, total: Math.ceil(tableData.length / 10) });
     const [expandedRowKeys, setExpandedRowKeys] = useState([]);
     const [sortState, setSortState] = useState({ column: 'frequency', order: 'DESC' });
     const addedRowsRef = useRef<Record<string, { customRow: HTMLTableRowElement, hiddenRows: HTMLTableRowElement[] }>>({});

@@ -6,6 +6,7 @@ export const keywordsSelectionTableConfig = [
         hidden: false,
         width: 385,
         minWidth: 385,
+        units: ' ',
     },
     {
         key: 'frequency',
@@ -14,7 +15,8 @@ export const keywordsSelectionTableConfig = [
         hidden: false,
         width: 160,
         minWidth: 160,
-        sortable: true
+        sortable: true,
+        units: ' ',
     },
     {
         key: 'total_goods',
@@ -23,6 +25,7 @@ export const keywordsSelectionTableConfig = [
         hidden: false,
         width: 160,
         minWidth: 160,
+        units: ' ',
     },
     {
         key: 'complexity',
@@ -31,6 +34,7 @@ export const keywordsSelectionTableConfig = [
         hidden: false,
         width: 160,
         minWidth: 160,
+        units: ' ',
     },
     // {
     //     key: 'shows',

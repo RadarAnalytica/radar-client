@@ -1,7 +1,7 @@
 import styles from './KeywordSelectionFilters.module.css';
 import { Form, Select, ConfigProvider, Input, Segmented, Checkbox, Flex } from 'antd';
 import { SelectIcon } from '@/components/sharedComponents/apiServicePagesFiltersComponent/shared/selectIcon/selectIcon';
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import DownloadButton from '@/components/DownloadButton';
 import useDebouncedFunction from '@/service/hooks/useDebounce';
 import { useDemoMode } from '@/app/providers';
@@ -66,6 +66,7 @@ export const KeywordSelectionFilters: React.FC<IKeywordSelectionFiltersForm> = (
     const [form] = Form.useForm();
     const [keywordDropdownIncludeOpen, setKeywordDropdownIncludeOpen] = useState(false);
     const [keywordDropdownExcludeOpen, setKeywordDropdownExcludeOpen] = useState(false);
+    const focusRef = useRef<string | null>(null);
     const { isDemoMode } = useDemoMode();
 
     const handleSubmit = useCallback(() => {
@@ -75,13 +76,20 @@ export const KeywordSelectionFilters: React.FC<IKeywordSelectionFiltersForm> = (
     const debouncedSubmit = useDebouncedFunction(handleSubmit, 500);
 
     const numberOnlyRule = { pattern: /^\d*$/, message: '' };
+    const decimalRule = { pattern: /^\d*(?:[.,]\d*)?$/, message: '' };
+    const parseLocaleNumber = (val: string) => Number((val ?? '').toString().replace(',', '.'));
     const createFromValidator = (toField: string) => ({
         validator(_: unknown, value: string) {
-            const toValue = form.getFieldValue(toField);
-            if (!value || !toValue) {
+            const toValueRaw = form.getFieldValue(toField);
+            if (!value || !toValueRaw) {
                 return Promise.resolve();
             }
-            if (Number(value) <= Number(toValue)) {
+            const fromNum = parseLocaleNumber(value);
+            const toNum = parseLocaleNumber(toValueRaw);
+            if (Number.isNaN(fromNum) || Number.isNaN(toNum)) {
+                return Promise.reject(new Error(''));
+            }
+            if (fromNum <= toNum) {
                 return Promise.resolve();
             }
             return Promise.reject(new Error(''));
@@ -89,11 +97,16 @@ export const KeywordSelectionFilters: React.FC<IKeywordSelectionFiltersForm> = (
     });
     const createToValidator = (fromField: string) => ({
         validator(_: unknown, value: string) {
-            const fromValue = form.getFieldValue(fromField);
-            if (!value || !fromValue) {
+            const fromValueRaw = form.getFieldValue(fromField);
+            if (!value || !fromValueRaw) {
                 return Promise.resolve();
             }
-            if (Number(value) >= Number(fromValue)) {
+            const toNum = parseLocaleNumber(value);
+            const fromNum = parseLocaleNumber(fromValueRaw);
+            if (Number.isNaN(fromNum) || Number.isNaN(toNum)) {
+                return Promise.reject(new Error(''));
+            }
+            if (toNum >= fromNum) {
                 return Promise.resolve();
             }
             return Promise.reject(new Error(''));
@@ -105,6 +118,30 @@ export const KeywordSelectionFilters: React.FC<IKeywordSelectionFiltersForm> = (
         form.setFieldValue(fieldName, digitsOnlyValue);
         debouncedSubmit();
     };
+    const handleDecimalInputChange = (fieldName: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
+        let value = event.target.value.replace(/[^0-9.,]/g, '');
+        const firstSep = value.search(/[.,]/);
+        if (firstSep !== -1) {
+            value = value.slice(0, firstSep + 1) + value.slice(firstSep + 1).replace(/[.,]/g, '');
+        }
+        form.setFieldValue(fieldName, value);
+        debouncedSubmit();
+    };
+
+    const handleFocus = (e: React.FocusEvent<HTMLElement>) => {
+        const { id } = e.target;
+        focusRef.current = id ?? null
+    };
+
+    useEffect(() => {
+        const focusID = focusRef?.current
+        if (!isDemoMode && !loading && focusID) {
+            const input = document.querySelector(`#${focusID}`) as HTMLElement | null;
+            if (input && input instanceof HTMLElement) {
+                input.focus();
+            }
+        }
+    }, [isDemoMode, loading])
 
 
     return (
@@ -158,6 +195,8 @@ export const KeywordSelectionFilters: React.FC<IKeywordSelectionFiltersForm> = (
                                     prefix={<span style={{ color: '#8C8C8C75' }}>От</span>}
                                     inputMode='numeric'
                                     onChange={handleNumberInputChange('frequency_from')}
+                                    id={'frequency_from'}
+                                    onFocus={handleFocus}
                                 />
                             </Form.Item>
                             <Form.Item
@@ -172,6 +211,8 @@ export const KeywordSelectionFilters: React.FC<IKeywordSelectionFiltersForm> = (
                                     prefix={<span style={{ color: '#8C8C8C75' }}>До</span>}
                                     inputMode='numeric'
                                     onChange={handleNumberInputChange('frequency_to')}
+                                    id={'frequency_to'}
+                                    onFocus={handleFocus}
                                 />
                             </Form.Item>
                         </div>
@@ -192,6 +233,8 @@ export const KeywordSelectionFilters: React.FC<IKeywordSelectionFiltersForm> = (
                                     prefix={<span style={{ color: '#8C8C8C75' }}>От</span>}
                                     inputMode='numeric'
                                     onChange={handleNumberInputChange('items_from')}
+                                    id={'items_from'}
+                                    onFocus={handleFocus}
                                 />
                             </Form.Item>
                             <Form.Item
@@ -206,6 +249,8 @@ export const KeywordSelectionFilters: React.FC<IKeywordSelectionFiltersForm> = (
                                     prefix={<span style={{ color: '#8C8C8C75' }}>До</span>}
                                     inputMode='numeric'
                                     onChange={handleNumberInputChange('items_to')}
+                                    id={'items_to'}
+                                    onFocus={handleFocus}
                                 />
                             </Form.Item>
                         </div>
@@ -218,28 +263,36 @@ export const KeywordSelectionFilters: React.FC<IKeywordSelectionFiltersForm> = (
                                 name="complexity_from"
                                 className={styles.filters__formItem}
                                 dependencies={['complexity_to']}
-                                rules={[numberOnlyRule, createFromValidator('complexity_to')]}
+                                rules={[decimalRule, createFromValidator('complexity_to')]}
                             >
                                 <Input
                                     size='large'
                                     className={styles.filters__select}
                                     prefix={<span style={{ color: '#8C8C8C75' }}>От</span>}
-                                    inputMode='numeric'
-                                    onChange={handleNumberInputChange('complexity_from')}
+                                    type='text'
+                                    inputMode='decimal'
+                                    pattern='[0-9]*[.,]?[0-9]*'
+                                    onChange={handleDecimalInputChange('complexity_from')}
+                                    id={'complexity_from'}
+                                    onFocus={handleFocus}
                                 />
                             </Form.Item>
                             <Form.Item
                                 name="complexity_to"
                                 className={styles.filters__formItem}
                                 dependencies={['complexity_from']}
-                                rules={[numberOnlyRule, createToValidator('complexity_from')]}
+                                rules={[decimalRule, createToValidator('complexity_from')]}
                             >
                                 <Input
                                     size='large'
                                     className={styles.filters__select}
                                     prefix={<span style={{ color: '#8C8C8C75' }}>До</span>}
-                                    inputMode='numeric'
-                                    onChange={handleNumberInputChange('complexity_to')}
+                                    type='text'
+                                    inputMode='decimal'
+                                    pattern='[0-9]*[.,]?[0-9]*'
+                                    onChange={handleDecimalInputChange('complexity_to')}
+                                    id={'complexity_to'}
+                                    onFocus={handleFocus}
                                 />
                             </Form.Item>
                         </div>
@@ -260,6 +313,8 @@ export const KeywordSelectionFilters: React.FC<IKeywordSelectionFiltersForm> = (
                                     prefix={<span style={{ color: '#8C8C8C75' }}>От</span>}
                                     inputMode='numeric'
                                     onChange={handleNumberInputChange('words_from')}
+                                    id={'words_from'}
+                                    onFocus={handleFocus}
                                 />
                             </Form.Item>
                             <Form.Item
@@ -274,6 +329,8 @@ export const KeywordSelectionFilters: React.FC<IKeywordSelectionFiltersForm> = (
                                     prefix={<span style={{ color: '#8C8C8C75' }}>До</span>}
                                     inputMode='numeric'
                                     onChange={handleNumberInputChange('words_to')}
+                                    id={'words_to'}
+                                    onFocus={handleFocus}
                                 />
                             </Form.Item>
                         </div>
@@ -293,6 +350,12 @@ export const KeywordSelectionFilters: React.FC<IKeywordSelectionFiltersForm> = (
                             getPopupContainer={(triggerNode) => triggerNode.parentNode}
                             open={keywordDropdownIncludeOpen}
                             onDropdownVisibleChange={setKeywordDropdownIncludeOpen}
+                            onKeyDown={(e) => {
+                                if (e.key === 'Enter') {
+                                    e.preventDefault();
+                                    e.stopPropagation();
+                                }
+                            }}
                             dropdownRender={() =>
                                 <KeywordSelectDropdown
                                     handler={(matchType, keywords) => {
@@ -320,6 +383,12 @@ export const KeywordSelectionFilters: React.FC<IKeywordSelectionFiltersForm> = (
                             getPopupContainer={(triggerNode) => triggerNode.parentNode}
                             open={keywordDropdownExcludeOpen}
                             onDropdownVisibleChange={setKeywordDropdownExcludeOpen}
+                            onKeyDown={(e) => {
+                                if (e.key === 'Enter') {
+                                    e.preventDefault();
+                                    e.stopPropagation();
+                                }
+                            }}
                             dropdownRender={() =>
                                 <KeywordSelectDropdown
                                     handler={(matchType, keywords) => {
@@ -413,6 +482,12 @@ const KeywordSelectDropdown: React.FC<IKeywordSelectDropdownProps> = ({ handler 
     const [selectedTab, setSelectedTab] = useState<'Все слова' | 'Любое слово'>('Все слова');
     const [inputValue, setInputValue] = useState('');
 
+    useEffect(() => {
+        if (!inputValue?.trim()) {
+            handler(selectedTab, null)
+        }
+    }, [inputValue]);
+
     return (
         <div className={styles.keywordSelectDropdown}>
             <ConfigProvider theme={segmentedTheme}>
@@ -430,12 +505,12 @@ const KeywordSelectDropdown: React.FC<IKeywordSelectDropdownProps> = ({ handler 
                     size='large'
                     onChange={(e) => setInputValue(e.target.value)}
                     placeholder='Ключевые слова'
+                    allowClear
                 />
             </div>
             <button
                 className={styles.keywordSelectDropdown__button}
                 onClick={() => handler(selectedTab, inputValue)}
-                disabled={!inputValue || inputValue.length <= 2}
             >
                 Применить
             </button>
