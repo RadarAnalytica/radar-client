@@ -17,6 +17,7 @@
     align-items: stretch;
     position: relative;
     padding: 16px;
+    transition: transform 0.1s ease-in-out;
 }
 
 .card:hover {
