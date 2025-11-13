@@ -219,6 +219,13 @@ export const menuConfig = [
         icon: menuIcons.seo,
         children: [
             {
+                id: 5,
+                url: '/keywords-selection',
+                label: 'Подбор ключевых запросов',
+                isActive: true,
+                isNew: true
+            },
+            {
                 id: 4,
                 url: '/position-check',
                 label: 'Проверка позиций',

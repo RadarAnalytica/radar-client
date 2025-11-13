@@ -11,6 +11,7 @@ import { DoubleTable, KeywordSelectionFilters } from "@/widgets";
 import { ServiceFunctions } from "@/service/serviceFunctions";
 import { formatPrice } from "@/service/utils";
 import { keywordsSelectionTableConfig, RadarLoader } from "@/shared";
+import { useDemoMode } from "@/app/providers";
 
 
 // model
@@ -79,29 +80,31 @@ const getKeywordsSelectionRequestObject = (keywords: string, filtersData: Record
         keywords_match: matchType === 'Обычный поиск по частичному совпадению' ? "part" : "full"
     }
     if (keywords && keywords !== 'skip') {
-        const keywordsArray = keywords.split(',').map(_ => _.trim());
-        newRequestObject.main_keywords.keywords = keywordsArray;
+        const normalizeDots = keywords.replace(/\./g, ',')
+        const hasCommas = normalizeDots.includes(',')
+        const keywordsArray = normalizeDots.split(hasCommas ? ',' : /\r?\n/).map(_ => _.trim());
+        newRequestObject.main_keywords.keywords = keywordsArray.filter(Boolean);
     }
     if (!keywords) {
         newRequestObject.main_keywords = null;
     }
     if (filtersData) {
         const excludeArray = filtersData.keywords_to_exclude ? filtersData.keywords_to_exclude.split(',').map((_: string) => _.trim()) : null;
-        if (filtersData.exclude_match_type === 'Все слова' && excludeArray) {
-            excludeArray.splice(0, 1)
-        }
         const includeArray = filtersData.keywords_to_include ? filtersData.keywords_to_include.split(',').map((_: string) => _.trim()) : null;
-        if (filtersData.include_match_type === 'Все слова' && includeArray) {
-            includeArray.splice(0, 1)
-        }
         newRequestObject = {
             ...newRequestObject,
             frequency: { start: filtersData.frequency_from || null, end: filtersData.frequency_to || null },
             goods_quantity: { start: filtersData.items_from || null, end: filtersData.items_to || null },
             complexity: { start: filtersData.complexity_from || null, end: filtersData.complexity_to || null },
-            words_count: { start: filtersData.words_count_from || null, end: filtersData.words_count_to || null },
-            include_words: includeArray,
-            exclude_words: excludeArray
+            words_count: { start: filtersData.words_from || null, end: filtersData.words_to || null },
+            include_words: includeArray ? {
+                keywords: includeArray,
+                keywords_match: filtersData.include_match_type === 'Все слова' ? 'full' : 'part'
+            } : includeArray,
+            exclude_words: excludeArray ? {
+                keywords: includeArray,
+                keywords_match: filtersData.include_match_type === 'Все слова' ? 'full' : 'part'
+            } : excludeArray
         }
     }
     return newRequestObject;
@@ -115,6 +118,7 @@ const KeywordsSelectionPage = () => {
     const [tableType, setTableType] = useState<'Кластеры' | 'По запросам'>('Кластеры');
     const [requestObject, setRequestObject] = useState<Record<string, any> | null>(null);
     const [keywordsSelectionData, setKeywordsSelectionData] = useState(null);
+    const { isDemoMode } = useDemoMode();
 
     const getKeywordsSelectionData = async (requestObject: Record<string, any>) => {
         setRequestStatus({ ...requestInitState, isLoading: true });
@@ -146,7 +150,7 @@ const KeywordsSelectionPage = () => {
         } else {
             setKeywordsSelectionData(null);
         }
-    }, [requestObject, tabsState])
+    }, [requestObject])
 
 
     return (
@@ -179,23 +183,26 @@ const KeywordsSelectionPage = () => {
                     <SearchBlock
                         submitHandler={(value: string) => { setRequestObject(() => ({ ...getKeywordsSelectionRequestObject(value, null, tabsState, requestObject) })); }}
                         hasBackground={false}
-                        placeholder='Введите ключевые слова'
+                        placeholder='Введите запросы'
                         searchButtonText='Подобрать'
                         layout='vertical'
                         lines={3}
                         style={{ padding: '0' }}
+                        disableEnter
+                        demoModeValue='Футболка'
                     />
                 </div>
 
                 {/* Filters */}
-                {requestObject && requestObject.main_keywords?.keywords && keywordsSelectionData && <div className={styles.page__filtersWrapper}>
-                    <KeywordSelectionFilters submitHandler={(formData) => { setRequestObject(() => ({ ...getKeywordsSelectionRequestObject('skip', formData, tabsState, requestObject) })); }} />
-                </div>}
+                {requestObject && requestObject.main_keywords?.keywords && keywordsSelectionData &&
+                    <div className={styles.page__filtersWrapper}>
+                        <KeywordSelectionFilters loading={requestStatus.isLoading} submitHandler={(formData) => { setRequestObject(() => ({ ...getKeywordsSelectionRequestObject('skip', formData, tabsState, requestObject) })); }} />
+                    </div>}
                 {/* Table */}
                 {requestStatus.isLoading && <div className={styles.page__tableWrapper}>
                     <RadarLoader loaderStyle={{ height: '50vh' }} />
                 </div>}
-                {keywordsSelectionData && !requestStatus.isLoading &&
+                {keywordsSelectionData && !requestStatus.isLoading && keywordsSelectionData?.preset_data.length > 0 &&
                     <div className={styles.page__tableWrapper}>
                         <ConfigProvider theme={segmentedTheme}>
                             <Segmented options={['Кластеры', 'По запросам']} size='large' value={tableType} onChange={(value) => setTableType(value as 'Кластеры' | 'По запросам')} />
@@ -218,7 +225,15 @@ const KeywordsSelectionPage = () => {
                             tableType={tableType}
                             tableConfig={keywordsSelectionTableConfig}
                             page={'keywords'}
+                            hasSort
                         />
+                    </div>
+                }
+                {keywordsSelectionData && !requestStatus.isLoading && keywordsSelectionData.preset_data.length === 0 &&
+                    <div className={styles.page__tableWrapper}>
+                        <div style={{ width: '100%', padding: '40px' }}>
+                            <span>Данные не найдены, попробуйте изменить запрос</span>
+                        </div>
                     </div>
                 }
             </section>
@@ -279,7 +294,7 @@ const Chart = (data: Record<string, any>[]) => {
                     <Tooltip
                         arrow={false}
                         color='white'
-                        title={<>{_.name}<br/>{formatPrice(_.value, '')}</>}
+                        title={<>{_.name}<br />{formatPrice(_.value, '')}</>}
                     >
                         <div
                             className={styles.page__chartItem}
@@ -334,7 +349,7 @@ const Chart = (data: Record<string, any>[]) => {
                     <Tooltip
                         arrow={false}
                         color='white'
-                        title={<>{_.name}<br/>{formatPrice(_.value, '')}</>}
+                        title={<>{_.name}<br />{formatPrice(_.value, '')}</>}
                     >
                         <div
                             className={styles.page__chartItem}
@@ -382,7 +397,7 @@ const Chart = (data: Record<string, any>[]) => {
                     <Tooltip
                         arrow={false}
                         color='white'
-                        title={<>{_.name}<br/>{formatPrice(_.value, '')}</>}
+                        title={<>{_.name}<br />{formatPrice(_.value, '')}</>}
                     >
                         <div
                             className={styles.page__chartItem}

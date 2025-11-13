@@ -79,7 +79,7 @@
 /* Keyword select dropdown */
 .keywordSelectDropdown {
     min-width: fit-content;
-    width: max-content;
+    width: 100%;
     padding: 12px;
     display: flex;
     flex-direction: column;
@@ -111,4 +111,10 @@
     justify-content: center;
     align-items: center;
     gap: 8px;
+}
+
+.keywordSelectDropdown__button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    filter: grayscale(100%);
 }

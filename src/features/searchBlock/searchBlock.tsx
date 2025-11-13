@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import styles from './searchBlock.module.css';
 import { Input, ConfigProvider, Button } from 'antd';
+import { useDemoMode } from '@/app/providers';
 
 
 
@@ -51,6 +52,8 @@ interface ISearchBlockProps {
     layout?: 'horizontal' | 'vertical';
     lines?: number;
     style?: React.CSSProperties;
+    disableEnter?: boolean,
+    demoModeValue: string
 }
 
 export const SearchBlock: React.FC<ISearchBlockProps> = ({
@@ -63,13 +66,15 @@ export const SearchBlock: React.FC<ISearchBlockProps> = ({
     searchButtonText = 'Найти',
     layout = 'horizontal',
     lines = 1,
-    style
+    style,
+    disableEnter = false,
+    demoModeValue = ''
 }) => {
 
 
     const inputRef = useRef(null);
     const [inputValue, setInputValue] = useState('');
-
+    const { isDemoMode } = useDemoMode();
 
     const historyButtonClickHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
         const { id } = e.target as HTMLButtonElement;
@@ -86,7 +91,7 @@ export const SearchBlock: React.FC<ISearchBlockProps> = ({
     };
 
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        if (e.key !== 'Enter') return;
+        if (e.key !== 'Enter' || disableEnter) return;
         runSearch();
     };
 
@@ -95,6 +100,13 @@ export const SearchBlock: React.FC<ISearchBlockProps> = ({
             inputRef.current.focus();
         }
     }, []);
+
+    useEffect(() => {
+        if (isDemoMode) {
+            setInputValue(demoModeValue)
+            runSearch(demoModeValue);
+        }
+    }, [isDemoMode])
 
     return (
         <div className={`${styles.search} ${hasBackground ? styles.search_background : ''}`} style={style}>

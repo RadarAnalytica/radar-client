@@ -32,6 +32,7 @@ import rnpFiltersData from './mock/rnp-filters.json';
 import serpRegions from './mock/serp-regions.json';
 import wbControlsData from './mock/wb-controls.json';
 import serpQueryData from './mock/serp-query-data.json';
+import keywordsSelectionData from './mock/position-check/positionCheckMainData.json'
 
 export class DemoDataService {
   private static instance: DemoDataService;
@@ -133,6 +134,7 @@ export class DemoDataService {
       'https://radarmarket.ru/api/analytic/query-dynamics/day': () => this.getTrendingAnalysisDay(),
       'https://radarmarket.ru/api/web-service/search-map/get-regions': () => this.getSERPRegions(),
       'https://radarmarket.ru/api/web-service/search-map/get-query-data': () => this.getSERPQueryData(),
+      'https://radarmarket.ru/api/web-service/keyword-selection/search' : () => this.getKeyboardSelectionData()
     };
 
     const dataGetter = endpointMap[endpoint];
@@ -381,6 +383,9 @@ export class DemoDataService {
 
   private getSERPQueryData(): any {
     return serpQueryData;
+  }
+  private getKeyboardSelectionData(): any {
+    return keywordsSelectionData;
   }
 
   private getSubscriptionsData(): any {
