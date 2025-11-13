@@ -11,7 +11,6 @@ import { DoubleTable, KeywordSelectionFilters } from "@/widgets";
 import { ServiceFunctions } from "@/service/serviceFunctions";
 import { formatPrice } from "@/service/utils";
 import { keywordsSelectionTableConfig, RadarLoader } from "@/shared";
-import { useDemoMode } from "@/app/providers";
 
 
 // model
@@ -119,7 +118,6 @@ const KeywordsSelectionPage = () => {
     const [tableType, setTableType] = useState<'Кластеры' | 'По запросам'>('Кластеры');
     const [requestObject, setRequestObject] = useState<Record<string, any> | null>(null);
     const [keywordsSelectionData, setKeywordsSelectionData] = useState(null);
-    const { isDemoMode } = useDemoMode();
 
     const getKeywordsSelectionData = async (requestObject: Record<string, any>) => {
         setRequestStatus({ ...requestInitState, isLoading: true });
@@ -304,6 +302,7 @@ const Chart = (data: Record<string, any>[]) => {
                                 borderRadius: '8px',
                                 gridRow: `span 8`,
                                 gridColumn: `span 20`,
+                                cursor: 'pointer',
                             }}
                         >
                             <p className={styles.page__chartItemTitle}>{_.name}</p>
@@ -362,6 +361,7 @@ const Chart = (data: Record<string, any>[]) => {
                                 borderRadius: '8px',
                                 gridRow: `span ${currRowSpan}`,
                                 gridColumn: `span ${currColSpan}`,
+                                cursor: 'pointer',
                             }}
                         >
                             <p className={styles.page__chartItemTitle}>{_.name}</p>
@@ -410,6 +410,7 @@ const Chart = (data: Record<string, any>[]) => {
                                 borderRadius: '8px',
                                 gridRow: `span ${currRowSpan}`,
                                 gridColumn: `span ${currColSpan}`,
+                                cursor: 'pointer',
                             }}
                         >
                             <p className={styles.page__chartItemTitle}>{_.name}</p>
