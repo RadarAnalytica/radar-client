@@ -191,7 +191,8 @@ const TurnoverBlock = ({ loading, turnover, turnoverCompare, selectedRange, acti
                 compareValue={{
                     comparativeValue: turnoverCompare,
                     absoluteValue: prevTurnover,
-                    absoluteValueUnits: 'дн.'
+                    absoluteValueUnits: 'дн.',
+                    tooltipText: 'Значение предыдущего периода'
                 }}
                 actionButtonParams={{
                     text: 'По артикулам',

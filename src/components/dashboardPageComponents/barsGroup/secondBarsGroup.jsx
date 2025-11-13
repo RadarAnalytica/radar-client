@@ -7,36 +7,6 @@ import TurnoverBlock from '../blocks/turnoverBlock/turnoverBlock';
 const SecondBarsGroup = ({ dataDashBoard, loading, selectedRange, activeBrand, authToken, filters }) => {
     return (
         <div className={styles.group}>
-            {/* 
-            заказы
-            возвраты
-            Расходы на логистику
-            Хранение
-            Платная приемка
-            Комиссия
-            Налог
-            Реклама (ДРР)
-            Штрафы WB и прочие удержания
-            Компенсации
-            Средняя стоимость логистики на 1 шт
-            Средняя прибыль на 1 шт
-
-
-            Упущенные продажи
-            Себестоимость проданных товаров
-            Оборачиваемость товара
-            */}
-            {/* <SmallBar
-                title='Расходы на логистику'
-                hasTooltip
-                tooltipText='Суммарные расходы на логистику, определяются расчетным способом от количества заказов'
-                loading={loading}
-                mainData={dataDashBoard?.logistics}
-                hasSecondaryData
-                secondaryDataType='relative'
-                secondaryDataUnits='%'
-                secondaryData={dataDashBoard?.logisticsCompare}
-            /> */}
             <RadarBar
                 title='Заказы'
                 midValue={dataDashBoard?.orderCount}
@@ -48,20 +18,11 @@ const SecondBarsGroup = ({ dataDashBoard, loading, selectedRange, activeBrand, a
                 compareValue={{
                     comparativeValue: dataDashBoard?.orderAmountCompare,
                     absoluteValue: dataDashBoard?.prev_order_amount,
-                    absoluteValueUnits: '₽'
+                    absoluteValueUnits: '₽',
+                    tooltipText: 'Значение предыдущего периода'
                 }}
                 isLoading={loading}
             />
-            {/* <Bar
-                title='Возвраты'
-                amount={dataDashBoard?.returnAmount}
-                amountPerDay={dataDashBoard?.returnAmount / daysRange}
-                amountInPercent={dataDashBoard?.returnAmountCompare}
-                quantity={dataDashBoard?.returnCount}
-                quantityPerDay={dataDashBoard?.returnCount / daysRange}
-                quantityInPercent={dataDashBoard?.returnCountCompare}
-                loading={loading}
-            /> */}
             <RadarBar
                 title='Возвраты'
                 tooltipText='Стоимость и количество товаров, которые покупатели вернули по различным причинам'
@@ -73,7 +34,8 @@ const SecondBarsGroup = ({ dataDashBoard, loading, selectedRange, activeBrand, a
                 compareValue={{
                     comparativeValue: dataDashBoard?.returnAmountCompare,
                     absoluteValue: dataDashBoard?.prev_return_amount,
-                    absoluteValueUnits: '₽'
+                    absoluteValueUnits: '₽',
+                    tooltipText: 'Значение предыдущего периода'
                 }}
                 isLoading={loading}
             />
@@ -85,22 +47,11 @@ const SecondBarsGroup = ({ dataDashBoard, loading, selectedRange, activeBrand, a
                 compareValue={{
                     comparativeValue: dataDashBoard?.logisticsCompare,
                     absoluteValue: dataDashBoard?.prev_logistics,
-                    absoluteValueUnits: '₽'
+                    absoluteValueUnits: '₽',
+                    tooltipText: 'Значение предыдущего периода'
                 }}
                 isLoading={loading}
             />
-
-            {/* <SmallBar
-                title='Хранение'
-                hasTooltip
-                tooltipText='Расходы на хранение товаров на складах WB'
-                loading={loading}
-                mainData={dataDashBoard?.storageData}
-                hasSecondaryData
-                secondaryDataType='relative'
-                secondaryDataUnits='%'
-                secondaryData={dataDashBoard?.storageDataCompare}
-            /> */}
             <RadarBar
                 title='Хранение'
                 tooltipText='Расходы на хранение товаров на складах WB'
@@ -109,16 +60,11 @@ const SecondBarsGroup = ({ dataDashBoard, loading, selectedRange, activeBrand, a
                 compareValue={{
                     comparativeValue: dataDashBoard?.storageDataCompare,
                     absoluteValue: dataDashBoard?.prev_storageData,
-                     absoluteValueUnits: '₽'
+                     absoluteValueUnits: '₽',
+                     tooltipText: 'Значение предыдущего периода'
                 }}
                 isLoading={loading}
             />
-
-            {/* <SmallBar
-                title='Платная приемка'
-                loading={loading}
-                mainData={dataDashBoard?.paid_acceptance}
-            /> */}
             <RadarBar
                 title='Платная приемка'
                 tooltipText='Услуга маркетплейса по проверке и приему вашего товара на склад'
@@ -128,21 +74,10 @@ const SecondBarsGroup = ({ dataDashBoard, loading, selectedRange, activeBrand, a
                 compareValue={{
                     comparativeValue: dataDashBoard?.paid_acceptance_compare,
                     absoluteValue: dataDashBoard?.prev_paid_acceptance,
-                    absoluteValueUnits: '₽'
+                    absoluteValueUnits: '₽',
+                    tooltipText: 'Значение предыдущего периода'
                 }}
             />
-
-            {/* <SmallBar
-                title='Комиссия'
-                hasTooltip
-                tooltipText='Суммарная комиссия маркетплейса, рассчитывается от суммарного объема продаж по коэффициентам, определенным Wildberries'
-                loading={loading}
-                mainData={dataDashBoard?.commissionWB}
-                hasSecondaryData
-                secondaryDataType='relative'
-                secondaryDataUnits='%'
-                secondaryData={dataDashBoard?.commissionWBCompare}
-            /> */}
             <RadarBar
                 title='Комиссия'
                 tooltipText='Суммарная комиссия маркетплейса, рассчитывается от суммарного объема продаж по коэффициентам, определенным Wildberries'
@@ -152,16 +87,11 @@ const SecondBarsGroup = ({ dataDashBoard, loading, selectedRange, activeBrand, a
                 compareValue={{
                     comparativeValue: dataDashBoard?.commissionWBCompare,
                     absoluteValue: dataDashBoard?.prev_commissionWB,
-                    absoluteValueUnits: '₽'
+                    absoluteValueUnits: '₽',
+                    tooltipText: 'Значение предыдущего периода'
                 }}
                 isLoading={loading}
             />
-
-            {/* <SmallBar
-                title='Налог'
-                loading={loading}
-                mainData={dataDashBoard?.tax_amount}
-            /> */}
             <RadarBar
                 title='Налог'
                 mainValue={dataDashBoard?.tax_amount}
@@ -170,19 +100,10 @@ const SecondBarsGroup = ({ dataDashBoard, loading, selectedRange, activeBrand, a
                 compareValue={{
                     comparativeValue: dataDashBoard?.taxCompare,
                     absoluteValue: dataDashBoard?.prev_tax,
-                    absoluteValueUnits: '₽'
+                    absoluteValueUnits: '₽',
+                    tooltipText: 'Значение предыдущего периода'
                 }}
             />
-
-            {/* <SmallBar
-                title='Реклама (ДРР)'
-                loading={loading}
-                mainData={dataDashBoard?.advertAmount}
-                hasSecondaryData
-                secondaryDataType='absolute'
-                secondaryDataUnits='%'
-                secondaryData={dataDashBoard?.advertPercent}
-            /> */}
             <RadarBar
                 title='Реклама (ДРР)'
                 mainValue={dataDashBoard?.advertAmount}
@@ -192,18 +113,11 @@ const SecondBarsGroup = ({ dataDashBoard, loading, selectedRange, activeBrand, a
                 compareValue={{
                     comparativeValue: dataDashBoard?.advertAmountCompare,
                     absoluteValue: dataDashBoard?.prev_advertAmount,
-                    absoluteValueUnits: '₽'
+                    absoluteValueUnits: '₽',
+                    tooltipText: 'Значение предыдущего периода'
                 }}
                 isLoading={loading}
             />
-
-            {/* <SmallBar
-                title='Штрафы WB'
-                hasTooltip={!dataDashBoard?.penalty}
-                tooltipText='В выбранном периоде штрафов и расходов на платную приемку нет'
-                loading={loading}
-                mainData={dataDashBoard?.penalty}
-            /> */}
             <RadarBar
                 title='Штрафы и прочие удержания'
                 tooltipText={'К прочим удержания отнесены: платежи по договору займа, предоставление услуг по подписке «Джем», страхование заказов, услуги по размещению рекламного материала, списания за отзывы, утилизации товара'}
@@ -213,15 +127,10 @@ const SecondBarsGroup = ({ dataDashBoard, loading, selectedRange, activeBrand, a
                 compareValue={{
                     comparativeValue: dataDashBoard?.penalty_compare,
                     absoluteValue: dataDashBoard?.prev_penalty,
-                    absoluteValueUnits: '₽'
+                    absoluteValueUnits: '₽',
+                    tooltipText: 'Значение предыдущего периода'
                 }}
             />
-
-            {/* <SmallBar
-                title='Компенсации'
-                loading={loading}
-                mainData={dataDashBoard?.compensation}
-            /> */}
             <RadarBar
                 title='Компенсации'
                 tooltipText='Выплаты от маркетплейса за брак, потерю или повреждение вашего товара на их складах, а также за нарушение сроков выплат'
@@ -231,18 +140,10 @@ const SecondBarsGroup = ({ dataDashBoard, loading, selectedRange, activeBrand, a
                 compareValue={{
                     comparativeValue: dataDashBoard?.compensation_compare,
                     absoluteValue: dataDashBoard?.prev_compensation,
-                    absoluteValueUnits: '₽'
+                    absoluteValueUnits: '₽',
+                    tooltipText: 'Значение предыдущего периода'
                 }}
             />
-
-
-            {/* <SmallBar
-                title='Средняя стоимость логистики на 1 шт'
-                loading={loading}
-                mainData={dataDashBoard?.logistic_per_one}
-                hasTooltip
-                tooltipText='Логистика на единицу проданного товара'
-            /> */}
             <RadarBar
                 title='Ср. стоимость логистики на 1 шт'
                 tooltipText='Логистика на единицу проданного товара'
@@ -252,22 +153,10 @@ const SecondBarsGroup = ({ dataDashBoard, loading, selectedRange, activeBrand, a
                 compareValue={{
                     comparativeValue: dataDashBoard?.logistic_per_one_compare,
                     absoluteValue: dataDashBoard?.prev_logistic_per_one,
-                    absoluteValueUnits: '₽'
+                    absoluteValueUnits: '₽',
+                    tooltipText: 'Значение предыдущего периода'
                 }}
             />
-
-            {/* Средняя прибыль на 1 шт */}
-            {/* <SmallBar
-                title='Средняя прибыль на 1 шт'
-                loading={loading}
-                mainData={dataDashBoard?.profit_per_one}
-                hasSecondaryData
-                secondaryDataType='relative'
-                secondaryDataUnits='%'
-                secondaryData={dataDashBoard?.profit_per_one_compare}
-                hasTooltip
-                tooltipText='Прибыль на единицу проданного товара'
-            /> */}
             <RadarBar
                 title='Средняя прибыль на 1 шт'
                 tooltipText='Прибыль на единицу проданного товара'
@@ -276,7 +165,8 @@ const SecondBarsGroup = ({ dataDashBoard, loading, selectedRange, activeBrand, a
                 compareValue={{
                     comparativeValue: dataDashBoard?.profit_per_one_compare,
                     absoluteValue: dataDashBoard?.prev_profit_per_one,
-                    absoluteValueUnits: '₽'
+                    absoluteValueUnits: '₽',
+                    tooltipText: 'Значение предыдущего периода'
                 }}
                 isLoading={loading}
             />
@@ -284,17 +174,6 @@ const SecondBarsGroup = ({ dataDashBoard, loading, selectedRange, activeBrand, a
 
 
             <div className={styles.group__3cols}>
-                {/* <SmallBar
-                title='Упущенные продажи'
-                hasTooltip
-                tooltipText='Расчетная величина, определенная как произведение средней скорости продаж на количество дней, в которых товар отсутствовал на полках магазина или на складе'
-                loading={loading}
-                mainData={dataDashBoard?.lostSalesAmount}
-                hasSecondaryData
-                secondaryDataType='absolute'
-                secondaryDataUnits='шт'
-                secondaryData={dataDashBoard?.lostSalesCount}
-            /> */}
                 <RadarBar
                     title='Упущенные продажи'
                     tooltipText='Расчетная величина, определенная как произведение средней скорости продаж на количество дней, в которых товар отсутствовал на полках магазина или на складе'
@@ -303,20 +182,11 @@ const SecondBarsGroup = ({ dataDashBoard, loading, selectedRange, activeBrand, a
                     compareValue={{
                         comparativeValue: dataDashBoard?.lost_sales_amount_compare,
                         absoluteValue: dataDashBoard?.prev_lostSalesAmount,
-                        absoluteValueUnits: '₽'
+                        absoluteValueUnits: '₽',
+                        tooltipText: 'Значение предыдущего периода'
                     }}
                     isLoading={loading}
                 />
-
-                {/* <SmallBar
-                title='Себестоимость проданных товаров'
-                loading={loading}
-                mainData={dataDashBoard?.costPriceAmount}
-                hasSecondaryData
-                secondaryDataType='absolute'
-                secondaryDataUnits='шт'
-                secondaryData={dataDashBoard?.saleCount}
-            /> */}
                 <RadarBar
                     title='Себестоимость проданных товаров'
                     tooltipText='Суммарная себестоимость проданных товаров (основана на данных раздела "Себестоимость"'
@@ -325,7 +195,8 @@ const SecondBarsGroup = ({ dataDashBoard, loading, selectedRange, activeBrand, a
                     compareValue={{
                         comparativeValue: dataDashBoard?.costPriceAmountCompare,
                         absoluteValue: dataDashBoard?.prev_costPriceAmount,
-                        absoluteValueUnits: '₽'
+                        absoluteValueUnits: '₽',
+                        tooltipText: 'Значение предыдущего периода'
                     }}
                     isLoading={loading}
                 />

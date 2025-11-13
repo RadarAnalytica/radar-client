@@ -66,6 +66,7 @@ interface RadarBarProps {
         comparativeValue?: number | string; // %
         absoluteValue?: number | string; // pcs / rubles / etc
         absoluteValueUnits?: string; // units of the absolute value (eg "шт", "%" or whatever)
+        tooltipText?: string; // tooltip text of the comparative value
     }
     isLoading: boolean
 }
@@ -153,9 +154,10 @@ export const RadarBar: React.FC<RadarBarProps> = ({
                             <Tooltip
                                 arrow={false}
                                 color='white'
-                                title={'Значение предыдущего периода'}
+                                title={compareValue.tooltipText}
+                              
                             >
-                                <div className={styles.bar__compareValuesBlock} style={getColorByValue(compareValue.comparativeValue)}>
+                                <div className={styles.bar__compareValuesBlock} style={{...getColorByValue(compareValue.comparativeValue), cursor: compareValue.tooltipText ? 'pointer' : 'default'}}>
                                     {compareValue.comparativeValue !== undefined &&
                                         <div className={styles.bar__comparativeValue}>{formatPrice(compareValue.comparativeValue.toString(), '%', true)}</div>
                                     }
