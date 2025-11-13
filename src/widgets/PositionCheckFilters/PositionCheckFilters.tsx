@@ -1,8 +1,9 @@
 import styles from './PositionCheckFilters.module.css';
 import { Form, Select, ConfigProvider, Input, Segmented } from 'antd';
 import { SelectIcon } from '@/components/sharedComponents/apiServicePagesFiltersComponent/shared/selectIcon/selectIcon';
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { useDemoMode } from '@/app/providers';
+import useDebouncedFunction from '@/service/hooks/useDebounce';
 
 
 // antd theme
@@ -52,6 +53,18 @@ export const PositionCheckFilters: React.FC<IPositionCheckFiltersForm> = ({ subm
     const [form] = Form.useForm();
     const [keywordDropdownOpen, setKeywordDropdownOpen] = useState(false);
 
+    const handleSubmit = useCallback(() => {
+        form.submit();
+    }, [form]);
+
+    const debouncedSubmit = useDebouncedFunction(handleSubmit, 500);
+
+    const handleNumberInputChange = (fieldName: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
+        const digitsOnlyValue = event.target.value.replace(/\D/g, '');
+        form.setFieldValue(fieldName, digitsOnlyValue);
+        debouncedSubmit();
+    };
+
     return (
         <div className={styles.filters}>
             <ConfigProvider
@@ -63,8 +76,11 @@ export const PositionCheckFilters: React.FC<IPositionCheckFiltersForm> = ({ subm
                     layout='vertical'
                     form={form}
                     onFinish={submitHandler}
-                    onValuesChange={() => {
-                        form.submit()
+                    onValuesChange={(changedValues) => {
+                        // Не вызываем submit для frequency полей, они обрабатываются через дебаунс
+                        if (!('frequency_from' in changedValues) && !('frequency_to' in changedValues)) {
+                            form.submit();
+                        }
                     }}
                     disabled={isDemoMode || isLoading}
                     initialValues={{
@@ -118,6 +134,8 @@ export const PositionCheckFilters: React.FC<IPositionCheckFiltersForm> = ({ subm
                                     size='large'
                                     className={styles.filters__select}
                                     prefix={<span style={{ color: '#8C8C8C75' }}>От</span>}
+                                    inputMode='numeric'
+                                    onChange={handleNumberInputChange('frequency_from')}
                                 />
                             </Form.Item>
                             <Form.Item
@@ -128,6 +146,8 @@ export const PositionCheckFilters: React.FC<IPositionCheckFiltersForm> = ({ subm
                                     size='large'
                                     className={styles.filters__select}
                                     prefix={<span style={{ color: '#8C8C8C75' }}>До</span>}
+                                    inputMode='numeric'
+                                    onChange={handleNumberInputChange('frequency_to')}
                                 />
                             </Form.Item>
                         </div>

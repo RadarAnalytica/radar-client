@@ -5,6 +5,7 @@ import { Table as RadarTable } from 'radar-ui';
 import { innerTableConfig, positionCheckTableCustomCellRender, RadarLoader, keywordsSelectionTableCustomCellRender } from '@/shared';
 import { ServiceFunctions } from '@/service/serviceFunctions';
 import wb_icon from '../../assets/wb_small_main_icon.png';
+import { Link } from 'react-router-dom';
 
 
 
@@ -176,7 +177,7 @@ export const DoubleTable: React.FC<IDoubleTableProps> = ({ tableData, dest, auth
             // Рендерим React компонент в контейнер
             const root = ReactDOM.createRoot(container);
             root.render(
-                <InnerTable tableData={serpData} />
+                <InnerTable tableData={serpData} query={currentRow.query} />
             );
 
             // Сохраняем ссылки для последующего удаления
@@ -322,11 +323,12 @@ const interTableDataToTableDataDto = (tableData: any[]) => {
 }
 
 
-const InnerTable = ({ tableData }: { tableData: any[] }) => {
+const InnerTable = ({ tableData, query }: { tableData: any[], query: string }) => {
     return (
         <div className={styles.innerTable}>
             <div className={styles.innerTable__header} style={{ height: '70px'}}>
                 <p className={styles.innerTable__headerTitle}>Поисковая выдача по ключу</p>
+                <a href={`/serp?query=${query}`} target='_blank' className={styles.innerTable__advancedSerpLink}>Продвинутый SERP</a>
                 {/* <DownloadButton handleDownload={() => { }} loading={false} /> */}
             </div>
             <div className={styles.innerTable__tableWrapper}>
