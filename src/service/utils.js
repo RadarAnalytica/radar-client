@@ -110,6 +110,7 @@ export const formatPrice = (value, literal, hasPlusSymbol = false) => {
 };
 
 
+
 //Функция для склонения слова 'день' в зависимости от количества
 export const getDayDeclension = (quantity) => {
   const num = parseInt(quantity);
