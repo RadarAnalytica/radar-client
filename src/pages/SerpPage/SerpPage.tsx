@@ -5,7 +5,7 @@ import Sidebar from '@/components/sharedComponents/sidebar/sidebar';
 import MobilePlug from '@/components/sharedComponents/mobilePlug/mobilePlug';
 import { SerpSchema } from '@/widgets';
 import { formatPrice } from '@/service/utils';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { Segmented, ConfigProvider, Input, Button } from 'antd';
 import { Table as RadarTable } from 'radar-ui';
 import { serpPageTableConfig } from '@/shared';
@@ -136,6 +136,7 @@ const SerpPage = () => {
     });
     const { authToken } = useContext(AuthContext);
     const tableContainerRef = useRef<HTMLDivElement>(null);
+    const [searchParams, setSearchParams] = useSearchParams();
 
 
 
@@ -147,12 +148,14 @@ const SerpPage = () => {
     const inputKeydownHandler = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e && e.key !== 'Enter') return;
         if (searchInputValue && activeFilter) {
+            setSearchParams({ query: searchInputValue });
             getPageData();
         }
     };
     // submit
     const searchButtonClickHandler = () => {
         if (searchInputValue && activeFilter) {
+            setSearchParams({ query: searchInputValue });
             getPageData();
         }
     };
@@ -212,6 +215,7 @@ const SerpPage = () => {
     // search suggestions handler
     const searchSuggestionsHandler = () => {
         setSearchInputValue('Платье женское');
+        setSearchParams({ query: 'Платье женское' });
         getPageData('Платье женское');
     };
 
@@ -278,6 +282,14 @@ const SerpPage = () => {
             getPageData();
         }
     }, [activeFilter]);
+
+    useEffect(() => {
+        const query = searchParams.get('query');
+        if (query) {
+            setSearchInputValue(query);
+            getPageData(query);
+        }
+    }, [searchParams]);
 
     // render
     return (
