@@ -28,7 +28,10 @@ const Header = ({
     hasShadow = true
 }) => {
     const dispatch = useAppDispatch();
-    const { user, logout, authToken } = useContext(AuthContext);
+    const { 
+        user, 
+        logout, 
+        authToken } = useContext(AuthContext);
     // стейт видимости поповера меню
     const [isMenuPopoverVisible, setIsMenuPopoverVisible] = useState(false);
     // сообщения
@@ -57,7 +60,7 @@ const Header = ({
 
     return (
         <div className={styles.headerWrapper}>
-            {/* {user && user.test_days_left !== undefined && user.test_days_left !== null && user.test_days_left >= 0 &&
+            {user && user.test_days_left !== undefined && user.test_days_left !== null && user.test_days_left >= 0 &&
                 <StatusBanner
                     icon={
                         <svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -67,11 +70,13 @@ const Header = ({
                     }
                     title={
                         <p className={styles.header__statusBannerTitle}>
-                            <span>Ваш тестовый период активен.</span> До окончания осталось {getDayDeclension(user.test_days_left.toString())}
+                            <span>Ваш тестовый период активен.</span> 
+                            {user.test_days_left > 0 && ` До окончания осталось: ${getDayDeclension(user.test_days_left.toString())}`}
+                            {user.test_days_left === 0 && ` До окончания осталось: менее 1 дня`}
                         </p>
                     }
                 />
-            } */}
+            }
             <header className={styles.header}>
                 <div className={styles.header__titleBlock} style={{ boxShadow: hasShadow ? '0px 0px 20px 0px #00000014' : 'none' }}>
                     {typeof title === 'string' ?
