@@ -63,21 +63,21 @@ export class DemoDataService {
       if (supplierMatch) return supplierMatch;
     }
 
-      // SKU Analysis маршруты
-      if (endpoint.includes('/product-analysis/')) {
-        const { SkuAnalysisDemoDataService } = await import('./SkuAnalysisDemoDataService');
-        const skuService = SkuAnalysisDemoDataService.getInstance();
-        const skuMatch = skuService.getDataForEndpoint(endpoint, filters, options);
-        if (skuMatch) return skuMatch;
-      }
+    // SKU Analysis маршруты
+    if (endpoint.includes('/product-analysis/')) {
+      const { SkuAnalysisDemoDataService } = await import('./SkuAnalysisDemoDataService');
+      const skuService = SkuAnalysisDemoDataService.getInstance();
+      const skuMatch = skuService.getDataForEndpoint(endpoint, filters, options);
+      if (skuMatch) return skuMatch;
+    }
 
-      // Position Check маршруты
-      if (endpoint.includes('/position-track/')) {
-        const { PositionCheckDemoDataService } = await import('./PositionCheckDemoDataService');
-        const positionCheckService = PositionCheckDemoDataService.getInstance();
-        const positionCheckMatch = positionCheckService.getDataForEndpoint(endpoint, filters, options);
-        if (positionCheckMatch) return positionCheckMatch;
-      }
+    // Position Check маршруты
+    if (endpoint.includes('/position-track/')) {
+      const { PositionCheckDemoDataService } = await import('./PositionCheckDemoDataService');
+      const positionCheckService = PositionCheckDemoDataService.getInstance();
+      const positionCheckMatch = positionCheckService.getDataForEndpoint(endpoint, filters, options);
+      if (positionCheckMatch) return positionCheckMatch;
+    }
 
     // Пробуем точное совпадение
     const exactMatch = this.getExactMatch(endpoint, filters);
@@ -692,7 +692,6 @@ export class DemoDataService {
     });
 
     data.netProfit = Math.round(data.netProfit / denominator);
-    console.log(Math.round(data.netProfit * (data.netProfitCompare / 100)));
     data.prev_net_profit = Math.round(data.netProfit - (data.netProfit * data.netProfitCompare / 100));
     data.roi = Math.round(data.roi / denominator);
     data.paid_acceptance = Math.round(data.paid_acceptance / denominator);
@@ -757,7 +756,6 @@ export class DemoDataService {
         const diffDays = filters?.selectedRange?.to
           ? Math.round((Number(new Date()) - Number(new Date(filters.selectedRange.to))) / 86400000)
           : 0;
-        console.log('diffDays', diffDays);
         const updatedByDateData = item.by_date_data.map((dateItem: any, index: number) => {
           // Генерируем дату от вчерашнего или последнего выбранного дня и назад
           const date = new Date();
@@ -767,7 +765,7 @@ export class DemoDataService {
         });
 
         // Пересчитываем summary_data на основе отфильтрованных дней
-        const recalculatedSummaryData = this.recalculateSummaryData(updatedByDateData);
+        // const recalculatedSummaryData = this.recalculateSummaryData(updatedByDateData);
 
         return { 
           ...item, 
@@ -794,12 +792,9 @@ export class DemoDataService {
 
     // Обновляем даты в by_date_data массиве для каждого элемента
     if (Array.isArray(data.by_date_data)) {
-      console.log('l1', data.by_date_data.length);
-      console.log('days',days);
       // Циклически повторяем элементы из исходного массива (7 элементов) для заполнения нужного количества дней
       const originalData = [...data.by_date_data];
       data.by_date_data = Array.from({ length: days + 1}, (_, i) => originalData[i % originalData.length]);
-      console.log('l2', data.by_date_data.length);
       const diffDays = filters?.selectedRange?.to
           ? Math.round((Number(new Date()) - Number(new Date(filters.selectedRange.to))) / 86400000)
           : 0;
