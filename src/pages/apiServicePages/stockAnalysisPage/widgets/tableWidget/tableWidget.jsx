@@ -108,13 +108,15 @@ const customCellRender = (value, record, index, dataIndex) => {
 };
 
 
-const TableWidget = ({ stockAnalysisFilteredData, loading, progress }) => {
+const TableWidget = ({ stockAnalysisFilteredData, loading, progress, config, initPaginationState, hasShadow = true }) => {
 
     const containerRef = useRef(null); // реф скролл-контейнера (используется чтобы седить за позицией скрола)
     const [tableData, setTableData] = useState(); // данные для рендера таблицы
     const [sortState, setSortState] = useState(initSortState); // стейт сортировки (см initSortState)
-    const [paginationState, setPaginationState] = useState({ current: 1, total: 50, pageSize: 25 });
-    const [tableConfig, setTableConfig] = useState();
+    const [paginationState, setPaginationState] = useState(initPaginationState || { current: 1, total: 50, pageSize: 25 });
+    const [tableConfig, setTableConfig] = useState(config || newTableConfig);
+    console.log('tableConfig', tableConfig);
+    console.log('tableData', tableData);
 
     // задаем начальную дату
     useEffect(() => {
@@ -238,7 +240,7 @@ const TableWidget = ({ stockAnalysisFilteredData, loading, progress }) => {
 
 
     return (
-        <div className={styles.widget__container}>
+        <div className={styles.widget__container} style={{ boxShadow: hasShadow ? '' : 'none' }}>
             <div className={styles.widget__scrollContainer} ref={containerRef}>
                 {tableData && tableData.length > 0 && tableConfig &&
                     <RadarTable

@@ -1,15 +1,61 @@
-import { useState } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import styles from './stockAnalysisBlock.module.css';
 import { Link } from 'react-router-dom';
 import { stockAnalysisTableConfig } from './stockAnalysisBlockTableConfig';
 import { Table as RadarTable } from 'radar-ui';
 import { sortTableDataFunc } from '../../../../pages/apiServicePages/stockAnalysisPage/shared/utils/tableUtils';
+import { TableWidget } from '@/pages/apiServicePages/stockAnalysisPage/widgets';
+import AuthContext from '@/service/AuthContext';
+import { useDemoMode } from "@/app/providers";
+import { useAppSelector } from '@/redux/hooks';
+import { ServiceFunctions } from '@/service/serviceFunctions';
+import { useLoadingProgress } from '@/service/hooks/useLoadingProgress';
 
-const StockAnalysisBlock = ({ data, loading }) => {
+const StockAnalysisBlock = ({ dashboardLoading }) => {
 
-    const [tableConfig, setTableConfig] = useState(stockAnalysisTableConfig);
-    const [sortState, setSortState] = useState({sort_field: undefined, sort_order: undefined}); // стейт сортировки (см initSortState)
-    const [paginationState, setPaginationState] = useState({ current: 1, total: 50, pageSize: 50 });
+    const { authToken } = useContext(AuthContext);
+    const { isDemoMode } = useDemoMode();
+    const { activeBrand, selectedRange } = useAppSelector((state) => state.filters);
+    const filters = useAppSelector((state) => state.filters);
+    const [stockAnalysisData, setStockAnalysisData] = useState([]); // это базовые данные для таблицы
+    const [stockAnalysisFilteredData, setStockAnalysisFilteredData] = useState(); // это данные для таблицы c учетом поиска
+    const [hasSelfCostPrice, setHasSelfCostPrice] = useState(false);
+    const [loading, setLoading] = useState(true);
+    const progress = useLoadingProgress({ loading });
+
+    const fetchAnalysisData = async () => {
+        setLoading(true);
+        setStockAnalysisData([]);
+        setStockAnalysisFilteredData([]);
+        progress.start();
+        try {
+            const data = await ServiceFunctions.getAnalysisData(
+                authToken,
+                selectedRange,
+                activeBrand?.id,
+                filters
+            );
+
+            progress.complete();
+            await setTimeout(() => {
+                setStockAnalysisData(data);
+                setStockAnalysisFilteredData(data);
+                setHasSelfCostPrice(data.every(_ => _.costPriceOne !== null));
+                setLoading(false);
+                progress.reset();
+            }, 500);
+        } catch (error) {
+            setLoading(false);
+            progress.reset();
+            console.error(error);
+        }
+    };
+
+    useEffect(() => {
+        if (filters.activeBrand) {
+            fetchAnalysisData();
+        }
+    }, [filters]);
 
     const onResizeGroup = (columnKey, width) => {
         console.log('Column resized:', columnKey, width);
@@ -28,7 +74,7 @@ const StockAnalysisBlock = ({ data, loading }) => {
 
                 // Если это листовая колонка
                 if (col.key === columnKey) {
-                    return { ...col, width: width, minWidth: width };
+                    return { ...col, width: width };
                 }
 
                 return col;
@@ -51,7 +97,7 @@ const StockAnalysisBlock = ({ data, loading }) => {
         });
     };
 
-    if (loading) {
+    if (loading || dashboardLoading) {
         return (
             <div className={styles.block}>
                 <div className={styles.bar__loaderWrapper}>
@@ -67,52 +113,19 @@ const StockAnalysisBlock = ({ data, loading }) => {
                     Аналитика по товарам
                 </p>
                 <Link to='/abc-data' className={styles.block__mainLink}>
-                    <svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <circle opacity="0.2" cx="12.5" cy="12" r="12" fill="#9A81FF" />
-                        <rect opacity="0.4" x="5" y="4.5" width="15" height="15" rx="7.5" fill="#9A81FF" />
-                        <rect x="5.4" y="4.9" width="14.2" height="14.2" rx="7.1" stroke="#9A81FF" strokeWidth="0.8" />
-                        <circle cx="12.6002" cy="11.6998" r="1.8" fill="white" stroke="#5030E5" strokeWidth="1.2" />
-                    </svg>
                     Смотреть подробнее
                 </Link>
             </div>
 
-            <div className={styles.block__table}>
-                <RadarTable
-                    dataSource={sortTableDataFunc(sortState.sort_order, sortState.sort_field, [])}
-                    preset='radar-table-simple'
-                    config={tableConfig}
-                    resizeable
-                    // stickyHeader
-                    onResize={onResizeGroup}
-                    onSort={(sort_field, sort_order) => {
-                        console.log('sorting', { sort_field, sort_order });
-                    }}
-                    pagination={{
-                        current: paginationState.current,
-                        pageSize: paginationState.pageSize,
-                        total: paginationState.total,
-                        onChange: (page, pageSize) => {
-                            console.log('pagination', { page, pageSize });
-                            setPaginationState({...paginationState, current: page, pageSize: pageSize});
-                        },
-                        showQuickJumper: true,
-                    }}
-                    paginationContainerStyle={{
-                        bottom: 0
-                    }}
-                    headerStyle={{
-                        backgroundColor: '#F7F6FE',
-                        height: 1,
-                    }}
-                    headerCellClassName={styles.tableHeaderCell}
-                    headerGroupCellClassName={styles.tableHeaderGroup}
-                    headerCellWrapperClassName={styles.tableHeaderCellWrapper}
-                    headerCellWrapperStyle={{
-                        backgroundColor: '#F7F6FE',
-                    }}
-                />
-            </div>
+            <TableWidget
+                stockAnalysisFilteredData={stockAnalysisFilteredData || []}
+                loading={loading || dashboardLoading}
+                progress={progress.value}
+                config={stockAnalysisTableConfig}
+                configVersion={'1'}
+                initPaginationState={{ current: 1, total: 1, pageSize: 5 }}
+                hasShadow={false}
+            />
         </div>
     );
 };
