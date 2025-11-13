@@ -40,7 +40,7 @@ export const keywordsSelectionTableCustomCellRender = (value: any, record: any, 
     // }
     if (dataIndex === 'query' && !record.isParent) {
         return (
-            <div className={styles.nameCell} style={{ paddingLeft: '30px' }}>
+            <div className={styles.nameCell} style={{ paddingLeft: '30px' }} data-double-is-last-child={record.isLastChild ? "lastChild" : ''}>
                 <img src={wb_icon} alt='wb_icon' width={20} height={20} style={{ transform: 'scale(1.2)' }} />
                 <p className={styles.nameCell__title} title={value}>{value}</p>
             </div>

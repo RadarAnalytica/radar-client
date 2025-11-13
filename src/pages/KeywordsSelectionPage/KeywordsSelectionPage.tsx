@@ -54,6 +54,7 @@ const mainDataToTableDataDto = (mainData: Record<string, any>, tableType: 'Кл�
             isParent: preset.queries_data && preset.queries_data.length > 0 ? true : false,
             children: preset.queries_data.map((query, queryIdx) => ({
                 rowKey: query.query + '_' + queryIdx,
+                isLastChild: queryIdx === ( preset.queries_data.length - 1),
                 ...query,
             }))
         }))
