@@ -17,7 +17,7 @@
     align-items: stretch;
     position: relative;
     padding: 16px;
-    transition: transform 0.1s ease-in-out;
+    transition: transform .15s ease-in-out;
 }
 
 .card:hover {
@@ -95,7 +95,7 @@
 @media (max-width: 1600px) {
     .card__monitoring, .card__rnp, .card__shops {
         .card__cover {
-            inset: 0 0 0 calc(50% + 1rem) !important;
+            inset: 0 0 0 calc(50% + 20px) !important;
         }
     }
 }

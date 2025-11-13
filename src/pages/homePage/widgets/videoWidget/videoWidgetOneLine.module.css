@@ -18,7 +18,7 @@
 .card {
     width: 100%;
     cursor: pointer;
-    transition: transform 0.1s ease-in-out;
+    transition: transform .15s ease-in-out;
 }
 
 .card img {
