@@ -11,14 +11,15 @@ export const PlainSelect = (
         handler, // (e) => void
         mode,
         allowClear,
-        disabled
+        disabled,
+        style = {}
     }
 ) => {
 
     const icon = <SelectIcon />;
 
     return (
-        <div className={styles.plainSelect}>
+        <div className={styles.plainSelect} style={style}>
             <label
                 className={styles.plainSelect__label}
                 htmlFor={selectId}

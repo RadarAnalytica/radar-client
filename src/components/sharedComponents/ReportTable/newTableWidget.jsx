@@ -107,7 +107,7 @@ const TableWidget = ({ loading, columns, data, rowSelection = false, virtual = t
 						behavior: 'smooth'
 					});
 				}
-				return { ...col, width: newWidth, minWidth: newWidth };
+				return { ...col, width: newWidth };
 			}
 			return col;
 		});

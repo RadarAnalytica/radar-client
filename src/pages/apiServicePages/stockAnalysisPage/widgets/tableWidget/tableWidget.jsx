@@ -5,6 +5,8 @@ import { formatPrice } from '../../../../../service/utils';
 import { Tooltip, Pagination, ConfigProvider, Progress } from 'antd';
 import { Table as RadarTable } from 'radar-ui';
 import { newTableConfig } from '../../shared/configs/newTableConfig';
+import { RadarRateMark } from '@/shared';
+import Loader from '@/components/ui/Loader';
 
 /**
  * Краткое описание:
@@ -36,7 +38,40 @@ const getABCBarOptions = (value) => {
     return bgColor;
 }
 
+const comparsionsList = {
+    "saleSum": "sale_sum_comparison",
+    "quantity": "quantity_comparison",
+    "lessReturns": "less_returns_comparison",
+    "costGoodsSold": "sold_cost_comparison",
+    "sold_cost": "sold_cost_comparison",
+    "returnsSum": "returns_sum_comparison",
+    "returnsQuantity": "returns_quantity_comparison",
+    "returnsCostSold": "return_cost_comparison",
+    "return_cost": "return_cost_comparison",
+    "toClient": "to_client_comparison",
+    "to_client_sum": "to_client_sum_comparison",
+    "fromClient": "from_client_comparison",
+    "from_client_sum": "from_client_sum_comparison",
+    "commissionWB": "commission_wb_comparison",
+    "fines": "fines_comparison",
+    "additionalPayment": "additional_payment_comparison",
+    "toPayoff": "to_payoff_comparison",
+    "marginalProfit": "marginal_profit_comparison",
+    "averageProfit": "average_profit_comparison",
+    "profitabilityOfProductsSold": "profitability_of_products_sold_comparison",
+    "marginal": "marginal_comparison",
+    "annualReturnOnInventory": "annual_return_on_inventory_comparison",
+    "lostRevenue": "lost_revenue_comparison",
+    "purchased": "purchased_comparison",
+    "notPurchased": "not_purchased_comparison",
+    "purchasedPercent": "purchased_percent_comparison",
+    "completed": "completed_comparison",
+    "saleCountDay": "sale_count_day_comparison"
+  }
+
 const customCellRender = (value, record, index, dataIndex) => {
+    const comparsionKey = comparsionsList[dataIndex]
+    const comparsion = record[comparsionKey]
     const rightBorders = ['category', 'sold_cost', 'return_cost', 'product_cost_stock', 'from_client_sum', 'additionalPayment', 'lostRevenue', 'byProfit', 'minDiscountPrice', 'orderSum', 'completed', 'saleCountDay'];
     if (dataIndex === 'productName') {
         return (
@@ -68,17 +103,20 @@ const customCellRender = (value, record, index, dataIndex) => {
 
     return <div className={styles.customCell} data-border-right={rightBorders.includes(dataIndex)} title={typeof value === 'number' ? formatPrice(value, newTableConfig.map(item => item.children).flat().find(item => item.dataIndex === dataIndex)?.units || '') : value}>
         {typeof value === 'number' ? formatPrice(value, newTableConfig.map(item => item.children).flat().find(item => item.dataIndex === dataIndex)?.units || '') : value}
+        {comparsion !== null && comparsion !== undefined && <RadarRateMark value={comparsion} units='%' />}
     </div>;
 };
 
 
-const TableWidget = ({ stockAnalysisFilteredData, loading, progress }) => {
+const TableWidget = ({ stockAnalysisFilteredData, loading, progress, config, initPaginationState, hasShadow = true }) => {
 
     const containerRef = useRef(null); // реф скролл-контейнера (используется чтобы седить за позицией скрола)
     const [tableData, setTableData] = useState(); // данные для рендера таблицы
     const [sortState, setSortState] = useState(initSortState); // стейт сортировки (см initSortState)
-    const [paginationState, setPaginationState] = useState({ current: 1, total: 50, pageSize: 25 });
-    const [ tableConfig, setTableConfig ] = useState();
+    const [paginationState, setPaginationState] = useState(initPaginationState || { current: 1, total: 50, pageSize: 25 });
+    const [tableConfig, setTableConfig] = useState(config || newTableConfig);
+    console.log('tableConfig', tableConfig);
+    console.log('tableData', tableData);
 
     // задаем начальную дату
     useEffect(() => {
@@ -117,8 +155,6 @@ const TableWidget = ({ stockAnalysisFilteredData, loading, progress }) => {
     };
 
     const onResizeGroup = (columnKey, width) => {
-        // Минимальная ширина колонки, чтобы контент не скрывался полностью
-        const MIN_COLUMN_WIDTH = 80;
         
         // Обновляем конфигурацию колонок с группированной структурой
         const updateColumnWidth = (columns) => {
@@ -132,14 +168,14 @@ const TableWidget = ({ stockAnalysisFilteredData, loading, progress }) => {
                 if (child.hidden) return sum; // Пропускаем скрытые колонки
                 return sum + (child.width || child.minWidth || 200);
               }, 0);
-              return { ...col, width: totalWidth, minWidth: totalWidth, children: updatedChildren };
+              return { ...col, width: totalWidth, children: updatedChildren, minWidth: totalWidth };
             }
 
             // Если это листовая колонка
             if (col.key === columnKey) {
               // Применяем минимальную ширину
-              const newWidth = Math.max(width, MIN_COLUMN_WIDTH);
-              return { ...col, width: newWidth, minWidth: newWidth };
+              const newWidth = width;
+              return { ...col, width: newWidth };
             }
 
             return col;
@@ -197,29 +233,14 @@ const TableWidget = ({ stockAnalysisFilteredData, loading, progress }) => {
         current?.scrollTo({ top: 0, behavior: 'smooth', duration: 100 });
     }, [paginationState.current]);
 
+
     if (loading) {
-        return (
-            <div className={styles.widget}>
-                <div className={styles.widget__loaderWrapper}>
-                    <span className='loader'></span>
-                    {progress !== null &&
-                        <div className={styles.loadingProgress}>
-                            <Progress
-                                percent={progress}
-                                size='small'
-                                showInfo={false}
-                                strokeColor='#5329FF'
-                                strokeLinecap={1}
-                            />
-                        </div>
-                    }
-                </div>
-            </div>
-        );
+        return <Loader loading={loading} progress={progress} />;
     }
 
+
     return (
-        <div className={styles.widget__container}>
+        <div className={styles.widget__container} style={{ boxShadow: hasShadow ? '' : 'none' }}>
             <div className={styles.widget__scrollContainer} ref={containerRef}>
                 {tableData && tableData.length > 0 && tableConfig &&
                     <RadarTable
@@ -281,6 +302,7 @@ const TableWidget = ({ stockAnalysisFilteredData, loading, progress }) => {
                         resizeable
                         onResize={onResizeGroup}
                         onSort={sortButtonClickHandler}
+                        style={{ width: 'max-content', tableLayout: 'fixed' }}
                         pagination={{
                             current: paginationState.current,
                             pageSize: paginationState.pageSize,

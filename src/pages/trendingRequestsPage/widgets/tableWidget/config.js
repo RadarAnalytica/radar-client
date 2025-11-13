@@ -18,7 +18,7 @@ export const tableConfig = [
     },
 
 ];
-export const CURR_TRENDING_REQUESTS_TABLE_CONFIG_VER = '1';
+export const CURR_TRENDING_REQUESTS_TABLE_CONFIG_VER = '2';
 export const newTableConfig = [
     {
         key: 'query',
@@ -105,4 +105,4 @@ export const newTableConfig = [
         minWidth: 160,
         hidden: false,
     },
-];
+].map(_ => ({ ..._, key: _.dataIndex, maxWidth: _.width * 2 }));

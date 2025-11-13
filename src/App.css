@@ -277,7 +277,7 @@ select:not(.ant-input) {
 }
 
 .ant-select-selector {
-  cursor: inherit !important;
+  /* cursor: inherit !important; */
 }
 /* End of Ant Design custom styles */
 

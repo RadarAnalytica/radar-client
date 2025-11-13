@@ -13,7 +13,6 @@
 
 .card {
     width: 100%;
-    height: 100%;
     height: 256px;
     max-height: 256px;
     display: flex;
@@ -22,7 +21,6 @@
     background-color: white;
     border-radius: 20px;
     padding: 16px;
-    font-family: Mulish;
     font-weight: 700;
     font-size: 24px;
     line-height: 140%;
@@ -55,7 +53,6 @@
     display: flex;
     flex-direction: column;
     gap: 8px;
-    font-family: Mulish;
     font-weight: 500;
     font-size: 16px;
     line-height: 140%;
@@ -65,7 +62,6 @@
         grid-column: span 2;
         font-size: 14px;
     }
-
 }
 
 .description__bullet {
@@ -73,7 +69,6 @@
     padding: 5px 12px;
     border-radius: 6px;
     border: 1px solid #E4DDFF;
-    font-family: Mulish;
     font-weight: 500;
     font-size: 14px;
     line-height: 160%;

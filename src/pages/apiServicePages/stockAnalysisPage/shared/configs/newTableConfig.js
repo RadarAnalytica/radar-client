@@ -1,4 +1,4 @@
-export const CURR_STOCK_ANALYSIS_TABLE_CONFIG_VER = '3';
+export const CURR_STOCK_ANALYSIS_TABLE_CONFIG_VER = '5';
 
 export const newTableConfig = [
     {
@@ -883,3 +883,10 @@ export const newTableConfig = [
     //minWidth: _.children.reduce((acc, child) => acc + child.minWidth, 0),
     colSpan: _.children?.length || 1
 }));
+
+
+
+
+
+
+

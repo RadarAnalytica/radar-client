@@ -14,6 +14,8 @@ export const positionCheckTableConfig = [
         hidden: false,
         width: 160,
         minWidth: 160,
+        sortable: true,
+        units: ' ',
     },
     {
         key: 'total_goods',
@@ -22,6 +24,7 @@ export const positionCheckTableConfig = [
         hidden: false,
         width: 160,
         minWidth: 160,
+        units: ' ',
     },
     {
         key: 'complexity',
@@ -30,6 +33,7 @@ export const positionCheckTableConfig = [
         hidden: false,
         width: 160,
         minWidth: 160,
+        units: ' ',
     },
     {
         key: 'shows',
@@ -38,6 +42,7 @@ export const positionCheckTableConfig = [
         hidden: false,
         width: 160,
         minWidth: 160,
+        units: ' ',
     },
     {
         key: 'serp',
@@ -57,32 +62,44 @@ export const innerTableConfig = [
         title: 'Товар',
         dataIndex: 'name',
         hidden: false,
-        width: 385,
-        minWidth: 385,
+        width: 375,
+        minWidth: 375,
     },
     {
         key: 'shows',
         title: 'Просмотры/мес',
         dataIndex: 'shows',
         hidden: false,
+        width: 160,
+        minWidth: 160,
+        units: ' ',
     },
     {
         key: 'feedbacks',
         title: 'Отзывы',
         dataIndex: 'feedbacks',
         hidden: false,
+        width: 160,
+        minWidth: 160,
+        units: ' ',
     },
     {
         key: 'rating',
         title: 'Рейтинг товара',
         dataIndex: 'rating',
         hidden: false,
+        width: 160,
+        minWidth: 160,
+        units: ' ',
     },
     {
         key: 'price',
         title: 'Цена',
         dataIndex: 'price',
         hidden: false,
+        width: 160,
+        minWidth: 160,
+        units: ' ',
     },
    
     {
@@ -90,5 +107,8 @@ export const innerTableConfig = [
         title: '№ в выдаче',
         dataIndex: 'number',
         hidden: false,
+        width: 160,
+        minWidth: 160,
+        units: ' ',
     },
 ]

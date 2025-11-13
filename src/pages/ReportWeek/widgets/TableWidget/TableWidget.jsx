@@ -87,10 +87,12 @@ const customCellRender = (value, record, index, dataIndex) => {
 };
 
 export default function TableWidget({ loading, columns, data, rowSelection = false, virtual = true, is_primary_collect, progress = null, setTableColumns, configVersion }) {
+    // console.log('columns', columns[0]);
     const tableContainerRef = useRef(null);
     const [sortState, setSortState] = useState({ sort_field: undefined, sort_order: undefined });
 
     const onResize = (columnKey, newWidth) => {
+
         // console.log('onResize', { columnKey, newWidth });
         const mouseHandler = (e) => {
             e.preventDefault();
@@ -100,13 +102,7 @@ export default function TableWidget({ loading, columns, data, rowSelection = fal
         document.addEventListener('mousemove', mouseHandler);
         const newConfig = columns.map((col, index) => {
             if (col.key === columnKey) {
-                if (index === columns.length - 1) {
-                    tableContainerRef.current?.scrollTo({
-                        left: tableContainerRef.current?.scrollWidth - tableContainerRef.current?.clientWidth,
-                        behavior: 'smooth'
-                    });
-                }
-                return { ...col, width: newWidth, minWidth: newWidth };
+                return { ...col, width: newWidth };
             }
             return col;
         });
@@ -114,6 +110,7 @@ export default function TableWidget({ loading, columns, data, rowSelection = fal
             version: configVersion,
             config: newConfig
         }));
+
         setTableColumns(newConfig);
         document.removeEventListener('mousemove', mouseHandler);
     };
@@ -141,12 +138,12 @@ export default function TableWidget({ loading, columns, data, rowSelection = fal
                         />
                     </div>}
                 </div>}
-                {!loading &&
+                {!loading && columns &&
                     <RadarTable
                         resizeable
                         onResize={onResize}
                         preset='radar-table-default'
-                        config={columns}
+                        config={[...columns]}
                         dataSource={(sortState.sort_field === undefined || sortState.sort_order === undefined) ? [...data] : [...data].sort((a, b) => {
                             if (a.key == 'summary' || b.key == 'summary') {
                                 return 0;
@@ -168,7 +165,7 @@ export default function TableWidget({ loading, columns, data, rowSelection = fal
                         }}
                         scrollContainerRef={tableContainerRef}
                         stickyHeader={true}
-                        style={{ fontFamily: 'Manrope' }}
+                        style={{ fontFamily: 'Manrope', width: 'max-content' }}
                         pagination={false}
                         paginationContainerStyle={{ display: 'none' }}
                         bodyRowClassName={styles.bodyRowSpecial}

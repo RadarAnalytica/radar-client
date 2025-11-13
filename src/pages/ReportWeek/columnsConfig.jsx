@@ -77,11 +77,11 @@ function sorter(a, b, key) {
 	return Number(v1 - v2);
 }
 
-export const CURR_REPORT_WEEK_COLUMNS_CONFIG_VER = '3';
+export const CURR_REPORT_WEEK_COLUMNS_CONFIG_VER = '7';
 
 export const COLUMNS = [
 	{title: 'Неделя', dataIndex: 'week_label', fixed: true, width: 200, minWidth: 200, sortable: false},
-	{title: 'Выкупы, руб', dataIndex: 'purchases_rub', sortable: true, width: 150, minWidth: 150, tooltipText: 'Сумма проданных товаров с учетом согласованной скидки продавца'},
+	{title: 'Выкупы, руб', dataIndex: 'purchases_rub', sortable: true, width: 170, minWidth: 170, tooltipText: 'Сумма проданных товаров с учетом согласованной скидки продавца'},
 	{title: 'Выкупы, шт', dataIndex: 'purchases_quantity', sortable: true, width: 150, minWidth: 150, tooltipText: 'Кол-во проданных товаров (с возвратами)'},
 	{title: 'Возвраты, руб',dataIndex: 'return_rub',sortable: true, width: 150, minWidth: 150},
 	{title: 'Возвраты, шт', dataIndex: 'return_quantity', sortable: true, width: 150, minWidth: 150},

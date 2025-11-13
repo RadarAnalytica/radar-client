@@ -60,11 +60,13 @@ interface RadarBarProps {
     actionButtonParams?: {
         text: string;
         action: () => void;
+        style?: React.CSSProperties;
     }
     compareValue?: {
         comparativeValue?: number | string; // %
         absoluteValue?: number | string; // pcs / rubles / etc
         absoluteValueUnits?: string; // units of the absolute value (eg "шт", "%" or whatever)
+        tooltipText?: string; // tooltip text of the comparative value
     }
     isLoading: boolean
 }
@@ -141,32 +143,35 @@ export const RadarBar: React.FC<RadarBarProps> = ({
                         <div className={styles.bar__mainValue}>{formatPrice(mainValue?.toString(), mainValueUnits)}</div>
                     }
                     {compareValue && (compareValue.comparativeValue !== undefined || compareValue.absoluteValue !== undefined) &&
-                        <ConfigProvider
-                            theme={{
-                                token: {
-                                    colorTextLightSolid: '#1A1A1A',
-                                    fontSize: 12,
-                                }
-                            }}
-                        >
-                            <Tooltip
-                                arrow={false}
-                                color='white'
-                                title={'Значение предыдущего периода'}
-                            >
-                                <div className={styles.bar__compareValuesBlock} style={getColorByValue(compareValue.comparativeValue)}>
-                                    {compareValue.comparativeValue !== undefined &&
-                                        <div className={styles.bar__comparativeValue}>{formatPrice(compareValue.comparativeValue.toString(), '%', true)}</div>
-                                    }
-                                    {compareValue.absoluteValue !== undefined &&
-                                        <div className={styles.bar__middleLine}></div>
-                                    }
-                                    {compareValue.absoluteValue !== undefined &&
-                                        <div className={styles.bar__absoluteValue}>{formatPrice(compareValue.absoluteValue.toString(), compareValue.absoluteValueUnits || ' ')}</div>
-                                    }
-                                </div>
-                            </Tooltip>
-                        </ConfigProvider>
+
+                        <div className={styles.bar__compareValuesBlock} style={{ ...getColorByValue(compareValue.comparativeValue) }}>
+                            {compareValue.comparativeValue !== undefined &&
+                                <div className={styles.bar__comparativeValue}>{formatPrice(compareValue.comparativeValue.toString(), '%', true)}</div>
+                            }
+                            {compareValue.absoluteValue !== undefined &&
+                                <div className={styles.bar__middleLine}></div>
+                            }
+                            {compareValue.absoluteValue !== undefined &&
+                                <ConfigProvider
+                                    theme={{
+                                        token: {
+                                            colorTextLightSolid: '#1A1A1A',
+                                            fontSize: 12,
+                                        }
+                                    }}
+                                >
+                                    <Tooltip
+                                        arrow={false}
+                                        color='white'
+                                        title={compareValue.tooltipText}
+
+                                    >
+                                        <div className={styles.bar__absoluteValue} style={{ cursor: compareValue.tooltipText ? 'pointer' : 'default' }}>{formatPrice(compareValue.absoluteValue.toString(), compareValue.absoluteValueUnits || ' ')}</div>
+                                    </Tooltip>
+                                </ConfigProvider>
+                            }
+                        </div>
+
                     }
                 </div>
                 {(linkParams || actionButtonParams) &&
@@ -175,7 +180,7 @@ export const RadarBar: React.FC<RadarBarProps> = ({
                             <Link to={linkParams.url || '/'} className={styles.bar__link}>{linkParams.text || 'Подробнее'}</Link>
                         }
                         {actionButtonParams &&
-                            <button className={styles.bar__link} onClick={actionButtonParams.action}>{actionButtonParams.text || 'Подробнее'}</button>
+                            <button className={styles.bar__link} style={actionButtonParams.style || {}} onClick={actionButtonParams.action}>{actionButtonParams.text || 'Подробнее'}</button>
                         }
                     </div>
                 }

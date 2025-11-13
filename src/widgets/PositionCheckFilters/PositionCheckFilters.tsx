@@ -1,8 +1,10 @@
 import styles from './PositionCheckFilters.module.css';
 import { Form, Select, ConfigProvider, Input, Segmented } from 'antd';
 import { SelectIcon } from '@/components/sharedComponents/apiServicePagesFiltersComponent/shared/selectIcon/selectIcon';
-import { useState } from 'react';
+import { useState, useCallback, useRef, useEffect } from 'react';
 import { useDemoMode } from '@/app/providers';
+import useDebouncedFunction from '@/service/hooks/useDebounce';
+import { IoMdReturnLeft } from 'react-icons/io';
 
 
 // antd theme
@@ -51,7 +53,37 @@ export const PositionCheckFilters: React.FC<IPositionCheckFiltersForm> = ({ subm
     const { isDemoMode } = useDemoMode();
     const [form] = Form.useForm();
     const [keywordDropdownOpen, setKeywordDropdownOpen] = useState(false);
+    const focusRef = useRef(null)
 
+    const handleSubmit = useCallback(() => {
+        form.submit();
+    }, [form]);
+
+    const debouncedSubmit = useDebouncedFunction(handleSubmit, 500);
+
+    const handleNumberInputChange = (fieldName: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
+        const digitsOnlyValue = event.target.value.replace(/\D/g, '');
+        form.setFieldValue(fieldName, digitsOnlyValue);
+        debouncedSubmit();
+    };
+
+    const handleFocus = (e: React.FocusEvent<HTMLElement>) => {
+        const { id } = e.target;
+        const list = ['frequency_from_input', 'frequency_to_input'];
+        focusRef.current = id && list.includes(id) ? id : null  
+    };
+
+    useEffect(() => {
+         const focusID = focusRef?.current
+         console.log(focusID)
+        if (!isDemoMode && !isLoading && focusID) {
+            const input = document.querySelector(`#${focusID}`) as HTMLElement | null;
+            if (input && input instanceof HTMLElement) {
+                input.focus();
+            }
+        }
+    }, [isDemoMode, isLoading])
+ 
     return (
         <div className={styles.filters}>
             <ConfigProvider
@@ -63,8 +95,11 @@ export const PositionCheckFilters: React.FC<IPositionCheckFiltersForm> = ({ subm
                     layout='vertical'
                     form={form}
                     onFinish={submitHandler}
-                    onValuesChange={() => {
-                        form.submit()
+                    onValuesChange={(changedValues) => {
+                        // Не вызываем submit для frequency полей, они обрабатываются через дебаунс
+                        if (!('frequency_from' in changedValues) && !('frequency_to' in changedValues)) {
+                            form.submit();
+                        }
                     }}
                     disabled={isDemoMode || isLoading}
                     initialValues={{
@@ -72,6 +107,7 @@ export const PositionCheckFilters: React.FC<IPositionCheckFiltersForm> = ({ subm
                         frequency_from: '',
                         frequency_to: '',
                         type: 'both',
+                        match_type: 'Содержит',
                     }}
                 >
                     {/* Region select */}
@@ -86,6 +122,8 @@ export const PositionCheckFilters: React.FC<IPositionCheckFiltersForm> = ({ subm
                             size='large'
                             suffixIcon={<SelectIcon />}
                             className={styles.filters__select}
+                            onFocus={handleFocus}
+                            id='region_select'
                         />
                     </Form.Item>
                     {/* type select */}
@@ -103,6 +141,8 @@ export const PositionCheckFilters: React.FC<IPositionCheckFiltersForm> = ({ subm
                             size='large'
                             suffixIcon={<SelectIcon />}
                             className={styles.filters__select}
+                            onFocus={handleFocus}
+                            id='type_select'
                         />
                     </Form.Item>
                     {/* Frequency block */}
@@ -112,21 +152,31 @@ export const PositionCheckFilters: React.FC<IPositionCheckFiltersForm> = ({ subm
                             <Form.Item
                                 name="frequency_from"
                                 className={styles.filters__formItem}
+                                style={{maxWidth: '210px'}}
                             >
                                 <Input
                                     size='large'
                                     className={styles.filters__select}
-                                    prefix={<span style={{ color: '#8C8C8C' }}>От</span>}
+                                    prefix={<span style={{ color: '#8C8C8C75' }}>От</span>}
+                                    inputMode='numeric'
+                                    onChange={handleNumberInputChange('frequency_from')}
+                                    id='frequency_from_input'
+                                    onFocus={handleFocus}
                                 />
                             </Form.Item>
                             <Form.Item
                                 name="frequency_to"
                                 className={styles.filters__formItem}
+                                style={{maxWidth: '210px'}}
                             >
                                 <Input
                                     size='large'
                                     className={styles.filters__select}
-                                    prefix={<span style={{ color: '#8C8C8C' }}>До</span>}
+                                    prefix={<span style={{ color: '#8C8C8C75' }}>До</span>}
+                                    inputMode='numeric'
+                                    onChange={handleNumberInputChange('frequency_to')}
+                                    id='frequency_to_input'
+                                    onFocus={handleFocus}
                                 />
                             </Form.Item>
                         </div>
@@ -145,6 +195,9 @@ export const PositionCheckFilters: React.FC<IPositionCheckFiltersForm> = ({ subm
                             getPopupContainer={(triggerNode) => triggerNode.parentNode}
                             open={keywordDropdownOpen}
                             onDropdownVisibleChange={setKeywordDropdownOpen}
+                            placeholder='Выбрать'
+                            onFocus={handleFocus}
+                            id='keyword_select'
                             dropdownRender={() =>
                                 <KeywordSelectDropdown
                                     handler={(matchType, keywords) => {
@@ -157,6 +210,12 @@ export const PositionCheckFilters: React.FC<IPositionCheckFiltersForm> = ({ subm
                             dropdownStyle={{ minWidth: 'max-content' }}
                         />
                     </Form.Item>
+                    <Form.Item
+                        name="match_type"
+                        label="Ключевое слово"
+                        className={styles.filters__formItem}
+                        hidden
+                    ><Input onFocus={handleFocus} id='match_type_input' /></Form.Item>
                     <button
                         className={styles.filters__resetButton}
                         onClick={() => { form.resetFields(); }}
@@ -202,6 +261,12 @@ const KeywordSelectDropdown: React.FC<IKeywordSelectDropdownProps> = ({ handler 
     const [selectedTab, setSelectedTab] = useState<'Содержит' | 'Совпадает полностью'>('Содержит');
     const [inputValue, setInputValue] = useState('');
 
+    useEffect(() => {
+        if (!inputValue?.trim()) {
+            handler(selectedTab, null)
+        }
+    }, [inputValue]);
+
     return (
         <div className={styles.keywordSelectDropdown}>
             <ConfigProvider theme={segmentedTheme}>
@@ -219,11 +284,13 @@ const KeywordSelectDropdown: React.FC<IKeywordSelectDropdownProps> = ({ handler 
                     size='large'
                     onChange={(e) => setInputValue(e.target.value)}
                     placeholder='Ключевые слова'
+                    allowClear
                 />
             </div>
             <button
                 className={styles.keywordSelectDropdown__button}
                 onClick={() => handler(selectedTab, inputValue)}
+                //disabled={!inputValue || inputValue.trim().length <= 2}
             >
                 Применить
             </button>

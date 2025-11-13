@@ -105,11 +105,10 @@ const StockAnalysisPage = () => {
                     }
                 </div>
 
-                {(isDemoMode || activeBrand?.is_primary_collect) &&
+                {(loading || activeBrand?.is_primary_collect) &&
                     <TableWidget
                         stockAnalysisFilteredData={stockAnalysisFilteredData}
                         loading={loading}
-                        setLoading={setLoading}
                         progress={progress.value}
                     />
                 }

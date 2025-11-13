@@ -19,7 +19,8 @@ const FirstBarsGroup = ({ dataDashBoard, selectedRange, loading }) => {
                 compareValue={{
                     comparativeValue: dataDashBoard?.netProfitCompare,
                     absoluteValue: dataDashBoard?.prev_net_profit,
-                    absoluteValueUnits: '₽'
+                    absoluteValueUnits: '₽',
+                    tooltipText: 'Значение предыдущего периода'
                 }}
                 isLoading={loading}
             />
@@ -36,7 +37,8 @@ const FirstBarsGroup = ({ dataDashBoard, selectedRange, loading }) => {
                 compareValue={{
                     comparativeValue: dataDashBoard?.saleAmountCompare,
                     absoluteValue: dataDashBoard?.prev_sale_amount,
-                    absoluteValueUnits: '₽'
+                    absoluteValueUnits: '₽',
+                    tooltipText: 'Значение предыдущего периода'
                 }}
                 isLoading={loading}
             />
@@ -51,6 +53,9 @@ const FirstBarsGroup = ({ dataDashBoard, selectedRange, loading }) => {
                 hasColoredBackground
                 compareValue={{
                     comparativeValue: dataDashBoard?.wb_realization_compare,
+                    absoluteValue: dataDashBoard?.prev_wb_realization,
+                    absoluteValueUnits: '₽',
+                    tooltipText: 'Значение предыдущего периода'
                 }}
                 isLoading={loading}
             />
@@ -64,6 +69,9 @@ const FirstBarsGroup = ({ dataDashBoard, selectedRange, loading }) => {
                     hasColoredBackground
                     compareValue={{
                         comparativeValue: dataDashBoard?.buyoutPercentCompare,
+                        absoluteValue: dataDashBoard?.prev_buyoutPercent,
+                        absoluteValueUnits: '%',
+                        tooltipText: 'Значение предыдущего периода'
                     }}
                     isLoading={loading}
                 />
@@ -77,6 +85,9 @@ const FirstBarsGroup = ({ dataDashBoard, selectedRange, loading }) => {
                     hasColoredBackground
                     compareValue={{
                         comparativeValue: dataDashBoard?.roi_compare,
+                        absoluteValue: dataDashBoard?.prev_roi,
+                        absoluteValueUnits: '%',
+                        tooltipText: 'Значение предыдущего периода'
                     }}
                     isLoading={loading}
                 />
@@ -86,55 +97,3 @@ const FirstBarsGroup = ({ dataDashBoard, selectedRange, loading }) => {
 };
 
 export default FirstBarsGroup;
-
-    {/* <Bar
-                title='Заказы'
-                amount={dataDashBoard?.orderAmount}
-                amountPerDay={dataDashBoard?.orderAmount / daysRange}
-                amountInPercent={dataDashBoard?.orderAmountCompare}
-                quantity={dataDashBoard?.orderCount}
-                quantityPerDay={dataDashBoard?.orderCount / daysRange}
-                quantityInPercent={dataDashBoard?.orderCountCompare}
-                loading={loading}
-            /> */}
-
-               {/* <Bar
-                title='Продажи'
-                amount={dataDashBoard?.saleAmount}
-                amountPerDay={dataDashBoard?.saleAmount / daysRange}
-                amountInPercent={dataDashBoard?.saleAmountCompare}
-                quantity={dataDashBoard?.saleCount}
-                quantityPerDay={dataDashBoard?.saleCount / daysRange}
-                quantityInPercent={dataDashBoard?.saleCountCompare}
-                loading={loading}
-                hasTooltip
-                tooltipText='Количество проданных товаров (без возвратов)'
-            /> */}
-
-              {/* <Bar
-                title='Возвраты'
-                amount={dataDashBoard?.returnAmount}
-                amountPerDay={dataDashBoard?.returnAmount / daysRange}
-                amountInPercent={dataDashBoard?.returnAmountCompare}
-                quantity={dataDashBoard?.returnCount}
-                quantityPerDay={dataDashBoard?.returnCount / daysRange}
-                quantityInPercent={dataDashBoard?.returnCountCompare}
-                loading={loading}
-            /> */}
-
-              {/* <Bar
-                    fixed={false}
-                    title='WB Реализовал'
-                    averageBill={dataDashBoard?.taxInfo?.wbRealization}
-                    loading={loading}
-                    hasTooltip
-                    tooltipText='Сумма реализации товара с учетом согласованной скидки продавца и СПП'
-                /> */}
-
-                  {/* <Bar
-                    fixed={false}
-                    title='Процент выкупа'
-                    buyOut={dataDashBoard?.buyoutPercent}
-                    butOutInPercent={dataDashBoard?.buyoutPercentCompare}
-                    loading={loading}
-                /> */}

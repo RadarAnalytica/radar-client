@@ -14,12 +14,32 @@
     gap: 13px;
     position: relative;
     overflow: auto;
+    /* Firefox scrollbar */
+    scrollbar-width: thin;
+    scrollbar-color: #5329ff80 transparent;
+}
+
+.page__tableWrapper::-webkit-scrollbar {
+    width: 3px;
+    height: 3px;
+    border-radius: 3px;
+}
+
+.page__tableWrapper::-webkit-scrollbar-thumb {
+    border-radius: 6px;
+    background: #5329ff80;
+}
+
+.page__tableWrapper::-webkit-scrollbar-track {
+    background: transparent;
+    height: 50%;
+    margin: 10px 20px;
 }
 
 .page__loaderWrapper {
     position: absolute;
     inset: 0;
-    background: rgba(255,255,255,.75);
+    background: rgba(255, 255, 255, .75);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -70,13 +90,28 @@
 }
 
 
-:global(.radar-table-default__body-row):has(div > .customCell[data-rnp-is-last-child="lastChild"])>td>div {
+/* :global(.radar-table-default__body-row):has(div[data-double-is-last-child="lastChild"])>td>div {
     border-bottom: 1px solid #E8E8E8 !important;
-}
+} */
 
 
 :global(.radar-table__body-row--parent:has(button.radar-table__expander-btn[aria-expanded="false"]) > td > .radar-table__body-cell-wrapper) {
     border-bottom: 1px solid #E8E8E8 !important;
+}
+
+:global(.radar-table-default__body-row):has(div[data-double-is-last-child="lastChild"])>td>div {
+    border-bottom: 1px solid #E8E8E8 !important;
+}
+
+
+
+.bodyRowSpecial:hover td div {
+    background-color: #FAFAFA !important;
+    transition: background-color 0.2s ease;
+}
+
+.bodyRowInner:last-of-type td div {
+    border-bottom: none !important;
 }
 
 
@@ -90,8 +125,8 @@
     padding: 8px;
     display: flex;
     flex-direction: column;
-    gap: 8px;
     flex-shrink: 0;
+    gap: 8px;
 }
 
 .innerTable__header {
@@ -99,8 +134,9 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 0 8px;
     gap: 8px;
-    padding: 8px;
+    height: 54px;
 }
 
 .innerTable__headerTitle {
@@ -113,12 +149,35 @@
     padding: 0;
 }
 
+
+.innerTable__advancedSerpLink {
+    height: 38px;
+    border-radius: 8px;
+    padding: 0 12px;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 160%;
+    letter-spacing: 0%;
+    color: white;
+    text-decoration: none;
+    background: #5329FF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .adCell {
     padding: 6.5px 4px;
     font-weight: 500;
     font-size: 14px;
     line-height: 100%;
     letter-spacing: 0%;
+    font-size: 14px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    padding: 0 12px;
+    transition: all .2s ease;
+    cursor: pointer;
     border-radius: 8px;
     display: flex;
     align-items: center;
@@ -145,8 +204,8 @@
 }
 
 .nameCell__imgWrapper {
-    width: 45px;
-    height: 60px;
+    width: 43px;
+    height: 58px;
     min-width: 45px;
     min-height: 60px;
     max-width: 45px;

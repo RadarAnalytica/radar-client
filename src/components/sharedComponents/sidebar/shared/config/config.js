@@ -191,7 +191,7 @@ export const menuConfig = [
             },
             {
                 id: 6,
-                url: '/operations-costs',
+                url: '/operating-expenses',
                 label: 'Операционные расходы',
                 isActive: true,
                 isNew: true,
@@ -218,6 +218,20 @@ export const menuConfig = [
         label: 'SEO',
         icon: menuIcons.seo,
         children: [
+            {
+                id: 5,
+                url: '/keywords-selection',
+                label: 'Подбор ключевых запросов',
+                isActive: true,
+                isNew: true
+            },
+            {
+                id: 4,
+                url: '/position-check',
+                label: 'Проверка позиций',
+                isActive: true,
+                isNew: true
+            },
             {
                 id: 3,
                 url: '/serp',

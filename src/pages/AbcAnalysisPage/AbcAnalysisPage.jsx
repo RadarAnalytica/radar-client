@@ -118,16 +118,19 @@ const AbcAnalysisPage = () => {
 	// 2.1 Получаем данные по выбранному магазину и проверяем себестоимость
 
 	useEffect(() => {
-		setPrimaryCollect(activeBrand?.is_primary_collect);
-		if (activeBrand?.is_primary_collect && viewType && isFiltersLoaded) {
-			updateDataAbcAnalysis(
-				viewType,
-				authToken,
-				selectedRange,
-				activeBrand.id.toString()
-			);
-		} else {
-			setLoading(false);
+		if (activeBrand) {
+			setPrimaryCollect(activeBrand?.is_primary_collect);
+
+			if (activeBrand?.is_primary_collect && viewType && isFiltersLoaded) {
+				updateDataAbcAnalysis(
+					viewType,
+					authToken,
+					selectedRange,
+					activeBrand.id.toString()
+				);
+			} else {
+				setLoading(false);
+			}
 		}
 	}, [viewType, page, sorting, activeBrand, selectedRange, isFiltersLoaded, activeBrandName, activeArticle, activeGroup]);
 

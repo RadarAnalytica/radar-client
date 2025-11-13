@@ -106,8 +106,9 @@ export const formatPrice = (value, literal, hasPlusSymbol = false) => {
       formattedPriceString = `+${formattedPriceString}`;
     }
   }
-  return formattedPriceString;
+  return formattedPriceString.replace(/\s/g, '\u00A0');
 };
+
 
 
 //Функция для склонения слова 'день' в зависимости от количества

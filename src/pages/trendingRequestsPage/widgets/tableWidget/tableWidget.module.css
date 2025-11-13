@@ -10,7 +10,6 @@
     justify-content: stretch;
     align-items: flex-start;
     position: relative;
-    transform: scale(100%);
 }
 
 .widget::-webkit-scrollbar {

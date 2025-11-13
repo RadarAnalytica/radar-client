@@ -8,3 +8,11 @@ export { positionCheckTableConfig } from './tableConfigs/positionCheckTableConfi
 export { positionCheckTableCustomCellRender } from './customTableCells/positionCheckTableCustomCellRender';
 export { innerTableConfig } from './tableConfigs/positionCheckTableConfig';
 export { RadarRateMark } from './ui/RadarRateMark/RadarRateMark';
+export { positionTrackingTableConfig } from './tableConfigs/positionTrackingTableConfig';
+export { positionTrackingTableCustomCellRender } from './customTableCells/positionTrackingTableCustomCellRender';
+export { positionTrackingProjectsTableConfig } from './tableConfigs/positionTrackingProjectsTableConfig';
+export { positionTrackingProjectsCustomCellRender } from './customTableCells/positionTrackingProjectsCustomCellRender';
+export { positionTrackingSkuTableConfig } from './tableConfigs/positionTrackingSkuTableConfig';
+export { positionTrackingSkuTableCustomCellRender } from './customTableCells/positionTrackingSkuTableCustomCellRender';
+export { keywordsSelectionTableConfig } from './tableConfigs/keywordsSelectionTableConfig';
+export { keywordsSelectionTableCustomCellRender } from './customTableCells/keywordsSelectionTableCustomCellRender';

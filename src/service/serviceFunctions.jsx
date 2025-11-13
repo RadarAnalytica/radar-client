@@ -1932,9 +1932,9 @@ export interface IProductPositionData {
 	shows: number;
 }
 	 */
-	getPositionCheckProductMetaData: async (token, productId, signal) => {
+	getPositionCheckProductMetaData: async (token, productId, signal, dest) => {
 			const res = await fetchApi(
-				`https://radarmarket.ru/api/web-service/position-track/meta/${productId}`,
+				`https://radarmarket.ru/api/web-service/position-track/meta/${productId}?dest=${dest}`,
 				{
 					method: 'GET',
 					headers: {
@@ -1996,6 +1996,19 @@ export interface IPositionCheckMainTableData {
 					headers: {
 						'content-type': 'application/json',
 						authorization: 'JWT ' + token,
+					},
+					body: JSON.stringify(requestObject),
+				}
+			);
+			return res;
+	},
+	getKeywordsSelectionPageData: async (requestObject) => {
+			const res = await fetchApi(
+				`https://radarmarket.ru/api/web-service/keyword-selection/search`,
+				{
+					method: 'POST',
+					headers: {
+						'content-type': 'application/json',
 					},
 					body: JSON.stringify(requestObject),
 				}
