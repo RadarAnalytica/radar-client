@@ -329,7 +329,7 @@
 
 
 .customCell {
-    display: -webkit-box;
+    /* display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 1;
     overflow: hidden;
@@ -338,7 +338,13 @@
     font-size: 14px;
     font-weight: 500;
     min-width: 'inherit';
-    width: 'inherit';
+    width: 'inherit'; */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    gap: 8px;
+    width: 100%;
 }
 .customCell * {
     min-width: 'inherit';

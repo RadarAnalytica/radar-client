@@ -883,3 +883,10 @@ export const newTableConfig = [
     //minWidth: _.children.reduce((acc, child) => acc + child.minWidth, 0),
     colSpan: _.children?.length || 1
 }));
+
+
+
+
+
+
+

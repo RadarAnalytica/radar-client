@@ -106,7 +106,7 @@ export const formatPrice = (value, literal, hasPlusSymbol = false) => {
       formattedPriceString = `+${formattedPriceString}`;
     }
   }
-  return formattedPriceString;
+  return formattedPriceString.replace(/\s/g, '\u00A0');
 };
 
 
