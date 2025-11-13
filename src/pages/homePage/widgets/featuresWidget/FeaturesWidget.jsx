@@ -9,7 +9,7 @@ import card5 from './assets/card5.png';
 export const FeaturesWidget = () => {
     return (
         <div className={styles.widget}>
-            <div className={`${styles.card} ${styles.card_first}`}>
+            <div className={`${styles.card} ${styles.card__rnp}`}>
                 <div className={styles.card__infoBlock}>
                     <p className={styles.card__title}>
                         Подключите отчет РНП и контролируйте 60+ бизнес-метрик ежедневно
@@ -28,7 +28,7 @@ export const FeaturesWidget = () => {
             </div>
 
 
-            <div className={styles.card}>
+            <div className={`${styles.card} ${styles.card__monitoring}`}>
                 <div className={styles.card__infoBlock}>
                     <p className={styles.card__title}>
                         Найдите прибыльный товар с высоким спросом всего за 5 минут
@@ -47,7 +47,7 @@ export const FeaturesWidget = () => {
             </div>
 
 
-            <div className={styles.card}>
+            <div className={`${styles.card} ${styles.card__shops}`}>
                 <div className={styles.card__infoBlock}>
                     <p className={styles.card__title}>
                         Узнайте, приносит ли магазин прибыль — оцифруйте все данные по API за пару кликов
@@ -66,7 +66,7 @@ export const FeaturesWidget = () => {
             </div>
 
 
-            <div className={styles.card}>
+            <div className={`${styles.card} ${styles.card__report}`}>
                 <div className={styles.card__infoBlock}>
                     <p className={styles.card__title}>
                         Анализируйте еженедельные отчеты без API с помощью нашей ручной оцифровки
@@ -84,7 +84,7 @@ export const FeaturesWidget = () => {
                 </div>
             </div>
 
-            <div className={`${styles.card} ${styles.card_full}`}>
+            <div className={`${styles.card} ${styles.card_full} ${styles.card__seo}`}>
                 <div className={styles.card__infoBlock}>
                     <div className={styles.card__newIcon}>
                         <svg width="39" height="25" viewBox="0 0 39 25" fill="none" xmlns="http://www.w3.org/2000/svg">
