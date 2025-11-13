@@ -99,6 +99,12 @@
     border-bottom: 1px solid #E8E8E8 !important;
 }
 
+:global(.radar-table-default__body-row):has(div[data-double-is-last-child="lastChild"])>td>div {
+    border-bottom: 1px solid #E8E8E8 !important;
+}
+
+
+
 .bodyRowSpecial:hover td div {
     background-color: #FAFAFA !important;
     transition: background-color 0.2s ease;
