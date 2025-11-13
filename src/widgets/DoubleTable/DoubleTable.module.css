@@ -90,14 +90,14 @@
 }
 
 
-/* :global(.radar-table-default__body-row):has(div > .customCell[data-rnp-is-last-child="lastChild"])>td>div {
+/* :global(.radar-table-default__body-row):has(div[data-double-is-last-child="lastChild"])>td>div {
     border-bottom: 1px solid #E8E8E8 !important;
-}
+} */
 
 
 :global(.radar-table__body-row--parent:has(button.radar-table__expander-btn[aria-expanded="false"]) > td > .radar-table__body-cell-wrapper) {
     border-bottom: 1px solid #E8E8E8 !important;
-} */
+}
 
 .bodyRowSpecial:hover td div {
     background-color: #FAFAFA !important;
@@ -119,8 +119,8 @@
     padding: 8px;
     display: flex;
     flex-direction: column;
-    gap: 8px;
     flex-shrink: 0;
+    gap: 8px;
 }
 
 .innerTable__header {
@@ -128,8 +128,9 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 0 8px;
     gap: 8px;
-    padding: 8px;
+    height: 54px;
 }
 
 .innerTable__headerTitle {

@@ -27,7 +27,7 @@
 
 .filters__block {
     width: 100%;
-    max-width: 200px;
+    max-width: 220px;
     display: flex;
     flex-direction: column;
     gap: 8px;
@@ -105,6 +105,5 @@
 
 .keywordSelectDropdown__button:disabled {
     opacity: 0.5;
-    cursor: not-allowed;
     filter: grayscale(100%);
 }

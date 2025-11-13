@@ -80,7 +80,6 @@ export const DoubleTable: React.FC<IDoubleTableProps> = ({ tableData, dest, auth
     };
 
     const handleExpandedRowsChange = (keys: string[]) => {
-        console.log(keys)
         // Находим строки, которые были свернуты
         const collapsedKeys = expandedRowKeys.filter(key => !keys.includes(key));
 
@@ -98,6 +97,12 @@ export const DoubleTable: React.FC<IDoubleTableProps> = ({ tableData, dest, auth
 
                 // Удаляем из ref
                 delete addedRowsRef.current[key];
+            }
+        });
+        keys.forEach(key => {
+            const serpRow = document.getElementById('serp-row-' + key);
+            if (serpRow) {
+                serpRow.remove();
             }
         });
 
@@ -215,6 +220,7 @@ export const DoubleTable: React.FC<IDoubleTableProps> = ({ tableData, dest, auth
             }
         });
         setExpandedRowKeys([]);
+        setPagination({...pagination, current: 1})
     }, [tableType]);
 
     return (
@@ -235,7 +241,6 @@ export const DoubleTable: React.FC<IDoubleTableProps> = ({ tableData, dest, auth
                 }}
                 treeMode
                 indentSize={45}
-                resizeable
                 onSort={(column, order) => sortHandler(column, order)}
                 sorting={{ sort_field: sortState.column, sort_order: sortState.order as 'ASC' | 'DESC' }}
                 expandedRowKeys={expandedRowKeys}
@@ -349,7 +354,7 @@ const InnerTable = ({ tableData, query }: { tableData: any[], query: string }) =
                     bodyCellWrapperStyle={{
                         borderBottom: '1px solid #E8E8E8',
                         backgroundColor: 'transparent',
-                        padding: '8px 12px',
+                        padding: '8px 16px',
                         fontSize: '14px',
                         fontWeight: 500,
                         height: '76px'
