@@ -117,7 +117,9 @@ const mainDataToTableDataDto = (mainData: IPositionCheckMainTableData, tableType
             isParent: preset.queries_data && preset.queries_data.length > 0 ? true : false,
             children: preset.queries_data.map((query, queryIdx) => ({
                 rowKey: query.query + '_' + queryIdx,
+                isLastChild: queryIdx === (preset.queries_data.length - 1),
                 ...query,
+                
             }))
         }))
     }
@@ -337,10 +339,10 @@ const PositionCheckID = () => {
                     <RadarBar title='Просмотры в месяц, шт' isLoading={metaAndRegionsRequestStatus.isLoading} mainValue={productMetaData?.shows || 0} mainValueUnits='' />
                 </div>
                 {/* Filters */}
-                {!metaAndRegionsRequestStatus.isLoading && <div className={styles.page__filtersWrapper}>
+                {<div className={styles.page__filtersWrapper}>
                     <PositionCheckFilters submitHandler={(formData) => {
                         setRequestObject(formDataToRequestObjectDto(formData, requestObject));
-                    }} isLoading={mainTableRequestStatus.isLoading} regionsData={regionsData} />
+                    }} isLoading={mainTableRequestStatus.isLoading || metaAndRegionsRequestStatus.isLoading} regionsData={regionsData} />
                     {/* <DownloadButton handleDownload={() => { }} loading={false} /> */}
                 </div>}
                 {/* Table */}
