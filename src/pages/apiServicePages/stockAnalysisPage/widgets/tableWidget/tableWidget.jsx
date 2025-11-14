@@ -109,7 +109,7 @@ const customCellRender = (value, record, index, dataIndex) => {
 
 
 const TableWidget = ({ stockAnalysisFilteredData, loading, progress, config, initPaginationState, hasShadow = true, configVersion, configKey, maxHeight }) => {
-
+    console.log(stockAnalysisFilteredData);
     const containerRef = useRef(null); // реф скролл-контейнера (используется чтобы седить за позицией скрола)
     const [tableData, setTableData] = useState(); // данные для рендера таблицы
     const [sortState, setSortState] = useState(initSortState); // стейт сортировки (см initSortState)
@@ -121,10 +121,10 @@ const TableWidget = ({ stockAnalysisFilteredData, loading, progress, config, ini
         if (stockAnalysisFilteredData) {
             if (sortState.sortedValue && sortState.sortType) {
                 setTableData([...sortTableDataFunc(sortState.sortType, sortState.sortedValue, stockAnalysisFilteredData)]);
-                setPaginationState({ current: 1, pageSize: paginationState.pageSize, total: [...sortTableDataFunc(sortState.sortType, sortState.sortedValue, stockAnalysisFilteredData)].length });
+                setPaginationState({ current: 1, pageSize: paginationState.pageSize, total: Math.ceil([...sortTableDataFunc(sortState.sortType, sortState.sortedValue, stockAnalysisFilteredData)].length / paginationState.pageSize) });
             } else {
                 setTableData(stockAnalysisFilteredData);
-                setPaginationState({ current: 1, pageSize: paginationState.pageSize, total: stockAnalysisFilteredData.length });
+                setPaginationState({ current: 1, pageSize: paginationState.pageSize, total: Math.ceil(stockAnalysisFilteredData.length / paginationState.pageSize) });
             }
         }
     }, [stockAnalysisFilteredData]);
@@ -135,7 +135,7 @@ const TableWidget = ({ stockAnalysisFilteredData, loading, progress, config, ini
         if (sortState.sortType === sort_order && sortState.sortedValue === sort_field) {
             setSortState(initSortState);
             setTableData(stockAnalysisFilteredData);
-            setPaginationState({ ...paginationState, total: stockAnalysisFilteredData.length, current: 1 });
+            setPaginationState({ ...paginationState, total: Math.ceil(stockAnalysisFilteredData.length / paginationState.pageSize), current: 1 });
             return;
         }
 
@@ -145,7 +145,7 @@ const TableWidget = ({ stockAnalysisFilteredData, loading, progress, config, ini
             sortType: sort_order,
         });
         setTableData([...sortTableDataFunc(sort_order, sort_field, stockAnalysisFilteredData)]);
-        setPaginationState({ ...paginationState, total: [...sortTableDataFunc(sort_order, sort_field, stockAnalysisFilteredData)].length, current: 1 });
+        setPaginationState({ ...paginationState, total: Math.ceil([...sortTableDataFunc(sort_order, sort_field, stockAnalysisFilteredData)].length / paginationState.pageSize), current: 1 });
     };
 
     const paginationHandler = (page) => {
