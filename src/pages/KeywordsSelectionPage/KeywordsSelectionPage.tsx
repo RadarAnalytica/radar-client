@@ -225,6 +225,7 @@ const KeywordsSelectionPage = () => {
                             tableConfig={keywordsSelectionTableConfig}
                             page={'keywords'}
                             hasSort
+                            feed_type={requestObject?.feed_type || 'both'}
                         />
                     </div>
                 }

@@ -366,6 +366,7 @@ const PositionCheckID = () => {
                             tableConfig={positionCheckTableConfig}
                             page={'position'}
                             hasSort={true}
+                            feed_type={requestObject?.feed_type || 'both'}
                         />
                     </div>
                 }

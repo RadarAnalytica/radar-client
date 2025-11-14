@@ -34,7 +34,6 @@
 }
 
 .tableWrapper {
-  min-height: 250px;
   max-height: calc(100vh - 260px);
   position: relative;
   width: 100%;

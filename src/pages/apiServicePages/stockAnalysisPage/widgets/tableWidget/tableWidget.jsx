@@ -108,15 +108,13 @@ const customCellRender = (value, record, index, dataIndex) => {
 };
 
 
-const TableWidget = ({ stockAnalysisFilteredData, loading, progress, config, initPaginationState, hasShadow = true }) => {
+const TableWidget = ({ stockAnalysisFilteredData, loading, progress, config, initPaginationState, hasShadow = true, configVersion, configKey }) => {
 
     const containerRef = useRef(null); // реф скролл-контейнера (используется чтобы седить за позицией скрола)
     const [tableData, setTableData] = useState(); // данные для рендера таблицы
     const [sortState, setSortState] = useState(initSortState); // стейт сортировки (см initSortState)
     const [paginationState, setPaginationState] = useState(initPaginationState || { current: 1, total: 50, pageSize: 25 });
     const [tableConfig, setTableConfig] = useState(config || newTableConfig);
-    console.log('tableConfig', tableConfig);
-    console.log('tableData', tableData);
 
     // задаем начальную дату
     useEffect(() => {
@@ -185,8 +183,8 @@ const TableWidget = ({ stockAnalysisFilteredData, loading, progress, config, ini
         // Обновляем состояние
         setTableConfig(prevConfig => {
             const updatedConfig = updateColumnWidth(prevConfig);
-            localStorage.setItem('STOCK_ANALYSIS_TABLE_CONFIG', JSON.stringify({
-                version: CURR_STOCK_ANALYSIS_TABLE_CONFIG_VER,
+            localStorage.setItem(configKey, JSON.stringify({
+                version: configVersion,
                 config: updatedConfig
             }));
             return updatedConfig;
@@ -194,35 +192,35 @@ const TableWidget = ({ stockAnalysisFilteredData, loading, progress, config, ini
     };
 
     useEffect(() => {
-        let savedTableConfigData = localStorage.getItem('STOCK_ANALYSIS_TABLE_CONFIG');
+        let savedTableConfigData = localStorage.getItem(configKey);
         if (savedTableConfigData) {
             try {
                 const parsed = JSON.parse(savedTableConfigData);
                 
                 // Проверяем версию конфига
-                if (parsed.version === CURR_STOCK_ANALYSIS_TABLE_CONFIG_VER) {
+                if (parsed.version === configVersion) {
                     setTableConfig(parsed.config);
                 } else {
                     // Версия не совпадает, используем дефолтный конфиг
                     console.log('Table config version mismatch, using default config');
                     setTableConfig(newTableConfig);
-                    localStorage.setItem('STOCK_ANALYSIS_TABLE_CONFIG', JSON.stringify({
-                        version: CURR_STOCK_ANALYSIS_TABLE_CONFIG_VER,
+                    localStorage.setItem(configKey, JSON.stringify({
+                        version: configVersion,
                         config: newTableConfig
                     }));
                 }
             } catch (error) {
                 console.error('Error parsing saved table config:', error);
                 setTableConfig(newTableConfig);
-                localStorage.setItem('STOCK_ANALYSIS_TABLE_CONFIG', JSON.stringify({
-                    version: CURR_STOCK_ANALYSIS_TABLE_CONFIG_VER,
+                localStorage.setItem(configKey, JSON.stringify({
+                    version: configVersion,
                     config: newTableConfig
                 }));
             }
         } else {
             setTableConfig(newTableConfig);
-            localStorage.setItem('STOCK_ANALYSIS_TABLE_CONFIG', JSON.stringify({
-                version: CURR_STOCK_ANALYSIS_TABLE_CONFIG_VER,
+            localStorage.setItem(configKey, JSON.stringify({
+                version: configVersion,
                 config: newTableConfig
             }));
         }
