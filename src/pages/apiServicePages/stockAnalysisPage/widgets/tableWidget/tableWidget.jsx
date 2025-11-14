@@ -314,7 +314,6 @@ const TableWidget = ({ stockAnalysisFilteredData, loading, progress, config, ini
                         }}
                         paginationContainerStyle={{
                             bottom: 0,
-                            display: paginationState.total <= 1 ? 'none' : 'blo'
                         }}
                         sorting={{ sort_field: sortState?.sortedValue, sort_order: sortState?.sortType }}
                         scrollContainerRef={containerRef}
