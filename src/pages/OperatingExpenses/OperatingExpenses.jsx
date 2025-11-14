@@ -393,8 +393,8 @@ export default function OperatingExpenses() {
 						titlePrefix={null}
 						children={null}
 						videoReviewLink={null}
-						// howToLink={'#'}
-						// howToLinkText={'Как загрузить?'}
+						howToLink={'https://radar.usedocs.com/article/80129'}
+						howToLinkText={'Как использовать раздел?'}
 					/>
 				</div>
 
