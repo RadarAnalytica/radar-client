@@ -17,6 +17,7 @@ export const keywordsSelectionTableConfig = [
         minWidth: 160,
         sortable: true,
         units: ' ',
+        tooltipText: 'Суммарная частотность запроса за 30 дней'
     },
     {
         key: 'total_goods',
@@ -35,6 +36,7 @@ export const keywordsSelectionTableConfig = [
         width: 160,
         minWidth: 160,
         units: ' ',
+        tooltipText: 'Отражает уровень конкуренции по запросу относительно спроса. Чем меньше знаечние, тем привлекательнее ключ для раскрутки товара. Рассчитывается по уникальной формуле, учитывающей показатели частотности и количества товаров в выдаче по запросу'
     },
     // {
     //     key: 'shows',
