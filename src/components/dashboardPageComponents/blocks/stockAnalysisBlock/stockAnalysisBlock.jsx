@@ -88,7 +88,7 @@ const StockAnalysisBlock = ({ dashboardLoading }) => {
                 configKey='STOCK_ANALYSIS_TABLE_CONFIG_DASHBOARD'
                 initPaginationState={{ current: 1, total: 1, pageSize: 10 }}
                 hasShadow={false}
-                maxHeight={425}
+                // maxHeight={425}
             />
         </div>
     );
