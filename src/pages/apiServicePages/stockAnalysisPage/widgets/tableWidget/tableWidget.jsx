@@ -108,12 +108,12 @@ const customCellRender = (value, record, index, dataIndex) => {
 };
 
 
-const TableWidget = ({ stockAnalysisFilteredData, loading, progress, config, initPaginationState, hasShadow = true, configVersion, configKey }) => {
+const TableWidget = ({ stockAnalysisFilteredData, loading, progress, config, initPaginationState, hasShadow = true, configVersion, configKey, maxHeight }) => {
 
     const containerRef = useRef(null); // реф скролл-контейнера (используется чтобы седить за позицией скрола)
     const [tableData, setTableData] = useState(); // данные для рендера таблицы
     const [sortState, setSortState] = useState(initSortState); // стейт сортировки (см initSortState)
-    const [paginationState, setPaginationState] = useState(initPaginationState || { current: 1, total: 50, pageSize: 25 });
+    const [paginationState, setPaginationState] = useState(initPaginationState || { current: 1, total: 1, pageSize: 25 });
     const [tableConfig, setTableConfig] = useState(config || newTableConfig);
 
     // задаем начальную дату
@@ -121,10 +121,10 @@ const TableWidget = ({ stockAnalysisFilteredData, loading, progress, config, ini
         if (stockAnalysisFilteredData) {
             if (sortState.sortedValue && sortState.sortType) {
                 setTableData([...sortTableDataFunc(sortState.sortType, sortState.sortedValue, stockAnalysisFilteredData)]);
-                setPaginationState({ current: 1, pageSize: paginationState.pageSize, total: Math.ceil([...sortTableDataFunc(sortState.sortType, sortState.sortedValue, stockAnalysisFilteredData)].length / paginationState.pageSize) });
+                setPaginationState({ current: 1, pageSize: paginationState.pageSize, total: [...sortTableDataFunc(sortState.sortType, sortState.sortedValue, stockAnalysisFilteredData)].length });
             } else {
                 setTableData(stockAnalysisFilteredData);
-                setPaginationState({ current: 1, pageSize: paginationState.pageSize, total: Math.ceil(stockAnalysisFilteredData.length / paginationState.pageSize) });
+                setPaginationState({ current: 1, pageSize: paginationState.pageSize, total: stockAnalysisFilteredData.length });
             }
         }
     }, [stockAnalysisFilteredData]);
@@ -135,7 +135,7 @@ const TableWidget = ({ stockAnalysisFilteredData, loading, progress, config, ini
         if (sortState.sortType === sort_order && sortState.sortedValue === sort_field) {
             setSortState(initSortState);
             setTableData(stockAnalysisFilteredData);
-            setPaginationState({ ...paginationState, total: Math.ceil(stockAnalysisFilteredData.length / paginationState.pageSize), current: 1 });
+            setPaginationState({ ...paginationState, total: stockAnalysisFilteredData.length, current: 1 });
             return;
         }
 
@@ -145,7 +145,7 @@ const TableWidget = ({ stockAnalysisFilteredData, loading, progress, config, ini
             sortType: sort_order,
         });
         setTableData([...sortTableDataFunc(sort_order, sort_field, stockAnalysisFilteredData)]);
-        setPaginationState({ ...paginationState, total: Math.ceil([...sortTableDataFunc(sort_order, sort_field, stockAnalysisFilteredData)].length / paginationState.pageSize), current: 1 });
+        setPaginationState({ ...paginationState, total: [...sortTableDataFunc(sort_order, sort_field, stockAnalysisFilteredData)].length, current: 1 });
     };
 
     const paginationHandler = (page) => {
@@ -239,7 +239,7 @@ const TableWidget = ({ stockAnalysisFilteredData, loading, progress, config, ini
 
     return (
         <div className={styles.widget__container} style={{ boxShadow: hasShadow ? '' : 'none' }}>
-            <div className={styles.widget__scrollContainer} ref={containerRef}>
+            <div className={styles.widget__scrollContainer} ref={containerRef} style={{ maxHeight: maxHeight ?? '100%' }}>
                 {tableData && tableData.length > 0 && tableConfig &&
                     <RadarTable
                         config={tableConfig}
@@ -258,6 +258,7 @@ const TableWidget = ({ stockAnalysisFilteredData, loading, progress, config, ini
                                 paginationHandler(page);
                             },
                             showQuickJumper: true,
+                            hideOnSinglePage: true,
                         }}
                         paginationContainerStyle={{
                             bottom: 0
@@ -312,7 +313,7 @@ const TableWidget = ({ stockAnalysisFilteredData, loading, progress, config, ini
                             hideOnSinglePage: true,
                         }}
                         paginationContainerStyle={{
-                            bottom: 0
+                            bottom: 0,
                         }}
                         sorting={{ sort_field: sortState?.sortedValue, sort_order: sortState?.sortType }}
                         scrollContainerRef={containerRef}
