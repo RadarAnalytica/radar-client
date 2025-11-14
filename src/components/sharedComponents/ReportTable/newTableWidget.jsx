@@ -9,13 +9,12 @@ const years = ['2020', '2021', '2022', '2023', '2024', '2025', '2026', '2027', '
 
 
 const customCellRender = (value, record, index, dataIndex) => {
-	console.log('record', record);
 	let yearAttribute = '';
 	if (years.some(year => year.toString() === dataIndex.toString())) {
 		yearAttribute = 'profitLossYearCell';
 	}
 
-	if (record.article === 'Прямые расходы') {
+	if (record.article && record.isParent) {
 		if (typeof value === 'object') {
 			return (
 				<div className={styles.customCell} data-year-attribute={yearAttribute}>
@@ -32,9 +31,7 @@ const customCellRender = (value, record, index, dataIndex) => {
 	}
 
 	if (
-		dataIndex === 'article' &&
-		(record.article === 'Себестоимость' || record.article === 'Внутренняя реклама' || record.article === 'Хранение' || record.article === 'Платная приемка' || record.article === 'Комиссия' || record.article === 'Логистика' || record.article === 'Штрафы и прочие удержания')
-	) {
+		dataIndex === 'article' && record.isChild) {
 		return (
 			<div className={`${styles.customCell} ${styles.customCellChildren}`} data-year-attribute={yearAttribute}>
 				<span className={styles.customCellValueText} style={{ color: 'rgba(0, 0, 0, .5)' }} title={value}>{value}</span>
@@ -61,9 +58,7 @@ const customCellRender = (value, record, index, dataIndex) => {
 			</div>
 		);
 	}
-	if (dataIndex !== 'article' &&
-		(record.article === 'Себестоимость' || record.article === 'Внутренняя реклама' || record.article === 'Хранение' || record.article === 'Платная приемка' || record.article === 'Комиссия' || record.article === 'Логистика' || record.article === 'Штрафы')
-	) {
+	if (dataIndex !== 'article' && record.isChild) {
 		return (
 			<div className={styles.customCell} data-year-attribute={yearAttribute}>
 				<span className={styles.customCellValueText} style={{ color: 'rgba(0, 0, 0, .5)' }} title={formatPrice(value.rub.value, '₽')}><b>{formatPrice(value.rub.value, '₽')}</b></span>
@@ -90,6 +85,7 @@ const customCellRender = (value, record, index, dataIndex) => {
 
 
 const TableWidget = ({ loading, columns, data, rowSelection = false, virtual = true, is_primary_collect, progress = null, setTableConfig }) => {
+	console.log('data', data);
 	const tableContainerRef = useRef(null);
 	const expandedRows = [...data].filter(_ => _.isExpanded).map(_ => JSON.stringify(_)).filter(Boolean);
 	const onResize = (columnKey, newWidth) => {

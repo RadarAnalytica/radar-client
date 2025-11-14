@@ -171,7 +171,18 @@ export default function ReportProfitLoss() {
 			};
 		});
 
-		return finalDataSource;
+		return finalDataSource.map(_ => {
+			if (!_.children) return _;
+			return {
+				..._,
+				children: _.children.map(child => {
+					return {
+						...child,
+						isChild: true,
+					};
+				}),
+			}
+		});
 	};
 
 	const dataToTableData = (response) => {
