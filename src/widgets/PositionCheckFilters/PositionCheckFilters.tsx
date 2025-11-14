@@ -316,7 +316,7 @@ const KeywordSelectDropdown: React.FC<IKeywordSelectDropdownProps> = ({ handler 
             <button
                 className={styles.keywordSelectDropdown__button}
                 onClick={() => handler(selectedTab, inputValue)}
-                //disabled={!inputValue || inputValue.trim().length <= 2}
+                disabled={!inputValue || inputValue?.trim().length < 3}
             >
                 Применить
             </button>
