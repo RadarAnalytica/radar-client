@@ -154,7 +154,8 @@ export default function RnpTable({ columns, data, columns2, data2, expanded, el 
 
 						preset="radar-table-default"
 						bodyRowClassName={styles.bodyRowSpecial}
-						bodyCellWrapperStyle={{ borderBottom: 'none', padding: '10.5px 12px' }}
+						bodyRowStyle={{ height: '38px' }}
+						bodyCellWrapperStyle={{ borderBottom: 'none', padding: '10.5px 12px', height: '38px' }}
 						headerCellWrapperClassName={styles.headerCellWrapperCustomClassName}
 						customCellRender={{
 							idx: [],
