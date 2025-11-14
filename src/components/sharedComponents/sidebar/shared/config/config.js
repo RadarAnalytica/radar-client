@@ -219,9 +219,9 @@ export const menuConfig = [
         icon: menuIcons.seo,
         children: [
             {
-                id: 5,
-                url: '/keywords-selection',
-                label: 'Подбор ключевых запросов',
+                id: 3,
+                url: '/serp',
+                label: 'Проверка выдачи SERP',
                 isActive: true,
                 isNew: true
             },
@@ -233,9 +233,9 @@ export const menuConfig = [
                 isNew: true
             },
             {
-                id: 3,
-                url: '/serp',
-                label: 'Проверка выдачи SERP',
+                id: 5,
+                url: '/keywords-selection',
+                label: 'Подбор ключевых запросов',
                 isActive: true,
                 isNew: true
             },
@@ -243,7 +243,7 @@ export const menuConfig = [
                 id: 1,
                 url: '/ai-generator',
                 label: 'Генерация описания',
-                isActive: true,
+                isActive: false,
                 isNew: false
             },
             {
