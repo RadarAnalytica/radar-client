@@ -19,7 +19,7 @@ const AbcDataBlock = ({ titles, data, loading }) => {
                 <p className={styles.block__title}>
                     ABC-анализ
                 </p>
-                <Link to='/abc-data' className={styles.block__mainLink}>
+                <Link to='/abc-data' target='_blank' className={styles.block__mainLink}>
                     Смотреть подробнее
                 </Link>
             </div>

@@ -21,12 +21,12 @@ const StorageBlock = ({ dataDashBoard, loading }) => {
         <div className={styles.block}>
             <div className={styles.block__header}>
                 <p className={styles.block__title}>Склад</p>
-                <Link
+                {/* <Link
                     to='/orders-map'
                     className={styles.block__mainLink}
                 >
                     Смотреть подробнее
-                </Link>
+                </Link> */}
             </div>
             <div className={styles.block__table}>
                 <div className={styles.block__tableRow}>

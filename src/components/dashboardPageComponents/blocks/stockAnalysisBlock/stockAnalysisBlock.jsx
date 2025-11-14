@@ -112,7 +112,7 @@ const StockAnalysisBlock = ({ dashboardLoading }) => {
                 <p className={styles.block__title}>
                     Аналитика по товарам
                 </p>
-                <Link to='/abc-data' className={styles.block__mainLink}>
+                <Link to='/stock-analysis' target='_blank' className={styles.block__mainLink}>
                     Смотреть подробнее
                 </Link>
             </div>
