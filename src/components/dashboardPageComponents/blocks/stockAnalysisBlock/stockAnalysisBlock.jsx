@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from 'react';
 import styles from './stockAnalysisBlock.module.css';
 import { Link } from 'react-router-dom';
-import { stockAnalysisTableConfig } from './stockAnalysisBlockTableConfig';
+import { stockAnalysisTableConfig, CONFIG_VER } from './stockAnalysisBlockTableConfig';
 import { Table as RadarTable } from 'radar-ui';
 import { sortTableDataFunc } from '../../../../pages/apiServicePages/stockAnalysisPage/shared/utils/tableUtils';
 import { TableWidget } from '@/pages/apiServicePages/stockAnalysisPage/widgets';
@@ -57,45 +57,7 @@ const StockAnalysisBlock = ({ dashboardLoading }) => {
         }
     }, [filters]);
 
-    const onResizeGroup = (columnKey, width) => {
-        console.log('Column resized:', columnKey, width);
-
-        // Обновляем конфигурацию колонок с группированной структурой
-        const updateColumnWidth = (columns) => {
-            return columns.map(col => {
-                // Если это группа с children
-                if (col.children && col.children.length > 0) {
-                    const updatedChildren = updateColumnWidth(col.children);
-
-                    // Всегда пересчитываем ширину группы на основе суммы ширин дочерних колонок
-                    const totalWidth = updatedChildren.reduce((sum, child) => sum + (child.width || child.minWidth), 0);
-                    return { ...col, width: totalWidth, minWidth: totalWidth, children: updatedChildren };
-                }
-
-                // Если это листовая колонка
-                if (col.key === columnKey) {
-                    return { ...col, width: width };
-                }
-
-                return col;
-            });
-        };
-
-        // Обновляем состояние
-        setTableConfig(prevConfig => {
-            const updatedConfig = updateColumnWidth(prevConfig);
-            const normalizedTableConfig = updatedConfig.map(item => ({
-                ...item,
-                render: undefined,
-                children: item.children.map(child => ({
-                    ...child,
-                    render: undefined
-                }))
-            }));
-            localStorage.setItem('MonitoringTableConfig', JSON.stringify(normalizedTableConfig));
-            return updatedConfig;
-        });
-    };
+    
 
     if (loading || dashboardLoading) {
         return (
@@ -122,7 +84,8 @@ const StockAnalysisBlock = ({ dashboardLoading }) => {
                 loading={loading || dashboardLoading}
                 progress={progress.value}
                 config={stockAnalysisTableConfig}
-                configVersion={'1'}
+                configVersion={CONFIG_VER}
+                configKey='STOCK_ANALYSIS_TABLE_CONFIG_DASHBOARD'
                 initPaginationState={{ current: 1, total: 1, pageSize: 5 }}
                 hasShadow={false}
             />

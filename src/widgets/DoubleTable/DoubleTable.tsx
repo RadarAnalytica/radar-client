@@ -17,9 +17,10 @@ interface IDoubleTableProps {
     tableConfig: any[];
     page: 'position' | 'keywords';
     hasSort?: boolean;
+    feed_type: 'both' | 'ad' | 'organic';
 }
 
-export const DoubleTable: React.FC<IDoubleTableProps> = ({ tableData, dest, authToken, tableType, tableConfig, page, hasSort = false }) => {
+export const DoubleTable: React.FC<IDoubleTableProps> = ({ tableData, dest, feed_type, authToken, tableType, tableConfig, page, hasSort = false }) => {
 
     const [pagination, setPagination] = useState({ current: 1, pageSize: 10, total: Math.ceil(tableData.length / 10) });
     const [expandedRowKeys, setExpandedRowKeys] = useState([]);
@@ -31,7 +32,7 @@ export const DoubleTable: React.FC<IDoubleTableProps> = ({ tableData, dest, auth
 
 
     const getSerpData = async (query: string) => {
-        const res = await ServiceFunctions.getSERPDataForPositionCheck(authToken ?? '', { dest, query });
+        const res = await ServiceFunctions.getSERPDataForPositionCheck(authToken ?? '', { dest, query, feed_type });
         if (!res.ok) {
             setIsLoading(false);
             return undefined;
@@ -227,7 +228,7 @@ export const DoubleTable: React.FC<IDoubleTableProps> = ({ tableData, dest, auth
             }
         });
         setExpandedRowKeys([]);
-        setPagination({...pagination, current: 1})
+        setPagination({...pagination, current: 1, total: Math.ceil(tableData.length / 10)})
     }, [tableType]);
 
     return (

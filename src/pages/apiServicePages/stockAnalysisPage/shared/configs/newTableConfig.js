@@ -1,4 +1,4 @@
-export const CURR_STOCK_ANALYSIS_TABLE_CONFIG_VER = '5';
+export const CURR_STOCK_ANALYSIS_TABLE_CONFIG_VER = '6';
 
 export const newTableConfig = [
     {

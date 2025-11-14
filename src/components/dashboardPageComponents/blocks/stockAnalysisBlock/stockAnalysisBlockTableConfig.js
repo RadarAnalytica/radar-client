@@ -1,3 +1,5 @@
+export const CONFIG_VER = '2'
+
 export const stockAnalysisTableConfig = [
     {
         title: 'О товаре',
