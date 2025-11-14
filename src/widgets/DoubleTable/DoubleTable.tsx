@@ -146,6 +146,12 @@ export const DoubleTable: React.FC<IDoubleTableProps> = ({ tableData, dest, auth
                 serpRow.remove();
             }
         });
+        if (serpRows.includes(rowKey)) {
+            setSerpRows([]);
+            setExpandedRowKeys([]);
+            return;
+        }
+       
         setExpandedRowKeys([]);
         // Раскрываем строку
         setSerpRows([currentRow.rowKey]);
@@ -280,7 +286,7 @@ export const DoubleTable: React.FC<IDoubleTableProps> = ({ tableData, dest, auth
                                 index,
                                 dataIndex,
                                 serpButtonHandler,
-                                expandedRowKeys.includes(record.rowKey),
+                                serpRows.includes(record.rowKey),
                                 tableType as 'Кластеры' | 'По запросам'
                             )
                         }
