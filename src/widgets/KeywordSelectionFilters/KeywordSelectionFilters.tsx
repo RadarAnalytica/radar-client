@@ -76,7 +76,6 @@ export const KeywordSelectionFilters: React.FC<IKeywordSelectionFiltersForm> = (
     const debouncedSubmit = useDebouncedFunction(handleSubmit, 500);
 
     const numberOnlyRule = { pattern: /^\d*$/, message: '' };
-    const decimalRule = { pattern: /^\d*(?:[.,]\d*)?$/, message: '' };
     const parseLocaleNumber = (val: string) => Number((val ?? '').toString().replace(',', '.'));
     const createFromValidator = (toField: string) => ({
         validator(_: unknown, value: string) {
@@ -118,15 +117,7 @@ export const KeywordSelectionFilters: React.FC<IKeywordSelectionFiltersForm> = (
         form.setFieldValue(fieldName, digitsOnlyValue);
         debouncedSubmit();
     };
-    const handleDecimalInputChange = (fieldName: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
-        let value = event.target.value.replace(/[^0-9.,]/g, '');
-        const firstSep = value.search(/[.,]/);
-        if (firstSep !== -1) {
-            value = value.slice(0, firstSep + 1) + value.slice(firstSep + 1).replace(/[.,]/g, '');
-        }
-        form.setFieldValue(fieldName, value);
-        debouncedSubmit();
-    };
+
 
     const handleFocus = (e: React.FocusEvent<HTMLElement>) => {
         const { id } = e.target;
@@ -272,7 +263,7 @@ export const KeywordSelectionFilters: React.FC<IKeywordSelectionFiltersForm> = (
                                     type='text'
                                     inputMode='decimal'
                                     pattern='[0-9]*[.,]?[0-9]*'
-                                    onChange={handleDecimalInputChange('complexity_from')}
+                                    onChange={handleNumberInputChange('complexity_from')}
                                     id={'complexity_from'}
                                     onFocus={handleFocus}
                                 />
@@ -290,7 +281,7 @@ export const KeywordSelectionFilters: React.FC<IKeywordSelectionFiltersForm> = (
                                     type='text'
                                     inputMode='decimal'
                                     pattern='[0-9]*[.,]?[0-9]*'
-                                    onChange={handleDecimalInputChange('complexity_to')}
+                                    onChange={handleNumberInputChange('complexity_to')}
                                     id={'complexity_to'}
                                     onFocus={handleFocus}
                                 />

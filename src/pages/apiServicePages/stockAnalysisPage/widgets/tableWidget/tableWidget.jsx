@@ -309,6 +309,7 @@ const TableWidget = ({ stockAnalysisFilteredData, loading, progress, config, ini
                                 paginationHandler(page);
                             },
                             showQuickJumper: true,
+                            hideOnSinglePage: true,
                         }}
                         paginationContainerStyle={{
                             bottom: 0
