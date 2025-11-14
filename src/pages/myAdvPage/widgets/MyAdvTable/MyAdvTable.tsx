@@ -6,7 +6,6 @@ import TableSettingsWidget from '../TableSettingsWidget/TableSettingsWidget';
 import { useTableColumnResize } from '@/service/hooks/useTableColumnResize';
 import { TABLE_CONFIG_VERSION } from '../../config/tableConfig';
 import { sortTableData } from './utils';
-import TippyTooltip from '@/components/ui/TippyTooltip';
 import styles from './MyAdvTable.module.css';
 import { CompanyData } from '../../data/mockData';
 import { ColumnConfig } from '../../config/tableConfig';

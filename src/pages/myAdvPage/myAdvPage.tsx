@@ -8,6 +8,7 @@ import { useLoadingProgress } from '@/service/hooks/useLoadingProgress';
 import Loader from '@/components/ui/Loader';
 import MyAdvTable from './widgets/MyAdvTable/MyAdvTable';
 import NoData from '@/components/sharedComponents/NoData/NoData';
+import SearchBlock from './widgets/SearchBlock/SearchBlock';
 import { 
   getDefaultTableConfig, 
   loadTableConfig, 
@@ -15,7 +16,7 @@ import {
   mergeTableConfig,
   type ColumnConfig 
 } from './config/tableConfig';
-import { mockCompaniesData } from './data/mockData';
+import { mockCompaniesData, CompanyData } from './data/mockData';
 import styles from './myAdvPage.module.css';
 
 const MyAdvPage: React.FC = () => {
@@ -27,8 +28,9 @@ const MyAdvPage: React.FC = () => {
     sort_field: undefined, 
     sort_order: undefined 
   });
-  const [data, setData] = useState(mockCompaniesData);
+  const [data, setData] = useState<CompanyData[]>(mockCompaniesData);
   const [pageData, setPageData] = useState({ page: 1, per_page: 50, total_count: mockCompaniesData.length });
+  const [searchQuery, setSearchQuery] = useState<string>('');
   
   const progress = useLoadingProgress({ loading });
 
@@ -47,11 +49,20 @@ const MyAdvPage: React.FC = () => {
     
     // Имитация загрузки данных
     setTimeout(() => {
-      setData(mockCompaniesData);
+      let filteredData = mockCompaniesData;
+      
+      // Фильтрация по поисковому запросу
+      if (searchQuery.trim()) {
+        filteredData = mockCompaniesData.filter(company => 
+          company.company.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+      }
+      
+      setData(filteredData);
       setPageData({ 
         page: 1, 
         per_page: 50, 
-        total_count: mockCompaniesData.length 
+        total_count: filteredData.length 
       });
       progress.complete();
       setTimeout(() => {
@@ -60,7 +71,12 @@ const MyAdvPage: React.FC = () => {
       }, 500);
     }, 500);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [searchQuery]);
+
+  // Обработчик поиска
+  const handleSearch = (query: string) => {
+    setSearchQuery(query);
+  };
 
   // Обработчик изменения конфигурации таблицы
   const handleTableConfigChange = (newConfig: ColumnConfig[]) => {
@@ -87,6 +103,11 @@ const MyAdvPage: React.FC = () => {
             howToLinkText="Как использовать?"
           />
         </div>
+
+        <SearchBlock 
+          onSearch={handleSearch}
+          loading={loading}
+        />
 
         {isDemoMode && <NoSubscriptionWarningBlock />}
 
