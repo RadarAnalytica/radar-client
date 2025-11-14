@@ -175,8 +175,8 @@ function App() {
                 <Route path='/position-tracking' element={<ProtectedRoute expireProtected routeRuName='Трекинг позиций'><PositionTrackingMainPage /></ProtectedRoute>} />
                 <Route path='/position-tracking/projects' element={<ProtectedRoute expireProtected routeRuName='Трекинг позиций'><PositionTrackingProjectsPage /></ProtectedRoute>} />
                 <Route path='/position-tracking/:sku' element={<ProtectedRoute expireProtected routeRuName='Трекинг позиций'><PositionTrackingSkuPage /></ProtectedRoute>} />
-                <Route path='/my-adv' element={<ProtectedRoute expireProtected routeRuName='Мои рекламные кампании'><MyAdvPage /></ProtectedRoute>} />
-                <Route path='/my-adv/:company_id' element={<ProtectedRoute expireProtected routeRuName='Мои рекламные кампании'><CompanyAdvPage /></ProtectedRoute>} />
+                <Route path='/my-adv' element={<ProtectedRoute expireProtected routeRuName='Мои реклама'><MyAdvPage /></ProtectedRoute>} />
+                <Route path='/my-adv/:companyId' element={<ProtectedRoute expireProtected routeRuName='Мои реклама'><CompanyAdvPage /></ProtectedRoute>} />
                 {/* Public routes */}
                 <Route path='/admin/article/demo/:slugOrId' element={<Suspense fallback={<LoaderPage />}><ArticleViewPage /></Suspense>} />
                 <Route path='/calculate' element={<Suspense fallback={<LoaderPage />}>{deviceRegexp.test(userAgent) ? <UnitCalculatorPage /> : <UnitCalculatorPageDesktop />}</Suspense>} />

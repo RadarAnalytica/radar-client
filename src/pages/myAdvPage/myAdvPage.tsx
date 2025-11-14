@@ -104,12 +104,12 @@ const MyAdvPage: React.FC = () => {
           />
         </div>
 
+        {isDemoMode && <NoSubscriptionWarningBlock />}
+
         <SearchBlock 
           onSearch={handleSearch}
           loading={loading}
         />
-
-        {isDemoMode && <NoSubscriptionWarningBlock />}
 
         {loading && (
           <div className={styles.loader__container}>

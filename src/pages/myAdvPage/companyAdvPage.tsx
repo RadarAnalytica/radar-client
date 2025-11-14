@@ -7,6 +7,8 @@ import { useDemoMode } from "@/app/providers";
 import NoSubscriptionWarningBlock from '@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock';
 import { useLoadingProgress } from '@/service/hooks/useLoadingProgress';
 import Loader from '@/components/ui/Loader';
+import BarsGroup from './widgets/BarsGroup/BarsGroup';
+import StatisticsChart from './widgets/StatisticsChart/StatisticsChart';
 import { Table as RadarTable } from 'radar-ui';
 import { useTableColumnResize } from '@/service/hooks/useTableColumnResize';
 import { TABLE_CONFIG_VERSION } from './config/tableConfig';
@@ -209,6 +211,8 @@ const CompanyAdvPage: React.FC = () => {
 
         {isDemoMode && <NoSubscriptionWarningBlock />}
 
+        <BarsGroup loading={loading} />
+
         {loading && (
           <div className={styles.loader__container}>
             <Loader loading={loading} progress={progress.value} />
@@ -216,26 +220,30 @@ const CompanyAdvPage: React.FC = () => {
         )}
 
         {!loading && (
-          <div className={styles.tableContainer}>
-            <div className={styles.tableWrapper} ref={tableContainerRef}>
-              <RadarTable
-                config={tableConfigResized as any}
-                dataSource={sortTableData(prepareTableData(), sortState)}
-                resizeable
-                onResize={onResizeColumn}
-                preset="radar-table-default"
-                scrollContainerRef={tableContainerRef}
-                stickyHeader
-                customCellRender={{
-                  idx: tableConfig.map(col => col.dataIndex),
-                  renderer: customCellRender,
-                }}
-                sorting={sortState}
-                onSort={handleSort}
-                style={{ fontFamily: 'Mulish', width: 'max-content', tableLayout: 'fixed' }}
-              />
+          <>
+            <div className={styles.tableContainer}>
+              <div className={styles.tableWrapper} ref={tableContainerRef}>
+                <RadarTable
+                  config={tableConfigResized as any}
+                  dataSource={sortTableData(prepareTableData(), sortState)}
+                  resizeable
+                  onResize={onResizeColumn}
+                  preset="radar-table-default"
+                  scrollContainerRef={tableContainerRef}
+                  stickyHeader
+                  customCellRender={{
+                    idx: tableConfig.map(col => col.dataIndex),
+                    renderer: customCellRender,
+                  }}
+                  sorting={sortState}
+                  onSort={handleSort}
+                  style={{ fontFamily: 'Mulish', width: 'max-content', tableLayout: 'fixed' }}
+                />
+              </div>
             </div>
-          </div>
+
+            <StatisticsChart data={data} loading={loading} />
+          </>
         )}
       </section>
     </main>
