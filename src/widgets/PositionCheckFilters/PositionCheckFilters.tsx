@@ -264,12 +264,6 @@ const KeywordSelectDropdown: React.FC<IKeywordSelectDropdownProps> = ({ handler 
     const [selectedTab, setSelectedTab] = useState<'Содержит' | 'Совпадает полностью'>('Содержит');
     const [inputValue, setInputValue] = useState('');
 
-    useEffect(() => {
-        if (!inputValue?.trim()) {
-            handler(selectedTab, null)
-        }
-    }, [inputValue]);
-
     return (
         <div className={styles.keywordSelectDropdown}>
             <ConfigProvider theme={segmentedTheme}>
@@ -285,9 +279,14 @@ const KeywordSelectDropdown: React.FC<IKeywordSelectDropdownProps> = ({ handler 
                 <Input
                     value={inputValue}
                     size='large'
-                    onChange={(e) => setInputValue(e.target.value)}
+                    onChange={(e) => {
+                        setInputValue(e.target.value)
+                    }}
                     placeholder='Ключевые слова'
                     allowClear
+                    onClear={() => {
+                        handler(selectedTab, null)
+                    }}
                 />
             </div>
             <button
