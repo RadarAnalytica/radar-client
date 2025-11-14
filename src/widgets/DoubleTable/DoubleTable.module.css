@@ -1,3 +1,7 @@
+:global(.radar-table__tooltip-text) {
+    font-size: 12px !important;
+}
+
 /* Radar Table */
 .bodyRowSpecial:hover td div {
     background-color: #FAFAFA !important;

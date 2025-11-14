@@ -227,7 +227,15 @@ export const DoubleTable: React.FC<IDoubleTableProps> = ({ tableData, dest, feed
                 serpRow.remove();
             }
         });
+        serpRows.forEach(key => {
+            const serpRow = document.getElementById('serp-row-' + key);
+            if (serpRow) {
+                serpRow.remove();
+            }
+        });
+        setSerpRows([]);
         setExpandedRowKeys([]);
+        
         setPagination({...pagination, current: 1, total: Math.ceil(tableData.length / 10)})
     }, [tableType]);
 

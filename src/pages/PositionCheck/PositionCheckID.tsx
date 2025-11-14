@@ -333,7 +333,7 @@ const PositionCheckID = () => {
                 </div>}
                 {/* Bars */}
                 <div className={styles.page__barsWrapper}>
-                    <RadarBar title='Видимость' isLoading={metaAndRegionsRequestStatus.isLoading} mainValue={productMetaData?.visibility || 0} mainValueUnits='%' tooltipText='Относительный показатель, учитывающий связь просмотров товара с частотностью запросов'/>
+                    <RadarBar title='Видимость' isLoading={metaAndRegionsRequestStatus.isLoading} mainValue={productMetaData?.visibility || 0} mainValueUnits='%' tooltipText='Относительный показатель, показывающий, какую долю потенциального спроса товар получает в поиске. Рассчитывается как отношение всех “просмотров товара” (по позициям в выдаче) к суммарной частотности всех запросов, в которых товар отображался.'/>
                     <RadarBar title='Средняя позиция' isLoading={metaAndRegionsRequestStatus.isLoading} mainValue={productMetaData?.avg_place || 0} mainValueUnits='' />
                     <RadarBar title='Просмотры в месяц, шт' isLoading={metaAndRegionsRequestStatus.isLoading} mainValue={productMetaData?.shows || 0} mainValueUnits='' />
                 </div>

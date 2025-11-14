@@ -1,5 +1,5 @@
 import styles from './PositionCheckFilters.module.css';
-import { Form, Select, ConfigProvider, Input, Segmented } from 'antd';
+import { Form, Select, ConfigProvider, Input, Segmented, Tooltip } from 'antd';
 import { SelectIcon } from '@/components/sharedComponents/apiServicePagesFiltersComponent/shared/selectIcon/selectIcon';
 import { useState, useCallback, useRef, useEffect } from 'react';
 import { useDemoMode } from '@/app/providers';
@@ -129,7 +129,7 @@ export const PositionCheckFilters: React.FC<IPositionCheckFiltersForm> = ({ subm
                     {/* type select */}
                     <Form.Item
                         name="type"
-                        label="Тип выдачи (?)"
+                        label="Тип выдачи"
                         className={styles.filters__formItem}
                     >
                         <Select
@@ -147,7 +147,23 @@ export const PositionCheckFilters: React.FC<IPositionCheckFiltersForm> = ({ subm
                     </Form.Item>
                     {/* Frequency block */}
                     <div className={styles.filters__block}>
-                        <label>Частота</label>
+                        <label>Частота
+                        <ConfigProvider
+                                theme={{
+                                    token: {
+                                        colorTextLightSolid: '#1A1A1A',
+                                        fontSize: 12,
+                                    }
+                                }}
+                            >
+                                <Tooltip arrow={false} title='Суммарная частотность запроса за 30 дней' color='#FFFFFF'>
+                                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ marginLeft: 10, cursor: 'pointer' }}>
+                                        <rect x="0.75" y="0.75" width="18.5" height="18.5" rx="9.25" stroke="black" strokeOpacity="0.1" strokeWidth="1.5" />
+                                        <path d="M9.064 15V7.958H10.338V15H9.064ZM8.952 6.418V5.046H10.464V6.418H8.952Z" fill="#1A1A1A" fillOpacity="0.5" />
+                                    </svg>
+                                </Tooltip>
+                            </ConfigProvider>
+                        </label>
                         <div className={styles.filters__blockWrapper}>
                             <Form.Item
                                 name="frequency_from"
