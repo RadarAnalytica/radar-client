@@ -65,6 +65,38 @@
     align-self: flex-end;
 }
 
+.filters__resetButton:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    filter: grayscale(100%);
+}
+
+.filters__submitButton {
+    border: none;
+    background: none;
+    height: 38px;
+    color: #5329FF;
+    background: #5329FF1A;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    cursor: pointer;
+    padding: 0 12px;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    align-self: flex-end;
+}
+.filters__submitButton:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    filter: grayscale(100%);
+}
+
 
 /* Keyword select dropdown */
 .keywordSelectDropdown {

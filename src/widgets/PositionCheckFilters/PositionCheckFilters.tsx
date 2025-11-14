@@ -95,12 +95,12 @@ export const PositionCheckFilters: React.FC<IPositionCheckFiltersForm> = ({ subm
                     layout='vertical'
                     form={form}
                     onFinish={submitHandler}
-                    onValuesChange={(changedValues) => {
-                        // Не вызываем submit для frequency полей, они обрабатываются через дебаунс
-                        if (!('frequency_from' in changedValues) && !('frequency_to' in changedValues)) {
-                            form.submit();
-                        }
-                    }}
+                    // onValuesChange={(changedValues) => {
+                    //     // Не вызываем submit для frequency полей, они обрабатываются через дебаунс
+                    //     if (!('frequency_from' in changedValues) && !('frequency_to' in changedValues)) {
+                    //         form.submit();
+                    //     }
+                    // }}
                     disabled={isDemoMode || isLoading}
                     initialValues={{
                         region: -1257786, // Moscow
@@ -159,7 +159,7 @@ export const PositionCheckFilters: React.FC<IPositionCheckFiltersForm> = ({ subm
                                     className={styles.filters__select}
                                     prefix={<span style={{ color: '#8C8C8C75' }}>От</span>}
                                     inputMode='numeric'
-                                    onChange={handleNumberInputChange('frequency_from')}
+                                    //onChange={handleNumberInputChange('frequency_from')}
                                     id='frequency_from_input'
                                     onFocus={handleFocus}
                                 />
@@ -174,7 +174,7 @@ export const PositionCheckFilters: React.FC<IPositionCheckFiltersForm> = ({ subm
                                     className={styles.filters__select}
                                     prefix={<span style={{ color: '#8C8C8C75' }}>До</span>}
                                     inputMode='numeric'
-                                    onChange={handleNumberInputChange('frequency_to')}
+                                    //onChange={handleNumberInputChange('frequency_to')}
                                     id='frequency_to_input'
                                     onFocus={handleFocus}
                                 />
@@ -220,8 +220,16 @@ export const PositionCheckFilters: React.FC<IPositionCheckFiltersForm> = ({ subm
                         hidden
                     ><Input onFocus={handleFocus} id='match_type_input' /></Form.Item>
                     <button
+                            className={styles.filters__submitButton}
+                            type='submit'
+                            disabled={isDemoMode || isLoading}
+                        >
+                            Применить
+                        </button>
+                    <button
                         className={styles.filters__resetButton}
                         onClick={() => { form.resetFields(); }}
+                        disabled={isDemoMode || isLoading}
                     >
                         Сбросить
                     </button>

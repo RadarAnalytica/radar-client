@@ -108,7 +108,7 @@ const customCellRender = (value, record, index, dataIndex) => {
 };
 
 
-const TableWidget = ({ stockAnalysisFilteredData, loading, progress, config, initPaginationState, hasShadow = true, configVersion, configKey }) => {
+const TableWidget = ({ stockAnalysisFilteredData, loading, progress, config, initPaginationState, hasShadow = true, configVersion, configKey, maxHeight }) => {
 
     const containerRef = useRef(null); // реф скролл-контейнера (используется чтобы седить за позицией скрола)
     const [tableData, setTableData] = useState(); // данные для рендера таблицы
@@ -239,7 +239,7 @@ const TableWidget = ({ stockAnalysisFilteredData, loading, progress, config, ini
 
     return (
         <div className={styles.widget__container} style={{ boxShadow: hasShadow ? '' : 'none' }}>
-            <div className={styles.widget__scrollContainer} ref={containerRef}>
+            <div className={styles.widget__scrollContainer} ref={containerRef} style={{ maxHeight: maxHeight ?? '100%' }}>
                 {tableData && tableData.length > 0 && tableConfig &&
                     <RadarTable
                         config={tableConfig}

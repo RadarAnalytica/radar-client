@@ -147,19 +147,19 @@ export const KeywordSelectionFilters: React.FC<IKeywordSelectionFiltersForm> = (
                     form={form}
                     onFinish={submitHandler}
                     disabled={isDemoMode || loading}
-                    onValuesChange={(changedValues) => {
-                        // Не вызываем submit для числовых полей, они обрабатываются через дебаунс
-                        const numericFields = [
-                            'frequency_from', 'frequency_to',
-                            'items_from', 'items_to',
-                            'complexity_from', 'complexity_to',
-                            'words_from', 'words_to'
-                        ];
-                        const hasNumericFieldChange = numericFields.some(field => field in changedValues);
-                        if (!hasNumericFieldChange) {
-                            form.submit();
-                        }
-                    }}
+                    // onValuesChange={(changedValues) => {
+                    //     // Не вызываем submit для числовых полей, они обрабатываются через дебаунс
+                    //     const numericFields = [
+                    //         'frequency_from', 'frequency_to',
+                    //         'items_from', 'items_to',
+                    //         'complexity_from', 'complexity_to',
+                    //         'words_from', 'words_to'
+                    //     ];
+                    //     const hasNumericFieldChange = numericFields.some(field => field in changedValues);
+                    //     if (!hasNumericFieldChange) {
+                    //         form.submit();
+                    //     }
+                    // }}
                     onKeyDown={(e) => {
                         if (e.key === 'Enter') {
                             e.preventDefault();
@@ -185,7 +185,7 @@ export const KeywordSelectionFilters: React.FC<IKeywordSelectionFiltersForm> = (
                                     className={styles.filters__select}
                                     prefix={<span style={{ color: '#8C8C8C75' }}>От</span>}
                                     inputMode='numeric'
-                                    onChange={handleNumberInputChange('frequency_from')}
+                                    //onChange={handleNumberInputChange('frequency_from')}
                                     id={'frequency_from'}
                                     onFocus={handleFocus}
                                 />
@@ -201,7 +201,7 @@ export const KeywordSelectionFilters: React.FC<IKeywordSelectionFiltersForm> = (
                                     className={styles.filters__select}
                                     prefix={<span style={{ color: '#8C8C8C75' }}>До</span>}
                                     inputMode='numeric'
-                                    onChange={handleNumberInputChange('frequency_to')}
+                                    //onChange={handleNumberInputChange('frequency_to')}
                                     id={'frequency_to'}
                                     onFocus={handleFocus}
                                 />
@@ -223,7 +223,7 @@ export const KeywordSelectionFilters: React.FC<IKeywordSelectionFiltersForm> = (
                                     className={styles.filters__select}
                                     prefix={<span style={{ color: '#8C8C8C75' }}>От</span>}
                                     inputMode='numeric'
-                                    onChange={handleNumberInputChange('items_from')}
+                                    //onChange={handleNumberInputChange('items_from')}
                                     id={'items_from'}
                                     onFocus={handleFocus}
                                 />
@@ -239,7 +239,7 @@ export const KeywordSelectionFilters: React.FC<IKeywordSelectionFiltersForm> = (
                                     className={styles.filters__select}
                                     prefix={<span style={{ color: '#8C8C8C75' }}>До</span>}
                                     inputMode='numeric'
-                                    onChange={handleNumberInputChange('items_to')}
+                                    //onChange={handleNumberInputChange('items_to')}
                                     id={'items_to'}
                                     onFocus={handleFocus}
                                 />
@@ -263,7 +263,7 @@ export const KeywordSelectionFilters: React.FC<IKeywordSelectionFiltersForm> = (
                                     type='text'
                                     inputMode='decimal'
                                     pattern='[0-9]*[.,]?[0-9]*'
-                                    onChange={handleNumberInputChange('complexity_from')}
+                                    //onChange={handleNumberInputChange('complexity_from')}
                                     id={'complexity_from'}
                                     onFocus={handleFocus}
                                 />
@@ -281,7 +281,7 @@ export const KeywordSelectionFilters: React.FC<IKeywordSelectionFiltersForm> = (
                                     type='text'
                                     inputMode='decimal'
                                     pattern='[0-9]*[.,]?[0-9]*'
-                                    onChange={handleNumberInputChange('complexity_to')}
+                                    //onChange={handleNumberInputChange('complexity_to')}
                                     id={'complexity_to'}
                                     onFocus={handleFocus}
                                 />
@@ -303,7 +303,7 @@ export const KeywordSelectionFilters: React.FC<IKeywordSelectionFiltersForm> = (
                                     className={styles.filters__select}
                                     prefix={<span style={{ color: '#8C8C8C75' }}>От</span>}
                                     inputMode='numeric'
-                                    onChange={handleNumberInputChange('words_from')}
+                                    //onChange={handleNumberInputChange('words_from')}
                                     id={'words_from'}
                                     onFocus={handleFocus}
                                 />
@@ -319,7 +319,7 @@ export const KeywordSelectionFilters: React.FC<IKeywordSelectionFiltersForm> = (
                                     className={styles.filters__select}
                                     prefix={<span style={{ color: '#8C8C8C75' }}>До</span>}
                                     inputMode='numeric'
-                                    onChange={handleNumberInputChange('words_to')}
+                                    //onChange={handleNumberInputChange('words_to')}
                                     id={'words_to'}
                                     onFocus={handleFocus}
                                 />
@@ -416,7 +416,7 @@ export const KeywordSelectionFilters: React.FC<IKeywordSelectionFiltersForm> = (
                         />
                     </Form.Item>
                     {/* Accept checkbox */}
-                    <Flex gap={8} style={{ gridColumn: 'span 3' }}>
+                    <Flex gap={12} style={{ gridColumn: 'span 3' }}>
                         {/* <ConfigProvider theme={checkboxTheme}>
                             <Form.Item
                                 name="accept_filters_to_keywords"
@@ -430,8 +430,16 @@ export const KeywordSelectionFilters: React.FC<IKeywordSelectionFiltersForm> = (
                             </Form.Item>
                         </ConfigProvider> */}
                         <button
+                            className={styles.filters__submitButton}
+                            type='submit'
+                            disabled={isDemoMode || loading}
+                        >
+                            Применить
+                        </button>
+                        <button
                             className={styles.filters__resetButton}
                             onClick={() => { form.resetFields(); }}
+                            disabled={isDemoMode || loading}
                         >
                             Сбросить
                         </button>

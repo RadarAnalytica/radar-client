@@ -135,7 +135,7 @@ function App() {
                 <Route path='/dashboard' element={<ProtectedRoute expireProtected onboardProtected routeRuName='Сводка продаж'><DashboardPage /></ProtectedRoute>} />
                 <Route path='/abc-data' element={<ProtectedRoute expireProtected onboardProtected routeRuName='ABC-анализ'><AbcAnalysisPage /></ProtectedRoute>} />
                 <Route path='/rank-analysis' element={<ProtectedRoute expireProtected routeRuName='Сравнение SEO'><SeoPage /></ProtectedRoute>} />
-                <Route path='/ai-generator' element={<ProtectedRoute expireProtected routeRuName='Генерация описания AI'><AiDescriptionGeneratorPage /></ProtectedRoute>} />
+                {/* <Route path='/ai-generator' element={<ProtectedRoute expireProtected underDevelopmentProtected routeRuName='Генерация описания AI'><AiDescriptionGeneratorPage /></ProtectedRoute>} /> */}
                 <Route path='/serp' element={<ProtectedRoute expireProtected routeRuName='SERP'><SerpPage /></ProtectedRoute>} />
                 <Route path='/position-check' element={<ProtectedRoute expireProtected routeRuName='Проверка позиций'><PositionCheckPage /></ProtectedRoute>} />
                 <Route path='/position-check/:id' element={<ProtectedRoute testPeriodGuardType='redirect' testPeriodRedirect='/position-check' expireProtected routeRuName='Проверка позиций'><PositionCheckIDPage /></ProtectedRoute>} />
