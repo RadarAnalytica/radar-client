@@ -112,12 +112,6 @@ export const KeywordSelectionFilters: React.FC<IKeywordSelectionFiltersForm> = (
         }
     });
 
-    const handleNumberInputChange = (fieldName: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
-        const digitsOnlyValue = event.target.value.replace(/\D/g, '');
-        form.setFieldValue(fieldName, digitsOnlyValue);
-        debouncedSubmit();
-    };
-
 
     const handleFocus = (e: React.FocusEvent<HTMLElement>) => {
         const { id } = e.target;
@@ -147,19 +141,6 @@ export const KeywordSelectionFilters: React.FC<IKeywordSelectionFiltersForm> = (
                     form={form}
                     onFinish={submitHandler}
                     disabled={isDemoMode || loading}
-                    // onValuesChange={(changedValues) => {
-                    //     // Не вызываем submit для числовых полей, они обрабатываются через дебаунс
-                    //     const numericFields = [
-                    //         'frequency_from', 'frequency_to',
-                    //         'items_from', 'items_to',
-                    //         'complexity_from', 'complexity_to',
-                    //         'words_from', 'words_to'
-                    //     ];
-                    //     const hasNumericFieldChange = numericFields.some(field => field in changedValues);
-                    //     if (!hasNumericFieldChange) {
-                    //         form.submit();
-                    //     }
-                    // }}
                     onKeyDown={(e) => {
                         if (e.key === 'Enter') {
                             e.preventDefault();
@@ -195,13 +176,13 @@ export const KeywordSelectionFilters: React.FC<IKeywordSelectionFiltersForm> = (
                                 className={styles.filters__formItem}
                                 dependencies={['frequency_to']}
                                 rules={[numberOnlyRule, createFromValidator('frequency_to')]}
+                                normalize={(val) => (typeof val === 'string' ? val.replace(/\D/g, '') : val)}
                             >
                                 <Input
                                     size='large'
                                     className={styles.filters__select}
                                     prefix={<span style={{ color: '#8C8C8C75' }}>От</span>}
                                     inputMode='numeric'
-                                    //onChange={handleNumberInputChange('frequency_from')}
                                     id={'frequency_from'}
                                     onFocus={handleFocus}
                                 />
@@ -211,13 +192,13 @@ export const KeywordSelectionFilters: React.FC<IKeywordSelectionFiltersForm> = (
                                 className={styles.filters__formItem}
                                 dependencies={['frequency_from']}
                                 rules={[numberOnlyRule, createToValidator('frequency_from')]}
+                                normalize={(val) => (typeof val === 'string' ? val.replace(/\D/g, '') : val)}
                             >
                                 <Input
                                     size='large'
                                     className={styles.filters__select}
                                     prefix={<span style={{ color: '#8C8C8C75' }}>До</span>}
                                     inputMode='numeric'
-                                    //onChange={handleNumberInputChange('frequency_to')}
                                     id={'frequency_to'}
                                     onFocus={handleFocus}
                                 />
@@ -235,13 +216,13 @@ export const KeywordSelectionFilters: React.FC<IKeywordSelectionFiltersForm> = (
                                 className={styles.filters__formItem}
                                 dependencies={['items_to']}
                                 rules={[numberOnlyRule, createFromValidator('items_to')]}
+                                normalize={(val) => (typeof val === 'string' ? val.replace(/\D/g, '') : val)}
                             >
                                 <Input
                                     size='large'
                                     className={styles.filters__select}
                                     prefix={<span style={{ color: '#8C8C8C75' }}>От</span>}
                                     inputMode='numeric'
-                                    //onChange={handleNumberInputChange('items_from')}
                                     id={'items_from'}
                                     onFocus={handleFocus}
                                 />
@@ -251,13 +232,13 @@ export const KeywordSelectionFilters: React.FC<IKeywordSelectionFiltersForm> = (
                                 className={styles.filters__formItem}
                                 dependencies={['items_from']}
                                 rules={[numberOnlyRule, createToValidator('items_from')]}
+                                normalize={(val) => (typeof val === 'string' ? val.replace(/\D/g, '') : val)}
                             >
                                 <Input
                                     size='large'
                                     className={styles.filters__select}
                                     prefix={<span style={{ color: '#8C8C8C75' }}>До</span>}
                                     inputMode='numeric'
-                                    //onChange={handleNumberInputChange('items_to')}
                                     id={'items_to'}
                                     onFocus={handleFocus}
                                 />
@@ -290,6 +271,7 @@ export const KeywordSelectionFilters: React.FC<IKeywordSelectionFiltersForm> = (
                                 className={styles.filters__formItem}
                                 dependencies={['complexity_to']}
                                 rules={[numberOnlyRule, createFromValidator('complexity_to')]}
+                                normalize={(val) => (typeof val === 'string' ? val.replace(/\D/g, '') : val)}
                             >
                                 <Input
                                     size='large'
@@ -297,8 +279,6 @@ export const KeywordSelectionFilters: React.FC<IKeywordSelectionFiltersForm> = (
                                     prefix={<span style={{ color: '#8C8C8C75' }}>От</span>}
                                     type='text'
                                     inputMode='decimal'
-                                    pattern='[0-9]*[.,]?[0-9]*'
-                                    //onChange={handleNumberInputChange('complexity_from')}
                                     id={'complexity_from'}
                                     onFocus={handleFocus}
                                 />
@@ -308,6 +288,7 @@ export const KeywordSelectionFilters: React.FC<IKeywordSelectionFiltersForm> = (
                                 className={styles.filters__formItem}
                                 dependencies={['complexity_from']}
                                 rules={[numberOnlyRule, createToValidator('complexity_from')]}
+                                normalize={(val) => (typeof val === 'string' ? val.replace(/\D/g, '') : val)}
                             >
                                 <Input
                                     size='large'
@@ -315,8 +296,6 @@ export const KeywordSelectionFilters: React.FC<IKeywordSelectionFiltersForm> = (
                                     prefix={<span style={{ color: '#8C8C8C75' }}>До</span>}
                                     type='text'
                                     inputMode='decimal'
-                                    pattern='[0-9]*[.,]?[0-9]*'
-                                    //onChange={handleNumberInputChange('complexity_to')}
                                     id={'complexity_to'}
                                     onFocus={handleFocus}
                                 />
@@ -332,6 +311,7 @@ export const KeywordSelectionFilters: React.FC<IKeywordSelectionFiltersForm> = (
                                 className={styles.filters__formItem}
                                 dependencies={['words_to']}
                                 rules={[numberOnlyRule, createFromValidator('words_to')]}
+                                normalize={(val) => (typeof val === 'string' ? val.replace(/\D/g, '') : val)}
                             >
                                 <Input
                                     size='large'
@@ -348,6 +328,7 @@ export const KeywordSelectionFilters: React.FC<IKeywordSelectionFiltersForm> = (
                                 className={styles.filters__formItem}
                                 dependencies={['words_from']}
                                 rules={[numberOnlyRule, createToValidator('words_from')]}
+                                normalize={(val) => (typeof val === 'string' ? val.replace(/\D/g, '') : val)}
                             >
                                 <Input
                                     size='large'
