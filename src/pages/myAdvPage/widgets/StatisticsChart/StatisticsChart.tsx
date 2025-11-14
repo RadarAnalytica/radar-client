@@ -38,7 +38,7 @@ const tabs = ['Линейные', 'Воронка'];
 
 const theme = {
   token: {
-    fontSize: '18px',
+    fontSize: 18,
   },
   components: {
     Segmented: {
@@ -200,69 +200,97 @@ const StatisticsChart: React.FC<StatisticsChartProps> = ({ data, loading = false
   // Данные для воронки
   const funnelData = data
     ? [
-        { label: 'Просмотры', value: data.views, percentage: 100 },
-        { label: 'Клики', value: data.clicks, percentage: (data.clicks / data.views) * 100 },
-        { label: 'Корзина', value: data.cart, percentage: (data.cart / data.views) * 100 },
-        { label: 'Заказы', value: data.orders, percentage: (data.orders / data.views) * 100 },
-        {
-          label: 'Прогноз выкупа',
-          value: data.forecast_purchase_qty,
-          percentage: (data.forecast_purchase_qty / data.views) * 100,
-        },
+        { label: 'Просмотры', value: data.views },
+        { label: 'Клики', value: data.clicks },
+        { label: 'Корзина', value: data.cart },
+        { label: 'Заказы', value: data.orders },
+        { label: 'Прогноз выкупа', value: data.forecast_purchase_qty },
       ]
     : [];
+  
+  const percetageData = [
+    { percent: 10, value1: 1000, value2: 10000 },
+    { percent: 20, value1: 200, value2: 1000 },
+    { percent: 20, value1: 40, value2: 200 },
+    { percent: 0, value1: 0, value2: 40 },
+  ];
 
-  const maxFunnelValue = funnelData.length > 0 ? funnelData[0].value : 0;
+  const trapezoids = [
+    <svg width="588" height="80" viewBox="0 0 441 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M431.725 1L8.69302 1C3.15622 1 -0.564514 6.67706 1.6449 11.7539L20.0172 53.97C21.2379 56.7752 24.006 58.5894 27.0653 58.5894L413.353 58.5894C416.412 58.5894 419.18 56.7752 420.401 53.97L438.773 11.7539C440.982 6.67706 437.262 1 431.725 1Z" fill="#E6EEFF" stroke="white" stroke-width="2"/>
+    </svg>, // 7.35
+    <svg width="521" height="80" viewBox="0 0 391 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M363.228 58.5894L27.0655 58.5894C24.0062 58.5894 21.2381 56.7752 20.0173 53.97L1.64511 11.7539C-0.564331 6.67705 3.15643 1 8.69324 1L381.6 1C387.137 1 390.857 6.67706 388.648 11.7539L370.276 53.97C369.055 56.7752 366.287 58.5894 363.228 58.5894Z" fill="#FFEBE3" stroke="white" stroke-width="2"/>
+    </svg>, // 6.516
+    <svg width="516" height="88" viewBox="1 0 349 68" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M26.7259 67L317.442 67C320.502 67 323.27 65.1858 324.491 62.3807L346.523 11.7539C348.732 6.67706 345.012 1 339.475 1L12.69342 1C7.15662 1 3.435883 6.67706 5.64529 11.7539L27.6778 62.3807C28.8986 65.1858 31.6666 67 34.7259 67Z" fill="#EBE6FF" stroke="white" stroke-width="2"/>
+    </svg>, // 5.682
+    <svg width="377" height="82" viewBox="0 0 283 62" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M254.826 60.5L27.8976 60.5C24.8383 60.5 22.0703 58.6858 20.8495 55.8807L1.64572 11.7539C-0.563721 6.67706 3.15701 1 8.69385 1L274.03 1C279.566 1 283.287 6.67706 281.078 11.7539L261.874 55.8807C260.653 58.6858 257.885 60.5 254.826 60.5Z" fill="#FFF3D8" stroke="white" stroke-width="2"/>
+    </svg>, // 4.848
+    <svg width="308" height="82" viewBox="0 0 231 62" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M203.115 60.3213L27.8189 60.3213C24.7597 60.3213 21.9916 58.5071 20.7708 55.702L1.64488 11.7539C-0.56456 6.67706 3.15617 1 8.69299 1L222.241 1C227.777 1 231.498 6.67706 229.289 11.7539L210.163 55.702C208.942 58.5071 206.174 60.3213 203.115 60.3213Z" fill="#DBF7E9" stroke="white" stroke-width="2"/>
+    </svg>,
+  ];
 
   return (
-    <div className={styles.chart}>
+    <div className={styles.chartWrapper}>
       <div className={styles.chart__header}>
-        <p className={styles.chart__title}>Статистика</p>
+        <h4 className={styles.chart__title}>Графики статистики</h4>
         <ConfigProvider theme={theme}>
           <Segmented size="large" options={tabs} value={activeTab} onChange={handleTabChange} />
         </ConfigProvider>
       </div>
 
-      <div className={styles.chart__content}>
-        {loading ? (
-          <RadarLoader loaderStyle={{ height: '300px' }} />
-        ) : (
-          <>
-            {activeTab === 'Линейные' && chartData && (
-              <Chart type="bar" data={chartData} options={chartOptions} />
-            )}
+      <div className={styles.chart}>
+        <div className={styles.chart__content}>
+          {loading ? (
+            <RadarLoader loaderStyle={{ height: '300px' }} />
+          ) : (
+            <>
+              {activeTab === 'Линейные' && chartData && (
+                <Chart type="bar" data={chartData} options={chartOptions} />
+              )}
 
             {activeTab === 'Воронка' && (
               <div className={styles.funnel}>
                 {funnelData.map((item, index) => {
-                  const width = (item.value / maxFunnelValue) * 100;
                   return (
-                    <div key={index} className={styles.funnel__item}>
-                      <div className={styles.funnel__label}>
-                        <span className={styles.funnel__labelText}>{item.label}</span>
-                        <span className={styles.funnel__value}>
-                          {new Intl.NumberFormat('ru-RU').format(item.value)}
-                        </span>
-                        <span className={styles.funnel__percentage}>
-                          {item.percentage.toFixed(2)}%
-                        </span>
-                      </div>
-                      <div className={styles.funnel__barWrapper}>
-                        <div
-                          className={styles.funnel__bar}
-                          style={{
-                            width: `${width}%`,
-                            backgroundColor: `hsl(${220 - index * 20}, 70%, ${60 - index * 5}%)`,
-                          }}
-                        />
+                    <div key={index} className={`${styles.funnel__item} ${styles[`funnel__item-${index}`]}`}>
+                      <div className={styles.funnel__content}>
+                        {trapezoids[index]}
+                        <div className={styles.funnel__text}>
+                          <span className={styles.funnel__labelText}>{item.label}</span>
+                          <span className={styles.funnel__value}>
+                            {new Intl.NumberFormat('ru-RU').format(item.value)}
+                          </span>
+                        </div>
                       </div>
                     </div>
                   );
                 })}
+
+                <div className={styles.funnel__percentageInfo}>
+                  {percetageData.map((item, index) => {
+                    return (
+                      <div key={index} className={styles.funnel__percentageItemWrapper}>
+                        <div className={styles.funnel__percentageItem}>
+                          <span className={styles.funnel__percentagePercent}>{item.percent}%</span>
+                          <div className={styles.funnel__percentageValueWrapper}>
+                            <span className={styles.funnel__percentageValue1}>{item.value1}</span>
+                            <span className={styles.funnel__percentageSeparator}>/</span>
+                            <span className={styles.funnel__percentageValue2}>{item.value2}</span>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
             )}
-          </>
-        )}
+            </>
+          )}
+        </div>
       </div>
     </div>
   );
