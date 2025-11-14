@@ -169,6 +169,7 @@ export const PositionCheckFilters: React.FC<IPositionCheckFiltersForm> = ({ subm
                                 name="frequency_from"
                                 className={styles.filters__formItem}
                                 style={{maxWidth: '210px'}}
+                                normalize={(val) => (typeof val === 'string' ? val.replace(/\D/g, '') : val)}
                             >
                                 <Input
                                     size='large'
@@ -184,6 +185,7 @@ export const PositionCheckFilters: React.FC<IPositionCheckFiltersForm> = ({ subm
                                 name="frequency_to"
                                 className={styles.filters__formItem}
                                 style={{maxWidth: '210px'}}
+                                normalize={(val) => (typeof val === 'string' ? val.replace(/\D/g, '') : val)}
                             >
                                 <Input
                                     size='large'
