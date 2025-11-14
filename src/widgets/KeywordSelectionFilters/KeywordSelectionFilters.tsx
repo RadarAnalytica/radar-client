@@ -263,7 +263,7 @@ export const KeywordSelectionFilters: React.FC<IKeywordSelectionFiltersForm> = (
                                 name="complexity_from"
                                 className={styles.filters__formItem}
                                 dependencies={['complexity_to']}
-                                rules={[decimalRule, createFromValidator('complexity_to')]}
+                                rules={[numberOnlyRule, createFromValidator('complexity_to')]}
                             >
                                 <Input
                                     size='large'
@@ -281,7 +281,7 @@ export const KeywordSelectionFilters: React.FC<IKeywordSelectionFiltersForm> = (
                                 name="complexity_to"
                                 className={styles.filters__formItem}
                                 dependencies={['complexity_from']}
-                                rules={[decimalRule, createToValidator('complexity_from')]}
+                                rules={[numberOnlyRule, createToValidator('complexity_from')]}
                             >
                                 <Input
                                     size='large'

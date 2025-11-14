@@ -102,7 +102,7 @@ const getKeywordsSelectionRequestObject = (keywords: string, filtersData: Record
                 keywords_match: filtersData.include_match_type === 'Все слова' ? 'full' : 'part'
             } : includeArray,
             exclude_words: excludeArray ? {
-                keywords: includeArray,
+                keywords: excludeArray,
                 keywords_match: filtersData.include_match_type === 'Все слова' ? 'full' : 'part'
             } : excludeArray
         }
