@@ -23,6 +23,7 @@ export const DoubleTable: React.FC<IDoubleTableProps> = ({ tableData, dest, auth
 
     const [pagination, setPagination] = useState({ current: 1, pageSize: 10, total: Math.ceil(tableData.length / 10) });
     const [expandedRowKeys, setExpandedRowKeys] = useState([]);
+    const [serpRows, setSerpRows] = useState([]);
     const [sortState, setSortState] = useState({ column: 'frequency', order: 'DESC' });
     const addedRowsRef = useRef<Record<string, { customRow: HTMLTableRowElement, hiddenRows: HTMLTableRowElement[] }>>({});
     const tableContainerRef = useRef<HTMLDivElement>(null);
@@ -52,6 +53,13 @@ export const DoubleTable: React.FC<IDoubleTableProps> = ({ tableData, dest, auth
             }
         });
         setExpandedRowKeys([]);
+        serpRows.forEach(key => {
+            const serpRow = document.getElementById('serp-row-' + key);
+            if (serpRow) {
+                serpRow.remove();
+            }
+        });
+        setSerpRows([]);
         setSortState({ column, order });
         tableContainerRef.current?.scrollTo({
             top: 0,
@@ -68,6 +76,13 @@ export const DoubleTable: React.FC<IDoubleTableProps> = ({ tableData, dest, auth
                 serpRow.remove();
             }
         });
+        serpRows.forEach(key => {
+            const serpRow = document.getElementById('serp-row-' + key);
+            if (serpRow) {
+                serpRow.remove();
+            }
+        });
+        setSerpRows([]);
         setExpandedRowKeys([]);
         setPagination({
             ...pagination,
@@ -99,6 +114,13 @@ export const DoubleTable: React.FC<IDoubleTableProps> = ({ tableData, dest, auth
                 delete addedRowsRef.current[key];
             }
         });
+        serpRows.forEach(key => {
+            const serpRow = document.getElementById('serp-row-' + key);
+            if (serpRow) {
+                serpRow.remove();
+            }
+        });
+        setSerpRows([]);
         keys.forEach(key => {
             const serpRow = document.getElementById('serp-row-' + key);
             if (serpRow) {
@@ -109,24 +131,16 @@ export const DoubleTable: React.FC<IDoubleTableProps> = ({ tableData, dest, auth
         setExpandedRowKeys([keys[keys.length - 1]]);
     };
 
-    const serpButtonHandler = (buttonRef: HTMLButtonElement, rowKey: string) => {
+    const serpButtonHandler = async (buttonRef: HTMLButtonElement, rowKey: string) => {
         const currentRow = tableData.find((row: any) => row.rowKey === rowKey);
         if (!currentRow) return;
-
-        // Тоггл: если уже раскрыто — закрываем и очищаем кастомные элементы
-        if (expandedRowKeys.includes(rowKey)) {
-            setExpandedRowKeys(prev => prev.filter(key => key !== rowKey));
-            const addedRowData = addedRowsRef.current[rowKey];
-            if (addedRowData) {
-                addedRowData.customRow.remove();
-                addedRowData.hiddenRows.forEach(row => {
-                    row.style.display = '';
-                });
-                delete addedRowsRef.current[rowKey];
-            }
-            return;
-        }
         expandedRowKeys.forEach(key => {
+            const serpRow = document.getElementById('serp-row-' + key);
+            if (serpRow) {
+                serpRow.remove();
+            }
+        });
+        serpRows.forEach(key => {
             const serpRow = document.getElementById('serp-row-' + key);
             if (serpRow) {
                 serpRow.remove();
@@ -134,63 +148,50 @@ export const DoubleTable: React.FC<IDoubleTableProps> = ({ tableData, dest, auth
         });
         setExpandedRowKeys([]);
         // Раскрываем строку
-        setExpandedRowKeys([currentRow.rowKey]);
+        setSerpRows([currentRow.rowKey]);
 
         // Находим tr в которой лежит кнопка
         const currentTr = buttonRef.closest('tr');
         if (!currentTr) return;
 
-        // Ждем рендеринг раскрытых строк
-        setTimeout(async () => {
-            setIsLoading(true);
-            const hiddenRows: HTMLTableRowElement[] = [];
-            // Скрываем следующие 3 строки
-            let nextTr = currentTr.nextElementSibling;
-            if (currentRow.children?.length) {
-                for (let i = 0; i < currentRow.children.length && nextTr; i++) {
-                    (nextTr as HTMLElement).style.display = 'none';
-                    hiddenRows.push(nextTr as HTMLTableRowElement);
-                    nextTr = nextTr.nextElementSibling;
-                }
-
-            }
+        setIsLoading(true);
+        const hiddenRows: HTMLTableRowElement[] = [];
 
 
 
-            const serpData = await getSerpData(currentRow.query);
-            if (!serpData) {
-                return;
-            }
+        const serpData = await getSerpData(currentRow.query);
+        if (!serpData) {
+            return;
+        }
 
-            // Создаем новую строку с кастомным рендером
-            const newRow = document.createElement('tr');
-            const newCell = document.createElement('td');
-            // Устанавливаем colSpan равным количеству ячеек в текущей строке,
-            // чтобы не ломать раскладку таблицы
-            const cellsCount = currentTr.querySelectorAll('td, th').length || 1;
-            newCell.colSpan = 6;
+        // Создаем новую строку с кастомным рендером
+        const newRow = document.createElement('tr');
+        const newCell = document.createElement('td');
+        // Устанавливаем colSpan равным количеству ячеек в текущей строке,
+        // чтобы не ломать раскладку таблицы
+        const cellsCount = currentTr.querySelectorAll('td, th').length || 1;
+        newCell.colSpan = 6;
 
-            // Создаем контейнер для React компонента
-            const container = document.createElement('div');
-            newCell.appendChild(container);
-            newRow.appendChild(newCell);
-            newRow.setAttribute('id', 'serp-row-' + currentRow.rowKey);
+        // Создаем контейнер для React компонента
+        const container = document.createElement('div');
+        newCell.appendChild(container);
+        newRow.appendChild(newCell);
+        newRow.setAttribute('id', 'serp-row-' + currentRow.rowKey);
 
-            // Вставляем новую строку после текущей
-            currentTr.after(newRow);
+        // Вставляем новую строку после текущей
+        currentTr.after(newRow);
 
-            // Рендерим React компонент в контейнер
-            const root = ReactDOM.createRoot(container);
-            root.render(
-                <InnerTable tableData={serpData} query={currentRow.query} />
-            );
+        // Рендерим React компонент в контейнер
+        const root = ReactDOM.createRoot(container);
+        root.render(
+            <InnerTable tableData={serpData} query={currentRow.query} />
+        );
 
-            // Сохраняем ссылки для последующего удаления
-            addedRowsRef.current[rowKey] = {
-                customRow: newRow,
-                hiddenRows: hiddenRows
-            };
-        }, 0);
+        // Сохраняем ссылки для последующего удаления
+        addedRowsRef.current[rowKey] = {
+            customRow: newRow,
+            hiddenRows: hiddenRows
+        };
     };
 
 
@@ -267,7 +268,7 @@ export const DoubleTable: React.FC<IDoubleTableProps> = ({ tableData, dest, auth
                                 index,
                                 dataIndex,
                                 serpButtonHandler,
-                                expandedRowKeys.includes(record.rowKey),
+                                serpRows.includes(record.rowKey),
                                 tableType as 'Кластеры' | 'По запросам'
                             )
                         }

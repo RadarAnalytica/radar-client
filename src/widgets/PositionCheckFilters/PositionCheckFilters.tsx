@@ -203,6 +203,9 @@ export const PositionCheckFilters: React.FC<IPositionCheckFiltersForm> = ({ subm
                                     handler={(matchType, keywords) => {
                                         form.setFieldValue('keyword', keywords);
                                         form.setFieldValue('match_type', matchType);
+                                        if (keywords === '' || keywords == null) {
+                                            form.submit();
+                                        }
                                         setKeywordDropdownOpen(false);
                                     }}
                                 />

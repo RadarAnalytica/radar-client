@@ -361,6 +361,9 @@ export const KeywordSelectionFilters: React.FC<IKeywordSelectionFiltersForm> = (
                                     handler={(matchType, keywords) => {
                                         form.setFieldValue('keywords_to_include', keywords);
                                         form.setFieldValue('include_match_type', matchType);
+                                        if (keywords === '' || keywords == null) {
+                                            form.submit();
+                                        }
                                         setKeywordDropdownIncludeOpen(false);
                                     }}
                                 />
@@ -394,6 +397,9 @@ export const KeywordSelectionFilters: React.FC<IKeywordSelectionFiltersForm> = (
                                     handler={(matchType, keywords) => {
                                         form.setFieldValue('keywords_to_exclude', keywords);
                                         form.setFieldValue('exclude_match_type', matchType);
+                                        if (keywords === '' || keywords == null) {
+                                            form.submit();
+                                        }
                                         setKeywordDropdownExcludeOpen(false);
                                     }}
                                 />
@@ -484,6 +490,7 @@ const KeywordSelectDropdown: React.FC<IKeywordSelectDropdownProps> = ({ handler 
 
     useEffect(() => {
         if (!inputValue?.trim()) {
+            console.log('inputValue', inputValue);
             handler(selectedTab, null)
         }
     }, [inputValue]);
