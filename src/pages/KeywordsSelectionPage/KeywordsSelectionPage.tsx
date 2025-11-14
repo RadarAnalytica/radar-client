@@ -11,6 +11,8 @@ import { DoubleTable, KeywordSelectionFilters } from "@/widgets";
 import { ServiceFunctions } from "@/service/serviceFunctions";
 import { formatPrice } from "@/service/utils";
 import { keywordsSelectionTableConfig, RadarLoader } from "@/shared";
+import NoSubscriptionWarningBlock from "@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock";
+import { useDemoMode } from "@/app/providers";
 
 
 // model
@@ -113,6 +115,7 @@ const getKeywordsSelectionRequestObject = (keywords: string, filtersData: Record
 
 // comp
 const KeywordsSelectionPage = () => {
+    const { isDemoMode } = useDemoMode();
     const [requestStatus, setRequestStatus] = useState(requestInitState);
     const [tabsState, setTabsState] = useState<'Обычный поиск по частичному совпадению' | 'Поиск по полному совпадению'>('Обычный поиск по частичному совпадению');
     const [tableType, setTableType] = useState<'Кластеры' | 'По запросам'>('Кластеры');
@@ -173,6 +176,7 @@ const KeywordsSelectionPage = () => {
                         hasShadow={false}
                     />
                 </div>
+                {isDemoMode && <NoSubscriptionWarningBlock />}
                 {/* !header */}
                 <div className={styles.page__searchBlockWrapper}>
                     <p className={styles.page__searchBlockTitle}>Введите один или несколько запросов, каждый с новой строки или через запятую</p>
