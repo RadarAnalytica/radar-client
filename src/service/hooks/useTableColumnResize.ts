@@ -55,7 +55,7 @@ export function useTableColumnResize(
 			if (col.children && col.children.length > 0) {
 				const updatedChildren = processColumns(col.children, processor);
 				const totalWidth = updatedChildren.reduce((sum, child) => 
-					sum + (child.width || child.minWidth || 0), 0
+					sum + (child.width || 0), 0
 				);
 				return { ...col, width: totalWidth, minWidth: totalWidth, children: updatedChildren };
 			}
@@ -181,7 +181,7 @@ export function useTableColumnResize(
 		setConfig(prevConfig => processColumns(prevConfig, col => {
 			if (col.key === columnKey) {
 				//const constrainedWidth = Math.max(minWidth, Math.min(maxWidth, width));
-				return { ...col, width: width, minWidth: width };
+				return { ...col, width: width };
 			}
 			return col;
 		}));
