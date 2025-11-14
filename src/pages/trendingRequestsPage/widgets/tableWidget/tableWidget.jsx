@@ -359,6 +359,7 @@ export const TableWidget = React.memo(({ rawData, loading, tablePaginationState,
                                 renderer: customCellRender
                             }}
                             bodyRowClassName={styles.bodyRowSpecial}
+                            style={{width: 'max-content', tableLayout: 'fixed'}}
                         />
                     </div>
                 }
