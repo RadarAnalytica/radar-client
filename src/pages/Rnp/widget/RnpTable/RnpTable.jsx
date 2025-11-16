@@ -76,7 +76,7 @@ export default function RnpTable({ columns, data, columns2, data2, expanded, el 
 			}
 			return col;
 		});
-		setTableConfig(newConfig);
+		// setTableConfig(newConfig);
 	};
 
 	// update table config when columns2 changes
@@ -151,7 +151,7 @@ export default function RnpTable({ columns, data, columns2, data2, expanded, el 
 
 						stickyHeader={true}
 						scrollContainerRef={containerRef}
-
+						style={{tableLayout: 'fixed', width: 'max-content'}}
 						preset="radar-table-default"
 						bodyRowClassName={styles.bodyRowSpecial}
 						bodyRowStyle={{ height: '38px' }}
