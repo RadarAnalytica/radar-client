@@ -15,6 +15,8 @@ import {
 } from 'chart.js';
 import { RadarLoader } from '@/shared';
 import { CompanyData } from '../../data/mockData';
+import { ChartControls } from '../../features';
+import { chartCompareConfigObject } from '../../shared';
 import styles from './StatisticsChart.module.css';
 
 ChartJS.register(
@@ -57,10 +59,13 @@ const theme = {
 const StatisticsChart: React.FC<StatisticsChartProps> = ({ data, loading = false }) => {
   const [activeTab, setActiveTab] = useState<string>('Линейные');
   const [chartData, setChartData] = useState<any>(null);
+  const [chartControls, setChartControls] = useState(
+    chartCompareConfigObject.filter(_ => _.isControl).map(_ => ({ ..._, isActive: _.defaultActive }))
+  );
 
   // Генерируем тестовые данные для графика на основе данных компании
   useEffect(() => {
-    if (data) {
+    if (data && chartControls) {
       // Генерируем данные за последние 7 дней
       const labels = [];
       const viewsData = [];
@@ -89,59 +94,47 @@ const StatisticsChart: React.FC<StatisticsChartProps> = ({ data, loading = false
         ordersData.push(Math.round(baseOrders / 7 * variation));
       }
 
+      const datasets = chartControls
+        .filter(control => control.isOnChart && control.isActive)
+        .map(control => {
+          let data: number[] = [];
+
+          switch (control.engName) {
+            case 'views':
+              data = viewsData;
+              break;
+            case 'clicks':
+              data = clicksData;
+              break;
+            case 'cart':
+              data = cartData;
+              break;
+            case 'orders':
+              data = ordersData;
+              break;
+          }
+
+          return {
+            label: control.ruName,
+            type: 'line',
+            backgroundColor: `${control.color}1A`,
+            borderColor: control.color,
+            borderWidth: 2,
+            pointRadius: 4,
+            pointBorderColor: 'white',
+            pointBackgroundColor: control.color,
+            fill: false,
+            data: data,
+            yAxisID: 'y',
+          };
+        });
+
       setChartData({
         labels,
-        datasets: [
-          {
-            label: 'Просмотры',
-            type: 'line',
-            backgroundColor: 'rgba(83, 41, 255, 0.1)',
-            borderColor: '#5329FF',
-            borderWidth: 2,
-            pointRadius: 4,
-            pointBorderColor: 'white',
-            pointBackgroundColor: '#5329FF',
-            fill: false,
-            data: viewsData,
-            yAxisID: 'y',
-          },
-          {
-            label: 'Клики',
-            type: 'line',
-            backgroundColor: 'rgba(240, 173, 0, 0.1)',
-            borderColor: '#F0AD00',
-            borderWidth: 2,
-            pointRadius: 4,
-            pointBorderColor: 'white',
-            pointBackgroundColor: '#F0AD00',
-            fill: false,
-            data: clicksData,
-            yAxisID: 'y',
-          },
-          {
-            label: 'Корзина',
-            type: 'bar',
-            backgroundColor: 'rgba(0, 182, 155, 0.6)',
-            borderColor: '#00B69B',
-            borderWidth: 0,
-            borderRadius: 8,
-            data: cartData,
-            yAxisID: 'y',
-          },
-          {
-            label: 'Заказы',
-            type: 'bar',
-            backgroundColor: 'rgba(249, 60, 101, 0.6)',
-            borderColor: '#F93C65',
-            borderWidth: 0,
-            borderRadius: 8,
-            data: ordersData,
-            yAxisID: 'y',
-          },
-        ],
+        datasets,
       });
     }
-  }, [data]);
+  }, [data, chartControls]);
 
   const handleTabChange = (value: string) => {
     setActiveTab(value);
@@ -243,51 +236,57 @@ const StatisticsChart: React.FC<StatisticsChartProps> = ({ data, loading = false
       </div>
 
       <div className={styles.chart}>
+        {activeTab === 'Линейные' && (
+          <ChartControls
+            chartControls={chartControls}
+            setChartControls={setChartControls}
+          />
+        )}
         <div className={styles.chart__content}>
           {loading ? (
             <RadarLoader loaderStyle={{ height: '300px' }} />
           ) : (
             <>
               {activeTab === 'Линейные' && chartData && (
-                <Chart type="bar" data={chartData} options={chartOptions} />
+                <Chart type="line" data={chartData} options={chartOptions} />
               )}
 
-            {activeTab === 'Воронка' && (
-              <div className={styles.funnel}>
-                {funnelData.map((item, index) => {
-                  return (
-                    <div key={index} className={`${styles.funnel__item} ${styles[`funnel__item-${index}`]}`}>
-                      <div className={styles.funnel__content}>
-                        {trapezoids[index]}
-                        <div className={styles.funnel__text}>
-                          <span className={styles.funnel__labelText}>{item.label}</span>
-                          <span className={styles.funnel__value}>
-                            {new Intl.NumberFormat('ru-RU').format(item.value)}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })}
-
-                <div className={styles.funnel__percentageInfo}>
-                  {percetageData.map((item, index) => {
+              {activeTab === 'Воронка' && (
+                <div className={styles.funnel}>
+                  {funnelData.map((item, index) => {
                     return (
-                      <div key={index} className={styles.funnel__percentageItemWrapper}>
-                        <div className={styles.funnel__percentageItem}>
-                          <span className={styles.funnel__percentagePercent}>{item.percent}%</span>
-                          <div className={styles.funnel__percentageValueWrapper}>
-                            <span className={styles.funnel__percentageValue1}>{item.value1}</span>
-                            <span className={styles.funnel__percentageSeparator}>/</span>
-                            <span className={styles.funnel__percentageValue2}>{item.value2}</span>
+                      <div key={index} className={`${styles.funnel__item} ${styles[`funnel__item-${index}`]}`}>
+                        <div className={styles.funnel__content}>
+                          {trapezoids[index]}
+                          <div className={styles.funnel__text}>
+                            <span className={styles.funnel__labelText}>{item.label}</span>
+                            <span className={styles.funnel__value}>
+                              {new Intl.NumberFormat('ru-RU').format(item.value)}
+                            </span>
                           </div>
                         </div>
                       </div>
                     );
                   })}
+
+                  <div className={styles.funnel__percentageInfo}>
+                    {percetageData.map((item, index) => {
+                      return (
+                        <div key={index} className={styles.funnel__percentageItemWrapper}>
+                          <div className={styles.funnel__percentageItem}>
+                            <span className={styles.funnel__percentagePercent}>{item.percent}%</span>
+                            <div className={styles.funnel__percentageValueWrapper}>
+                              <span className={styles.funnel__percentageValue1}>{item.value1}</span>
+                              <span className={styles.funnel__percentageSeparator}>/</span>
+                              <span className={styles.funnel__percentageValue2}>{item.value2}</span>
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
             </>
           )}
         </div>

@@ -66,7 +66,7 @@ const MyAdvTable: React.FC<MyAdvTableProps> = ({
   const customCellRender = (value: any, record: any, index: number, dataIndex: string) => {
     // Рендер для компании (кликабельная)
     if (dataIndex === 'company') {
-      const imageSize = { width: 40, height: 40 };
+      const imageSize = { width: 30, height: 40 };
       return (
         <div 
           className={styles.companyCell}
@@ -81,6 +81,19 @@ const MyAdvTable: React.FC<MyAdvTableProps> = ({
             {value}
           </span>
         </div>
+      );
+    }
+
+    if (dataIndex === 'status_wb') {
+      const badgeColor = value === 'Запущена' ? '#4AD99133' : '#F0AD0033';
+      return (
+        <span 
+          className={`${styles.labelCell} ${styles.badgeCell}`} 
+          style={{ backgroundColor: badgeColor }}
+          title={value}
+        >
+          {value}
+        </span>
       );
     }
 
@@ -149,9 +162,11 @@ const MyAdvTable: React.FC<MyAdvTableProps> = ({
       <div className={styles.tableControls}>
         <div className={styles.filtersWrapper}>
           <Filters
-            timeSelect={false}
             isDataLoading={loading}
-            tempPageCondition={true}
+            articleSelect={false}
+            groupSelect={false}
+            shopSelect={false}
+            brandSelect={false}
             maxCustomDate={new Date(Date.now() - 24 * 60 * 60 * 1000)}
           />
         </div>

@@ -1,12 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { RadarBar } from '@/shared';
 import styles from './BarsGroup.module.css';
+import image1 from './assets/1.jpg';
+import image2 from './assets/2.jpg';
+import image3 from './assets/3.jpg';
+import image4 from './assets/4.jpg';
+import image5 from './assets/5.jpg';
 
 interface BarsGroupProps {
   loading?: boolean;
 }
 
 const BarsGroup: React.FC<BarsGroupProps> = ({ loading = false }) => {
+  const [images, setImages] = useState([image1, image2, image3, image4, image5]);
+  const [currentImage, setCurrentImage] = useState(image1);
+  
   const handleRefresh = () => {
     // TODO: Implement refresh logic
     console.log('Refresh clicked');
@@ -18,32 +26,27 @@ const BarsGroup: React.FC<BarsGroupProps> = ({ loading = false }) => {
       <div className={styles.fullWidthBar}>
         <div className={styles.campaignBar}>
           <div className={styles.campaignBar__left}>
-            <div className={styles.campaignBar__info}>
-              <span className={styles.campaignBar__label}>Кампания</span>
-              <span className={styles.campaignBar__value}>Название кампании</span>
+            <div className={styles.campaignBar__left__title}>
+              Кампания
             </div>
-            <div className={styles.campaignBar__info}>
-              <span className={styles.campaignBar__label}>Запущена</span>
-              <span className={styles.campaignBar__value}>Да</span>
+            <div className={styles.campaignBar__left__content}>
+              <div className={`${styles.campaignBar__badge} ${styles.campaignBar__status}`}>Запущена</div>
+              <div className={`${styles.campaignBar__badge} ${styles.campaignBar__type}`}>Ручная</div>
+              <div className={styles.campaignBar__created}>
+                <span className={styles.campaignBar__label}>Создана:</span>
+                <span className={styles.campaignBar__value}>01.01.2024</span>
+              </div>
+              <div className={styles.campaignBar__id}>
+                <span className={styles.campaignBar__label}>ID на WB</span>
+                <span className={styles.campaignBar__value}><a href="https://www.wildberries.ru/catalog/123456/detail.aspx" target="_blank">123456</a></span>
+              </div>
             </div>
-            <div className={styles.campaignBar__info}>
-              <span className={styles.campaignBar__label}>Ручная</span>
-              <span className={styles.campaignBar__value}>Да</span>
-            </div>
-            <div className={styles.campaignBar__info}>
-              <span className={styles.campaignBar__label}>Создана</span>
-              <span className={styles.campaignBar__value}>01.01.2024</span>
-            </div>
-            <div className={styles.campaignBar__info}>
-              <span className={styles.campaignBar__label}>ID на WB</span>
-              <span className={styles.campaignBar__value}>123456</span>
-            </div>
-          </div>
-          <div className={styles.campaignBar__center}>
-            <span className={styles.campaignBar__budgetLabel}>Бюджет</span>
-            <span className={styles.campaignBar__budgetValue}>1000₽</span>
           </div>
           <div className={styles.campaignBar__right}>
+            <div className={styles.campaignBar__budget}>
+              <span className={styles.campaignBar__budget__label}>Бюджет</span>
+              <span className={styles.campaignBar__budget__value}>1000₽</span>
+            </div>
             <button className={styles.refreshButton} onClick={handleRefresh}>
               Обновить
             </button>
@@ -97,8 +100,9 @@ const BarsGroup: React.FC<BarsGroupProps> = ({ loading = false }) => {
         />
         <RadarBar
           title="ДРР заказы"
-          mainValue="> 100%"
-          mainValueUnits=""
+          mainValuePrefix=">"
+          mainValue={100}
+          mainValueUnits="%"
           isLoading={loading}
         />
       </div>
@@ -109,12 +113,18 @@ const BarsGroup: React.FC<BarsGroupProps> = ({ loading = false }) => {
         <div className={styles.productBar}>
           <div className={styles.productBar__gallery}>
             <div className={styles.productBar__mainImage}>
-              <img src="https://via.placeholder.com/138x182" alt="Product" />
+              <img src={currentImage} alt="Product" />
             </div>
             <div className={styles.productBar__imageList}>
-              <img src="https://via.placeholder.com/39x54" alt="Product" />
-              <img src="https://via.placeholder.com/39x54" alt="Product" />
-              <img src="https://via.placeholder.com/39x54" alt="Product" />
+              {images.map((image, index) => (
+                <img 
+                  key={index} 
+                  src={image} 
+                  alt="Product" 
+                  onClick={() => setCurrentImage(image)} 
+                  role="button"
+                />
+              ))}
             </div>
           </div>
           <div className={styles.productBar__info}>
@@ -124,15 +134,15 @@ const BarsGroup: React.FC<BarsGroupProps> = ({ loading = false }) => {
             <div className={styles.productBar__prices}>
               <div className={styles.productBar__priceItem}>
                 <span className={styles.productBar__priceLabel}>Цена реализации</span>
-                <span className={styles.productBar__priceValue}>350₽</span>
+                <span className={styles.productBar__priceValue}>350 ₽</span>
               </div>
               <div className={styles.productBar__priceItem}>
                 <span className={styles.productBar__priceLabel}>В поиске (CPM)</span>
-                <span className={styles.productBar__priceValue}>600₽</span>
+                <span className={styles.productBar__priceValue}>600 ₽</span>
               </div>
               <div className={styles.productBar__priceItem}>
                 <span className={styles.productBar__priceLabel}>В рекомендациях (CPM)</span>
-                <span className={styles.productBar__priceValue}>300₽</span>
+                <span className={styles.productBar__priceValue}>300 ₽</span>
               </div>
             </div>
           </div>
@@ -151,11 +161,14 @@ const BarsGroup: React.FC<BarsGroupProps> = ({ loading = false }) => {
             </div>
             <div className={styles.detailsBar__item}>
               <span className={styles.detailsBar__label}>Оценка</span>
-              <span className={styles.detailsBar__value}>4.9 / Отзывы 19</span>
+              <span className={styles.detailsBar__value}>4.9</span>
             </div>
           </div>
-          <div className={styles.detailsBar__divider}></div>
           <div className={styles.detailsBar__right}>
+          <div className={styles.detailsBar__item}>
+              <span className={styles.detailsBar__label}>Отзывы</span>
+              <span className={styles.detailsBar__value}>19</span>
+            </div>
             <div className={styles.detailsBar__item}>
               <span className={styles.detailsBar__label}>Остатки</span>
               <span className={styles.detailsBar__value}>20 шт</span>
