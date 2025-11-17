@@ -1,97 +1,77 @@
 import styles from './firstBarsGroup.module.css';
-import Bar from '../bars/bar';
-import { differenceInDays } from 'date-fns';
-import { useAppSelector } from '../../../redux/hooks';
 import { RadarBar } from '../../../shared/ui/RadarBar/RadarBar';
+import { useState } from 'react';
+import { useDndMonitor } from '@dnd-kit/core';
+import { SortableContext, useSortable, arrayMove, rectSortingStrategy } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
+
+
 
 const FirstBarsGroup = ({ dataDashBoard, selectedRange, loading }) => {
+    const [items, setItems] = useState(barsConfig);
 
-    const daysRange = selectedRange.from && selectedRange.to ? differenceInDays(selectedRange.to, selectedRange.from, { unit: 'days' }) : selectedRange.period;
+    useDndMonitor({
+        onDragOver: ({ active, over }) => {
+            console.log('onDragOver', { active, over });
+            if (!over || active.id === over.id) return;
+        },
+        onDragEnd: ({ active, over }) => {
+            if (!over || active.id === over.id) return;
+            const activeElem = document.getElementById(active.id);
+            const overElem = document.getElementById(over.id);
+            if (activeElem && overElem) {
+                const activeCS = getComputedStyle(activeElem);
+                const overCS = getComputedStyle(overElem);
+                const activeGridColumn = activeCS.getPropertyValue('grid-column').trim();
+                const overGridColumn = overCS.getPropertyValue('grid-column').trim();
+                if (activeGridColumn !== overGridColumn) {
+                    return;
+                }
+            }
+            setItems((prev) => {
+                const oldIndex = prev.findIndex((i) => i.id === active.id);
+                const newIndex = prev.findIndex((i) => i.id === over.id);
+                if (oldIndex === -1 || newIndex === -1) return prev;
+                return arrayMove(prev, oldIndex, newIndex);
+            });
+        },
+    });
+
     return (
         <div className={styles.group}>
-            <div className={styles.group__lgBarWrapper}>
+            <SortableContext items={items.map((i) => i.id)} strategy={rectSortingStrategy}>
+                {items.map((bar) => (
+                    <SortableBar key={bar.id} bar={bar} dataDashBoard={dataDashBoard} loading={loading} />
+                ))}
+            </SortableContext>
+        </div>
+    );
+};
+
+const SortableBar = ({ bar, dataDashBoard, loading }) => {
+    const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: bar.id });
+    const style = {
+        transform: CSS.Transform.toString(transform),
+        transition,
+        cursor: 'grab',
+        opacity: isDragging ? 0.8 : 1,
+    };
+    return (
+        <div className={bar.container} ref={setNodeRef} style={style} {...attributes} {...listeners} id={bar.id}>
             <RadarBar
-                title='Чистая прибыль'
-                tooltipText='Прибыль, остающаяся после уплаты налогов, сборов, отчислений'
-                mainValue={dataDashBoard?.netProfit}
-                mainValueUnits='₽'
-                hasColoredBackground
+                title={bar.title}
+                tooltipText={bar.tooltipText}
+                mainValue={dataDashBoard?.[bar.mainValue]}
+                mainValueUnits={bar.mainValueUnits}
+                hasColoredBackground={bar.hasColoredBackground}
                 compareValue={{
-                    comparativeValue: dataDashBoard?.netProfitCompare,
-                    absoluteValue: dataDashBoard?.prev_net_profit,
-                    absoluteValueUnits: '₽',
+                    comparativeValue: dataDashBoard?.[bar.compareValue.comparativeValue],
+                    absoluteValue: dataDashBoard?.[bar.compareValue.absoluteValue],
+                    absoluteValueUnits: bar.compareValue.absoluteValueUnits,
                     tooltipText: 'Значение предыдущего периода'
                 }}
                 isLoading={loading}
             />
-            </div>
-            <div className={styles.group__lgBarWrapper}>
-            <RadarBar
-                title='Продажи'
-                tooltipText='Количество проданных товаров (без возвратов)'
-                midValue={dataDashBoard?.saleCount}
-                midValueUnits='шт'
-                mainValue={dataDashBoard?.saleAmount}
-                mainValueUnits='₽'
-                hasColoredBackground
-                compareValue={{
-                    comparativeValue: dataDashBoard?.saleAmountCompare,
-                    absoluteValue: dataDashBoard?.prev_sale_amount,
-                    absoluteValueUnits: '₽',
-                    tooltipText: 'Значение предыдущего периода'
-                }}
-                isLoading={loading}
-            />
-            </div>
-            <div className={styles.group__sBarWrapper}>
-            <RadarBar
-                title='WB Реализовал'
-                tooltipText='Сумма реализации товара с учетом согласованной скидки продавца и СПП'
-                midValueUnits='₽'
-                mainValue={dataDashBoard?.taxInfo?.wbRealization}
-                mainValueUnits='₽'
-                hasColoredBackground
-                compareValue={{
-                    comparativeValue: dataDashBoard?.wb_realization_compare,
-                    absoluteValue: dataDashBoard?.prev_wb_realization,
-                    absoluteValueUnits: '₽',
-                    tooltipText: 'Значение предыдущего периода'
-                }}
-                isLoading={loading}
-            />
-            </div>
-            <div className={styles.group__xsBarWrapper}>
-                <RadarBar
-                    title='Процент выкупа'
-                    tooltipText='Доля заказов, которые были оплачены и получены покупателями, от общего числа созданных заказов.'
-                    mainValue={dataDashBoard?.buyoutPercent}
-                    mainValueUnits='%'
-                    hasColoredBackground
-                    compareValue={{
-                        comparativeValue: dataDashBoard?.buyoutPercentCompare,
-                        absoluteValue: dataDashBoard?.prev_buyoutPercent,
-                        absoluteValueUnits: '%',
-                        tooltipText: 'Значение предыдущего периода'
-                    }}
-                    isLoading={loading}
-                />
-            </div>
-            <div className={styles.group__xsBarWrapper}>
-                <RadarBar
-                    title='ROI'
-                    tooltipText='Показывает общую рентабельность ваших вложений. Насколько прибыльны или убыточны ваши продажи с учетом всех затрат'
-                    mainValue={dataDashBoard?.roi}
-                    mainValueUnits='%'
-                    hasColoredBackground
-                    compareValue={{
-                        comparativeValue: dataDashBoard?.roi_compare,
-                        absoluteValue: dataDashBoard?.prev_roi,
-                        absoluteValueUnits: '%',
-                        tooltipText: 'Значение предыдущего периода'
-                    }}
-                    isLoading={loading}
-                />
-            </div>
         </div>
     );
 };
