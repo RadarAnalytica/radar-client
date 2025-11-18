@@ -347,8 +347,8 @@
     width: 100%;
 }
 .customCell * {
-    min-width: 'inherit';
-    width: 'inherit';
+    /* min-width: 'inherit';
+    width: 'inherit'; */
 }
 
 .productCustomCell {
@@ -356,16 +356,17 @@
     justify-content: flex-start;
     align-items: center;
     gap: 20px;
-    min-width: 'inherit';
-    width: 'inherit';
+    /* min-width: 'inherit';
+    width: 'inherit'; */
 }
 
 .productCustomCellTitle {
-    display: -webkit-box;
+    /* display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
     overflow: hidden;
     text-overflow: ellipsis;
+    text-wrap: wrap; */
     text-wrap: wrap;
     font-size: 14px;
     font-weight: 700;
@@ -395,7 +396,7 @@
     width: 30px;
     height: 40px;
     border-radius: 3px;
-    overflow: hidden;
+    /* overflow: hidden; */
     background: #D9D9D9;
     flex-grow: 0;
     flex-shrink: 0;

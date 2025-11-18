@@ -57,7 +57,7 @@ const SkuFrequencyPage = () => {
         if (savedTableConfigData) {
             try {
                 const parsed = JSON.parse(savedTableConfigData);
-                
+                console.log(parsed)
                 // Проверяем версию конфига
                 if (parsed.version === CURR_MONITORING_TABLE_CONFIG_VER) {
                     setTableConfig(parsed.config);

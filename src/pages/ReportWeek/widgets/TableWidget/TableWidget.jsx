@@ -112,7 +112,6 @@ export default function TableWidget({ loading, columns, data, rowSelection = fal
         }));
 
         setTableColumns(newConfig);
-        document.removeEventListener('mousemove', mouseHandler);
     };
 
     useEffect(() => {
@@ -165,13 +164,18 @@ export default function TableWidget({ loading, columns, data, rowSelection = fal
                         }}
                         scrollContainerRef={tableContainerRef}
                         stickyHeader={true}
-                        style={{ fontFamily: 'Manrope', width: 'max-content' }}
+                        style={{ fontFamily: 'Manrope', width: 'max-content', tableLayout: 'fixed' }}
                         pagination={false}
                         paginationContainerStyle={{ display: 'none' }}
                         bodyRowClassName={styles.bodyRowSpecial}
                         onSort={(sort_field, sort_order) => setSortState({ sort_field, sort_order })}
                         headerCellWrapperClassName={styles.headerCellWrapperCustomClass}
                         bodyCellWrapperClassName={styles.bodyCellWrapperCustomClass}
+                        virtualization={{
+                            enabled: true,
+                            estimateSize: 35.8,
+                            overscan: 20
+                        }}
                     />
                 }
             </div>

@@ -14,7 +14,6 @@ export const cellRender = (value, record, index, dataIndex) => {
         to={url}
         target='_blank'
         title='Смотреть подробнее'
-        key={dataIndex}
       >
         <p className={styles.cell__title}>{value}</p>
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
@@ -35,12 +34,11 @@ export const cellRender = (value, record, index, dataIndex) => {
     return (
       <div
         className={`${styles.cell} ${styles.cell_rate}`}
-        key={dataIndex}
       >
         {[1, 2, 3, 4, 5].map(_ => {
           if (_ <= v) {
             return (
-              <svg width="20" height="19" viewBox="0 0 20 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <svg width="20" height="19" viewBox="0 0 20 19" fill="none" xmlns="http://www.w3.org/2000/svg" key={_}>
                 <path
                   d="M10 0L12.2451 6.90983H19.5106L13.6327 11.1803L15.8779 18.0902L10 13.8197L4.12215 18.0902L6.36729 11.1803L0.489435 6.90983H7.75486L10 0Z"
                   fill="#5329FF"/>
@@ -48,7 +46,7 @@ export const cellRender = (value, record, index, dataIndex) => {
             );
           } else {
             return (
-              <svg width="20" height="19" viewBox="0 0 20 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <svg width="20" height="19" viewBox="0 0 20 19" fill="none" xmlns="http://www.w3.org/2000/svg" key={_}>
                 <path
                   d="M10 0L12.2451 6.90983H19.5106L13.6327 11.1803L15.8779 18.0902L10 13.8197L4.12215 18.0902L6.36729 11.1803L0.489435 6.90983H7.75486L10 0Z"
                   fill="#8C8C8C"/>
@@ -64,7 +62,6 @@ export const cellRender = (value, record, index, dataIndex) => {
   return (
     <div
       className={`${styles.cell} ${styles.cell_rate}`}
-      key={dataIndex}
     >
       {value}
     </div>

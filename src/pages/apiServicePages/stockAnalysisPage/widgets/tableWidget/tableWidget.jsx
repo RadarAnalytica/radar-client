@@ -109,7 +109,6 @@ const customCellRender = (value, record, index, dataIndex) => {
 
 
 const TableWidget = ({ stockAnalysisFilteredData, loading, progress, config, initPaginationState, hasShadow = true, configVersion, configKey, maxHeight }) => {
-    console.log(stockAnalysisFilteredData);
     const containerRef = useRef(null); // реф скролл-контейнера (используется чтобы седить за позицией скрола)
     const [tableData, setTableData] = useState(); // данные для рендера таблицы
     const [sortState, setSortState] = useState(initSortState); // стейт сортировки (см initSortState)
@@ -153,7 +152,7 @@ const TableWidget = ({ stockAnalysisFilteredData, loading, progress, config, ini
     };
 
     const onResizeGroup = (columnKey, width) => {
-        
+        console.log('onResizeGroup', columnKey, width);
         // Обновляем конфигурацию колонок с группированной структурой
         const updateColumnWidth = (columns) => {
           return columns.map(col => {
@@ -164,9 +163,10 @@ const TableWidget = ({ stockAnalysisFilteredData, loading, progress, config, ini
               // Всегда пересчитываем ширину группы на основе суммы ширин дочерних колонок
               const totalWidth = updatedChildren.reduce((sum, child) => {
                 if (child.hidden) return sum; // Пропускаем скрытые колонки
-                return sum + (child.width || child.minWidth || 200);
+                return sum + child.width;
               }, 0);
-              return { ...col, width: totalWidth, children: updatedChildren, minWidth: totalWidth };
+              console.log('totalWidth', col.key, totalWidth);
+              return { ...col, width: updatedChildren.some(child => child.key === columnKey) ? totalWidth : col.width, children: updatedChildren };
             }
 
             // Если это листовая колонка
@@ -180,6 +180,12 @@ const TableWidget = ({ stockAnalysisFilteredData, loading, progress, config, ini
           });
         };
 
+        // const updatedConfig = updateColumnWidth(prevConfig);
+        // localStorage.setItem(configKey, JSON.stringify({
+        //     version: configVersion,
+        //     config: updatedConfig
+        // }));
+
         // Обновляем состояние
         setTableConfig(prevConfig => {
             const updatedConfig = updateColumnWidth(prevConfig);
@@ -187,7 +193,7 @@ const TableWidget = ({ stockAnalysisFilteredData, loading, progress, config, ini
                 version: configVersion,
                 config: updatedConfig
             }));
-            return updatedConfig;
+            return [...updatedConfig];
         });
     };
 
@@ -247,7 +253,6 @@ const TableWidget = ({ stockAnalysisFilteredData, loading, progress, config, ini
                         preset='radar-table-simple'
                         stickyHeader
                         resizeable
-                        resizeThrottle={33}
                         onResize={onResizeGroup}
                         onSort={sortButtonClickHandler}
                         pagination={{
@@ -270,8 +275,6 @@ const TableWidget = ({ stockAnalysisFilteredData, loading, progress, config, ini
                             renderer: customCellRender,
                         }}
                         headerCellWrapperStyle={{
-                            minHeight: '0px',
-                            padding: '12px 10px',
                             fontSize: 'inherit',
                             //overflow: 'hidden',
                             //wekitBoxOrient: 'vertical',
@@ -279,7 +282,6 @@ const TableWidget = ({ stockAnalysisFilteredData, loading, progress, config, ini
                             //textWrap: 'nowrap',
                         }}
                         bodyCellWrapperStyle={{
-                            padding: '5px 10px',
                             //minWidth: 'inherit',
                             //width: 'inherit',
                             //maxWidth: 'inherit',
@@ -290,6 +292,7 @@ const TableWidget = ({ stockAnalysisFilteredData, loading, progress, config, ini
                             height: '50px',
                         }}
                         bodyRowClassName={styles.bodyRowSpecial}
+                        style={{ width: 'max-content', tableLayout: 'fixed' }}
                     />
                 }
                 {tableData && tableData.length === 0 && tableConfig &&
@@ -331,10 +334,7 @@ const TableWidget = ({ stockAnalysisFilteredData, loading, progress, config, ini
                             //textWrap: 'nowrap',
                         }}
                         bodyCellWrapperStyle={{
-                            padding: '5px 10px',
-                            minWidth: 'inherit',
-                            width: 'inherit',
-                            maxWidth: 'inherit',
+                            padding: '12px 10px',
                             border: 'none',
                         }}
                         bodyCellStyle={{

@@ -107,7 +107,7 @@ const TableWidget = ({ loading, columns, data, rowSelection = false, virtual = t
 			}
 			return col;
 		});
-		setTableConfig(newConfig);
+		// setTableConfig(newConfig);
 		document.removeEventListener('mousemove', mouseHandler);
 	};
 
@@ -147,7 +147,7 @@ const TableWidget = ({ loading, columns, data, rowSelection = false, virtual = t
 							idx: [],
 							renderer: customCellRender,
 						}}
-						style={{ fontFamily: 'Mulish' }}
+						style={{ fontFamily: 'Mulish', width: 'max-content', tableLayout: 'fixed' }}
 						pagination={false}
 						paginationContainerStyle={{ display: 'none' }}
 						bodyRowClassName={styles.bodyRowSpecial}

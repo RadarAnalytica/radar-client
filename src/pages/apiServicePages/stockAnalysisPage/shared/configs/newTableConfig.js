@@ -1,11 +1,9 @@
-export const CURR_STOCK_ANALYSIS_TABLE_CONFIG_VER = '6';
+export const CURR_STOCK_ANALYSIS_TABLE_CONFIG_VER = '15';
 
 export const newTableConfig = [
     {
         title: 'О товаре',
         fixed: true,
-        width: 540,
-        minWidth: 540,
         hidden: false,
         dataIndex: 'productInfo',
         key: 'productInfo',
@@ -19,9 +17,7 @@ export const newTableConfig = [
                 title: 'Товар',
                 dataIndex: 'productName',
                 sortable: true,
-                width: 260,
-                minWidth: 260,
-                maxWidth: 520,
+                width: 330,
                 fixed: true,
                 key: 'productName',
                 style: {
@@ -35,9 +31,7 @@ export const newTableConfig = [
                 title: 'Артикул',
                 dataIndex: 'vendorСode',
                 sortable: true,
-                width: 125,
-                minWidth: 125,
-                maxWidth: 125,
+                width: 120,
                 fixed: true,
                 key: 'vendorСode',
                 style: {
@@ -50,9 +44,7 @@ export const newTableConfig = [
                 title: 'SKU',
                 dataIndex: 'sku',
                 sortable: true,
-                width: 100,
-                minWidth: 100,
-                maxWidth: 160,
+                width: 150,
                 fixed: true,
                 key: 'sku',
                 style: {
@@ -66,8 +58,6 @@ export const newTableConfig = [
                 dataIndex: 'size',
                 sortable: false,
                 width: 100,
-                minWidth: 100,
-                maxWidth: 160,
                 fixed: true,
                 key: 'size',
                 style: {
@@ -76,7 +66,7 @@ export const newTableConfig = [
                     fontSize: '14px',
                 }
             },
-        ].map(_ => ({..._, maxWidth: _.width * 2})),
+        ].map(_ => ({..._, maxWidth: _.width * 2, minWidth: _.width})),
     },
     {
         title: '',
@@ -879,7 +869,7 @@ export const newTableConfig = [
     },
 ].map(_ => ({
     ..._,
-    //width: _.children.reduce((acc, child) => acc + child.width, 0),
+    width: _.children.reduce((acc, child) => acc + child.width, 0),
     //minWidth: _.children.reduce((acc, child) => acc + child.minWidth, 0),
     colSpan: _.children?.length || 1
 }));
