@@ -42,12 +42,14 @@ export default function OperatingExpenses() {
 	const firstLoad = useRef(true);
 	const [loading, setLoading] = useState(true);
 	const progress = useLoadingProgress({ loading });
-	const [view, setView] = useState('expense'); // costs | category
+	const [view, setView] = useState('expense'); // expense | category | template
 	const [expenseModal, setExpenseModal] = useState({ mode: null, isOpen: false, data: null });
+	const [templateModal, setTemplateModal] = useState({ mode: null, isOpen: false, data: null });
 	const [modalCreateCategoryOpen, setModalCreateCategoryOpen] = useState(false);
 	const [isPlanExpenseCreated, setIsPlanExpenseCreated] = useState(false);
 	const [deleteExpenseId, setDeleteExpenseId] = useState(null);
 	const [deleteCategoryId, setDeleteCategoryId] = useState(null);
+	const [deleteTemplateId, setDeleteTemplateId] = useState(null);
 	const [alertState, setAlertState] = useState(initAlertState);
 	const [expense, setExpense] = useState([]);
 	const [totalSum, setTotalSum] = useState(0);
@@ -62,6 +64,12 @@ export default function OperatingExpenses() {
 		limit: 25,
 		total: 1,
 	});
+	const [templatePagination, setTemplatePagination] = useState({
+		page: 1,
+		limit: 25,
+		total: 1,
+	});
+	const [templates, setTemplates] = useState([]);
 
 	const expenseData = useMemo(() => {
 		const columns = EXPENSE_COLUMNS.map((column, i) => {
@@ -106,6 +114,22 @@ export default function OperatingExpenses() {
 		}
 		return { data, columns };
 	}, [category]);
+
+	const templateData = useMemo(() => {
+		const columns = EXPENSE_COLUMNS.map((column, i) => {
+			return ({ ...column, key: column.i });
+		});
+
+		let data = templates?.map((item) => ({
+			...item,
+			key: item.id,
+			expense_categories: Array.isArray(item.expense_categories) 
+				? item.expense_categories.map((el) => typeof el === 'object' ? el.name : el).join(', ')
+				: item.expense_categories || '-'
+		})) || [];
+
+		return { data, columns };
+	}, [templates]);
 
 	const updateCategories = async (resetPagination = false) => {
 		setLoading(true);
@@ -177,6 +201,37 @@ export default function OperatingExpenses() {
 		}
 	};
 
+	const updateTemplates = async (resetPagination = false, showLoader = true) => {
+		setLoading(showLoader);
+		progress.start();
+
+		// Сбрасываем пагинацию если нужно
+		const pagination = resetPagination ? { page: 1, limit: 25, total: 1 } : templatePagination;
+		if (resetPagination) {
+			setTemplatePagination(pagination);
+		}
+
+		const requestObject = {
+			page: pagination.page,
+			limit: pagination.limit,
+		};
+
+		try {
+			const res = await ServiceFunctions.getOperatingExpensesTemplateGetAll(authToken, requestObject);
+			setTemplates(res.data || []);
+			progress.complete();
+			setTemplatePagination((prev) => ({ ...prev, total: res.total_pages || 1 }));
+			setTimeout(() => {
+				progress.reset();
+				setLoading(false);
+			}, 500);
+		} catch (error) {
+			console.error('updateTemplates error', error);
+			setTemplates([]);
+			setLoading(false);
+		}
+	};
+
 	useEffect(() => {
 		if (activeBrand) {
 			if (activeBrand?.is_primary_collect) {
@@ -202,8 +257,22 @@ export default function OperatingExpenses() {
         }
     }, [activeBrand, activeArticle, selectedRange, expPagination.page, activeExpenseCategory]);
 
+	useEffect(() => {
+		if (activeBrand && view === 'template') {
+			if (activeBrand?.is_primary_collect) {
+				updateTemplates();
+			} else {
+				setLoading(false);
+			}
+		}
+	}, [activeBrand, templatePagination.page, view]);
+
 	const modalExpenseHandlerClose = () => {
 		setExpenseModal({ mode: null, isOpen: false, data: null });
+	};
+
+	const modalTemplateHandlerClose = () => {
+		setTemplateModal({ mode: null, isOpen: false, data: null });
 	};
 
 	const modalCategoryHandlerClose = () => {
@@ -214,6 +283,8 @@ export default function OperatingExpenses() {
 	const modalHandler = () => {
 		if (view === 'expense') {
 			setExpenseModal({ mode: 'create', isOpen: true, data: null });
+		} else if (view === 'template') {
+			setTemplateModal({ mode: 'create', isOpen: true, data: null });
 		} else {
 			setModalCreateCategoryOpen(true);
 		}
@@ -263,7 +334,7 @@ export default function OperatingExpenses() {
 			await editExpanse(expense);
 		} else {
 			await createExpense(expense);
-			if (expense.requestUrl?.includes('periodic-expense')) setIsPlanExpenseCreated(true);
+			if (expense.isPeriodicExpense) setIsPlanExpenseCreated(true);
 		}
 	};
 
@@ -378,6 +449,125 @@ export default function OperatingExpenses() {
 		}
 	};
 
+	const handleTemplate = async (template) => {
+		if (templateModal.mode === 'edit') {
+			await editTemplate(template);
+		} else {
+			await createTemplate(template);
+		}
+	};
+
+	const createTemplate = async (requestData) => {
+		const { requestObject, requestUrl } = requestData;
+		setLoading(true);
+		try {
+			const res = await ServiceFunctions.postOperatingExpensesTemplateCreate(authToken, requestObject, requestUrl);
+			await updateTemplates(true); // Сбрасываем пагинацию и обновляем данные
+			const successMessage = templateModal.mode === 'copy' ? 'Шаблон скопирован' : 'Шаблон добавлен';
+			setAlertState({ message: successMessage, status: 'success', isVisible: true });
+		} catch (error) {
+			console.error('createTemplate error', error);
+			const errorMessage = templateModal.mode === 'copy' ? 'Не удалось скопировать шаблон' : 'Не удалось добавить шаблон';
+			setAlertState({ message: errorMessage, status: 'error', isVisible: true });
+		} finally {
+			setTemplateModal({ mode: null, isOpen: false, data: null });
+			setLoading(false);
+		}
+	};
+
+	const editTemplate = async (requestData) => {
+		const { requestObject, requestUrl } = requestData;
+		setLoading(true);
+		try {
+			const res = await ServiceFunctions.patchOperatingExpensesTemplate(authToken, requestObject, requestUrl);
+			await updateTemplates(); // Обновляем данные без сброса пагинации
+			setAlertState({ message: 'Шаблон обновлен', status: 'success', isVisible: true });
+		} catch (error) {
+			console.error('editTemplate error', error);
+			setAlertState({ message: 'Не удалось обновить шаблон', status: 'error', isVisible: true });
+		} finally {
+			setTemplateModal({ mode: null, isOpen: false, data: null });
+			setLoading(false);
+		}
+	};
+
+	const copyTemplate = async (templateId) => {
+		setLoading(true);
+		try {
+			let templateToCopy = templates.find((item) => item.id === templateId);
+			if (!templateToCopy) {
+				throw new Error('Шаблон не найден');
+			}
+			// Prepare template data for copying (remove id and any timestamps)
+			const { id, created_at, updated_at, ...templateData } = templateToCopy;
+
+			// Определяем тип шаблона
+			const isPeriodic = templateData.is_periodic !== undefined 
+				? templateData.is_periodic 
+				: (templateData.period_type || templateData.frequency ? true : false);
+
+			// Transform expense_categories: extract IDs if it's an array of objects
+			if (templateData.expense_categories && Array.isArray(templateData.expense_categories)) {
+				templateData.expense_categories = templateData.expense_categories.map(cat =>
+					typeof cat === 'object' ? cat.id : cat
+				);
+			}
+
+			// Transform items (shops, vendor_codes, brand_names) - они уже в правильном формате
+			// Но нужно убедиться, что они есть
+			if (!templateData.items || templateData.items.length === 0) {
+				// Если items нет, создаем из shops/vendor_codes/brand_names
+				const items = [];
+				if (templateData.shops && templateData.shops.length > 0) {
+					items.push(...templateData.shops.map(s => ({ shop: typeof s === 'object' ? s.id : s })));
+				}
+				if (templateData.vendor_codes && templateData.vendor_codes.length > 0) {
+					items.push(...templateData.vendor_codes.map(v => ({ 
+						vendor_code: typeof v === 'object' ? v.id || v.vendor_code : v,
+						brand_name: typeof v === 'object' ? v.brand_name : undefined
+					})));
+				}
+				if (templateData.brand_names && templateData.brand_names.length > 0) {
+					items.push(...templateData.brand_names.map(b => ({ 
+						brand_name: typeof b === 'object' ? b.id || b.brand_name : b
+					})));
+				}
+				if (items.length > 0) {
+					templateData.items = items;
+				}
+			}
+
+			// Определяем правильный URL в зависимости от типа шаблона
+			const createUrl = isPeriodic 
+				? 'operating-expenses/periodic-templates/create'
+				: 'operating-expenses/templates/create';
+
+			const res = await ServiceFunctions.postOperatingExpensesTemplateCreate(authToken, templateData, createUrl);
+			await updateTemplates(true);
+			setAlertState({ message: 'Шаблон скопирован', status: 'success', isVisible: true });
+		} catch (error) {
+			console.error('copyTemplate error', error);
+			setAlertState({ message: 'Не удалось скопировать шаблон', status: 'error', isVisible: true });
+		} finally {
+			setLoading(false);
+		}
+	};
+
+	const deleteTemplate = async (id, isPeriodic) => {
+		setLoading(true);
+		try {
+			const res = await ServiceFunctions.deleteOperatingExpensesTemplateDelete(authToken, id, isPeriodic);
+			await updateTemplates(); // Обновляем данные без сброса пагинации
+			setAlertState({ message: 'Шаблон удален', status: 'success', isVisible: true });
+		} catch (error) {
+			console.error('deleteTemplate error', error);
+			setAlertState({ message: 'Не удалось удалить шаблон', status: 'error', isVisible: true });
+		} finally {
+			setDeleteTemplateId(null);
+			setLoading(false);
+		}
+	};
+
 	return (
 		<main className={styles.page}>
 			<MobilePlug />
@@ -416,6 +606,13 @@ export default function OperatingExpenses() {
 								style={{ fontWeight: 500, fontSize: 14 }}
 							>
 								Статьи
+							</button>
+							<button
+								className={view === 'template' ? `${styles.segmented__button} ${styles.segmented__button_active}` : styles.segmented__button}
+								onClick={() => { setView('template'); }}
+								style={{ fontWeight: 500, fontSize: 14 }}
+							>
+								Шаблоны
 							</button>
 						</Flex>
 						<Flex align="center" justify="flex-end" gap={11}>
@@ -507,6 +704,26 @@ export default function OperatingExpenses() {
 					: <NoData />
 				)}
 
+				{/* Шаблоны */}
+				{!loading && activeBrand && activeBrand?.is_primary_collect && view === 'template' && (
+					templateData.data?.length > 0
+					? <TableWidget
+						loading={loading}
+						columns={EXPENSE_COLUMNS}
+						data={templateData.data}
+						setExpenseModal={setTemplateModal}
+						setDeleteExpenseId={setDeleteTemplateId}
+						copyExpense={copyTemplate}
+						tableType='expense'
+						pagination={templatePagination}
+						setPagination={setTemplatePagination}
+						authToken={authToken}
+						setAlertState={setAlertState}
+						isTemplate={true}
+					/>
+					: <NoData />
+				)}
+
 				{expenseModal.isOpen && expenseModal.mode &&
 					<ExpenseFormModal
 						mode={expenseModal.mode}
@@ -518,6 +735,21 @@ export default function OperatingExpenses() {
 						handle={handleExpanse}
 						loading={loading}
 						zIndex={1000}
+					/>
+				}
+
+				{templateModal.isOpen && templateModal.mode &&
+					<ExpenseFormModal
+						mode={templateModal.mode}
+						open={templateModal.isOpen}
+						onCancel={modalTemplateHandlerClose}
+						setModalCreateCategoryOpen={setModalCreateCategoryOpen}
+						category={category}
+						editData={templateModal.data}
+						handle={handleTemplate}
+						loading={loading}
+						zIndex={1000}
+						isTemplate={true}
 					/>
 				}
 
@@ -565,6 +797,33 @@ export default function OperatingExpenses() {
 					onOk={() => deleteCategoryHandler(deleteCategoryId)}
 					onCancel={() => setDeleteCategoryId(null)}
 					isLoading={loading}
+				/>}
+
+				{deleteTemplateId && <ModalDeleteConfirm
+					title={'Вы уверены, что хотите удалить шаблон?'}
+					text={templateData.data.find((el) => el.id === deleteTemplateId)?.is_periodic ? (
+						<div className={styles.deleteModal__text}>
+							Вы удаляете периодический шаблон. Это действие также удалит все созданные расходы по этому шаблону.
+							<RadarTooltip
+								text='Вы также можете запретить создавать новые расходы по этому шаблону. Для этого зайдите в редактирование планового шаблона и установите/измените дату окончания шаблона.'
+							>
+								<span
+									style={{ color: '#F93C65', textDecoration: 'underline' }}
+								>Подробнее</span>
+							</RadarTooltip>
+						</div>
+					) : null}
+					onOk={() => {
+						const currentTemplate = templateData.data.find((el) => el.id === deleteTemplateId);
+						if (currentTemplate?.is_periodic) {
+							deleteTemplate(currentTemplate.periodic_expense_id, true);
+						} else {
+							deleteTemplate(deleteTemplateId, false);
+						}
+					}}
+					onCancel={() => setDeleteTemplateId(null)}
+					isLoading={loading}
+					buttonText='Удалить шаблон'
 				/>}
 
 				<SuccessModal

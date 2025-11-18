@@ -75,10 +75,42 @@ const customCellExpenseRender = (
                         e.stopPropagation();
                         e.preventDefault();
 
+                        // Для шаблонов используем данные из списка
+                        if (isTemplate) {
+                            const templateData = data?.find((item) => item.id === record.id);
+                            if (templateData) {
+                                // Определяем, является ли шаблон плановым
+                                const isPeriodic = templateData.is_periodic !== undefined 
+                                    ? templateData.is_periodic 
+                                    : (templateData.period_type || templateData.frequency ? true : false);
+                                
+                                setExpenseModal({
+                                    mode: 'edit',
+                                    isOpen: true,
+                                    data: {
+                                        id: templateData.id,
+                                        is_periodic: isPeriodic,
+                                        end_date: templateData.finished_at?.split('T')[0] || templateData.end_date,
+                                        frequency: templateData.period_type || templateData.frequency,
+                                        week: templateData.period_type === 'week' ? templateData.period_values : (templateData.frequency === 'week' ? templateData.week : null),
+                                        month: templateData.period_type === 'month' ? templateData.period_values?.toString() : (templateData.frequency === 'month' ? templateData.month : null),
+                                        shops: templateData.shops,
+                                        vendor_codes: templateData.vendor_codes,
+                                        brand_names: templateData.brand_names,
+                                        value: templateData.value,
+                                        description: templateData.description,
+                                        expense_categories: templateData.expense_categories,
+                                        date: templateData.date_from || templateData.date,
+                                    }
+                                });
+                            }
+                            return;
+                        }
+
                         let response;
                         if (record?.is_periodic) {
                             try {
-                                response = await ServiceFunctions.getPeriodicExpenseTemplate(authToken, record.periodic_expense_id);
+                                response = await ServiceFunctions.getPeriodicExpenseData(authToken, record.periodic_expense_id);
 
                                 setExpenseModal({
                                     mode: 'edit',
@@ -123,6 +155,37 @@ const customCellExpenseRender = (
                         e.stopPropagation();
                         e.preventDefault();
 
+                        // Для шаблонов используем данные из списка
+                        if (isTemplate) {
+                            const templateData = data?.find((item) => item.id === record.id);
+                            if (templateData) {
+                                // Определяем, является ли шаблон плановым
+                                const isPeriodic = templateData.is_periodic !== undefined 
+                                    ? templateData.is_periodic 
+                                    : (templateData.period_type || templateData.frequency ? true : false);
+                                
+                                setExpenseModal({
+                                    mode: 'copy',
+                                    isOpen: true,
+                                    data: {
+                                        is_periodic: isPeriodic,
+                                        end_date: templateData.finished_at?.split('T')[0] || templateData.end_date,
+                                        date: templateData.date_from || templateData.date,
+                                        frequency: templateData.period_type || templateData.frequency,
+                                        week: templateData.period_type === 'week' ? templateData.period_values : (templateData.frequency === 'week' ? templateData.week : null),
+                                        month: templateData.period_type === 'month' ? templateData.period_values : (templateData.frequency === 'month' ? templateData.month : null),
+                                        shops: templateData.shops,
+                                        vendor_codes: templateData.vendor_codes,
+                                        brand_names: templateData.brand_names,
+                                        value: templateData.value,
+                                        description: templateData.description,
+                                        expense_categories: templateData.expense_categories,
+                                    }
+                                });
+                            }
+                            return;
+                        }
+
                         if (!record.is_periodic) {
                             copyExpense(record.id);
                             return;
@@ -131,7 +194,7 @@ const customCellExpenseRender = (
                         let response;
                         if (record?.is_periodic) {
                             try {
-                                response = await ServiceFunctions.getPeriodicExpenseTemplate(authToken, record?.periodic_expense_id);
+                                response = await ServiceFunctions.getPeriodicExpenseData(authToken, record?.periodic_expense_id);
 
                                 setExpenseModal({
                                     mode: 'copy',
@@ -221,7 +284,8 @@ export default function TableWidget({
     pagination,
     setPagination,
     authToken,
-    setAlertState
+    setAlertState,
+    isTemplate = false // флаг работы с шаблонами
 }) {
     const tableContainerRef = useRef(null);
     
