@@ -13,9 +13,15 @@
   z-index: 2;
   top: 0;
   background-color: white;
+  width: max-content;
+  min-width: 100%;
+  max-width: fit-content;
 
   .tableContainerHeaderItem {
-    position: relative;
+    position: sticky;
+    top: 0;
+    background-color: white;
+    flex-shrink: 0;
 
     h2 {
       font-weight: 600;
@@ -28,26 +34,29 @@
   }
 
   .tableContainerHeaderFirst {
-    min-width: 485px;
-    position: fixed;
-    z-index: 4;
-    background-color: white;
-    border-right: 1px solid #E8E8E8;
+    min-width: 484px;
+    left: 0;
+    z-index: 3;
   }
 
   .tableContainerHeaderSecond {
-    padding-left: 485px;
-  }
-
-  .tableContainerHeaderSecond {
-    min-width: 2254px;
-    background-color: white;
-    border-right: 1px solid #E8E8E8;
+    min-width: 1770px;
+    left: 484px;
+    z-index: 2;
+    border-left: 1px solid #E8E8E8;
   }
 
   .tableContainerHeaderThird {
-    min-width: 1966px;
-    background-color: white;
+    min-width: 660px;
+    left: 484px;
+    z-index: 2;
+    border-left: 1px solid #E8E8E8;
+  }
+
+  .stickyFixer {
+    min-width: 1300px;
+    left: 2320px;
+    z-index: 1;
   }
 }
 

@@ -185,6 +185,7 @@ const MyAdvTable: React.FC<MyAdvTableProps> = ({
         <div className={`${styles.tableContainerHeaderItem} ${styles.tableContainerHeaderThird}`}>
           <h2>Рекламная статистика</h2>
         </div>
+        <div className={`${styles.tableContainerHeaderItem} ${styles.stickyFixer}`}></div>
       </div>
     );
   };
