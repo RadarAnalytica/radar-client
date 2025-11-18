@@ -105,6 +105,14 @@ const MyAdvTable: React.FC<MyAdvTableProps> = ({
       );
     }
 
+    if (dataIndex === 'views') {
+      return (
+        <span className={`${styles.labelCell} viewsCell`}>
+          {value}
+        </span>
+      );
+    }
+
     // Рендер для процентов (строковые значения уже отформатированы)
     if (dataIndex.includes('_to_') || (dataIndex.includes('forecast_') && typeof value === 'string')) {
       return (

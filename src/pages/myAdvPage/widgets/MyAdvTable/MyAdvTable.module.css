@@ -28,20 +28,26 @@
   }
 
   .tableContainerHeaderFirst {
+    min-width: 485px;
     position: fixed;
-    z-index: 3;
-    width: 484px;
+    z-index: 4;
     background-color: white;
     border-right: 1px solid #E8E8E8;
   }
 
-  .tableContainerHeaderSecond, .tableContainerHeaderThird {
-    position: relative;
-    left: 484px;
+  .tableContainerHeaderSecond {
+    padding-left: 485px;
+  }
+
+  .tableContainerHeaderSecond {
+    min-width: 2254px;
+    background-color: white;
+    border-right: 1px solid #E8E8E8;
   }
 
   .tableContainerHeaderThird {
-    left: 2054px;
+    min-width: 1966px;
+    background-color: white;
   }
 }
 
@@ -85,9 +91,9 @@
   text-align: center;
 }
 
-.companyType {
-  position: sticky;
-  left: 200px;
+:global(.radar-table__body-cell:has(.viewsCell)), 
+:global(.radar-table__header-cell.viewsCell) {
+  border-left: 1px solid #E8E8E8;
 }
 
 .tableWrapper {

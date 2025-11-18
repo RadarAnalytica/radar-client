@@ -12,6 +12,7 @@ export interface ColumnConfig {
   hidden: boolean;
   canToggle?: boolean;
   align?: 'left' | 'center' | 'right';
+  className?: string;
 }
 
 export interface TableConfigData {
@@ -163,6 +164,7 @@ export const getDefaultTableConfig = (): ColumnConfig[] => {
       hidden: false,
       canToggle: true,
       align: 'right',
+      className: 'viewsCell',
     },
     {
       key: 'clicks',
