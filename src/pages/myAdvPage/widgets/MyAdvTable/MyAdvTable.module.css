@@ -4,8 +4,45 @@
   border-radius: 12px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
   padding-bottom: 20px;
+}
+
+.tableContainerHeader {
+  display: flex;
+  position: sticky;
+  z-index: 2;
+  top: 0;
+  background-color: white;
+
+  .tableContainerHeaderItem {
+    position: relative;
+
+    h2 {
+      font-weight: 600;
+      font-size: 18px;
+      line-height: 100%;
+      letter-spacing: 0%;
+      margin: 0;
+      padding: 8px;
+    }
+  }
+
+  .tableContainerHeaderFirst {
+    position: fixed;
+    z-index: 3;
+    width: 484px;
+    background-color: white;
+    border-right: 1px solid #E8E8E8;
+  }
+
+  .tableContainerHeaderSecond, .tableContainerHeaderThird {
+    position: relative;
+    left: 484px;
+  }
+
+  .tableContainerHeaderThird {
+    left: 2054px;
+  }
 }
 
 .tableControls {
@@ -48,6 +85,11 @@
   text-align: center;
 }
 
+.companyType {
+  position: sticky;
+  left: 200px;
+}
+
 .tableWrapper {
   max-height: calc(100vh - 300px);
   position: relative;
@@ -62,6 +104,10 @@
     border-bottom: 2px solid #e8e8e8;
     font-weight: 600;
     color: #1a1a1a;
+  }
+
+  :global(.radar-table__header) {
+    top: 34px !important;
   }
 
   :global(.radar-table-row:hover) {

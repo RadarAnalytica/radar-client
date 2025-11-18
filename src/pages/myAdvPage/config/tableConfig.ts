@@ -12,7 +12,6 @@ export interface ColumnConfig {
   hidden: boolean;
   canToggle?: boolean;
   align?: 'left' | 'center' | 'right';
-  className?: string;
 }
 
 export interface TableConfigData {
@@ -42,6 +41,7 @@ export const getDefaultTableConfig = (): ColumnConfig[] => {
       hidden: false,
       canToggle: true,
       align: 'center',
+      fixed: true,
     },
     {
       key: 'company_type',
@@ -52,6 +52,7 @@ export const getDefaultTableConfig = (): ColumnConfig[] => {
       hidden: false,
       canToggle: true,
       align: 'left',
+      fixed: true,
     },
     {
       key: 'cart',

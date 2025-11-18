@@ -97,6 +97,14 @@ const MyAdvTable: React.FC<MyAdvTableProps> = ({
       );
     }
 
+    if (dataIndex === 'company_type') {
+      return (
+        <span className={`${styles.labelCell} ${styles.companyType}`}>
+          {value}
+        </span>
+      );
+    }
+
     // Рендер для процентов (строковые значения уже отформатированы)
     if (dataIndex.includes('_to_') || (dataIndex.includes('forecast_') && typeof value === 'string')) {
       return (
@@ -157,6 +165,22 @@ const MyAdvTable: React.FC<MyAdvTableProps> = ({
     TABLE_CONFIG_VERSION
   );
 
+  const headerComponent = () => {
+    return (
+      <div className={styles.tableContainerHeader}>
+        <div className={`${styles.tableContainerHeaderItem} ${styles.tableContainerHeaderFirst}`}>
+          <h2>О товаре</h2>
+        </div>
+        <div className={`${styles.tableContainerHeaderItem} ${styles.tableContainerHeaderSecond}`}>
+          <h2>Рекламная воронка</h2>
+        </div>
+        <div className={`${styles.tableContainerHeaderItem} ${styles.tableContainerHeaderThird}`}>
+          <h2>Рекламная статистика</h2>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className={styles.table}>
       <div className={styles.tableControls}>
@@ -179,13 +203,15 @@ const MyAdvTable: React.FC<MyAdvTableProps> = ({
       </div>
 
       <div className={styles.tableContainer}>
+        
         <div className={styles.tableWrapper} ref={tableContainerRef}>
-          {!loading && data && (
+          {!loading && data && <>
+            {headerComponent()}
             <RadarTable
               config={tableConfigResized as any}
               dataSource={sortTableData(prepareTableData(), sortState)}
-              resizeable
-              onResize={onResizeColumn}
+              // resizeable
+              // onResize={onResizeColumn}
               preset="radar-table-default"
               scrollContainerRef={tableContainerRef}
               stickyHeader
@@ -204,7 +230,7 @@ const MyAdvTable: React.FC<MyAdvTableProps> = ({
               }}
               style={{ fontFamily: 'Mulish', width: 'max-content', tableLayout: 'fixed' }}
             />
-          )}
+          </>}
         </div>
       </div>
     </div>
