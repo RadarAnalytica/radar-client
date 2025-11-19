@@ -211,13 +211,8 @@ export default function OperatingExpenses() {
 			setTemplatePagination(pagination);
 		}
 
-		const requestObject = {
-			page: pagination.page,
-			limit: pagination.limit,
-		};
-
 		try {
-			const res = await ServiceFunctions.getOperatingExpensesTemplateGetAll(authToken, requestObject);
+			const res = await ServiceFunctions.getOperatingExpensesTemplateGetAll(authToken, pagination.page, pagination.limit);
 			setTemplates(res.data || []);
 			progress.complete();
 			setTemplatePagination((prev) => ({ ...prev, total: res.total_pages || 1 }));
@@ -258,14 +253,19 @@ export default function OperatingExpenses() {
     }, [activeBrand, activeArticle, selectedRange, expPagination.page, activeExpenseCategory]);
 
 	useEffect(() => {
-		if (activeBrand && view === 'template') {
+		if (activeBrand) {
 			if (activeBrand?.is_primary_collect) {
+				if (prevPageRef.current === templatePagination.page) {
+                    setTemplatePagination((prev) => (prev.page === 1 ? prev : { ...prev, page: 1 }));
+                } else {
+                    prevPageRef.current = templatePagination.page;
+                }
 				updateTemplates();
 			} else {
 				setLoading(false);
 			}
 		}
-	}, [activeBrand, templatePagination.page, view]);
+	}, [activeBrand, templatePagination.page]);
 
 	const modalExpenseHandlerClose = () => {
 		setExpenseModal({ mode: null, isOpen: false, data: null });
@@ -638,7 +638,7 @@ export default function OperatingExpenses() {
 					</Flex>
 				)}
 				
-				{view === 'expense' && 
+				{(view === 'expense' || view === 'template') && 
 					<div className={styles.controls}>
 						<Filters
 							isDataLoading={loading}

@@ -1749,17 +1749,40 @@ export const ServiceFunctions = {
 		}
 	},
 
-	getOperatingExpensesTemplateGetAll: async (token, requestObject) => {
+	getOperatingExpensesTemplateGetAll: async (token, page, limit) => {
 		try {
 			const res = await fetchApi(
-				`/api/operating-expenses/periodic-templates/get-all`,
+				`/api/operating-expenses/periodic-templates/get-all?page=${page}&limit=${limit}`,
 				{
-					method: 'POST',
+					method: 'GET',
 					headers: {
 						'content-type': 'application/json',
 						authorization: 'JWT ' + token,
 					},
-					body: JSON.stringify(requestObject)
+				}
+			);
+
+			if (!res.ok) {
+				throw new Error('Ошибка запроса');
+			}
+
+			return res.json();
+		} catch (error) {
+			console.error('getAllOperatingExpensesExpense ', error);
+			throw new Error(error);
+		}
+	},
+
+	getOperatingExpensesTemplateGet: async (token, expense_id) => {
+		try {
+			const res = await fetchApi(
+				`/api/operating-expenses/periodic-templates/get?expense_id=${expense_id}`,
+				{
+					method: 'GET',
+					headers: {
+						'content-type': 'application/json',
+						authorization: 'JWT ' + token,
+					},
 				}
 			);
 
@@ -1800,7 +1823,7 @@ export const ServiceFunctions = {
 
 	getPeriodicExpenseTemplateData: async (token, periodic_expense_id) => {
 		try {
-			const res = await fetch(
+			const res = await fetchApi(
 				`${URL}/api/operating-expenses/periodic-templates/get-all?expense_id=${periodic_expense_id}`,
 				{
 					method: 'GET',

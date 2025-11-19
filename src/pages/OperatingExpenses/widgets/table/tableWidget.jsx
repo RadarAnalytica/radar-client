@@ -18,7 +18,8 @@ const customCellExpenseRender = (
     copyExpense,
     data,
     authToken,
-    setAlertState
+    setAlertState,
+    isTemplate = false,
 ) => {
 
     if (dataIndex === 'is_periodic' && record.key !== 'summary') {
@@ -26,41 +27,41 @@ const customCellExpenseRender = (
             <div className={record.is_periodic ? styles.periodicBadge_periodic : styles.periodicBadge_static} title={record.is_periodic ? 'Плановый' : 'Разовый'}>
                 {record.is_periodic ? 'Плановый' : 'Разовый'}
             </div>
-        )
+        );
     }
     if (dataIndex === 'date' && record.key === 'summary') {
         return (
             <div className={`${styles.customCell} ${styles.customCell_summaryPadding}`}>
                 {value}
             </div>
-        )
+        );
     }
     if (dataIndex === 'date' && record.key !== 'summary') {
         return (
             <div className={styles.customCell}>
                 {moment(value).format('DD.MM.YYYY')}
             </div>
-        )
+        );
     }
     if (dataIndex === 'description' || dataIndex === 'expense_categories' || dataIndex === 'vendor_code' || dataIndex === 'brand_name') {
         return (
             <div className={`${styles.customCell} text-break`} title={value}>
                 {value || '-'}
             </div>
-        )
+        );
     }
     if (dataIndex === 'value') {
         return (
             <div className={styles.customCell}>
                 {formatPrice(value, '')}
             </div>
-        )
+        );
     }
     if (dataIndex === 'shops') {
-        return (<>{value?.length > 0 ? value[0]?.name : '-'}</>)
+        return (<>{value?.length > 0 && value[0]?.name ? value[0]?.name : '-'}</>);
     }
     if (dataIndex === 'vendor_codes' || dataIndex === 'brand_names') {
-        return (<>{value?.length > 0 ? value[0] : '-'}</>)
+        return (<>{value?.length > 0 ? value[0] : '-'}</>);
     }
     if (dataIndex === 'action' && record.key === 'summary') {
         return null;
@@ -77,12 +78,9 @@ const customCellExpenseRender = (
 
                         // Для шаблонов используем данные из списка
                         if (isTemplate) {
-                            const templateData = data?.find((item) => item.id === record.id);
+                            const templateData = await ServiceFunctions.getOperatingExpensesTemplateGet(authToken, record.id);
                             if (templateData) {
-                                // Определяем, является ли шаблон плановым
-                                const isPeriodic = templateData.is_periodic !== undefined 
-                                    ? templateData.is_periodic 
-                                    : (templateData.period_type || templateData.frequency ? true : false);
+                                const isPeriodic = templateData?.period_type || templateData?.frequency;
                                 
                                 setExpenseModal({
                                     mode: 'edit',
@@ -230,9 +228,9 @@ const customCellExpenseRender = (
                     title='Удалить'
                 ></Button>
             </ConfigProvider>
-        </Flex>)
+        </Flex>);
     }
-}
+};
 
 const customCellCategoryRender = (
     value,
@@ -252,7 +250,7 @@ const customCellCategoryRender = (
                     icon={EditIcon}
                     onClick={() => {
                         setCategoryEdit((data.find((article) => article.id === record.id)));
-                        setModalCreateCategoryOpen(true)
+                        setModalCreateCategoryOpen(true);
                     }}
                     title='Изменить'
                 ></Button>
@@ -263,9 +261,9 @@ const customCellCategoryRender = (
                     title='Удалить'
                 ></Button>
             </ConfigProvider>
-        </Flex>)
+        </Flex>);
     }
-}
+};
 
 export default function TableWidget({
     loading,
@@ -311,7 +309,7 @@ export default function TableWidget({
                             setPagination({
                                 ...pagination,
                                 page: page,
-                            })
+                            });
                         },
                         showQuickJumper: true,
                         hideOnSinglePage: true,
@@ -333,8 +331,9 @@ export default function TableWidget({
                                     copyExpense,
                                     data,
                                     authToken,
-                                    setAlertState
-                                )
+                                    setAlertState,
+                                    isTemplate
+                                );
                             }
                             if (tableType === 'category') {
                                 return customCellCategoryRender(
@@ -346,7 +345,7 @@ export default function TableWidget({
                                     setModalCreateCategoryOpen,
                                     setDeleteCategoryId,
                                     data
-                                )
+                                );
                             }
                         }
                     }}
