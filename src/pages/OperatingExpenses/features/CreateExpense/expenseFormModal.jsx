@@ -31,7 +31,7 @@ const getRequestObject = (values, editData, mode, isTemplate = false) => {
 	const formattedDateStart = formatDate(parse(values.date, 'dd.MM.yyyy', new Date()), 'yyyy-MM-dd');
 
 	// Определяем тип расхода/шаблона
-	const isPeriodicExpense = mode === 'create' ? values.type === 'plan' : editData?.is_periodic;
+	const isPeriodicExpense = mode === 'create' ? values.type === 'plan' || isTemplate : editData?.is_periodic;
 
 	if (!editData?.is_periodic && mode === 'edit') {
 		values.shops = values.shops ? [values.shops] : [];
@@ -68,7 +68,7 @@ const getRequestObject = (values, editData, mode, isTemplate = false) => {
 			expense_categories: values.expense_categories ? [values.expense_categories] : [],
 			description: values.description,
 			value: values.value,
-			date_from: formattedDateStart,
+			date: formattedDateStart,
 			period_type: values.frequency,
 			period_values: values.frequency === 'week'
 				? values.week
@@ -93,8 +93,8 @@ const getRequestObject = (values, editData, mode, isTemplate = false) => {
 		// Разовый расход или разовый шаблон
 		if (isTemplate) {
 			requestUrl = mode === 'edit'
-				? 'operating-expenses/templates/update'
-				: 'operating-expenses/templates/create';
+				? 'operating-expenses/periodic-templates/update'
+				: 'operating-expenses/periodic-templates/create';
 		} else {
 			requestUrl = mode === 'edit'
 				? 'operating-expenses/expense/update'
@@ -157,7 +157,7 @@ export default function ExpenseFormModal({
 	});
 
 	// Определяем, является ли расход/шаблон плановым
-	const isPeriodicExpense = mode === 'create' ? typeValue === 'plan' : editData?.is_periodic;
+	const isPeriodicExpense = mode === 'create' ? typeValue === 'plan' || isTemplate : editData?.is_periodic;
 
 	const today = new Date();
 	const minDateFrom = new Date(today);
@@ -282,6 +282,7 @@ export default function ExpenseFormModal({
 
 			// Для плановых расходов при редактировании или копировании
 			if ((mode === 'edit' && editData.is_periodic) || mode === 'copy') {
+				console.log('//2', editData);
 				const formattedDate = editData.date
 					? format(parse(editData.date, 'yyyy-MM-dd', new Date()), 'dd.MM.yyyy')
 					: null;
@@ -377,7 +378,7 @@ export default function ExpenseFormModal({
 						}}
 					>
 						{/* Тип операции (для режима создания) */}
-						{mode === 'create' && (
+						{mode === 'create' && !isTemplate && (
 							<RadioGroup
 								label='Тип операции'
 								name='type'

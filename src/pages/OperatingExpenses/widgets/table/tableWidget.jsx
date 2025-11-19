@@ -24,8 +24,11 @@ const customCellExpenseRender = (
 
     if (dataIndex === 'is_periodic' && record.key !== 'summary') {
         return (
-            <div className={record.is_periodic ? styles.periodicBadge_periodic : styles.periodicBadge_static} title={record.is_periodic ? 'Плановый' : 'Разовый'}>
-                {record.is_periodic ? 'Плановый' : 'Разовый'}
+            <div 
+                className={isTemplate ? styles.periodicBadge_template : record.is_periodic ? styles.periodicBadge_periodic : styles.periodicBadge_static} 
+                title={isTemplate ? 'Шаблон' : record.is_periodic ? 'Плановый' : 'Разовый'}
+            >
+                {isTemplate ? 'Шаблон' : record.is_periodic ? 'Плановый' : 'Разовый'}
             </div>
         );
     }
@@ -58,10 +61,19 @@ const customCellExpenseRender = (
         );
     }
     if (dataIndex === 'shops') {
-        return (<>{value?.length > 0 ? value[0]?.name : '-'}</>);
+        let v = isTemplate ? record.items && record.items[0] : value && value[0];
+        v = v?.name || v?.shop_name || v?.shop || '-';
+        return <div className={styles.distributorCell} title={v}>{v}</div>;
     }
-    if (dataIndex === 'vendor_codes' || dataIndex === 'brand_names') {
-        return (<>{value?.length > 0 ? value[0] : '-'}</>);
+    if (dataIndex === 'vendor_codes') {
+        let v = isTemplate ? record.items && record.items[0] : value && value[0];
+        v = v?.vendor_code || '-';
+        return <div className={styles.distributorCell} title={v}>{v}</div>;
+    }
+    if (dataIndex === 'brand_names') {
+        let v = isTemplate ? record.items && record.items[0] : value && value[0];
+        v = v?.brand_name || '-';
+        return <div className={styles.distributorCell} title={v}>{v}</div>;
     }
     if (dataIndex === 'action' && record.key === 'summary') {
         return null;
@@ -80,21 +92,19 @@ const customCellExpenseRender = (
                         if (isTemplate) {
                             const templateData = await ServiceFunctions.getOperatingExpensesTemplateGet(authToken, record.id);
                             if (templateData) {
-                                const isPeriodic = templateData?.period_type || templateData?.frequency;
-                                
                                 setExpenseModal({
                                     mode: 'edit',
                                     isOpen: true,
                                     data: {
                                         id: templateData.id,
-                                        is_periodic: isPeriodic,
+                                        is_periodic: true,
                                         end_date: templateData.finished_at?.split('T')[0] || templateData.end_date,
                                         frequency: templateData.period_type || templateData.frequency,
                                         week: templateData.period_type === 'week' ? templateData.period_values : (templateData.frequency === 'week' ? templateData.week : null),
                                         month: templateData.period_type === 'month' ? templateData.period_values?.toString() : (templateData.frequency === 'month' ? templateData.month : null),
-                                        shops: templateData.shops,
-                                        vendor_codes: templateData.vendor_codes,
-                                        brand_names: templateData.brand_names,
+                                        shops: templateData.items.filter(item => item?.shop && !item?.vendor_code && !item?.brand_name).map(item => item?.shop),
+                                        vendor_codes: templateData.items.filter(item => item?.vendor_code).map(item => item?.vendor_code),
+                                        brand_names: templateData.items.filter(item => item?.brand_name && !item?.vendor_code).map(item => item?.brand_name),
                                         value: templateData.value,
                                         description: templateData.description,
                                         expense_categories: templateData.expense_categories,
@@ -108,7 +118,7 @@ const customCellExpenseRender = (
                         let response;
                         if (record?.is_periodic) {
                             try {
-                                response = await ServiceFunctions.getPeriodicExpenseData(authToken, record.periodic_expense_id);
+                                response = await ServiceFunctions.getPeriodicExpenseData(authToken, record.id);
 
                                 setExpenseModal({
                                     mode: 'edit',
@@ -126,7 +136,7 @@ const customCellExpenseRender = (
                                         value: response.value,
                                         description: response.description,
                                         expense_categories: response.expense_categories,
-                                        date: response.date_from,
+                                        date: response.date,
                                     }
                                 });
                                 return;
@@ -155,23 +165,21 @@ const customCellExpenseRender = (
 
                         // Для шаблонов используем данные из списка
                         if (isTemplate) {
-                            const templateData = data?.find((item) => item.id === record.id);
+                            const templateData = await ServiceFunctions.getOperatingExpensesTemplateGet(authToken, record.id);
                             if (templateData) {
-                                const isPeriodic = templateData?.period_type || templateData?.frequency;
-                                
                                 setExpenseModal({
                                     mode: 'copy',
                                     isOpen: true,
                                     data: {
-                                        is_periodic: isPeriodic,
+                                        is_periodic: true,
                                         end_date: templateData.finished_at?.split('T')[0] || templateData.end_date,
                                         date: templateData.date_from || templateData.date,
                                         frequency: templateData.period_type || templateData.frequency,
                                         week: templateData.period_type === 'week' ? templateData.period_values : (templateData.frequency === 'week' ? templateData.week : null),
                                         month: templateData.period_type === 'month' ? templateData.period_values : (templateData.frequency === 'month' ? templateData.month : null),
-                                        shops: templateData.shops,
-                                        vendor_codes: templateData.vendor_codes,
-                                        brand_names: templateData.brand_names,
+                                        shops: templateData.items.filter(item => item?.shop && !item?.vendor_code && !item?.brand_name).map(item => item?.shop),
+                                        vendor_codes: templateData.items.filter(item => item?.vendor_code).map(item => item?.vendor_code),
+                                        brand_names: templateData.items.filter(item => item?.brand_name && !item?.vendor_code).map(item => item?.brand_name),
                                         value: templateData.value,
                                         description: templateData.description,
                                         expense_categories: templateData.expense_categories,
@@ -189,7 +197,7 @@ const customCellExpenseRender = (
                         let response;
                         if (record?.is_periodic) {
                             try {
-                                response = await ServiceFunctions.getPeriodicExpenseData(authToken, record?.periodic_expense_id);
+                                response = await ServiceFunctions.getPeriodicExpenseData(authToken, record.id);
 
                                 setExpenseModal({
                                     mode: 'copy',
@@ -197,7 +205,7 @@ const customCellExpenseRender = (
                                     data: {
                                         ...response,
                                         end_date: response.finished_at?.split('T')[0],
-                                        date: response.date_from,
+                                        date: response.date,
                                         frequency: response.period_type,
                                         week: response.period_type === 'week' ? response.period_values : null,
                                         month: response.period_type === 'month' ? response.period_values : null,

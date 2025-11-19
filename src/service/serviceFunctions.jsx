@@ -1797,10 +1797,10 @@ export const ServiceFunctions = {
 		}
 	},
 
-	getPeriodicExpenseData: async (token, periodic_expense_id) => {
+	getPeriodicExpenseData: async (token, expense_id) => {
 		try {
 			const res = await fetchApi(
-				`/api/operating-expenses/expense/get?expense_id=${periodic_expense_id}`,
+				`/api/operating-expenses/expense/get?expense_id=${expense_id}`,
 				{
 					method: 'GET',
 					headers: {
@@ -1897,7 +1897,7 @@ export const ServiceFunctions = {
 
 	deleteOperatingExpensesExpenseDelete: async (token, id, isPeriodic) => {
 		const url = isPeriodic
-			? `/api/operating-expenses/periodic-expense/delete?expense_id=${id}&delete_linked=true`
+			? `/api/operating-expenses/expense/delete?expense_id=${id}&delete_linked=true`
 			: `/api/operating-expenses/expense/delete?expense_id=${id}`;
 
 		try {
@@ -1971,14 +1971,10 @@ export const ServiceFunctions = {
 		}
 	},
 
-	deleteOperatingExpensesTemplateDelete: async (token, id, isPeriodic) => {
-		const url = isPeriodic
-			? `/api/operating-expenses/periodic-templates/delete?expense_id=${id}&delete_linked=true`
-			: `/api/operating-expenses/periodic-templates/delete?expense_id=${id}`;
-
+	deleteOperatingExpensesTemplateDelete: async (token, id) => {
 		try {
 			const res = await fetchApi(
-				url,
+				`/api/operating-expenses/periodic-templates/delete?expense_id=${id}&delete_linked=true`,
 				{
 					method: 'DELETE',
 					headers: {

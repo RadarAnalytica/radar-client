@@ -539,10 +539,10 @@ export default function OperatingExpenses() {
 		}
 	};
 
-	const deleteTemplate = async (id, isPeriodic) => {
+	const deleteTemplate = async (id) => {
 		setLoading(true);
 		try {
-			const res = await ServiceFunctions.deleteOperatingExpensesTemplateDelete(authToken, id, isPeriodic);
+			const res = await ServiceFunctions.deleteOperatingExpensesTemplateDelete(authToken, id);
 			await updateTemplates(); // Обновляем данные без сброса пагинации
 			setAlertState({ message: 'Шаблон удален', status: 'success', isVisible: true });
 		} catch (error) {
@@ -745,11 +745,7 @@ export default function OperatingExpenses() {
 					) : null}
 					onOk={() => {
 						const currentExpense = expenseData.data.find((el) => el.id === deleteExpenseId);
-						if (currentExpense.is_periodic) {
-							deleteExpense(currentExpense.periodic_expense_id, true);
-						} else {
-							deleteExpense(deleteExpenseId, false);
-						}
+						deleteExpense(deleteExpenseId, currentExpense.is_periodic);
 					}}
 					onCancel={() => setDeleteExpenseId(null)}
 					isLoading={loading}
