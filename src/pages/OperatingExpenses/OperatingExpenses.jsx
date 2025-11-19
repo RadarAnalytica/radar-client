@@ -502,9 +502,7 @@ export default function OperatingExpenses() {
 			const { id, created_at, updated_at, ...templateData } = templateToCopy;
 
 			// Определяем тип шаблона
-			const isPeriodic = templateData.is_periodic !== undefined 
-				? templateData.is_periodic 
-				: (templateData.period_type || templateData.frequency ? true : false);
+			const isPeriodic = templateData?.period_type || templateData?.frequency;
 
 			// Transform expense_categories: extract IDs if it's an array of objects
 			if (templateData.expense_categories && Array.isArray(templateData.expense_categories)) {
@@ -513,10 +511,7 @@ export default function OperatingExpenses() {
 				);
 			}
 
-			// Transform items (shops, vendor_codes, brand_names) - они уже в правильном формате
-			// Но нужно убедиться, что они есть
 			if (!templateData.items || templateData.items.length === 0) {
-				// Если items нет, создаем из shops/vendor_codes/brand_names
 				const items = [];
 				if (templateData.shops && templateData.shops.length > 0) {
 					items.push(...templateData.shops.map(s => ({ shop: typeof s === 'object' ? s.id : s })));
@@ -537,12 +532,7 @@ export default function OperatingExpenses() {
 				}
 			}
 
-			// Определяем правильный URL в зависимости от типа шаблона
-			const createUrl = isPeriodic 
-				? 'operating-expenses/periodic-templates/create'
-				: 'operating-expenses/templates/create';
-
-			const res = await ServiceFunctions.postOperatingExpensesTemplateCreate(authToken, templateData, createUrl);
+			const res = await ServiceFunctions.postOperatingExpensesTemplateCreate(authToken, templateData, 'operating-expenses/periodic-templates/create');
 			await updateTemplates(true);
 			setAlertState({ message: 'Шаблон скопирован', status: 'success', isVisible: true });
 		} catch (error) {

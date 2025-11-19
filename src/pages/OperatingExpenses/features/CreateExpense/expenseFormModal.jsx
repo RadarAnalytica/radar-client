@@ -138,7 +138,7 @@ export default function ExpenseFormModal({
 	editData,
 	handle,
 	loading,
-	isTemplate = false, // флаг работы с шаблонами
+	isTemplate = false,
 	...props
 }) {
 	const { shops, filters } = useAppSelector((state) => state.filters);

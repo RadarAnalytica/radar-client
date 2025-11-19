@@ -159,10 +159,7 @@ const customCellExpenseRender = (
                         if (isTemplate) {
                             const templateData = data?.find((item) => item.id === record.id);
                             if (templateData) {
-                                // Определяем, является ли шаблон плановым
-                                const isPeriodic = templateData.is_periodic !== undefined 
-                                    ? templateData.is_periodic 
-                                    : (templateData.period_type || templateData.frequency ? true : false);
+                                const isPeriodic = templateData?.period_type || templateData?.frequency;
                                 
                                 setExpenseModal({
                                     mode: 'copy',
@@ -285,7 +282,7 @@ export default function TableWidget({
     setPagination,
     authToken,
     setAlertState,
-    isTemplate = false // флаг работы с шаблонами
+    isTemplate = false
 }) {
     const tableContainerRef = useRef(null);
     
