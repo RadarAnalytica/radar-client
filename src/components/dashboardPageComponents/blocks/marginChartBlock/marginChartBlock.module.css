@@ -22,6 +22,14 @@
     transform: scale(101%);
 }
 
+.block__header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+}
+
 .block__title {
     font-family: Mulish;
     font-weight: 600;

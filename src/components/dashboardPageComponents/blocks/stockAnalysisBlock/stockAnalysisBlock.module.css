@@ -65,6 +65,13 @@
     background: #5329FF0D;
 }
 
+.block__headerRight {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 12px;
+}
+
 /* TABLE */
 
 .block__table {

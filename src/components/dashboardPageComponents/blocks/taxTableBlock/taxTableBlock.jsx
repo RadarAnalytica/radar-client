@@ -10,7 +10,7 @@ import { RadarLoader } from '../../../../shared/ui/RadarLoader/RadarLoader';
 
 const taxOption = ['УСН Д-Р', 'УСН-доходы', 'Не считать налог', 'Считать от РС'];
 
-const TaxTableBlock = ({ dataDashBoard, loading, updateDashboard }) => {
+const TaxTableBlock = ({ dataDashBoard, loading, updateDashboard, dragHandle }) => {
     const data = dataDashBoard?.taxInfo || {};
     const { authToken } = useContext(AuthContext);
     const [taxType, setTaxType] = useState();
@@ -53,7 +53,10 @@ const TaxTableBlock = ({ dataDashBoard, loading, updateDashboard }) => {
 
     return (
         <div className={styles.block}>
-            <p className={styles.block__title}>Налог</p>
+            <div className={styles.block__header}>
+                <p className={styles.block__title}>Налог</p>
+                {dragHandle && dragHandle()}
+            </div>
             <div className={styles.block__chart}>
                 <div className={styles.block__controlsWrapper}>
                     <div className={styles.block__inputWrapper}>

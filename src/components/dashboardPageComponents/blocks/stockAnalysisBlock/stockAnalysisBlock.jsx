@@ -12,7 +12,7 @@ import { ServiceFunctions } from '@/service/serviceFunctions';
 import { useLoadingProgress } from '@/service/hooks/useLoadingProgress';
 import { CURR_STOCK_ANALYSIS_TABLE_CONFIG_VER } from '@/pages/apiServicePages/stockAnalysisPage/shared';
 
-const StockAnalysisBlock = ({ dashboardLoading }) => {
+const StockAnalysisBlock = ({ dashboardLoading, dragHandle }) => {
 
     const { authToken } = useContext(AuthContext);
     const { isDemoMode } = useDemoMode();
@@ -75,9 +75,12 @@ const StockAnalysisBlock = ({ dashboardLoading }) => {
                 <p className={styles.block__title}>
                     Аналитика по товарам
                 </p>
-                <Link to='/stock-analysis' target='_blank' className={styles.block__mainLink}>
-                    Смотреть подробнее
-                </Link>
+                <div className={styles.block__headerRight}>
+                    <Link to='/stock-analysis' target='_blank' className={styles.block__mainLink}>
+                        Смотреть подробнее
+                    </Link>
+                    {dragHandle && dragHandle()}
+                </div>
             </div>
 
             <TableWidget

@@ -9,8 +9,8 @@
     box-sizing: border-box;
 }
 .page__content {
-    width: 100%;
-    padding: 30px 52px;
+    width: calc(100% - 74px);
+    padding: 20px 32px;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -18,8 +18,9 @@
     gap: 20px;
     box-sizing: border-box;
     height: 100%;
-  overflow: auto;
-    
+    flex-grow: 1;
+    flex-shrink: 0;
+    overflow-y: scroll;
 }
 .page__sideNavWrapper {
     height: 100%;

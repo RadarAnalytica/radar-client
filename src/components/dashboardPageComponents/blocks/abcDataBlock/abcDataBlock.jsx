@@ -4,7 +4,7 @@ import { formatPrice } from '../../../../service/utils';
 import { RadarLoader } from '../../../../shared/ui/RadarLoader/RadarLoader';
 // import { getColor } from '../blockUtils';
 
-const AbcDataBlock = ({ titles, data, loading }) => {
+const AbcDataBlock = ({ titles, data, loading, dragHandle }) => {
 
     if (loading) {
         return (
@@ -19,9 +19,12 @@ const AbcDataBlock = ({ titles, data, loading }) => {
                 <p className={styles.block__title}>
                     ABC-анализ
                 </p>
-                <Link to='/abc-data' target='_blank' className={styles.block__mainLink}>
-                    Смотреть подробнее
-                </Link>
+                <div className={styles.block__headerRight}> 
+                    <Link to='/abc-data' target='_blank' className={styles.block__mainLink}>
+                        Смотреть подробнее
+                    </Link>
+                    {dragHandle && dragHandle()}
+                </div>
             </div>
 
             {data &&
