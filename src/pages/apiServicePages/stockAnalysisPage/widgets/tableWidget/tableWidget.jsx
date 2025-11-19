@@ -152,7 +152,6 @@ const TableWidget = ({ stockAnalysisFilteredData, loading, progress, config, ini
     };
 
     const onResizeGroup = (columnKey, width) => {
-        console.log('onResizeGroup', columnKey, width);
         // Обновляем конфигурацию колонок с группированной структурой
         const updateColumnWidth = (columns) => {
           return columns.map(col => {
@@ -165,8 +164,7 @@ const TableWidget = ({ stockAnalysisFilteredData, loading, progress, config, ini
                 if (child.hidden) return sum; // Пропускаем скрытые колонки
                 return sum + child.width;
               }, 0);
-              console.log('totalWidth', col.key, totalWidth);
-              return { ...col, width: updatedChildren.some(child => child.key === columnKey) ? totalWidth : col.width, children: updatedChildren };
+              return { ...col, children: updatedChildren };
             }
 
             // Если это листовая колонка
