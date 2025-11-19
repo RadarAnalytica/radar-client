@@ -22,6 +22,7 @@ export const Filters = ({
   isDataLoading,
   maxCustomDate,
   opExpensesArticles = false,
+  children = null,
 }) => {
 
   // ------ это база ------//
@@ -146,18 +147,7 @@ export const Filters = ({
                   isDataLoading={isDataLoading}
                 />
               </div>}
-              {/* <div className={styles.filters__inputWrapper}>
-                <PlainSelect
-                  selectId={i.groups.enLabel}
-                  label={`${i.groups.ruLabel}:`}
-                  value={filtersState[i.groups.stateKey]}
-                  optionsData={i.groups.data}
-                  handler={(value) => {
-                    const current = i.groups.data.find(_ => _.value === value);
-                    dispatch(filterActions.setActiveFilters({ stateKey: i.groups.stateKey, data: current }))
-                  }}
-                />
-              </div> */}
+              {children}
             </React.Fragment>
           );
         })}

@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { Table as RadarTable } from 'radar-ui';
 import { useNavigate } from 'react-router-dom';
 import { Filters } from '@/components/sharedComponents/apiServicePagesFiltersComponent';
@@ -36,6 +36,15 @@ const MyAdvTable: React.FC<MyAdvTableProps> = ({
 }) => {
   const tableContainerRef = useRef(null);
   const navigate = useNavigate();
+
+  // ---- state и хэндлер для чекбокса "Скрыть компании без статистики" -----------//
+  const [hideCompaniesWithoutStats, setHideCompaniesWithoutStats] = useState(false);
+  
+  const handleHideCompaniesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const checked = e.target.checked;
+    console.log('Скрыть компании без статистики:', checked);
+    setHideCompaniesWithoutStats(checked);
+  };
 
   const prepareTableData = () => {
     if (!Array.isArray(data)) return [];
@@ -201,7 +210,18 @@ const MyAdvTable: React.FC<MyAdvTableProps> = ({
             shopSelect={false}
             brandSelect={false}
             maxCustomDate={new Date(Date.now() - 24 * 60 * 60 * 1000)}
-          />
+          >
+            <div className={styles.checkboxWrapper}>
+              <label className={styles.checkboxLabel}>
+                <input
+                  type="checkbox"
+                  checked={hideCompaniesWithoutStats}
+                  onChange={handleHideCompaniesChange}
+                />
+                <span>Скрыть компании без статистики</span>
+              </label>
+            </div>
+          </Filters>
         </div>
         <div className={styles.settingsWrapper}>
           <TableSettingsWidget

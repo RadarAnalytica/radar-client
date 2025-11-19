@@ -72,6 +72,54 @@
   flex: 1;
 }
 
+.checkboxWrapper {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-start;
+}
+
+.checkboxLabel {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  height: 38px;
+  padding-top: 20px;
+  padding-left: 4px;
+}
+
+.checkboxLabel input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgb(204, 204, 204) !important;
+  background: transparent;
+  border-radius: 4px;
+  cursor: pointer;
+  position: relative;
+}
+
+.checkboxLabel input[type="checkbox"]:checked {
+  background-color: rgb(84, 41, 255);
+  border: rgb(84, 41, 255) !important;
+}
+
+.checkboxLabel input[type="checkbox"]:checked::after {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  left: 7px;
+  top: 3px;
+  width: 6px;
+  height: 12px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
 .settingsWrapper {
   display: flex;
   align-items: flex-end;
