@@ -406,7 +406,7 @@ export default function ExpenseFormModal({
 									label={isPeriodicExpense ? 'Дата начала' : 'Дата'}
 									formId='date'
 									minDate={minDateFrom}
-									maxDate={today} // mode === 'create' && !isPeriodicExpense ? today : maxDateFrom
+									maxDate={isTemplate ? maxDateFrom : today}
 								/>
 							</Col>
 							<Col span={12}>

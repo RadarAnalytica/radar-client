@@ -16,6 +16,7 @@ import ExpenseFormModal from './features/CreateExpense/expenseFormModal';
 import ModalCreateCategory from './features/CreateCategory/CreateCategory';
 import { EditIcon, CopyIcon, DeleteIcon, InfoIcon } from './shared/Icons';
 import TableWidget from './widgets/table/tableWidget';
+import Tabs from './widgets/Tabs/Tabs';
 import { formatDate, parse } from 'date-fns';
 import { Tooltip as RadarTooltip } from 'radar-ui';
 import { useAppDispatch } from '@/redux/hooks';
@@ -255,11 +256,6 @@ export default function OperatingExpenses() {
 	useEffect(() => {
 		if (activeBrand) {
 			if (activeBrand?.is_primary_collect) {
-				if (prevPageRef.current === templatePagination.page) {
-                    setTemplatePagination((prev) => (prev.page === 1 ? prev : { ...prev, page: 1 }));
-                } else {
-                    prevPageRef.current = templatePagination.page;
-                }
 				updateTemplates();
 			} else {
 				setLoading(false);
@@ -582,29 +578,7 @@ export default function OperatingExpenses() {
 
 				{!loading && (
 					<Flex justify="space-between">
-						<Flex gap={4} align="center">
-							<button
-								className={view === 'expense' ? `${styles.segmented__button} ${styles.segmented__button_active}` : styles.segmented__button}
-								onClick={() => { setView('expense'); }}
-								style={{ fontWeight: 500, fontSize: 14 }}
-							>
-								Расходы
-							</button>
-							<button
-								className={view === 'category' ? `${styles.segmented__button} ${styles.segmented__button_active}` : styles.segmented__button}
-								onClick={() => { setView('category'); }}
-								style={{ fontWeight: 500, fontSize: 14 }}
-							>
-								Статьи
-							</button>
-							<button
-								className={view === 'template' ? `${styles.segmented__button} ${styles.segmented__button_active}` : styles.segmented__button}
-								onClick={() => { setView('template'); }}
-								style={{ fontWeight: 500, fontSize: 14 }}
-							>
-								Шаблоны
-							</button>
-						</Flex>
+						<Tabs view={view} setView={setView} />
 						<Flex align="center" justify="flex-end" gap={11}>
 							<ConfigProvider
 								theme={{
@@ -638,7 +612,7 @@ export default function OperatingExpenses() {
 					</Flex>
 				)}
 				
-				{(view === 'expense' || view === 'template') && 
+				{view === 'expense' && 
 					<div className={styles.controls}>
 						<Filters
 							isDataLoading={loading}
@@ -657,7 +631,7 @@ export default function OperatingExpenses() {
 				{loading && <Loader loading={loading} progress={progress.value} />}
 
 				{/* Расходы */}
-				{!loading && activeBrand && activeBrand?.is_primary_collect && view === 'expense' && (
+				{view === 'expense' && !loading && activeBrand && activeBrand?.is_primary_collect && (
 					expenseData.data?.length > 0
 					? <TableWidget
 						loading={loading}
@@ -676,7 +650,7 @@ export default function OperatingExpenses() {
 				)}
 
 				{/* Статьи */}
-				{!loading && activeBrand && activeBrand?.is_primary_collect && view === 'category' && (
+				{view === 'category' && !loading && activeBrand && activeBrand?.is_primary_collect && (
 					categoryData.data?.length > 0 
 					? <div className={styles.container}>
 						<TableWidget
@@ -695,7 +669,7 @@ export default function OperatingExpenses() {
 				)}
 
 				{/* Шаблоны */}
-				{!loading && activeBrand && activeBrand?.is_primary_collect && view === 'template' && (
+				{view === 'template' && !loading && activeBrand && activeBrand?.is_primary_collect && (
 					templateData.data?.length > 0
 					? <TableWidget
 						loading={loading}
