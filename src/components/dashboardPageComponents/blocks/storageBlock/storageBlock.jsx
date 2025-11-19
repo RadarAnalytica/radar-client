@@ -4,7 +4,7 @@ import { getStorageData } from '../blockUtils';
 import { formatPrice } from '../../../../service/utils';
 import { RadarLoader } from '../../../../shared/ui/RadarLoader/RadarLoader';
 
-const StorageBlock = ({ dataDashBoard, loading }) => {
+const StorageBlock = ({ dataDashBoard, loading, dragHandle }) => {
 
     const data = getStorageData(dataDashBoard);
 
@@ -27,6 +27,7 @@ const StorageBlock = ({ dataDashBoard, loading }) => {
                 >
                     Смотреть подробнее
                 </Link> */}
+                {dragHandle && dragHandle()}
             </div>
             <div className={styles.block__table}>
                 <div className={styles.block__tableRow}>

@@ -32,21 +32,23 @@ const tooltipData = {
     "Процент выкупа": "Доля заказов, которые были оплачены и получены покупателями, от общего числа созданных заказов."
 };
 
-const FinanceBlock = ({ dataDashBoard, loading }) => {
+const FinanceBlock = ({ dataDashBoard, loading, dragHandle }) => {
     const financeData = getFinanceData(dataDashBoard);
 
     if (loading) {
         return (
             <div className={styles.block}>
-                    <RadarLoader loaderStyle={{ height: '220px' }} />
+                <RadarLoader loaderStyle={{ height: '220px' }} />
             </div>
         );
     }
 
     return (
         <div className={styles.block}>
-            <p className={styles.block__title}>Финансы</p>
-
+            <div className={styles.block__header}>
+                <p className={styles.block__title}>Финансы</p>
+                {dragHandle && dragHandle()}
+            </div>
             <div className={styles.block__table}>
                 {financeData && financeData.map((i, id) => {
                     const tooltip = tooltipData[i.name];

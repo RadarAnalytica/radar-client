@@ -69,6 +69,7 @@ interface RadarBarProps {
         tooltipText?: string; // tooltip text of the comparative value
     }
     isLoading: boolean
+    dragHandle?: () => React.ReactNode;
 }
 
 //component
@@ -83,7 +84,8 @@ export const RadarBar: React.FC<RadarBarProps> = ({
     linkParams,
     actionButtonParams,
     compareValue,
-    isLoading
+    isLoading,
+    dragHandle
 }) => {
 
 
@@ -125,6 +127,11 @@ export const RadarBar: React.FC<RadarBarProps> = ({
                         </ConfigProvider>
                     }
                 </div>
+                {dragHandle &&
+                    <div className={`${styles.bar__side} ${styles.bar__side_right}`} style={{ alignItems: 'flex-start', flexWrap: 'nowrap' }}>
+                        {dragHandle()}
+                    </div>
+                }
             </div>
 
             {/* mid */}

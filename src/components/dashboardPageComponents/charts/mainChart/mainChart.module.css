@@ -32,6 +32,13 @@
     justify-content: space-between;
     align-items: flex-start;
 }
+
+.chart__headerRight {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 12px;
+}
 .chart__titleWrapper {
     display: flex;
     flex-direction: column;

@@ -12,7 +12,7 @@ const tooltipData = {
     "Процент выкупа": "Доля заказов, которые были оплачены и получены покупателями, от общего числа созданных заказов."
 };
 
-const ProfitBlock = ({ dataDashBoard, loading }) => {
+const ProfitBlock = ({ dataDashBoard, loading, dragHandle }) => {
 
     const profitData = getProfitData(dataDashBoard);
     if (loading) {
@@ -25,7 +25,10 @@ const ProfitBlock = ({ dataDashBoard, loading }) => {
 
     return (
         <div className={styles.block}>
-            <p className={styles.block__title}>Прибыльность</p>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px', width: '100%' }}>
+                <p className={styles.block__title}>Прибыльность</p>
+                {dragHandle && dragHandle()}
+            </div>
 
             <div className={styles.block__table}>
                 {profitData && profitData.map((i, id) => {

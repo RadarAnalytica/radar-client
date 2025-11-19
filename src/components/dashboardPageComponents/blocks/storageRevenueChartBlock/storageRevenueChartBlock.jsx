@@ -6,7 +6,7 @@ import { RadarLoader } from '../../../../shared/ui/RadarLoader/RadarLoader';
 
 const ITEMS_PER_PAGE = 15;
 
-const StorageRevenueChartBlock = ({ dataDashBoard, loading }) => {
+const StorageRevenueChartBlock = ({ dataDashBoard, loading, dragHandle }) => {
     //data.revenueByWarehouse
     const [currentPage, setCurrentPage] = useState(0);
 
@@ -160,7 +160,7 @@ const StorageRevenueChartBlock = ({ dataDashBoard, loading }) => {
     if (loading) {
         return (
             <div className={styles.block}>
-              <RadarLoader loaderStyle={{ height: '407px' }} />
+                <RadarLoader loaderStyle={{ height: '407px' }} />
             </div>
         );
     }
@@ -169,33 +169,36 @@ const StorageRevenueChartBlock = ({ dataDashBoard, loading }) => {
         <div className={styles.block}>
             <div className={styles.block__header}>
                 <p className={styles.block__title}>Выручка по складам</p>
-                {(sortedData.length > ITEMS_PER_PAGE && totalPages > 1) && (
-                    <div className={styles.pagination}>
-                        <button
-                            className={styles.pagination__button}
-                            onClick={handlePrevPage}
-                            disabled={currentPage === 0}
-                            aria-label="Предыдущая страница"
-                        >
-                            <svg width="6" height="10" viewBox="0 0 6 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M5 1L1 5L5 9" stroke="currentColor" strokeLinecap="round" />
-                            </svg>
-                        </button>
-                        <span className={styles.pagination__info}>
-                            {currentPage + 1} / {totalPages}
-                        </span>
-                        <button
-                            className={styles.pagination__button}
-                            onClick={handleNextPage}
-                            disabled={currentPage === totalPages - 1}
-                            aria-label="Следующая страница"
-                        >
-                            <svg width="6" height="10" viewBox="0 0 6 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M1 9L5 5L1 1" stroke="currentColor" strokeLinecap="round" />
-                            </svg>
-                        </button>
-                    </div>
-                )}
+                <div className={styles.block__headerRight}>
+                    {(sortedData.length > ITEMS_PER_PAGE && totalPages > 1) && (
+                        <div className={styles.pagination}>
+                            <button
+                                className={styles.pagination__button}
+                                onClick={handlePrevPage}
+                                disabled={currentPage === 0}
+                                aria-label="Предыдущая страница"
+                            >
+                                <svg width="6" height="10" viewBox="0 0 6 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M5 1L1 5L5 9" stroke="currentColor" strokeLinecap="round" />
+                                </svg>
+                            </button>
+                            <span className={styles.pagination__info}>
+                                {currentPage + 1} / {totalPages}
+                            </span>
+                            <button
+                                className={styles.pagination__button}
+                                onClick={handleNextPage}
+                                disabled={currentPage === totalPages - 1}
+                                aria-label="Следующая страница"
+                            >
+                                <svg width="6" height="10" viewBox="0 0 6 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M1 9L5 5L1 1" stroke="currentColor" strokeLinecap="round" />
+                                </svg>
+                            </button>
+                        </div>
+                    )}
+                    {dragHandle && dragHandle()}
+                </div>
             </div>
             <div className={styles.block__chart}>
                 <Bar data={data} options={options} />

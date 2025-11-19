@@ -15,17 +15,17 @@ export const getRequestObject = (filters, selectedRange, shopId) => {
 		date_to: selectedRange?.to && selectedRange.to
 	};
 
-	if (filters.activeBrandName && Array.isArray(filters.activeBrandName) && !filters.activeBrandName.some(_ => _.value === 'Все')) {
+	if (filters?.activeBrandName && Array.isArray(filters?.activeBrandName) && !filters?.activeBrandName.some(_ => _.value === 'Все')) {
 		requestObject.brands = filters.activeBrandName.map(_ => _.name);
 	}
 	// filters?.activeArticle.value !== 'Все'
-	if (filters.activeArticle && Array.isArray(filters.activeArticle) && !filters.activeArticle.some(_ => _.value === 'Все')) {
+	if (filters?.activeArticle && Array.isArray(filters?.activeArticle) && !filters?.activeArticle.some(_ => _.value === 'Все')) {
 		requestObject.articles = filters.activeArticle.map(_ => _.name);
 	}
-	if (filters.activeGroup && Array.isArray(filters.activeGroup) && !filters.activeGroup.some(_ => _.value === 'Все')) {
+	if (filters?.activeGroup && Array.isArray(filters?.activeGroup) && !filters?.activeGroup.some(_ => _.value === 'Все')) {
 		requestObject.product_groups = filters.activeGroup.map(_ => _.id);
 	}
-	if (filters.activeCategory && Array.isArray(filters.activeCategory) && !filters.activeCategory.some(_ => _.value === 'Все')) {
+	if (filters?.activeCategory && Array.isArray(filters?.activeCategory) && !filters?.activeCategory.some(_ => _.value === 'Все')) {
 		requestObject.categories = filters.activeCategory.map(_ => _.id);
 	}
 	return requestObject;

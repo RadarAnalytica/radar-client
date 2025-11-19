@@ -80,7 +80,7 @@ export const sortTableDataFunc = (sortType, sortedValue, dataToSort) => {
 };
 
 
-const TurnoverBlock = ({ loading, turnover, turnoverCompare, selectedRange, activeBrand, authToken, filters, prevTurnover }) => {
+const TurnoverBlock = ({ loading, turnover, turnoverCompare, selectedRange, activeBrand, authToken, filters, prevTurnover, dragHandle }) => {
     const [initData, setInitData] = useState([]);
     const [tableData, setTableData] = useState([]);
     const [isModalVisible, setIsModalVisible] = useState(false);
@@ -201,6 +201,7 @@ const TurnoverBlock = ({ loading, turnover, turnoverCompare, selectedRange, acti
                     }
                 }}
                 isLoading={loading}
+                dragHandle={dragHandle}
             />
 
             <Modal

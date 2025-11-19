@@ -21,7 +21,7 @@ ChartJS.register(
     verticalDashedLinePlugin
 );
 
-const MarginChartBlock = ({ dataDashBoard, loading }) => {
+const MarginChartBlock = ({ dataDashBoard, loading, dragHandle }) => {
 
     const [controlsState, setControlsState] = useState({
         isMarginActive: true,
@@ -326,7 +326,10 @@ const MarginChartBlock = ({ dataDashBoard, loading }) => {
 
     return (
         <div className={styles.block}>
-            <p className={styles.block__title}>Рентабельность и маржинальность</p>
+            <div className={styles.block__header}>
+                <p className={styles.block__title}>Рентабельность и маржинальность</p>
+                {dragHandle && dragHandle()}
+            </div>
             <div className={styles.block__legend}>
             <div className={styles.controls__controlWrapper}>
                 <ConfigProvider

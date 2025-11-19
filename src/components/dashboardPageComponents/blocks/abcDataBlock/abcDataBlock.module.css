@@ -61,6 +61,12 @@
     background: #5329FF0D;
 }
 
+.block__headerRight {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 12px;
+}
 .block__table {
     width: 100%;
     display: flex;

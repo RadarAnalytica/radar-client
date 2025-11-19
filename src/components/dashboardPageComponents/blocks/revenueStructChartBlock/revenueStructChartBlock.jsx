@@ -122,7 +122,7 @@ const centerTextPlugin = {
 
 const chartPlugins = [centerTextPlugin, tooltipShadowPlugin, activeArcShadowPlugin];
 
-const RevenueStructChartBlock = ({ dataDashBoard, loading }) => {
+const RevenueStructChartBlock = ({ dataDashBoard, loading, dragHandle }) => {
 
     const dataStructureRevenue = processStructureData(dataDashBoard?.structure);
     const { isSidebarHidden } = useAppSelector((state) => state.utils);
@@ -206,7 +206,10 @@ const RevenueStructChartBlock = ({ dataDashBoard, loading }) => {
 
     return (
         <div className={styles.block}>
-            <p className={styles.block__title}>Структура выручки</p>
+            <div className={styles.block__header}>
+                <p className={styles.block__title}>Структура выручки</p>
+                {dragHandle && dragHandle()}
+            </div>
             <div className={styles.block__chart}>
                 <Doughnut data={data} options={options} plugins={chartPlugins} />
             </div>
