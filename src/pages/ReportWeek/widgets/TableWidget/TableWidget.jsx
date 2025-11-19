@@ -171,11 +171,6 @@ export default function TableWidget({ loading, columns, data, rowSelection = fal
                         onSort={(sort_field, sort_order) => setSortState({ sort_field, sort_order })}
                         headerCellWrapperClassName={styles.headerCellWrapperCustomClass}
                         bodyCellWrapperClassName={styles.bodyCellWrapperCustomClass}
-                        virtualization={{
-                            enabled: true,
-                            estimateSize: 35.8,
-                            overscan: 20
-                        }}
                     />
                 }
             </div>

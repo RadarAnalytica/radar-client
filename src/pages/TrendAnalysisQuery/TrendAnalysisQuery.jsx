@@ -431,6 +431,7 @@ export default function TrendAnalysisQuery() {
 											config={NEW_COLUMNS}
 											dataSource={data.table}
 											bodyRowClassName={styles.bodyRowSpecial}
+											style={{ width: '100%' }}
 											paginationContainerStyle={{ display: 'none' }}
 											bodyCellWrapperStyle={{
 												//fontWeight: 700,

@@ -137,7 +137,6 @@ export default function RnpTable({ columns, data, columns2, data2, expanded, el 
 
 						dataSource={data2}
 						config={tableConfig}
-
 						treeMode
 						indentSize={45}
 						expandedRowKeys={expandedRowKeys}
@@ -160,11 +159,6 @@ export default function RnpTable({ columns, data, columns2, data2, expanded, el 
 						customCellRender={{
 							idx: [],
 							renderer: customCellRender,
-						}}
-						virtualization={{
-							enabled: true,
-							estimateSize: 38,
-							overscan: 17
 						}}
 					/>
 				</div>

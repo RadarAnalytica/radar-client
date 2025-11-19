@@ -79,15 +79,24 @@ export const AddShopWidget = ({ authToken, setStatusBarState }) => {
             });
             setAddShopRequestStatus(initRequestStatus);
         }
+        let timeout;
         if (addShopRequestStatus.isError) {
             // setIsModalVisible(false)
-            setStatusBarState({
-                isActive: true,
-                type: 'Error',
-                message: addShopRequestStatus.message
-            });
-            setAddShopRequestStatus(initRequestStatus);
+            // setStatusBarState({
+            //     isActive: true,
+            //     type: 'Error',
+            //     message: addShopRequestStatus.message
+            // });
+            timeout = setTimeout(() => {
+                setAddShopRequestStatus(initRequestStatus);
+            }, 2000);
         }
+
+        return () => {
+            if (timeout) {
+                clearTimeout(timeout);
+            }
+        };
     }, [addShopRequestStatus]);
 
     return (
@@ -212,14 +221,25 @@ export const AddShopWidget = ({ authToken, setStatusBarState }) => {
                             <div className={styles.widget__buttonHelper}>
                                 <Link to='https://radar.usedocs.com/article/79862' target='_blank'>Где найти токен?</Link>
                             </div>
+                            
                             <Button
                                 htmlType='submit'
                                 type='primary'
                                 style={{ height: 63, fontSize: 16, fontWeight: 700, width: '100%' }}
+                                disabled={addShopRequestStatus.isError}
+                                loading={addShopRequestStatus.isLoading}
                             >
                                 Сохранить
                             </Button>
-                          
+                            {addShopRequestStatus.isError &&
+                                <div 
+                                    style={{ color: '#F93C65', fontSize: 14, fontWeight: 500, lineHeight: '100%' }}
+
+                                >
+                                    {addShopRequestStatus.message}
+                                </div>
+                            }
+
                         </Form>
                     </ConfigProvider>
                 </div>

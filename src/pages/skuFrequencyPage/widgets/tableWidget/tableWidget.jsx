@@ -135,11 +135,6 @@ const TableWidget = ({ tableConfig, setTableConfig }) => {
                         },
                         showQuickJumper: true,
                     }}
-                    virtualization={{
-                        enabled: true,
-                        estimateSize: 85,
-                        overscan: 12
-                    }}
                     paginationContainerStyle={{
                         bottom: 0
                     }}
