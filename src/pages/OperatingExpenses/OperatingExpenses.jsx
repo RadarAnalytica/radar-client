@@ -11,7 +11,7 @@ import ReportTable from '@/components/sharedComponents/ReportTable/ReportTable';
 import DataCollectWarningBlock from '@/components/sharedComponents/dataCollectWarningBlock/dataCollectWarningBlock';
 import ModalDeleteConfirm from '@/components/sharedComponents/ModalDeleteConfirm';
 import styles from './OperatingExpenses.module.css';
-import { EXPENSE_COLUMNS, CATEGORY_COLUMNS } from './config/config';
+import { EXPENSE_COLUMNS, CATEGORY_COLUMNS, TEMPLATE_COLUMNS } from './config/config';
 import ExpenseFormModal from './features/CreateExpense/expenseFormModal';
 import ModalCreateCategory from './features/CreateCategory/CreateCategory';
 import { EditIcon, CopyIcon, DeleteIcon, InfoIcon } from './shared/Icons';
@@ -340,6 +340,7 @@ export default function OperatingExpenses() {
 		try {
 			const res = await ServiceFunctions.postOperatingExpensesExpenseCreate(authToken, requestObject, requestUrl);
 			await updateExpenses(true); // Сбрасываем пагинацию и обновляем данные
+			await updateTemplates();
 			const successMessage = expenseModal.mode === 'copy' ? 'Расход скопирован' : 'Расход добавлен';
 			setAlertState({ message: successMessage, status: 'success', isVisible: true });
 		} catch (error) {
@@ -359,6 +360,7 @@ export default function OperatingExpenses() {
 		try {
 			const res = await ServiceFunctions.patchOperatingExpensesExpense(authToken, requestObject, requestUrl);
 			await updateExpenses(); // Обновляем данные без сброса пагинации
+			await updateTemplates();
 			setAlertState({ message: 'Расход обновлен', status: 'success', isVisible: true });
 		} catch (error) {
 			console.error('editExpense error', error);
@@ -405,6 +407,7 @@ export default function OperatingExpenses() {
 
 			const res = await ServiceFunctions.postOperatingExpensesExpenseCreate(authToken, expenseData, `/operating-expenses/expense/copy?expense_id=${expenseId}`);
 			await updateExpenses(true);
+			await updateTemplates();
 			setAlertState({ message: 'Расход скопирован', status: 'success', isVisible: true });
 		} catch (error) {
 			console.error('copyExpense error', error);
@@ -419,6 +422,7 @@ export default function OperatingExpenses() {
 		try {
 			const res = await ServiceFunctions.deleteOperatingExpensesExpenseDelete(authToken, id, isPeriodic);
 			await updateExpenses(); // Обновляем данные без сброса пагинации
+			await updateTemplates();
 			setAlertState({ message: 'Расход удален', status: 'success', isVisible: true });
 		} catch (error) {
 			console.error('deleteExpense error', error);
@@ -477,6 +481,7 @@ export default function OperatingExpenses() {
 		try {
 			const res = await ServiceFunctions.patchOperatingExpensesTemplate(authToken, requestObject, requestUrl);
 			await updateTemplates(); // Обновляем данные без сброса пагинации
+			await updateExpenses();
 			setAlertState({ message: 'Шаблон обновлен', status: 'success', isVisible: true });
 		} catch (error) {
 			console.error('editTemplate error', error);
@@ -530,6 +535,7 @@ export default function OperatingExpenses() {
 
 			const res = await ServiceFunctions.postOperatingExpensesTemplateCreate(authToken, templateData, 'operating-expenses/periodic-templates/create');
 			await updateTemplates(true);
+			await updateExpenses();
 			setAlertState({ message: 'Шаблон скопирован', status: 'success', isVisible: true });
 		} catch (error) {
 			console.error('copyTemplate error', error);
@@ -543,6 +549,7 @@ export default function OperatingExpenses() {
 		setLoading(true);
 		try {
 			const res = await ServiceFunctions.deleteOperatingExpensesTemplateDelete(authToken, id);
+			await updateExpenses();
 			await updateTemplates(); // Обновляем данные без сброса пагинации
 			setAlertState({ message: 'Шаблон удален', status: 'success', isVisible: true });
 		} catch (error) {
@@ -673,7 +680,7 @@ export default function OperatingExpenses() {
 					templateData.data?.length > 0
 					? <TableWidget
 						loading={loading}
-						columns={EXPENSE_COLUMNS}
+						columns={TEMPLATE_COLUMNS}
 						data={templateData.data}
 						setExpenseModal={setTemplateModal}
 						setDeleteExpenseId={setDeleteTemplateId}
@@ -733,7 +740,7 @@ export default function OperatingExpenses() {
 					title={'Вы уверены, что хотите удалить расход?'}
 					text={expenseData.data.find((el) => el.id === deleteExpenseId)?.is_periodic ? (
 						<div className={styles.deleteModal__text}>
-							Вы удаляете периодический расход. Это действие также удалит все созданные расходы по этому шаблону.
+							Вы удаляете периодический расход. Это действие также удалит все созданные расходы по этому шаблону и сам шаблон.
 							<RadarTooltip
 								text='Вы также можете запретить создавать новые расходы по этому шаблону. Для этого зайдите в редактирование планового расхода и установите/измените дату окончания расхода.'
 							>
@@ -745,7 +752,7 @@ export default function OperatingExpenses() {
 					) : null}
 					onOk={() => {
 						const currentExpense = expenseData.data.find((el) => el.id === deleteExpenseId);
-						deleteExpense(deleteExpenseId, currentExpense.is_periodic);
+						deleteExpense(currentExpense?.periodic_expense_id ? currentExpense.periodic_expense_id : deleteExpenseId, currentExpense?.is_periodic);
 					}}
 					onCancel={() => setDeleteExpenseId(null)}
 					isLoading={loading}
@@ -763,7 +770,7 @@ export default function OperatingExpenses() {
 					title={'Вы уверены, что хотите удалить шаблон?'}
 					text={templateData.data.find((el) => el.id === deleteTemplateId)?.is_periodic ? (
 						<div className={styles.deleteModal__text}>
-							Вы удаляете периодический шаблон. Это действие также удалит все созданные расходы по этому шаблону.
+							Вы удаляете периодический шаблон. Это действие также удалит все созданные расходы по этому шаблону и сам шаблон.
 							<RadarTooltip
 								text='Вы также можете запретить создавать новые расходы по этому шаблону. Для этого зайдите в редактирование планового шаблона и установите/измените дату окончания шаблона.'
 							>

@@ -4,7 +4,7 @@ import { Table as RadarTable } from 'radar-ui';
 import { EditIcon, CopyIcon, DeleteIcon, InfoIcon } from '../../shared/Icons';
 import moment from 'moment';
 import styles from './tableWidget.module.css';
-import { formatPrice } from '@/service/utils';
+import { formatPrice, getWordDeclension } from '@/service/utils';
 import { ServiceFunctions } from '@/service/serviceFunctions';
 import { useTableColumnResize } from '@/service/hooks';
 
@@ -32,19 +32,14 @@ const customCellExpenseRender = (
             </div>
         );
     }
-    if (dataIndex === 'date' && record.key === 'summary') {
-        return (
-            <div className={`${styles.customCell} ${styles.customCell_summaryPadding}`}>
-                {value}
-            </div>
-        );
+    if (dataIndex === 'date') {
+        if (record.key === 'summary') {
+            return <div className={`${styles.customCell} ${styles.customCell_summaryPadding}`}>{value}</div>;
+        }
+        return <div className={styles.customCell}>{moment(value).format('DD.MM.YYYY')}</div>;
     }
-    if (dataIndex === 'date' && record.key !== 'summary') {
-        return (
-            <div className={styles.customCell}>
-                {moment(value).format('DD.MM.YYYY')}
-            </div>
-        );
+    if (dataIndex === 'date_from' || dataIndex === 'date_to') {
+        return <div className={styles.customCell}>{value ? moment(value).format('DD.MM.YYYY') : '-'}</div>;
     }
     if (dataIndex === 'description' || dataIndex === 'expense_categories' || dataIndex === 'vendor_code' || dataIndex === 'brand_name') {
         return (
@@ -60,19 +55,16 @@ const customCellExpenseRender = (
             </div>
         );
     }
-    if (dataIndex === 'shops') {
-        let v = isTemplate ? record.items && record.items[0] : value && value[0];
-        v = v?.name || v?.shop_name || v?.shop || '-';
-        return <div className={styles.distributorCell} title={v}>{v}</div>;
-    }
-    if (dataIndex === 'vendor_codes') {
-        let v = isTemplate ? record.items && record.items[0] : value && value[0];
-        v = v?.vendor_code || '-';
-        return <div className={styles.distributorCell} title={v}>{v}</div>;
-    }
-    if (dataIndex === 'brand_names') {
-        let v = isTemplate ? record.items && record.items[0] : value && value[0];
-        v = v?.brand_name || '-';
+    if (['shops', 'vendor_codes', 'brand_names'].includes(dataIndex) && value) {
+        value = Array.from(new Set(value));
+        if (value?.length > 1) {
+            const word = dataIndex === 'shops' ? 'магазин' : dataIndex === 'vendor_codes' ? 'артикул' : 'бренд';
+            return <div className={styles.distributorCell}>{value.length} {getWordDeclension(word, value.length)}</div>;
+        }
+        let v = (value && value[0]) || '-';
+        if (dataIndex === 'shops') {
+            v = v?.name || v?.shop_name || v?.shop || '-';
+        }
         return <div className={styles.distributorCell} title={v}>{v}</div>;
     }
     if (dataIndex === 'action' && record.key === 'summary') {
@@ -88,37 +80,10 @@ const customCellExpenseRender = (
                         e.stopPropagation();
                         e.preventDefault();
 
-                        // Для шаблонов используем данные из списка
-                        if (isTemplate) {
-                            const templateData = await ServiceFunctions.getOperatingExpensesTemplateGet(authToken, record.id);
-                            if (templateData) {
-                                setExpenseModal({
-                                    mode: 'edit',
-                                    isOpen: true,
-                                    data: {
-                                        id: templateData.id,
-                                        is_periodic: true,
-                                        end_date: templateData.finished_at?.split('T')[0] || templateData.end_date,
-                                        frequency: templateData.period_type || templateData.frequency,
-                                        week: templateData.period_type === 'week' ? templateData.period_values : (templateData.frequency === 'week' ? templateData.week : null),
-                                        month: templateData.period_type === 'month' ? templateData.period_values?.toString() : (templateData.frequency === 'month' ? templateData.month : null),
-                                        shops: templateData.items.filter(item => item?.shop && !item?.vendor_code && !item?.brand_name).map(item => item?.shop),
-                                        vendor_codes: templateData.items.filter(item => item?.vendor_code).map(item => item?.vendor_code),
-                                        brand_names: templateData.items.filter(item => item?.brand_name && !item?.vendor_code).map(item => item?.brand_name),
-                                        value: templateData.value,
-                                        description: templateData.description,
-                                        expense_categories: templateData.expense_categories,
-                                        date: templateData.date_from || templateData.date,
-                                    }
-                                });
-                            }
-                            return;
-                        }
-
                         let response;
                         if (record?.is_periodic) {
                             try {
-                                response = await ServiceFunctions.getPeriodicExpenseData(authToken, record.id);
+                                response = await ServiceFunctions.getOperatingExpensesTemplateGet(authToken, isTemplate ? record.id : record.periodic_expense_id);
 
                                 setExpenseModal({
                                     mode: 'edit',
@@ -136,7 +101,7 @@ const customCellExpenseRender = (
                                         value: response.value,
                                         description: response.description,
                                         expense_categories: response.expense_categories,
-                                        date: response.date,
+                                        date_from: response.date_from,
                                     }
                                 });
                                 return;
@@ -163,32 +128,6 @@ const customCellExpenseRender = (
                         e.stopPropagation();
                         e.preventDefault();
 
-                        // Для шаблонов используем данные из списка
-                        if (isTemplate) {
-                            const templateData = await ServiceFunctions.getOperatingExpensesTemplateGet(authToken, record.id);
-                            if (templateData) {
-                                setExpenseModal({
-                                    mode: 'copy',
-                                    isOpen: true,
-                                    data: {
-                                        is_periodic: true,
-                                        end_date: templateData.finished_at?.split('T')[0] || templateData.end_date,
-                                        date: templateData.date_from || templateData.date,
-                                        frequency: templateData.period_type || templateData.frequency,
-                                        week: templateData.period_type === 'week' ? templateData.period_values : (templateData.frequency === 'week' ? templateData.week : null),
-                                        month: templateData.period_type === 'month' ? templateData.period_values : (templateData.frequency === 'month' ? templateData.month : null),
-                                        shops: templateData.items.filter(item => item?.shop && !item?.vendor_code && !item?.brand_name).map(item => item?.shop),
-                                        vendor_codes: templateData.items.filter(item => item?.vendor_code).map(item => item?.vendor_code),
-                                        brand_names: templateData.items.filter(item => item?.brand_name && !item?.vendor_code).map(item => item?.brand_name),
-                                        value: templateData.value,
-                                        description: templateData.description,
-                                        expense_categories: templateData.expense_categories,
-                                    }
-                                });
-                            }
-                            return;
-                        }
-
                         if (!record.is_periodic) {
                             copyExpense(record.id);
                             return;
@@ -197,7 +136,7 @@ const customCellExpenseRender = (
                         let response;
                         if (record?.is_periodic) {
                             try {
-                                response = await ServiceFunctions.getPeriodicExpenseData(authToken, record.id);
+                                response = await ServiceFunctions.getOperatingExpensesTemplateGet(authToken, isTemplate ? record.id : record.periodic_expense_id);
 
                                 setExpenseModal({
                                     mode: 'copy',
@@ -205,7 +144,7 @@ const customCellExpenseRender = (
                                     data: {
                                         ...response,
                                         end_date: response.finished_at?.split('T')[0],
-                                        date: response.date,
+                                        date_from: response.date_from,
                                         frequency: response.period_type,
                                         week: response.period_type === 'week' ? response.period_values : null,
                                         month: response.period_type === 'month' ? response.period_values : null,
