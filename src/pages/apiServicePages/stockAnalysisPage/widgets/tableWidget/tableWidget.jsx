@@ -278,11 +278,13 @@ const TableWidget = ({ stockAnalysisFilteredData, loading, progress, config, ini
                             //wekitBoxOrient: 'vertical',
                             //webkitLineClamp: 1,
                             //textWrap: 'nowrap',
+                            padding: '12px 25px 12px 10px'
                         }}
                         bodyCellWrapperStyle={{
                             //minWidth: 'inherit',
                             //width: 'inherit',
                             //maxWidth: 'inherit',
+                            padding: '5px 10px',
                             border: 'none',
                         }}
                         bodyCellStyle={{
