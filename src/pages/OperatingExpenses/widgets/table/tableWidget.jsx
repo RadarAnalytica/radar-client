@@ -38,7 +38,7 @@ const customCellExpenseRender = (
         }
         return <div className={styles.customCell}>{moment(value).format('DD.MM.YYYY')}</div>;
     }
-    if (dataIndex === 'date_from' || dataIndex === 'date_to') {
+    if (dataIndex === 'date_from' || dataIndex === 'finished_at') {
         return <div className={styles.customCell}>{value ? moment(value).format('DD.MM.YYYY') : '-'}</div>;
     }
     if (dataIndex === 'description' || dataIndex === 'expense_categories' || dataIndex === 'vendor_code' || dataIndex === 'brand_name') {
@@ -63,7 +63,7 @@ const customCellExpenseRender = (
         }
         let v = (value && value[0]) || '-';
         if (dataIndex === 'shops') {
-            v = v?.name || v?.shop_name || v?.shop || '-';
+            v = v?.name || v?.shop_name || (v && v.toString()) || '-';
         }
         return <div className={styles.distributorCell} title={v}>{v}</div>;
     }
@@ -81,7 +81,7 @@ const customCellExpenseRender = (
                         e.preventDefault();
 
                         let response;
-                        if (record?.is_periodic) {
+                        if (record?.is_periodic || record?.is_template) {
                             try {
                                 response = await ServiceFunctions.getOperatingExpensesTemplateGet(authToken, isTemplate ? record.id : record.periodic_expense_id);
 
@@ -134,7 +134,7 @@ const customCellExpenseRender = (
                         }
 
                         let response;
-                        if (record?.is_periodic) {
+                        if (record?.is_periodic || record?.is_template) {
                             try {
                                 response = await ServiceFunctions.getOperatingExpensesTemplateGet(authToken, isTemplate ? record.id : record.periodic_expense_id);
 

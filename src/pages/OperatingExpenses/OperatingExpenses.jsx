@@ -313,6 +313,7 @@ export default function OperatingExpenses() {
 		} finally {
 			setCategoryEdit(null);
 			updateExpenses(false, false);
+			updateTemplates();
 		}
 	};
 
@@ -429,6 +430,7 @@ export default function OperatingExpenses() {
 			setAlertState({ message: 'Не удалось удалить расход', status: 'error', isVisible: true });
 		} finally {
 			setDeleteExpenseId(null);
+			setDeleteTemplateId(null);
 			setLoading(false);
 		}
 	};
@@ -445,6 +447,7 @@ export default function OperatingExpenses() {
 		} finally {
 			setDeleteCategoryId(null);
 			updateExpenses(false, false);
+			updateTemplates();
 			setLoading(false);
 		}
 	};
@@ -768,25 +771,20 @@ export default function OperatingExpenses() {
 
 				{deleteTemplateId && <ModalDeleteConfirm
 					title={'Вы уверены, что хотите удалить шаблон?'}
-					text={templateData.data.find((el) => el.id === deleteTemplateId)?.is_periodic ? (
+					text={(
 						<div className={styles.deleteModal__text}>
-							Вы удаляете периодический шаблон. Это действие также удалит все созданные расходы по этому шаблону и сам шаблон.
+							Вы удаляете шаблон. Это действие также удалит все созданные расходы по этому шаблону.
 							<RadarTooltip
-								text='Вы также можете запретить создавать новые расходы по этому шаблону. Для этого зайдите в редактирование планового шаблона и установите/измените дату окончания шаблона.'
+								text='Вы также можете запретить создавать новые расходы по этому шаблону. Для этого зайдите в редактирование шаблона и установите/измените дату окончания.'
 							>
 								<span
 									style={{ color: '#F93C65', textDecoration: 'underline' }}
 								>Подробнее</span>
 							</RadarTooltip>
 						</div>
-					) : null}
+					)}
 					onOk={() => {
-						const currentTemplate = templateData.data.find((el) => el.id === deleteTemplateId);
-						if (currentTemplate?.is_periodic) {
-							deleteTemplate(currentTemplate.periodic_expense_id, true);
-						} else {
-							deleteTemplate(deleteTemplateId, false);
-						}
+						deleteExpense(deleteTemplateId, true);
 					}}
 					onCancel={() => setDeleteTemplateId(null)}
 					isLoading={loading}

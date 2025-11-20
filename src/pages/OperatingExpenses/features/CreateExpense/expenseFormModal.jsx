@@ -77,11 +77,7 @@ const getRequestObject = (values, editData, mode, isTemplate = false) => {
 
 		// Добавляем id для редактирования
 		if (mode === 'edit') {
-			if (isTemplate && editData?.id) {
-				requestObject.id = editData.id;
-			} else if (!isTemplate && editData?.periodic_expense_id) {
-				requestObject.id = editData.periodic_expense_id;
-			}
+			requestObject.id = editData.periodic_expense_id;
 		}
 	} else {
 		// Разовый расход или разовый шаблон

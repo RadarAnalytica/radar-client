@@ -128,8 +128,8 @@ export const TEMPLATE_COLUMNS = [
 	},
 	{
 		title: 'Дата окончания',
-		dataIndex: 'date_to',
-		key: 'date_to',
+		dataIndex: 'finished_at',
+		key: 'finished_at',
 		width: 120,
 		minWidth: 100,
 		maxWidth: 200,
