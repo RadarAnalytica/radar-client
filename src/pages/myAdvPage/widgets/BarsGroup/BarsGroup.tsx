@@ -107,9 +107,7 @@ const BarsGroup: React.FC<BarsGroupProps> = ({ loading = false }) => {
         />
       </div>
 
-      {/* Two bars side by side */}
-      <div className={styles.productBars}>
-        {/* 10 bar - Product with images */}
+      {/* <div className={styles.productBars}>
         <div className={styles.productBar}>
           <div className={styles.productBar__gallery}>
             <div className={styles.productBar__mainImage}>
@@ -148,7 +146,6 @@ const BarsGroup: React.FC<BarsGroupProps> = ({ loading = false }) => {
           </div>
         </div>
 
-        {/* 11 bar - Product details split in half */}
         <div className={styles.detailsBar}>
           <div className={styles.detailsBar__left}>
             <div className={styles.detailsBar__item}>
@@ -179,7 +176,7 @@ const BarsGroup: React.FC<BarsGroupProps> = ({ loading = false }) => {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

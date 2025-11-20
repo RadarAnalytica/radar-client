@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { Table as RadarTable } from 'radar-ui';
 import { useNavigate } from 'react-router-dom';
 import { Filters } from '@/components/sharedComponents/apiServicePagesFiltersComponent';
@@ -46,13 +46,72 @@ const MyAdvTable: React.FC<MyAdvTableProps> = ({
     setHideCompaniesWithoutStats(checked);
   };
 
+  // ---- state для expanded строк -----------//
+  const [expandedRowKeys, setExpandedRowKeys] = useState<string[]>([]);
+
+  // Генерация дочерних строк с датами для компании
+  const generateDateRows = (company: CompanyData) => {
+    // Генерируем последние 7 дней
+    const dates = [];
+    for (let i = 6; i >= 0; i--) {
+      const date = new Date();
+      date.setDate(date.getDate() - i);
+      dates.push(date);
+    }
+
+    return dates.map((date, index) => {
+      const dateStr = date.toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit', year: 'numeric' });
+      // Генерируем случайные данные для каждой даты (можно заменить на реальные данные)
+      const variation = 0.8 + Math.random() * 0.4; // вариация от 80% до 120%
+      
+      return {
+        id: `${company.id}_${date.getTime()}`,
+        key: `${company.id}_${date.getTime()}`,
+        isParent: false,
+        isLastChild: index === dates.length - 1,
+        company: dateStr, // В колонке компании показываем дату
+        cart: Math.round(company.cart * variation / dates.length),
+        orders: Math.round(company.orders * variation / dates.length),
+        ordered_qty: Math.round(company.ordered_qty * variation / dates.length),
+        forecast_purchase_qty: Math.round(company.forecast_purchase_qty * variation / dates.length),
+        views_to_click: company.views_to_click,
+        click_to_cart: company.click_to_cart,
+        cart_to_order: company.cart_to_order,
+        view_to_order: company.view_to_order,
+        forecast_order_to_purchase: company.forecast_order_to_purchase,
+        forecast_click_to_purchase: company.forecast_click_to_purchase,
+        views: Math.round(company.views * variation / dates.length),
+        clicks: Math.round(company.clicks * variation / dates.length),
+        cpc: company.cpc,
+        avg_crm: company.avg_crm,
+        avg_position: company.avg_position,
+        drr_orders: company.drr_orders,
+        forecast_drr_purchase: company.forecast_drr_purchase,
+        cpcart: company.cpcart,
+        forecast_cps: company.forecast_cps,
+        orders_sum: Math.round(company.orders_sum * variation / dates.length),
+        forecast_purchase_sum: Math.round(company.forecast_purchase_sum * variation / dates.length),
+        advertising_costs: Math.round(company.advertising_costs * variation / dates.length),
+      };
+    });
+  };
+
   const prepareTableData = () => {
     if (!Array.isArray(data)) return [];
 
-    return data.map((item: CompanyData) => ({
-      key: item.id,
-      ...item
-    }));
+    return data.map((item: CompanyData) => {
+      const children = generateDateRows(item);
+      return {
+        id: item.id,
+        key: item.id,
+        isParent: true,
+        ...item,
+        children: children.map((child, index) => ({
+          ...child,
+          isLastChild: index === children.length - 1,
+        })),
+      };
+    });
   };
 
   const handlePageChange = (page: number) => {
@@ -72,44 +131,55 @@ const MyAdvTable: React.FC<MyAdvTableProps> = ({
     navigate(`/my-adv/${companyId}`);
   };
 
-  const customCellRender = (value: any, record: any, index: number, dataIndex: string) => {
-    // Рендер для компании (кликабельная)
+  const customCellRender = (value: unknown, record: CompanyData & { isParent?: boolean; isLastChild?: boolean; id?: number | string }, index: number, dataIndex: string) => {
+    // Рендер для компании (кликабельная) - только для родительских строк
     if (dataIndex === 'company') {
-      const imageSize = { width: 30, height: 40 };
-      return (
-        <div 
-          className={styles.companyCell}
-          onClick={() => handleCompanyClick(record.id)}
-          style={{ cursor: 'pointer' }}
-        >
-          {record.company_photo 
-            ? <img src={record.company_photo} alt={value} {...imageSize} className={styles.companyImage} />
-            : <div className={styles.companyImage} style={imageSize} />
-          }
-          <span className={styles.companyName}>
-            {value}
-          </span>
-        </div>
-      );
+      if (record.isParent) {
+        const imageSize = { width: 30, height: 40 };
+        const companyName = String(value ?? '');
+        return (
+          <div 
+            className={styles.companyCell}
+            onClick={() => handleCompanyClick(record.id as number)}
+            style={{ cursor: 'pointer' }}
+          >
+            {record.company_photo 
+              ? <img src={record.company_photo} alt={companyName} {...imageSize} className={styles.companyImage} />
+              : <div className={styles.companyImage} style={imageSize} />
+            }
+            <span className={styles.companyName}>
+              {companyName}
+            </span>
+          </div>
+        );
+      } else {
+        // Для дочерних строк показываем дату
+        return (
+          <div className={styles.dateCell}>
+            {String(value ?? '')}
+          </div>
+        );
+      }
     }
 
-    if (dataIndex === 'status_wb') {
-      const badgeColor = value === 'Запущена' ? '#4AD99133' : '#F0AD0033';
+    if (dataIndex === 'status_wb' && value) {
+      const statusValue = String(value ?? '');
+      const badgeColor = statusValue === 'Запущена' ? '#4AD99133' : '#F0AD0033';
       return (
         <span 
           className={`${styles.labelCell} ${styles.badgeCell}`} 
           style={{ backgroundColor: badgeColor }}
-          title={value}
+          title={statusValue}
         >
-          {value}
+          {statusValue}
         </span>
       );
     }
 
-    if (dataIndex === 'company_type') {
+    if (dataIndex === 'company_type' && value) {
       return (
         <span className={`${styles.labelCell} ${styles.companyType}`}>
-          {value}
+          {String(value ?? '')}
         </span>
       );
     }
@@ -117,7 +187,7 @@ const MyAdvTable: React.FC<MyAdvTableProps> = ({
     if (dataIndex === 'views') {
       return (
         <span className={`${styles.labelCell} viewsCell`}>
-          {value}
+          {String(value ?? '')}
         </span>
       );
     }
@@ -126,7 +196,7 @@ const MyAdvTable: React.FC<MyAdvTableProps> = ({
     if (dataIndex.includes('_to_') || (dataIndex.includes('forecast_') && typeof value === 'string')) {
       return (
         <span className={styles.labelCell}>
-          {value}
+          {String(value ?? '')}
         </span>
       );
     }
@@ -140,7 +210,7 @@ const MyAdvTable: React.FC<MyAdvTableProps> = ({
         : value;
       return (
         <span className={styles.labelCell}>
-          {formattedValue}
+          {String(formattedValue ?? '')}
         </span>
       );
     }
@@ -152,7 +222,7 @@ const MyAdvTable: React.FC<MyAdvTableProps> = ({
         : value;
       return (
         <span className={styles.labelCell}>
-          {formattedValue}
+          {String(formattedValue ?? '')}
         </span>
       );
     }
@@ -162,25 +232,57 @@ const MyAdvTable: React.FC<MyAdvTableProps> = ({
       const formattedValue = new Intl.NumberFormat('ru-RU').format(value);
       return (
         <span className={styles.labelCell}>
-          {formattedValue}
+          {String(formattedValue ?? '')}
         </span>
       );
     }
 
     return (
       <span className={`${styles.labelCell} ${toCamelCase(dataIndex)}Cell`}>
-        {value}
+        {String(value ?? '')}
       </span>
     );
   };
 
-  const { config: tableConfigResized, onResize: onResizeColumn } = useTableColumnResize(
+  const { config: tableConfigResized } = useTableColumnResize(
     columns, 
     `myAdv_sizeColumnsConfig`,
     0,
     400,
     TABLE_CONFIG_VERSION
   );
+
+  // Инициализация состояния раскрытых строк
+  useEffect(() => {
+    if (!data || data.length === 0) return;
+
+    // Пытаемся загрузить сохраненное состояние
+    const savedState = localStorage.getItem('MY_ADV_EXPANDED_TABLE_ROWS_STATE');
+    
+    if (savedState) {
+      try {
+        const parsedState = JSON.parse(savedState);
+        if (Array.isArray(parsedState.keys)) {
+          setExpandedRowKeys(parsedState.keys);
+          return;
+        }
+      } catch (error) {
+        console.error('Ошибка при парсинге сохраненного состояния:', error);
+      }
+    }
+
+    // Если нет сохраненного состояния, раскрываем все строки по умолчанию
+    const allKeys = data.map((item) => String(item.id));
+    setExpandedRowKeys(allKeys);
+    localStorage.setItem('MY_ADV_EXPANDED_TABLE_ROWS_STATE', JSON.stringify({ keys: allKeys }));
+  }, [data]);
+
+  // Сохранение состояния при изменении раскрытых строк
+  const handleExpandedRowsChange = (keys: React.Key[]) => {
+    const stringKeys = keys.map(key => String(key));
+    setExpandedRowKeys(stringKeys);
+    localStorage.setItem('MY_ADV_EXPANDED_TABLE_ROWS_STATE', JSON.stringify({ keys: stringKeys }));
+  };
 
   const headerComponent = () => {
     return (
@@ -209,9 +311,10 @@ const MyAdvTable: React.FC<MyAdvTableProps> = ({
             groupSelect={false}
             shopSelect={false}
             brandSelect={false}
+            tempPageCondition={true}
             maxCustomDate={new Date(Date.now() - 24 * 60 * 60 * 1000)}
           >
-            <div className={styles.checkboxWrapper}>
+            {/* <div className={styles.checkboxWrapper}>
               <label className={styles.checkboxLabel}>
                 <input
                   type="checkbox"
@@ -220,7 +323,7 @@ const MyAdvTable: React.FC<MyAdvTableProps> = ({
                 />
                 <span>Скрыть компании без статистики</span>
               </label>
-            </div>
+            </div> */}
           </Filters>
         </div>
         <div className={styles.settingsWrapper}>
@@ -237,13 +340,18 @@ const MyAdvTable: React.FC<MyAdvTableProps> = ({
           {!loading && data && <>
             {headerComponent()}
             <RadarTable
-              config={tableConfigResized as any}
+              rowKey={(record) => String(record.id || record.key)}
+              config={tableConfigResized}
               dataSource={sortTableData(prepareTableData(), sortState)}
               // resizeable
               // onResize={onResizeColumn}
               preset="radar-table-default"
               scrollContainerRef={tableContainerRef}
               stickyHeader
+              treeMode
+              indentSize={45}
+              expandedRowKeys={expandedRowKeys}
+              onExpandedRowsChange={(keys: React.Key[]) => handleExpandedRowsChange(keys)}
               customCellRender={{
                 idx: columns.map(col => col.dataIndex),
                 renderer: customCellRender,

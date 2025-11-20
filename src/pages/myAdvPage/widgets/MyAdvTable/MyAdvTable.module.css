@@ -250,3 +250,9 @@
   text-decoration: underline;
 }
 
+.dateCell {
+  font-size: 14px;
+  color: #1A1A1A;
+  padding: 8px 0;
+}
+

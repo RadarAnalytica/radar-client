@@ -32,6 +32,25 @@
 .page__headerWrapper {
   width: 100%;
 }
+.page__headerTitle {
+  color: #bbbbbb;
+  font-size: 22px;
+  font-weight: 600;
+  margin: 0;
+
+  a {
+    color: #bbbbbb;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  span {
+    color: #1A1A1A;
+  }
+}
 
 .loader__container {
   display: flex;

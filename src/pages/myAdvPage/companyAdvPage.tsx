@@ -20,6 +20,7 @@ import {
 } from './config/tableConfig';
 import { mockCompaniesData, CompanyData } from './data/mockData';
 import styles from './companyAdvPage.module.css';
+import { Link } from 'react-router-dom';
 
 const CompanyAdvPage: React.FC = () => {
   const { companyId } = useParams<{ companyId: string }>();
@@ -98,7 +99,7 @@ const CompanyAdvPage: React.FC = () => {
       <section className={styles.page__content}>
         <div className={styles.page__headerWrapper}>
           <Header 
-            title={`Моя реклама / ${data.company}`}
+            title={<h2 className={styles.page__headerTitle}><Link to='/my-adv'>Моя реклама</Link> / <span>{data.company}</span></h2>}
             titlePrefix=""
             children=""
             videoReviewLink=""
