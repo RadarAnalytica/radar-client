@@ -6,6 +6,7 @@ import { RadarRateMark } from '@/shared';
 import styles from './newTableWidget.module.css';
 import { Tooltip, ConfigProvider } from 'antd';
 const years = ['2020', '2021', '2022', '2023', '2024', '2025', '2026', '2027', '2028', '2029', '2030'];
+import { URL } from '@/service/config';
 
 
 const customCellRender = (value, record, index, dataIndex) => {
@@ -152,6 +153,7 @@ const TableWidget = ({ loading, columns, data, rowSelection = false, virtual = t
 						paginationContainerStyle={{ display: 'none' }}
 						bodyRowClassName={styles.bodyRowSpecial}
 						defaultExpandedRowKeys={expandedRows}
+						benchmark={URL === 'https://test-server-pro.ru'}
 					/>
 				}
 			</div>
