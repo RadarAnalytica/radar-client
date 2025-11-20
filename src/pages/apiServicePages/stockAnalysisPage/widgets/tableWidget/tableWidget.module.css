@@ -361,15 +361,50 @@
 }
 
 .productCustomCellTitle {
-    /* display: -webkit-box;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.productCustomCellTitle span {
+    display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
     overflow: hidden;
     text-overflow: ellipsis;
-    text-wrap: wrap; */
     text-wrap: wrap;
+    overflow: hidden;
+    width: 100%;
+}
+.fixedCell {
+    display: block;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 20px;
+    /* min-width: 'inherit';
+    width: 'inherit'; */
+    min-width: 80px;
+}
+
+.fixedCellTitle {
     font-size: 14px;
-    font-weight: 700;
+    font-weight: 500;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-wrap: nowrap;
+    width: 100%;
+}
+
+.fixedCellTitle span {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-wrap: wrap;
+    overflow: hidden;
+    width: 100%;
+    min-width: 0;
+    word-break: break-all;
 }
 
 

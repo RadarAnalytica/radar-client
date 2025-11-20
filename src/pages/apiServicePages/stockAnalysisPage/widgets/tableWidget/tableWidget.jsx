@@ -70,22 +70,31 @@ const comparsionsList = {
   }
 
 const customCellRender = (value, record, index, dataIndex) => {
+    const [isImgVisible, setIsImgVisible] = useState(true);
     const comparsionKey = comparsionsList[dataIndex]
     const comparsion = record[comparsionKey]
     const rightBorders = ['category', 'sold_cost', 'return_cost', 'product_cost_stock', 'from_client_sum', 'additionalPayment', 'lostRevenue', 'byProfit', 'minDiscountPrice', 'orderSum', 'completed', 'saleCountDay'];
+   
     if (dataIndex === 'productName') {
         return (
             <div className={styles.productCustomCell}>
                 <div className={styles.productCustomCellImgWrapper}>
-                    <img 
+                    {isImgVisible && <img 
                         src={record.photo} 
                         width={30} 
                         height={40} 
                         alt='Product'
-                        onError={(e) => { e.target.style.display = 'none'; }}
-                    ></img>
+                        onError={(e) => { e.target.style.display = 'none'; setIsImgVisible(false); }}
+                    ></img>}
                 </div>
-                <div className={styles.productCustomCellTitle} title={value}>{value}</div>
+                <div className={styles.productCustomCellTitle} title={value}><span>{value}</span></div>
+            </div>
+        );
+    }
+    if (dataIndex === 'vendorСode' || dataIndex === 'sku' || dataIndex === 'size') {
+        return (
+            <div className={styles.fixedCell}>
+                <div className={styles.fixedCellTitle} title={value}><span>{value.toString()}</span></div>
             </div>
         );
     }
@@ -178,12 +187,6 @@ const TableWidget = ({ stockAnalysisFilteredData, loading, progress, config, ini
           });
         };
 
-        // const updatedConfig = updateColumnWidth(prevConfig);
-        // localStorage.setItem(configKey, JSON.stringify({
-        //     version: configVersion,
-        //     config: updatedConfig
-        // }));
-
         // Обновляем состояние
         setTableConfig(prevConfig => {
             const updatedConfig = updateColumnWidth(prevConfig);
@@ -208,25 +211,25 @@ const TableWidget = ({ stockAnalysisFilteredData, loading, progress, config, ini
                     // Версия не совпадает, используем дефолтный конфиг
                     console.log('Table config version mismatch, using default config');
                     setTableConfig(newTableConfig);
-                    localStorage.setItem(configKey, JSON.stringify({
-                        version: configVersion,
-                        config: newTableConfig
-                    }));
+                    // localStorage.setItem(configKey, JSON.stringify({
+                    //     version: configVersion,
+                    //     config: newTableConfig
+                    // }));
                 }
             } catch (error) {
                 console.error('Error parsing saved table config:', error);
                 setTableConfig(newTableConfig);
-                localStorage.setItem(configKey, JSON.stringify({
-                    version: configVersion,
-                    config: newTableConfig
-                }));
+                // localStorage.setItem(configKey, JSON.stringify({
+                //     version: configVersion,
+                //     config: newTableConfig
+                // }));
             }
         } else {
             setTableConfig(newTableConfig);
-            localStorage.setItem(configKey, JSON.stringify({
-                version: configVersion,
-                config: newTableConfig
-            }));
+            // localStorage.setItem(configKey, JSON.stringify({
+            //     version: configVersion,
+            //     config: newTableConfig
+            // }));
         }
     }, []);
 
