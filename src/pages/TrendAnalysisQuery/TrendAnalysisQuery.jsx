@@ -44,7 +44,8 @@ export default function TrendAnalysisQuery() {
 	const NEW_COLUMNS = [
 		{
 			key: 'timeFrame',
-			title: timeFrame === 'month' ? 'Месяц' : 'День',
+			//title: timeFrame === 'month' ? 'Месяц' : 'День',
+			title: 'Месяц',
 			dataIndex: 'timeFrame',
 			sortable: false,
 			fixed: false,
@@ -52,6 +53,7 @@ export default function TrendAnalysisQuery() {
 			width: 200,
 			minWidth: 200,
 			hidden: false,
+			children: []
 		},
 		{
 			key: 'quantity',
@@ -63,6 +65,7 @@ export default function TrendAnalysisQuery() {
 			minWidth: 200,
 			hidden: false,
 			units: ' ',
+			children: []
 		},
 	];
 
@@ -343,7 +346,7 @@ export default function TrendAnalysisQuery() {
 										</svg>
 									}
 									htmlType="submit"
-									title={isDemoMode && 'Отображение данных будет доступно после оформления подписки'}
+									title={isDemoMode ? 'Отображение данных будет доступно после оформления подписки' : ''}
 									disabled={loading || checkQuery(formQuery) || isDemoMode}
 								>
 									Найти
@@ -428,6 +431,7 @@ export default function TrendAnalysisQuery() {
 											config={NEW_COLUMNS}
 											dataSource={data.table}
 											bodyRowClassName={styles.bodyRowSpecial}
+											style={{ width: '100%' }}
 											paginationContainerStyle={{ display: 'none' }}
 											bodyCellWrapperStyle={{
 												//fontWeight: 700,

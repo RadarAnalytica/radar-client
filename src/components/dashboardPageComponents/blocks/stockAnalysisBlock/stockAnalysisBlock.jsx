@@ -10,6 +10,7 @@ import { useDemoMode } from "@/app/providers";
 import { useAppSelector } from '@/redux/hooks';
 import { ServiceFunctions } from '@/service/serviceFunctions';
 import { useLoadingProgress } from '@/service/hooks/useLoadingProgress';
+import { CURR_STOCK_ANALYSIS_TABLE_CONFIG_VER } from '@/pages/apiServicePages/stockAnalysisPage/shared';
 
 const StockAnalysisBlock = ({ dashboardLoading, dragHandle }) => {
 
@@ -86,9 +87,9 @@ const StockAnalysisBlock = ({ dashboardLoading, dragHandle }) => {
                 stockAnalysisFilteredData={stockAnalysisFilteredData || []}
                 loading={loading || dashboardLoading}
                 progress={progress.value}
-                config={stockAnalysisTableConfig}
-                configVersion={CONFIG_VER}
-                configKey='STOCK_ANALYSIS_TABLE_CONFIG_DASHBOARD'
+                //config={stockAnalysisTableConfig}
+                configVersion={CURR_STOCK_ANALYSIS_TABLE_CONFIG_VER}
+                configKey='STOCK_ANALYSIS_TABLE_CONFIG'
                 initPaginationState={{ current: 1, total: 1, pageSize: 10 }}
                 hasShadow={false}
                 // maxHeight={425}

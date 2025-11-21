@@ -48,7 +48,7 @@ const isValueBelowZero = (value: number | string) => {
 interface RadarBarProps {
     title: string; // title of the bar
     tooltipText?: string; // tooltip text of the bar + triggers visibility of the tooltip
-    midValue?: number | string; // mid value of the bar
+    midValue?: number | string | React.ReactNode; // mid value of the bar
     midValueUnits?: string; // units of the mid value (eg "шт", "%" or whatever)
     mainValue?: number | string; // main value of the bar
     mainValueUnits?: string; // units of the main value (eg "шт", "%" or whatever)
@@ -80,7 +80,7 @@ export const RadarBar: React.FC<RadarBarProps> = ({
     midValueUnits,
     mainValue,
     mainValueUnits,
-    hasColoredBackground = false,
+    //hasColoredBackground = false,
     linkParams,
     actionButtonParams,
     compareValue,
@@ -135,10 +135,17 @@ export const RadarBar: React.FC<RadarBarProps> = ({
             </div>
 
             {/* mid */}
-            {midValue !== undefined &&
+            {midValue !== undefined && (typeof midValue === 'string' || typeof midValue === 'number') && 
                 <div className={styles.bar__mid}>
                     <div className={`${styles.bar__side} ${styles.bar__side_left}`}>
                         <span className={styles.bar__midValue}>{formatPrice(midValue.toString(), midValueUnits)}</span>
+                    </div>
+                </div>
+            }
+            {midValue !== undefined && (typeof midValue !== 'string' || typeof midValue !== 'number') && React.isValidElement(midValue) && 
+                <div className={styles.bar__mid}>
+                    <div className={`${styles.bar__side} ${styles.bar__side_left}`}>
+                        {midValue}
                     </div>
                 </div>
             }

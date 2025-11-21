@@ -1,11 +1,9 @@
-export const CURR_STOCK_ANALYSIS_TABLE_CONFIG_VER = '6';
+export const CURR_STOCK_ANALYSIS_TABLE_CONFIG_VER = '15';
 
 export const newTableConfig = [
     {
         title: 'О товаре',
         fixed: true,
-        width: 540,
-        minWidth: 540,
         hidden: false,
         dataIndex: 'productInfo',
         key: 'productInfo',
@@ -19,9 +17,9 @@ export const newTableConfig = [
                 title: 'Товар',
                 dataIndex: 'productName',
                 sortable: true,
-                width: 260,
-                minWidth: 260,
-                maxWidth: 520,
+                minWidth: 150,
+                width: 300,
+                maxWidth: 450,
                 fixed: true,
                 key: 'productName',
                 style: {
@@ -35,9 +33,9 @@ export const newTableConfig = [
                 title: 'Артикул',
                 dataIndex: 'vendorСode',
                 sortable: true,
-                width: 125,
-                minWidth: 125,
-                maxWidth: 125,
+                width: 150,
+                minWidth: 100,
+                maxWidth: 300,
                 fixed: true,
                 key: 'vendorСode',
                 style: {
@@ -50,9 +48,9 @@ export const newTableConfig = [
                 title: 'SKU',
                 dataIndex: 'sku',
                 sortable: true,
-                width: 100,
+                width: 150,
                 minWidth: 100,
-                maxWidth: 160,
+                maxWidth: 300,
                 fixed: true,
                 key: 'sku',
                 style: {
@@ -67,7 +65,7 @@ export const newTableConfig = [
                 sortable: false,
                 width: 100,
                 minWidth: 100,
-                maxWidth: 160,
+                maxWidth: 200,
                 fixed: true,
                 key: 'size',
                 style: {
@@ -76,13 +74,11 @@ export const newTableConfig = [
                     fontSize: '14px',
                 }
             },
-        ].map(_ => ({..._, maxWidth: _.width * 2})),
+        ].map(_ => ({..._, maxWidth: _.width * 2, minWidth: _.width / 2})),
     },
     {
         title: '',
         fixed: false,
-        width: 300,
-        minWidth: 300,
         hidden: false,
         dataIndex: 'brandCategory',
         key: 'brandCategory',
@@ -127,8 +123,6 @@ export const newTableConfig = [
     {
         title: 'Прибыль',
         fixed: false,
-        width: 800,
-        minWidth: 800,
         hidden: false,
         dataIndex: 'profit',
         key: 'profit',
@@ -251,8 +245,6 @@ export const newTableConfig = [
     {
         title: 'Выкупы',
         fixed: false,
-        width: 400,
-        minWidth: 400,
         hidden: false,
         dataIndex: 'buyouts',
         key: 'buyouts',
@@ -329,8 +321,6 @@ export const newTableConfig = [
     {
         title: 'Продажи',
         fixed: false,
-        width: 450,
-        minWidth: 450,
         hidden: false,
         dataIndex: 'sales',
         key: 'sales',
@@ -392,8 +382,6 @@ export const newTableConfig = [
     {
         title: 'Возвраты',
         fixed: false,
-        width: 360,
-        minWidth: 360,
         hidden: false,
         dataIndex: 'returns',
         key: 'returns',
@@ -455,8 +443,6 @@ export const newTableConfig = [
     {
         title: 'Себестоимость',
         fixed: false,
-        width: 350,
-        minWidth: 350,
         hidden: false,
         dataIndex: 'costPrice',
         key: 'costPrice',
@@ -503,8 +489,6 @@ export const newTableConfig = [
     {
         title: 'Логистика',
         fixed: false,
-        width: 400,
-        minWidth: 400,
         hidden: false,
         dataIndex: 'logistics',
         key: 'logistics',
@@ -581,8 +565,6 @@ export const newTableConfig = [
     {
         title: 'Прочие расходы',
         fixed: false,
-        width: 300,
-        minWidth: 300,
         hidden: false,
         dataIndex: 'otherExpenses',
         key: 'otherExpenses',
@@ -644,8 +626,6 @@ export const newTableConfig = [
     {
         title: 'АВС анализ',
         fixed: false,
-        width: 200,
-        minWidth: 200,
         hidden: false,
         dataIndex: 'abcAnalysis',
         key: 'abcAnalysis',
@@ -690,8 +670,6 @@ export const newTableConfig = [
     {
         title: 'Цена',
         fixed: false,
-        width: 300,
-        minWidth: 300,
         hidden: false,
         dataIndex: 'price',
         key: 'price',
@@ -800,8 +778,6 @@ export const newTableConfig = [
     {
         title: 'Скорость',
         fixed: false,
-        width: 200,
-        minWidth: 200,
         hidden: false,
         dataIndex: 'speed',
         key: 'speed',
@@ -848,8 +824,6 @@ export const newTableConfig = [
     {
         title: 'Остаток',
         fixed: false,
-        width: 120,
-        minWidth: 120,
         hidden: false,
         dataIndex: 'balance',
         key: 'balance',

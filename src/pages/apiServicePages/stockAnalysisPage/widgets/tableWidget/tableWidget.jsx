@@ -70,22 +70,31 @@ const comparsionsList = {
   }
 
 const customCellRender = (value, record, index, dataIndex) => {
+    const [isImgVisible, setIsImgVisible] = useState(true);
     const comparsionKey = comparsionsList[dataIndex]
     const comparsion = record[comparsionKey]
     const rightBorders = ['category', 'sold_cost', 'return_cost', 'product_cost_stock', 'from_client_sum', 'additionalPayment', 'lostRevenue', 'byProfit', 'minDiscountPrice', 'orderSum', 'completed', 'saleCountDay'];
+   
     if (dataIndex === 'productName') {
         return (
             <div className={styles.productCustomCell}>
                 <div className={styles.productCustomCellImgWrapper}>
-                    <img 
+                    {isImgVisible && <img 
                         src={record.photo} 
                         width={30} 
                         height={40} 
                         alt='Product'
-                        onError={(e) => { e.target.style.display = 'none'; }}
-                    ></img>
+                        onError={(e) => { e.target.style.display = 'none'; setIsImgVisible(false); }}
+                    ></img>}
                 </div>
-                <div className={styles.productCustomCellTitle} title={value}>{value}</div>
+                <div className={styles.productCustomCellTitle} title={value}><span>{value}</span></div>
+            </div>
+        );
+    }
+    if (dataIndex === 'vendorСode' || dataIndex === 'sku' || dataIndex === 'size') {
+        return (
+            <div className={styles.fixedCell}>
+                <div className={styles.fixedCellTitle} title={value}><span>{value.toString()}</span></div>
             </div>
         );
     }
@@ -152,7 +161,6 @@ const TableWidget = ({ stockAnalysisFilteredData, loading, progress, config, ini
     };
 
     const onResizeGroup = (columnKey, width) => {
-        
         // Обновляем конфигурацию колонок с группированной структурой
         const updateColumnWidth = (columns) => {
           return columns.map(col => {
@@ -163,9 +171,9 @@ const TableWidget = ({ stockAnalysisFilteredData, loading, progress, config, ini
               // Всегда пересчитываем ширину группы на основе суммы ширин дочерних колонок
               const totalWidth = updatedChildren.reduce((sum, child) => {
                 if (child.hidden) return sum; // Пропускаем скрытые колонки
-                return sum + (child.width || child.minWidth || 200);
+                return sum + child.width;
               }, 0);
-              return { ...col, width: totalWidth, children: updatedChildren, minWidth: totalWidth };
+              return { ...col, children: updatedChildren };
             }
 
             // Если это листовая колонка
@@ -186,7 +194,7 @@ const TableWidget = ({ stockAnalysisFilteredData, loading, progress, config, ini
                 version: configVersion,
                 config: updatedConfig
             }));
-            return updatedConfig;
+            return [...updatedConfig];
         });
     };
 
@@ -203,25 +211,25 @@ const TableWidget = ({ stockAnalysisFilteredData, loading, progress, config, ini
                     // Версия не совпадает, используем дефолтный конфиг
                     console.log('Table config version mismatch, using default config');
                     setTableConfig(newTableConfig);
-                    localStorage.setItem(configKey, JSON.stringify({
-                        version: configVersion,
-                        config: newTableConfig
-                    }));
+                    // localStorage.setItem(configKey, JSON.stringify({
+                    //     version: configVersion,
+                    //     config: newTableConfig
+                    // }));
                 }
             } catch (error) {
                 console.error('Error parsing saved table config:', error);
                 setTableConfig(newTableConfig);
-                localStorage.setItem(configKey, JSON.stringify({
-                    version: configVersion,
-                    config: newTableConfig
-                }));
+                // localStorage.setItem(configKey, JSON.stringify({
+                //     version: configVersion,
+                //     config: newTableConfig
+                // }));
             }
         } else {
             setTableConfig(newTableConfig);
-            localStorage.setItem(configKey, JSON.stringify({
-                version: configVersion,
-                config: newTableConfig
-            }));
+            // localStorage.setItem(configKey, JSON.stringify({
+            //     version: configVersion,
+            //     config: newTableConfig
+            // }));
         }
     }, []);
 
@@ -246,7 +254,6 @@ const TableWidget = ({ stockAnalysisFilteredData, loading, progress, config, ini
                         preset='radar-table-simple'
                         stickyHeader
                         resizeable
-                        resizeThrottle={33}
                         onResize={onResizeGroup}
                         onSort={sortButtonClickHandler}
                         pagination={{
@@ -269,19 +276,18 @@ const TableWidget = ({ stockAnalysisFilteredData, loading, progress, config, ini
                             renderer: customCellRender,
                         }}
                         headerCellWrapperStyle={{
-                            minHeight: '0px',
-                            padding: '12px 10px',
                             fontSize: 'inherit',
                             //overflow: 'hidden',
                             //wekitBoxOrient: 'vertical',
                             //webkitLineClamp: 1,
                             //textWrap: 'nowrap',
+                            padding: '12px 25px 12px 10px'
                         }}
                         bodyCellWrapperStyle={{
-                            padding: '5px 10px',
                             //minWidth: 'inherit',
                             //width: 'inherit',
                             //maxWidth: 'inherit',
+                            padding: '5px 10px',
                             border: 'none',
                         }}
                         bodyCellStyle={{
@@ -289,6 +295,7 @@ const TableWidget = ({ stockAnalysisFilteredData, loading, progress, config, ini
                             height: '50px',
                         }}
                         bodyRowClassName={styles.bodyRowSpecial}
+                        style={{ width: 'max-content', tableLayout: 'fixed' }}
                     />
                 }
                 {tableData && tableData.length === 0 && tableConfig &&
@@ -330,10 +337,7 @@ const TableWidget = ({ stockAnalysisFilteredData, loading, progress, config, ini
                             //textWrap: 'nowrap',
                         }}
                         bodyCellWrapperStyle={{
-                            padding: '5px 10px',
-                            minWidth: 'inherit',
-                            width: 'inherit',
-                            maxWidth: 'inherit',
+                            padding: '12px 10px',
                             border: 'none',
                         }}
                         bodyCellStyle={{

@@ -20,9 +20,12 @@ const FiltersProvider = ({ children }: { children: React.ReactNode }) => {
     const { messages } = useAppSelector((state: RootState) => state.messagesSlice);
     const prevMessages = useRef<any[] | null>(null);
     const [isFiltersLoading, setIsFiltersLoading] = useState(false);
+    const [isError, setIsError] = useState(false);
+    const requestCounterRef = useRef(0);
 
     const getFiltersData = async () => {
       // if (!authToken) return;
+      setIsError(false);
       setIsFiltersLoading(true);
       try {
         let shopsResponse = await fetchApi('/api/shop/all', {
@@ -32,11 +35,12 @@ const FiltersProvider = ({ children }: { children: React.ReactNode }) => {
             authorization: 'JWT ' + authToken,
           }
         });
-
-        let shopsData = null;
-        if (shopsResponse?.ok) {
-          shopsData = await shopsResponse.json();
+        if (!shopsResponse?.ok) {
+          setIsError(true);
+          return;
         }
+        let shopsData = null;
+        shopsData = await shopsResponse.json();
 
         // @ts-ignore
         await dispatch(fetchFilters({
@@ -46,17 +50,36 @@ const FiltersProvider = ({ children }: { children: React.ReactNode }) => {
         }));
       } catch (error) {
         console.error("FiltersProvider: Error fetching initial data:", error);
-      } finally {
         setIsFiltersLoading(false);
+        setIsError(true);
       }
     };
 
-    // Отслеживаем изменения authToken
     useEffect(() => {
-      if (authToken && !activeBrand && !isFiltersLoading) {
+      if (authToken && !activeBrand && !isFiltersLoading && !isError) {
         getFiltersData();
       }
     }, [authToken, isFiltersLoading]);
+
+    useEffect(() => {
+      let timeout: NodeJS.Timeout;
+      if (isError) {
+        requestCounterRef.current++;
+        if (requestCounterRef.current <= 60) {
+          timeout = setTimeout(() => {
+            getFiltersData();
+          }, 1000);
+          
+        } else {
+          setIsError(false);
+        }
+      }
+      return () => {
+        if (timeout) {
+          clearTimeout(timeout);
+        }
+      };
+    }, [isError]);
 
     //Данные магазина [A-Za-z0-9]+ успешно собраны\. Результаты доступны на страницах сервиса
     useEffect(() => {

@@ -1,4 +1,4 @@
-export const CURR_MONITORING_TABLE_CONFIG_VER = '5'
+export const CURR_MONITORING_TABLE_CONFIG_VER = '8'
 export const radarTableConfig = [
     {
         title: '',
@@ -15,7 +15,7 @@ export const radarTableConfig = [
                 dataIndex: 'query',
                 fixed: 'left',
                 width: 370,
-                minWidth: 370,
+                minWidth: 200,
                 sortable: true,
                 hidden: false,
                 className: 'monitoringTableFirstLeafCell',

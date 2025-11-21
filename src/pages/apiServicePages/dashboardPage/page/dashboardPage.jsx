@@ -36,6 +36,7 @@ import { DragHandle } from '@/shared/ui/DragHandler/DragHandler';
 import { SortableRow } from '../components/SortableRow';
 import { SettingsModal } from '../components/SettingsModal';
 import { v4 as uuidv4 } from 'uuid';
+import { SmallButton } from '@/shared';
 
 
 
@@ -272,6 +273,7 @@ const barsConfig = [
                         tooltipText='Суммарные расходы на логистику, определяются расчетным способом от количества заказов'
                         mainValue={dataDashBoard?.logistics}
                         hasColoredBackground
+                        midValue={<SmallButton title='Детализация' dataDashBoard={dataDashBoard} dataType='logistic' />}
                         compareValue={{
                             comparativeValue: dataDashBoard?.logisticsCompare,
                             absoluteValue: dataDashBoard?.prev_logistics,
@@ -341,6 +343,7 @@ const barsConfig = [
                         tooltipText='Суммарная комиссия маркетплейса, рассчитывается от суммарного объема продаж по коэффициентам, определенным Wildberries'
                         mainValue={dataDashBoard?.commissionWB}
                         mainValueUnits='₽'
+                        midValue={<SmallButton title='Детализация' dataDashBoard={dataDashBoard} dataType='comission' />}
                         hasColoredBackground
                         compareValue={{
                             comparativeValue: dataDashBoard?.commissionWBCompare,
@@ -410,6 +413,7 @@ const barsConfig = [
                         title='Штрафы и прочие удержания'
                         tooltipText={'К прочим удержания отнесены: платежи по договору займа, предоставление услуг по подписке «Джем», страхование заказов, услуги по размещению рекламного материала, списания за отзывы, утилизации товара'}
                         mainValue={dataDashBoard?.penalty}
+                        midValue={<SmallButton title='Детализация' dataDashBoard={dataDashBoard} dataType='penalty' />}
                         mainValueUnits='₽'
                         isLoading={loading}
                         compareValue={{

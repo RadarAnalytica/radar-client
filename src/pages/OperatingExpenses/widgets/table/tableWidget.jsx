@@ -4,7 +4,7 @@ import { Table as RadarTable } from 'radar-ui';
 import { EditIcon, CopyIcon, DeleteIcon, InfoIcon } from '../../shared/Icons';
 import moment from 'moment';
 import styles from './tableWidget.module.css';
-import { formatPrice } from '@/service/utils';
+import { formatPrice, getWordDeclension } from '@/service/utils';
 import { ServiceFunctions } from '@/service/serviceFunctions';
 import { useTableColumnResize } from '@/service/hooks';
 
@@ -18,49 +18,54 @@ const customCellExpenseRender = (
     copyExpense,
     data,
     authToken,
-    setAlertState
+    setAlertState,
+    isTemplate = false,
 ) => {
 
     if (dataIndex === 'is_periodic' && record.key !== 'summary') {
         return (
-            <div className={record.is_periodic ? styles.periodicBadge_periodic : styles.periodicBadge_static} title={record.is_periodic ? 'Плановый' : 'Разовый'}>
-                {record.is_periodic ? 'Плановый' : 'Разовый'}
+            <div 
+                className={record?.is_template ? styles.periodicBadge_template : record.is_periodic ? styles.periodicBadge_periodic : styles.periodicBadge_static} 
+                title={record?.is_template ? 'Шаблон' : record?.is_periodic ? 'Плановый' : 'Разовый'}
+            >
+                {record?.is_template ? 'Шаблон' : record?.is_periodic ? 'Плановый' : 'Разовый'}
             </div>
-        )
+        );
     }
-    if (dataIndex === 'date' && record.key === 'summary') {
-        return (
-            <div className={`${styles.customCell} ${styles.customCell_summaryPadding}`}>
-                {value}
-            </div>
-        )
+    if (dataIndex === 'date') {
+        if (record.key === 'summary') {
+            return <div className={`${styles.customCell} ${styles.customCell_summaryPadding}`}>{value}</div>;
+        }
+        return <div className={styles.customCell}>{moment(value).format('DD.MM.YYYY')}</div>;
     }
-    if (dataIndex === 'date' && record.key !== 'summary') {
-        return (
-            <div className={styles.customCell}>
-                {moment(value).format('DD.MM.YYYY')}
-            </div>
-        )
+    if (dataIndex === 'date_from' || dataIndex === 'finished_at') {
+        return <div className={styles.customCell}>{value ? moment(value).format('DD.MM.YYYY') : '-'}</div>;
     }
     if (dataIndex === 'description' || dataIndex === 'expense_categories' || dataIndex === 'vendor_code' || dataIndex === 'brand_name') {
         return (
             <div className={`${styles.customCell} text-break`} title={value}>
                 {value || '-'}
             </div>
-        )
+        );
     }
     if (dataIndex === 'value') {
         return (
             <div className={styles.customCell}>
                 {formatPrice(value, '')}
             </div>
-        )
+        );
     }
-    if (dataIndex === 'shops') {
-        return (<>{value?.length > 0 ? value[0]?.name : '-'}</>)
-    }
-    if (dataIndex === 'vendor_codes' || dataIndex === 'brand_names') {
-        return (<>{value?.length > 0 ? value[0] : '-'}</>)
+    if (['shops', 'vendor_codes', 'brand_names'].includes(dataIndex) && value) {
+        value = Array.from(new Set(value));
+        if (value?.length > 1) {
+            const word = dataIndex === 'shops' ? 'магазин' : dataIndex === 'vendor_codes' ? 'артикул' : 'бренд';
+            return <div className={styles.distributorCell}>{value.length} {getWordDeclension(word, value.length)}</div>;
+        }
+        let v = (value && value[0]) || '-';
+        if (dataIndex === 'shops') {
+            v = v?.name || v?.shop_name || (v && v.toString()) || '-';
+        }
+        return <div className={styles.distributorCell} title={v}>{v}</div>;
     }
     if (dataIndex === 'action' && record.key === 'summary') {
         return null;
@@ -76,9 +81,9 @@ const customCellExpenseRender = (
                         e.preventDefault();
 
                         let response;
-                        if (record?.is_periodic) {
+                        if (record?.is_periodic || record?.is_template) {
                             try {
-                                response = await ServiceFunctions.getPeriodicExpenseTemplate(authToken, record.periodic_expense_id);
+                                response = await ServiceFunctions.getOperatingExpensesTemplateGet(authToken, isTemplate ? record.id : record.periodic_expense_id);
 
                                 setExpenseModal({
                                     mode: 'edit',
@@ -96,7 +101,7 @@ const customCellExpenseRender = (
                                         value: response.value,
                                         description: response.description,
                                         expense_categories: response.expense_categories,
-                                        date: response.date_from,
+                                        date_from: response.date_from,
                                     }
                                 });
                                 return;
@@ -123,38 +128,34 @@ const customCellExpenseRender = (
                         e.stopPropagation();
                         e.preventDefault();
 
-                        if (!record.is_periodic) {
-                            copyExpense(record.id);
+                        if (!record.is_periodic && !record.is_template) {
+                            copyExpense(record.id, false);
                             return;
                         }
 
-                        let response;
-                        if (record?.is_periodic) {
-                            try {
-                                response = await ServiceFunctions.getPeriodicExpenseTemplate(authToken, record?.periodic_expense_id);
-
-                                setExpenseModal({
-                                    mode: 'copy',
-                                    isOpen: true,
-                                    data: {
-                                        ...response,
-                                        end_date: response.finished_at?.split('T')[0],
-                                        date: response.date_from,
-                                        frequency: response.period_type,
-                                        week: response.period_type === 'week' ? response.period_values : null,
-                                        month: response.period_type === 'month' ? response.period_values : null,
-                                        periodic_expense_id: response.id,
-                                        is_periodic: true,
-                                    }
-                                });
-                                return;
-                            } catch (error) {
-                                setAlertState({
-                                    status: 'error',
-                                    isVisible: true,
-                                    message: 'Не удалось получить шаблон расхода',
-                                });
-                            }
+                        try {
+                            const response = await ServiceFunctions.getOperatingExpensesTemplateGet(authToken, isTemplate ? record.id : record.periodic_expense_id);
+                            setExpenseModal({
+                                mode: 'copy',
+                                isOpen: true,
+                                data: {
+                                    ...response,
+                                    end_date: response.finished_at?.split('T')[0],
+                                    date_from: response.date_from,
+                                    frequency: response.period_type,
+                                    week: response.period_type === 'week' ? response.period_values : null,
+                                    month: response.period_type === 'month' ? response.period_values : null,
+                                    periodic_expense_id: response.id,
+                                    is_periodic: true,
+                                }
+                            });
+                            return;
+                        } catch (error) {
+                            setAlertState({
+                                status: 'error',
+                                isVisible: true,
+                                message: 'Не удалось получить шаблон расхода',
+                            });
                         }
                     }}
                     title='Копировать'
@@ -170,9 +171,9 @@ const customCellExpenseRender = (
                     title='Удалить'
                 ></Button>
             </ConfigProvider>
-        </Flex>)
+        </Flex>);
     }
-}
+};
 
 const customCellCategoryRender = (
     value,
@@ -192,7 +193,7 @@ const customCellCategoryRender = (
                     icon={EditIcon}
                     onClick={() => {
                         setCategoryEdit((data.find((article) => article.id === record.id)));
-                        setModalCreateCategoryOpen(true)
+                        setModalCreateCategoryOpen(true);
                     }}
                     title='Изменить'
                 ></Button>
@@ -203,9 +204,9 @@ const customCellCategoryRender = (
                     title='Удалить'
                 ></Button>
             </ConfigProvider>
-        </Flex>)
+        </Flex>);
     }
-}
+};
 
 export default function TableWidget({
     loading,
@@ -221,7 +222,8 @@ export default function TableWidget({
     pagination,
     setPagination,
     authToken,
-    setAlertState
+    setAlertState,
+    isTemplate = false
 }) {
     const tableContainerRef = useRef(null);
     
@@ -250,7 +252,7 @@ export default function TableWidget({
                             setPagination({
                                 ...pagination,
                                 page: page,
-                            })
+                            });
                         },
                         showQuickJumper: true,
                         hideOnSinglePage: true,
@@ -272,8 +274,9 @@ export default function TableWidget({
                                     copyExpense,
                                     data,
                                     authToken,
-                                    setAlertState
-                                )
+                                    setAlertState,
+                                    isTemplate
+                                );
                             }
                             if (tableType === 'category') {
                                 return customCellCategoryRender(
@@ -285,7 +288,7 @@ export default function TableWidget({
                                     setModalCreateCategoryOpen,
                                     setDeleteCategoryId,
                                     data
-                                )
+                                );
                             }
                         }
                     }}

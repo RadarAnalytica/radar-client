@@ -1723,6 +1723,7 @@ export const ServiceFunctions = {
 			throw new Error(error);
 		}
 	},
+
 	getOperatingExpensesExpenseGetAll: async (token, requestObject) => {
 		try {
 			const res = await fetchApi(
@@ -1742,55 +1743,64 @@ export const ServiceFunctions = {
 			}
 
 			return res.json();
-			/*
-			const res = {
-				data: [
-					{
-						id: 1,
-						date: '2025-05-10',
-						value: 12300,
-						description: null,
-						expense_categories: ['Статья1', 'Статья2'],
-						sku: null,
-						brand: null,
-						shop: 'Магазин',
-						type: 'once',
-					},
-					{
-						id: 2,
-						date: '2025-05-10',
-						value: 300,
-						description: null,
-						expense_categories: ['Статья1', 'Статья2'],
-						sku: null,
-						brand: 'AURA',
-						shop: null,
-						type: 'plan',
-					},
-					{
-						id: 3,
-						date: '2025-05-12',
-						value: 1300,
-						description: null,
-						expense_categories: ['Статья1', 'Статья2'],
-						sku: 123124,
-						brand: null,
-						shop: null,
-						type: 'once',
-					},
-				]
-			};
-			return res;
-			*/
 		} catch (error) {
 			console.error('getAllOperatingExpensesExpense ', error);
 			throw new Error(error);
 		}
 	},
-	getPeriodicExpenseTemplate: async (token, periodic_expense_id) => {
+
+	getOperatingExpensesTemplateGetAll: async (token, page, limit) => {
 		try {
 			const res = await fetchApi(
-				`/api/operating-expenses/periodic-expense/get?expense_id=${periodic_expense_id}`,
+				`/api/operating-expenses/periodic-templates/get-all?page=${page}&limit=${limit}`,
+				{
+					method: 'GET',
+					headers: {
+						'content-type': 'application/json',
+						authorization: 'JWT ' + token,
+					},
+				}
+			);
+
+			if (!res.ok) {
+				throw new Error('Ошибка запроса');
+			}
+
+			return res.json();
+		} catch (error) {
+			console.error('getAllOperatingExpensesExpense ', error);
+			throw new Error(error);
+		}
+	},
+
+	getOperatingExpensesTemplateGet: async (token, expense_id) => {
+		try {
+			const res = await fetchApi(
+				`/api/operating-expenses/periodic-templates/get?expense_id=${expense_id}`,
+				{
+					method: 'GET',
+					headers: {
+						'content-type': 'application/json',
+						authorization: 'JWT ' + token,
+					},
+				}
+			);
+
+			if (!res.ok) {
+				throw new Error('Ошибка запроса');
+			}
+
+			return res.json();
+		} catch (error) {
+			console.error('getAllOperatingExpensesExpense ', error);
+			throw new Error(error);
+		}
+	},
+
+	getPeriodicExpenseData: async (token, expense_id) => {
+		try {
+			const res = await fetchApi(
+				`/api/operating-expenses/expense/get?expense_id=${expense_id}`,
 				{
 					method: 'GET',
 					headers: {
@@ -1810,6 +1820,31 @@ export const ServiceFunctions = {
 			throw new Error(error);
 		}
 	},
+
+	getPeriodicExpenseTemplateData: async (token, periodic_expense_id) => {
+		try {
+			const res = await fetchApi(
+				`${URL}/api/operating-expenses/periodic-templates/get-all?expense_id=${periodic_expense_id}`,
+				{
+					method: 'GET',
+					headers: {
+						'content-type': 'application/json',
+						authorization: 'JWT ' + token,
+					}
+				}
+			);
+
+			if (!res.ok) {
+				throw new Error('Ошибка запроса');
+			}
+
+			return await res.json();
+		} catch (error) {
+			console.error('getAllOperatingExpensesExpense ', error);
+			throw new Error(error);
+		}
+	},
+
 	postOperatingExpensesExpenseCreate: async (token, expense, createExpenseUrl) => {
 		try {
 			const res = await fetchApi(
@@ -1862,12 +1897,84 @@ export const ServiceFunctions = {
 
 	deleteOperatingExpensesExpenseDelete: async (token, id, isPeriodic) => {
 		const url = isPeriodic
-			? `/api/operating-expenses/periodic-expense/delete?expense_id=${id}&delete_linked=true`
+			? `/api/operating-expenses/periodic-templates/delete?expense_id=${id}&delete_linked=true`
 			: `/api/operating-expenses/expense/delete?expense_id=${id}`;
 
 		try {
 			const res = await fetchApi(
 				url,
+				{
+					method: 'DELETE',
+					headers: {
+						'content-type': 'application/json',
+						authorization: 'JWT ' + token,
+					},
+				}
+			);
+			if (!res.ok) {
+				throw new Error('Ошибка запроса');
+			}
+
+		} catch (error) {
+			console.error('deleteOperatingExpensesCategory ', error);
+			throw new Error(error);
+		}
+	},
+
+	postOperatingExpensesTemplateCreate: async (token, expense, createExpenseUrl) => {
+		try {
+			const res = await fetchApi(
+				`/api/${createExpenseUrl}`,
+				{
+					method: 'POST',
+					headers: {
+						'content-type': 'application/json',
+						authorization: 'JWT ' + token,
+					},
+					body: JSON.stringify(expense)
+				}
+			);
+
+			if (!res.ok) {
+				throw new Error('Ошибка запроса');
+			}
+
+			return res.json();
+		} catch (error) {
+			console.error('postOperatingExpensesExpenseCreate ', error);
+			throw new Error(error);
+		}
+	},
+
+	patchOperatingExpensesTemplate: async (token, expense, updateExpenseUrl) => {
+		try {
+			const res = await fetchApi(
+				`/api/${updateExpenseUrl}`,
+				{
+					method: 'PATCH',
+					headers: {
+						'content-type': 'application/json',
+						authorization: 'JWT ' + token,
+					},
+					body: JSON.stringify(expense),
+				}
+			);
+			if (!res.ok) {
+				throw new Error('Ошибка запроса');
+			}
+			const data = await res.json();
+			return data;
+
+		} catch (error) {
+			console.error('patchOperatingExpensesExpense ', error);
+			throw new Error(error);
+		}
+	},
+
+	deleteOperatingExpensesTemplateDelete: async (token, id) => {
+		try {
+			const res = await fetchApi(
+				`/api/operating-expenses/periodic-templates/delete?expense_id=${id}&delete_linked=true`,
 				{
 					method: 'DELETE',
 					headers: {

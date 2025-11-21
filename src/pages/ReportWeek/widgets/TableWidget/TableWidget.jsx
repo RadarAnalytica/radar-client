@@ -112,7 +112,6 @@ export default function TableWidget({ loading, columns, data, rowSelection = fal
         }));
 
         setTableColumns(newConfig);
-        document.removeEventListener('mousemove', mouseHandler);
     };
 
     useEffect(() => {
@@ -165,7 +164,7 @@ export default function TableWidget({ loading, columns, data, rowSelection = fal
                         }}
                         scrollContainerRef={tableContainerRef}
                         stickyHeader={true}
-                        style={{ fontFamily: 'Manrope', width: 'max-content' }}
+                        style={{ fontFamily: 'Manrope', width: 'max-content', tableLayout: 'fixed' }}
                         pagination={false}
                         paginationContainerStyle={{ display: 'none' }}
                         bodyRowClassName={styles.bodyRowSpecial}

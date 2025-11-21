@@ -4,6 +4,7 @@ import { Table as RadarTable, Tooltip as RadarTooltip } from 'radar-ui';
 import { formatPrice } from '../../../../service/utils';
 import styles from './RnpTable.module.css';
 import { RadarRateMark } from '@/shared';
+import { URL } from '@/service/config';
 
 const customCellRender = (value, record, index, dataIndex) => {
 	if (dataIndex === 'summary') {
@@ -137,7 +138,6 @@ export default function RnpTable({ columns, data, columns2, data2, expanded, el 
 
 						dataSource={data2}
 						config={tableConfig}
-
 						treeMode
 						indentSize={45}
 						expandedRowKeys={expandedRowKeys}
@@ -161,6 +161,7 @@ export default function RnpTable({ columns, data, columns2, data2, expanded, el 
 							idx: [],
 							renderer: customCellRender,
 						}}
+						benchmark={URL === 'https://test-server-pro.ru'}
 					/>
 				</div>
 			}

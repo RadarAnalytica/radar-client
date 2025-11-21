@@ -146,7 +146,6 @@ export default function RnpTableTotal({ loading, columns, data, columns2, data2,
 						bodyRowClassName={styles.bodyRowSpecial}
 						bodyCellWrapperStyle={{ borderBottom: 'none', padding: '10.5px 12px' }}
 						headerCellWrapperClassName={styles.headerCellWrapperCustomClassName}
-
 						customCellRender={{
 							idx: [],
 							renderer: customCellRender,

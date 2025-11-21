@@ -62,7 +62,7 @@ const TableWidget = ({ tableConfig, setTableConfig }) => {
                 if (child.hidden) return sum; // Пропускаем скрытые колонки
                 return sum + (child.width || 200);
               }, 0);
-              return { ...col, width: totalWidth, children: updatedChildren };
+              return { ...col, children: updatedChildren };
             }
 
             // Если это листовая колонка
@@ -73,14 +73,14 @@ const TableWidget = ({ tableConfig, setTableConfig }) => {
             return col;
           });
         };
+        const updatedConfig = updateColumnWidth(tableConfig);
+        localStorage.setItem('MonitoringTableConfig', JSON.stringify({
+            version: CURR_MONITORING_TABLE_CONFIG_VER,
+            config: updatedConfig
+        }));
 
-        // Обновляем состояние
+        //Обновляем состояние
         setTableConfig(prevConfig => {
-            const updatedConfig = updateColumnWidth(prevConfig);
-            localStorage.setItem('MonitoringTableConfig', JSON.stringify({
-                version: CURR_MONITORING_TABLE_CONFIG_VER,
-                config: updatedConfig
-            }));
             return updatedConfig;
         });
     };
@@ -142,6 +142,10 @@ const TableWidget = ({ tableConfig, setTableConfig }) => {
                     scrollContainerRef={containerRef}
                     bodyCellWrapperStyle={{
                         minHeight: '85px'
+                    }}
+                    style={{
+                        width: 'max-content',
+                        tableLayout: 'fixed'
                     }}
                 />
             </div>

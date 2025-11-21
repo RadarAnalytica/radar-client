@@ -17,20 +17,21 @@ import { formatDate, parse } from 'date-fns';
 import { useDemoMode } from '@/app/providers/DemoDataProvider';
 
 /**
- * Генерирует объект запроса для создания/редактирования расхода
+ * Генерирует объект запроса для создания/редактирования расхода или шаблона
  * @param {Object} values - значения формы
  * @param {Object} editData - данные для редактирования (если есть)
  * @param {string} mode - режим работы ('create' | 'edit' | 'copy')
+ * @param {boolean} isTemplate - флаг, является ли расход/шаблон шаблоном
  * @returns {Object} - объект с requestObject и requestUrl
  */
-const getRequestObject = (values, editData, mode) => {
+const getRequestObject = (values, editData, mode, isTemplate = false) => {
 	let requestObject = {};
 	let requestUrl = '';
 	let distributeItems = [];
 	const formattedDateStart = formatDate(parse(values.date, 'dd.MM.yyyy', new Date()), 'yyyy-MM-dd');
 
-	// Определяем тип расхода
-	const isPeriodicExpense = mode === 'create' ? values.type === 'plan' : editData?.is_periodic;
+	// Определяем тип расхода/шаблона
+	const isPeriodicExpense = values.type === 'plan' || editData?.is_periodic || isTemplate;
 
 	if (!editData?.is_periodic && mode === 'edit') {
 		values.shops = values.shops ? [values.shops] : [];
@@ -47,10 +48,10 @@ const getRequestObject = (values, editData, mode) => {
 	}
 
 	if (isPeriodicExpense) {
-		// Плановый расход
+		// Плановый расход или плановый шаблон
 		requestUrl = mode === 'edit' 
-			? 'operating-expenses/periodic-expense/update'
-			: 'operating-expenses/periodic-expense/create';
+			? 'operating-expenses/periodic-templates/update'
+			: 'operating-expenses/periodic-templates/create';
 
 		let formattedDateEnd;
 		if (values.end_date) {
@@ -75,11 +76,11 @@ const getRequestObject = (values, editData, mode) => {
 		};
 
 		// Добавляем id для редактирования
-		if (mode === 'edit' && editData?.periodic_expense_id) {
+		if (mode === 'edit') {
 			requestObject.id = editData.periodic_expense_id;
 		}
 	} else {
-		// Разовый расход
+		// Разовый расход или разовый шаблон
 		requestUrl = mode === 'edit'
 			? 'operating-expenses/expense/update'
 			: 'operating-expenses/expense/create';
@@ -98,7 +99,7 @@ const getRequestObject = (values, editData, mode) => {
 		}
 	}
 
-	return { requestObject, requestUrl };
+	return { requestObject, requestUrl, isPeriodicExpense };
 };
 
 /**
@@ -121,6 +122,7 @@ export default function ExpenseFormModal({
 	editData,
 	handle,
 	loading,
+	isTemplate = false,
 	...props
 }) {
 	const { shops, filters } = useAppSelector((state) => state.filters);
@@ -138,14 +140,14 @@ export default function ExpenseFormModal({
 		vendor_codes: [],
 	});
 
-	// Определяем, является ли расход плановым
-	const isPeriodicExpense = mode === 'create' ? typeValue === 'plan' : editData?.is_periodic;
+	// Определяем, является ли расход/шаблон плановым
+	const isPeriodicExpense = mode === 'create' ? typeValue === 'plan' || isTemplate : editData?.is_periodic;
 
 	const today = new Date();
 	const minDateFrom = new Date(today);
 	const maxDateFrom = new Date(today);
-	minDateFrom.setDate(today.getDate() - 90);
-	maxDateFrom.setDate(today.getDate() + 90);
+	minDateFrom.setDate(today.getDate() - 1800);
+	maxDateFrom.setDate(today.getDate() + 1800);
 
 	const minDateTo = dateFrom
 		? (() => {
@@ -156,7 +158,7 @@ export default function ExpenseFormModal({
 		: today;
 
 	const onFinish = (values) => {
-		handle(getRequestObject(values, editData, mode));
+		handle(getRequestObject(values, editData, mode, isTemplate));
 	};
 
 	const cancelHandler = () => {
@@ -166,16 +168,16 @@ export default function ExpenseFormModal({
 
 	// Заголовки для разных режимов
 	const titles = {
-		create: 'Добавление расхода',
-		edit: 'Редактирование расхода',
-		copy: 'Копирование расхода',
+		create: isTemplate ? 'Добавление шаблона' : 'Добавление расхода',
+		edit: isTemplate ? 'Редактирование шаблона' : 'Редактирование расхода',
+		copy: isTemplate ? 'Копирование шаблона' : 'Копирование расхода',
 	};
 
 	// Текст кнопки для разных режимов
 	const buttonTexts = {
-		create: 'Добавить расход',
-		edit: 'Сохранить расход',
-		copy: 'Копировать расход',
+		create: isTemplate ? 'Добавить шаблон' : 'Добавить расход',
+		edit: isTemplate ? 'Сохранить шаблон' : 'Сохранить расход',
+		copy: isTemplate ? 'Копировать шаблон' : 'Копировать расход',
 	};
 
 	useEffect(() => {
@@ -238,13 +240,9 @@ export default function ExpenseFormModal({
 
 			// Для разовых расходов при редактировании
 			if (mode === 'edit' && !editData.is_periodic) {
-				const formattedDate = editData.date
-					? format(parse(editData.date, 'yyyy-MM-dd', new Date()), 'dd.MM.yyyy')
-					: null;
-
-				const formattedEndDate = editData.end_date
-					? format(parse(editData.end_date, 'yyyy-MM-dd', new Date()), 'dd.MM.yyyy')
-					: null;
+				const date = editData.date_from || editData.date;
+				const formattedDate = date ? format(parse(date, 'yyyy-MM-dd', new Date()), 'dd.MM.yyyy') : null;
+				const formattedEndDate = editData.finished_at ? format(parse(editData.finished_at, 'yyyy-MM-dd', new Date()), 'dd.MM.yyyy') : null;
 
 				const expenseCategory = editData.expense_categories
 					? category.find((el) => el.name === editData.expense_categories)?.id
@@ -264,8 +262,8 @@ export default function ExpenseFormModal({
 
 			// Для плановых расходов при редактировании или копировании
 			if ((mode === 'edit' && editData.is_periodic) || mode === 'copy') {
-				const formattedDate = editData.date
-					? format(parse(editData.date, 'yyyy-MM-dd', new Date()), 'dd.MM.yyyy')
+				const formattedDate = editData.date_from
+					? format(parse(editData.date_from, 'yyyy-MM-dd', new Date()), 'dd.MM.yyyy')
 					: null;
 
 				const formattedEndDate = editData.end_date
@@ -358,8 +356,8 @@ export default function ExpenseFormModal({
 							expense_categories: null,
 						}}
 					>
-						{/* Тип операции (только для режима создания) */}
-						{mode === 'create' && (
+						{/* Тип операции (для режима создания) */}
+						{mode === 'create' && !isTemplate && (
 							<RadioGroup
 								label='Тип операции'
 								name='type'
@@ -370,10 +368,13 @@ export default function ExpenseFormModal({
 							/>
 						)}
 
-						{/* Подзаголовок типа расхода (для режимов редактирования и копирования) */}
+						{/* Подзаголовок типа расхода/шаблона (для режимов редактирования и копирования) */}
 						{(mode === 'edit' || mode === 'copy') && (
 							<p className={styles.modal__typeSubtitle}>
-								{isPeriodicExpense ? 'Плановый расход' : 'Разовый расход'}
+								{isTemplate 
+									? (isPeriodicExpense ? 'Плановый шаблон' : 'Разовый шаблон')
+									: (isPeriodicExpense ? 'Плановый расход' : 'Разовый расход')
+								}
 							</p>
 						)}
 
@@ -385,7 +386,7 @@ export default function ExpenseFormModal({
 									label={isPeriodicExpense ? 'Дата начала' : 'Дата'}
 									formId='date'
 									minDate={minDateFrom}
-									maxDate={today} // mode === 'create' && !isPeriodicExpense ? today : maxDateFrom
+									maxDate={maxDateFrom}
 								/>
 							</Col>
 							<Col span={12}>
