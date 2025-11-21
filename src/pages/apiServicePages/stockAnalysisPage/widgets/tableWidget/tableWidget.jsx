@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import styles from './tableWidget.module.css';
 import { tableConfig, sortTableDataFunc, CURR_STOCK_ANALYSIS_TABLE_CONFIG_VER } from '../../shared';
-import { formatPrice } from '../../../../../service/utils';
+import { formatPrice, getWordDeclension } from '../../../../../service/utils';
 import { Tooltip, Pagination, ConfigProvider, Progress } from 'antd';
 import { Table as RadarTable } from 'radar-ui';
 import { newTableConfig } from '../../shared/configs/newTableConfig';
@@ -74,7 +74,7 @@ const customCellRender = (value, record, index, dataIndex) => {
     const comparsionKey = comparsionsList[dataIndex]
     const comparsion = record[comparsionKey]
     const rightBorders = ['category', 'sold_cost', 'return_cost', 'product_cost_stock', 'from_client_sum', 'additionalPayment', 'lostRevenue', 'byProfit', 'minDiscountPrice', 'orderSum', 'completed', 'saleCountDay'];
-   
+
     if (dataIndex === 'productName') {
         return (
             <div className={styles.productCustomCell}>
@@ -94,7 +94,7 @@ const customCellRender = (value, record, index, dataIndex) => {
     if (dataIndex === 'vendorСode' || dataIndex === 'sku' || dataIndex === 'size') {
         return (
             <div className={styles.fixedCell}>
-                <div className={styles.fixedCellTitle} title={value}><span>{value.toString()}</span></div>
+                <div className={styles.fixedCellTitle} title={value}><span>{value}</span></div>
             </div>
         );
     }
@@ -123,27 +123,44 @@ const TableWidget = ({ stockAnalysisFilteredData, loading, progress, config, ini
     const [sortState, setSortState] = useState(initSortState); // стейт сортировки (см initSortState)
     const [paginationState, setPaginationState] = useState(initPaginationState || { current: 1, total: 1, pageSize: 25 });
     const [tableConfig, setTableConfig] = useState(config || newTableConfig);
+    const [expandedRowKeys, setExpandedRowKeys] = useState([]);
 
     // задаем начальную дату
     useEffect(() => {
         if (stockAnalysisFilteredData) {
+            const data = stockAnalysisFilteredData.map(item => ({
+                ...item.article_data,
+                vendorСode: item.article,
+                size: `${item.sizes?.length} ${getWordDeclension('размер', item.sizes?.length )}`,
+                isParent: true,
+                children: item.sizes.map(child => ({
+                    ...child,
+                    vendorСode: item.article,
+                    isLastChild: child.index === item.article_data.length - 1,
+                })),
+            }));
+            
             if (sortState.sortedValue && sortState.sortType) {
-                setTableData([...sortTableDataFunc(sortState.sortType, sortState.sortedValue, stockAnalysisFilteredData)]);
-                setPaginationState({ current: 1, pageSize: paginationState.pageSize, total: Math.ceil([...sortTableDataFunc(sortState.sortType, sortState.sortedValue, stockAnalysisFilteredData)].length / paginationState.pageSize) });
+                setTableData([...sortTableDataFunc(sortState.sortType, sortState.sortedValue, data)]);
+                setPaginationState({ current: 1, pageSize: paginationState.pageSize, total: Math.ceil([...sortTableDataFunc(sortState.sortType, sortState.sortedValue, data)].length / paginationState.pageSize) });
             } else {
-                setTableData(stockAnalysisFilteredData);
-                setPaginationState({ current: 1, pageSize: paginationState.pageSize, total: Math.ceil(stockAnalysisFilteredData.length / paginationState.pageSize) });
+                setTableData(data);
+                setPaginationState({ current: 1, pageSize: paginationState.pageSize, total: Math.ceil(data.length / paginationState.pageSize) });
             }
         }
     }, [stockAnalysisFilteredData]);
+
+    const handleExpandedRowsChange = (keys) => {
+		setExpandedRowKeys(keys);
+	};
 
     // хэндлер сортировки
     const sortButtonClickHandler = (sort_field, sort_order) => {
         // выключаем сортировку если нажата уже активная клавиша
         if (sortState.sortType === sort_order && sortState.sortedValue === sort_field) {
             setSortState(initSortState);
-            setTableData(stockAnalysisFilteredData);
-            setPaginationState({ ...paginationState, total: Math.ceil(stockAnalysisFilteredData.length / paginationState.pageSize), current: 1 });
+            setTableData(tableData);
+            setPaginationState({ ...paginationState, total: Math.ceil(tableData.length / paginationState.pageSize), current: 1 });
             return;
         }
 
@@ -152,8 +169,8 @@ const TableWidget = ({ stockAnalysisFilteredData, loading, progress, config, ini
             sortedValue: sort_field,
             sortType: sort_order,
         });
-        setTableData([...sortTableDataFunc(sort_order, sort_field, stockAnalysisFilteredData)]);
-        setPaginationState({ ...paginationState, total: Math.ceil([...sortTableDataFunc(sort_order, sort_field, stockAnalysisFilteredData)].length / paginationState.pageSize), current: 1 });
+        setTableData([...sortTableDataFunc(sort_order, sort_field, tableData)]);
+        setPaginationState({ ...paginationState, total: Math.ceil([...sortTableDataFunc(sort_order, sort_field, tableData)].length / paginationState.pageSize), current: 1 });
     };
 
     const paginationHandler = (page) => {
@@ -211,25 +228,13 @@ const TableWidget = ({ stockAnalysisFilteredData, loading, progress, config, ini
                     // Версия не совпадает, используем дефолтный конфиг
                     console.log('Table config version mismatch, using default config');
                     setTableConfig(newTableConfig);
-                    // localStorage.setItem(configKey, JSON.stringify({
-                    //     version: configVersion,
-                    //     config: newTableConfig
-                    // }));
                 }
             } catch (error) {
                 console.error('Error parsing saved table config:', error);
                 setTableConfig(newTableConfig);
-                // localStorage.setItem(configKey, JSON.stringify({
-                //     version: configVersion,
-                //     config: newTableConfig
-                // }));
             }
         } else {
             setTableConfig(newTableConfig);
-            // localStorage.setItem(configKey, JSON.stringify({
-            //     version: configVersion,
-            //     config: newTableConfig
-            // }));
         }
     }, []);
 
@@ -256,6 +261,10 @@ const TableWidget = ({ stockAnalysisFilteredData, loading, progress, config, ini
                         resizeable
                         onResize={onResizeGroup}
                         onSort={sortButtonClickHandler}
+                        treeMode
+                        indentSize={45}
+                        expandedRowKeys={expandedRowKeys}
+                        onExpandedRowsChange={(keys) => handleExpandedRowsChange(keys)}
                         pagination={{
                             current: paginationState.current,
                             pageSize: paginationState.pageSize,
@@ -277,16 +286,9 @@ const TableWidget = ({ stockAnalysisFilteredData, loading, progress, config, ini
                         }}
                         headerCellWrapperStyle={{
                             fontSize: 'inherit',
-                            //overflow: 'hidden',
-                            //wekitBoxOrient: 'vertical',
-                            //webkitLineClamp: 1,
-                            //textWrap: 'nowrap',
                             padding: '12px 25px 12px 10px'
                         }}
                         bodyCellWrapperStyle={{
-                            //minWidth: 'inherit',
-                            //width: 'inherit',
-                            //maxWidth: 'inherit',
                             padding: '5px 10px',
                             border: 'none',
                         }}
