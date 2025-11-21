@@ -9,7 +9,7 @@ export const SortableRow = ({ row, items, dataDashBoard, loading, children, isOv
     }
 
     // Если активный элемент имеет span 12 и эта строка подсвечена, добавляем контур строки
-    const rowOutline = isActiveSpan12 && isOver && isOverValid
+    const rowOutline = isOver && isOverValid
         ? `2px solid ${isOverValid ? '#5329FF' : '#FF3B3B'}`
         : 'none';
 
