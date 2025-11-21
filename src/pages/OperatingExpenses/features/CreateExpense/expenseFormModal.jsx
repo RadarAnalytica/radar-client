@@ -31,7 +31,7 @@ const getRequestObject = (values, editData, mode, isTemplate = false) => {
 	const formattedDateStart = formatDate(parse(values.date, 'dd.MM.yyyy', new Date()), 'yyyy-MM-dd');
 
 	// Определяем тип расхода/шаблона
-	const isPeriodicExpense = values.type === 'plan' || isTemplate;
+	const isPeriodicExpense = values.type === 'plan' || editData?.is_periodic || isTemplate;
 
 	if (!editData?.is_periodic && mode === 'edit') {
 		values.shops = values.shops ? [values.shops] : [];
