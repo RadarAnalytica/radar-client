@@ -374,6 +374,7 @@
     text-wrap: wrap;
     overflow: hidden;
     width: 100%;
+    word-break: break-all;
 }
 .fixedCell {
     display: block;
