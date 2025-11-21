@@ -46,14 +46,19 @@ const CompanyAdvPage: React.FC = () => {
     const result = [{
       ...data,
       ...data.summary_data,
-    }];
-
-    data.date_data.forEach(item => {
-      result.push({
+      isParent: true,
+      children: data.date_data.map(item => ({
         ...item,
         company_name: item.date,
-      });
-    });
+      })),
+    }];
+
+    // data.date_data.forEach(item => {
+    //   result.push({
+    //     ...item,
+    //     company_name: item.date,
+    //   });
+    // });
 
     return result;
   };

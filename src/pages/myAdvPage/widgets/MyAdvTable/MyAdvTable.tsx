@@ -37,6 +37,8 @@ const MyAdvTable: React.FC<MyAdvTableProps> = ({
   const navigate = useNavigate();
   const [tableData, setTableData] = useState<CompanyData[]>([]);
 
+  const [expandedRowKeys, setExpandedRowKeys] = useState<string[]>([]);
+
   // Инициализация данных таблицы
   useEffect(() => {
     if (data) {
@@ -260,6 +262,27 @@ const MyAdvTable: React.FC<MyAdvTableProps> = ({
     return <Loader loading={loading} progress={0} />;
   }
 
+  const handleExpandedRowsChange = (keys: React.Key[]) => {
+    const stringKeys = keys.map(key => String(key));
+    setExpandedRowKeys(stringKeys);
+    localStorage.setItem('MY_ADV_EXPANDED_TABLE_ROWS_STATE', JSON.stringify({ keys: stringKeys }));
+  };
+
+  const prepareTableData = (data: CompanyData[]) => {
+    if (!Array.isArray(data)) return [];
+
+    return data.map(item => ({
+      id: item.id,
+      key: item.id,
+      isParent: true,
+      ...item,
+      children: item.date_data.map((child, index) => ({
+        ...child,
+        isLastChild: index === item.date_data.length - 1,
+      })),
+    }));
+  };
+
   return (
     <div className={styles.table}>
       <div className={styles.tableControls}>
@@ -288,7 +311,7 @@ const MyAdvTable: React.FC<MyAdvTableProps> = ({
             <RadarTable
               rowKey={(record) => String(record.company_id)}
               config={getDefaultTableConfig()}
-              dataSource={[...tableData.slice((pageData.page - 1) * pageData.per_page, pageData.page * pageData.per_page)]}
+              dataSource={prepareTableData(tableData)}
               preset="radar-table-simple"
               scrollContainerRef={tableContainerRef}
               stickyHeader
@@ -303,6 +326,10 @@ const MyAdvTable: React.FC<MyAdvTableProps> = ({
                 onChange: handlePageChange,
                 showQuickJumper: true,
               }}
+              treeMode
+              indentSize={45}
+              expandedRowKeys={expandedRowKeys}
+              onExpandedRowsChange={(keys: React.Key[]) => handleExpandedRowsChange(keys)}
               paginationContainerStyle={{
                 bottom: 0
               }}
@@ -331,7 +358,7 @@ const MyAdvTable: React.FC<MyAdvTableProps> = ({
             <RadarTable
               rowKey={(record) => String(record.company_id)}
               config={getDefaultTableConfig()}
-              dataSource={tableData}
+              dataSource={prepareTableData(tableData)}
               preset="radar-table-simple"
               scrollContainerRef={tableContainerRef}
               stickyHeader
@@ -345,6 +372,10 @@ const MyAdvTable: React.FC<MyAdvTableProps> = ({
                 onChange: handlePageChange,
                 showQuickJumper: true,
               }}
+              treeMode
+              indentSize={45}
+              expandedRowKeys={expandedRowKeys}
+              onExpandedRowsChange={(keys: React.Key[]) => handleExpandedRowsChange(keys)}
               paginationContainerStyle={{
                 bottom: 0
               }}
