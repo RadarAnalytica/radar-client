@@ -224,6 +224,10 @@ const WbMetricsTable: React.FC<WbMetricsTableProps> = ({
               showQuickJumper: true,
             }}
             style={{ fontFamily: 'Mulish', width: 'max-content', tableLayout: 'fixed' }}
+            bodyCellWrapperStyle={{
+              justifyContent: 'flex-start',
+              height: '70px',
+            }}
           />
         )}
       </div>
