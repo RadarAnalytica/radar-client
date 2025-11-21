@@ -42,7 +42,7 @@
 
 .popoverRender__item {
     display: grid;
-    grid-template-columns: 3fr 1fr;
+    grid-template-columns: 3fr minmax(80px, 1fr) auto;
     gap: 24px;
 }
 
@@ -57,4 +57,7 @@
 
 .popoverRender__text_bold {
     font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
 }
