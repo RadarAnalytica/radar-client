@@ -89,15 +89,6 @@ const AbcAnalysisPage = () => {
 
 	const columnsList = useMemo(() => {
 		let columns = COLUMNS;
-		if (viewType === 'proceeds' || dataAbcAnalysis.results[0]?.logistics === undefined) {
-			columns = columns.filter((el) => el.dataIndex !== 'logistics');
-		}
-		if (dataAbcAnalysis.results[0]?.roi === undefined) {
-			columns = columns.filter((el) => el.dataIndex !== 'roi');
-		}
-		if (dataAbcAnalysis.results[0]?.marginality === undefined) {
-			columns = columns.filter((el) => el.dataIndex !== 'marginality');
-		}
 		const amountTitle = {
 			profit: 'Прибыль',
 			proceeds: 'Выручка',

@@ -95,6 +95,7 @@ export const COLUMNS = [
 		dataIndex: 'tech_size',
 		key: 'tech_size',
 		title: 'Размер',
+		width: '150px',
     	ellipsis: true,
 	},
 	{
@@ -145,14 +146,14 @@ export const COLUMNS = [
 		render: renderNumber,
 		ellipsis: true,
 	},
-	{
-		dataIndex: 'logistics',
-		key: 'logistics',
-		title: 'Логистика',
-		sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />,
-		sorter: true,
-		ellipsis: true,
-	},
+	// {
+	// 	dataIndex: 'logistics',
+	// 	key: 'logistics',
+	// 	title: 'Логистика',
+	// 	sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />,
+	// 	sorter: true,
+	// 	ellipsis: true,
+	// },
 	{
 		dataIndex: 'category',
 		key: 'category',
