@@ -77,7 +77,7 @@ export default function RnpTable({ columns, data, columns2, data2, expanded, el 
 			}
 			return col;
 		});
-		// setTableConfig(newConfig);
+		setTableConfig(newConfig);
 	};
 
 	// update table config when columns2 changes
