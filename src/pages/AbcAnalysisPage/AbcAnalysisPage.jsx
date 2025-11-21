@@ -37,7 +37,7 @@ const AbcAnalysisPage = () => {
 	const tableContainerRef = useRef(null);
 	const tableScroll = useMemo(() => {
 		if (!tableContainerRef.current){
-			return ({ x: '100%', y: 400 });
+			return ({ x: 'max-content', y: 400 });
 		}
 		const container = tableContainerRef.current;
 		const {height} = container.getBoundingClientRect();
@@ -88,6 +88,16 @@ const AbcAnalysisPage = () => {
 	}, [dataAbcAnalysis]);
 
 	const columnsList = useMemo(() => {
+		let columns = COLUMNS;
+		if (viewType === 'proceeds' || dataAbcAnalysis.results[0]?.logistics === undefined) {
+			columns = columns.filter((el) => el.dataIndex !== 'logistics');
+		}
+		if (dataAbcAnalysis.results[0]?.roi === undefined) {
+			columns = columns.filter((el) => el.dataIndex !== 'roi');
+		}
+		if (dataAbcAnalysis.results[0]?.marginality === undefined) {
+			columns = columns.filter((el) => el.dataIndex !== 'marginality');
+		}
 		const amountTitle = {
 			profit: 'Прибыль',
 			proceeds: 'Выручка',
@@ -96,7 +106,7 @@ const AbcAnalysisPage = () => {
 			profit: 'Доля прибыли',
 			proceeds: 'Доля выручки',
 		};
-		return COLUMNS.map((el) => {
+		return columns.map((el) => {
 			if (el.key === 'amount') {
 				el.title = amountTitle[viewType];
 			}

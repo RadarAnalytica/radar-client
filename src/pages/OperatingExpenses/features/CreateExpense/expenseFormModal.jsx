@@ -197,7 +197,7 @@ export default function ExpenseFormModal({
 					vendor_code: article.value,
 				}));
 
-				shops.push({ ...filter.shop, shop: filter.shop?.id, shop_name: filter.shop?.brand_name });
+				shops.push({ ...filter.shop, shop: filter.shop?.id });
 				brands.push(...brandsOptions);
 				vendor_codes.push(...vendorCodesOptions);
 			});
@@ -846,7 +846,7 @@ export default function ExpenseFormModal({
 													hasSelectAll
 													optionsData={distributeOptions.shops?.map(el => ({
 														key: el.shop,
-														value: JSON.stringify({ shop: el.shop, shop_name: el.shop_name }),
+														value: JSON.stringify({ shop: el.shop }),
 														label: el.brand_name,
 													}))}
 													selectId='shops'
