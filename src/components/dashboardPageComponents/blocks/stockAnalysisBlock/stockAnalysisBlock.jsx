@@ -58,7 +58,7 @@ const StockAnalysisBlock = ({ dashboardLoading, dragHandle }) => {
         }
     }, [filters]);
 
-    
+
 
     if (loading || dashboardLoading) {
         return (
@@ -82,7 +82,6 @@ const StockAnalysisBlock = ({ dashboardLoading, dragHandle }) => {
                     {dragHandle && dragHandle()}
                 </div>
             </div>
-
             <TableWidget
                 stockAnalysisFilteredData={stockAnalysisFilteredData || []}
                 loading={loading || dashboardLoading}
@@ -92,7 +91,7 @@ const StockAnalysisBlock = ({ dashboardLoading, dragHandle }) => {
                 configKey='STOCK_ANALYSIS_TABLE_CONFIG'
                 initPaginationState={{ current: 1, total: 1, pageSize: 10 }}
                 hasShadow={false}
-                // maxHeight={425}
+            // maxHeight={425}
             />
         </div>
     );

@@ -94,7 +94,7 @@ const customCellRender = (value, record, index, dataIndex) => {
     if (dataIndex === 'vendorСode' || dataIndex === 'sku' || dataIndex === 'size') {
         return (
             <div className={styles.fixedCell}>
-                <div className={styles.fixedCellTitle} title={value}><span>{value.toString()}</span></div>
+                <div className={styles.fixedCellTitle} title={value}><span>{value?.toString()}</span></div>
             </div>
         );
     }
@@ -269,7 +269,7 @@ const TableWidget = ({ stockAnalysisFilteredData, loading, progress, config, ini
                         paginationContainerStyle={{
                             bottom: 0
                         }}
-                        sorting={{ sort_field: sortState?.sortedValue, sort_order: sortState?.sortType }}
+                        //sorting={{ sort_field: sortState?.sortedValue, sort_order: sortState?.sortType }}
                         scrollContainerRef={containerRef}
                         customCellRender={{
                             idx: [],

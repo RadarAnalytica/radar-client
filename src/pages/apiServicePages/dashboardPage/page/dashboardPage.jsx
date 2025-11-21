@@ -880,15 +880,19 @@ const MainContent = React.memo(({
 }) => {
     const isLoading = loading || !isFiltersLoading; // Флаг загрузки данных
 
+    // Кэшируем загруженные данные из localStorage
+    const savedRowsRef = useRef(null);
+    if (savedRowsRef.current === null) {
+        savedRowsRef.current = loadDashboardSettings();
+    }
+    
     // Применяем настройки видимости и порядка к конфигу
     const configWithSettings = useMemo(() => {
-        const savedRows = loadDashboardSettings();
-        
         // Обогащаем загруженные данные недостающими из исходного конфига
-        let config = enrichConfig(savedRows, barsConfig);
+        let config = enrichConfig(savedRowsRef.current, barsConfig);
         
         // Если есть актуальный visibilityMap (из состояния), применяем его поверх сохраненных
-        if (visibilityMap) {
+        if (visibilityMap && Object.keys(visibilityMap).length > 0) {
             config = config.map(row => ({
                 ...row,
                 children: row.children ? row.children.map(child => ({
@@ -903,11 +907,20 @@ const MainContent = React.memo(({
         return config;
     }, [visibilityMap]);
 
-    const [items, setItems] = useState(() => configWithSettings); // Конфиг для DND
+    // Инициализируем items с начальным значением из configWithSettings
+    const [items, setItems] = useState(() => configWithSettings);
+    const prevConfigRef = useRef(configWithSettings);
 
-    // Обновляем items при изменении настроек
+    // Обновляем items при изменении настроек (только если действительно изменились)
     useEffect(() => {
-        setItems(configWithSettings);
+        // Сравниваем структуру (порядок и ID элементов), чтобы избежать лишних обновлений
+        const prevIds = JSON.stringify(prevConfigRef.current.map(r => ({ rowId: r.rowId, children: r.children?.map(c => c.id) })));
+        const newIds = JSON.stringify(configWithSettings.map(r => ({ rowId: r.rowId, children: r.children?.map(c => c.id) })));
+        
+        if (prevIds !== newIds) {
+            prevConfigRef.current = configWithSettings;
+            setItems(configWithSettings);
+        }
     }, [configWithSettings]);
     
     // Функция для сохранения настроек с текущими items
