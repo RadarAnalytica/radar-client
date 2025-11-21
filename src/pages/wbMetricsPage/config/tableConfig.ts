@@ -1,4 +1,4 @@
-export const TABLE_CONFIG_VERSION = '1.0.6';
+export const TABLE_CONFIG_VERSION = '1.0.7';
 export const TABLE_CONFIG_STORAGE_KEY = 'wbMetrics_tableConfig';
 
 export interface ColumnConfig {
@@ -63,7 +63,7 @@ export const getDefaultTableConfig = (controlData?: any[]): ColumnConfig[] => {
       key: 'category',
       title: 'Категория',
       dataIndex: 'category',
-      width: 200,
+      width: 150,
       sortable: false,
       hidden: false,
       canToggle: true,
@@ -78,7 +78,7 @@ export const getDefaultTableConfig = (controlData?: any[]): ColumnConfig[] => {
       canToggle: false,
       className: 'chart-column',
     },
-  ].map(_ => ({ ..._, key: _.dataIndex, maxWidth: _.width * 2, minWidth: _.width }));
+  ].map(_ => ({ ..._, key: _.dataIndex, maxWidth: _.width * 2, minWidth: _.width / 2 }));
 
   // Добавляем колонки для каждого дня
   const dayColumns: ColumnConfig[] = (controlData || []).map((item, index) => {

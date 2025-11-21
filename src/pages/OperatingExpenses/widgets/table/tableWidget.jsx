@@ -244,6 +244,7 @@ export default function TableWidget({
                     dataSource={data}
                     resizeable={tableType === 'expense'}
                     onResize={onResizeColumn}
+                    style={{width: tableType === 'category' ? '100%' : 'max-content'}}
                     pagination={{
                         current: pagination.page,
                         pageSize: pagination.limit,

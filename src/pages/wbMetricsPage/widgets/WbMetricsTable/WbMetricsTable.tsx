@@ -133,6 +133,14 @@ const WbMetricsTable: React.FC<WbMetricsTableProps> = ({
       );
     }
 
+    if (dataIndex === 'vendor_code' || dataIndex === 'barcode' || dataIndex === 'brand' || dataIndex === 'category') {
+      return (
+        <div className={styles.fixedCell}>
+            <div className={styles.fixedCellTitle} title={value}><span>{value.toString()}</span></div>
+        </div>
+    )
+  }
+
     // Рендер для графика
     if (dataIndex === 'chart') {
         return (
