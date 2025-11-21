@@ -31,8 +31,8 @@ export const SmallButton: React.FC<ISmallButtonProps> = ({ title, dataDashBoard,
     if (dataType === 'comission') {
         popoverData = [
             {
-                value: dataDashBoard?.commissionWB,
-                compare: dataDashBoard?.commissionWBCompare,
+                value: dataDashBoard?.comission_without_acquiring,
+                compare: dataDashBoard?.comission_without_acquiring_compare,
                 description: 'Номинальная комиссия'
             },
             {
