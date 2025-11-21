@@ -21,17 +21,16 @@ import { useDemoMode } from '@/app/providers/DemoDataProvider';
  * @param {Object} values - значения формы
  * @param {Object} editData - данные для редактирования (если есть)
  * @param {string} mode - режим работы ('create' | 'edit' | 'copy')
- * @param {boolean} isTemplate - флаг работы с шаблонами
  * @returns {Object} - объект с requestObject и requestUrl
  */
-const getRequestObject = (values, editData, mode, isTemplate = false) => {
+const getRequestObject = (values, editData, mode) => {
 	let requestObject = {};
 	let requestUrl = '';
 	let distributeItems = [];
 	const formattedDateStart = formatDate(parse(values.date, 'dd.MM.yyyy', new Date()), 'yyyy-MM-dd');
 
 	// Определяем тип расхода/шаблона
-	const isPeriodicExpense = editData?.is_periodic || isTemplate;
+	const isPeriodicExpense = values.type === 'plan';
 
 	if (!editData?.is_periodic && mode === 'edit') {
 		values.shops = values.shops ? [values.shops] : [];
@@ -158,7 +157,7 @@ export default function ExpenseFormModal({
 		: today;
 
 	const onFinish = (values) => {
-		handle(getRequestObject(values, editData, mode, isTemplate));
+		handle(getRequestObject(values, editData, mode));
 	};
 
 	const cancelHandler = () => {
@@ -240,13 +239,9 @@ export default function ExpenseFormModal({
 
 			// Для разовых расходов при редактировании
 			if (mode === 'edit' && !editData.is_periodic) {
-				const formattedDate = editData.date
-					? format(parse(editData.date, 'yyyy-MM-dd', new Date()), 'dd.MM.yyyy')
-					: null;
-
-				const formattedEndDate = editData.end_date
-					? format(parse(editData.end_date, 'yyyy-MM-dd', new Date()), 'dd.MM.yyyy')
-					: null;
+				const date = editData.date_from || editData.date;
+				const formattedDate = date ? format(parse(date, 'yyyy-MM-dd', new Date()), 'dd.MM.yyyy') : null;
+				const formattedEndDate = editData.finished_at ? format(parse(editData.finished_at, 'yyyy-MM-dd', new Date()), 'dd.MM.yyyy') : null;
 
 				const expenseCategory = editData.expense_categories
 					? category.find((el) => el.name === editData.expense_categories)?.id

@@ -25,10 +25,10 @@ const customCellExpenseRender = (
     if (dataIndex === 'is_periodic' && record.key !== 'summary') {
         return (
             <div 
-                className={isTemplate ? styles.periodicBadge_template : record.is_periodic ? styles.periodicBadge_periodic : styles.periodicBadge_static} 
-                title={isTemplate ? 'Шаблон' : record.is_periodic ? 'Плановый' : 'Разовый'}
+                className={record?.is_template ? styles.periodicBadge_template : record.is_periodic ? styles.periodicBadge_periodic : styles.periodicBadge_static} 
+                title={record?.is_template ? 'Шаблон' : record?.is_periodic ? 'Плановый' : 'Разовый'}
             >
-                {isTemplate ? 'Шаблон' : record.is_periodic ? 'Плановый' : 'Разовый'}
+                {record?.is_template ? 'Шаблон' : record?.is_periodic ? 'Плановый' : 'Разовый'}
             </div>
         );
     }
@@ -128,38 +128,34 @@ const customCellExpenseRender = (
                         e.stopPropagation();
                         e.preventDefault();
 
-                        if (!record.is_periodic) {
-                            copyExpense(record.id);
+                        if (!record.is_periodic && !record.is_template) {
+                            copyExpense(record.id, false);
                             return;
                         }
 
-                        let response;
-                        if (record?.is_periodic || record?.is_template) {
-                            try {
-                                response = await ServiceFunctions.getOperatingExpensesTemplateGet(authToken, isTemplate ? record.id : record.periodic_expense_id);
-
-                                setExpenseModal({
-                                    mode: 'copy',
-                                    isOpen: true,
-                                    data: {
-                                        ...response,
-                                        end_date: response.finished_at?.split('T')[0],
-                                        date_from: response.date_from,
-                                        frequency: response.period_type,
-                                        week: response.period_type === 'week' ? response.period_values : null,
-                                        month: response.period_type === 'month' ? response.period_values : null,
-                                        periodic_expense_id: response.id,
-                                        is_periodic: true,
-                                    }
-                                });
-                                return;
-                            } catch (error) {
-                                setAlertState({
-                                    status: 'error',
-                                    isVisible: true,
-                                    message: 'Не удалось получить шаблон расхода',
-                                });
-                            }
+                        try {
+                            const response = await ServiceFunctions.getOperatingExpensesTemplateGet(authToken, isTemplate ? record.id : record.periodic_expense_id);
+                            setExpenseModal({
+                                mode: 'copy',
+                                isOpen: true,
+                                data: {
+                                    ...response,
+                                    end_date: response.finished_at?.split('T')[0],
+                                    date_from: response.date_from,
+                                    frequency: response.period_type,
+                                    week: response.period_type === 'week' ? response.period_values : null,
+                                    month: response.period_type === 'month' ? response.period_values : null,
+                                    periodic_expense_id: response.id,
+                                    is_periodic: true,
+                                }
+                            });
+                            return;
+                        } catch (error) {
+                            setAlertState({
+                                status: 'error',
+                                isVisible: true,
+                                message: 'Не удалось получить шаблон расхода',
+                            });
                         }
                     }}
                     title='Копировать'

@@ -495,7 +495,7 @@ export default function OperatingExpenses() {
 		}
 	};
 
-	const copyTemplate = async (templateId) => {
+	const copyTemplate = async (templateId, isPeriodic) => {
 		setLoading(true);
 		try {
 			let templateToCopy = templates.find((item) => item.id === templateId);
@@ -503,10 +503,7 @@ export default function OperatingExpenses() {
 				throw new Error('Шаблон не найден');
 			}
 			// Prepare template data for copying (remove id and any timestamps)
-			const { id, created_at, updated_at, ...templateData } = templateToCopy;
-
-			// Определяем тип шаблона
-			const isPeriodic = templateData?.period_type || templateData?.frequency;
+			const { id, ...templateData } = templateToCopy;
 
 			// Transform expense_categories: extract IDs if it's an array of objects
 			if (templateData.expense_categories && Array.isArray(templateData.expense_categories)) {
@@ -514,7 +511,6 @@ export default function OperatingExpenses() {
 					typeof cat === 'object' ? cat.id : cat
 				);
 			}
-
 			if (!templateData.items || templateData.items.length === 0) {
 				const items = [];
 				if (templateData.shops && templateData.shops.length > 0) {
@@ -535,8 +531,12 @@ export default function OperatingExpenses() {
 					templateData.items = items;
 				}
 			}
+			if (!isPeriodic) {
+				templateData.date = templateData.date_from;
+			}
 
-			const res = await ServiceFunctions.postOperatingExpensesTemplateCreate(authToken, templateData, 'operating-expenses/periodic-templates/create');
+			const url = isPeriodic ? 'operating-expenses/periodic-templates/create' : 'operating-expenses/expense/create';
+			const res = await ServiceFunctions.postOperatingExpensesTemplateCreate(authToken, templateData, url);
 			await updateTemplates(true);
 			await updateExpenses();
 			setAlertState({ message: 'Шаблон скопирован', status: 'success', isVisible: true });
@@ -548,10 +548,14 @@ export default function OperatingExpenses() {
 		}
 	};
 
-	const deleteTemplate = async (id) => {
+	const deleteTemplate = async (id, isPeriodic) => {
 		setLoading(true);
 		try {
-			const res = await ServiceFunctions.deleteOperatingExpensesTemplateDelete(authToken, id);
+			if (isPeriodic) {
+				await ServiceFunctions.deleteOperatingExpensesTemplateDelete(authToken, id);
+			} else {
+				await ServiceFunctions.deleteOperatingExpensesExpenseDelete(authToken, id, false);
+			}
 			await updateExpenses();
 			await updateTemplates(); // Обновляем данные без сброса пагинации
 			setAlertState({ message: 'Шаблон удален', status: 'success', isVisible: true });
@@ -784,7 +788,8 @@ export default function OperatingExpenses() {
 						</div>
 					)}
 					onOk={() => {
-						deleteExpense(deleteTemplateId, true);
+						const currentTemplate = templateData.data.find((el) => el.id === deleteTemplateId);
+						deleteTemplate(deleteTemplateId, currentTemplate?.is_template);
 					}}
 					onCancel={() => setDeleteTemplateId(null)}
 					isLoading={loading}
