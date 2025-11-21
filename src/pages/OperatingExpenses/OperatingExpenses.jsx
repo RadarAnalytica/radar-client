@@ -775,7 +775,7 @@ export default function OperatingExpenses() {
 
 				{deleteTemplateId && <ModalDeleteConfirm
 					title={'Вы уверены, что хотите удалить шаблон?'}
-					text={(
+					text={templateData.data.find((el) => el.id === deleteTemplateId)?.is_template ? (
 						<div className={styles.deleteModal__text}>
 							Вы удаляете шаблон. Это действие также удалит все созданные расходы по этому шаблону.
 							<RadarTooltip
@@ -786,7 +786,7 @@ export default function OperatingExpenses() {
 								>Подробнее</span>
 							</RadarTooltip>
 						</div>
-					)}
+					) : null}
 					onOk={() => {
 						const currentTemplate = templateData.data.find((el) => el.id === deleteTemplateId);
 						deleteTemplate(deleteTemplateId, currentTemplate?.is_template);

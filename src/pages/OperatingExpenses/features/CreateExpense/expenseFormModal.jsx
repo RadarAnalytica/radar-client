@@ -21,17 +21,18 @@ import { useDemoMode } from '@/app/providers/DemoDataProvider';
  * @param {Object} values - значения формы
  * @param {Object} editData - данные для редактирования (если есть)
  * @param {string} mode - режим работы ('create' | 'edit' | 'copy')
- * @param {boolean} isTemplate - флаг, является ли расход/шаблон шаблоном
  * @returns {Object} - объект с requestObject и requestUrl
  */
-const getRequestObject = (values, editData, mode, isTemplate = false) => {
+const getRequestObject = (values, editData, mode) => {
 	let requestObject = {};
 	let requestUrl = '';
 	let distributeItems = [];
 	const formattedDateStart = formatDate(parse(values.date, 'dd.MM.yyyy', new Date()), 'yyyy-MM-dd');
 
 	// Определяем тип расхода/шаблона
-	const isPeriodicExpense = values.type === 'plan' || editData?.is_periodic || isTemplate;
+	const isPeriodicExpense = values.type === 'plan' || editData?.is_periodic || editData?.is_template;
+
+	console.log('isPeriodicExpense', isPeriodicExpense);
 
 	if (!editData?.is_periodic && mode === 'edit') {
 		values.shops = values.shops ? [values.shops] : [];
@@ -158,7 +159,7 @@ export default function ExpenseFormModal({
 		: today;
 
 	const onFinish = (values) => {
-		handle(getRequestObject(values, editData, mode, isTemplate));
+		handle(getRequestObject(values, editData, mode));
 	};
 
 	const cancelHandler = () => {
