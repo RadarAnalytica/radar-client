@@ -36,7 +36,7 @@ const getABCBarOptions = (value) => {
         bgColor = '#FB450033';
     }
     return bgColor;
-}
+};
 
 const comparsionsList = {
     "saleSum": "sale_sum_comparison",
@@ -67,17 +67,17 @@ const comparsionsList = {
     "purchasedPercent": "purchased_percent_comparison",
     "completed": "completed_comparison",
     "saleCountDay": "sale_count_day_comparison"
-  }
+};
 
 const customCellRender = (value, record, index, dataIndex) => {
     const [isImgVisible, setIsImgVisible] = useState(true);
-    const comparsionKey = comparsionsList[dataIndex]
-    const comparsion = record[comparsionKey]
+    const comparsionKey = comparsionsList[dataIndex];
+    const comparsion = record[comparsionKey];
     const rightBorders = ['category', 'sold_cost', 'return_cost', 'product_cost_stock', 'from_client_sum', 'additionalPayment', 'lostRevenue', 'byProfit', 'minDiscountPrice', 'orderSum', 'completed', 'saleCountDay'];
 
     if (dataIndex === 'productName') {
         return (
-            <div className={styles.productCustomCell}>
+            <div className={`${styles.productCustomCell} ${!record.children && 'ps-5'}`}>
                 <div className={styles.productCustomCellImgWrapper}>
                     {isImgVisible && <img 
                         src={record.photo} 
