@@ -335,11 +335,10 @@ const MyAdvTable: React.FC<MyAdvTableProps> = ({
         
         <div className={styles.tableWrapper} ref={tableContainerRef}>
           {!loading && data && <>
-            {headerComponent()}
             <RadarTable
               rowKey={(record) => String(record.id || record.key)}
-              config={tableConfigResized}
-              dataSource={sortTableData(prepareTableData(), sortState)}
+              config={columns}
+              dataSource={data}
               // resizeable
               // onResize={onResizeColumn}
               preset="radar-table-default"

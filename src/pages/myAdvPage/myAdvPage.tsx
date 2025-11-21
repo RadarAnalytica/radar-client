@@ -42,14 +42,12 @@ const MyAdvPage: React.FC = () => {
     setLoading(true);
     progress.start();
     try {
-      // const requestObject = getRequestObject({...pageData, search_query: searchQuery}, selectedRange);
-      //const response: ApiResponse = await ServiceFunctions.getAdvertData(authToken, requestObject);
-      // const transformedData = transformApiDataToCompanyData(response.data || []);
-      // if (response.total_count) {
-      //   setPageData({ ...pageData, total_count: response.total_count });
-      // }
-      const transformedData = transformApiDataToCompanyData(mockCompaniesData || []);
-      setData(transformedData);
+      const requestObject = getRequestObject({...pageData, search_query: searchQuery}, selectedRange);
+      const response: ApiResponse = await ServiceFunctions.getAdvertData(authToken, requestObject);
+      if (response.total_count) {
+        setPageData({ ...pageData, total_count: response.total_count });
+      }
+      setData(response.data.slice(0, 50) || []);
       progress.complete();
       await setTimeout(() => {
         setLoading(false);
