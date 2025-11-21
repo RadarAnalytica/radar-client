@@ -14,6 +14,7 @@ import { fetchShops } from "../../../../redux/shops/shopsActions";
 import { useAppDispatch } from "../../../../redux/hooks";
 import { fetchApi } from "@/service/fetchApi";
 import { useDemoMode } from "@/app/providers";
+import { fetchFilters } from "@/redux/apiServicePagesFiltersState/filterActions";
 
 const dataFetchingStatus = {
     isLoading: false,
@@ -24,7 +25,7 @@ const dataFetchingStatus = {
 
 const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, initDataStatus, shopId, setIsSuccess, dataStatus, setTableData, tableData, resetSearch }) => {
     const datePickerContainerRef = useRef(null);
-    const {isDemoMode} = useDemoMode();
+    const { isDemoMode } = useDemoMode();
     const [product, setProduct] = useState(); // присваиваем глубоким копированием
     const [isOpen, setIsOpen] = useState(false); // стейт открытия аккордеона
     const [isDatePickerVisible, setIsDatePickerVisible] = useState(false); // стейт датапикера
@@ -87,10 +88,28 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
             let newTableData = tableData;
             const index = newTableData.findIndex(_ => _.product === parsedData.product);
             newTableData[index] = parsedData;
-            const isAllProductsHasSelfCost = !newTableData.some(_ => _.cost === null );
+            const isAllProductsHasSelfCost = !newTableData.some(_ => _.cost === null);
 
             if (isAllProductsHasSelfCost) {
-                dispatch(fetchShops(authToken));
+                let shopsResponse = await fetchApi('/api/shop/all', {
+                    method: 'GET',
+                    headers: {
+                        'content-type': 'application/json',
+                        authorization: 'JWT ' + authToken,
+                    }
+                });
+                if (!shopsResponse?.ok) {
+                    console.error('Error fetching shops data:');
+                    window.location.reload();
+                }
+                let shopsData = null;
+                shopsData = await shopsResponse.json();
+
+                // @ts-ignore
+                await dispatch(fetchFilters({
+                    authToken,
+                    shopsData
+                }));
             }
             setTableData(newTableData);
             setDataStatus({ ...initDataStatus });
