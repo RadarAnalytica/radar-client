@@ -5,10 +5,10 @@ import { formatPrice } from '@/service/utils';
 import { RadarRateMark } from '../RadarRateMark/RadarRateMark';
 
 const compareDictionary: Record<string, string> = {
-    logistic_to_client_sale: 'К клиенту при продаже',
     logistic_to_client_cancel: 'К клиенту при отмене',
-    logistic_reverse_return: 'От клиента при продаже',
-    logistic_reverse_cancel: 'От клиента при отмене'
+    logistic_to_client_sale: 'К клиенту при продаже',
+    logistic_reverse_cancel: 'От клиента при отмене',
+    logistic_reverse_return: 'От клиента при возврате',
 }
 
 interface ISmallButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -47,7 +47,7 @@ export const SmallButton: React.FC<ISmallButtonProps> = ({ title, dataDashBoard,
         popoverData = dataDashBoard?.logistic_details
     }
 
-   
+
 
     return (
         <Popover
@@ -67,32 +67,48 @@ export const SmallButton: React.FC<ISmallButtonProps> = ({ title, dataDashBoard,
 };
 
 
-const PopoverRender = ({ popoverData, title, dataType }: { popoverData?: Record<string, number | string> | Array<Record<string, number | string>>, title: string, dataType: 'logistic' | 'penalty' | 'comission' }) => {
+const PopoverRender = ({ popoverData, title, dataType }: { popoverData?: Record<string, Record<string, number | string>> | Array<Record<string, number | string>>, title: string, dataType: 'logistic' | 'penalty' | 'comission' }) => {
     return (
         <div className={styles.popoverRender}>
             <p className={styles.popoverRender__title}>{title}</p>
             {popoverData && dataType === 'logistic' && Object.keys(popoverData).length > 0 &&
                 <ul className={styles.popoverRender__list}>
-                    {Object.keys(popoverData).map((key) => {
-                        const title = compareDictionary[key] ?? key;
-                        return (
-                            <li key={key} className={styles.popoverRender__item}>
-                                <span className={styles.popoverRender__text}>{title}</span>
-                                <span className={`${styles.popoverRender__text} ${styles.popoverRender__text_bold}`}>{formatPrice(popoverData[key]?.toString(), '₽')}</span>
-                                {/* <RadarRateMark value={popoverData[key].toString()} units='%' /> */}
-                            </li>
-                        )
-                    })}
+                    {Object.keys(compareDictionary)
+                        .filter((key) => popoverData && key in popoverData)
+                        .map((key) => {
+                            const title = compareDictionary[key] ?? key;
+                            return (
+                                <li key={key} className={styles.popoverRender__item}>
+                                    <span className={styles.popoverRender__text}>{title}</span>
+                                    <div className={styles.popoverRender__rowRapper}>
+                                        <div className={`${styles.popoverRender__text} ${styles.popoverRender__text_bold}`}>{formatPrice(popoverData[key]?.value?.toString(), '₽')}</div>
+                                        {popoverData[key]?.compare &&
+                                            <div className={styles.popoverRender__leftWrapper}>
+                                                <RadarRateMark value={popoverData[key]?.compare} units='%'
+                                                />
+                                            </div>
+                                        }
+                                    </div>
+                                </li>
+                            )
+                        })}
                 </ul>
             }
-            {popoverData &&  (dataType === 'comission' || dataType === 'penalty') && Array.isArray(popoverData) && popoverData.length > 0 &&
+            {popoverData && (dataType === 'comission' || dataType === 'penalty') && Array.isArray(popoverData) && popoverData.length > 0 &&
                 <ul className={styles.popoverRender__list}>
                     {popoverData.map((_, idx) => {
                         return (
                             <li key={idx} className={styles.popoverRender__item}>
                                 <span className={styles.popoverRender__text}>{_.description}</span>
-                                <div className={`${styles.popoverRender__text} ${styles.popoverRender__text_bold}`}>{formatPrice(_.value?.toString(), '₽')}</div>
-                                {_.compare && <RadarRateMark value={_.compare} units='%' />}
+                                <div className={styles.popoverRender__rowRapper}>
+                                    <div className={`${styles.popoverRender__text} ${styles.popoverRender__text_bold}`}>{formatPrice(_.value?.toString(), '₽')}</div>
+                                    {_.compare &&
+                                        <div className={styles.popoverRender__leftWrapper}>
+                                            <RadarRateMark value={_.compare} units='%'
+                                            />
+                                        </div>
+                                    }
+                                </div>
                             </li>
                         )
                     })}

@@ -41,9 +41,23 @@
 }
 
 .popoverRender__item {
-    display: grid;
-    grid-template-columns: 3fr minmax(80px, 1fr) auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     gap: 24px;
+}
+.popoverRender__itemNoMark {
+    display: grid;
+    grid-template-columns: 3fr minmax(80px, 1fr);
+    justify-items: stretch;
+    justify-content: stretch;
+    gap: 24px;
+}
+
+.popoverRender__rowRapper {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
 }
 
 .popoverRender__text {
@@ -60,4 +74,19 @@
     display: flex;
     align-items: center;
     justify-content: flex-end;
+}
+
+.popoverRender__rigthWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    width: 100%;
+}
+.popoverRender__leftWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    width: 80px;
+    flex-shrink: 0;
+    flex-grow: 0;
 }
