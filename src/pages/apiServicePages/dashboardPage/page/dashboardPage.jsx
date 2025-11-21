@@ -339,7 +339,7 @@ const barsConfig = [
                 dropKey: '1',
                 render: (bar, dataDashBoard, loading) => (
                     <RadarBar
-                        title='Комиссия'
+                        title='Комиссия + эквайринг'
                         tooltipText='Суммарная комиссия маркетплейса, рассчитывается от суммарного объема продаж по коэффициентам, определенным Wildberries'
                         mainValue={dataDashBoard?.commissionWB}
                         mainValueUnits='₽'
