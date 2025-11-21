@@ -1,4 +1,7 @@
 export const sortTableDataFunc = (sortType, sortedValue, dataToSort) => {
+    if (!dataToSort) {
+        return [];
+    }
     let sortedData = dataToSort;
     if (sortedValue === 'byRevenue' || sortedValue === 'byProfit') {
         if (sortType === 'ASC') {
@@ -6,7 +9,7 @@ export const sortTableDataFunc = (sortType, sortedValue, dataToSort) => {
                 if (typeof b[sortedValue] === 'number' && typeof a[sortedValue] === 'number') {
                     return b[sortedValue] - a[sortedValue];
                 } else {
-                    return b[sortedValue].localeCompare(a[sortedValue]);
+                    return b[sortedValue]?.localeCompare(a[sortedValue]);
                 }
             });
         }
@@ -16,7 +19,7 @@ export const sortTableDataFunc = (sortType, sortedValue, dataToSort) => {
                 if (typeof b[sortedValue] === 'number' && typeof a[sortedValue] === 'number') {
                     return a[sortedValue] - b[sortedValue];
                 } else {
-                    return a[sortedValue].localeCompare(b[sortedValue]);
+                    return a[sortedValue]?.localeCompare(b[sortedValue]);
                 }
             });
         }
@@ -26,7 +29,7 @@ export const sortTableDataFunc = (sortType, sortedValue, dataToSort) => {
                 if (typeof a[sortedValue] === 'number' && typeof b[sortedValue] === 'number') {
                     return a[sortedValue] - b[sortedValue];
                 } else {
-                    return a[sortedValue].localeCompare(b[sortedValue]);
+                    return a[sortedValue]?.localeCompare(b[sortedValue]);
                 }
             });
         }
@@ -36,7 +39,7 @@ export const sortTableDataFunc = (sortType, sortedValue, dataToSort) => {
                 if (typeof a[sortedValue] === 'number' && typeof b[sortedValue] === 'number') {
                     return b[sortedValue] - a[sortedValue];
                 } else {
-                    return b[sortedValue].localeCompare(a[sortedValue]);
+                    return b[sortedValue]?.localeCompare(a[sortedValue]);
                 }
             });
         }
