@@ -3,13 +3,13 @@ import { Table as RadarTable } from 'radar-ui';
 import { useNavigate } from 'react-router-dom';
 import { Filters } from '@/components/sharedComponents/apiServicePagesFiltersComponent';
 import TableSettingsWidget from '../TableSettingsWidget/TableSettingsWidget';
-import { useTableColumnResize } from '@/service/hooks/useTableColumnResize';
-import { TABLE_CONFIG_VERSION } from '../../config/tableConfig';
+import { TABLE_CONFIG_VERSION, getDefaultTableConfig } from '../../config/tableConfig';
 import { sortTableData } from './utils';
 import styles from './MyAdvTable.module.css';
 import { CompanyData } from '../../data/mockData';
 import { ColumnConfig } from '../../config/tableConfig';
 import { toCamelCase } from './utils';
+import Loader from '@/components/ui/Loader';
 
 interface MyAdvTableProps {
   data: CompanyData[];
@@ -36,92 +36,74 @@ const MyAdvTable: React.FC<MyAdvTableProps> = ({
 }) => {
   const tableContainerRef = useRef(null);
   const navigate = useNavigate();
+  const [tableData, setTableData] = useState<CompanyData[]>([]);
 
-  const [hideCompaniesWithoutStats, setHideCompaniesWithoutStats] = useState(false);
-  
-  const handleHideCompaniesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const checked = e.target.checked;
-    console.log('Скрыть компании без статистики:', checked);
-    setHideCompaniesWithoutStats(checked);
-  };
-
-  const [expandedRowKeys, setExpandedRowKeys] = useState<string[]>([]);
-
-  // Генерация дочерних строк с датами для компании
-  const generateDateRows = (company: CompanyData) => {
-    // Генерируем последние 7 дней
-    const dates = [];
-    for (let i = 6; i >= 0; i--) {
-      const date = new Date();
-      date.setDate(date.getDate() - i);
-      dates.push(date);
+  // Инициализация данных таблицы
+  useEffect(() => {
+    if (data) {
+      if (sortState.sort_field && sortState.sort_order) {
+        setTableData([...sortTableData(data, sortState)]);
+      } else {
+        setTableData(data);
+      }
     }
+  }, [data, sortState]);
 
-    return dates.map((date, index) => {
-      const dateStr = date.toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit', year: 'numeric' });
-      // Генерируем случайные данные для каждой даты (можно заменить на реальные данные)
-      const variation = 0.8 + Math.random() * 0.4; // вариация от 80% до 120%
-      
-      return {
-        id: `${company.id}_${date.getTime()}`,
-        key: `${company.id}_${date.getTime()}`,
-        isParent: false,
-        isLastChild: index === dates.length - 1,
-        company: dateStr, // В колонке компании показываем дату
-        cart: Math.round(company.cart * variation / dates.length),
-        orders: Math.round(company.orders * variation / dates.length),
-        ordered_qty: Math.round(company.ordered_qty * variation / dates.length),
-        forecast_purchase_qty: Math.round(company.forecast_purchase_qty * variation / dates.length),
-        views_to_click: company.views_to_click,
-        click_to_cart: company.click_to_cart,
-        cart_to_order: company.cart_to_order,
-        view_to_order: company.view_to_order,
-        forecast_order_to_purchase: company.forecast_order_to_purchase,
-        forecast_click_to_purchase: company.forecast_click_to_purchase,
-        views: Math.round(company.views * variation / dates.length),
-        clicks: Math.round(company.clicks * variation / dates.length),
-        cpc: company.cpc,
-        avg_crm: company.avg_crm,
-        avg_position: company.avg_position,
-        drr_orders: company.drr_orders,
-        forecast_drr_purchase: company.forecast_drr_purchase,
-        cpcart: company.cpcart,
-        forecast_cps: company.forecast_cps,
-        orders_sum: Math.round(company.orders_sum * variation / dates.length),
-        forecast_purchase_sum: Math.round(company.forecast_purchase_sum * variation / dates.length),
-        advertising_costs: Math.round(company.advertising_costs * variation / dates.length),
-      };
+  const handlePageChange = (page: number, pageSize?: number) => {
+    setPageData({ ...pageData, page: page, per_page: pageSize || pageData.per_page });
+    tableContainerRef.current?.scrollTo({
+      top: 0,
+      behavior: 'smooth'
     });
-  };
-
-  const prepareTableData = () => {
-    if (Array.isArray(data)) return data;
-
-    // return data.map((item: CompanyData) => {
-    //   const children = generateDateRows(item);
-    //   return {
-    //     id: item.id,
-    //     key: item.id,
-    //     isParent: true,
-    //     ...item,
-    //     children: children.map((child, index) => ({
-    //       ...child,
-    //       isLastChild: index === children.length - 1,
-    //     })),
-    //   };
-    // });
-  };
-
-  const handlePageChange = (page: number) => {
-    setPageData({ ...pageData, page: page });
   };
 
   const handleSort = (sort_field: string, sort_order: "ASC" | "DESC") => {
     setPageData({ ...pageData, page: 1 });
     setSortState({ sort_field, sort_order });
+    if (data) {
+      setTableData([...sortTableData(data, { sort_field, sort_order })]);
+    }
     tableContainerRef.current?.scrollTo({
       top: 0,
       behavior: 'smooth'
+    });
+  };
+
+  const onResizeGroup = (columnKey: string, width: number) => {
+    // Обновляем конфигурацию колонок с группированной структурой
+    const updateColumnWidth = (columns: any[]): any[] => {
+      return columns.map(col => {
+        // Если это группа с children
+        if (col.children && col.children.length > 0) {
+          const updatedChildren = updateColumnWidth(col.children);
+
+          // Всегда пересчитываем ширину группы на основе суммы ширин дочерних колонок
+          const totalWidth = updatedChildren.reduce((sum: number, child: any) => {
+            if (child.hidden) return sum; // Пропускаем скрытые колонки
+            return sum + (child.width || child.minWidth || 200);
+          }, 0);
+          return { ...col, width: totalWidth, children: updatedChildren, minWidth: totalWidth };
+        }
+
+        // Если это листовая колонка
+        if (col.key === columnKey) {
+          // Применяем минимальную ширину
+          const newWidth = width;
+          return { ...col, width: newWidth };
+        }
+
+        return col;
+      });
+    };
+
+    // Обновляем состояние
+    setTableConfig((prevConfig: ColumnConfig[]) => {
+      const updatedConfig = updateColumnWidth(prevConfig);
+      localStorage.setItem('MY_ADV_TABLE_CONFIG', JSON.stringify({
+        version: TABLE_CONFIG_VERSION,
+        config: updatedConfig
+      }));
+      return updatedConfig;
     });
   };
 
@@ -129,37 +111,29 @@ const MyAdvTable: React.FC<MyAdvTableProps> = ({
     navigate(`/my-adv/${companyId}`);
   };
 
-  const customCellRender = (value: unknown, record: CompanyData & { isParent?: boolean; isLastChild?: boolean; id?: number | string }, index: number, dataIndex: string) => {
-    // Рендер для компании (кликабельная) - только для родительских строк
-    if (dataIndex === 'company') {
-      if (!record.isParent) {
-        const imageSize = { width: 30, height: 40 };
-        const companyName = String(value ?? '');
-        return (
-          <div 
-            className={styles.companyCell}
-            onClick={() => handleCompanyClick(record.id as number)}
-            style={{ cursor: 'pointer' }}
-          >
-            {record.company_photo 
-              ? <img src={record.company_photo} alt={companyName} {...imageSize} className={styles.companyImage} />
-              : <div className={styles.companyImage} style={imageSize} />
-            }
-            <span className={styles.companyName}>
-              {companyName}
-            </span>
-          </div>
-        );
-      } else {
-        return (
-          <div className={styles.dateCell}>
-            {String(value ?? '')}
-          </div>
-        );
-      }
+  const customCellRender = (value: unknown, record: CompanyData, index: number, dataIndex: string) => {
+    // Рендер для компании (кликабельная)
+    if (dataIndex === 'company_name') {
+      const imageSize = { width: 30, height: 40 };
+      const companyName = String(value ?? '');
+      return (
+        <div 
+          className={styles.companyCell}
+          onClick={() => handleCompanyClick(record.id)}
+          style={{ cursor: 'pointer' }}
+        >
+          {record.company_photo 
+            ? <img src={record.company_photo} alt={companyName} {...imageSize} className={styles.companyImage} />
+            : <div className={styles.companyImage} style={imageSize} />
+          }
+          <span className={styles.companyName}>
+            {companyName}
+          </span>
+        </div>
+      );
     }
 
-    if (dataIndex === 'status_wb' && value) {
+    if (dataIndex === 'company_status' && value) {
       const statusValue = String(value ?? '');
       const badgeColor = statusValue === 'Запущена' ? '#4AD99133' : '#F0AD0033';
       return (
@@ -189,38 +163,40 @@ const MyAdvTable: React.FC<MyAdvTableProps> = ({
       );
     }
 
-    // Рендер для процентов (строковые значения уже отформатированы)
-    if (dataIndex.includes('_to_') || (dataIndex.includes('forecast_') && typeof value === 'string')) {
+    // Рендер для процентов (view_click, click_cart и т.д.)
+    if (dataIndex === 'view_click' || dataIndex === 'click_cart' || dataIndex === 'cart_order' || 
+        dataIndex === 'view_order' || dataIndex === 'expected_order_purchase' || dataIndex === 'expected_click_purchase') {
+      const percentValue = typeof value === 'number' ? `${value.toFixed(2)}%` : String(value ?? '');
       return (
-        <span className={styles.labelCell}>
-          {String(value ?? '')}
-        </span>
+        <div className={styles.customCell} title={percentValue}>
+          {percentValue}
+        </div>
       );
     }
 
     // Рендер для денежных значений
-    if (dataIndex === 'cpc' || dataIndex === 'avg_crm' || dataIndex === 'cpcart' || 
-        dataIndex === 'forecast_cps' || dataIndex === 'orders_sum' || 
-        dataIndex === 'forecast_purchase_sum' || dataIndex === 'advertising_costs') {
+    if (dataIndex === 'cpc' || dataIndex === 'cpm' || dataIndex === 'cp_cart' || 
+        dataIndex === 'expected_cps' || dataIndex === 'orders_amount' || 
+        dataIndex === 'expected_purchase_amount' || dataIndex === 'ad_spend') {
       const formattedValue = typeof value === 'number' 
         ? new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB', minimumFractionDigits: 0 }).format(value)
         : value;
       return (
-        <span className={styles.labelCell}>
+        <div className={styles.customCell} title={String(formattedValue ?? '')}>
           {String(formattedValue ?? '')}
-        </span>
+        </div>
       );
     }
 
     // Рендер для числовых forecast полей (не денежных)
-    if (dataIndex === 'forecast_drr_purchase') {
+    if (dataIndex === 'drr_purchase') {
       const formattedValue = typeof value === 'number' 
         ? new Intl.NumberFormat('ru-RU', { minimumFractionDigits: 1, maximumFractionDigits: 1 }).format(value)
         : value;
       return (
-        <span className={styles.labelCell}>
+        <div className={styles.customCell} title={String(formattedValue ?? '')}>
           {String(formattedValue ?? '')}
-        </span>
+        </div>
       );
     }
 
@@ -228,75 +204,66 @@ const MyAdvTable: React.FC<MyAdvTableProps> = ({
     if (typeof value === 'number') {
       const formattedValue = new Intl.NumberFormat('ru-RU').format(value);
       return (
-        <span className={styles.labelCell}>
-          {String(formattedValue ?? '')}
-        </span>
+        <div className={styles.customCell} title={formattedValue}>
+          {formattedValue}
+        </div>
       );
     }
 
     return (
-      <span className={`${styles.labelCell} ${toCamelCase(dataIndex)}Cell`}>
+      <div className={`${styles.customCell} ${toCamelCase(dataIndex)}Cell`} title={String(value ?? '')}>
         {String(value ?? '')}
-      </span>
-    );
-  };
-
-  const { config: tableConfigResized } = useTableColumnResize(
-    columns, 
-    `myAdv_sizeColumnsConfig`,
-    0,
-    400,
-    TABLE_CONFIG_VERSION
-  );
-
-  // Инициализация состояния раскрытых строк
-  useEffect(() => {
-    if (!data || data.length === 0) return;
-
-    // Пытаемся загрузить сохраненное состояние
-    const savedState = localStorage.getItem('MY_ADV_EXPANDED_TABLE_ROWS_STATE');
-    
-    if (savedState) {
-      try {
-        const parsedState = JSON.parse(savedState);
-        if (Array.isArray(parsedState.keys)) {
-          setExpandedRowKeys(parsedState.keys);
-          return;
-        }
-      } catch (error) {
-        console.error('Ошибка при парсинге сохраненного состояния:', error);
-      }
-    }
-
-    // Если нет сохраненного состояния, раскрываем все строки по умолчанию
-    const allKeys = data.map((item) => String(item.id));
-    setExpandedRowKeys(allKeys);
-    localStorage.setItem('MY_ADV_EXPANDED_TABLE_ROWS_STATE', JSON.stringify({ keys: allKeys }));
-  }, [data]);
-
-  // Сохранение состояния при изменении раскрытых строк
-  const handleExpandedRowsChange = (keys: React.Key[]) => {
-    const stringKeys = keys.map(key => String(key));
-    setExpandedRowKeys(stringKeys);
-    localStorage.setItem('MY_ADV_EXPANDED_TABLE_ROWS_STATE', JSON.stringify({ keys: stringKeys }));
-  };
-
-  const headerComponent = () => {
-    return (
-      <div className={styles.tableContainerHeader}>
-        <div className={`${styles.tableContainerHeaderItem} ${styles.tableContainerHeaderFirst}`}>
-          <h2>О товаре</h2>
-        </div>
-        <div className={`${styles.tableContainerHeaderItem} ${styles.tableContainerHeaderSecond}`}>
-          <h2>Рекламная воронка</h2>
-        </div>
-        <div className={`${styles.tableContainerHeaderItem} ${styles.tableContainerHeaderThird}`}>
-          <h2>Рекламная статистика</h2>
-        </div>
-        <div className={`${styles.tableContainerHeaderItem} ${styles.stickyFixer}`}></div>
       </div>
     );
   };
+
+  // Загрузка конфигурации таблицы из localStorage
+  useEffect(() => {
+    let savedTableConfigData = localStorage.getItem('MY_ADV_TABLE_CONFIG');
+    if (savedTableConfigData) {
+      try {
+        const parsed = JSON.parse(savedTableConfigData);
+        
+        // Проверяем версию конфига
+        if (parsed.version === TABLE_CONFIG_VERSION) {
+          setTableConfig(parsed.config);
+        } else {
+          // Версия не совпадает, используем дефолтный конфиг
+          console.log('Table config version mismatch, using default config');
+          const defaultConfig = getDefaultTableConfig();
+          setTableConfig(defaultConfig);
+          localStorage.setItem('MY_ADV_TABLE_CONFIG', JSON.stringify({
+            version: TABLE_CONFIG_VERSION,
+            config: defaultConfig
+          }));
+        }
+      } catch (error) {
+        console.error('Error parsing saved table config:', error);
+        const defaultConfig = getDefaultTableConfig();
+        setTableConfig(defaultConfig);
+        localStorage.setItem('MY_ADV_TABLE_CONFIG', JSON.stringify({
+          version: TABLE_CONFIG_VERSION,
+          config: defaultConfig
+        }));
+      }
+    } else {
+      const defaultConfig = getDefaultTableConfig();
+      setTableConfig(defaultConfig);
+      localStorage.setItem('MY_ADV_TABLE_CONFIG', JSON.stringify({
+        version: TABLE_CONFIG_VERSION,
+        config: defaultConfig
+      }));
+    }
+  }, []);
+
+  useEffect(() => {
+    const { current } = tableContainerRef;
+    current?.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [pageData.page]);
+
+  if (loading) {
+    return <Loader loading={loading} progress={0} />;
+  }
 
   return (
     <div className={styles.table}>
@@ -310,18 +277,7 @@ const MyAdvTable: React.FC<MyAdvTableProps> = ({
             brandSelect={false}
             tempPageCondition={true}
             maxCustomDate={new Date(Date.now() - 24 * 60 * 60 * 1000)}
-          >
-            {/* <div className={styles.checkboxWrapper}>
-              <label className={styles.checkboxLabel}>
-                <input
-                  type="checkbox"
-                  checked={hideCompaniesWithoutStats}
-                  onChange={handleHideCompaniesChange}
-                />
-                <span>Скрыть компании без статистики</span>
-              </label>
-            </div> */}
-          </Filters>
+          />
         </div>
         <div className={styles.settingsWrapper}>
           <TableSettingsWidget
@@ -332,27 +288,18 @@ const MyAdvTable: React.FC<MyAdvTableProps> = ({
       </div>
 
       <div className={styles.tableContainer}>
-        
         <div className={styles.tableWrapper} ref={tableContainerRef}>
-          {!loading && data && <>
+          {tableData && tableData.length > 0 && tableConfig &&
             <RadarTable
-              rowKey={(record) => String(record.id || record.key)}
-              config={columns}
-              dataSource={data}
-              // resizeable
-              // onResize={onResizeColumn}
-              preset="radar-table-default"
+              rowKey={(record) => String(record.id)}
+              config={tableConfig}
+              dataSource={[...tableData.slice((pageData.page - 1) * pageData.per_page, pageData.page * pageData.per_page)]}
+              preset="radar-table-simple"
               scrollContainerRef={tableContainerRef}
               stickyHeader
-              treeMode
-              indentSize={45}
-              expandedRowKeys={expandedRowKeys}
-              onExpandedRowsChange={(keys: React.Key[]) => handleExpandedRowsChange(keys)}
-              customCellRender={{
-                idx: columns.map(col => col.dataIndex),
-                renderer: customCellRender,
-              }}
-              sorting={sortState}
+              resizeable
+              resizeThrottle={33}
+              onResize={onResizeGroup}
               onSort={handleSort}
               pagination={pageData.total_count <= pageData.per_page ? null : {
                 current: pageData.page,
@@ -361,9 +308,72 @@ const MyAdvTable: React.FC<MyAdvTableProps> = ({
                 onChange: handlePageChange,
                 showQuickJumper: true,
               }}
+              paginationContainerStyle={{
+                bottom: 0
+              }}
+              sorting={{ sort_field: sortState?.sort_field, sort_order: sortState?.sort_order }}
+              customCellRender={{
+                idx: [],
+                renderer: customCellRender,
+              }}
+              headerCellWrapperStyle={{
+                minHeight: '0px',
+                padding: '12px 10px',
+                fontSize: 'inherit',
+              }}
+              bodyCellWrapperStyle={{
+                padding: '5px 10px',
+                border: 'none',
+              }}
+              bodyCellStyle={{
+                borderBottom: '1px solid #E8E8E8',
+                height: '50px',
+              }}
+              style={{ width: 'max-content', tableLayout: 'fixed' }}
+            />
+          }
+          {tableData && tableData.length === 0 && tableConfig &&
+            <RadarTable
+              rowKey={(record) => String(record.id)}
+              config={tableConfig}
+              dataSource={tableData}
+              preset="radar-table-simple"
+              scrollContainerRef={tableContainerRef}
+              stickyHeader
+              resizeable
+              onResize={onResizeGroup}
+              onSort={handleSort}
+              pagination={pageData.total_count <= pageData.per_page ? null : {
+                current: pageData.page,
+                pageSize: pageData.per_page,
+                total: Math.ceil(pageData.total_count / pageData.per_page),
+                onChange: handlePageChange,
+                showQuickJumper: true,
+              }}
+              paginationContainerStyle={{
+                bottom: 0
+              }}
+              sorting={{ sort_field: sortState?.sort_field, sort_order: sortState?.sort_order }}
+              customCellRender={{
+                idx: [],
+                renderer: customCellRender,
+              }}
+              headerCellWrapperStyle={{
+                minHeight: '0px',
+                padding: '12px 10px',
+                fontSize: 'inherit',
+              }}
+              bodyCellWrapperStyle={{
+                padding: '5px 10px',
+                border: 'none',
+              }}
+              bodyCellStyle={{
+                borderBottom: '1px solid #E8E8E8',
+                height: '50px',
+              }}
               style={{ fontFamily: 'Mulish', width: 'max-content', tableLayout: 'fixed' }}
             />
-          </>}
+          }
         </div>
       </div>
     </div>

@@ -74,7 +74,7 @@ export const getDefaultTableConfig = (): ColumnConfig[] => {
           {title: 'Расходы на рекламу', dataIndex: 'advertising_costs', sortable: true, fixed: false, width: 200},
       ].map(_ => ({ ..._, render: _.render?.bind(_), key: _.dataIndex, minWidth: _.width }))
     },
-  ].map(_ => ({ ..._, key: _.dataIndex, maxWidth: _.width * 2, minWidth: _.width || 100 }));
+  ].map(_ => ({ ..._, colSpan: _?.children?.length || 1, className: 'myAdvTableGroupCell' }));
 
   return columns;
 };
