@@ -19,7 +19,7 @@ export const DragHandle = ({ context, children, className, style, ...props }: Dr
     const dragHandleProps = useContext(context);
 
     if (!dragHandleProps) {
-        console.warn('DragHandle должен использоваться внутри SortableBar');
+        //console.warn('DragHandle должен использоваться внутри SortableBar');
         return (children || null) as React.ReactElement | null;
     }
 

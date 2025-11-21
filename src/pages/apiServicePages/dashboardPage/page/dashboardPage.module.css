@@ -10,6 +10,7 @@
     min-width: 1200px;
     overflow-x: hidden;
 }
+
 .page__content {
     width: calc(100% - 74px);
     padding: 20px 32px;
@@ -24,6 +25,7 @@
     flex-grow: 0;
     flex-shrink: 0;
 }
+
 .page__sideNavWrapper {
     height: 100%;
     width: auto;
@@ -52,6 +54,7 @@
     box-sizing: border-box;
     align-items: stretch; */
 }
+
 .page__dndRow {
     width: 100%;
     display: grid;
@@ -59,10 +62,12 @@
     gap: 12px;
     /* border: 1px solid red; */
 }
+
 .page__headerWrapper {
     width: 100%;
     margin-bottom: 8px;
 }
+
 .page__chartGroup {
     width: 100%;
     display: grid;
@@ -115,6 +120,25 @@
     gap: 12px;
 }
 
+.group__addRowWrapper {
+    grid-column: span 12;
+}
+
+.group__addRowContainer {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    border: 2px solid #5329FF;
+    border-radius: 16px;
+    color: #5329FF;
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 100%;
+    letter-spacing: 0%;
+}
+
 .group__doubleBlockWrapper {
     grid-column: span 3;
     grid-row: span 3;
@@ -129,6 +153,7 @@
     justify-content: center;
     align-items: stretch;
 }
+
 .group__halfWrapper {
     grid-column: span 6;
     grid-row: span 3;
@@ -136,16 +161,31 @@
     justify-content: center;
     align-items: stretch;
 }
+
 .group__halfToFullWrapper {
     grid-column: span 6;
     grid-row: span 3;
     display: flex;
     justify-content: center;
     align-items: stretch;
+
     @media (max-width: 1360px) {
         grid-column: span 12;
     }
 }
+
+.group__lgBarWrapperTop {
+    grid-column: span 3;
+    grid-row: span 1;
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+
+    @media (max-width: 1360px) {
+        grid-column: span 4;
+    }
+}
+
 .group__lgBarWrapper {
     grid-column: span 3;
     grid-row: span 1;
