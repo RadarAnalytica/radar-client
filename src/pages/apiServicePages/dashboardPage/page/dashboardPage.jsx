@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect, useMemo, useCallback } from 'react';
+import React, { useState, useContext, useEffect, useMemo, useCallback, useRef } from 'react';
 import styles from './dashboardPage.module.css';
 import { useAppSelector } from '@/redux/hooks';
 import AuthContext from '@/service/AuthContext';
@@ -35,6 +35,7 @@ import { SortableContext, arrayMove, rectSortingStrategy } from '@dnd-kit/sortab
 import { DragHandle } from '@/shared/ui/DragHandler/DragHandler';
 import { SortableRow } from '../components/SortableRow';
 import { SettingsModal } from '../components/SettingsModal';
+import { v4 as uuidv4 } from 'uuid';
 
 
 
@@ -745,64 +746,69 @@ const barsConfig = [
 const STORAGE_KEY = 'dashboard_cards_visibility';
 
 // Функция для сохранения настроек в localStorage
+// Сохраняет только: для строк - rowId, children; для children - id, isVisible
 const saveDashboardSettings = (items, visibilityMap) => {
     try {
-        const order = items.map(row => ({
+        const savedData = items.map(row => ({
             rowId: row.rowId,
-            children: row.children ? row.children.map(child => child.id) : []
+            children: row.children ? row.children.map(child => ({
+                id: child.id,
+                isVisible: visibilityMap && visibilityMap[child.id] !== undefined 
+                    ? visibilityMap[child.id] 
+                    : (child.isVisible !== false)
+            })) : []
         }));
 
-        // Если visibilityMap не передан, загружаем из localStorage
-        let visibility = visibilityMap;
-        if (!visibility) {
-            const currentSettings = loadDashboardSettings();
-            visibility = currentSettings.visibility || {};
-        }
-
-        const settings = {
-            visibility: visibility,
-            order: order
-        };
-
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(settings));
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(savedData));
     } catch (error) {
         console.error('Ошибка при сохранении настроек дашборда:', error);
     }
 };
 
 // Функция для загрузки настроек из localStorage
+// Просто загружает урезанный массив
 const loadDashboardSettings = () => {
     try {
         const saved = localStorage.getItem(STORAGE_KEY);
         if (saved) {
             const parsed = JSON.parse(saved);
-            // Поддержка старого формата (только visibility)
-            if (parsed.visibility && parsed.order) {
+            
+            // Новый формат: массив объектов с rowId и children (с id, isVisible)
+            if (Array.isArray(parsed)) {
                 return parsed;
-            } else if (typeof parsed === 'object' && !parsed.visibility) {
-                // Старый формат - только visibility map
-                return {
-                    visibility: parsed,
-                    order: null
-                };
             }
-            return parsed;
+            
+            // Старый формат: объект с visibility и order - конвертируем
+            if (parsed.visibility && parsed.order) {
+                return parsed.order.map(orderRow => ({
+                    rowId: orderRow.rowId,
+                    children: orderRow.children.map(childId => ({
+                        id: childId,
+                        isVisible: parsed.visibility[childId] !== undefined 
+                            ? parsed.visibility[childId] 
+                            : true
+                    }))
+                }));
+            }
+            
+            // Очень старый формат: только visibility map - возвращаем null, будет использован исходный конфиг
+            return null;
         }
     } catch (error) {
         console.error('Ошибка при загрузке настроек дашборда:', error);
     }
-    return { visibility: {}, order: null };
+    return null;
 };
 
-// Функция для применения порядка к конфигу
-const applyOrderSettings = (config, order) => {
-    if (!order || !Array.isArray(order)) {
-        return config;
+// Функция для обогащения загруженных данных недостающими из исходного конфига
+const enrichConfig = (savedRows, originalConfig) => {
+    if (!savedRows || !Array.isArray(savedRows)) {
+        return originalConfig;
     }
 
     // Создаем карту элементов по ID для быстрого доступа
     const elementMap = new Map();
-    config.forEach(row => {
+    originalConfig.forEach(row => {
         if (row.children) {
             row.children.forEach(child => {
                 elementMap.set(child.id, child);
@@ -810,49 +816,47 @@ const applyOrderSettings = (config, order) => {
         }
     });
 
-    // Применяем порядок из сохраненных настроек
-    const orderedConfig = order.map(orderRow => {
-        const originalRow = config.find(r => r.rowId === orderRow.rowId);
+    // Обогащаем загруженные строки полными данными
+    const enrichedRows = savedRows.map(savedRow => {
+        const originalRow = originalConfig.find(r => r.rowId === savedRow.rowId);
         if (!originalRow) return null;
 
-        const orderedChildren = orderRow.children
-            .map(childId => elementMap.get(childId))
-            .filter(Boolean); // Убираем элементы, которых нет в оригинальном конфиге
+        // Обогащаем children полными данными из исходного конфига
+        const enrichedChildren = savedRow.children
+            .map(savedChild => {
+                const originalChild = elementMap.get(savedChild.id);
+                if (!originalChild) return null;
+                
+                return {
+                    ...originalChild, // Все данные из исходного конфига
+                    isVisible: savedChild.isVisible !== undefined ? savedChild.isVisible : (originalChild.isVisible !== false)
+                };
+            })
+            .filter(Boolean);
 
-        // Добавляем элементы, которых нет в сохраненном порядке (новые элементы)
+        // Добавляем элементы, которых нет в сохраненных (новые элементы из исходного конфига)
         if (originalRow.children) {
             originalRow.children.forEach(child => {
-                if (!orderRow.children.includes(child.id)) {
-                    orderedChildren.push(child);
+                if (!savedRow.children.some(sc => sc.id === child.id)) {
+                    enrichedChildren.push(child);
                 }
             });
         }
 
         return {
-            ...originalRow,
-            children: orderedChildren
+            ...originalRow, // Все данные из исходного конфига
+            children: enrichedChildren
         };
     }).filter(Boolean);
 
-    // Добавляем строки, которых нет в сохраненном порядке
-    config.forEach(row => {
-        if (!order.some(o => o.rowId === row.rowId)) {
-            orderedConfig.push(row);
+    // Добавляем строки, которых нет в сохраненных (новые строки из исходного конфига)
+    originalConfig.forEach(row => {
+        if (!savedRows.some(sr => sr.rowId === row.rowId)) {
+            enrichedRows.push(row);
         }
     });
 
-    return orderedConfig;
-};
-
-// Функция для применения настроек видимости к конфигу
-const applyVisibilitySettings = (config, visibilityMap) => {
-    return config.map(row => ({
-        ...row,
-        children: row.children ? row.children.map(child => ({
-            ...child,
-            isVisible: visibilityMap[child.id] !== undefined ? visibilityMap[child.id] : (child.isVisible !== false)
-        })) : []
-    }));
+    return enrichedRows;
 };
 
 // Рендер непосредственно дашборда (карточек)
@@ -867,23 +871,30 @@ const MainContent = React.memo(({
     filters,
     updateDataDashBoard,
     isSidebarHidden,
-    visibilityMap
+    visibilityMap,
+    onSaveSettings
 }) => {
     const isLoading = loading || !isFiltersLoading; // Флаг загрузки данных
 
     // Применяем настройки видимости и порядка к конфигу
     const configWithSettings = useMemo(() => {
-        const settings = loadDashboardSettings();
-        let config = barsConfig;
-        return config;
-        // Применяем порядок, если он есть
-        if (settings.order) {
-            config = applyOrderSettings(config, settings.order);
+        const savedRows = loadDashboardSettings();
+        
+        // Обогащаем загруженные данные недостающими из исходного конфига
+        let config = enrichConfig(savedRows, barsConfig);
+        
+        // Если есть актуальный visibilityMap (из состояния), применяем его поверх сохраненных
+        if (visibilityMap) {
+            config = config.map(row => ({
+                ...row,
+                children: row.children ? row.children.map(child => ({
+                    ...child,
+                    isVisible: visibilityMap[child.id] !== undefined 
+                        ? visibilityMap[child.id] 
+                        : child.isVisible
+                })) : []
+            }));
         }
-
-        // Применяем видимость
-        const visibility = visibilityMap || settings.visibility || {};
-        config = applyVisibilitySettings(config, visibility);
 
         return config;
     }, [visibilityMap]);
@@ -894,23 +905,71 @@ const MainContent = React.memo(({
     useEffect(() => {
         setItems(configWithSettings);
     }, [configWithSettings]);
+    
+    // Функция для сохранения настроек с текущими items
+    const saveCurrentSettings = useCallback((currentItems, currentVisibilityMap) => {
+        saveDashboardSettings(currentItems, currentVisibilityMap || visibilityMap);
+    }, [visibilityMap]);
+    
+    // Передаем функцию сохранения в родительский компонент
+    useEffect(() => {
+        if (onSaveSettings) {
+            onSaveSettings((newVisibilityMap) => {
+                saveCurrentSettings(items, newVisibilityMap);
+            });
+        }
+    }, [items, saveCurrentSettings, onSaveSettings]);
+    
+    // Очистка при размонтировании
+    useEffect(() => {
+        return () => {
+            if (rafIdRef.current !== null) {
+                cancelAnimationFrame(rafIdRef.current);
+                rafIdRef.current = null;
+            }
+            pendingUpdateRef.current = null;
+        };
+    }, []);
     const [overId, setOverId] = useState(null); // ID целевого элемента
     const [activeId, setActiveId] = useState(null); // ID активного элемента
     const [isOverValid, setIsOverValid] = useState(false); // Флаг валидности целевого элемента
     const [isActiveSpan12, setIsActiveSpan12] = useState(false); // Флаг активности большого элемента
     const [showRowInDragOverlay, setShowRowInDragOverlay] = useState(false); // Флаг показа строки в dragOverlay
     const [activeRowForOverlay, setActiveRowForOverlay] = useState(null); // Строка активного элемента для dragOverlay
-    // ------------------------------------------------------------------------------------------------
-    // Находим активный элемент внутри строк
-    const activeItem = activeId ? (() => {
-        for (const row of items) {
-            if (row.children) {
-                const item = row.children.find(child => child.id === activeId);
-                if (item) return item;
+    
+    // Рефы для оптимизации onDragOver
+    const rafIdRef = useRef(null);
+    const pendingUpdateRef = useRef(null);
+    
+    // Мемоизируем карту элементов для быстрого доступа
+    const itemsMapRef = useRef(new Map());
+    const rowsMapRef = useRef(new Map());
+    
+    // Обновляем карты при изменении items
+    useEffect(() => {
+        itemsMapRef.current.clear();
+        rowsMapRef.current.clear();
+        
+        items.forEach((row) => {
+            if (row && row.children && Array.isArray(row.children)) {
+                row.children.forEach((child) => {
+                    if (child && child.id) {
+                        itemsMapRef.current.set(child.id, { child, row });
+                    }
+                });
+                if (row.rowId) {
+                    rowsMapRef.current.set(String(row.rowId), row);
+                }
             }
-        }
-        return null;
-    })() : null;
+        });
+    }, [items]);
+    // ------------------------------------------------------------------------------------------------
+    // Находим активный элемент внутри строк (оптимизировано через карту)
+    const activeItem = useMemo(() => {
+        if (!activeId) return null;
+        const itemData = itemsMapRef.current.get(activeId);
+        return itemData ? itemData.child : null;
+    }, [activeId]);
     // ------------------------------------------------------------------------------------------------
     // Находим строку активного элемента (вычисляем динамически)
     const activeRow = useMemo(() => {
@@ -959,77 +1018,7 @@ const MainContent = React.memo(({
             }
 
             const activeElem = row.children.find(child => child.id === active.id);
-            // Проверяем, имеет ли активный элемент span 12
-            if (activeElem.dropKey !== '1') {
-                setIsActiveSpan12(true);
-            } else {
-                setIsActiveSpan12(false);
-            }
-        },
-        onDragOver: ({ active, over }) => {
-
-            if (!active | !over || active?.id === over?.id) {
-                setOverId(null);
-                setIsOverValid(false);
-                setShowRowInDragOverlay(false);
-                return;
-            }
-            // Проверяем, является ли over.id ID строки (rowId) или элемента
-            const isOverRow = items.some(row => row && String(row.rowId) === String(over.id));
-            // Если over - это строка, находим первый элемент в этой строке
-            let overElementId = over.id;
-            if (isOverRow) {
-                const overRow = items.find(row => row && String(row.rowId) === String(over.id));
-                if (!overRow || !overRow.children || !Array.isArray(overRow.children) || overRow.children.length === 0) {
-                    setOverId(over.id);
-                    setIsOverValid(false);
-                    setShowRowInDragOverlay(false);
-                    //document.body.style.cursor = 'not-allowed';
-                    return;
-                }
-                overElementId = overRow.children[0].id;
-            }
-
-            const activeRow = items.find(row =>
-                row && row.children && Array.isArray(row.children) &&
-                row.children.some(child => child && child.id === active.id)
-            );
-           
-
-
-            const overRow = items.find(row =>
-                row && row.children && Array.isArray(row.children) &&
-                row.children.some(child => child && child.id === overElementId)
-            );
-
-            if (!activeRow || !overRow) {
-                setOverId(over.id);
-                setIsOverValid(false);
-                setShowRowInDragOverlay(false);
-                // document.body.style.cursor = 'not-allowed';
-                return;
-            }
-            const activeElement = activeRow.children.find(child => child.id === active.id);
-            const overElement = overRow.children.find(child => child.id === overElementId);
-
-            if (!activeElement || !overElement) {
-                setOverId(over.id);
-                setIsOverValid(false);
-                setShowRowInDragOverlay(false);
-                // document.body.style.cursor = 'not-allowed';
-                return;
-            }
-            // Если активный элемент имеет span 12, подсвечиваем всю строку
-            if (isActiveSpan12) {
-                // Устанавливаем overId на rowId строки, а не на элемент
-                setOverId(String(overRow.rowId));
-                setIsOverValid(true);
-                setShowRowInDragOverlay(false);
-                // document.body.style.cursor = 'copy';
-                return;
-            }
-
-            if (activeElement.dropKey === '1') {
+            if (activeElem.dropKey !== 'full') {
                 const newItems = [...items];
                 const hasAddRow = newItems.some(row => row.rowId === 'addRow');
                 if (!hasAddRow) {
@@ -1037,7 +1026,7 @@ const MainContent = React.memo(({
                         rowId: 'addRow',
                         children: [{
                             id: 'addRowElement',
-                            dropKey: activeElement.dropKey,
+                            dropKey: activeElem.dropKey,
                             container: styles.group__addRowWrapper,
                             render: (bar, dataDashBoard, loading) => (
                                 <div className={styles.group__addRowContainer}>
@@ -1046,65 +1035,202 @@ const MainContent = React.memo(({
                             )
                         }]
                     }
-                    newItems.splice(0, 0, addRow);
+                    const activeRowIndex = newItems.findIndex(r => r.rowId === row.rowId);
+                    if (row === -1) {
+                        newItems.splice(0, 0, addRow);
+                    } else {
+                        newItems.splice(activeRowIndex + 1, 0, addRow);
+                    }
                     setItems(newItems);
                 }
+            }
+            // Проверяем, имеет ли активный элемент span 12
+            if (activeElem.dropKey === 'full') {
+                setIsActiveSpan12(true);
+            } else {
+                setIsActiveSpan12(false);
+            }
+        },
+        onDragOver: ({ active, over }) => {
+            // Ранний выход для невалидных случаев
+            if (!active || !over || active?.id === over?.id) {
+                if (pendingUpdateRef.current) {
+                    pendingUpdateRef.current = { overId: null, isOverValid: false, showRowInDragOverlay: false };
+                } else {
+                    pendingUpdateRef.current = { overId: null, isOverValid: false, showRowInDragOverlay: false };
+                    if (rafIdRef.current === null) {
+                        rafIdRef.current = requestAnimationFrame(() => {
+                            if (pendingUpdateRef.current) {
+                                const update = pendingUpdateRef.current;
+                                setOverId(update.overId);
+                                setIsOverValid(update.isOverValid);
+                                setShowRowInDragOverlay(update.showRowInDragOverlay);
+                                pendingUpdateRef.current = null;
+                            }
+                            rafIdRef.current = null;
+                        });
+                    }
+                }
+                return;
+            }
+
+            // Используем кэшированные карты для быстрого доступа
+            const activeItemData = itemsMapRef.current.get(active.id);
+            if (!activeItemData) {
+                pendingUpdateRef.current = { overId: over.id, isOverValid: false, showRowInDragOverlay: false };
+                if (rafIdRef.current === null) {
+                    rafIdRef.current = requestAnimationFrame(() => {
+                        if (pendingUpdateRef.current) {
+                            const update = pendingUpdateRef.current;
+                            setOverId(update.overId);
+                            setIsOverValid(update.isOverValid);
+                            setShowRowInDragOverlay(update.showRowInDragOverlay);
+                            pendingUpdateRef.current = null;
+                        }
+                        rafIdRef.current = null;
+                    });
+                }
+                return;
+            }
+
+            const { row: activeRow, child: activeElement } = activeItemData;
+
+            // Проверяем, является ли over.id ID строки (rowId) или элемента
+            let overRow = rowsMapRef.current.get(String(over.id));
+            let overElementId = over.id;
+            let overElement = null;
+
+            if (overRow) {
+                // over - это строка
+                if (!overRow.children || !Array.isArray(overRow.children) || overRow.children.length === 0) {
+                    pendingUpdateRef.current = { overId: over.id, isOverValid: false, showRowInDragOverlay: false };
+                    if (rafIdRef.current === null) {
+                        rafIdRef.current = requestAnimationFrame(() => {
+                            if (pendingUpdateRef.current) {
+                                const update = pendingUpdateRef.current;
+                                setOverId(update.overId);
+                                setIsOverValid(update.isOverValid);
+                                setShowRowInDragOverlay(update.showRowInDragOverlay);
+                                pendingUpdateRef.current = null;
+                            }
+                            rafIdRef.current = null;
+                        });
+                    }
+                    return;
+                }
+                overElementId = overRow.children[0].id;
+                overElement = overRow.children[0];
+            } else {
+                // over - это элемент
+                const overItemData = itemsMapRef.current.get(over.id);
+                if (!overItemData) {
+                    pendingUpdateRef.current = { overId: over.id, isOverValid: false, showRowInDragOverlay: false };
+                    if (rafIdRef.current === null) {
+                        rafIdRef.current = requestAnimationFrame(() => {
+                            if (pendingUpdateRef.current) {
+                                const update = pendingUpdateRef.current;
+                                setOverId(update.overId);
+                                setIsOverValid(update.isOverValid);
+                                setShowRowInDragOverlay(update.showRowInDragOverlay);
+                                pendingUpdateRef.current = null;
+                            }
+                            rafIdRef.current = null;
+                        });
+                    }
+                    return;
+                }
+                overRow = overItemData.row;
+                overElement = overItemData.child;
+            }
+
+            if (!activeRow || !overRow || !activeElement || !overElement) {
+                pendingUpdateRef.current = { overId: over.id, isOverValid: false, showRowInDragOverlay: false };
+                if (rafIdRef.current === null) {
+                    rafIdRef.current = requestAnimationFrame(() => {
+                        if (pendingUpdateRef.current) {
+                            const update = pendingUpdateRef.current;
+                            setOverId(update.overId);
+                            setIsOverValid(update.isOverValid);
+                            setShowRowInDragOverlay(update.showRowInDragOverlay);
+                            pendingUpdateRef.current = null;
+                        }
+                        rafIdRef.current = null;
+                    });
+                }
+                return;
             }
 
             // Если элементы в одной строке - все валидны
             const isSameRow = activeRow.rowId === overRow.rowId;
-
             if (isSameRow) {
-                setOverId(over.id);
-                setIsOverValid(true);
-                setShowRowInDragOverlay(false);
-                // document.body.style.cursor = 'copy';
+                pendingUpdateRef.current = { overId: over.id, isOverValid: true, showRowInDragOverlay: false };
+                if (rafIdRef.current === null) {
+                    rafIdRef.current = requestAnimationFrame(() => {
+                        if (pendingUpdateRef.current) {
+                            const update = pendingUpdateRef.current;
+                            setOverId(update.overId);
+                            setIsOverValid(update.isOverValid);
+                            setShowRowInDragOverlay(update.showRowInDragOverlay);
+                            pendingUpdateRef.current = null;
+                        }
+                        rafIdRef.current = null;
+                    });
+                }
                 return;
             }
 
-            // Если элементы в разных строках - проверяем grid-column
+            // Если элементы в разных строках - проверяем dropKey
             const activeElemDropKey = activeElement.dropKey;
             const overElemDropKey = overElement.dropKey;
 
             if (!activeElemDropKey || !overElemDropKey) {
-                setOverId(over.id);
-                setIsOverValid(false);
-                setShowRowInDragOverlay(false);
-                // document.body.style.cursor = 'not-allowed';
+                pendingUpdateRef.current = { overId: over.id, isOverValid: false, showRowInDragOverlay: false };
+                if (rafIdRef.current === null) {
+                    rafIdRef.current = requestAnimationFrame(() => {
+                        if (pendingUpdateRef.current) {
+                            const update = pendingUpdateRef.current;
+                            setOverId(update.overId);
+                            setIsOverValid(update.isOverValid);
+                            setShowRowInDragOverlay(update.showRowInDragOverlay);
+                            pendingUpdateRef.current = null;
+                        }
+                        rafIdRef.current = null;
+                    });
+                }
                 return;
             }
-            // const activeElem = document.getElementById(active.id);
-            // const overElem = document.getElementById(overElementId);
 
-            // // Получаем span из grid-column
-            // const getSpanFromGridColumn = (gridColumn) => {
-            //     const match = gridColumn.match(/span\s+(\d+)/);
-            //     return match ? parseInt(match[1], 10) : null;
-            // };
+            // Проверяем валидность цели как дропзоны
+            const isValid = true;
+            const shouldShowRow = activeElemDropKey !== overElemDropKey || activeElemDropKey === 'full' || overElemDropKey === 'full';
+            
+            pendingUpdateRef.current = {
+                overId: shouldShowRow ? String(overRow.rowId) : over.id,
+                isOverValid: isValid,
+                showRowInDragOverlay: shouldShowRow
+            };
 
-            // const activeCS = getComputedStyle(activeElem);
-            // const overCS = getComputedStyle(overElem);
-            // const activeGridColumn = activeCS.getPropertyValue('grid-column').trim();
-            // const overGridColumn = overCS.getPropertyValue('grid-column').trim();
-
-            // const activeSpan = getSpanFromGridColumn(activeGridColumn);
-            // const overSpan = getSpanFromGridColumn(overGridColumn);
-
-
-            // проверяем валидность цели как дропзоны
-            //const isValid = activeElemDropKey === 'full' || overElemDropKey === 'full' || (activeElemDropKey === overElemDropKey && activeElemDropKey !== null && overElemDropKey !== null);
-            const isValid = true
-            // Если маленький элемент перетаскивается на элемент со span 12, показываем всю строку в dragOverlay
-            // Проверяем: активный элемент НЕ имеет span 12, целевой элемент имеет span 12
-            // const shouldShowRow = !isActiveSpan12 && overElemDropKey === 'full' && activeElemDropKey !== null && activeElemDropKey !== 'full';
-            const shouldShowRow = activeElemDropKey !== '1' && overElemDropKey !== '1';
-            setShowRowInDragOverlay(shouldShowRow);
-
-            setOverId(over.id);
-            setIsOverValid(isValid);
-            //document.body.style.cursor = isValid ? 'copy' : 'not-allowed';
+            if (rafIdRef.current === null) {
+                rafIdRef.current = requestAnimationFrame(() => {
+                    if (pendingUpdateRef.current) {
+                        const update = pendingUpdateRef.current;
+                        setOverId(update.overId);
+                        setIsOverValid(update.isOverValid);
+                        setShowRowInDragOverlay(update.showRowInDragOverlay);
+                        pendingUpdateRef.current = null;
+                    }
+                    rafIdRef.current = null;
+                });
+            }
         },
         onDragCancel: () => {
+            // Отменяем pending обновления
+            if (rafIdRef.current !== null) {
+                cancelAnimationFrame(rafIdRef.current);
+                rafIdRef.current = null;
+            }
+            pendingUpdateRef.current = null;
+            
             setOverId(null);
             setActiveId(null);
             setIsOverValid(false);
@@ -1114,6 +1240,13 @@ const MainContent = React.memo(({
             //document.body.style.cursor = '';
         },
         onDragEnd: ({ active, over }) => {
+            // Отменяем pending обновления
+            if (rafIdRef.current !== null) {
+                cancelAnimationFrame(rafIdRef.current);
+                rafIdRef.current = null;
+            }
+            pendingUpdateRef.current = null;
+            
             setOverId(null);
             setActiveId(null);
             setIsOverValid(false);
@@ -1132,10 +1265,6 @@ const MainContent = React.memo(({
             };
 
             setItems((prev) => {
-                const addRowIndex = prev.findIndex(row => row.rowId === 'addRow');
-                if (addRowIndex !== -1) {
-                    prev.splice(addRowIndex, 1);
-                }
                 // Проверяем, является ли over.id ID строки (rowId) или элемента
                 const isOverRow = prev.some(row => row && String(row.rowId) === String(over.id));
 
@@ -1162,6 +1291,12 @@ const MainContent = React.memo(({
 
                 if (!activeRow || !overRow || !activeRow.children || !overRow.children) return prev;
 
+                const activeElement = activeRow.children.find(child => child.id === active.id);
+                const overElement = overRow.children.find(child => child.id === overElementId);
+                const activeElemDropKey = activeElement.dropKey;
+                const overElemDropKey = overElement.dropKey;
+
+
                 // Если элементы в одной строке - сортируем внутри строки
                 if (activeRowIndex === overRowIndex) {
                     const activeChildIndex = activeRow.children.findIndex(child => child && child.id === active.id);
@@ -1176,19 +1311,36 @@ const MainContent = React.memo(({
                         children: arrayMove(activeRow.children, activeChildIndex, overChildIndex)
                     };
 
+                    const addRowIndex = newItems.findIndex(row => row.rowId === 'addRow');
+                    if (addRowIndex !== -1) {
+                        newItems.splice(addRowIndex, 1);
+                    }
+
                     // Сохраняем позиции в localStorage
                     setTimeout(() => {
-                        saveDashboardSettings(newItems);
+                        saveDashboardSettings(newItems, visibilityMap);
                     }, 0);
 
                     return newItems;
                 }
 
 
-                const activeElement = activeRow.children.find(child => child.id === active.id);
-                const overElement = overRow.children.find(child => child.id === overElementId);
-                const activeElemDropKey = activeElement.dropKey;
-                const overElemDropKey = overElement.dropKey;
+                // Если цель - новая строка, то создаем новую строку
+                if (overRow.rowId === 'addRow') {
+                    let newItems = [...prev];
+                    const activeChildIndex = activeRow.children.findIndex(child => child.id === active.id);
+                    if (activeChildIndex === -1) return prev;
+                    newItems[activeRowIndex].children.splice(activeChildIndex, 1);
+                    newItems[overRowIndex].children.splice(0, 1, activeElement);
+                    newItems[overRowIndex].rowId = uuidv4();
+                    setTimeout(() => {
+                        saveDashboardSettings(newItems, visibilityMap);
+                    }, 0);
+                    return newItems;
+                }
+
+
+
 
 
                 // Проверяем, есть ли в строке элемент со span 12
@@ -1201,6 +1353,10 @@ const MainContent = React.memo(({
                 // Если активная строка содержит элемент со span 12, меняем строки местами
                 if (activeRowHasFullWidth || overRowHasFullWidth && activeRow.rowId !== 'addRow') {
                     const newItems = arrayMove(prev, activeRowIndex, overRowIndex);
+                    const addRowIndex = newItems.findIndex(row => row.rowId === 'addRow');
+                    if (addRowIndex !== -1) {
+                        newItems.splice(addRowIndex, 1);
+                    }
                     setTimeout(() => {
                         saveDashboardSettings(newItems);
                     }, 0);
@@ -1212,14 +1368,19 @@ const MainContent = React.memo(({
                 // Если нет элементов на всю ширину и у элементов не совпадает dropKey, то меняем строки местами
                 if (!activeRowHasFullWidth && !overRowHasFullWidth && activeElemDropKey !== overElemDropKey) {
                     const newItems = arrayMove(prev, activeRowIndex, overRowIndex);
+
+                    const addRowIndex = newItems.findIndex(row => row.rowId === 'addRow');
+                    if (addRowIndex !== -1) {
+                        newItems.splice(addRowIndex, 1);
+                    }
                     setTimeout(() => {
                         saveDashboardSettings(newItems);
                     }, 0);
                     return newItems;
                 }
 
-                // Если это два элемента с dropKey = 1, то добавляем активный элемент в целевую строку
-                if (activeElemDropKey === '1' && activeElemDropKey === overElemDropKey) {
+                // Если это два элемента с одинаковым dropKey, то добавляем активный элемент в целевую строку
+                if (!activeRowHasFullWidth && !overRowHasFullWidth && activeElemDropKey === overElemDropKey) {
                     const newItems = [...prev];
                     const activeChildIndex = activeRow.children.findIndex(child => child.id === active.id);
                     const overChildIndex = overRow.children.findIndex(child => child.id === overElementId);
@@ -1230,22 +1391,19 @@ const MainContent = React.memo(({
                     if (newItems[activeRowIndex].children.length === 0) {
                         newItems.splice(activeRowIndex, 1);
                     }
+
+                    const addRowIndex = newItems.findIndex(row => row.rowId === 'addRow');
+                    if (addRowIndex !== -1) {
+                        newItems.splice(addRowIndex, 1);
+                    }
                     setTimeout(() => {
                         saveDashboardSettings(newItems);
                     }, 0);
                     return newItems;
                 }
 
-                // Если активный с dropKey = 1, а целевой - создание новой строки, то создаем новую строку
-                if (activeElemDropKey === '1' && overRow.rowId === 'addRow') {
-                    const newItems = [...prev];
-                    const activeChildIndex = activeRow.children.findIndex(child => child.id === active.id);
-                    const overChildIndex = overRow.children.findIndex(child => child.id === overElementId);
-                    if (activeChildIndex === -1 || overChildIndex === -1) return prev;
-                    newItems[overRowIndex].children.splice(overChildIndex, 0, activeElement);
-                    newItems[activeRowIndex].children.splice(activeChildIndex, 1);
-                }
-               
+
+
 
 
 
@@ -1280,9 +1438,14 @@ const MainContent = React.memo(({
                         ]
                     };
 
+                    const addRowIndex = newItems.findIndex(row => row.rowId === 'addRow');
+                    if (addRowIndex !== -1) {
+                        newItems.splice(addRowIndex, 1);
+                    }
+
                     // Сохраняем позиции в localStorage
                     setTimeout(() => {
-                        saveDashboardSettings(newItems);
+                        saveDashboardSettings(newItems, visibilityMap);
                     }, 0);
 
                     return newItems;
@@ -1388,8 +1551,20 @@ const _DashboardPage = () => {
     const { isSidebarHidden } = useAppSelector((state) => state.utils);
     const [isSettingsOpen, setIsSettingsOpen] = useState(false);
     const [visibilityMap, setVisibilityMap] = useState(() => {
-        const settings = loadDashboardSettings();
-        return settings.visibility || {};
+        const savedRows = loadDashboardSettings();
+        // Извлекаем visibility из загруженных данных
+        if (savedRows && Array.isArray(savedRows)) {
+            const visibility = {};
+            savedRows.forEach(row => {
+                if (row.children && Array.isArray(row.children)) {
+                    row.children.forEach(child => {
+                        visibility[child.id] = child.isVisible !== undefined ? child.isVisible : true;
+                    });
+                }
+            });
+            return visibility;
+        }
+        return {};
     });
     const [pageState, setPageState] = useState({
         dataDashBoard: null,
@@ -1399,58 +1574,14 @@ const _DashboardPage = () => {
         error: false
     });
 
+    const saveSettingsRef = useRef(null);
+    
     const handleSettingsOk = (newVisibilityMap) => {
         setVisibilityMap(newVisibilityMap);
-        // Сохраняем видимость вместе с текущим порядком из localStorage
-        const currentSettings = loadDashboardSettings();
-        const currentOrder = currentSettings.order;
-
-        // Если есть сохраненный порядок, используем его, иначе используем исходный из barsConfig
-        if (currentOrder) {
-            // Используем сохраненный порядок
-            const itemsWithOrder = currentOrder.map(orderRow => {
-                const originalRow = barsConfig.find(r => r.rowId === orderRow.rowId);
-                if (!originalRow) return null;
-
-                // Восстанавливаем элементы в сохраненном порядке
-                const orderedChildren = orderRow.children
-                    .map(childId => {
-                        // Ищем элемент в исходном конфиге
-                        for (const row of barsConfig) {
-                            if (row.children) {
-                                const child = row.children.find(c => c.id === childId);
-                                if (child) return child;
-                            }
-                        }
-                        return null;
-                    })
-                    .filter(Boolean);
-
-                // Добавляем новые элементы, которых нет в сохраненном порядке
-                if (originalRow.children) {
-                    originalRow.children.forEach(child => {
-                        if (!orderRow.children.includes(child.id)) {
-                            orderedChildren.push(child);
-                        }
-                    });
-                }
-
-                return {
-                    ...originalRow,
-                    children: orderedChildren
-                };
-            }).filter(Boolean);
-
-            saveDashboardSettings(itemsWithOrder, newVisibilityMap);
-        } else {
-            // Если нет сохраненного порядка, используем исходный
-            saveDashboardSettings(
-                barsConfig.map(row => ({
-                    ...row,
-                    children: row.children || []
-                })),
-                newVisibilityMap
-            );
+        // Сохраняем видимость вместе с текущим порядком из items
+        // Функция сохранения будет вызвана из MainContent с актуальными items
+        if (saveSettingsRef.current) {
+            saveSettingsRef.current(newVisibilityMap);
         }
     };
 
@@ -1563,6 +1694,9 @@ const _DashboardPage = () => {
                         updateDataDashBoard={updateDataDashBoard}
                         isSidebarHidden={isSidebarHidden}
                         visibilityMap={visibilityMap}
+                        onSaveSettings={(saveFn) => {
+                            saveSettingsRef.current = saveFn;
+                        }}
                     />
                 </DndContext>
 

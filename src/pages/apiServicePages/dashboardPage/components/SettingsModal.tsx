@@ -51,23 +51,44 @@ export const SettingsModal: React.FC<ISettingsModalProps> = (
         if (isOpen) {
             try {
                 const saved = localStorage.getItem(STORAGE_KEY);
+                const formValues: Record<string, boolean> = {};
+                
                 if (saved) {
-                    const settings = JSON.parse(saved);
-                    // Поддержка нового формата (с visibility и order) и старого (только visibility)
-                    const visibilityMap = settings.visibility || settings;
-                    const formValues: Record<string, boolean> = {};
-                    allCards.forEach(card => {
-                        formValues[card.id] = visibilityMap[card.id] !== undefined ? visibilityMap[card.id] : true;
-                    });
-                    form.setFieldsValue(formValues);
-                } else {
-                    // Если нет сохраненных настроек, устанавливаем все в true
-                    const formValues: Record<string, boolean> = {};
-                    allCards.forEach(card => {
-                        formValues[card.id] = true;
-                    });
-                    form.setFieldsValue(formValues);
+                    const parsed = JSON.parse(saved);
+                    
+                    // Новый формат: массив rows с children (id, isVisible)
+                    if (Array.isArray(parsed)) {
+                        parsed.forEach(row => {
+                            if (row.children && Array.isArray(row.children)) {
+                                row.children.forEach((child: { id: string; isVisible?: boolean }) => {
+                                    formValues[child.id] = child.isVisible !== undefined ? child.isVisible : true;
+                                });
+                            }
+                        });
+                    }
+                    // Старый формат: объект с visibility и order
+                    else if (parsed.visibility && parsed.order) {
+                        const visibilityMap = parsed.visibility;
+                        allCards.forEach(card => {
+                            formValues[card.id] = visibilityMap[card.id] !== undefined ? visibilityMap[card.id] : true;
+                        });
+                    }
+                    // Очень старый формат: только visibility map
+                    else if (typeof parsed === 'object' && parsed.visibility) {
+                        allCards.forEach(card => {
+                            formValues[card.id] = parsed.visibility[card.id] !== undefined ? parsed.visibility[card.id] : true;
+                        });
+                    }
                 }
+                
+                // Устанавливаем значения по умолчанию для всех карточек
+                allCards.forEach(card => {
+                    if (formValues[card.id] === undefined) {
+                        formValues[card.id] = true;
+                    }
+                });
+                
+                form.setFieldsValue(formValues);
             } catch (error) {
                 console.error('Ошибка при загрузке настроек видимости:', error);
             }
@@ -76,26 +97,8 @@ export const SettingsModal: React.FC<ISettingsModalProps> = (
 
     const handleOk = () => {
         form.validateFields().then(values => {
-            // Загружаем текущие настройки, чтобы сохранить порядок
-            try {
-                const saved = localStorage.getItem(STORAGE_KEY);
-                let order = null;
-                
-                if (saved) {
-                    const settings = JSON.parse(saved);
-                    order = settings.order || null;
-                }
-                
-                // Сохраняем в localStorage с сохранением порядка
-                const settings = {
-                    visibility: values,
-                    order: order
-                };
-                
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(settings));
-            } catch (error) {
-                console.error('Ошибка при сохранении настроек видимости:', error);
-            }
+            // Сохранение происходит через onOk, который вызовет saveDashboardSettings
+            // в родительском компоненте с текущим порядком items
             onOk(values);
             setIsOpen(false);
         });
