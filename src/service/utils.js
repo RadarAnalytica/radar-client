@@ -810,4 +810,35 @@ export function sortByRelevance(items, searchTerm, fieldName = 'name') {
     // 5. По длине строки (короче = более релевантно)
     return nameA.length - nameB.length;
   });
+};
+
+/**
+ * Склоняет слово в зависимости от числа
+ * @param {Object|string} word - Объект с формами слова или просто слово
+ * @param {number} count - Число для определения формы
+ * @returns {string} - Слово в правильной форме с числом, например: "1 бренд", "2 бренда", "5 брендов"
+ * 
+ * @example
+ * getWordDeclension({one: 'бренд', few: 'бренда', many: 'брендов'}, 1) // "1 бренд"
+ * getWordDeclension({one: 'бренд', few: 'бренда', many: 'брендов'}, 2) // "2 бренда"
+ * getWordDeclension({one: 'бренд', few: 'бренда', many: 'брендов'}, 5) // "5 брендов"
+ */
+export function getWordDeclension(word, count) {
+  const wordObject = typeof word === 'object' ? word : {
+    one: word,
+    few: `${word}а`,
+    many: `${word}ов`,
+  };
+
+  const num = Math.abs(count);
+  const lastDigit = num % 10;
+
+  // Склонение по последней цифре
+  if (lastDigit === 1) {
+    return wordObject.one;
+  } else if (lastDigit >= 2 && lastDigit <= 4) {
+    return wordObject.few;
+  } else {
+    return wordObject.many;
+  }
 }

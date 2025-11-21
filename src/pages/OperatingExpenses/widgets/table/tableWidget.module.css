@@ -69,11 +69,29 @@
     padding: 7px 0;
 }
 
+.distributorCell {
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    display: -webkit-box !important;
+    -webkit-box-orient: vertical !important;
+    -webkit-line-clamp: 1 !important;
+}
+
 .periodicBadge_periodic {
     background-color: #5329FF0D;
     border-radius: 4px;
     padding: 4px 8px;
     color: #5329FF;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 100%;
+    letter-spacing: 0%;
+}
+.periodicBadge_template {
+    background-color: #5329FF0D;
+    border-radius: 4px;
+    padding: 4px 8px;
+    color: #333;
     font-size: 12px;
     font-weight: 500;
     line-height: 100%;

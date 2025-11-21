@@ -31,7 +31,6 @@ function columnExpensesRender(value, row) {
 		return value;
 	}
 	return value;
-	// return value?.length ? value.join(', ') : '-';
 }
 
 export const EXPENSE_COLUMNS = [
@@ -47,6 +46,90 @@ export const EXPENSE_COLUMNS = [
 		title: 'Дата',
 		dataIndex: 'date',
 		key: 'date',
+		width: 120,
+		minWidth: 100,
+		maxWidth: 200,
+	},
+	{
+		title: 'Описание',
+		dataIndex: 'description',
+		key: 'description',
+		width: 200,
+		minWidth: 150,
+		maxWidth: 400,
+	},
+	{
+		title: 'Сумма, руб',
+		dataIndex: 'value',
+		key: 'value',
+		units: ' ',
+		width: 150,
+		minWidth: 120,
+		maxWidth: 250,
+	},
+	{
+		title: 'Статья расходов',
+		dataIndex: 'expense_categories',
+		key: 'expense_categories',
+		width: 180,
+		minWidth: 150,
+		maxWidth: 350,
+	},
+	{
+		title: 'Артикул',
+		dataIndex: 'vendor_codes',
+		key: 'vendor_codes',
+		width: 150,
+		minWidth: 120,
+		maxWidth: 250,
+	},
+	{
+		title: 'Бренд',
+		dataIndex: 'brand_names',
+		key: 'brand_names',
+		width: 150,
+		minWidth: 120,
+		maxWidth: 250,
+	},
+	{
+		title: 'Магазин',
+		dataIndex: 'shops',
+		key: 'shops',
+		width: 180,
+		minWidth: 150,
+		maxWidth: 300,
+	},
+	{
+		title: 'Действия',
+		dataIndex: 'action',
+		key: 'action',
+		width: 150,
+		minWidth: 130,
+		maxWidth: 200,
+	},
+];
+
+export const TEMPLATE_COLUMNS = [
+	{
+		title: 'Тип',
+		dataIndex: 'is_periodic',
+		key: 'is_periodic',
+		width: 120,
+		minWidth: 100,
+		maxWidth: 150,
+	},
+	{
+		title: 'Дата начала',
+		dataIndex: 'date_from',
+		key: 'date_from',
+		width: 120,
+		minWidth: 100,
+		maxWidth: 200,
+	},
+	{
+		title: 'Дата окончания',
+		dataIndex: 'finished_at',
+		key: 'finished_at',
 		width: 120,
 		minWidth: 100,
 		maxWidth: 200,

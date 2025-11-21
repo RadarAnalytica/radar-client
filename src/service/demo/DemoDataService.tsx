@@ -122,7 +122,7 @@ export class DemoDataService {
       '/api/blog/articles': () => this.getArticlesData(),
       '/api/operating-expenses/category/get-all': () => this.getOperatingExpensesCategoriesData(),
       '/api/operating-expenses/expense/get-all': () => this.getOperatingExpensesData(filters),
-      '/api/operating-expenses/periodic-expense/get': () => this.getPeriodicExpenseTemplateData(),
+      '/api/operating-expenses/periodic-expense/get': () => this.getPeriodicExpenseData(),
       '/api/control/spp': () => this.getWbControlsData(filters),
       '/api/control/drr': () => this.getWbControlsData(filters),
       '/api/product/self-costs': () => ({ message: "Success", updated_items: [{ product: 'Демо', cost: 100, fulfillment: 100 }] }),
@@ -631,7 +631,7 @@ export class DemoDataService {
     };
   }
 
-  private getPeriodicExpenseTemplateData() {
+  private getPeriodicExpenseData() {
     const today = new Date().toISOString().split('T')[0];
 
     return {
