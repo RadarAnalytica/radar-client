@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import MobilePlug from '@/components/sharedComponents/mobilePlug/mobilePlug';
 import Sidebar from '@/components/sharedComponents/sidebar/sidebar';
@@ -21,11 +21,15 @@ import {
 import { mockCompaniesData, CompanyData } from './data/mockData';
 import styles from './companyAdvPage.module.css';
 import { Link } from 'react-router-dom';
+import { useAppSelector } from '@/redux/hooks';
+import { ServiceFunctions, getRequestObject } from '@/service/serviceFunctions';
+import AuthContext from '@/service/AuthContext';
 
 const CompanyAdvPage: React.FC = () => {
   const { companyId } = useParams<{ companyId: string }>();
   const { isDemoMode } = useDemoMode();
-  
+  const { authToken } = useContext(AuthContext);
+  const { selectedRange } = useAppSelector((state) => state.filters);
   const [loading, setLoading] = useState(true);
   const [tableConfig, setTableConfig] = useState<ColumnConfig[]>([]);
   const [sortState, setSortState] = useState<{ sort_field: string | undefined, sort_order: "ASC" | "DESC" | undefined }>({ 
@@ -38,6 +42,26 @@ const CompanyAdvPage: React.FC = () => {
 
   const progress = useLoadingProgress({ loading });
 
+  const loadData = async (id) => {
+    setLoading(true);
+    progress.start();
+    try {
+      const requestObject = getRequestObject({}, selectedRange);
+      const response = await ServiceFunctions.getAdvertDataById(authToken, id, requestObject);
+      console.log(response);
+      // const transformedData = transformApiDataToCompanyData(response.data || []);
+      progress.complete();
+      await setTimeout(() => {
+        setLoading(false);
+        progress.reset();
+      }, 500);
+    } catch (error) {
+      console.error('getAdvertData error', error);
+      setLoading(false);
+      progress.reset();
+    }
+  };
+
   // Инициализация конфигурации таблицы
   useEffect(() => {
     const defaultConfig = getDefaultTableConfig();
@@ -48,24 +72,25 @@ const CompanyAdvPage: React.FC = () => {
 
   // Загрузка данных компании
   useEffect(() => {
-    setLoading(true);
-    progress.start();
-    
-    // Имитация загрузки данных
-    setTimeout(() => {
-      const company = mockCompaniesData.find(c => c.id === Number(companyId));
-      if (company) {
-        setData(company);
-        // Для страницы компании создаем массив с одной записью для таблицы
-        setTableData([company]);
-        setPageData({ page: 1, per_page: 50, total_count: 1 });
-      }
-      progress.complete();
-      setTimeout(() => {
-        setLoading(false);
-        progress.reset();
-      }, 500);
-    }, 500);
+    if (companyId) {
+      loadData(companyId);
+    }
+    // setLoading(true);
+    // progress.start();
+    // // Имитация загрузки данных
+    // setTimeout(() => {
+    //   const company = mockCompaniesData.find(c => c.id === Number(companyId));
+    //   if (company) {
+    //     setData(company);
+    //     setTableData([company]);
+    //     setPageData({ page: 1, per_page: 50, total_count: 1 });
+    //   }
+    //   progress.complete();
+    //   setTimeout(() => {
+    //     setLoading(false);
+    //     progress.reset();
+    //   }, 500);
+    // }, 500);
   }, [companyId]);
 
   // Обработчик изменения конфигурации таблицы

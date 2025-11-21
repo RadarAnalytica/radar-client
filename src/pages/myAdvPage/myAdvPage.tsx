@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import MobilePlug from '@/components/sharedComponents/mobilePlug/mobilePlug';
 import Sidebar from '@/components/sharedComponents/sidebar/sidebar';
 import Header from '@/components/sharedComponents/header/header';
@@ -9,6 +9,7 @@ import Loader from '@/components/ui/Loader';
 import MyAdvTable from './widgets/MyAdvTable/MyAdvTable';
 import NoData from '@/components/sharedComponents/NoData/NoData';
 import SearchBlock from './widgets/SearchBlock/SearchBlock';
+import { useAppSelector } from '@/redux/hooks';
 import { 
   getDefaultTableConfig, 
   loadTableConfig, 
@@ -16,12 +17,14 @@ import {
   mergeTableConfig,
   type ColumnConfig 
 } from './config/tableConfig';
-import { mockCompaniesData, CompanyData } from './data/mockData';
+import { mockCompaniesData, CompanyData, transformApiDataToCompanyData, ApiResponse } from './data/mockData';
 import styles from './myAdvPage.module.css';
+import AuthContext from '@/service/AuthContext';
+import { ServiceFunctions, getRequestObject } from '@/service/serviceFunctions';
 
 const MyAdvPage: React.FC = () => {
   const { isDemoMode } = useDemoMode();
-  
+  const { authToken } = useContext(AuthContext);
   const [loading, setLoading] = useState(true);
   const [tableConfig, setTableConfig] = useState<ColumnConfig[]>([]);
   const [sortState, setSortState] = useState<{ sort_field: string | undefined, sort_order: "ASC" | "DESC" | undefined }>({ 
@@ -31,8 +34,33 @@ const MyAdvPage: React.FC = () => {
   const [data, setData] = useState<CompanyData[]>(mockCompaniesData);
   const [pageData, setPageData] = useState({ page: 1, per_page: 50, total_count: mockCompaniesData.length });
   const [searchQuery, setSearchQuery] = useState<string>('');
+  const { selectedRange, activeBrand } = useAppSelector((state) => state.filters);
   
   const progress = useLoadingProgress({ loading });
+
+  const loadData = async () => {
+    setLoading(true);
+    progress.start();
+    try {
+      // const requestObject = getRequestObject({...pageData, search_query: searchQuery}, selectedRange);
+      //const response: ApiResponse = await ServiceFunctions.getAdvertData(authToken, requestObject);
+      // const transformedData = transformApiDataToCompanyData(response.data || []);
+      // if (response.total_count) {
+      //   setPageData({ ...pageData, total_count: response.total_count });
+      // }
+      const transformedData = transformApiDataToCompanyData(mockCompaniesData || []);
+      setData(transformedData);
+      progress.complete();
+      await setTimeout(() => {
+        setLoading(false);
+        progress.reset();
+      }, 500);
+    } catch (error) {
+      console.error('getAdvertData error', error);
+      setLoading(false);
+      progress.reset();
+    }
+  };
 
   // Инициализация конфигурации таблицы
   useEffect(() => {
@@ -44,34 +72,14 @@ const MyAdvPage: React.FC = () => {
 
   // Загрузка данных (моковые данные)
   useEffect(() => {
-    setLoading(true);
-    progress.start();
-    
-    // Имитация загрузки данных
-    setTimeout(() => {
-      let filteredData = mockCompaniesData;
-      
-      // Фильтрация по поисковому запросу
-      if (searchQuery.trim()) {
-        filteredData = mockCompaniesData.filter(company => 
-          company.company.toLowerCase().includes(searchQuery.toLowerCase())
-        );
-      }
-      
-      setData(filteredData);
-      setPageData({ 
-        page: 1, 
-        per_page: 50, 
-        total_count: filteredData.length 
-      });
-      progress.complete();
-      setTimeout(() => {
+    if (activeBrand) {
+      if (activeBrand.is_primary_collect) {
+        loadData();
+      } else {
         setLoading(false);
-        progress.reset();
-      }, 500);
-    }, 500);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchQuery]);
+      }
+    }
+  }, [searchQuery, selectedRange, activeBrand]);
 
   // Обработчик поиска
   const handleSearch = (query: string) => {

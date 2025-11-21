@@ -5,7 +5,8 @@ import moment from 'moment';
 import { fetchApi } from './fetchApi';
 
 export const getRequestObject = (filters, selectedRange, shopId) => {
-	let requestObject = {
+	const requestObject = {
+		...filters,
 		articles: null,
 		product_groups: null,
 		brands: null,
@@ -2014,6 +2015,56 @@ export interface IPositionCheckMainTableData {
 				}
 			);
 			return res;
+	},
+
+	getAdvertData: async (token, requestObject) => {
+		try {
+			const res = await fetchApi(
+				`/api/advert/list?page=${requestObject.page}&per_page=${requestObject.per_page}`,
+				{
+					method: 'POST',
+					headers: {
+						'content-type': 'application/json',
+						authorization: 'JWT ' + token,
+					},
+					body: JSON.stringify(requestObject)
+				}
+			);
+
+			if (!res.ok) {
+				throw new Error('Ошибка запроса');
+			}
+
+			return res.json();
+		} catch (error) {
+			console.error('getAllOperatingExpensesExpense ', error);
+			throw new Error(error);
+		}
+	},
+
+	getAdvertDataById: async (token, id, requestObject) => {
+		try {
+			const res = await fetchApi(
+				`/api/advert/?adv_id=${id}`,
+				{
+					method: 'POST',
+					headers: {
+						'content-type': 'application/json',
+						authorization: 'JWT ' + token,
+					},
+					body: JSON.stringify(requestObject)
+				}
+			);
+
+			if (!res.ok) {
+				throw new Error('Ошибка запроса');
+			}
+
+			return res.json();
+		} catch (error) {
+			console.error('getAllOperatingExpensesExpense ', error);
+			throw new Error(error);
+		}
 	},
 };
 

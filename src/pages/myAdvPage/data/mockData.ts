@@ -1,3 +1,50 @@
+// Интерфейсы для новой структуры API
+export interface AdvertFunnel {
+  cart: number;
+  orders: number;
+  order_item_count: number;
+  expected_purchase: number;
+  view_click: number;
+  click_cart: number;
+  cart_order: number;
+  view_order: number;
+  expected_order_purchase: number;
+  expected_click_purchase: number;
+}
+
+export interface AdvertStatistics {
+  views: number;
+  clicks: number;
+  cpc: number;
+  avg_cpm: number;
+  avg_position: number;
+  drr_orders: number;
+  drr_purchase: number;
+  cp_cart: number;
+  expected_cps: number;
+  orders_amount: number;
+  expected_purchase_amount: number;
+  ad_spend: number;
+}
+
+export interface ApiCompanyData {
+  advert_funnel: AdvertFunnel;
+  advert_statistics: AdvertStatistics;
+  company_id: number;
+  company_name: string;
+  company_status: string;
+  company_type: string;
+  company_start_date: string;
+}
+
+export interface ApiResponse {
+  data: ApiCompanyData[];
+  total_count?: number;
+  page?: number;
+  per_page?: number;
+}
+
+// Интерфейс для данных таблицы (совместим с текущим кодом)
 export interface CompanyData {
   id: number;
   company: string;
@@ -28,325 +75,234 @@ export interface CompanyData {
   advertising_costs: number;
 }
 
+// Функция преобразования процентов в строку формата "X.XX%"
+const formatPercentage = (value: number): string => {
+  if (value === 0 || isNaN(value) || !isFinite(value)) return '0%';
+  return `${value.toFixed(2)}%`;
+};
+
+// Функция преобразования данных из API формата в формат таблицы
+export const transformApiDataToCompanyData = (apiData: ApiCompanyData[]): CompanyData[] => {
+  return apiData.map((item) => {
+    const funnel = item.advert_funnel;
+    const stats = item.advert_statistics;
+
+    // Используем значения из API, если они есть, иначе вычисляем проценты
+    // Поля view_click, click_cart и т.д. могут быть уже в процентах или коэффициентами
+    // Если они равны 0, вычисляем на основе других данных
+    let viewsToClick = funnel.view_click || 0;
+    if (viewsToClick === 0 && stats.views > 0) {
+      viewsToClick = (stats.clicks / stats.views) * 100;
+    }
+    // Если значение меньше 1, считаем его коэффициентом и преобразуем в проценты
+    if (viewsToClick > 0 && viewsToClick < 1) {
+      viewsToClick = viewsToClick * 100;
+    }
+
+    let clickToCart = funnel.click_cart || 0;
+    if (clickToCart === 0 && stats.clicks > 0) {
+      clickToCart = (funnel.cart / stats.clicks) * 100;
+    }
+    if (clickToCart > 0 && clickToCart < 1) {
+      clickToCart = clickToCart * 100;
+    }
+
+    let cartToOrder = funnel.cart_order || 0;
+    if (cartToOrder === 0 && funnel.cart > 0) {
+      cartToOrder = (funnel.orders / funnel.cart) * 100;
+    }
+    if (cartToOrder > 0 && cartToOrder < 1) {
+      cartToOrder = cartToOrder * 100;
+    }
+
+    let viewToOrder = funnel.view_order || 0;
+    if (viewToOrder === 0 && stats.views > 0) {
+      viewToOrder = (funnel.orders / stats.views) * 100;
+    }
+    if (viewToOrder > 0 && viewToOrder < 1) {
+      viewToOrder = viewToOrder * 100;
+    }
+
+    let forecastOrderToPurchase = funnel.expected_order_purchase || 0;
+    if (forecastOrderToPurchase === 0 && funnel.orders > 0) {
+      forecastOrderToPurchase = (funnel.expected_purchase / funnel.orders) * 100;
+    }
+    if (forecastOrderToPurchase > 0 && forecastOrderToPurchase < 1) {
+      forecastOrderToPurchase = forecastOrderToPurchase * 100;
+    }
+
+    let forecastClickToPurchase = funnel.expected_click_purchase || 0;
+    if (forecastClickToPurchase === 0 && stats.clicks > 0) {
+      forecastClickToPurchase = (funnel.expected_purchase / stats.clicks) * 100;
+    }
+    if (forecastClickToPurchase > 0 && forecastClickToPurchase < 1) {
+      forecastClickToPurchase = forecastClickToPurchase * 100;
+    }
+
+    return {
+      id: item.company_id,
+      company: item.company_name || item.company_id,
+      company_photo: undefined, // API не предоставляет фото
+      status_wb: item.company_status || '',
+      company_type: item.company_type || '',
+      cart: funnel.cart || 0,
+      orders: funnel.orders || 0,
+      ordered_qty: funnel.order_item_count || 0,
+      forecast_purchase_qty: funnel.expected_purchase || 0,
+      views_to_click: formatPercentage(viewsToClick),
+      click_to_cart: formatPercentage(clickToCart),
+      cart_to_order: formatPercentage(cartToOrder),
+      view_to_order: formatPercentage(viewToOrder),
+      forecast_order_to_purchase: formatPercentage(forecastOrderToPurchase),
+      forecast_click_to_purchase: formatPercentage(forecastClickToPurchase),
+      views: stats.views || 0,
+      clicks: stats.clicks || 0,
+      cpc: stats.cpc || 0,
+      avg_crm: stats.avg_cpm || 0,
+      avg_position: stats.avg_position || 0,
+      drr_orders: stats.drr_orders || 0,
+      forecast_drr_purchase: stats.drr_purchase || 0,
+      cpcart: stats.cp_cart || 0,
+      forecast_cps: stats.expected_cps || 0,
+      orders_sum: stats.orders_amount || 0,
+      forecast_purchase_sum: stats.expected_purchase_amount || 0,
+      advertising_costs: stats.ad_spend || 0,
+    };
+  });
+};
+
 export const mockCompaniesData: CompanyData[] = [
   {
-    id: 1,
-    company: 'ООО "Торговый дом"',
-    company_photo: 'https://placeholder.apptor.studio/40/40/product1.png',
-    status_wb: 'Запущена',
-    company_type: 'Продавец',
-    cart: 1250,
-    orders: 890,
-    ordered_qty: 1250,
-    forecast_purchase_qty: 1100,
-    views_to_click: '2.45%',
-    click_to_cart: '8.32%',
-    cart_to_order: '12.5%',
-    view_to_order: '0.31%',
-    forecast_order_to_purchase: '85.2%',
-    forecast_click_to_purchase: '2.1%',
-    views: 125000,
-    clicks: 3062,
-    cpc: 12.5,
-    avg_crm: 4500,
-    avg_position: 15.3,
-    drr_orders: 125.5,
-    forecast_drr_purchase: 106.8,
-    cpcart: 45.2,
-    forecast_cps: 38.5,
-    orders_sum: 4450000,
-    forecast_purchase_sum: 4950000,
-    advertising_costs: 382750,
+    "advert_funnel": {
+        "cart": 15,
+        "orders": 11,
+        "order_item_count": 11,
+        "expected_purchase": 73,
+        "view_click": 5.533,
+        "click_cart": 8.475,
+        "cart_order": 73.333,
+        "view_order": 0.344,
+        "expected_order_purchase": 15.068,
+        "expected_click_purchase": 242.466
+    },
+    "advert_statistics": {
+        "views": 3199,
+        "clicks": 177,
+        "cpc": 2.831,
+        "avg_cpm": 156.64,
+        "avg_position": 0,
+        "drr_orders": 1.187,
+        "drr_purchase": 0.179,
+        "cp_cart": 33.406,
+        "expected_cps": 6.864,
+        "orders_amount": 42225,
+        "expected_purchase_amount": 279275.54,
+        "ad_spend": 501.09
+    },
+    "company_id": 22950510,
+    "company_name": "Компания без названия 22950510",
+    "company_status": "На паузе",
+    "company_type": "Единая ставка",
+    "company_start_date": "2025-10-23"
   },
   {
-    id: 2,
-    company: 'ИП Иванов И.И.',
-    company_photo: 'https://placeholder.apptor.studio/40/40/product2.png',
-    status_wb: 'Запущена',
-    company_type: 'Поставщик',
-    cart: 890,
-    orders: 650,
-    ordered_qty: 890,
-    forecast_purchase_qty: 780,
-    views_to_click: '1.98%',
-    click_to_cart: '7.15%',
-    cart_to_order: '11.2%',
-    view_to_order: '0.25%',
-    forecast_order_to_purchase: '82.5%',
-    forecast_click_to_purchase: '1.8%',
-    views: 98000,
-    clicks: 1940,
-    cpc: 15.2,
-    avg_crm: 5200,
-    avg_position: 18.7,
-    drr_orders: 98.3,
-    forecast_drr_purchase: 81.1,
-    cpcart: 52.8,
-    forecast_cps: 43.6,
-    orders_sum: 3380000,
-    forecast_purchase_sum: 4056000,
-    advertising_costs: 294880,
+    "advert_funnel": {
+        "cart": 25,
+        "orders": 3,
+        "order_item_count": 3,
+        "expected_purchase": 102,
+        "view_click": 4.324,
+        "click_cart": 16.447,
+        "cart_order": 12,
+        "view_order": 0.085,
+        "expected_order_purchase": 2.941,
+        "expected_click_purchase": 149.02
+    },
+    "advert_statistics": {
+        "views": 3515,
+        "clicks": 152,
+        "cpc": 6.754,
+        "avg_cpm": 292.077,
+        "avg_position": 0,
+        "drr_orders": 9.354,
+        "drr_purchase": 0.267,
+        "cp_cart": 41.066,
+        "expected_cps": 10.065,
+        "orders_amount": 10975,
+        "expected_purchase_amount": 384801.92,
+        "ad_spend": 1026.65
+    },
+    "company_id": 25238285,
+    "company_name": "Компания без названия 25238285",
+    "company_status": "На паузе",
+    "company_type": "Единая ставка",
+    "company_start_date": "2025-11-19"
   },
   {
-    id: 3,
-    company: 'ООО "Электроника Плюс"',
-    company_photo: 'https://placeholder.apptor.studio/40/40/product3.png',
-    status_wb: 'Приостановлена',
-    company_type: 'Продавец',
-    cart: 2100,
-    orders: 1520,
-    ordered_qty: 2100,
-    forecast_purchase_qty: 1890,
-    views_to_click: '3.12%',
-    click_to_cart: '9.45%',
-    cart_to_order: '13.8%',
-    view_to_order: '0.42%',
-    forecast_order_to_purchase: '88.5%',
-    forecast_click_to_purchase: '2.5%',
-    views: 210000,
-    clicks: 6552,
-    cpc: 10.8,
-    avg_crm: 3800,
-    avg_position: 12.5,
-    drr_orders: 145.2,
-    forecast_drr_purchase: 128.5,
-    cpcart: 38.5,
-    forecast_cps: 34.1,
-    orders_sum: 5776000,
-    forecast_purchase_sum: 7182000,
-    advertising_costs: 707616,
+    "advert_funnel": {
+        "cart": 55,
+        "orders": 17,
+        "order_item_count": 17,
+        "expected_purchase": 102,
+        "view_click": 4.942,
+        "click_cart": 10.476,
+        "cart_order": 30.909,
+        "view_order": 0.16,
+        "expected_order_purchase": 16.667,
+        "expected_click_purchase": 514.706
+    },
+    "advert_statistics": {
+        "views": 10623,
+        "clicks": 525,
+        "cpc": 3.876,
+        "avg_cpm": 191.57,
+        "avg_position": 0,
+        "drr_orders": 3.004,
+        "drr_purchase": 0.529,
+        "cp_cart": 37.001,
+        "expected_cps": 19.951,
+        "orders_amount": 67748,
+        "expected_purchase_amount": 384801.92,
+        "ad_spend": 2035.05
+    },
+    "company_id": 25238289,
+    "company_name": "Компания без названия 25238289",
+    "company_status": "На паузе",
+    "company_type": "Единая ставка",
+    "company_start_date": "2025-11-06"
   },
   {
-    id: 4,
-    company: 'ООО "Модный стиль"',
-    company_photo: 'https://placeholder.apptor.studio/40/40/product4.png',
-    status_wb: 'Запущена',
-    company_type: 'Поставщик',
-    cart: 750,
-    orders: 520,
-    ordered_qty: 750,
-    forecast_purchase_qty: 660,
-    views_to_click: '2.15%',
-    click_to_cart: '6.85%',
-    cart_to_order: '10.5%',
-    view_to_order: '0.22%',
-    forecast_order_to_purchase: '80.2%',
-    forecast_click_to_purchase: '1.6%',
-    views: 85000,
-    clicks: 1827,
-    cpc: 18.5,
-    avg_crm: 5800,
-    avg_position: 22.3,
-    drr_orders: 85.7,
-    forecast_drr_purchase: 68.8,
-    cpcart: 58.2,
-    forecast_cps: 46.7,
-    orders_sum: 3016000,
-    forecast_purchase_sum: 3828000,
-    advertising_costs: 337995,
-  },
-  {
-    id: 5,
-    company: 'ИП Петров П.П.',
-    company_photo: 'https://placeholder.apptor.studio/40/40/product5.png',
-    status_wb: 'Запущена',
-    company_type: 'Продавец',
-    cart: 1680,
-    orders: 1200,
-    ordered_qty: 1680,
-    forecast_purchase_qty: 1512,
-    views_to_click: '2.78%',
-    click_to_cart: '8.95%',
-    cart_to_order: '12.8%',
-    view_to_order: '0.35%',
-    forecast_order_to_purchase: '86.5%',
-    forecast_click_to_purchase: '2.3%',
-    views: 165000,
-    clicks: 4587,
-    cpc: 11.2,
-    avg_crm: 4200,
-    avg_position: 14.8,
-    drr_orders: 135.8,
-    forecast_drr_purchase: 117.5,
-    cpcart: 42.5,
-    forecast_cps: 36.8,
-    orders_sum: 5040000,
-    forecast_purchase_sum: 6350400,
-    advertising_costs: 513744,
-  },
-  {
-    id: 6,
-    company: 'ООО "Дом и сад"',
-    company_photo: 'https://placeholder.apptor.studio/40/40/product6.png',
-    status_wb: 'Запущена',
-    company_type: 'Поставщик',
-    cart: 1100,
-    orders: 780,
-    ordered_qty: 1100,
-    forecast_purchase_qty: 968,
-    views_to_click: '2.35%',
-    click_to_cart: '7.85%',
-    cart_to_order: '11.5%',
-    view_to_order: '0.28%',
-    forecast_order_to_purchase: '83.5%',
-    forecast_click_to_purchase: '1.95%',
-    views: 115000,
-    clicks: 2702,
-    cpc: 13.8,
-    avg_crm: 4800,
-    avg_position: 16.5,
-    drr_orders: 112.3,
-    forecast_drr_purchase: 93.8,
-    cpcart: 48.5,
-    forecast_cps: 40.5,
-    orders_sum: 3744000,
-    forecast_purchase_sum: 4646400,
-    advertising_costs: 372876,
-  },
-  {
-    id: 7,
-    company: 'ООО "Спорт товары"',
-    company_photo: 'https://placeholder.apptor.studio/40/40/product7.png',
-    status_wb: 'Запущена',
-    company_type: 'Продавец',
-    cart: 1950,
-    orders: 1420,
-    ordered_qty: 1950,
-    forecast_purchase_qty: 1755,
-    views_to_click: '2.95%',
-    click_to_cart: '9.15%',
-    cart_to_order: '13.2%',
-    view_to_order: '0.38%',
-    forecast_order_to_purchase: '87.2%',
-    forecast_click_to_purchase: '2.4%',
-    views: 198000,
-    clicks: 5841,
-    cpc: 11.5,
-    avg_crm: 4100,
-    avg_position: 13.9,
-    drr_orders: 142.5,
-    forecast_drr_purchase: 124.2,
-    cpcart: 41.2,
-    forecast_cps: 35.9,
-    orders_sum: 5822000,
-    forecast_purchase_sum: 7208100,
-    advertising_costs: 671715,
-  },
-  {
-    id: 8,
-    company: 'ИП Сидоров С.С.',
-    company_photo: 'https://placeholder.apptor.studio/40/40/product8.png',
-    status_wb: 'Приостановлена',
-    company_type: 'Поставщик',
-    cart: 680,
-    orders: 480,
-    ordered_qty: 680,
-    forecast_purchase_qty: 598,
-    views_to_click: '1.85%',
-    click_to_cart: '6.25%',
-    cart_to_order: '9.8%',
-    view_to_order: '0.18%',
-    forecast_order_to_purchase: '78.5%',
-    forecast_click_to_purchase: '1.4%',
-    views: 72000,
-    clicks: 1332,
-    cpc: 20.5,
-    avg_crm: 6200,
-    avg_position: 25.2,
-    drr_orders: 72.5,
-    forecast_drr_purchase: 56.9,
-    cpcart: 62.8,
-    forecast_cps: 49.3,
-    orders_sum: 2976000,
-    forecast_purchase_sum: 3705800,
-    advertising_costs: 273060,
-  },
-  {
-    id: 9,
-    company: 'ООО "Красота и здоровье"',
-    company_photo: 'https://placeholder.apptor.studio/40/40/product9.png',
-    status_wb: 'Запущена',
-    company_type: 'Продавец',
-    cart: 1450,
-    orders: 1050,
-    ordered_qty: 1450,
-    forecast_purchase_qty: 1305,
-    views_to_click: '2.65%',
-    click_to_cart: '8.65%',
-    cart_to_order: '12.2%',
-    view_to_order: '0.32%',
-    forecast_order_to_purchase: '85.8%',
-    forecast_click_to_purchase: '2.2%',
-    views: 148000,
-    clicks: 3922,
-    cpc: 12.8,
-    avg_crm: 4400,
-    avg_position: 15.6,
-    drr_orders: 128.5,
-    forecast_drr_purchase: 110.3,
-    cpcart: 44.2,
-    forecast_cps: 37.9,
-    orders_sum: 4620000,
-    forecast_purchase_sum: 5742000,
-    advertising_costs: 502016,
-  },
-  {
-    id: 10,
-    company: 'ООО "Техника для дома"',
-    company_photo: 'https://placeholder.apptor.studio/40/40/product10.png',
-    status_wb: 'Запущена',
-    company_type: 'Поставщик',
-    cart: 1320,
-    orders: 950,
-    ordered_qty: 1320,
-    forecast_purchase_qty: 1161,
-    views_to_click: '2.55%',
-    click_to_cart: '8.25%',
-    cart_to_order: '11.8%',
-    view_to_order: '0.30%',
-    forecast_order_to_purchase: '84.5%',
-    forecast_click_to_purchase: '2.0%',
-    views: 135000,
-    clicks: 3442,
-    cpc: 13.2,
-    avg_crm: 4600,
-    avg_position: 16.2,
-    drr_orders: 122.8,
-    forecast_drr_purchase: 103.8,
-    cpcart: 46.5,
-    forecast_cps: 39.3,
-    orders_sum: 4370000,
-    forecast_purchase_sum: 5421900,
-    advertising_costs: 454344,
-  },
-  {
-    id: 11,
-    company: 'ООО "Техника для дома"',
-    company_photo: 'https://placeholder.apptor.studio/40/40/product10.png',
-    status_wb: 'Запущена',
-    company_type: 'Поставщик',
-    cart: 1320,
-    orders: 950,
-    ordered_qty: 1320,
-    forecast_purchase_qty: 1161,
-    views_to_click: '2.55%',
-    click_to_cart: '8.25%',
-    cart_to_order: '11.8%',
-    view_to_order: '0.30%',
-    forecast_order_to_purchase: '84.5%',
-    forecast_click_to_purchase: '2.0%',
-    views: 135000,
-    clicks: 3442,
-    cpc: 13.2,
-    avg_crm: 4600,
-    avg_position: 16.2,
-    drr_orders: 122.8,
-    forecast_drr_purchase: 103.8,
-    cpcart: 46.5,
-    forecast_cps: 39.3,
-    orders_sum: 4370000,
-    forecast_purchase_sum: 5421900,
-    advertising_costs: 454344,
-  },
+    "advert_funnel": {
+        "cart": 0,
+        "orders": 0,
+        "order_item_count": 0,
+        "expected_purchase": 9,
+        "view_click": 13.725,
+        "click_cart": 0,
+        "cart_order": 0,
+        "view_order": 0,
+        "expected_order_purchase": 0,
+        "expected_click_purchase": 77.778
+    },
+    "advert_statistics": {
+        "views": 51,
+        "clicks": 7,
+        "cpc": 1.063,
+        "avg_cpm": 145.882,
+        "avg_position": 0,
+        "drr_orders": 0,
+        "drr_purchase": 0.045,
+        "cp_cart": 0,
+        "expected_cps": 0.827,
+        "orders_amount": 0,
+        "expected_purchase_amount": 16576.55,
+        "ad_spend": 7.44
+    },
+    "company_id": 25711676,
+    "company_name": "Компания без названия 25711676",
+    "company_status": "На паузе",
+    "company_type": "Единая ставка",
+    "company_start_date": "2025-09-29"
+  }
 ];
 

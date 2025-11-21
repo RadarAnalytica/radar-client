@@ -37,7 +37,6 @@ const MyAdvTable: React.FC<MyAdvTableProps> = ({
   const tableContainerRef = useRef(null);
   const navigate = useNavigate();
 
-  // ---- state и хэндлер для чекбокса "Скрыть компании без статистики" -----------//
   const [hideCompaniesWithoutStats, setHideCompaniesWithoutStats] = useState(false);
   
   const handleHideCompaniesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -46,7 +45,6 @@ const MyAdvTable: React.FC<MyAdvTableProps> = ({
     setHideCompaniesWithoutStats(checked);
   };
 
-  // ---- state для expanded строк -----------//
   const [expandedRowKeys, setExpandedRowKeys] = useState<string[]>([]);
 
   // Генерация дочерних строк с датами для компании
@@ -97,21 +95,21 @@ const MyAdvTable: React.FC<MyAdvTableProps> = ({
   };
 
   const prepareTableData = () => {
-    if (!Array.isArray(data)) return [];
+    if (Array.isArray(data)) return data;
 
-    return data.map((item: CompanyData) => {
-      const children = generateDateRows(item);
-      return {
-        id: item.id,
-        key: item.id,
-        isParent: true,
-        ...item,
-        children: children.map((child, index) => ({
-          ...child,
-          isLastChild: index === children.length - 1,
-        })),
-      };
-    });
+    // return data.map((item: CompanyData) => {
+    //   const children = generateDateRows(item);
+    //   return {
+    //     id: item.id,
+    //     key: item.id,
+    //     isParent: true,
+    //     ...item,
+    //     children: children.map((child, index) => ({
+    //       ...child,
+    //       isLastChild: index === children.length - 1,
+    //     })),
+    //   };
+    // });
   };
 
   const handlePageChange = (page: number) => {
@@ -134,7 +132,7 @@ const MyAdvTable: React.FC<MyAdvTableProps> = ({
   const customCellRender = (value: unknown, record: CompanyData & { isParent?: boolean; isLastChild?: boolean; id?: number | string }, index: number, dataIndex: string) => {
     // Рендер для компании (кликабельная) - только для родительских строк
     if (dataIndex === 'company') {
-      if (record.isParent) {
+      if (!record.isParent) {
         const imageSize = { width: 30, height: 40 };
         const companyName = String(value ?? '');
         return (
@@ -153,7 +151,6 @@ const MyAdvTable: React.FC<MyAdvTableProps> = ({
           </div>
         );
       } else {
-        // Для дочерних строк показываем дату
         return (
           <div className={styles.dateCell}>
             {String(value ?? '')}

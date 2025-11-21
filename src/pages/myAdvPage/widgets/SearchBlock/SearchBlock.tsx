@@ -63,7 +63,7 @@ const SearchBlock: React.FC<SearchBlockProps> = ({ onSearch, loading = false }) 
         >
           <Input
             ref={inputRef}
-            placeholder='Название компании'
+            placeholder='Поиск по названию компании, id, артикулу товара'
             size='large'
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
