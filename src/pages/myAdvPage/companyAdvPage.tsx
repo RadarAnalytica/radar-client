@@ -42,14 +42,32 @@ const CompanyAdvPage: React.FC = () => {
 
   const progress = useLoadingProgress({ loading });
 
+  const transformData = (data: CompanyData) => {
+    const result = [{
+      ...data,
+      ...data.summary_data,
+    }];
+
+    data.date_data.forEach(item => {
+      result.push({
+        ...item,
+        company_name: item.date,
+      });
+    });
+
+    return result;
+  };
+
   const loadData = async (id) => {
     setLoading(true);
     progress.start();
     try {
       const requestObject = getRequestObject({}, selectedRange);
       const response = await ServiceFunctions.getAdvertDataById(authToken, id, requestObject);
-      console.log(response);
-      // const transformedData = transformApiDataToCompanyData(response.data || []);
+      const transformedData = transformData(response);
+      setData(response);
+      setTableData(transformedData);
+      setPageData({ page: 1, per_page: 50, total_count: 1 });
       progress.complete();
       await setTimeout(() => {
         setLoading(false);

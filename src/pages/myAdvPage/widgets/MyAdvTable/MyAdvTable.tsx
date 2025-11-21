@@ -25,7 +25,6 @@ interface MyAdvTableProps {
 
 const MyAdvTable: React.FC<MyAdvTableProps> = ({
   data,
-  columns,
   loading,
   pageData,
   setPageData,
@@ -41,11 +40,7 @@ const MyAdvTable: React.FC<MyAdvTableProps> = ({
   // Инициализация данных таблицы
   useEffect(() => {
     if (data) {
-      if (sortState.sort_field && sortState.sort_order) {
-        setTableData([...sortTableData(data, sortState)]);
-      } else {
-        setTableData(data);
-      }
+      setTableData(data.map(item => ({ ...item, ...item.advert_funnel, ...item.advert_statistics, key: item.company_id })));
     }
   }, [data, sortState]);
 
@@ -119,13 +114,13 @@ const MyAdvTable: React.FC<MyAdvTableProps> = ({
       return (
         <div 
           className={styles.companyCell}
-          onClick={() => handleCompanyClick(record.id)}
+          onClick={() => handleCompanyClick(record.company_id)}
           style={{ cursor: 'pointer' }}
         >
-          {record.company_photo 
+          {/* {record.company_photo 
             ? <img src={record.company_photo} alt={companyName} {...imageSize} className={styles.companyImage} />
             : <div className={styles.companyImage} style={imageSize} />
-          }
+          } */}
           <span className={styles.companyName}>
             {companyName}
           </span>
@@ -291,8 +286,8 @@ const MyAdvTable: React.FC<MyAdvTableProps> = ({
         <div className={styles.tableWrapper} ref={tableContainerRef}>
           {tableData && tableData.length > 0 && tableConfig &&
             <RadarTable
-              rowKey={(record) => String(record.id)}
-              config={tableConfig}
+              rowKey={(record) => String(record.company_id)}
+              config={getDefaultTableConfig()}
               dataSource={[...tableData.slice((pageData.page - 1) * pageData.per_page, pageData.page * pageData.per_page)]}
               preset="radar-table-simple"
               scrollContainerRef={tableContainerRef}
@@ -334,8 +329,8 @@ const MyAdvTable: React.FC<MyAdvTableProps> = ({
           }
           {tableData && tableData.length === 0 && tableConfig &&
             <RadarTable
-              rowKey={(record) => String(record.id)}
-              config={tableConfig}
+              rowKey={(record) => String(record.company_id)}
+              config={getDefaultTableConfig()}
               dataSource={tableData}
               preset="radar-table-simple"
               scrollContainerRef={tableContainerRef}
