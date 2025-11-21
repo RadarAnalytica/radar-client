@@ -21,7 +21,7 @@
 }
 
 :global(.chart-column .radar-table__header-cell-wrapper) {
-  justify-content: center;
+  justify-content: flex-start;
 }
 
 :global(.day-header-cell.--weekend) {
@@ -157,7 +157,7 @@
 }
 
 .fixedCell {
-  display: block;
+  display: flex;
   justify-content: flex-start;
   align-items: center;
   gap: 20px;
