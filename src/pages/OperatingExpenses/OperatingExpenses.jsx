@@ -406,7 +406,7 @@ export default function OperatingExpenses() {
 					: [expenseData.brand_name.id || expenseData.brand_name];
 			}
 
-			const res = await ServiceFunctions.postOperatingExpensesExpenseCreate(authToken, expenseData, `/operating-expenses/expense/copy?expense_id=${expenseId}`);
+			await ServiceFunctions.postOperatingExpensesExpenseCreate(authToken, expenseData, `/operating-expenses/expense/copy?expense_id=${expenseId}`);
 			await updateExpenses(true);
 			await updateTemplates();
 			setAlertState({ message: 'Расход скопирован', status: 'success', isVisible: true });
@@ -535,8 +535,8 @@ export default function OperatingExpenses() {
 				templateData.date = templateData.date_from;
 			}
 
-			const url = isPeriodic ? 'operating-expenses/periodic-templates/create' : 'operating-expenses/expense/create';
-			const res = await ServiceFunctions.postOperatingExpensesTemplateCreate(authToken, templateData, url);
+			const url = isPeriodic ? 'operating-expenses/periodic-templates/create' : `operating-expenses/expense/copy?expense_id=${templateId}`;
+			await ServiceFunctions.postOperatingExpensesTemplateCreate(authToken, templateData, url);
 			await updateTemplates(true);
 			await updateExpenses();
 			setAlertState({ message: 'Шаблон скопирован', status: 'success', isVisible: true });

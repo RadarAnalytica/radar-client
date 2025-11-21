@@ -32,8 +32,6 @@ const getRequestObject = (values, editData, mode) => {
 	// Определяем тип расхода/шаблона
 	const isPeriodicExpense = values.type === 'plan' || editData?.is_periodic || editData?.is_template;
 
-	console.log('isPeriodicExpense', isPeriodicExpense);
-
 	if (!editData?.is_periodic && mode === 'edit') {
 		values.shops = values.shops ? [values.shops] : [];
 		values.vendor_codes = values.vendor_codes ? [values.vendor_codes] : [];
@@ -198,8 +196,8 @@ export default function ExpenseFormModal({
 					brand_name: article.brand,
 					vendor_code: article.value,
 				}));
-				
-				shops.push({ ...filter.shop, shop: filter.shop?.id });
+
+				shops.push({ ...filter.shop, shop: filter.shop?.id, shop_name: filter.shop?.brand_name });
 				brands.push(...brandsOptions);
 				vendor_codes.push(...vendorCodesOptions);
 			});
@@ -848,7 +846,7 @@ export default function ExpenseFormModal({
 													hasSelectAll
 													optionsData={distributeOptions.shops?.map(el => ({
 														key: el.shop,
-														value: JSON.stringify({ shop: el.shop }),
+														value: JSON.stringify({ shop: el.shop, shop_name: el.shop_name }),
 														label: el.brand_name,
 													}))}
 													selectId='shops'
