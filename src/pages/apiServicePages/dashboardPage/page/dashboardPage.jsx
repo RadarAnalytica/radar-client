@@ -59,18 +59,23 @@ import { SettingsModal } from '../components/SettingsModal';
 export const DragHandleContext = React.createContext(null);
 
 
+
+
+
 // Конфигурация строк и карточек
 const barsConfig = [
     // Первая группа
     {
         rowId: 1,
         rowStyle: '',
+        canUnite: true,
         children: [
             {
                 id: 'bar-1',
                 title: 'Чистая прибыль',
                 isVisible: true,
-                container: styles.group__lgBarWrapper,
+                container: styles.group__lgBarWrapperTop,
+                dropKey: '1',
                 render: (bar, dataDashBoard, loading) => (
                     <RadarBar
                         title='Чистая прибыль'
@@ -93,7 +98,8 @@ const barsConfig = [
                 id: 'bar-2',
                 title: 'Продажи',
                 isVisible: true,
-                container: styles.group__lgBarWrapper,
+                container: styles.group__lgBarWrapperTop,
+                dropKey: '1',
                 render: (bar, dataDashBoard, loading) => (
                     <RadarBar
                         title='Продажи'
@@ -118,7 +124,8 @@ const barsConfig = [
                 id: 'bar-3',
                 title: 'WB Реализовал',
                 isVisible: true,
-                container: styles.group__lgBarWrapper,
+                container: styles.group__lgBarWrapperTop,
+                dropKey: '1',
                 render: (bar, dataDashBoard, loading) => (
                     <RadarBar
                         title='WB Реализовал'
@@ -142,7 +149,8 @@ const barsConfig = [
                 id: 'bar-5',
                 title: 'ROI',
                 isVisible: true,
-                container: styles.group__lgBarWrapper,
+                container: styles.group__lgBarWrapperTop,
+                dropKey: '1',
                 render: (bar, dataDashBoard, loading) => (
                     <RadarBar
                         title='ROI'
@@ -170,6 +178,7 @@ const barsConfig = [
             {
                 id: 'mainChart',
                 title: 'Заказы и продажи',
+                dropKey: 'full',
                 isVisible: true,
                 tooltipText: 'Прибыль, остающаяся после уплаты налогов, сборов, отчислений',
                 mainValue: 'netProfit',
@@ -196,12 +205,14 @@ const barsConfig = [
     {
         rowId: 3,
         rowStyle: '',
+        canUnite: true,
         children: [
             {
                 id: 'sec-orders',
                 title: 'Заказы',
                 isVisible: true,
                 container: styles.group__lgBarWrapper,
+                dropKey: '1',
                 render: (bar, dataDashBoard, loading) => (
                     <RadarBar
                         title='Заказы'
@@ -227,6 +238,7 @@ const barsConfig = [
                 title: 'Возвраты',
                 isVisible: true,
                 container: styles.group__lgBarWrapper,
+                dropKey: '1',
                 render: (bar, dataDashBoard, loading) => (
                     <RadarBar
                         title='Возвраты'
@@ -252,6 +264,7 @@ const barsConfig = [
                 title: 'Расходы на логистику',
                 isVisible: true,
                 container: styles.group__lgBarWrapper,
+                dropKey: '1',
                 render: (bar, dataDashBoard, loading) => (
                     <RadarBar
                         title='Расходы на логистику'
@@ -274,6 +287,7 @@ const barsConfig = [
                 title: 'Хранение',
                 isVisible: true,
                 container: styles.group__lgBarWrapper,
+                dropKey: '1',
                 render: (bar, dataDashBoard, loading) => (
                     <RadarBar
                         title='Хранение'
@@ -291,17 +305,12 @@ const barsConfig = [
                     />
                 ),
             },
-        ]
-    },
-    {
-        rowId: 4,
-        rowStyle: '',
-        children: [
             {
                 id: 'sec-paid-acceptance',
                 title: 'Платная приемка',
                 isVisible: true,
                 container: styles.group__lgBarWrapper,
+                dropKey: '1',
                 render: (bar, dataDashBoard, loading) => (
                     <RadarBar
                         title='Платная приемка'
@@ -324,6 +333,7 @@ const barsConfig = [
                 title: 'Комиссия',
                 isVisible: true,
                 container: styles.group__lgBarWrapper,
+                dropKey: '1',
                 render: (bar, dataDashBoard, loading) => (
                     <RadarBar
                         title='Комиссия'
@@ -347,6 +357,7 @@ const barsConfig = [
                 title: 'Налог',
                 isVisible: true,
                 container: styles.group__lgBarWrapper,
+                dropKey: '1',
                 render: (bar, dataDashBoard, loading) => (
                     <RadarBar
                         title='Налог'
@@ -368,6 +379,7 @@ const barsConfig = [
                 title: 'Реклама (ДРР)',
                 isVisible: true,
                 container: styles.group__lgBarWrapper,
+                dropKey: '1',
                 render: (bar, dataDashBoard, loading) => (
                     <RadarBar
                         title='Реклама (ДРР)'
@@ -386,17 +398,12 @@ const barsConfig = [
                     />
                 ),
             },
-        ]
-    },
-    {
-        rowId: 5,
-        rowStyle: '',
-        children: [
             {
                 id: 'sec-penalty',
                 title: 'Штрафы и прочие удержания',
                 isVisible: true,
                 container: styles.group__lgBarWrapper,
+                dropKey: '1',
                 render: (bar, dataDashBoard, loading) => (
                     <RadarBar
                         title='Штрафы и прочие удержания'
@@ -419,6 +426,7 @@ const barsConfig = [
                 title: 'Компенсации',
                 isVisible: true,
                 container: styles.group__lgBarWrapper,
+                dropKey: '1',
                 render: (bar, dataDashBoard, loading) => (
                     <RadarBar
                         title='Компенсации'
@@ -441,6 +449,7 @@ const barsConfig = [
                 title: 'Ср. стоимость логистики на 1 шт',
                 isVisible: true,
                 container: styles.group__lgBarWrapper,
+                dropKey: '1',
                 render: (bar, dataDashBoard, loading) => (
                     <RadarBar
                         title='Ср. стоимость логистики на 1 шт'
@@ -463,6 +472,7 @@ const barsConfig = [
                 title: 'Средняя прибыль на 1 шт',
                 isVisible: true,
                 container: styles.group__lgBarWrapper,
+                dropKey: '1',
                 render: (bar, dataDashBoard, loading) => (
                     <RadarBar
                         title='Средняя прибыль на 1 шт'
@@ -480,17 +490,12 @@ const barsConfig = [
                     />
                 ),
             },
-        ]
-    },
-    {
-        rowId: 6,
-        rowStyle: '',
-        children: [
             {
                 id: 'sec-lost-sales-amount',
                 title: 'Упущенные продажи',
                 isVisible: true,
                 container: styles.group__lgBarWrapper,
+                dropKey: '1',
                 render: (bar, dataDashBoard, loading) => (
                     <RadarBar
                         title='Упущенные продажи'
@@ -513,6 +518,7 @@ const barsConfig = [
                 title: 'Себестоимость проданных товаров',
                 isVisible: true,
                 container: styles.group__lgBarWrapper,
+                dropKey: '1',
                 render: (bar, dataDashBoard, loading) => (
                     <RadarBar
                         title='Себестоимость проданных товаров'
@@ -535,6 +541,7 @@ const barsConfig = [
                 title: 'Оборачиваемость',
                 isVisible: true,
                 container: styles.group__lgBarWrapper,
+                dropKey: '1',
                 render: (bar, dataDashBoard, loading, selectedRange, activeBrand, authToken, filters) => (
                     <TurnoverBlock
                         loading={loading}
@@ -554,6 +561,7 @@ const barsConfig = [
                 title: 'Процент выкупа',
                 isVisible: true,
                 container: styles.group__lgBarWrapper,
+                dropKey: '1',
                 render: (bar, dataDashBoard, loading) => (
                     <RadarBar
                         title='Процент выкупа'
@@ -581,6 +589,7 @@ const barsConfig = [
             {
                 id: 'sec-finance',
                 title: 'Финансы',
+                dropKey: '2',
                 isVisible: true,
                 container: styles.group__halfWrapper,
                 render: (bar, dataDashBoard, loading) => (
@@ -594,6 +603,7 @@ const barsConfig = [
             {
                 id: 'sec-profit',
                 title: 'Прибыльность',
+                dropKey: '2',
                 isVisible: true,
                 container: styles.group__halfWrapper,
                 render: (bar, dataDashBoard, loading, selectedRange, activeBrand, authToken, filters, updateDataDashBoard) => (
@@ -614,6 +624,7 @@ const barsConfig = [
                 id: 'sec-tax-struct',
                 title: 'Налог',
                 isVisible: true,
+                dropKey: '3',
                 container: styles.group__doubleBlockWrapper,
                 render: (bar, dataDashBoard, loading, selectedRange, activeBrand, authToken, filters, updateDataDashBoard) => (
                     <TaxTableBlock
@@ -628,6 +639,7 @@ const barsConfig = [
                 id: 'sec-revenue-struct',
                 title: 'Структура выручки',
                 isVisible: true,
+                dropKey: '3',
                 container: styles.group__doubleBlockWrapper,
                 render: (bar, dataDashBoard, loading, selectedRange, activeBrand, authToken, filters, updateDataDashBoard) => (
                     <RevenueStructChartBlock
@@ -641,6 +653,7 @@ const barsConfig = [
                 id: 'sec-margin-chart',
                 title: 'Рентабельность и маржинальность',
                 isVisible: true,
+                dropKey: '3',
                 container: styles.group__halfWrapper,
                 render: (bar, dataDashBoard, loading) => (
                     <MarginChartBlock
@@ -660,6 +673,7 @@ const barsConfig = [
                 id: 'sec-storage-revenue-chart',
                 title: 'Выручка по складам',
                 isVisible: true,
+                dropKey: '4',
                 container: styles.group__halfWrapper,
                 render: (bar, dataDashBoard, loading) => (
                     <StorageRevenueChartBlock
@@ -673,6 +687,7 @@ const barsConfig = [
                 id: 'sec-storage',
                 title: 'Склад',
                 isVisible: true,
+                dropKey: '4',
                 container: styles.group__halfWrapper,
                 render: (bar, dataDashBoard, loading) => (
                     <StorageBlock
@@ -693,6 +708,7 @@ const barsConfig = [
                 title: 'Анализ остатков',
                 isVisible: true,
                 container: styles.group__fullWrapper,
+                dropKey: 'full',
                 render: (bar, dataDashBoard, loading) => (
                     <StockAnalysisBlock
                         data={[]}
@@ -711,6 +727,7 @@ const barsConfig = [
                 id: 'sec-abc',
                 title: 'ABC-анализ',
                 isVisible: true,
+                dropKey: 'full',
                 container: styles.group__fullWrapper,
                 render: (bar, dataDashBoard, loading, selectedRange, activeBrand, authToken, filters) => (
                     <AbcDataBlock
@@ -734,19 +751,19 @@ const saveDashboardSettings = (items, visibilityMap) => {
             rowId: row.rowId,
             children: row.children ? row.children.map(child => child.id) : []
         }));
-        
+
         // Если visibilityMap не передан, загружаем из localStorage
         let visibility = visibilityMap;
         if (!visibility) {
             const currentSettings = loadDashboardSettings();
             visibility = currentSettings.visibility || {};
         }
-        
+
         const settings = {
             visibility: visibility,
             order: order
         };
-        
+
         localStorage.setItem(STORAGE_KEY, JSON.stringify(settings));
     } catch (error) {
         console.error('Ошибка при сохранении настроек дашборда:', error);
@@ -782,7 +799,7 @@ const applyOrderSettings = (config, order) => {
     if (!order || !Array.isArray(order)) {
         return config;
     }
-    
+
     // Создаем карту элементов по ID для быстрого доступа
     const elementMap = new Map();
     config.forEach(row => {
@@ -792,16 +809,16 @@ const applyOrderSettings = (config, order) => {
             });
         }
     });
-    
+
     // Применяем порядок из сохраненных настроек
     const orderedConfig = order.map(orderRow => {
         const originalRow = config.find(r => r.rowId === orderRow.rowId);
         if (!originalRow) return null;
-        
+
         const orderedChildren = orderRow.children
             .map(childId => elementMap.get(childId))
             .filter(Boolean); // Убираем элементы, которых нет в оригинальном конфиге
-        
+
         // Добавляем элементы, которых нет в сохраненном порядке (новые элементы)
         if (originalRow.children) {
             originalRow.children.forEach(child => {
@@ -810,20 +827,20 @@ const applyOrderSettings = (config, order) => {
                 }
             });
         }
-        
+
         return {
             ...originalRow,
             children: orderedChildren
         };
     }).filter(Boolean);
-    
+
     // Добавляем строки, которых нет в сохраненном порядке
     config.forEach(row => {
         if (!order.some(o => o.rowId === row.rowId)) {
             orderedConfig.push(row);
         }
     });
-    
+
     return orderedConfig;
 };
 
@@ -853,26 +870,26 @@ const MainContent = React.memo(({
     visibilityMap
 }) => {
     const isLoading = loading || !isFiltersLoading; // Флаг загрузки данных
-    
+
     // Применяем настройки видимости и порядка к конфигу
     const configWithSettings = useMemo(() => {
         const settings = loadDashboardSettings();
         let config = barsConfig;
-        
+        return config;
         // Применяем порядок, если он есть
         if (settings.order) {
             config = applyOrderSettings(config, settings.order);
         }
-        
+
         // Применяем видимость
         const visibility = visibilityMap || settings.visibility || {};
         config = applyVisibilitySettings(config, visibility);
-        
+
         return config;
     }, [visibilityMap]);
-    
+
     const [items, setItems] = useState(() => configWithSettings); // Конфиг для DND
-    
+
     // Обновляем items при изменении настроек
     useEffect(() => {
         setItems(configWithSettings);
@@ -927,7 +944,6 @@ const MainContent = React.memo(({
             setActiveId(active.id);
             setIsOverValid(false);
             setShowRowInDragOverlay(false);
-            document.body.style.cursor = 'grabbing';
             // Сохраняем строку активного элемента для использования в DragOverlay
             const currentItems = items;
             const row = currentItems.find(r =>
@@ -935,27 +951,27 @@ const MainContent = React.memo(({
                 r.children.some(child => child && child.id === active.id)
             );
             setActiveRowForOverlay(row || null);
+            if (!row) {
+                setOverId(null);
+                setIsOverValid(false);
+                setShowRowInDragOverlay(false);
+                return;
+            }
+
+            const activeElem = row.children.find(child => child.id === active.id);
             // Проверяем, имеет ли активный элемент span 12
-            const activeElem = document.getElementById(active.id);
-            if (activeElem) {
-                const activeCS = getComputedStyle(activeElem);
-                const activeGridColumn = activeCS.getPropertyValue('grid-column').trim();
-                const getSpanFromGridColumn = (gridColumn) => {
-                    const match = gridColumn.match(/span\s+(\d+)/);
-                    return match ? parseInt(match[1], 10) : null;
-                };
-                const activeSpan = getSpanFromGridColumn(activeGridColumn);
-                setIsActiveSpan12(activeSpan === 12);
+            if (activeElem.dropKey !== '1') {
+                setIsActiveSpan12(true);
             } else {
                 setIsActiveSpan12(false);
             }
         },
         onDragOver: ({ active, over }) => {
-            if (!over || active.id === over.id) {
+
+            if (!active | !over || active?.id === over?.id) {
                 setOverId(null);
                 setIsOverValid(false);
                 setShowRowInDragOverlay(false);
-                document.body.style.cursor = 'grabbing';
                 return;
             }
             // Проверяем, является ли over.id ID строки (rowId) или элемента
@@ -968,17 +984,19 @@ const MainContent = React.memo(({
                     setOverId(over.id);
                     setIsOverValid(false);
                     setShowRowInDragOverlay(false);
-                    document.body.style.cursor = 'not-allowed';
+                    //document.body.style.cursor = 'not-allowed';
                     return;
                 }
                 overElementId = overRow.children[0].id;
             }
 
-            // Находим строки, в которых находятся активный и целевой элементы
             const activeRow = items.find(row =>
                 row && row.children && Array.isArray(row.children) &&
                 row.children.some(child => child && child.id === active.id)
             );
+           
+
+
             const overRow = items.find(row =>
                 row && row.children && Array.isArray(row.children) &&
                 row.children.some(child => child && child.id === overElementId)
@@ -988,18 +1006,49 @@ const MainContent = React.memo(({
                 setOverId(over.id);
                 setIsOverValid(false);
                 setShowRowInDragOverlay(false);
-                document.body.style.cursor = 'not-allowed';
+                // document.body.style.cursor = 'not-allowed';
                 return;
             }
+            const activeElement = activeRow.children.find(child => child.id === active.id);
+            const overElement = overRow.children.find(child => child.id === overElementId);
 
+            if (!activeElement || !overElement) {
+                setOverId(over.id);
+                setIsOverValid(false);
+                setShowRowInDragOverlay(false);
+                // document.body.style.cursor = 'not-allowed';
+                return;
+            }
             // Если активный элемент имеет span 12, подсвечиваем всю строку
             if (isActiveSpan12) {
                 // Устанавливаем overId на rowId строки, а не на элемент
                 setOverId(String(overRow.rowId));
                 setIsOverValid(true);
                 setShowRowInDragOverlay(false);
-                document.body.style.cursor = 'copy';
+                // document.body.style.cursor = 'copy';
                 return;
+            }
+
+            if (activeElement.dropKey === '1') {
+                const newItems = [...items];
+                const hasAddRow = newItems.some(row => row.rowId === 'addRow');
+                if (!hasAddRow) {
+                    const addRow = {
+                        rowId: 'addRow',
+                        children: [{
+                            id: 'addRowElement',
+                            dropKey: activeElement.dropKey,
+                            container: styles.group__addRowWrapper,
+                            render: (bar, dataDashBoard, loading) => (
+                                <div className={styles.group__addRowContainer}>
+                                    + Добавить строку
+                                </div>
+                            )
+                        }]
+                    }
+                    newItems.splice(0, 0, addRow);
+                    setItems(newItems);
+                }
             }
 
             // Если элементы в одной строке - все валидны
@@ -1009,49 +1058,51 @@ const MainContent = React.memo(({
                 setOverId(over.id);
                 setIsOverValid(true);
                 setShowRowInDragOverlay(false);
-                document.body.style.cursor = 'copy';
+                // document.body.style.cursor = 'copy';
                 return;
             }
 
             // Если элементы в разных строках - проверяем grid-column
-            const activeElem = document.getElementById(active.id);
-            const overElem = document.getElementById(overElementId);
+            const activeElemDropKey = activeElement.dropKey;
+            const overElemDropKey = overElement.dropKey;
 
-            if (!activeElem || !overElem) {
+            if (!activeElemDropKey || !overElemDropKey) {
                 setOverId(over.id);
                 setIsOverValid(false);
                 setShowRowInDragOverlay(false);
-                document.body.style.cursor = 'not-allowed';
+                // document.body.style.cursor = 'not-allowed';
                 return;
             }
+            // const activeElem = document.getElementById(active.id);
+            // const overElem = document.getElementById(overElementId);
 
-            // Получаем span из grid-column
-            const getSpanFromGridColumn = (gridColumn) => {
-                const match = gridColumn.match(/span\s+(\d+)/);
-                return match ? parseInt(match[1], 10) : null;
-            };
+            // // Получаем span из grid-column
+            // const getSpanFromGridColumn = (gridColumn) => {
+            //     const match = gridColumn.match(/span\s+(\d+)/);
+            //     return match ? parseInt(match[1], 10) : null;
+            // };
 
-            const activeCS = getComputedStyle(activeElem);
-            const overCS = getComputedStyle(overElem);
-            const activeGridColumn = activeCS.getPropertyValue('grid-column').trim();
-            const overGridColumn = overCS.getPropertyValue('grid-column').trim();
+            // const activeCS = getComputedStyle(activeElem);
+            // const overCS = getComputedStyle(overElem);
+            // const activeGridColumn = activeCS.getPropertyValue('grid-column').trim();
+            // const overGridColumn = overCS.getPropertyValue('grid-column').trim();
 
-            const activeSpan = getSpanFromGridColumn(activeGridColumn);
-            const overSpan = getSpanFromGridColumn(overGridColumn);
+            // const activeSpan = getSpanFromGridColumn(activeGridColumn);
+            // const overSpan = getSpanFromGridColumn(overGridColumn);
 
-            // Валидность для разных строк определяется одинаковым grid-column (span), кроме случаев с span 12
-            // Если один из элементов имеет span 12, то это всегда валидно
-            // Если span совпадают и не равны 12, то валидно
-            const isValid = activeSpan === 12 || overSpan === 12 || (activeSpan === overSpan && activeSpan !== null && overSpan !== null);
 
+            // проверяем валидность цели как дропзоны
+            //const isValid = activeElemDropKey === 'full' || overElemDropKey === 'full' || (activeElemDropKey === overElemDropKey && activeElemDropKey !== null && overElemDropKey !== null);
+            const isValid = true
             // Если маленький элемент перетаскивается на элемент со span 12, показываем всю строку в dragOverlay
             // Проверяем: активный элемент НЕ имеет span 12, целевой элемент имеет span 12
-            const shouldShowRow = !isActiveSpan12 && overSpan === 12 && activeSpan !== null && activeSpan !== 12;
+            // const shouldShowRow = !isActiveSpan12 && overElemDropKey === 'full' && activeElemDropKey !== null && activeElemDropKey !== 'full';
+            const shouldShowRow = activeElemDropKey !== '1' && overElemDropKey !== '1';
             setShowRowInDragOverlay(shouldShowRow);
 
             setOverId(over.id);
             setIsOverValid(isValid);
-            document.body.style.cursor = isValid ? 'copy' : 'not-allowed';
+            //document.body.style.cursor = isValid ? 'copy' : 'not-allowed';
         },
         onDragCancel: () => {
             setOverId(null);
@@ -1060,7 +1111,7 @@ const MainContent = React.memo(({
             setIsActiveSpan12(false);
             setShowRowInDragOverlay(false);
             setActiveRowForOverlay(null);
-            document.body.style.cursor = '';
+            //document.body.style.cursor = '';
         },
         onDragEnd: ({ active, over }) => {
             setOverId(null);
@@ -1069,10 +1120,22 @@ const MainContent = React.memo(({
             setIsActiveSpan12(false);
             setShowRowInDragOverlay(false);
             setActiveRowForOverlay(null);
-            document.body.style.cursor = '';
-            if (!over || active.id === over.id) return;
+            //document.body.style.cursor = '';
+            if (!over || active.id === over.id) {
+                const newItems = [...items];
+                const addRowIndex = newItems.findIndex(row => row.rowId === 'addRow');
+                if (addRowIndex !== -1) {
+                    newItems.splice(addRowIndex, 1);
+                }
+                setItems(newItems);
+                return
+            };
 
             setItems((prev) => {
+                const addRowIndex = prev.findIndex(row => row.rowId === 'addRow');
+                if (addRowIndex !== -1) {
+                    prev.splice(addRowIndex, 1);
+                }
                 // Проверяем, является ли over.id ID строки (rowId) или элемента
                 const isOverRow = prev.some(row => row && String(row.rowId) === String(over.id));
 
@@ -1083,24 +1146,6 @@ const MainContent = React.memo(({
                     if (!overRow || !overRow.children || !Array.isArray(overRow.children) || overRow.children.length === 0) return prev;
                     overElementId = overRow.children[0].id;
                 }
-
-                const activeElem = document.getElementById(active.id);
-                const overElem = document.getElementById(overElementId);
-                if (!activeElem || !overElem) return prev;
-
-                const activeCS = getComputedStyle(activeElem);
-                const overCS = getComputedStyle(overElem);
-                const activeGridColumn = activeCS.getPropertyValue('grid-column').trim();
-                const overGridColumn = overCS.getPropertyValue('grid-column').trim();
-
-                // Получаем span из grid-column
-                const getSpanFromGridColumn = (gridColumn) => {
-                    const match = gridColumn.match(/span\s+(\d+)/);
-                    return match ? parseInt(match[1], 10) : null;
-                };
-
-                const activeSpan = getSpanFromGridColumn(activeGridColumn);
-                const overSpan = getSpanFromGridColumn(overGridColumn);
 
                 // Находим строки, содержащие активный и целевой элементы
                 const activeRowIndex = prev.findIndex(row =>
@@ -1139,46 +1184,74 @@ const MainContent = React.memo(({
                     return newItems;
                 }
 
+
+                const activeElement = activeRow.children.find(child => child.id === active.id);
+                const overElement = overRow.children.find(child => child.id === overElementId);
+                const activeElemDropKey = activeElement.dropKey;
+                const overElemDropKey = overElement.dropKey;
+
+
                 // Проверяем, есть ли в строке элемент со span 12
                 // Проверяем через CSS класс (group__fullWrapper = span 12) или через DOM
-                const hasFullWidthElement = (row) => {
-                    if (!row || !row.children || !Array.isArray(row.children)) return false;
 
-                    // Сначала проверяем через CSS класс в конфигурации
-                    const hasFullWrapperClass = row.children.some(child =>
-                        child && child.container === styles.group__fullWrapper
-                    );
-                    if (hasFullWrapperClass) return true;
 
-                    // Если не нашли через класс, проверяем через DOM
-                    return row.children.some(child => {
-                        if (!child || !child.id) return false;
-                        const childElem = document.getElementById(child.id);
-                        if (!childElem) return false;
-                        const childCS = getComputedStyle(childElem);
-                        const childGridColumn = childCS.getPropertyValue('grid-column').trim();
-                        const childSpan = getSpanFromGridColumn(childGridColumn);
-                        return childSpan === 12;
-                    });
-                };
+                const activeRowHasFullWidth = activeRow.children.some(child => child.dropKey === 'full');
+                const overRowHasFullWidth = overRow.children.some(child => child.dropKey === 'full');
 
-                const activeRowHasFullWidth = hasFullWidthElement(activeRow);
-                const overRowHasFullWidth = hasFullWidthElement(overRow);
-
-                // Если строка содержит элемент со span 12, меняем строки местами
-                if (activeRowHasFullWidth || overRowHasFullWidth) {
+                // Если активная строка содержит элемент со span 12, меняем строки местами
+                if (activeRowHasFullWidth || overRowHasFullWidth && activeRow.rowId !== 'addRow') {
                     const newItems = arrayMove(prev, activeRowIndex, overRowIndex);
-                    
-                    // Сохраняем позиции в localStorage
                     setTimeout(() => {
                         saveDashboardSettings(newItems);
                     }, 0);
-                    
+
                     return newItems;
                 }
 
+
+                // Если нет элементов на всю ширину и у элементов не совпадает dropKey, то меняем строки местами
+                if (!activeRowHasFullWidth && !overRowHasFullWidth && activeElemDropKey !== overElemDropKey) {
+                    const newItems = arrayMove(prev, activeRowIndex, overRowIndex);
+                    setTimeout(() => {
+                        saveDashboardSettings(newItems);
+                    }, 0);
+                    return newItems;
+                }
+
+                // Если это два элемента с dropKey = 1, то добавляем активный элемент в целевую строку
+                if (activeElemDropKey === '1' && activeElemDropKey === overElemDropKey) {
+                    const newItems = [...prev];
+                    const activeChildIndex = activeRow.children.findIndex(child => child.id === active.id);
+                    const overChildIndex = overRow.children.findIndex(child => child.id === overElementId);
+                    if (activeChildIndex === -1 || overChildIndex === -1) return prev;
+                    newItems[overRowIndex].children.splice(overChildIndex, 0, activeElement);
+                    newItems[activeRowIndex].children.splice(activeChildIndex, 1);
+
+                    if (newItems[activeRowIndex].children.length === 0) {
+                        newItems.splice(activeRowIndex, 1);
+                    }
+                    setTimeout(() => {
+                        saveDashboardSettings(newItems);
+                    }, 0);
+                    return newItems;
+                }
+
+                // Если активный с dropKey = 1, а целевой - создание новой строки, то создаем новую строку
+                if (activeElemDropKey === '1' && overRow.rowId === 'addRow') {
+                    const newItems = [...prev];
+                    const activeChildIndex = activeRow.children.findIndex(child => child.id === active.id);
+                    const overChildIndex = overRow.children.findIndex(child => child.id === overElementId);
+                    if (activeChildIndex === -1 || overChildIndex === -1) return prev;
+                    newItems[overRowIndex].children.splice(overChildIndex, 0, activeElement);
+                    newItems[activeRowIndex].children.splice(activeChildIndex, 1);
+                }
+               
+
+
+
+
                 // Если элемент не на всю строку и целевой элемент совпадает по span, меняем элементы местами
-                if (activeSpan && overSpan && activeSpan === overSpan && activeSpan !== 12) {
+                if (activeElemDropKey && overElemDropKey && activeElemDropKey === overElemDropKey && activeElemDropKey !== 'full') {
                     const newItems = [...prev];
                     const activeChildIndex = activeRow.children.findIndex(child => child.id === active.id);
                     const overChildIndex = overRow.children.findIndex(child => child.id === overElementId);
@@ -1233,7 +1306,7 @@ const MainContent = React.memo(({
                         const visibleChildren = row.children ? row.children.filter(child => child.isVisible !== false) : [];
                         // Если в строке не осталось видимых элементов, не рендерим строку
                         if (visibleChildren.length === 0) return null;
-                        
+
                         return (
                             <SortableRow
                                 key={row.rowId}
@@ -1281,7 +1354,7 @@ const MainContent = React.memo(({
                                     gridTemplateColumns: 'repeat(12, 1fr)',
                                 }}
                             >
-                                {dragOverlayContent.row.children.map((bar) =>  bar.isVisible && (
+                                {dragOverlayContent.row.children.map((bar) => bar.isVisible && (
                                     <div key={bar.id} className={bar.container} style={{ width: '100%', height: '100%', boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)', }}>
                                         {bar.render(bar, dataDashBoard, loading, selectedRange, activeBrand, authToken, filters, updateDataDashBoard)}
                                     </div>
@@ -1299,7 +1372,6 @@ const MainContent = React.memo(({
                         );
                     }
 
-                    console.log('Rendering NULL');
                     return null;
                 })()}
             </DragOverlay>
@@ -1326,20 +1398,20 @@ const _DashboardPage = () => {
         shopStatus: null,
         error: false
     });
-    
+
     const handleSettingsOk = (newVisibilityMap) => {
         setVisibilityMap(newVisibilityMap);
         // Сохраняем видимость вместе с текущим порядком из localStorage
         const currentSettings = loadDashboardSettings();
         const currentOrder = currentSettings.order;
-        
+
         // Если есть сохраненный порядок, используем его, иначе используем исходный из barsConfig
         if (currentOrder) {
             // Используем сохраненный порядок
             const itemsWithOrder = currentOrder.map(orderRow => {
                 const originalRow = barsConfig.find(r => r.rowId === orderRow.rowId);
                 if (!originalRow) return null;
-                
+
                 // Восстанавливаем элементы в сохраненном порядке
                 const orderedChildren = orderRow.children
                     .map(childId => {
@@ -1353,7 +1425,7 @@ const _DashboardPage = () => {
                         return null;
                     })
                     .filter(Boolean);
-                
+
                 // Добавляем новые элементы, которых нет в сохраненном порядке
                 if (originalRow.children) {
                     originalRow.children.forEach(child => {
@@ -1362,13 +1434,13 @@ const _DashboardPage = () => {
                         }
                     });
                 }
-                
+
                 return {
                     ...originalRow,
                     children: orderedChildren
                 };
             }).filter(Boolean);
-            
+
             saveDashboardSettings(itemsWithOrder, newVisibilityMap);
         } else {
             // Если нет сохраненного порядка, используем исходный
@@ -1493,7 +1565,7 @@ const _DashboardPage = () => {
                         visibilityMap={visibilityMap}
                     />
                 </DndContext>
-                
+
                 <SettingsModal
                     isOpen={isSettingsOpen}
                     setIsOpen={setIsSettingsOpen}
