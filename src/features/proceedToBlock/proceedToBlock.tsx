@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styles from './proceedToBlock.module.css';
 import { Form, Input, ConfigProvider, Segmented, Button } from 'antd';
 
@@ -51,17 +51,20 @@ interface IProceedToBlockProps {
     hasTabs?: boolean;
     tabsOptions?: Array<string>;
     placeholder?: string;
-    submitHandler: (inputValue: string, tab: string | undefined) => void;
+    submit: (inputValue: string, tab: string | undefined) => void;
 }
 export const ProceedToBlock: React.FC<IProceedToBlockProps> = ({
     title,
     hasTabs = false,
     tabsOptions = [],
     placeholder,
-    submitHandler
+    submit
 }) => {
-
-
+    const [ tabs, setTabs ] = useState<string | undefined>(tabsOptions?.[0] ?? undefined);
+    const [form] = Form.useForm();
+    const submitHandler = (fields: Record<string, any>) => {
+        submit(fields.inputValue, tabs ?? undefined);
+    }
 
     return (
         <div className={styles.block}>
@@ -70,6 +73,8 @@ export const ProceedToBlock: React.FC<IProceedToBlockProps> = ({
                 <Form
                     layout="vertical"
                     className={styles.block__form}
+                    onFinish={submitHandler}
+                    form={form}
                 >
                     {hasTabs && tabsOptions &&
                         <Form.Item
@@ -79,6 +84,7 @@ export const ProceedToBlock: React.FC<IProceedToBlockProps> = ({
                             <Segmented
                                 options={tabsOptions}
                                 style={{ width: '100%' }}
+                                value={tabs}
                             />
                         </Form.Item>
                     }

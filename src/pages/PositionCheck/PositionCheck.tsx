@@ -78,6 +78,7 @@ const PositionCheckPage = () => {
                     searchHistory={skuSearchHistory}
                     submitHandler={submitHandler}
                     clearSearchHistoryHandler={() => dispatch(skuAnalysisActions.resetSkuSearchHistory())}
+                    demoModeValue=''
                 />
             </section>
             {/* ---------------------- */}

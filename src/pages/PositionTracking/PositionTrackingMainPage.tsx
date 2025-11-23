@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import Header from '@/components/sharedComponents/header/header';
 import styles from './PositionTrackingMainPage.module.css';
 import Sidebar from '@/components/sharedComponents/sidebar/sidebar';
@@ -14,6 +14,24 @@ import { positionTrackingTableCustomCellRender } from '@/shared';
 import MainChart from '@/components/dashboardPageComponents/charts/mainChart/mainChart';
 import { SearchBlock } from '@/features';
 import { useNavigate } from 'react-router-dom';
+import { ServiceFunctions } from '@/service/serviceFunctions';
+import AuthContext from '@/service/AuthContext';
+
+interface Product {
+    wb_id: string;
+    name: string;
+    wb_id_image_url: string;
+    id: number;
+}
+
+interface Project {
+    products: Product[];
+    id: number;
+    name: string;
+    created_at: string;
+    updated_at: string;
+    total_products: number;
+}
 
 const chartMockData = {
     orderCountList: [12, 18, 16, 20, 15, 22, 19, 24, 21, 18, 23, 17, 16, 22, 25, 19, 18, 21, 20, 23, 24, 26, 22, 19, 21, 18, 20, 22, 24, 23],
@@ -115,10 +133,102 @@ const tableMockData = [
     },
 ]
 
+const initRequestStatus = {
+    isLoading: false,
+    isError: false,
+    isSuccess: false,
+    message: '',
+}
+
 const PositionTrackingMainPage = () => {
+    const { authToken } = useContext(AuthContext);  
     const [activeFilter, setActiveFilter] = useState('По просмотрам');
+    const [ requestStatus, setRequestStatus ] = useState<typeof initRequestStatus>(initRequestStatus);
     const [isAddModalVisible, setIsAddModalVisible] = useState(false);
+    const [ projectsList, setProjectsList ] = useState<Project[] | null>([]);
+    const [ addModalState, setAddModalState ] = useState<{sku: string, projectId: string}>({sku: '', projectId: ''});
     const navigate = useNavigate();
+
+    //get all projects list
+    const getProjectsList = async (token: string): Promise<void> => {
+        if (!requestStatus.isLoading) {
+            setRequestStatus({ ...initRequestStatus, isLoading: true });
+        };
+        try {
+            const res = await ServiceFunctions.getPostionTrackingProjects(token);
+            if (!res.ok) {
+                console.error('getProjectsList error:');
+                setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось получить список проектов' });
+                return 
+            }
+            const data: Project[] = await res.json();
+            console.log('all projects', data);
+            setProjectsList(data);
+            setAddModalState({ sku: '', projectId: '' });
+            setRequestStatus(initRequestStatus);
+        } catch (error) {
+            console.error('getProjectsList error:', error);
+            setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось получить список проектов' });
+            return;
+        }
+       
+    }
+
+    const createProject = async (token: string, product: string, projectName?: string): Promise<void> => {
+        setRequestStatus({ ...initRequestStatus, isLoading: true });
+        try {
+            const res = await ServiceFunctions.createPostionTrackingProject(token, projectName ?? 'Новый проект');
+            if (!res.ok) {
+                console.error('createProject error:');
+                setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось создать проект' });
+                return;
+            }
+            const data: Project = await res.json();
+            if (product && data.id) {
+                const addRes = await ServiceFunctions.addProductToPositionTrackingProject(token, data.id, product);
+                if (!addRes.ok) {
+                    console.error('addProductToPositionTrackingProject error:');
+                    setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось добавить товар к проекту' });
+                    return;
+                }
+                const parsedAddRes: Product = await addRes.json();
+                console.log('added product to project', data);
+                getProjectsList(token);
+            }
+            console.log('created project', data);
+            setRequestStatus(initRequestStatus);
+        } catch (error) {
+            console.error('createProject error:', error);
+            setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось создать проект' });
+            return;
+        }
+    }
+
+    const addProductToProject = async (token: string, sku: string, projectId: string): Promise<void> => {
+        if (!requestStatus.isLoading) {
+            setRequestStatus({ ...initRequestStatus, isLoading: true });
+        };
+        try {
+            const res = await ServiceFunctions.addProductToPositionTrackingProject(token, projectId, sku);
+            if (!res.ok) {
+                console.error('addProductToProject error:');
+                setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось добавить товар к проекту' });
+                return;
+            }
+            const data: Product = await res.json();
+            console.log('added product to project', data);
+            getProjectsList(token);
+        } catch (error) {
+            console.error('addProductToProject error:', error);
+            setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось добавить товар к проекту' });
+            return;
+        }
+    }
+    useEffect(() => {
+        if (authToken) {
+            getProjectsList(authToken);
+        }
+    }, []);
     return (
         <main className={styles.page}>
             <MobilePlug />
@@ -143,13 +253,28 @@ const PositionTrackingMainPage = () => {
                 {/* !header */}
 
                 {/* main widget */}
-                <PositionTrackingMainPageWidget hasAddBlock={true} setIsAddModalVisible={setIsAddModalVisible} />
+                <PositionTrackingMainPageWidget setIsAddModalVisible={setIsAddModalVisible} hasAddBlock={projectsList && projectsList?.length === 0} createProject={async (sku: string) => {
+                     let normilizedId: string;
+                     if (/^(|\d+)$/.test(sku)) {
+                         normilizedId = sku;
+                     } else {
+                         const startId = sku.indexOf('wildberries.ru/catalog/') + 'wildberries.ru/catalog/'.length;
+                         const endId = sku.indexOf('/detail.aspx');
+                         if (startId === -1 || endId === -1) {
+                             setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не верный формат артикула. Вставьте только числа или ссылку вида: https://www.wildberries.ru/catalog/ID/detail.aspx' });
+                             return;
+                         }
+                         normilizedId = sku.substring(startId, endId);
+                     }
+                    await createProject(authToken, normilizedId, undefined);
+                }}
+                />
 
                 {/* info bars */}
-                <div className={styles.page__barsWrapper}>
+                {projectsList?.length > 0 && <div className={styles.page__barsWrapper}>
                     <RadarBar
                         title="Активные товары"
-                        mainValue={1}
+                        mainValue={projectsList?.reduce((acc, project) => acc + project.total_products, 0) ?? 0}
                         isLoading={false}
                         actionButtonParams={{
                             text: 'Добавить новый товар к отслеживаню',
@@ -167,7 +292,7 @@ const PositionTrackingMainPage = () => {
                     />
                     <RadarBar
                         title="Проект"
-                        mainValue={1}
+                        mainValue={projectsList?.length ?? 0}
                         isLoading={false}
                         actionButtonParams={{
                             text: 'Управлять',
@@ -178,17 +303,17 @@ const PositionTrackingMainPage = () => {
                             }
                         }}
                     />
-                </div>
+                </div>}
 
                 {/* settings block */}
-                <div className={styles.page__container}>
+                {projectsList?.length > 0 && <div className={styles.page__container}>
                     <p className={styles.page__title}>Динамика</p>
                     <div className={styles.page__selectWrapper}>
                         <PlainSelect
-                            selectId='brandSelect'
+                            selectId='projectSelect'
                             label=''
                             value={0}
-                            optionsData={[{ value: 0, label: 'Все проекты' }, { value: 2, label: 'Проект 1' }]}
+                            optionsData={[{value: 0, label: 'Все проекты'}, ...projectsList?.map((project) => ({ value: project.id, label: project.name }))]}
                             handler={(value: number) => {
                                 //setActiveFilter(filtersData?.find((item) => item.dest === value) || null);
                             }}
@@ -209,17 +334,18 @@ const PositionTrackingMainPage = () => {
                             disabled={false}
                         />
                     </div>
-                </div>
+                </div>}
 
-                <div className={styles.page__chartWrapper}>
+                {projectsList?.length > 0 && <div className={styles.page__chartWrapper}>
                     <MainChart
                         title=''
                         loading={false}
                         dataDashBoard={chartMockData}
                         selectedRange={{ period: 30 }}
+                        dragHandle={null}
                     />
-                </div>
-                <div className={styles.page__tableConfig}>
+                </div>}
+                {projectsList?.length > 0 && <div className={styles.page__tableConfig}>
                     <p className={styles.page__title}>Лучшие товары</p>
                     <ConfigProvider theme={segmentedTheme}>
                         <Segmented
@@ -230,8 +356,8 @@ const PositionTrackingMainPage = () => {
                             }}
                         />
                     </ConfigProvider>
-                </div>
-                <div className={styles.page__tableWrapper}>
+                </div>}
+                {projectsList?.length > 0 && <div className={styles.page__tableWrapper}>
                     <RadarTable
                         config={positionTrackingTableConfig}
                         preset='radar-table-default'
@@ -242,7 +368,7 @@ const PositionTrackingMainPage = () => {
                             renderer: positionTrackingTableCustomCellRender,
                         }}
                     />
-                </div>
+                </div>}
 
                 <Modal
                     open={isAddModalVisible}
@@ -258,17 +384,18 @@ const PositionTrackingMainPage = () => {
                         <SearchBlock
                             style={{ padding: 0 }}
                             submitHandler={(value) => {
-                                navigate(`/position-tracking/projects`);
+                               setAddModalState({ sku: value, projectId: addModalState.projectId });
                             }}
+                            demoModeValue=''
                         />
 
                         <PlainSelect
                             selectId='brandSelect'
                             label='Проект'
-                            value={1}
+                            value={addModalState.projectId}
                             optionsData={[{ value: 1, label: 'Москва' }, { value: 2, label: 'Санкт-Петербург' }]}
                             handler={(value: number) => {
-                                //setActiveFilter(filtersData?.find((item) => item.dest === value) || null);
+                                setAddModalState({ sku: addModalState.sku, projectId: value.toString() });
                             }}
                             mode={undefined}
                             allowClear={false}
@@ -278,10 +405,14 @@ const PositionTrackingMainPage = () => {
 
                         <div className={styles.addModal__buttonsWrapper}>
                             <ConfigProvider theme={modalCancelButtonTheme}>
-                                <Button variant='outlined' onClick={() => setIsAddModalVisible(false)}>Отмена</Button>
+                                <Button variant='outlined' onClick={() => {setIsAddModalVisible(false); setAddModalState({ sku: '', projectId: '' })}}>Отмена</Button>
                             </ConfigProvider>
                             <ConfigProvider theme={modalPrimaryButtonTheme}>
-                                <Button type='primary' onClick={() => {setIsAddModalVisible(false); navigate(`/position-tracking/projects`)}}>Добавить</Button>
+                                <Button type='primary' onClick={() => {
+                                    if (!addModalState.sku || !addModalState.projectId) return;
+                                    addProductToProject(authToken, addModalState.sku, addModalState.projectId);
+                                    setIsAddModalVisible(false)
+                                }}>Добавить</Button>
                             </ConfigProvider>
                         </div>
                     </div>

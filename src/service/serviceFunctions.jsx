@@ -1996,7 +1996,7 @@ export const ServiceFunctions = {
 	getControlMetrics: async (token, metricType, filters = {}, page = 1, per_page = 50, sorting = {}) => {
 		try {
 			const requestObject = {
-				...getFiltersRequestObject(filters, { period: 30 }), 
+				...getFiltersRequestObject(filters, { period: 30 }),
 				shop: filters.activeBrand?.id,
 				sorting,
 			};
@@ -2040,87 +2040,148 @@ export interface IProductPositionData {
 }
 	 */
 	getPositionCheckProductMetaData: async (token, productId, signal, dest) => {
-			const res = await fetchApi(
-				`https://radarmarket.ru/api/web-service/position-track/meta/${productId}?dest=${dest}`,
-				{
-					method: 'GET',
-					headers: {
-						'content-type': 'application/json',
-						authorization: 'JWT ' + token,
-					},
-					signal,
-				}
-			);
-			return res;
+		const res = await fetchApi(
+			`https://radarmarket.ru/api/web-service/position-track/meta/${productId}?dest=${dest}`,
+			{
+				method: 'GET',
+				headers: {
+					'content-type': 'application/json',
+					authorization: 'JWT ' + token,
+				},
+				signal,
+			}
+		);
+		return res;
 	},
 	/*//
 	Response type for function below (getPositionCheckMainTableData)\
 	
 	export interface IQueryData {
-    query: string;
-    frequency: number;
-    total_goods: number;
-    complexity: number;
-    shows: number;
+	query: string;
+	frequency: number;
+	total_goods: number;
+	complexity: number;
+	shows: number;
 }
 
 export interface IPresetData {
-    query: string;
-    frequency: number;
-    total_goods: number;
-    complexity: number;
-    shows: number;
-    queries_data: IQueryData[];
+	query: string;
+	frequency: number;
+	total_goods: number;
+	complexity: number;
+	shows: number;
+	queries_data: IQueryData[];
 }
 
 export interface IPositionCheckMainTableData {
-    presets_count: number;
-    queries_count: number;
-    keywords: string[];
-    preset_data: IPresetData[];
+	presets_count: number;
+	queries_count: number;
+	keywords: string[];
+	preset_data: IPresetData[];
 }
 	*/
 	getPositionCheckMainTableData: async (token, requestObject, signal) => {
-			const res = await fetchApi(
-				`https://radarmarket.ru/api/web-service/position-track/get-position-track`,
-				{
-					method: 'POST',
-					headers: {
-						'content-type': 'application/json',
-						authorization: 'JWT ' + token,
-					},
-					body: JSON.stringify(requestObject),
-					signal,
-				}
-			);
-			return res;
+		const res = await fetchApi(
+			`https://radarmarket.ru/api/web-service/position-track/get-position-track`,
+			{
+				method: 'POST',
+				headers: {
+					'content-type': 'application/json',
+					authorization: 'JWT ' + token,
+				},
+				body: JSON.stringify(requestObject),
+				signal,
+			}
+		);
+		return res;
 	},
 	getSERPDataForPositionCheck: async (token, requestObject) => {
-			const res = await fetchApi(
-				`https://radarmarket.ru/api/web-service/position-track/search-map`,
-				{
-					method: 'POST',
-					headers: {
-						'content-type': 'application/json',
-						authorization: 'JWT ' + token,
-					},
-					body: JSON.stringify(requestObject),
-				}
-			);
-			return res;
+		const res = await fetchApi(
+			`https://radarmarket.ru/api/web-service/position-track/search-map`,
+			{
+				method: 'POST',
+				headers: {
+					'content-type': 'application/json',
+					authorization: 'JWT ' + token,
+				},
+				body: JSON.stringify(requestObject),
+			}
+		);
+		return res;
 	},
 	getKeywordsSelectionPageData: async (requestObject) => {
-			const res = await fetchApi(
-				`https://radarmarket.ru/api/web-service/keyword-selection/search`,
-				{
-					method: 'POST',
-					headers: {
-						'content-type': 'application/json',
-					},
-					body: JSON.stringify(requestObject),
-				}
-			);
-			return res;
+		const res = await fetchApi(
+			`https://radarmarket.ru/api/web-service/keyword-selection/search`,
+			{
+				method: 'POST',
+				headers: {
+					'content-type': 'application/json',
+				},
+				body: JSON.stringify(requestObject),
+			}
+		);
+		return res;
 	},
+	getPostionTrackingProjects: async (token) => {
+		const res = await fetchApi(`${URL}/position-track/project/get-all`, {
+			method: 'GET',
+			headers: {
+				'content-type': 'application/json',
+				authorization: 'JWT ' + token,
+			},
+		})
+		return res
+	},
+	createPostionTrackingProject: async (token, projectName) => {
+		const res = await fetchApi(`${URL}/position-track/radar-product/create`, {
+			method: 'POST',
+			headers: {
+				'content-type': 'application/json',
+				authorization: 'JWT ' + token,
+			},
+			body: JSON.stringify({
+				name: projectName,
+			}),
+		})
+		return res
+	},
+	addProductToPositionTrackingProject: async (token, projectId, productId) => {
+		const res = await fetchApi(`${URL}/position-track/radar-product/create`, {
+			method: 'POST',
+			headers: {
+				'content-type': 'application/json',
+				authorization: 'JWT ' + token,
+			},
+			body: JSON.stringify({
+				wb_id: productId,
+				project_id: projectId
+			}),
+		})
+		return res
+	},
+	deletePositionTrackingProject: async (token, projectId) => {
+		const res = await fetchApi(`${URL}/position-track/project/delete?project_id=${projectId}`, {
+			method: 'DELETE',
+			headers: {
+				'content-type': 'application/json',
+				authorization: 'JWT ' + token,
+			}
+		})
+		return res
+	},
+	updatePositionTrackingProject: async (token, projectId, projectName) => {
+		const res = await fetchApi(`${URL}/position-track/project/update`, {
+			method: 'POST',
+			headers: {
+				'content-type': 'application/json',
+				authorization: 'JWT ' + token,
+			},
+			body: JSON.stringify({
+				id: projectId,
+				name: projectName
+			}),
+		})
+		return res
+	}
 };
 
