@@ -11,7 +11,7 @@ class ErrorBoundary extends React.Component {
   constructor(props) {
     super(props);
     this.state = { hasError: false, error: null, errorInfo: null };
-    this.enabled = location.hostname !== 'test-server-pro.ru' && location.hostname !== 'localhost';
+    this.enabled = true
   }
 
   static getDerivedStateFromError(error) {

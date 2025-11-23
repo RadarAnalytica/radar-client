@@ -9,7 +9,7 @@ import { URL } from '../../service/config';
 import { useSelector, useDispatch } from 'react-redux';
 import { setDownloadLoading } from '../../redux/download/downloadSlice';
 
-const NewFilterGroup = ({pageIdent, filtersData, isLoading, getData}) => {
+const NewFilterGroup = ({ pageIdent, filtersData, isLoading, getData }) => {
     const { authToken } = useContext(AuthContext);
     const dispatch = useDispatch();
     const isDownloading = useSelector((state) => state.downloadReducer?.isDownloading);
@@ -46,7 +46,7 @@ const NewFilterGroup = ({pageIdent, filtersData, isLoading, getData}) => {
 
         filterData();
 
-      }, [pageIdent, authToken, setFilters, setWeekOriginFilter, filtersData]);
+    }, [pageIdent, authToken, setFilters, setWeekOriginFilter, filtersData]);
 
     useEffect(() => {
         getData();
@@ -89,32 +89,32 @@ const NewFilterGroup = ({pageIdent, filtersData, isLoading, getData}) => {
     const handleDownload = async () => {
         dispatch(setDownloadLoading(true));
         fetch(
-          `${URL}/api/report/download`,
-          {
-            method: 'POST',
-            headers: {
-              authorization: 'JWT ' + authToken,
-            },
-            // body: JSON.stringify(filters)
-          }
+            `${URL}/api/report/download`,
+            {
+                method: 'POST',
+                headers: {
+                    authorization: 'JWT ' + authToken,
+                },
+                // body: JSON.stringify(filters)
+            }
         )
-          .then((response) => {
-            return response.blob();
-          })
-          .then((blob) => {
-            const url = window.URL.createObjectURL(new Blob([blob]));
-            const link = document.createElement('a');
-            link.href = url;
-            link.setAttribute('download', `Финансовый отчет.xlsx`);
-            document.body.appendChild(link);
-            link.click();
-            link.parentNode.removeChild(link);
-          })
-          .catch((e) => console.error(e))
-          .finally(() => {
-            dispatch(setDownloadLoading(false));
-          });
-      };
+            .then((response) => {
+                return response.blob();
+            })
+            .then((blob) => {
+                const url = window.URL.createObjectURL(new Blob([blob]));
+                const link = document.createElement('a');
+                link.href = url;
+                link.setAttribute('download', `Финансовый отчет.xlsx`);
+                document.body.appendChild(link);
+                link.click();
+                link.parentNode.removeChild(link);
+            })
+            .catch((e) => console.error(e))
+            .finally(() => {
+                dispatch(setDownloadLoading(false));
+            });
+    };
 
     // const getFiltersByLocalStorage = () => {
     //     const resultFilters = {}
@@ -139,46 +139,45 @@ const NewFilterGroup = ({pageIdent, filtersData, isLoading, getData}) => {
     return (
 
         <div className={styles.filterContainer}>
-            <div className="dash-container p-3 pb-2 pt-3 d-flex">
+            {!isCollapsed && (
+                <>
+                    <div className={styles.filterGrid}>
+                        {filters.map((elem) => {
+                            return (
+                                <FilterElem
+                                    key={elem.filterIdent}
+                                    title={elem.title}
+                                    pageIdent={pageIdent}
+                                    filterIdent={elem.filterIdent}
+                                    items={elem.items}
+                                    isLoading={isLoading}
+                                    widthData={elem.width}
+                                    changeWeekFilter={changeWeekFilters}
+                                />
+                            );
+                        })}
+                    </div>
+                </>
+            )}
+            <div className={styles.filterControls} style={{ marginTop: !isCollapsed ? '20px' : '0' }}>
                 <button
                     className={styles.collapseButton}
                     onClick={() => setIsCollapsed(!isCollapsed)}
                 >
                     {!isCollapsed ? 'Свернуть фильтры' : 'Развернуть фильтры'}
                 </button>
-                <DownloadButton handleDownload={handleDownload} loading={isDownloading}/>
+                <div className={styles.filterControlsWrapper}>
+                    {!isCollapsed && (
+                        <button
+                        className={styles.applyButton}
+                            onClick={() => getData()}
+                        >
+                            Применить фильтры
+                        </button>
+                    )}
+                    <DownloadButton handleDownload={handleDownload} loading={isDownloading} />
+                </div>
             </div>
-
-            {!isCollapsed && (
-                <>
-                  <div className={styles.filterGrid}>
-                    {filters.map((elem) => {
-                        return (
-                            <FilterElem
-                                key={elem.filterIdent}
-                                title={elem.title}
-                                pageIdent={pageIdent}
-                                filterIdent={elem.filterIdent}
-                                items={elem.items}
-                                isLoading={isLoading}
-                                widthData={elem.width}
-                                changeWeekFilter={changeWeekFilters}
-                            />
-                        );
-                    })}
-                  </div>
-                  <div className='container dash-container'>
-                        <div>
-                            <button
-                                className={styles.applyButton}
-                                onClick={() => getData()}
-                            >
-                                Применить фильтры
-                            </button>
-                        </div>
-                  </div>
-                </>
-            )}
         </div>
     );
 };

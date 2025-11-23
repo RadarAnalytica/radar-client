@@ -185,7 +185,7 @@ const FilterElem = ({title, pageIdent, filterIdent, items, isLoading, widthData,
   return (
       <div
         className={styles.filterGroup}
-        style={{width: widthData ? widthData : '220px'}}
+        // style={{width: widthData ? widthData : '220px'}}
       >
         <div className={styles.filterHeader}>
           <h3>{title}</h3>

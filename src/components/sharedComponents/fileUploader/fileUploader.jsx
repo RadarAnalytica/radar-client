@@ -674,7 +674,7 @@ const FileUploader = ({ setShow, setError, getListOfReports }) => {
 
                 {/* кнопки управления */}
                 {fileList?.length > 10 &&
-                    <div className={`${styles.fileList__statusBlock} ${styles.fileList__statusBlock_error}`} style={{ marginLeft: 16, marginBottom: 16, fontSize: 16, overflow: 'hidden' }}>
+                    <div className={`${styles.fileList__statusBlock} ${styles.fileList__statusBlock_error}`} style={{ marginLeft: 16, marginBottom: 16, fontSize: 12, overflow: 'hidden' }}>
                         {'Превышен лимит: вы можете загрузить не более 10 файлов одновременно.'}
                     </div>
                 }
