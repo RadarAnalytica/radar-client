@@ -111,22 +111,26 @@ const MyAdvTable: React.FC<MyAdvTableProps> = ({
   const customCellRender = (value: unknown, record: CompanyData, index: number, dataIndex: string) => {
     // Рендер для компании (кликабельная)
     if (dataIndex === 'company_name') {
-      const imageSize = { width: 30, height: 40 };
-      const companyName = String(value ?? '');
+      // const imageSize = { width: 30, height: 40 };
+      const isDateCell = Boolean(record.date);
       return (
-        <div 
-          className={styles.companyCell}
-          onClick={() => handleCompanyClick(record.company_id)}
-          style={{ cursor: 'pointer' }}
-        >
-          {/* {record.company_photo 
-            ? <img src={record.company_photo} alt={companyName} {...imageSize} className={styles.companyImage} />
-            : <div className={styles.companyImage} style={imageSize} />
-          } */}
-          <span className={styles.companyName}>
-            {companyName}
-          </span>
-        </div>
+        isDateCell 
+          ? <div className={styles.cellDate}>{value}</div>
+          : (
+            <div 
+              className={styles.companyCell}
+              onClick={() => handleCompanyClick(record.company_id)}
+              style={{ cursor: 'pointer' }}
+            >
+              {/* {record.company_photo 
+                ? <img src={record.company_photo} alt={companyName} {...imageSize} className={styles.companyImage} />
+                : <div className={styles.companyImage} style={imageSize} />
+              } */}
+              <span className={styles.companyName}>
+                {value}
+              </span>
+            </div>
+          )
       );
     }
 

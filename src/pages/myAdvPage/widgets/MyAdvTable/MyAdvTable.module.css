@@ -7,59 +7,6 @@
   padding-bottom: 20px;
 }
 
-.tableContainerHeader {
-  display: flex;
-  position: sticky;
-  z-index: 2;
-  top: 0;
-  background-color: white;
-  width: max-content;
-  min-width: 100%;
-  max-width: fit-content;
-
-  .tableContainerHeaderItem {
-    position: sticky;
-    top: 0;
-    background-color: white;
-    flex-shrink: 0;
-
-    h2 {
-      font-weight: 600;
-      font-size: 18px;
-      line-height: 100%;
-      letter-spacing: 0%;
-      margin: 0;
-      padding: 8px;
-    }
-  }
-
-  .tableContainerHeaderFirst {
-    min-width: 484px;
-    left: 0;
-    z-index: 3;
-  }
-
-  .tableContainerHeaderSecond {
-    min-width: 1770px;
-    left: 484px;
-    z-index: 2;
-    border-left: 1px solid #E8E8E8;
-  }
-
-  .tableContainerHeaderThird {
-    min-width: 660px;
-    left: 484px;
-    z-index: 2;
-    border-left: 1px solid #E8E8E8;
-  }
-
-  .stickyFixer {
-    min-width: 1300px;
-    left: 2320px;
-    z-index: 1;
-  }
-}
-
 .tableControls {
   display: flex;
   justify-content: space-between;
@@ -123,6 +70,21 @@
   display: flex;
   align-items: flex-end;
   justify-content: flex-end;
+}
+
+:global(.myAdvTableGroupCell), :global(.radar-table__header-cell[data-column-key="m03"]) {
+  border-left: 1px solid #E8E8E8;
+}
+
+:global(.radar-table__body-cell-wrapper) {
+  justify-content: flex-start !important;
+}
+
+.cellDate {
+  font-weight: 500;
+  font-size: 14px;
+  color: #1A1A1A;
+  padding-left: 30px;
 }
 
 .labelCell {

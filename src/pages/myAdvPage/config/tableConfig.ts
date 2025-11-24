@@ -62,7 +62,7 @@ export const getDefaultTableConfig = (): ColumnConfig[] => {
       children: [
           {title: 'Просмотры', dataIndex: 'views', sortable: true, fixed: false, width: 120},
           {title: 'Клики', dataIndex: 'clicks', sortable: true, fixed: false, width: 120},
-          {title: 'CPC', dataIndex: 'cpc', sortable: true, fixed: false, width: 120},
+          {title: 'CPC', dataIndex: 'cpc', sortable: true, fixed: false, width: 120}, 
           {title: 'CPM', dataIndex: 'avg_cpm', sortable: true, fixed: false, width: 120},
           {title: 'Средняя позиция', dataIndex: 'avg_position', sortable: true, fixed: false, width: 120},
           {title: 'ДРР заказы', dataIndex: 'drr_orders', sortable: true, fixed: false, width: 120},
@@ -72,9 +72,9 @@ export const getDefaultTableConfig = (): ColumnConfig[] => {
           {title: 'Заказов на сумму', dataIndex: 'orders_amount', sortable: true, fixed: false, width: 120},
           {title: 'Прогноз выкуп на сумму', dataIndex: 'expected_purchase_amount', sortable: true, fixed: false, width: 120},
           {title: 'Расходы на рекламу', dataIndex: 'ad_spend', sortable: true, fixed: false, width: 120},
-      ].map(_ => ({ ..._, render: _.render?.bind(_), key: _.dataIndex, minWidth: _.width, hidden: false, canToggle: !_.fixed }))
+      ].map(_ => ({ ..._, render: _.render?.bind(_), key: _.dataIndex, minWidth: _.width, hidden: false, canToggle: !_.fixed, className: 'myAdvTableGroupCell' }))
     },
-  ].map(_ => ({ ..._, colSpan: _?.children?.length || 1, className: 'myAdvTableGroupCell' }));
+  ].map(_ => ({ ..._, colSpan: _?.children?.length || 1 }));
 
   return columns;
 };

@@ -25,6 +25,7 @@ import { useAppSelector } from '@/redux/hooks';
 import { ServiceFunctions, getRequestObject } from '@/service/serviceFunctions';
 import AuthContext from '@/service/AuthContext';
 import { format } from 'date-fns';
+import { ru } from 'date-fns/locale';
 
 const CompanyAdvPage: React.FC = () => {
   const { companyId } = useParams<{ companyId: string }>();
@@ -51,7 +52,7 @@ const CompanyAdvPage: React.FC = () => {
       isParent: true,
       children: data?.date_data?.map(item => ({
         ...item,
-        company_name: format(item.date, 'dd.MM.yyyy'),
+        company_name: format(item.date, "d MMMM yyyy", { locale: ru }),
         ...item.advert_funnel,
         ...item.advert_statistics,
       })) || [],

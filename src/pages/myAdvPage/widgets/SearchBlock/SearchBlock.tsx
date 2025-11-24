@@ -23,14 +23,14 @@ const SearchBlock: React.FC<SearchBlockProps> = ({ onSearch, loading = false }) 
   const searchSubmitHandler = (e?: React.KeyboardEvent | React.MouseEvent) => {
     if (e && 'key' in e && e.key && e.key !== 'Enter') return;
     
-    if (!inputValue.trim()) {
-      setRequestStatus({ 
-        ...requestInitState, 
-        isError: true, 
-        message: 'Введите поисковый запрос' 
-      });
-      return;
-    }
+    // if (!inputValue.trim()) {
+    //   setRequestStatus({ 
+    //     ...requestInitState, 
+    //     isError: true, 
+    //     message: 'Введите поисковый запрос' 
+    //   });
+    //   return;
+    // }
 
     // Вызываем callback с запросом
     onSearch(inputValue.trim());
