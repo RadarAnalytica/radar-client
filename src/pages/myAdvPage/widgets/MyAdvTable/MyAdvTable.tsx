@@ -31,7 +31,7 @@ const MyAdvTable: React.FC<MyAdvTableProps> = ({
   sortState,
   setSortState,
   tableConfig,
-  setTableConfig
+  setTableConfig,
 }) => {
   const tableContainerRef = useRef(null);
   const navigate = useNavigate();
@@ -132,7 +132,7 @@ const MyAdvTable: React.FC<MyAdvTableProps> = ({
 
     if (dataIndex === 'company_status' && value) {
       const statusValue = String(value ?? '');
-      const badgeColor = statusValue === 'Запущена' ? '#4AD99133' : '#F0AD0033';
+      const badgeColor = statusValue === 'Активна' ? '#4AD99133' : statusValue === 'Завершена' ? '#FF8D8D33' : '#F0AD0033';
       return (
         <span 
           className={`${styles.labelCell} ${styles.badgeCell}`} 
@@ -268,21 +268,6 @@ const MyAdvTable: React.FC<MyAdvTableProps> = ({
     localStorage.setItem('MY_ADV_EXPANDED_TABLE_ROWS_STATE', JSON.stringify({ keys: stringKeys }));
   };
 
-  const prepareTableData = (data: CompanyData[]) => {
-    if (!Array.isArray(data)) return [];
-
-    return data.map(item => ({
-      id: item.id,
-      key: item.id,
-      isParent: true,
-      ...item,
-      children: item.date_data.map((child, index) => ({
-        ...child,
-        isLastChild: index === item.date_data.length - 1,
-      })),
-    }));
-  };
-
   return (
     <div className={styles.table}>
       <div className={styles.tableControls}>
@@ -309,9 +294,8 @@ const MyAdvTable: React.FC<MyAdvTableProps> = ({
         <div className={styles.tableWrapper} ref={tableContainerRef}>
           {tableData && tableData.length > 0 && tableConfig &&
             <RadarTable
-              rowKey={(record) => String(record.company_id)}
-              config={getDefaultTableConfig()}
-              dataSource={prepareTableData(tableData)}
+              config={tableConfig}
+              dataSource={data}
               preset="radar-table-simple"
               scrollContainerRef={tableContainerRef}
               stickyHeader
@@ -352,52 +336,6 @@ const MyAdvTable: React.FC<MyAdvTableProps> = ({
                 height: '50px',
               }}
               style={{ width: 'max-content', tableLayout: 'fixed' }}
-            />
-          }
-          {tableData && tableData.length === 0 && tableConfig &&
-            <RadarTable
-              rowKey={(record) => String(record.company_id)}
-              config={getDefaultTableConfig()}
-              dataSource={prepareTableData(tableData)}
-              preset="radar-table-simple"
-              scrollContainerRef={tableContainerRef}
-              stickyHeader
-              resizeable
-              onResize={onResizeGroup}
-              onSort={handleSort}
-              pagination={pageData.total_count <= pageData.per_page ? null : {
-                current: pageData.page,
-                pageSize: pageData.per_page,
-                total: Math.ceil(pageData.total_count / pageData.per_page),
-                onChange: handlePageChange,
-                showQuickJumper: true,
-              }}
-              treeMode
-              indentSize={45}
-              expandedRowKeys={expandedRowKeys}
-              onExpandedRowsChange={(keys: React.Key[]) => handleExpandedRowsChange(keys)}
-              paginationContainerStyle={{
-                bottom: 0
-              }}
-              sorting={{ sort_field: sortState?.sort_field, sort_order: sortState?.sort_order }}
-              customCellRender={{
-                idx: [],
-                renderer: customCellRender,
-              }}
-              headerCellWrapperStyle={{
-                minHeight: '0px',
-                padding: '12px 10px',
-                fontSize: 'inherit',
-              }}
-              bodyCellWrapperStyle={{
-                padding: '5px 10px',
-                border: 'none',
-              }}
-              bodyCellStyle={{
-                borderBottom: '1px solid #E8E8E8',
-                height: '50px',
-              }}
-              style={{ fontFamily: 'Mulish', width: 'max-content', tableLayout: 'fixed' }}
             />
           }
         </div>

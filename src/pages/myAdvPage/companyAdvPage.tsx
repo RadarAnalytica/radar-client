@@ -24,6 +24,7 @@ import { Link } from 'react-router-dom';
 import { useAppSelector } from '@/redux/hooks';
 import { ServiceFunctions, getRequestObject } from '@/service/serviceFunctions';
 import AuthContext from '@/service/AuthContext';
+import { format } from 'date-fns';
 
 const CompanyAdvPage: React.FC = () => {
   const { companyId } = useParams<{ companyId: string }>();
@@ -42,36 +43,32 @@ const CompanyAdvPage: React.FC = () => {
 
   const progress = useLoadingProgress({ loading });
 
-  const transformData = (data: CompanyData) => {
+  const prepareTableData = (data: CompanyData) => {
     const result = [{
       ...data,
-      ...data.summary_data,
+      ...data?.summary_data?.advert_funnel,
+      ...data?.summary_data?.advert_statistics,
       isParent: true,
-      children: data.date_data.map(item => ({
+      children: data?.date_data?.map(item => ({
         ...item,
-        company_name: item.date,
-      })),
+        company_name: format(item.date, 'dd.MM.yyyy'),
+        ...item.advert_funnel,
+        ...item.advert_statistics,
+      })) || [],
     }];
-
-    // data.date_data.forEach(item => {
-    //   result.push({
-    //     ...item,
-    //     company_name: item.date,
-    //   });
-    // });
 
     return result;
   };
 
-  const loadData = async (id) => {
+  const loadData = async () => {
     setLoading(true);
     progress.start();
     try {
       const requestObject = getRequestObject({}, selectedRange);
-      const response = await ServiceFunctions.getAdvertDataById(authToken, id, requestObject);
-      const transformedData = transformData(response);
+      const response = await ServiceFunctions.getAdvertDataById(authToken, companyId, requestObject);
+      const preparedData = prepareTableData(response);
       setData(response);
-      setTableData(transformedData);
+      setTableData(preparedData);
       setPageData({ page: 1, per_page: 50, total_count: 1 });
       progress.complete();
       await setTimeout(() => {
@@ -96,24 +93,8 @@ const CompanyAdvPage: React.FC = () => {
   // Загрузка данных компании
   useEffect(() => {
     if (companyId) {
-      loadData(companyId);
+      loadData();
     }
-    // setLoading(true);
-    // progress.start();
-    // // Имитация загрузки данных
-    // setTimeout(() => {
-    //   const company = mockCompaniesData.find(c => c.id === Number(companyId));
-    //   if (company) {
-    //     setData(company);
-    //     setTableData([company]);
-    //     setPageData({ page: 1, per_page: 50, total_count: 1 });
-    //   }
-    //   progress.complete();
-    //   setTimeout(() => {
-    //     setLoading(false);
-    //     progress.reset();
-    //   }, 500);
-    // }, 500);
   }, [companyId]);
 
   // Обработчик изменения конфигурации таблицы
@@ -121,20 +102,6 @@ const CompanyAdvPage: React.FC = () => {
     setTableConfig(newConfig);
     saveTableConfig(newConfig);
   };
-
-  if (!data) {
-    return (
-      <main className={styles.page}>
-        <MobilePlug />
-        <section className={styles.page__sideNavWrapper}>
-          <Sidebar />
-        </section>
-        <section className={styles.page__content}>
-          <NoData />
-        </section>
-      </main>
-    );
-  }
 
   return (
     <main className={styles.page}>
@@ -147,7 +114,7 @@ const CompanyAdvPage: React.FC = () => {
       <section className={styles.page__content}>
         <div className={styles.page__headerWrapper}>
           <Header 
-            title={<h2 className={styles.page__headerTitle}><Link to='/my-adv'>Моя реклама</Link> / <span>{data.company}</span></h2>}
+            title={<h2 className={styles.page__headerTitle}><Link to='/my-adv'>Моя реклама</Link> / <span>{data?.company_name}</span></h2>}
             titlePrefix=""
             children=""
             videoReviewLink=""
@@ -158,7 +125,7 @@ const CompanyAdvPage: React.FC = () => {
 
         {isDemoMode && <NoSubscriptionWarningBlock />}
 
-        <BarsGroup loading={loading} />
+        <BarsGroup data={tableData ? tableData[0] : null} loadData={loadData} loading={loading} />
 
         {loading && (
           <div className={styles.loader__container}>
@@ -180,7 +147,7 @@ const CompanyAdvPage: React.FC = () => {
               setTableConfig={handleTableConfigChange}
             />
 
-            <StatisticsChart data={data} loading={loading} />
+            <StatisticsChart data={tableData ? tableData[0] : null} loading={loading} />
           </>
         )}
       </section>

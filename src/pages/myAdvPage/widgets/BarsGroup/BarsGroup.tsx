@@ -1,28 +1,17 @@
 import React, { useState } from 'react';
 import { RadarBar } from '@/shared';
 import styles from './BarsGroup.module.css';
-import image1 from './assets/1.jpg';
-import image2 from './assets/2.jpg';
-import image3 from './assets/3.jpg';
-import image4 from './assets/4.jpg';
-import image5 from './assets/5.jpg';
+import { CompanyData } from '../../data/mockData';
 
 interface BarsGroupProps {
+  data: CompanyData;
+  loadData: () => void;
   loading?: boolean;
 }
 
-const BarsGroup: React.FC<BarsGroupProps> = ({ loading = false }) => {
-  const [images, setImages] = useState([image1, image2, image3, image4, image5]);
-  const [currentImage, setCurrentImage] = useState(image1);
-  
-  const handleRefresh = () => {
-    // TODO: Implement refresh logic
-    console.log('Refresh clicked');
-  };
-
+const BarsGroup: React.FC<BarsGroupProps> = ({ data = {}, loadData, loading = false }) => {
   return (
     <div className={styles.barsGroup}>
-      {/* 1 bar - Full width with campaign info, budget, and refresh button */}
       <div className={styles.fullWidthBar}>
         <div className={styles.campaignBar}>
           <div className={styles.campaignBar__left}>
@@ -30,24 +19,24 @@ const BarsGroup: React.FC<BarsGroupProps> = ({ loading = false }) => {
               Кампания
             </div>
             <div className={styles.campaignBar__left__content}>
-              <div className={`${styles.campaignBar__badge} ${styles.campaignBar__status}`}>Запущена</div>
-              <div className={`${styles.campaignBar__badge} ${styles.campaignBar__type}`}>Ручная</div>
+              <div className={`${styles.campaignBar__badge} ${styles.campaignBar__status}`}>{data.company_status}</div>
+              <div className={`${styles.campaignBar__badge} ${styles.campaignBar__type}`}>{data.company_type}</div>
               <div className={styles.campaignBar__created}>
                 <span className={styles.campaignBar__label}>Создана:</span>
-                <span className={styles.campaignBar__value}>01.01.2024</span>
+                <span className={styles.campaignBar__value}>{data.company_start_date}</span>
               </div>
               <div className={styles.campaignBar__id}>
                 <span className={styles.campaignBar__label}>ID на WB</span>
-                <span className={styles.campaignBar__value}><a href="https://www.wildberries.ru/catalog/123456/detail.aspx" target="_blank">123456</a></span>
+                <span className={styles.campaignBar__value}><a href={`https://www.wildberries.ru/catalog/${data.company_id}/detail.aspx`} target="_blank">{data.company_id}</a></span>
               </div>
             </div>
           </div>
           <div className={styles.campaignBar__right}>
             <div className={styles.campaignBar__budget}>
               <span className={styles.campaignBar__budget__label}>Бюджет</span>
-              <span className={styles.campaignBar__budget__value}>1000₽</span>
+              <span className={styles.campaignBar__budget__value}>{data.avg_cpm} ₽</span>
             </div>
-            <button className={styles.refreshButton} onClick={handleRefresh}>
+            <button className={styles.refreshButton} onClick={loadData}>
               Обновить
             </button>
           </div>
@@ -58,50 +47,50 @@ const BarsGroup: React.FC<BarsGroupProps> = ({ loading = false }) => {
       <div className={styles.metricsGrid}>
         <RadarBar
           title="Просмотры"
-          mainValue={10000}
+          mainValue={data.views}
           mainValueUnits=""
           isLoading={loading}
         />
         <RadarBar
           title="Клики"
-          mainValue={100}
+          mainValue={data.clicks}
           mainValueUnits=""
           isLoading={loading}
         />
         <RadarBar
           title="CTR"
-          mainValue={10}
+          mainValue={data.clicks}
           mainValueUnits="%"
           isLoading={loading}
         />
         <RadarBar
           title="CPC"
-          mainValue={10}
+          mainValue={data.cpc}
           mainValueUnits="%"
           isLoading={loading}
         />
         <RadarBar
           title="Расходы"
-          mainValue={1000}
+          mainValue={data.ad_spend}
           mainValueUnits="₽"
           isLoading={loading}
         />
         <RadarBar
           title="Корзина"
-          mainValue={10}
+          mainValue={data.cart}
           mainValueUnits="шт"
           isLoading={loading}
         />
         <RadarBar
           title="Заказы"
-          mainValue={10}
+          mainValue={data.orders}
           mainValueUnits="шт"
           isLoading={loading}
         />
         <RadarBar
           title="ДРР заказы"
           mainValuePrefix=">"
-          mainValue={100}
+          mainValue={data.drr_orders}
           mainValueUnits="%"
           isLoading={loading}
         />

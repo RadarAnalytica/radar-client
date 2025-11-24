@@ -70,6 +70,18 @@ const SearchBlock: React.FC<SearchBlockProps> = ({ onSearch, loading = false }) 
             onKeyDown={(e) => { searchSubmitHandler(e); }}
             className={styles.search__input}
             disabled={loading}
+            suffix={
+              <button
+                  onClick={() => setInputValue('')}
+                  className={`clear-input-button ${inputValue ? 'd-flex' : 'd-none'}`}
+                  type="button"
+                  aria-label="Очистить"
+              >
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M13 1L1 13M1 1L13 13" stroke="#999999" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </button>
+            }
           />
           <Button
             size='large'

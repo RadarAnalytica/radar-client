@@ -1,5 +1,5 @@
 .tableContainer {
-  padding: 8px;
+  padding: 0 8px 8px;
   background-color: white;
   border-radius: 12px;
   display: flex;
@@ -145,6 +145,30 @@
   line-height: 160%;
   color: #1A1A1A;
   text-align: center;
+}
+
+:global(.radar-table__header) {
+  tr:first-child {
+    th {
+      padding-top: 8px;
+
+      span {
+        font-weight: 600;
+        font-size: 18px;
+        color: #1A1A1A;
+      }
+    }
+  }
+}
+
+:global(.radar-table__body-row--child) {
+  td {
+    height: 40px !important;
+
+    & > div {
+      height: 40px !important;
+    }
+  }
 }
 
 :global(.radar-table__body-cell:has(.viewsCell)), 

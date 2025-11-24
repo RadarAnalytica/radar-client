@@ -39,7 +39,7 @@ export interface ApiCompanyData {
 
 export interface ApiResponse {
   data: ApiCompanyData[];
-  total_count?: number;
+  total?: number;
   page?: number;
   per_page?: number;
 }

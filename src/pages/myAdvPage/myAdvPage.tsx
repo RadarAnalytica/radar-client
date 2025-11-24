@@ -17,7 +17,7 @@ import {
   mergeTableConfig,
   type ColumnConfig 
 } from './config/tableConfig';
-import { mockCompaniesData, CompanyData, transformApiDataToCompanyData, ApiResponse } from './data/mockData';
+import { mockCompaniesData, CompanyData, ApiResponse } from './data/mockData';
 import styles from './myAdvPage.module.css';
 import AuthContext from '@/service/AuthContext';
 import { ServiceFunctions, getRequestObject } from '@/service/serviceFunctions';
@@ -32,11 +32,21 @@ const MyAdvPage: React.FC = () => {
     sort_order: undefined 
   });
   const [data, setData] = useState<CompanyData[]>(mockCompaniesData);
-  const [pageData, setPageData] = useState({ page: 1, per_page: 50, total_count: mockCompaniesData.length });
+  const [pageData, setPageData] = useState({ page: 1, per_page: 25, total_count: 25 });
   const [searchQuery, setSearchQuery] = useState<string>('');
   const { selectedRange, activeBrand } = useAppSelector((state) => state.filters);
   
   const progress = useLoadingProgress({ loading });
+
+  const prepareTableData = (data: CompanyData[]) => {
+    const result = data.map(item => ({
+      ...item,
+      ...item.advert_funnel,
+      ...item.advert_statistics,
+    }));
+
+    return result;
+  };
 
   const loadData = async () => {
     setLoading(true);
@@ -44,10 +54,10 @@ const MyAdvPage: React.FC = () => {
     try {
       const requestObject = getRequestObject({...pageData, search_query: searchQuery}, selectedRange);
       const response: ApiResponse = await ServiceFunctions.getAdvertData(authToken, requestObject);
-      if (response.total_count) {
-        setPageData({ ...pageData, total_count: response.total_count });
+      if (response.total) {
+        setPageData(prev => ({ ...prev, total_count: response.total }));
       }
-      setData(response.data.slice(0, 50) || []);
+      setData(prepareTableData(response.data || []));
       progress.complete();
       await setTimeout(() => {
         setLoading(false);
@@ -77,7 +87,7 @@ const MyAdvPage: React.FC = () => {
         setLoading(false);
       }
     }
-  }, [searchQuery, selectedRange, activeBrand]);
+  }, [searchQuery, selectedRange, activeBrand, pageData.page]);
 
   // Обработчик поиска
   const handleSearch = (query: string) => {

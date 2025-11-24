@@ -32,7 +32,7 @@ export const getDefaultTableConfig = (): ColumnConfig[] => {
           {title: 'Компания', dataIndex: 'company_name', sortable: true, fixed: true, width: 240},
           {title: 'Статус WB', dataIndex: 'company_status', sortable: true, fixed: true, width: 100},
           {title: 'Тип компании', dataIndex: 'company_type', sortable: true, fixed: true, width: 100},
-      ].map(_ => ({ ..._, key: _.dataIndex, minWidth: _.width }))
+      ].map(_ => ({ ..._, key: _.dataIndex, minWidth: _.width, hidden: false, canToggle: !_.fixed }))
     },
     {
       title: 'Рекламная воронка',
@@ -45,13 +45,13 @@ export const getDefaultTableConfig = (): ColumnConfig[] => {
           {title: 'Заказы', dataIndex: 'orders', sortable: true, fixed: false, width: 120},
           {title: 'Заказано, шт', dataIndex: 'order_item_count', units: 'шт', sortable: true, fixed: false, width: 120},
           {title: 'Прогноз выкуп, шт', dataIndex: 'expected_purchase', units: 'шт', sortable: true, fixed: false, width: 200},
-          {title: 'Просмотры -> Клик (CTR)', dataIndex: 'view_click', sortable: true, fixed: false, width: 120},
-          {title: 'Клик -> Корзина', dataIndex: 'click_cart', sortable: true, fixed: false, width: 120},
-          {title: 'Корзина -> Заказ', dataIndex: 'cart_order', sortable: true, fixed: false, width: 120},
-          {title: 'Просмотр -> Заказ', dataIndex: 'view_order', sortable: true, fixed: false, width: 120},
-          {title: 'Прогноз Заказ -> Выкуп', dataIndex: 'expected_order_purchase', sortable: true, fixed: false, width: 120},
-          {title: 'Прогноз Клик -> Выкуп', dataIndex: 'expected_click_purchase', sortable: true, fixed: false, width: 120},
-      ].map(_ => ({ ..._, render: _.render?.bind(_), key: _.dataIndex, minWidth: _.width }))
+          {title: 'Просмотры → Клик (CTR)', dataIndex: 'view_click', sortable: true, fixed: false, width: 120},
+          {title: 'Клик → Корзина', dataIndex: 'click_cart', sortable: true, fixed: false, width: 120},
+          {title: 'Корзина → Заказ', dataIndex: 'cart_order', sortable: true, fixed: false, width: 120},
+          {title: 'Просмотр → Заказ', dataIndex: 'view_order', sortable: true, fixed: false, width: 120},
+          {title: 'Прогноз Заказ → Выкуп', dataIndex: 'expected_order_purchase', sortable: true, fixed: false, width: 120},
+          {title: 'Прогноз Клик → Выкуп', dataIndex: 'expected_click_purchase', sortable: true, fixed: false, width: 120},
+      ].map(_ => ({ ..._, render: _.render?.bind(_), key: _.dataIndex, minWidth: _.width, hidden: false, canToggle: !_.fixed }))
     },
     {
       title: 'Рекламная статистика',
@@ -72,7 +72,7 @@ export const getDefaultTableConfig = (): ColumnConfig[] => {
           {title: 'Заказов на сумму', dataIndex: 'orders_amount', sortable: true, fixed: false, width: 120},
           {title: 'Прогноз выкуп на сумму', dataIndex: 'expected_purchase_amount', sortable: true, fixed: false, width: 120},
           {title: 'Расходы на рекламу', dataIndex: 'ad_spend', sortable: true, fixed: false, width: 120},
-      ].map(_ => ({ ..._, render: _.render?.bind(_), key: _.dataIndex, minWidth: _.width }))
+      ].map(_ => ({ ..._, render: _.render?.bind(_), key: _.dataIndex, minWidth: _.width, hidden: false, canToggle: !_.fixed }))
     },
   ].map(_ => ({ ..._, colSpan: _?.children?.length || 1, className: 'myAdvTableGroupCell' }));
 

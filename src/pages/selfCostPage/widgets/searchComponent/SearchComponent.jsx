@@ -56,7 +56,7 @@ const SearchComponent = ({ searchInputValue, setSearchInputValue, handleSearch, 
                         suffix={
                             <button
                                 onClick={clearInputHandler}
-                                className={`${styles.clearButton} ${searchInputValue ? 'd-flex' : 'd-none'}`}
+                                className={`clear-input-button ${searchInputValue ? 'd-flex' : 'd-none'}`}
                                 type="button"
                                 aria-label="Очистить"
                             >

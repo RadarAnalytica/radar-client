@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Button, ConfigProvider, Modal, Form, Checkbox } from 'antd';
 import { ColumnConfig } from '../../config/tableConfig';
 import styles from './TableSettingsWidget.module.css';
@@ -6,6 +6,11 @@ import styles from './TableSettingsWidget.module.css';
 interface TableSettingsWidgetProps {
   tableConfig: ColumnConfig[];
   setTableConfig: (config: ColumnConfig[]) => void;
+}
+
+// Расширенный интерфейс для колонок с children
+interface ExtendedColumnConfig extends ColumnConfig {
+  children?: ExtendedColumnConfig[];
 }
 
 const TableSettingsWidget: React.FC<TableSettingsWidgetProps> = ({
@@ -16,22 +21,53 @@ const TableSettingsWidget: React.FC<TableSettingsWidgetProps> = ({
   const [isAllButtonState, setIsAllButtonState] = useState(false);
   const [form] = Form.useForm();
 
-  // Фильтруем только колонки, которые можно переключать
-  const toggleableColumns = tableConfig.filter(col => col.canToggle);
+  // Собираем все колонки из children всех групп и фильтруем только те, которые можно переключать
+  const toggleableColumns = useMemo(() => {
+    const collectColumns = (cols: ExtendedColumnConfig[]): ExtendedColumnConfig[] => {
+      const result: ExtendedColumnConfig[] = [];
+      cols.forEach(col => {
+        if (col.children && col.children.length > 0) {
+          // Если есть children, рекурсивно собираем их
+          result.push(...collectColumns(col.children));
+        } else {
+          // Если это листовая колонка, добавляем её
+          result.push(col);
+        }
+      });
+      return result;
+    };
+
+    const allColumns = collectColumns(tableConfig as ExtendedColumnConfig[]);
+    // Фильтруем только колонки, которые можно переключать (не fixed и имеют canToggle или не fixed)
+    return allColumns.filter(col => !col.fixed && (col.canToggle !== false));
+  }, [tableConfig]);
 
   const handleSubmit = (values: any) => {
-    // Обновляем конфигурацию таблицы, изменяя только переключаемые колонки
-    const updatedConfig = tableConfig.map(col => {
-      if (col.canToggle) {
-        return {
-          ...col,
-          hidden: !values[col.dataIndex]
-        };
-      }
-      return col;
-    });
-    
-    setTableConfig(updatedConfig);
+    // Обновляем конфигурацию таблицы, изменяя только переключаемые колонки в children
+    const updateConfig = (cols: ExtendedColumnConfig[]): ExtendedColumnConfig[] => {
+      return cols.map(col => {
+        if (col.children && col.children.length > 0) {
+          // Если есть children, рекурсивно обновляем их
+          const updatedChildren = updateConfig(col.children);
+          return {
+            ...col,
+            children: updatedChildren
+          };
+        } else {
+          // Если это листовая колонка и она переключаемая, обновляем hidden
+          if (!col.fixed && (col.canToggle !== false) && col.dataIndex in values) {
+            return {
+              ...col,
+              hidden: !values[col.dataIndex]
+            };
+          }
+          return col;
+        }
+      });
+    };
+
+    const updatedConfig = updateConfig(tableConfig as ExtendedColumnConfig[]);
+    setTableConfig(updatedConfig as ColumnConfig[]);
     setIsModalOpen(false);
   };
 
@@ -40,11 +76,13 @@ const TableSettingsWidget: React.FC<TableSettingsWidgetProps> = ({
     setIsModalOpen(false);
   };
 
-  const checkAllHandler = () => {
+  const checkAllHandler = React.useCallback(() => {
     const values = form.getFieldsValue();
     const keysArr = Object.keys(values);
-    setIsAllButtonState(!keysArr.some(_ => !values[_]));
-  };
+    if (keysArr.length > 0) {
+      setIsAllButtonState(!keysArr.some(_ => !values[_]));
+    }
+  }, [form]);
 
   const switchAllHandler = () => {
     const values = form.getFieldsValue();
@@ -64,15 +102,18 @@ const TableSettingsWidget: React.FC<TableSettingsWidgetProps> = ({
   };
 
   useEffect(() => {
-    if (isModalOpen) {
+    if (isModalOpen && toggleableColumns.length > 0) {
       const values = toggleableColumns.reduce((acc, col) => {
         acc[col.dataIndex] = !col.hidden;
         return acc;
       }, {} as Record<string, boolean>);
       form.setFieldsValue(values);
-      checkAllHandler();
+      // Проверяем состояние "Выбрать все" после установки значений
+      setTimeout(() => {
+        checkAllHandler();
+      }, 0);
     }
-  }, [isModalOpen, tableConfig]);
+  }, [isModalOpen, toggleableColumns, form, checkAllHandler]);
 
   return (
     <>
