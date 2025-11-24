@@ -177,7 +177,7 @@ const RevenueStorageChart = ({ revenueByWarehouse, dataRevenueStorage, labels, m
         <div className={`${styles.revenueStrorage}`}>
             <div className='chart-container-header'>
                 <div>
-                    <div className='chart-title'>Выручка по складам</div>
+                    <div className='chart-title' style={{ fontSize: '18px'}}>Выручка по складам</div>
                 </div>
                 {(sortedData.length > ITEMS_PER_PAGE && totalPages > 1) && (
                     <div className={styles.pagination}>
