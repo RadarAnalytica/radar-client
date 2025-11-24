@@ -49,7 +49,7 @@ export const PositionTrackingMainPageWidget: React.FC<IPositionTrackingMainPageW
     const navigate = useNavigate();
     const submitHandler = (fields: Record<string, any>) => {
         createProject(fields.sku);
-        setIsAddModalVisible(true)
+        // setIsAddModalVisible(true)
     }
 
 
@@ -87,7 +87,6 @@ export const PositionTrackingMainPageWidget: React.FC<IPositionTrackingMainPageW
             <ProceedToBlock
                 title="Проверка позиции"
                 placeholder="Введите артикул"
-                tabsOptions={['Аналитика товара', 'Тренды']}
                 submit={(inputValue) => {
                     let normilizedId: string;
                     if (/^(|\d+)$/.test(inputValue)) {
@@ -108,15 +107,16 @@ export const PositionTrackingMainPageWidget: React.FC<IPositionTrackingMainPageW
                 title="Подбор ключей"
                 placeholder="Введите запрос"
                 hasTabs={true}
-                tabsOptions={['Аналитика товара', 'Тренды']}
+                tabsOptions={['Содержит', 'Совпадает полностью']}
                 submit={(inputValue, tab) => {
-                    navigate(`/keywords-selection/?query=${inputValue}&tab=${tab}`);
+                    console.log('tab', tab);
+                    console.log('inputValue', inputValue);
+                    navigate(`/keywords-selection/?query=${inputValue}&match_type=${tab}`);
                 }}
             />
             <ProceedToBlock
                 title="Проверка выдачи (SERP)"
                 placeholder="Введите запрос"
-                tabsOptions={['Аналитика товара', 'Тренды']}
                 submit={(inputValue) => {
                     navigate(`/serp-check/?query=${inputValue}`);
                 }}

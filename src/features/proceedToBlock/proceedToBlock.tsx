@@ -85,6 +85,7 @@ export const ProceedToBlock: React.FC<IProceedToBlockProps> = ({
                                 options={tabsOptions}
                                 style={{ width: '100%' }}
                                 value={tabs}
+                                onChange={(value) => setTabs(value)}
                             />
                         </Form.Item>
                     }

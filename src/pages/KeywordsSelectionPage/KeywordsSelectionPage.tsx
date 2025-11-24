@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import MobilePlug from "@/components/sharedComponents/mobilePlug/mobilePlug";
 import styles from "./KeywordsSelectionPage.module.css";
 import Sidebar from "@/components/sharedComponents/sidebar/sidebar";
@@ -7,12 +7,14 @@ import { SearchBlock } from "@/features";
 import ErrorModal from "@/components/sharedComponents/modals/errorModal/errorModal";
 import { useState } from "react";
 import { ConfigProvider, Segmented, Tooltip } from "antd";
+import type { InputRef } from "antd";
 import { DoubleTable, KeywordSelectionFilters } from "@/widgets";
 import { ServiceFunctions } from "@/service/serviceFunctions";
 import { formatPrice } from "@/service/utils";
 import { keywordsSelectionTableConfig, RadarLoader } from "@/shared";
 import NoSubscriptionWarningBlock from "@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock";
 import { useDemoMode } from "@/app/providers";
+import { useSearchParams } from "react-router-dom";
 
 
 // model
@@ -121,7 +123,9 @@ const KeywordsSelectionPage = () => {
     const [tableType, setTableType] = useState<'Кластеры' | 'По запросам'>('Кластеры');
     const [requestObject, setRequestObject] = useState<Record<string, any> | null>(null);
     const [keywordsSelectionData, setKeywordsSelectionData] = useState(null);
-
+    const [searchParams, setSearchParams] = useSearchParams();
+    const [externalInputValue, setExternalInputValue] = useState<string | undefined>(undefined);
+    const inputRef = useRef<InputRef>(null);
     const getKeywordsSelectionData = async (requestObject: Record<string, any>) => {
         setRequestStatus({ ...requestInitState, isLoading: true });
         try {
@@ -153,6 +157,17 @@ const KeywordsSelectionPage = () => {
             setKeywordsSelectionData(null);
         }
     }, [requestObject])
+
+    useEffect(() => {
+        let matchType = searchParams.get('match_type');
+        const query = searchParams.get('query');
+        if (matchType && query) {
+            matchType = matchType === 'Содержит' ? 'Обычный поиск по частичному совпадению' : 'Поиск по полному совпадению';
+            setRequestObject(() => ({ ...getKeywordsSelectionRequestObject(query, null, matchType as 'Обычный поиск по частичному совпадению' | 'Поиск по полному совпадению', requestObject) }));
+            setTabsState(matchType as 'Обычный поиск по частичному совпадению' | 'Поиск по полному совпадению');
+            setExternalInputValue(query);
+        }
+    }, [searchParams]);
 
 
     return (
@@ -193,6 +208,8 @@ const KeywordsSelectionPage = () => {
                         style={{ padding: '0' }}
                         disableEnter
                         demoModeValue='Футболка'
+                        externalInputRef={inputRef}
+                        externalValue={externalInputValue}
                     />
                 </div>
 

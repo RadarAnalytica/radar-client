@@ -2122,8 +2122,8 @@ export interface IPositionCheckMainTableData {
 		);
 		return res;
 	},
-	getPostionTrackingProjects: async (token) => {
-		const res = await fetchApi(`${URL}/position-track/project/get-all`, {
+	getPostionTrackingMeta: async (token) => {
+		const res = await fetchApi(`${URL}/api/position-track/radar-product/user-meta`, {
 			method: 'GET',
 			headers: {
 				'content-type': 'application/json',
@@ -2132,21 +2132,46 @@ export interface IPositionCheckMainTableData {
 		})
 		return res
 	},
-	createPostionTrackingProject: async (token, projectName) => {
-		const res = await fetchApi(`${URL}/position-track/radar-product/create`, {
+	getPostionTrackingSkuValidity: async (token, sku) => {
+		const res = await fetchApi(`${URL}/api/position-track/radar-product/check-product`, {
 			method: 'POST',
 			headers: {
 				'content-type': 'application/json',
 				authorization: 'JWT ' + token,
 			},
 			body: JSON.stringify({
-				name: projectName,
+				wb_id: sku,
+			}),
+		})
+		return res
+	},
+	getPostionTrackingProjects: async (token) => {
+		const res = await fetchApi(`${URL}/api/position-track/project/get-all`, {
+			method: 'GET',
+			headers: {
+				'content-type': 'application/json',
+				authorization: 'JWT ' + token,
+			},
+		})
+		return res
+	},
+	createPostionTrackingProject: async (token, projectName, sku, productName) => {
+		const res = await fetchApi(`${URL}/api/position-track/radar-product/create`, {
+			method: 'POST',
+			headers: {
+				'content-type': 'application/json',
+				authorization: 'JWT ' + token,
+			},
+			body: JSON.stringify({
+				id: projectName,
+				wb_id: sku,
+				name: productName,
 			}),
 		})
 		return res
 	},
 	addProductToPositionTrackingProject: async (token, projectId, productId) => {
-		const res = await fetchApi(`${URL}/position-track/radar-product/create`, {
+		const res = await fetchApi(`${URL}/api/position-track/radar-product/create`, {
 			method: 'POST',
 			headers: {
 				'content-type': 'application/json',
@@ -2160,7 +2185,7 @@ export interface IPositionCheckMainTableData {
 		return res
 	},
 	deletePositionTrackingProject: async (token, projectId) => {
-		const res = await fetchApi(`${URL}/position-track/project/delete?project_id=${projectId}`, {
+		const res = await fetchApi(`${URL}/api/position-track/project/delete?project_id=${projectId}`, {
 			method: 'DELETE',
 			headers: {
 				'content-type': 'application/json',
@@ -2170,7 +2195,7 @@ export interface IPositionCheckMainTableData {
 		return res
 	},
 	updatePositionTrackingProject: async (token, projectId, projectName) => {
-		const res = await fetchApi(`${URL}/position-track/project/update`, {
+		const res = await fetchApi(`${URL}/api/position-track/project/update`, {
 			method: 'POST',
 			headers: {
 				'content-type': 'application/json',
