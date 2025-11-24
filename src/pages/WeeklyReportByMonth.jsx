@@ -1,4 +1,4 @@
-import { useEffect, useContext, useCallback, useState } from 'react';
+import { useEffect, useContext, useCallback, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchReportByMonth } from '../redux/reportByMonth/reportByMonthActions';
 import { fetchByMonthFilters } from '../redux/reportByMonth/byMonthFiltersAction';
@@ -17,6 +17,7 @@ import { Table as RadarTable } from 'radar-ui';
 import { useDemoMode } from "@/app/providers";
 import moment from 'moment';
 import { formatPrice } from '@/service/utils';
+import { RadarLoader } from '@/shared';
 
 const tableConfig = [
   {
@@ -60,7 +61,8 @@ const tableConfig = [
         title: "Выкупы",
         dataIndex: 'purchases',
         key: 'purchases',
-        units: 'double',
+        units: '₽',
+        compareUnits: 'шт',
         style: {
           background: '#F7F6FE',
           verticalAlign: 'middle',
@@ -71,7 +73,8 @@ const tableConfig = [
         title: "Возвраты",
         dataIndex: 'return',
         key: 'return',
-        units: 'double',
+        units: '₽',
+        compareUnits: 'шт',
         style: {
           background: '#F7F6FE',
           verticalAlign: 'middle',
@@ -82,7 +85,8 @@ const tableConfig = [
         title: "Продажи и выручка",
         dataIndex: 'revenue',
         key: 'revenue',
-        units: 'double',
+        units: '₽',
+        compareUnits: 'шт',
         style: {
           background: '#F7F6FE',
           verticalAlign: 'middle',
@@ -274,17 +278,17 @@ const tableConfig = [
           fontSize: '14px',
         }
       },
-      {
-        title: "Кол-во брака",
-        dataIndex: 'compensation_defects_quantity',
-        key: 'compensation_defects_quantity',
-        units: 'шт',
-        style: {
-          background: '#F7F6FE',
-          verticalAlign: 'middle',
-          fontSize: '14px',
-        }
-      },
+      // {
+      //   title: "Кол-во брака",
+      //   dataIndex: 'compensation_defects_quantity',
+      //   key: 'compensation_defects_quantity',
+      //   units: 'шт',
+      //   style: {
+      //     background: '#F7F6FE',
+      //     verticalAlign: 'middle',
+      //     fontSize: '14px',
+      //   }
+      // },
       {
         title: "Компенсации ущерба",
         dataIndex: 'compensation_damage',
@@ -296,16 +300,17 @@ const tableConfig = [
           fontSize: '14px',
         }
       },
-      {
-        title: "Кол-во ущерба",
-        dataIndex: 'compensation_damage_quantity',
-        key: 'compensation_damage_quantity',
-        style: {
-          background: '#F7F6FE',
-          verticalAlign: 'middle',
-          fontSize: '14px',
-        }
-      },
+      // {
+      //   title: "Кол-во ущерба",
+      //   dataIndex: 'compensation_damage_quantity',
+      //   key: 'compensation_damage_quantity',
+      //   units: 'шт',
+      //   style: {
+      //     background: '#F7F6FE',
+      //     verticalAlign: 'middle',
+      //     fontSize: '14px',
+      //   }
+      // },
       {
         title: "Штрафы",
         dataIndex: 'penalties',
@@ -366,8 +371,8 @@ const tableConfig = [
       },
       {
         title: "Платная приёмка",
-        dataIndex: 'paid_acceptance',
-        key: 'paid_acceptance',
+        dataIndex: 'acceptance',
+        key: 'acceptance',
         units: '₽',
         style: {
           background: '#F7F6FE',
@@ -412,9 +417,9 @@ const tableConfig = [
       },
       {
         title: "Внешние расходы",
-        dataIndex: 'external_expenses',
-        key: 'external_expenses',
-        units: '₽',
+        dataIndex: 'expenses_percent',
+        key: 'expenses_percent',
+        units: '%',
         style: {
           background: '#F7F6FE',
           verticalAlign: 'middle',
@@ -423,8 +428,8 @@ const tableConfig = [
       },
       {
         title: "Всего внешних расходов",
-        dataIndex: 'external_expenses_total',
-        key: 'external_expenses_total',
+        dataIndex: 'external_expenses',
+        key: 'external_expenses',
         units: '₽',
         style: {
           background: '#F7F6FE',
@@ -540,6 +545,7 @@ const tableConfig = [
         title: "ROI",
         dataIndex: 'return_on_investment',
         key: 'return_on_investment',
+        units: '%',
         style: {
           background: '#F7F6FE',
           verticalAlign: 'middle',
@@ -577,6 +583,7 @@ const getTableData = (data) => {
     }
 
     const row = {
+      rowKey: key,
       period: key,
       ...total,
       indentSize: indentSize,
@@ -585,6 +592,10 @@ const getTableData = (data) => {
       row.children = children;
       row.isParent = true
     }
+
+    if (!children) {
+      row.isLastChild = key === Object.keys(data)[Object.keys(data).length - 1];
+    }
     arr.push(row);
 
   });
@@ -592,8 +603,9 @@ const getTableData = (data) => {
   return arr;
 };
 
-const customCellRender = (value, record, index, dataIndex) => {
+const customCellRender = (value, record, index, dataIndex, expandedRowKeys, tableConfig) => {
   const rightBorders = ['purchase_percent', 'cost_price_per_one', 'logistics_per_product', 'additional_payments', 'compensation_penalties', 'external_expenses_total', 'tax', 'return_on_investment']
+  const isExpanded = expandedRowKeys.includes(record.rowKey);
   if (dataIndex === 'period') {
     return (
       <div
@@ -602,7 +614,7 @@ const customCellRender = (value, record, index, dataIndex) => {
         style={{
           fontWeight: record.isParent ? '700' : '500',
         }}
-
+        data-is-month-last-child={record.isLastChild}
       >
         {record.isParent && value}
         {!record.isParent && moment(value).format('DD.MM.YYYY')}
@@ -616,22 +628,33 @@ const customCellRender = (value, record, index, dataIndex) => {
         className={styles.customCell}
         data-border-right={rightBorders.includes(dataIndex)}
       >
-        {Object.keys(value).map((key, idx) => (<span key={key} style={{ fontWeight: idx === 0 ? '700' : '500' }}>{formatPrice(value[key], ' ')}</span>))}
+        {!isExpanded && Object.keys(value).map((key, idx) => {
+          const units = key === 'rub' ? '₽' : key === 'percent' ? '%' : key === 'quantity' ? 'шт' : ' ';
+          return <span key={key} style={{ fontWeight: idx === 0 ? '700' : '500' }}>{formatPrice(value[key], units)}</span>
+        })}
       </div>
     );
   }
+
+  const configChildren = tableConfig.map(item => item.children).flat();
+  const currElem = configChildren.find(item => item.dataIndex === dataIndex);
+
   return (
     <div
       className={styles.customCell}
       data-border-right={rightBorders.includes(dataIndex)}
-    >{value}</div>
+    >
+      {!isExpanded && formatPrice(value, currElem.units)}
+    </div>
   );
 }
 
 const WeeklyReportByMonth = () => {
   const { isDemoMode } = useDemoMode();
   const { authToken, user } = useContext(AuthContext);
+  const tableContainerRef = useRef(null);
   const [tableData, setTableData] = useState([]);
+  const [expandedRowKeys, setExpandedRowKeys] = useState([]);
   const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
   const { weeklyData } = useSelector(
@@ -647,9 +670,16 @@ const WeeklyReportByMonth = () => {
 
   useEffect(() => {
     if (weeklyData) {
-      setTableData(getTableData(weeklyData));
+      const data = getTableData(weeklyData);
+      const defaultExpandedRowKeys = [data[0]?.rowKey, data[0]?.children[0]?.rowKey];
+      setExpandedRowKeys(defaultExpandedRowKeys);
+      setTableData(data);
     }
   }, [weeklyData]);
+
+  const handleExpandedRowsChange = (keys) => {
+    setExpandedRowKeys(keys);
+  };
 
   const handleFetchReport = useCallback(() => {
     setLoading(true);
@@ -673,8 +703,7 @@ const WeeklyReportByMonth = () => {
       <section className={styles.page__content}>
         {/* header */}
         <div className={styles.page__headerWrapper}>
-          {/* <Header title={'По месяцам'} titlePrefix={'Отчёт'} hasShadow={false} reportNav={true} /> */}
-          <Header title={'Оцифровка еженедельных отчетов'} hasShadow={false} reportNav={true} />
+          <Header title={'По месяцам'} titlePrefix={'Отчёт'} hasShadow={false} />
         </div>
 
         {isDemoMode &&
@@ -695,11 +724,17 @@ const WeeklyReportByMonth = () => {
           isLoading={isFiltersLoading}
           getData={handleFetchReport}
         />
+        {loading &&
+          <div className={styles.tableWrapper}>
+            <RadarLoader loaderStyle={{ height: '50vh', backgroundColor: 'white' }} />
+          </div>
+        }
 
-        {tableData?.length > 0 &&
+        {tableData?.length > 0 && !loading &&
           <div className={styles.tableContainerWrapper}>
-            <div className={styles.tableContainer}>
+             <div className={styles.tableContainer} ref={tableContainerRef}>
               <RadarTable
+                rowKey={(record) => record.rowKey}
                 config={tableConfig}
                 dataSource={tableData}
                 treeMode
@@ -709,9 +744,12 @@ const WeeklyReportByMonth = () => {
                 style={{ tableLayout: 'fixed', width: 'max-content', minWidth: '100%' }}
                 paginationContainerStyle={{ display: 'none' }}
                 indentSize={45}
+                expandedRowKeys={expandedRowKeys}
+                scrollContainerRef={tableContainerRef}
+                onExpandedRowsChange={handleExpandedRowsChange}
                 customCellRender={{
                   idx: [],
-                  renderer: customCellRender,
+                  renderer: (value, record, index, dataIndex) => customCellRender(value, record, index, dataIndex, expandedRowKeys, tableConfig),
                 }}
                 headerCellWrapperStyle={{
                   fontSize: 'inherit',
@@ -723,17 +761,16 @@ const WeeklyReportByMonth = () => {
                 }}
                 bodyCellWrapperClassName={styles.bodyCellWrapperCustomClassName}
                 bodyCellStyle={{
-                  borderBottom: '1px solid #E8E8E8',
+                  //borderBottom: '1px solid #E8E8E8',
                   height: '50px',
                 }}
                 bodyRowClassName={styles.bodyRowSpecial}
-                style={{ width: 'max-content', tableLayout: 'fixed' }}
               />
             </div>
           </div>
         }
 
-        {/* <BottomNavigation /> */}
+        <BottomNavigation />
       </section>
       {/* ---------------------- */}
     </main >

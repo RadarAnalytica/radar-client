@@ -23,6 +23,7 @@
   overflow: auto;
   flex-grow: 0;
   flex-shrink: 0;
+  padding-bottom: 72px;
 }
 
 .page__sideNavWrapper {
@@ -179,4 +180,20 @@
 
 .bodyCellWrapperCustomClassName:has(div[data-ident-size="90"]) {
   padding-left: 90px !important;
+}
+
+:global(.radar-table__body-row--parent:has(button.radar-table__expander-btn[aria-expanded="false"]) > td > .radar-table__body-cell-wrapper) {
+  border-top: 1px solid #E8E8E8 !important;
+  border-bottom: 1px solid #E8E8E8 !important;
+}
+:global(.radar-table__body-row--parent:has(button.radar-table__expander-btn[aria-expanded="false"]):first-of-type > td > .radar-table__body-cell-wrapper) {
+  border-top: none !important;
+  border-bottom: 1px solid #E8E8E8 !important;
+}
+:global(.radar-table__body-row--parent:has(button.radar-table__expander-btn[aria-expanded="false"]):last-of-type > td > .radar-table__body-cell-wrapper) {
+  border-top: 1px solid #E8E8E8 !important;
+  border-bottom: none !important;
+}
+:global(.radar-table__body-row):has(div > .customCell[data-is-month-last-child="true"]) > td > div {
+  border-bottom: 1px solid #E8E8E8 !important;
 }

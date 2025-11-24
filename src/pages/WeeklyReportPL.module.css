@@ -23,6 +23,7 @@
   overflow: auto;
   flex-grow: 0;
   flex-shrink: 0;
+  padding-bottom: 72px;
 }
 
 .page__sideNavWrapper {
@@ -40,12 +41,17 @@
   width: 100%;
 }
 
-.tableContainer {
-  width: 100%;
-  overflow: auto;
+.tableContainerWrapper {
   border-radius: 16px;
   background: white;
   padding: 8px;
+  width: 100%;
+}
+
+.tableContainer {
+  width: 100%;
+  overflow: auto;
+ 
 }
 
 .applyButton {

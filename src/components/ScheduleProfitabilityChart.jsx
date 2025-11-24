@@ -3,6 +3,7 @@ import { Chart as ChartJS, BarElement, CategoryScale, LinearScale, Tooltip, Lege
 import { Bar } from 'react-chartjs-2';
 import roi from '../assets/roi.svg';
 import { verticalDashedLinePlugin } from '../service/utils';
+import styles from './ScheduleProfitabilityChart.module.css';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend, verticalDashedLinePlugin);
 
@@ -199,20 +200,20 @@ const ScheduleProfitabilityChart = ({ dataProfitability, dataProfitPlus, dataPro
     };
 
     return (
-        <div className="chart-container" style={{ marginLeft: "8px", minWidth: "50%" }}>
+        <div className={styles.chart}>
             <div className='chart-container-header-prof'>
                 <div>
-                    <div className='chart-title'>Рентабельность и маржинальность</div>
+                    <div className='chart-title' style={{ fontSize: '18px'}}>Рентабельность и маржинальность</div>
                 </div>
             </div>
             <div className='chart-header-wrapper-prof'>
                 <div className='chart-container-colors-wrapper'>
                     <div className='roundedChartColor'></div>
-                    <div>Маржинальность по прибыли, %</div>
+                    <div style={{ fontSize: '14px'}}>Маржинальность по прибыли, %</div>
                 </div>
                 <div className='chart-container-colors-wrapper'>
                     <div style={{ marginRight: '5px' }}><img src={roi} /></div>
-                    <div>ROI, %</div>
+                    <div style={{ fontSize: '14px'}}>ROI, %</div>
                 </div>
             </div>
             {isLoading ? (

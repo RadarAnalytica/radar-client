@@ -6,13 +6,6 @@
     border-radius: 12px;
   }
 
-  @media screen and (min-width: 2000px) {
-    .filterGroup {
-      width: 20%!important;
-      padding: 1.2rem;
-    }
-  }
-
   .loaderWrapper {
     width: 100%;
     height: 135px;

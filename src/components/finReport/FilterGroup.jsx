@@ -8,8 +8,29 @@ import DownloadButton from '../DownloadButton';
 import { URL } from '../../service/config';
 import { useSelector, useDispatch } from 'react-redux';
 import { setDownloadLoading } from '../../redux/download/downloadSlice';
+import { ConfigProvider, Segmented } from 'antd';
 
-const NewFilterGroup = ({ pageIdent, filtersData, isLoading, getData }) => {
+// antd config providers themes
+const segmentedTheme = {
+    token: {
+        fontSize: 12,
+        fontWeight: 500,
+    },
+    components: {
+        Segmented: {
+            itemActiveBg: '#5329FF1A',
+            itemSelectedBg: '#5329FF1A',
+            trackBg: 'transparent',
+            trackPadding: 0,
+            itemHoverBg: '#5329FF10',
+            itemColor: '#1A1A1A80',
+            itemSelectedColor: '#1A1A1A',
+            itemHoverColor: '#1A1A1A',
+        }
+    }
+}
+
+const NewFilterGroup = ({ pageIdent, filtersData, isLoading, getData, setActiveTab, activeTab }) => {
     const { authToken } = useContext(AuthContext);
     const dispatch = useDispatch();
     const isDownloading = useSelector((state) => state.downloadReducer?.isDownloading);
@@ -159,25 +180,65 @@ const NewFilterGroup = ({ pageIdent, filtersData, isLoading, getData }) => {
                     </div>
                 </>
             )}
-            <div className={styles.filterControls} style={{ marginTop: !isCollapsed ? '20px' : '0' }}>
-                <button
-                    className={styles.collapseButton}
-                    onClick={() => setIsCollapsed(!isCollapsed)}
-                >
-                    {!isCollapsed ? 'Свернуть фильтры' : 'Развернуть фильтры'}
-                </button>
-                <div className={styles.filterControlsWrapper}>
-                    {!isCollapsed && (
-                        <button
-                        className={styles.applyButton}
-                            onClick={() => getData()}
-                        >
-                            Применить фильтры
-                        </button>
-                    )}
-                    <DownloadButton handleDownload={handleDownload} loading={isDownloading} />
+            {pageIdent !== 'abc' && (
+                <div className={styles.filterControls} style={{ marginTop: !isCollapsed ? '20px' : '0' }}>
+                    <button
+                        className={styles.collapseButton}
+                        onClick={() => setIsCollapsed(!isCollapsed)}
+                    >
+                        {!isCollapsed ? 'Свернуть фильтры' : 'Развернуть фильтры'}
+                    </button>
+                    <div className={styles.filterControlsWrapper}>
+                        {!isCollapsed && (
+                            <button
+                                className={styles.applyButton}
+                                onClick={() => getData()}
+                            >
+                                Применить фильтры
+                            </button>
+                        )}
+                        <DownloadButton handleDownload={handleDownload} loading={isDownloading} />
+                    </div>
                 </div>
-            </div>
+            )}
+            {pageIdent === 'abc' && (
+                <div className={styles.generalFilterContainer}>
+                    <button
+                        className={styles.collapseButton}
+                        onClick={() => setIsCollapsed(!isCollapsed)}
+                    >
+                        {!isCollapsed ? 'Свернуть фильтры' : 'Развернуть фильтры'}
+                    </button>
+                    <div className={styles.filterControls} style={{ marginTop: !isCollapsed ? '20px' : '0' }}>
+                        {activeTab && setActiveTab &&
+                            <ConfigProvider theme={segmentedTheme}>
+                                <Segmented
+                                    size='large'
+                                    options={['По выручке', 'По прибыли']}
+                                    value={activeTab}
+                                    onChange={(value) => setActiveTab(value)}
+                                    disabled={isLoading}
+                                />
+                            </ConfigProvider>
+                        }
+                        <div className={styles.filterControlsWrapper}>
+                            {!isCollapsed && (
+                                <button
+                                    className={styles.applyButton}
+                                    onClick={() => getData()}
+                                >
+                                    Применить фильтры
+                                </button>
+                            )}
+                            <DownloadButton handleDownload={handleDownload} loading={isDownloading} />
+                        </div>
+                    </div>
+                </div>
+            )}
+
+
+
+
         </div>
     );
 };

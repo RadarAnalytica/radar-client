@@ -16,6 +16,7 @@ import NoSubscriptionWarningBlock from '../components/sharedComponents/noSubscri
 import { useDemoMode } from "@/app/providers";
 import { Table as RadarTable } from 'radar-ui';
 import { formatPrice } from '@/service/utils';
+import { RadarLoader } from '@/shared';
 
 const tableConfig = [{
   title: 'Значение',
@@ -88,24 +89,24 @@ const getTableData = (plData) => {
 const customCellRender = (value, record, index, dataIndex) => {
   console.log(record)
   if (dataIndex === 'value') {
-    return <div className={styles.customCell} 
-    style={{ fontWeight: record.isBold ? '700' : '500', backgroundColor: record.hasBg ? '#F6F4FF' : 'transparent' }}
-    data-has-bg={record.hasBg}
+    return <div className={styles.customCell}
+      style={{ fontWeight: record.isBold ? '700' : '500', backgroundColor: record.hasBg ? '#F6F4FF' : 'transparent' }}
+      data-has-bg={record.hasBg}
     >{value}</div>;
   }
   if (typeof value !== 'object') {
-    return <div className={styles.customCell} 
-    style={{ fontWeight: record.isBold ? '700' : '500', backgroundColor: record.hasBg ? '#F6F4FF' : 'transparent' }}
-    data-has-bg={record.hasBg}
+    return <div className={styles.customCell}
+      style={{ fontWeight: record.isBold ? '700' : '500', backgroundColor: record.hasBg ? '#F6F4FF' : 'transparent' }}
+      data-has-bg={record.hasBg}
     >{formatPrice(value, record.units)}</div>;
   }
   if (typeof value === 'object') {
     return <div className={styles.customCell} style={{ fontWeight: record.isBold ? '700' : '500', backgroundColor: record.hasBg ? '#F6F4FF' : 'transparent' }}>
       <span>{formatPrice(value.value, record.units)}</span>
-      <span style={{ fontWeight: '500'}}>{formatPrice(value.percentage, '%')}</span>
-      </div>;
+      <span style={{ fontWeight: '500' }}>{formatPrice(value.percentage, '%')}</span>
+    </div>;
   }
- 
+
 }
 
 const WeeklyReportPL = () => {
@@ -151,7 +152,7 @@ const WeeklyReportPL = () => {
       <section className={styles.page__content}>
         {/* header */}
         <div className={styles.page__headerWrapper}>
-          <Header title={'P&L'} titlePrefix={'Отчёт'} hasShadow={false} reportNav={true} />
+          <Header title={'P&L'} titlePrefix={'Отчёт'} hasShadow={false} />
         </div>
 
         {isDemoMode &&
@@ -168,27 +169,35 @@ const WeeklyReportPL = () => {
 
         <NewFilterGroup pageIdent='pl' filtersData={plFilters} isLoading={isFiltersLoading} getData={handleApplyFilters} />
 
-        {plData && plData.length > 0 &&
-          <div className={styles.tableContainer} ref={tableContainerRef}>
-            <RadarTable
-              config={[...getTableConfig(plData, tableConfig)]}
-              dataSource={getTableData(plData)}
-              preset='radar-table-default'
-              pagination={false}
-              style={{ tableLayout: 'fixed', width: 'max-content', minWidth: '100%' }}
-              paginationContainerStyle={{ display: 'none' }}
-              scrollContainerRef={tableContainerRef}
-              stickyHeader={-8}
-              bodyCellWrapperClassName={styles.bodyCell}
-              customCellRender={{
-                idx: [],
-                renderer: customCellRender,
-              }}
-            />
+        {isLoading &&
+          <div className={styles.tableWrapper}>
+            <RadarLoader loaderStyle={{ height: '50vh', backgroundColor: 'white' }} />
           </div>
         }
 
-        {/* <BottomNavigation /> */}
+        {plData && plData.length > 0 && !isLoading &&
+          <div className={styles.tableContainerWrapper}>
+            <div className={styles.tableContainer} ref={tableContainerRef}>
+              <RadarTable
+                config={[...getTableConfig(plData, tableConfig)]}
+                dataSource={getTableData(plData)}
+                preset='radar-table-default'
+                pagination={false}
+                style={{ tableLayout: 'fixed', width: 'max-content', minWidth: '100%' }}
+                paginationContainerStyle={{ display: 'none' }}
+                scrollContainerRef={tableContainerRef}
+                stickyHeader={-8}
+                bodyCellWrapperClassName={styles.bodyCell}
+                customCellRender={{
+                  idx: [],
+                  renderer: customCellRender,
+                }}
+              />
+            </div>
+          </div>
+        }
+
+        <BottomNavigation />
       </section>
       {/* ---------------------- */}
     </main>

@@ -11,21 +11,24 @@ import AuthContext from '../service/AuthContext';
 import DemonstrationSection from '../components/DemonstrationSection';
 
 const ExternalExpensesPage = () => {
-  const {isDemoMode} = useDemoMode();
+  const { isDemoMode } = useDemoMode();
   const { user } = useContext(AuthContext);
+
 
   return (
     <main className={styles.page}>
       <MobilePlug />
-
+      {/* ------ SIDE BAR ------ */}
       <section className={styles.page__sideNavWrapper}>
         <Sidebar />
       </section>
-
+      {/* ------ CONTENT ------ */}
       <section className={styles.page__content}>
+        {/* header */}
         <div className={styles.page__headerWrapper}>
-          <Header title='Внешние расходы' />
+          <Header title='Внешние расходы' titlePrefix={'Отчёт'} hasShadow={false} reportNav={true} />
         </div>
+
 
         {isDemoMode &&
           <NoSubscriptionWarningBlock />
@@ -35,14 +38,16 @@ const ExternalExpensesPage = () => {
           <DemonstrationSection />
         }
 
+
         <div className={styles.page__widgetWrapper}>
           <ExpenseTracker />
         </div>
 
         <BottomNavigation />
       </section>
+      {/* ---------------------- */}
     </main>
-  );
+  )
 };
 
 export default ExternalExpensesPage;

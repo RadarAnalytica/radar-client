@@ -99,7 +99,7 @@ const WeeklyReportDashboard = () => {
       <section className={styles.page__content}>
         {/* header */}
         <div className={styles.page__headerWrapper}>
-          <Header title={'Дашборд'} titlePrefix={'Отчёт'} hasShadow={false} reportNav={true} />
+          <Header title={'Дашборд'} titlePrefix={'Отчёт'} hasShadow={false} />
         </div>
 
         {isDemoMode &&
@@ -699,7 +699,7 @@ const WeeklyReportDashboard = () => {
         </div>
 
         {/* bottom nav */}
-        {/* <BottomNavigation /> */}
+        <BottomNavigation />
       </section>
       {/* ---------------------- */}
     </main>

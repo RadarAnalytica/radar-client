@@ -20,7 +20,7 @@ import NoSubscriptionWarningBlock from '../components/sharedComponents/noSubscri
 import { useDemoMode } from "@/app/providers";
 
 const Schedule = () => {
-  const {isDemoMode} = useDemoMode();
+  const { isDemoMode } = useDemoMode();
   const { authToken, user } = useContext(AuthContext);
   const dispatch = useDispatch();
   const { chartsFilters, isFiltersLoading } = useSelector((state) => state?.chartsFiltersSlice);
@@ -596,16 +596,17 @@ const Schedule = () => {
   };
 
   return (
-    <div className='dashboard-page'>
+    <main className={styles.page}>
       <MobilePlug />
-
-      <div style={{ height: '100vh', zIndex: 999 }}>
+      {/* ------ SIDE BAR ------ */}
+      <section className={styles.page__sideNavWrapper}>
         <Sidebar />
-      </div>
-
-      <div className={`${styles.scheduleMain} dashboard-content pb-3 `} style={{ padding: '0 32px' }}>
-        <div style={{ width: '100%', padding: '20px 0' }} className="container dash-container">
-          <Header title={'Графики'} titlePrefix={'Отчёт'} />
+      </section>
+      {/* ------ CONTENT ------ */}
+      <section className={styles.page__content}>
+        {/* header */}
+        <div className={styles.page__headerWrapper}>
+          <Header title={'Графики'} titlePrefix={'Отчёт'} hasShadow={false} />
         </div>
 
         {isDemoMode &&
@@ -620,10 +621,8 @@ const Schedule = () => {
           </div>
         }
 
-        <div className='container dash-container'>
-          <NewFilterGroup pageIdent='charts' filtersData={chartsFilters} isLoading={isFiltersLoading} getData={updateScheduleChartData} />
-        </div>
-        
+        <NewFilterGroup pageIdent='charts' filtersData={chartsFilters} isLoading={isFiltersLoading} getData={updateScheduleChartData} />
+
         <div className={styles.ScheduleBody}>
           <ScheduleBigChart
             dataRevenue={dataRevenue}
@@ -663,8 +662,9 @@ const Schedule = () => {
         </div>
 
         <BottomNavigation />
-      </div>
-    </div>
-  );
+      </section>
+      {/* ---------------------- */}
+    </main>
+  )
 };
 export default Schedule;

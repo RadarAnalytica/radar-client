@@ -1,10 +1,13 @@
 .revenueStructure {
-  width: 30%;
+  width: 25%;
   flex-shrink: 0;
   flex-grow: 0;
   min-height: 500px;
   display: flex;
   flex-direction: column;
+  border-radius: 16px;
+  background-color: white;
+  padding: 16px;
 }
 
 .chartWrapper {

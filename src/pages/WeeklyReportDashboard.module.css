@@ -23,6 +23,7 @@
   overflow: auto;
   flex-grow: 0;
   flex-shrink: 0;
+  padding-bottom: 72px;
 }
 
 .page__sideNavWrapper {

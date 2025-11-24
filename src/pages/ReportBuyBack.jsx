@@ -20,7 +20,7 @@ import DemonstrationSection from '@/components/DemonstrationSection';
 const ReportBuyBack = () => {
   const [file, setFile] = useState();
   const { authToken, user } = useContext(AuthContext);
-  const {isDemoMode} = useDemoMode();
+  const { isDemoMode } = useDemoMode();
   const [show, setShow] = useState(false);
   const [costPriceShow, setCostPriceShow] = useState(false);
   const [selfBuyoutStatus, setselfBuyoutStatus] = useState();
@@ -85,16 +85,17 @@ const ReportBuyBack = () => {
   }, []);
 
   return (
-    <div className='dashboard-page'>
+    <main className={styles.page}>
       <MobilePlug />
-
-      <div style={{ height: '100vh', zIndex: 999 }}>
+      {/* ------ SIDE BAR ------ */}
+      <section className={styles.page__sideNavWrapper}>
         <Sidebar />
-      </div>
-
-      <div className='dashboard-content pb-3' style={{ padding: '0 32px' }}>
-        <div style={{ width: '100%', padding: '20px 0' }} className="container dash-container">
-          <Header title={'Самовыкупы'} titlePrefix={'Отчёт'} />
+      </section>
+      {/* ------ CONTENT ------ */}
+      <section className={styles.page__content}>
+        {/* header */}
+        <div className={styles.page__headerWrapper}>
+          <Header title={'Самовыкупы'} titlePrefix={'Отчёт'} hasShadow={false} reportNav={true} />
         </div>
 
         {isDemoMode &&
@@ -109,7 +110,7 @@ const ReportBuyBack = () => {
           </div>
         }
 
-        <div className='container dash-container h-50 d-flex justify-content-center align-items-center'>
+        <div className={styles.primeCostWrapper}>
           <div className={styles.primeCost}>
             <div className={styles.primeCostBox}>
               <img src={buyback} alt='buyback' />
@@ -121,18 +122,20 @@ const ReportBuyBack = () => {
                   </span>
                 )}
               </div>
+
+              <div className={styles.primeCostBoxButton}>
+                <button onClick={() => handleCostPriceShow()}>
+                  Загрузить самовыкупы
+                </button>
+              </div>
             </div>
-            <div className={styles.primeCostBoxButton}>
-              <button onClick={() => handleCostPriceShow()}>
-                Загрузить самовыкупы
-              </button>
-            </div>
+
           </div>
         </div>
 
         <BottomNavigation />
-      </div>
-
+      </section>
+      {/* ---------------------- */}
       <Modal
         show={costPriceShow}
         onHide={handleCostPriceClose}
@@ -236,8 +239,8 @@ const ReportBuyBack = () => {
         onOk={() => setShowModalError(false)}
         footer={null}
       />
-    </div>
-  );
+    </main>
+  )
 };
 
 export default ReportBuyBack;

@@ -11,6 +11,13 @@
     gap: 10px;
   }
 
+  .generalFilterContainer {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+  }
+
   .filterControlsWrapper {
     display: flex;
     align-items: center;
@@ -36,7 +43,8 @@
   .filterGrid {
     width: 100%;
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    grid-auto-flow: row;
     gap: 20px;
   }
   
