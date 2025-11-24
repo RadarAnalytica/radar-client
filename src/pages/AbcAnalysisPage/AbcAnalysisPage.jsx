@@ -1,6 +1,6 @@
 import { useContext, useState, useEffect, useMemo, useRef } from 'react';
 import styles from './AbcAnalysisPage.module.css';
-import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import { useAppSelector } from '@/redux/hooks';
 import AuthContext from '@/service/AuthContext';
 import NoSubscriptionPage from '../NoSubscriptionPage';
 import { ServiceFunctions } from '@/service/serviceFunctions';
@@ -10,41 +10,50 @@ import Header from '@/components/sharedComponents/header/header';
 import Sidebar from '@/components/sharedComponents/sidebar/sidebar';
 import SelfCostWarningBlock from '@/components/sharedComponents/selfCostWraningBlock/selfCostWarningBlock';
 import DataCollectWarningBlock from '@/components/sharedComponents/dataCollectWarningBlock/dataCollectWarningBlock';
-import { ConfigProvider, Table, Button, Flex } from 'antd';
+import { ConfigProvider, Button, Flex } from 'antd';
 import ruRU from 'antd/locale/ru_RU';
-import { COLUMNS } from './widgets/table/config';
+import { Table as RadarTable } from 'radar-ui';
+import { getAbcAnalysisTableConfig, ABC_ANALYSIS_TABLE_CONFIG_VER } from './widgets/table/radarTableConfig';
 import { useDemoMode } from "@/app/providers";
 import NoSubscriptionWarningBlock from "@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock";
 import { useLoadingProgress } from '@/service/hooks/useLoadingProgress';
 import Loader from '@/components/ui/Loader';
+import { formatPrice } from '@/service/utils';
+import { Tooltip } from 'antd';
 
 const AbcAnalysisPage = () => {
 	const filters = useAppSelector(state => state.filters);
 	const { activeBrand, selectedRange, isFiltersLoaded, activeBrandName, activeArticle, activeGroup, shops } = filters;
 	const { user, authToken } = useContext(AuthContext);
   	const { isDemoMode } = useDemoMode();
-	const dispatch = useAppDispatch();
 	const [dataAbcAnalysis, setDataAbcAnalysis] = useState(null);
 	const [isNeedCost, setIsNeedCost] = useState([]);
 	const [viewType, setViewType] = useState('proceeds');
 	const [sorting, setSorting] = useState({ key: null, direction: 'desc' });
 	const [loading, setLoading] = useState(true);
 	const progress = useLoadingProgress({ loading });
-	const [primaryCollect, setPrimaryCollect] = useState(null);
 	const [shopStatus, setShopStatus] = useState(null);
 
 	const [page, setPage] = useState(1);
 	const tableContainerRef = useRef(null);
-	const tableScroll = useMemo(() => {
-		if (!tableContainerRef.current){
-			return ({ x: 'max-content', y: 400 });
+	const scrollContainerRef = useRef(null);
+	const [tableConfig, setTableConfig] = useState(() => getAbcAnalysisTableConfig(viewType));
+	const [sortState, setSortState] = useState({ sort_field: null, sort_order: null });
+
+	// Загружаем сохраненную конфигурацию
+	useEffect(() => {
+		let savedTableConfigData = localStorage.getItem('abcAnalysisTableConfig');
+		if (savedTableConfigData) {
+			try {
+				const parsed = JSON.parse(savedTableConfigData);
+				if (parsed.version === ABC_ANALYSIS_TABLE_CONFIG_VER) {
+					setTableConfig(parsed.config);
+				}
+			} catch (error) {
+				console.error('Error parsing saved table config:', error);
+			}
 		}
-		const container = tableContainerRef.current;
-		const {height} = container.getBoundingClientRect();
-		// расчет высоты относительно контента, высоты фильтров и отступов
-		const availableHeight = height - 230 > 350 ? height - 230 : 400;
-		return ({ x: '100%', y: availableHeight });
-	}, [dataAbcAnalysis]);
+	}, []);
 
 	const updateDataAbcAnalysis = async (
 		viewType,
@@ -63,7 +72,7 @@ const AbcAnalysisPage = () => {
 				activeBrand,
 				filters,
 				page,
-				sorting.direction
+				sorting.direction.toLowerCase()
 			);
 
 			progress.complete();
@@ -87,41 +96,13 @@ const AbcAnalysisPage = () => {
 		})) : [];
 	}, [dataAbcAnalysis]);
 
-	const columnsList = useMemo(() => {
-		let columns = COLUMNS;
-		const amountTitle = {
-			profit: 'Прибыль',
-			proceeds: 'Выручка',
-		};
-		const amountPercentTitle = {
-			profit: 'Доля прибыли',
-			proceeds: 'Доля выручки',
-		};
-		return columns.map((el) => {
-			if (el.key === 'amount') {
-				el.title = amountTitle[viewType];
-			}
-			if (el.key === 'amount_percent') {
-				el.title = amountPercentTitle[viewType];
-			}
-			// отчистка предыдущей сортировки
-			if (el.sorter) {
-				el.defaultSortOrder = null;
-			}
-			// отображение текущей сортировки
-			if (sorting.key && el.dataIndex === sorting.key) {
-				el.defaultSortOrder = sorting.direction;
-			}
-			return el;
-		});
-	}, [dataAbcAnalysis]);
-
-	// 2.1 Получаем данные по выбранному магазину и проверяем себестоимость
+	// Обновляем конфигурацию при изменении viewType
+	useEffect(() => {
+		setTableConfig(getAbcAnalysisTableConfig(viewType));
+	}, [viewType]);
 
 	useEffect(() => {
 		if (activeBrand) {
-			setPrimaryCollect(activeBrand?.is_primary_collect);
-
 			if (activeBrand?.is_primary_collect && viewType && isFiltersLoaded) {
 				updateDataAbcAnalysis(
 					viewType,
@@ -133,7 +114,7 @@ const AbcAnalysisPage = () => {
 				setLoading(false);
 			}
 		}
-	}, [viewType, page, sorting, activeBrand, selectedRange, isFiltersLoaded, activeBrandName, activeArticle, activeGroup]);
+	}, [viewType, page, sorting, activeBrand, selectedRange, isFiltersLoaded, activeBrandName, activeArticle, activeGroup, authToken]);
 
 	useEffect(() => {
 		setPage(1);
@@ -166,16 +147,118 @@ const AbcAnalysisPage = () => {
 	const viewTypeHandler = (view) => {
 		setViewType(view);
 		setPage(1);
+		setSortState({ sort_field: null, sort_order: null });
 	};
 
-	const tableChangeHandler = (pagination, filters, sorter, extra) => {
-		if (extra.action === 'sort'){
-			setSorting({ key: sorter.field, direction: sorter.order || 'desc' });
+	const sortButtonClickHandler = (sort_field, sort_order) => {
+		// выключаем сортировку если нажата уже активная клавиша
+		if (sortState.sort_field === sort_field && sortState.sort_order === sort_order) {
+			setSortState({ sort_field: null, sort_order: null });
+			setSorting({ key: null, direction: 'desc' });
 			setPage(1);
+			return;
 		}
-		if (extra.action === 'paginate'){
-			setPage(pagination.current);
+
+		// включаем сортировку
+		setSortState({ sort_field, sort_order });
+		setSorting({ key: sort_field, direction: sort_order || 'desc' });
+		setPage(1);
+	};
+
+	const paginationHandler = (page) => {
+		setPage(page);
+	};
+
+	// Custom cell render для RadarTable
+	const customCellRender = (value, record, index, dataIndex) => {
+		if (dataIndex === 'item') {
+			return (
+				<div
+					style={{
+						color: '#5329FF',
+						display: 'flex',
+						alignItems: 'center',
+						gap: 8,
+					}}
+				>
+					<div
+						style={{
+							width: '30px',
+							height: '40px',
+							borderRadius: '5px',
+							backgroundColor: '#D3D3D3',
+							flexGrow: 0,
+							flexShrink: 0,
+						}}
+					>
+						{record.photo ? (
+							<img
+								src={record.photo}
+								alt={record.title}
+								style={{
+									width: '100%',
+									height: '100%',
+									borderRadius: '5px',
+									objectFit: 'cover',
+								}}
+								onError={(e) => {
+									e.target.style.backgroundColor = '#D3D3D3';
+									e.target.alt = '';
+									e.target.src =
+										'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/wcAAgAB/HHpC6UAAAAASUVORK5CYII=';
+								}}
+							/>
+						) : null}
+					</div>
+					<div>
+						<Tooltip title={record.title}>{record.title}</Tooltip>
+					</div>
+				</div>
+			);
 		}
+
+		if (dataIndex === 'category') {
+			let className = styles.category__icon + ' ';
+			if (value === 'A') {
+				className += styles.category__icon_green;
+			}
+			if (value === 'B') {
+				className += styles.category__icon_yellow;
+			}
+			if (value === 'C') {
+				className += styles.category__icon_red;
+			}
+			return <span className={className}>{value}</span>;
+		}
+
+		// Для числовых значений используем formatPrice
+		const columnConfig = tableConfig.find(col => col.dataIndex === dataIndex);
+		if (typeof value === 'number' && columnConfig?.units) {
+			return formatPrice(value, columnConfig.units);
+		}
+
+		// Для остальных значений просто показываем с тултипом
+		return <Tooltip title={value}>{value}</Tooltip>;
+	};
+
+	const onResizeGroup = (columnKey, width) => {
+		const updateColumnWidth = (columns) => {
+			return columns.map(col => {
+				if (col.key === columnKey) {
+					return { ...col, width: width };
+				}
+				return col;
+			});
+		};
+
+		setTableConfig(prevConfig => {
+			const updatedConfig = updateColumnWidth(prevConfig);
+			localStorage.setItem('abcAnalysisTableConfig', JSON.stringify({
+				version: ABC_ANALYSIS_TABLE_CONFIG_VER,
+				config: updatedConfig
+			}));
+			return [...updatedConfig];
+		});
 	};
 
 	return (
@@ -212,7 +295,6 @@ const AbcAnalysisPage = () => {
 						<div className={styles.container}>
 							<ConfigProvider
 								locale={ruRU}
-								renderEmpty={() => <div>Нет данных</div>}
 								theme={{
 									token: {
 										colorPrimary: '#5329FF',
@@ -220,35 +302,6 @@ const AbcAnalysisPage = () => {
 										colorBgTextHover: '#5329FF0D',
 									},
 									components: {
-										Table: {
-											headerColor: '#8c8c8c',
-											headerBg: '#f7f6fe',
-											headerBorderRadius: 20,
-											selectionColumnWidth: 32,
-											cellFontSize: 16,
-											borderColor: '#e8e8e8',
-											cellPaddingInline: 16,
-											cellPaddingBlock: 17,
-											bodySortBg: '#f7f6fe',
-											headerSortActiveBg: '#e7e1fe',
-											headerSortHoverBg: '#e7e1fe',
-											rowSelectedBg: '#f7f6fe',
-											rowSelectedHoverBg: '#e7e1fe',
-											colorText: '#1A1A1A',
-											lineHeight: 1.2,
-											fontWeightStrong: 500,
-										},
-										Checkbox: {
-											colorBorder: '#ccc',
-											colorPrimary: '#5329ff',
-											colorPrimaryBorder: '#5329ff',
-											colorPrimaryHover: '#5329ff',
-										},
-										Pagination: {
-											itemActiveBg: '#EEEAFF',
-											itemBg: '#F7F7F7',
-											itemColor: '#8C8C8C',
-										},
 										Button: {
 											paddingBlockLG: 10,
 											paddingInlineLG: 20,
@@ -281,38 +334,53 @@ const AbcAnalysisPage = () => {
 									</Button>
 								</Flex>
 
-										<div className={styles.tableContainer}>
-											<Table
-												columns={columnsList}
+								<div className={styles.tableContainer}>
+									<div className={styles.tableScrollContainer} ref={scrollContainerRef}>
+										{tableData && tableData.length > 0 && tableConfig && (
+											<RadarTable
+												config={tableConfig.filter(col => !col.hidden)}
 												dataSource={tableData}
-												scroll={tableScroll}
-												sticky={true}
-												showSorterTooltip={false}
-												onChange={tableChangeHandler}
+												preset='radar-table-simple'
+												stickyHeader
+												resizeable
+												onResize={onResizeGroup}
+												onSort={sortButtonClickHandler}
 												pagination={{
-													locale: {
-														items_per_page: 'записей на странице',
-														jump_to: 'Перейти',
-														jump_to_confirm: 'подтвердить',
-														page: 'Страница',
-														prev_page: 'Предыдущая страница',
-														next_page: 'Следующая страница',
-														prev_5: 'Предыдущие 5 страниц',
-														next_5: 'Следующие 5 страниц',
-														prev_3: 'Предыдущие 3 страниц',
-														next_3: 'Следующие 3 страниц',
-													},
-													position: ['bottomLeft'],
-													defaultCurrent: 1,
-													defaultPageSize: dataAbcAnalysis?.per_page,
-													hideOnSinglePage: true,
-													showSizeChanger: false,
 													current: page,
-													total: dataAbcAnalysis?.total,
+													pageSize: dataAbcAnalysis?.per_page || 25,
+													total: dataAbcAnalysis?.total || 0,
+													onChange: (page) => {
+														paginationHandler(page);
+													},
+													showQuickJumper: true,
+													hideOnSinglePage: true,
 												}}
-												sortDirections={['asc', 'desc']}
+												paginationContainerStyle={{
+													bottom: 0
+												}}
+												sorting={{ sort_field: sortState?.sort_field, sort_order: sortState?.sort_order }}
+												scrollContainerRef={scrollContainerRef}
+												customCellRender={{
+													idx: ['item', 'category', 'amount', 'amount_percent', 'marginality', 'roi', 'gmroi', 'logistics'],
+													renderer: customCellRender,
+												}}
+												headerCellWrapperStyle={{
+													fontSize: 'inherit',
+													padding: '12px 25px 12px 10px'
+												}}
+												bodyCellWrapperStyle={{
+													padding: '5px 10px',
+													border: 'none',
+												}}
+												bodyCellStyle={{
+													borderBottom: '1px solid #E8E8E8',
+													height: '50px',
+												}}
+												style={{ width: 'max-content', tableLayout: 'fixed' }}
 											/>
-										</div>
+										)}
+									</div>
+								</div>
 							</div>
 							)}
 							</ConfigProvider>

@@ -47,6 +47,11 @@
   padding: 16px;
   border-radius: 16px;
   background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
 }
 
 .container :global(.ant-table),
@@ -89,6 +94,48 @@
   padding: 0 16px;
   color: grey;
   font-size: 1rem;
+}
+
+.tableContainer {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.tableScrollContainer {
+  width: 100%;
+  flex: 1;
+  max-height: calc(100vh - 325px);
+  overflow: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #5329ff80 transparent;
+}
+
+.tableScrollContainer::-webkit-scrollbar {
+  width: 3px;
+  height: 3px;
+  border-radius: 3px;
+}
+
+.tableScrollContainer::-webkit-scrollbar-thumb {
+  border-radius: 6px;
+  background: #5329ff80;
+}
+
+.tableScrollContainer::-webkit-scrollbar-track {
+  background: transparent;
+  height: 50%;
+  margin: 10px 20px;
+}
+
+:global(.abcAnalysis) {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
 }
 
 .loading {
