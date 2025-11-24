@@ -97,7 +97,7 @@ const AbcAnalysisPage = () => {
 			profit: 'Доля прибыли',
 			proceeds: 'Доля выручки',
 		};
-		return columns.map((el) => {
+		return columns.filter((el) => !el.onlyView || el.onlyView === viewType).map((el) => {
 			if (el.key === 'amount') {
 				el.title = amountTitle[viewType];
 			}
