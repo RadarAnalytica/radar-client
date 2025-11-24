@@ -833,7 +833,10 @@ export function getWordDeclension(word, count) {
   const num = Math.abs(count);
   const lastDigit = num % 10;
 
-  // Склонение по последней цифре
+  if (num > 10 && num < 20) {
+    return wordObject.many;
+  }
+
   if (lastDigit === 1) {
     return wordObject.one;
   } else if (lastDigit >= 2 && lastDigit <= 4) {
