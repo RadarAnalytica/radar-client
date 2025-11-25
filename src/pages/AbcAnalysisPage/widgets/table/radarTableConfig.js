@@ -1,4 +1,4 @@
-export const ABC_ANALYSIS_TABLE_CONFIG_VER = '1';
+export const ABC_ANALYSIS_TABLE_CONFIG_VER = '1.0.0';
 
 export const getAbcAnalysisTableConfig = (viewType) => {
     const amountTitle = {
@@ -20,6 +20,7 @@ export const getAbcAnalysisTableConfig = (viewType) => {
             maxWidth: 400,
             sortable: false,
             hidden: false,
+            fixed: true,
         },
         {
             title: 'Размер',
@@ -74,6 +75,17 @@ export const getAbcAnalysisTableConfig = (viewType) => {
             units: '%',
         },
         {
+            title: 'Логистика',
+            dataIndex: 'logistic',
+            key: 'logistic',
+            width: 150,
+            minWidth: 100,
+            maxWidth: 200,
+            sortable: true,
+            hidden: viewType !== 'profit',
+            units: '₽',
+        },
+        {
             title: 'Маржинальность',
             dataIndex: 'marginality',
             key: 'marginality',
@@ -107,21 +119,10 @@ export const getAbcAnalysisTableConfig = (viewType) => {
             units: '%',
         },
         {
-            title: 'Логистика',
-            dataIndex: 'logistic',
-            key: 'logistic',
-            width: 150,
-            minWidth: 100,
-            maxWidth: 200,
-            sortable: true,
-            hidden: false,
-            units: '₽',
-        },
-        {
             title: 'Категория',
             dataIndex: 'category',
             key: 'category',
-            width: 150,
+            width: 100,
             minWidth: 100,
             maxWidth: 200,
             sortable: true,
