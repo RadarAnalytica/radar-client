@@ -129,14 +129,15 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 20px;
-    border: 2px solid #5329FF;
+    padding: 30px 20px;
     border-radius: 16px;
     color: #5329FF;
+    opacity: 0.5;
     font-weight: 700;
     font-size: 14px;
     line-height: 100%;
     letter-spacing: 0%;
+    grid-column: span 12;
 }
 
 .group__doubleBlockWrapper {

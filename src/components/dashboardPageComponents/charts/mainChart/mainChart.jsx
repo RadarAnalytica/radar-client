@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, memo, useMemo, useCallback } from 'react';
 import styles from './mainChart.module.css';
 import MainChartControls from './mainChartControls/mainChartControls';
 import { getChartData, getChartOptions } from '../../shared/mainChartUtils';
@@ -23,8 +23,8 @@ ChartJS.register(
     verticalDashedLinePlugin
 );
 
-const MainChart = ({ title, loading, dataDashBoard, selectedRange, dragHandle }) => {
-
+const MainChart = memo(({ title, loading, dataDashBoard, selectedRange, dragHandle }) => {
+    console.log('main chart render')
     const [chartData, setChartData] = useState();
     const [days, setDays] = useState();
     const [controlsState, setControlsState] = useState({
@@ -34,7 +34,6 @@ const MainChart = ({ title, loading, dataDashBoard, selectedRange, dragHandle })
         isSalesAmountActive: true,
     });
     const [isModalOpen, setIsModalOpen] = useState(false);
-
 
     //Трансформируем данные для графика
     useEffect(() => {
@@ -176,6 +175,18 @@ const MainChart = ({ title, loading, dataDashBoard, selectedRange, dragHandle })
             } */}
         </>
     );
-};
+}, (prevProps, nextProps) => {
+    // Кастомная функция сравнения для оптимизации ререндеров
+    // Компонент будет ререндериться только если изменились важные пропсы
+    return (
+        prevProps.title === nextProps.title &&
+        prevProps.loading === nextProps.loading &&
+        prevProps.dragHandle === nextProps.dragHandle &&
+        JSON.stringify(prevProps.dataDashBoard) === JSON.stringify(nextProps.dataDashBoard) &&
+        JSON.stringify(prevProps.selectedRange) === JSON.stringify(nextProps.selectedRange)
+    );
+});
+
+MainChart.displayName = 'MainChart';
 
 export default MainChart;

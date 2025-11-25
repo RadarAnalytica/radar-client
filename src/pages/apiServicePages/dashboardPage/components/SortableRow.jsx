@@ -1,43 +1,93 @@
-import React from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { SortableContext, rectSortingStrategy } from '@dnd-kit/sortable';
+import { useDroppable } from '@dnd-kit/core';
 import { SortableBar } from './SortableBar';
 import styles from '../page/dashboardPage.module.css';
+import { horizontalListSortingStrategy, verticalListSortingStrategy, } from '@dnd-kit/sortable';
 
-export const SortableRow = ({ row, items, dataDashBoard, loading, children, isOver, isDraggingActive, overId, activeId, isOverValid, isActiveSpan12, selectedRange, activeBrand, authToken, filters, updateDataDashBoard }) => {
-    if (!row || !row.children || !Array.isArray(row.children)) {
+export const SortableRow = ({ row, items, dataDashBoard, loading, children, isDraggingActive, overId, activeId, activeRowId, overRowId, selectedRange, activeBrand, authToken, filters, updateDataDashBoard, stockAnalysisData }) => {
+    if (!row) {
         return null;
     }
+    const rowId = row?.rowId
 
-    // Если активный элемент имеет span 12 и эта строка подсвечена, добавляем контур строки
-    const rowOutline = isOver && isOverValid
-        ? `2px solid ${isOverValid ? '#5329FF' : '#FF3B3B'}`
-        : 'none';
+    // Делаем строку droppable, чтобы она определялась при наведении
+    const { setNodeRef, isOver: isDroppableOver } = useDroppable({
+        id: rowId,
+        data: {
+            type: 'container',
+            children: row.children ? row.children.map(child => child.id) : []
+        }
+    });
+    const getOutline = useCallback(() => {
+        if (!activeId) return 'none';
+        if (activeId && overRowId && overRowId !== rowId) return '2px solid #5329FF1A';
+        if (activeId && overRowId && overRowId === rowId) return '2px solid #5329FF';
+    }, [activeId, overRowId, rowId]);
+    const getStyles = useCallback(() => {
+        return {
+            outlineOffset: '2px',
+            borderRadius: '16px',
+            transition: 'outline 0.2s ease',
+            minHeight: '50px',
+        }
+    }, [activeId]);
+
+    const activeItem = useMemo(() => {
+        const activeElem = items?.find(item => item.id === activeId);
+        if (activeElem) {
+            return activeElem;
+        }
+        return null;
+    }, [activeId]);
+
+    const overElement = useMemo(() => {
+        const overElem = items?.find(item => item.id === overId);
+        if (overElem) {
+            return overElem;
+        }
+        return null;
+    }, [overId]);
+
+    const activeItemForSorting = useMemo(() => {
+        if (activeRowId !== overRowId && activeItem?.dropKey === overElement?.dropKey) {
+            return items?.find(item => item.id === activeId);
+        }
+        return undefined
+    }, [items, activeId, activeRowId, overRowId]);
 
     return (
         <div
+            ref={setNodeRef}
             className={styles.page__dndRow}
-            id={row?.rowId?.toString()}
+            id={rowId}
             style={{
-                outline: rowOutline,
-                outlineOffset: rowOutline !== 'none' ? '2px' : '0',
-                borderRadius: rowOutline !== 'none' ? '16px' : '0',
-                transition: 'outline 0.2s ease',
+                outline: getOutline(),
+                ...getStyles(),
             }}
         >
-            <SortableContext items={row.children.map((i) => i.id)} strategy={rectSortingStrategy}>
-                {row?.children?.map((bar) => (
+            <SortableContext items={(row?.children?.map((i) => i.id) ?? [])} strategy={rectSortingStrategy}>
+                {rowId !== 'addRow' && row?.children?.map((bar) => (
                     <SortableBar
                         key={bar?.id}
                         bar={bar}
                         dataDashBoard={dataDashBoard}
                         loading={loading}
-                        isOver={!isActiveSpan12 && overId === bar?.id}
+                        isOver={overId === bar?.id}
                         isDraggingActive={!!activeId}
-                        isOverValid={isOverValid}
+                        activeId={activeId}
+                        activeRowId={activeRowId}
+                        overRowId={overRowId}
+                        items={items}
                     >
-                        {bar?.render(bar, dataDashBoard, loading, selectedRange, activeBrand, authToken, filters, updateDataDashBoard)}
+                        {bar?.render(bar, dataDashBoard, loading, selectedRange, activeBrand, authToken, filters, updateDataDashBoard, stockAnalysisData)}
                     </SortableBar>
                 ))}
+                {rowId === 'addRow' &&
+                    <div className={styles.group__addRowContainer}>
+                        + Добавить строку
+                    </div>
+                }
             </SortableContext>
         </div>
     );

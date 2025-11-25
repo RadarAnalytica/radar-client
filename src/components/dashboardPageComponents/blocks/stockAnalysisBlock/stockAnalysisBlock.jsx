@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, useContext, memo } from 'react';
 import styles from './stockAnalysisBlock.module.css';
 import { Link } from 'react-router-dom';
 import { stockAnalysisTableConfig, CONFIG_VER } from './stockAnalysisBlockTableConfig';
@@ -12,7 +12,7 @@ import { ServiceFunctions } from '@/service/serviceFunctions';
 import { useLoadingProgress } from '@/service/hooks/useLoadingProgress';
 import { CURR_STOCK_ANALYSIS_TABLE_CONFIG_VER } from '@/pages/apiServicePages/stockAnalysisPage/shared';
 
-const StockAnalysisBlock = ({ dashboardLoading, dragHandle }) => {
+const StockAnalysisBlock = memo(({ dashboardLoading, dragHandle, data}) => {
 
     const { authToken } = useContext(AuthContext);
     const { isDemoMode } = useDemoMode();
@@ -21,7 +21,7 @@ const StockAnalysisBlock = ({ dashboardLoading, dragHandle }) => {
     const [stockAnalysisData, setStockAnalysisData] = useState([]); // это базовые данные для таблицы
     const [stockAnalysisFilteredData, setStockAnalysisFilteredData] = useState(); // это данные для таблицы c учетом поиска
     const [hasSelfCostPrice, setHasSelfCostPrice] = useState(false);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
     const progress = useLoadingProgress({ loading });
 
     const fetchAnalysisData = async () => {
@@ -52,15 +52,23 @@ const StockAnalysisBlock = ({ dashboardLoading, dragHandle }) => {
         }
     };
 
+    // useEffect(() => {
+    //     if (filters.activeBrand) {
+    //         fetchAnalysisData();
+    //     }
+    // }, [filters]);
+
     useEffect(() => {
-        if (filters.activeBrand) {
-            fetchAnalysisData();
+        if (data) {
+            setStockAnalysisData(data);
+            setStockAnalysisFilteredData(data);
+            setHasSelfCostPrice(data.every(_ => _.costPriceOne !== null));
         }
-    }, [filters]);
+    }, [data]);
 
 
 
-    if (loading || dashboardLoading) {
+    if (dashboardLoading) {
         return (
             <div className={styles.block}>
                 <div className={styles.bar__loaderWrapper}>
@@ -84,7 +92,7 @@ const StockAnalysisBlock = ({ dashboardLoading, dragHandle }) => {
             </div>
             <TableWidget
                 stockAnalysisFilteredData={stockAnalysisFilteredData || []}
-                loading={loading || dashboardLoading}
+                loading={dashboardLoading}
                 progress={progress.value}
                 //config={stockAnalysisTableConfig}
                 configVersion={CURR_STOCK_ANALYSIS_TABLE_CONFIG_VER}
@@ -95,6 +103,13 @@ const StockAnalysisBlock = ({ dashboardLoading, dragHandle }) => {
             />
         </div>
     );
-};
+}, (prevProps, nextProps) => {
+    // Кастомная функция сравнения для оптимизации ререндеров
+    return (
+        prevProps.dashboardLoading === nextProps.dashboardLoading &&
+        prevProps.dragHandle === nextProps.dragHandle &&
+        prevProps.stockAnalysisData === nextProps.stockAnalysisData
+    );
+});
 
 export default StockAnalysisBlock;
