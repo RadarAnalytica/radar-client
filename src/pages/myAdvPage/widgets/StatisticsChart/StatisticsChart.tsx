@@ -203,6 +203,7 @@ const StatisticsChart: React.FC<StatisticsChartProps> = ({ data, loading = false
             fill: false,
             data: dataValues,
             yAxisID: 'y',
+            tension: 0.4,
           };
         });
 

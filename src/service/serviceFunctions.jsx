@@ -2017,19 +2017,20 @@ export interface IPositionCheckMainTableData {
 			return res;
 	},
 
-	getAdvertData: async (token, requestObject) => {
+	getAdvertData: async (token, requestObject, sorting) => {
 		try {
-			const res = await fetchApi(
-				`/api/advert/list?page=${requestObject.page}&per_page=${requestObject.per_page}`,
-				{
-					method: 'POST',
-					headers: {
-						'content-type': 'application/json',
-						authorization: 'JWT ' + token,
-					},
-					body: JSON.stringify(requestObject)
-				}
-			);
+			let url = `/api/advert/list?page=${requestObject.page}&per_page=${requestObject.per_page}`;
+			if (sorting.sort_field && sorting.sort_order) {
+				url += `&sort_by=${sorting.sort_field}&sort_order=${sorting.sort_order?.toLowerCase()}`;
+			}
+			const res = await fetchApi(url, {
+				method: 'POST',
+				headers: {
+					'content-type': 'application/json',
+					authorization: 'JWT ' + token,
+				},
+				body: JSON.stringify(requestObject)
+			});
 
 			if (!res.ok) {
 				throw new Error('Ошибка запроса');

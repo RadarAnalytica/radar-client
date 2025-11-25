@@ -53,7 +53,7 @@ const MyAdvPage: React.FC = () => {
     progress.start();
     try {
       const requestObject = getRequestObject({...pageData, search_query: searchQuery}, selectedRange);
-      const response: ApiResponse = await ServiceFunctions.getAdvertData(authToken, requestObject);
+      const response: ApiResponse = await ServiceFunctions.getAdvertData(authToken, requestObject, sortState);
       if (response.total) {
         setPageData(prev => ({ ...prev, total_count: response.total }));
       }
@@ -87,7 +87,7 @@ const MyAdvPage: React.FC = () => {
         setLoading(false);
       }
     }
-  }, [searchQuery, selectedRange, activeBrand, pageData.page]);
+  }, [searchQuery, selectedRange, activeBrand, pageData.page, sortState]);
 
   // Обработчик поиска
   const handleSearch = (query: string) => {
