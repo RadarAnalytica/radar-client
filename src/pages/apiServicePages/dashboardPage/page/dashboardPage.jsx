@@ -60,7 +60,9 @@ import { SmallButton } from '@/shared';
 // Контекст для передачи listeners и attributes в DragHandle
 export const DragHandleContext = React.createContext(null);
 
-
+const DASHBOARD_CONFIG_VER = '1';
+const ROWS_STORAGE_KEY = 'dashboard_rows_config';
+const BARS_STORAGE_KEY = 'dashboard_bars_config';
 
 const rowsConfig = ['row-1', 'row-2', 'row-3', 'row-4', 'row-5', 'row-6', 'row-7', 'row-8'];
 
@@ -734,6 +736,27 @@ const barsConfig = [
     },
 ]
 
+const saveBarsConfig = (items, BARS_STORAGE_KEY, DASHBOARD_CONFIG_VER) => {
+    const serializableConfig = items.map(item => ({id: item.id, isVisible: item.isVisible, rowId: item.rowId}));
+    localStorage.setItem(BARS_STORAGE_KEY, JSON.stringify({ version: DASHBOARD_CONFIG_VER, items: serializableConfig }));
+}
+const inferBarsConfig = (barsConfig, savedConfig, DASHBOARD_CONFIG_VER) => {
+    if (!savedConfig) return barsConfig;
+    const { version, items } = savedConfig;
+    if (!version || !items) return barsConfig;
+    if (version !== DASHBOARD_CONFIG_VER) return barsConfig;
+    const updatedConfig = barsConfig.map(item => {
+        const savedItem = items.find(i => i.id === item.id);
+        if (savedItem) {
+            // Мержим сохраненные значения, включая isVisible
+            return { ...item, ...savedItem };
+        }
+        // Если элемент не найден в сохраненных, устанавливаем isVisible по умолчанию
+        return { ...item, isVisible: item.isVisible !== false };
+    })
+    return updatedConfig;
+}
+
 
 // Рендер непосредственно дашборда (карточек)
 const MainContent = React.memo(({
@@ -749,12 +772,15 @@ const MainContent = React.memo(({
     isSidebarHidden,
     visibilityMap,
     onSaveSettings,
-    stockAnalysisData
+    stockAnalysisData,
+    rows,
+    items,
+    setItems,
+    setRows
 }) => {
     const isLoading = loading || !isFiltersLoading; // Флаг загрузки данных
-    // Инициализируем items с начальным значением из configWithSettings
-    const [rows, setRows] = useState(rowsConfig);
-    const [items, setItems] = useState(barsConfig);
+    // const [rows, setRows] = useState(rowsConfig);
+    // const [items, setItems] = useState(barsConfig);
     const [overId, setOverId] = useState(null); // ID целевого элемента
     const [overRowId, setOverRowId] = useState(null); // ID целевой строки
     const [activeId, setActiveId] = useState(null); // ID активного элемента
@@ -890,6 +916,7 @@ const MainContent = React.memo(({
                 if (activeItemIndex !== -1 && targetItemIndex !== -1) {
                     const arr = arrayMove(newItems, activeItemIndex, targetItemIndex);
                     setItems(arr);
+                    saveBarsConfig(arr, BARS_STORAGE_KEY, DASHBOARD_CONFIG_VER);
                     tempItemsRef.current = null;
                     tempOverRowIdRef.current = null;
 
@@ -919,7 +946,9 @@ const MainContent = React.memo(({
 
 
                 setRows(newRows);
+                localStorage.setItem(ROWS_STORAGE_KEY, JSON.stringify({ version: DASHBOARD_CONFIG_VER, rows: newRows }));
                 setItems(newItems);
+                saveBarsConfig(newItems, BARS_STORAGE_KEY, DASHBOARD_CONFIG_VER);
                 setActiveId(null);
                 setActiveRowId(null);
                 setOverId(null);
@@ -937,6 +966,7 @@ const MainContent = React.memo(({
 
                     if (targetRowIndex !== -1 && activeRowIndex !== -1) {
                         const arr = arrayMove(prevRows, activeRowIndex, targetRowIndex);
+                        localStorage.setItem(ROWS_STORAGE_KEY, JSON.stringify({ version: DASHBOARD_CONFIG_VER, rows: arr.filter(r => r !== 'addRow') }));
                         return arr.filter(r => r !== 'addRow');
                     }
                     return prevRows.filter(r => r !== 'addRow');
@@ -960,6 +990,7 @@ const MainContent = React.memo(({
 
                     if (targetRowIndex !== -1 && activeRowIndex !== -1) {
                         const arr = arrayMove(prevRows, activeRowIndex, targetRowIndex);
+                        localStorage.setItem(ROWS_STORAGE_KEY, JSON.stringify({ version: DASHBOARD_CONFIG_VER, rows: arr.filter(r => r !== 'addRow') }));
                         return arr.filter(r => r !== 'addRow');
                     }
                     return prevRows.filter(r => r !== 'addRow');
@@ -982,6 +1013,7 @@ const MainContent = React.memo(({
 
                     if (targetRowIndex !== -1 && activeRowIndex !== -1) {
                         const arr = arrayMove(prevRows, activeRowIndex, targetRowIndex);
+                        localStorage.setItem(ROWS_STORAGE_KEY, JSON.stringify({ version: DASHBOARD_CONFIG_VER, rows: arr.filter(r => r !== 'addRow') }));
                         return arr.filter(r => r !== 'addRow');
                     }
                     return prevRows.filter(r => r !== 'addRow');
@@ -1023,6 +1055,7 @@ const MainContent = React.memo(({
                             return item;
                         })
                         setItems(newItems); // ИСПРАВЛЕНИЕ: используем newItems
+                        saveBarsConfig(newItems, BARS_STORAGE_KEY, DASHBOARD_CONFIG_VER);
                         tempItemsRef.current = null;
                         tempOverRowIdRef.current = null;
 
@@ -1108,6 +1141,8 @@ const _DashboardPage = () => {
     const { isSidebarHidden } = useAppSelector((state) => state.utils);
     const [isSettingsOpen, setIsSettingsOpen] = useState(false);
     const [stockAnalysisData, setStockAnalysisData] = useState([]);
+    const [rows, setRows] = useState(rowsConfig);
+    const [items, setItems] = useState(barsConfig);
     const [pageState, setPageState] = useState({
         dataDashBoard: null,
         loading: true,
@@ -1179,6 +1214,26 @@ const _DashboardPage = () => {
         }
     }, [activeBrand, selectedRange, isFiltersLoaded, activeBrandName, activeArticle, activeGroup]);
 
+    useEffect(() => {
+        const savedRows = localStorage.getItem(ROWS_STORAGE_KEY);
+        const savedBars = localStorage.getItem(BARS_STORAGE_KEY);
+        if (savedRows) {
+            const { version, rows } = JSON.parse(savedRows);
+            if (!version || !rows) return;
+            if (version !== DASHBOARD_CONFIG_VER) return;
+            setRows(rows);
+        }
+        if (savedBars) {
+            try {
+                const parsed = JSON.parse(savedBars);
+                const updatedConfig = inferBarsConfig(barsConfig, parsed, DASHBOARD_CONFIG_VER);
+                setItems(updatedConfig);
+            } catch (error) {
+                console.error('Error parsing saved bars config:', error);
+            }
+        }   
+    }, []);
+
     return (
         <main className={styles.page}>
             <MobilePlug />
@@ -1241,13 +1296,21 @@ const _DashboardPage = () => {
                         updateDataDashBoard={updateDataDashBoard}
                         isSidebarHidden={isSidebarHidden}
                         stockAnalysisData={stockAnalysisData}
+                        rows={rows}
+                        items={items}
+                        setItems={setItems}
+                        setRows={setRows}
                     />
                 </DndContext>
 
                 <SettingsModal
                     isOpen={isSettingsOpen}
                     setIsOpen={setIsSettingsOpen}
-                    barsConfig={barsConfig}
+                    BARS_STORAGE_KEY={BARS_STORAGE_KEY}
+                    DASHBOARD_CONFIG_VER={DASHBOARD_CONFIG_VER}
+                    items={items}
+                    setItems={setItems}
+                    onSave={saveBarsConfig}
                 />
             </section>
         </main>

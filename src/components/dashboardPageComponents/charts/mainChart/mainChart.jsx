@@ -24,7 +24,6 @@ ChartJS.register(
 );
 
 const MainChart = memo(({ title, loading, dataDashBoard, selectedRange, dragHandle }) => {
-    console.log('main chart render')
     const [chartData, setChartData] = useState();
     const [days, setDays] = useState();
     const [controlsState, setControlsState] = useState({
