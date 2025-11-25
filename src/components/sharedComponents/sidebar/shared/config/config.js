@@ -148,6 +148,13 @@ export const menuConfig = [
         children: [
             {
                 id: 1,
+                url: '/my-adv',
+                label: 'Моя реклама',
+                isActive: true,
+                isNew: true
+            },
+            {
+                id: 2,
                 url: '/control/drr',
                 label: 'Контроль ДРР',
                 isActive: true,
