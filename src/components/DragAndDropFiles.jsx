@@ -87,14 +87,14 @@ function DragDropFile({ files, setFiles }) {
               strokeWidth='1.5'
             />
           </svg>
-          <h5 className='fw-bold'>Перетащите файл сюда</h5>
-          <span className='clue-text'>или нажмите на кнопку</span>
+          <h5 className='fw-bold' style={{ fontSize: '14px' }}>Перетащите файл сюда</h5>
+          <span className='clue-text' style={{ fontSize: '12px' }}>или нажмите на кнопку</span>
           <button
             className='prime-btn'
-            style={{ width: '100%', height: '52px' }}
+            style={{ width: '100%', height: '46px', display: 'flex', alignItems: 'center', justifyContent: 'center', minWidth: '220px' }}
             onClick={onButtonClick}
           >
-            Выбрать файл
+            <span style={{ fontSize: '14px' }}>Выбрать файл</span>
           </button>
         </div>
       </label>

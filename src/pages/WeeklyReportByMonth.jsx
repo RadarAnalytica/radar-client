@@ -63,6 +63,7 @@ const tableConfig = [
         key: 'purchases',
         units: '₽',
         compareUnits: 'шт',
+        width: 150,
         style: {
           background: '#F7F6FE',
           verticalAlign: 'middle',
@@ -75,6 +76,7 @@ const tableConfig = [
         key: 'return',
         units: '₽',
         compareUnits: 'шт',
+        width: 150,
         style: {
           background: '#F7F6FE',
           verticalAlign: 'middle',
@@ -87,6 +89,7 @@ const tableConfig = [
         key: 'revenue',
         units: '₽',
         compareUnits: 'шт',
+        width: 150,
         style: {
           background: '#F7F6FE',
           verticalAlign: 'middle',
@@ -98,6 +101,7 @@ const tableConfig = [
         dataIndex: 'avg_check',
         key: 'avg_check',
         units: '₽',
+        width: 150,
         style: {
           background: '#F7F6FE',
           verticalAlign: 'middle',
@@ -109,6 +113,7 @@ const tableConfig = [
         dataIndex: 'avg_spp',
         key: 'avg_spp',
         units: '%',
+        width: 150,
         style: {
           background: '#F7F6FE',
           verticalAlign: 'middle',
@@ -120,6 +125,7 @@ const tableConfig = [
         dataIndex: 'purchase_percent',
         key: 'purchase_percent',
         units: '%',
+        width: 150,
         style: {
           background: '#F7F6FE',
           verticalAlign: 'middle',
@@ -145,6 +151,7 @@ const tableConfig = [
         dataIndex: 'cost_price',
         key: 'cost_price',
         units: '₽',
+        width: 150,
         style: {
           background: '#F7F6FE',
           verticalAlign: 'middle',
@@ -156,6 +163,7 @@ const tableConfig = [
         dataIndex: 'cost_price_per_one',
         key: 'cost_price_per_one',
         units: '₽',
+        width: 150,
         style: {
           background: '#F7F6FE',
           verticalAlign: 'middle',
@@ -181,6 +189,7 @@ const tableConfig = [
         dataIndex: 'deliveries',
         key: 'deliveries',
         units: 'шт',
+        width: 150,
         style: {
           background: '#F7F6FE',
           verticalAlign: 'middle',
@@ -192,6 +201,7 @@ const tableConfig = [
         dataIndex: 'wb_commission',
         key: 'wb_commission',
         units: '₽',
+        width: 150,
         style: {
           background: '#F7F6FE',
           verticalAlign: 'middle',
@@ -203,6 +213,7 @@ const tableConfig = [
         dataIndex: 'acquiring',
         key: 'acquiring',
         units: '₽',
+        width: 150,
         style: {
           background: '#F7F6FE',
           verticalAlign: 'middle',
@@ -214,6 +225,7 @@ const tableConfig = [
         dataIndex: 'logistics_straight',
         key: 'logistics_straight',
         units: '₽',
+        width: 150,
         style: {
           background: '#F7F6FE',
           verticalAlign: 'middle',
@@ -225,6 +237,7 @@ const tableConfig = [
         dataIndex: 'logistics_reverse',
         key: 'logistics_reverse',
         units: '₽',
+        width: 150,
         style: {
           background: '#F7F6FE',
           verticalAlign: 'middle',
@@ -236,6 +249,7 @@ const tableConfig = [
         dataIndex: 'logistics_total',
         key: 'logistics_total',
         units: '₽',
+        width: 150,
         style: {
           background: '#F7F6FE',
           verticalAlign: 'middle',
@@ -247,6 +261,7 @@ const tableConfig = [
         dataIndex: 'logistics_per_product',
         key: 'logistics_per_product',
         units: '₽',
+        width: 150,
         style: {
           background: '#F7F6FE',
           verticalAlign: 'middle',
@@ -272,6 +287,7 @@ const tableConfig = [
         dataIndex: 'compensation_defects',
         key: 'compensation_defects',
         units: '₽',
+        width: 150,
         style: {
           background: '#F7F6FE',
           verticalAlign: 'middle',
@@ -294,6 +310,7 @@ const tableConfig = [
         dataIndex: 'compensation_damage',
         key: 'compensation_damage',
         units: '₽',
+        width: 150,
         style: {
           background: '#F7F6FE',
           verticalAlign: 'middle',
@@ -316,6 +333,7 @@ const tableConfig = [
         dataIndex: 'penalties',
         key: 'penalties',
         units: '₽',
+        width: 150,
         style: {
           background: '#F7F6FE',
           verticalAlign: 'middle',
@@ -327,6 +345,7 @@ const tableConfig = [
         dataIndex: 'additional_payments',
         key: 'additional_payments',
         units: '₽',
+        width: 150,
         style: {
           background: '#F7F6FE',
           verticalAlign: 'middle',
@@ -352,6 +371,7 @@ const tableConfig = [
         dataIndex: 'storage',
         key: 'storage',
         units: '₽',
+        width: 150,
         style: {
           background: '#F7F6FE',
           verticalAlign: 'middle',
@@ -363,6 +383,7 @@ const tableConfig = [
         dataIndex: 'other_retentions',
         key: 'other_retentions',
         units: '₽',
+        width: 150,
         style: {
           background: '#F7F6FE',
           verticalAlign: 'middle',
@@ -374,6 +395,7 @@ const tableConfig = [
         dataIndex: 'acceptance',
         key: 'acceptance',
         units: '₽',
+        width: 150,
         style: {
           background: '#F7F6FE',
           verticalAlign: 'middle',
@@ -384,6 +406,7 @@ const tableConfig = [
         title: "Все удержания WB",
         dataIndex: 'compensation_penalties',
         key: 'compensation_penalties',
+        width: 150,
         style: {
           background: '#F7F6FE',
           verticalAlign: 'middle',
@@ -409,6 +432,7 @@ const tableConfig = [
         dataIndex: 'self_purchase_costs',
         key: 'self_purchase_costs',
         units: '₽',
+        width: 150,
         style: {
           background: '#F7F6FE',
           verticalAlign: 'middle',
@@ -420,6 +444,7 @@ const tableConfig = [
         dataIndex: 'expenses_percent',
         key: 'expenses_percent',
         units: '%',
+        width: 150,
         style: {
           background: '#F7F6FE',
           verticalAlign: 'middle',
@@ -431,6 +456,7 @@ const tableConfig = [
         dataIndex: 'external_expenses',
         key: 'external_expenses',
         units: '₽',
+        width: 150,
         style: {
           background: '#F7F6FE',
           verticalAlign: 'middle',
@@ -456,6 +482,7 @@ const tableConfig = [
         dataIndex: 'sold_by_wb',
         key: 'sold_by_wb',
         units: '₽',
+        width: 150,
         style: {
           background: '#F7F6FE',
           verticalAlign: 'middle',
@@ -467,6 +494,7 @@ const tableConfig = [
         dataIndex: 'tax_base',
         key: 'tax_base',
         units: '₽',
+        width: 150,
         style: {
           background: '#F7F6FE',
           verticalAlign: 'middle',
@@ -478,6 +506,7 @@ const tableConfig = [
         dataIndex: 'tax',
         key: 'tax',
         units: '₽',
+        width: 150,
         style: {
           background: '#F7F6FE',
           verticalAlign: 'middle',
@@ -495,6 +524,7 @@ const tableConfig = [
       zIndex: 3,
       color: 'black',
       fontSize: '18px',
+
     },
     children: [
       {
@@ -502,6 +532,7 @@ const tableConfig = [
         dataIndex: 'payment',
         key: 'payment',
         units: '₽',
+        width: 150,
         style: {
           background: '#F7F6FE',
           verticalAlign: 'middle',
@@ -513,6 +544,7 @@ const tableConfig = [
         dataIndex: 'profit',
         key: 'profit',
         units: '₽',
+        width: 150,
         style: {
           background: '#F7F6FE',
           verticalAlign: 'middle',
@@ -524,6 +556,7 @@ const tableConfig = [
         dataIndex: 'profit_per_one',
         key: 'profit_per_one',
         units: '₽',
+        width: 150,
         style: {
           background: '#F7F6FE',
           verticalAlign: 'middle',
@@ -535,6 +568,7 @@ const tableConfig = [
         dataIndex: 'marginality',
         key: 'marginality',
         units: '%',
+        width: 150,
         style: {
           background: '#F7F6FE',
           verticalAlign: 'middle',
@@ -546,10 +580,12 @@ const tableConfig = [
         dataIndex: 'return_on_investment',
         key: 'return_on_investment',
         units: '%',
+        width: 150,
         style: {
           background: '#F7F6FE',
           verticalAlign: 'middle',
           fontSize: '14px',
+          borderRadius: '0 12px 12px 0',
         }
       },
     ]
@@ -732,8 +768,9 @@ const WeeklyReportByMonth = () => {
 
         {tableData?.length > 0 && !loading &&
           <div className={styles.tableContainerWrapper}>
-             <div className={styles.tableContainer} ref={tableContainerRef}>
+            <div className={styles.tableContainer} ref={tableContainerRef}>
               <RadarTable
+                resizeable
                 rowKey={(record) => record.rowKey}
                 config={tableConfig}
                 dataSource={tableData}
@@ -741,7 +778,7 @@ const WeeklyReportByMonth = () => {
                 preset='radar-table-simple'
                 pagination={false}
                 stickyHeader
-                style={{ tableLayout: 'fixed', width: 'max-content', minWidth: '100%' }}
+                style={{ tableLayout: 'fixed', width: 'max-content', minWidth: '100%', marginRight: '16px' }}
                 paginationContainerStyle={{ display: 'none' }}
                 indentSize={45}
                 expandedRowKeys={expandedRowKeys}

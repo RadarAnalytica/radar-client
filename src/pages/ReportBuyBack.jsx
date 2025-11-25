@@ -115,7 +115,7 @@ const ReportBuyBack = () => {
             <div className={styles.primeCostBox}>
               <img src={buyback} alt='buyback' />
               <div className={styles.primeCostBoxText}>
-                <span className={styles.title}>Самовыкупы</span>
+                <span className={styles.title}>Выкуп товара</span>
                 {selfBuyoutStatus && (
                   <span className={styles.lastDownlaod}>
                     {selfBuyoutStatus}
@@ -124,7 +124,7 @@ const ReportBuyBack = () => {
               </div>
 
               <div className={styles.primeCostBoxButton}>
-                <button onClick={() => handleCostPriceShow()}>
+                <button onClick={() => handleCostPriceShow()} style={{ backgroundColor: '#0069FF' }}>
                   Загрузить самовыкупы
                 </button>
               </div>
@@ -145,7 +145,7 @@ const ReportBuyBack = () => {
           <div className='d-flex align-items-center gap-2'>
             <div style={{ width: '100%' }}>
               <div className='d-flex justify-content-between'>
-                <h4 className='fw-bold mb-0'>Установка самовыкупов</h4>
+                <h4 className='fw-bold mb-0' style={{ fontSize: '18px' }}>Установка самовыкупов</h4>
               </div>
             </div>
           </div>
@@ -169,14 +169,14 @@ const ReportBuyBack = () => {
                       strokeWidth='1.5'
                     />
                   </svg>
-                  <span>{file ? file.name : ''}</span>
+                  <span style={{ fontSize: '14px' }}>{file ? file.name : ''}</span>
                 </div>
                 <div>
                   <a
                     href='#'
                     className='link'
                     onClick={() => setFile(null)}
-                    style={{ color: 'red', cursor: 'pointer' }}
+                    style={{ color: 'red', cursor: 'pointer', fontSize: '14px' }}
                   >
                     Удалить
                   </a>
@@ -188,12 +188,12 @@ const ReportBuyBack = () => {
                   className='prime-btn'
                   style={{ height: '52px' }}
                   disabled={isFileUpload}
-                >
-                  Сохранить
+                  >
+                    <span style={{ fontSize: '14px' }}>Сохранить</span>
                 </button>
               </div>
-              <div className='d-flex justify-content-center w-100 mt-2 gap-2'>
-                <a href='#' className='link' onClick={handleCostPriceClose}>
+              <div className='d-flex justify-content-center w-100 gap-2'>
+                <a href='#' className='link' onClick={handleCostPriceClose} style={{ fontSize: '14px' }}>
                   Отмена
                 </a>
               </div>

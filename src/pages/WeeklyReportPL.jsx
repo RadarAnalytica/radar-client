@@ -27,7 +27,7 @@ const tableConfig = [{
 }]
 
 const getTableConfig = (plData) => {
-  const newTableConfig = tableConfig;
+  const newTableConfig = [...tableConfig]; // Создаем копию массива, а не ссылку
 
   plData.forEach(item => {
     const isInList = newTableConfig.some(config => config.dataIndex === item.date);
@@ -87,7 +87,6 @@ const getTableData = (plData) => {
 
 
 const customCellRender = (value, record, index, dataIndex) => {
-  console.log(record)
   if (dataIndex === 'value') {
     return <div className={styles.customCell}
       style={{ fontWeight: record.isBold ? '700' : '500', backgroundColor: record.hasBg ? '#F6F4FF' : 'transparent' }}
@@ -128,8 +127,8 @@ const WeeklyReportPL = () => {
 
   useEffect(() => {
     if (plData && plData.length > 0) {
-      setTableConfig([...getTableConfig(plData)]);
-      setTableData(getTableData(plData));
+      setTableConfig(() => getTableConfig(plData));
+      setTableData(() => getTableData(plData));
     }
   }, [plData]);
 
@@ -175,15 +174,17 @@ const WeeklyReportPL = () => {
           </div>
         }
 
-        {plData && plData.length > 0 && !isLoading &&
+        {tableData && tableData.length > 0 && !isLoading &&
           <div className={styles.tableContainerWrapper}>
             <div className={styles.tableContainer} ref={tableContainerRef}>
               <RadarTable
-                config={[...getTableConfig(plData, tableConfig)]}
-                dataSource={getTableData(plData)}
+                key={tableData.length}
+                config={[...tableConfig]}
+                dataSource={tableData}
                 preset='radar-table-default'
                 pagination={false}
-                style={{ tableLayout: 'fixed', width: 'max-content', minWidth: '100%' }}
+                // resizeable
+                style={{ tableLayout: 'fixed',}}
                 paginationContainerStyle={{ display: 'none' }}
                 scrollContainerRef={tableContainerRef}
                 stickyHeader={-8}

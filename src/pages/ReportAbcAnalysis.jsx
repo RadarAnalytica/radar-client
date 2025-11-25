@@ -89,7 +89,7 @@ const getTableData = (data) => {
     wb_id: item.wb_id,
     rowKey: item.wb_id,
     children: item.items.map((child) => ({
-      ...item,
+      ...child,
       wb_id: child.title,
       isChild: true,
       rowKey: child.barcode,
