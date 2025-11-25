@@ -83,6 +83,8 @@ const KeywordsSelectionPage = React.lazy(() => import("@/pages/KeywordsSelection
 const PositionTrackingMainPage = React.lazy(() => import("@/pages/PositionTracking/PositionTrackingMainPage"));
 const PositionTrackingProjectsPage = React.lazy(() => import("@/pages/PositionTracking/PositionTrackingProjectsPage"));
 const PositionTrackingSkuPage = React.lazy(() => import("@/pages/PositionTracking/PositionTrackingSkuPage"));
+const MyAdvPage = React.lazy(() => import("@/pages/myAdvPage/myAdvPage"));
+const CompanyAdvPage = React.lazy(() => import("@/pages/myAdvPage/companyAdvPage"));
 
 // During migration, allow missing props on ProtectedRoute
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -173,6 +175,8 @@ function App() {
                 <Route path='/position-tracking' element={<ProtectedRoute expireProtected routeRuName='Трекинг позиций'><PositionTrackingMainPage /></ProtectedRoute>} />
                 <Route path='/position-tracking/projects' element={<ProtectedRoute expireProtected routeRuName='Трекинг позиций'><PositionTrackingProjectsPage /></ProtectedRoute>} />
                 <Route path='/position-tracking/:sku' element={<ProtectedRoute expireProtected routeRuName='Трекинг позиций'><PositionTrackingSkuPage /></ProtectedRoute>} />
+                <Route path='/my-adv' element={<ProtectedRoute expireProtected routeRuName='Мои реклама'><MyAdvPage /></ProtectedRoute>} />
+                <Route path='/my-adv/:companyId' element={<ProtectedRoute expireProtected routeRuName='Мои реклама'><CompanyAdvPage /></ProtectedRoute>} />
                 {/* Public routes */}
                 <Route path='/admin/article/demo/:slugOrId' element={<Suspense fallback={<LoaderPage />}><ArticleViewPage /></Suspense>} />
                 <Route path='/calculate' element={<Suspense fallback={<LoaderPage />}>{deviceRegexp.test(userAgent) ? <UnitCalculatorPage /> : <UnitCalculatorPageDesktop />}</Suspense>} />

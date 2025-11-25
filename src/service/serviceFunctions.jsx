@@ -5,7 +5,8 @@ import moment from 'moment';
 import { fetchApi } from './fetchApi';
 
 export const getRequestObject = (filters, selectedRange, shopId) => {
-	let requestObject = {
+	const requestObject = {
+		...filters,
 		articles: null,
 		product_groups: null,
 		brands: null,
@@ -2121,6 +2122,61 @@ export interface IPositionCheckMainTableData {
 				}
 			);
 			return res;
+	},
+
+	getAdvertData: async (token, requestObject, sorting) => {
+		try {
+			let url = `/api/advert/list?page=${requestObject.page}&per_page=${requestObject.per_page}`;
+			if (sorting.sort_field && sorting.sort_order) {
+				url += `&sort_by=${sorting.sort_field}&sort_order=${sorting.sort_order?.toLowerCase()}`;
+			}
+			const res = await fetchApi(url, {
+				method: 'POST',
+				headers: {
+					'content-type': 'application/json',
+					authorization: 'JWT ' + token,
+				},
+				body: JSON.stringify(requestObject)
+			});
+
+			if (!res.ok) {
+				throw new Error('Ошибка запроса');
+			}
+
+			return res.json();
+		} catch (error) {
+			console.error('getAllOperatingExpensesExpense ', error);
+			throw new Error(error);
+		}
+	},
+
+	getAdvertDataById: async (token, id, requestObject, sorting) => {
+		try {
+			let url = `/api/advert/?adv_id=${id}`;
+			if (sorting.sort_field && sorting.sort_order) {
+				url += `&sort_by=${sorting.sort_field}&sort_order=${sorting.sort_order?.toLowerCase()}`;
+			}
+			const res = await fetchApi(
+				url,
+				{
+					method: 'POST',
+					headers: {
+						'content-type': 'application/json',
+						authorization: 'JWT ' + token,
+					},
+					body: JSON.stringify(requestObject)
+				}
+			);
+
+			if (!res.ok) {
+				throw new Error('Ошибка запроса');
+			}
+
+			return res.json();
+		} catch (error) {
+			console.error('getAllOperatingExpensesExpense ', error);
+			throw new Error(error);
+		}
 	},
 };
 

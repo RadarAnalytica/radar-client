@@ -114,7 +114,6 @@ const MainChart = ({ title, loading, dataDashBoard, selectedRange, dragHandle })
             }
 
             {isModalOpen &&
-
                 <MainChartModal
                     isModalOpen={isModalOpen}
                     setIsModalOpen={setIsModalOpen}
