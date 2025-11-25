@@ -65,7 +65,7 @@ const CompanyAdvPage: React.FC = () => {
     progress.start();
     try {
       const requestObject = getRequestObject({}, selectedRange);
-      const response = await ServiceFunctions.getAdvertDataById(authToken, companyId, requestObject);
+      const response = await ServiceFunctions.getAdvertDataById(authToken, companyId, requestObject, sortState);
       const preparedData = prepareTableData(response);
       setData(response);
       setTableData(preparedData);
@@ -95,7 +95,7 @@ const CompanyAdvPage: React.FC = () => {
     if (companyId) {
       loadData();
     }
-  }, [companyId]);
+  }, [companyId, selectedRange, sortState]);
 
   // Обработчик изменения конфигурации таблицы
   const handleTableConfigChange = (newConfig: ColumnConfig[]) => {

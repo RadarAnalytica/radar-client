@@ -2043,10 +2043,14 @@ export interface IPositionCheckMainTableData {
 		}
 	},
 
-	getAdvertDataById: async (token, id, requestObject) => {
+	getAdvertDataById: async (token, id, requestObject, sorting) => {
 		try {
+			let url = `/api/advert/?adv_id=${id}`;
+			if (sorting.sort_field && sorting.sort_order) {
+				url += `&sort_by=${sorting.sort_field}&sort_order=${sorting.sort_order?.toLowerCase()}`;
+			}
 			const res = await fetchApi(
-				`/api/advert/?adv_id=${id}`,
+				url,
 				{
 					method: 'POST',
 					headers: {
