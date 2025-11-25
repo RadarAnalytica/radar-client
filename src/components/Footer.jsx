@@ -193,7 +193,7 @@ const Footer = ({ isWide }) => {
             </a>
           </div>
           <div className='col pt-1 footer-col'>
-            <h6 className='fw-bold'>О компании</h6>
+            <h6 className='fw-bold'>О кампании</h6>
             <a className='footer-link' href='#'>
               О нас
             </a>

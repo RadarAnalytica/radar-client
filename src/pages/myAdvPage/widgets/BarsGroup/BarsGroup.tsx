@@ -20,7 +20,7 @@ const BarsGroup: React.FC<BarsGroupProps> = ({ data = {}, loadData, loading = fa
               {data.company_name}
             </div>
             <div className={styles.campaignBar__left__content}>
-              <div className={`${styles.campaignBar__badge} ${styles.campaignBar__status}`}>{data.company_status}</div>
+              <div className={`${styles.campaignBar__badge} ${styles.campaignBar__status} ${data.company_status === 'Активна' ? styles.campaignBar__status_active : data.company_status === 'На паузе' ? styles.campaignBar__status_paused : styles.campaignBar__status_completed}`}>{data.company_status}</div>
               <div className={`${styles.campaignBar__badge} ${styles.campaignBar__type}`}>{data.company_type}</div>
               <div className={styles.campaignBar__created}>
                 <span className={styles.campaignBar__label}>Создана:</span>

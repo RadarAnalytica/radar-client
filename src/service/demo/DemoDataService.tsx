@@ -32,7 +32,9 @@ import rnpFiltersData from './mock/rnp-filters.json';
 import serpRegions from './mock/serp-regions.json';
 import wbControlsData from './mock/wb-controls.json';
 import serpQueryData from './mock/serp-query-data.json';
-import keywordsSelectionData from './mock/position-check/positionCheckMainData.json'
+import keywordsSelectionData from './mock/position-check/positionCheckMainData.json';
+import advertListData from './mock/my-adv-list.json';
+import advertCompanyData from './mock/my-adv-company.json';
 
 export class DemoDataService {
   private static instance: DemoDataService;
@@ -48,56 +50,56 @@ export class DemoDataService {
 
   // Получить данные для конкретного эндпоинта
   public async getDataForEndpoint(endpoint: string, filters?: any, options?: any): Promise<any> {
-    endpoint = endpoint.split('?')[0];
+    const baseEndpoint = endpoint.split('?')[0];
 
-    if (!endpoint) {
+    if (!baseEndpoint) {
       console.error('DemoDataService: No endpoint provided');
       return null;
     }
 
     // Сначала проверяем специализированные сервисы
     // Supplier Analysis маршруты
-    if (endpoint.includes('/supplier-analysis/')) {
+    if (baseEndpoint.includes('/supplier-analysis/')) {
       const { SupplierAnalysisDemoDataService } = await import('./SupplierAnalysisDemoDataService');
       const supplierService = SupplierAnalysisDemoDataService.getInstance();
-      const supplierMatch = supplierService.getDataForEndpoint(endpoint, filters, options);
+      const supplierMatch = supplierService.getDataForEndpoint(baseEndpoint, filters, options);
       if (supplierMatch) return supplierMatch;
     }
 
     // SKU Analysis маршруты
-    if (endpoint.includes('/product-analysis/')) {
+    if (baseEndpoint.includes('/product-analysis/')) {
       const { SkuAnalysisDemoDataService } = await import('./SkuAnalysisDemoDataService');
       const skuService = SkuAnalysisDemoDataService.getInstance();
-      const skuMatch = skuService.getDataForEndpoint(endpoint, filters, options);
+      const skuMatch = skuService.getDataForEndpoint(baseEndpoint, filters, options);
       if (skuMatch) return skuMatch;
     }
 
     // Position Check маршруты
-    if (endpoint.includes('/position-track/')) {
+    if (baseEndpoint.includes('/position-track/')) {
       const { PositionCheckDemoDataService } = await import('./PositionCheckDemoDataService');
       const positionCheckService = PositionCheckDemoDataService.getInstance();
-      const positionCheckMatch = positionCheckService.getDataForEndpoint(endpoint, filters, options);
+      const positionCheckMatch = positionCheckService.getDataForEndpoint(baseEndpoint, filters, options);
       if (positionCheckMatch) return positionCheckMatch;
     }
 
     // Пробуем точное совпадение
-    const exactMatch = this.getExactMatch(endpoint, filters);
+    const exactMatch = this.getExactMatch(baseEndpoint, filters, options);
     if (exactMatch) {
       return exactMatch;
     }
 
     // Пробуем совпадение по паттерну для URL с динамическими параметрами
-    const patternMatch = this.getPatternMatch(endpoint, filters);
+    const patternMatch = this.getPatternMatch(baseEndpoint, filters);
     if (patternMatch) {
       return patternMatch;
     }
 
-    console.error('DemoDataService: No handler found for endpoint:', endpoint);
+    console.error('DemoDataService: No handler found for endpoint:', baseEndpoint);
     return null;
   }
 
   // Точное совпадение эндпоинтов
-  protected getExactMatch(endpoint: string, filters?: any): any {
+  protected getExactMatch(endpoint: string, filters?: any, options?: any): any {
     const endpointMap: Record<string, () => any> = {
       '/api/dashboard/': () => this.getDashboardData(filters),
       '/api/prod_analytic/': () => this.getStockAnalysisData(filters),
@@ -125,6 +127,8 @@ export class DemoDataService {
       '/api/operating-expenses/periodic-expense/get': () => this.getPeriodicExpenseData(),
       '/api/control/spp': () => this.getWbControlsData(filters),
       '/api/control/drr': () => this.getWbControlsData(filters),
+      '/api/advert/list': () => this.getAdvertData(filters, JSON.parse(options?.body)),
+      '/api/advert/': () => this.getAdvertCompanyData(filters),
       '/api/product/self-costs': () => ({ message: "Success", updated_items: [{ product: 'Демо', cost: 100, fulfillment: 100 }] }),
       '/api/msg/': () => ([]),
       'https://radarmarket.ru/api/web-service/monitoring-oracle/easy/get': () => this.getEasyMonitoringData(),
@@ -256,6 +260,80 @@ export class DemoDataService {
 
   private getTurnOverData(): any {
     return turnOverData;
+  }
+
+  private getAdvertData(filters?: any, requestObject?: any): any {
+    let data = this.getOriginalJson(advertListData);
+    const days = this.getFilterDays(filters);
+    const denominator = 90 / days;
+
+    // Фильтрация по search_query, если он есть
+    if (requestObject?.search_query && requestObject.search_query.trim() !== '') {
+      const searchQuery = requestObject.search_query.toLowerCase().trim();
+      data = data.filter((item: any) => 
+        item.company_name?.toLowerCase().includes(searchQuery)
+      );
+    }
+
+    // Деление всех числовых значений на denominator
+    data = data.map((item: any) => {
+      const processedItem = { ...item };
+      
+      if (processedItem.advert_funnel) {
+        processedItem.advert_funnel = { ...processedItem.advert_funnel };
+        Object.keys(processedItem.advert_funnel).forEach(key => {
+          if (typeof processedItem.advert_funnel[key] === 'number') {
+            processedItem.advert_funnel[key] = processedItem.advert_funnel[key] / denominator;
+          }
+        });
+      }
+      
+      if (processedItem.advert_statistics) {
+        processedItem.advert_statistics = { ...processedItem.advert_statistics };
+        Object.keys(processedItem.advert_statistics).forEach(key => {
+          if (typeof processedItem.advert_statistics[key] === 'number') {
+            processedItem.advert_statistics[key] = processedItem.advert_statistics[key] / denominator;
+          }
+        });
+      }
+      
+      return processedItem;
+    });
+
+    return {
+      data,
+      page: 1,
+      per_page: 25,
+      total_count: data.length,
+    };
+  }
+
+  private getAdvertCompanyData(filters?: any): any {
+    let data = this.getOriginalJson(advertCompanyData);
+    const days = this.getFilterDays(filters);
+    
+    // Определяем конечную дату
+    let dayTo = new Date().toISOString().split('T')[0];
+    if (filters?.selectedRange?.to) {
+      dayTo = filters.selectedRange.to;
+    }
+    
+    // Обрезаем массив date_data до нужного количества дней (берем последние days элементов)
+    if (Array.isArray(data.date_data)) {
+      data.date_data = data.date_data.slice(-days);
+      
+      // Обновляем даты, начиная от dayTo и идя в прошлое
+      data.date_data = data.date_data.map((item: any, index: number) => {
+        const date = new Date(dayTo);
+        date.setDate(date.getDate() - (days - 1 - index));
+        return {
+          ...item,
+          date: date.toISOString().split('T')[0] // Формат YYYY-MM-DD
+        };
+      });
+    }
+    
+    return data;
   }
 
   private getWbControlsData(filters?: any, count: number = 30): WbMetricsData {

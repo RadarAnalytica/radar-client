@@ -1,0 +1,3296 @@
+{
+    "company_id": "00000001",
+    "company_name": "Демо-компания",
+    "company_status": "Активна",
+    "company_type": "Единая ставка",
+    "company_start_date": "2025-08-01",
+    "date_data": [
+        {
+            "advert_funnel": {
+                "cart": 3,
+                "orders": 0,
+                "order_item_count": 1,
+                "expected_purchase": 4,
+                "view_click": 3.02,
+                "click_cart": 14.35,
+                "cart_order": 19.27,
+                "view_order": 0,
+                "expected_order_purchase": 0,
+                "expected_click_purchase": 18.18
+            },
+            "advert_statistics": {
+                "views": 746,
+                "clicks": 22,
+                "cpc": 3.88,
+                "avg_cpm": 120.27,
+                "avg_position": 0,
+                "drr_orders": 0,
+                "drr_purchase": 0.54,
+                "cp_cart": 28.44,
+                "expected_cps": 21.33,
+                "orders_amount": 0,
+                "expected_purchase_amount": 20716,
+                "ad_spend": 85.33
+            },
+            "date": "2025-08-01"
+        },
+        {
+            "advert_funnel": {
+                "cart": 7,
+                "orders": 1,
+                "order_item_count": 2,
+                "expected_purchase": 5,
+                "view_click": 3.39,
+                "click_cart": 13.03,
+                "cart_order": 19.47,
+                "view_order": 0.06,
+                "expected_order_purchase": 500,
+                "expected_click_purchase": 8.33
+            },
+            "advert_statistics": {
+                "views": 1773,
+                "clicks": 60,
+                "cpc": 4.92,
+                "avg_cpm": 124.67,
+                "avg_position": 0,
+                "drr_orders": 0.06,
+                "drr_purchase": 0.28,
+                "cp_cart": 42.14,
+                "expected_cps": 59,
+                "orders_amount": 3714,
+                "expected_purchase_amount": 20691,
+                "ad_spend": 294.98
+            },
+            "date": "2025-08-02"
+        },
+        {
+            "advert_funnel": {
+                "cart": 29,
+                "orders": 9,
+                "order_item_count": 9,
+                "expected_purchase": 10,
+                "view_click": 7.34,
+                "click_cart": 16.92,
+                "cart_order": 33.61,
+                "view_order": 0.38,
+                "expected_order_purchase": 111.11,
+                "expected_click_purchase": 5.78
+            },
+            "advert_statistics": {
+                "views": 2364,
+                "clicks": 173,
+                "cpc": 3,
+                "avg_cpm": 122.49,
+                "avg_position": 0,
+                "drr_orders": 0.38,
+                "drr_purchase": 0.42,
+                "cp_cart": 17.91,
+                "expected_cps": 51.95,
+                "orders_amount": 34778,
+                "expected_purchase_amount": 47300,
+                "ad_spend": 519.48
+            },
+            "date": "2025-08-03"
+        },
+        {
+            "advert_funnel": {
+                "cart": 55,
+                "orders": 13,
+                "order_item_count": 15,
+                "expected_purchase": 14,
+                "view_click": 7.88,
+                "click_cart": 24.78,
+                "cart_order": 24.12,
+                "view_order": 0.45,
+                "expected_order_purchase": 107.69,
+                "expected_click_purchase": 6.19
+            },
+            "advert_statistics": {
+                "views": 2876,
+                "clicks": 226,
+                "cpc": 2.61,
+                "avg_cpm": 178.29,
+                "avg_position": 0,
+                "drr_orders": 0.45,
+                "drr_purchase": 0.49,
+                "cp_cart": 10.71,
+                "expected_cps": 42.07,
+                "orders_amount": 64482,
+                "expected_purchase_amount": 81613,
+                "ad_spend": 588.91
+            },
+            "date": "2025-08-04"
+        },
+        {
+            "advert_funnel": {
+                "cart": 21,
+                "orders": 5,
+                "order_item_count": 7,
+                "expected_purchase": 9,
+                "view_click": 6.92,
+                "click_cart": 25.38,
+                "cart_order": 24.04,
+                "view_order": 0.41,
+                "expected_order_purchase": 180,
+                "expected_click_purchase": 10.84
+            },
+            "advert_statistics": {
+                "views": 1212,
+                "clicks": 83,
+                "cpc": 3.36,
+                "avg_cpm": 184.92,
+                "avg_position": 0,
+                "drr_orders": 0.41,
+                "drr_purchase": 0.74,
+                "cp_cart": 13.3,
+                "expected_cps": 31.03,
+                "orders_amount": 20404,
+                "expected_purchase_amount": 50456,
+                "ad_spend": 279.24
+            },
+            "date": "2025-08-05"
+        },
+        {
+            "advert_funnel": {
+                "cart": 25,
+                "orders": 7,
+                "order_item_count": 8,
+                "expected_purchase": 11,
+                "view_click": 7.05,
+                "click_cart": 29.93,
+                "cart_order": 28.91,
+                "view_order": 0.58,
+                "expected_order_purchase": 157.14,
+                "expected_click_purchase": 13.1
+            },
+            "advert_statistics": {
+                "views": 1200,
+                "clicks": 84,
+                "cpc": 2.97,
+                "avg_cpm": 181.27,
+                "avg_position": 0,
+                "drr_orders": 0.58,
+                "drr_purchase": 0.92,
+                "cp_cart": 9.96,
+                "expected_cps": 22.64,
+                "orders_amount": 32080,
+                "expected_purchase_amount": 51806,
+                "ad_spend": 249.08
+            },
+            "date": "2025-08-06"
+        },
+        {
+            "advert_funnel": {
+                "cart": 52,
+                "orders": 20,
+                "order_item_count": 20,
+                "expected_purchase": 23,
+                "view_click": 6.87,
+                "click_cart": 15.12,
+                "cart_order": 39.8,
+                "view_order": 0.4,
+                "expected_order_purchase": 115,
+                "expected_click_purchase": 6.67
+            },
+            "advert_statistics": {
+                "views": 5030,
+                "clicks": 345,
+                "cpc": 3.22,
+                "avg_cpm": 193.98,
+                "avg_position": 0,
+                "drr_orders": 0.4,
+                "drr_purchase": 0.46,
+                "cp_cart": 21.34,
+                "expected_cps": 48.25,
+                "orders_amount": 84854,
+                "expected_purchase_amount": 117762,
+                "ad_spend": 1109.8
+            },
+            "date": "2025-08-07"
+        },
+        {
+            "advert_funnel": {
+                "cart": 14,
+                "orders": 4,
+                "order_item_count": 6,
+                "expected_purchase": 4,
+                "view_click": 6.46,
+                "click_cart": 20.03,
+                "cart_order": 30.54,
+                "view_order": 0.35,
+                "expected_order_purchase": 100,
+                "expected_click_purchase": 5.56
+            },
+            "advert_statistics": {
+                "views": 1127,
+                "clicks": 72,
+                "cpc": 4.62,
+                "avg_cpm": 139.27,
+                "avg_position": 0,
+                "drr_orders": 0.36,
+                "drr_purchase": 0.36,
+                "cp_cart": 23.76,
+                "expected_cps": 83.15,
+                "orders_amount": 19689,
+                "expected_purchase_amount": 19361,
+                "ad_spend": 332.58
+            },
+            "date": "2025-08-08"
+        },
+        {
+            "advert_funnel": {
+                "cart": 6,
+                "orders": 1,
+                "order_item_count": 2,
+                "expected_purchase": 3,
+                "view_click": 5.38,
+                "click_cart": 11.8,
+                "cart_order": 16.82,
+                "view_order": 0.11,
+                "expected_order_purchase": 300,
+                "expected_click_purchase": 5.88
+            },
+            "advert_statistics": {
+                "views": 948,
+                "clicks": 51,
+                "cpc": 1.93,
+                "avg_cpm": 188.37,
+                "avg_position": 0,
+                "drr_orders": 0.11,
+                "drr_purchase": 0.32,
+                "cp_cart": 16.4,
+                "expected_cps": 32.81,
+                "orders_amount": 4356,
+                "expected_purchase_amount": 15237,
+                "ad_spend": 98.42
+            },
+            "date": "2025-08-09"
+        },
+        {
+            "advert_funnel": {
+                "cart": 28,
+                "orders": 10,
+                "order_item_count": 12,
+                "expected_purchase": 14,
+                "view_click": 4.1,
+                "click_cart": 26.22,
+                "cart_order": 36.99,
+                "view_order": 0.37,
+                "expected_order_purchase": 140,
+                "expected_click_purchase": 12.73
+            },
+            "advert_statistics": {
+                "views": 2703,
+                "clicks": 110,
+                "cpc": 2.54,
+                "avg_cpm": 141.53,
+                "avg_position": 0,
+                "drr_orders": 0.37,
+                "drr_purchase": 0.52,
+                "cp_cart": 9.98,
+                "expected_cps": 19.95,
+                "orders_amount": 41683,
+                "expected_purchase_amount": 64096,
+                "ad_spend": 279.36
+            },
+            "date": "2025-08-10"
+        },
+        {
+            "advert_funnel": {
+                "cart": 11,
+                "orders": 2,
+                "order_item_count": 2,
+                "expected_purchase": 6,
+                "view_click": 5.63,
+                "click_cart": 18.15,
+                "cart_order": 20.39,
+                "view_order": 0.17,
+                "expected_order_purchase": 300,
+                "expected_click_purchase": 9.09
+            },
+            "advert_statistics": {
+                "views": 1188,
+                "clicks": 66,
+                "cpc": 1.53,
+                "avg_cpm": 184.27,
+                "avg_position": 0,
+                "drr_orders": 0.17,
+                "drr_purchase": 0.51,
+                "cp_cart": 9.19,
+                "expected_cps": 16.85,
+                "orders_amount": 7902,
+                "expected_purchase_amount": 27267,
+                "ad_spend": 101.1
+            },
+            "date": "2025-08-11"
+        },
+        {
+            "advert_funnel": {
+                "cart": 9,
+                "orders": 2,
+                "order_item_count": 4,
+                "expected_purchase": 3,
+                "view_click": 6.89,
+                "click_cart": 15.75,
+                "cart_order": 31.45,
+                "view_order": 0.22,
+                "expected_order_purchase": 150,
+                "expected_click_purchase": 4.92
+            },
+            "advert_statistics": {
+                "views": 896,
+                "clicks": 61,
+                "cpc": 4.12,
+                "avg_cpm": 140.2,
+                "avg_position": 0,
+                "drr_orders": 0.22,
+                "drr_purchase": 0.34,
+                "cp_cart": 27.93,
+                "expected_cps": 83.79,
+                "orders_amount": 9493,
+                "expected_purchase_amount": 16138,
+                "ad_spend": 251.37
+            },
+            "date": "2025-08-12"
+        },
+        {
+            "advert_funnel": {
+                "cart": 20,
+                "orders": 3,
+                "order_item_count": 4,
+                "expected_purchase": 7,
+                "view_click": 4.2,
+                "click_cart": 26.02,
+                "cart_order": 17.3,
+                "view_order": 0.16,
+                "expected_order_purchase": 233.33,
+                "expected_click_purchase": 8.97
+            },
+            "advert_statistics": {
+                "views": 1855,
+                "clicks": 78,
+                "cpc": 2.98,
+                "avg_cpm": 177.23,
+                "avg_position": 0,
+                "drr_orders": 0.16,
+                "drr_purchase": 0.38,
+                "cp_cart": 11.62,
+                "expected_cps": 33.19,
+                "orders_amount": 13731,
+                "expected_purchase_amount": 33680,
+                "ad_spend": 232.33
+            },
+            "date": "2025-08-13"
+        },
+        {
+            "advert_funnel": {
+                "cart": 14,
+                "orders": 4,
+                "order_item_count": 6,
+                "expected_purchase": 4,
+                "view_click": 4.69,
+                "click_cart": 13.75,
+                "cart_order": 35.19,
+                "view_order": 0.18,
+                "expected_order_purchase": 100,
+                "expected_click_purchase": 3.85
+            },
+            "advert_statistics": {
+                "views": 2218,
+                "clicks": 104,
+                "cpc": 2.98,
+                "avg_cpm": 198.23,
+                "avg_position": 0,
+                "drr_orders": 0.18,
+                "drr_purchase": 0.18,
+                "cp_cart": 22.11,
+                "expected_cps": 77.38,
+                "orders_amount": 17127,
+                "expected_purchase_amount": 21389,
+                "ad_spend": 309.51
+            },
+            "date": "2025-08-14"
+        },
+        {
+            "advert_funnel": {
+                "cart": 98,
+                "orders": 25,
+                "order_item_count": 27,
+                "expected_purchase": 26,
+                "view_click": 7.77,
+                "click_cart": 24.42,
+                "cart_order": 26.29,
+                "view_order": 0.48,
+                "expected_order_purchase": 104,
+                "expected_click_purchase": 6.44
+            },
+            "advert_statistics": {
+                "views": 5205,
+                "clicks": 404,
+                "cpc": 4.79,
+                "avg_cpm": 180.16,
+                "avg_position": 0,
+                "drr_orders": 0.48,
+                "drr_purchase": 0.5,
+                "cp_cart": 19.76,
+                "expected_cps": 74.46,
+                "orders_amount": 100664,
+                "expected_purchase_amount": 117062,
+                "ad_spend": 1936
+            },
+            "date": "2025-08-15"
+        },
+        {
+            "advert_funnel": {
+                "cart": 13,
+                "orders": 4,
+                "order_item_count": 5,
+                "expected_purchase": 6,
+                "view_click": 7.67,
+                "click_cart": 28.13,
+                "cart_order": 33.47,
+                "view_order": 0.61,
+                "expected_order_purchase": 150,
+                "expected_click_purchase": 12.24
+            },
+            "advert_statistics": {
+                "views": 651,
+                "clicks": 49,
+                "cpc": 4.79,
+                "avg_cpm": 120.75,
+                "avg_position": 0,
+                "drr_orders": 0.61,
+                "drr_purchase": 0.92,
+                "cp_cart": 18.07,
+                "expected_cps": 39.14,
+                "orders_amount": 15953,
+                "expected_purchase_amount": 35091,
+                "ad_spend": 234.85
+            },
+            "date": "2025-08-16"
+        },
+        {
+            "advert_funnel": {
+                "cart": 4,
+                "orders": 1,
+                "order_item_count": 1,
+                "expected_purchase": 4,
+                "view_click": 5.05,
+                "click_cart": 10.63,
+                "cart_order": 27.17,
+                "view_order": 0.12,
+                "expected_order_purchase": 400,
+                "expected_click_purchase": 9.3
+            },
+            "advert_statistics": {
+                "views": 852,
+                "clicks": 43,
+                "cpc": 2.55,
+                "avg_cpm": 199.44,
+                "avg_position": 0,
+                "drr_orders": 0.12,
+                "drr_purchase": 0.47,
+                "cp_cart": 27.39,
+                "expected_cps": 27.39,
+                "orders_amount": 3708,
+                "expected_purchase_amount": 19147,
+                "ad_spend": 109.54
+            },
+            "date": "2025-08-17"
+        },
+        {
+            "advert_funnel": {
+                "cart": 15,
+                "orders": 5,
+                "order_item_count": 7,
+                "expected_purchase": 9,
+                "view_click": 6.71,
+                "click_cart": 19.99,
+                "cart_order": 39.85,
+                "view_order": 0.41,
+                "expected_order_purchase": 180,
+                "expected_click_purchase": 11.25
+            },
+            "advert_statistics": {
+                "views": 1205,
+                "clicks": 80,
+                "cpc": 3.1,
+                "avg_cpm": 175.09,
+                "avg_position": 0,
+                "drr_orders": 0.42,
+                "drr_purchase": 0.75,
+                "cp_cart": 16.55,
+                "expected_cps": 27.58,
+                "orders_amount": 22847,
+                "expected_purchase_amount": 40389,
+                "ad_spend": 248.25
+            },
+            "date": "2025-08-18"
+        },
+        {
+            "advert_funnel": {
+                "cart": 13,
+                "orders": 4,
+                "order_item_count": 4,
+                "expected_purchase": 4,
+                "view_click": 7.45,
+                "click_cart": 11.07,
+                "cart_order": 38.11,
+                "view_order": 0.25,
+                "expected_order_purchase": 100,
+                "expected_click_purchase": 3.36
+            },
+            "advert_statistics": {
+                "views": 1609,
+                "clicks": 119,
+                "cpc": 3.46,
+                "avg_cpm": 159.29,
+                "avg_position": 0,
+                "drr_orders": 0.25,
+                "drr_purchase": 0.25,
+                "cp_cart": 31.63,
+                "expected_cps": 102.81,
+                "orders_amount": 19574,
+                "expected_purchase_amount": 19898,
+                "ad_spend": 411.23
+            },
+            "date": "2025-08-19"
+        },
+        {
+            "advert_funnel": {
+                "cart": 22,
+                "orders": 7,
+                "order_item_count": 7,
+                "expected_purchase": 11,
+                "view_click": 6.13,
+                "click_cart": 16.27,
+                "cart_order": 33.88,
+                "view_order": 0.31,
+                "expected_order_purchase": 157.14,
+                "expected_click_purchase": 7.97
+            },
+            "advert_statistics": {
+                "views": 2259,
+                "clicks": 138,
+                "cpc": 3.33,
+                "avg_cpm": 173.47,
+                "avg_position": 0,
+                "drr_orders": 0.31,
+                "drr_purchase": 0.49,
+                "cp_cart": 20.87,
+                "expected_cps": 41.74,
+                "orders_amount": 33008,
+                "expected_purchase_amount": 52091,
+                "ad_spend": 459.14
+            },
+            "date": "2025-08-20"
+        },
+        {
+            "advert_funnel": {
+                "cart": 22,
+                "orders": 3,
+                "order_item_count": 5,
+                "expected_purchase": 5,
+                "view_click": 5.63,
+                "click_cart": 16.98,
+                "cart_order": 16.2,
+                "view_order": 0.13,
+                "expected_order_purchase": 166.67,
+                "expected_click_purchase": 3.79
+            },
+            "advert_statistics": {
+                "views": 2346,
+                "clicks": 132,
+                "cpc": 2.26,
+                "avg_cpm": 190.21,
+                "avg_position": 0,
+                "drr_orders": 0.13,
+                "drr_purchase": 0.21,
+                "cp_cart": 13.55,
+                "expected_cps": 59.61,
+                "orders_amount": 11010,
+                "expected_purchase_amount": 25192,
+                "ad_spend": 298.05
+            },
+            "date": "2025-08-21"
+        },
+        {
+            "advert_funnel": {
+                "cart": 20,
+                "orders": 7,
+                "order_item_count": 8,
+                "expected_purchase": 9,
+                "view_click": 5.23,
+                "click_cart": 27.76,
+                "cart_order": 35.27,
+                "view_order": 0.49,
+                "expected_order_purchase": 128.57,
+                "expected_click_purchase": 12
+            },
+            "advert_statistics": {
+                "views": 1440,
+                "clicks": 75,
+                "cpc": 3.08,
+                "avg_cpm": 120.94,
+                "avg_position": 0,
+                "drr_orders": 0.49,
+                "drr_purchase": 0.63,
+                "cp_cart": 11.56,
+                "expected_cps": 25.68,
+                "orders_amount": 32880,
+                "expected_purchase_amount": 53667,
+                "ad_spend": 231.12
+            },
+            "date": "2025-08-22"
+        },
+        {
+            "advert_funnel": {
+                "cart": 12,
+                "orders": 1,
+                "order_item_count": 2,
+                "expected_purchase": 4,
+                "view_click": 6.58,
+                "click_cart": 22.19,
+                "cart_order": 16.12,
+                "view_order": 0.11,
+                "expected_order_purchase": 400,
+                "expected_click_purchase": 6.9
+            },
+            "advert_statistics": {
+                "views": 884,
+                "clicks": 58,
+                "cpc": 2.65,
+                "avg_cpm": 167.96,
+                "avg_position": 0,
+                "drr_orders": 0.11,
+                "drr_purchase": 0.45,
+                "cp_cart": 12.79,
+                "expected_cps": 38.38,
+                "orders_amount": 4634,
+                "expected_purchase_amount": 20210,
+                "ad_spend": 153.52
+            },
+            "date": "2025-08-23"
+        },
+        {
+            "advert_funnel": {
+                "cart": 4,
+                "orders": 1,
+                "order_item_count": 3,
+                "expected_purchase": 1,
+                "view_click": 5.67,
+                "click_cart": 13.47,
+                "cart_order": 31.33,
+                "view_order": 0.18,
+                "expected_order_purchase": 100,
+                "expected_click_purchase": 3.13
+            },
+            "advert_statistics": {
+                "views": 565,
+                "clicks": 32,
+                "cpc": 4.72,
+                "avg_cpm": 175.41,
+                "avg_position": 0,
+                "drr_orders": 0.18,
+                "drr_purchase": 0.18,
+                "cp_cart": 37.75,
+                "expected_cps": 151,
+                "orders_amount": 3782,
+                "expected_purchase_amount": 4696,
+                "ad_spend": 151
+            },
+            "date": "2025-08-24"
+        },
+        {
+            "advert_funnel": {
+                "cart": 18,
+                "orders": 3,
+                "order_item_count": 5,
+                "expected_purchase": 6,
+                "view_click": 5.57,
+                "click_cart": 20.4,
+                "cart_order": 20.33,
+                "view_order": 0.18,
+                "expected_order_purchase": 200,
+                "expected_click_purchase": 6.59
+            },
+            "advert_statistics": {
+                "views": 1652,
+                "clicks": 91,
+                "cpc": 1.69,
+                "avg_cpm": 158.68,
+                "avg_position": 0,
+                "drr_orders": 0.18,
+                "drr_purchase": 0.36,
+                "cp_cart": 8.53,
+                "expected_cps": 25.58,
+                "orders_amount": 12162,
+                "expected_purchase_amount": 29060,
+                "ad_spend": 153.47
+            },
+            "date": "2025-08-25"
+        },
+        {
+            "advert_funnel": {
+                "cart": 15,
+                "orders": 5,
+                "order_item_count": 7,
+                "expected_purchase": 9,
+                "view_click": 7.73,
+                "click_cart": 13.25,
+                "cart_order": 36.88,
+                "view_order": 0.32,
+                "expected_order_purchase": 180,
+                "expected_click_purchase": 7.5
+            },
+            "advert_statistics": {
+                "views": 1562,
+                "clicks": 120,
+                "cpc": 2.65,
+                "avg_cpm": 131.56,
+                "avg_position": 0,
+                "drr_orders": 0.32,
+                "drr_purchase": 0.58,
+                "cp_cart": 21.21,
+                "expected_cps": 35.35,
+                "orders_amount": 20472,
+                "expected_purchase_amount": 45645,
+                "ad_spend": 318.18
+            },
+            "date": "2025-08-26"
+        },
+        {
+            "advert_funnel": {
+                "cart": 22,
+                "orders": 7,
+                "order_item_count": 7,
+                "expected_purchase": 10,
+                "view_click": 4.35,
+                "click_cart": 28.61,
+                "cart_order": 32.81,
+                "view_order": 0.39,
+                "expected_order_purchase": 142.86,
+                "expected_click_purchase": 12.99
+            },
+            "advert_statistics": {
+                "views": 1775,
+                "clicks": 77,
+                "cpc": 2.94,
+                "avg_cpm": 167.24,
+                "avg_position": 0,
+                "drr_orders": 0.39,
+                "drr_purchase": 0.56,
+                "cp_cart": 10.28,
+                "expected_cps": 22.61,
+                "orders_amount": 30242,
+                "expected_purchase_amount": 59147,
+                "ad_spend": 226.07
+            },
+            "date": "2025-08-27"
+        },
+        {
+            "advert_funnel": {
+                "cart": 40,
+                "orders": 13,
+                "order_item_count": 13,
+                "expected_purchase": 13,
+                "view_click": 5.42,
+                "click_cart": 21.71,
+                "cart_order": 33.72,
+                "view_order": 0.38,
+                "expected_order_purchase": 100,
+                "expected_click_purchase": 6.99
+            },
+            "advert_statistics": {
+                "views": 3448,
+                "clicks": 186,
+                "cpc": 2.29,
+                "avg_cpm": 188.86,
+                "avg_position": 0,
+                "drr_orders": 0.38,
+                "drr_purchase": 0.38,
+                "cp_cart": 10.64,
+                "expected_cps": 32.75,
+                "orders_amount": 54306,
+                "expected_purchase_amount": 63417,
+                "ad_spend": 425.74
+            },
+            "date": "2025-08-28"
+        },
+        {
+            "advert_funnel": {
+                "cart": 3,
+                "orders": 1,
+                "order_item_count": 2,
+                "expected_purchase": 4,
+                "view_click": 3.3,
+                "click_cart": 11.8,
+                "cart_order": 39.6,
+                "view_order": 0.11,
+                "expected_order_purchase": 400,
+                "expected_click_purchase": 13.33
+            },
+            "advert_statistics": {
+                "views": 933,
+                "clicks": 30,
+                "cpc": 3.63,
+                "avg_cpm": 154.8,
+                "avg_position": 0,
+                "drr_orders": 0.11,
+                "drr_purchase": 0.43,
+                "cp_cart": 36.25,
+                "expected_cps": 27.19,
+                "orders_amount": 4724,
+                "expected_purchase_amount": 18593,
+                "ad_spend": 108.76
+            },
+            "date": "2025-08-29"
+        },
+        {
+            "advert_funnel": {
+                "cart": 9,
+                "orders": 2,
+                "order_item_count": 4,
+                "expected_purchase": 2,
+                "view_click": 3.79,
+                "click_cart": 14.56,
+                "cart_order": 22.25,
+                "view_order": 0.11,
+                "expected_order_purchase": 100,
+                "expected_click_purchase": 2.94
+            },
+            "advert_statistics": {
+                "views": 1818,
+                "clicks": 68,
+                "cpc": 3.85,
+                "avg_cpm": 184.52,
+                "avg_position": 0,
+                "drr_orders": 0.11,
+                "drr_purchase": 0.11,
+                "cp_cart": 29.07,
+                "expected_cps": 130.81,
+                "orders_amount": 8162,
+                "expected_purchase_amount": 9270,
+                "ad_spend": 261.61
+            },
+            "date": "2025-08-30"
+        },
+        {
+            "advert_funnel": {
+                "cart": 67,
+                "orders": 13,
+                "order_item_count": 14,
+                "expected_purchase": 14,
+                "view_click": 6.36,
+                "click_cart": 27.92,
+                "cart_order": 19.77,
+                "view_order": 0.34,
+                "expected_order_purchase": 107.69,
+                "expected_click_purchase": 5.81
+            },
+            "advert_statistics": {
+                "views": 3791,
+                "clicks": 241,
+                "cpc": 4.17,
+                "avg_cpm": 171.83,
+                "avg_position": 0,
+                "drr_orders": 0.34,
+                "drr_purchase": 0.37,
+                "cp_cart": 15.02,
+                "expected_cps": 71.86,
+                "orders_amount": 64876,
+                "expected_purchase_amount": 61506,
+                "ad_spend": 1006.05
+            },
+            "date": "2025-08-31"
+        },
+        {
+            "advert_funnel": {
+                "cart": 37,
+                "orders": 11,
+                "order_item_count": 11,
+                "expected_purchase": 11,
+                "view_click": 6.94,
+                "click_cart": 24.28,
+                "cart_order": 30.8,
+                "view_order": 0.49,
+                "expected_order_purchase": 100,
+                "expected_click_purchase": 7.1
+            },
+            "advert_statistics": {
+                "views": 2238,
+                "clicks": 155,
+                "cpc": 3.96,
+                "avg_cpm": 131.9,
+                "avg_position": 0,
+                "drr_orders": 0.49,
+                "drr_purchase": 0.49,
+                "cp_cart": 16.57,
+                "expected_cps": 55.72,
+                "orders_amount": 42972,
+                "expected_purchase_amount": 45103,
+                "ad_spend": 612.96
+            },
+            "date": "2025-09-01"
+        },
+        {
+            "advert_funnel": {
+                "cart": 32,
+                "orders": 10,
+                "order_item_count": 12,
+                "expected_purchase": 13,
+                "view_click": 5.74,
+                "click_cart": 19.05,
+                "cart_order": 31.45,
+                "view_order": 0.34,
+                "expected_order_purchase": 130,
+                "expected_click_purchase": 7.74
+            },
+            "advert_statistics": {
+                "views": 2935,
+                "clicks": 168,
+                "cpc": 4.51,
+                "avg_cpm": 199.68,
+                "avg_position": 0,
+                "drr_orders": 0.34,
+                "drr_purchase": 0.44,
+                "cp_cart": 23.7,
+                "expected_cps": 58.34,
+                "orders_amount": 40951,
+                "expected_purchase_amount": 63155,
+                "ad_spend": 758.41
+            },
+            "date": "2025-09-02"
+        },
+        {
+            "advert_funnel": {
+                "cart": 30,
+                "orders": 11,
+                "order_item_count": 13,
+                "expected_purchase": 12,
+                "view_click": 6.97,
+                "click_cart": 28.52,
+                "cart_order": 39.86,
+                "view_order": 0.72,
+                "expected_order_purchase": 109.09,
+                "expected_click_purchase": 11.32
+            },
+            "advert_statistics": {
+                "views": 1534,
+                "clicks": 106,
+                "cpc": 4.78,
+                "avg_cpm": 179.78,
+                "avg_position": 0,
+                "drr_orders": 0.72,
+                "drr_purchase": 0.78,
+                "cp_cart": 16.89,
+                "expected_cps": 42.24,
+                "orders_amount": 52097,
+                "expected_purchase_amount": 68753,
+                "ad_spend": 506.83
+            },
+            "date": "2025-09-03"
+        },
+        {
+            "advert_funnel": {
+                "cart": 10,
+                "orders": 1,
+                "order_item_count": 2,
+                "expected_purchase": 5,
+                "view_click": 5.56,
+                "click_cart": 25.85,
+                "cart_order": 15.35,
+                "view_order": 0.14,
+                "expected_order_purchase": 500,
+                "expected_click_purchase": 12.5
+            },
+            "advert_statistics": {
+                "views": 729,
+                "clicks": 40,
+                "cpc": 3.97,
+                "avg_cpm": 161.41,
+                "avg_position": 0,
+                "drr_orders": 0.14,
+                "drr_purchase": 0.69,
+                "cp_cart": 15.9,
+                "expected_cps": 31.79,
+                "orders_amount": 3836,
+                "expected_purchase_amount": 23167,
+                "ad_spend": 158.97
+            },
+            "date": "2025-09-04"
+        },
+        {
+            "advert_funnel": {
+                "cart": 7,
+                "orders": 1,
+                "order_item_count": 1,
+                "expected_purchase": 2,
+                "view_click": 3.47,
+                "click_cart": 15.6,
+                "cart_order": 23.97,
+                "view_order": 0.07,
+                "expected_order_purchase": 200,
+                "expected_click_purchase": 4
+            },
+            "advert_statistics": {
+                "views": 1463,
+                "clicks": 50,
+                "cpc": 2.78,
+                "avg_cpm": 195.95,
+                "avg_position": 0,
+                "drr_orders": 0.07,
+                "drr_purchase": 0.14,
+                "cp_cart": 19.83,
+                "expected_cps": 69.42,
+                "orders_amount": 4363,
+                "expected_purchase_amount": 11389,
+                "ad_spend": 138.84
+            },
+            "date": "2025-09-05"
+        },
+        {
+            "advert_funnel": {
+                "cart": 28,
+                "orders": 8,
+                "order_item_count": 8,
+                "expected_purchase": 9,
+                "view_click": 4.5,
+                "click_cart": 26.03,
+                "cart_order": 29.5,
+                "view_order": 0.33,
+                "expected_order_purchase": 112.5,
+                "expected_click_purchase": 8.33
+            },
+            "advert_statistics": {
+                "views": 2421,
+                "clicks": 108,
+                "cpc": 2.21,
+                "avg_cpm": 184.56,
+                "avg_position": 0,
+                "drr_orders": 0.33,
+                "drr_purchase": 0.37,
+                "cp_cart": 8.54,
+                "expected_cps": 26.57,
+                "orders_amount": 31797,
+                "expected_purchase_amount": 46809,
+                "ad_spend": 239.11
+            },
+            "date": "2025-09-06"
+        },
+        {
+            "advert_funnel": {
+                "cart": 13,
+                "orders": 2,
+                "order_item_count": 3,
+                "expected_purchase": 3,
+                "view_click": 6.55,
+                "click_cart": 28.37,
+                "cart_order": 22.79,
+                "view_order": 0.28,
+                "expected_order_purchase": 150,
+                "expected_click_purchase": 6.52
+            },
+            "advert_statistics": {
+                "views": 715,
+                "clicks": 46,
+                "cpc": 3.65,
+                "avg_cpm": 183.98,
+                "avg_position": 0,
+                "drr_orders": 0.28,
+                "drr_purchase": 0.42,
+                "cp_cart": 12.9,
+                "expected_cps": 55.91,
+                "orders_amount": 7053,
+                "expected_purchase_amount": 14985,
+                "ad_spend": 167.72
+            },
+            "date": "2025-09-07"
+        },
+        {
+            "advert_funnel": {
+                "cart": 21,
+                "orders": 7,
+                "order_item_count": 8,
+                "expected_purchase": 11,
+                "view_click": 6.47,
+                "click_cart": 22.83,
+                "cart_order": 37.25,
+                "view_order": 0.49,
+                "expected_order_purchase": 157.14,
+                "expected_click_purchase": 11.83
+            },
+            "advert_statistics": {
+                "views": 1442,
+                "clicks": 93,
+                "cpc": 2.13,
+                "avg_cpm": 121.18,
+                "avg_position": 0,
+                "drr_orders": 0.49,
+                "drr_purchase": 0.76,
+                "cp_cart": 9.45,
+                "expected_cps": 18.03,
+                "orders_amount": 28316,
+                "expected_purchase_amount": 63847,
+                "ad_spend": 198.37
+            },
+            "date": "2025-09-08"
+        },
+        {
+            "advert_funnel": {
+                "cart": 7,
+                "orders": 2,
+                "order_item_count": 4,
+                "expected_purchase": 4,
+                "view_click": 3.8,
+                "click_cart": 14.85,
+                "cart_order": 28.9,
+                "view_order": 0.15,
+                "expected_order_purchase": 200,
+                "expected_click_purchase": 7.69
+            },
+            "advert_statistics": {
+                "views": 1378,
+                "clicks": 52,
+                "cpc": 1.87,
+                "avg_cpm": 161.06,
+                "avg_position": 0,
+                "drr_orders": 0.14,
+                "drr_purchase": 0.29,
+                "cp_cart": 13.92,
+                "expected_cps": 24.35,
+                "orders_amount": 8389,
+                "expected_purchase_amount": 19788,
+                "ad_spend": 97.41
+            },
+            "date": "2025-09-09"
+        },
+        {
+            "advert_funnel": {
+                "cart": 7,
+                "orders": 2,
+                "order_item_count": 2,
+                "expected_purchase": 5,
+                "view_click": 4.77,
+                "click_cart": 10.65,
+                "cart_order": 33.87,
+                "view_order": 0.13,
+                "expected_order_purchase": 250,
+                "expected_click_purchase": 6.85
+            },
+            "advert_statistics": {
+                "views": 1541,
+                "clicks": 73,
+                "cpc": 4.92,
+                "avg_cpm": 162.54,
+                "avg_position": 0,
+                "drr_orders": 0.13,
+                "drr_purchase": 0.32,
+                "cp_cart": 51.31,
+                "expected_cps": 71.84,
+                "orders_amount": 9474,
+                "expected_purchase_amount": 21338,
+                "ad_spend": 359.2
+            },
+            "date": "2025-09-10"
+        },
+        {
+            "advert_funnel": {
+                "cart": 65,
+                "orders": 24,
+                "order_item_count": 24,
+                "expected_purchase": 28,
+                "view_click": 6.86,
+                "click_cart": 26.82,
+                "cart_order": 37.14,
+                "view_order": 0.68,
+                "expected_order_purchase": 116.67,
+                "expected_click_purchase": 11.52
+            },
+            "advert_statistics": {
+                "views": 3547,
+                "clicks": 243,
+                "cpc": 3.01,
+                "avg_cpm": 158.26,
+                "avg_position": 0,
+                "drr_orders": 0.68,
+                "drr_purchase": 0.79,
+                "cp_cart": 11.26,
+                "expected_cps": 26.14,
+                "orders_amount": 92176,
+                "expected_purchase_amount": 122450,
+                "ad_spend": 731.79
+            },
+            "date": "2025-09-11"
+        },
+        {
+            "advert_funnel": {
+                "cart": 4,
+                "orders": 0,
+                "order_item_count": 2,
+                "expected_purchase": 4,
+                "view_click": 5.7,
+                "click_cart": 10.08,
+                "cart_order": 20.2,
+                "view_order": 0,
+                "expected_order_purchase": 0,
+                "expected_click_purchase": 10
+            },
+            "advert_statistics": {
+                "views": 714,
+                "clicks": 40,
+                "cpc": 4.46,
+                "avg_cpm": 180.51,
+                "avg_position": 0,
+                "drr_orders": 0,
+                "drr_purchase": 0.56,
+                "cp_cart": 44.57,
+                "expected_cps": 44.57,
+                "orders_amount": 0,
+                "expected_purchase_amount": 19667,
+                "ad_spend": 178.26
+            },
+            "date": "2025-09-12"
+        },
+        {
+            "advert_funnel": {
+                "cart": 3,
+                "orders": 0,
+                "order_item_count": 1,
+                "expected_purchase": 4,
+                "view_click": 3.01,
+                "click_cart": 20.92,
+                "cart_order": 22.17,
+                "view_order": 0,
+                "expected_order_purchase": 0,
+                "expected_click_purchase": 23.53
+            },
+            "advert_statistics": {
+                "views": 587,
+                "clicks": 17,
+                "cpc": 1.79,
+                "avg_cpm": 148.17,
+                "avg_position": 0,
+                "drr_orders": 0,
+                "drr_purchase": 0.68,
+                "cp_cart": 10.14,
+                "expected_cps": 7.6,
+                "orders_amount": 0,
+                "expected_purchase_amount": 22961,
+                "ad_spend": 30.41
+            },
+            "date": "2025-09-13"
+        },
+        {
+            "advert_funnel": {
+                "cart": 11,
+                "orders": 1,
+                "order_item_count": 1,
+                "expected_purchase": 2,
+                "view_click": 4.96,
+                "click_cart": 12.19,
+                "cart_order": 17.88,
+                "view_order": 0.05,
+                "expected_order_purchase": 200,
+                "expected_click_purchase": 2.13
+            },
+            "advert_statistics": {
+                "views": 1914,
+                "clicks": 94,
+                "cpc": 4.16,
+                "avg_cpm": 127.72,
+                "avg_position": 0,
+                "drr_orders": 0.05,
+                "drr_purchase": 0.1,
+                "cp_cart": 35.55,
+                "expected_cps": 195.52,
+                "orders_amount": 4442,
+                "expected_purchase_amount": 10644,
+                "ad_spend": 391.03
+            },
+            "date": "2025-09-14"
+        },
+        {
+            "advert_funnel": {
+                "cart": 44,
+                "orders": 13,
+                "order_item_count": 15,
+                "expected_purchase": 14,
+                "view_click": 5.5,
+                "click_cart": 29.44,
+                "cart_order": 29.68,
+                "view_order": 0.47,
+                "expected_order_purchase": 107.69,
+                "expected_click_purchase": 9.21
+            },
+            "advert_statistics": {
+                "views": 2770,
+                "clicks": 152,
+                "cpc": 4.37,
+                "avg_cpm": 138.66,
+                "avg_position": 0,
+                "drr_orders": 0.47,
+                "drr_purchase": 0.51,
+                "cp_cart": 15.09,
+                "expected_cps": 47.44,
+                "orders_amount": 56581,
+                "expected_purchase_amount": 70076,
+                "ad_spend": 664.1
+            },
+            "date": "2025-09-15"
+        },
+        {
+            "advert_funnel": {
+                "cart": 29,
+                "orders": 6,
+                "order_item_count": 7,
+                "expected_purchase": 7,
+                "view_click": 4.19,
+                "click_cart": 24.87,
+                "cart_order": 23.27,
+                "view_order": 0.21,
+                "expected_order_purchase": 116.67,
+                "expected_click_purchase": 5.98
+            },
+            "advert_statistics": {
+                "views": 2812,
+                "clicks": 117,
+                "cpc": 2.56,
+                "avg_cpm": 128.5,
+                "avg_position": 0,
+                "drr_orders": 0.21,
+                "drr_purchase": 0.25,
+                "cp_cart": 10.31,
+                "expected_cps": 42.72,
+                "orders_amount": 25247,
+                "expected_purchase_amount": 39835,
+                "ad_spend": 299.04
+            },
+            "date": "2025-09-16"
+        },
+        {
+            "advert_funnel": {
+                "cart": 60,
+                "orders": 15,
+                "order_item_count": 17,
+                "expected_purchase": 17,
+                "view_click": 7.84,
+                "click_cart": 18.65,
+                "cart_order": 25.57,
+                "view_order": 0.36,
+                "expected_order_purchase": 113.33,
+                "expected_click_purchase": 5.21
+            },
+            "advert_statistics": {
+                "views": 4170,
+                "clicks": 326,
+                "cpc": 1.95,
+                "avg_cpm": 197.02,
+                "avg_position": 0,
+                "drr_orders": 0.36,
+                "drr_purchase": 0.41,
+                "cp_cart": 10.6,
+                "expected_cps": 37.41,
+                "orders_amount": 61289,
+                "expected_purchase_amount": 99870,
+                "ad_spend": 635.92
+            },
+            "date": "2025-09-17"
+        },
+        {
+            "advert_funnel": {
+                "cart": 21,
+                "orders": 7,
+                "order_item_count": 9,
+                "expected_purchase": 7,
+                "view_click": 5.08,
+                "click_cart": 12.96,
+                "cart_order": 37.29,
+                "view_order": 0.21,
+                "expected_order_purchase": 100,
+                "expected_click_purchase": 4.14
+            },
+            "advert_statistics": {
+                "views": 3346,
+                "clicks": 169,
+                "cpc": 2.61,
+                "avg_cpm": 187.14,
+                "avg_position": 0,
+                "drr_orders": 0.21,
+                "drr_purchase": 0.21,
+                "cp_cart": 21.03,
+                "expected_cps": 63.09,
+                "orders_amount": 34208,
+                "expected_purchase_amount": 40942,
+                "ad_spend": 441.66
+            },
+            "date": "2025-09-18"
+        },
+        {
+            "advert_funnel": {
+                "cart": 15,
+                "orders": 4,
+                "order_item_count": 5,
+                "expected_purchase": 5,
+                "view_click": 3.21,
+                "click_cart": 14.89,
+                "cart_order": 32.38,
+                "view_order": 0.12,
+                "expected_order_purchase": 125,
+                "expected_click_purchase": 4.85
+            },
+            "advert_statistics": {
+                "views": 3208,
+                "clicks": 103,
+                "cpc": 3.76,
+                "avg_cpm": 140.57,
+                "avg_position": 0,
+                "drr_orders": 0.13,
+                "drr_purchase": 0.16,
+                "cp_cart": 25.8,
+                "expected_cps": 77.4,
+                "orders_amount": 14250,
+                "expected_purchase_amount": 21387,
+                "ad_spend": 387
+            },
+            "date": "2025-09-19"
+        },
+        {
+            "advert_funnel": {
+                "cart": 16,
+                "orders": 3,
+                "order_item_count": 4,
+                "expected_purchase": 3,
+                "view_click": 6.26,
+                "click_cart": 20.93,
+                "cart_order": 21.52,
+                "view_order": 0.23,
+                "expected_order_purchase": 100,
+                "expected_click_purchase": 3.7
+            },
+            "advert_statistics": {
+                "views": 1300,
+                "clicks": 81,
+                "cpc": 3.45,
+                "avg_cpm": 178.16,
+                "avg_position": 0,
+                "drr_orders": 0.23,
+                "drr_purchase": 0.23,
+                "cp_cart": 17.44,
+                "expected_cps": 93.01,
+                "orders_amount": 11142,
+                "expected_purchase_amount": 15957,
+                "ad_spend": 279.02
+            },
+            "date": "2025-09-20"
+        },
+        {
+            "advert_funnel": {
+                "cart": 6,
+                "orders": 1,
+                "order_item_count": 1,
+                "expected_purchase": 3,
+                "view_click": 4.18,
+                "click_cart": 28.12,
+                "cart_order": 22.21,
+                "view_order": 0.18,
+                "expected_order_purchase": 300,
+                "expected_click_purchase": 13.04
+            },
+            "advert_statistics": {
+                "views": 551,
+                "clicks": 23,
+                "cpc": 2.32,
+                "avg_cpm": 176.22,
+                "avg_position": 0,
+                "drr_orders": 0.18,
+                "drr_purchase": 0.54,
+                "cp_cart": 8.89,
+                "expected_cps": 17.79,
+                "orders_amount": 3903,
+                "expected_purchase_amount": 12486,
+                "ad_spend": 53.36
+            },
+            "date": "2025-09-21"
+        },
+        {
+            "advert_funnel": {
+                "cart": 37,
+                "orders": 5,
+                "order_item_count": 5,
+                "expected_purchase": 5,
+                "view_click": 7.18,
+                "click_cart": 23.38,
+                "cart_order": 15.72,
+                "view_order": 0.22,
+                "expected_order_purchase": 100,
+                "expected_click_purchase": 3.14
+            },
+            "advert_statistics": {
+                "views": 2227,
+                "clicks": 159,
+                "cpc": 3.48,
+                "avg_cpm": 161.82,
+                "avg_position": 0,
+                "drr_orders": 0.23,
+                "drr_purchase": 0.23,
+                "cp_cart": 14.97,
+                "expected_cps": 110.78,
+                "orders_amount": 22941,
+                "expected_purchase_amount": 27787,
+                "ad_spend": 553.89
+            },
+            "date": "2025-09-22"
+        },
+        {
+            "advert_funnel": {
+                "cart": 32,
+                "orders": 8,
+                "order_item_count": 8,
+                "expected_purchase": 10,
+                "view_click": 3.86,
+                "click_cart": 28.96,
+                "cart_order": 27.29,
+                "view_order": 0.28,
+                "expected_order_purchase": 125,
+                "expected_click_purchase": 9.01
+            },
+            "advert_statistics": {
+                "views": 2887,
+                "clicks": 111,
+                "cpc": 4.63,
+                "avg_cpm": 150.12,
+                "avg_position": 0,
+                "drr_orders": 0.28,
+                "drr_purchase": 0.35,
+                "cp_cart": 16.06,
+                "expected_cps": 51.39,
+                "orders_amount": 35729,
+                "expected_purchase_amount": 43386,
+                "ad_spend": 513.92
+            },
+            "date": "2025-09-23"
+        },
+        {
+            "advert_funnel": {
+                "cart": 37,
+                "orders": 11,
+                "order_item_count": 13,
+                "expected_purchase": 15,
+                "view_click": 5.84,
+                "click_cart": 21.23,
+                "cart_order": 30.08,
+                "view_order": 0.36,
+                "expected_order_purchase": 136.36,
+                "expected_click_purchase": 8.47
+            },
+            "advert_statistics": {
+                "views": 3038,
+                "clicks": 177,
+                "cpc": 2.95,
+                "avg_cpm": 129.22,
+                "avg_position": 0,
+                "drr_orders": 0.36,
+                "drr_purchase": 0.49,
+                "cp_cart": 14.13,
+                "expected_cps": 34.86,
+                "orders_amount": 51756,
+                "expected_purchase_amount": 69395,
+                "ad_spend": 522.83
+            },
+            "date": "2025-09-24"
+        },
+        {
+            "advert_funnel": {
+                "cart": 10,
+                "orders": 3,
+                "order_item_count": 5,
+                "expected_purchase": 7,
+                "view_click": 4.09,
+                "click_cart": 29.56,
+                "cart_order": 38.08,
+                "view_order": 0.34,
+                "expected_order_purchase": 233.33,
+                "expected_click_purchase": 19.44
+            },
+            "advert_statistics": {
+                "views": 881,
+                "clicks": 36,
+                "cpc": 2.29,
+                "avg_cpm": 165.17,
+                "avg_position": 0,
+                "drr_orders": 0.34,
+                "drr_purchase": 0.8,
+                "cp_cart": 8.25,
+                "expected_cps": 11.79,
+                "orders_amount": 11846,
+                "expected_purchase_amount": 39856,
+                "ad_spend": 82.53
+            },
+            "date": "2025-09-25"
+        },
+        {
+            "advert_funnel": {
+                "cart": 37,
+                "orders": 7,
+                "order_item_count": 7,
+                "expected_purchase": 9,
+                "view_click": 3.5,
+                "click_cart": 25.09,
+                "cart_order": 19.41,
+                "view_order": 0.17,
+                "expected_order_purchase": 128.57,
+                "expected_click_purchase": 6.08
+            },
+            "advert_statistics": {
+                "views": 4240,
+                "clicks": 148,
+                "cpc": 4.27,
+                "avg_cpm": 147.03,
+                "avg_position": 0,
+                "drr_orders": 0.17,
+                "drr_purchase": 0.21,
+                "cp_cart": 17.07,
+                "expected_cps": 70.18,
+                "orders_amount": 27453,
+                "expected_purchase_amount": 37854,
+                "ad_spend": 631.65
+            },
+            "date": "2025-09-26"
+        },
+        {
+            "advert_funnel": {
+                "cart": 19,
+                "orders": 4,
+                "order_item_count": 6,
+                "expected_purchase": 4,
+                "view_click": 7.37,
+                "click_cart": 18.13,
+                "cart_order": 25.59,
+                "view_order": 0.27,
+                "expected_order_purchase": 100,
+                "expected_click_purchase": 3.7
+            },
+            "advert_statistics": {
+                "views": 1470,
+                "clicks": 108,
+                "cpc": 4.27,
+                "avg_cpm": 168.35,
+                "avg_position": 0,
+                "drr_orders": 0.27,
+                "drr_purchase": 0.27,
+                "cp_cart": 24.26,
+                "expected_cps": 115.24,
+                "orders_amount": 16559,
+                "expected_purchase_amount": 16329,
+                "ad_spend": 460.96
+            },
+            "date": "2025-09-27"
+        },
+        {
+            "advert_funnel": {
+                "cart": 20,
+                "orders": 3,
+                "order_item_count": 3,
+                "expected_purchase": 3,
+                "view_click": 5.66,
+                "click_cart": 28.35,
+                "cart_order": 19.33,
+                "view_order": 0.23,
+                "expected_order_purchase": 100,
+                "expected_click_purchase": 4.11
+            },
+            "advert_statistics": {
+                "views": 1305,
+                "clicks": 73,
+                "cpc": 2.58,
+                "avg_cpm": 157.67,
+                "avg_position": 0,
+                "drr_orders": 0.23,
+                "drr_purchase": 0.23,
+                "cp_cart": 9.41,
+                "expected_cps": 62.7,
+                "orders_amount": 10639,
+                "expected_purchase_amount": 17860,
+                "ad_spend": 188.11
+            },
+            "date": "2025-09-28"
+        },
+        {
+            "advert_funnel": {
+                "cart": 47,
+                "orders": 11,
+                "order_item_count": 12,
+                "expected_purchase": 15,
+                "view_click": 6.42,
+                "click_cart": 23.55,
+                "cart_order": 25.03,
+                "view_order": 0.35,
+                "expected_order_purchase": 136.36,
+                "expected_click_purchase": 7.43
+            },
+            "advert_statistics": {
+                "views": 3158,
+                "clicks": 202,
+                "cpc": 1.85,
+                "avg_cpm": 189.91,
+                "avg_position": 0,
+                "drr_orders": 0.35,
+                "drr_purchase": 0.48,
+                "cp_cart": 7.93,
+                "expected_cps": 24.86,
+                "orders_amount": 48224,
+                "expected_purchase_amount": 62806,
+                "ad_spend": 372.89
+            },
+            "date": "2025-09-29"
+        },
+        {
+            "advert_funnel": {
+                "cart": 20,
+                "orders": 5,
+                "order_item_count": 5,
+                "expected_purchase": 6,
+                "view_click": 5.47,
+                "click_cart": 15,
+                "cart_order": 29.69,
+                "view_order": 0.2,
+                "expected_order_purchase": 120,
+                "expected_click_purchase": 4.35
+            },
+            "advert_statistics": {
+                "views": 2524,
+                "clicks": 138,
+                "cpc": 4.98,
+                "avg_cpm": 177.86,
+                "avg_position": 0,
+                "drr_orders": 0.2,
+                "drr_purchase": 0.24,
+                "cp_cart": 34.35,
+                "expected_cps": 114.49,
+                "orders_amount": 23734,
+                "expected_purchase_amount": 34578,
+                "ad_spend": 686.94
+            },
+            "date": "2025-09-30"
+        },
+        {
+            "advert_funnel": {
+                "cart": 58,
+                "orders": 18,
+                "order_item_count": 18,
+                "expected_purchase": 19,
+                "view_click": 7.01,
+                "click_cart": 27.9,
+                "cart_order": 31.34,
+                "view_order": 0.6,
+                "expected_order_purchase": 105.56,
+                "expected_click_purchase": 9.05
+            },
+            "advert_statistics": {
+                "views": 3003,
+                "clicks": 210,
+                "cpc": 4.94,
+                "avg_cpm": 172,
+                "avg_position": 0,
+                "drr_orders": 0.6,
+                "drr_purchase": 0.63,
+                "cp_cart": 17.9,
+                "expected_cps": 54.64,
+                "orders_amount": 75547,
+                "expected_purchase_amount": 108261,
+                "ad_spend": 1038.11
+            },
+            "date": "2025-10-01"
+        },
+        {
+            "advert_funnel": {
+                "cart": 9,
+                "orders": 3,
+                "order_item_count": 4,
+                "expected_purchase": 4,
+                "view_click": 5.45,
+                "click_cart": 20.03,
+                "cart_order": 37.39,
+                "view_order": 0.35,
+                "expected_order_purchase": 133.33,
+                "expected_click_purchase": 8.7
+            },
+            "advert_statistics": {
+                "views": 858,
+                "clicks": 46,
+                "cpc": 4.84,
+                "avg_cpm": 184.95,
+                "avg_position": 0,
+                "drr_orders": 0.35,
+                "drr_purchase": 0.47,
+                "cp_cart": 24.73,
+                "expected_cps": 55.64,
+                "orders_amount": 13504,
+                "expected_purchase_amount": 21918,
+                "ad_spend": 222.55
+            },
+            "date": "2025-10-02"
+        },
+        {
+            "advert_funnel": {
+                "cart": 10,
+                "orders": 3,
+                "order_item_count": 5,
+                "expected_purchase": 6,
+                "view_click": 5.77,
+                "click_cart": 15.27,
+                "cart_order": 39.7,
+                "view_order": 0.25,
+                "expected_order_purchase": 200,
+                "expected_click_purchase": 8.7
+            },
+            "advert_statistics": {
+                "views": 1209,
+                "clicks": 69,
+                "cpc": 4.12,
+                "avg_cpm": 179.13,
+                "avg_position": 0,
+                "drr_orders": 0.25,
+                "drr_purchase": 0.5,
+                "cp_cart": 28.4,
+                "expected_cps": 47.33,
+                "orders_amount": 13341,
+                "expected_purchase_amount": 28641,
+                "ad_spend": 283.97
+            },
+            "date": "2025-10-03"
+        },
+        {
+            "advert_funnel": {
+                "cart": 10,
+                "orders": 2,
+                "order_item_count": 3,
+                "expected_purchase": 2,
+                "view_click": 5,
+                "click_cart": 15.21,
+                "cart_order": 22.47,
+                "view_order": 0.15,
+                "expected_order_purchase": 100,
+                "expected_click_purchase": 3.03
+            },
+            "advert_statistics": {
+                "views": 1321,
+                "clicks": 66,
+                "cpc": 3.25,
+                "avg_cpm": 164.51,
+                "avg_position": 0,
+                "drr_orders": 0.15,
+                "drr_purchase": 0.15,
+                "cp_cart": 21.48,
+                "expected_cps": 107.38,
+                "orders_amount": 9511,
+                "expected_purchase_amount": 10753,
+                "ad_spend": 214.76
+            },
+            "date": "2025-10-04"
+        },
+        {
+            "advert_funnel": {
+                "cart": 6,
+                "orders": 1,
+                "order_item_count": 3,
+                "expected_purchase": 5,
+                "view_click": 4.52,
+                "click_cart": 18.82,
+                "cart_order": 19.02,
+                "view_order": 0.12,
+                "expected_order_purchase": 500,
+                "expected_click_purchase": 13.89
+            },
+            "advert_statistics": {
+                "views": 815,
+                "clicks": 36,
+                "cpc": 4.56,
+                "avg_cpm": 135.47,
+                "avg_position": 0,
+                "drr_orders": 0.12,
+                "drr_purchase": 0.61,
+                "cp_cart": 27.35,
+                "expected_cps": 32.82,
+                "orders_amount": 4680,
+                "expected_purchase_amount": 28973,
+                "ad_spend": 164.12
+            },
+            "date": "2025-10-05"
+        },
+        {
+            "advert_funnel": {
+                "cart": 16,
+                "orders": 3,
+                "order_item_count": 4,
+                "expected_purchase": 4,
+                "view_click": 3.77,
+                "click_cart": 17.06,
+                "cart_order": 23.09,
+                "view_order": 0.12,
+                "expected_order_purchase": 133.33,
+                "expected_click_purchase": 4.08
+            },
+            "advert_statistics": {
+                "views": 2603,
+                "clicks": 98,
+                "cpc": 2.99,
+                "avg_cpm": 152.59,
+                "avg_position": 0,
+                "drr_orders": 0.12,
+                "drr_purchase": 0.15,
+                "cp_cart": 18.3,
+                "expected_cps": 73.18,
+                "orders_amount": 12432,
+                "expected_purchase_amount": 23390,
+                "ad_spend": 292.72
+            },
+            "date": "2025-10-06"
+        },
+        {
+            "advert_funnel": {
+                "cart": 87,
+                "orders": 27,
+                "order_item_count": 28,
+                "expected_purchase": 27,
+                "view_click": 5.97,
+                "click_cart": 26.81,
+                "cart_order": 31.63,
+                "view_order": 0.49,
+                "expected_order_purchase": 100,
+                "expected_click_purchase": 8.26
+            },
+            "advert_statistics": {
+                "views": 5487,
+                "clicks": 327,
+                "cpc": 4.19,
+                "avg_cpm": 142.99,
+                "avg_position": 0,
+                "drr_orders": 0.49,
+                "drr_purchase": 0.49,
+                "cp_cart": 15.77,
+                "expected_cps": 50.8,
+                "orders_amount": 112497,
+                "expected_purchase_amount": 117085,
+                "ad_spend": 1371.56
+            },
+            "date": "2025-10-07"
+        },
+        {
+            "advert_funnel": {
+                "cart": 29,
+                "orders": 4,
+                "order_item_count": 6,
+                "expected_purchase": 4,
+                "view_click": 4.92,
+                "click_cart": 13.19,
+                "cart_order": 15.34,
+                "view_order": 0.09,
+                "expected_order_purchase": 100,
+                "expected_click_purchase": 1.79
+            },
+            "advert_statistics": {
+                "views": 4558,
+                "clicks": 224,
+                "cpc": 1.89,
+                "avg_cpm": 144.24,
+                "avg_position": 0,
+                "drr_orders": 0.09,
+                "drr_purchase": 0.09,
+                "cp_cart": 14.58,
+                "expected_cps": 105.67,
+                "orders_amount": 15028,
+                "expected_purchase_amount": 18058,
+                "ad_spend": 422.69
+            },
+            "date": "2025-10-08"
+        },
+        {
+            "advert_funnel": {
+                "cart": 67,
+                "orders": 15,
+                "order_item_count": 16,
+                "expected_purchase": 18,
+                "view_click": 6.42,
+                "click_cart": 21.3,
+                "cart_order": 22.83,
+                "view_order": 0.3,
+                "expected_order_purchase": 120,
+                "expected_click_purchase": 5.7
+            },
+            "advert_statistics": {
+                "views": 4936,
+                "clicks": 316,
+                "cpc": 2.81,
+                "avg_cpm": 199.77,
+                "avg_position": 0,
+                "drr_orders": 0.3,
+                "drr_purchase": 0.37,
+                "cp_cart": 13.25,
+                "expected_cps": 49.32,
+                "orders_amount": 61252,
+                "expected_purchase_amount": 106615,
+                "ad_spend": 887.81
+            },
+            "date": "2025-10-09"
+        },
+        {
+            "advert_funnel": {
+                "cart": 47,
+                "orders": 17,
+                "order_item_count": 17,
+                "expected_purchase": 17,
+                "view_click": 3.91,
+                "click_cart": 21.26,
+                "cart_order": 37.34,
+                "view_order": 0.3,
+                "expected_order_purchase": 100,
+                "expected_click_purchase": 7.66
+            },
+            "advert_statistics": {
+                "views": 5682,
+                "clicks": 222,
+                "cpc": 4.31,
+                "avg_cpm": 182.14,
+                "avg_position": 0,
+                "drr_orders": 0.3,
+                "drr_purchase": 0.3,
+                "cp_cart": 20.34,
+                "expected_cps": 56.23,
+                "orders_amount": 78717,
+                "expected_purchase_amount": 97336,
+                "ad_spend": 955.91
+            },
+            "date": "2025-10-10"
+        },
+        {
+            "advert_funnel": {
+                "cart": 17,
+                "orders": 5,
+                "order_item_count": 5,
+                "expected_purchase": 9,
+                "view_click": 5.78,
+                "click_cart": 16.8,
+                "cart_order": 30.1,
+                "view_order": 0.27,
+                "expected_order_purchase": 180,
+                "expected_click_purchase": 8.49
+            },
+            "advert_statistics": {
+                "views": 1845,
+                "clicks": 106,
+                "cpc": 1.6,
+                "avg_cpm": 191.38,
+                "avg_position": 0,
+                "drr_orders": 0.27,
+                "drr_purchase": 0.49,
+                "cp_cart": 9.95,
+                "expected_cps": 18.8,
+                "orders_amount": 23995,
+                "expected_purchase_amount": 50531,
+                "ad_spend": 169.2
+            },
+            "date": "2025-10-11"
+        },
+        {
+            "advert_funnel": {
+                "cart": 13,
+                "orders": 4,
+                "order_item_count": 5,
+                "expected_purchase": 4,
+                "view_click": 5.45,
+                "click_cart": 10.32,
+                "cart_order": 37.64,
+                "view_order": 0.17,
+                "expected_order_purchase": 100,
+                "expected_click_purchase": 3.15
+            },
+            "advert_statistics": {
+                "views": 2345,
+                "clicks": 127,
+                "cpc": 2.58,
+                "avg_cpm": 153.3,
+                "avg_position": 0,
+                "drr_orders": 0.17,
+                "drr_purchase": 0.17,
+                "cp_cart": 25.24,
+                "expected_cps": 82.04,
+                "orders_amount": 17404,
+                "expected_purchase_amount": 22258,
+                "ad_spend": 328.16
+            },
+            "date": "2025-10-12"
+        },
+        {
+            "advert_funnel": {
+                "cart": 29,
+                "orders": 7,
+                "order_item_count": 7,
+                "expected_purchase": 8,
+                "view_click": 5.53,
+                "click_cart": 27.34,
+                "cart_order": 26,
+                "view_order": 0.35,
+                "expected_order_purchase": 114.29,
+                "expected_click_purchase": 7.34
+            },
+            "advert_statistics": {
+                "views": 1976,
+                "clicks": 109,
+                "cpc": 2.08,
+                "avg_cpm": 138.59,
+                "avg_position": 0,
+                "drr_orders": 0.35,
+                "drr_purchase": 0.41,
+                "cp_cart": 7.83,
+                "expected_cps": 28.4,
+                "orders_amount": 32602,
+                "expected_purchase_amount": 33822,
+                "ad_spend": 227.2
+            },
+            "date": "2025-10-13"
+        },
+        {
+            "advert_funnel": {
+                "cart": 25,
+                "orders": 5,
+                "order_item_count": 7,
+                "expected_purchase": 7,
+                "view_click": 5.08,
+                "click_cart": 27.86,
+                "cart_order": 20.55,
+                "view_order": 0.27,
+                "expected_order_purchase": 140,
+                "expected_click_purchase": 7.53
+            },
+            "advert_statistics": {
+                "views": 1842,
+                "clicks": 93,
+                "cpc": 1.97,
+                "avg_cpm": 145.07,
+                "avg_position": 0,
+                "drr_orders": 0.27,
+                "drr_purchase": 0.38,
+                "cp_cart": 7.34,
+                "expected_cps": 26.23,
+                "orders_amount": 18727,
+                "expected_purchase_amount": 39968,
+                "ad_spend": 183.59
+            },
+            "date": "2025-10-14"
+        },
+        {
+            "advert_funnel": {
+                "cart": 19,
+                "orders": 5,
+                "order_item_count": 7,
+                "expected_purchase": 7,
+                "view_click": 3.99,
+                "click_cart": 15.06,
+                "cart_order": 27.96,
+                "view_order": 0.15,
+                "expected_order_purchase": 140,
+                "expected_click_purchase": 5.3
+            },
+            "advert_statistics": {
+                "views": 3318,
+                "clicks": 132,
+                "cpc": 1.52,
+                "avg_cpm": 149.21,
+                "avg_position": 0,
+                "drr_orders": 0.15,
+                "drr_purchase": 0.21,
+                "cp_cart": 10.56,
+                "expected_cps": 28.67,
+                "orders_amount": 23147,
+                "expected_purchase_amount": 29058,
+                "ad_spend": 200.7
+            },
+            "date": "2025-10-15"
+        },
+        {
+            "advert_funnel": {
+                "cart": 14,
+                "orders": 3,
+                "order_item_count": 5,
+                "expected_purchase": 6,
+                "view_click": 5.52,
+                "click_cart": 18.38,
+                "cart_order": 23.98,
+                "view_order": 0.21,
+                "expected_order_purchase": 200,
+                "expected_click_purchase": 7.69
+            },
+            "advert_statistics": {
+                "views": 1421,
+                "clicks": 78,
+                "cpc": 2.75,
+                "avg_cpm": 133.55,
+                "avg_position": 0,
+                "drr_orders": 0.21,
+                "drr_purchase": 0.42,
+                "cp_cart": 15.31,
+                "expected_cps": 35.72,
+                "orders_amount": 13423,
+                "expected_purchase_amount": 26295,
+                "ad_spend": 214.31
+            },
+            "date": "2025-10-16"
+        },
+        {
+            "advert_funnel": {
+                "cart": 27,
+                "orders": 5,
+                "order_item_count": 7,
+                "expected_purchase": 7,
+                "view_click": 3.13,
+                "click_cart": 18.74,
+                "cart_order": 21.46,
+                "view_order": 0.1,
+                "expected_order_purchase": 140,
+                "expected_click_purchase": 4.7
+            },
+            "advert_statistics": {
+                "views": 4775,
+                "clicks": 149,
+                "cpc": 2.07,
+                "avg_cpm": 142.78,
+                "avg_position": 0,
+                "drr_orders": 0.11,
+                "drr_purchase": 0.15,
+                "cp_cart": 11.43,
+                "expected_cps": 44.09,
+                "orders_amount": 18546,
+                "expected_purchase_amount": 35823,
+                "ad_spend": 308.59
+            },
+            "date": "2025-10-17"
+        },
+        {
+            "advert_funnel": {
+                "cart": 35,
+                "orders": 5,
+                "order_item_count": 6,
+                "expected_purchase": 5,
+                "view_click": 4.4,
+                "click_cart": 25.38,
+                "cart_order": 16.5,
+                "view_order": 0.16,
+                "expected_order_purchase": 100,
+                "expected_click_purchase": 3.62
+            },
+            "advert_statistics": {
+                "views": 3148,
+                "clicks": 138,
+                "cpc": 4.68,
+                "avg_cpm": 149.46,
+                "avg_position": 0,
+                "drr_orders": 0.16,
+                "drr_purchase": 0.16,
+                "cp_cart": 18.43,
+                "expected_cps": 129.02,
+                "orders_amount": 20243,
+                "expected_purchase_amount": 20884,
+                "ad_spend": 645.09
+            },
+            "date": "2025-10-18"
+        },
+        {
+            "advert_funnel": {
+                "cart": 23,
+                "orders": 4,
+                "order_item_count": 4,
+                "expected_purchase": 4,
+                "view_click": 6.65,
+                "click_cart": 16.7,
+                "cart_order": 18.86,
+                "view_order": 0.19,
+                "expected_order_purchase": 100,
+                "expected_click_purchase": 2.9
+            },
+            "advert_statistics": {
+                "views": 2077,
+                "clicks": 138,
+                "cpc": 3.11,
+                "avg_cpm": 151.2,
+                "avg_position": 0,
+                "drr_orders": 0.19,
+                "drr_purchase": 0.19,
+                "cp_cart": 18.68,
+                "expected_cps": 107.42,
+                "orders_amount": 18351,
+                "expected_purchase_amount": 17236,
+                "ad_spend": 429.69
+            },
+            "date": "2025-10-19"
+        },
+        {
+            "advert_funnel": {
+                "cart": 12,
+                "orders": 1,
+                "order_item_count": 1,
+                "expected_purchase": 2,
+                "view_click": 6.35,
+                "click_cart": 17.14,
+                "cart_order": 16.58,
+                "view_order": 0.09,
+                "expected_order_purchase": 200,
+                "expected_click_purchase": 2.82
+            },
+            "advert_statistics": {
+                "views": 1129,
+                "clicks": 71,
+                "cpc": 3.81,
+                "avg_cpm": 149.04,
+                "avg_position": 0,
+                "drr_orders": 0.09,
+                "drr_purchase": 0.18,
+                "cp_cart": 22.55,
+                "expected_cps": 135.31,
+                "orders_amount": 3816,
+                "expected_purchase_amount": 8856,
+                "ad_spend": 270.62
+            },
+            "date": "2025-10-20"
+        },
+        {
+            "advert_funnel": {
+                "cart": 11,
+                "orders": 2,
+                "order_item_count": 4,
+                "expected_purchase": 3,
+                "view_click": 6.28,
+                "click_cart": 13.02,
+                "cart_order": 19.72,
+                "view_order": 0.14,
+                "expected_order_purchase": 150,
+                "expected_click_purchase": 3.37
+            },
+            "advert_statistics": {
+                "views": 1422,
+                "clicks": 89,
+                "cpc": 4.14,
+                "avg_cpm": 133.96,
+                "avg_position": 0,
+                "drr_orders": 0.14,
+                "drr_purchase": 0.21,
+                "cp_cart": 33.49,
+                "expected_cps": 122.78,
+                "orders_amount": 9667,
+                "expected_purchase_amount": 15851,
+                "ad_spend": 368.35
+            },
+            "date": "2025-10-21"
+        },
+        {
+            "advert_funnel": {
+                "cart": 33,
+                "orders": 7,
+                "order_item_count": 7,
+                "expected_purchase": 7,
+                "view_click": 4.69,
+                "click_cart": 26.95,
+                "cart_order": 22.43,
+                "view_order": 0.26,
+                "expected_order_purchase": 100,
+                "expected_click_purchase": 5.69
+            },
+            "advert_statistics": {
+                "views": 2642,
+                "clicks": 123,
+                "cpc": 4.88,
+                "avg_cpm": 170.29,
+                "avg_position": 0,
+                "drr_orders": 0.27,
+                "drr_purchase": 0.27,
+                "cp_cart": 18.19,
+                "expected_cps": 85.75,
+                "orders_amount": 26763,
+                "expected_purchase_amount": 37604,
+                "ad_spend": 600.24
+            },
+            "date": "2025-10-22"
+        },
+        {
+            "advert_funnel": {
+                "cart": 12,
+                "orders": 4,
+                "order_item_count": 6,
+                "expected_purchase": 4,
+                "view_click": 4.78,
+                "click_cart": 16.74,
+                "cart_order": 38.15,
+                "view_order": 0.25,
+                "expected_order_purchase": 100,
+                "expected_click_purchase": 5.41
+            },
+            "advert_statistics": {
+                "views": 1569,
+                "clicks": 74,
+                "cpc": 4.84,
+                "avg_cpm": 189.67,
+                "avg_position": 0,
+                "drr_orders": 0.26,
+                "drr_purchase": 0.26,
+                "cp_cart": 29.85,
+                "expected_cps": 89.55,
+                "orders_amount": 17887,
+                "expected_purchase_amount": 20261,
+                "ad_spend": 358.19
+            },
+            "date": "2025-10-23"
+        },
+        {
+            "advert_funnel": {
+                "cart": 19,
+                "orders": 7,
+                "order_item_count": 9,
+                "expected_purchase": 10,
+                "view_click": 7.05,
+                "click_cart": 23.05,
+                "cart_order": 38.77,
+                "view_order": 0.59,
+                "expected_order_purchase": 142.86,
+                "expected_click_purchase": 12.05
+            },
+            "advert_statistics": {
+                "views": 1186,
+                "clicks": 83,
+                "cpc": 1.51,
+                "avg_cpm": 185.86,
+                "avg_position": 0,
+                "drr_orders": 0.59,
+                "drr_purchase": 0.84,
+                "cp_cart": 6.59,
+                "expected_cps": 12.52,
+                "orders_amount": 34097,
+                "expected_purchase_amount": 42610,
+                "ad_spend": 125.18
+            },
+            "date": "2025-10-24"
+        },
+        {
+            "advert_funnel": {
+                "cart": 15,
+                "orders": 5,
+                "order_item_count": 6,
+                "expected_purchase": 5,
+                "view_click": 6.66,
+                "click_cart": 11.42,
+                "cart_order": 37.78,
+                "view_order": 0.25,
+                "expected_order_purchase": 100,
+                "expected_click_purchase": 3.79
+            },
+            "advert_statistics": {
+                "views": 1983,
+                "clicks": 132,
+                "cpc": 3.16,
+                "avg_cpm": 141.87,
+                "avg_position": 0,
+                "drr_orders": 0.25,
+                "drr_purchase": 0.25,
+                "cp_cart": 27.81,
+                "expected_cps": 83.41,
+                "orders_amount": 20425,
+                "expected_purchase_amount": 28865,
+                "ad_spend": 417.07
+            },
+            "date": "2025-10-25"
+        },
+        {
+            "advert_funnel": {
+                "cart": 8,
+                "orders": 1,
+                "order_item_count": 1,
+                "expected_purchase": 2,
+                "view_click": 5.77,
+                "click_cart": 18.61,
+                "cart_order": 22.86,
+                "view_order": 0.13,
+                "expected_order_purchase": 200,
+                "expected_click_purchase": 4.55
+            },
+            "advert_statistics": {
+                "views": 767,
+                "clicks": 44,
+                "cpc": 2.6,
+                "avg_cpm": 158.49,
+                "avg_position": 0,
+                "drr_orders": 0.13,
+                "drr_purchase": 0.26,
+                "cp_cart": 14.32,
+                "expected_cps": 57.27,
+                "orders_amount": 4061,
+                "expected_purchase_amount": 10404,
+                "ad_spend": 114.53
+            },
+            "date": "2025-10-26"
+        },
+        {
+            "advert_funnel": {
+                "cart": 25,
+                "orders": 5,
+                "order_item_count": 7,
+                "expected_purchase": 5,
+                "view_click": 5.92,
+                "click_cart": 22.09,
+                "cart_order": 21.92,
+                "view_order": 0.26,
+                "expected_order_purchase": 100,
+                "expected_click_purchase": 4.39
+            },
+            "advert_statistics": {
+                "views": 1938,
+                "clicks": 114,
+                "cpc": 1.53,
+                "avg_cpm": 126.29,
+                "avg_position": 0,
+                "drr_orders": 0.26,
+                "drr_purchase": 0.26,
+                "cp_cart": 6.96,
+                "expected_cps": 34.79,
+                "orders_amount": 22929,
+                "expected_purchase_amount": 24096,
+                "ad_spend": 173.97
+            },
+            "date": "2025-10-27"
+        },
+        {
+            "advert_funnel": {
+                "cart": 48,
+                "orders": 19,
+                "order_item_count": 21,
+                "expected_purchase": 19,
+                "view_click": 5.12,
+                "click_cart": 29.34,
+                "cart_order": 39.76,
+                "view_order": 0.59,
+                "expected_order_purchase": 100,
+                "expected_click_purchase": 11.45
+            },
+            "advert_statistics": {
+                "views": 3241,
+                "clicks": 166,
+                "cpc": 3.01,
+                "avg_cpm": 173.39,
+                "avg_position": 0,
+                "drr_orders": 0.59,
+                "drr_purchase": 0.59,
+                "cp_cart": 10.42,
+                "expected_cps": 26.32,
+                "orders_amount": 72691,
+                "expected_purchase_amount": 81853,
+                "ad_spend": 499.99
+            },
+            "date": "2025-10-28"
+        },
+        {
+            "advert_funnel": {
+                "cart": 13,
+                "orders": 4,
+                "order_item_count": 4,
+                "expected_purchase": 5,
+                "view_click": 7.37,
+                "click_cart": 20.06,
+                "cart_order": 36.42,
+                "view_order": 0.45,
+                "expected_order_purchase": 125,
+                "expected_click_purchase": 7.58
+            },
+            "advert_statistics": {
+                "views": 897,
+                "clicks": 66,
+                "cpc": 2.99,
+                "avg_cpm": 192.43,
+                "avg_position": 0,
+                "drr_orders": 0.45,
+                "drr_purchase": 0.56,
+                "cp_cart": 15.19,
+                "expected_cps": 39.5,
+                "orders_amount": 16746,
+                "expected_purchase_amount": 26288,
+                "ad_spend": 197.51
+            },
+            "date": "2025-10-29"
+        },
+        {
+            "advert_funnel": {
+                "cart": 37,
+                "orders": 8,
+                "order_item_count": 10,
+                "expected_purchase": 11,
+                "view_click": 6.39,
+                "click_cart": 22.46,
+                "cart_order": 24.2,
+                "view_order": 0.3,
+                "expected_order_purchase": 137.5,
+                "expected_click_purchase": 6.59
+            },
+            "advert_statistics": {
+                "views": 2626,
+                "clicks": 167,
+                "cpc": 1.85,
+                "avg_cpm": 123.36,
+                "avg_position": 0,
+                "drr_orders": 0.31,
+                "drr_purchase": 0.42,
+                "cp_cart": 8.33,
+                "expected_cps": 28.02,
+                "orders_amount": 36999,
+                "expected_purchase_amount": 61024,
+                "ad_spend": 308.18
+            },
+            "date": "2025-10-30"
+        },
+        {
+            "advert_funnel": {
+                "cart": 48,
+                "orders": 18,
+                "order_item_count": 20,
+                "expected_purchase": 20,
+                "view_click": 5.84,
+                "click_cart": 26.68,
+                "cart_order": 39.12,
+                "view_order": 0.57,
+                "expected_order_purchase": 111.11,
+                "expected_click_purchase": 10.93
+            },
+            "advert_statistics": {
+                "views": 3135,
+                "clicks": 183,
+                "cpc": 1.6,
+                "avg_cpm": 191.87,
+                "avg_position": 0,
+                "drr_orders": 0.57,
+                "drr_purchase": 0.64,
+                "cp_cart": 6.09,
+                "expected_cps": 14.61,
+                "orders_amount": 81806,
+                "expected_purchase_amount": 94162,
+                "ad_spend": 292.25
+            },
+            "date": "2025-10-31"
+        },
+        {
+            "advert_funnel": {
+                "cart": 16,
+                "orders": 3,
+                "order_item_count": 3,
+                "expected_purchase": 3,
+                "view_click": 7.95,
+                "click_cart": 13.55,
+                "cart_order": 19.73,
+                "view_order": 0.19,
+                "expected_order_purchase": 100,
+                "expected_click_purchase": 2.42
+            },
+            "advert_statistics": {
+                "views": 1566,
+                "clicks": 124,
+                "cpc": 2.75,
+                "avg_cpm": 122.29,
+                "avg_position": 0,
+                "drr_orders": 0.19,
+                "drr_purchase": 0.19,
+                "cp_cart": 21.34,
+                "expected_cps": 113.79,
+                "orders_amount": 14251,
+                "expected_purchase_amount": 13157,
+                "ad_spend": 341.37
+            },
+            "date": "2025-11-01"
+        },
+        {
+            "advert_funnel": {
+                "cart": 8,
+                "orders": 2,
+                "order_item_count": 3,
+                "expected_purchase": 3,
+                "view_click": 5.92,
+                "click_cart": 20.55,
+                "cart_order": 29.25,
+                "view_order": 0.29,
+                "expected_order_purchase": 150,
+                "expected_click_purchase": 7.5
+            },
+            "advert_statistics": {
+                "views": 691,
+                "clicks": 40,
+                "cpc": 4.5,
+                "avg_cpm": 145.23,
+                "avg_position": 0,
+                "drr_orders": 0.29,
+                "drr_purchase": 0.43,
+                "cp_cart": 22.5,
+                "expected_cps": 60,
+                "orders_amount": 8970,
+                "expected_purchase_amount": 15469,
+                "ad_spend": 179.99
+            },
+            "date": "2025-11-02"
+        },
+        {
+            "advert_funnel": {
+                "cart": 37,
+                "orders": 14,
+                "order_item_count": 16,
+                "expected_purchase": 15,
+                "view_click": 7.26,
+                "click_cart": 11.75,
+                "cart_order": 38.45,
+                "view_order": 0.32,
+                "expected_order_purchase": 107.14,
+                "expected_click_purchase": 4.75
+            },
+            "advert_statistics": {
+                "views": 4364,
+                "clicks": 316,
+                "cpc": 4.17,
+                "avg_cpm": 161.03,
+                "avg_position": 0,
+                "drr_orders": 0.32,
+                "drr_purchase": 0.34,
+                "cp_cart": 35.58,
+                "expected_cps": 87.76,
+                "orders_amount": 57805,
+                "expected_purchase_amount": 64884,
+                "ad_spend": 1316.46
+            },
+            "date": "2025-11-03"
+        },
+        {
+            "advert_funnel": {
+                "cart": 26,
+                "orders": 4,
+                "order_item_count": 6,
+                "expected_purchase": 5,
+                "view_click": 3.38,
+                "click_cart": 18.01,
+                "cart_order": 18.99,
+                "view_order": 0.09,
+                "expected_order_purchase": 125,
+                "expected_click_purchase": 3.45
+            },
+            "advert_statistics": {
+                "views": 4296,
+                "clicks": 145,
+                "cpc": 3.78,
+                "avg_cpm": 124.64,
+                "avg_position": 0,
+                "drr_orders": 0.09,
+                "drr_purchase": 0.12,
+                "cp_cart": 21.08,
+                "expected_cps": 109.59,
+                "orders_amount": 17586,
+                "expected_purchase_amount": 22797,
+                "ad_spend": 547.96
+            },
+            "date": "2025-11-04"
+        },
+        {
+            "advert_funnel": {
+                "cart": 20,
+                "orders": 7,
+                "order_item_count": 7,
+                "expected_purchase": 8,
+                "view_click": 5.78,
+                "click_cart": 20.85,
+                "cart_order": 37.88,
+                "view_order": 0.4,
+                "expected_order_purchase": 114.29,
+                "expected_click_purchase": 8.08
+            },
+            "advert_statistics": {
+                "views": 1730,
+                "clicks": 99,
+                "cpc": 4.84,
+                "avg_cpm": 151.96,
+                "avg_position": 0,
+                "drr_orders": 0.41,
+                "drr_purchase": 0.46,
+                "cp_cart": 23.95,
+                "expected_cps": 59.86,
+                "orders_amount": 32723,
+                "expected_purchase_amount": 39562,
+                "ad_spend": 478.91
+            },
+            "date": "2025-11-05"
+        },
+        {
+            "advert_funnel": {
+                "cart": 24,
+                "orders": 7,
+                "order_item_count": 9,
+                "expected_purchase": 8,
+                "view_click": 7.87,
+                "click_cart": 19.36,
+                "cart_order": 30.34,
+                "view_order": 0.43,
+                "expected_order_purchase": 114.29,
+                "expected_click_purchase": 6.3
+            },
+            "advert_statistics": {
+                "views": 1619,
+                "clicks": 127,
+                "cpc": 3.42,
+                "avg_cpm": 195.99,
+                "avg_position": 0,
+                "drr_orders": 0.43,
+                "drr_purchase": 0.49,
+                "cp_cart": 18.1,
+                "expected_cps": 54.29,
+                "orders_amount": 28790,
+                "expected_purchase_amount": 44387,
+                "ad_spend": 434.32
+            },
+            "date": "2025-11-06"
+        },
+        {
+            "advert_funnel": {
+                "cart": 33,
+                "orders": 12,
+                "order_item_count": 14,
+                "expected_purchase": 12,
+                "view_click": 7.04,
+                "click_cart": 26.79,
+                "cart_order": 38.26,
+                "view_order": 0.67,
+                "expected_order_purchase": 100,
+                "expected_click_purchase": 9.6
+            },
+            "advert_statistics": {
+                "views": 1779,
+                "clicks": 125,
+                "cpc": 3.12,
+                "avg_cpm": 129.63,
+                "avg_position": 0,
+                "drr_orders": 0.68,
+                "drr_purchase": 0.68,
+                "cp_cart": 11.81,
+                "expected_cps": 32.47,
+                "orders_amount": 46500,
+                "expected_purchase_amount": 48897,
+                "ad_spend": 389.66
+            },
+            "date": "2025-11-07"
+        },
+        {
+            "advert_funnel": {
+                "cart": 14,
+                "orders": 3,
+                "order_item_count": 3,
+                "expected_purchase": 6,
+                "view_click": 5.25,
+                "click_cart": 21.94,
+                "cart_order": 23.93,
+                "view_order": 0.25,
+                "expected_order_purchase": 200,
+                "expected_click_purchase": 9.38
+            },
+            "advert_statistics": {
+                "views": 1222,
+                "clicks": 64,
+                "cpc": 4.01,
+                "avg_cpm": 131.67,
+                "avg_position": 0,
+                "drr_orders": 0.25,
+                "drr_purchase": 0.49,
+                "cp_cart": 18.32,
+                "expected_cps": 42.75,
+                "orders_amount": 10997,
+                "expected_purchase_amount": 33710,
+                "ad_spend": 256.52
+            },
+            "date": "2025-11-08"
+        },
+        {
+            "advert_funnel": {
+                "cart": 34,
+                "orders": 9,
+                "order_item_count": 10,
+                "expected_purchase": 13,
+                "view_click": 3.34,
+                "click_cart": 28.64,
+                "cart_order": 27.98,
+                "view_order": 0.25,
+                "expected_order_purchase": 144.44,
+                "expected_click_purchase": 10.83
+            },
+            "advert_statistics": {
+                "views": 3619,
+                "clicks": 120,
+                "cpc": 3.84,
+                "avg_cpm": 167.89,
+                "avg_position": 0,
+                "drr_orders": 0.25,
+                "drr_purchase": 0.36,
+                "cp_cart": 13.57,
+                "expected_cps": 35.48,
+                "orders_amount": 37026,
+                "expected_purchase_amount": 65373,
+                "ad_spend": 461.28
+            },
+            "date": "2025-11-09"
+        },
+        {
+            "advert_funnel": {
+                "cart": 9,
+                "orders": 3,
+                "order_item_count": 3,
+                "expected_purchase": 7,
+                "view_click": 3.18,
+                "click_cart": 29.09,
+                "cart_order": 35.39,
+                "view_order": 0.31,
+                "expected_order_purchase": 233.33,
+                "expected_click_purchase": 22.58
+            },
+            "advert_statistics": {
+                "views": 976,
+                "clicks": 31,
+                "cpc": 2.74,
+                "avg_cpm": 188.93,
+                "avg_position": 0,
+                "drr_orders": 0.31,
+                "drr_purchase": 0.72,
+                "cp_cart": 9.42,
+                "expected_cps": 12.11,
+                "orders_amount": 13206,
+                "expected_purchase_amount": 38072,
+                "ad_spend": 84.8
+            },
+            "date": "2025-11-10"
+        },
+        {
+            "advert_funnel": {
+                "cart": 10,
+                "orders": 2,
+                "order_item_count": 3,
+                "expected_purchase": 3,
+                "view_click": 5.99,
+                "click_cart": 10.92,
+                "cart_order": 20.04,
+                "view_order": 0.13,
+                "expected_order_purchase": 150,
+                "expected_click_purchase": 3.16
+            },
+            "advert_statistics": {
+                "views": 1591,
+                "clicks": 95,
+                "cpc": 4.3,
+                "avg_cpm": 138.07,
+                "avg_position": 0,
+                "drr_orders": 0.13,
+                "drr_purchase": 0.19,
+                "cp_cart": 40.85,
+                "expected_cps": 136.17,
+                "orders_amount": 7097,
+                "expected_purchase_amount": 14735,
+                "ad_spend": 408.5
+            },
+            "date": "2025-11-11"
+        },
+        {
+            "advert_funnel": {
+                "cart": 55,
+                "orders": 15,
+                "order_item_count": 17,
+                "expected_purchase": 16,
+                "view_click": 5.78,
+                "click_cart": 25.41,
+                "cart_order": 28.16,
+                "view_order": 0.4,
+                "expected_order_purchase": 106.67,
+                "expected_click_purchase": 7.31
+            },
+            "advert_statistics": {
+                "views": 3794,
+                "clicks": 219,
+                "cpc": 3.82,
+                "avg_cpm": 142.81,
+                "avg_position": 0,
+                "drr_orders": 0.4,
+                "drr_purchase": 0.42,
+                "cp_cart": 15.19,
+                "expected_cps": 52.21,
+                "orders_amount": 68000,
+                "expected_purchase_amount": 72352,
+                "ad_spend": 835.4
+            },
+            "date": "2025-11-12"
+        },
+        {
+            "advert_funnel": {
+                "cart": 32,
+                "orders": 6,
+                "order_item_count": 6,
+                "expected_purchase": 9,
+                "view_click": 4.39,
+                "click_cart": 24.2,
+                "cart_order": 20.46,
+                "view_order": 0.2,
+                "expected_order_purchase": 150,
+                "expected_click_purchase": 6.77
+            },
+            "advert_statistics": {
+                "views": 3041,
+                "clicks": 133,
+                "cpc": 1.54,
+                "avg_cpm": 193.09,
+                "avg_position": 0,
+                "drr_orders": 0.2,
+                "drr_purchase": 0.3,
+                "cp_cart": 6.38,
+                "expected_cps": 22.7,
+                "orders_amount": 23908,
+                "expected_purchase_amount": 40996,
+                "ad_spend": 204.26
+            },
+            "date": "2025-11-13"
+        },
+        {
+            "advert_funnel": {
+                "cart": 32,
+                "orders": 5,
+                "order_item_count": 6,
+                "expected_purchase": 6,
+                "view_click": 5.72,
+                "click_cart": 14.82,
+                "cart_order": 17.24,
+                "view_order": 0.13,
+                "expected_order_purchase": 120,
+                "expected_click_purchase": 2.76
+            },
+            "advert_statistics": {
+                "views": 3804,
+                "clicks": 217,
+                "cpc": 4.8,
+                "avg_cpm": 122.6,
+                "avg_position": 0,
+                "drr_orders": 0.13,
+                "drr_purchase": 0.16,
+                "cp_cart": 32.56,
+                "expected_cps": 173.65,
+                "orders_amount": 24629,
+                "expected_purchase_amount": 33654,
+                "ad_spend": 1041.9
+            },
+            "date": "2025-11-14"
+        },
+        {
+            "advert_funnel": {
+                "cart": 2,
+                "orders": 0,
+                "order_item_count": 0,
+                "expected_purchase": 4,
+                "view_click": 4.36,
+                "click_cart": 12.29,
+                "cart_order": 19.28,
+                "view_order": 0,
+                "expected_order_purchase": 0,
+                "expected_click_purchase": 21.05
+            },
+            "advert_statistics": {
+                "views": 447,
+                "clicks": 19,
+                "cpc": 2.5,
+                "avg_cpm": 197.42,
+                "avg_position": 0,
+                "drr_orders": 0,
+                "drr_purchase": 0.9,
+                "cp_cart": 23.73,
+                "expected_cps": 11.86,
+                "orders_amount": 0,
+                "expected_purchase_amount": 19745,
+                "ad_spend": 47.45
+            },
+            "date": "2025-11-15"
+        },
+        {
+            "advert_funnel": {
+                "cart": 49,
+                "orders": 19,
+                "order_item_count": 21,
+                "expected_purchase": 23,
+                "view_click": 6.99,
+                "click_cart": 25.1,
+                "cart_order": 39.56,
+                "view_order": 0.68,
+                "expected_order_purchase": 121.05,
+                "expected_click_purchase": 11.73
+            },
+            "advert_statistics": {
+                "views": 2806,
+                "clicks": 196,
+                "cpc": 1.71,
+                "avg_cpm": 165.2,
+                "avg_position": 0,
+                "drr_orders": 0.68,
+                "drr_purchase": 0.82,
+                "cp_cart": 6.84,
+                "expected_cps": 14.58,
+                "orders_amount": 75952,
+                "expected_purchase_amount": 120544,
+                "ad_spend": 335.35
+            },
+            "date": "2025-11-16"
+        },
+        {
+            "advert_funnel": {
+                "cart": 4,
+                "orders": 0,
+                "order_item_count": 0,
+                "expected_purchase": 2,
+                "view_click": 5.43,
+                "click_cart": 20.75,
+                "cart_order": 22.94,
+                "view_order": 0,
+                "expected_order_purchase": 0,
+                "expected_click_purchase": 9.52
+            },
+            "advert_statistics": {
+                "views": 389,
+                "clicks": 21,
+                "cpc": 2.23,
+                "avg_cpm": 156.71,
+                "avg_position": 0,
+                "drr_orders": 0,
+                "drr_purchase": 0.51,
+                "cp_cart": 11.71,
+                "expected_cps": 23.42,
+                "orders_amount": 0,
+                "expected_purchase_amount": 9658,
+                "ad_spend": 46.84
+            },
+            "date": "2025-11-17"
+        },
+        {
+            "advert_funnel": {
+                "cart": 40,
+                "orders": 13,
+                "order_item_count": 13,
+                "expected_purchase": 13,
+                "view_click": 4.13,
+                "click_cart": 29.11,
+                "cart_order": 34.83,
+                "view_order": 0.38,
+                "expected_order_purchase": 100,
+                "expected_click_purchase": 9.29
+            },
+            "advert_statistics": {
+                "views": 3392,
+                "clicks": 140,
+                "cpc": 1.9,
+                "avg_cpm": 144.37,
+                "avg_position": 0,
+                "drr_orders": 0.38,
+                "drr_purchase": 0.38,
+                "cp_cart": 6.66,
+                "expected_cps": 20.49,
+                "orders_amount": 55604,
+                "expected_purchase_amount": 53506,
+                "ad_spend": 266.42
+            },
+            "date": "2025-11-18"
+        },
+        {
+            "advert_funnel": {
+                "cart": 8,
+                "orders": 1,
+                "order_item_count": 2,
+                "expected_purchase": 4,
+                "view_click": 3.33,
+                "click_cart": 10.83,
+                "cart_order": 20.88,
+                "view_order": 0.04,
+                "expected_order_purchase": 400,
+                "expected_click_purchase": 5
+            },
+            "advert_statistics": {
+                "views": 2403,
+                "clicks": 80,
+                "cpc": 1.65,
+                "avg_cpm": 196.07,
+                "avg_position": 0,
+                "drr_orders": 0.04,
+                "drr_purchase": 0.17,
+                "cp_cart": 16.47,
+                "expected_cps": 32.94,
+                "orders_amount": 3552,
+                "expected_purchase_amount": 16695,
+                "ad_spend": 131.74
+            },
+            "date": "2025-11-19"
+        },
+        {
+            "advert_funnel": {
+                "cart": 17,
+                "orders": 5,
+                "order_item_count": 5,
+                "expected_purchase": 6,
+                "view_click": 3.67,
+                "click_cart": 22.58,
+                "cart_order": 35.28,
+                "view_order": 0.23,
+                "expected_order_purchase": 120,
+                "expected_click_purchase": 7.59
+            },
+            "advert_statistics": {
+                "views": 2165,
+                "clicks": 79,
+                "cpc": 3.02,
+                "avg_cpm": 160.92,
+                "avg_position": 0,
+                "drr_orders": 0.23,
+                "drr_purchase": 0.28,
+                "cp_cart": 14.05,
+                "expected_cps": 39.8,
+                "orders_amount": 23301,
+                "expected_purchase_amount": 30148,
+                "ad_spend": 238.81
+            },
+            "date": "2025-11-20"
+        }
+    ],
+    "summary_data": {
+        "advert_funnel": {
+            "cart": 2708,
+            "orders": 716,
+            "order_item_count": 833,
+            "expected_purchase": 919,
+            "view_click": 5.47,
+            "click_cart": 20.4,
+            "cart_order": 26.44,
+            "view_order": 0.3,
+            "expected_order_purchase": 128.35,
+            "expected_click_purchase": 6.92
+        },
+        "advert_statistics": {
+            "views": 242624,
+            "clicks": 13272,
+            "cpc": 3.25,
+            "avg_cpm": 177.81,
+            "avg_position": 0,
+            "drr_orders": 0.3,
+            "drr_purchase": 0.38,
+            "cp_cart": 15.93,
+            "expected_cps": 46.94,
+            "orders_amount": 3059391,
+            "expected_purchase_amount": 4553172,
+            "ad_spend": 43141.93
+        }
+    },
+    "funnel_chart_data": {
+        "views": 242624,
+        "clicks": 13272,
+        "cart": 2708,
+        "orders": 716,
+        "expected_purchase": 919,
+        "clicks_views_conversion": 5.47,
+        "cart_click_conversion": 20.4,
+        "cart_order_conversion": 26.44,
+        "order_purchase_conversion": 128.35
+    }
+}

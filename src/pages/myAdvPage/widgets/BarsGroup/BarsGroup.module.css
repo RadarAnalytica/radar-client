@@ -42,8 +42,16 @@
   font-size: 14px;
 }
 
-.campaignBar__status {
+.campaignBar__status_active {
   background: #4AD99133;
+}
+
+.campaignBar__status_paused {
+  background: #F0AD0033;
+}
+
+.campaignBar__status_completed {
+  background: #FF8D8D33;
 }
 
 .campaignBar__type {

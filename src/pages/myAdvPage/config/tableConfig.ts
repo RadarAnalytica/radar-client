@@ -1,4 +1,4 @@
-export const TABLE_CONFIG_VERSION = '1.0.0';
+export const TABLE_CONFIG_VERSION = '1.0.1';
 export const TABLE_CONFIG_STORAGE_KEY = 'myAdv_tableConfig';
 
 export interface ColumnConfig {
@@ -23,16 +23,16 @@ export interface TableConfigData {
 export const getDefaultTableConfig = (): ColumnConfig[] => {
   const columns: ColumnConfig[] = [
     {
-      title: 'О компании',
+      title: 'О кампании',
       key: 'm01',
       hidden: false,
       fixed: true,
       groupColor: 'white',
       children: [
-          {title: 'Компания', dataIndex: 'company_name', sortable: true, fixed: true, width: 240},
-          {title: 'Статус WB', dataIndex: 'company_status', sortable: true, fixed: true, width: 100},
-          {title: 'Тип компании', dataIndex: 'company_type', sortable: true, fixed: true, width: 100},
-      ].map(_ => ({ ..._, key: _.dataIndex, minWidth: _.width, hidden: false, canToggle: !_.fixed }))
+          {title: 'Название кампании', dataIndex: 'company_name', sortable: false, fixed: true, width: 240},
+          {title: 'Статус WB', dataIndex: 'company_status', sortable: false, fixed: true, width: 100},
+          {title: 'Тип кампании', dataIndex: 'company_type', sortable: false, fixed: true, width: 100},
+      ].map(_ => ({ ..._, key: _.dataIndex, minWidth: _.width }))
     },
     {
       title: 'Рекламная воронка',
@@ -51,7 +51,7 @@ export const getDefaultTableConfig = (): ColumnConfig[] => {
           {title: 'Просмотр → Заказ', dataIndex: 'view_order', sortable: true, fixed: false, width: 120},
           {title: 'Прогноз Заказ → Выкуп', dataIndex: 'expected_order_purchase', sortable: true, fixed: false, width: 120},
           {title: 'Прогноз Клик → Выкуп', dataIndex: 'expected_click_purchase', sortable: true, fixed: false, width: 120},
-      ].map(_ => ({ ..._, render: _.render?.bind(_), key: _.dataIndex, minWidth: _.width, hidden: false, canToggle: !_.fixed }))
+      ].map(_ => ({ ..._, key: _.dataIndex, minWidth: _.width }))
     },
     {
       title: 'Рекламная статистика',
@@ -72,7 +72,7 @@ export const getDefaultTableConfig = (): ColumnConfig[] => {
           {title: 'Заказов на сумму', dataIndex: 'orders_amount', sortable: true, fixed: false, width: 120},
           {title: 'Прогноз выкуп на сумму', dataIndex: 'expected_purchase_amount', sortable: true, fixed: false, width: 120},
           {title: 'Расходы на рекламу', dataIndex: 'ad_spend', sortable: true, fixed: false, width: 120},
-      ].map(_ => ({ ..._, render: _.render?.bind(_), key: _.dataIndex, minWidth: _.width, hidden: false, canToggle: !_.fixed, className: 'myAdvTableGroupCell' }))
+      ].map(_ => ({ ..._, render: _.render?.bind(_), key: _.dataIndex, minWidth: _.width, className: 'myAdvTableGroupCell' }))
     },
   ].map(_ => ({ ..._, colSpan: _?.children?.length || 1 }));
 
