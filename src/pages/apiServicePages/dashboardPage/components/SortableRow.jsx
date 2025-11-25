@@ -66,7 +66,7 @@ export const SortableRow = ({ row, items, dataDashBoard, loading, children, isDr
                 ...getStyles(),
             }}
         >
-            <SortableContext items={(row?.children?.map((i) => i.id) ?? [])} strategy={rectSortingStrategy}>
+            <SortableContext items={(row?.children?.map((i) => i.id) ?? [])} strategy={items.filter(i => i.dropKey === '3').every(i => i.rowId === rowId) ? horizontalListSortingStrategy : rectSortingStrategy}>
                 {rowId !== 'addRow' && row?.children?.map((bar) => (
                     <SortableBar
                         key={bar?.id}

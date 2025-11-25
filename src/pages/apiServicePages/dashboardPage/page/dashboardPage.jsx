@@ -659,7 +659,7 @@ const barsConfig = [
         title: 'Рентабельность и маржинальность',
         isVisible: true,
         dropKey: '3',
-        container: styles.group__halfWrapper,
+        container: styles.group__halfToFullWrapper,
         rowId: 'row-5',
         render: (bar, dataDashBoard, loading, selectedRange, activeBrand, authToken, filters, updateDataDashBoard, stockAnalysisData) => (
             <MarginChartBlock
@@ -677,7 +677,7 @@ const barsConfig = [
         isVisible: true,
         dropKey: '4',
         rowId: 'row-6',
-        container: styles.group__halfWrapper,
+        container: styles.group__halfToFullWrapper,
         render: (bar, dataDashBoard, loading, selectedRange, activeBrand, authToken, filters, updateDataDashBoard, stockAnalysisData) => (
             <StorageRevenueChartBlock
                 loading={loading}
@@ -692,8 +692,8 @@ const barsConfig = [
         isVisible: true,
         dropKey: '4',
         rowId: 'row-6',
-        container: styles.group__halfWrapper,
-        render: (bbar, dataDashBoard, loading, selectedRange, activeBrand, authToken, filters, updateDataDashBoard, stockAnalysisData) => (
+        container: styles.group__halfToFullWrapper,
+        render: (bar, dataDashBoard, loading, selectedRange, activeBrand, authToken, filters, updateDataDashBoard, stockAnalysisData) => (
             <StorageBlock
                 loading={loading}
                 dataDashBoard={dataDashBoard}
