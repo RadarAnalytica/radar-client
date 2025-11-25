@@ -10,7 +10,6 @@ import Loader from '@/components/ui/Loader';
 import BarsGroup from './widgets/BarsGroup/BarsGroup';
 import StatisticsChart from './widgets/StatisticsChart/StatisticsChart';
 import MyAdvTable from './widgets/MyAdvTable/MyAdvTable';
-import NoData from '@/components/sharedComponents/NoData/NoData';
 import { 
   getDefaultTableConfig, 
   loadTableConfig, 
@@ -126,7 +125,7 @@ const CompanyAdvPage: React.FC = () => {
 
         {isDemoMode && <NoSubscriptionWarningBlock />}
 
-        <BarsGroup data={tableData ? tableData[0] : null} loadData={loadData} loading={loading} />
+        <BarsGroup data={tableData ? tableData[0] : {}} loadData={loadData} loading={loading} />
 
         {loading && (
           <div className={styles.loader__container}>

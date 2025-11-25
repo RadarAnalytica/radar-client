@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { RadarBar } from '@/shared';
 import styles from './BarsGroup.module.css';
 import { CompanyData } from '../../data/mockData';
+import { format } from 'date-fns';
 
 interface BarsGroupProps {
   data: CompanyData;
@@ -16,14 +17,14 @@ const BarsGroup: React.FC<BarsGroupProps> = ({ data = {}, loadData, loading = fa
         <div className={styles.campaignBar}>
           <div className={styles.campaignBar__left}>
             <div className={styles.campaignBar__left__title}>
-              Кампания
+              {data.company_name}
             </div>
             <div className={styles.campaignBar__left__content}>
               <div className={`${styles.campaignBar__badge} ${styles.campaignBar__status}`}>{data.company_status}</div>
               <div className={`${styles.campaignBar__badge} ${styles.campaignBar__type}`}>{data.company_type}</div>
               <div className={styles.campaignBar__created}>
                 <span className={styles.campaignBar__label}>Создана:</span>
-                <span className={styles.campaignBar__value}>{data.company_start_date}</span>
+                <span className={styles.campaignBar__value}>{data?.company_start_date && format(data?.company_start_date, 'dd.MM.yyyy')}</span>
               </div>
               <div className={styles.campaignBar__id}>
                 <span className={styles.campaignBar__label}>ID на WB</span>
@@ -34,7 +35,7 @@ const BarsGroup: React.FC<BarsGroupProps> = ({ data = {}, loadData, loading = fa
           <div className={styles.campaignBar__right}>
             <div className={styles.campaignBar__budget}>
               <span className={styles.campaignBar__budget__label}>Бюджет</span>
-              <span className={styles.campaignBar__budget__value}>{data.avg_cpm} ₽</span>
+              <span className={styles.campaignBar__budget__value}>{data.ad_spend} ₽</span>
             </div>
             <button className={styles.refreshButton} onClick={loadData}>
               Обновить
@@ -59,7 +60,7 @@ const BarsGroup: React.FC<BarsGroupProps> = ({ data = {}, loadData, loading = fa
         />
         <RadarBar
           title="CTR"
-          mainValue={data.clicks}
+          mainValue={data.view_click}
           mainValueUnits="%"
           isLoading={loading}
         />

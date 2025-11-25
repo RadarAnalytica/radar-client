@@ -138,6 +138,7 @@ const StatisticsChart: React.FC<StatisticsChartProps> = ({ data, loading = false
   const [chartControls, setChartControls] = useState(
     chartCompareConfigObject.filter(_ => _.isControl).map(_ => ({ ..._, isActive: _.defaultActive }))
   );
+  const funnelData = data?.funnel_chart_data || {};
 
   // Используем данные из массива date_data
   useEffect(() => {
@@ -235,7 +236,7 @@ const StatisticsChart: React.FC<StatisticsChartProps> = ({ data, loading = false
         },
       },
       tooltip: {
-        mode: 'index' as const,
+        mode: 'nearest' as const,
         intersect: false,
       },
     },
@@ -269,21 +270,18 @@ const StatisticsChart: React.FC<StatisticsChartProps> = ({ data, loading = false
   };
 
   // Данные для воронки
-  const funnelData = data
-    ? [
-        { label: 'Просмотры', value: data?.summary_data?.advert_funnel?.view_order || 0 },
-        { label: 'Клики', value: data?.summary_data?.advert_funnel?.view_click || 0 },
-        { label: 'Корзина', value: data?.summary_data?.advert_funnel?.cart_order || 0 },
-        { label: 'Заказы', value: data?.summary_data?.advert_funnel?.orders || 0 },
-        { label: 'Прогноз выкупа', value: data?.summary_data?.advert_funnel?.expected_purchase || 0 },
-      ]
-    : [];
-  
-  const percetageData = [
-    { percent: 10, value1: 1000, value2: 10000 },
-    { percent: 20, value1: 200, value2: 1000 },
-    { percent: 20, value1: 40, value2: 200 },
-    { percent: 0, value1: 0, value2: 40 },
+  const funnelChartData = [
+    { label: 'Просмотры', value: funnelData?.views || 0 },
+    { label: 'Клики', value: funnelData?.clicks || 0 },
+    { label: 'Корзина', value: funnelData?.cart || 0 },
+    { label: 'Заказы', value: funnelData?.orders || 0 },
+    { label: 'Прогноз выкупа', value: funnelData?.expected_purchase || 0 },
+  ];
+  const percetageFunnelChartData = [
+    { percent: funnelData?.clicks_views_conversion || 0, value1: funnelData?.clicks || 0, value2: funnelData?.views || 0 },
+    { percent: funnelData?.cart_click_conversion || 0, value1: funnelData?.cart || 0, value2: funnelData?.clicks || 0 },
+    { percent: funnelData?.cart_order_conversion || 0, value1: funnelData?.orders || 0, value2: funnelData?.cart || 0 },
+    { percent: funnelData?.order_purchase_conversion || 0, value1: funnelData?.orders || 0, value2: funnelData?.expected_purchase || 0 },
   ];
 
   const trapezoids = [
@@ -331,7 +329,7 @@ const StatisticsChart: React.FC<StatisticsChartProps> = ({ data, loading = false
 
               {activeTab === 'Воронка' && (
                 <div className={styles.funnel}>
-                  {funnelData.map((item, index) => {
+                  {funnelChartData.map((item, index) => {
                     return (
                       <div key={index} className={`${styles.funnel__item} ${styles[`funnel__item-${index}`]}`}>
                         <div className={styles.funnel__content}>
@@ -348,7 +346,7 @@ const StatisticsChart: React.FC<StatisticsChartProps> = ({ data, loading = false
                   })}
 
                   <div className={styles.funnel__percentageInfo}>
-                    {percetageData.map((item, index) => {
+                    {percetageFunnelChartData.map((item, index) => {
                       return (
                         <div key={index} className={styles.funnel__percentageItemWrapper}>
                           <div className={styles.funnel__percentageItem}>
