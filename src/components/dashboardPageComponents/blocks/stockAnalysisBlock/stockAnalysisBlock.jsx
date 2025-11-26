@@ -99,7 +99,7 @@ const StockAnalysisBlock = memo(({ dashboardLoading, dragHandle, data}) => {
                 configKey='STOCK_ANALYSIS_TABLE_CONFIG'
                 initPaginationState={{ current: 1, total: 1, pageSize: 10 }}
                 hasShadow={false}
-                maxHeight={710}
+                maxHeight={720}
             />
         </div>
     );

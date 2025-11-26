@@ -70,22 +70,32 @@ const comparsionsList = {
 };
 
 const customCellRender = (value, record, index, dataIndex) => {
-    const [isImgVisible, setIsImgVisible] = useState(true);
+    const [isImgVisible, setIsImgVisible] = useState(false);
     const comparsionKey = comparsionsList[dataIndex];
     const comparsion = record[comparsionKey];
     const rightBorders = ['category', 'sold_cost', 'return_cost', 'product_cost_stock', 'from_client_sum', 'additionalPayment', 'lostRevenue', 'byProfit', 'minDiscountPrice', 'orderSum', 'completed', 'saleCountDay'];
+
+
+    useEffect(() => {
+        if (record.photo) {
+            setIsImgVisible(true);
+        }
+    }, [record.photo]);
+
 
     if (dataIndex === 'productName') {
         return (
             <div className={`${styles.productCustomCell} ${!record.children && 'ps-5'}`}>
                 <div className={styles.productCustomCellImgWrapper}>
-                    {isImgVisible && <img 
+                    <img 
                         src={record.photo} 
                         width={30} 
                         height={40} 
                         alt='Product'
-                        onError={(e) => { e.target.style.display = 'none'; setIsImgVisible(false); }}
-                    ></img>}
+                        onLoad={() => { setIsImgVisible(true); }}
+                        onError={(e) => { setIsImgVisible(false) }}
+                        hidden={!isImgVisible}
+                    ></img>
                 </div>
                 <div className={styles.productCustomCellTitle} title={value}><span>{value}</span></div>
             </div>
