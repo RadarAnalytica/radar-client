@@ -27,6 +27,11 @@
     }
 }
 
+/* Скрыть стандартную галочку */
+.controls__controlWrapper :global(.ant-checkbox-checked .ant-checkbox-inner::after) {
+    display: none;
+}
+
 .controls__controlWrapper :global(.ant-checkbox-inner) {
     border-color: var(--checkbox-color) !important;
 }
@@ -34,6 +39,10 @@
 .controls__controlWrapper :global(.ant-checkbox-checked .ant-checkbox-inner) {
     background-color: var(--checkbox-color) !important;
     border-color: var(--checkbox-color) !important;
+    background-image: url("data:image/svg+xml,%3Csvg width='8' height='6' viewBox='0 0 8 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0.75 2.3573L3.28846 4.75L6.75 0.75' stroke='white' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 8px;
 }
 
 .controls__controlWrapper :global(.ant-checkbox:hover .ant-checkbox-inner) {
@@ -48,7 +57,7 @@
 .controls__label {
     font-family: Mulish;
     font-weight: 500;
-    font-size: 16px;
+    font-size: 14px;
     line-height: 100%;
     letter-spacing: 0%;
     color: #1A1A1A;
@@ -67,17 +76,13 @@
     background: transparent;
     font-family: Mulish;
     font-weight: 600;
-    font-size: 16px;
+    font-size: 14px;
     line-height: 100%;
     letter-spacing: 0%;
     color: #5329FF;
     cursor: pointer;
     margin: 0;
     padding: 0;
-
-    @media (max-width: 1500px) {
-
-    }
 }
 
 .controls__tooltipWrapper {

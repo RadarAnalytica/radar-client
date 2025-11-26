@@ -34,7 +34,7 @@
   padding: 0;
   font-family: Mulish;
   font-weight: 700;
-  font-size: 24px;
+  font-size: 18px;
   line-height: 100%;
   letter-spacing: 0%;
   color: #1A1A1A;
@@ -168,6 +168,10 @@
 
 .funnel__percentageSeparator, .funnel__percentageValue2 {
   color: #1A1A1A80;
+}
+
+:global(.ant-segmented-item-label) {
+  font-size: 14px;
 }
 
 @media (max-width: 1360px) {

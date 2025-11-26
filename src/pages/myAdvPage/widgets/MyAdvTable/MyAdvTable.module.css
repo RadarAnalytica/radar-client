@@ -94,6 +94,10 @@
   white-space: nowrap;
 }
 
+.customCell, .labelCell {
+  font-size: 14px;
+}
+
 .badgeCell {
   width: 100px;
   height: 27px;
@@ -110,6 +114,10 @@
 }
 
 :global(.radar-table__header) {
+  tr th {
+    font-size: 14px;
+  }
+
   tr:first-child {
     th {
       padding-top: 8px;
@@ -200,7 +208,7 @@
 
   :global(.radar-table__body-cell-wrapper) {
     justify-content: center;
-    height: 70px;
+    height: 50px;
   }
 
   :global(.radar-table__header-cell-text-wrapper) {

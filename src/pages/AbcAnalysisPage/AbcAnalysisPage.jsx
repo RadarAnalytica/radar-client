@@ -314,6 +314,7 @@ const AbcAnalysisPage = () => {
 												config={currentTableConfig}
 												dataSource={tableData}
 												preset='radar-table-simple'
+												className='abc-analysis-table'
 												stickyHeader
 												// resizeable
 												onResize={onResizeGroup}

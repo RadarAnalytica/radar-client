@@ -415,7 +415,7 @@ const StatisticsChart: React.FC<StatisticsChartProps> = ({ data, loading = false
       <div className={styles.chart__header}>
         <h4 className={styles.chart__title}>Графики статистики</h4>
         <ConfigProvider theme={theme}>
-          <Segmented size="large" options={tabs} value={activeTab} onChange={handleTabChange} />
+          <Segmented options={tabs} value={activeTab} onChange={handleTabChange} />
         </ConfigProvider>
       </div>
 

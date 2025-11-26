@@ -159,7 +159,7 @@ export const RadarBar: React.FC<RadarBarProps> = ({
                         <div className={styles.bar__mainValuePrefix}>{mainValuePrefix}</div>
                     }
                     {mainValue !== undefined &&
-                        <div className={styles.bar__mainValue}>{formatPrice(mainValue?.toString(), mainValueUnits)}</div>
+                        <div className={styles.bar__mainValue}>{mainValue === null ? '-' : formatPrice(mainValue?.toString(), mainValueUnits)}</div>
                     }
                     {compareValue && (compareValue.comparativeValue !== undefined || compareValue.absoluteValue !== undefined) &&
 

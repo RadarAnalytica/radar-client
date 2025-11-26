@@ -283,7 +283,7 @@ export class DemoDataService {
         processedItem.advert_funnel = { ...processedItem.advert_funnel };
         Object.keys(processedItem.advert_funnel).forEach(key => {
           if (typeof processedItem.advert_funnel[key] === 'number') {
-            processedItem.advert_funnel[key] = processedItem.advert_funnel[key] / denominator;
+            processedItem.advert_funnel[key] = Math.round(processedItem.advert_funnel[key] / denominator);
           }
         });
       }
@@ -292,7 +292,7 @@ export class DemoDataService {
         processedItem.advert_statistics = { ...processedItem.advert_statistics };
         Object.keys(processedItem.advert_statistics).forEach(key => {
           if (typeof processedItem.advert_statistics[key] === 'number') {
-            processedItem.advert_statistics[key] = processedItem.advert_statistics[key] / denominator;
+            processedItem.advert_statistics[key] = Math.round(processedItem.advert_statistics[key] / denominator);
           }
         });
       }
@@ -414,6 +414,7 @@ export class DemoDataService {
 
     data.results.map(item => {
       item.amount = item.amount / denominator;
+      item.logistic = item.logistic / denominator;
     });
 
     return data;

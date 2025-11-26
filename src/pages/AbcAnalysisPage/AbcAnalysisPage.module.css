@@ -182,14 +182,14 @@
     background: #FEDACC;
 }
 
-:global(.radar-table__body) tr td:last-child,
-:global(.radar-table__header) tr th:last-child {
+:global(.abc-analysis-table .radar-table__body) tr td:last-child,
+:global(.abc-analysis-table .radar-table__header) tr th:last-child {
   position: sticky !important;
   right: 0;
   box-shadow: -4px 0 6px -2px rgba(0, 0, 0, 0.05);
 }
 
-:global(.radar-table__header) tr th:last-child {
+:global(.abc-analysis-table .radar-table__header) tr th:last-child {
   top: 0;
   z-index: 1;
 }

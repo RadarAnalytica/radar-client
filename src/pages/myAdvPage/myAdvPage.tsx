@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useRef } from 'react';
 import MobilePlug from '@/components/sharedComponents/mobilePlug/mobilePlug';
 import Sidebar from '@/components/sharedComponents/sidebar/sidebar';
 import Header from '@/components/sharedComponents/header/header';
@@ -35,7 +35,7 @@ const MyAdvPage: React.FC = () => {
   const [pageData, setPageData] = useState({ page: 1, per_page: 25, total_count: 25 });
   const [searchQuery, setSearchQuery] = useState<string>('');
   const { selectedRange, activeBrand } = useAppSelector((state) => state.filters);
-  
+  const currentPageRef = useRef(1);
   const progress = useLoadingProgress({ loading });
 
   const prepareTableData = (data: CompanyData[]) => {
@@ -82,8 +82,13 @@ const MyAdvPage: React.FC = () => {
   useEffect(() => {
     if (activeBrand) {
       if (activeBrand.is_primary_collect) {
-        setPageData(prev => ({ ...prev, page: 1 }));
-        loadData();
+        if (pageData.page !== 1 && currentPageRef.current !== pageData.page) {
+          currentPageRef.current = pageData.page;
+          setPageData({ ...pageData, page: 1 });
+        } else {
+          console.log('//!');
+          loadData();
+        }
       } else {
         setLoading(false);
       }

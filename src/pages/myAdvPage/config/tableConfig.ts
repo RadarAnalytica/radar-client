@@ -29,9 +29,9 @@ export const getDefaultTableConfig = (): ColumnConfig[] => {
       fixed: true,
       groupColor: 'white',
       children: [
-          {title: 'Название кампании', dataIndex: 'company_name', sortable: false, fixed: true, width: 240},
-          {title: 'Статус WB', dataIndex: 'company_status', sortable: false, fixed: true, width: 100},
-          {title: 'Тип кампании', dataIndex: 'company_type', sortable: false, fixed: true, width: 100},
+          {title: 'Название кампании', dataIndex: 'company_name', sortable: false, fixed: true, width: 240, className: 'pe-none'},
+          {title: 'Статус WB', dataIndex: 'company_status', sortable: false, fixed: true, width: 100, className: 'pe-none'},
+          {title: 'Тип кампании', dataIndex: 'company_type', sortable: false, fixed: true, width: 100, className: 'pe-none'},
       ].map(_ => ({ ..._, key: _.dataIndex, minWidth: _.width }))
     },
     {

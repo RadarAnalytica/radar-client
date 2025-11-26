@@ -63,6 +63,7 @@ const CompanyAdvPage: React.FC = () => {
     return {
       ...data,
       children: [],
+      summary_data: {},
     };
   };
 

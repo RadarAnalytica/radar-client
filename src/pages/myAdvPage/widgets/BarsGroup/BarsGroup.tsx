@@ -3,6 +3,7 @@ import { RadarBar } from '@/shared';
 import styles from './BarsGroup.module.css';
 import { CompanyData } from '../../data/mockData';
 import { format } from 'date-fns';
+import { formatPrice } from '@/service/utils';
 
 interface BarsGroupProps {
   data: CompanyData;
@@ -35,7 +36,7 @@ const BarsGroup: React.FC<BarsGroupProps> = ({ data = {}, loadData, loading = fa
           <div className={styles.campaignBar__right}>
             <div className={styles.campaignBar__budget}>
               <span className={styles.campaignBar__budget__label}>Бюджет</span>
-              <span className={styles.campaignBar__budget__value}>{data.ad_spend} ₽</span>
+              <span className={styles.campaignBar__budget__value}>{data.ad_spend ? `${formatPrice(data.ad_spend, '₽')}` : '-'}</span>
             </div>
             {/* <button className={styles.refreshButton} onClick={loadData}>
               Обновить

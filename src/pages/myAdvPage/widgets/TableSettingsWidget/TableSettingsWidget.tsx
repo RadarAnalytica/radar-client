@@ -39,7 +39,7 @@ const TableSettingsWidget: React.FC<TableSettingsWidgetProps> = ({
 
     const allColumns = collectColumns(tableConfig as ExtendedColumnConfig[]);
     // Фильтруем только колонки, которые можно переключать (не fixed и имеют canToggle или не fixed)
-    return allColumns.filter(col => !col.fixed && (col.canToggle !== false));
+    return collectColumns(tableConfig as ExtendedColumnConfig[]); // .filter(col => !col.fixed && (col.canToggle !== false))
   }, [tableConfig]);
 
   const handleSubmit = (values: any) => {
@@ -181,7 +181,7 @@ const TableSettingsWidget: React.FC<TableSettingsWidgetProps> = ({
                     valuePropName="checked"
                     className={styles.modal__checkboxItem}
                   >
-                    <Checkbox onChange={checkAllHandler}>{col.title}</Checkbox>
+                    <Checkbox onChange={checkAllHandler} disabled={!col.canToggle}>{col.title}</Checkbox>
                   </Form.Item>
                 ))}
               </div>

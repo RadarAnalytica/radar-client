@@ -85,7 +85,7 @@ const customCellRender = (value, record, index, dataIndex) => {
 
     if (dataIndex === 'productName') {
         return (
-            <div className={`${styles.productCustomCell} ${!record.children && 'ps-5'}`}>
+            <div className={styles.productCustomCell} style={{ paddingLeft: !record.children ? '28px' : '0px' }}>
                 <div className={styles.productCustomCellImgWrapper}>
                     <img 
                         src={record.photo} 
@@ -138,17 +138,21 @@ const TableWidget = ({ stockAnalysisFilteredData, loading, progress, config, ini
     // задаем начальную дату
     useEffect(() => {
         if (stockAnalysisFilteredData) {
-            const data = stockAnalysisFilteredData.map(item => ({
-                ...item.article_data,
-                vendorСode: item.article,
-                size: `${item.sizes?.length} ${getWordDeclension('размер', item.sizes?.length )}`,
-                isParent: true,
-                children: item.sizes.map(child => ({
-                    ...child,
+            const data = stockAnalysisFilteredData.map(item => {
+                const sizesLength = item.sizes?.length || 0;
+                const hasChildren = sizesLength > 1;
+                return {
+                    ...item.article_data,
                     vendorСode: item.article,
-                    isLastChild: child.index === item.article_data.length - 1,
-                })),
-            }));
+                    size: hasChildren ? `${sizesLength} ${getWordDeclension('размер', sizesLength )}` : item.article_data?.size,
+                    isParent: hasChildren,
+                    children: hasChildren ? item.sizes.map(child => ({
+                        ...child,
+                        vendorСode: item.article,
+                        isLastChild: child.index === item.article_data.length - 1,
+                    })) : null,
+                };
+            });
             
             if (sortState.sortedValue && sortState.sortType) {
                 setTableData([...sortTableDataFunc(sortState.sortType, sortState.sortedValue, data)]);

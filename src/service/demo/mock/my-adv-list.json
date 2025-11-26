@@ -1,10 +1,10 @@
 [
     {
         "advert_funnel": {
-            "cart": 171.13,
-            "orders": 53.19,
-            "order_item_count": 65.11,
-            "expected_purchase": 896.14,
+            "cart": 171,
+            "orders": 53,
+            "order_item_count": 65,
+            "expected_purchase": 896,
             "view_click": 8.3,
             "click_cart": 29.06,
             "cart_order": 63.6,
@@ -13,11 +13,11 @@
             "expected_click_purchase": 192.61
         },
         "advert_statistics": {
-            "views": 25466.5,
-            "clicks": 1047.11,
+            "views": 25467,
+            "clicks": 1047,
             "cpc": 6.06,
             "avg_cpm": 294.84,
-            "avg_position": 6.95,
+            "avg_position": 7,
             "drr_orders": 3.31,
             "drr_purchase": 0.17,
             "cp_cart": 38.01,
@@ -34,10 +34,10 @@
     },
     {
         "advert_funnel": {
-            "cart": 77.01,
-            "orders": 21.1,
-            "order_item_count": 19.03,
-            "expected_purchase": 1043.76,
+            "cart": 77,
+            "orders": 21,
+            "order_item_count": 19,
+            "expected_purchase": 1044,
             "view_click": 8.66,
             "click_cart": 21.25,
             "cart_order": 45.03,
@@ -46,11 +46,11 @@
             "expected_click_purchase": 122.75
         },
         "advert_statistics": {
-            "views": 15044.06,
-            "clicks": 766.64,
+            "views": 15044,
+            "clicks": 767,
             "cpc": 9.78,
             "avg_cpm": 436.35,
-            "avg_position": 0.27,
+            "avg_position": 0,
             "drr_orders": 7.89,
             "drr_purchase": 0.18,
             "cp_cart": 78,
@@ -67,10 +67,10 @@
     },
     {
         "advert_funnel": {
-            "cart": 223.95,
-            "orders": 67.6,
-            "order_item_count": 68.14,
-            "expected_purchase": 1122.99,
+            "cart": 224,
+            "orders": 68,
+            "order_item_count": 68,
+            "expected_purchase": 1123,
             "view_click": 8.29,
             "click_cart": 18.23,
             "cart_order": 48.77,
@@ -79,11 +79,11 @@
             "expected_click_purchase": 369.66
         },
         "advert_statistics": {
-            "views": 48604.4,
-            "clicks": 2105.14,
+            "views": 48604,
+            "clicks": 2105,
             "cpc": 6.84,
             "avg_cpm": 369.75,
-            "avg_position": 3.09,
+            "avg_position": 3,
             "drr_orders": 6.41,
             "drr_purchase": 0.44,
             "cp_cart": 80.26,
@@ -100,10 +100,10 @@
     },
     {
         "advert_funnel": {
-            "cart": 1.6,
-            "orders": 3.59,
-            "order_item_count": 3.33,
-            "expected_purchase": 82.38,
+            "cart": 2,
+            "orders": 4,
+            "order_item_count": 3,
+            "expected_purchase": 82,
             "view_click": 6.88,
             "click_cart": 1.34,
             "cart_order": 7.24,
@@ -112,11 +112,11 @@
             "expected_click_purchase": 1.75
         },
         "advert_statistics": {
-            "views": 11.04,
-            "clicks": 1.77,
+            "views": 11,
+            "clicks": 2,
             "cpc": 7.5,
             "avg_cpm": 333.33,
-            "avg_position": 1.3,
+            "avg_position": 1,
             "drr_orders": 6.84,
             "drr_purchase": 0.01,
             "cp_cart": 1.61,
@@ -133,10 +133,10 @@
     },
     {
         "advert_funnel": {
-            "cart": 7.25,
-            "orders": 1.62,
-            "order_item_count": 1.83,
-            "expected_purchase": 100.3,
+            "cart": 7,
+            "orders": 2,
+            "order_item_count": 2,
+            "expected_purchase": 100,
             "view_click": 9.61,
             "click_cart": 14.62,
             "cart_order": 44.27,
@@ -145,11 +145,11 @@
             "expected_click_purchase": 124.3
         },
         "advert_statistics": {
-            "views": 1553.54,
-            "clicks": 87.4,
+            "views": 1554,
+            "clicks": 87,
             "cpc": 7.49,
             "avg_cpm": 467.31,
-            "avg_position": 3.41,
+            "avg_position": 3,
             "drr_orders": 18.93,
             "drr_purchase": 0.33,
             "cp_cart": 98.31,
@@ -166,10 +166,10 @@
     },
     {
         "advert_funnel": {
-            "cart": 178.18,
-            "orders": 49.27,
-            "order_item_count": 42.65,
-            "expected_purchase": 1052.73,
+            "cart": 178,
+            "orders": 49,
+            "order_item_count": 43,
+            "expected_purchase": 1053,
             "view_click": 10.61,
             "click_cart": 16.16,
             "cart_order": 40.12,
@@ -178,11 +178,11 @@
             "expected_click_purchase": 344.27
         },
         "advert_statistics": {
-            "views": 37615.99,
-            "clicks": 2393.46,
+            "views": 37616,
+            "clicks": 2393,
             "cpc": 4.25,
             "avg_cpm": 293.1,
-            "avg_position": 3.22,
+            "avg_position": 3,
             "drr_orders": 6.5,
             "drr_purchase": 0.24,
             "cp_cart": 58.25,
@@ -199,10 +199,10 @@
     },
     {
         "advert_funnel": {
-            "cart": 98.76,
-            "orders": 33.35,
-            "order_item_count": 30.59,
-            "expected_purchase": 1040.53,
+            "cart": 99,
+            "orders": 33,
+            "order_item_count": 31,
+            "expected_purchase": 1041,
             "view_click": 14.29,
             "click_cart": 20.02,
             "cart_order": 57.02,
@@ -211,11 +211,11 @@
             "expected_click_purchase": 164.73
         },
         "advert_statistics": {
-            "views": 11045.62,
-            "clicks": 808.02,
+            "views": 11046,
+            "clicks": 808,
             "cpc": 3.4,
             "avg_cpm": 309.31,
-            "avg_position": 1.71,
+            "avg_position": 2,
             "drr_orders": 2.44,
             "drr_purchase": 0.09,
             "cp_cart": 29.17,
@@ -232,10 +232,10 @@
     },
     {
         "advert_funnel": {
-            "cart": 98.74,
-            "orders": 18.29,
-            "order_item_count": 17.14,
-            "expected_purchase": 534.82,
+            "cart": 99,
+            "orders": 18,
+            "order_item_count": 17,
+            "expected_purchase": 535,
             "view_click": 8,
             "click_cart": 27.77,
             "cart_order": 31.14,
@@ -244,11 +244,11 @@
             "expected_click_purchase": 216.78
         },
         "advert_statistics": {
-            "views": 11300.76,
-            "clicks": 544.35,
+            "views": 11301,
+            "clicks": 544,
             "cpc": 10.77,
             "avg_cpm": 477.86,
-            "avg_position": 0.31,
+            "avg_position": 0,
             "drr_orders": 8.68,
             "drr_purchase": 0.33,
             "cp_cart": 66.42,
@@ -265,10 +265,10 @@
     },
     {
         "advert_funnel": {
-            "cart": 128.85,
-            "orders": 25.82,
-            "order_item_count": 31.65,
-            "expected_purchase": 515.48,
+            "cart": 129,
+            "orders": 26,
+            "order_item_count": 32,
+            "expected_purchase": 515,
             "view_click": 9.55,
             "click_cart": 28.65,
             "cart_order": 38.55,
@@ -277,11 +277,11 @@
             "expected_click_purchase": 221.65
         },
         "advert_statistics": {
-            "views": 15002.71,
-            "clicks": 765.07,
+            "views": 15003,
+            "clicks": 765,
             "cpc": 12.28,
             "avg_cpm": 565.46,
-            "avg_position": 1.16,
+            "avg_position": 1,
             "drr_orders": 9.6,
             "drr_purchase": 0.52,
             "cp_cart": 79.39,
@@ -298,10 +298,10 @@
     },
     {
         "advert_funnel": {
-            "cart": 7.48,
-            "orders": 6.94,
-            "order_item_count": 3.35,
-            "expected_purchase": 16.07,
+            "cart": 7,
+            "orders": 7,
+            "order_item_count": 3,
+            "expected_purchase": 16,
             "view_click": 7.41,
             "click_cart": 1.83,
             "cart_order": 3.07,
@@ -310,11 +310,11 @@
             "expected_click_purchase": 84.78
         },
         "advert_statistics": {
-            "views": 192.55,
-            "clicks": 9.86,
+            "views": 193,
+            "clicks": 10,
             "cpc": 9.61,
             "avg_cpm": 424.06,
-            "avg_position": 1.87,
+            "avg_position": 2,
             "drr_orders": 0.44,
             "drr_purchase": 0.19,
             "cp_cart": 3.96,
@@ -331,10 +331,10 @@
     },
     {
         "advert_funnel": {
-            "cart": 0.86,
-            "orders": 1.68,
-            "order_item_count": 1.08,
-            "expected_purchase": 68.84,
+            "cart": 1,
+            "orders": 2,
+            "order_item_count": 1,
+            "expected_purchase": 69,
             "view_click": 7.83,
             "click_cart": 0.69,
             "cart_order": 1.28,
@@ -343,11 +343,11 @@
             "expected_click_purchase": 1.32
         },
         "advert_statistics": {
-            "views": 1.98,
-            "clicks": 0.54,
+            "views": 2,
+            "clicks": 1,
             "cpc": 5.99,
             "avg_cpm": 386.64,
-            "avg_position": 0.71,
+            "avg_position": 1,
             "drr_orders": 1.08,
             "drr_purchase": 0.97,
             "cp_cart": 7.8,
@@ -364,10 +364,10 @@
     },
     {
         "advert_funnel": {
-            "cart": 1.35,
-            "orders": 1.05,
-            "order_item_count": 9.01,
-            "expected_purchase": 11.37,
+            "cart": 1,
+            "orders": 1,
+            "order_item_count": 9,
+            "expected_purchase": 11,
             "view_click": 3.99,
             "click_cart": 1.31,
             "cart_order": 3.34,
@@ -376,11 +376,11 @@
             "expected_click_purchase": 1.52
         },
         "advert_statistics": {
-            "views": 3.02,
-            "clicks": 5.71,
+            "views": 3,
+            "clicks": 6,
             "cpc": 1.18,
             "avg_cpm": 379.91,
-            "avg_position": 0.35,
+            "avg_position": 0,
             "drr_orders": 0.53,
             "drr_purchase": 0.02,
             "cp_cart": 4.91,
@@ -397,10 +397,10 @@
     },
     {
         "advert_funnel": {
-            "cart": 16.91,
-            "orders": 9.77,
-            "order_item_count": 1.6,
-            "expected_purchase": 539.35,
+            "cart": 17,
+            "orders": 10,
+            "order_item_count": 2,
+            "expected_purchase": 539,
             "view_click": 7.32,
             "click_cart": 12.84,
             "cart_order": 1.2,
@@ -409,11 +409,11 @@
             "expected_click_purchase": 81.39
         },
         "advert_statistics": {
-            "views": 6523.15,
-            "clicks": 250.78,
+            "views": 6523,
+            "clicks": 251,
             "cpc": 14.73,
             "avg_cpm": 470.58,
-            "avg_position": 7.69,
+            "avg_position": 8,
             "drr_orders": 1.52,
             "drr_purchase": 0.2,
             "cp_cart": 153.64,
@@ -430,10 +430,10 @@
     },
     {
         "advert_funnel": {
-            "cart": 9.28,
-            "orders": 6.42,
-            "order_item_count": 1.54,
-            "expected_purchase": 11.93,
+            "cart": 9,
+            "orders": 6,
+            "order_item_count": 2,
+            "expected_purchase": 12,
             "view_click": 3.75,
             "click_cart": 5.48,
             "cart_order": 1.1,
@@ -442,11 +442,11 @@
             "expected_click_purchase": 0.87
         },
         "advert_statistics": {
-            "views": 3.2,
-            "clicks": 7.74,
+            "views": 3,
+            "clicks": 8,
             "cpc": 1.03,
             "avg_cpm": 374.83,
-            "avg_position": 3.93,
+            "avg_position": 4,
             "drr_orders": 0.29,
             "drr_purchase": 0.01,
             "cp_cart": 0.44,
@@ -463,10 +463,10 @@
     },
     {
         "advert_funnel": {
-            "cart": 37.95,
-            "orders": 4.75,
-            "order_item_count": 4.53,
-            "expected_purchase": 447.28,
+            "cart": 38,
+            "orders": 5,
+            "order_item_count": 5,
+            "expected_purchase": 447,
             "view_click": 10.08,
             "click_cart": 13.78,
             "cart_order": 26.85,
@@ -475,11 +475,11 @@
             "expected_click_purchase": 169.16
         },
         "advert_statistics": {
-            "views": 8553.97,
-            "clicks": 474.76,
+            "views": 8554,
+            "clicks": 475,
             "cpc": 5.94,
             "avg_cpm": 396,
-            "avg_position": 7.62,
+            "avg_position": 8,
             "drr_orders": 17.51,
             "drr_purchase": 0.17,
             "cp_cart": 83.3,
@@ -496,10 +496,10 @@
     },
     {
         "advert_funnel": {
-            "cart": 48.09,
-            "orders": 6.34,
-            "order_item_count": 7.16,
-            "expected_purchase": 979.64,
+            "cart": 48,
+            "orders": 6,
+            "order_item_count": 7,
+            "expected_purchase": 980,
             "view_click": 5.26,
             "click_cart": 15.01,
             "cart_order": 23.33,
@@ -508,11 +508,11 @@
             "expected_click_purchase": 81.41
         },
         "advert_statistics": {
-            "views": 16642.1,
-            "clicks": 446.12,
+            "views": 16642,
+            "clicks": 446,
             "cpc": 19.13,
             "avg_cpm": 614.41,
-            "avg_position": 1.86,
+            "avg_position": 2,
             "drr_orders": 37.2,
             "drr_purchase": 0.34,
             "cp_cart": 226.24,
@@ -529,10 +529,10 @@
     },
     {
         "advert_funnel": {
-            "cart": 104.51,
-            "orders": 23.15,
-            "order_item_count": 25.38,
-            "expected_purchase": 1028.23,
+            "cart": 105,
+            "orders": 23,
+            "order_item_count": 25,
+            "expected_purchase": 1028,
             "view_click": 8.63,
             "click_cart": 18.86,
             "cart_order": 44.18,
@@ -541,11 +541,11 @@
             "expected_click_purchase": 153.08
         },
         "advert_statistics": {
-            "views": 17536.03,
-            "clicks": 853.79,
+            "views": 17536,
+            "clicks": 854,
             "cpc": 7.53,
             "avg_cpm": 352.86,
-            "avg_position": 3.6,
+            "avg_position": 4,
             "drr_orders": 8.22,
             "drr_purchase": 0.16,
             "cp_cart": 67.91,
@@ -562,10 +562,10 @@
     },
     {
         "advert_funnel": {
-            "cart": 1.01,
-            "orders": 1.3,
-            "order_item_count": 1.72,
-            "expected_purchase": 21.9,
+            "cart": 1,
+            "orders": 1,
+            "order_item_count": 2,
+            "expected_purchase": 22,
             "view_click": 5.6,
             "click_cart": 4.51,
             "cart_order": 5.44,
@@ -574,11 +574,11 @@
             "expected_click_purchase": 6.27
         },
         "advert_statistics": {
-            "views": 1.97,
-            "clicks": 1.52,
+            "views": 2,
+            "clicks": 2,
             "cpc": 1.65,
             "avg_cpm": 500.17,
-            "avg_position": 0.52,
+            "avg_position": 1,
             "drr_orders": 0.73,
             "drr_purchase": 0.03,
             "cp_cart": 1.98,
@@ -595,10 +595,10 @@
     },
     {
         "advert_funnel": {
-            "cart": 565.46,
-            "orders": 118.43,
-            "order_item_count": 131.73,
-            "expected_purchase": 1142.22,
+            "cart": 565,
+            "orders": 118,
+            "order_item_count": 132,
+            "expected_purchase": 1142,
             "view_click": 8.24,
             "click_cart": 17.4,
             "cart_order": 42.47,
@@ -607,11 +607,11 @@
             "expected_click_purchase": 916.9
         },
         "advert_statistics": {
-            "views": 101236.23,
+            "views": 101236,
             "clicks": 5454,
             "cpc": 8.54,
             "avg_cpm": 415.78,
-            "avg_position": 1.09,
+            "avg_position": 1,
             "drr_orders": 9.06,
             "drr_purchase": 0.93,
             "cp_cart": 83.8,
@@ -628,10 +628,10 @@
     },
     {
         "advert_funnel": {
-            "cart": 44.45,
-            "orders": 7.76,
-            "order_item_count": 7.48,
-            "expected_purchase": 525.49,
+            "cart": 44,
+            "orders": 8,
+            "order_item_count": 7,
+            "expected_purchase": 525,
             "view_click": 6.37,
             "click_cart": 9.29,
             "cart_order": 28.96,
@@ -640,11 +640,11 @@
             "expected_click_purchase": 321.73
         },
         "advert_statistics": {
-            "views": 26248.56,
-            "clicks": 955.08,
+            "views": 26249,
+            "clicks": 955,
             "cpc": 15.86,
             "avg_cpm": 697.44,
-            "avg_position": 1.4,
+            "avg_position": 1,
             "drr_orders": 62.89,
             "drr_purchase": 0.83,
             "cp_cart": 322.22,
@@ -661,10 +661,10 @@
     },
     {
         "advert_funnel": {
-            "cart": 0.91,
-            "orders": 0.26,
-            "order_item_count": 1.93,
-            "expected_purchase": 5.9,
+            "cart": 1,
+            "orders": 0,
+            "order_item_count": 2,
+            "expected_purchase": 6,
             "view_click": 5.73,
             "click_cart": 0.36,
             "cart_order": 8.49,
@@ -673,11 +673,11 @@
             "expected_click_purchase": 8.22
         },
         "advert_statistics": {
-            "views": 1.58,
-            "clicks": 9.68,
+            "views": 2,
+            "clicks": 10,
             "cpc": 0.43,
             "avg_cpm": 596.74,
-            "avg_position": 8.36,
+            "avg_position": 8,
             "drr_orders": 0.83,
             "drr_purchase": 3.17,
             "cp_cart": 6.78,
@@ -694,10 +694,10 @@
     },
     {
         "advert_funnel": {
-            "cart": 0.64,
-            "orders": 1.38,
-            "order_item_count": 6.22,
-            "expected_purchase": 63.14,
+            "cart": 1,
+            "orders": 1,
+            "order_item_count": 6,
+            "expected_purchase": 63,
             "view_click": 64.32,
             "click_cart": 6.37,
             "cart_order": 7.35,
@@ -706,11 +706,11 @@
             "expected_click_purchase": 5.51
         },
         "advert_statistics": {
-            "views": 4.73,
-            "clicks": 1.85,
+            "views": 5,
+            "clicks": 2,
             "cpc": 1.25,
             "avg_cpm": 438.47,
-            "avg_position": 1.69,
+            "avg_position": 2,
             "drr_orders": 3.51,
             "drr_purchase": 0.04,
             "cp_cart": 6.83,
@@ -727,10 +727,10 @@
     },
     {
         "advert_funnel": {
-            "cart": 8.8,
-            "orders": 0.5,
-            "order_item_count": 1.68,
-            "expected_purchase": 74.78,
+            "cart": 9,
+            "orders": 1,
+            "order_item_count": 2,
+            "expected_purchase": 75,
             "view_click": 1.39,
             "click_cart": 0.98,
             "cart_order": 5.08,
@@ -739,11 +739,11 @@
             "expected_click_purchase": 3.16
         },
         "advert_statistics": {
-            "views": 3.01,
-            "clicks": 1.38,
+            "views": 3,
+            "clicks": 1,
             "cpc": 0.57,
             "avg_cpm": 299.18,
-            "avg_position": 0.77,
+            "avg_position": 1,
             "drr_orders": 1.15,
             "drr_purchase": 7.95,
             "cp_cart": 0.91,
@@ -760,10 +760,10 @@
     },
     {
         "advert_funnel": {
-            "cart": 43.5,
-            "orders": 13.64,
-            "order_item_count": 15.41,
-            "expected_purchase": 356.05,
+            "cart": 44,
+            "orders": 14,
+            "order_item_count": 15,
+            "expected_purchase": 356,
             "view_click": 5.41,
             "click_cart": 51.7,
             "cart_order": 49.75,
@@ -772,11 +772,11 @@
             "expected_click_purchase": 84.69
         },
         "advert_statistics": {
-            "views": 6033.12,
-            "clicks": 147.61,
+            "views": 6033,
+            "clicks": 148,
             "cpc": 18.28,
             "avg_cpm": 499.82,
-            "avg_position": 3.88,
+            "avg_position": 4,
             "drr_orders": 14.93,
             "drr_purchase": 0.46,
             "cp_cart": 77.47,
@@ -793,10 +793,10 @@
     },
     {
         "advert_funnel": {
-            "cart": 0.8,
-            "orders": 0.6,
-            "order_item_count": 0.67,
-            "expected_purchase": 5.87,
+            "cart": 1,
+            "orders": 1,
+            "order_item_count": 1,
+            "expected_purchase": 6,
             "view_click": 190.53,
             "click_cart": 0.39,
             "cart_order": 7.97,
@@ -805,11 +805,11 @@
             "expected_click_purchase": 55.77
         },
         "advert_statistics": {
-            "views": 1.87,
-            "clicks": 1.85,
+            "views": 2,
+            "clicks": 2,
             "cpc": 0.33,
             "avg_cpm": 410.89,
-            "avg_position": 1.94,
+            "avg_position": 2,
             "drr_orders": 3.16,
             "drr_purchase": 0.01,
             "cp_cart": 3.61,
