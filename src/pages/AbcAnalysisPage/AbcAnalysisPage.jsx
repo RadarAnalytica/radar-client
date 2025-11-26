@@ -315,7 +315,7 @@ const AbcAnalysisPage = () => {
 												dataSource={tableData}
 												preset='radar-table-simple'
 												stickyHeader
-												resizeable
+												// resizeable
 												onResize={onResizeGroup}
 												onSort={sortButtonClickHandler}
 												pagination={{
