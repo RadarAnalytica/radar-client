@@ -148,11 +148,11 @@ export default function RnpTable({ columns, data, columns2, data2, expanded, el 
 
 						pagination={false}
 						paginationContainerStyle={{ display: 'none' }}
-						virtualization={{
-							enabled: true,
-							overscan: 10,
-							estimateSize: 38,
-						}}
+						// virtualization={{
+						// 	enabled: true,
+						// 	overscan: 10,
+						// 	estimateSize: 38,
+						// }}
 						stickyHeader={true}
 						scrollContainerRef={containerRef}
 						style={{tableLayout: 'fixed', width: 'max-content'}}
