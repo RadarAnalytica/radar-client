@@ -4,6 +4,9 @@
     background: rgba(255, 255, 255, 1);
     padding: 12px;
     border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    height: 200px;
   }
 
   .loaderWrapper {
@@ -70,6 +73,10 @@
     font-size: 14px;
     font-weight: 700;
     line-height: 20px;
+    width: calc(100% - 100px);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   @media screen and (min-width: 2000px) {
@@ -106,8 +113,11 @@
     display: flex;
     flex-direction: column;
     gap: 4px;
-    max-height: 135px;
     overflow-y: auto;
+    /* height: 100%; */
+    max-height: 135px;
+    flex-grow: 1;
+    flex-shrink: 1;
   }
 
   .optionsList::-webkit-scrollbar-track {
@@ -117,10 +127,10 @@
   .optionsList::-webkit-scrollbar-thumb {
     background: #5329ff80;
     border-radius: 6px;
-    visibility:hidden;
+    /* visibility:hidden; */
   }
   .optionsList:hover::-webkit-scrollbar-thumb {
-    visibility:visible;
+    /* visibility:visible; */
   }
   
   .optionsList::-webkit-scrollbar {
@@ -129,12 +139,7 @@
     width: 6px;
     height: 10%;
   }
-  
-  @media screen and (min-width: 2000px) {
-    .optionsList {
-      max-height: 15vh;
-    }
-  }
+ 
 
   .optionLabel {
     display: flex;

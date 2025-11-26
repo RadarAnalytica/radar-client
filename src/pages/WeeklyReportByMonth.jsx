@@ -84,7 +84,7 @@ const tableConfig = [
         }
       },
       {
-        title: "Продажи и выручка",
+        title: "Выручка и продажи",
         dataIndex: 'revenue',
         key: 'revenue',
         units: '₽',

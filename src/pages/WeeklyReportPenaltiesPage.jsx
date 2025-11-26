@@ -55,14 +55,14 @@ const getTableData = (data) => {
       rowKey: key,
       firstColumn: key,
       isParent: true,
-      children: data[key].map(item => ({
+      children: Array.isArray(data[key]) ? data[key].map(item => ({
         rowKey: item.srid,
         firstColumn: item.srid,
         wb_id: item.wb_id,
         title: item.title,
         size: item.size,
         penalty_total: item.penalty_total,
-      })),
+      })) : [],
     };
     arr.push(row);
   });
@@ -95,14 +95,13 @@ const WeeklyReportPenaltiesPage = () => {
     (state) => state.penaltiesSlice
   );
   const tableContainerRef = useRef(null);
-  console.log(penaltiesData);
   const { penaltyFilters, isFiltersLoading } = useSelector((state) => state?.penaltyFiltersSlice);
   const { authToken, user } = useContext(AuthContext);
   const [tableData, setTableData] = useState(null);
 
   useEffect(() => {
     if (penaltiesData) {
-      setTableData(getTableData(penaltiesData));
+      setTableData([...getTableData(penaltiesData)]);
     }
   }, [penaltiesData]);
 
@@ -161,6 +160,7 @@ const WeeklyReportPenaltiesPage = () => {
                 rowKey={(record) => record.rowKey}
                 config={tableConfig}
                 dataSource={tableData}
+                defaultExpandedRowKeys={tableData.map(item => item.rowKey)}
                 treeMode
                 preset='radar-table-default'
                 pagination={false}

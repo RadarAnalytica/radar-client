@@ -15,27 +15,20 @@ const FilterElem = ({title, pageIdent, filterIdent, items, isLoading, widthData,
   const [isAllSelected, setIsAllSelected] = useState((false));
   const [options, setOptions] = useState([]);
   const dispatch = useDispatch();
-  // const [isLoading, setIsLoading] = useState(startLoading);
 
   useEffect(() => {
     let current = [];
-    // const storageItem = localStorage.getItem(pageIdent)
-
-    // let currentPageData = JSON.parse(storageItem)
-    // currentPageData = currentPageData ? currentPageData : {}
-    // let currentFilterData = currentPageData[filterIdent] ? currentPageData[filterIdent] : []
+  
     let counter = 0;
     for (let elem of items ? Object.keys(items) : []) {
       current.push({
         key: `${filterIdent}${counter}`,
         value: elem,
-        isSelected: items[elem]// currentFilterData.includes(elem)
+        isSelected: items[elem]
       });
       counter++;
     }
-    // if (filterIdent === 'year' || filterIdent === 'month') {
-    //   changeWeekFilter();
-    // }
+
     
     if (filterIdent === 'week' && pageIdent === 'abc') {
       current = [...current].reverse();
@@ -83,53 +76,21 @@ const FilterElem = ({title, pageIdent, filterIdent, items, isLoading, widthData,
             default:
                 break;
         }
-    // const updatedList = options.map((elem) => (
-    //   elem.value === optionElem.value
-    //     ? { ...elem, isSelected: !elem.isSelected }
-    //     : elem
-    // ));
 
-    // const storageItem = localStorage.getItem(pageIdent);
-    // let currentPageData = JSON.parse(storageItem);
-    // currentPageData = currentPageData ? currentPageData : {}
-    // let currentFilterData = currentPageData[filterIdent] ? currentPageData[filterIdent] : []
-    // if (currentFilterData.includes(optionElem.value)) {
-    //   currentFilterData = currentFilterData.filter((el) => el !== optionElem.value);
-    // } else {
-    //   currentFilterData.push(optionElem.value);
-    // }
-    // console.log('currentFilterData', currentFilterData);
-
-    // currentPageData[filterIdent] = currentFilterData
-    // console.log('currentPageData', currentPageData);
-
-    // localStorage.setItem(pageIdent, JSON.stringify(currentPageData))
-    // if (filterIdent === 'year' || filterIdent === 'month') {
-    //   changeWeekFilter();
-    // }
-    // setOptions(updatedList)
   };
-  // console.log('Test one of Fin Report pages');
 
   useEffect(() =>  {
     const selectList = options.map(x => x.isSelected ? 1 : 0);
     const res = (selectList.reduce((acc, num) => acc + num, 0)) === options.length;
     setIsAllSelected(res);
-    // if (filterIdent === 'year' || filterIdent === 'month') {
-    //   changeWeekFilter();
-    // }
+  
   }, [options, filterIdent]);
 
 
   const handleSelectAll = () => {
-    // const storageItem = localStorage.getItem(pageIdent);
-    // let currentPageData = JSON.parse(storageItem);
-    // currentPageData = currentPageData ? currentPageData : {}
     let isAllValue = true;
     if (isAllSelected) {
       isAllValue = false;
-
-      // currentPageData[filterIdent] = []
     }
     setIsAllSelected(isAllValue);
     switch (pageIdent) {
@@ -171,7 +132,6 @@ const FilterElem = ({title, pageIdent, filterIdent, items, isLoading, widthData,
       default:
           break;
   }
-    // localStorage.setItem(pageIdent, JSON.stringify(currentPageData))
   };
   const handleTitleDisplay = (e) => {
     const span = e.currentTarget;
@@ -185,10 +145,9 @@ const FilterElem = ({title, pageIdent, filterIdent, items, isLoading, widthData,
   return (
       <div
         className={styles.filterGroup}
-        // style={{width: widthData ? widthData : '220px'}}
       >
         <div className={styles.filterHeader}>
-          <h3>{title}</h3>
+          <h3 title={title}>{title}</h3>
           <button onClick={handleSelectAll} className={styles.clearButton}>
             {isAllSelected ? 'Снять все' : 'Выбрать все'}
           </button>
@@ -210,7 +169,6 @@ const FilterElem = ({title, pageIdent, filterIdent, items, isLoading, widthData,
                 if (splittedValue[1]) {
                   monthValue += ` ${splittedValue[1]}`;
                 } else {
-                  //
                 }
               }
               return (

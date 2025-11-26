@@ -513,7 +513,7 @@ const getTableData = (data) => {
   const arr = []
   Object.keys(data).forEach(key => {
     let row = {
-      vendorCode: key,
+      vendorCode: key === 'total' ? 'Итого' : key,
       ...data[key],
     }
     arr.push(row);
@@ -592,7 +592,6 @@ const WeeklyReportByGoods = () => {
   useEffect(() => {
     if (weeklyData) {
       const data = getTableData(weeklyData);
-      console.log(data);
       setTableData(data);
     }
   }, [weeklyData]);
