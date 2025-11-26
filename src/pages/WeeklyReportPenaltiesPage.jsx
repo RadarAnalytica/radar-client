@@ -17,35 +17,47 @@ import { useDemoMode } from "@/app/providers";
 import { Table as RadarTable } from 'radar-ui';
 import { formatPrice } from '../service/utils';
 import { RadarLoader } from '@/shared';
+import { useTableColumnResize } from '@/service/hooks/useTableColumnResize';
 
-const tableConfig = [
+const TABLE_CONFIG_VERSION = '1';
+
+const initTableConfig = [
   {
     title: 'Виды лоистики, штрафов и доплат и Srid',
     dataIndex: 'firstColumn',
     key: 'firstColumn',
+    width: 300,
   },
   {
     title: 'Артикул',
     dataIndex: 'wb_id',
     key: 'wb_id',
+    width: 200,
   },
   {
     title: 'Товар',
     dataIndex: 'title',
     key: 'title',
+    width: 200,
   },
   {
     title: 'Размер',
     dataIndex: 'size',
     key: 'size',
+    width: 200,
   },
   {
     title: 'Итог',
     dataIndex: 'penalty_total',
     key: 'penalty_total',
     units: '₽',
+    width: 200,
   }
-];
+].map(item => ({
+  ...item,
+  minWidth: item.width / 2,
+  maxWidth: item.width * 2,
+}));
 
 const getTableData = (data) => {
   if (!data) return [];
@@ -55,14 +67,14 @@ const getTableData = (data) => {
       rowKey: key,
       firstColumn: key,
       isParent: true,
-      children: data[key].map(item => ({
+      children: Array.isArray(data[key]) ? data[key].map(item => ({
         rowKey: item.srid,
         firstColumn: item.srid,
         wb_id: item.wb_id,
         title: item.title,
         size: item.size,
         penalty_total: item.penalty_total,
-      })),
+      })) : [],
     };
     arr.push(row);
   });
@@ -95,14 +107,18 @@ const WeeklyReportPenaltiesPage = () => {
     (state) => state.penaltiesSlice
   );
   const tableContainerRef = useRef(null);
-  console.log(penaltiesData);
   const { penaltyFilters, isFiltersLoading } = useSelector((state) => state?.penaltyFiltersSlice);
   const { authToken, user } = useContext(AuthContext);
   const [tableData, setTableData] = useState(null);
+  const { config: tableConfig, onResize: onResizeColumn } = useTableColumnResize(
+    initTableConfig, 
+    'weeklyReportPenaltiesTableConfig',
+    TABLE_CONFIG_VERSION
+  );
 
   useEffect(() => {
     if (penaltiesData) {
-      setTableData(getTableData(penaltiesData));
+      setTableData([...getTableData(penaltiesData)]);
     }
   }, [penaltiesData]);
 
@@ -158,14 +174,17 @@ const WeeklyReportPenaltiesPage = () => {
           <div className={styles.tableContainerWrapper}>
             <div className={styles.tableContainer} ref={tableContainerRef}>
               <RadarTable
+                onResize={onResizeColumn}
+                resizeable
                 rowKey={(record) => record.rowKey}
                 config={tableConfig}
                 dataSource={tableData}
+                defaultExpandedRowKeys={tableData.map(item => item.rowKey)}
                 treeMode
                 preset='radar-table-default'
                 pagination={false}
                 stickyHeader
-                style={{ tableLayout: 'fixed', width: 'max-content', minWidth: '100%' }}
+                style={{ tableLayout: 'fixed', width: 'max-content' }}
                 paginationContainerStyle={{ display: 'none' }}
                 indentSize={45}
                 scrollContainerRef={tableContainerRef}

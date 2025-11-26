@@ -16,8 +16,11 @@ import styles from './WeeklyReportByGoods.module.css';
 import { Table as RadarTable } from 'radar-ui';
 import { formatPrice } from '@/service/utils';
 import { RadarLoader } from '@/shared';
+import { useTableColumnResize } from '@/service/hooks/useTableColumnResize';
 
-const tableConfig = [
+const TABLE_CONFIG_VERSION = '1';
+
+const initTableConfig = [
   {
     title: 'Продажи',
     key: 'sales_group',
@@ -513,7 +516,7 @@ const getTableData = (data) => {
   const arr = []
   Object.keys(data).forEach(key => {
     let row = {
-      vendorCode: key,
+      vendorCode: key === 'total' ? 'Итого' : key,
       ...data[key],
     }
     arr.push(row);
@@ -572,6 +575,11 @@ const WeeklyReportByGoods = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [tableData, setTableData] = useState([]);
   const tableContainerRef = useRef(null);
+  const { config: tableConfig, onResize: onResizeColumn } = useTableColumnResize(
+    initTableConfig, 
+    'weeklyReportByGoodsTableConfig',
+    TABLE_CONFIG_VERSION
+  );
   useEffect(() => {
     dispatch(fetchByGoodsFilters(
       authToken
@@ -592,7 +600,6 @@ const WeeklyReportByGoods = () => {
   useEffect(() => {
     if (weeklyData) {
       const data = getTableData(weeklyData);
-      console.log(data);
       setTableData(data);
     }
   }, [weeklyData]);
@@ -639,6 +646,7 @@ const WeeklyReportByGoods = () => {
               <RadarTable
                 resizeable
                 config={[...tableConfig]}
+                onResize={onResizeColumn}
                 dataSource={tableData}
                 preset='radar-table-simple'
                 pagination={false}

@@ -293,9 +293,9 @@ const ExpenseTracker = () => {
       {!loading ? (
         <div className={styles.table}>
           {/* Header */}
-          <div className={styles.table__row}>
+          <div className={styles.table__row} style={{ backgroundColor: '#F7F6FE', borderRadius: '12px', height: 'auto', minHeight: 'auto', padding: '8px 0 8px 12px' }}>
             <div className={`${styles.table__item} ${styles.table__item_wide}`}>Дата</div>
-            <div className={styles.table__item}>Артикул{'\n'}поставщика</div>
+            <div className={styles.table__item} style={{height: 'auto'}}>Артикул{'\n'}поставщика</div>
             {[1, 2, 3, 4, 5].map((num) => (
               <div
                 key={num}

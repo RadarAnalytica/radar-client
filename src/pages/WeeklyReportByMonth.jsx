@@ -18,8 +18,11 @@ import { useDemoMode } from "@/app/providers";
 import moment from 'moment';
 import { formatPrice } from '@/service/utils';
 import { RadarLoader } from '@/shared';
+import { useTableColumnResize } from '@/service/hooks/useTableColumnResize';
 
-const tableConfig = [
+const TABLE_CONFIG_VERSION = '1';
+
+const initTableConfig = [
   {
     title: 'Продажи',
     dataIndex: 'sales',
@@ -84,7 +87,7 @@ const tableConfig = [
         }
       },
       {
-        title: "Продажи и выручка",
+        title: "Выручка и продажи",
         dataIndex: 'revenue',
         key: 'revenue',
         units: '₽',
@@ -697,6 +700,12 @@ const WeeklyReportByMonth = () => {
     (state) => state.reportByMonthSlice
   );
   const { byMonthFilters, isFiltersLoading } = useSelector((state) => state?.byMonthFiltersSlice);
+  const { config: tableConfig, onResize: onResizeColumn } = useTableColumnResize(
+    initTableConfig, 
+    'weeklyReportByMonthTableConfig',
+    TABLE_CONFIG_VERSION
+  );
+
 
   useEffect(() => {
     dispatch(fetchByMonthFilters(
@@ -774,6 +783,7 @@ const WeeklyReportByMonth = () => {
                 rowKey={(record) => record.rowKey}
                 config={tableConfig}
                 dataSource={tableData}
+                onResize={onResizeColumn}
                 treeMode
                 preset='radar-table-simple'
                 pagination={false}

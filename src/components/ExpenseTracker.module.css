@@ -7,7 +7,6 @@
   overflow-x: hidden;
   overflow-y: scroll;
   max-height: 100%;
-  padding: 8px;
 }
 
 .table::-webkit-scrollbar {
@@ -37,6 +36,7 @@
   min-height: 50px;
   padding: 4px 0;
   box-sizing: border-box;
+  padding-left: 12px;
 
 
   @media (max-width: 1300px) {
@@ -244,6 +244,7 @@
   cursor: pointer;
   border-radius: 4px;
   background-color: #1A1A1A0D;
+  margin-left: 12px;
 }
 
 .addButton::after {

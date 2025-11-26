@@ -345,13 +345,15 @@ const AbcAnalysisPage = () => {
 													padding: '5px 10px',
 													border: 'none',
 												}}
+												headerCellClassName={styles.customHeaderCell}
 												bodyCellStyle={{
 													borderBottom: '1px solid #E8E8E8',
 													height: '50px',
 												}}
 												style={{
 													tableLayout: 'fixed',
-													width: '100%',
+													minWidth: '100%',
+													width: 'max-content',
 												}}
 											/>
 										)}
