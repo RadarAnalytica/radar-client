@@ -17,35 +17,47 @@ import { useDemoMode } from "@/app/providers";
 import { Table as RadarTable } from 'radar-ui';
 import { formatPrice } from '../service/utils';
 import { RadarLoader } from '@/shared';
+import { useTableColumnResize } from '@/service/hooks/useTableColumnResize';
 
-const tableConfig = [
+const TABLE_CONFIG_VERSION = '1';
+
+const initTableConfig = [
   {
     title: 'Виды лоистики, штрафов и доплат и Srid',
     dataIndex: 'firstColumn',
     key: 'firstColumn',
+    width: 300,
   },
   {
     title: 'Артикул',
     dataIndex: 'wb_id',
     key: 'wb_id',
+    width: 200,
   },
   {
     title: 'Товар',
     dataIndex: 'title',
     key: 'title',
+    width: 200,
   },
   {
     title: 'Размер',
     dataIndex: 'size',
     key: 'size',
+    width: 200,
   },
   {
     title: 'Итог',
     dataIndex: 'penalty_total',
     key: 'penalty_total',
     units: '₽',
+    width: 200,
   }
-];
+].map(item => ({
+  ...item,
+  minWidth: item.width / 2,
+  maxWidth: item.width * 2,
+}));
 
 const getTableData = (data) => {
   if (!data) return [];
@@ -98,6 +110,11 @@ const WeeklyReportPenaltiesPage = () => {
   const { penaltyFilters, isFiltersLoading } = useSelector((state) => state?.penaltyFiltersSlice);
   const { authToken, user } = useContext(AuthContext);
   const [tableData, setTableData] = useState(null);
+  const { config: tableConfig, onResize: onResizeColumn } = useTableColumnResize(
+    initTableConfig, 
+    'weeklyReportPenaltiesTableConfig',
+    TABLE_CONFIG_VERSION
+  );
 
   useEffect(() => {
     if (penaltiesData) {
@@ -157,6 +174,8 @@ const WeeklyReportPenaltiesPage = () => {
           <div className={styles.tableContainerWrapper}>
             <div className={styles.tableContainer} ref={tableContainerRef}>
               <RadarTable
+                onResize={onResizeColumn}
+                resizeable
                 rowKey={(record) => record.rowKey}
                 config={tableConfig}
                 dataSource={tableData}
@@ -165,7 +184,7 @@ const WeeklyReportPenaltiesPage = () => {
                 preset='radar-table-default'
                 pagination={false}
                 stickyHeader
-                style={{ tableLayout: 'fixed', width: 'max-content', minWidth: '100%' }}
+                style={{ tableLayout: 'fixed', width: 'max-content' }}
                 paginationContainerStyle={{ display: 'none' }}
                 indentSize={45}
                 scrollContainerRef={tableContainerRef}

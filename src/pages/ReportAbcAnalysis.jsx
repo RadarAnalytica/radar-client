@@ -19,65 +19,86 @@ import { useDemoMode } from "@/app/providers";
 import { Table as RadarTable } from 'radar-ui';
 import { ConfigProvider, Segmented } from 'antd';
 import { RadarLoader } from '@/shared';
+import { useTableColumnResize } from '@/service/hooks/useTableColumnResize';
 
-const proceedTableConfig = [
+const TABLE_CONFIG_VERSION = '1';
+
+const initProceedTableConfig = [
   {
     title: 'Артикул и товары',
     dataIndex: 'wb_id',
     key: 'wb_id',
+    width: 300,
   },
   {
     title: 'Выручка',
     dataIndex: 'proceeds',
     key: 'proceeds',
     units: '₽',
+    width: 200,
   },
   {
     title: 'Доля выручки',
     dataIndex: 'proceeds_percent',
     key: 'proceeds_percent',
     units: '%',
+    width: 200,
   },
   {
     title: 'Категория по выручке',
     dataIndex: 'proceed_abc',
     key: 'proceed_abc',
+    width: 200,
   },
   {
     title: 'Общая категория',
     dataIndex: 'common_abc',
     key: 'common_abc',
+    width: 200,
   }
-];
-const profitTableConfig = [
+].map(item => ({
+  ...item,
+  minWidth: item.width / 2,
+  maxWidth: item.width * 2,
+}));
+const initProfitTableConfig = [
   {
     title: 'Артикул и товары',
     dataIndex: 'wb_id',
     key: 'wb_id',
+    width: 300,
   },
   {
     title: 'Прибыль',
     dataIndex: 'profit',
     key: 'profit',
     units: '₽',
+    width: 200,
   },
   {
     title: 'Доля прибыли',
     dataIndex: 'profit_percent',
     key: 'profit_percent',
     units: '%',
+    width: 200,
   },
   {
     title: 'Категория по выручке',
     dataIndex: 'profit_abc',
     key: 'profit_abc',
+    width: 200,
   },
   {
     title: 'Общая категория',
     dataIndex: 'common_abc',
     key: 'common_abc',
+    width: 200,
   }
-];
+].map(item => ({
+  ...item,
+  minWidth: item.width / 2,
+  maxWidth: item.width * 2,
+}));
 
 
 
@@ -142,8 +163,13 @@ const ReportAbcAnalysis = () => {
   const [activeTab, setActiveTab] = useState('По выручке');
   const [isOpenFilters, setIsOpenFilters] = useState(false);
   const [dataRevenue, setDataRevenue] = useState([]);
-  console.log(dataRevenue);
   const tableContainerRef = useRef(null);
+
+  const { config: tableConfig, onResize: onResizeColumn } = useTableColumnResize(
+    activeTab === 'По выручке' ? initProceedTableConfig : initProfitTableConfig, 
+    `reportAbcAnalysisTableConfig__${activeTab}`,
+    TABLE_CONFIG_VERSION
+  );
 
   useEffect(() => {
     dispatch(fetchABCFilters(authToken));
@@ -203,14 +229,16 @@ const ReportAbcAnalysis = () => {
           <div className={styles.tableContainerWrapper}>
             <div className={styles.tableContainer} ref={tableContainerRef}>
               <RadarTable
+                onResize={onResizeColumn}
+                resizeable
                 rowKey={(record) => record.rowKey}
-                config={activeTab === 'По выручке' ? proceedTableConfig : profitTableConfig}
+                config={tableConfig}
                 dataSource={dataRevenue}
                 treeMode
                 preset='radar-table-default'
                 pagination={false}
                 stickyHeader
-                style={{ tableLayout: 'fixed', width: 'max-content', minWidth: '100%' }}
+                style={{ tableLayout: 'fixed', width: 'max-content' }}
                 paginationContainerStyle={{ display: 'none' }}
                 indentSize={45}
                 scrollContainerRef={tableContainerRef}
@@ -230,7 +258,7 @@ const ReportAbcAnalysis = () => {
                 bodyRowClassName={styles.bodyRowSpecial}
                 customCellRender={{
                   idx: [],
-                  renderer: (value, record, index, dataIndex) => customCellRender(value, record, index, dataIndex, activeTab === 'По выручке' ? proceedTableConfig : profitTableConfig),
+                  renderer: (value, record, index, dataIndex) => customCellRender(value, record, index, dataIndex, tableConfig),
                 }}
               />
             </div>
