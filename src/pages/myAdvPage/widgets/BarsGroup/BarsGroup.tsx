@@ -37,9 +37,9 @@ const BarsGroup: React.FC<BarsGroupProps> = ({ data = {}, loadData, loading = fa
               <span className={styles.campaignBar__budget__label}>Бюджет</span>
               <span className={styles.campaignBar__budget__value}>{data.ad_spend} ₽</span>
             </div>
-            <button className={styles.refreshButton} onClick={loadData}>
+            {/* <button className={styles.refreshButton} onClick={loadData}>
               Обновить
-            </button>
+            </button> */}
           </div>
         </div>
       </div>
@@ -67,7 +67,7 @@ const BarsGroup: React.FC<BarsGroupProps> = ({ data = {}, loadData, loading = fa
         <RadarBar
           title="CPC"
           mainValue={data.cpc}
-          mainValueUnits="%"
+          mainValueUnits="₽"
           isLoading={loading}
         />
         <RadarBar
@@ -90,7 +90,6 @@ const BarsGroup: React.FC<BarsGroupProps> = ({ data = {}, loadData, loading = fa
         />
         <RadarBar
           title="ДРР заказы"
-          mainValuePrefix=">"
           mainValue={data.drr_orders}
           mainValueUnits="%"
           isLoading={loading}

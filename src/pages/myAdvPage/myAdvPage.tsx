@@ -78,7 +78,18 @@ const MyAdvPage: React.FC = () => {
     setTableConfig(mergedConfig);
   }, []);
 
-  // Загрузка данных (моковые данные)
+  // Загрузка данных
+  useEffect(() => {
+    if (activeBrand) {
+      if (activeBrand.is_primary_collect) {
+        setPageData(prev => ({ ...prev, page: 1 }));
+        loadData();
+      } else {
+        setLoading(false);
+      }
+    }
+  }, [searchQuery, selectedRange, activeBrand, sortState]);
+
   useEffect(() => {
     if (activeBrand) {
       if (activeBrand.is_primary_collect) {
@@ -87,7 +98,7 @@ const MyAdvPage: React.FC = () => {
         setLoading(false);
       }
     }
-  }, [searchQuery, selectedRange, activeBrand, pageData.page, sortState]);
+  }, [pageData.page]);
 
   // Обработчик поиска
   const handleSearch = (query: string) => {

@@ -1,4 +1,4 @@
-export const TABLE_CONFIG_VERSION = '1.0.2';
+export const TABLE_CONFIG_VERSION = '1.0.3';
 export const TABLE_CONFIG_STORAGE_KEY = 'myAdv_tableConfig';
 
 export interface ColumnConfig {
@@ -41,16 +41,16 @@ export const getDefaultTableConfig = (): ColumnConfig[] => {
       fixed: false,
       groupColor: 'white',
       children: [
-          {title: 'Корзина', dataIndex: 'cart', sortable: true, fixed: false, width: 120},
-          {title: 'Заказы', dataIndex: 'orders', sortable: true, fixed: false, width: 120},
-          {title: 'Заказано, шт', dataIndex: 'order_item_count', units: 'шт', sortable: true, fixed: false, width: 120},
-          {title: 'Прогноз выкуп, шт', dataIndex: 'expected_purchase', units: 'шт', sortable: true, fixed: false, width: 200},
-          {title: 'Просмотры → Клик (CTR)', dataIndex: 'view_click', sortable: true, fixed: false, width: 120},
-          {title: 'Клик → Корзина', dataIndex: 'click_cart', sortable: true, fixed: false, width: 120},
-          {title: 'Корзина → Заказ', dataIndex: 'cart_order', sortable: true, fixed: false, width: 120},
-          {title: 'Просмотр → Заказ', dataIndex: 'view_order', sortable: true, fixed: false, width: 120},
-          {title: 'Прогноз Заказ → Выкуп', dataIndex: 'expected_order_purchase', sortable: true, fixed: false, width: 120},
-          {title: 'Прогноз Клик → Выкуп', dataIndex: 'expected_click_purchase', sortable: true, fixed: false, width: 120},
+          {title: 'Корзина', dataIndex: 'cart', sortable: true, fixed: false, canToggle: false, width: 120},
+          {title: 'Заказы', dataIndex: 'orders', sortable: true, fixed: false, canToggle: false, width: 120},
+          {title: 'Заказано, шт', dataIndex: 'order_item_count', sortable: true, fixed: false, canToggle: true, width: 120},
+          {title: 'Прогноз выкуп, шт', dataIndex: 'expected_purchase', sortable: true, fixed: false, canToggle: true, width: 200},
+          {title: 'Просмотры → Клик (CTR)', dataIndex: 'view_click', sortable: true, fixed: false, canToggle: true, width: 120},
+          {title: 'Клик → Корзина', dataIndex: 'click_cart', sortable: true, fixed: false, canToggle: true, width: 120},
+          {title: 'Корзина → Заказ', dataIndex: 'cart_order', sortable: true, fixed: false, canToggle: true, width: 120},
+          {title: 'Просмотр → Заказ', dataIndex: 'view_order', sortable: true, fixed: false, canToggle: true, width: 120},
+          {title: 'Прогноз Заказ → Выкуп', dataIndex: 'expected_order_purchase', sortable: true, fixed: false, canToggle: true, width: 120},
+          {title: 'Прогноз Клик → Выкуп', dataIndex: 'expected_click_purchase', sortable: true, fixed: false, canToggle: true, width: 120},
       ].map(_ => ({ ..._, key: _.dataIndex, minWidth: _.width }))
     },
     {
@@ -60,19 +60,19 @@ export const getDefaultTableConfig = (): ColumnConfig[] => {
       fixed: false,
       groupColor: 'white',
       children: [
-          {title: 'Просмотры', dataIndex: 'views', sortable: true, fixed: false, width: 120},
-          {title: 'Клики', dataIndex: 'clicks', sortable: true, fixed: false, width: 120},
-          {title: 'CPC', dataIndex: 'cpc', sortable: true, fixed: false, width: 120}, 
-          {title: 'Средний CPM за период', dataIndex: 'avg_cpm', units: '₽', sortable: true, fixed: false, width: 120},
-          {title: 'Средняя позиция', dataIndex: 'avg_position', sortable: true, fixed: false, width: 120},
-          {title: 'ДРР заказы', dataIndex: 'drr_orders', units: '%', sortable: true, fixed: false, width: 120},
-          {title: 'Прогноз ДРР (по выкупу)', dataIndex: 'drr_purchase', units: '%', sortable: true, fixed: false, width: 120},
-          {title: 'CPCart', dataIndex: 'cp_cart', sortable: true, fixed: false, width: 120},
-          {title: 'Прогноз CPS', dataIndex: 'expected_cps', sortable: true, fixed: false, width: 120},
-          {title: 'Заказов на сумму', dataIndex: 'orders_amount', sortable: true, fixed: false, width: 120},
-          {title: 'Прогноз выкуп на сумму', dataIndex: 'expected_purchase_amount', sortable: true, fixed: false, width: 120},
-          {title: 'Расходы на рекламу', dataIndex: 'ad_spend', sortable: true, fixed: false, width: 120},
-      ].map(_ => ({ ..._, render: _.render?.bind(_), key: _.dataIndex, minWidth: _.width, className: 'myAdvTableGroupCell' }))
+          {title: 'Просмотры', dataIndex: 'views', sortable: true, fixed: false, canToggle: false, width: 120},
+          {title: 'Клики', dataIndex: 'clicks', sortable: true, fixed: false, canToggle: false, width: 120},
+          {title: 'CPC', dataIndex: 'cpc', sortable: true, fixed: false, canToggle: true, width: 120}, 
+          {title: 'Средний CPM за период', dataIndex: 'avg_cpm', sortable: true, fixed: false, canToggle: true, width: 120},
+          // {title: 'Средняя позиция', dataIndex: 'avg_position', sortable: true, fixed: false, width: 120},
+          {title: 'ДРР заказы', dataIndex: 'drr_orders', sortable: true, fixed: false, canToggle: true, width: 120},
+          {title: 'Прогноз ДРР (по выкупу)', dataIndex: 'drr_purchase', sortable: true, fixed: false, canToggle: true, width: 120},
+          {title: 'CPCart', dataIndex: 'cp_cart', sortable: true, fixed: false, canToggle: true, width: 120},
+          {title: 'Прогноз CPS', dataIndex: 'expected_cps', sortable: true, fixed: false, canToggle: true, width: 120},
+          {title: 'Заказов на сумму', dataIndex: 'orders_amount', sortable: true, fixed: false, canToggle: true, width: 120},
+          {title: 'Прогноз выкуп на сумму', dataIndex: 'expected_purchase_amount', sortable: true, fixed: false, canToggle: true, width: 120},
+          {title: 'Расходы на рекламу', dataIndex: 'ad_spend', sortable: true, fixed: false, canToggle: true, width: 120},
+      ].map(_ => ({ ..._, key: _.dataIndex, minWidth: _.width, className: 'myAdvTableGroupCell' }))
     },
   ].map(_ => ({ ..._, colSpan: _?.children?.length || 1 }));
 

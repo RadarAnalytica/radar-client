@@ -680,21 +680,39 @@ export function detectBrowser() {
   }
 }
 
+/**
+ * Форматирует число с разделением пробелами каждые 3 цифры
+ * @param {number|string} value - число или строка для форматирования
+ * @param {string} separator - разделитель (по умолчанию " ")
+ * @returns {string} - отформатированная строка (например, 1000000 → "1 000 000")
+ */
+export function formatNumberWithSpaces(value, separator = ' ') {
+  if (value === null || value === undefined) return '';
+  
+  const numStr = String(value);
+  const parts = numStr.split('.');
+  const integerPart = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, separator);
+  
+  return parts.length > 1 ? `${integerPart}.${parts[1]}` : integerPart;
+}
+
 export const verticalDashedLinePlugin = {
   id: 'verticalDashedLine',
-  beforeDraw: function (chart) {
+  afterDraw: function (chart) {
     const enabled = chart?.config?._config?.options?.plugins?.verticalDashedLine?.enabled;
     if (chart.tooltip?._active && chart.tooltip._active.length && enabled) {
       const ctx = chart.ctx;
       ctx.save();
       const activePoint = chart.tooltip._active[0];
       ctx.beginPath();
-      ctx.setLineDash([6, 6]);
+      ctx.setLineDash([5, 5]); // равномерные полоски 5px
+      ctx.lineDashOffset = 0;
       ctx.moveTo(activePoint.element.x, chart.chartArea.top);
       ctx.lineTo(activePoint.element.x, chart.chartArea.bottom);
       ctx.lineWidth = 1;
       ctx.strokeStyle = '#8B8B8B';
       ctx.stroke();
+      ctx.setLineDash([]); // сброс lineDash
       ctx.restore();
     }
   }

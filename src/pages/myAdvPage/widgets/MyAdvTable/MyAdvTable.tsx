@@ -12,6 +12,7 @@ import { toCamelCase } from './utils';
 import Loader from '@/components/ui/Loader';
 
 interface MyAdvTableProps {
+  companyId?: string | number;
   data: CompanyData[];
   columns: ColumnConfig[];
   loading: boolean;
@@ -24,6 +25,7 @@ interface MyAdvTableProps {
 }
 
 const MyAdvTable: React.FC<MyAdvTableProps> = ({
+  companyId,
   data,
   loading,
   pageData,
@@ -37,7 +39,7 @@ const MyAdvTable: React.FC<MyAdvTableProps> = ({
   const navigate = useNavigate();
   const [tableData, setTableData] = useState<CompanyData[]>([]);
 
-  const [expandedRowKeys, setExpandedRowKeys] = useState<string[]>([]);
+  const [expandedRowKeys, setExpandedRowKeys] = useState<string[]>([`${companyId || ''}_`]);
 
   // Инициализация данных таблицы
   useEffect(() => {
@@ -67,6 +69,8 @@ const MyAdvTable: React.FC<MyAdvTableProps> = ({
   };
 
   const onResizeGroup = (columnKey: string, width: number) => {
+    width = Math.min(width, 400);
+    console.log('width', width);
     // Обновляем конфигурацию колонок с группированной структурой
     const updateColumnWidth = (columns: any[]): any[] => {
       return columns.map(col => {
@@ -79,14 +83,13 @@ const MyAdvTable: React.FC<MyAdvTableProps> = ({
             if (child.hidden) return sum; // Пропускаем скрытые колонки
             return sum + (child.width || child.minWidth || 200);
           }, 0);
-          return { ...col, width: totalWidth, children: updatedChildren, minWidth: totalWidth };
+          return { ...col, width: totalWidth, children: updatedChildren, maxWidth: 400 };
         }
 
         // Если это листовая колонка
         if (col.key === columnKey) {
-          // Применяем минимальную ширину
           const newWidth = width;
-          return { ...col, width: newWidth };
+          return { ...col, width: newWidth, maxWidth: 400 };
         }
 
         return col;
@@ -165,8 +168,7 @@ const MyAdvTable: React.FC<MyAdvTableProps> = ({
     }
 
     // Рендер для процентов (view_click, click_cart и т.д.)
-    if (dataIndex === 'view_click' || dataIndex === 'click_cart' || dataIndex === 'cart_order' || 
-        dataIndex === 'view_order' || dataIndex === 'expected_order_purchase' || dataIndex === 'expected_click_purchase') {
+    if (['view_click', 'click_cart', 'cart_order', 'view_order', 'expected_order_purchase', 'expected_click_purchase', 'drr_orders', 'drr_purchase'].includes(dataIndex)) {
       const percentValue = typeof value === 'number' ? `${value.toFixed(2)}%` : String(value ?? '');
       return (
         <div className={styles.customCell} title={percentValue}>
@@ -176,9 +178,7 @@ const MyAdvTable: React.FC<MyAdvTableProps> = ({
     }
 
     // Рендер для денежных значений
-    if (dataIndex === 'cpc' || dataIndex === 'cpm' || dataIndex === 'cp_cart' || 
-        dataIndex === 'expected_cps' || dataIndex === 'orders_amount' || 
-        dataIndex === 'expected_purchase_amount' || dataIndex === 'ad_spend') {
+    if (['cpc', 'cpm', 'cp_cart', 'expected_cps', 'orders_amount', 'expected_purchase_amount', 'ad_spend', 'avg_cpm'].includes(dataIndex)) {
       const formattedValue = typeof value === 'number' 
         ? new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB', minimumFractionDigits: 0 }).format(value)
         : value;
@@ -298,12 +298,13 @@ const MyAdvTable: React.FC<MyAdvTableProps> = ({
         <div className={styles.tableWrapper} ref={tableContainerRef}>
           {tableData && tableData.length > 0 && tableConfig &&
             <RadarTable
+              rowKey={(record: CompanyData) => `${record.company_id || ''}_${record.date || ''}`}
               config={tableConfig}
               dataSource={data}
               preset="radar-table-simple"
               scrollContainerRef={tableContainerRef}
               stickyHeader
-              resizeable
+              // resizeable
               resizeThrottle={33}
               onResize={onResizeGroup}
               onSort={handleSort}
@@ -339,7 +340,7 @@ const MyAdvTable: React.FC<MyAdvTableProps> = ({
                 borderBottom: '1px solid #E8E8E8',
                 height: '50px',
               }}
-              style={{ width: 'max-content', tableLayout: 'fixed' }}
+              style={{ tableLayout: 'fixed' }}
             />
           }
         </div>

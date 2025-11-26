@@ -17,6 +17,7 @@ import { RadarLoader } from '@/shared';
 import { CompanyData } from '../../data/mockData';
 import { ChartControls } from '../../features';
 import { chartCompareConfigObject } from '../../shared';
+import { verticalDashedLinePlugin, formatPrice, formatNumberWithSpaces } from '@/service/utils';
 import styles from './StatisticsChart.module.css';
 
 // Интерфейс для элемента date_data
@@ -104,8 +105,111 @@ ChartJS.register(
   BarElement,
   LineController,
   LineElement,
-  Tooltip
+  Tooltip,
+  verticalDashedLinePlugin
 );
+
+// Кастомный tooltip по подобию mainChartWidget
+const getChartTooltip = (context: any, chartData: any) => {
+  let tooltipEl = document.getElementById('chartjs-tooltip');
+
+  if (!tooltipEl) {
+    tooltipEl = document.createElement('div');
+    tooltipEl.id = 'chartjs-tooltip';
+    tooltipEl.innerHTML = '<table></table>';
+    tooltipEl.classList.add('custom-tooltip');
+    document.body.appendChild(tooltipEl);
+  }
+
+  const tooltipModel = context.tooltip;
+  if (tooltipModel.opacity === 0) {
+    tooltipEl.style.opacity = '0';
+    tooltipEl.style.visibility = 'hidden';
+    return;
+  }
+
+  tooltipEl.classList.remove('above', 'below', 'no-transform');
+  if (tooltipModel.yAlign) {
+    tooltipEl.classList.add(tooltipModel.yAlign);
+  } else {
+    tooltipEl.classList.add('no-transform');
+  }
+
+  if (tooltipModel.body) {
+    const datasets = chartData?.datasets?.filter((obj: any) => obj.data?.length > 0)?.reverse();
+    const datalabels = chartData?.labels;
+    const targetIndex = datalabels?.indexOf(tooltipModel.title[0]);
+    const titleLines = tooltipModel.title || [];
+
+    let innerHtml = '<thead>';
+    titleLines.forEach(function (title: string) {
+      innerHtml += '<tr><th style="color: silver; font-weight: 400;">' + title?.split(',').join(' ') + '</th></tr>';
+    });
+    innerHtml += '</thead><tbody>';
+
+    datasets?.forEach(function (set: any) {
+      // Используем borderColor для яркого цвета квадратика
+      const targetColor = set.borderColor || set.backgroundColor;
+      const config = chartCompareConfigObject.find(_ => _.ruName === set.label);
+      const units = config?.units || '';
+      const value = set?.data[targetIndex] || '0';
+      const span =
+        '<span style="display: inline-block; width: 12px; height: 12px; border-radius: 2px; background-color: ' +
+        targetColor +
+        '; margin-right: 8px; vertical-align: middle;"></span><span style="vertical-align: middle;">' +
+        set?.label +
+        ':  <span style="font-weight: bold;">' +
+        formatPrice(value, units) +
+        '</span></span>';
+      innerHtml += '<tr><td style="padding: 0;">' + span + '</td></tr>';
+    });
+    innerHtml += '</tbody>';
+
+    const tableRoot = tooltipEl.querySelector('table');
+    if (tableRoot) tableRoot.innerHTML = innerHtml;
+  }
+
+  const position = context.chart.canvas.getBoundingClientRect();
+  let tooltipLeft = position.left + tooltipModel.caretX;
+  let tooltipTop = position.top + tooltipModel.caretY;
+
+  tooltipEl.style.display = 'block';
+  const tooltipWidth = tooltipEl.offsetWidth + 300;
+  const tooltipHeight = tooltipEl.offsetHeight;
+  const viewportWidth = window.innerWidth;
+  const viewportHeight = window.innerHeight;
+  const margin = 5;
+
+  if (tooltipLeft + tooltipWidth + margin > viewportWidth) {
+    tooltipLeft = viewportWidth - (tooltipWidth / 1.5) - margin;
+  } else if (tooltipLeft - margin < 0) {
+    tooltipLeft = margin;
+  }
+
+  if (tooltipTop + tooltipHeight + margin > viewportHeight) {
+    tooltipTop = viewportHeight - tooltipHeight - margin;
+  } else if (tooltipTop - margin < 0) {
+    tooltipTop = margin;
+  }
+
+  tooltipLeft += window.scrollX;
+  tooltipTop += window.scrollY;
+
+  tooltipEl.style.position = 'absolute';
+  tooltipEl.style.left = Math.round(tooltipLeft) + 'px';
+  tooltipEl.style.top = Math.round(tooltipTop) + 'px';
+  tooltipEl.style.minWidth = '250px';
+  tooltipEl.style.maxWidth = '300px';
+  tooltipEl.style.opacity = '1';
+  tooltipEl.style.visibility = 'visible';
+  tooltipEl.style.transition = 'all 0.2s ease';
+  tooltipEl.style.backgroundColor = 'white';
+  tooltipEl.style.borderRadius = '8px';
+  tooltipEl.style.boxShadow = '0px 0px 20px 0px #00000014';
+  tooltipEl.style.padding = '1rem';
+  tooltipEl.style.pointerEvents = 'none';
+  tooltipEl.style.zIndex = '1000';
+};
 
 interface StatisticsChartProps {
   data: ChartDataProps | null;
@@ -224,24 +328,22 @@ const StatisticsChart: React.FC<StatisticsChartProps> = ({ data, loading = false
     maintainAspectRatio: false,
     plugins: {
       legend: {
-        display: true,
-        position: 'top' as const,
-        labels: {
-          usePointStyle: true,
-          padding: 15,
-          font: {
-            family: 'Mulish',
-            size: 12,
-          },
-        },
+        display: false,
       },
       tooltip: {
-        mode: 'nearest' as const,
+        enabled: false,
         intersect: false,
+        mode: 'index' as const,
+        axis: 'x' as const,
+        external: (context: any) => { getChartTooltip(context, chartData); }
       },
+      verticalDashedLine: { enabled: true }
     },
     scales: {
       y: {
+        type: 'linear' as const,
+        display: true,
+        position: 'left' as const,
         beginAtZero: true,
         grid: {
           color: '#F3F4F6',
@@ -271,11 +373,11 @@ const StatisticsChart: React.FC<StatisticsChartProps> = ({ data, loading = false
 
   // Данные для воронки
   const funnelChartData = [
-    { label: 'Просмотры', value: funnelData?.views || 0 },
-    { label: 'Клики', value: funnelData?.clicks || 0 },
-    { label: 'Корзина', value: funnelData?.cart || 0 },
-    { label: 'Заказы', value: funnelData?.orders || 0 },
-    { label: 'Прогноз выкупа', value: funnelData?.expected_purchase || 0 },
+    { label: 'Просмотры', value: funnelData?.views || 0, units: '' },
+    { label: 'Клики', value: funnelData?.clicks || 0, units: '' },
+    { label: 'Корзина', value: funnelData?.cart || 0, units: 'шт' },
+    { label: 'Заказы', value: funnelData?.orders || 0, units: 'шт' },
+    { label: 'Прогноз выкупа', value: funnelData?.expected_purchase || 0, units: 'шт' },
   ];
   const percetageFunnelChartData = [
     { percent: funnelData?.clicks_views_conversion || 0, value1: funnelData?.clicks || 0, value2: funnelData?.views || 0 },
@@ -324,7 +426,13 @@ const StatisticsChart: React.FC<StatisticsChartProps> = ({ data, loading = false
           ) : (
             <>
               {activeTab === 'Линейные' && chartData && (
-                <Chart type="line" data={chartData} options={chartOptions} />
+                <Chart 
+                  type="line" 
+                  data={chartData} 
+                  options={chartOptions}
+                  width={100}
+                  height={40}
+                />
               )}
 
               {activeTab === 'Воронка' && (
@@ -337,7 +445,7 @@ const StatisticsChart: React.FC<StatisticsChartProps> = ({ data, loading = false
                           <div className={styles.funnel__text}>
                             <span className={styles.funnel__labelText}>{item.label}</span>
                             <span className={styles.funnel__value}>
-                              {new Intl.NumberFormat('ru-RU').format(item.value)}
+                              {new Intl.NumberFormat('ru-RU').format(item.value)} {item.units}
                             </span>
                           </div>
                         </div>
@@ -352,9 +460,9 @@ const StatisticsChart: React.FC<StatisticsChartProps> = ({ data, loading = false
                           <div className={styles.funnel__percentageItem}>
                             <span className={styles.funnel__percentagePercent}>{item.percent}%</span>
                             <div className={styles.funnel__percentageValueWrapper}>
-                              <span className={styles.funnel__percentageValue1}>{item.value1}</span>
+                              <span className={styles.funnel__percentageValue1}>{formatNumberWithSpaces(item.value1)}</span>
                               <span className={styles.funnel__percentageSeparator}>/</span>
-                              <span className={styles.funnel__percentageValue2}>{item.value2}</span>
+                              <span className={styles.funnel__percentageValue2}>{formatNumberWithSpaces(item.value2)}</span>
                             </div>
                           </div>
                         </div>

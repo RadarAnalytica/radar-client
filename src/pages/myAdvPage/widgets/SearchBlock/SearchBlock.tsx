@@ -22,19 +22,15 @@ const SearchBlock: React.FC<SearchBlockProps> = ({ onSearch, loading = false }) 
 
   const searchSubmitHandler = (e?: React.KeyboardEvent | React.MouseEvent) => {
     if (e && 'key' in e && e.key && e.key !== 'Enter') return;
-    
-    // if (!inputValue.trim()) {
-    //   setRequestStatus({ 
-    //     ...requestInitState, 
-    //     isError: true, 
-    //     message: 'Введите поисковый запрос' 
-    //   });
-    //   return;
-    // }
 
     // Вызываем callback с запросом
     onSearch(inputValue.trim());
     setRequestStatus(requestInitState);
+  };
+
+  const setValue = (value: string) => {
+    setInputValue(value);
+    if (value === '') setTimeout(() => onSearch(''), 500);
   };
 
   useEffect(() => {
@@ -66,13 +62,13 @@ const SearchBlock: React.FC<SearchBlockProps> = ({ onSearch, loading = false }) 
             placeholder='Поиск по названию компании, id, артикулу товара'
             size='large'
             value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
+            onChange={(e) => setValue(e.target.value)}
             onKeyDown={(e) => { searchSubmitHandler(e); }}
             className={styles.search__input}
             disabled={loading}
             suffix={
               <button
-                  onClick={() => setInputValue('')}
+                  onClick={() => setValue('')}
                   className={`clear-input-button ${inputValue ? 'd-flex' : 'd-none'}`}
                   type="button"
                   aria-label="Очистить"

@@ -17,7 +17,7 @@ import {
   mergeTableConfig,
   type ColumnConfig 
 } from './config/tableConfig';
-import { mockCompaniesData, CompanyData } from './data/mockData';
+import { CompanyData } from './data/mockData';
 import styles from './companyAdvPage.module.css';
 import { Link } from 'react-router-dom';
 import { useAppSelector } from '@/redux/hooks';
@@ -49,7 +49,7 @@ const CompanyAdvPage: React.FC = () => {
       ...data?.summary_data?.advert_funnel,
       ...data?.summary_data?.advert_statistics,
       isParent: true,
-      children: data?.date_data?.map(item => ({
+      children: data?.date_data?.sort((a, b) => new Date(b.date) - new Date(a.date)).map(item => ({
         ...item,
         company_name: format(item.date, "d MMMM yyyy", { locale: ru }),
         ...item.advert_funnel,
@@ -136,6 +136,7 @@ const CompanyAdvPage: React.FC = () => {
         {!loading && (
           <>
             <MyAdvTable
+              companyId={companyId}
               data={tableData}
               columns={tableConfig}
               loading={loading}
