@@ -351,6 +351,7 @@ const AbcAnalysisPage = () => {
 												}}
 												style={{
 													tableLayout: 'fixed',
+													width: '100%',
 												}}
 											/>
 										)}
