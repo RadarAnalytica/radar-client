@@ -37,27 +37,33 @@ const CompanyAdvPage: React.FC = () => {
     sort_field: undefined, 
     sort_order: undefined 
   });
-  const [data, setData] = useState<CompanyData | null>(null);
-  const [tableData, setTableData] = useState<CompanyData[]>([]);
+  const [data, setData] = useState<CompanyData>({} as CompanyData);
   const [pageData, setPageData] = useState({ page: 1, per_page: 50, total_count: 1 });
 
   const progress = useLoadingProgress({ loading });
 
-  const prepareTableData = (data: CompanyData) => {
-    const result = [{
+  const prepareTableData = (responseData: CompanyData) => {
+    if (responseData?.company_id) {
+      const result = {
+        ...responseData,
+        ...responseData?.summary_data?.advert_funnel,
+        ...responseData?.summary_data?.advert_statistics,
+        isParent: true,
+        children: responseData?.date_data?.sort((a, b) => new Date(b.date) - new Date(a.date)).map(item => ({
+          ...item,
+          company_name: format(item.date, "d MMMM yyyy", { locale: ru }),
+          ...item.advert_funnel,
+          ...item.advert_statistics,
+        })) || [],
+      };
+  
+      return result;
+    }
+    
+    return {
       ...data,
-      ...data?.summary_data?.advert_funnel,
-      ...data?.summary_data?.advert_statistics,
-      isParent: true,
-      children: data?.date_data?.sort((a, b) => new Date(b.date) - new Date(a.date)).map(item => ({
-        ...item,
-        company_name: format(item.date, "d MMMM yyyy", { locale: ru }),
-        ...item.advert_funnel,
-        ...item.advert_statistics,
-      })) || [],
-    }];
-
-    return result;
+      children: [],
+    };
   };
 
   const loadData = async () => {
@@ -67,9 +73,7 @@ const CompanyAdvPage: React.FC = () => {
       const requestObject = getRequestObject({}, selectedRange);
       const response = await ServiceFunctions.getAdvertDataById(authToken, companyId, requestObject, sortState);
       const preparedData = prepareTableData(response);
-      setData(response);
-      setTableData(preparedData);
-      setPageData({ page: 1, per_page: 50, total_count: 1 });
+      setData(preparedData);
       progress.complete();
       await setTimeout(() => {
         setLoading(false);
@@ -88,6 +92,7 @@ const CompanyAdvPage: React.FC = () => {
     const savedConfig = loadTableConfig();
     const mergedConfig = mergeTableConfig(defaultConfig, savedConfig);
     setTableConfig(mergedConfig);
+    setPageData({ page: 1, per_page: 50, total_count: 1 });
   }, []);
 
   // Загрузка данных компании
@@ -125,7 +130,7 @@ const CompanyAdvPage: React.FC = () => {
 
         {isDemoMode && <NoSubscriptionWarningBlock />}
 
-        <BarsGroup data={tableData ? tableData[0] : {}} loadData={loadData} loading={loading} />
+        <BarsGroup data={data} loadData={loadData} loading={loading} />
 
         {loading && (
           <div className={styles.loader__container}>
@@ -137,7 +142,7 @@ const CompanyAdvPage: React.FC = () => {
           <>
             <MyAdvTable
               companyId={companyId}
-              data={tableData}
+              data={[data]}
               columns={tableConfig}
               loading={loading}
               pageData={pageData}
@@ -148,7 +153,7 @@ const CompanyAdvPage: React.FC = () => {
               setTableConfig={handleTableConfigChange}
             />
 
-            <StatisticsChart data={tableData ? tableData[0] : null} loading={loading} />
+            <StatisticsChart data={data} loading={loading} />
           </>
         )}
       </section>

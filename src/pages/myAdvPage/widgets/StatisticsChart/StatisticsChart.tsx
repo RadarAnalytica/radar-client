@@ -239,6 +239,7 @@ const theme = {
 const StatisticsChart: React.FC<StatisticsChartProps> = ({ data, loading = false }) => {
   const [activeTab, setActiveTab] = useState<string>('Линейные');
   const [chartData, setChartData] = useState<{ labels: string[]; datasets: ChartDataset[] } | null>(null);
+  const [showChart, setShowChart] = useState<boolean>(true);
   const [chartControls, setChartControls] = useState(
     chartCompareConfigObject.filter(_ => _.isControl).map(_ => ({ ..._, isActive: _.defaultActive }))
   );
@@ -252,6 +253,7 @@ const StatisticsChart: React.FC<StatisticsChartProps> = ({ data, loading = false
       
       if (!dateDataArray || dateDataArray.length === 0) {
         setChartData(null);
+        setShowChart(false);
         return;
       }
 
@@ -403,6 +405,10 @@ const StatisticsChart: React.FC<StatisticsChartProps> = ({ data, loading = false
       <path d="M203.115 60.3213L27.8189 60.3213C24.7597 60.3213 21.9916 58.5071 20.7708 55.702L1.64488 11.7539C-0.56456 6.67706 3.15617 1 8.69299 1L222.241 1C227.777 1 231.498 6.67706 229.289 11.7539L210.163 55.702C208.942 58.5071 206.174 60.3213 203.115 60.3213Z" fill="#DBF7E9" stroke="white" strokeWidth="2"/>
     </svg>,
   ];
+
+  if (!showChart) {
+    return null;
+  }
 
   return (
     <div className={styles.chartWrapper}>
