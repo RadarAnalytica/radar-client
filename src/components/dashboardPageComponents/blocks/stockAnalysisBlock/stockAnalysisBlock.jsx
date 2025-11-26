@@ -52,19 +52,20 @@ const StockAnalysisBlock = memo(({ dashboardLoading, dragHandle, data}) => {
         }
     };
 
-    // useEffect(() => {
-    //     if (filters.activeBrand) {
-    //         fetchAnalysisData();
-    //     }
-    // }, [filters]);
-
     useEffect(() => {
-        if (data) {
-            setStockAnalysisData(data);
-            setStockAnalysisFilteredData(data);
-            setHasSelfCostPrice(data.every(_ => _.costPriceOne !== null));
+        if (filters.activeBrand) {
+            fetchAnalysisData();
         }
-    }, [data]);
+    }, [filters]);
+
+    // раскоментить когда введем днд (данные буду фетчится в основной странице дашборда)
+    // useEffect(() => {
+    //     if (data) {
+    //         setStockAnalysisData(data);
+    //         setStockAnalysisFilteredData(data);
+    //         setHasSelfCostPrice(data.every(_ => _.costPriceOne !== null));
+    //     }
+    // }, [data]);
 
 
 

@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect, useMemo, useCallback } from 'react';
-import styles from './dashboardPage.module.css';
+import styles from './dashboardPageNoDnd.module.css';
 import { useAppSelector } from '@/redux/hooks';
 import AuthContext from '@/service/AuthContext';
 import { ServiceFunctions } from '@/service/serviceFunctions';
