@@ -348,7 +348,7 @@ const PositionTrackingProjectsPage = () => {
                         <RadarTable
                             config={positionTrackingProjectsTableConfig}
                             preset='radar-table-default'
-                            dataSource={projectsMockData}
+                            dataSource={projectsList}
                             paginationContainerStyle={{ display: 'none' }}
                             customCellRender={{
                                 idx: ['actions'],

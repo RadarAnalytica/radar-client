@@ -1,4 +1,4 @@
-import { useContext, useState, useEffect } from 'react';
+import { useContext, useState, useEffect, useCallback } from 'react';
 import Header from '@/components/sharedComponents/header/header';
 import styles from './PositionTrackingMainPage.module.css';
 import Sidebar from '@/components/sharedComponents/sidebar/sidebar';
@@ -281,6 +281,7 @@ const PositionTrackingMainPage = () => {
     useEffect(() => {
         if (authToken) {
             getMetaData(authToken);
+            getProjectsList(authToken);
         }
     }, []);
     return (
@@ -361,7 +362,7 @@ const PositionTrackingMainPage = () => {
                 </div>}
 
                 {/* settings block */}
-                {metaData && metaData.products_count > 0 &&
+                {metaData && metaData.products_count > 0 && projectsList &&
                  <div className={styles.page__container}>
                     <p className={styles.page__title}>Динамика</p>
                     <div className={styles.page__selectWrapper}>

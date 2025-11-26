@@ -2163,7 +2163,7 @@ export interface IPositionCheckMainTableData {
 				authorization: 'JWT ' + token,
 			},
 			body: JSON.stringify({
-				id: projectName,
+				project_id: projectName,
 				wb_id: sku,
 				name: productName,
 			}),

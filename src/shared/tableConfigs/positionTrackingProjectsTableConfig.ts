@@ -6,21 +6,21 @@ export const positionTrackingProjectsTableConfig = [
         hidden: false,
     },
     {
-        key: 'createdAt',
+        key: 'created_at',
         title: 'Создан',
         dataIndex: 'createdAt',
         hidden: false,
     },
     {
-        key: 'updatedAt',
+        key: 'updated_at',
         title: 'Обновлен',
         dataIndex: 'updatedAt',
         hidden: false,
     },
     {
-        key: 'productsCount',
+        key: 'total_products',
         title: 'Товаров',
-        dataIndex: 'productsCount',
+        dataIndex: 'total_products',
         hidden: false,
     },
     {
