@@ -38,31 +38,13 @@ const NewFilterGroup = ({ pageIdent, filtersData, isLoading, getData, setActiveT
     const [filters, setFilters] = useState(reportFilters[pageIdent]);
     const [weekOriginFilter, setWeekOriginFilter] = useState([]);
 
-    // useEffect(() => {
-    //     const storageItem = localStorage.getItem(pageIdent)
-    //     if (!storageItem) {
-    //         const storageData = {}
-    //         for (let item of reportFilters[pageIdent]) {
-    //             storageData[item.filterIdent] = []
-    //         }
-    //         console.log(storageData);
-
-    //         localStorage.setItem(pageIdent, JSON.stringify(storageData))
-    //     }
-    // }, [pageIdent])
-
     useEffect(() => {
         const filterData = async () => {
-            // const result = await getFilters(authToken)
             setFilters((list) => {
                 return list.map((el) => (
                     { ...el, items: filtersData[el.filterIdent] }
                 ));
             });
-            // if (filtersData.week) {
-            //     setWeekOriginFilter(filtersData.week)
-            // }
-            // setIsLoading(false);
         };
 
         filterData();
@@ -75,36 +57,6 @@ const NewFilterGroup = ({ pageIdent, filtersData, isLoading, getData, setActiveT
 
     const changeWeekFilters = useCallback(() => {
         return;
-        const storageItem = localStorage.getItem(pageIdent);
-        let currentPageData = JSON.parse(storageItem);
-        currentPageData = currentPageData ? currentPageData : {};
-        const yearSelectList = currentPageData.year ? currentPageData.year : [];
-        const monthSelectList = currentPageData.month ? currentPageData.month : [];
-
-        let currentWeekFilter = [];
-        if (yearSelectList.length > 0) {
-            for (let _year of yearSelectList) {
-                currentWeekFilter = currentWeekFilter.concat(weekOriginFilter.filter(el => el.includes(`${_year}-`)));
-            }
-        } else {
-            currentWeekFilter = [...weekOriginFilter];
-        }
-        const yearFilteredList = Array.from(new Set(currentWeekFilter));
-        currentWeekFilter = [];
-
-        if (monthSelectList.length > 0) {
-            for (let _month of monthSelectList) {
-                currentWeekFilter = currentWeekFilter.concat(yearFilteredList.filter(el => el.includes(`-${_month}-`)));
-            }
-        } else {
-            currentWeekFilter = [...yearFilteredList];
-        }
-
-        // setFilters((list) => {
-        //     return list.map((el) => (
-        //         el.filterIdent === 'week' ? {...el, items: Array.from(new Set(currentWeekFilter)) } : el
-        //     ))
-        // })
     }, [weekOriginFilter, pageIdent]);
 
     const handleDownload = async () => {
@@ -116,7 +68,6 @@ const NewFilterGroup = ({ pageIdent, filtersData, isLoading, getData, setActiveT
                 headers: {
                     authorization: 'JWT ' + authToken,
                 },
-                // body: JSON.stringify(filters)
             }
         )
             .then((response) => {
@@ -137,25 +88,6 @@ const NewFilterGroup = ({ pageIdent, filtersData, isLoading, getData, setActiveT
             });
     };
 
-    // const getFiltersByLocalStorage = () => {
-    //     const resultFilters = {}
-    //     const dashboardStorage = localStorage.getItem('dashboard')
-    //     let currentPageData = JSON.parse(dashboardStorage)
-    //     const dashboardPageData = currentPageData ? currentPageData : {}
-
-    //     resultFilters['dashboard'] = {
-    //         warehouse_name_filter: dashboardPageData.wh ? dashboardPageData.wh : [],
-    //         brand_name_filter: dashboardPageData.brand ? dashboardPageData.brand : [],
-    //         groups_filter: dashboardPageData.group ? dashboardPageData.group : [],
-    //         date_sale_filter: {
-    //             years: dashboardPageData.year ? dashboardPageData.year : [],
-    //             months: dashboardPageData.month ? dashboardPageData.month : [],
-    //             weekdays: dashboardPageData.week ? dashboardPageData.week : [],
-    //         },
-    //     };
-
-    //     return resultFilters
-    // }
 
     return (
 

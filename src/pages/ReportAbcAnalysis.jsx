@@ -88,6 +88,7 @@ const getTableData = (data) => {
     isParent: true,
     wb_id: item.wb_id,
     rowKey: item.wb_id,
+    ...item,
     children: item.items.map((child) => ({
       ...child,
       wb_id: child.title,
@@ -128,9 +129,7 @@ const customCellRender = (value, record, index, dataIndex, tableConfig) => {
     </div>;
   }
   const currElem = tableConfig.find(item => item.dataIndex === dataIndex);
-  if (!record.isParent) {
-    return <div className={styles.customCell}>{currElem.units ? formatPrice(value, currElem.units) : value}</div>;
-  }
+  return <div className={styles.customCell}>{currElem.units ? formatPrice(value, currElem.units) : value}</div>;
 };
 
 const ReportAbcAnalysis = () => {
@@ -143,6 +142,7 @@ const ReportAbcAnalysis = () => {
   const [activeTab, setActiveTab] = useState('По выручке');
   const [isOpenFilters, setIsOpenFilters] = useState(false);
   const [dataRevenue, setDataRevenue] = useState([]);
+  console.log(dataRevenue);
   const tableContainerRef = useRef(null);
 
   useEffect(() => {
@@ -198,13 +198,12 @@ const ReportAbcAnalysis = () => {
             <RadarLoader loaderStyle={{ height: '50vh', backgroundColor: 'white' }} />
           </div>
         }
-        
+
         {dataRevenue.length > 0 && !isRevenueLoading && !isFiltersLoading &&
           <div className={styles.tableContainerWrapper}>
             <div className={styles.tableContainer} ref={tableContainerRef}>
               <RadarTable
                 rowKey={(record) => record.rowKey}
-                defaultExpandedRowKeys={[dataRevenue[0].rowKey]}
                 config={activeTab === 'По выручке' ? proceedTableConfig : profitTableConfig}
                 dataSource={dataRevenue}
                 treeMode
