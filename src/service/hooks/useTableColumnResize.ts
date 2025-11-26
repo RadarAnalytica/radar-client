@@ -50,14 +50,14 @@ export function useTableColumnResize(
 	version: string | null = null
 ): UseTableColumnResizeResult {
 	// Рекурсивная работа с колонками
-	const processColumns = useCallback((columns: TableColumn[], processor: ColumnProcessor): TableColumn[] => {
+	const processColumns = useCallback((columns: TableColumn[], processor: ColumnProcessor, noTotalWidth: boolean = false): TableColumn[] => {
 		return columns.map(col => {
 			if (col.children && col.children.length > 0) {
 				const updatedChildren = processColumns(col.children, processor);
 				const totalWidth = updatedChildren.reduce((sum, child) => 
 					sum + (child.width || 0), 0
 				);
-				return { ...col, width: totalWidth, minWidth: totalWidth, children: updatedChildren };
+				return { ...col, width: noTotalWidth ? undefined : totalWidth, minWidth: noTotalWidth ? undefined : totalWidth, children: updatedChildren };
 			}
 			return processor(col);
 		});
@@ -170,7 +170,7 @@ export function useTableColumnResize(
 	
 
 	// Обработчик изменения ширины колонок
-	const onResize = useCallback((columnKey: string, width: number): void => {
+	const onResize = useCallback((columnKey: string, width: number, noTotalWidth: boolean = false): void => {
 		if (typeof width !== 'number' || isNaN(width) || width <= 0) {
 			console.warn('Invalid width received:', width);
 			return;
@@ -184,7 +184,7 @@ export function useTableColumnResize(
 				return { ...col, width: width };
 			}
 			return col;
-		}));
+		}, noTotalWidth));
 	}, [minWidth, maxWidth, processColumns]);
 
 	if (!initialConfig?.length || !storageKey) {

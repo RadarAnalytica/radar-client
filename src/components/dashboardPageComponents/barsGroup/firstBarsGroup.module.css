@@ -1,7 +1,7 @@
 .group {
     width: 100%;
     display: grid;
-    grid-template-columns: repeat(12, 1fr);
+    grid-template-columns: repeat(8, 1fr);
     grid-template-rows: auto;
     gap: 12px;
     justify-items: stretch;
@@ -9,19 +9,19 @@
     box-sizing: border-box;
     align-items: stretch;
 
-    /* @media (max-width: 1360px) {
+    @media (max-width: 1360px) {
         grid-template-columns: repeat(6, 1fr);
-    } */
+    }
 }
 
 .group__lgBarWrapper {
-    grid-column: span 3;
+    grid-column: span 2;
     display: flex;
     justify-content: center;
     align-items: stretch;
 
     @media (max-width: 1360px) {
-        grid-column: span 6;
+        grid-column: span 3;
     }
 }
 .group__sBarWrapper {
@@ -29,18 +29,14 @@
     display: flex;
     justify-content: center;
     align-items: stretch;
-    @media (max-width: 1360px) {
-        grid-column: span 3;
-    }
 }
 .group__xsBarWrapper {
     display: flex;
     justify-content: center;
     align-items: stretch;
-    grid-column: span 1;
 
     @media (max-width: 1360px) {
-        grid-column: span 3;
+        grid-column: span 2;
     }
 }
 
