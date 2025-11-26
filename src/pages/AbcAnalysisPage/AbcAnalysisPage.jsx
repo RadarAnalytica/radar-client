@@ -349,6 +349,9 @@ const AbcAnalysisPage = () => {
 													borderBottom: '1px solid #E8E8E8',
 													height: '50px',
 												}}
+												style={{
+													tableLayout: 'fixed',
+												}}
 											/>
 										)}
 									</div>

@@ -1,4 +1,4 @@
-export const TABLE_CONFIG_VERSION = '1.0.1';
+export const TABLE_CONFIG_VERSION = '1.0.2';
 export const TABLE_CONFIG_STORAGE_KEY = 'myAdv_tableConfig';
 
 export interface ColumnConfig {
@@ -63,10 +63,10 @@ export const getDefaultTableConfig = (): ColumnConfig[] => {
           {title: 'Просмотры', dataIndex: 'views', sortable: true, fixed: false, width: 120},
           {title: 'Клики', dataIndex: 'clicks', sortable: true, fixed: false, width: 120},
           {title: 'CPC', dataIndex: 'cpc', sortable: true, fixed: false, width: 120}, 
-          {title: 'CPM', dataIndex: 'avg_cpm', sortable: true, fixed: false, width: 120},
+          {title: 'Средний CPM за период', dataIndex: 'avg_cpm', units: '₽', sortable: true, fixed: false, width: 120},
           {title: 'Средняя позиция', dataIndex: 'avg_position', sortable: true, fixed: false, width: 120},
-          {title: 'ДРР заказы', dataIndex: 'drr_orders', sortable: true, fixed: false, width: 120},
-          {title: 'Прогноз ДРР (по выкупу)', dataIndex: 'drr_purchase', sortable: true, fixed: false, width: 120},
+          {title: 'ДРР заказы', dataIndex: 'drr_orders', units: '%', sortable: true, fixed: false, width: 120},
+          {title: 'Прогноз ДРР (по выкупу)', dataIndex: 'drr_purchase', units: '%', sortable: true, fixed: false, width: 120},
           {title: 'CPCart', dataIndex: 'cp_cart', sortable: true, fixed: false, width: 120},
           {title: 'Прогноз CPS', dataIndex: 'expected_cps', sortable: true, fixed: false, width: 120},
           {title: 'Заказов на сумму', dataIndex: 'orders_amount', sortable: true, fixed: false, width: 120},

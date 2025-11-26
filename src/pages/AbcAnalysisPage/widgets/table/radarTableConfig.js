@@ -1,4 +1,4 @@
-export const ABC_ANALYSIS_TABLE_CONFIG_VER = '1.0.0';
+export const ABC_ANALYSIS_TABLE_CONFIG_VER = '1.0.1';
 
 export const getAbcAnalysisTableConfig = (viewType) => {
     const amountTitle = {
@@ -122,9 +122,9 @@ export const getAbcAnalysisTableConfig = (viewType) => {
             title: 'Категория',
             dataIndex: 'category',
             key: 'category',
-            width: 100,
-            minWidth: 100,
-            maxWidth: 200,
+            width: 130,
+            minWidth: 130,
+            maxWidth: 130,
             sortable: true,
             hidden: false,
         },

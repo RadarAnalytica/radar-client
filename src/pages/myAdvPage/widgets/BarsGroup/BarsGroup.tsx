@@ -26,10 +26,10 @@ const BarsGroup: React.FC<BarsGroupProps> = ({ data = {}, loadData, loading = fa
                 <span className={styles.campaignBar__label}>Создана:</span>
                 <span className={styles.campaignBar__value}>{data?.company_start_date && format(data?.company_start_date, 'dd.MM.yyyy')}</span>
               </div>
-              <div className={styles.campaignBar__id}>
+              {/* <div className={styles.campaignBar__id}>
                 <span className={styles.campaignBar__label}>ID на WB</span>
                 <span className={styles.campaignBar__value}><a href={`https://www.wildberries.ru/catalog/${data.company_id}/detail.aspx`} target="_blank">{data.company_id}</a></span>
-              </div>
+              </div> */}
             </div>
           </div>
           <div className={styles.campaignBar__right}>
