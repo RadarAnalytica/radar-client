@@ -65,7 +65,7 @@ const getTableData = (data) => {
   Object.keys(data).forEach(key => {
     const row = {
       rowKey: key,
-      firstColumn: key,
+      firstColumn: key.toLowerCase() === 'ошибка' && typeof data[key] === 'string' ? 'Ошибка: ' + data[key].toLowerCase() : key,
       isParent: true,
       children: Array.isArray(data[key]) ? data[key].map(item => ({
         rowKey: item.srid,

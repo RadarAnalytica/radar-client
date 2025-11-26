@@ -20,7 +20,7 @@ import { formatPrice } from '@/service/utils';
 import { RadarLoader } from '@/shared';
 import { useTableColumnResize } from '@/service/hooks/useTableColumnResize';
 
-const TABLE_CONFIG_VERSION = '1';
+const TABLE_CONFIG_VERSION = '2';
 
 const initTableConfig = [
   {
@@ -783,7 +783,7 @@ const WeeklyReportByMonth = () => {
                 rowKey={(record) => record.rowKey}
                 config={tableConfig}
                 dataSource={tableData}
-                onResize={onResizeColumn}
+                onResize={(columnKey, width) => onResizeColumn(columnKey, width, true)}
                 treeMode
                 preset='radar-table-simple'
                 pagination={false}

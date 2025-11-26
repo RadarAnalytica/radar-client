@@ -18,7 +18,7 @@ import { formatPrice } from '@/service/utils';
 import { RadarLoader } from '@/shared';
 import { useTableColumnResize } from '@/service/hooks/useTableColumnResize';
 
-const TABLE_CONFIG_VERSION = '1';
+const TABLE_CONFIG_VERSION = '2';
 
 const initTableConfig = [
   {
@@ -57,7 +57,11 @@ const initTableConfig = [
           fontSize: '14px',
         }
       },
-    ],
+    ].map(item => ({
+      ...item,
+      minWidth: item.width / 2,
+      maxWidth: item.width * 2,
+    }))
   },
   {
     title: '',
@@ -92,7 +96,7 @@ const initTableConfig = [
         }
       },
       {
-        title: 'Продажи и выручка',
+        title: 'Выручка и продажи',
         key: 'revenue',
         dataIndex: 'revenue',
         width: 150,
@@ -143,7 +147,11 @@ const initTableConfig = [
           fontSize: '14px',
         }
       },
-    ],
+    ].map(item => ({
+      ...item,
+      minWidth: 100,
+      maxWidth: item.width * 2,
+    }))
   },
   {
     title: 'Себестоимость',
@@ -179,7 +187,11 @@ const initTableConfig = [
           fontSize: '14px',
         }
       },
-    ],
+    ].map(item => ({
+      ...item,
+      minWidth: 100,
+      maxWidth: item.width * 2,
+    }))
   },
   {
     title: 'Комиссия и логистика',
@@ -272,7 +284,11 @@ const initTableConfig = [
           fontSize: '14px',
         }
       },
-    ],
+    ].map(item => ({
+      ...item,
+      minWidth: 100,
+      maxWidth: item.width * 2,
+    })),
   },
   {
     title: 'Компенсации и штрафы/доплаты',
@@ -330,7 +346,11 @@ const initTableConfig = [
           fontSize: '14px',
         }
       },
-    ],
+    ].map(item => ({
+      ...item,
+      minWidth: 100,
+      maxWidth: item.width * 2,
+    })),
   },
   {
     title: 'Другие удержания',
@@ -386,7 +406,11 @@ const initTableConfig = [
           fontSize: '14px',
         }
       },
-    ],
+    ].map(item => ({
+      ...item,
+      minWidth: 100,
+      maxWidth: item.width * 2,
+    })),
   },
   {
     title: 'Налог',
@@ -434,7 +458,11 @@ const initTableConfig = [
           fontSize: '14px',
         }
       },
-    ],
+    ].map(item => ({
+      ...item,
+      minWidth: 100,
+      maxWidth: item.width * 2,
+    })),
   },
   {
     title: 'Финансы',
@@ -507,7 +535,11 @@ const initTableConfig = [
           borderRadius: '0 12px 12px 0',
         }
       },
-    ],
+    ].map(item => ({
+      ...item,
+      minWidth: 100,
+      maxWidth: item.width * 2,
+    })),
   }
 ].map(_ => ({ ..._, colSpan: _.children?.length }));
 
@@ -646,7 +678,7 @@ const WeeklyReportByGoods = () => {
               <RadarTable
                 resizeable
                 config={[...tableConfig]}
-                onResize={onResizeColumn}
+                onResize={(columnKey, width) => onResizeColumn(columnKey, width, true)}
                 dataSource={tableData}
                 preset='radar-table-simple'
                 pagination={false}
