@@ -12,94 +12,41 @@ import {
 interface ISettingsModalProps {
     isOpen: boolean;
     setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
-    onOk: (visibilityMap: Record<string, boolean>) => void;
-    barsConfig: Array<Record<string, any>>;
+    BARS_STORAGE_KEY: string;
+    DASHBOARD_CONFIG_VER: string;
+    items: Array<Record<string, any>>;
+    setItems: React.Dispatch<React.SetStateAction<Array<Record<string, any>>>>;
+    onSave: (items: Array<Record<string, any>>, BARS_STORAGE_KEY: string, DASHBOARD_CONFIG_VER: string) => void;
 }
-
-const STORAGE_KEY = 'dashboard_cards_visibility';
 
 export const SettingsModal: React.FC<ISettingsModalProps> = (
     {
         isOpen,
         setIsOpen,
-        onOk,
-        barsConfig,
+        BARS_STORAGE_KEY,
+        DASHBOARD_CONFIG_VER,
+        items,
+        setItems,
+        onSave
     }
 ) => {
     const [form] = Form.useForm();
 
-    // Собираем все карточки из конфига
-    const allCards = useMemo(() => {
-        const cards: Array<{ id: string; title: string }> = [];
-        barsConfig.forEach(row => {
-            if (row.children && Array.isArray(row.children)) {
-                row.children.forEach(child => {
-                    if (child.id && child.title) {
-                        cards.push({
-                            id: child.id,
-                            title: child.title
-                        });
-                    }
-                });
-            }
-        });
-        return cards;
-    }, [barsConfig]);
-
-    // Загружаем сохраненные настройки из localStorage
     useEffect(() => {
-        if (isOpen) {
-            try {
-                const saved = localStorage.getItem(STORAGE_KEY);
-                const formValues: Record<string, boolean> = {};
-                
-                if (saved) {
-                    const parsed = JSON.parse(saved);
-                    
-                    // Новый формат: массив rows с children (id, isVisible)
-                    if (Array.isArray(parsed)) {
-                        parsed.forEach(row => {
-                            if (row.children && Array.isArray(row.children)) {
-                                row.children.forEach((child: { id: string; isVisible?: boolean }) => {
-                                    formValues[child.id] = child.isVisible !== undefined ? child.isVisible : true;
-                                });
-                            }
-                        });
-                    }
-                    // Старый формат: объект с visibility и order
-                    else if (parsed.visibility && parsed.order) {
-                        const visibilityMap = parsed.visibility;
-                        allCards.forEach(card => {
-                            formValues[card.id] = visibilityMap[card.id] !== undefined ? visibilityMap[card.id] : true;
-                        });
-                    }
-                    // Очень старый формат: только visibility map
-                    else if (typeof parsed === 'object' && parsed.visibility) {
-                        allCards.forEach(card => {
-                            formValues[card.id] = parsed.visibility[card.id] !== undefined ? parsed.visibility[card.id] : true;
-                        });
-                    }
-                }
-                
-                // Устанавливаем значения по умолчанию для всех карточек
-                allCards.forEach(card => {
-                    if (formValues[card.id] === undefined) {
-                        formValues[card.id] = true;
-                    }
-                });
-                
-                form.setFieldsValue(formValues);
-            } catch (error) {
-                console.error('Ошибка при загрузке настроек видимости:', error);
-            }
-        }
-    }, [isOpen, allCards, form]);
+        form.setFieldsValue(items.reduce((acc, item) => {
+            acc[item.id] = item.isVisible;
+            return acc;
+        }, {}));
+    }, [items]);
+
+   
 
     const handleOk = () => {
         form.validateFields().then(values => {
-            // Сохранение происходит через onOk, который вызовет saveDashboardSettings
-            // в родительском компоненте с текущим порядком items
-            onOk(values);
+            const updatedConfig = [...items].map(item => ({...item, isVisible: values[item.id]}));
+            console.log(updatedConfig);
+            onSave(updatedConfig, BARS_STORAGE_KEY, DASHBOARD_CONFIG_VER);
+            setItems(updatedConfig);
             setIsOpen(false);
         });
     };
@@ -207,7 +154,7 @@ export const SettingsModal: React.FC<ISettingsModalProps> = (
             >
                 <Form form={form} layout="vertical">
                     <Flex gap="16px 12px" wrap className={styles.list}>
-                        {allCards.map((card) => (
+                        {items.map((card) => (
                             <div key={card.id} className={styles.item}>
                                 <Form.Item
                                     name={card.id}

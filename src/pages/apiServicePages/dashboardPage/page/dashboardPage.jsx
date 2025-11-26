@@ -30,8 +30,8 @@ import StockAnalysisBlock from '@/components/dashboardPageComponents/blocks/stoc
 import NoSubscriptionWarningBlock from '@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock';
 import { useDemoMode } from "@/app/providers";
 import { RadarBar } from '@/shared';
-import { DndContext, pointerWithin, useDndMonitor, DragOverlay } from '@dnd-kit/core';
-import { SortableContext, arrayMove, rectSortingStrategy } from '@dnd-kit/sortable';
+import { DndContext, pointerWithin, rectIntersection, useDndMonitor, DragOverlay, closestCenter, closestCorners } from '@dnd-kit/core';
+import { SortableContext, arrayMove, rectSortingStrategy, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { DragHandle } from '@/shared/ui/DragHandler/DragHandler';
 import { SortableRow } from '../components/SortableRow';
 import { SettingsModal } from '../components/SettingsModal';
@@ -60,808 +60,703 @@ import { SmallButton } from '@/shared';
 // Контекст для передачи listeners и attributes в DragHandle
 export const DragHandleContext = React.createContext(null);
 
+const DASHBOARD_CONFIG_VER = '1';
+const ROWS_STORAGE_KEY = 'dashboard_rows_config';
+const BARS_STORAGE_KEY = 'dashboard_bars_config';
 
-
-
+const rowsConfig = ['row-1', 'row-2', 'row-3', 'row-4', 'row-5', 'row-6', 'row-7', 'row-8'];
 
 // Конфигурация строк и карточек
 const barsConfig = [
-    // Первая группа
     {
-        rowId: 1,
-        rowStyle: '',
-        canUnite: true,
-        children: [
-            {
-                id: 'bar-1',
-                title: 'Чистая прибыль',
-                isVisible: true,
-                container: styles.group__lgBarWrapperTop,
-                dropKey: '1',
-                render: (bar, dataDashBoard, loading) => (
-                    <RadarBar
-                        title='Чистая прибыль'
-                        tooltipText='Прибыль, остающаяся после уплаты налогов, сборов, отчислений'
-                        mainValue={dataDashBoard?.netProfit}
-                        mainValueUnits='₽'
-                        hasColoredBackground
-                        compareValue={{
-                            comparativeValue: dataDashBoard?.netProfitCompare,
-                            absoluteValue: dataDashBoard?.prev_net_profit,
-                            absoluteValueUnits: '₽',
-                            tooltipText: 'Значение предыдущего периода'
-                        }}
-                        isLoading={loading}
-                        dragHandle={() => <DragHandle context={DragHandleContext} />}
-                    />
-                ),
-            },
-            {
-                id: 'bar-2',
-                title: 'Продажи',
-                isVisible: true,
-                container: styles.group__lgBarWrapperTop,
-                dropKey: '1',
-                render: (bar, dataDashBoard, loading) => (
-                    <RadarBar
-                        title='Продажи'
-                        tooltipText='Количество проданных товаров (без возвратов)'
-                        midValue={dataDashBoard?.saleCount}
-                        midValueUnits='шт'
-                        mainValue={dataDashBoard?.saleAmount}
-                        mainValueUnits='₽'
-                        hasColoredBackground
-                        compareValue={{
-                            comparativeValue: dataDashBoard?.saleAmountCompare,
-                            absoluteValue: dataDashBoard?.prev_sale_amount,
-                            absoluteValueUnits: '₽',
-                            tooltipText: 'Значение предыдущего периода'
-                        }}
-                        isLoading={loading}
-                        dragHandle={() => <DragHandle context={DragHandleContext} />}
-                    />
-                ),
-            },
-            {
-                id: 'bar-3',
-                title: 'WB Реализовал',
-                isVisible: true,
-                container: styles.group__lgBarWrapperTop,
-                dropKey: '1',
-                render: (bar, dataDashBoard, loading) => (
-                    <RadarBar
-                        title='WB Реализовал'
-                        tooltipText='Сумма реализации товара с учетом согласованной скидки продавца и СПП'
-                        midValueUnits='₽'
-                        mainValue={dataDashBoard?.taxInfo?.wbRealization}
-                        mainValueUnits='₽'
-                        hasColoredBackground
-                        compareValue={{
-                            comparativeValue: dataDashBoard?.wb_realization_compare,
-                            absoluteValue: dataDashBoard?.prev_wb_realization,
-                            absoluteValueUnits: '₽',
-                            tooltipText: 'Значение предыдущего периода'
-                        }}
-                        isLoading={loading}
-                        dragHandle={() => <DragHandle context={DragHandleContext} />}
-                    />
-                ),
-            },
-            {
-                id: 'bar-5',
-                title: 'ROI',
-                isVisible: true,
-                container: styles.group__lgBarWrapperTop,
-                dropKey: '1',
-                render: (bar, dataDashBoard, loading) => (
-                    <RadarBar
-                        title='ROI'
-                        tooltipText='Показывает общую рентабельность ваших вложений. Насколько прибыльны или убыточны ваши продажи с учетом всех затрат'
-                        mainValue={dataDashBoard?.roi}
-                        mainValueUnits='%'
-                        hasColoredBackground
-                        compareValue={{
-                            comparativeValue: dataDashBoard?.roi_compare,
-                            absoluteValue: dataDashBoard?.prev_roi,
-                            absoluteValueUnits: '%',
-                            tooltipText: 'Значение предыдущего периода'
-                        }}
-                        isLoading={loading}
-                        dragHandle={() => <DragHandle context={DragHandleContext} />}
-                    />
-                ),
-            },
-        ]
-    },
-    {
-        rowId: 2,
-        rowStyle: '',
-        children: [
-            {
-                id: 'mainChart',
-                title: 'Заказы и продажи',
-                dropKey: 'full',
-                isVisible: true,
-                tooltipText: 'Прибыль, остающаяся после уплаты налогов, сборов, отчислений',
-                mainValue: 'netProfit',
-                mainValueUnits: '₽',
-                hasColoredBackground: true,
-                container: styles.group__fullWrapper,
-                compareValue: {
-                    comparativeValue: 'netProfitCompare',
-                    absoluteValue: 'prev_net_profit',
+        id: 'bar-1',
+        title: 'Чистая прибыль',
+        isVisible: true,
+        container: styles.group__lgBarWrapperTop,
+        dropKey: '1',
+        rowId: 'row-1',
+        render: (bar, dataDashBoard, loading, selectedRange, activeBrand, authToken, filters, updateDataDashBoard, stockAnalysisData) => (
+            <RadarBar
+                title='Чистая прибыль'
+                tooltipText='Прибыль, остающаяся после уплаты налогов, сборов, отчислений'
+                mainValue={dataDashBoard?.netProfit}
+                mainValueUnits='₽'
+                hasColoredBackground
+                compareValue={{
+                    comparativeValue: dataDashBoard?.netProfitCompare,
+                    absoluteValue: dataDashBoard?.prev_net_profit,
                     absoluteValueUnits: '₽',
-                },
-                render: (bar, dataDashBoard, loading, selectedRange) => (
-                    <MainChart
-                        title='Заказы и продажи'
-                        loading={loading}
-                        dataDashBoard={dataDashBoard}
-                        selectedRange={selectedRange}
-                        dragHandle={() => <DragHandle context={DragHandleContext} />}
-                    />
-                ),
-            },
-        ]
+                    tooltipText: 'Значение предыдущего периода'
+                }}
+                isLoading={loading}
+                dragHandle={() => <DragHandle context={DragHandleContext} />}
+            />
+        ),
     },
     {
-        rowId: 3,
-        rowStyle: '',
-        canUnite: true,
-        children: [
-            {
-                id: 'sec-orders',
-                title: 'Заказы',
-                isVisible: true,
-                container: styles.group__lgBarWrapper,
-                dropKey: '1',
-                render: (bar, dataDashBoard, loading) => (
-                    <RadarBar
-                        title='Заказы'
-                        midValue={dataDashBoard?.orderCount}
-                        tooltipText='Общие сумма и количество созданных и оплаченных заказов за выбранный период'
-                        midValueUnits='шт'
-                        mainValue={dataDashBoard?.orderAmount}
-                        mainValueUnits='₽'
-                        hasColoredBackground
-                        compareValue={{
-                            comparativeValue: dataDashBoard?.orderAmountCompare,
-                            absoluteValue: dataDashBoard?.prev_order_amount,
-                            absoluteValueUnits: '₽',
-                            tooltipText: 'Значение предыдущего периода'
-                        }}
-                        isLoading={loading}
-                        dragHandle={() => <DragHandle context={DragHandleContext} />}
-                    />
-                ),
-            },
-            {
-                id: 'sec-returns',
-                title: 'Возвраты',
-                isVisible: true,
-                container: styles.group__lgBarWrapper,
-                dropKey: '1',
-                render: (bar, dataDashBoard, loading) => (
-                    <RadarBar
-                        title='Возвраты'
-                        tooltipText='Стоимость и количество товаров, которые покупатели вернули по различным причинам'
-                        midValue={dataDashBoard?.returnCount}
-                        midValueUnits='шт'
-                        mainValue={dataDashBoard?.returnAmount}
-                        mainValueUnits='₽'
-                        hasColoredBackground
-                        compareValue={{
-                            comparativeValue: dataDashBoard?.returnAmountCompare,
-                            absoluteValue: dataDashBoard?.prev_return_amount,
-                            absoluteValueUnits: '₽',
-                            tooltipText: 'Значение предыдущего периода'
-                        }}
-                        isLoading={loading}
-                        dragHandle={() => <DragHandle context={DragHandleContext} />}
-                    />
-                ),
-            },
-            {
-                id: 'sec-logistics',
-                title: 'Расходы на логистику',
-                isVisible: true,
-                container: styles.group__lgBarWrapper,
-                dropKey: '1',
-                render: (bar, dataDashBoard, loading) => (
-                    <RadarBar
-                        title='Расходы на логистику'
-                        tooltipText='Суммарные расходы на логистику, определяются расчетным способом от количества заказов'
-                        mainValue={dataDashBoard?.logistics}
-                        hasColoredBackground
-                        midValue={<SmallButton title='Детализация' dataDashBoard={dataDashBoard} dataType='logistic' />}
-                        compareValue={{
-                            comparativeValue: dataDashBoard?.logisticsCompare,
-                            absoluteValue: dataDashBoard?.prev_logistics,
-                            absoluteValueUnits: '₽',
-                            tooltipText: 'Значение предыдущего периода'
-                        }}
-                        isLoading={loading}
-                        dragHandle={() => <DragHandle context={DragHandleContext} />}
-                    />
-                ),
-            },
-            {
-                id: 'sec-storage-bar',
-                title: 'Хранение',
-                isVisible: true,
-                container: styles.group__lgBarWrapper,
-                dropKey: '1',
-                render: (bar, dataDashBoard, loading) => (
-                    <RadarBar
-                        title='Хранение'
-                        tooltipText='Расходы на хранение товаров на складах WB'
-                        mainValue={dataDashBoard?.storageData}
-                        hasColoredBackground
-                        compareValue={{
-                            comparativeValue: dataDashBoard?.storageDataCompare,
-                            absoluteValue: dataDashBoard?.prev_storageData,
-                            absoluteValueUnits: '₽',
-                            tooltipText: 'Значение предыдущего периода'
-                        }}
-                        isLoading={loading}
-                        dragHandle={() => <DragHandle context={DragHandleContext} />}
-                    />
-                ),
-            },
-            {
-                id: 'sec-paid-acceptance',
-                title: 'Платная приемка',
-                isVisible: true,
-                container: styles.group__lgBarWrapper,
-                dropKey: '1',
-                render: (bar, dataDashBoard, loading) => (
-                    <RadarBar
-                        title='Платная приемка'
-                        tooltipText='Услуга маркетплейса по проверке и приему вашего товара на склад'
-                        mainValue={dataDashBoard?.paid_acceptance}
-                        mainValueUnits='₽'
-                        isLoading={loading}
-                        compareValue={{
-                            comparativeValue: dataDashBoard?.paid_acceptance_compare,
-                            absoluteValue: dataDashBoard?.prev_paid_acceptance,
-                            absoluteValueUnits: '₽',
-                            tooltipText: 'Значение предыдущего периода'
-                        }}
-                        dragHandle={() => <DragHandle context={DragHandleContext} />}
-                    />
-                ),
-            },
-            {
-                id: 'sec-commission',
-                title: 'Комиссия',
-                isVisible: true,
-                container: styles.group__lgBarWrapper,
-                dropKey: '1',
-                render: (bar, dataDashBoard, loading) => (
-                    <RadarBar
-                        title='Комиссия + эквайринг'
-                        tooltipText='Суммарная комиссия маркетплейса, рассчитывается от суммарного объема продаж по коэффициентам, определенным Wildberries'
-                        mainValue={dataDashBoard?.commissionWB}
-                        mainValueUnits='₽'
-                        midValue={<SmallButton title='Детализация' dataDashBoard={dataDashBoard} dataType='comission' />}
-                        hasColoredBackground
-                        compareValue={{
-                            comparativeValue: dataDashBoard?.commissionWBCompare,
-                            absoluteValue: dataDashBoard?.prev_commissionWB,
-                            absoluteValueUnits: '₽',
-                            tooltipText: 'Значение предыдущего периода'
-                        }}
-                        isLoading={loading}
-                        dragHandle={() => <DragHandle context={DragHandleContext} />}
-                    />
-                ),
-            },
-            {
-                id: 'sec-tax',
-                title: 'Налог',
-                isVisible: true,
-                container: styles.group__lgBarWrapper,
-                dropKey: '1',
-                render: (bar, dataDashBoard, loading) => (
-                    <RadarBar
-                        title='Налог'
-                        mainValue={dataDashBoard?.tax_amount}
-                        mainValueUnits='₽'
-                        isLoading={loading}
-                        compareValue={{
-                            comparativeValue: dataDashBoard?.taxCompare,
-                            absoluteValue: dataDashBoard?.prev_tax,
-                            absoluteValueUnits: '₽',
-                            tooltipText: 'Значение предыдущего периода'
-                        }}
-                        dragHandle={() => <DragHandle context={DragHandleContext} />}
-                    />
-                ),
-            },
-            {
-                id: 'sec-advert',
-                title: 'Реклама (ДРР)',
-                isVisible: true,
-                container: styles.group__lgBarWrapper,
-                dropKey: '1',
-                render: (bar, dataDashBoard, loading) => (
-                    <RadarBar
-                        title='Реклама (ДРР)'
-                        tooltipText='Показатель эффективности маркетинга - сумма рекламных затрат'
-                        mainValue={dataDashBoard?.advertAmount}
-                        mainValueUnits='₽'
-                        hasColoredBackground
-                        compareValue={{
-                            comparativeValue: dataDashBoard?.advertAmountCompare,
-                            absoluteValue: dataDashBoard?.prev_advertAmount,
-                            absoluteValueUnits: '₽',
-                            tooltipText: 'Значение предыдущего периода'
-                        }}
-                        isLoading={loading}
-                        dragHandle={() => <DragHandle context={DragHandleContext} />}
-                    />
-                ),
-            },
-            {
-                id: 'sec-penalty',
-                title: 'Штрафы и прочие удержания',
-                isVisible: true,
-                container: styles.group__lgBarWrapper,
-                dropKey: '1',
-                render: (bar, dataDashBoard, loading) => (
-                    <RadarBar
-                        title='Штрафы и прочие удержания'
-                        tooltipText={'К прочим удержания отнесены: платежи по договору займа, предоставление услуг по подписке «Джем», страхование заказов, услуги по размещению рекламного материала, списания за отзывы, утилизации товара'}
-                        mainValue={dataDashBoard?.penalty}
-                        midValue={<SmallButton title='Детализация' dataDashBoard={dataDashBoard} dataType='penalty' />}
-                        mainValueUnits='₽'
-                        isLoading={loading}
-                        compareValue={{
-                            comparativeValue: dataDashBoard?.penalty_compare,
-                            absoluteValue: dataDashBoard?.prev_penalty,
-                            absoluteValueUnits: '₽',
-                            tooltipText: 'Значение предыдущего периода'
-                        }}
-                        dragHandle={() => <DragHandle context={DragHandleContext} />}
-                    />
-                ),
-            },
-            {
-                id: 'sec-compensation',
-                title: 'Компенсации',
-                isVisible: true,
-                container: styles.group__lgBarWrapper,
-                dropKey: '1',
-                render: (bar, dataDashBoard, loading) => (
-                    <RadarBar
-                        title='Компенсации'
-                        tooltipText='Выплаты от маркетплейса за брак, потерю или повреждение вашего товара на их складах, а также за нарушение сроков выплат'
-                        mainValue={dataDashBoard?.compensation}
-                        mainValueUnits='₽'
-                        isLoading={loading}
-                        compareValue={{
-                            comparativeValue: dataDashBoard?.compensation_compare,
-                            absoluteValue: dataDashBoard?.prev_compensation,
-                            absoluteValueUnits: '₽',
-                            tooltipText: 'Значение предыдущего периода'
-                        }}
-                        dragHandle={() => <DragHandle context={DragHandleContext} />}
-                    />
-                ),
-            },
-            {
-                id: 'sec-logistic-per-one',
-                title: 'Ср. стоимость логистики на 1 шт',
-                isVisible: true,
-                container: styles.group__lgBarWrapper,
-                dropKey: '1',
-                render: (bar, dataDashBoard, loading) => (
-                    <RadarBar
-                        title='Ср. стоимость логистики на 1 шт'
-                        tooltipText='Логистика на единицу проданного товара'
-                        mainValue={dataDashBoard?.logistic_per_one}
-                        mainValueUnits='₽'
-                        isLoading={loading}
-                        compareValue={{
-                            comparativeValue: dataDashBoard?.logistic_per_one_compare,
-                            absoluteValue: dataDashBoard?.prev_logistic_per_one,
-                            absoluteValueUnits: '₽',
-                            tooltipText: 'Значение предыдущего периода'
-                        }}
-                        dragHandle={() => <DragHandle context={DragHandleContext} />}
-                    />
-                ),
-            },
-            {
-                id: 'sec-profit-per-one',
-                title: 'Средняя прибыль на 1 шт',
-                isVisible: true,
-                container: styles.group__lgBarWrapper,
-                dropKey: '1',
-                render: (bar, dataDashBoard, loading) => (
-                    <RadarBar
-                        title='Средняя прибыль на 1 шт'
-                        tooltipText='Прибыль на единицу проданного товара'
-                        mainValue={dataDashBoard?.profit_per_one}
-                        mainValueUnits='₽'
-                        compareValue={{
-                            comparativeValue: dataDashBoard?.profit_per_one_compare,
-                            absoluteValue: dataDashBoard?.prev_profit_per_one,
-                            absoluteValueUnits: '₽',
-                            tooltipText: 'Значение предыдущего периода'
-                        }}
-                        isLoading={loading}
-                        dragHandle={() => <DragHandle context={DragHandleContext} />}
-                    />
-                ),
-            },
-            {
-                id: 'sec-lost-sales-amount',
-                title: 'Упущенные продажи',
-                isVisible: true,
-                container: styles.group__lgBarWrapper,
-                dropKey: '1',
-                render: (bar, dataDashBoard, loading) => (
-                    <RadarBar
-                        title='Упущенные продажи'
-                        tooltipText='Расчетная величина, определенная как произведение средней скорости продаж на количество дней, в которых товар отсутствовал на полках магазина или на складе'
-                        mainValue={dataDashBoard?.lostSalesAmount}
-                        mainValueUnits='₽'
-                        compareValue={{
-                            comparativeValue: dataDashBoard?.lost_sales_amount_compare,
-                            absoluteValue: dataDashBoard?.prev_lostSalesAmount,
-                            absoluteValueUnits: '₽',
-                            tooltipText: 'Значение предыдущего периода'
-                        }}
-                        isLoading={loading}
-                        dragHandle={() => <DragHandle context={DragHandleContext} />}
-                    />
-                ),
-            },
-            {
-                id: 'sec-cost-price-amount',
-                title: 'Себестоимость проданных товаров',
-                isVisible: true,
-                container: styles.group__lgBarWrapper,
-                dropKey: '1',
-                render: (bar, dataDashBoard, loading) => (
-                    <RadarBar
-                        title='Себестоимость проданных товаров'
-                        tooltipText='Суммарная себестоимость проданных товаров (основана на данных раздела "Себестоимость"'
-                        mainValue={dataDashBoard?.costPriceAmount}
-                        mainValueUnits='₽'
-                        compareValue={{
-                            comparativeValue: dataDashBoard?.costPriceAmountCompare,
-                            absoluteValue: dataDashBoard?.prev_costPriceAmount,
-                            absoluteValueUnits: '₽',
-                            tooltipText: 'Значение предыдущего периода'
-                        }}
-                        isLoading={loading}
-                        dragHandle={() => <DragHandle context={DragHandleContext} />}
-                    />
-                ),
-            },
-            {
-                id: 'sec-turnover',
-                title: 'Оборачиваемость',
-                isVisible: true,
-                container: styles.group__lgBarWrapper,
-                dropKey: '1',
-                render: (bar, dataDashBoard, loading, selectedRange, activeBrand, authToken, filters) => (
-                    <TurnoverBlock
-                        loading={loading}
-                        turnover={dataDashBoard?.turnover}
-                        selectedRange={selectedRange}
-                        activeBrand={activeBrand}
-                        authToken={authToken}
-                        filters={filters}
-                        turnoverCompare={dataDashBoard?.turnover_compare}
-                        prevTurnover={dataDashBoard?.prev_turnover}
-                        dragHandle={() => <DragHandle context={DragHandleContext} />}
-                    />
-                ),
-            },
-            {
-                id: 'bar-4',
-                title: 'Процент выкупа',
-                isVisible: true,
-                container: styles.group__lgBarWrapper,
-                dropKey: '1',
-                render: (bar, dataDashBoard, loading) => (
-                    <RadarBar
-                        title='Процент выкупа'
-                        tooltipText='Доля заказов, которые были оплачены и получены покупателями, от общего числа созданных заказов.'
-                        mainValue={dataDashBoard?.buyoutPercent}
-                        mainValueUnits='%'
-                        hasColoredBackground
-                        compareValue={{
-                            comparativeValue: dataDashBoard?.buyoutPercentCompare,
-                            absoluteValue: dataDashBoard?.prev_buyoutPercent,
-                            absoluteValueUnits: '%',
-                            tooltipText: 'Значение предыдущего периода'
-                        }}
-                        isLoading={loading}
-                        dragHandle={() => <DragHandle context={DragHandleContext} />}
-                    />
-                ),
-            },
-        ]
+        id: 'bar-2',
+        title: 'Продажи',
+        isVisible: true,
+        container: styles.group__lgBarWrapperTop,
+        dropKey: '1',
+        rowId: 'row-1',
+        render: (bar, dataDashBoard, loading, selectedRange, activeBrand, authToken, filters, updateDataDashBoard, stockAnalysisData) => (
+            <RadarBar
+                title='Продажи'
+                tooltipText='Количество проданных товаров (без возвратов)'
+                midValue={dataDashBoard?.saleCount}
+                midValueUnits='шт'
+                mainValue={dataDashBoard?.saleAmount}
+                mainValueUnits='₽'
+                hasColoredBackground
+                compareValue={{
+                    comparativeValue: dataDashBoard?.saleAmountCompare,
+                    absoluteValue: dataDashBoard?.prev_sale_amount,
+                    absoluteValueUnits: '₽',
+                    tooltipText: 'Значение предыдущего периода'
+                }}
+                isLoading={loading}
+                dragHandle={() => <DragHandle context={DragHandleContext} />}
+            />
+        ),
     },
     {
-        rowId: 7,
-        rowStyle: '',
-        children: [
-            {
-                id: 'sec-finance',
-                title: 'Финансы',
-                dropKey: '2',
-                isVisible: true,
-                container: styles.group__halfWrapper,
-                render: (bar, dataDashBoard, loading) => (
-                    <FinanceBlock
-                        dataDashBoard={dataDashBoard}
-                        loading={loading}
-                        dragHandle={() => <DragHandle context={DragHandleContext} />}
-                    />
-                ),
-            },
-            {
-                id: 'sec-profit',
-                title: 'Прибыльность',
-                dropKey: '2',
-                isVisible: true,
-                container: styles.group__halfWrapper,
-                render: (bar, dataDashBoard, loading, selectedRange, activeBrand, authToken, filters, updateDataDashBoard) => (
-                    <ProfitBlock
-                        dataDashBoard={dataDashBoard}
-                        loading={loading}
-                        dragHandle={() => <DragHandle context={DragHandleContext} />}
-                    />
-                ),
-            },
-        ]
+        id: 'bar-3',
+        title: 'WB Реализовал',
+        isVisible: true,
+        container: styles.group__lgBarWrapperTop,
+        dropKey: '1',
+        rowId: 'row-1',
+        render: (bar, dataDashBoard, loading, selectedRange, activeBrand, authToken, filters, updateDataDashBoard, stockAnalysisData) => (
+            <RadarBar
+                title='WB Реализовал'
+                tooltipText='Сумма реализации товара с учетом согласованной скидки продавца и СПП'
+                midValueUnits='₽'
+                mainValue={dataDashBoard?.taxInfo?.wbRealization}
+                mainValueUnits='₽'
+                hasColoredBackground
+                compareValue={{
+                    comparativeValue: dataDashBoard?.wb_realization_compare,
+                    absoluteValue: dataDashBoard?.prev_wb_realization,
+                    absoluteValueUnits: '₽',
+                    tooltipText: 'Значение предыдущего периода'
+                }}
+                isLoading={loading}
+                dragHandle={() => <DragHandle context={DragHandleContext} />}
+            />
+        ),
     },
     {
-        rowId: 8,
-        rowStyle: '',
-        children: [
-            {
-                id: 'sec-tax-struct',
-                title: 'Налог',
-                isVisible: true,
-                dropKey: '3',
-                container: styles.group__doubleBlockWrapper,
-                render: (bar, dataDashBoard, loading, selectedRange, activeBrand, authToken, filters, updateDataDashBoard) => (
-                    <TaxTableBlock
-                        loading={loading}
-                        dataDashBoard={dataDashBoard}
-                        updateDashboard={updateDataDashBoard}
-                        dragHandle={() => <DragHandle context={DragHandleContext} />}
-                    />
-                ),
-            },
-            {
-                id: 'sec-revenue-struct',
-                title: 'Структура выручки',
-                isVisible: true,
-                dropKey: '3',
-                container: styles.group__doubleBlockWrapper,
-                render: (bar, dataDashBoard, loading, selectedRange, activeBrand, authToken, filters, updateDataDashBoard) => (
-                    <RevenueStructChartBlock
-                        loading={loading}
-                        dataDashBoard={dataDashBoard}
-                        dragHandle={() => <DragHandle context={DragHandleContext} />}
-                    />
-                ),
-            },
-            {
-                id: 'sec-margin-chart',
-                title: 'Рентабельность и маржинальность',
-                isVisible: true,
-                dropKey: '3',
-                container: styles.group__halfWrapper,
-                render: (bar, dataDashBoard, loading) => (
-                    <MarginChartBlock
-                        loading={loading}
-                        dataDashBoard={dataDashBoard}
-                        dragHandle={() => <DragHandle context={DragHandleContext} />}
-                    />
-                ),
-            },
-        ]
+        id: 'bar-5',
+        title: 'ROI',
+        isVisible: true,
+        container: styles.group__lgBarWrapperTop,
+        dropKey: '1',
+        rowId: 'row-1',
+        render: (bar, dataDashBoard, loading, selectedRange, activeBrand, authToken, filters, updateDataDashBoard, stockAnalysisData) => (
+            <RadarBar
+                title='ROI'
+                tooltipText='Показывает общую рентабельность ваших вложений. Насколько прибыльны или убыточны ваши продажи с учетом всех затрат'
+                mainValue={dataDashBoard?.roi}
+                mainValueUnits='%'
+                hasColoredBackground
+                compareValue={{
+                    comparativeValue: dataDashBoard?.roi_compare,
+                    absoluteValue: dataDashBoard?.prev_roi,
+                    absoluteValueUnits: '%',
+                    tooltipText: 'Значение предыдущего периода'
+                }}
+                isLoading={loading}
+                dragHandle={() => <DragHandle context={DragHandleContext} />}
+            />
+        ),
+    },
+    //row-2
+    {
+        id: 'mainChart',
+        title: 'Заказы и продажи',
+        dropKey: 'full',
+        isVisible: true,
+        tooltipText: 'Прибыль, остающаяся после уплаты налогов, сборов, отчислений',
+        mainValue: 'netProfit',
+        mainValueUnits: '₽',
+        hasColoredBackground: true,
+        container: styles.group__fullWrapper,
+        compareValue: {
+            comparativeValue: 'netProfitCompare',
+            absoluteValue: 'prev_net_profit',
+            absoluteValueUnits: '₽',
+        },
+        rowId: 'row-2',
+        render: (bar, dataDashBoard, loading, selectedRange, activeBrand, authToken, filters, updateDataDashBoard, stockAnalysisData) => (
+            <MainChart
+                title='Заказы и продажи'
+                loading={loading}
+                dataDashBoard={dataDashBoard}
+                selectedRange={selectedRange}
+                dragHandle={() => <DragHandle context={DragHandleContext} />}
+            />
+        ),
+    },
+    //row-3
+    {
+        id: 'sec-orders',
+        title: 'Заказы',
+        isVisible: true,
+        container: styles.group__lgBarWrapper,
+        dropKey: '1',
+        rowId: 'row-3',
+        render: (bar, dataDashBoard, loading, selectedRange, activeBrand, authToken, filters, updateDataDashBoard, stockAnalysisData) => (
+            <RadarBar
+                title='Заказы'
+                midValue={dataDashBoard?.orderCount}
+                tooltipText='Общие сумма и количество созданных и оплаченных заказов за выбранный период'
+                midValueUnits='шт'
+                mainValue={dataDashBoard?.orderAmount}
+                mainValueUnits='₽'
+                hasColoredBackground
+                compareValue={{
+                    comparativeValue: dataDashBoard?.orderAmountCompare,
+                    absoluteValue: dataDashBoard?.prev_order_amount,
+                    absoluteValueUnits: '₽',
+                    tooltipText: 'Значение предыдущего периода'
+                }}
+                isLoading={loading}
+                dragHandle={() => <DragHandle context={DragHandleContext} />}
+            />
+        ),
     },
     {
-        rowId: 9,
-        rowStyle: '',
-        children: [
-            {
-                id: 'sec-storage-revenue-chart',
-                title: 'Выручка по складам',
-                isVisible: true,
-                dropKey: '4',
-                container: styles.group__halfWrapper,
-                render: (bar, dataDashBoard, loading) => (
-                    <StorageRevenueChartBlock
-                        loading={loading}
-                        dataDashBoard={dataDashBoard}
-                        dragHandle={() => <DragHandle context={DragHandleContext} />}
-                    />
-                ),
-            },
-            {
-                id: 'sec-storage',
-                title: 'Склад',
-                isVisible: true,
-                dropKey: '4',
-                container: styles.group__halfWrapper,
-                render: (bar, dataDashBoard, loading) => (
-                    <StorageBlock
-                        loading={loading}
-                        dataDashBoard={dataDashBoard}
-                        dragHandle={() => <DragHandle context={DragHandleContext} />}
-                    />
-                ),
-            },
-        ]
+        id: 'sec-returns',
+        title: 'Возвраты',
+        isVisible: true,
+        container: styles.group__lgBarWrapper,
+        dropKey: '1',
+        rowId: 'row-3',
+        render: (bar, dataDashBoard, loading, selectedRange, activeBrand, authToken, filters, updateDataDashBoard, stockAnalysisData) => (
+            <RadarBar
+                title='Возвраты'
+                tooltipText='Стоимость и количество товаров, которые покупатели вернули по различным причинам'
+                midValue={dataDashBoard?.returnCount}
+                midValueUnits='шт'
+                mainValue={dataDashBoard?.returnAmount}
+                mainValueUnits='₽'
+                hasColoredBackground
+                compareValue={{
+                    comparativeValue: dataDashBoard?.returnAmountCompare,
+                    absoluteValue: dataDashBoard?.prev_return_amount,
+                    absoluteValueUnits: '₽',
+                    tooltipText: 'Значение предыдущего периода'
+                }}
+                isLoading={loading}
+                dragHandle={() => <DragHandle context={DragHandleContext} />}
+            />
+        ),
     },
     {
-        rowId: 10,
-        rowStyle: '',
-        children: [
-            {
-                id: 'sec-stock-analysis',
-                title: 'Анализ остатков',
-                isVisible: true,
-                container: styles.group__fullWrapper,
-                dropKey: 'full',
-                render: (bar, dataDashBoard, loading) => (
-                    <StockAnalysisBlock
-                        data={[]}
-                        loading={loading}
-                        dragHandle={() => <DragHandle context={DragHandleContext} />}
-                    />
-                ),
-            },
-        ]
+        id: 'sec-logistics',
+        title: 'Расходы на логистику',
+        isVisible: true,
+        container: styles.group__lgBarWrapper,
+        dropKey: '1',
+        rowId: 'row-3',
+        render: (bar, dataDashBoard, loading, selectedRange, activeBrand, authToken, filters, updateDataDashBoard, stockAnalysisData) => (
+            <RadarBar
+                title='Расходы на логистику'
+                tooltipText='Суммарные расходы на логистику, определяются расчетным способом от количества заказов'
+                mainValue={dataDashBoard?.logistics}
+                hasColoredBackground
+                midValue={<SmallButton title='Детализация' dataDashBoard={dataDashBoard} dataType='logistic' />}
+                compareValue={{
+                    comparativeValue: dataDashBoard?.logisticsCompare,
+                    absoluteValue: dataDashBoard?.prev_logistics,
+                    absoluteValueUnits: '₽',
+                    tooltipText: 'Значение предыдущего периода'
+                }}
+                isLoading={loading}
+                dragHandle={() => <DragHandle context={DragHandleContext} />}
+            />
+        ),
     },
     {
-        rowId: 11,
-        rowStyle: '',
-        children: [
-            {
-                id: 'sec-abc',
-                title: 'ABC-анализ',
-                isVisible: true,
-                dropKey: 'full',
-                container: styles.group__fullWrapper,
-                render: (bar, dataDashBoard, loading, selectedRange, activeBrand, authToken, filters) => (
-                    <AbcDataBlock
-                        titles={['Группа А', 'Группа В', 'Группа С']}
-                        data={dataDashBoard?.ABCAnalysis}
-                        loading={loading}
-                        dragHandle={() => <DragHandle context={DragHandleContext} />}
-                    />
-                ),
-            },
-        ]
+        id: 'sec-storage-bar',
+        title: 'Хранение',
+        isVisible: true,
+        container: styles.group__lgBarWrapper,
+        dropKey: '1',
+        rowId: 'row-3',
+        render: (bar, dataDashBoard, loading, selectedRange, activeBrand, authToken, filters, updateDataDashBoard, stockAnalysisData) => (
+            <RadarBar
+                title='Хранение'
+                tooltipText='Расходы на хранение товаров на складах WB'
+                mainValue={dataDashBoard?.storageData}
+                hasColoredBackground
+                compareValue={{
+                    comparativeValue: dataDashBoard?.storageDataCompare,
+                    absoluteValue: dataDashBoard?.prev_storageData,
+                    absoluteValueUnits: '₽',
+                    tooltipText: 'Значение предыдущего периода'
+                }}
+                isLoading={loading}
+                dragHandle={() => <DragHandle context={DragHandleContext} />}
+            />
+        ),
     },
-];
+    {
+        id: 'sec-paid-acceptance',
+        title: 'Платная приемка',
+        isVisible: true,
+        container: styles.group__lgBarWrapper,
+        dropKey: '1',
+        rowId: 'row-3',
+        render: (bar, dataDashBoard, loading, selectedRange, activeBrand, authToken, filters, updateDataDashBoard, stockAnalysisData) => (
+            <RadarBar
+                title='Платная приемка'
+                tooltipText='Услуга маркетплейса по проверке и приему вашего товара на склад'
+                mainValue={dataDashBoard?.paid_acceptance}
+                mainValueUnits='₽'
+                isLoading={loading}
+                compareValue={{
+                    comparativeValue: dataDashBoard?.paid_acceptance_compare,
+                    absoluteValue: dataDashBoard?.prev_paid_acceptance,
+                    absoluteValueUnits: '₽',
+                    tooltipText: 'Значение предыдущего периода'
+                }}
+                dragHandle={() => <DragHandle context={DragHandleContext} />}
+            />
+        ),
+    },
+    {
+        id: 'sec-commission',
+        title: 'Комиссия',
+        isVisible: true,
+        container: styles.group__lgBarWrapper,
+        dropKey: '1',
+        rowId: 'row-3',
+        render: (bar, dataDashBoard, loading, selectedRange, activeBrand, authToken, filters, updateDataDashBoard, stockAnalysisData) => (
+            <RadarBar
+                title='Комиссия + эквайринг'
+                tooltipText='Суммарная комиссия маркетплейса, рассчитывается от суммарного объема продаж по коэффициентам, определенным Wildberries'
+                mainValue={dataDashBoard?.commissionWB}
+                mainValueUnits='₽'
+                midValue={<SmallButton title='Детализация' dataDashBoard={dataDashBoard} dataType='comission' />}
+                hasColoredBackground
+                compareValue={{
+                    comparativeValue: dataDashBoard?.commissionWBCompare,
+                    absoluteValue: dataDashBoard?.prev_commissionWB,
+                    absoluteValueUnits: '₽',
+                    tooltipText: 'Значение предыдущего периода'
+                }}
+                isLoading={loading}
+                dragHandle={() => <DragHandle context={DragHandleContext} />}
+            />
+        ),
+    },
+    {
+        id: 'sec-tax',
+        title: 'Налог',
+        isVisible: true,
+        container: styles.group__lgBarWrapper,
+        dropKey: '1',
+        rowId: 'row-3',
+        render: (bar, dataDashBoard, loading, selectedRange, activeBrand, authToken, filters, updateDataDashBoard, stockAnalysisData) => (
+            <RadarBar
+                title='Налог'
+                mainValue={dataDashBoard?.tax_amount}
+                mainValueUnits='₽'
+                isLoading={loading}
+                compareValue={{
+                    comparativeValue: dataDashBoard?.taxCompare,
+                    absoluteValue: dataDashBoard?.prev_tax,
+                    absoluteValueUnits: '₽',
+                    tooltipText: 'Значение предыдущего периода'
+                }}
+                dragHandle={() => <DragHandle context={DragHandleContext} />}
+            />
+        ),
+    },
+    {
+        id: 'sec-advert',
+        title: 'Реклама (ДРР)',
+        isVisible: true,
+        container: styles.group__lgBarWrapper,
+        dropKey: '1',
+        rowId: 'row-3',
+        render: (bar, dataDashBoard, loading, selectedRange, activeBrand, authToken, filters, updateDataDashBoard, stockAnalysisData) => (
+            <RadarBar
+                title='Реклама (ДРР)'
+                tooltipText='Показатель эффективности маркетинга - сумма рекламных затрат'
+                mainValue={dataDashBoard?.advertAmount}
+                mainValueUnits='₽'
+                hasColoredBackground
+                compareValue={{
+                    comparativeValue: dataDashBoard?.advertAmountCompare,
+                    absoluteValue: dataDashBoard?.prev_advertAmount,
+                    absoluteValueUnits: '₽',
+                    tooltipText: 'Значение предыдущего периода'
+                }}
+                isLoading={loading}
+                dragHandle={() => <DragHandle context={DragHandleContext} />}
+            />
+        ),
+    },
+    {
+        id: 'sec-penalty',
+        title: 'Штрафы и прочие удержания',
+        isVisible: true,
+        container: styles.group__lgBarWrapper,
+        dropKey: '1',
+        rowId: 'row-3',
+        render: (bar, dataDashBoard, loading, selectedRange, activeBrand, authToken, filters, updateDataDashBoard, stockAnalysisData) => (
+            <RadarBar
+                title='Штрафы и прочие удержания'
+                tooltipText={'К прочим удержания отнесены: платежи по договору займа, предоставление услуг по подписке «Джем», страхование заказов, услуги по размещению рекламного материала, списания за отзывы, утилизации товара'}
+                mainValue={dataDashBoard?.penalty}
+                midValue={<SmallButton title='Детализация' dataDashBoard={dataDashBoard} dataType='penalty' />}
+                mainValueUnits='₽'
+                isLoading={loading}
+                compareValue={{
+                    comparativeValue: dataDashBoard?.penalty_compare,
+                    absoluteValue: dataDashBoard?.prev_penalty,
+                    absoluteValueUnits: '₽',
+                    tooltipText: 'Значение предыдущего периода'
+                }}
+                dragHandle={() => <DragHandle context={DragHandleContext} />}
+            />
+        ),
+    },
+    {
+        id: 'sec-compensation',
+        title: 'Компенсации',
+        isVisible: true,
+        container: styles.group__lgBarWrapper,
+        dropKey: '1',
+        rowId: 'row-3',
+        render: (bar, dataDashBoard, loading, selectedRange, activeBrand, authToken, filters, updateDataDashBoard, stockAnalysisData) => (
+            <RadarBar
+                title='Компенсации'
+                tooltipText='Выплаты от маркетплейса за брак, потерю или повреждение вашего товара на их складах, а также за нарушение сроков выплат'
+                mainValue={dataDashBoard?.compensation}
+                mainValueUnits='₽'
+                isLoading={loading}
+                compareValue={{
+                    comparativeValue: dataDashBoard?.compensation_compare,
+                    absoluteValue: dataDashBoard?.prev_compensation,
+                    absoluteValueUnits: '₽',
+                    tooltipText: 'Значение предыдущего периода'
+                }}
+                dragHandle={() => <DragHandle context={DragHandleContext} />}
+            />
+        ),
+    },
+    {
+        id: 'sec-logistic-per-one',
+        title: 'Ср. стоимость логистики на 1 шт',
+        isVisible: true,
+        container: styles.group__lgBarWrapper,
+        dropKey: '1',
+        rowId: 'row-3',
+        render: (bar, dataDashBoard, loading, selectedRange, activeBrand, authToken, filters, updateDataDashBoard, stockAnalysisData) => (
+            <RadarBar
+                title='Ср. стоимость логистики на 1 шт'
+                tooltipText='Логистика на единицу проданного товара'
+                mainValue={dataDashBoard?.logistic_per_one}
+                mainValueUnits='₽'
+                isLoading={loading}
+                compareValue={{
+                    comparativeValue: dataDashBoard?.logistic_per_one_compare,
+                    absoluteValue: dataDashBoard?.prev_logistic_per_one,
+                    absoluteValueUnits: '₽',
+                    tooltipText: 'Значение предыдущего периода'
+                }}
+                dragHandle={() => <DragHandle context={DragHandleContext} />}
+            />
+        ),
+    },
+    {
+        id: 'sec-profit-per-one',
+        title: 'Средняя прибыль на 1 шт',
+        isVisible: true,
+        container: styles.group__lgBarWrapper,
+        dropKey: '1',
+        rowId: 'row-3',
+        render: (bar, dataDashBoard, loading, selectedRange, activeBrand, authToken, filters, updateDataDashBoard, stockAnalysisData) => (
+            <RadarBar
+                title='Средняя прибыль на 1 шт'
+                tooltipText='Прибыль на единицу проданного товара'
+                mainValue={dataDashBoard?.profit_per_one}
+                mainValueUnits='₽'
+                compareValue={{
+                    comparativeValue: dataDashBoard?.profit_per_one_compare,
+                    absoluteValue: dataDashBoard?.prev_profit_per_one,
+                    absoluteValueUnits: '₽',
+                    tooltipText: 'Значение предыдущего периода'
+                }}
+                isLoading={loading}
+                dragHandle={() => <DragHandle context={DragHandleContext} />}
+            />
+        ),
+    },
+    {
+        id: 'sec-lost-sales-amount',
+        title: 'Упущенные продажи',
+        isVisible: true,
+        container: styles.group__lgBarWrapper,
+        dropKey: '1',
+        rowId: 'row-3',
+        render: (bar, dataDashBoard, loading, selectedRange, activeBrand, authToken, filters, updateDataDashBoard, stockAnalysisData) => (
+            <RadarBar
+                title='Упущенные продажи'
+                tooltipText='Расчетная величина, определенная как произведение средней скорости продаж на количество дней, в которых товар отсутствовал на полках магазина или на складе'
+                mainValue={dataDashBoard?.lostSalesAmount}
+                mainValueUnits='₽'
+                compareValue={{
+                    comparativeValue: dataDashBoard?.lost_sales_amount_compare,
+                    absoluteValue: dataDashBoard?.prev_lostSalesAmount,
+                    absoluteValueUnits: '₽',
+                    tooltipText: 'Значение предыдущего периода'
+                }}
+                isLoading={loading}
+                dragHandle={() => <DragHandle context={DragHandleContext} />}
+            />
+        ),
+    },
+    {
+        id: 'sec-cost-price-amount',
+        title: 'Себестоимость проданных товаров',
+        isVisible: true,
+        container: styles.group__lgBarWrapper,
+        dropKey: '1',
+        rowId: 'row-3',
+        render: (bar, dataDashBoard, loading, selectedRange, activeBrand, authToken, filters, updateDataDashBoard, stockAnalysisData) => (
+            <RadarBar
+                title='Себестоимость проданных товаров'
+                tooltipText='Суммарная себестоимость проданных товаров (основана на данных раздела "Себестоимость"'
+                mainValue={dataDashBoard?.costPriceAmount}
+                mainValueUnits='₽'
+                compareValue={{
+                    comparativeValue: dataDashBoard?.costPriceAmountCompare,
+                    absoluteValue: dataDashBoard?.prev_costPriceAmount,
+                    absoluteValueUnits: '₽',
+                    tooltipText: 'Значение предыдущего периода'
+                }}
+                isLoading={loading}
+                dragHandle={() => <DragHandle context={DragHandleContext} />}
+            />
+        ),
+    },
+    {
+        id: 'sec-turnover',
+        title: 'Оборачиваемость',
+        isVisible: true,
+        container: styles.group__lgBarWrapper,
+        dropKey: '1',
+        rowId: 'row-3',
+        render: (bbar, dataDashBoard, loading, selectedRange, activeBrand, authToken, filters, updateDataDashBoard, stockAnalysisData) => (
+            <TurnoverBlock
+                loading={loading}
+                turnover={dataDashBoard?.turnover}
+                selectedRange={selectedRange}
+                activeBrand={activeBrand}
+                authToken={authToken}
+                filters={filters}
+                turnoverCompare={dataDashBoard?.turnover_compare}
+                prevTurnover={dataDashBoard?.prev_turnover}
+                dragHandle={() => <DragHandle context={DragHandleContext} />}
+            />
+        ),
+    },
+    {
+        id: 'bar-4',
+        title: 'Процент выкупа',
+        isVisible: true,
+        container: styles.group__lgBarWrapper,
+        dropKey: '1',
+        rowId: 'row-3',
+        render: (bar, dataDashBoard, loading, selectedRange, activeBrand, authToken, filters, updateDataDashBoard, stockAnalysisData) => (
+            <RadarBar
+                title='Процент выкупа'
+                tooltipText='Доля заказов, которые были оплачены и получены покупателями, от общего числа созданных заказов.'
+                mainValue={dataDashBoard?.buyoutPercent}
+                mainValueUnits='%'
+                hasColoredBackground
+                compareValue={{
+                    comparativeValue: dataDashBoard?.buyoutPercentCompare,
+                    absoluteValue: dataDashBoard?.prev_buyoutPercent,
+                    absoluteValueUnits: '%',
+                    tooltipText: 'Значение предыдущего периода'
+                }}
+                isLoading={loading}
+                dragHandle={() => <DragHandle context={DragHandleContext} />}
+            />
+        ),
+    },
+    //row-4
+    {
+        id: 'sec-finance',
+        title: 'Финансы',
+        dropKey: '2',
+        isVisible: true,
+        container: styles.group__halfWrapper,
+        rowId: 'row-4',
+        render: (bar, dataDashBoard, loading, selectedRange, activeBrand, authToken, filters, updateDataDashBoard, stockAnalysisData) => (
+            <FinanceBlock
+                dataDashBoard={dataDashBoard}
+                loading={loading}
+                dragHandle={() => <DragHandle context={DragHandleContext} />}
+            />
+        ),
+    },
+    {
+        id: 'sec-profit',
+        title: 'Прибыльность',
+        dropKey: '2',
+        isVisible: true,
+        container: styles.group__halfWrapper,
+        rowId: 'row-4',
+        render: (bar, dataDashBoard, loading, selectedRange, activeBrand, authToken, filters, updateDataDashBoard, stockAnalysisData) => (
+            <ProfitBlock
+                dataDashBoard={dataDashBoard}
+                loading={loading}
+                dragHandle={() => <DragHandle context={DragHandleContext} />}
+            />
+        ),
+    },
+    //row-5
+    {
+        id: 'sec-tax-struct',
+        title: 'Налог',
+        isVisible: true,
+        dropKey: '3',
+        container: styles.group__doubleBlockWrapper,
+        rowId: 'row-5',
+        render: (bar, dataDashBoard, loading, selectedRange, activeBrand, authToken, filters, updateDataDashBoard, stockAnalysisData) => (
+            <TaxTableBlock
+                loading={loading}
+                dataDashBoard={dataDashBoard}
+                updateDashboard={updateDataDashBoard}
+                dragHandle={() => <DragHandle context={DragHandleContext} />}
+            />
+        ),
+    },
+    {
+        id: 'sec-revenue-struct',
+        title: 'Структура выручки',
+        isVisible: true,
+        dropKey: '3',
+        container: styles.group__doubleBlockWrapper,
+        rowId: 'row-5',
+        render: (bar, dataDashBoard, loading, selectedRange, activeBrand, authToken, filters, updateDataDashBoard, stockAnalysisData) => (
+            <RevenueStructChartBlock
+                loading={loading}
+                dataDashBoard={dataDashBoard}
+                dragHandle={() => <DragHandle context={DragHandleContext} />}
+            />
+        ),
+    },
+    {
+        id: 'sec-margin-chart',
+        title: 'Рентабельность и маржинальность',
+        isVisible: true,
+        dropKey: '3',
+        container: styles.group__halfToFullWrapper,
+        rowId: 'row-5',
+        render: (bar, dataDashBoard, loading, selectedRange, activeBrand, authToken, filters, updateDataDashBoard, stockAnalysisData) => (
+            <MarginChartBlock
+                loading={loading}
+                dataDashBoard={dataDashBoard}
+                dragHandle={() => <DragHandle context={DragHandleContext} />}
+            />
+        ),
+    },
 
-const STORAGE_KEY = 'dashboard_cards_visibility';
+    //row-6
+    {
+        id: 'sec-storage-revenue-chart',
+        title: 'Выручка по складам',
+        isVisible: true,
+        dropKey: '4',
+        rowId: 'row-6',
+        container: styles.group__halfToFullWrapper,
+        render: (bar, dataDashBoard, loading, selectedRange, activeBrand, authToken, filters, updateDataDashBoard, stockAnalysisData) => (
+            <StorageRevenueChartBlock
+                loading={loading}
+                dataDashBoard={dataDashBoard}
+                dragHandle={() => <DragHandle context={DragHandleContext} />}
+            />
+        ),
+    },
+    {
+        id: 'sec-storage',
+        title: 'Склад',
+        isVisible: true,
+        dropKey: '4',
+        rowId: 'row-6',
+        container: styles.group__halfToFullWrapper,
+        render: (bar, dataDashBoard, loading, selectedRange, activeBrand, authToken, filters, updateDataDashBoard, stockAnalysisData) => (
+            <StorageBlock
+                loading={loading}
+                dataDashBoard={dataDashBoard}
+                dragHandle={() => <DragHandle context={DragHandleContext} />}
+            />
+        ),
+    },
+    //row-7
+    {
+        id: 'sec-stock-analysis',
+        title: 'Анализ остатков',
+        isVisible: true,
+        container: styles.group__fullWrapper,
+        dropKey: 'full',
+        rowId: 'row-7',
+        render: (bar, dataDashBoard, loading, selectedRange, activeBrand, authToken, filters, updateDataDashBoard, stockAnalysisData) => (
+            <StockAnalysisBlock
+                data={stockAnalysisData}
+                dashboardLoading={loading}
+                dragHandle={() => <DragHandle context={DragHandleContext} />}
+            />
+        ),
+    },
+    //row-8
+    {
+        id: 'sec-abc',
+        title: 'ABC-анализ',
+        isVisible: true,
+        dropKey: 'full',
+        container: styles.group__fullWrapper,
+        rowId: 'row-8',
+        render: (bar, dataDashBoard, loading, selectedRange, activeBrand, authToken, filters, updateDataDashBoard, stockAnalysisData) => (
+            <AbcDataBlock
+                titles={['Группа А', 'Группа В', 'Группа С']}
+                data={dataDashBoard?.ABCAnalysis}
+                loading={loading}
+                dragHandle={() => <DragHandle context={DragHandleContext} />}
+            />
+        ),
+    },
+]
 
-// Функция для сохранения настроек в localStorage
-// Сохраняет только: для строк - rowId, children; для children - id, isVisible
-const saveDashboardSettings = (items, visibilityMap) => {
-    try {
-        const savedData = items.map(row => ({
-            rowId: row.rowId,
-            children: row.children ? row.children.map(child => ({
-                id: child.id,
-                isVisible: visibilityMap && visibilityMap[child.id] !== undefined 
-                    ? visibilityMap[child.id] 
-                    : (child.isVisible !== false)
-            })) : []
-        }));
-
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(savedData));
-    } catch (error) {
-        console.error('Ошибка при сохранении настроек дашборда:', error);
-    }
-};
-
-// Функция для загрузки настроек из localStorage
-// Просто загружает урезанный массив
-const loadDashboardSettings = () => {
-    try {
-        const saved = localStorage.getItem(STORAGE_KEY);
-        if (saved) {
-            const parsed = JSON.parse(saved);
-            
-            // Новый формат: массив объектов с rowId и children (с id, isVisible)
-            if (Array.isArray(parsed)) {
-                return parsed;
-            }
-            
-            // Старый формат: объект с visibility и order - конвертируем
-            if (parsed.visibility && parsed.order) {
-                return parsed.order.map(orderRow => ({
-                    rowId: orderRow.rowId,
-                    children: orderRow.children.map(childId => ({
-                        id: childId,
-                        isVisible: parsed.visibility[childId] !== undefined 
-                            ? parsed.visibility[childId] 
-                            : true
-                    }))
-                }));
-            }
-            
-            // Очень старый формат: только visibility map - возвращаем null, будет использован исходный конфиг
-            return null;
+const saveBarsConfig = (items, BARS_STORAGE_KEY, DASHBOARD_CONFIG_VER) => {
+    const serializableConfig = items.map(item => ({id: item.id, isVisible: item.isVisible, rowId: item.rowId}));
+    localStorage.setItem(BARS_STORAGE_KEY, JSON.stringify({ version: DASHBOARD_CONFIG_VER, items: serializableConfig }));
+}
+const inferBarsConfig = (barsConfig, savedConfig, DASHBOARD_CONFIG_VER) => {
+    if (!savedConfig) return barsConfig;
+    const { version, items } = savedConfig;
+    if (!version || !items) return barsConfig;
+    if (version !== DASHBOARD_CONFIG_VER) return barsConfig;
+    const updatedConfig = barsConfig.map(item => {
+        const savedItem = items.find(i => i.id === item.id);
+        if (savedItem) {
+            // Мержим сохраненные значения, включая isVisible
+            return { ...item, ...savedItem };
         }
-    } catch (error) {
-        console.error('Ошибка при загрузке настроек дашборда:', error);
-    }
-    return null;
-};
+        // Если элемент не найден в сохраненных, устанавливаем isVisible по умолчанию
+        return { ...item, isVisible: item.isVisible !== false };
+    })
+    return updatedConfig;
+}
 
-// Функция для обогащения загруженных данных недостающими из исходного конфига
-const enrichConfig = (savedRows, originalConfig) => {
-    if (!savedRows || !Array.isArray(savedRows)) {
-        return originalConfig;
-    }
-
-    // Создаем карту элементов по ID для быстрого доступа
-    const elementMap = new Map();
-    originalConfig.forEach(row => {
-        if (row.children) {
-            row.children.forEach(child => {
-                elementMap.set(child.id, child);
-            });
-        }
-    });
-
-    // Обогащаем загруженные строки полными данными
-    const enrichedRows = savedRows.map(savedRow => {
-        const originalRow = originalConfig.find(r => r.rowId === savedRow.rowId);
-        if (!originalRow) return null;
-
-        // Обогащаем children полными данными из исходного конфига
-        const enrichedChildren = savedRow.children
-            .map(savedChild => {
-                const originalChild = elementMap.get(savedChild.id);
-                if (!originalChild) return null;
-                
-                return {
-                    ...originalChild, // Все данные из исходного конфига
-                    isVisible: savedChild.isVisible !== undefined ? savedChild.isVisible : (originalChild.isVisible !== false)
-                };
-            })
-            .filter(Boolean);
-
-        // Добавляем элементы, которых нет в сохраненных (новые элементы из исходного конфига)
-        if (originalRow.children) {
-            originalRow.children.forEach(child => {
-                if (!savedRow.children.some(sc => sc.id === child.id)) {
-                    enrichedChildren.push(child);
-                }
-            });
-        }
-
-        return {
-            ...originalRow, // Все данные из исходного конфига
-            children: enrichedChildren
-        };
-    }).filter(Boolean);
-
-    // Добавляем строки, которых нет в сохраненных (новые строки из исходного конфига)
-    originalConfig.forEach(row => {
-        if (!savedRows.some(sr => sr.rowId === row.rowId)) {
-            enrichedRows.push(row);
-        }
-    });
-
-    return enrichedRows;
-};
 
 // Рендер непосредственно дашборда (карточек)
 const MainContent = React.memo(({
@@ -876,600 +771,313 @@ const MainContent = React.memo(({
     updateDataDashBoard,
     isSidebarHidden,
     visibilityMap,
-    onSaveSettings
+    onSaveSettings,
+    stockAnalysisData,
+    rows,
+    items,
+    setItems,
+    setRows
 }) => {
     const isLoading = loading || !isFiltersLoading; // Флаг загрузки данных
-
-    // Кэшируем загруженные данные из localStorage
-    const savedRowsRef = useRef(null);
-    if (savedRowsRef.current === null) {
-        savedRowsRef.current = loadDashboardSettings();
-    }
-    
-    // Применяем настройки видимости и порядка к конфигу
-    const configWithSettings = useMemo(() => {
-        // Обогащаем загруженные данные недостающими из исходного конфига
-        let config = enrichConfig(savedRowsRef.current, barsConfig);
-        
-        // Если есть актуальный visibilityMap (из состояния), применяем его поверх сохраненных
-        if (visibilityMap && Object.keys(visibilityMap).length > 0) {
-            config = config.map(row => ({
-                ...row,
-                children: row.children ? row.children.map(child => ({
-                    ...child,
-                    isVisible: visibilityMap[child.id] !== undefined 
-                        ? visibilityMap[child.id] 
-                        : child.isVisible
-                })) : []
-            }));
-        }
-
-        return config;
-    }, [visibilityMap]);
-
-    // Инициализируем items с начальным значением из configWithSettings
-    const [items, setItems] = useState(() => configWithSettings);
-    const prevConfigRef = useRef(configWithSettings);
-
-    // Обновляем items при изменении настроек (только если действительно изменились)
-    useEffect(() => {
-        // Сравниваем структуру (порядок и ID элементов), чтобы избежать лишних обновлений
-        const prevIds = JSON.stringify(prevConfigRef.current.map(r => ({ rowId: r.rowId, children: r.children?.map(c => c.id) })));
-        const newIds = JSON.stringify(configWithSettings.map(r => ({ rowId: r.rowId, children: r.children?.map(c => c.id) })));
-        
-        if (prevIds !== newIds) {
-            prevConfigRef.current = configWithSettings;
-            setItems(configWithSettings);
-        }
-    }, [configWithSettings]);
-    
-    // Функция для сохранения настроек с текущими items
-    const saveCurrentSettings = useCallback((currentItems, currentVisibilityMap) => {
-        saveDashboardSettings(currentItems, currentVisibilityMap || visibilityMap);
-    }, [visibilityMap]);
-    
-    // Передаем функцию сохранения в родительский компонент
-    useEffect(() => {
-        if (onSaveSettings) {
-            onSaveSettings((newVisibilityMap) => {
-                saveCurrentSettings(items, newVisibilityMap);
-            });
-        }
-    }, [items, saveCurrentSettings, onSaveSettings]);
-    
-    // Очистка при размонтировании
-    useEffect(() => {
-        return () => {
-            if (rafIdRef.current !== null) {
-                cancelAnimationFrame(rafIdRef.current);
-                rafIdRef.current = null;
-            }
-            pendingUpdateRef.current = null;
-        };
-    }, []);
+    // const [rows, setRows] = useState(rowsConfig);
+    // const [items, setItems] = useState(barsConfig);
     const [overId, setOverId] = useState(null); // ID целевого элемента
+    const [overRowId, setOverRowId] = useState(null); // ID целевой строки
     const [activeId, setActiveId] = useState(null); // ID активного элемента
-    const [isOverValid, setIsOverValid] = useState(false); // Флаг валидности целевого элемента
-    const [isActiveSpan12, setIsActiveSpan12] = useState(false); // Флаг активности большого элемента
-    const [showRowInDragOverlay, setShowRowInDragOverlay] = useState(false); // Флаг показа строки в dragOverlay
-    const [activeRowForOverlay, setActiveRowForOverlay] = useState(null); // Строка активного элемента для dragOverlay
-    
-    // Рефы для оптимизации onDragOver
-    const rafIdRef = useRef(null);
-    const pendingUpdateRef = useRef(null);
-    
-    // Мемоизируем карту элементов для быстрого доступа
-    const itemsMapRef = useRef(new Map());
-    const rowsMapRef = useRef(new Map());
-    
-    // Обновляем карты при изменении items
+    const [activeRowId, setActiveRowId] = useState(null); // ID активной строки
+    const tempItemsRef = useRef(null);
+    const tempOverRowIdRef = useRef(null);
+
     useEffect(() => {
-        itemsMapRef.current.clear();
-        rowsMapRef.current.clear();
-        
-        items.forEach((row) => {
-            if (row && row.children && Array.isArray(row.children)) {
-                row.children.forEach((child) => {
-                    if (child && child.id) {
-                        itemsMapRef.current.set(child.id, { child, row });
-                    }
-                });
-                if (row.rowId) {
-                    rowsMapRef.current.set(String(row.rowId), row);
-                }
-            }
-        });
-    }, [items]);
-    // ------------------------------------------------------------------------------------------------
-    // Находим активный элемент внутри строк (оптимизировано через карту)
-    const activeItem = useMemo(() => {
-        if (!activeId) return null;
-        const itemData = itemsMapRef.current.get(activeId);
-        return itemData ? itemData.child : null;
-    }, [activeId]);
-    // ------------------------------------------------------------------------------------------------
-    // Находим строку активного элемента (вычисляем динамически)
-    const activeRow = useMemo(() => {
-        if (!activeId) return null;
-        return items.find(row =>
-            row && row.children && Array.isArray(row.children) &&
-            row.children.some(child => child && child.id === activeId)
-        );
-    }, [activeId, items]);
-    // ------------------------------------------------------------------------------------------------
-    // Вычисляем содержимое для DragOverlay
-    const dragOverlayContent = useMemo(() => {
-        if (showRowInDragOverlay && activeRowForOverlay && activeRowForOverlay.children && Array.isArray(activeRowForOverlay.children) && activeRowForOverlay.children.length > 0) {
-            return {
-                type: 'row',
-                row: activeRowForOverlay
-            };
+        // Восстанавливаем исходное состояние, если пользователь убрал мышь с целевой строки
+        if (tempOverRowIdRef?.current &&
+            tempItemsRef?.current &&
+            tempOverRowIdRef.current !== overRowId &&
+            activeId) { // Перетаскивание активно
+            setItems([...tempItemsRef.current]); // Восстанавливаем исходное состояние
+            tempItemsRef.current = null;
+            tempOverRowIdRef.current = null;
         }
-        if (activeItem) {
-            return {
-                type: 'item',
-                item: activeItem
-            };
-        }
-        return null;
-    }, [showRowInDragOverlay, activeRowForOverlay, activeItem]);
+    }, [overRowId, activeId]); // Добавляем activeId в зависимости
+
+
     // ------------------------------------------------------------------------------------------------
     // Собственно логика днд
     useDndMonitor({
         onDragStart: ({ active }) => {
-            setActiveId(active.id);
-            setIsOverValid(false);
-            setShowRowInDragOverlay(false);
-            // Сохраняем строку активного элемента для использования в DragOverlay
-            const currentItems = items;
-            const row = currentItems.find(r =>
-                r && r.children && Array.isArray(r.children) &&
-                r.children.some(child => child && child.id === active.id)
-            );
-            setActiveRowForOverlay(row || null);
-            if (!row) {
-                setOverId(null);
-                setIsOverValid(false);
-                setShowRowInDragOverlay(false);
-                return;
-            }
+            tempItemsRef.current = [...items]
+            const activeItem = items.find(item => item.id === active.id);
+            const currentRow = rows.find(r => r === activeItem?.rowId);
+            if (!activeItem || !currentRow) return;
+            setActiveId(activeItem?.id);
+            setActiveRowId(currentRow ?? null);
 
-            const activeElem = row.children.find(child => child.id === active.id);
-            if (activeElem.dropKey !== 'full') {
-                const newItems = [...items];
-                const hasAddRow = newItems.some(row => row.rowId === 'addRow');
-                if (!hasAddRow) {
-                    const addRow = {
-                        rowId: 'addRow',
-                        children: [{
-                            id: 'addRowElement',
-                            dropKey: activeElem.dropKey,
-                            container: styles.group__addRowWrapper,
-                            render: (bar, dataDashBoard, loading) => (
-                                <div className={styles.group__addRowContainer}>
-                                    + Добавить строку
-                                </div>
-                            )
-                        }]
-                    }
-                    const activeRowIndex = newItems.findIndex(r => r.rowId === row.rowId);
-                    if (row === -1) {
-                        newItems.splice(0, 0, addRow);
+            if (activeItem.dropKey !== 'full') {
+                const newRows = [...rows];
+                const hasAddRow = newRows.some(row => row === 'addRow');
+                const currRowItems = items.filter(item => item.rowId === currentRow);
+
+                if (!hasAddRow && currRowItems.length > 1) {
+                    const activeRowIndex = newRows.findIndex(r => r === currentRow);
+                    if (activeRowIndex === -1) {
+                        newRows.splice(0, 0, 'addRow');
                     } else {
-                        newItems.splice(activeRowIndex + 1, 0, addRow);
+                        newRows.splice(activeRowIndex + 1, 0, 'addRow');
                     }
-                    setItems(newItems);
+                    setRows(newRows);
                 }
-            }
-            // Проверяем, имеет ли активный элемент span 12
-            if (activeElem.dropKey === 'full') {
-                setIsActiveSpan12(true);
-            } else {
-                setIsActiveSpan12(false);
             }
         },
         onDragOver: ({ active, over }) => {
-            // Ранний выход для невалидных случаев
-            if (!active || !over || active?.id === over?.id) {
-                if (pendingUpdateRef.current) {
-                    pendingUpdateRef.current = { overId: null, isOverValid: false, showRowInDragOverlay: false };
-                } else {
-                    pendingUpdateRef.current = { overId: null, isOverValid: false, showRowInDragOverlay: false };
-                    if (rafIdRef.current === null) {
-                        rafIdRef.current = requestAnimationFrame(() => {
-                            if (pendingUpdateRef.current) {
-                                const update = pendingUpdateRef.current;
-                                setOverId(update.overId);
-                                setIsOverValid(update.isOverValid);
-                                setShowRowInDragOverlay(update.showRowInDragOverlay);
-                                pendingUpdateRef.current = null;
-                            }
-                            rafIdRef.current = null;
-                        });
-                    }
-                }
-                return;
-            }
-
-            // Используем кэшированные карты для быстрого доступа
-            const activeItemData = itemsMapRef.current.get(active.id);
-            if (!activeItemData) {
-                pendingUpdateRef.current = { overId: over.id, isOverValid: false, showRowInDragOverlay: false };
-                if (rafIdRef.current === null) {
-                    rafIdRef.current = requestAnimationFrame(() => {
-                        if (pendingUpdateRef.current) {
-                            const update = pendingUpdateRef.current;
-                            setOverId(update.overId);
-                            setIsOverValid(update.isOverValid);
-                            setShowRowInDragOverlay(update.showRowInDragOverlay);
-                            pendingUpdateRef.current = null;
-                        }
-                        rafIdRef.current = null;
-                    });
-                }
-                return;
-            }
-
-            const { row: activeRow, child: activeElement } = activeItemData;
-
-            // Проверяем, является ли over.id ID строки (rowId) или элемента
-            let overRow = rowsMapRef.current.get(String(over.id));
-            let overElementId = over.id;
-            let overElement = null;
-
-            if (overRow) {
-                // over - это строка
-                if (!overRow.children || !Array.isArray(overRow.children) || overRow.children.length === 0) {
-                    pendingUpdateRef.current = { overId: over.id, isOverValid: false, showRowInDragOverlay: false };
-                    if (rafIdRef.current === null) {
-                        rafIdRef.current = requestAnimationFrame(() => {
-                            if (pendingUpdateRef.current) {
-                                const update = pendingUpdateRef.current;
-                                setOverId(update.overId);
-                                setIsOverValid(update.isOverValid);
-                                setShowRowInDragOverlay(update.showRowInDragOverlay);
-                                pendingUpdateRef.current = null;
-                            }
-                            rafIdRef.current = null;
-                        });
-                    }
-                    return;
-                }
-                overElementId = overRow.children[0].id;
-                overElement = overRow.children[0];
+            if (!over) return;
+            const activeItem = items?.find(item => item.id === activeId);
+            const isTargetIsRow = rows.some(r => r === over.id);
+            let targetElem;
+            let targetRow;
+            if (isTargetIsRow) {
+                targetRow = rows.find(r => r === over.id);
+                setOverRowId(targetRow ?? null);
             } else {
-                // over - это элемент
-                const overItemData = itemsMapRef.current.get(over.id);
-                if (!overItemData) {
-                    pendingUpdateRef.current = { overId: over.id, isOverValid: false, showRowInDragOverlay: false };
-                    if (rafIdRef.current === null) {
-                        rafIdRef.current = requestAnimationFrame(() => {
-                            if (pendingUpdateRef.current) {
-                                const update = pendingUpdateRef.current;
-                                setOverId(update.overId);
-                                setIsOverValid(update.isOverValid);
-                                setShowRowInDragOverlay(update.showRowInDragOverlay);
-                                pendingUpdateRef.current = null;
-                            }
-                            rafIdRef.current = null;
-                        });
+                targetElem = items.find(item => item.id === over.id);
+                setOverId(targetElem?.id ?? null);
+                targetRow = targetElem?.rowId ?? null;
+                setOverRowId(targetRow ?? null);
+            }
+
+            if (!targetRow && !targetElem) return;
+
+            // 0 ------------------------------ Сортировка внутри строки на лету -----------------------------------------------------------
+            if (targetRow !== activeRowId && targetElem && activeItem?.dropKey === targetElem?.dropKey && activeItem.dropKey !== 'full' && targetElem.dropKey !== 'full') {
+                // Сохраняем исходное состояние ПЕРЕД первым изменением
+                if (tempOverRowIdRef.current !== targetRow) {
+                    // Это первое наведение на эту строку - сохраняем исходное состояние
+                    if (!tempItemsRef.current) {
+                        tempItemsRef.current = [...items];
                     }
-                    return;
+                    tempOverRowIdRef.current = targetRow;
                 }
-                overRow = overItemData.row;
-                overElement = overItemData.child;
-            }
 
-            if (!activeRow || !overRow || !activeElement || !overElement) {
-                pendingUpdateRef.current = { overId: over.id, isOverValid: false, showRowInDragOverlay: false };
-                if (rafIdRef.current === null) {
-                    rafIdRef.current = requestAnimationFrame(() => {
-                        if (pendingUpdateRef.current) {
-                            const update = pendingUpdateRef.current;
-                            setOverId(update.overId);
-                            setIsOverValid(update.isOverValid);
-                            setShowRowInDragOverlay(update.showRowInDragOverlay);
-                            pendingUpdateRef.current = null;
-                        }
-                        rafIdRef.current = null;
-                    });
-                }
-                return;
-            }
-
-            // Если элементы в одной строке - все валидны
-            const isSameRow = activeRow.rowId === overRow.rowId;
-            if (isSameRow) {
-                pendingUpdateRef.current = { overId: over.id, isOverValid: true, showRowInDragOverlay: false };
-                if (rafIdRef.current === null) {
-                    rafIdRef.current = requestAnimationFrame(() => {
-                        if (pendingUpdateRef.current) {
-                            const update = pendingUpdateRef.current;
-                            setOverId(update.overId);
-                            setIsOverValid(update.isOverValid);
-                            setShowRowInDragOverlay(update.showRowInDragOverlay);
-                            pendingUpdateRef.current = null;
-                        }
-                        rafIdRef.current = null;
-                    });
-                }
-                return;
-            }
-
-            // Если элементы в разных строках - проверяем dropKey
-            const activeElemDropKey = activeElement.dropKey;
-            const overElemDropKey = overElement.dropKey;
-
-            if (!activeElemDropKey || !overElemDropKey) {
-                pendingUpdateRef.current = { overId: over.id, isOverValid: false, showRowInDragOverlay: false };
-                if (rafIdRef.current === null) {
-                    rafIdRef.current = requestAnimationFrame(() => {
-                        if (pendingUpdateRef.current) {
-                            const update = pendingUpdateRef.current;
-                            setOverId(update.overId);
-                            setIsOverValid(update.isOverValid);
-                            setShowRowInDragOverlay(update.showRowInDragOverlay);
-                            pendingUpdateRef.current = null;
-                        }
-                        rafIdRef.current = null;
-                    });
-                }
-                return;
-            }
-
-            // Проверяем валидность цели как дропзоны
-            const isValid = true;
-            const shouldShowRow = activeElemDropKey !== overElemDropKey || activeElemDropKey === 'full' || overElemDropKey === 'full';
-            
-            pendingUpdateRef.current = {
-                overId: shouldShowRow ? String(overRow.rowId) : over.id,
-                isOverValid: isValid,
-                showRowInDragOverlay: shouldShowRow
-            };
-
-            if (rafIdRef.current === null) {
-                rafIdRef.current = requestAnimationFrame(() => {
-                    if (pendingUpdateRef.current) {
-                        const update = pendingUpdateRef.current;
-                        setOverId(update.overId);
-                        setIsOverValid(update.isOverValid);
-                        setShowRowInDragOverlay(update.showRowInDragOverlay);
-                        pendingUpdateRef.current = null;
+                // Временно меняем rowId для визуальной сортировки
+                const targetElemIndex = items.findIndex(item => item.id === targetElem?.id);
+                const currElemIndex = items.findIndex(item => item.id === activeId);
+                const arr = arrayMove(items, currElemIndex, targetElemIndex);
+                const newItems = arr.map(item => {
+                    if (item.id === activeId) {
+                        return { ...item, rowId: targetRow }; // Временно меняем rowId
                     }
-                    rafIdRef.current = null;
-                });
+                    return item;
+                })
+                setItems(newItems);
+            } else {
+                // Если условия не выполняются, но мы были на целевой строке - восстанавливаем
+                if (tempOverRowIdRef.current && tempOverRowIdRef.current !== targetRow) {
+                    if (tempItemsRef.current) {
+                        setItems([...tempItemsRef.current]);
+                        tempItemsRef.current = null;
+                        tempOverRowIdRef.current = null;
+                    }
+                }
             }
+            // ----------------------------------------------------------------------------------------------------------------
         },
         onDragCancel: () => {
-            // Отменяем pending обновления
-            if (rafIdRef.current !== null) {
-                cancelAnimationFrame(rafIdRef.current);
-                rafIdRef.current = null;
+            // Восстанавливаем исходное состояние
+            if (tempItemsRef?.current) {
+                setItems([...tempItemsRef.current]);
+                tempItemsRef.current = null;
+                tempOverRowIdRef.current = null;
             }
-            pendingUpdateRef.current = null;
-            
-            setOverId(null);
+
             setActiveId(null);
-            setIsOverValid(false);
-            setIsActiveSpan12(false);
-            setShowRowInDragOverlay(false);
-            setActiveRowForOverlay(null);
-            //document.body.style.cursor = '';
+            setActiveRowId(null);
+            setOverId(null);
+            setOverRowId(null);
+            setRows(rows.filter(r => r !== 'addRow'));
         },
         onDragEnd: ({ active, over }) => {
-            // Отменяем pending обновления
-            if (rafIdRef.current !== null) {
-                cancelAnimationFrame(rafIdRef.current);
-                rafIdRef.current = null;
+            const activeItem = items?.find(item => item.id === activeId);
+            const isTargetIsRow = rows?.some(r => r === over?.id);
+            let targetElem;
+            let targetRow;
+            if (isTargetIsRow) {
+                targetRow = rows?.find(r => r === over?.id);
+                setOverRowId(targetRow ?? null);
+            } else {
+                targetElem = items?.find(item => item.id === over?.id);
+                setOverId(targetElem?.id ?? null);
+                targetRow = targetElem?.rowId ?? null;
+                setOverRowId(targetRow ?? null);
             }
-            pendingUpdateRef.current = null;
-            
-            setOverId(null);
-            setActiveId(null);
-            setIsOverValid(false);
-            setIsActiveSpan12(false);
-            setShowRowInDragOverlay(false);
-            setActiveRowForOverlay(null);
-            //document.body.style.cursor = '';
-            if (!over || active.id === over.id) {
+            // 0 ------------------------------ Сортировка внутри строки -----------------------------------------------------------
+            if (targetRow === activeRowId && targetElem?.id !== activeId) {
                 const newItems = [...items];
-                const addRowIndex = newItems.findIndex(row => row.rowId === 'addRow');
-                if (addRowIndex !== -1) {
-                    newItems.splice(addRowIndex, 1);
+                const activeItemIndex = newItems.findIndex(item => item.id === activeId);
+                const targetItemIndex = newItems.findIndex(item => item.id === targetElem?.id);
+                if (activeItemIndex !== -1 && targetItemIndex !== -1) {
+                    const arr = arrayMove(newItems, activeItemIndex, targetItemIndex);
+                    setItems(arr);
+                    saveBarsConfig(arr, BARS_STORAGE_KEY, DASHBOARD_CONFIG_VER);
+                    tempItemsRef.current = null;
+                    tempOverRowIdRef.current = null;
+
+                    setActiveId(null);
+                    setActiveRowId(null);
+                    setOverId(null);
+                    setOverRowId(null);
+                    setRows(rows.filter(r => r !== 'addRow'));
+                    return;
                 }
+            }
+            // 1 ------------------------------ Cоздание новой строки --------------------------------------------------------------
+            if (targetRow === 'addRow') {
+                const newAddRowId = 'row-' + Date.now();
+                const newRows = rows.map(row => {
+                    if (row === 'addRow') {
+                        return newAddRowId;
+                    }
+                    return row;
+                })
+                const newItems = items.map(item => {
+                    if (item.id === activeId) {
+                        return { ...item, rowId: newAddRowId };
+                    }
+                    return item;
+                })
+
+
+                setRows(newRows);
+                localStorage.setItem(ROWS_STORAGE_KEY, JSON.stringify({ version: DASHBOARD_CONFIG_VER, rows: newRows }));
                 setItems(newItems);
-                return
-            };
+                saveBarsConfig(newItems, BARS_STORAGE_KEY, DASHBOARD_CONFIG_VER);
+                setActiveId(null);
+                setActiveRowId(null);
+                setOverId(null);
+                setOverRowId(null);
+                return;
+            }
+            // 2 ------------------------------ Перемещение элемента в другую строку (при дропе на элемент) ------------------------
+            // TODO: Написать эту логику если можно будет когда-то перетаскивать разные элементы на строку (Сейчас по сути элемент встраивается в строку и отрабатывает вариант №0)
 
-            setItems((prev) => {
-                // Проверяем, является ли over.id ID строки (rowId) или элемента
-                const isOverRow = prev.some(row => row && String(row.rowId) === String(over.id));
+            // 3 ------------------------------ Перемещение большого элемента ------------------------------------------------------
+            if (targetRow && targetRow !== activeRowId && activeItem.dropKey === 'full') {
+                setRows(prevRows => {
+                    const targetRowIndex = prevRows.findIndex(r => r === targetRow);
+                    const activeRowIndex = prevRows.findIndex(r => r === activeRowId);
 
-                // Если over - это строка, находим первый элемент в этой строке
-                let overElementId = over.id;
-                if (isOverRow) {
-                    const overRow = prev.find(row => row && String(row.rowId) === String(over.id));
-                    if (!overRow || !overRow.children || !Array.isArray(overRow.children) || overRow.children.length === 0) return prev;
-                    overElementId = overRow.children[0].id;
-                }
+                    if (targetRowIndex !== -1 && activeRowIndex !== -1) {
+                        const arr = arrayMove(prevRows, activeRowIndex, targetRowIndex);
+                        localStorage.setItem(ROWS_STORAGE_KEY, JSON.stringify({ version: DASHBOARD_CONFIG_VER, rows: arr.filter(r => r !== 'addRow') }));
+                        return arr.filter(r => r !== 'addRow');
+                    }
+                    return prevRows.filter(r => r !== 'addRow');
+                });
 
-                // Находим строки, содержащие активный и целевой элементы
-                const activeRowIndex = prev.findIndex(row =>
-                    row && row.children && Array.isArray(row.children) && row.children.some(child => child && child.id === active.id)
-                );
-                const overRowIndex = prev.findIndex(row =>
-                    row && row.children && Array.isArray(row.children) && row.children.some(child => child && child.id === overElementId)
-                );
+                tempItemsRef.current = null;
+                tempOverRowIdRef.current = null;
 
-                if (activeRowIndex === -1 || overRowIndex === -1) return prev;
+                setActiveId(null);
+                setActiveRowId(null);
+                setOverId(null);
+                setOverRowId(null);
+                return;
+            }
+            // 4 ------------------------------ Перемещение на большой элемент ------------------------------------------------------
+            if (targetElem && targetRow !== activeRowId && targetElem.dropKey === 'full') {
 
-                const activeRow = prev[activeRowIndex];
-                const overRow = prev[overRowIndex];
+                setRows(prevRows => {
+                    const targetRowIndex = prevRows.findIndex(r => r === targetRow);
+                    const activeRowIndex = prevRows.findIndex(r => r === activeRowId);
 
-                if (!activeRow || !overRow || !activeRow.children || !overRow.children) return prev;
+                    if (targetRowIndex !== -1 && activeRowIndex !== -1) {
+                        const arr = arrayMove(prevRows, activeRowIndex, targetRowIndex);
+                        localStorage.setItem(ROWS_STORAGE_KEY, JSON.stringify({ version: DASHBOARD_CONFIG_VER, rows: arr.filter(r => r !== 'addRow') }));
+                        return arr.filter(r => r !== 'addRow');
+                    }
+                    return prevRows.filter(r => r !== 'addRow');
+                });
 
-                const activeElement = activeRow.children.find(child => child.id === active.id);
-                const overElement = overRow.children.find(child => child.id === overElementId);
-                const activeElemDropKey = activeElement.dropKey;
-                const overElemDropKey = overElement.dropKey;
+                tempItemsRef.current = null;
+                tempOverRowIdRef.current = null;
 
+                setActiveId(null);
+                setActiveRowId(null);
+                setOverId(null);
+                setOverRowId(null);
+                return;
+            }
+            // 5 ------------------------------ Перемещение элементов с разными dropKey ---------------------------------------------
+            if (targetElem && activeItem && targetRow !== activeRowId && activeItem.dropKey !== targetElem.dropKey && targetElem.dropKey !== 'full' && activeItem.dropKey !== 'full') {
+                setRows(prevRows => {
+                    const targetRowIndex = prevRows.findIndex(r => r === targetRow);
+                    const activeRowIndex = prevRows.findIndex(r => r === activeRowId);
 
-                // Если элементы в одной строке - сортируем внутри строки
-                if (activeRowIndex === overRowIndex) {
-                    const activeChildIndex = activeRow.children.findIndex(child => child && child.id === active.id);
-                    const overChildIndex = overRow.children.findIndex(child => child && child.id === overElementId);
+                    if (targetRowIndex !== -1 && activeRowIndex !== -1) {
+                        const arr = arrayMove(prevRows, activeRowIndex, targetRowIndex);
+                        localStorage.setItem(ROWS_STORAGE_KEY, JSON.stringify({ version: DASHBOARD_CONFIG_VER, rows: arr.filter(r => r !== 'addRow') }));
+                        return arr.filter(r => r !== 'addRow');
+                    }
+                    return prevRows.filter(r => r !== 'addRow');
+                });
 
-                    if (activeChildIndex === -1 || overChildIndex === -1) return prev;
-                    if (activeChildIndex === overChildIndex) return prev;
+                tempItemsRef.current = null;
+                tempOverRowIdRef.current = null;
 
-                    const newItems = [...prev];
-                    newItems[activeRowIndex] = {
-                        ...activeRow,
-                        children: arrayMove(activeRow.children, activeChildIndex, overChildIndex)
-                    };
-
-                    const addRowIndex = newItems.findIndex(row => row.rowId === 'addRow');
-                    if (addRowIndex !== -1) {
-                        newItems.splice(addRowIndex, 1);
+                setActiveId(null);
+                setActiveRowId(null);
+                setOverId(null);
+                setOverRowId(null);
+                return;
+            }
+            // 6 ------------------------------ Перемещение элемента на строку ------------------------------------------------
+            if (!targetElem && targetRow && targetRow !== activeRowId && activeItem.dropKey !== 'full') {
+                const rowItems = items.filter(item => item.rowId === targetRow);
+                const isSameDropKey = rowItems.length === 0 || rowItems.every(item => item.dropKey === activeItem.dropKey);
+                if (isSameDropKey) {
+                    // Находим индекс последнего элемента в целевой строке
+                    let lastElemIndex = -1;
+                    for (let i = items.length - 1; i >= 0; i--) {
+                        if (items[i].rowId === targetRow) {
+                            lastElemIndex = i;
+                            break;
+                        }
                     }
 
-                    // Сохраняем позиции в localStorage
-                    setTimeout(() => {
-                        saveDashboardSettings(newItems, visibilityMap);
-                    }, 0);
+                    // Если строка пустая, добавляем в конец
+                    const insertIndex = lastElemIndex !== -1 ? lastElemIndex + 1 : items.length;
+                    const activeElemIndex = items.findIndex(item => item.id === activeId);
 
-                    return newItems;
-                }
+                    if (activeElemIndex !== -1) {
+                        const arr = arrayMove(items, activeElemIndex, insertIndex);
+                        const newItems = arr.map(item => {
+                            if (item.id === activeId) {
+                                return { ...item, rowId: targetRow };
+                            }
+                            return item;
+                        })
+                        setItems(newItems); // ИСПРАВЛЕНИЕ: используем newItems
+                        saveBarsConfig(newItems, BARS_STORAGE_KEY, DASHBOARD_CONFIG_VER);
+                        tempItemsRef.current = null;
+                        tempOverRowIdRef.current = null;
 
-
-                // Если цель - новая строка, то создаем новую строку
-                if (overRow.rowId === 'addRow') {
-                    let newItems = [...prev];
-                    const activeChildIndex = activeRow.children.findIndex(child => child.id === active.id);
-                    if (activeChildIndex === -1) return prev;
-                    newItems[activeRowIndex].children.splice(activeChildIndex, 1);
-                    newItems[overRowIndex].children.splice(0, 1, activeElement);
-                    newItems[overRowIndex].rowId = uuidv4();
-                    setTimeout(() => {
-                        saveDashboardSettings(newItems, visibilityMap);
-                    }, 0);
-                    return newItems;
-                }
-
-
-
-
-
-                // Проверяем, есть ли в строке элемент со span 12
-                // Проверяем через CSS класс (group__fullWrapper = span 12) или через DOM
-
-
-                const activeRowHasFullWidth = activeRow.children.some(child => child.dropKey === 'full');
-                const overRowHasFullWidth = overRow.children.some(child => child.dropKey === 'full');
-
-                // Если активная строка содержит элемент со span 12, меняем строки местами
-                if (activeRowHasFullWidth || overRowHasFullWidth && activeRow.rowId !== 'addRow') {
-                    const newItems = arrayMove(prev, activeRowIndex, overRowIndex);
-                    const addRowIndex = newItems.findIndex(row => row.rowId === 'addRow');
-                    if (addRowIndex !== -1) {
-                        newItems.splice(addRowIndex, 1);
+                        setActiveId(null);
+                        setActiveRowId(null);
+                        setOverId(null);
+                        setOverRowId(null);
+                        setRows(rows.filter(r => r !== 'addRow'));
+                        return;
                     }
-                    setTimeout(() => {
-                        saveDashboardSettings(newItems);
-                    }, 0);
-
-                    return newItems;
                 }
+            }
+            // ----------------------------------------------------------------------------------------------------------------
 
+            tempItemsRef.current = null;
+            tempOverRowIdRef.current = null;
 
-                // Если нет элементов на всю ширину и у элементов не совпадает dropKey, то меняем строки местами
-                if (!activeRowHasFullWidth && !overRowHasFullWidth && activeElemDropKey !== overElemDropKey) {
-                    const newItems = arrayMove(prev, activeRowIndex, overRowIndex);
-
-                    const addRowIndex = newItems.findIndex(row => row.rowId === 'addRow');
-                    if (addRowIndex !== -1) {
-                        newItems.splice(addRowIndex, 1);
-                    }
-                    setTimeout(() => {
-                        saveDashboardSettings(newItems);
-                    }, 0);
-                    return newItems;
-                }
-
-                // Если это два элемента с одинаковым dropKey, то добавляем активный элемент в целевую строку
-                if (!activeRowHasFullWidth && !overRowHasFullWidth && activeElemDropKey === overElemDropKey) {
-                    const newItems = [...prev];
-                    const activeChildIndex = activeRow.children.findIndex(child => child.id === active.id);
-                    const overChildIndex = overRow.children.findIndex(child => child.id === overElementId);
-                    if (activeChildIndex === -1 || overChildIndex === -1) return prev;
-                    newItems[overRowIndex].children.splice(overChildIndex, 0, activeElement);
-                    newItems[activeRowIndex].children.splice(activeChildIndex, 1);
-
-                    if (newItems[activeRowIndex].children.length === 0) {
-                        newItems.splice(activeRowIndex, 1);
-                    }
-
-                    const addRowIndex = newItems.findIndex(row => row.rowId === 'addRow');
-                    if (addRowIndex !== -1) {
-                        newItems.splice(addRowIndex, 1);
-                    }
-                    setTimeout(() => {
-                        saveDashboardSettings(newItems);
-                    }, 0);
-                    return newItems;
-                }
-
-
-
-
-
-
-
-                // Если элемент не на всю строку и целевой элемент совпадает по span, меняем элементы местами
-                if (activeElemDropKey && overElemDropKey && activeElemDropKey === overElemDropKey && activeElemDropKey !== 'full') {
-                    const newItems = [...prev];
-                    const activeChildIndex = activeRow.children.findIndex(child => child.id === active.id);
-                    const overChildIndex = overRow.children.findIndex(child => child.id === overElementId);
-
-                    if (activeChildIndex === -1 || overChildIndex === -1) return prev;
-
-                    // Меняем элементы местами между строками
-                    const activeChild = activeRow.children[activeChildIndex];
-                    const overChild = overRow.children[overChildIndex];
-
-                    newItems[activeRowIndex] = {
-                        ...activeRow,
-                        children: [
-                            ...activeRow.children.slice(0, activeChildIndex),
-                            overChild,
-                            ...activeRow.children.slice(activeChildIndex + 1)
-                        ]
-                    };
-
-                    newItems[overRowIndex] = {
-                        ...overRow,
-                        children: [
-                            ...overRow.children.slice(0, overChildIndex),
-                            activeChild,
-                            ...overRow.children.slice(overChildIndex + 1)
-                        ]
-                    };
-
-                    const addRowIndex = newItems.findIndex(row => row.rowId === 'addRow');
-                    if (addRowIndex !== -1) {
-                        newItems.splice(addRowIndex, 1);
-                    }
-
-                    // Сохраняем позиции в localStorage
-                    setTimeout(() => {
-                        saveDashboardSettings(newItems, visibilityMap);
-                    }, 0);
-
-                    return newItems;
-                }
-
-                return prev;
-            });
+            setActiveId(null);
+            setActiveRowId(null);
+            setOverId(null);
+            setOverRowId(null);
+            setRows(rows.filter(r => r !== 'addRow'));
         },
     });
     // ------------------------------------------------------------------------------------------------
@@ -1479,81 +1087,46 @@ const MainContent = React.memo(({
     // Рендер
     return (
         <>
-            <SortableContext items={items.map((i) => i.rowId)} strategy={rectSortingStrategy}>
+            <SortableContext items={rows.map((i) => i)} strategy={rectSortingStrategy}>
                 <div className={styles.page__mainContentWrapper} >
-                    {items.map((row) => {
+                    {rows.map((row) => {
+                        const children = items?.filter(child => child.rowId === row);
                         // Фильтруем children по isVisible
-                        const visibleChildren = row.children ? row.children.filter(child => child.isVisible !== false) : [];
+                        const visibleChildren = children?.filter(child => child.isVisible);
                         // Если в строке не осталось видимых элементов, не рендерим строку
-                        if (visibleChildren.length === 0) return null;
+                        if (visibleChildren?.length === 0 && row !== 'addRow') return null;
 
                         return (
                             <SortableRow
-                                key={row.rowId}
-                                row={{ ...row, children: visibleChildren }}
+                                key={row}
+                                row={{ rowId: row, children: visibleChildren }}
                                 items={items}
                                 dataDashBoard={dataDashBoard}
                                 loading={loading}
                                 children={visibleChildren}
-                                isOver={overId === String(row.rowId)}
                                 isDraggingActive={!!activeId}
                                 overId={overId}
                                 activeId={activeId}
-                                isOverValid={isOverValid}
-                                isActiveSpan12={isActiveSpan12}
                                 selectedRange={selectedRange}
                                 activeBrand={activeBrand}
                                 authToken={authToken}
                                 filters={filters}
+                                activeRowId={activeRowId}
+                                overRowId={overRowId}
                                 updateDataDashBoard={updateDataDashBoard}
+                                stockAnalysisData={stockAnalysisData}
                             />
                         );
                     })}
                 </div >
             </SortableContext>
+            {/* TODO: Добавить снэпшоты как dragImage чтобы не рендерить компоненты */}
             <DragOverlay
-                key={`${activeId}-${showRowInDragOverlay}-${dragOverlayContent?.type || 'none'}`}
-                style={{ cursor: overId && isOverValid ? 'copy' : overId && !isOverValid ? 'not-allowed' : 'grabbing' }}
+                style={{ cursor: (overId || overRowId) ? 'copy' : 'not-allowed' }}
             >
-                {(() => {
-
-
-                    if (dragOverlayContent?.type === 'row' && dragOverlayContent.row && dragOverlayContent.row.children) {
-
-                        return (
-                            <div
-                                style={{
-                                    opacity: 0.25,
-                                    borderRadius: '16px',
-                                    overflow: 'hidden',
-                                    backgroundColor: 'transparent',
-                                    gap: '12px',
-                                    width: `calc(100% * ${dragOverlayContent.row?.children?.filter(child => child.isVisible).length})`,
-                                    maxWidth: `calc(100% * ${dragOverlayContent.row?.children?.filter(child => child.isVisible).length})`,
-                                    display: 'grid',
-                                    gridTemplateColumns: 'repeat(12, 1fr)',
-                                }}
-                            >
-                                {dragOverlayContent.row.children.map((bar) => bar.isVisible && (
-                                    <div key={bar.id} className={bar.container} style={{ width: '100%', height: '100%', boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)', }}>
-                                        {bar.render(bar, dataDashBoard, loading, selectedRange, activeBrand, authToken, filters, updateDataDashBoard)}
-                                    </div>
-                                ))}
-                            </div>
-                        );
-                    }
-
-                    if (dragOverlayContent?.type === 'item' && dragOverlayContent.item) {
-                        console.log('Rendering ITEM');
-                        return (
-                            <div className={dragOverlayContent.item.container} style={{ opacity: 0.25, boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)', borderRadius: '16px', overflow: 'hidden' }}>
-                                {dragOverlayContent.item.render(dragOverlayContent.item, dataDashBoard, loading, selectedRange, activeBrand, authToken, filters, updateDataDashBoard)}
-                            </div>
-                        );
-                    }
-
-                    return null;
-                })()}
+                <div className={items?.find(item => item.id === activeId)?.container} style={{ opacity: 0.25, boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)', borderRadius: '16px', overflow: 'hidden' }}>
+                    {items?.find(item => item.id === activeId)?.render(items?.find(item => item.id === activeId), dataDashBoard, loading, selectedRange, activeBrand, authToken, filters, updateDataDashBoard, stockAnalysisData)}
+                </div>
             </DragOverlay>
         </>
     );
@@ -1567,22 +1140,9 @@ const _DashboardPage = () => {
     const filters = useAppSelector((state) => state.filters);
     const { isSidebarHidden } = useAppSelector((state) => state.utils);
     const [isSettingsOpen, setIsSettingsOpen] = useState(false);
-    const [visibilityMap, setVisibilityMap] = useState(() => {
-        const savedRows = loadDashboardSettings();
-        // Извлекаем visibility из загруженных данных
-        if (savedRows && Array.isArray(savedRows)) {
-            const visibility = {};
-            savedRows.forEach(row => {
-                if (row.children && Array.isArray(row.children)) {
-                    row.children.forEach(child => {
-                        visibility[child.id] = child.isVisible !== undefined ? child.isVisible : true;
-                    });
-                }
-            });
-            return visibility;
-        }
-        return {};
-    });
+    const [stockAnalysisData, setStockAnalysisData] = useState([]);
+    const [rows, setRows] = useState(rowsConfig);
+    const [items, setItems] = useState(barsConfig);
     const [pageState, setPageState] = useState({
         dataDashBoard: null,
         loading: true,
@@ -1590,17 +1150,6 @@ const _DashboardPage = () => {
         shopStatus: null,
         error: false
     });
-
-    const saveSettingsRef = useRef(null);
-    
-    const handleSettingsOk = (newVisibilityMap) => {
-        setVisibilityMap(newVisibilityMap);
-        // Сохраняем видимость вместе с текущим порядком из items
-        // Функция сохранения будет вызвана из MainContent с актуальными items
-        if (saveSettingsRef.current) {
-            saveSettingsRef.current(newVisibilityMap);
-        }
-    };
 
     const updateDataDashBoard = async (selectedRange, activeBrand, authToken) => {
         setPageState(prev => ({ ...prev, loading: true }));
@@ -1617,6 +1166,21 @@ const _DashboardPage = () => {
         } catch (e) {
             console.error(e);
             setPageState(prev => ({ ...prev, error: true }));
+        }
+    };
+
+    const fetchAnalysisData = async () => {
+        try {
+            const data = await ServiceFunctions.getAnalysisData(
+                authToken,
+                selectedRange,
+                activeBrand?.id,
+                filters
+            );
+
+            setStockAnalysisData(data);
+        } catch (error) {
+            console.error(error);
         }
     };
 
@@ -1642,12 +1206,33 @@ const _DashboardPage = () => {
         if (activeBrand && activeBrand.is_primary_collect && !pageState.error && isFiltersLoaded) {
             setPageState(prev => ({ ...prev, primaryCollect: activeBrand?.is_primary_collect }));
             updateDataDashBoard(selectedRange, activeBrand.id, authToken);
+            fetchAnalysisData();
         }
 
         if (activeBrand && !activeBrand.is_primary_collect && isFiltersLoaded) {
             setPageState(prev => ({ ...prev, loading: false }));
         }
     }, [activeBrand, selectedRange, isFiltersLoaded, activeBrandName, activeArticle, activeGroup]);
+
+    useEffect(() => {
+        const savedRows = localStorage.getItem(ROWS_STORAGE_KEY);
+        const savedBars = localStorage.getItem(BARS_STORAGE_KEY);
+        if (savedRows) {
+            const { version, rows } = JSON.parse(savedRows);
+            if (!version || !rows) return;
+            if (version !== DASHBOARD_CONFIG_VER) return;
+            setRows(rows);
+        }
+        if (savedBars) {
+            try {
+                const parsed = JSON.parse(savedBars);
+                const updatedConfig = inferBarsConfig(barsConfig, parsed, DASHBOARD_CONFIG_VER);
+                setItems(updatedConfig);
+            } catch (error) {
+                console.error('Error parsing saved bars config:', error);
+            }
+        }   
+    }, []);
 
     return (
         <main className={styles.page}>
@@ -1697,8 +1282,8 @@ const _DashboardPage = () => {
                 {activeBrand && !activeBrand.is_primary_collect && (
                     <DataCollectWarningBlock />
                 )}
-
-                <DndContext collisionDetection={pointerWithin}>
+                <DndContext
+                >
                     <MainContent
                         shopStatus={shopStatus}
                         loading={pageState?.loading}
@@ -1710,18 +1295,22 @@ const _DashboardPage = () => {
                         filters={filters}
                         updateDataDashBoard={updateDataDashBoard}
                         isSidebarHidden={isSidebarHidden}
-                        visibilityMap={visibilityMap}
-                        onSaveSettings={(saveFn) => {
-                            saveSettingsRef.current = saveFn;
-                        }}
+                        stockAnalysisData={stockAnalysisData}
+                        rows={rows}
+                        items={items}
+                        setItems={setItems}
+                        setRows={setRows}
                     />
                 </DndContext>
 
                 <SettingsModal
                     isOpen={isSettingsOpen}
                     setIsOpen={setIsSettingsOpen}
-                    onOk={handleSettingsOk}
-                    barsConfig={barsConfig}
+                    BARS_STORAGE_KEY={BARS_STORAGE_KEY}
+                    DASHBOARD_CONFIG_VER={DASHBOARD_CONFIG_VER}
+                    items={items}
+                    setItems={setItems}
+                    onSave={saveBarsConfig}
                 />
             </section>
         </main>

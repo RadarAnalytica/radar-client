@@ -152,7 +152,7 @@ const PrimeCost = () => {
           <div className='d-flex align-items-center gap-2'>
             <div style={{ width: '100%' }}>
               <div className='d-flex justify-content-between'>
-                <h4 className='fw-bold mb-0'>Установка себестоимости товара</h4>
+                <h4 className='fw-bold mb-0' style={{ fontSize: '18px' }}>Установка себестоимости товара</h4>
               </div>
             </div>
           </div>
@@ -176,14 +176,14 @@ const PrimeCost = () => {
                       strokeWidth='1.5'
                     />
                   </svg>
-                  <span>{file ? file.name : ''}</span>
+                  <span style={{ fontSize: '14px' }}>{file ? file.name : ''}</span>
                 </div>
                 <div>
                   <a
                     href='#'
                     className='link'
                     onClick={() => setFile(null)}
-                    style={{ color: 'red', cursor: 'pointer' }}
+                    style={{ color: 'red', cursor: 'pointer', fontSize: '14px' }}
                   >
                     Удалить
                   </a>
@@ -193,16 +193,16 @@ const PrimeCost = () => {
                 <button
                   onClick={handleCostPriceSave}
                   className='prime-btn'
-                  style={{ height: '52px' }}
+                  style={{ height: '46px', display: 'flex', alignItems: 'center', justifyContent: 'center', minWidth: '220px' }}
                   disabled={isFileUpload}
                 >
-                  Сохранить
+                  <span style={{ fontSize: '14px' }}>Сохранить</span>
                 </button>
 
 
               </div>
-              <div className='d-flex justify-content-center w-100 mt-2 gap-2'>
-                <a href='#' className='link' onClick={handleCostPriceClose}>
+              <div className='d-flex justify-content-center w-100 gap-2'>
+                <a href='#' className='link' onClick={handleCostPriceClose} style={{ fontSize: '14px'  }}>
                   Отмена
                 </a>
               </div>
@@ -225,7 +225,7 @@ const PrimeCost = () => {
                                 </div> */}
               <DragDropFile files={file} setFiles={setFile} />
               <div className='d-flex justify-content-center w-100 mt-2 gap-2'>
-                <a href='#' className='link' onClick={handleTemplateDownload}>
+                <a href='#' className='link' onClick={handleTemplateDownload} style={{ fontSize: '14px' }}>
                   Скачать шаблон
                 </a>
               </div>

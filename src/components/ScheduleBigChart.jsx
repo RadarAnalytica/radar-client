@@ -145,7 +145,7 @@ const ScheduleBigChart = ({ labels, dataRevenue, dataNetProfit, minDataRevenue, 
         <div className={styles.chart}>
             <div className='chart-container-header' style={{ marginBottom: '25px'}}>
                 <div>
-                    <div className='chart-title'>Продажи и прибыль</div>
+                    <div className='chart-title' style={{ fontSize: '18px'}}>Продажи и прибыль</div>
                 </div>
                 <div className='chart-header-wrapper'>
                     <div className='chart-container-colors-wrapper'>
