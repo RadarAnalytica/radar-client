@@ -175,7 +175,7 @@ const MyAdvTable: React.FC<MyAdvTableProps> = ({
       const percentValue = typeof value === 'number' ? `${value.toFixed(2)}%` : String(value ?? '');
       return (
         <div className={styles.customCell} title={percentValue}>
-          {percentValue}
+          {formatNumberWithSpaces(percentValue)}
         </div>
       );
     }
