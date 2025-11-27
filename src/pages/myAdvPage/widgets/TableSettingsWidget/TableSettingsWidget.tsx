@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { Button, ConfigProvider, Modal, Form, Checkbox } from 'antd';
-import { ColumnConfig } from '../../config/tableConfig';
+import { ColumnConfig, TABLE_CONFIG_VERSION } from '../../config/tableConfig';
 import styles from './TableSettingsWidget.module.css';
 
 interface TableSettingsWidgetProps {
@@ -69,6 +69,13 @@ const TableSettingsWidget: React.FC<TableSettingsWidgetProps> = ({
 
     const updatedConfig = updateConfig(tableConfig as ExtendedColumnConfig[]);
     setTableConfig(updatedConfig as ColumnConfig[]);
+    
+    // Сохраняем в localStorage
+    localStorage.setItem('MY_ADV_TABLE_CONFIG', JSON.stringify({
+      version: TABLE_CONFIG_VERSION,
+      config: updatedConfig
+    }));
+    
     setIsModalOpen(false);
   };
 

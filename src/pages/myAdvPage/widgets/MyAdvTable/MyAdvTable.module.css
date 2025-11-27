@@ -113,6 +113,18 @@
   text-align: center;
 }
 
+.tableStaticCompany {
+  :global(.radar-table__header-row) {
+    th[data-column-key="company_name"], th[data-column-key="company_status"], th[data-column-key="company_type"] {
+      pointer-events: none;
+
+      :global(.radar-table__sort-button-wrapper) {
+        display: none;
+      }
+    }
+  }
+}
+
 .tableWrapper {
   max-height: calc(100vh - 280px);
   position: relative;
@@ -137,6 +149,7 @@
     tr:first-child {
       th {
         padding-top: 8px;
+        pointer-events: none;
   
         span {
           font-weight: 600;
