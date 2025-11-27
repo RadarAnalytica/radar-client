@@ -6,7 +6,6 @@ import { fetchApi } from './fetchApi';
 
 export const getRequestObject = (filters, selectedRange, shopId) => {
 	const requestObject = {
-		...filters,
 		articles: null,
 		product_groups: null,
 		brands: null,
