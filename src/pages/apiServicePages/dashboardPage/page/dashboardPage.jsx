@@ -1283,6 +1283,7 @@ const _DashboardPage = () => {
                 {activeBrand && !activeBrand.is_primary_collect && (
                     <DataCollectWarningBlock />
                 )}
+                
                 <DndContext
                 >
                     <MainContent

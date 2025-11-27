@@ -21,7 +21,6 @@ import { mockCompaniesData, CompanyData, ApiResponse } from './data/mockData';
 import styles from './myAdvPage.module.css';
 import AuthContext from '@/service/AuthContext';
 import { ServiceFunctions, getRequestObject } from '@/service/serviceFunctions';
-import DataCollectWarningBlock from '@/components/sharedComponents/dataCollectWarningBlock/dataCollectWarningBlock';
 
 const MyAdvPage: React.FC = () => {
   const { isDemoMode } = useDemoMode();
@@ -136,7 +135,6 @@ const MyAdvPage: React.FC = () => {
           />
         </div>
 
-        {activeBrand && !activeBrand?.is_primary_collect && <DataCollectWarningBlock />}
         {isDemoMode && <NoSubscriptionWarningBlock />}
 
         <SearchBlock 
@@ -161,6 +159,7 @@ const MyAdvPage: React.FC = () => {
               setSortState={setSortState}
               tableConfig={tableConfig}
               setTableConfig={handleTableConfigChange}
+              showDataCollectWarning={activeBrand && !activeBrand?.is_primary_collect}
             />
           : <NoData />
         )}
