@@ -1,17 +1,21 @@
+import { useState } from "react";
 import styles from "./positionTrackingTableCustomCellRender.module.css"
 import { Link } from "react-router-dom";
 import wb_icon from './wb_icon.png'
 
 export const positionTrackingTableCustomCellRender = (value: any, record: any, index: number, dataIndex: string) => {
+    const [imageVisible, setImageVisible] = useState(false);
     if (dataIndex === 'name') {
         return (
             <div className={styles.nameCell}>
                 <div className={styles.nameCell__header}>
                     <div className={styles.nameCell__imgWrapper}>
                         <img
-                            src={record.wb_id_image_link}
+                            src={record.wb_id_image_url}
                             alt={record.name}
-                            onError={e => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                            onLoad={() => { setImageVisible(true); }}
+                            onError={() => { setImageVisible(false); }}
+                            hidden={!imageVisible}
                         />
                     </div>
                     <div className={styles.nameCell__titleBlock}>

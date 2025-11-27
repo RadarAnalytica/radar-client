@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import styles from './searchBlock.module.css';
 import { Input, ConfigProvider, Button } from 'antd';
+import type { InputRef } from 'antd';
 import { useDemoMode } from '@/app/providers';
 
 
@@ -53,7 +54,9 @@ interface ISearchBlockProps {
     lines?: number;
     style?: React.CSSProperties;
     disableEnter?: boolean,
-    demoModeValue: string
+    demoModeValue: string,
+    externalInputRef?: React.RefObject<InputRef>,
+    externalValue?: string
 }
 
 export const SearchBlock: React.FC<ISearchBlockProps> = ({
@@ -68,11 +71,13 @@ export const SearchBlock: React.FC<ISearchBlockProps> = ({
     lines = 1,
     style,
     disableEnter = false,
-    demoModeValue = ''
+    demoModeValue = '',
+    externalInputRef,
+    externalValue
 }) => {
 
 
-    const inputRef = useRef(null);
+    const inputRef = useRef<InputRef>(null);
     const [inputValue, setInputValue] = useState('');
     const { isDemoMode } = useDemoMode();
 
@@ -96,8 +101,11 @@ export const SearchBlock: React.FC<ISearchBlockProps> = ({
     };
 
     useEffect(() => {
-        if (inputRef && inputRef.current) {
-            inputRef.current.focus();
+        if (inputRef?.current?.input) {
+            inputRef.current.input.focus();
+        }
+        if (externalInputRef?.current?.input) {
+            externalInputRef.current.input.focus();
         }
     }, []);
 
@@ -107,6 +115,12 @@ export const SearchBlock: React.FC<ISearchBlockProps> = ({
             runSearch(demoModeValue);
         }
     }, [isDemoMode])
+
+    useEffect(() => {
+        if (externalValue !== undefined) {
+            setInputValue(externalValue);
+        }
+    }, [externalValue])
 
     return (
         <div className={`${styles.search} ${hasBackground ? styles.search_background : ''}`} style={style}>
@@ -119,7 +133,7 @@ export const SearchBlock: React.FC<ISearchBlockProps> = ({
                 >
                     {lines > 1 ? (
                         <Input.TextArea
-                            ref={inputRef}
+                            ref={externalInputRef || inputRef}
                             placeholder={placeholder}
                             size='large'
                             value={inputValue}
@@ -136,7 +150,7 @@ export const SearchBlock: React.FC<ISearchBlockProps> = ({
                                 </svg>
 
                             }
-                            ref={inputRef}
+                            ref={externalInputRef || inputRef}
                             placeholder={placeholder}
                             size='large'
                             value={inputValue}
