@@ -175,17 +175,17 @@ export const chartCompareConfigObject: ChartControlConfig[] = [
     isControl: true, 
     defaultActive: true 
   },
-  { 
-    engName: 'avg_position', 
-    ruName: 'Средняя позиция', 
-    color: '#C084FC', 
-    isControlTooltip: false, 
-    hasUnits: false, 
-    isOnChart: true, 
-    isAnnotation: false, 
-    isControl: true, 
-    defaultActive: true 
-  },
+  // { 
+  //   engName: 'avg_position', 
+  //   ruName: 'Средняя позиция', 
+  //   color: '#C084FC', 
+  //   isControlTooltip: false, 
+  //   hasUnits: false, 
+  //   isOnChart: true, 
+  //   isAnnotation: false, 
+  //   isControl: true, 
+  //   defaultActive: true 
+  // },
   { 
     engName: 'drr_orders', 
     ruName: 'ДРР заказы, %', 

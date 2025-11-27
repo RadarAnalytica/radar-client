@@ -82,7 +82,10 @@ const MyAdvPage: React.FC = () => {
   useEffect(() => {
     if (activeBrand) {
       if (activeBrand.is_primary_collect) {
-        if (pageData.page !== 1 && currentPageRef.current !== pageData.page) {
+        if (pageData.page === 1) {
+          currentPageRef.current = 1;
+          loadData();
+        } else if (currentPageRef.current !== pageData.page) {
           currentPageRef.current = pageData.page;
           setPageData({ ...pageData, page: 1 });
         } else {
