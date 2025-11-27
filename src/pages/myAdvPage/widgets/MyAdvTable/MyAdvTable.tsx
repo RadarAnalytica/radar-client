@@ -12,6 +12,7 @@ import { toCamelCase } from './utils';
 import Loader from '@/components/ui/Loader';
 import DataCollectWarningBlock from '@/components/sharedComponents/dataCollectWarningBlock/dataCollectWarningBlock';
 import { useAppSelector } from '@/redux/hooks';
+import { formatNumberWithSpaces } from '@/service/utils';
 
 interface MyAdvTableProps {
   companyId?: string | number;
@@ -163,7 +164,7 @@ const MyAdvTable: React.FC<MyAdvTableProps> = ({
     if (dataIndex === 'views') {
       return (
         <span className={`${styles.labelCell} viewsCell`}>
-          {String(value ?? '')}
+          {formatNumberWithSpaces(value)}
         </span>
       );
     }
