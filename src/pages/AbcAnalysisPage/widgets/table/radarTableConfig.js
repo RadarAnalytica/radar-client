@@ -1,4 +1,4 @@
-export const ABC_ANALYSIS_TABLE_CONFIG_VER = '1.0.2';
+export const ABC_ANALYSIS_TABLE_CONFIG_VER = '1.0.3';
 
 export const getAbcAnalysisTableConfig = (viewType) => {
     const amountTitle = {
@@ -31,6 +31,7 @@ export const getAbcAnalysisTableConfig = (viewType) => {
             maxWidth: 300,
             sortable: false,
             hidden: false,
+            className: 'pe-none',
         },
         {
             title: 'Артикул поставщика',
@@ -41,6 +42,7 @@ export const getAbcAnalysisTableConfig = (viewType) => {
             maxWidth: 400,
             sortable: false,
             hidden: false,
+            className: 'pe-none',
         },
         {
             title: 'Артикул',
@@ -51,6 +53,7 @@ export const getAbcAnalysisTableConfig = (viewType) => {
             maxWidth: 400,
             sortable: false,
             hidden: false,
+            className: 'pe-none',
         },
         {
             title: amountTitle[viewType],
