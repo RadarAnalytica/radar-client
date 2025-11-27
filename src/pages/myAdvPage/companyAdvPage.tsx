@@ -76,7 +76,7 @@ const CompanyAdvPage: React.FC = () => {
         ...responseData?.summary_data?.advert_funnel,
         ...responseData?.summary_data?.advert_statistics,
         isParent: true,
-        children: responseData?.date_data?.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()).map(item => ({
+        children: responseData?.date_data?.map(item => ({
           ...item,
           company_name: format(item.date, "d MMMM yyyy", { locale: ru }),
           ...item.advert_funnel,
