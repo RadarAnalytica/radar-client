@@ -159,7 +159,6 @@ const MyAdvPage: React.FC = () => {
               setSortState={setSortState}
               tableConfig={tableConfig}
               setTableConfig={handleTableConfigChange}
-              showDataCollectWarning={activeBrand && !activeBrand?.is_primary_collect}
             />
           : <NoData />
         )}

@@ -11,6 +11,7 @@ import { ColumnConfig } from '../../config/tableConfig';
 import { toCamelCase } from './utils';
 import Loader from '@/components/ui/Loader';
 import DataCollectWarningBlock from '@/components/sharedComponents/dataCollectWarningBlock/dataCollectWarningBlock';
+import { useAppSelector } from '@/redux/hooks';
 
 interface MyAdvTableProps {
   companyId?: string | number;
@@ -23,7 +24,6 @@ interface MyAdvTableProps {
   setSortState: (sortState: { sort_field: string | undefined, sort_order: "ASC" | "DESC" | undefined }) => void;
   tableConfig: ColumnConfig[];
   setTableConfig: (config: ColumnConfig[]) => void;
-  showDataCollectWarning?: boolean;
 }
 
 const MyAdvTable: React.FC<MyAdvTableProps> = ({
@@ -36,11 +36,11 @@ const MyAdvTable: React.FC<MyAdvTableProps> = ({
   setSortState,
   tableConfig,
   setTableConfig,
-  showDataCollectWarning = false,
 }) => {
   const tableContainerRef = useRef(null);
   const navigate = useNavigate();
   const [tableData, setTableData] = useState<CompanyData[]>([]);
+  const { activeBrand } = useAppSelector((state) => state.filters);
 
   const [expandedRowKeys, setExpandedRowKeys] = useState<string[]>([`${companyId || ''}_`]);
 
@@ -295,7 +295,7 @@ const MyAdvTable: React.FC<MyAdvTableProps> = ({
         </div>
       </div>
 
-      {!showDataCollectWarning && <div className='pb-3'><DataCollectWarningBlock /></div>}
+      {activeBrand && !activeBrand?.is_primary_collect && <div className='pb-3'><DataCollectWarningBlock /></div>}
 
       <div className={styles.tableContainer}>
         <div className={styles.tableWrapper} ref={tableContainerRef}>
