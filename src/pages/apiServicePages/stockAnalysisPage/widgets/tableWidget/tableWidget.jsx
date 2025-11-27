@@ -139,14 +139,20 @@ const TableWidget = ({ stockAnalysisFilteredData, loading, progress, config, ini
     useEffect(() => {
         if (stockAnalysisFilteredData) {
             const data = stockAnalysisFilteredData.map(item => {
-                const sizesLength = item.sizes?.length || 0;
-                const hasChildren = sizesLength > 1;
+                const sizesLength = item?.sizes?.length || 0;
+                let showSizes = sizesLength > 1;
+
+                if (item?.showSizes) {
+                    showSizes = true;
+                    setExpandedRowKeys(prev => [...prev, `${item.article_data?.sku}_${sizesLength}`]);
+                }
+                
                 return {
                     ...item.article_data,
                     vendorСode: item.article,
-                    size: hasChildren ? `${sizesLength} ${getWordDeclension('размер', sizesLength )}` : item.article_data?.size,
-                    isParent: hasChildren,
-                    children: hasChildren ? item.sizes.map(child => ({
+                    size: showSizes ? `${sizesLength} ${getWordDeclension('размер', sizesLength )}` : item.article_data?.size,
+                    isParent: showSizes,
+                    children: showSizes ? item.sizes.map(child => ({
                         ...child,
                         vendorСode: item.article,
                         isLastChild: child.index === item.article_data.length - 1,
@@ -268,6 +274,7 @@ const TableWidget = ({ stockAnalysisFilteredData, loading, progress, config, ini
             <div className={styles.widget__scrollContainer} ref={containerRef} style={{ maxHeight: maxHeight ?? '100%' }}>
                 {tableData && tableData.length > 0 && tableConfig &&
                     <RadarTable
+                        rowKey={(record) => `${record.sku}_${record?.children?.length || 0}`}
                         config={tableConfig}
                         dataSource={[...tableData.slice((paginationState.current - 1) * paginationState.pageSize, paginationState.current * paginationState.pageSize)]}
                         preset='radar-table-simple'
