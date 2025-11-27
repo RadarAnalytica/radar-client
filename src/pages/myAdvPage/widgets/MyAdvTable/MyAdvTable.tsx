@@ -301,6 +301,7 @@ const MyAdvTable: React.FC<MyAdvTableProps> = ({
         <div className={styles.tableWrapper} ref={tableContainerRef}>
           {!data.length ? (!isDataCollecting && <NoData />) : (
             <RadarTable
+              key={JSON.stringify(tableConfig)}
               rowKey={(record: CompanyData) => `${record.company_id || ''}_${record.date || ''}`}
               config={tableConfig}
               dataSource={data}
