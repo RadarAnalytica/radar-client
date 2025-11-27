@@ -1,0 +1,170 @@
+.chart {
+    width: 100%;
+    background: white;
+    /* box-shadow: 0px 0px 20px 0px #00000014; */
+    padding: 16px;
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: stretch;
+    align-items: flex-start;
+    gap: 16px;
+    transition: all .1s ease-in-out;
+    min-height: 410px;
+}
+
+.chart:hover {
+    transform: scale(100.25%);
+}
+
+.chart__loaderWrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.chart__header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.chart__headerRight {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 12px;
+}
+
+.chart__titleWrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.chart__title {
+    font-family: Mulish;
+    font-weight: 600;
+    font-size: 22px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    color: #1A1A1A;
+    margin: 0;
+    padding: 0;
+}
+
+.chart__detailsButton {
+    border: none;
+    background: #FFF3D6;
+    padding: 6px 8px;
+    border-radius: 6px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    cursor: pointer;
+    font-family: Mulish;
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    color: #F0AD00;
+    gap: 6px;
+    width: auto;
+    text-align: left;
+}
+
+.chart__content {
+    width: 100%;
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    justify-content: stretch;
+    align-items: stretch;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Стили для меток на осях Y графика */
+.chart__content :global(canvas) {
+    color: #6B7280;
+}
+
+/* Альтернативный способ через псевдоэлементы Chart.js */
+.chart :global(.chartjs-render-monitor) {
+    color: #6B7280;
+}
+
+.block {
+    display: flex;
+    flex-direction: column;
+    justify-content: stretch;
+    align-items: flex-start;
+    gap: 10px;
+    transition: all .1s ease-in-out;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.block:hover {
+    transform: scale(101%);
+}
+
+.block__header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+}
+
+
+.block__chart {
+    width: 100%;
+    height: 100%;
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    justify-content: stretch;
+    align-items: stretch;
+    position: relative;
+}
+
+.block__chart :global(canvas) {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+.block__chart :global(.chartjs-render-monitor) {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+.block__legend {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+.block__legendWrapper {
+    width: auto;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 8px
+}
+.block__legendItemText {
+    font-family: Mulish;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    margin: 0;
+    padding: 0;
+    color: #1A1A1A;
+}
