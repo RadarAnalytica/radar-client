@@ -139,7 +139,8 @@ const TableWidget = ({ stockAnalysisFilteredData, loading, progress, config, ini
     useEffect(() => {
         if (stockAnalysisFilteredData) {
             const data = stockAnalysisFilteredData.map(item => {
-                const sizesLength = item?.sizes?.length || 0;
+                const sizesLength = item?.originalSizesLength ?? item?.sizes?.length ?? 0;
+                //const sizesLength = item?.originalSizesLength || 0;
                 let showSizes = sizesLength > 1;
 
                 if (item?.showSizes) {
@@ -328,6 +329,7 @@ const TableWidget = ({ stockAnalysisFilteredData, loading, progress, config, ini
                         preset='radar-table-simple'
                         stickyHeader
                         resizeable
+                        treeMode
                         onResize={onResizeGroup}
                         onSort={sortButtonClickHandler}
                         style={{ width: 'max-content', tableLayout: 'fixed' }}
