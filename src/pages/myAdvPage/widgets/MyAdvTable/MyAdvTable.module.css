@@ -162,7 +162,7 @@
 }
 
 .tableWrapper {
-  max-height: calc(100vh - 320px);
+  max-height: calc(100vh - 280px);
   position: relative;
   width: 100%;
   overflow: auto;

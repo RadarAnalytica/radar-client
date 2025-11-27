@@ -86,7 +86,6 @@ const MyAdvPage: React.FC = () => {
           currentPageRef.current = pageData.page;
           setPageData({ ...pageData, page: 1 });
         } else {
-          console.log('//!');
           loadData();
         }
       } else {
@@ -127,7 +126,7 @@ const MyAdvPage: React.FC = () => {
       <section className={styles.page__content}>
         <div className={styles.page__headerWrapper}>
           <Header 
-            title="Моя реклама"
+            title="Статистика"
             titlePrefix=""
             children={null}
             videoReviewLink=""

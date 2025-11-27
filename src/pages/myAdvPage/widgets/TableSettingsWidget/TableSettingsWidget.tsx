@@ -51,6 +51,7 @@ const TableSettingsWidget: React.FC<TableSettingsWidgetProps> = ({
           const updatedChildren = updateConfig(col.children);
           return {
             ...col,
+            colSpan: updatedChildren.filter(child => !child.hidden)?.length || 1,
             children: updatedChildren
           };
         } else {
@@ -78,23 +79,26 @@ const TableSettingsWidget: React.FC<TableSettingsWidgetProps> = ({
 
   const checkAllHandler = React.useCallback(() => {
     const values = form.getFieldsValue();
-    const keysArr = Object.keys(values);
-    if (keysArr.length > 0) {
-      setIsAllButtonState(!keysArr.some(_ => !values[_]));
+    const toggleableKeys = toggleableColumns
+      .filter(col => col.canToggle)
+      .map(col => col.dataIndex);
+    if (toggleableKeys.length > 0) {
+      setIsAllButtonState(!toggleableKeys.some(key => !values[key]));
     }
-  }, [form]);
+  }, [form, toggleableColumns]);
 
   const switchAllHandler = () => {
-    const values = form.getFieldsValue();
-    const keysArr = Object.keys(values);
+    const toggleableKeys = toggleableColumns
+      .filter(col => col.canToggle)
+      .map(col => col.dataIndex);
 
     if (isAllButtonState) {
-      keysArr.forEach(_ => {
-        form.setFieldValue(_, false);
+      toggleableKeys.forEach(key => {
+        form.setFieldValue(key, false);
       });
     } else {
-      keysArr.forEach(_ => {
-        form.setFieldValue(_, true);
+      toggleableKeys.forEach(key => {
+        form.setFieldValue(key, true);
       });
     }
 

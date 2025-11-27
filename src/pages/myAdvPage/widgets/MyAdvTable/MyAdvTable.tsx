@@ -69,8 +69,6 @@ const MyAdvTable: React.FC<MyAdvTableProps> = ({
   };
 
   const onResizeGroup = (columnKey: string, width: number) => {
-    width = Math.min(width, 400);
-    console.log('width', width);
     // Обновляем конфигурацию колонок с группированной структурой
     const updateColumnWidth = (columns: any[]): any[] => {
       return columns.map(col => {
@@ -340,7 +338,10 @@ const MyAdvTable: React.FC<MyAdvTableProps> = ({
                 borderBottom: '1px solid #E8E8E8',
                 height: '50px',
               }}
-              style={{ tableLayout: 'fixed' }}
+              style={{ 
+                tableLayout: 'fixed', 
+                width: 'max-content' 
+              }}
             />
           }
         </div>

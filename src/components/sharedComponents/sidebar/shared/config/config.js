@@ -149,7 +149,7 @@ export const menuConfig = [
             {
                 id: 1,
                 url: '/my-adv',
-                label: 'Моя реклама',
+                label: 'Статистика',
                 isActive: true,
                 isNew: true
             },

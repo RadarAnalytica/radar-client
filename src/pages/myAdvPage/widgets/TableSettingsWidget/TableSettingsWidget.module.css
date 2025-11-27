@@ -63,6 +63,14 @@
     font-weight: 600;
     color: #1a1a1a;
   }
+
+  :global(.ant-checkbox-disabled.ant-checkbox-checked .ant-checkbox-inner::after) {
+    border-color: #f0f0f0;
+  }
+
+  :global(.ant-checkbox-disabled.ant-checkbox-checked .ant-checkbox-inner) {
+    border-color: #f0f0f0;
+  }
 }
 
 .modal__content {

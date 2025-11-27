@@ -50,7 +50,7 @@ export class DemoDataService {
 
   // Получить данные для конкретного эндпоинта
   public async getDataForEndpoint(endpoint: string, filters?: any, options?: any): Promise<any> {
-    const baseEndpoint = endpoint.split('?')[0];
+    const [baseEndpoint, query] = endpoint.split('?');
 
     if (!baseEndpoint) {
       console.error('DemoDataService: No endpoint provided');
@@ -83,7 +83,7 @@ export class DemoDataService {
     }
 
     // Пробуем точное совпадение
-    const exactMatch = this.getExactMatch(baseEndpoint, filters, options);
+    const exactMatch = this.getExactMatch(baseEndpoint, filters, options, query);
     if (exactMatch) {
       return exactMatch;
     }
@@ -99,7 +99,7 @@ export class DemoDataService {
   }
 
   // Точное совпадение эндпоинтов
-  protected getExactMatch(endpoint: string, filters?: any, options?: any): any {
+  protected getExactMatch(endpoint: string, filters?: any, options?: any, query?: string): any {
     const endpointMap: Record<string, () => any> = {
       '/api/dashboard/': () => this.getDashboardData(filters),
       '/api/prod_analytic/': () => this.getStockAnalysisData(filters),
@@ -128,7 +128,7 @@ export class DemoDataService {
       '/api/control/spp': () => this.getWbControlsData(filters),
       '/api/control/drr': () => this.getWbControlsData(filters),
       '/api/advert/list': () => this.getAdvertData(filters, JSON.parse(options?.body)),
-      '/api/advert/': () => this.getAdvertCompanyData(filters),
+      '/api/advert/': () => this.getAdvertCompanyData(filters, query),
       '/api/product/self-costs': () => ({ message: "Success", updated_items: [{ product: 'Демо', cost: 100, fulfillment: 100 }] }),
       '/api/msg/': () => ([]),
       'https://radarmarket.ru/api/web-service/monitoring-oracle/easy/get': () => this.getEasyMonitoringData(),
@@ -308,8 +308,10 @@ export class DemoDataService {
     };
   }
 
-  private getAdvertCompanyData(filters?: any): any {
-    let data = this.getOriginalJson(advertCompanyData);
+  private getAdvertCompanyData(filters?: any, query?: string): any {
+    const companyId = query && parseInt(query.match(/\d+/)[0]);
+    const companyData = companyId ? advertListData.find((item: any) => item.company_id === companyId) : {};
+    const data = this.getOriginalJson(Object.assign({}, advertCompanyData, companyData));
     const days = this.getFilterDays(filters);
     
     // Определяем конечную дату
