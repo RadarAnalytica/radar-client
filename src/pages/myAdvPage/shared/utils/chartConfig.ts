@@ -46,18 +46,6 @@ export const chartCompareConfigObject: ChartControlConfig[] = [
     isControl: true, 
     defaultActive: true 
   },
-  // { 
-  //   engName: 'orders_amount', 
-  //   ruName: 'Заказано, шт', 
-  //   color: '#6366F1', 
-  //   isControlTooltip: false, 
-  //   hasUnits: true, 
-  //   units: '₽',
-  //   isOnChart: true, 
-  //   isAnnotation: false, 
-  //   isControl: true, 
-  //   defaultActive: true 
-  // },
   { 
     engName: 'expected_purchase', 
     ruName: 'Прогноз выкуп, шт', 
@@ -238,6 +226,18 @@ export const chartCompareConfigObject: ChartControlConfig[] = [
     engName: 'expected_cps', 
     ruName: 'Прогноз CPS, ₽', 
     color: '#ADADAD', 
+    isControlTooltip: false, 
+    hasUnits: true, 
+    units: '₽',
+    isOnChart: true, 
+    isAnnotation: false, 
+    isControl: true, 
+    defaultActive: true 
+  },
+  { 
+    engName: 'orders_amount', 
+    ruName: 'Заказов на сумму, ₽', 
+    color: '#6366F1', 
     isControlTooltip: false, 
     hasUnits: true, 
     units: '₽',

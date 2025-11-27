@@ -214,6 +214,7 @@ const getChartTooltip = (context: any, chartData: any) => {
 interface StatisticsChartProps {
   data: ChartDataProps | null;
   loading?: boolean;
+  isNoData?: boolean;
 }
 
 const tabs = ['Линейные', 'Воронка'];
@@ -236,10 +237,9 @@ const theme = {
   },
 };
 
-const StatisticsChart: React.FC<StatisticsChartProps> = ({ data, loading = false }) => {
+const StatisticsChart: React.FC<StatisticsChartProps> = ({ data, loading = false, isNoData = false }) => {
   const [activeTab, setActiveTab] = useState<string>('Линейные');
   const [chartData, setChartData] = useState<{ labels: string[]; datasets: ChartDataset[] } | null>(null);
-  const [showChart, setShowChart] = useState<boolean>(true);
   const [chartControls, setChartControls] = useState(
     chartCompareConfigObject.filter(_ => _.isControl).map(_ => ({ ..._, isActive: _.defaultActive }))
   );
@@ -253,7 +253,6 @@ const StatisticsChart: React.FC<StatisticsChartProps> = ({ data, loading = false
       
       if (!dateDataArray || dateDataArray.length === 0) {
         setChartData(null);
-        setShowChart(false);
         return;
       }
 
@@ -406,11 +405,7 @@ const StatisticsChart: React.FC<StatisticsChartProps> = ({ data, loading = false
     </svg>,
   ];
 
-  if (!showChart) {
-    return null;
-  }
-
-  return (
+  return isNoData ? null : (
     <div className={styles.chartWrapper}>
       <div className={styles.chart__header}>
         <h4 className={styles.chart__title}>Графики статистики</h4>

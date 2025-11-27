@@ -1,4 +1,4 @@
-export const TABLE_CONFIG_VERSION = '1.0.3';
+export const TABLE_CONFIG_VERSION = '1.0.4';
 export const TABLE_CONFIG_STORAGE_KEY = 'myAdv_tableConfig';
 
 export interface ColumnConfig {
@@ -30,9 +30,9 @@ export const getDefaultTableConfig = (): ColumnConfig[] => {
       groupColor: 'white',
       children: [
           {title: 'Название кампании', dataIndex: 'company_name', sortable: false, fixed: true, width: 240, className: 'pe-none'},
-          {title: 'Статус WB', dataIndex: 'company_status', sortable: false, fixed: true, width: 100, className: 'pe-none'},
-          {title: 'Тип кампании', dataIndex: 'company_type', sortable: false, fixed: true, width: 100, className: 'pe-none'},
-      ].map(_ => ({ ..._, key: _.dataIndex, minWidth: _.width }))
+          {title: 'Статус WB', dataIndex: 'company_status', sortable: true, fixed: true, width: 100},
+          {title: 'Тип кампании', dataIndex: 'company_type', sortable: true, fixed: true, width: 100},
+      ].map(_ => ({ ..._, key: _.dataIndex }))
     },
     {
       title: 'Рекламная воронка',

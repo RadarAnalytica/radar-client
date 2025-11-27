@@ -44,6 +44,27 @@ export interface ApiResponse {
   per_page?: number;
 }
 
+// Интерфейс для данных по датам
+export interface DateData {
+  date: string;
+  advert_funnel: AdvertFunnel;
+  advert_statistics: AdvertStatistics;
+}
+
+// Интерфейс для ответа API по отдельной компании (getAdvertDataById)
+export interface CompanyApiResponse {
+  company_id: number;
+  company_name: string;
+  company_status: string;
+  company_type: string;
+  company_start_date: string;
+  summary_data: {
+    advert_funnel: AdvertFunnel;
+    advert_statistics: AdvertStatistics;
+  };
+  date_data: DateData[];
+}
+
 // Интерфейс для данных таблицы (совместим с текущим кодом)
 export interface CompanyData {
   id: number;

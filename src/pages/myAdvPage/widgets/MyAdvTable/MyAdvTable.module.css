@@ -113,54 +113,6 @@
   text-align: center;
 }
 
-:global(.radar-table__header) {
-  tr th {
-    font-size: 14px;
-  }
-
-  tr:first-child {
-    th {
-      padding-top: 8px;
-
-      span {
-        font-weight: 600;
-        font-size: 18px;
-        color: #1A1A1A;
-      }
-    }
-  }
-
-  tr:last-child {
-    th {
-      background-color: #F7F6FE !important;
-      padding: 10px 0;
-
-      &:first-child {
-        border-radius: 12px 0 0 12px;
-      }
-
-      &:last-child {
-        border-radius: 0 12px 12px 0;
-      }
-    }
-  }
-}
-
-:global(.radar-table__body-row--child) {
-  td {
-    height: 40px !important;
-
-    & > div {
-      height: 40px !important;
-    }
-  }
-}
-
-:global(.radar-table__body-cell:has(.viewsCell)), 
-:global(.radar-table__header-cell.viewsCell) {
-  border-left: 1px solid #E8E8E8;
-}
-
 .tableWrapper {
   max-height: calc(100vh - 280px);
   position: relative;
@@ -175,6 +127,54 @@
     border-bottom: 2px solid #e8e8e8;
     font-weight: 600;
     color: #1a1a1a;
+  }
+
+  :global(.radar-table__header) {
+    tr th {
+      font-size: 14px;
+    }
+  
+    tr:first-child {
+      th {
+        padding-top: 8px;
+  
+        span {
+          font-weight: 600;
+          font-size: 18px;
+          color: #1A1A1A;
+        }
+      }
+    }
+  
+    tr:last-child {
+      th {
+        background-color: #F7F6FE !important;
+        padding: 10px 0;
+  
+        &:first-child {
+          border-radius: 12px 0 0 12px;
+        }
+  
+        &:last-child {
+          border-radius: 0 12px 12px 0;
+        }
+      }
+    }
+  }
+  
+  :global(.radar-table__body-row--child) {
+    td {
+      height: 40px !important;
+  
+      & > div {
+        height: 40px !important;
+      }
+    }
+  }
+  
+  :global(.radar-table__body-cell:has(.viewsCell)), 
+  :global(.radar-table__header-cell.viewsCell) {
+    border-left: 1px solid #E8E8E8;
   }
 
   :global(.radar-table-row:hover) {
@@ -258,5 +258,9 @@
   font-size: 14px;
   color: #1A1A1A;
   padding: 8px 0;
+}
+
+.noDataBlock {
+  padding: 1rem 10px;
 }
 

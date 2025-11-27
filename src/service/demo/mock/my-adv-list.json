@@ -27,7 +27,7 @@
             "ad_spend": 3951.66
         },
         "company_id": 10000001,
-        "company_name": "Демо-компания №1",
+        "company_name": "Демо-кампания №1",
         "company_status": "Активна",
         "company_type": "Единая ставка",
         "company_start_date": "2025-10-23"
@@ -60,7 +60,7 @@
             "ad_spend": 3911.44
         },
         "company_id": 10000002,
-        "company_name": "Демо-компания №2",
+        "company_name": "Демо-кампания №2",
         "company_status": "Активна",
         "company_type": "Единая ставка",
         "company_start_date": "2025-11-19"
@@ -93,7 +93,7 @@
             "ad_spend": 8595.98
         },
         "company_id": 10000003,
-        "company_name": "Демо-компания №3",
+        "company_name": "Демо-кампания №3",
         "company_status": "Активна",
         "company_type": "Единая ставка",
         "company_start_date": "2025-11-06"
@@ -126,7 +126,7 @@
             "ad_spend": 2.27
         },
         "company_id": 10000004,
-        "company_name": "Демо-компания №4",
+        "company_name": "Демо-кампания №4",
         "company_status": "Активна",
         "company_type": "Единая ставка",
         "company_start_date": "2025-09-04"
@@ -159,7 +159,7 @@
             "ad_spend": 359.87
         },
         "company_id": 10000005,
-        "company_name": "Демо-компания №5",
+        "company_name": "Демо-кампания №5",
         "company_status": "Активна",
         "company_type": "Единая ставка",
         "company_start_date": "2025-09-29"
@@ -192,7 +192,7 @@
             "ad_spend": 5960.8
         },
         "company_id": 10000006,
-        "company_name": "Демо-компания №6",
+        "company_name": "Демо-кампания №6",
         "company_status": "Активна",
         "company_type": "Единая ставка",
         "company_start_date": "2025-11-18"
@@ -225,7 +225,7 @@
             "ad_spend": 1865.06
         },
         "company_id": 10000007,
-        "company_name": "Демо-компания №7",
+        "company_name": "Демо-кампания №7",
         "company_status": "Активна",
         "company_type": "Единая ставка",
         "company_start_date": "2025-10-03"
@@ -258,7 +258,7 @@
             "ad_spend": 2742.14
         },
         "company_id": 10000008,
-        "company_name": "Демо-компания №8",
+        "company_name": "Демо-кампания №8",
         "company_status": "Активна",
         "company_type": "Единая ставка",
         "company_start_date": "2025-10-17"
@@ -291,7 +291,7 @@
             "ad_spend": 5790.95
         },
         "company_id": 10000009,
-        "company_name": "Демо-компания №9",
+        "company_name": "Демо-кампания №9",
         "company_status": "Активна",
         "company_type": "Единая ставка",
         "company_start_date": "2025-10-22"
@@ -324,7 +324,7 @@
             "ad_spend": 42.63
         },
         "company_id": 10000010,
-        "company_name": "Демо-компания №10",
+        "company_name": "Демо-кампания №10",
         "company_status": "Активна",
         "company_type": "Единая ставка",
         "company_start_date": "2025-09-24"
@@ -357,7 +357,7 @@
             "ad_spend": 0.35
         },
         "company_id": 10000011,
-        "company_name": "Демо-компания №11",
+        "company_name": "Демо-кампания №11",
         "company_status": "Завершена",
         "company_type": "Единая ставка",
         "company_start_date": "2024-09-07"
@@ -390,7 +390,7 @@
             "ad_spend": 0.61
         },
         "company_id": 10000012,
-        "company_name": "Демо-компания №12",
+        "company_name": "Демо-кампания №12",
         "company_status": "Завершена",
         "company_type": "Единая или ручная ставка",
         "company_start_date": "2025-09-04"
@@ -423,7 +423,7 @@
             "ad_spend": 1711.55
         },
         "company_id": 10000013,
-        "company_name": "Демо-компания №13",
+        "company_name": "Демо-кампания №13",
         "company_status": "На паузе",
         "company_type": "Единая или ручная ставка",
         "company_start_date": "2025-11-14"
@@ -456,7 +456,7 @@
             "ad_spend": 0.66
         },
         "company_id": 10000014,
-        "company_name": "Демо-компания №14",
+        "company_name": "Демо-кампания №14",
         "company_status": "На паузе",
         "company_type": "Единая или ручная ставка",
         "company_start_date": "2025-09-11"
@@ -489,7 +489,7 @@
             "ad_spend": 1958.99
         },
         "company_id": 10000015,
-        "company_name": "Демо-компания №15",
+        "company_name": "Демо-кампания №15",
         "company_status": "На паузе",
         "company_type": "Единая или ручная ставка",
         "company_start_date": "2025-10-21"
@@ -522,7 +522,7 @@
             "ad_spend": 5551.49
         },
         "company_id": 10000016,
-        "company_name": "Демо-компания №16",
+        "company_name": "Демо-кампания №16",
         "company_status": "На паузе",
         "company_type": "Единая или ручная ставка",
         "company_start_date": "2025-11-23"
@@ -555,7 +555,7 @@
             "ad_spend": 3746.24
         },
         "company_id": 10000017,
-        "company_name": "Демо-компания №17",
+        "company_name": "Демо-кампания №17",
         "company_status": "На паузе",
         "company_type": "Единая или ручная ставка",
         "company_start_date": "2025-11-20"
@@ -588,7 +588,7 @@
             "ad_spend": 0.46
         },
         "company_id": 10000018,
-        "company_name": "Демо-компания №18",
+        "company_name": "Демо-кампания №18",
         "company_status": "На паузе",
         "company_type": "Единая или ручная ставка",
         "company_start_date": "2025-09-11"
@@ -621,7 +621,7 @@
             "ad_spend": 25357.98
         },
         "company_id": 10000019,
-        "company_name": "Демо-компания №19",
+        "company_name": "Демо-кампания №19",
         "company_status": "На паузе",
         "company_type": "Единая или ручная ставка",
         "company_start_date": "2025-11-23"
@@ -654,7 +654,7 @@
             "ad_spend": 8981.73
         },
         "company_id": 10000020,
-        "company_name": "Демо-компания №20",
+        "company_name": "Демо-кампания №20",
         "company_status": "На паузе",
         "company_type": "Единая или ручная ставка",
         "company_start_date": "2025-11-19"
@@ -687,7 +687,7 @@
             "ad_spend": 0.55
         },
         "company_id": 10000021,
-        "company_name": "Демо-компания №21",
+        "company_name": "Демо-кампания №21",
         "company_status": "На паузе",
         "company_type": "Единая ставка",
         "company_start_date": "2025-01-01"
@@ -720,7 +720,7 @@
             "ad_spend": 1.27
         },
         "company_id": 10000022,
-        "company_name": "Демо-компания №22",
+        "company_name": "Демо-кампания №22",
         "company_status": "На паузе",
         "company_type": "Единая ставка",
         "company_start_date": "2025-09-24"
@@ -753,7 +753,7 @@
             "ad_spend": 0.48
         },
         "company_id": 10000023,
-        "company_name": "Демо-компания №23",
+        "company_name": "Демо-кампания №23",
         "company_status": "На паузе",
         "company_type": "Единая ставка",
         "company_start_date": "2025-09-08"
@@ -786,7 +786,7 @@
             "ad_spend": 1781.89
         },
         "company_id": 10000024,
-        "company_name": "Демо-компания №24",
+        "company_name": "Демо-кампания №24",
         "company_status": "На паузе",
         "company_type": "Единая ставка",
         "company_start_date": "2025-10-13"
@@ -819,7 +819,7 @@
             "ad_spend": 0.32
         },
         "company_id": 10000025,
-        "company_name": "Демо-компания №25",
+        "company_name": "Демо-кампания №25",
         "company_status": "На паузе",
         "company_type": "Единая ставка",
         "company_start_date": "2025-08-16"

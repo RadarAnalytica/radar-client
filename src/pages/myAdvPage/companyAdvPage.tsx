@@ -17,7 +17,7 @@ import {
   mergeTableConfig,
   type ColumnConfig 
 } from './config/tableConfig';
-import { CompanyData } from './data/mockData';
+import { CompanyApiResponse, CompanyData } from './data/mockData';
 import styles from './companyAdvPage.module.css';
 import { Link } from 'react-router-dom';
 import { useAppSelector } from '@/redux/hooks';
@@ -39,31 +39,68 @@ const CompanyAdvPage: React.FC = () => {
   });
   const [data, setData] = useState<CompanyData>({} as CompanyData);
   const [pageData, setPageData] = useState({ page: 1, per_page: 50, total_count: 1 });
-
+  const [isNoData, setIsNoData] = useState<boolean>(false);
   const progress = useLoadingProgress({ loading });
 
-  const prepareTableData = (responseData: CompanyData) => {
-    if (responseData?.company_id) {
-      const result = {
+  // Ключ для хранения метаданных кампании в localStorage
+  const getCompanyMetaKey = () => `company_meta_${companyId}`;
+
+  // Сохранение метаданных кампании в localStorage
+  const saveCompanyMeta = (responseData: CompanyApiResponse) => {
+    const meta = {
+      company_name: responseData.company_name,
+      company_start_date: responseData.company_start_date,
+      company_status: responseData.company_status,
+      company_type: responseData.company_type,
+      ad_spend_stored: responseData.summary_data?.advert_statistics?.ad_spend,
+    };
+    localStorage.setItem(getCompanyMetaKey(), JSON.stringify(meta));
+  };
+
+  // Получение метаданных кампании из localStorage
+  const getCompanyMeta = () => {
+    const saved = localStorage.getItem(getCompanyMetaKey());
+    return saved ? JSON.parse(saved) : null;
+  };
+
+  const processResponseData = (responseData: CompanyApiResponse) => {
+    const responseCompanyId = responseData?.company_id;
+    setIsNoData(!responseCompanyId);
+    
+    if (responseCompanyId) {
+      // Сохраняем метаданные в localStorage
+      saveCompanyMeta(responseData);
+      
+      return {
         ...responseData,
         ...responseData?.summary_data?.advert_funnel,
         ...responseData?.summary_data?.advert_statistics,
         isParent: true,
-        children: responseData?.date_data?.sort((a, b) => new Date(b.date) - new Date(a.date)).map(item => ({
+        children: responseData?.date_data?.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()).map(item => ({
           ...item,
           company_name: format(item.date, "d MMMM yyyy", { locale: ru }),
           ...item.advert_funnel,
           ...item.advert_statistics,
         })) || [],
       };
-  
-      return result;
     }
+
+    // Извлекаем сохранённые метаданные из localStorage
+    const savedMeta = getCompanyMeta();
     
-    return {
-      ...data,
-      children: [],
-      summary_data: {},
+    return { 
+      ...data, 
+      ...savedMeta,
+      children: [], 
+      summary_data: {}, 
+      views: null, 
+      clicks: null, 
+      cpc: null, 
+      cart: null, 
+      orders: null, 
+      view_click: null, 
+      drr_orders: null,
+      ad_spend: null,
     };
   };
 
@@ -73,7 +110,7 @@ const CompanyAdvPage: React.FC = () => {
     try {
       const requestObject = getRequestObject({}, selectedRange);
       const response = await ServiceFunctions.getAdvertDataById(authToken, companyId, requestObject, sortState);
-      const preparedData = prepareTableData(response);
+      const preparedData = processResponseData(response);
       setData(preparedData);
       progress.complete();
       await setTimeout(() => {
@@ -143,7 +180,7 @@ const CompanyAdvPage: React.FC = () => {
           <>
             <MyAdvTable
               companyId={companyId}
-              data={[data]}
+              data={isNoData ? [] : [data]}
               columns={tableConfig}
               loading={loading}
               pageData={pageData}
@@ -153,8 +190,7 @@ const CompanyAdvPage: React.FC = () => {
               tableConfig={tableConfig}
               setTableConfig={handleTableConfigChange}
             />
-
-            <StatisticsChart data={data} loading={loading} />
+            <StatisticsChart data={data} loading={loading} isNoData={isNoData} />
           </>
         )}
       </section>

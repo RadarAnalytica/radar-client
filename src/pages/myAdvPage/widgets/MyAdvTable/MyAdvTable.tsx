@@ -260,15 +260,15 @@ const MyAdvTable: React.FC<MyAdvTableProps> = ({
     current?.scrollTo({ top: 0, behavior: 'smooth' });
   }, [pageData.page]);
 
-  if (loading) {
-    return <Loader loading={loading} progress={0} />;
-  }
-
   const handleExpandedRowsChange = (keys: React.Key[]) => {
     const stringKeys = keys.map(key => String(key));
     setExpandedRowKeys(stringKeys);
     localStorage.setItem('MY_ADV_EXPANDED_TABLE_ROWS_STATE', JSON.stringify({ keys: stringKeys }));
   };
+
+  if (loading) {
+    return <Loader loading={loading} progress={0} />;
+  }
 
   return (
     <div className={styles.table}>
@@ -294,7 +294,7 @@ const MyAdvTable: React.FC<MyAdvTableProps> = ({
 
       <div className={styles.tableContainer}>
         <div className={styles.tableWrapper} ref={tableContainerRef}>
-          {tableData && tableData.length > 0 && tableConfig &&
+          {tableConfig &&
             <RadarTable
               rowKey={(record: CompanyData) => `${record.company_id || ''}_${record.date || ''}`}
               config={tableConfig}
@@ -325,6 +325,7 @@ const MyAdvTable: React.FC<MyAdvTableProps> = ({
                 idx: [],
                 renderer: customCellRender,
               }}
+              noDataRender={() => <div className={styles.noDataBlock}>Для выбранного периода данные не найдены</div>}
               headerCellWrapperStyle={{
                 minHeight: '0px',
                 padding: '12px 10px',
@@ -340,7 +341,8 @@ const MyAdvTable: React.FC<MyAdvTableProps> = ({
               }}
               style={{ 
                 tableLayout: 'fixed', 
-                width: 'max-content' 
+                width: 'max-content',
+                minWidth: '100%'
               }}
             />
           }

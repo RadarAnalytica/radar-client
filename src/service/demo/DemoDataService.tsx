@@ -309,10 +309,11 @@ export class DemoDataService {
   }
 
   private getAdvertCompanyData(filters?: any, query?: string): any {
-    const companyId = query && parseInt(query.match(/\d+/)[0]);
-    const companyData = companyId ? advertListData.find((item: any) => item.company_id === companyId) : {};
-    const data = this.getOriginalJson(Object.assign({}, advertCompanyData, companyData));
     const days = this.getFilterDays(filters);
+    const companyId = query && parseInt(query.match(/\d+/)[0]);
+    const listData = this.getAdvertData(filters);
+    const companyData = companyId ? listData.data.find((item: any) => item.company_id === companyId) : {};
+    const data = this.getOriginalJson(Object.assign(advertCompanyData, companyData, {summary_data: {...companyData}}));
     
     // Определяем конечную дату
     let dayTo = new Date().toISOString().split('T')[0];

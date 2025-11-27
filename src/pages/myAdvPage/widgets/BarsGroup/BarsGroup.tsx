@@ -12,6 +12,8 @@ interface BarsGroupProps {
 }
 
 const BarsGroup: React.FC<BarsGroupProps> = ({ data = {}, loadData, loading = false }) => {
+  const adSpend = data?.ad_spend || data?.ad_spend_stored;
+
   return (
     <div className={styles.barsGroup}>
       <div className={styles.fullWidthBar}>
@@ -36,7 +38,7 @@ const BarsGroup: React.FC<BarsGroupProps> = ({ data = {}, loadData, loading = fa
           <div className={styles.campaignBar__right}>
             <div className={styles.campaignBar__budget}>
               <span className={styles.campaignBar__budget__label}>Бюджет</span>
-              <span className={styles.campaignBar__budget__value}>{data.ad_spend ? `${formatPrice(data.ad_spend, '₽')}` : '-'}</span>
+              <span className={styles.campaignBar__budget__value}>{adSpend ? `${formatPrice(adSpend, '₽')}` : '-'}</span>
             </div>
             {/* <button className={styles.refreshButton} onClick={loadData}>
               Обновить
