@@ -38,13 +38,17 @@ const antdTheme = {
 
 interface IPositionTrackingMainPageWidgetProps {
     hasAddBlock?: boolean;
+    hasProceedToBlocks?: boolean;
     setIsAddModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
     createProject: (sku: string) => Promise<void>;
+    loading: boolean;
 }
 export const PositionTrackingMainPageWidget: React.FC<IPositionTrackingMainPageWidgetProps> = ({
     hasAddBlock = false,
+    hasProceedToBlocks = true,
     setIsAddModalVisible,
     createProject,
+    loading,
 }) => {
     const navigate = useNavigate();
     const submitHandler = (fields: Record<string, any>) => {
@@ -56,7 +60,7 @@ export const PositionTrackingMainPageWidget: React.FC<IPositionTrackingMainPageW
     return (
         <div className={`${styles.widget} ${hasAddBlock ? styles.widget_hasAddBlock : styles.widget_noAddBlock}`}>
             {hasAddBlock &&
-                <div className={styles.addBlock}>
+                <div className={`${styles.addBlock} ${!hasProceedToBlocks ? styles.addBlock_noProceedToBlocks : ''}`}>
                     <div className={styles.addBlock__wrapper}>
                         <p className={styles.addBlock__title}>Добавьте ваш первый артикул, позиции которого хотите начать отлеживать</p>
                         <ConfigProvider theme={antdTheme}>
@@ -76,6 +80,7 @@ export const PositionTrackingMainPageWidget: React.FC<IPositionTrackingMainPageW
                                     type="primary"
                                     htmlType="submit"
                                     style={{ fontWeight: 600 }}
+                                    loading={loading}
                                 >
                                     Добавить
                                 </Button>
@@ -84,43 +89,47 @@ export const PositionTrackingMainPageWidget: React.FC<IPositionTrackingMainPageW
                     </div>
                 </div>
             }
-            <ProceedToBlock
-                title="Проверка позиции"
-                placeholder="Введите артикул"
-                submit={(inputValue) => {
-                    let normilizedId: string;
-                    if (/^(|\d+)$/.test(inputValue)) {
-                        normilizedId = inputValue;
-                    } else {
-                        const startId = inputValue.indexOf('wildberries.ru/catalog/') + 'wildberries.ru/catalog/'.length;
-                        const endId = inputValue.indexOf('/detail.aspx');
-                        if (startId === -1 || endId === -1) {
-                            // setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не верный формат артикула. Вставьте только числа или ссылку вида: https://www.wildberries.ru/catalog/ID/detail.aspx' });
-                            return;
-                        }
-                        normilizedId = inputValue.substring(startId, endId);
-                    }
-                    navigate(`/position-check/?id=${normilizedId}`);
-                }}
-            />
-            <ProceedToBlock
-                title="Подбор ключей"
-                placeholder="Введите запрос"
-                hasTabs={true}
-                tabsOptions={['Содержит', 'Совпадает полностью']}
-                submit={(inputValue, tab) => {
-                    console.log('tab', tab);
-                    console.log('inputValue', inputValue);
-                    navigate(`/keywords-selection/?query=${inputValue}&match_type=${tab}`);
-                }}
-            />
-            <ProceedToBlock
-                title="Проверка выдачи (SERP)"
-                placeholder="Введите запрос"
-                submit={(inputValue) => {
-                    navigate(`/serp-check/?query=${inputValue}`);
-                }}
-            />
+            {hasProceedToBlocks &&
+                <>
+                    <ProceedToBlock
+                        title="Проверка позиции"
+                        placeholder="Введите артикул"
+                        submit={(inputValue) => {
+                            let normilizedId: string;
+                            if (/^(|\d+)$/.test(inputValue)) {
+                                normilizedId = inputValue;
+                            } else {
+                                const startId = inputValue.indexOf('wildberries.ru/catalog/') + 'wildberries.ru/catalog/'.length;
+                                const endId = inputValue.indexOf('/detail.aspx');
+                                if (startId === -1 || endId === -1) {
+                                    // setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не верный формат артикула. Вставьте только числа или ссылку вида: https://www.wildberries.ru/catalog/ID/detail.aspx' });
+                                    return;
+                                }
+                                normilizedId = inputValue.substring(startId, endId);
+                            }
+                            navigate(`/position-check/?id=${normilizedId}`);
+                        }}
+                    />
+                    <ProceedToBlock
+                        title="Подбор ключей"
+                        placeholder="Введите запрос"
+                        hasTabs={true}
+                        tabsOptions={['Содержит', 'Совпадает полностью']}
+                        submit={(inputValue, tab) => {
+                            console.log('tab', tab);
+                            console.log('inputValue', inputValue);
+                            navigate(`/keywords-selection/?query=${inputValue}&match_type=${tab}`);
+                        }}
+                    />
+                    <ProceedToBlock
+                        title="Проверка выдачи (SERP)"
+                        placeholder="Введите запрос"
+                        submit={(inputValue) => {
+                            navigate(`/serp-check/?query=${inputValue}`);
+                        }}
+                    />
+                </>
+            }
         </div>
     );
 };

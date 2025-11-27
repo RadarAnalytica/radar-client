@@ -1,5 +1,6 @@
+import { format } from "date-fns";
 import styles from "./positionTrackingProjectsCustomCellRender.module.css"
-import { Button } from "antd";
+import moment from "moment";
 
 export const positionTrackingProjectsCustomCellRender = (value: any, record: any, index: number, dataIndex: string, setDeleteModalVisible: (visible: boolean) => void, setEditModalVisible: (visible: boolean) => void, setDeleteModalState: (state: { projectId: string }) => void, setEditModalState: (state: { projectId: string, projectName: string }) => void) => {
     if (dataIndex === 'actions') {
@@ -20,6 +21,9 @@ export const positionTrackingProjectsCustomCellRender = (value: any, record: any
                 </button>
             </div>
         )
+    }
+    if (dataIndex === 'created_at' || dataIndex === 'updated_at') {
+        return <div className={styles.customCell}>{moment(value).format('DD.MM.YYYY')}</div>
     }
 
 }

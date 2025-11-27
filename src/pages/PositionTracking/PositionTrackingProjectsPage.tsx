@@ -16,6 +16,8 @@ import { useNavigate } from 'react-router-dom';
 import Breadcrumbs from '@/components/sharedComponents/header/headerBreadcrumbs/breadcrumbs';
 import { ServiceFunctions } from '@/service/serviceFunctions';
 import AuthContext from '@/service/AuthContext';
+import { getWordDeclension } from '@/service/utils';
+import ErrorModal from '@/components/sharedComponents/modals/errorModal/errorModal';
 
 
 
@@ -108,22 +110,25 @@ const deleteModalPrimaryButtonTheme = {
         },
     },
 };
-// antd config providers themes
-const segmentedTheme = {
+
+const inputTheme = {
     token: {
-        fontSize: 14,
+        colorBgContainer: 'white',
+        colorBorder: '#5329FF1A',
+        borderRadius: 8,
+        fontFamily: 'Mulish',
+        fontSize: 12,
         fontWeight: 500,
+        controlHeightLG: 38,
     },
     components: {
-        Segmented: {
-            itemActiveBg: '#5329FF1A',
-            itemSelectedBg: '#5329FF1A',
-            trackBg: 'transparent',
-            trackPadding: 0,
-            itemHoverBg: '#5329FF10',
-            itemColor: '#1A1A1A80',
-            itemSelectedColor: '#1A1A1A',
-            itemHoverColor: '#1A1A1A',
+        Input: {
+            activeBorderColor: '#5329FF1A',
+            hoverBorderColor: '#5329FF1A',
+            activeOutlineColor: 'transparent',
+            hoverBg: 'white',
+            activeShadow: 'transparent',
+            activeBg: 'white',
         }
     }
 }
@@ -144,54 +149,17 @@ interface Project {
     total_products: number;
 }
 
-const projectsMockData = [
-    {
-        key: '1',
-        name: 'Ваш первый проект',
-        wb_id: 'PRJ-001',
-        wb_id_image_link: 'https://via.placeholder.com/64x64.png?text=PR',
-        createdAt: '12.09.2024',
-        updatedAt: '05.10.2024',
-        productsCount: 12,
-        actions: '—',
-    },
-    {
-        key: '2',
-        name: 'Проект Москва',
-        wb_id: 'PRJ-002',
-        wb_id_image_link: 'https://via.placeholder.com/64x64.png?text=MSK',
-        createdAt: '20.08.2024',
-        updatedAt: '01.10.2024',
-        productsCount: 8,
-        actions: '—',
-    },
-    {
-        key: '3',
-        name: 'Проект Санкт-Петербург',
-        wb_id: 'PRJ-003',
-        wb_id_image_link: 'https://via.placeholder.com/64x64.png?text=SPB',
-        createdAt: '03.07.2024',
-        updatedAt: '28.09.2024',
-        productsCount: 15,
-        actions: '—',
-    },
-    {
-        key: '4',
-        name: 'Проект Новинки',
-        wb_id: 'PRJ-004',
-        wb_id_image_link: 'https://via.placeholder.com/64x64.png?text=NEW',
-        createdAt: '11.10.2024',
-        updatedAt: '14.10.2024',
-        productsCount: 4,
-        actions: '—',
-    },
-];
-
 const initRequestStatus = {
     isLoading: false,
     isError: false,
     isSuccess: false,
     message: '',
+    errorType: 'Modal'
+}
+
+interface SkuValidity {
+    wb_id: string;
+    name: string;
 }
 
 const PositionTrackingProjectsPage = () => {
@@ -203,7 +171,7 @@ const PositionTrackingProjectsPage = () => {
     const [requestStatus, setRequestStatus] = useState<typeof initRequestStatus>(initRequestStatus);
     const [editModalVisible, setEditModalVisible] = useState(false);
     const [editModalState, setEditModalState] = useState<{ projectId: string, projectName: string }>({ projectId: '', projectName: '' });
-    const [addModalState, setAddModalState] = useState<{ sku: string, projectId: string }>({ sku: '', projectId: '' });
+    const [addModalNameValue, setAddModalNameValue] = useState<string>('Мой новый проект');
 
     const getProjectsList = async (token: string): Promise<void> => {
         if (!requestStatus.isLoading) {
@@ -227,30 +195,67 @@ const PositionTrackingProjectsPage = () => {
         }
 
     }
+    const getSkuValidity = async (token: string, sku: string): Promise<SkuValidity | undefined> => {
+        if (!requestStatus.isLoading) {
+            setRequestStatus({ ...initRequestStatus, isLoading: true });
+        };
+        try {
+            const res = await ServiceFunctions.getPostionTrackingSkuValidity(token, sku);
+            if (!res.ok) {
+                console.error('getSkuValidity error:');
+                setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось получить валидность SKU' });
+                return;
+            }
+            const data: SkuValidity = await res.json();
+            console.log('sku validity', data);
+            setRequestStatus(initRequestStatus);
+            return data;
 
-    const createProject = async (token: string, product: string, projectName?: string): Promise<void> => {
+        } catch (error) {
+            console.error('getSkuValidity error:', error);
+            setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось получить валидность SKU' });
+            return;
+        }
+    }
+    const createProject = async (token: string, projectName: string): Promise<void> => {
         setRequestStatus({ ...initRequestStatus, isLoading: true });
         try {
-            const res = await ServiceFunctions.createPostionTrackingProject(token, projectName ?? 'Новый проект');
+            const res = await ServiceFunctions.createPostionTrackingProject(token, projectName);
+            if (!res.ok) {
+                console.error('createProject error:');
+                setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось создать проект' });
+                setIsAddModalVisible(false);
+                return;
+            }
+            await getProjectsList(token);
+            setRequestStatus(initRequestStatus);
+        } catch (error) {
+            console.error('createProject error:', error);
+            setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось создать проект' });
+            setIsAddModalVisible(false);
+            return;
+        }
+    }
+    const createProjectWithProduct = async (token: string, product: string, projectName?: string): Promise<void> => {
+        setRequestStatus({ ...initRequestStatus, isLoading: true });
+        try {
+            let skuValidity: SkuValidity | undefined;
+            if (product) {
+                skuValidity = await getSkuValidity(token, product);
+            }
+
+            if (product && !skuValidity) {
+                return
+            }
+            const res = await ServiceFunctions.createPostionTrackingProjectWithProduct(token, projectName ?? null, skuValidity?.wb_id ?? null, skuValidity?.name ?? null);
             if (!res.ok) {
                 console.error('createProject error:');
                 setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось создать проект' });
                 return;
             }
             const data: Project = await res.json();
-            if (product && data.id) {
-                const addRes = await ServiceFunctions.addProductToPositionTrackingProject(token, data.id, product);
-                if (!addRes.ok) {
-                    console.error('addProductToPositionTrackingProject error:');
-                    setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось добавить товар к проекту' });
-                    return;
-                }
-                const parsedAddRes: Product = await addRes.json();
-                console.log('added product to project', data);
-                getProjectsList(token);
-            }
+            await getProjectsList(token);
             console.log('created project', data);
-            setRequestStatus(initRequestStatus);
         } catch (error) {
             console.error('createProject error:', error);
             setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось создать проект' });
@@ -266,16 +271,17 @@ const PositionTrackingProjectsPage = () => {
             if (!res.ok) {
                 console.error('deleteProject error:');
                 setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось удалить проект' });
+                setDeleteModalVisible(false);
                 return;
             }
             console.log('deleted project');
-            getProjectsList(token);
+            await getProjectsList(token);
         } catch (error) {
             console.error('deleteProject error:', error);
             setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось удалить проект' });
+            setDeleteModalVisible(false);
         }
     }
-
     const updateProject = async (token: string, projectId: string, projectName: string): Promise<void> => {
         if (!requestStatus.isLoading) {
             setRequestStatus({ ...initRequestStatus, isLoading: true });
@@ -285,13 +291,15 @@ const PositionTrackingProjectsPage = () => {
             if (!res.ok) {
                 console.error('updateProject error:');
                 setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось обновить проект' });
+                setEditModalVisible(false);
                 return;
             }
             console.log('updated project');
-            getProjectsList(token);
+            await getProjectsList(token);
         } catch (error) {
             console.error('updateProject error:', error);
             setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось обновить проект' });
+            setEditModalVisible(false);
             return;
         }
     }
@@ -332,17 +340,38 @@ const PositionTrackingProjectsPage = () => {
                     />
                 </div>
                 {/* !header */}
-                <div className={styles.page__titleBlock}>
-                    <p className={styles.page__title}>У вас {projectsList?.length ?? 0} проектов</p>
-                    <ConfigProvider theme={modalPrimaryButtonTheme}>
-                        <Button type='primary' onClick={() => setIsAddModalVisible(true)}>
-                            <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M11 3V11M11 19V11M11 11H3H19" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                            </svg>
-                            Создать проект
-                        </Button>
-                    </ConfigProvider>
-                </div>
+                {projectsList?.length > 0 &&
+                    <div className={styles.page__titleBlock}>
+                        {projectsList?.length > 0 && <p className={styles.page__title}>У вас {projectsList?.length} {getWordDeclension('проект', projectsList.length)}</p>}
+                        {!projectsList?.length && <p className={styles.page__title}>У вас нет проектов</p>}
+                        <ConfigProvider theme={modalPrimaryButtonTheme}>
+                            <Button type='primary' onClick={() => setIsAddModalVisible(true)}>
+                                <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M11 3V11M11 19V11M11 11H3H19" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                                </svg>
+                                Создать проект
+                            </Button>
+                        </ConfigProvider>
+                    </div>
+                }
+                {!projectsList?.length &&
+                    <PositionTrackingMainPageWidget setIsAddModalVisible={setIsAddModalVisible} hasAddBlock={true} hasProceedToBlocks={false} loading={requestStatus.isLoading} createProject={async (sku: string) => {
+                        let normilizedId: string;
+                        if (/^(|\d+)$/.test(sku)) {
+                            normilizedId = sku;
+                        } else {
+                            const startId = sku.indexOf('wildberries.ru/catalog/') + 'wildberries.ru/catalog/'.length;
+                            const endId = sku.indexOf('/detail.aspx');
+                            if (startId === -1 || endId === -1) {
+                                setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не верный формат артикула. Вставьте только числа или ссылку вида: https://www.wildberries.ru/catalog/ID/detail.aspx' });
+                                return;
+                            }
+                            normilizedId = sku.substring(startId, endId);
+                        }
+                        await createProjectWithProduct(authToken, normilizedId, undefined);
+                    }}
+                    />
+                }
                 {projectsList?.length > 0 &&
                     <div className={styles.page__tableWrapper}>
                         <RadarTable
@@ -351,41 +380,61 @@ const PositionTrackingProjectsPage = () => {
                             dataSource={projectsList}
                             paginationContainerStyle={{ display: 'none' }}
                             customCellRender={{
-                                idx: ['actions'],
+                                idx: ['actions', 'created_at', 'updated_at'],
                                 renderer: (value: any, record: any, index: number, dataIndex: string) => positionTrackingProjectsCustomCellRender(value, record, index, dataIndex, setDeleteModalVisible, setEditModalVisible, setDeleteModalState, setEditModalState) as React.ReactNode,
                             }}
                         />
-                    </div>}
+                    </div>
+                }
 
                 {/* edit modal */}
                 <Modal
                     open={editModalVisible}
-                    onCancel={() => setEditModalVisible(false)}
-                    onClose={() => setEditModalVisible(false)}
-                    onOk={() => setEditModalVisible(false)}
+                    onCancel={() => {
+                        if (requestStatus.isLoading) return;
+                        setEditModalVisible(false)
+                    }}
+                    onClose={() => {
+                        if (requestStatus.isLoading) return;
+                        setEditModalVisible(false)
+                    }}
+                    onOk={() => {
+                        if (requestStatus.isLoading) return;
+                        setEditModalVisible(false)
+                    }}
                     footer={null}
                     centered
                     width={600}
                 >
                     <div className={styles.addModal}>
                         <p className={styles.addModal__title}>Изменить название проекта</p>
-                        <Input
-                            size='large'
-                            className={styles.modal__input}
-                            placeholder='Введите название'
-                            value={editModalState.projectName}
-                            onChange={(e) => setEditModalState({ ...editModalState, projectName: e.target.value })}
-                        />
+                        <ConfigProvider theme={inputTheme}>
+                            <Input
+                                size='large'
+                                className={styles.modal__input}
+                                placeholder='Введите название'
+                                value={editModalState.projectName}
+                                onChange={(e) => setEditModalState({ ...editModalState, projectName: e.target.value })}
+                            />
+                        </ConfigProvider>
                         <div className={styles.addModal__buttonsWrapper}>
                             <ConfigProvider theme={modalCancelButtonTheme}>
-                                <Button variant='outlined' onClick={() => setIsAddModalVisible(false)}>Отмена</Button>
+                                <Button variant='outlined' onClick={() => setEditModalVisible(false)} loading={requestStatus.isLoading}>Отмена</Button>
                             </ConfigProvider>
                             <ConfigProvider theme={modalPrimaryButtonTheme}>
-                                <Button type='primary' onClick={() => { 
-                                    if (!editModalState.projectId || !editModalState.projectName) return;
-                                    updateProject(authToken, editModalState.projectId, editModalState.projectName);
-                                    setEditModalVisible(false);
-                                }}>Сохранить</Button>
+                                <Button
+                                    loading={requestStatus.isLoading}
+                                    disabled={!editModalState?.projectName?.trim()}
+                                    type='primary'
+                                    onClick={async () => {
+                                        if (!editModalState.projectId || !editModalState.projectName) return;
+                                        if (projectsList?.some(_ => _.name === editModalState.projectName?.trim())) {
+                                            setEditModalVisible(false);
+                                            return;
+                                        };
+                                        await updateProject(authToken, editModalState.projectId, editModalState.projectName);
+                                        setEditModalVisible(false);
+                                    }}>Сохранить</Button>
                             </ConfigProvider>
                         </div>
                     </div>
@@ -402,49 +451,60 @@ const PositionTrackingProjectsPage = () => {
                 >
                     <div className={styles.addModal}>
                         <p className={styles.addModal__title}>Добавление товара</p>
-                        <SearchBlock
-                            style={{ padding: 0 }}
-                            submitHandler={(value) => {
-                                setAddModalState({ sku: value, projectId: addModalState.projectId });
-                            }}
-                            demoModeValue=''
-                        />
-
-                        <PlainSelect
-                            selectId='brandSelect'
-                            label='Проект'
-                            value={addModalState.projectId}
-                            optionsData={[{ value: 1, label: 'Москва' }, { value: 2, label: 'Санкт-Петербург' }]}
-                            handler={(value: number) => {
-                                setAddModalState({ sku: addModalState.sku, projectId: value.toString() });
-                            }}
-                            mode={undefined}
-                            allowClear={false}
-                            disabled={false}
-                            style={{ width: '100%', maxWidth: '100%' }}
-                        />
-
+                        <ConfigProvider theme={inputTheme}>
+                            <Input
+                                size='large'
+                                className={styles.modal__input}
+                                placeholder='Введите название'
+                                value={addModalNameValue}
+                                onChange={(e) => setAddModalNameValue(e.target.value)}
+                                status={projectsList?.some(_ => _.name === addModalNameValue?.trim()) ? 'error' : ''}
+                            />
+                        </ConfigProvider>
                         <div className={styles.addModal__buttonsWrapper}>
                             <ConfigProvider theme={modalCancelButtonTheme}>
-                                <Button variant='outlined' onClick={() => { setIsAddModalVisible(false); setAddModalState({ sku: '', projectId: '' }) }}>Отмена</Button>
+                                <Button
+                                    variant='outlined'
+                                    onClick={() => { setIsAddModalVisible(false); setAddModalNameValue('') }}
+                                    loading={requestStatus.isLoading}
+                                >
+                                    Отмена
+                                </Button>
                             </ConfigProvider>
                             <ConfigProvider theme={modalPrimaryButtonTheme}>
-                                <Button type='primary' onClick={() => {
-                                    if (!addModalState.sku || !addModalState.projectId) return;
-                                    createProject(authToken, addModalState.sku, addModalState.projectId);
-                                    setIsAddModalVisible(false)
-                                }}>Добавить</Button>
+                                <Button
+                                    loading={requestStatus.isLoading}
+                                    type='primary'
+                                    disabled={!addModalNameValue.trim()}
+                                    onClick={async () => {
+                                        if (projectsList?.some(_ => _.name === addModalNameValue?.trim())) {
+                                            return;
+                                        };
+                                        await createProject(authToken, addModalNameValue?.trim());
+                                        setIsAddModalVisible(false)
+                                    }}
+                                >
+                                    Добавить
+                                </Button>
                             </ConfigProvider>
                         </div>
                     </div>
                 </Modal>
-
                 {/* delete modal */}
                 <Modal
                     open={deleteModalVisible}
-                    onCancel={() => setDeleteModalVisible(false)}
-                    onClose={() => setDeleteModalVisible(false)}
-                    onOk={() => setDeleteModalVisible(false)}
+                    onCancel={() => {
+                        if (requestStatus.isLoading) return;
+                        setDeleteModalVisible(false)
+                    }}
+                    onClose={() => {
+                        if (requestStatus.isLoading) return;
+                        setDeleteModalVisible(false)
+                    }}
+                    onOk={() => {
+                        if (requestStatus.isLoading) return;
+                        setDeleteModalVisible(false)
+                    }}
                     footer={null}
                     centered
                     width={400}
@@ -453,20 +513,35 @@ const PositionTrackingProjectsPage = () => {
                         <p className={styles.addModal__title} style={{ maxWidth: '300px' }}>Вы уверены, что хотите удалить проект?</p>
                         <div className={styles.addModal__buttonsWrapper}>
                             <ConfigProvider theme={deleteModalCancelButtonTheme}>
-                                <Button onClick={() => setDeleteModalVisible(false)} style={{ width: '50%' }}>Отменить</Button>
+                                <Button
+                                    loading={requestStatus.isLoading}
+                                    onClick={() => setDeleteModalVisible(false)}
+                                    style={{ width: '50%' }}
+                                >
+                                    Отменить
+                                </Button>
                             </ConfigProvider>
                             <ConfigProvider theme={deleteModalPrimaryButtonTheme}>
-                                <Button type='primary' onClick={() => 
-                                    {
+                                <Button
+                                    loading={requestStatus.isLoading}
+                                    type='primary'
+                                    onClick={async () => {
                                         if (!deleteModalState.projectId) return;
-                                        deleteProject(authToken, deleteModalState.projectId);
+                                        await deleteProject(authToken, deleteModalState.projectId);
                                         setDeleteModalVisible(false);
                                     }
-                                } style={{ width: '50%' }}>Удалить</Button>
+                                    } style={{ width: '50%' }}>Удалить</Button>
                             </ConfigProvider>
                         </div>
                     </div>
                 </Modal>
+                {/* error modal */}
+                <ErrorModal
+                    message={requestStatus.message}
+                    open={requestStatus.isError && requestStatus.errorType === 'Modal'}
+                    onCancel={() => setRequestStatus(initRequestStatus)}
+                    onClose={() => setRequestStatus(initRequestStatus)}
+                />
             </section>
             {/* ---------------------- */}
         </main>

@@ -595,7 +595,7 @@ export const ServiceFunctions = {
 				'content-type': 'application/json',
 				authorization: 'JWT ' + token,
 			},
-			signal,
+			signal
 		});
 
 		if (!response.ok) {
@@ -2155,7 +2155,20 @@ export interface IPositionCheckMainTableData {
 		})
 		return res
 	},
-	createPostionTrackingProject: async (token, projectName, sku, productName) => {
+	createPostionTrackingProject: async (token, projectName) => {
+		const res = await fetchApi(`${URL}/api/position-track/project/create`, {
+			method: 'POST',
+			headers: {
+				'content-type': 'application/json',
+				authorization: 'JWT ' + token,
+			},
+			body: JSON.stringify({
+				name: projectName,
+			}),
+		})
+		return res
+	},
+	createPostionTrackingProjectWithProduct: async (token, projectName, sku, productName) => {
 		const res = await fetchApi(`${URL}/api/position-track/radar-product/create`, {
 			method: 'POST',
 			headers: {
@@ -2170,17 +2183,14 @@ export interface IPositionCheckMainTableData {
 		})
 		return res
 	},
-	addProductToPositionTrackingProject: async (token, projectId, productId) => {
+	addProductToPositionTrackingProject: async (token, requestObject) => {
 		const res = await fetchApi(`${URL}/api/position-track/radar-product/create`, {
 			method: 'POST',
 			headers: {
 				'content-type': 'application/json',
 				authorization: 'JWT ' + token,
 			},
-			body: JSON.stringify({
-				wb_id: productId,
-				project_id: projectId
-			}),
+			body: JSON.stringify(requestObject),
 		})
 		return res
 	},
@@ -2207,6 +2217,17 @@ export interface IPositionCheckMainTableData {
 			}),
 		})
 		return res
-	}
+	},
+	getPositionTrackingMainPageData: async (token, requestObject) => {
+		const res = await fetchApi(`${URL}/api/position-track/web-product/get-totals`, {
+			method: 'POST',
+			headers: {
+				'content-type': 'application/json',
+				authorization: 'JWT ' + token,
+			},
+			body: JSON.stringify(requestObject),
+		})
+		return res
+	},
 };
 
