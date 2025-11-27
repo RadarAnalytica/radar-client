@@ -43,6 +43,7 @@ const MyAdvTable: React.FC<MyAdvTableProps> = ({
   const navigate = useNavigate();
   const [tableData, setTableData] = useState<CompanyData[]>([]);
   const { activeBrand } = useAppSelector((state) => state.filters);
+  const isDataCollecting = activeBrand && !activeBrand?.is_primary_collect;
 
   const [expandedRowKeys, setExpandedRowKeys] = useState<string[]>([`${companyId || ''}_`]);
 
@@ -290,18 +291,15 @@ const MyAdvTable: React.FC<MyAdvTableProps> = ({
           />
         </div>
         <div className={styles.settingsWrapper}>
-          <TableSettingsWidget
-            tableConfig={tableConfig}
-            setTableConfig={setTableConfig}
-          />
+          {!isDataCollecting && <TableSettingsWidget tableConfig={tableConfig} setTableConfig={setTableConfig} />}
         </div>
       </div>
 
-      {activeBrand && !activeBrand?.is_primary_collect && <div className='pb-3'><DataCollectWarningBlock /></div>}
+      {isDataCollecting && <div className='pb-3'><DataCollectWarningBlock /></div>}
 
       <div className={styles.tableContainer}>
         <div className={styles.tableWrapper} ref={tableContainerRef}>
-          {!data.length ? <NoData /> :
+          {!data.length ? (!isDataCollecting && <NoData />) : (
             <RadarTable
               rowKey={(record: CompanyData) => `${record.company_id || ''}_${record.date || ''}`}
               config={tableConfig}
@@ -352,7 +350,7 @@ const MyAdvTable: React.FC<MyAdvTableProps> = ({
                 minWidth: '100%'
               }}
             />
-          }
+          )}
         </div>
       </div>
     </div>
