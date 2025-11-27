@@ -17,7 +17,7 @@ import {
   mergeTableConfig,
   type ColumnConfig 
 } from './config/tableConfig';
-import { mockCompaniesData, CompanyData, ApiResponse } from './data/mockData';
+import { CompanyData, ApiResponse } from './data/mockData';
 import styles from './myAdvPage.module.css';
 import AuthContext from '@/service/AuthContext';
 import { ServiceFunctions, getRequestObject } from '@/service/serviceFunctions';
@@ -31,7 +31,7 @@ const MyAdvPage: React.FC = () => {
     sort_field: undefined, 
     sort_order: undefined 
   });
-  const [data, setData] = useState<CompanyData[]>(mockCompaniesData);
+  const [data, setData] = useState<CompanyData[]>([]);
   const [pageData, setPageData] = useState({ page: 1, per_page: 25, total_count: 25 });
   const [searchQuery, setSearchQuery] = useState<string>('');
   const { selectedRange, activeBrand } = useAppSelector((state) => state.filters);
@@ -145,25 +145,22 @@ const MyAdvPage: React.FC = () => {
           loading={loading}
         />
 
-        {loading && (
+        {loading ? (
           <div className={styles.loader__container}>
             <Loader loading={loading} progress={progress.value} />
           </div>
-        )}
-
-        {!loading && (data?.length > 0
-          ? <MyAdvTable
-              data={data}
-              columns={tableConfig}
-              loading={loading}
-              pageData={pageData}
-              setPageData={setPageData}
-              sortState={sortState}
-              setSortState={setSortState}
-              tableConfig={tableConfig}
-              setTableConfig={handleTableConfigChange}
-            />
-          : <NoData />
+        ) : (
+          <MyAdvTable
+            data={data}
+            columns={tableConfig}
+            loading={loading}
+            pageData={pageData}
+            setPageData={setPageData}
+            sortState={sortState}
+            setSortState={setSortState}
+            tableConfig={tableConfig}
+            setTableConfig={handleTableConfigChange}
+          />
         )}
       </section>
     </main>
