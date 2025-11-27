@@ -169,9 +169,10 @@ const initRequestStatus = {
 const getMainPageDataRequestObject = (
     settings: { project: string | number, dest: string | number },
     tabs: string,
+    projectsList: Project[]
 ) => {
     return {
-        project_ids: [settings.project],
+        project_ids: settings.project === 0 && projectsList?.length > 0 ? projectsList.map((project) => project.id) : [settings.project],
         city: settings.dest ?? null,
         order_by: tabs === 'По просмотрам' ? 'shows' : tabs === 'По ключам' ? 'queries' : tabs === 'По средней позиции' ? 'place' : null,
     }
@@ -342,7 +343,7 @@ const PositionTrackingMainPage = () => {
         if (!requestStatus.isLoading) {
             setRequestStatus({ ...initRequestStatus, isLoading: true });
         };
-        const requestObject = getMainPageDataRequestObject(settingsState, activeFilter);
+        const requestObject = getMainPageDataRequestObject(settingsState, activeFilter, projectsList);
         try {
             const res = await ServiceFunctions.getPositionTrackingMainPageData(token, requestObject);
             if (!res.ok) {

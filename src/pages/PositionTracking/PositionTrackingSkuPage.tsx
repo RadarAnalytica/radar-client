@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useRef, useState } from 'react';
+import { useCallback, useMemo, useRef, useState, useEffect, useContext } from 'react';
 import Header from '@/components/sharedComponents/header/header';
 import styles from './PositionTrackingSkuPage.module.css';
 import Sidebar from '@/components/sharedComponents/sidebar/sidebar';
@@ -25,6 +25,10 @@ import {
     type ActiveElement,
 } from 'chart.js';
 import { PlainSelect } from '@/components/sharedComponents/apiServicePagesFiltersComponent/features/plainSelect/plainSelect';
+import { ServiceFunctions } from '@/service/serviceFunctions';
+import { useParams } from 'react-router-dom';
+import AuthContext from '@/service/AuthContext';
+import { formatPrice } from '@/service/utils';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Tooltip, Filler);
 
@@ -196,15 +200,113 @@ type MarkPoint = {
     label: string;
 };
 
+interface ProductMeta {
+    wb_id: number;
+    name: string;
+    wb_id_image_url: string;
+    created_at: string;
+}
+
+interface PresetDay {
+    date: string;
+    place: number;
+    trend: boolean;
+}
+
+interface QueryData {
+    query: string;
+    frequency: number;
+    total_goods: number;
+    days: PresetDay[];
+}
+
+interface Preset {
+    query: string;
+    frequency: number;
+    total_goods: number;
+    days: PresetDay[];
+    queries_data: QueryData[];
+}
+
+interface PositionTrackingChartData {
+    date: string;
+    price: number;
+    queries: number;
+    shows: number;
+    visibility: number;
+}
+
+interface PositionTrackingSkuPageData {
+    product_meta: ProductMeta;
+    presets: Preset[];
+    dates: string[];
+    charts: PositionTrackingChartData[];
+    total_queries: number;
+    total_presets: number;
+}
+
+const initRequestStatus = {
+    isLoading: false,
+    isError: false,
+    message: '',
+};
+
+const getSkuPageDataRequestObject = (sku: string) => {
+    return {
+        wb_id: sku,
+        place_from: null,
+        place_to: null,
+        freq_from: null,
+        freq_to: null,
+        keywords: null, // string[]
+    }
+}
+
+const formatDateShort = (dateInput: string) => {
+    const date = new Date(dateInput);
+    const day = date.getDate();
+    const months = ['янв', 'фев', 'мар', 'апр', 'май', 'июн', 'июл', 'авг', 'сен', 'окт', 'ноя', 'дек'];
+    return `${day} ${months[date.getMonth()]}`;
+};
+
 const PositionTrackingSkuPage = () => {
+    const { authToken } = useContext(AuthContext);
     const [isAddModalVisible, setIsAddModalVisible] = useState(false);
     const [tableType, setTableType] = useState<'Кластеры' | 'По запросам'>('Кластеры');
     const [marks, setMarks] = useState<MarkPoint[]>([]);
     const [pendingMarkIndex, setPendingMarkIndex] = useState<number | null>(null);
     const [inputValue, setInputValue] = useState('');
     const [markTooltip, setMarkTooltip] = useState<{ id: string; label: string; x: number; y: number } | null>(null);
-    const highlightPointIndex = 3;
+    const highlightPointIndex = null;
     const activityChartContainerRef = useRef<HTMLDivElement>(null);
+    const [skuData, setSkuData] = useState<PositionTrackingSkuPageData | null>(null);
+    const [requestStatus, setRequestStatus] = useState<typeof initRequestStatus>(initRequestStatus);
+    const { sku } = useParams();
+
+    const getSkuPageData = async (token: string) => {
+        if (!requestStatus.isLoading) {
+            setRequestStatus({ ...initRequestStatus, isLoading: true });
+        };
+
+        const requestObject = getSkuPageDataRequestObject(sku);
+        try {
+            const res = await ServiceFunctions.getPositionTrackingSkuPageData(token, requestObject);
+            if (!res.ok) {
+                console.error('getSkuPageData error:');
+                setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось получить данные для SKU' });
+                return;
+            }
+            const data: PositionTrackingSkuPageData = await res.json();
+            console.log('sku page data', data);
+            setSkuData(data);
+            setRequestStatus(initRequestStatus);
+        }
+        catch (error) {
+            console.error('getSkuPageData error:', error);
+            setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось получить данные для SKU' });
+            return;
+        }
+    }
 
     const activityChartData = useMemo<ChartData<'line'>>(() => {
         const labels = ['7 Окт', '8 Окт', '9 Окт', '10 Окт', '11 Окт', '12 Окт', '13 Окт', '14 Окт', '15 Окт', '16 Окт', '17 Окт', '18 Окт', '19 Окт', '20 Окт'];
@@ -282,6 +384,83 @@ const PositionTrackingSkuPage = () => {
             ],
         };
     }, [marks]);
+
+    const getActivityChartData = useCallback((skuData: PositionTrackingSkuPageData): ChartData<'line'> => {
+        const labels = ['7 Окт', '8 Окт', '9 Окт', '10 Окт', '11 Окт', '12 Окт', '13 Окт', '14 Окт', '15 Окт', '16 Окт', '17 Окт', '18 Окт', '19 Окт', '20 Окт'];
+        const marksMap = new Map(marks.map((mark) => [mark.index, mark]));
+        const markData = labels.map((_label, index) => (marksMap.has(index) ? 460 : null));
+        return {
+            labels: skuData?.dates.map((date) => formatDateShort(date)),
+            datasets: [
+                {
+                    label: 'Просмотры, шт',
+                    data: skuData?.charts.map((chart) => chart.shows),
+                    yAxisID: 'y',
+                    borderColor: '#5B3BE1',
+                    backgroundColor: 'rgba(83, 41, 255, 0.08)',
+                    fill: {
+                        target: 'origin',
+                        above: 'rgba(83, 41, 255, 0.12)',
+                        below: 'transparent',
+                    },
+                    pointBackgroundColor: '#5B3BE1',
+                    pointBorderColor: '#FFFFFF',
+                    pointBorderWidth: 3,
+                    pointRadius: 5,
+                    pointHoverRadius: 7,
+                    pointHoverBorderWidth: 3,
+                    tension: 0.45,
+                    cubicInterpolationMode: 'monotone',
+                    borderWidth: 3,
+                    clip: 16,
+                },
+                {
+                    label: 'Ключи, шт',
+                    data: skuData?.charts.map((chart) => chart.queries),
+                    yAxisID: 'y',
+                    borderColor: '#FFB21A',
+                    pointBackgroundColor: '#FFB21A',
+                    pointBorderColor: '#FFFFFF',
+                    pointBorderWidth: 3,
+                    pointRadius: 5,
+                    pointHoverRadius: 7,
+                    pointHoverBorderWidth: 3,
+                    tension: 0.45,
+                    cubicInterpolationMode: 'monotone',
+                    borderWidth: 3,
+                    fill: false,
+                },
+                {
+                    label: 'Цена, руб',
+                    data: [210, 208, 208, 206, 205, 204, 204, 204, 206, 360, 420, 420, 380, 320],
+                    yAxisID: 'y1',
+                    borderColor: '#FF5470',
+                    pointBackgroundColor: '#FF5470',
+                    pointBorderColor: '#FFFFFF',
+                    pointBorderWidth: 3,
+                    pointRadius: 5,
+                    pointHoverRadius: 7,
+                    pointHoverBorderWidth: 3,
+                    tension: 0.45,
+                    cubicInterpolationMode: 'monotone',
+                    borderWidth: 3,
+                    fill: false,
+                },
+                {
+                    label: 'Метки',
+                    data: markData,
+                    yAxisID: 'y1',
+                    showLine: false,
+                    pointBackgroundColor: '#5329FF',
+                    pointBorderColor: '#FFFFFF',
+                    pointBorderWidth: 3,
+                    pointRadius: 6,
+                    pointHoverRadius: 8,
+                    pointHitRadius: 12,
+                },
+            ],
+        };
+    }, [skuData]);
 
     const handleActivityChartClick = useCallback((chart: ChartJS, elements: ActiveElement[]) => {
         if (elements.length === 0) {
@@ -471,10 +650,11 @@ const PositionTrackingSkuPage = () => {
         },
     }), [handleActivityChartClick, handleActivityChartHover]);
 
-    const visibilityChartData = useMemo<ChartData<'line'>>(() => {
-        const values = [0.7, 1, 1.2, 1.5, 1, 1, 1.5];
+    const getVisibilityChartData = useCallback((skuData: PositionTrackingSkuPageData): ChartData<'line'> => {
+        const values = skuData?.charts.map((chart) => chart.visibility);
+        const labels = skuData?.dates.map((date) => formatDateShort(date));
         return {
-            labels: ['12 окт', '13 окт', '14 окт', '15 окт', '16 окт', '17 окт', '18 окт'],
+            labels,
             datasets: [
                 {
                     data: values,
@@ -495,7 +675,7 @@ const PositionTrackingSkuPage = () => {
                 },
             ],
         };
-    }, [highlightPointIndex]);
+    }, [skuData]);
 
     const visibilityChartOptions = useMemo<ChartOptions<'line'>>(() => ({
         responsive: true,
@@ -571,6 +751,14 @@ const PositionTrackingSkuPage = () => {
             },
         },
     }), []);
+
+
+    useEffect(() => {
+        if (authToken) {
+            getSkuPageData(authToken);
+        }
+    }, [sku])
+
     return (
         <main className={styles.page}>
             <MobilePlug />
@@ -603,17 +791,23 @@ const PositionTrackingSkuPage = () => {
                 </div>
                 {/* !header */}
                 <div className={styles.page__skuBlock}>
-                    <RadarProductBar data={mockSkuData} isLoading={false} />
+                    <RadarProductBar
+                        data={{
+                            ...skuData?.product_meta,
+                            wb_id_image_link: skuData?.product_meta?.wb_id_image_url,
+                        }}
+                        isLoading={false}
+                    />
                     <div className={styles.page__miniChart}>
                         <div className={styles.page__miniChartHeader}>
                             <p className={styles.page__miniChartTitle}>Видимость</p>
                             <div className={styles.page__miniChartValues}>
-                                <span className={styles.page__miniChartMainValue}>49.51%</span>
-                                <RadarRateMark value={100} units='%' />
+                                <span className={styles.page__miniChartMainValue}>{formatPrice(skuData?.charts?.reduce((acc, chart) => acc + chart.visibility, 0) / skuData?.charts?.length, '%')}</span>
+                                {/* <RadarRateMark value={100} units='%' /> */}
                             </div>
                         </div>
                         <div className={styles.page__miniChartCanvas}>
-                            <Line data={visibilityChartData} options={visibilityChartOptions} />
+                            <Line data={getVisibilityChartData(skuData)} options={visibilityChartOptions} />
                         </div>
                     </div>
                 </div>

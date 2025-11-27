@@ -2229,5 +2229,16 @@ export interface IPositionCheckMainTableData {
 		})
 		return res
 	},
+	getPositionTrackingSkuPageData: async (token, requestObject) => {
+		const res = await fetchApi(`${URL}/api/position-track/web-product/get-product`, {
+			method: 'POST',
+			headers: {
+				'content-type': 'application/json',
+				authorization: 'JWT ' + token,
+			},
+			body: JSON.stringify(requestObject),
+		})
+		return res
+	},
 };
 
