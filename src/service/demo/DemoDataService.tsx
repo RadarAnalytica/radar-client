@@ -918,18 +918,46 @@ export class DemoDataService {
   }
 
   // Stock Analysis данные
-  private getStockAnalysisData(filters?: any): StockProductData[] {
-    const products = this.getOriginalJson(stockAnalysis) as StockProductData[];
+  private getStockAnalysisData(filters?: any): any[] {
+    const products = this.getOriginalJson(stockAnalysis) as any[];
     const days = this.getFilterDays(filters);
     const denominator = 90 / days;
 
-    products.map(item => {
+    const devideItem = (item: StockProductData) => {
+      item.lostRevenue = item.lostRevenue / denominator;
+      item.averageProfit = item.averageProfit / denominator;
+      item.marginalProfit = item.marginalProfit / denominator;
+      item.toPayoff = item.toPayoff / denominator;
       item.saleSum = item.saleSum / denominator;
-      item.quantity = item.quantity / denominator;
+      item.quantity = Math.round(item.quantity / denominator);
       item.lessReturns = item.lessReturns / denominator;
       item.costGoodsSold = item.costGoodsSold / denominator;
       item.returnsSum = item.returnsSum / denominator;
+      item.purchased = Math.round(item.purchased / denominator);
+      item.notPurchased = Math.round(item.notPurchased / denominator);
+      item.completed = Math.round(item.completed / denominator);
+      item.returnsQuantity = Math.round(item.returnsQuantity / denominator);
+      item.toClient = Math.round(item.toClient / denominator);
+      item.to_client_sum = item.to_client_sum / denominator;
+      item.fromClient = Math.round(item.fromClient / denominator);
+      item.from_client_sum = item.from_client_sum / denominator;
+      item.dataRadar = Math.round(item.dataRadar / denominator);
+      item.orderQuantity = Math.round(item.orderQuantity / denominator);
+      item.orderSum = item.orderSum / denominator;
+      item.purchasedPercent = Math.round(item.purchasedPercent / denominator);
+      item.orderCountDay = Math.round(item.orderCountDay / denominator);
+      item.saleCountDay = Math.round(item.saleCountDay / denominator);
+      item.commissionWB = item.commissionWB / denominator;
+      item.fines = item.fines / denominator;
+      item.additionalPayment = item.additionalPayment / denominator;
+    };
+
+    products.map(item => {
+      devideItem(item.article_data);
+      item.sizes.map(size => devideItem(size));
     });
+
+    console.log(products, denominator);
 
     return products;
   }
