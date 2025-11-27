@@ -64,7 +64,7 @@ const AbcAnalysisPage = () => {
 				activeBrand,
 				filters,
 				paginationState.current,
-				sorting.direction.toLowerCase()
+				sorting
 			);
 
 			progress.complete();

@@ -229,23 +229,28 @@ export const ServiceFunctions = {
 		return data;
 	},
 
-	getAbcData: async (viewType, token, selectedRange, idShop, filters, page, sorting) => {
-		//let rangeParams = rangeApiFormat(day);
-		const body = getRequestObject(filters, selectedRange, idShop);
+	getAbcData: async (viewType, token, selectedRange, idShop, filters, page, sorting = {}) => {
+		let url = `/api/abc_data/${viewType}?page=${page}&per_page=100`;
+		if (sorting.key && sorting.direction) {
+			url += `&sorting_field=${sorting.key}&sorting=${sorting.direction.toLowerCase()}`;
+		}
+
 		const res = await fetchApi(
-			`/api/abc_data/${viewType}?page=${page}&per_page=100&sorting=${sorting}`,
+			url,
 			{
 				method: 'POST',
 				headers: {
 					'content-type': 'application/json',
 					authorization: 'JWT ' + token,
 				},
-				body: JSON.stringify(body)
+				body: JSON.stringify(getRequestObject(filters, selectedRange, idShop))
 			}
 		);
+
 		if (res.status !== 200) {
 			throw new Error(`Ошибка запроса: ${res.status}`);
 		}
+
 		const data = await res.json();
 		return data;
 	},
