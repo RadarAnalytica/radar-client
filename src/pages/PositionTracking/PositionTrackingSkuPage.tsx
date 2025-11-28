@@ -30,6 +30,7 @@ import { useParams } from 'react-router-dom';
 import AuthContext from '@/service/AuthContext';
 import { formatPrice } from '@/service/utils';
 import { verticalDashedLinePlugin } from '@/service/utils';
+import { useNavigate } from 'react-router-dom';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Tooltip, Filler, verticalDashedLinePlugin);
 
@@ -139,6 +140,27 @@ const segmentedTheme = {
             itemColor: '#1A1A1A80',
             itemSelectedColor: '#1A1A1A',
             itemHoverColor: '#1A1A1A',
+        }
+    }
+}
+const inputTheme = {
+    token: {
+        colorBgContainer: 'white',
+        colorBorder: '#5329FF1A',
+        borderRadius: 8,
+        fontFamily: 'Mulish',
+        fontSize: 12,
+        fontWeight: 500,
+        controlHeightLG: 38,
+    },
+    components: {
+        Input: {
+            activeBorderColor: '#5329FF1A',
+            hoverBorderColor: '#5329FF1A',
+            activeOutlineColor: 'transparent',
+            hoverBg: 'white',
+            activeShadow: 'transparent',
+            activeBg: 'white',
         }
     }
 }
@@ -346,6 +368,7 @@ const getTableData = (skuData: PositionTrackingSkuPageData, tableType: 'Клас
 
 const PositionTrackingSkuPage = () => {
     const { authToken } = useContext(AuthContext);
+    const navigate = useNavigate();
     const [isAddModalVisible, setIsAddModalVisible] = useState(false);
     const [tableType, setTableType] = useState<'Кластеры' | 'По запросам'>('Кластеры');
     const [marks, setMarks] = useState<Mark[]>([]);
@@ -360,6 +383,8 @@ const PositionTrackingSkuPage = () => {
     const [tableConfig, setTableConfig] = useState<Record<string, any>[]>(initTableConfig);
     const [sortState, setSortState] = useState<{ sort_field: string, sort_order: 'ASC' | 'DESC' }>({ sort_field: 'frequency', sort_order: 'DESC' });
     const [regionsList, setRegionsList] = useState<Record<string, any>[]>([]);
+    const [isEditDeleteMarkModalVisible, setIsEditDeleteMarkModalVisible] = useState(false);
+    const [editDeleteMarkId, setEditDeleteMarkId] = useState<number | null>(null);
     const [requestObject, setRequestObject] = useState<{ wb_id: string, place_from: number | null, place_to: number | null, freq_from: number | null, freq_to: number | null, keywords: string[] | null }>({ wb_id: '', place_from: null, place_to: null, freq_from: null, freq_to: null, keywords: null });
     const [controlsState, setControlsState] = useState({
         isShowsActive: true,
@@ -369,7 +394,7 @@ const PositionTrackingSkuPage = () => {
 
     const { sku } = useParams();
 
-    const getSkuPageData = async (token: string) => {
+    const getSkuPageData = useCallback(async (token: string) => {
         if (!requestStatus.isLoading) {
             setRequestStatus({ ...initRequestStatus, isLoading: true });
         };
@@ -393,8 +418,9 @@ const PositionTrackingSkuPage = () => {
             setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось получить данные для SKU' });
             return;
         }
-    }
-    const createMark = async (token: string, requestObject: any) => {
+    }, [sku, tableType, requestStatus.isLoading]);
+
+    const createMark = useCallback(async (token: string, requestObject: any) => {
         if (!requestStatus.isLoading) {
             setRequestStatus({ ...initRequestStatus, isLoading: true });
         };
@@ -415,8 +441,9 @@ const PositionTrackingSkuPage = () => {
             setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось создать метку' });
             return;
         }
-    }
-    const deleteMark = async (token: string, markId: number) => {
+    }, [requestStatus.isLoading]);
+
+    const deleteMark = useCallback(async (token: string, markId: number) => {
         if (!requestStatus.isLoading) {
             setRequestStatus({ ...initRequestStatus, isLoading: true });
         };
@@ -437,8 +464,9 @@ const PositionTrackingSkuPage = () => {
             setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось удалить метку' });
             return;
         }
-    }
-    const updateMark = async (token: string, requestObject: any) => {
+    }, [requestStatus.isLoading]);
+
+    const updateMark = useCallback(async (token: string, requestObject: any) => {
         if (!requestStatus.isLoading) {
             setRequestStatus({ ...initRequestStatus, isLoading: true });
         };
@@ -459,8 +487,9 @@ const PositionTrackingSkuPage = () => {
             setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось обновить метку' });
             return;
         }
-    }
-    const getRegionsList = async (token: string) => {
+    }, [requestStatus.isLoading]);
+
+    const getRegionsList = useCallback(async (token: string) => {
         if (!requestStatus.isLoading) {
             setRequestStatus({ ...initRequestStatus, isLoading: true });
         };
@@ -475,7 +504,7 @@ const PositionTrackingSkuPage = () => {
             setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось получить список регионов' });
             return;
         }
-    }
+    }, [requestStatus.isLoading]);
 
     const controlsCheckboxHandler = (e) => {
         setControlsState({
@@ -485,9 +514,10 @@ const PositionTrackingSkuPage = () => {
     };
 
     const getActivityChartData = useCallback((skuData: PositionTrackingSkuPageData): ChartData<'line'> => {
-        const labels = ['7 Окт', '8 Окт', '9 Окт', '10 Окт', '11 Окт', '12 Окт', '13 Окт', '14 Окт', '15 Окт', '16 Окт', '17 Окт', '18 Окт', '19 Окт', '20 Окт'];
-        const marksMap = new Map(marks.map((mark) => [mark.id, mark]));
-        const markData = labels.map((_label, index) => (marksMap.has(index) ? 460 : null));
+        // Создаем мапу меток по датам для быстрого поиска
+        const marksByDate = new Map(marks.map((mark) => [mark.date, mark]));
+        // Все метки имеют значение 1 (максимум скрытой оси y3)
+        const markData = skuData?.dates.map((date) => (marksByDate.has(date) ? 0.97 : null)) || [];
         return {
             labels: skuData?.dates.map((date) => formatDateShort(date)),
             datasets: [
@@ -546,9 +576,9 @@ const PositionTrackingSkuPage = () => {
                     fill: false,
                 },
                 {
-                    label: 'Метки',
+                    label: 'Метка',
                     data: markData,
-                    yAxisID: 'y1',
+                    yAxisID: 'y3',
                     showLine: false,
                     pointBackgroundColor: '#5329FF',
                     pointBorderColor: '#FFFFFF',
@@ -556,6 +586,7 @@ const PositionTrackingSkuPage = () => {
                     pointRadius: 6,
                     pointHoverRadius: 8,
                     pointHitRadius: 12,
+                    pointStyle: 'circle',
                 },
             ],
         };
@@ -565,17 +596,34 @@ const PositionTrackingSkuPage = () => {
         if (elements.length === 0) {
             return;
         }
-        console.log('elements', elements);
         const first = elements[0];
         const dataset = chart.data.datasets[first.datasetIndex];
-        if (dataset?.label === 'Метки') {
+        if (dataset?.label === 'Метка') {
             return;
         }
-        setPendingMarkIndex(first.index);
-        setInputValue('');
-        setIsAddModalVisible(true);
+
+        const dateIndex = first.index;
+        const date = skuData?.dates[dateIndex];
+        if (!date) {
+            return;
+        }
+
+        // Проверяем, есть ли метка для этой даты
+        const mark = marks.find((item) => item.date === date);
+
+        if (mark) {
+            // Если метка есть - открываем модалку редактирования
+            setEditDeleteMarkId(mark.id);
+            setInputValue(mark.name);
+            setIsEditDeleteMarkModalVisible(true);
+        } else {
+            // Если метки нет - открываем модалку создания
+            setPendingMarkIndex(dateIndex);
+            setInputValue('');
+            setIsAddModalVisible(true);
+        }
         setMarkTooltip(null);
-    }, []);
+    }, [skuData, marks]);
 
     const handleActivityChartHover = useCallback((chart: ChartJS, elements: ActiveElement[]) => {
         if (!elements || elements.length === 0) {
@@ -585,12 +633,20 @@ const PositionTrackingSkuPage = () => {
 
         const first = elements[0];
         const dataset = chart.data.datasets[first.datasetIndex];
-        if (dataset?.label !== 'Метки') {
+        if (dataset?.label !== 'Метка') {
             setMarkTooltip(null);
             return;
         }
 
-        const mark = marks.find((item) => item.id === Number(first.index));
+        // Получаем дату по индексу и ищем метку по дате
+        const dateIndex = first.index;
+        const date = skuData?.dates[dateIndex];
+        if (!date) {
+            setMarkTooltip(null);
+            return;
+        }
+
+        const mark = marks.find((item) => item.date === date);
         if (!mark) {
             setMarkTooltip(null);
             return;
@@ -606,11 +662,13 @@ const PositionTrackingSkuPage = () => {
             x: x + canvasRect.left - (containerRect?.left ?? canvasRect.left),
             y: y + canvasRect.top - (containerRect?.top ?? canvasRect.top),
         });
-    }, [marks]);
+    }, [marks, skuData]);
 
     const closeMarkModal = useCallback(() => {
         setIsAddModalVisible(false);
+        setIsEditDeleteMarkModalVisible(false);
         setPendingMarkIndex(null);
+        setEditDeleteMarkId(null);
         setInputValue('');
     }, []);
 
@@ -628,11 +686,193 @@ const PositionTrackingSkuPage = () => {
             name: trimmed,
         });
         closeMarkModal();
-    }, [closeMarkModal, inputValue, pendingMarkIndex]);
+    }, [closeMarkModal, inputValue, pendingMarkIndex, authToken, createMark, skuData]);
 
     const handleDeleteMark = useCallback((id: string) => {
         deleteMark(authToken, Number(id));
     }, [authToken, deleteMark]);
+
+    const handleEditMark = useCallback(() => {
+        if (editDeleteMarkId === null) {
+            return;
+        }
+        const trimmed = inputValue.trim();
+        if (!trimmed) {
+            return;
+        }
+        updateMark(authToken, {
+            id: editDeleteMarkId,
+            name: trimmed,
+        });
+        closeMarkModal();
+    }, [closeMarkModal, inputValue, editDeleteMarkId, authToken, updateMark]);
+
+    const handleDeleteMarkFromModal = useCallback(() => {
+        if (editDeleteMarkId === null) {
+            return;
+        }
+        deleteMark(authToken, editDeleteMarkId);
+        closeMarkModal();
+    }, [closeMarkModal, editDeleteMarkId, authToken, deleteMark]);
+
+    const getActivityChartTooltip = useCallback((context: any) => {
+        // Tooltip Element
+        let tooltipEl = document.getElementById('position-tracking-tooltip');
+
+        // Create element on first render
+        if (!tooltipEl) {
+            tooltipEl = document.createElement('div');
+            tooltipEl.id = 'position-tracking-tooltip';
+            tooltipEl.innerHTML = '<table></table>';
+            document.body.appendChild(tooltipEl);
+        }
+
+        // Hide if no tooltip
+        const tooltipModel = context.tooltip;
+        if (tooltipModel.opacity === 0) {
+            tooltipEl.style.opacity = '0';
+            tooltipEl.style.visibility = 'hidden';
+            return;
+        }
+
+        // Set Text
+        if (tooltipModel.body) {
+            const titleLines = tooltipModel.title || [];
+            const bodyLines = tooltipModel.body.map((b: any) => b.lines);
+
+            let innerHtml = '<thead>';
+            titleLines.forEach((title: string) => {
+                innerHtml += '<tr><th style="color: #8C8C8C; font-weight: 500; font-size: 12px; font-family: Mulish; padding-bottom: 8px;">' + title + '</th></tr>';
+            });
+            innerHtml += '</thead><tbody>';
+
+            // Обрабатываем каждый элемент tooltip
+            tooltipModel.dataPoints.forEach((item: any, index: number) => {
+                const dataset = context.chart.data.datasets[item.datasetIndex];
+                const label = dataset.label;
+                const value = item.parsed.y;
+
+                // Определяем цвет и форму иконки
+                let iconColor = '#5329FF';
+                let iconStyle = '';
+                let labelText = '';
+
+                if (label === 'Просмотры, шт') {
+                    iconColor = '#9A81FF';
+                    iconStyle = 'width: 12px; height: 3px; border-radius: 0;'; // Прямоугольник высотой 3px
+                    labelText = `${label} — ${value}`;
+                } else if (label === 'Ключи, шт') {
+                    iconColor = '#FFDB7E';
+                    iconStyle = 'width: 12px; height: 12px; border-radius: 0;'; // Квадрат
+                    labelText = `${label} — ${value}`;
+                } else if (label === 'Цена, руб') {
+                    iconColor = '#FF8D8D';
+                    iconStyle = 'width: 12px; height: 12px; border-radius: 0;'; // Квадрат
+                    labelText = `${label} — ${value}`;
+                } else if (label === 'Метка') {
+                    iconColor = '#5329FF';
+                    iconStyle = 'width: 12px; height: 12px; border-radius: 50%;'; // Круг
+                    const dateIndex = item.dataIndex;
+                    const date = skuData?.dates[dateIndex];
+                    if (date) {
+                        const mark = marks.find((m: Mark) => m.date === date);
+                        if (mark) {
+                            labelText = `Метка — ${mark.name}`;
+                        } else {
+                            labelText = '';
+                        }
+                    } else {
+                        labelText = '';
+                    }
+                }
+
+                // Добавляем отступ перед меткой, если есть элементы перед ней, которые не являются метками
+                if (label === 'Метка' && index > 0) {
+                    const hasNonMarkItemsBefore = tooltipModel.dataPoints.slice(0, index).some((prevItem: any) => {
+                        const prevDataset = context.chart.data.datasets[prevItem.datasetIndex];
+                        return prevDataset.label !== 'Метка';
+                    });
+                    if (hasNonMarkItemsBefore) {
+                        innerHtml += '<tr><td style="height: 8px;"></td></tr>'; // Отступ
+                    }
+                }
+
+                if (labelText) {
+                    const span = `<span style="display: inline-block; ${iconStyle} background-color: ${iconColor}; margin-right: 8px; vertical-align: middle;"></span><span style="color: #1A1A1A; font-size: 14px; font-weight: 600; font-family: Mulish;">${labelText}</span>`;
+                    innerHtml += '<tr><td style="padding: 2px 0;">' + span + '</td></tr>';
+                }
+            });
+
+            // Добавляем текст "Кликните чтобы добавить метку" внизу, если метки нет
+            const hasMark = tooltipModel.dataPoints.some((item: any) => {
+                const dataset = context.chart.data.datasets[item.datasetIndex];
+                if (dataset.label === 'Метка') {
+                    const dateIndex = item.dataIndex;
+                    const date = skuData?.dates[dateIndex];
+                    if (date) {
+                        const mark = marks.find((m: Mark) => m.date === date);
+                        return !!mark;
+                    }
+                }
+                return false;
+            });
+
+            if (!hasMark) {
+                innerHtml += '<tr><td style="height: 8px;"></td></tr>'; // Отступ
+                innerHtml += '<tr><td style="color: #8C8C8C; font-size: 12px; font-family: Mulish; padding-top: 4px;">Кликните чтобы добавить метку</td></tr>';
+            }
+
+            innerHtml += '</tbody>';
+
+            let tableRoot = tooltipEl.querySelector('table');
+            if (tableRoot) {
+                tableRoot.innerHTML = innerHtml;
+            }
+        }
+
+        const position = context.chart.canvas.getBoundingClientRect();
+        let tooltipLeft = position.left + tooltipModel.caretX;
+        let tooltipTop = position.top + tooltipModel.caretY;
+
+        tooltipEl.style.display = 'block';
+        const tooltipWidth = tooltipEl.offsetWidth;
+        const tooltipHeight = tooltipEl.offsetHeight;
+
+        const viewportWidth = window.innerWidth;
+        const viewportHeight = window.innerHeight;
+        const margin = 10;
+
+        if (tooltipLeft + tooltipWidth + margin > viewportWidth) {
+            tooltipLeft = viewportWidth - tooltipWidth - margin;
+        } else if (tooltipLeft - margin < 0) {
+            tooltipLeft = margin;
+        }
+
+        if (tooltipTop + tooltipHeight + margin > viewportHeight) {
+            tooltipTop = viewportHeight - tooltipHeight - margin;
+        } else if (tooltipTop - margin < 0) {
+            tooltipTop = margin;
+        }
+
+        tooltipLeft += window.scrollX;
+        tooltipTop += window.scrollY;
+
+        tooltipEl.style.position = 'absolute';
+        tooltipEl.style.left = Math.round(tooltipLeft) + 'px';
+        tooltipEl.style.top = Math.round(tooltipTop) + 'px';
+        tooltipEl.style.opacity = '1';
+        tooltipEl.style.visibility = 'visible';
+        tooltipEl.style.backgroundColor = '#FFFFFF';
+        tooltipEl.style.borderColor = '#E5E9F0';
+        tooltipEl.style.borderWidth = '1px';
+        tooltipEl.style.borderStyle = 'solid';
+        tooltipEl.style.borderRadius = '8px';
+        tooltipEl.style.padding = '12px';
+        tooltipEl.style.boxShadow = '0px 0px 20px 0px #00000014';
+        tooltipEl.style.pointerEvents = 'none';
+        tooltipEl.style.zIndex = '1000';
+        tooltipEl.style.fontFamily = 'Mulish';
+    }, [skuData, marks]);
 
     const activityChartOptions = useMemo<ChartOptions<'line'>>(() => ({
         responsive: true,
@@ -749,6 +989,21 @@ const PositionTrackingSkuPage = () => {
                     color: 'white',
                 },
             },
+            y3: {
+                display: false,
+                beginAtZero: true,
+                max: 1,
+                grid: {
+                    display: false,
+                    drawBorder: false,
+                },
+                ticks: {
+                    display: false,
+                },
+                border: {
+                    display: false,
+                },
+            },
         },
         plugins: {
             legend: {
@@ -772,12 +1027,8 @@ const PositionTrackingSkuPage = () => {
                     weight: 600,
                 },
 
-                padding: 12,
-                displayColors: true,
-                filter: (tooltipItem) => tooltipItem.dataset.label !== 'Метки',
-                callbacks: {
-                    label: (context) => `${context.dataset.label} — ${context.parsed.y}`,
-                },
+                enabled: false, // Отключаем стандартный tooltip
+                external: getActivityChartTooltip, // Используем кастомный external tooltip
             },
         },
         elements: {
@@ -786,7 +1037,7 @@ const PositionTrackingSkuPage = () => {
                 borderJoinStyle: 'round',
             },
         },
-    }), [handleActivityChartClick, handleActivityChartHover]);
+    }), [handleActivityChartClick, handleActivityChartHover, getActivityChartTooltip]);
 
     const getVisibilityChartData = useCallback((skuData: PositionTrackingSkuPageData): ChartData<'line'> => {
         const values = skuData?.charts.map((chart) => chart.visibility);
@@ -910,9 +1161,11 @@ const PositionTrackingSkuPage = () => {
     }
 
     useEffect(() => {
-        if (authToken) {
+        if (authToken && sku) {
             getSkuPageData(authToken);
             getRegionsList(authToken);
+        } else {
+            navigate('/position-tracking');
         }
     }, [sku])
 
@@ -1149,13 +1402,15 @@ const PositionTrackingSkuPage = () => {
                 >
                     <div className={styles.addModal}>
                         <p className={styles.addModal__title}>Новая метка</p>
-                        <Input
-                            size='large'
-                            className={styles.modal__input}
-                            placeholder='Введите название'
-                            value={inputValue}
-                            onChange={(e) => setInputValue(e.target.value)}
-                        />
+                        <ConfigProvider theme={inputTheme}>
+                            <Input
+                                size='large'
+                                className={styles.modal__input}
+                                placeholder='Введите название'
+                                value={inputValue}
+                                onChange={(e) => setInputValue(e.target.value)}
+                            />
+                        </ConfigProvider>
 
                         <div className={styles.addModal__buttonsWrapper}>
                             <ConfigProvider theme={modalCancelButtonTheme}>
@@ -1163,6 +1418,41 @@ const PositionTrackingSkuPage = () => {
                             </ConfigProvider>
                             <ConfigProvider theme={modalPrimaryButtonTheme}>
                                 <Button type='primary' onClick={handleCreateMark} disabled={!inputValue.trim()}>Добавить</Button>
+                            </ConfigProvider>
+                        </div>
+                    </div>
+                </Modal>
+                {/* edit and delete mark modal  */}
+                <Modal
+                    open={isEditDeleteMarkModalVisible}
+                    onCancel={closeMarkModal}
+                    onClose={closeMarkModal}
+                    onOk={closeMarkModal}
+                    footer={null}
+                    centered
+                    width={600}
+                >
+                    <div className={styles.addModal}>
+                        <p className={styles.addModal__title}>Редактировать метку</p>
+                        <ConfigProvider theme={inputTheme}>
+                            <Input
+                                size='large'
+                                className={styles.modal__input}
+                                placeholder='Введите название'
+                                value={inputValue}
+                                onChange={(e) => setInputValue(e.target.value)}
+                            />
+                        </ConfigProvider>
+
+                        <div className={styles.addModal__buttonsWrapper}>
+                            {/* <ConfigProvider theme={modalCancelButtonTheme}>
+                                <Button variant='outlined' onClick={closeMarkModal}>Отмена</Button>
+                            </ConfigProvider> */}
+                            <ConfigProvider theme={deleteModalPrimaryButtonTheme}>
+                                <Button type='primary' onClick={handleDeleteMarkFromModal}>Удалить</Button>
+                            </ConfigProvider>
+                            <ConfigProvider theme={modalPrimaryButtonTheme}>
+                                <Button type='primary' onClick={handleEditMark} disabled={!inputValue.trim()}>Сохранить</Button>
                             </ConfigProvider>
                         </div>
                     </div>
