@@ -74,42 +74,42 @@ const MyAdvTable: React.FC<MyAdvTableProps> = ({
     });
   };
 
-  // const onResizeGroup = (columnKey: string, width: number) => {
-  //   // Обновляем конфигурацию колонок с группированной структурой
-  //   const updateColumnWidth = (columns: any[]): any[] => {
-  //     return columns.map(col => {
-  //       // Если это группа с children
-  //       if (col.children && col.children.length > 0) {
-  //         const updatedChildren = updateColumnWidth(col.children);
+  const onResizeGroup = (columnKey: string, width: number) => {
+    // Обновляем конфигурацию колонок с группированной структурой
+    const updateColumnWidth = (columns: any[]): any[] => {
+      return columns.map(col => {
+        // Если это группа с children
+        if (col.children && col.children.length > 0) {
+          const updatedChildren = updateColumnWidth(col.children);
 
-  //         // Всегда пересчитываем ширину группы на основе суммы ширин дочерних колонок
-  //         const totalWidth = updatedChildren.reduce((sum: number, child: any) => {
-  //           if (child.hidden) return sum; // Пропускаем скрытые колонки
-  //           return sum + (child.width || child.minWidth || 200);
-  //         }, 0);
-  //         return { ...col, width: totalWidth, children: updatedChildren, maxWidth: 400 };
-  //       }
+          // Всегда пересчитываем ширину группы на основе суммы ширин дочерних колонок
+          const totalWidth = updatedChildren.reduce((sum: number, child: any) => {
+            if (child.hidden) return sum; // Пропускаем скрытые колонки
+            return sum + (child.width || child.minWidth || 200);
+          }, 0);
+          return { ...col, width: totalWidth, children: updatedChildren, maxWidth: 400 };
+        }
 
-  //       // Если это листовая колонка
-  //       if (col.key === columnKey) {
-  //         const newWidth = width;
-  //         return { ...col, width: newWidth, maxWidth: 400 };
-  //       }
+        // Если это листовая колонка
+        if (col.key === columnKey) {
+          const newWidth = width;
+          return { ...col, width: newWidth, maxWidth: 400 };
+        }
 
-  //       return col;
-  //     });
-  //   };
+        return col;
+      });
+    };
 
-  //   // Обновляем состояние
-  //   setTableConfig((prevConfig: ColumnConfig[]) => {
-  //     const updatedConfig = updateColumnWidth(prevConfig);
-  //     localStorage.setItem('MY_ADV_TABLE_CONFIG', JSON.stringify({
-  //       version: TABLE_CONFIG_VERSION,
-  //       config: updatedConfig
-  //     }));
-  //     return updatedConfig;
-  //   });
-  // };
+    // Обновляем состояние
+    setTableConfig((prevConfig: ColumnConfig[]) => {
+      const updatedConfig = updateColumnWidth(prevConfig);
+      localStorage.setItem('MY_ADV_TABLE_CONFIG', JSON.stringify({
+        version: TABLE_CONFIG_VERSION,
+        config: updatedConfig
+      }));
+      return updatedConfig;
+    });
+  };
 
   const handleCompanyClick = (companyId: number) => {
     navigate(`/my-adv/${companyId}`);
@@ -276,6 +276,8 @@ const MyAdvTable: React.FC<MyAdvTableProps> = ({
     return <Loader loading={loading} progress={0} />;
   }
 
+  console.log(tableConfig);
+
   return (
     <div className={styles.table}>
       <div className={styles.tableControls}>
@@ -309,9 +311,9 @@ const MyAdvTable: React.FC<MyAdvTableProps> = ({
               className={companyId ? styles.tableStaticCompany : styles.tableStatic}
               scrollContainerRef={tableContainerRef}
               stickyHeader
-              // resizeable
-              // onResize={onResizeGroup}
-              // resizeThrottle={33}
+              resizeable
+              onResize={onResizeGroup}
+              resizeThrottle={33}
               onSort={handleSort}
               pagination={pageData.total_count <= pageData.per_page ? null : {
                 current: pageData.page,

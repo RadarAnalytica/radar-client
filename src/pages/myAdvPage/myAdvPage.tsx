@@ -7,7 +7,6 @@ import NoSubscriptionWarningBlock from '@/components/sharedComponents/noSubscrip
 import { useLoadingProgress } from '@/service/hooks/useLoadingProgress';
 import Loader from '@/components/ui/Loader';
 import MyAdvTable from './widgets/MyAdvTable/MyAdvTable';
-import NoData from '@/components/sharedComponents/NoData/NoData';
 import SearchBlock from './widgets/SearchBlock/SearchBlock';
 import { useAppSelector } from '@/redux/hooks';
 import { 
@@ -145,11 +144,7 @@ const MyAdvPage: React.FC = () => {
           loading={loading}
         />
 
-        {loading ? (
-          <div className={styles.loader__container}>
-            <Loader loading={loading} progress={progress.value} />
-          </div>
-        ) : (
+        {loading ? <div className={styles.loader__container}><Loader loading={loading} progress={progress.value} /></div> : (
           <MyAdvTable
             data={data}
             columns={tableConfig}
