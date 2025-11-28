@@ -1,4 +1,5 @@
 import { useCallback, useMemo, useRef, useState, useEffect, useContext } from 'react';
+import { createRoot } from 'react-dom/client';
 import Header from '@/components/sharedComponents/header/header';
 import styles from './PositionTrackingSkuPage.module.css';
 import Sidebar from '@/components/sharedComponents/sidebar/sidebar';
@@ -214,8 +215,9 @@ interface ProductMeta {
 interface PresetDay {
     date: string;
     place: number;
-    trend: boolean;
     shows: number;
+    place_compare: number;
+    shows_compare: number;
 }
 
 interface QueryData {
@@ -239,6 +241,7 @@ interface PositionTrackingChartData {
     queries: number;
     shows: number;
     visibility: number;
+    visibility_compare: number;
 }
 
 interface PositionTrackingSkuPageData {
@@ -248,6 +251,8 @@ interface PositionTrackingSkuPageData {
     charts: PositionTrackingChartData[];
     total_queries: number;
     total_presets: number;
+    visibility: number;
+    visibility_compare: number;
 }
 
 interface Mark {
@@ -1122,6 +1127,114 @@ const PositionTrackingSkuPage = () => {
 
 
 
+    const getVisibilityChartTooltip = useCallback((context: any) => {
+        // Tooltip Element
+        let tooltipEl = document.getElementById('visibility-chart-tooltip');
+
+        // Create element on first render
+        if (!tooltipEl) {
+            tooltipEl = document.createElement('div');
+            tooltipEl.id = 'visibility-chart-tooltip';
+            document.body.appendChild(tooltipEl);
+        }
+
+        // Hide if no tooltip
+        const tooltipModel = context.tooltip;
+        if (tooltipModel.opacity === 0) {
+            tooltipEl.style.opacity = '0';
+            tooltipEl.style.visibility = 'hidden';
+            return;
+        }
+
+        // Set Text
+        if (tooltipModel.body) {
+            const titleLines = tooltipModel.title || [];
+            const dataIndex = tooltipModel.dataPoints[0]?.dataIndex;
+            const visibility = tooltipModel.dataPoints[0]?.parsed.y;
+            const visibilityCompare = skuData?.charts[dataIndex]?.visibility_compare;
+
+            // Clear previous content
+            tooltipEl.innerHTML = '';
+            
+            // Create container for React components
+            const titleContainer = document.createElement('div');
+            const valuesRow = document.createElement('div');
+            const valueContainer = document.createElement('span');
+            const compareContainer = document.createElement('span');
+            
+            // Title
+            titleLines.forEach((title: string) => {
+                const titleDiv = document.createElement('div');
+                titleDiv.style.cssText = 'color: #8C8C8C; font-weight: 500; font-size: 12px; font-family: Mulish; padding-bottom: 8px;';
+                titleDiv.textContent = title;
+                titleContainer.appendChild(titleDiv);
+            });
+
+            // Values row container
+            valuesRow.style.cssText = 'display: flex; align-items: center; gap: 8px; flex-wrap: wrap;';
+
+            // Main value
+            const visibilityFormatted = formatPrice(visibility.toFixed(2), '%', false);
+            valueContainer.style.cssText = 'color: #1A1A1A; font-size: 14px; font-weight: 600; font-family: Mulish;';
+            valueContainer.textContent = visibilityFormatted;
+            valuesRow.appendChild(valueContainer);
+
+            // Compare value with RadarRateMark component
+            if (visibilityCompare !== undefined && visibilityCompare !== null) {
+                const diff = visibility - visibilityCompare;
+                const root = createRoot(compareContainer);
+                root.render(<RadarRateMark value={Math.round(diff)} units='%' />);
+                valuesRow.appendChild(compareContainer);
+            }
+
+            tooltipEl.appendChild(titleContainer);
+            tooltipEl.appendChild(valuesRow);
+        }
+
+        const position = context.chart.canvas.getBoundingClientRect();
+        let tooltipLeft = position.left + tooltipModel.caretX;
+        let tooltipTop = position.top + tooltipModel.caretY;
+
+        tooltipEl.style.display = 'block';
+        const tooltipWidth = tooltipEl.offsetWidth;
+        const tooltipHeight = tooltipEl.offsetHeight;
+
+        const viewportWidth = window.innerWidth;
+        const viewportHeight = window.innerHeight;
+        const margin = 10;
+
+        if (tooltipLeft + tooltipWidth + margin > viewportWidth) {
+            tooltipLeft = viewportWidth - tooltipWidth - margin;
+        } else if (tooltipLeft - margin < 0) {
+            tooltipLeft = margin;
+        }
+
+        if (tooltipTop + tooltipHeight + margin > viewportHeight) {
+            tooltipTop = viewportHeight - tooltipHeight - margin;
+        } else if (tooltipTop - margin < 0) {
+            tooltipTop = margin;
+        }
+
+        tooltipLeft += window.scrollX;
+        tooltipTop += window.scrollY;
+
+        tooltipEl.style.position = 'absolute';
+        tooltipEl.style.left = Math.round(tooltipLeft) + 'px';
+        tooltipEl.style.top = Math.round(tooltipTop) + 'px';
+        tooltipEl.style.opacity = '1';
+        tooltipEl.style.visibility = 'visible';
+        tooltipEl.style.backgroundColor = '#FFFFFF';
+        tooltipEl.style.borderColor = '#E5E9F0';
+        tooltipEl.style.borderWidth = '1px';
+        tooltipEl.style.borderStyle = 'solid';
+        tooltipEl.style.borderRadius = '8px';
+        tooltipEl.style.padding = '12px';
+        tooltipEl.style.boxShadow = '0px 0px 20px 0px #00000014';
+        tooltipEl.style.pointerEvents = 'none';
+        tooltipEl.style.zIndex = '1000';
+        tooltipEl.style.fontFamily = 'Mulish';
+    }, [skuData]);
+
     const getVisibilityChartData = useCallback((skuData: PositionTrackingSkuPageData): ChartData<'line'> => {
         const values = skuData?.charts.map((chart) => chart.visibility);
         const labels = skuData?.dates.map((date) => formatDateShort(date));
@@ -1194,26 +1307,8 @@ const PositionTrackingSkuPage = () => {
                 display: false,
             },
             tooltip: {
-                backgroundColor: '#ffffff',
-                borderColor: '#E5E9F0',
-                borderWidth: 1,
-                titleColor: '#8C8C8C',
-                bodyColor: '#1A1A1A',
-                titleFont: {
-                    family: 'Mulish',
-                    size: 12,
-                    weight: 500,
-                },
-                bodyFont: {
-                    family: 'Mulish',
-                    size: 14,
-                    weight: 600,
-                },
-                padding: 12,
-                displayColors: false,
-                callbacks: {
-                    label: (context) => `${context.parsed.y.toFixed(2)} %`,
-                },
+                enabled: false,
+                external: getVisibilityChartTooltip,
             },
         },
         elements: {
@@ -1222,7 +1317,7 @@ const PositionTrackingSkuPage = () => {
                 borderJoinStyle: 'round',
             },
         },
-    }), []);
+    }), [skuData, getVisibilityChartTooltip]);
 
     const handleTableSort = (tableData: Record<string, any>[]) => {
         const { sort_field, sort_order } = sortState;
@@ -1312,8 +1407,8 @@ const PositionTrackingSkuPage = () => {
                         <div className={styles.page__miniChartHeader}>
                             <p className={styles.page__miniChartTitle}>Видимость</p>
                             <div className={styles.page__miniChartValues}>
-                                <span className={styles.page__miniChartMainValue}>{formatPrice(skuData?.charts?.reduce((acc, chart) => acc + chart.visibility, 0) / skuData?.charts?.length, '%')}</span>
-                                {/* <RadarRateMark value={100} units='%' /> */}
+                                {skuData?.visibility && <span className={styles.page__miniChartMainValue}>{formatPrice(skuData?.visibility?.toString(), '%')}</span>}
+                                {skuData?.visibility_compare && <RadarRateMark value={skuData?.visibility_compare.toString()} units='%' />}
                             </div>
                         </div>
                         <div className={styles.page__miniChartCanvas}>
@@ -1349,80 +1444,80 @@ const PositionTrackingSkuPage = () => {
                             allowClear={false}
                             disabled={false}
                         /> */}
-                    </div>
+                </div>
                 </div>
 
-                 {/* main chart */}
-            {requestStatus.isLoading && <RadarLoader loaderStyle={{ minHeight: '456px', width: '100%', background: 'white', borderRadius: '16px' }} />}
+                {/* main chart */}
+                {requestStatus.isLoading && <RadarLoader loaderStyle={{ minHeight: '456px', width: '100%', background: 'white', borderRadius: '16px' }} />}
             {
                 !requestStatus.isLoading &&
-                <div className={styles.page__activityChart}>
-                    <div className={styles.page__activityChartHeader}>
-                        <div className={styles.controls__controlWrapper}>
-                            <ConfigProvider
-                                theme={{
-                                    token: {
-                                        colorPrimary: '#9A81FF',
-                                        controlInteractiveSize: 20,
-                                    }
-                                }}
-                            >
-                                <Checkbox
-                                    //size='large'
-                                    checked={controlsState.isShowsActive}
-                                    value='isShowsActive'
-                                    onChange={controlsCheckboxHandler}
+                    <div className={styles.page__activityChart}>
+                        <div className={styles.page__activityChartHeader}>
+                            <div className={styles.controls__controlWrapper}>
+                                <ConfigProvider
+                                    theme={{
+                                        token: {
+                                            colorPrimary: '#9A81FF',
+                                            controlInteractiveSize: 20,
+                                        }
+                                    }}
                                 >
-                                    <label className={styles.controls__label}>
-                                        Просмотры, шт
-                                    </label>
-                                </Checkbox>
-                            </ConfigProvider>
-                        </div>
-                        <div className={styles.controls__controlWrapper}>
-                            <ConfigProvider
-                                theme={{
-                                    token: {
-                                        colorPrimary: '#FFDB7E',
-                                        controlInteractiveSize: 20,
-                                    }
-                                }}
-                            >
-                                <Checkbox
-                                    //size='large'
-                                    checked={controlsState.isQueriesActive}
-                                    value='isQueriesActive'
-                                    onChange={controlsCheckboxHandler}
+                                    <Checkbox
+                                        //size='large'
+                                        checked={controlsState.isShowsActive}
+                                        value='isShowsActive'
+                                        onChange={controlsCheckboxHandler}
+                                    >
+                                        <label className={styles.controls__label}>
+                                            Просмотры, шт
+                                        </label>
+                                    </Checkbox>
+                                </ConfigProvider>
+                            </div>
+                            <div className={styles.controls__controlWrapper}>
+                                <ConfigProvider
+                                    theme={{
+                                        token: {
+                                            colorPrimary: '#FFDB7E',
+                                            controlInteractiveSize: 20,
+                                        }
+                                    }}
                                 >
-                                    <label className={styles.controls__label}>
-                                        Ключи, шт
-                                    </label>
-                                </Checkbox>
-                            </ConfigProvider>
-                        </div>
-                        <div className={styles.controls__controlWrapper}>
-                            <ConfigProvider
-                                theme={{
-                                    token: {
-                                        colorPrimary: '#FF8D8D',
-                                        controlInteractiveSize: 20,
-                                    }
-                                }}
-                            >
-                                <Checkbox
-                                    //size='large'
-                                    checked={controlsState.isPriceActive}
-                                    value='isPriceActive'
-                                    onChange={controlsCheckboxHandler}
+                                    <Checkbox
+                                        //size='large'
+                                        checked={controlsState.isQueriesActive}
+                                        value='isQueriesActive'
+                                        onChange={controlsCheckboxHandler}
+                                    >
+                                        <label className={styles.controls__label}>
+                                            Ключи, шт
+                                        </label>
+                                    </Checkbox>
+                                </ConfigProvider>
+                            </div>
+                            <div className={styles.controls__controlWrapper}>
+                                <ConfigProvider
+                                    theme={{
+                                        token: {
+                                            colorPrimary: '#FF8D8D',
+                                            controlInteractiveSize: 20,
+                                        }
+                                    }}
                                 >
-                                    <label className={styles.controls__label}>
-                                        Цена, руб
-                                    </label>
-                                </Checkbox>
-                            </ConfigProvider>
+                                    <Checkbox
+                                        //size='large'
+                                        checked={controlsState.isPriceActive}
+                                        value='isPriceActive'
+                                        onChange={controlsCheckboxHandler}
+                                    >
+                                        <label className={styles.controls__label}>
+                                            Цена, руб
+                                        </label>
+                                    </Checkbox>
+                                </ConfigProvider>
+                            </div>
                         </div>
-                    </div>
-                    <div className={styles.page__activityChartCanvas} ref={activityChartContainerRef}>
+                        <div className={styles.page__activityChartCanvas} ref={activityChartContainerRef}>
                         {activityChartData && (
                             <Line
                                 data={activityChartData}
@@ -1430,26 +1525,26 @@ const PositionTrackingSkuPage = () => {
                             />
                         )}
                         {/* {markTooltip && (
-                 <div
-                     className={styles.page__markTooltip}
-                     style={{ left: `${markTooltip.x}px`, top: `${markTooltip.y - 56}px` }}
-                 >
-                     <p className={styles.page__markTooltipTitle}>{markTooltip.label}</p>
-                     <button
-                         type='button'
-                         className={styles.page__markTooltipButton}
-                         onClick={(event) => {
-                             event.stopPropagation();
-                             handleDeleteMark(markTooltip.id);
-                         }}
-                     >
-                         Удалить метку
-                     </button>
-                 </div>
+                                <div
+                                    className={styles.page__markTooltip}
+                                    style={{ left: `${markTooltip.x}px`, top: `${markTooltip.y - 56}px` }}
+                                >
+                                    <p className={styles.page__markTooltipTitle}>{markTooltip.label}</p>
+                                    <button
+                                        type='button'
+                                        className={styles.page__markTooltipButton}
+                                        onClick={(event) => {
+                                            event.stopPropagation();
+                                            handleDeleteMark(markTooltip.id);
+                                        }}
+                                    >
+                                        Удалить метку
+                                    </button>
+                                </div>
              )} */}
+                        </div>
                     </div>
-                </div>
-            }
+                }
 
                 <PositionTrackingSkuFilters
                     submitHandler={(formData) => {
@@ -1491,18 +1586,18 @@ const PositionTrackingSkuPage = () => {
                     </div>}
             </section>
             {/* ---------------------- */}
-            {/* add mark modal */}
-            <Modal
-                open={isAddModalVisible}
-                onCancel={closeMarkModal}
-                onClose={closeMarkModal}
-                onOk={closeMarkModal}
-                footer={null}
-                centered
-                width={600}
-            >
-                <div className={styles.addModal}>
-                    <p className={styles.addModal__title}>Новая метка</p>
+                {/* add mark modal */}
+                <Modal
+                    open={isAddModalVisible}
+                    onCancel={closeMarkModal}
+                    onClose={closeMarkModal}
+                    onOk={closeMarkModal}
+                    footer={null}
+                    centered
+                    width={600}
+                >
+                    <div className={styles.addModal}>
+                        <p className={styles.addModal__title}>Новая метка</p>
                     <ConfigProvider theme={inputTheme}>
                         <Input
                             size='large'
@@ -1513,16 +1608,16 @@ const PositionTrackingSkuPage = () => {
                         />
                     </ConfigProvider>
 
-                    <div className={styles.addModal__buttonsWrapper}>
-                        <ConfigProvider theme={modalCancelButtonTheme}>
-                            <Button variant='outlined' onClick={closeMarkModal}>Отмена</Button>
-                        </ConfigProvider>
-                        <ConfigProvider theme={modalPrimaryButtonTheme}>
-                            <Button type='primary' onClick={handleCreateMark} disabled={!inputValue.trim()}>Добавить</Button>
-                        </ConfigProvider>
+                        <div className={styles.addModal__buttonsWrapper}>
+                            <ConfigProvider theme={modalCancelButtonTheme}>
+                                <Button variant='outlined' onClick={closeMarkModal}>Отмена</Button>
+                            </ConfigProvider>
+                            <ConfigProvider theme={modalPrimaryButtonTheme}>
+                                <Button type='primary' onClick={handleCreateMark} disabled={!inputValue.trim()}>Добавить</Button>
+                            </ConfigProvider>
+                        </div>
                     </div>
-                </div>
-            </Modal>
+                </Modal>
             {/* edit and delete mark modal  */}
             <Modal
                 open={isEditDeleteMarkModalVisible}
