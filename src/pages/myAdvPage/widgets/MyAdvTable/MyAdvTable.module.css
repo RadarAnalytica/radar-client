@@ -146,6 +146,7 @@
   :global(.radar-table__header) {
     tr th {
       font-size: 14px;
+      max-width: 400px;
     }
   
     tr:first-child {

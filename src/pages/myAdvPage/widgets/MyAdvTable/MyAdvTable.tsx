@@ -43,7 +43,7 @@ const MyAdvTable: React.FC<MyAdvTableProps> = ({
   const navigate = useNavigate();
   const [tableData, setTableData] = useState<CompanyData[]>([]);
   const { activeBrand } = useAppSelector((state) => state.filters);
-  const isDataCollecting = activeBrand && !activeBrand?.is_primary_collect;
+  const isDataNotCollected = activeBrand && !activeBrand?.is_primary_collect;
 
   const [expandedRowKeys, setExpandedRowKeys] = useState<string[]>([`${companyId || ''}_`]);
 
@@ -301,15 +301,15 @@ const MyAdvTable: React.FC<MyAdvTableProps> = ({
           />
         </div>
         <div className={styles.settingsWrapper}>
-          {!isDataCollecting && <TableSettingsWidget tableConfig={tableConfig} setTableConfig={handleTableColumnsChange} />}
+          {!isDataNotCollected && <TableSettingsWidget tableConfig={tableConfig} setTableConfig={setTableConfig} />}
         </div>
       </div>
 
-      {isDataCollecting && <div className='pb-3'><DataCollectWarningBlock /></div>}
+      {isDataNotCollected && <div className='pb-3'><DataCollectWarningBlock /></div>}
 
       <div className={styles.tableContainer}>
         <div className={styles.tableWrapper} ref={tableContainerRef}>
-          {!isDataCollecting && (
+          {!isDataNotCollected && (
             <RadarTable
               key={JSON.stringify(tableConfig)}
               rowKey={(record: CompanyData) => `${record.company_id || ''}_${record.date || ''}`}
@@ -369,4 +369,3 @@ const MyAdvTable: React.FC<MyAdvTableProps> = ({
 };
 
 export default MyAdvTable;
-
