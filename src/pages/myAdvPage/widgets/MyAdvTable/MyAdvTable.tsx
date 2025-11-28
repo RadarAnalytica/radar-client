@@ -276,8 +276,6 @@ const MyAdvTable: React.FC<MyAdvTableProps> = ({
     return <Loader loading={loading} progress={0} />;
   }
 
-  console.log(tableConfig);
-
   return (
     <div className={styles.table}>
       <div className={styles.tableControls}>
@@ -311,9 +309,9 @@ const MyAdvTable: React.FC<MyAdvTableProps> = ({
               className={companyId ? styles.tableStaticCompany : styles.tableStatic}
               scrollContainerRef={tableContainerRef}
               stickyHeader
-              resizeable
-              onResize={onResizeGroup}
-              resizeThrottle={33}
+              // resizeable
+              // onResize={onResizeGroup}
+              // resizeThrottle={33}
               onSort={handleSort}
               pagination={pageData.total_count <= pageData.per_page ? null : {
                 current: pageData.page,
