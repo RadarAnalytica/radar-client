@@ -34,13 +34,11 @@ const getColorByValue = (value: number | string) => {
 }
 
 
-export const RadarRateMark: React.FC<IRadarRateMarkProps> = ({
-    value,
-    units = ' '
-}) => {
+export const RadarRateMark: React.FC<IRadarRateMarkProps> = ({value, units = ' '}) => {
+    const formattedValue = formatPrice(value.toString(), units, true);
     return (
-        <div className={styles.radarRateMark} style={getColorByValue(value)}>
-            {formatPrice(value.toString(), units, true)}
+        <div className={styles.radarRateMark} style={getColorByValue(value)} title={formattedValue}>
+            {formattedValue}
         </div>
-    )
-}
+    );
+};
