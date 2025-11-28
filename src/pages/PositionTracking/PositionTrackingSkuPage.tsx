@@ -6,7 +6,7 @@ import MobilePlug from '@/components/sharedComponents/mobilePlug/mobilePlug';
 // import { MainChart } from '@/features';
 import { Table as RadarTable } from 'radar-ui';
 import { Segmented, ConfigProvider, Button, Modal, Input, Checkbox } from 'antd';
-import { positionTrackingSkuTableConfig as initTableConfig } from '@/shared';
+import { positionTrackingSkuTableConfig as initTableConfig, RadarLoader } from '@/shared';
 import { positionTrackingSkuTableCustomCellRender } from '@/shared';
 import Breadcrumbs from '@/components/sharedComponents/header/headerBreadcrumbs/breadcrumbs';
 import { RadarProductBar, RadarRateMark } from '@/shared';
@@ -29,8 +29,9 @@ import { ServiceFunctions } from '@/service/serviceFunctions';
 import { useParams } from 'react-router-dom';
 import AuthContext from '@/service/AuthContext';
 import { formatPrice } from '@/service/utils';
+import { verticalDashedLinePlugin } from '@/service/utils';
 
-ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Tooltip, Filler);
+ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Tooltip, Filler, verticalDashedLinePlugin);
 
 
 const modalCancelButtonTheme = {
@@ -125,7 +126,7 @@ const deleteModalPrimaryButtonTheme = {
 // antd config providers themes
 const segmentedTheme = {
     token: {
-        fontSize: 14,
+        fontSize: 12,
         fontWeight: 500,
     },
     components: {
@@ -177,13 +178,10 @@ const positionTrackingSkuMockTableData = [
     },
 ];
 
-type MarkPoint = {
-    id: string;
-    index: number;
-    label: string;
-};
+
 
 interface ProductMeta {
+    id: number
     wb_id: number;
     name: string;
     wb_id_image_url: string;
@@ -194,6 +192,7 @@ interface PresetDay {
     date: string;
     place: number;
     trend: boolean;
+    shows: number;
 }
 
 interface QueryData {
@@ -252,11 +251,28 @@ const getSkuPageDataRequestObject = (sku: string) => {
     }
 }
 
+const formatDateHeader = (dateString: string): string => {
+    const date = new Date(dateString);
+    const dayNames = ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
+    const dayName = dayNames[date.getDay()];
+    const day = date.getDate();
+    const month = date.getMonth() + 1;
+    return `${dayName}, ${day}.${month < 10 ? '0' + month : month}`;
+};
+
 const formatDateShort = (dateInput: string) => {
     const date = new Date(dateInput);
     const day = date.getDate();
     const months = ['янв', 'фев', 'мар', 'апр', 'май', 'июн', 'июл', 'авг', 'сен', 'окт', 'ноя', 'дек'];
     return `${day} ${months[date.getMonth()]}`;
+};
+
+const formatDateLong = (dateInput: string): string => {
+    const date = new Date(dateInput);
+    const day = date.getDate();
+    const months = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'];
+    const year = date.getFullYear();
+    return `${day} ${months[date.getMonth()]}, ${year}`;
 };
 
 const getTableConfig = (skuData: PositionTrackingSkuPageData, tableType: 'Кластеры' | 'По запросам') => {
@@ -275,7 +291,7 @@ const getTableConfig = (skuData: PositionTrackingSkuPageData, tableType: 'Кла
             minWidth: 100,
             maxWidth: 200,
         }
-        const tableConfig = [...initTableConfig, ...datesArray.map((date) => ({ ...templateObject, key: date, title: formatDateShort(date), dataIndex: date }))]
+        const tableConfig = [...initTableConfig, ...datesArray.map((date) => ({ ...templateObject, key: date, title: formatDateHeader(date), dataIndex: date }))]
         return tableConfig;
     }
     if (tableType === 'По запросам') {
@@ -293,7 +309,7 @@ const getTableConfig = (skuData: PositionTrackingSkuPageData, tableType: 'Кла
             minWidth: 100,
             maxWidth: 200,
         }
-        const tableConfig = [...initTableConfig, ...datesArray.map((date) => ({ ...templateObject, key: date, title: formatDateShort(date), dataIndex: date }))]
+        const tableConfig = [...initTableConfig, ...datesArray.map((date) => ({ ...templateObject, key: date, title: formatDateHeader(date), dataIndex: date }))]
         return tableConfig;
     }
 }
@@ -302,8 +318,9 @@ const getTableData = (skuData: PositionTrackingSkuPageData, tableType: 'Клас
         return skuData.presets.map(preset => {
             let updatedPreset = {
                 ...preset,
+                isParent: true,
                 children: preset.queries_data.map(query => {
-                    let updatedQuery = { ...query };
+                    let updatedQuery = { ...query, isChild: true };
                     query.days.forEach(day => {
                         updatedQuery[day.date] = day;
                     });
@@ -341,6 +358,7 @@ const PositionTrackingSkuPage = () => {
     const [tableData, setTableData] = useState<Record<string, any>[]>([]);
     const [requestStatus, setRequestStatus] = useState<typeof initRequestStatus>(initRequestStatus);
     const [tableConfig, setTableConfig] = useState<Record<string, any>[]>(initTableConfig);
+    const [sortState, setSortState] = useState<{ sort_field: string, sort_order: 'ASC' | 'DESC' }>({ sort_field: 'frequency', sort_order: 'DESC' });
     const [regionsList, setRegionsList] = useState<Record<string, any>[]>([]);
     const [requestObject, setRequestObject] = useState<{ wb_id: string, place_from: number | null, place_to: number | null, freq_from: number | null, freq_to: number | null, keywords: string[] | null }>({ wb_id: '', place_from: null, place_to: null, freq_from: null, freq_to: null, keywords: null });
     const [controlsState, setControlsState] = useState({
@@ -498,7 +516,7 @@ const PositionTrackingSkuPage = () => {
                 {
                     label: 'Ключи, шт',
                     data: controlsState.isQueriesActive ? skuData?.charts.map((chart) => chart.queries) : [],
-                    yAxisID: 'y',
+                    yAxisID: 'y2',
                     borderColor: '#FFDB7E',
                     pointBackgroundColor: '#FFDB7E',
                     pointBorderColor: '#FFFFFF',
@@ -547,6 +565,7 @@ const PositionTrackingSkuPage = () => {
         if (elements.length === 0) {
             return;
         }
+        console.log('elements', elements);
         const first = elements[0];
         const dataset = chart.data.datasets[first.datasetIndex];
         if (dataset?.label === 'Метки') {
@@ -604,7 +623,7 @@ const PositionTrackingSkuPage = () => {
             return;
         }
         createMark(authToken, {
-            product_id: skuData?.product_meta?.wb_id,
+            product_id: skuData?.product_meta?.id,
             date: skuData?.dates[pendingMarkIndex],
             name: trimmed,
         });
@@ -627,6 +646,7 @@ const PositionTrackingSkuPage = () => {
             handleActivityChartClick(chart, elements);
         },
         onHover: (event, elements, chart) => {
+            (event.native.target as HTMLElement).style.cursor = 'pointer';
             if (event.type === 'mousemove') {
                 handleActivityChartHover(chart, elements);
             }
@@ -655,16 +675,23 @@ const PositionTrackingSkuPage = () => {
                         size: 12,
                     },
                 },
+                border: {
+                    color: 'white',
+                },
             },
             y: {
                 position: 'left',
                 beginAtZero: true,
                 suggestedMax: 400,
+                // offset: true,
                 grid: {
                     color: 'rgba(83, 41, 255, 0.08)',
                     drawBorder: false,
+                    tickLength: 0,
                 },
                 ticks: {
+                    tickLength: 0,
+                    padding: 12,
                     color: '#5B3BE1',
                     font: {
                         family: 'Mulish',
@@ -672,21 +699,54 @@ const PositionTrackingSkuPage = () => {
                     },
                     callback: (value: string | number) => `${value}к`,
                 },
+                border: {
+                    color: 'white',
+                },
             },
             y1: {
                 position: 'right',
                 beginAtZero: true,
                 suggestedMax: 500,
+                // offset: true,
                 grid: {
                     drawOnChartArea: false,
                     drawBorder: false,
+                    tickLength: 0,
                 },
                 ticks: {
+                    tickLength: 0,
+                    padding: 12,
                     color: '#FF5470',
                     font: {
                         family: 'Mulish',
                         size: 12,
                     },
+                },
+                border: {
+                    color: 'white',
+                },
+            },
+            y2: {
+                position: 'left',
+                beginAtZero: true,
+                suggestedMax: 50,
+                // offset: true,
+                grid: {
+                    drawOnChartArea: false,
+                    drawBorder: false,
+                    tickLength: 0,
+                },
+                ticks: {
+                    tickLength: 0,
+                    padding: 12,
+                    color: '#FFDB7E',
+                    font: {
+                        family: 'Mulish',
+                        size: 12,
+                    },
+                },
+                border: {
+                    color: 'white',
                 },
             },
         },
@@ -694,6 +754,7 @@ const PositionTrackingSkuPage = () => {
             legend: {
                 display: false,
             },
+            // verticalDashedLine: { enabled: true },
             tooltip: {
                 backgroundColor: '#FFFFFF',
                 borderColor: '#E5E9F0',
@@ -710,6 +771,7 @@ const PositionTrackingSkuPage = () => {
                     size: 14,
                     weight: 600,
                 },
+
                 padding: 12,
                 displayColors: true,
                 filter: (tooltipItem) => tooltipItem.dataset.label !== 'Метки',
@@ -736,7 +798,7 @@ const PositionTrackingSkuPage = () => {
                     data: values,
                     fill: false,
                     borderColor: '#14B885',
-                    borderWidth: 3,
+                    borderWidth: 1.5,
                     tension: 0.45,
                     cubicInterpolationMode: 'monotone',
                     pointBackgroundColor: '#14B885',
@@ -828,6 +890,24 @@ const PositionTrackingSkuPage = () => {
         },
     }), []);
 
+    const handleTableSort = (tableData: Record<string, any>[]) => {
+        const { sort_field, sort_order } = sortState;
+        if (!tableData || !Array.isArray(tableData)) return [];
+
+        const sortedData = [...tableData].sort((a, b) => {
+            const freqA = a.frequency ?? 0;
+            const freqB = b.frequency ?? 0;
+
+            if (sort_order === 'ASC') {
+                return freqA - freqB;
+            } else {
+                return freqB - freqA;
+            }
+        });
+
+        return sortedData;
+
+    }
 
     useEffect(() => {
         if (authToken) {
@@ -879,10 +959,14 @@ const PositionTrackingSkuPage = () => {
                         data={{
                             ...skuData?.product_meta,
                             wb_id_image_link: skuData?.product_meta?.wb_id_image_url,
+                            wb_id: skuData?.product_meta?.wb_id?.toString(),
                         }}
-                        isLoading={false}
+                        isLoading={requestStatus.isLoading}
+                        additionalInfo={skuData?.product_meta?.created_at ? `Отслеживаем с ${formatDateLong(skuData.product_meta.created_at)}` : ''}
+                        hasWbLink
                     />
-                    <div className={styles.page__miniChart}>
+                    {requestStatus.isLoading && <RadarLoader loaderStyle={{ height: '130px', width: '100%', background: 'white', borderRadius: '16px' }} />}
+                    {!requestStatus.isLoading && <div className={styles.page__miniChart}>
                         <div className={styles.page__miniChartHeader}>
                             <p className={styles.page__miniChartTitle}>Видимость</p>
                             <div className={styles.page__miniChartValues}>
@@ -893,7 +977,7 @@ const PositionTrackingSkuPage = () => {
                         <div className={styles.page__miniChartCanvas}>
                             <Line data={getVisibilityChartData(skuData)} options={visibilityChartOptions} />
                         </div>
-                    </div>
+                    </div>}
                 </div>
                 {/* settings block */}
                 <div className={styles.page__container}>
@@ -926,100 +1010,103 @@ const PositionTrackingSkuPage = () => {
                     </div> */}
                 </div>
                 {/* main chart */}
-                <div className={styles.page__activityChart}>
-                    <div className={styles.page__activityChartHeader}>
-                        <div className={styles.controls__controlWrapper}>
-                            <ConfigProvider
-                                theme={{
-                                    token: {
-                                        colorPrimary: '#9A81FF',
-                                        controlInteractiveSize: 20,
-                                    }
-                                }}
-                            >
-                                <Checkbox
-                                    //size='large'
-                                    checked={controlsState.isShowsActive}
-                                    value='isShowsActive'
-                                    onChange={controlsCheckboxHandler}
-                                >
-                                    <label className={styles.controls__label}>
-                                        Просмотры, шт
-                                    </label>
-                                </Checkbox>
-                            </ConfigProvider>
-                        </div>
-                        <div className={styles.controls__controlWrapper}>
-                            <ConfigProvider
-                                theme={{
-                                    token: {
-                                        colorPrimary: '#FFDB7E',
-                                        controlInteractiveSize: 20,
-                                    }
-                                }}
-                            >
-                                <Checkbox
-                                    //size='large'
-                                    checked={controlsState.isQueriesActive}
-                                    value='isQueriesActive'
-                                    onChange={controlsCheckboxHandler}
-                                >
-                                    <label className={styles.controls__label}>
-                                        Ключи, шт
-                                    </label>
-                                </Checkbox>
-                            </ConfigProvider>
-                        </div>
-                        <div className={styles.controls__controlWrapper}>
-                            <ConfigProvider
-                                theme={{
-                                    token: {
-                                        colorPrimary: '#FF8D8D',
-                                        controlInteractiveSize: 20,
-                                    }
-                                }}
-                            >
-                                <Checkbox
-                                    //size='large'
-                                    checked={controlsState.isPriceActive}
-                                    value='isPriceActive'
-                                    onChange={controlsCheckboxHandler}
-                                >
-                                    <label className={styles.controls__label}>
-                                        Цена, руб
-                                    </label>
-                                </Checkbox>
-                            </ConfigProvider>
-                        </div>
-                    </div>
-                    <div className={styles.page__activityChartCanvas} ref={activityChartContainerRef}>
-                        <Line
-                            data={getActivityChartData(skuData)}
-                            options={activityChartOptions}
-                        />
-                        {markTooltip && (
-                            <div
-                                className={styles.page__markTooltip}
-                                style={{ left: `${markTooltip.x}px`, top: `${markTooltip.y - 56}px` }}
-                            >
-                                <p className={styles.page__markTooltipTitle}>{markTooltip.label}</p>
-                                <button
-                                    type='button'
-                                    className={styles.page__markTooltipButton}
-                                    onClick={(event) => {
-                                        event.stopPropagation();
-                                        handleDeleteMark(markTooltip.id);
+                {requestStatus.isLoading && <RadarLoader loaderStyle={{ minHeight: '456px', width: '100%', background: 'white', borderRadius: '16px' }} />}
+                {!requestStatus.isLoading &&
+                    <div className={styles.page__activityChart}>
+                        <div className={styles.page__activityChartHeader}>
+                            <div className={styles.controls__controlWrapper}>
+                                <ConfigProvider
+                                    theme={{
+                                        token: {
+                                            colorPrimary: '#9A81FF',
+                                            controlInteractiveSize: 20,
+                                        }
                                     }}
                                 >
-                                    Удалить метку
-                                </button>
+                                    <Checkbox
+                                        //size='large'
+                                        checked={controlsState.isShowsActive}
+                                        value='isShowsActive'
+                                        onChange={controlsCheckboxHandler}
+                                    >
+                                        <label className={styles.controls__label}>
+                                            Просмотры, шт
+                                        </label>
+                                    </Checkbox>
+                                </ConfigProvider>
                             </div>
-                        )}
+                            <div className={styles.controls__controlWrapper}>
+                                <ConfigProvider
+                                    theme={{
+                                        token: {
+                                            colorPrimary: '#FFDB7E',
+                                            controlInteractiveSize: 20,
+                                        }
+                                    }}
+                                >
+                                    <Checkbox
+                                        //size='large'
+                                        checked={controlsState.isQueriesActive}
+                                        value='isQueriesActive'
+                                        onChange={controlsCheckboxHandler}
+                                    >
+                                        <label className={styles.controls__label}>
+                                            Ключи, шт
+                                        </label>
+                                    </Checkbox>
+                                </ConfigProvider>
+                            </div>
+                            <div className={styles.controls__controlWrapper}>
+                                <ConfigProvider
+                                    theme={{
+                                        token: {
+                                            colorPrimary: '#FF8D8D',
+                                            controlInteractiveSize: 20,
+                                        }
+                                    }}
+                                >
+                                    <Checkbox
+                                        //size='large'
+                                        checked={controlsState.isPriceActive}
+                                        value='isPriceActive'
+                                        onChange={controlsCheckboxHandler}
+                                    >
+                                        <label className={styles.controls__label}>
+                                            Цена, руб
+                                        </label>
+                                    </Checkbox>
+                                </ConfigProvider>
+                            </div>
+                        </div>
+                        <div className={styles.page__activityChartCanvas} ref={activityChartContainerRef}>
+                            <Line
+                                data={getActivityChartData(skuData)}
+                                options={activityChartOptions}
+                            />
+                            {markTooltip && (
+                                <div
+                                    className={styles.page__markTooltip}
+                                    style={{ left: `${markTooltip.x}px`, top: `${markTooltip.y - 56}px` }}
+                                >
+                                    <p className={styles.page__markTooltipTitle}>{markTooltip.label}</p>
+                                    <button
+                                        type='button'
+                                        className={styles.page__markTooltipButton}
+                                        onClick={(event) => {
+                                            event.stopPropagation();
+                                            handleDeleteMark(markTooltip.id);
+                                        }}
+                                    >
+                                        Удалить метку
+                                    </button>
+                                </div>
+                            )}
+                        </div>
                     </div>
-                </div>
-
+                }
+                {requestStatus.isLoading && <RadarLoader loaderStyle={{ minHeight: '456px', width: '100%', background: 'white', borderRadius: '16px' }} />}
                 {/* table */}
-                {tableData && tableConfig && tableData.length > 0 &&
+                {tableData && tableConfig && tableData.length > 0 && !requestStatus.isLoading &&
                     <div className={styles.page__tableWrapper}>
                         <ConfigProvider theme={segmentedTheme}>
                             <Segmented options={['Кластеры', 'По запросам']} size='large' value={tableType} onChange={(value) => setTableType(value as 'Кластеры' | 'По запросам')} />
@@ -1036,7 +1123,9 @@ const PositionTrackingSkuPage = () => {
                                     config={tableConfig}
                                     treeMode={tableType === 'Кластеры'}
                                     preset='radar-table-default'
-                                    dataSource={tableData}
+                                    sorting={sortState}
+                                    onSort={(sort_field, sort_order) => setSortState({ sort_field, sort_order })}
+                                    dataSource={handleTableSort(tableData)}
                                     paginationContainerStyle={{ display: 'none' }}
                                     stickyHeader
                                     customCellRender={{

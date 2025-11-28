@@ -4,7 +4,7 @@ import styles from './PositionTrackingProjectsPage.module.css';
 import Sidebar from '@/components/sharedComponents/sidebar/sidebar';
 import MobilePlug from '@/components/sharedComponents/mobilePlug/mobilePlug';
 import { PositionTrackingMainPageWidget } from '@/widgets/PositionTrackingMainPageWidget/PositionTrackingMainPageWidget';
-import { RadarBar } from '@/shared';
+import { RadarBar, RadarLoader } from '@/shared';
 import { PlainSelect } from '@/components/sharedComponents/apiServicePagesFiltersComponent/features/plainSelect/plainSelect';
 // import { MainChart } from '@/features';
 import { Table as RadarTable } from 'radar-ui';
@@ -372,7 +372,12 @@ const PositionTrackingProjectsPage = () => {
                     }}
                     />
                 }
-                {projectsList?.length > 0 &&
+                {requestStatus.isLoading &&
+                    <div className={styles.page__tableWrapper}>
+                        <RadarLoader loaderStyle={{ height: '50vh' }} />
+                    </div>
+                }
+                {projectsList?.length > 0 && !requestStatus.isLoading &&
                     <div className={styles.page__tableWrapper}>
                         <RadarTable
                             config={positionTrackingProjectsTableConfig}

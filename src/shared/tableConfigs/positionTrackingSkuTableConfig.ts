@@ -14,6 +14,7 @@ export const positionTrackingSkuTableConfig = [
         hidden: false,
         width: 100,
         fixed: true,
+        sortable: true,
     },
     {
         key: 'total_goods',
