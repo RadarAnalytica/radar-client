@@ -198,7 +198,3 @@
 .category__icon_red {
     background: #FEDACC;
 }
-
-.customHeaderCell:first-of-type {
-  pointer-events: none;
-}
