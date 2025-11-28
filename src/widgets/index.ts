@@ -7,3 +7,4 @@ export { DoubleTable } from './DoubleTable/DoubleTable';
 export { KeywordSelectionFilters } from './KeywordSelectionFilters/KeywordSelectionFilters';
 export { OnboardingWidget } from './OnboardingWidget/OnboardingWidget';
 export { PositionTrackingMainPageWidget } from './PositionTrackingMainPageWidget/PositionTrackingMainPageWidget';
+export { PositionTrackingSkuFilters } from './PositionTrackingSkuFilters/PositionTrackingSkuFilters';
