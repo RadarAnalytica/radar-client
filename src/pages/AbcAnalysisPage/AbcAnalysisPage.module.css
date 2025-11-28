@@ -101,6 +101,12 @@
           border-radius: 0 12px 12px 0;
         }
       }
+
+      th[data-column-key="category"] {
+        :global(.radar-table__resize-button) {
+          display: none;
+        }
+      }
     }
   }
   

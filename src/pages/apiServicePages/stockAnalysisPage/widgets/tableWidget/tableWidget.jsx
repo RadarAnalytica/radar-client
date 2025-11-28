@@ -84,8 +84,9 @@ const customCellRender = (value, record, index, dataIndex) => {
 
 
     if (dataIndex === 'productName') {
+        const paddingLeft = record.isParent === false ? '28px' : !record.children?.length ? '36px' : '0px';
         return (
-            <div className={styles.productCustomCell} style={{ paddingLeft: !record.children ? '28px' : '0px' }}>
+            <div className={styles.productCustomCell} style={{ paddingLeft }}>
                 <div className={styles.productCustomCellImgWrapper}>
                     <img 
                         src={record.photo} 
