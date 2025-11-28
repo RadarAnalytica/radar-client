@@ -29,6 +29,7 @@ export const Filters = ({
   const { user, authToken } = useContext(AuthContext);
   const dispatch = useAppDispatch();
   const { activeBrand, filters, shops, expenseCategories, activeExpenseCategory } = useAppSelector(store => store.filters);
+  console.log('filters', filters);
   const filtersState = useAppSelector(store => store.filters);
 
   // ---- хэндлер выбора магазина -----------//
@@ -105,10 +106,11 @@ export const Filters = ({
               optionsData={shops}
               handler={shopChangeHandler}
               isDataLoading={isDataLoading}
+              hasSearch={shops.length > 5} // добавляем поиск если магазинов больше 5
             />
           </div>
         }
-        {filters && activeBrand && filters.map((i, id) => {
+        {filters && activeBrand && filters?.map((i, id) => {
           return activeBrand.id === i.shop.id && (
             <React.Fragment key={id}>
               {brandSelect && <div className={styles.filters__inputWrapper}>
