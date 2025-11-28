@@ -77,6 +77,8 @@ const MyAdvTable: React.FC<MyAdvTableProps> = ({
   const onResizeGroup = (columnKey: string, width: number) => {
     // Обновляем конфигурацию колонок с группированной структурой
     const updateColumnWidth = (columns: any[]): any[] => {
+      const maxWidth = 400;
+
       return columns.map(col => {
         // Если это группа с children
         if (col.children && col.children.length > 0) {
@@ -87,13 +89,12 @@ const MyAdvTable: React.FC<MyAdvTableProps> = ({
             if (child.hidden) return sum; // Пропускаем скрытые колонки
             return sum + (child.width || child.minWidth || 200);
           }, 0);
-          return { ...col, width: totalWidth, children: updatedChildren, maxWidth: 400 };
+          return { ...col, width: Math.min(totalWidth, maxWidth), children: updatedChildren, maxWidth };
         }
 
         // Если это листовая колонка
         if (col.key === columnKey) {
-          const newWidth = width;
-          return { ...col, width: newWidth, maxWidth: 400 };
+          return { ...col, width: Math.min(width, maxWidth), maxWidth };
         }
 
         return col;
