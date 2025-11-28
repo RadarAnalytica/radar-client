@@ -62,7 +62,7 @@ const FiltersProvider = ({ children }: { children: React.ReactNode }) => {
     }, [authToken, isFiltersLoading]);
 
     useEffect(() => {
-      let timeout: NodeJS.Timeout;
+      let timeout: ReturnType<typeof setTimeout>;
       if (isError) {
         requestCounterRef.current++;
         if (requestCounterRef.current <= 60) {
@@ -117,7 +117,7 @@ const FiltersProvider = ({ children }: { children: React.ReactNode }) => {
     // обновляем раз в 30 секунд магазины если данные не собраны
     useEffect(() => {
         activeBrand && localStorage.setItem('activeShop', JSON.stringify(activeBrand));
-        let interval: NodeJS.Timeout;
+        let interval: ReturnType<typeof setInterval>;
         if (activeBrand && !activeBrand.is_primary_collect && activeBrand.id !== 0) {
             interval = setInterval(() => {
                 getFiltersData();

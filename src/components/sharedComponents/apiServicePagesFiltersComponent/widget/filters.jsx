@@ -105,6 +105,7 @@ export const Filters = ({
               optionsData={shops}
               handler={shopChangeHandler}
               isDataLoading={isDataLoading}
+              hasSearch={shops.length > 5} // добавляем поиск если магазинов больше 5
             />
           </div>
         }
