@@ -299,7 +299,7 @@ const MyAdvTable: React.FC<MyAdvTableProps> = ({
 
       <div className={styles.tableContainer}>
         <div className={styles.tableWrapper} ref={tableContainerRef}>
-          {!data.length ? (!isDataCollecting && <NoData />) : (
+          {!isDataCollecting && (
             <RadarTable
               key={JSON.stringify(tableConfig)}
               rowKey={(record: CompanyData) => `${record.company_id || ''}_${record.date || ''}`}
@@ -332,7 +332,7 @@ const MyAdvTable: React.FC<MyAdvTableProps> = ({
                 idx: [],
                 renderer: customCellRender,
               }}
-              noDataRender={() => <div className={styles.noDataBlock}>Для выбранного периода данные не найдены</div>}
+              noDataRender={() => <div className={styles.noDataBlock}>Нет данных в выбранном периоде</div>}
               headerCellWrapperStyle={{
                 minHeight: '0px',
                 padding: '12px 10px',
