@@ -3,7 +3,7 @@ import { Table as RadarTable } from 'radar-ui';
 import { useNavigate } from 'react-router-dom';
 import { Filters } from '@/components/sharedComponents/apiServicePagesFiltersComponent';
 import TableSettingsWidget from '../TableSettingsWidget/TableSettingsWidget';
-import { TABLE_CONFIG_VERSION, getDefaultTableConfig } from '../../config/tableConfig';
+import { TABLE_CONFIG_VERSION, getDefaultTableConfig, getNormalizedTableConfig, saveTableConfig } from '../../config/tableConfig';
 import { sortTableData } from './utils';
 import styles from './MyAdvTable.module.css';
 import { CompanyData } from '../../data/mockData';
@@ -63,6 +63,8 @@ const MyAdvTable: React.FC<MyAdvTableProps> = ({
   };
 
   const handleSort = (sort_field: string, sort_order: "ASC" | "DESC") => {
+    if ((companyId ? ['company_name', 'company_status', 'company_type'] : ['company_name']).includes(sort_field)) return;
+
     setPageData({ ...pageData, page: 1 });
     setSortState({ sort_field, sort_order });
     if (data) {
@@ -273,11 +275,16 @@ const MyAdvTable: React.FC<MyAdvTableProps> = ({
     localStorage.setItem('MY_ADV_EXPANDED_TABLE_ROWS_STATE', JSON.stringify({ keys: stringKeys }));
   };
 
+  // Обработчик изменения конфигурации таблицы
+  const handleTableColumnsChange = (newConfig: ColumnConfig[]) => {
+    const normalizedConfig = getNormalizedTableConfig(newConfig);
+    setTableConfig(normalizedConfig);
+    saveTableConfig(normalizedConfig);
+  };
+
   if (loading) {
     return <Loader loading={loading} progress={0} />;
   }
-
-  console.log(tableConfig);
 
   return (
     <div className={styles.table}>
@@ -294,7 +301,7 @@ const MyAdvTable: React.FC<MyAdvTableProps> = ({
           />
         </div>
         <div className={styles.settingsWrapper}>
-          {!isDataCollecting && <TableSettingsWidget tableConfig={tableConfig} setTableConfig={setTableConfig} />}
+          {!isDataCollecting && <TableSettingsWidget tableConfig={tableConfig} setTableConfig={handleTableColumnsChange} />}
         </div>
       </div>
 

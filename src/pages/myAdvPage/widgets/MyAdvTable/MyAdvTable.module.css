@@ -116,7 +116,9 @@
 .tableStaticCompany {
   :global(.radar-table__header-row) {
     th[data-column-key="company_name"], th[data-column-key="company_status"], th[data-column-key="company_type"] {
-      pointer-events: none;
+      span {
+        cursor: default !important;
+      }
 
       :global(.radar-table__sort-button-wrapper) {
         display: none;

@@ -129,3 +129,40 @@ export const mergeTableConfig = (
   });
 };
 
+// Обработчик изменения конфигурации таблицы
+export const getNormalizedTableConfig = (newConfig: ColumnConfig[]): ColumnConfig[] => {
+  const MAX_WIDTH = 400;
+  
+  // Расширенный интерфейс для колонок с children (аналогично TableSettingsWidget)
+  type ExtendedColumnConfig = ColumnConfig & {
+    children?: ExtendedColumnConfig[];
+  };
+  
+  // Рекурсивная функция для ограничения ширины колонок
+  const limitColumnWidth = (columns: ExtendedColumnConfig[]): ExtendedColumnConfig[] => {
+    return columns.map(col => {
+      if (Array.isArray(col.children) && col.children.length > 0) {
+        const updatedChildren = limitColumnWidth(col.children);
+        // Пересчитываем ширину группы на основе суммы ширин дочерних колонок
+        const totalWidth = updatedChildren.reduce((sum: number, child: ExtendedColumnConfig) => {
+          if (child.hidden) return sum;
+          return sum + (child.width || child.minWidth || 200);
+        }, 0);
+        return { 
+          ...col, 
+          width: Math.min(totalWidth, MAX_WIDTH), 
+          children: updatedChildren 
+        };
+      }
+      
+      // Если это листовая колонка, ограничиваем ширину до MAX_WIDTH
+      if (col.width && col.width > MAX_WIDTH) {
+        return { ...col, width: MAX_WIDTH };
+      }
+      
+      return col;
+    });
+  };
+  
+  return limitColumnWidth(newConfig as ExtendedColumnConfig[]);
+};
