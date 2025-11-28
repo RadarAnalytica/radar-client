@@ -24,20 +24,22 @@ const SelfCostTableWidget = ({
     resetSearch,
     filters,
     totalItems,
-    searchInputValue
+    searchInputValue,
+    paginationState,
+    setPaginationState
 }) => {
-    const [paginationState, setPaginationState] = useState({ current: 1, total: 0, pageSize: 50 });
-    
+   //const [paginationState, setPaginationState] = useState({ current: 1, total: 0, pageSize: 50 });
+
     const paginationHandler = (page) => {
         setPaginationState({ ...paginationState, current: page });
-        if (getTableData && authToken && activeBrand) {
-            getTableData(authToken, activeBrand.id, filters, page, searchInputValue || '');
-        }
+        // if (getTableData && authToken && activeBrand) {
+        //     getTableData(authToken, activeBrand.id, filters, page, searchInputValue || '');
+        // }
     };
 
-    useEffect(() => {
-        setPaginationState(prev => ({ ...prev, current: 1, total: totalItems }));
-    }, [totalItems]);
+    // useEffect(() => {
+    //     setPaginationState(prev => ({ ...prev, current: 1, total: totalItems }));
+    // }, [totalItems]);
 
     useEffect(() => {
         const paginationNextButton = document.querySelector('.ant-pagination-jump-next');
@@ -45,16 +47,16 @@ const SelfCostTableWidget = ({
         const paginationSingleNextButton = document.querySelector('.ant-pagination-next');
         const paginationSinglePrevButton = document.querySelector('.ant-pagination-prev');
         if (paginationNextButton) {
-         paginationNextButton.setAttribute('title', 'Следующие 5 страниц');
+            paginationNextButton.setAttribute('title', 'Следующие 5 страниц');
         }
         if (paginationSingleNextButton) {
-         paginationSingleNextButton.setAttribute('title', 'Следующая страница');
+            paginationSingleNextButton.setAttribute('title', 'Следующая страница');
         }
         if (paginationSinglePrevButton) {
-         paginationSinglePrevButton.setAttribute('title', 'Предыдущая страница');
+            paginationSinglePrevButton.setAttribute('title', 'Предыдущая страница');
         }
         if (paginationPrevButton) {
-         paginationPrevButton.setAttribute('title', 'Предыдущие 5 страниц');
+            paginationPrevButton.setAttribute('title', 'Предыдущие 5 страниц');
         }
     }, [paginationState]);
 
@@ -83,7 +85,7 @@ const SelfCostTableWidget = ({
                     {/* Тело таблицы */}
                     <div className={styles.table__body}>
                         {dataStatus.isLoading && (
-                            <div className={`${styles.widget__loaderWrapper} ${progress.value !== null ? 'bg-white' : '' }`}>
+                            <div className={`${styles.widget__loaderWrapper} ${progress.value !== null ? 'bg-white' : ''}`}>
                                 <Loader loading={dataStatus.isLoading} progress={progress.value} />
                             </div>
                         )}

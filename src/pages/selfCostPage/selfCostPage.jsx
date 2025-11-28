@@ -35,7 +35,8 @@ const SelfCostPage = () => {
     const { authToken } = useContext(AuthContext);
     const { activeBrand, selectedRange, isFiltersLoaded, activeBrandName, activeArticle, activeGroup } = useAppSelector((state) => state.filters);
     const filters = useAppSelector(store => store.filters);
-    
+    const [paginationState, setPaginationState] = useState({ current: 1, total: 0, pageSize: 50 });
+
     const getTableData = useCallback(async (authToken, shopId, filters, page = 1, searchValue = '') => {
         setDataStatus({ ...initDataStatus, isLoading: true });
         progress.start();
@@ -51,7 +52,8 @@ const SelfCostPage = () => {
 
         setTableData([...items]);
         setFilteredTableData([...items]);
-        setTotalItems(total || items.length);
+        setPaginationState(prev => ({ ...prev, total: total || items.length }));
+        // setTotalItems(total || items.length);
         progress.complete();
 
         await setTimeout(() => {
@@ -67,16 +69,17 @@ const SelfCostPage = () => {
     const resetSearch = useCallback(() => {
         if (searchInputValue) {
             setSearchInputValue('');
-            getTableData(authToken, activeBrand.id, filters, 1, '');
+            setPaginationState(prev => ({ ...prev, current: 1 }));
+            // getTableData(authToken, activeBrand.id, filters, 1, '');
         }
     }, [searchInputValue, authToken, activeBrand, filters, getTableData]);
 
     //задаем начальную дату
     useEffect(() => {
         if (activeBrand && activeBrand.is_primary_collect && isFiltersLoaded) {
-            getTableData(authToken, activeBrand.id, filters);
+            getTableData(authToken, activeBrand.id, filters, paginationState.current);
         }
-    }, [activeBrand, selectedRange, isFiltersLoaded, activeBrandName, activeArticle, activeGroup]);
+    }, [activeBrand, selectedRange, isFiltersLoaded, activeBrandName, activeArticle, activeGroup, paginationState.current]);
 
     const memoizedDataStatus = useMemo(() => dataStatus, [dataStatus]);
     const memoizedFilteredTableData = useMemo(() => filteredTableData, [filteredTableData]);
@@ -142,6 +145,8 @@ const SelfCostPage = () => {
                             filters={filters}
                             totalItems={totalItems}
                             searchInputValue={memoizedSearchInputValue}
+                            paginationState={paginationState}
+                            setPaginationState={setPaginationState}
                         />
                     </>
                 }
