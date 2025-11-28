@@ -138,6 +138,9 @@ const AbcAnalysisPage = () => {
 	};
 
 	const sortButtonClickHandler = (sort_field, sort_order) => {
+		// TODO: Убрать, когда будет фикс radar-table: клик по !sortable заголовку - срабатывает сортировка
+		if (['supplier_id', 'tech_size', 'wb_id'].includes(sort_field)) return;
+
 		// выключаем сортировку если нажата уже активная клавиша
 		if (sortState.sort_field === sort_field && sortState.sort_order === sort_order) {
 			setSortState({ sort_field: null, sort_order: null });
@@ -316,7 +319,7 @@ const AbcAnalysisPage = () => {
 												preset='radar-table-simple'
 												className='abc-analysis-table'
 												stickyHeader
-												// resizeable
+												resizeable
 												onResize={onResizeGroup}
 												onSort={sortButtonClickHandler}
 												pagination={{
