@@ -3,6 +3,7 @@ import SmallBar from '../bars/smallBar';
 import { useAppSelector } from '../../../redux/hooks';
 import { RadarBar } from '../../../shared/ui/RadarBar/RadarBar';
 import TurnoverBlock from '../blocks/turnoverBlock/turnoverBlock';
+import { SmallButton } from '@/shared';
 
 const SecondBarsGroup = ({ dataDashBoard, loading, selectedRange, activeBrand, authToken, filters }) => {
     return (
@@ -44,6 +45,7 @@ const SecondBarsGroup = ({ dataDashBoard, loading, selectedRange, activeBrand, a
                 tooltipText='Суммарные расходы на логистику, определяются расчетным способом от количества заказов'
                 mainValue={dataDashBoard?.logistics}
                 hasColoredBackground
+                midValue={<SmallButton title='Детализация' dataDashBoard={dataDashBoard} dataType='logistic' />}
                 compareValue={{
                     comparativeValue: dataDashBoard?.logisticsCompare,
                     absoluteValue: dataDashBoard?.prev_logistics,
@@ -84,6 +86,7 @@ const SecondBarsGroup = ({ dataDashBoard, loading, selectedRange, activeBrand, a
                 mainValue={dataDashBoard?.commissionWB}
                 mainValueUnits='₽'
                 hasColoredBackground
+                midValue={<SmallButton title='Детализация' dataDashBoard={dataDashBoard} dataType='comission' />}
                 compareValue={{
                     comparativeValue: dataDashBoard?.commissionWBCompare,
                     absoluteValue: dataDashBoard?.prev_commissionWB,
@@ -123,6 +126,7 @@ const SecondBarsGroup = ({ dataDashBoard, loading, selectedRange, activeBrand, a
                 tooltipText={'К прочим удержания отнесены: платежи по договору займа, предоставление услуг по подписке «Джем», страхование заказов, услуги по размещению рекламного материала, списания за отзывы, утилизации товара'}
                 mainValue={dataDashBoard?.penalty}
                 mainValueUnits='₽'
+                midValue={<SmallButton title='Детализация' dataDashBoard={dataDashBoard} dataType='penalty' />}
                 isLoading={loading}
                 compareValue={{
                     comparativeValue: dataDashBoard?.penalty_compare,

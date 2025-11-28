@@ -23,9 +23,11 @@ const SearchWidget = ({ stockAnalysisData, setStockAnalysisFilteredData, filters
 
     const inputKeydownHandler = (e) => {
         if (e && e.key !== 'Enter') return;
+        console.log('SA stockAnalysisData filtered', getFilteredData(searchInputValue.trim(), stockAnalysisData));
         setStockAnalysisFilteredData(getFilteredData(searchInputValue.trim(), stockAnalysisData));
     };
     const searchButtonClickHandler = () => {
+        console.log('SA stockAnalysisData filtered', getFilteredData(searchInputValue.trim(), stockAnalysisData));
         setStockAnalysisFilteredData(getFilteredData(searchInputValue.trim(), stockAnalysisData));
     };
     const inputChangeHandler = (e) => {
@@ -52,7 +54,8 @@ const SearchWidget = ({ stockAnalysisData, setStockAnalysisFilteredData, filters
 
     useEffect(() => {
         if (stockAnalysisData && searchInputValue) {
-            setStockAnalysisFilteredData(getFilteredData(searchInputValue.trim(), stockAnalysisData));
+            console.log('SA stockAnalysisData filtered', getFilteredData(searchInputValue.trim(), stockAnalysisData));
+            setStockAnalysisFilteredData([...getFilteredData(searchInputValue.trim(), stockAnalysisData)]);
         }
     }, [stockAnalysisData]);
 

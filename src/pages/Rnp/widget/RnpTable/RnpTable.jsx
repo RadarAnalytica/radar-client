@@ -131,11 +131,11 @@ export default function RnpTable({ columns, data, columns2, data2, expanded, el 
 
 	return (
 		<div className={styles.container}>
-			{tableConfig &&
+			{tableConfig && data2 &&
 				<div className={styles.tableContainer} ref={containerRef}>
 					<RadarTable
+						key={containerRef?.current}
 						rowKey={(record) => record.id}
-
 						dataSource={data2}
 						config={tableConfig}
 						treeMode
@@ -148,7 +148,11 @@ export default function RnpTable({ columns, data, columns2, data2, expanded, el 
 
 						pagination={false}
 						paginationContainerStyle={{ display: 'none' }}
-
+						// virtualization={{
+						// 	enabled: true,
+						// 	overscan: 10,
+						// 	estimateSize: 38,
+						// }}
 						stickyHeader={true}
 						scrollContainerRef={containerRef}
 						style={{tableLayout: 'fixed', width: 'max-content'}}
@@ -161,10 +165,9 @@ export default function RnpTable({ columns, data, columns2, data2, expanded, el 
 							idx: [],
 							renderer: customCellRender,
 						}}
-						benchmark={URL === 'https://test-server-pro.ru'}
+						//benchmark={URL === 'https://test-server-pro.ru'}
 					/>
-				</div>
-			}
+				</div>}
 		</div>
 	);
 }

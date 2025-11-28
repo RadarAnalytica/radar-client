@@ -70,22 +70,32 @@ const comparsionsList = {
 };
 
 const customCellRender = (value, record, index, dataIndex) => {
-    const [isImgVisible, setIsImgVisible] = useState(true);
+    const [isImgVisible, setIsImgVisible] = useState(false);
     const comparsionKey = comparsionsList[dataIndex];
     const comparsion = record[comparsionKey];
     const rightBorders = ['category', 'sold_cost', 'return_cost', 'product_cost_stock', 'from_client_sum', 'additionalPayment', 'lostRevenue', 'byProfit', 'minDiscountPrice', 'orderSum', 'completed', 'saleCountDay'];
 
+
+    useEffect(() => {
+        if (record.photo) {
+            setIsImgVisible(true);
+        }
+    }, [record.photo]);
+
+
     if (dataIndex === 'productName') {
         return (
-            <div className={`${styles.productCustomCell} ${!record.children && 'ps-5'}`}>
+            <div className={styles.productCustomCell} style={{ paddingLeft: !record.children ? '28px' : '0px' }}>
                 <div className={styles.productCustomCellImgWrapper}>
-                    {isImgVisible && <img 
+                    <img 
                         src={record.photo} 
                         width={30} 
                         height={40} 
                         alt='Product'
-                        onError={(e) => { e.target.style.display = 'none'; setIsImgVisible(false); }}
-                    ></img>}
+                        onLoad={() => { setIsImgVisible(true); }}
+                        onError={(e) => { setIsImgVisible(false) }}
+                        hidden={!isImgVisible}
+                    ></img>
                 </div>
                 <div className={styles.productCustomCellTitle} title={value}><span>{value}</span></div>
             </div>
@@ -128,17 +138,28 @@ const TableWidget = ({ stockAnalysisFilteredData, loading, progress, config, ini
     // задаем начальную дату
     useEffect(() => {
         if (stockAnalysisFilteredData) {
-            const data = stockAnalysisFilteredData.map(item => ({
-                ...item.article_data,
-                vendorСode: item.article,
-                size: `${item.sizes?.length} ${getWordDeclension('размер', item.sizes?.length )}`,
-                isParent: true,
-                children: item.sizes.map(child => ({
-                    ...child,
+            const data = stockAnalysisFilteredData.map(item => {
+                const sizesLength = item?.originalSizesLength ?? item?.sizes?.length ?? 0;
+                //const sizesLength = item?.originalSizesLength || 0;
+                let showSizes = sizesLength > 1;
+
+                if (item?.showSizes) {
+                    showSizes = true;
+                    setExpandedRowKeys(prev => [...prev, `${item.article_data?.sku}_${sizesLength}`]);
+                }
+                
+                return {
+                    ...item.article_data,
                     vendorСode: item.article,
-                    isLastChild: child.index === item.article_data.length - 1,
-                })),
-            }));
+                    size: showSizes ? `${sizesLength} ${getWordDeclension('размер', sizesLength )}` : item.article_data?.size,
+                    isParent: showSizes,
+                    children: showSizes ? item.sizes.map(child => ({
+                        ...child,
+                        vendorСode: item.article,
+                        isLastChild: child.index === item.article_data.length - 1,
+                    })) : null,
+                };
+            });
             
             if (sortState.sortedValue && sortState.sortType) {
                 setTableData([...sortTableDataFunc(sortState.sortType, sortState.sortedValue, data)]);
@@ -254,6 +275,7 @@ const TableWidget = ({ stockAnalysisFilteredData, loading, progress, config, ini
             <div className={styles.widget__scrollContainer} ref={containerRef} style={{ maxHeight: maxHeight ?? '100%' }}>
                 {tableData && tableData.length > 0 && tableConfig &&
                     <RadarTable
+                        rowKey={(record) => `${record.sku}_${record?.children?.length || 0}`}
                         config={tableConfig}
                         dataSource={[...tableData.slice((paginationState.current - 1) * paginationState.pageSize, paginationState.current * paginationState.pageSize)]}
                         preset='radar-table-simple'
@@ -307,6 +329,7 @@ const TableWidget = ({ stockAnalysisFilteredData, loading, progress, config, ini
                         preset='radar-table-simple'
                         stickyHeader
                         resizeable
+                        treeMode
                         onResize={onResizeGroup}
                         onSort={sortButtonClickHandler}
                         style={{ width: 'max-content', tableLayout: 'fixed' }}

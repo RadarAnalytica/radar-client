@@ -1,27 +1,27 @@
 /* Page */
 
 .page {
-    background-color: #F7F6FE;
-    height: 100vh;
-    overflow: hidden;
-    width: 100%;
-    display: flex;
-    box-sizing: border-box;
-    min-width: 1200px;
-    overflow-x: hidden;
+  background-color: #F7F6FE;
+  height: 100vh;
+  overflow: hidden;
+  width: 100%;
+  display: flex;
+  box-sizing: border-box;
+  min-width: 1200px;
 }
 .page__content {
-    width: 100%;
-    padding: 30px 52px;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: stretch;
-    gap: 20px;
-    box-sizing: border-box;
-    height: 100%;
-    overflow-y: scroll;
-    
+  width: calc(100% - 74px);
+  padding: 20px 32px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
+  gap: 20px;
+  box-sizing: border-box;
+  height: 100%;
+  overflow: auto;
+  flex-grow: 0;
+  flex-shrink: 0;
 }
 .page__sideNavWrapper {
     height: 100%;
@@ -38,57 +38,127 @@
 }
 
 /* page content */
-
 .wrapper{
   flex-grow: 1;
 }
 
 .container{
-  padding: 16px;
-  border-radius: 16px;
+  padding: 12px;
+  border-radius: 12px;
   background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
 }
 
-.container :global(.ant-table),
-.container :global(.ant-table-body) {
-  scrollbar-color: #5329ff80 transparent;
+.viewButton {
+  height: 38px;
+  width: 101px;
+  font-size: 14px;
+  color: #1A1A1A;
+  border-radius: 8px;
+  border: none;
+  background-color: transparent;
+  color: #1A1A1A80;
+}
+
+.viewButton:not(.viewButtonActive):hover {
+  background-color: #5329FF0F;
+  color: #1A1A1A;
+}
+
+.viewButtonActive {
+  background-color: #5329FF1A;
+  color: #1A1A1A;
+}
+
+.view {
+  margin-bottom: 12px;
+  color: grey;
+  font-size: 1rem;
+}
+
+.tableContainer {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+
+  :global(.radar-table__header) {
+    tr {
+      th {
+        background-color: #F7F6FE;
+        font-size: 14px;
+  
+        &:first-child {
+          border-radius: 12px 0 0 12px;
+        }
+  
+        &:last-child {
+          border-radius: 0 12px 12px 0;
+        }
+      }
+    }
+  }
+  
+  :global(.radar-table-simple__header-cell-wrapper) {
+    height: 100%;
+    min-height: none;
+  }
+  
+  :global(.radar-table-simple__body-cell-wrapper) {
+    font-size: 14px !important;
+    word-break: break-word;
+  }
+
+  :global(.radar-table__body) tr td:last-child,
+  :global(.radar-table__header) tr th:last-child {
+    position: sticky !important;
+    right: 0;
+    box-shadow: -4px 0 6px -2px rgba(0, 0, 0, 0.05);
+  }
+
+  :global(.radar-table__header) tr th:last-child {
+    top: 0;
+    z-index: 1;
+  }
+}
+
+.tableScrollContainer {
+  width: 100%;
+  flex: 1;
+  max-height: calc(100vh - 325px);
+  overflow: auto;
   scrollbar-width: thin;
+  scrollbar-color: #5329ff80 transparent;
 }
 
-.container :global(.ant-table-body)::-webkit-scrollbar {
+.tableScrollContainer::-webkit-scrollbar {
   width: 3px;
   height: 3px;
-  border-radius: 6px;
+  border-radius: 3px;
 }
-  
-.container :global(.ant-table-body)::-webkit-scrollbar-track {
+
+.tableScrollContainer::-webkit-scrollbar-thumb {
+  border-radius: 6px;
+  background: #5329ff80;
+}
+
+.tableScrollContainer::-webkit-scrollbar-track {
   background: transparent;
   height: 50%;
   margin: 10px 20px;
 }
-  
-.container :global(.ant-table-body)::-webkit-scrollbar-thumb {
-  background: #5329ff80;
-  border-radius: 6px;
-}
 
-.container thead>tr>th:first-child {
-  border-bottom-left-radius: 20px;
-}
-
-.container thead>tr>th:last-child {
-  border-bottom-right-radius: 20px;
-}
-
-.container thead>tr>th {
-  height: 70px;
-}
-
-.view {
-  margin-bottom: 20px;
-  padding: 0 16px;
-  color: grey;
-  font-size: 1rem;
+:global(.abcAnalysis) {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
 }
 
 .loading {
@@ -121,4 +191,8 @@
 
 .category__icon_red {
     background: #FEDACC;
+}
+
+.customHeaderCell:first-of-type {
+  pointer-events: none;
 }

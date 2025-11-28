@@ -21,16 +21,13 @@ import { useDemoMode } from '@/app/providers/DemoDataProvider';
  * @param {Object} values - значения формы
  * @param {Object} editData - данные для редактирования (если есть)
  * @param {string} mode - режим работы ('create' | 'edit' | 'copy')
+ * @param {boolean} isTemplate - флаг, является ли расход/шаблон шаблоном
  * @returns {Object} - объект с requestObject и requestUrl
  */
-const getRequestObject = (values, editData, mode) => {
-	let requestObject = {};
+const getRequestObject = (values, editData, mode, isTemplate = false) => {
 	let requestUrl = '';
-	let distributeItems = [];
 	const formattedDateStart = formatDate(parse(values.date, 'dd.MM.yyyy', new Date()), 'yyyy-MM-dd');
-
-	// Определяем тип расхода/шаблона
-	const isPeriodicExpense = values.type === 'plan' || editData?.is_periodic || editData?.is_template;
+	const isPeriodicExpense = values.type === 'plan' || editData?.is_periodic || editData?.is_template || (isTemplate && mode === 'create');
 
 	if (!editData?.is_periodic && mode === 'edit') {
 		values.shops = values.shops ? [values.shops] : [];
@@ -38,6 +35,7 @@ const getRequestObject = (values, editData, mode) => {
 		values.brand_names = values.brand_names ? [values.brand_names] : [];
 	}
 
+	let distributeItems = [];
 	if (values.shops?.length > 0) {
 		distributeItems = values.shops.filter(Boolean).map(el => JSON.parse(el));
 	} else if (values.vendor_codes?.length > 0) {
@@ -46,6 +44,7 @@ const getRequestObject = (values, editData, mode) => {
 		distributeItems = values.brand_names.filter(Boolean).map(el => JSON.parse(el));
 	}
 
+	let requestObject = {};
 	if (isPeriodicExpense) {
 		// Плановый расход или плановый шаблон
 		requestUrl = mode === 'edit' 
@@ -157,7 +156,7 @@ export default function ExpenseFormModal({
 		: today;
 
 	const onFinish = (values) => {
-		handle(getRequestObject(values, editData, mode));
+		handle(getRequestObject(values, editData, mode, isTemplate));
 	};
 
 	const cancelHandler = () => {
@@ -197,7 +196,7 @@ export default function ExpenseFormModal({
 					vendor_code: article.value,
 				}));
 
-				shops.push({ ...filter.shop, shop: filter.shop?.id });
+				shops.push({ ...filter.shop, shop: filter.shop?.id, shop_name: filter.shop?.brand_name });
 				brands.push(...brandsOptions);
 				vendor_codes.push(...vendorCodesOptions);
 			});
@@ -219,13 +218,19 @@ export default function ExpenseFormModal({
 	useEffect(() => {
 		if (mode !== 'create' && editData && distributeOptions.shops.length > 0) {
 			if (editData.vendor_codes?.length > 0) {
-				const targetVendorCodes = distributeOptions.vendor_codes.filter(el => editData.vendor_codes.includes(el.vendor_code)).map(el => JSON.stringify(el));
+				const targetVendorCodes = distributeOptions.vendor_codes
+					.filter(el => editData.vendor_codes.includes(el.vendor_code))
+					.map(el => JSON.stringify(el));
 				form.setFieldValue('vendor_codes', targetVendorCodes);
 			} else if (editData.brand_names?.length > 0) {
-				const targetBrands = distributeOptions.brands.filter(el => editData.brand_names.includes(el.brand_name)).map(el => JSON.stringify(el));
+				const targetBrands = distributeOptions.brands
+					.filter(el => editData.brand_names.includes(el.brand_name))
+					.map(el => JSON.stringify(el));
 				form.setFieldValue('brand_names', targetBrands);
 			} else if (editData.shops?.length > 0) {
-				const targetShops = editData.shops.map(el => JSON.stringify({ shop: el?.id || el }));
+				const targetShops = distributeOptions.shops
+					.filter(el => editData.shops.find(shop => shop.id === el.id))
+					.map(el => JSON.stringify({ shop: el.shop, shop_name: el.shop_name }));
 				form.setFieldValue('shops', targetShops);
 			}
 		}
@@ -846,7 +851,7 @@ export default function ExpenseFormModal({
 													hasSelectAll
 													optionsData={distributeOptions.shops?.map(el => ({
 														key: el.shop,
-														value: JSON.stringify({ shop: el.shop }),
+														value: JSON.stringify({ shop: el.shop, shop_name: el.shop_name }),
 														label: el.brand_name,
 													}))}
 													selectId='shops'
@@ -967,7 +972,7 @@ export default function ExpenseFormModal({
 												suffixIcon={<SelectIcon />}
 												options={distributeOptions.shops?.map(el => ({
 													key: el.shop,
-													value: JSON.stringify({ shop: el.shop }),
+													value: JSON.stringify({ shop: el.shop, shop_name: el.shop_name }),
 													label: el.brand_name,
 												}))}
 											/>

@@ -8,6 +8,10 @@
       "amount_percent": 19.45,
       "photo": "https://basket-12.wbbasket.ru/vol1751/part175175/175175738/images/c246x328/1.webp",
       "category": "A",
+      "logistic": 1250,
+      "marginality": 20.0,
+      "roi": 20.0,
+      "gmroi": 20.0,
       "tech_size": "0"
     },
     {
@@ -18,6 +22,10 @@
       "amount_percent": 8.22,
       "photo": "https://basket-14.wbbasket.ru/vol2079/part207968/207968475/images/c246x328/1.webp",
       "category": "A",
+      "logistic": 980,
+      "marginality": 30.0,
+      "roi": 20.0,
+      "gmroi": 20.0,
       "tech_size": "0"
     },
     {
@@ -28,6 +36,10 @@
       "amount_percent": 7.40,
       "photo": "https://basket-26.wbbasket.ru/vol4855/part485557/485557912/images/c246x328/1.webp",
       "category": "A",
+      "logistic": 1120,
+      "marginality": 40.0,
+      "roi": 30.0,
+      "gmroi": 30.0,
       "tech_size": "0"
     },
     {
@@ -38,6 +50,10 @@
       "amount_percent": 6.90,
       "photo": "https://basket-10.wbbasket.ru/vol1592/part159244/159244282/images/c246x328/1.webp",
       "category": "A",
+      "logistic": 850,
+      "marginality": 20.0,
+      "roi": 20.0,
+      "gmroi": 20.0,
       "tech_size": "0"
     },
     {
@@ -48,6 +64,10 @@
       "amount_percent": 4.81,
       "photo": "https://basket-26.wbbasket.ru/vol4853/part485365/485365491/images/c246x328/1.webp",
       "category": "A",
+      "logistic": 1340,
+      "marginality": 30.0,
+      "roi": 30.0,
+      "gmroi": 30.0,
       "tech_size": "0"
     },
     {
@@ -58,6 +78,10 @@
       "amount_percent": 3.87,
       "photo": "https://basket-16.wbbasket.ru/vol2513/part251351/251351066/images/c246x328/1.webp",
       "category": "A",
+      "logistic": 920,
+      "marginality": 40.0,
+      "roi": 40.0,
+      "gmroi": 40.0,
       "tech_size": "0"
     },
     {
@@ -68,6 +92,10 @@
       "amount_percent": 3.44,
       "photo": "https://basket-14.wbbasket.ru/vol2116/part211666/211666051/images/c246x328/1.webp",
       "category": "A",
+      "logistic": 1050,
+      "marginality": 20.0,
+      "roi": 20.0,
+      "gmroi": 20.0,
       "tech_size": "0"
     },
     {
@@ -78,6 +106,10 @@
       "amount_percent": 3.14,
       "photo": "https://basket-14.wbbasket.ru/vol2116/part211665/211665836/images/c246x328/1.webp",
       "category": "A",
+      "logistic": 780,
+      "marginality": 30.0,
+      "roi": 30.0,
+      "gmroi": 30.0,
       "tech_size": "0"
     },
     {
@@ -88,6 +120,10 @@
       "amount_percent": 2.84,
       "photo": "https://basket-18.wbbasket.ru/vol2875/part287568/287568831/images/c246x328/1.webp",
       "category": "A",
+      "logistic": 1180,
+      "marginality": 40.0,
+      "roi": 40.0,
+      "gmroi": 40.0,
       "tech_size": "0"
     },
     {
@@ -98,6 +134,10 @@
       "amount_percent": 2.55,
       "photo": "https://basket-11.wbbasket.ru/vol1728/part172849/172849651/images/c246x328/1.webp",
       "category": "A",
+      "logistic": 1015,
+      "marginality": 20.0,
+      "roi": 20.0,
+      "gmroi": 20.0,
       "tech_size": "0"
     },
     {
@@ -108,6 +148,10 @@
       "amount_percent": 2.16,
       "photo": "https://basket-14.wbbasket.ru/vol2116/part211666/211666067/images/c246x328/1.webp",
       "category": "A",
+      "logistic": 890,
+      "marginality": 30.0,
+      "roi": 30.0,
+      "gmroi": 30.0,
       "tech_size": "0"
     },
     {
@@ -118,6 +162,10 @@
       "amount_percent": 1.93,
       "photo": "https://basket-14.wbbasket.ru/vol2136/part213699/213699516/images/c246x328/1.webp",
       "category": "A",
+      "logistic": 1275,
+      "marginality": 40.0,
+      "roi": 40.0,
+      "gmroi": 40.0,
       "tech_size": "0"
     },
     {
@@ -128,6 +176,10 @@
       "amount_percent": 1.38,
       "photo": "https://basket-13.wbbasket.ru/vol2087/part208726/208726438/images/c246x328/1.webp",
       "category": "B",
+      "logistic": 945,
+      "marginality": 20.0,
+      "roi": 20.0,
+      "gmroi": 20.0,
       "tech_size": "0"
     },
     {
@@ -138,6 +190,10 @@
       "amount_percent": 1.30,
       "photo": "https://basket-14.wbbasket.ru/vol2137/part213702/213702056/images/c246x328/1.webp",
       "category": "B",
+      "logistic": 1100,
+      "marginality": 30.0,
+      "roi": 30.0,
+      "gmroi": 30.0,
       "tech_size": "0"
     },
     {
@@ -148,6 +204,10 @@
       "amount_percent": 1.13,
       "photo": "https://basket-14.wbbasket.ru/vol2116/part211666/211666075/images/c246x328/1.webp",
       "category": "B",
+      "logistic": 820,
+      "marginality": 40.0,
+      "roi": 40.0,
+      "gmroi": 40.0,
       "tech_size": "0"
     },
     {
@@ -158,6 +218,10 @@
       "amount_percent": 1.00,
       "photo": "https://basket-24.wbbasket.ru/vol4136/part413639/413639573/images/c246x328/1.webp",
       "category": "B",
+      "logistic": 1195,
+      "marginality": 20.0,
+      "roi": 20.0,
+      "gmroi": 20.0,
       "tech_size": "3XL(54Rus)"
     },
     {
@@ -168,6 +232,10 @@
       "amount_percent": 0.93,
       "photo": "https://basket-15.wbbasket.ru/vol2210/part221031/221031209/images/c246x328/1.webp",
       "category": "B",
+      "logistic": 960,
+      "marginality": 30.0,
+      "roi": 30.0,
+      "gmroi": 30.0,
       "tech_size": "Единый(48-60)"
     },
     {
@@ -178,6 +246,10 @@
       "amount_percent": 0.85,
       "photo": "https://basket-22.wbbasket.ru/vol3866/part386615/386615599/images/c246x328/1.webp",
       "category": "B",
+      "logistic": 1085,
+      "marginality": 40.0,
+      "roi": 40.0,
+      "gmroi": 40.0,
       "tech_size": "0"
     },
     {
@@ -188,6 +260,10 @@
       "amount_percent": 0.49,
       "photo": "https://basket-13.wbbasket.ru/vol2098/part209872/209872643/images/c246x328/1.webp",
       "category": "C",
+      "logistic": 875,
+      "marginality": 20.0,
+      "roi": 20.0,
+      "gmroi": 20.0,
       "tech_size": "0"
     },
     {
@@ -198,6 +274,10 @@
       "amount_percent": 0.40,
       "photo": "https://basket-19.wbbasket.ru/vol3223/part322361/322361671/images/c246x328/1.webp",
       "category": "C",
+      "logistic": 1150,
+      "marginality": 30.0,
+      "roi": 30.0,
+      "gmroi": 30.0,
       "tech_size": "XXS"
     }
   ],
@@ -206,4 +286,3 @@
   "page": 1,
   "per_page": 100
 }
-

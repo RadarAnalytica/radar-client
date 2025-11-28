@@ -83,6 +83,10 @@ const KeywordsSelectionPage = React.lazy(() => import("@/pages/KeywordsSelection
 const PositionTrackingMainPage = React.lazy(() => import("@/pages/PositionTracking/PositionTrackingMainPage"));
 const PositionTrackingProjectsPage = React.lazy(() => import("@/pages/PositionTracking/PositionTrackingProjectsPage"));
 const PositionTrackingSkuPage = React.lazy(() => import("@/pages/PositionTracking/PositionTrackingSkuPage"));
+const MyAdvPage = React.lazy(() => import("@/pages/myAdvPage/myAdvPage"));
+const CompanyAdvPage = React.lazy(() => import("@/pages/myAdvPage/companyAdvPage"));
+//TEMP
+const DashboardPageNoDnd = React.lazy(() => import('@/pages/apiServicePages/dashboardPage/page/dashboardPageNoDnd'));
 
 // During migration, allow missing props on ProtectedRoute
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -132,7 +136,8 @@ function App() {
                 <Route path='/selfcost' element={<ProtectedRoute expireProtected onboardProtected routeRuName='Себестоимость товаров'><SelfCostPage /></ProtectedRoute>} />
                 <Route path='/sku-analysis' element={<ProtectedRoute expireProtected routeRuName='Анализ артикула'><SkuAnalysisPage /></ProtectedRoute>} />
                 <Route path='/sku-analysis/:id' element={<ProtectedRoute testPeriodGuardType='redirect' testPeriodRedirect='/sku-analysis' expireProtected routeRuName='Анализ артикула'><SkuIdPage /></ProtectedRoute>} />
-                <Route path='/dashboard' element={<ProtectedRoute expireProtected onboardProtected routeRuName='Сводка продаж'><DashboardPage /></ProtectedRoute>} />
+                <Route path='/dashboard' element={<ProtectedRoute expireProtected onboardProtected routeRuName='Сводка продаж'><DashboardPageNoDnd /></ProtectedRoute>} />
+                <Route path='/dashboard-dnd' element={<ProtectedRoute expireProtected onboardProtected routeRuName='Сводка продаж'><DashboardPage /></ProtectedRoute>} />
                 <Route path='/abc-data' element={<ProtectedRoute expireProtected onboardProtected routeRuName='ABC-анализ'><AbcAnalysisPage /></ProtectedRoute>} />
                 <Route path='/rank-analysis' element={<ProtectedRoute expireProtected routeRuName='Сравнение SEO'><SeoPage /></ProtectedRoute>} />
                 {/* <Route path='/ai-generator' element={<ProtectedRoute expireProtected underDevelopmentProtected routeRuName='Генерация описания AI'><AiDescriptionGeneratorPage /></ProtectedRoute>} /> */}
@@ -173,6 +178,8 @@ function App() {
                 <Route path='/position-tracking' element={<ProtectedRoute expireProtected routeRuName='Трекинг позиций'><PositionTrackingMainPage /></ProtectedRoute>} />
                 <Route path='/position-tracking/projects' element={<ProtectedRoute expireProtected routeRuName='Трекинг позиций'><PositionTrackingProjectsPage /></ProtectedRoute>} />
                 <Route path='/position-tracking/:sku' element={<ProtectedRoute expireProtected routeRuName='Трекинг позиций'><PositionTrackingSkuPage /></ProtectedRoute>} />
+                <Route path='/my-adv' element={<ProtectedRoute expireProtected routeRuName='Мои реклама'><MyAdvPage /></ProtectedRoute>} />
+                <Route path='/my-adv/:companyId' element={<ProtectedRoute expireProtected routeRuName='Мои реклама'><CompanyAdvPage /></ProtectedRoute>} />
                 {/* Public routes */}
                 <Route path='/admin/article/demo/:slugOrId' element={<Suspense fallback={<LoaderPage />}><ArticleViewPage /></Suspense>} />
                 <Route path='/calculate' element={<Suspense fallback={<LoaderPage />}>{deviceRegexp.test(userAgent) ? <UnitCalculatorPage /> : <UnitCalculatorPageDesktop />}</Suspense>} />

@@ -2,6 +2,7 @@ import React from 'react';
 import { Chart as ChartJS, BarElement, CategoryScale, LinearScale, Tooltip, Legend } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
 import { verticalDashedLinePlugin } from '../service/utils';
+import styles from './ScheduleBigChart.module.css';
 
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend, verticalDashedLinePlugin);
@@ -141,19 +142,19 @@ const ScheduleBigChart = ({ labels, dataRevenue, dataNetProfit, minDataRevenue, 
     };
 
     return (
-        <div className="chart-container" style={{ marginRight: "10px", minWidth: "50%" }}>
+        <div className={styles.chart}>
             <div className='chart-container-header' style={{ marginBottom: '25px'}}>
                 <div>
-                    <div className='chart-title'>Продажи и прибыль</div>
+                    <div className='chart-title' style={{ fontSize: '18px'}}>Продажи и прибыль</div>
                 </div>
                 <div className='chart-header-wrapper'>
                     <div className='chart-container-colors-wrapper'>
                         <div className='roundedChartColor'></div>
-                        <div>Выручка, ₽</div>
+                        <div style={{ fontSize: '14px'}}>Выручка, ₽</div>
                     </div>
                     <div className='chart-container-colors-wrapper'>
                         <div className='roundedChartColorPurple'></div>
-                        <div>Чистая прибыль, ₽</div>
+                        <div style={{ fontSize: '14px'}}>Чистая прибыль, ₽</div>
                     </div>
                 </div>
             </div>

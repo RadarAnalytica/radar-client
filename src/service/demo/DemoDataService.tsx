@@ -32,7 +32,9 @@ import rnpFiltersData from './mock/rnp-filters.json';
 import serpRegions from './mock/serp-regions.json';
 import wbControlsData from './mock/wb-controls.json';
 import serpQueryData from './mock/serp-query-data.json';
-import keywordsSelectionData from './mock/position-check/positionCheckMainData.json'
+import keywordsSelectionData from './mock/position-check/positionCheckMainData.json';
+import advertListData from './mock/my-adv-list.json';
+import advertCompanyData from './mock/my-adv-company.json';
 
 export class DemoDataService {
   private static instance: DemoDataService;
@@ -48,56 +50,56 @@ export class DemoDataService {
 
   // Получить данные для конкретного эндпоинта
   public async getDataForEndpoint(endpoint: string, filters?: any, options?: any): Promise<any> {
-    endpoint = endpoint.split('?')[0];
+    const [baseEndpoint, query] = endpoint.split('?');
 
-    if (!endpoint) {
+    if (!baseEndpoint) {
       console.error('DemoDataService: No endpoint provided');
       return null;
     }
 
     // Сначала проверяем специализированные сервисы
     // Supplier Analysis маршруты
-    if (endpoint.includes('/supplier-analysis/')) {
+    if (baseEndpoint.includes('/supplier-analysis/')) {
       const { SupplierAnalysisDemoDataService } = await import('./SupplierAnalysisDemoDataService');
       const supplierService = SupplierAnalysisDemoDataService.getInstance();
-      const supplierMatch = supplierService.getDataForEndpoint(endpoint, filters, options);
+      const supplierMatch = supplierService.getDataForEndpoint(baseEndpoint, filters, options);
       if (supplierMatch) return supplierMatch;
     }
 
     // SKU Analysis маршруты
-    if (endpoint.includes('/product-analysis/')) {
+    if (baseEndpoint.includes('/product-analysis/')) {
       const { SkuAnalysisDemoDataService } = await import('./SkuAnalysisDemoDataService');
       const skuService = SkuAnalysisDemoDataService.getInstance();
-      const skuMatch = skuService.getDataForEndpoint(endpoint, filters, options);
+      const skuMatch = skuService.getDataForEndpoint(baseEndpoint, filters, options);
       if (skuMatch) return skuMatch;
     }
 
     // Position Check маршруты
-    if (endpoint.includes('/position-track/')) {
+    if (baseEndpoint.includes('/position-track/')) {
       const { PositionCheckDemoDataService } = await import('./PositionCheckDemoDataService');
       const positionCheckService = PositionCheckDemoDataService.getInstance();
-      const positionCheckMatch = positionCheckService.getDataForEndpoint(endpoint, filters, options);
+      const positionCheckMatch = positionCheckService.getDataForEndpoint(baseEndpoint, filters, options);
       if (positionCheckMatch) return positionCheckMatch;
     }
 
     // Пробуем точное совпадение
-    const exactMatch = this.getExactMatch(endpoint, filters);
+    const exactMatch = this.getExactMatch(baseEndpoint, filters, options, query);
     if (exactMatch) {
       return exactMatch;
     }
 
     // Пробуем совпадение по паттерну для URL с динамическими параметрами
-    const patternMatch = this.getPatternMatch(endpoint, filters);
+    const patternMatch = this.getPatternMatch(baseEndpoint, filters);
     if (patternMatch) {
       return patternMatch;
     }
 
-    console.error('DemoDataService: No handler found for endpoint:', endpoint);
+    console.error('DemoDataService: No handler found for endpoint:', baseEndpoint);
     return null;
   }
 
   // Точное совпадение эндпоинтов
-  protected getExactMatch(endpoint: string, filters?: any): any {
+  protected getExactMatch(endpoint: string, filters?: any, options?: any, query?: string): any {
     const endpointMap: Record<string, () => any> = {
       '/api/dashboard/': () => this.getDashboardData(filters),
       '/api/prod_analytic/': () => this.getStockAnalysisData(filters),
@@ -125,6 +127,8 @@ export class DemoDataService {
       '/api/operating-expenses/periodic-expense/get': () => this.getPeriodicExpenseData(),
       '/api/control/spp': () => this.getWbControlsData(filters),
       '/api/control/drr': () => this.getWbControlsData(filters),
+      '/api/advert/list': () => this.getAdvertData(filters, JSON.parse(options?.body)),
+      '/api/advert/': () => this.getAdvertCompanyData(filters, query),
       '/api/product/self-costs': () => ({ message: "Success", updated_items: [{ product: 'Демо', cost: 100, fulfillment: 100 }] }),
       '/api/msg/': () => ([]),
       'https://radarmarket.ru/api/web-service/monitoring-oracle/easy/get': () => this.getEasyMonitoringData(),
@@ -258,6 +262,83 @@ export class DemoDataService {
     return turnOverData;
   }
 
+  private getAdvertData(filters?: any, requestObject?: any): any {
+    let data = this.getOriginalJson(advertListData);
+    const days = this.getFilterDays(filters);
+    const denominator = 90 / days;
+
+    // Фильтрация по search_query, если он есть
+    if (requestObject?.search_query && requestObject.search_query.trim() !== '') {
+      const searchQuery = requestObject.search_query.toLowerCase().trim();
+      data = data.filter((item: any) => 
+        item.company_name?.toLowerCase().includes(searchQuery)
+      );
+    }
+
+    // Деление всех числовых значений на denominator
+    data = data.map((item: any) => {
+      const processedItem = { ...item };
+      
+      if (processedItem.advert_funnel) {
+        processedItem.advert_funnel = { ...processedItem.advert_funnel };
+        Object.keys(processedItem.advert_funnel).forEach(key => {
+          if (typeof processedItem.advert_funnel[key] === 'number') {
+            processedItem.advert_funnel[key] = Math.round(processedItem.advert_funnel[key] / denominator);
+          }
+        });
+      }
+      
+      if (processedItem.advert_statistics) {
+        processedItem.advert_statistics = { ...processedItem.advert_statistics };
+        Object.keys(processedItem.advert_statistics).forEach(key => {
+          if (typeof processedItem.advert_statistics[key] === 'number') {
+            processedItem.advert_statistics[key] = Math.round(processedItem.advert_statistics[key] / denominator);
+          }
+        });
+      }
+      
+      return processedItem;
+    });
+
+    return {
+      data,
+      page: 1,
+      per_page: 25,
+      total_count: data.length,
+    };
+  }
+
+  private getAdvertCompanyData(filters?: any, query?: string): any {
+    const days = this.getFilterDays(filters);
+    const companyId = query && parseInt(query.match(/\d+/)[0]);
+    const listData = this.getAdvertData(filters);
+    const companyData = companyId ? listData.data.find((item: any) => item.company_id === companyId) : {};
+    const data = this.getOriginalJson(Object.assign(advertCompanyData, companyData, {summary_data: {...companyData}}));
+    
+    // Определяем конечную дату
+    let dayTo = new Date().toISOString().split('T')[0];
+    if (filters?.selectedRange?.to) {
+      dayTo = filters.selectedRange.to;
+    }
+    
+    // Обрезаем массив date_data до нужного количества дней (берем последние days элементов)
+    if (Array.isArray(data.date_data)) {
+      data.date_data = data.date_data.slice(-days);
+      
+      // Обновляем даты, начиная от dayTo и идя в прошлое
+      data.date_data = data.date_data.map((item: any, index: number) => {
+        const date = new Date(dayTo);
+        date.setDate(date.getDate() - (days - 1 - index));
+        return {
+          ...item,
+          date: date.toISOString().split('T')[0] // Формат YYYY-MM-DD
+        };
+      });
+    }
+    
+    return data;
+  }
+
   private getWbControlsData(filters?: any, count: number = 30): WbMetricsData {
     const generateRandomPercentage = (min: number, max: number): number => {
       return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -336,6 +417,7 @@ export class DemoDataService {
 
     data.results.map(item => {
       item.amount = item.amount / denominator;
+      item.logistic = item.logistic / denominator;
     });
 
     return data;
@@ -836,18 +918,46 @@ export class DemoDataService {
   }
 
   // Stock Analysis данные
-  private getStockAnalysisData(filters?: any): StockProductData[] {
-    const products = this.getOriginalJson(stockAnalysis) as StockProductData[];
+  private getStockAnalysisData(filters?: any): any[] {
+    const products = this.getOriginalJson(stockAnalysis) as any[];
     const days = this.getFilterDays(filters);
     const denominator = 90 / days;
 
-    products.map(item => {
+    const devideItem = (item: StockProductData) => {
+      item.lostRevenue = item.lostRevenue / denominator;
+      item.averageProfit = item.averageProfit / denominator;
+      item.marginalProfit = item.marginalProfit / denominator;
+      item.toPayoff = item.toPayoff / denominator;
       item.saleSum = item.saleSum / denominator;
-      item.quantity = item.quantity / denominator;
+      item.quantity = Math.round(item.quantity / denominator);
       item.lessReturns = item.lessReturns / denominator;
       item.costGoodsSold = item.costGoodsSold / denominator;
       item.returnsSum = item.returnsSum / denominator;
+      item.purchased = Math.round(item.purchased / denominator);
+      item.notPurchased = Math.round(item.notPurchased / denominator);
+      item.completed = Math.round(item.completed / denominator);
+      item.returnsQuantity = Math.round(item.returnsQuantity / denominator);
+      item.toClient = Math.round(item.toClient / denominator);
+      item.to_client_sum = item.to_client_sum / denominator;
+      item.fromClient = Math.round(item.fromClient / denominator);
+      item.from_client_sum = item.from_client_sum / denominator;
+      item.dataRadar = Math.round(item.dataRadar / denominator);
+      item.orderQuantity = Math.round(item.orderQuantity / denominator);
+      item.orderSum = item.orderSum / denominator;
+      item.purchasedPercent = Math.round(item.purchasedPercent / denominator);
+      item.orderCountDay = Math.round(item.orderCountDay / denominator);
+      item.saleCountDay = Math.round(item.saleCountDay / denominator);
+      item.commissionWB = item.commissionWB / denominator;
+      item.fines = item.fines / denominator;
+      item.additionalPayment = item.additionalPayment / denominator;
+    };
+
+    products.map(item => {
+      devideItem(item.article_data);
+      item.sizes.map(size => devideItem(size));
     });
+
+    console.log(products, denominator);
 
     return products;
   }

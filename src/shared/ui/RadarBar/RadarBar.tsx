@@ -52,6 +52,7 @@ interface RadarBarProps {
     midValueUnits?: string; // units of the mid value (eg "шт", "%" or whatever)
     mainValue?: number | string; // main value of the bar
     mainValueUnits?: string; // units of the main value (eg "шт", "%" or whatever)
+    mainValuePrefix?: string; // prefix of the main value (eg ">" or "<")
     hasColoredBackground?: boolean; // if true, the background of the bar will be red if compareValue is negative
     linkParams?: {
         url: string;
@@ -80,6 +81,7 @@ export const RadarBar: React.FC<RadarBarProps> = ({
     midValueUnits,
     mainValue,
     mainValueUnits,
+    mainValuePrefix,
     //hasColoredBackground = false,
     linkParams,
     actionButtonParams,
@@ -135,14 +137,14 @@ export const RadarBar: React.FC<RadarBarProps> = ({
             </div>
 
             {/* mid */}
-            {midValue !== undefined && (typeof midValue === 'string' || typeof midValue === 'number') && 
+            {midValue !== undefined && (typeof midValue === 'string' || typeof midValue === 'number') &&
                 <div className={styles.bar__mid}>
                     <div className={`${styles.bar__side} ${styles.bar__side_left}`}>
                         <span className={styles.bar__midValue}>{formatPrice(midValue.toString(), midValueUnits)}</span>
                     </div>
                 </div>
             }
-            {midValue !== undefined && (typeof midValue !== 'string' || typeof midValue !== 'number') && React.isValidElement(midValue) && 
+            {midValue !== undefined && (typeof midValue !== 'string' || typeof midValue !== 'number') && React.isValidElement(midValue) &&
                 <div className={styles.bar__mid}>
                     <div className={`${styles.bar__side} ${styles.bar__side_left}`}>
                         {midValue}
@@ -153,8 +155,11 @@ export const RadarBar: React.FC<RadarBarProps> = ({
             {/* bottom */}
             <div className={styles.bar__bottom}>
                 <div className={`${styles.bar__side} ${styles.bar__side_left}`} style={{ gap: 4 }}>
+                    {mainValuePrefix &&
+                        <div className={styles.bar__mainValuePrefix}>{mainValuePrefix}</div>
+                    }
                     {mainValue !== undefined &&
-                        <div className={styles.bar__mainValue}>{formatPrice(mainValue?.toString(), mainValueUnits)}</div>
+                        <div className={styles.bar__mainValue}>{mainValue === null ? '-' : formatPrice(mainValue?.toString(), mainValueUnits)}</div>
                     }
                     {compareValue && (compareValue.comparativeValue !== undefined || compareValue.absoluteValue !== undefined) &&
 

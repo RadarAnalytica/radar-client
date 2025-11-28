@@ -4,7 +4,7 @@
     left: 0;
     right: 0;
     width: 100%;
-    background: rgba(255, 255, 255, 1);
+    background: #EBE7FF;
     display: flex;
     justify-content: flex-start;
     align-items: center;
@@ -39,13 +39,12 @@
     color: rgba(26, 26, 26, 0.5);
     cursor: pointer;
     text-decoration: none;
-    background: white;
     border-radius: 8px;
     padding: 4px 12px;
 }
 .navItemActive {
     cursor: pointer;
-    background: rgba(83, 41, 255, 0.1);
+    background: white;
     border-radius: 8px;
     color: rgba(26, 26, 26, 1);
     text-decoration: none;

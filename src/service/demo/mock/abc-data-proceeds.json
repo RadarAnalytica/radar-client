@@ -8,6 +8,8 @@
       "amount_percent": 18.5,
       "photo": "https://basket-26.wbbasket.ru/vol4855/part485557/485557912/images/c246x328/1.webp",
       "category": "A",
+      "marginality": 20.0,
+      "roi": 20.0,
       "tech_size": "0"
     },
     {
@@ -18,6 +20,8 @@
       "amount_percent": 16.85,
       "photo": "https://basket-10.wbbasket.ru/vol1592/part159244/159244282/images/c246x328/1.webp",
       "category": "A",
+      "marginality": 30.0,
+      "roi": 30.0,
       "tech_size": "0"
     },
     {
@@ -28,6 +32,8 @@
       "amount_percent": 11.35,
       "photo": "https://basket-26.wbbasket.ru/vol4853/part485365/485365491/images/c246x328/1.webp",
       "category": "A",
+      "marginality": 40.0,
+      "roi": 40.0,
       "tech_size": "0"
     },
     {
@@ -38,6 +44,8 @@
       "amount_percent": 9.22,
       "photo": "https://basket-13.wbbasket.ru/vol1986/part198653/198653800/images/c246x328/1.webp",
       "category": "A",
+      "marginality": 20.0,
+      "roi": 20.0,
       "tech_size": "0"
     },
     {
@@ -48,6 +56,8 @@
       "amount_percent": 6.22,
       "photo": "https://basket-14.wbbasket.ru/vol2116/part211666/211666051/images/c246x328/1.webp",
       "category": "A",
+      "marginality": 30.0,
+      "roi": 30.0,
       "tech_size": "0"
     },
     {
@@ -58,6 +68,8 @@
       "amount_percent": 4.83,
       "photo": "https://basket-13.wbbasket.ru/vol1986/part198653/198653800/images/c246x328/1.webp",
       "category": "A",
+      "marginality": 40.0,
+      "roi": 40.0,
       "tech_size": "0"
     },
     {
@@ -68,6 +80,8 @@
       "amount_percent": 4.41,
       "photo": "https://basket-14.wbbasket.ru/vol2116/part211665/211665958/images/c246x328/1.webp",
       "category": "A",
+      "marginality": 20.0,
+      "roi": 20.0,
       "tech_size": "0"
     },
     {
@@ -78,6 +92,8 @@
       "amount_percent": 4.14,
       "photo": "https://basket-18.wbbasket.ru/vol2875/part287568/287568831/images/c246x328/1.webp",
       "category": "A",
+      "marginality": 30.0,
+      "roi": 30.0,
       "tech_size": "0"
     },
     {
@@ -88,6 +104,8 @@
       "amount_percent": 3.88,
       "photo": "https://basket-13.wbbasket.ru/vol1986/part198653/198653800/images/c246x328/1.webp",
       "category": "A",
+      "marginality": 40.0,
+      "roi": 40.0,
       "tech_size": "0"
     },
     {
@@ -98,6 +116,8 @@
       "amount_percent": 3.54,
       "photo": "https://basket-13.wbbasket.ru/vol1986/part198653/198653800/images/c246x328/1.webp",
       "category": "A",
+      "marginality": 20.0,
+      "roi": 20.0,
       "tech_size": "0"
     },
     {
@@ -108,6 +128,8 @@
       "amount_percent": 3.33,
       "photo": "https://basket-14.wbbasket.ru/vol2136/part213699/213699516/images/c246x328/1.webp",
       "category": "A",
+      "marginality": 30.0,
+      "roi": 30.0,
       "tech_size": "0"
     },
     {
@@ -118,6 +140,8 @@
       "amount_percent": 3.02,
       "photo": "https://basket-14.wbbasket.ru/vol2136/part213699/213699516/images/c246x328/1.webp",
       "category": "A",
+      "marginality": 40.0,
+      "roi": 40.0,
       "tech_size": "0"
     },
     {
@@ -128,6 +152,8 @@
       "amount_percent": 1.79,
       "photo": "https://basket-14.wbbasket.ru/vol2137/part213702/213702056/images/c246x328/1.webp",
       "category": "B",
+      "marginality": 20.0,
+      "roi": 20.0,
       "tech_size": "0"
     },
     {
@@ -138,6 +164,8 @@
       "amount_percent": 1.65,
       "photo": "https://basket-14.wbbasket.ru/vol2116/part211666/211666075/images/c246x328/1.webp",
       "category": "B",
+      "marginality": 30.0,
+      "roi": 30.0,
       "tech_size": "0"
     },
     {
@@ -148,6 +176,8 @@
       "amount_percent": 1.53,
       "photo": "https://basket-14.wbbasket.ru/vol2137/part213702/213702068/images/c246x328/1.webp",
       "category": "B",
+      "marginality": 40.0,
+      "roi": 40.0,
       "tech_size": "0"
     },
     {
@@ -158,6 +188,8 @@
       "amount_percent": 1.30,
       "photo": "https://basket-24.wbbasket.ru/vol4136/part413639/413639573/images/c246x328/1.webp",
       "category": "B",
+      "marginality": 20.0,
+      "roi": 20.0,
       "tech_size": "3XL(54Rus)"
     },
     {
@@ -168,6 +200,8 @@
       "amount_percent": 1.21,
       "photo": "https://basket-15.wbbasket.ru/vol2210/part221031/221031209/images/c246x328/1.webp",
       "category": "B",
+      "marginality": 30.0,
+      "roi": 30.0,
       "tech_size": "Единый(48-60)"
     },
     {
@@ -178,6 +212,8 @@
       "amount_percent": 1.11,
       "photo": "https://basket-22.wbbasket.ru/vol3866/part386615/386615599/images/c246x328/1.webp",
       "category": "B",
+      "marginality": 40.0,
+      "roi": 40.0,
       "tech_size": "0"
     },
     {
@@ -188,6 +224,8 @@
       "amount_percent": 0.62,
       "photo": "https://basket-12.wbbasket.ru/vol1751/part175175/175175738/images/c246x328/1.webp",
       "category": "C",
+      "marginality": 20.0,
+      "roi": 20.0,
       "tech_size": "0"
     },
     {
@@ -198,6 +236,8 @@
       "amount_percent": 0.52,
       "photo": "https://basket-19.wbbasket.ru/vol3223/part322361/322361671/images/c246x328/1.webp",
       "category": "C",
+      "marginality": 30.0,
+      "roi": 30.0,
       "tech_size": "XXS"
     }
   ],

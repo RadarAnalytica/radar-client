@@ -5,7 +5,7 @@ import moment from 'moment';
 import { fetchApi } from './fetchApi';
 
 export const getRequestObject = (filters, selectedRange, shopId) => {
-	let requestObject = {
+	const requestObject = {
 		articles: null,
 		product_groups: null,
 		brands: null,
@@ -229,23 +229,28 @@ export const ServiceFunctions = {
 		return data;
 	},
 
-	getAbcData: async (viewType, token, selectedRange, idShop, filters, page, sorting) => {
-		//let rangeParams = rangeApiFormat(day);
-		const body = getRequestObject(filters, selectedRange, idShop);
+	getAbcData: async (viewType, token, selectedRange, idShop, filters, page, sorting = {}) => {
+		let url = `/api/abc_data/${viewType}?page=${page}&per_page=100`;
+		if (sorting.key && sorting.direction) {
+			url += `&sorting_field=${sorting.key}&sorting=${sorting.direction.toLowerCase()}`;
+		}
+
 		const res = await fetchApi(
-			`/api/abc_data/${viewType}?page=${page}&per_page=100&sorting=${sorting}`,
+			url,
 			{
 				method: 'POST',
 				headers: {
 					'content-type': 'application/json',
 					authorization: 'JWT ' + token,
 				},
-				body: JSON.stringify(body)
+				body: JSON.stringify(getRequestObject(filters, selectedRange, idShop))
 			}
 		);
+
 		if (res.status !== 200) {
 			throw new Error(`Ошибка запроса: ${res.status}`);
 		}
+
 		const data = await res.json();
 		return data;
 	},
@@ -2271,6 +2276,60 @@ export interface IPositionCheckMainTableData {
 			body: JSON.stringify(requestObject),
 		})
 		return res
+
+	getAdvertData: async (token, requestObject, sorting) => {
+		try {
+			let url = `/api/advert/list?page=${requestObject.page}&per_page=${requestObject.per_page}`;
+			if (sorting.sort_field && sorting.sort_order) {
+				url += `&sort_by=${sorting.sort_field}&sort_order=${sorting.sort_order?.toLowerCase()}`;
+			}
+			const res = await fetchApi(url, {
+				method: 'POST',
+				headers: {
+					'content-type': 'application/json',
+					authorization: 'JWT ' + token,
+				},
+				body: JSON.stringify(requestObject)
+			});
+
+			if (!res.ok) {
+				throw new Error('Ошибка запроса');
+			}
+
+			return res.json();
+		} catch (error) {
+			console.error('getAllOperatingExpensesExpense ', error);
+			throw new Error(error);
+		}
+	},
+
+	getAdvertDataById: async (token, id, requestObject, sorting) => {
+		try {
+			let url = `/api/advert/?adv_id=${id}`;
+			if (sorting.sort_field && sorting.sort_order) {
+				url += `&sort_by=${sorting.sort_field}&sort_order=${sorting.sort_order?.toLowerCase()}`;
+			}
+			const res = await fetchApi(
+				url,
+				{
+					method: 'POST',
+					headers: {
+						'content-type': 'application/json',
+						authorization: 'JWT ' + token,
+					},
+					body: JSON.stringify(requestObject)
+				}
+			);
+
+			if (!res.ok) {
+				throw new Error('Ошибка запроса');
+			}
+
+			return res.json();
+		} catch (error) {
+			console.error('getAllOperatingExpensesExpense ', error);
+			throw new Error(error);
+		}
 	},
 };
 

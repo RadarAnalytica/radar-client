@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext, useCallback } from 'react';
+import { useState, useEffect, useContext, useCallback, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchReportByGoods } from '@/redux/reportByGoods/reportByGoodsActions';
 import { fetchByGoodsFilters } from '@/redux/reportByGoods/byGoodsFiltersAction';
@@ -12,15 +12,606 @@ import Header from '../components/sharedComponents/header/header';
 import NoSubscriptionWarningBlock from '../components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock';
 import DemonstrationSection from '../components/DemonstrationSection';
 import { useDemoMode } from "@/app/providers";
+import styles from './WeeklyReportByGoods.module.css';
+import { Table as RadarTable } from 'radar-ui';
+import { formatPrice } from '@/service/utils';
+import { RadarLoader } from '@/shared';
+import { useTableColumnResize } from '@/service/hooks/useTableColumnResize';
+
+const TABLE_CONFIG_VERSION = '2';
+
+const initTableConfig = [
+  {
+    title: 'Продажи',
+    key: 'sales_group',
+    fixed: true,
+    style: {
+      zIndex: 3,
+      color: 'black',
+      fontSize: '18px',
+      background: 'white',
+    },
+    children: [
+      {
+        title: 'Артикул',
+        key: 'vendorCode',
+        dataIndex: 'vendorCode',
+        fixed: true,
+        width: 200,
+        style: {
+          background: '#F7F6FE',
+          borderRadius: '12px 0 0 12px',
+          verticalAlign: 'middle',
+          fontSize: '14px',
+        }
+      },
+      {
+        title: 'Товар',
+        key: 'name',
+        dataIndex: 'name',
+        fixed: true,
+        width: 300,
+        style: {
+          background: '#F7F6FE',
+          verticalAlign: 'middle',
+          fontSize: '14px',
+        }
+      },
+    ].map(item => ({
+      ...item,
+      minWidth: item.width / 2,
+      maxWidth: item.width * 2,
+    }))
+  },
+  {
+    title: '',
+    key: 'sales_second_group',
+    style: {
+      zIndex: 3,
+      color: 'black',
+      fontSize: '18px',
+      background: 'white',
+    },
+    children: [
+      {
+        title: 'Выкупы',
+        key: 'purchases',
+        dataIndex: 'purchases',
+        width: 150,
+        style: {
+          background: '#F7F6FE',
+          verticalAlign: 'middle',
+          fontSize: '14px',
+        }
+      },
+      {
+        title: 'Возвраты',
+        key: 'return',
+        dataIndex: 'return',
+        width: 150,
+        style: {
+          background: '#F7F6FE',
+          verticalAlign: 'middle',
+          fontSize: '14px',
+        }
+      },
+      {
+        title: 'Выручка и продажи',
+        key: 'revenue',
+        dataIndex: 'revenue',
+        width: 150,
+        style: {
+          background: '#F7F6FE',
+          verticalAlign: 'middle',
+          fontSize: '14px',
+        }
+      },
+      // {
+      //   title: 'Выручка',
+      //   key: 'revenue',
+      //   dataIndex: 'revenue',
+      // },
+      {
+        title: 'Ср. цена продажи',
+        key: 'avg_check',
+        dataIndex: 'avg_check',
+        units: '₽',
+        width: 150,
+        style: {
+          background: '#F7F6FE',
+          verticalAlign: 'middle',
+          fontSize: '14px',
+        }
+      },
+      {
+        title: 'СПП',
+        key: 'avg_spp',
+        dataIndex: 'avg_spp',
+        units: '%',
+        width: 150,
+        style: {
+          background: '#F7F6FE',
+          verticalAlign: 'middle',
+          fontSize: '14px',
+        }
+      },
+      {
+        title: 'Выкуп',
+        key: 'purchase_percent',
+        dataIndex: 'purchase_percent',
+        units: '%',
+        width: 150,
+        style: {
+          background: '#F7F6FE',
+          verticalAlign: 'middle',
+          fontSize: '14px',
+        }
+      },
+    ].map(item => ({
+      ...item,
+      minWidth: 100,
+      maxWidth: item.width * 2,
+    }))
+  },
+  {
+    title: 'Себестоимость',
+    key: 'cost_price_group',
+    style: {
+      zIndex: 3,
+      color: 'black',
+      fontSize: '18px',
+      background: 'white',
+    },
+    children: [
+      {
+        title: 'Себестоимость',
+        key: 'cost_price',
+        dataIndex: 'cost_price',
+        units: '₽',
+        width: 150,
+        style: {
+          background: '#F7F6FE',
+          verticalAlign: 'middle',
+          fontSize: '14px',
+        }
+      },
+      {
+        title: 'Себестоимость на единицу',
+        key: 'cost_price_per_one',
+        dataIndex: 'cost_price_per_one',
+        units: '₽',
+        width: 150,
+        style: {
+          background: '#F7F6FE',
+          verticalAlign: 'middle',
+          fontSize: '14px',
+        }
+      },
+    ].map(item => ({
+      ...item,
+      minWidth: 100,
+      maxWidth: item.width * 2,
+    }))
+  },
+  {
+    title: 'Комиссия и логистика',
+    key: 'logistics_group',
+    style: {
+      zIndex: 3,
+      color: 'black',
+      fontSize: '18px',
+      background: 'white',
+    },
+    children: [
+      {
+        title: 'Кол-во доставок',
+        key: 'deliveries',
+        dataIndex: 'deliveries',
+        units: 'шт',
+        width: 150,
+        style: {
+          background: '#F7F6FE',
+          verticalAlign: 'middle',
+          fontSize: '14px',
+        }
+      },
+      {
+        title: 'Комиссия',
+        key: 'wb_commission',
+        dataIndex: 'wb_commission',
+        width: 150,
+        style: {
+          background: '#F7F6FE',
+          verticalAlign: 'middle',
+          fontSize: '14px',
+        }
+      },
+      {
+        title: 'Эквайринг',
+        key: 'acquiring',
+        dataIndex: 'acquiring',
+        width: 150,
+        style: {
+          background: '#F7F6FE',
+          verticalAlign: 'middle',
+          fontSize: '14px',
+        }
+      },
+      {
+        title: 'Логистика доставок',
+        key: 'logistics_straight',
+        dataIndex: 'logistics_straight',
+        units: '₽',
+        width: 150,
+        style: {
+          background: '#F7F6FE',
+          verticalAlign: 'middle',
+          fontSize: '14px',
+        }
+      },
+      {
+        title: 'Логистика возвратов',
+        key: 'logistics_reverse',
+        dataIndex: 'logistics_reverse',
+        units: '₽',
+        width: 150,
+        style: {
+          background: '#F7F6FE',
+          verticalAlign: 'middle',
+          fontSize: '14px',
+        }
+      },
+      {
+        title: 'Логистика итого',
+        key: 'logistics_total',
+        dataIndex: 'logistics_total',
+        width: 150,
+        style: {
+          background: '#F7F6FE',
+          verticalAlign: 'middle',
+          fontSize: '14px',
+        }
+      },
+      {
+        title: 'Логистика на единицу',
+        key: 'logistics_per_product',
+        dataIndex: 'logistics_per_product',
+        units: '₽',
+        width: 150,
+        style: {
+          background: '#F7F6FE',
+          verticalAlign: 'middle',
+          fontSize: '14px',
+        }
+      },
+    ].map(item => ({
+      ...item,
+      minWidth: 100,
+      maxWidth: item.width * 2,
+    })),
+  },
+  {
+    title: 'Компенсации и штрафы/доплаты',
+    key: 'compensation_and_fines_group',
+    style: {
+      zIndex: 3,
+      color: 'black',
+      fontSize: '18px',
+      background: 'white',
+    },
+    children: [
+      {
+        title: 'Компенсации брака и количество',
+        key: 'compensation_defects',
+        dataIndex: 'compensation_defects',
+        width: 150,
+        style: {
+          background: '#F7F6FE',
+          verticalAlign: 'middle',
+          fontSize: '14px',
+        }
+      },
+      {
+        title: 'Компенсации ущерба и количество',
+        key: 'compensation_damage',
+        dataIndex: 'compensation_damage',
+        width: 150,
+        style: {
+          background: '#F7F6FE',
+          verticalAlign: 'middle',
+          fontSize: '14px',
+        }
+      },
+      {
+        title: 'Штрафы',
+        key: 'penalties',
+        dataIndex: 'penalties',
+        units: '₽',
+        width: 150,
+        style: {
+          background: '#F7F6FE',
+          verticalAlign: 'middle',
+          fontSize: '14px',
+        }
+      },
+      {
+        title: 'Доплаты',
+        key: 'additional_payments',
+        dataIndex: 'additional_payments',
+        units: '₽',
+        width: 150,
+        style: {
+          background: '#F7F6FE',
+          verticalAlign: 'middle',
+          fontSize: '14px',
+        }
+      },
+    ].map(item => ({
+      ...item,
+      minWidth: 100,
+      maxWidth: item.width * 2,
+    })),
+  },
+  {
+    title: 'Другие удержания',
+    key: 'other_retentions_group',
+    style: {
+      zIndex: 3,
+      color: 'black',
+      fontSize: '18px',
+      background: 'white',
+    },
+    children: [
+      {
+        title: 'Хранение',
+        key: 'storage',
+        dataIndex: 'storage',
+        width: 150,
+        style: {
+          background: '#F7F6FE',
+          verticalAlign: 'middle',
+          fontSize: '14px',
+        }
+      },
+      {
+        title: 'Прочие удержания',
+        key: 'other_retentions',
+        dataIndex: 'other_retentions',
+        width: 150,
+        style: {
+          background: '#F7F6FE',
+          verticalAlign: 'middle',
+          fontSize: '14px',
+        }
+      },
+      {
+        title: 'Платная приёмка',
+        key: 'acceptance',
+        dataIndex: 'acceptance',
+        width: 150,
+        style: {
+          background: '#F7F6FE',
+          verticalAlign: 'middle',
+          fontSize: '14px',
+        }
+      },
+      {
+        title: 'Все удержания WB',
+        key: 'compensation_penalties',
+        dataIndex: 'compensation_penalties',
+        width: 150,
+        style: {
+          background: '#F7F6FE',
+          verticalAlign: 'middle',
+          fontSize: '14px',
+        }
+      },
+    ].map(item => ({
+      ...item,
+      minWidth: 100,
+      maxWidth: item.width * 2,
+    })),
+  },
+  {
+    title: 'Налог',
+    key: 'tax_group',
+    style: {
+      zIndex: 3,
+      color: 'black',
+      fontSize: '18px',
+      background: 'white',
+    },
+    children: [
+      {
+        title: 'СПП + WB реализовал',
+        key: 'sold_by_wb',
+        dataIndex: 'sold_by_wb',
+        units: '₽',
+        width: 150,
+        style: {
+          background: '#F7F6FE',
+          verticalAlign: 'middle',
+          fontSize: '14px',
+        }
+      },
+      {
+        title: 'Налоговая база',
+        key: 'tax_base',
+        dataIndex: 'tax_base',
+        units: '₽',
+        width: 150,
+        style: {
+          background: '#F7F6FE',
+          verticalAlign: 'middle',
+          fontSize: '14px',
+        }
+      },
+      {
+        title: 'Налог',
+        key: 'tax',
+        dataIndex: 'tax',
+        units: '₽',
+        width: 150,
+        style: {
+          background: '#F7F6FE',
+          verticalAlign: 'middle',
+          fontSize: '14px',
+        }
+      },
+    ].map(item => ({
+      ...item,
+      minWidth: 100,
+      maxWidth: item.width * 2,
+    })),
+  },
+  {
+    title: 'Финансы',
+    key: 'finance_group',
+    style: {
+      zIndex: 3,
+      color: 'black',
+      fontSize: '18px',
+      background: 'white',
+    },
+    children: [
+      {
+        title: 'Оплата на Р/С',
+        key: 'payment',
+        dataIndex: 'payment',
+        units: '₽',
+        width: 150,
+        style: {
+          background: '#F7F6FE',
+          verticalAlign: 'middle',
+          fontSize: '14px',
+        }
+      },
+      {
+        title: 'Чистая прибыль',
+        key: 'profit',
+        dataIndex: 'profit',
+        units: '₽',
+        width: 150,
+        style: {
+          background: '#F7F6FE',
+          verticalAlign: 'middle',
+          fontSize: '14px',
+        }
+      },
+      {
+        title: 'Чистая прибыль на единицу',
+        key: 'profit_per_one',
+        dataIndex: 'profit_per_one',
+        units: '₽',
+        width: 150,
+        style: {
+          background: '#F7F6FE',
+          verticalAlign: 'middle',
+          fontSize: '14px',
+        }
+      },
+      {
+        title: 'Маржинальность по прибыли',
+        key: 'marginality',
+        dataIndex: 'marginality',
+        units: '%',
+        width: 150,
+        style: {
+          background: '#F7F6FE',
+          verticalAlign: 'middle',
+          fontSize: '14px',
+        }
+      },
+      {
+        title: 'ROI',
+        key: 'return_on_investment',
+        dataIndex: 'return_on_investment',
+        units: '%',
+        width: 150,
+        style: {
+          background: '#F7F6FE',
+          verticalAlign: 'middle',
+          fontSize: '14px',
+          borderRadius: '0 12px 12px 0',
+        }
+      },
+    ].map(item => ({
+      ...item,
+      minWidth: 100,
+      maxWidth: item.width * 2,
+    })),
+  }
+].map(_ => ({ ..._, colSpan: _.children?.length }));
+
+const getTableData = (data) => {
+  if (!data) return [];
+  const arr = []
+  Object.keys(data).forEach(key => {
+    let row = {
+      vendorCode: key === 'total' ? 'Итого' : key,
+      ...data[key],
+    }
+    arr.push(row);
+  })
+  return arr;
+}
+
+const customCellRender = (value, record, index, dataIndex) => {
+  const rightBorders = ['purchase_percent', 'cost_price_per_one', 'logistics_per_product', 'additional_payments', 'compensation_penalties', 'external_expenses_total', 'tax', 'return_on_investment']
+  if (dataIndex === 'vendorCode') {
+    return (
+      <div
+        className={styles.customCell}
+        style={{
+          fontWeight: '700',
+        }}
+      >
+        {value}
+      </div>
+    );
+  }
+
+  if (typeof value === 'object') {
+    return (
+      <div
+        className={styles.customCell}
+        data-border-right={rightBorders.includes(dataIndex)}
+      >
+        {Object.keys(value).map((key, idx) => {
+          const units = key === 'rub' ? '₽' : key === 'percent' ? '%' : key === 'quantity' ? 'шт' : ' ';
+          return <span key={key} style={{ fontWeight: idx === 0 ? '700' : '500' }}>{formatPrice(value[key], units)}</span>
+        })}
+      </div>
+    );
+  }
+
+
+  return (
+    <div
+      className={styles.customCell}
+      data-border-right={rightBorders.includes(dataIndex)}
+    >
+      {formatPrice(value, ' ')}
+      </div>
+  );
+}
+
+
 
 const WeeklyReportByGoods = () => {
-  const {isDemoMode} = useDemoMode();
+  const { isDemoMode } = useDemoMode();
   const { authToken, user } = useContext(AuthContext);
   const dispatch = useDispatch();
   const { weeklyData, loading, error } = useSelector(state => state.reportByGoodsSlice);
   const { byGoodsFilters, isFiltersLoading } = useSelector((state) => state?.byGoodsFiltersSlice);
   const [isLoading, setIsLoading] = useState(false);
-
+  const [tableData, setTableData] = useState([]);
+  const tableContainerRef = useRef(null);
+  const { config: tableConfig, onResize: onResizeColumn } = useTableColumnResize(
+    initTableConfig, 
+    'weeklyReportByGoodsTableConfig',
+    TABLE_CONFIG_VERSION
+  );
   useEffect(() => {
     dispatch(fetchByGoodsFilters(
       authToken
@@ -38,17 +629,25 @@ const WeeklyReportByGoods = () => {
     });
   }, [authToken, dispatch, isFiltersLoading]);
 
+  useEffect(() => {
+    if (weeklyData) {
+      const data = getTableData(weeklyData);
+      setTableData(data);
+    }
+  }, [weeklyData]);
+
   return (
-    <div className='dashboard-page'>
+    <main className={styles.page}>
       <MobilePlug />
-
-      <div style={{ height: '100vh', zIndex: 999 }}>
+      {/* ------ SIDE BAR ------ */}
+      <section className={styles.page__sideNavWrapper}>
         <Sidebar />
-      </div>
-
-      <div className='dashboard-content pb-3' style={{ padding: '0 32px' }}>
-        <div style={{ width: '100%', padding: '20px 0' }} className="container dash-container">
-          <Header title={'По товарам'} titlePrefix={'Отчёт'} />
+      </section>
+      {/* ------ CONTENT ------ */}
+      <section className={styles.page__content}>
+        {/* header */}
+        <div className={styles.page__headerWrapper}>
+          <Header title={'По товарам'} titlePrefix={'Отчёт'} hasShadow={false} />
         </div>
 
         {isDemoMode &&
@@ -63,34 +662,72 @@ const WeeklyReportByGoods = () => {
           </div>
         }
 
-        <div className='container dash-container'>
-          <NewFilterGroup pageIdent='goods' filtersData={byGoodsFilters} isLoading={isFiltersLoading} getData={handleFetchReport} />
-        </div>
+        {/* filters */}
+        <NewFilterGroup pageIdent='goods' filtersData={byGoodsFilters} isLoading={isFiltersLoading} getData={handleFetchReport} />
 
-        <div className='container dash-container'>
-          {!isLoading
-            ? <TableByGoods data={weeklyData} />
-            : <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                height: '200px',
-                overflow: 'auto',
-                position: 'relative',
-                borderRadius: '16px',
-                boxShadow: '0px 0px 20px 0px rgba(0, 0, 0, 0.08)',
-                willChange: 'transform',
-                marginTop: '21px',
-              }}
-            >
-              <span className='loader'></span>
+        {isLoading &&
+          <div className={styles.tableWrapper}>
+            <RadarLoader loaderStyle={{ height: '50vh', backgroundColor: 'white' }} />
+          </div>
+        }
+
+        {/* table */}
+        {tableData?.length > 0 && !isLoading &&
+          <div className={styles.tableContainerWrapper}>
+            <div className={styles.tableContainer}>
+              <RadarTable
+                resizeable
+                config={[...tableConfig]}
+                onResize={(columnKey, width) => onResizeColumn(columnKey, width, true)}
+                dataSource={tableData}
+                preset='radar-table-simple'
+                pagination={false}
+                style={{ tableLayout: 'fixed', width: 'max-content', minWidth: '100%', marginRight: '16px' }}
+                paginationContainerStyle={{ display: 'none' }}
+                scrollContainerRef={tableContainerRef}
+                stickyHeader
+                headerCellWrapperStyle={{
+                  fontSize: 'inherit',
+                  padding: '12px 25px 12px 10px'
+                }}
+                bodyCellWrapperStyle={{
+                  padding: '5px 10px',
+                  border: 'none',
+                }}
+                bodyCellWrapperClassName={styles.bodyCellWrapperCustomClassName}
+                bodyCellStyle={{
+                  borderBottom: '1px solid #E8E8E8',
+                  height: '50px',
+                }}
+                bodyRowClassName={styles.bodyRowSpecial}
+                customCellRender={{
+                  idx: [
+                    'purchases',
+                    'return',
+                    'revenue',
+                    'wb_commission',
+                    'acquiring',
+                    'logistics_total',
+                    'compensation_defects',
+                    'compensation_damage',
+                    'storage',
+                    'other_retentions',
+                    'acceptance',
+                    'compensation_penalties',
+                    'vendorCode'
+                  ],
+                  renderer: customCellRender,
+                }}
+              />
             </div>
-          }
-        </div>
+          </div>
+        }
 
+        {/* bottom nav */}
         <BottomNavigation />
-      </div>
-    </div>
-  );
+      </section>
+      {/* ---------------------- */}
+    </main>
+  )
 };
 export default WeeklyReportByGoods;

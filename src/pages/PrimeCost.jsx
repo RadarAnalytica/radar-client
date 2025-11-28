@@ -19,7 +19,7 @@ import DemonstrationSection from '@/components/DemonstrationSection';
 
 const PrimeCost = () => {
   const [file, setFile] = useState();
-  const {isDemoMode} = useDemoMode(); 
+  const { isDemoMode } = useDemoMode();
   const { authToken, user } = useContext(AuthContext);
   const [show, setShow] = useState(false);
   const [costPriceShow, setCostPriceShow] = useState(false);
@@ -81,16 +81,17 @@ const PrimeCost = () => {
   }, []);
 
   return (
-    <div className='dashboard-page'>
+    <main className={styles.page}>
       <MobilePlug />
-
-      <div style={{ height: '100vh', zIndex: 999 }}>
+      {/* ------ SIDE BAR ------ */}
+      <section className={styles.page__sideNavWrapper}>
         <Sidebar />
-      </div>
-
-      <div className='dashboard-content pb-3' style={{ padding: '0 32px' }}>
-        <div style={{ width: '100%', padding: '20px 0' }} className="container dash-container">
-          <Header title={'Себестоимость'} titlePrefix={'Отчёт'} />
+      </section>
+      {/* ------ CONTENT ------ */}
+      <section className={styles.page__content}>
+        {/* header */}
+        <div className={styles.page__headerWrapper}>
+          <Header title={'Себестоимость'} titlePrefix={'Отчёт'} hasShadow={false} reportNav={true} />
         </div>
 
         {isDemoMode &&
@@ -105,10 +106,15 @@ const PrimeCost = () => {
           </div>
         }
 
-        <div className='container dash-container h-50 d-flex justify-content-center align-items-center'>
+        <div className={styles.primeCostWrapper}>
           <div className={styles.primeCost}>
             <div className={styles.primeCostBox}>
-              <img src={primeCost} alt='primeCost' />
+              <svg width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect width="60" height="60" rx="10" fill="#5329FF" fillOpacity="0.15" />
+                <path fillRule="evenodd" clipRule="evenodd" d="M26.6011 30.7666C26.2229 29.7445 24.7771 29.7445 24.3989 30.7666L23.8753 32.1816C23.7564 32.503 23.503 32.7564 23.1816 32.8753L21.7666 33.3989C20.7445 33.7771 20.7445 35.2229 21.7666 35.6011L23.1816 36.1247C23.503 36.2436 23.7564 36.497 23.8753 36.8184L24.3989 38.2334C24.7771 39.2556 26.2229 39.2556 26.6011 38.2334L27.1247 36.8184C27.2436 36.497 27.497 36.2436 27.8184 36.1247L29.2334 35.6011C30.2555 35.2229 30.2555 33.7771 29.2334 33.3989L27.8184 32.8753C27.497 32.7564 27.2436 32.503 27.1247 32.1816L26.6011 30.7666ZM25.5 33.8464C25.3127 34.0928 25.0928 34.3127 24.8464 34.5C25.0928 34.6873 25.3127 34.9072 25.5 35.1536C25.6873 34.9072 25.9072 34.6873 26.1536 34.5C25.9072 34.3127 25.6873 34.0928 25.5 33.8464Z" fill="#5329FF" />
+                <path fillRule="evenodd" clipRule="evenodd" d="M34.3756 35.9998C34.3962 35.9999 34.4168 36 34.4374 36C39.4425 36 43.5 31.9706 43.5 27C43.5 22.0294 39.4425 18 34.4374 18C29.9469 18 26.2192 21.2434 25.5001 25.5C25.5001 25.5 25.5002 25.5 25.5001 25.5C20.5296 25.5 16.5 29.5294 16.5 34.5C16.5 39.4706 20.5294 43.5 25.5 43.5C29.9596 43.5 33.6616 40.2565 34.3756 35.9998ZM34.4692 33.7499C38.2084 33.7329 41.2344 30.7174 41.2344 27C41.2344 23.2721 38.1913 20.25 34.4374 20.25C31.1017 20.25 28.3273 22.6363 27.7505 25.7837C31.3982 26.7228 34.1508 29.8912 34.4692 33.7499ZM25.5 41.25C29.2279 41.25 32.25 38.2279 32.25 34.5C32.25 30.7721 29.2279 27.75 25.5 27.75C21.7721 27.75 18.75 30.7721 18.75 34.5C18.75 38.2279 21.7721 41.25 25.5 41.25Z" fill="#5329FF" />
+              </svg>
+
               <div className={styles.primeCostBoxText}>
                 <span className={styles.title}>Себестоимость</span>
                 {costPriceStatus && (
@@ -122,18 +128,21 @@ const PrimeCost = () => {
                   </span>
                 )}
               </div>
-            </div>
-            <div className={styles.primeCostBoxButton}>
-              <button onClick={() => handleCostPriceShow()}>
-                Загрузить себестоимость
-              </button>
+
+              <div className={styles.primeCostBoxButton}>
+                <button onClick={() => handleCostPriceShow()}>
+                  Загрузить себестоимость
+                </button>
+              </div>
             </div>
           </div>
         </div>
 
         <BottomNavigation />
-      </div>
-
+      </section>
+      {/* ---------------------- */}
+      {/* ------ MODALS ------ */}
+      {/* upload */}
       <Modal
         show={costPriceShow}
         onHide={handleCostPriceClose}
@@ -143,7 +152,7 @@ const PrimeCost = () => {
           <div className='d-flex align-items-center gap-2'>
             <div style={{ width: '100%' }}>
               <div className='d-flex justify-content-between'>
-                <h4 className='fw-bold mb-0'>Установка себестоимости товара</h4>
+                <h4 className='fw-bold mb-0' style={{ fontSize: '18px' }}>Установка себестоимости товара</h4>
               </div>
             </div>
           </div>
@@ -167,14 +176,14 @@ const PrimeCost = () => {
                       strokeWidth='1.5'
                     />
                   </svg>
-                  <span>{file ? file.name : ''}</span>
+                  <span style={{ fontSize: '14px' }}>{file ? file.name : ''}</span>
                 </div>
                 <div>
                   <a
                     href='#'
                     className='link'
                     onClick={() => setFile(null)}
-                    style={{ color: 'red', cursor: 'pointer' }}
+                    style={{ color: 'red', cursor: 'pointer', fontSize: '14px' }}
                   >
                     Удалить
                   </a>
@@ -184,16 +193,16 @@ const PrimeCost = () => {
                 <button
                   onClick={handleCostPriceSave}
                   className='prime-btn'
-                  style={{ height: '52px' }}
+                  style={{ height: '46px', display: 'flex', alignItems: 'center', justifyContent: 'center', minWidth: '220px' }}
                   disabled={isFileUpload}
                 >
-                  Сохранить
+                  <span style={{ fontSize: '14px' }}>Сохранить</span>
                 </button>
 
 
               </div>
-              <div className='d-flex justify-content-center w-100 mt-2 gap-2'>
-                <a href='#' className='link' onClick={handleCostPriceClose}>
+              <div className='d-flex justify-content-center w-100 gap-2'>
+                <a href='#' className='link' onClick={handleCostPriceClose} style={{ fontSize: '14px'  }}>
                   Отмена
                 </a>
               </div>
@@ -216,7 +225,7 @@ const PrimeCost = () => {
                                 </div> */}
               <DragDropFile files={file} setFiles={setFile} />
               <div className='d-flex justify-content-center w-100 mt-2 gap-2'>
-                <a href='#' className='link' onClick={handleTemplateDownload}>
+                <a href='#' className='link' onClick={handleTemplateDownload} style={{ fontSize: '14px' }}>
                   Скачать шаблон
                 </a>
               </div>
@@ -224,6 +233,7 @@ const PrimeCost = () => {
           )}
         </Modal.Body>
       </Modal>
+      {/* success */}
       <SuccessModal
         open={showSuccessPopup}
         message='Файл успешно загружен!'
@@ -232,6 +242,7 @@ const PrimeCost = () => {
         onOk={() => setShowSuccessPopup(false)}
         footer={null}
       />
+      {/* err */}
       <ErrorModal
         open={showModalError}
         message={errorMessage}
@@ -240,8 +251,8 @@ const PrimeCost = () => {
         onOk={() => setShowModalError(false)}
         footer={null}
       />
-    </div>
-  );
+    </main>
+  )
 };
 
 export default PrimeCost;

@@ -20,7 +20,7 @@ import DemonstrationSection from '@/components/DemonstrationSection';
 const ReportBuyBack = () => {
   const [file, setFile] = useState();
   const { authToken, user } = useContext(AuthContext);
-  const {isDemoMode} = useDemoMode();
+  const { isDemoMode } = useDemoMode();
   const [show, setShow] = useState(false);
   const [costPriceShow, setCostPriceShow] = useState(false);
   const [selfBuyoutStatus, setselfBuyoutStatus] = useState();
@@ -85,16 +85,17 @@ const ReportBuyBack = () => {
   }, []);
 
   return (
-    <div className='dashboard-page'>
+    <main className={styles.page}>
       <MobilePlug />
-
-      <div style={{ height: '100vh', zIndex: 999 }}>
+      {/* ------ SIDE BAR ------ */}
+      <section className={styles.page__sideNavWrapper}>
         <Sidebar />
-      </div>
-
-      <div className='dashboard-content pb-3' style={{ padding: '0 32px' }}>
-        <div style={{ width: '100%', padding: '20px 0' }} className="container dash-container">
-          <Header title={'Самовыкупы'} titlePrefix={'Отчёт'} />
+      </section>
+      {/* ------ CONTENT ------ */}
+      <section className={styles.page__content}>
+        {/* header */}
+        <div className={styles.page__headerWrapper}>
+          <Header title={'Самовыкупы'} titlePrefix={'Отчёт'} hasShadow={false} reportNav={true} />
         </div>
 
         {isDemoMode &&
@@ -109,30 +110,32 @@ const ReportBuyBack = () => {
           </div>
         }
 
-        <div className='container dash-container h-50 d-flex justify-content-center align-items-center'>
+        <div className={styles.primeCostWrapper}>
           <div className={styles.primeCost}>
             <div className={styles.primeCostBox}>
               <img src={buyback} alt='buyback' />
               <div className={styles.primeCostBoxText}>
-                <span className={styles.title}>Самовыкупы</span>
+                <span className={styles.title}>Выкуп товара</span>
                 {selfBuyoutStatus && (
                   <span className={styles.lastDownlaod}>
                     {selfBuyoutStatus}
                   </span>
                 )}
               </div>
+
+              <div className={styles.primeCostBoxButton}>
+                <button onClick={() => handleCostPriceShow()} style={{ backgroundColor: '#0069FF' }}>
+                  Загрузить самовыкупы
+                </button>
+              </div>
             </div>
-            <div className={styles.primeCostBoxButton}>
-              <button onClick={() => handleCostPriceShow()}>
-                Загрузить самовыкупы
-              </button>
-            </div>
+
           </div>
         </div>
 
         <BottomNavigation />
-      </div>
-
+      </section>
+      {/* ---------------------- */}
       <Modal
         show={costPriceShow}
         onHide={handleCostPriceClose}
@@ -142,7 +145,7 @@ const ReportBuyBack = () => {
           <div className='d-flex align-items-center gap-2'>
             <div style={{ width: '100%' }}>
               <div className='d-flex justify-content-between'>
-                <h4 className='fw-bold mb-0'>Установка самовыкупов</h4>
+                <h4 className='fw-bold mb-0' style={{ fontSize: '18px' }}>Установка самовыкупов</h4>
               </div>
             </div>
           </div>
@@ -166,14 +169,14 @@ const ReportBuyBack = () => {
                       strokeWidth='1.5'
                     />
                   </svg>
-                  <span>{file ? file.name : ''}</span>
+                  <span style={{ fontSize: '14px' }}>{file ? file.name : ''}</span>
                 </div>
                 <div>
                   <a
                     href='#'
                     className='link'
                     onClick={() => setFile(null)}
-                    style={{ color: 'red', cursor: 'pointer' }}
+                    style={{ color: 'red', cursor: 'pointer', fontSize: '14px' }}
                   >
                     Удалить
                   </a>
@@ -185,12 +188,12 @@ const ReportBuyBack = () => {
                   className='prime-btn'
                   style={{ height: '52px' }}
                   disabled={isFileUpload}
-                >
-                  Сохранить
+                  >
+                    <span style={{ fontSize: '14px' }}>Сохранить</span>
                 </button>
               </div>
-              <div className='d-flex justify-content-center w-100 mt-2 gap-2'>
-                <a href='#' className='link' onClick={handleCostPriceClose}>
+              <div className='d-flex justify-content-center w-100 gap-2'>
+                <a href='#' className='link' onClick={handleCostPriceClose} style={{ fontSize: '14px' }}>
                   Отмена
                 </a>
               </div>
@@ -236,8 +239,8 @@ const ReportBuyBack = () => {
         onOk={() => setShowModalError(false)}
         footer={null}
       />
-    </div>
-  );
+    </main>
+  )
 };
 
 export default ReportBuyBack;
