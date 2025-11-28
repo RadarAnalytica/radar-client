@@ -8,7 +8,7 @@ import { fetchApi } from '../../service/fetchApi';
 
 const createFiltersDTO = (data, shopsData) => {
   // если магазинов меньше 5, то добавляем опцию "Все магазины"
-  const hasAllShopsOption = shopsData?.length <= 5
+  const hasAllShopsOption = shopsData?.filter(_ => _.is_valid).length <= 5
   // 0 - собираем список недель для фильтр  а выбора недели
   const weeksListData = weeksList();
   // 1 - создаем массив всех магазинов + опцию "Все магазины"
@@ -32,6 +32,7 @@ const createFiltersDTO = (data, shopsData) => {
       is_self_cost_set: shopsData?.find(s => s.id === _.shop_data.id) ? shopsData?.find(s => s.id === _.shop_data.id).is_self_cost_set : false,
     }))
   ];
+  console.log('shops', shops);
 
 
   // 2 - Трансформируем дату для опции "все магазины"
@@ -114,7 +115,77 @@ const createFiltersDTO = (data, shopsData) => {
   };
 
   // формируем итоговый массив для всех данных
-  const DTO = [allShopsOption, ...data?.map(i => {
+  const DTO = hasAllShopsOption ? [allShopsOption, ...data?.map(i => {
+    let articlesData = [];
+    let categoriesData = [];
+    let brandsData = [];
+    i.categories?.forEach(c => {
+      categoriesData.push({ ...c, value: c.name, key: c.id });
+      c.brand?.forEach((item, bId) => {
+        const brandObject = {
+          name: item.name ? item.name : `Без названия&${i.shop_data.id}`,
+          value: item.name ? item.name : `Без названия (${i.shop_data.brand_name})`,
+          category: c.name
+        };
+        const isBrandInList = brandsData.some(_ => _.name === brandObject.name);
+        if (!isBrandInList) {
+          brandsData.push(brandObject);
+        }
+        const items = item.wb_id.map(_ => ({
+          name: _ ? _ : `Без названия&${i.shop_data.id}`,
+          value: _ ? _ : `Без названия (${i.shop_data.brand_name})`,
+          brand: item.name ? item.name : brandObject.value, category: c.name
+        }));
+        articlesData = [...articlesData, ...items];
+      });
+    });
+
+    let newItem = {
+      shop: {
+        ...i.shop_data,
+        value: i.shop_data.name
+      },
+      brands: {
+        stateKey: 'activeBrandName',
+        ruLabel: 'Бренд',
+        enLabel: 'brands',
+        data: brandsData
+      },
+      articles: {
+        stateKey: 'activeArticle',
+        ruLabel: 'Артикул',
+        enLabel: 'articles',
+        data: articlesData
+      },
+      groups: {
+        stateKey: 'activeGroup',
+        ruLabel: 'Группа товаров',
+        enLabel: 'product_groups',
+        data: i.groups.map(_ => ({ ..._, value: _.name, key: _.id }))
+      },
+      weeks: {
+        stateKey: 'activeWeeks',
+        ruLabel: 'Период',
+        enLabel: 'weeks',
+        data: weeksListData
+      },
+      months: {
+        stateKey: 'activeMonths',
+        ruLabel: 'Период',
+        enLabel: 'months'
+      },
+      categories: {
+        stateKey: 'activeCategory',
+        ruLabel: 'Категория',
+        enLabel: 'categories',
+        data: categoriesData
+      }
+    };
+
+    return newItem;
+  })]
+  :
+  [...data?.map(i => {
     let articlesData = [];
     let categoriesData = [];
     let brandsData = [];
@@ -219,9 +290,10 @@ const createFiltersDTO = (data, shopsData) => {
   // поднимаем сохраненный период по месяцам, чтобы установить его по умолчанию
   let savedActiveMonths = getSavedActiveMonths(savedActiveBrand.id);
 
+  console.log('shops end', shops)
 
   return {
-    shops,
+    shops: [...shops],
     filtersData: DTO,
     initState: {
       activeBrandName: [{ value: 'Все' }],
