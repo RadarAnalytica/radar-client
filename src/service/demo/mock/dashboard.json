@@ -1568,5 +1568,50 @@
     "paid_acceptance_compare": "+10%",
     "penalty_compare": "-10%",
     "compensation_compare": "+0%",
-    "logistic_per_one_compare": "-35%"
+    "logistic_per_one_compare": "-35%",
+    "penalty_details": [
+        {
+            "value": 56970.0,
+            "compare": "7%",
+            "description": "Предоставление услуг по подписке «Джем»"
+        },
+        {
+            "value": 40464.0,
+            "compare": "77%",
+            "description": "Списание за отзыв"
+        },
+        {
+            "value": 918420.0,
+            "compare": "-8%",
+            "description": "Оказание услуг «WB Продвижение»"
+        },
+        {
+            "value": 14382.1,
+            "compare": "2776%",
+            "description": "Штрафы"
+        }
+    ],
+    "logistic_details": {
+        "logistic_to_client_sale": {
+            "value": 171082.65,
+            "compare": "26%"
+        },
+        "logistic_to_client_cancel": {
+            "value": 365052.42,
+            "compare": "24%"
+        },
+        "logistic_reverse_return": {
+            "value": 8050.0,
+            "compare": "18%"
+        },
+        "logistic_reverse_cancel": {
+            "value": 156350.0,
+            "compare": "4%"
+        }
+    },
+    "commission_without_acquiring": 2220848.7299999995,
+    "commission_without_acquiring_compare": "14%",
+    "acquiring": 89030.04999999992,
+    "prev_acquiring": 86007.88999999988,
+    "acquiring_compare": "4%"
 }
