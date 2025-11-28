@@ -92,12 +92,34 @@
     background: white;
     border-radius: 16px;
     padding: 8px;
-    overflow: hidden;
+}
+
+.page__table {
+    max-height: 80vh;
 }
 
 .page__tableContainer {
     width: 100%;
+    height: 100%;
     overflow: auto;
+}
+
+
+.page__tableContainer::-webkit-scrollbar {
+    width: 3px;
+    height: 3px;
+    border-radius: 3px;
+}
+
+.page__tableContainer::-webkit-scrollbar-thumb {
+    border-radius: 6px;
+    background: #5329ff80;
+}
+
+.page__tableContainer::-webkit-scrollbar-track {
+    background: transparent;
+    height: 50%;
+    margin: 10px 20px;
 }
 
 .page__skuBlock {
@@ -158,12 +180,12 @@
     padding: 24px;
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
     gap: 24px;
 }
 
 .page__activityChartHeader {
     display: flex;
-    justify-content: space-between;
     flex-wrap: wrap;
     gap: 16px;
 }
@@ -296,4 +318,11 @@
     justify-content: flex-end;
     align-items: center;
     gap: 12px;
+}
+
+.block__legend {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 16px;
 }

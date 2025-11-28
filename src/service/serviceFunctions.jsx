@@ -2234,6 +2234,48 @@ export interface IPositionCheckMainTableData {
 		})
 		return res
 	},
+	getPositionTrackingSkuPageData: async (token, requestObject) => {
+		const res = await fetchApi(`${URL}/api/position-track/web-product/get-product`, {
+			method: 'POST',
+			headers: {
+				'content-type': 'application/json',
+				authorization: 'JWT ' + token,
+			},
+			body: JSON.stringify(requestObject),
+		})
+		return res
+	},
+	createPositionTrackingChartMark: async (token, requestObject) => {
+		const res = await fetchApi(`${URL}/api/position-track/radar-product/mark/create`, {
+			method: 'POST',
+			headers: {
+				'content-type': 'application/json',
+				authorization: 'JWT ' + token,
+			},
+			body: JSON.stringify(requestObject),
+		})
+		return res
+	},
+	deletePositionTrackingChartMark: async (token, markId) => {
+		const res = await fetchApi(`${URL}/api/position-track/radar-product/mark/delete?mark_id=${markId}`, {
+			method: 'DELETE',
+			headers: {
+				'content-type': 'application/json',
+				authorization: 'JWT ' + token,
+			},
+		})
+		return res
+	},
+	updatePositionTrackingChartMark: async (token, requestObject) => {
+		const res = await fetchApi(`${URL}/api/position-track/radar-product/mark/update`, {
+			method: 'PATCH',
+			headers: {
+				'content-type': 'application/json',
+				authorization: 'JWT ' + token,
+			},
+			body: JSON.stringify(requestObject),
+		})
+		return res
 
 	getAdvertData: async (token, requestObject, sorting) => {
 		try {

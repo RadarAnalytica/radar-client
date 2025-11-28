@@ -18,6 +18,7 @@ import { ServiceFunctions } from '@/service/serviceFunctions';
 import AuthContext from '@/service/AuthContext';
 import { useAppSelector } from '@/redux/hooks';
 import ErrorModal from '@/components/sharedComponents/modals/errorModal/errorModal';
+import { RadarLoader } from '@/shared';
 
 
 interface SkuValidity {
@@ -169,9 +170,10 @@ const initRequestStatus = {
 const getMainPageDataRequestObject = (
     settings: { project: string | number, dest: string | number },
     tabs: string,
+    projectsList: Project[]
 ) => {
     return {
-        project_ids: [settings.project],
+        project_ids: settings.project === 0 && projectsList?.length > 0 ? projectsList.map((project) => project.id) : [settings.project],
         city: settings.dest ?? null,
         order_by: tabs === 'По просмотрам' ? 'shows' : tabs === 'По ключам' ? 'queries' : tabs === 'По средней позиции' ? 'place' : null,
     }
@@ -261,7 +263,6 @@ const PositionTrackingMainPage = () => {
         }
 
     }
-
     const createProject = async (token: string, product: string, projectName?: string): Promise<void> => {
         setRequestStatus({ ...initRequestStatus, isLoading: true });
         try {
@@ -342,7 +343,7 @@ const PositionTrackingMainPage = () => {
         if (!requestStatus.isLoading) {
             setRequestStatus({ ...initRequestStatus, isLoading: true });
         };
-        const requestObject = getMainPageDataRequestObject(settingsState, activeFilter);
+        const requestObject = getMainPageDataRequestObject(settingsState, activeFilter, projectsList);
         try {
             const res = await ServiceFunctions.getPositionTrackingMainPageData(token, requestObject);
             if (!res.ok) {
@@ -421,12 +422,11 @@ const PositionTrackingMainPage = () => {
                 />
 
                 {/* info bars */}
-                {metaData && metaData.projects_count > 0 && shops &&
+                {metaData && metaData.projects_count > 0 &&
                     <div className={styles.page__barsWrapper}>
                         <RadarBar
                             title="Активные товары"
                             mainValue={metaData?.products_count ?? 0}
-                            isLoading={false}
                             actionButtonParams={{
                                 text: 'Добавить новый товар к отслеживаню',
                                 action: () => { setAddModalState({ ...addModalState, projectId: projectsList[0]?.id?.toString() }); setIsAddModalVisible(true) },
@@ -435,16 +435,17 @@ const PositionTrackingMainPage = () => {
                                     alignSelf: 'flex-end'
                                 }
                             }}
+                            isLoading={requestStatus.isLoading}
                         />
                         <RadarBar
                             title="Магазины"
-                            mainValue={shops.filter((shop) => shop.id !== 0).length}
-                            isLoading={false}
+                            mainValue={shops?.filter((shop) => shop.id !== 0).length ?? 0}
+                            isLoading={requestStatus.isLoading}
                         />
                         <RadarBar
                             title="Проекты"
                             mainValue={metaData?.projects_count ?? 0}
-                            isLoading={false}
+                            isLoading={requestStatus.isLoading}
                             actionButtonParams={{
                                 text: 'Управлять',
                                 action: () => { navigate(`/position-tracking/projects`) },
@@ -457,7 +458,7 @@ const PositionTrackingMainPage = () => {
                     </div>}
 
                 {/* settings block */}
-                {metaData && metaData.products_count > 0 && projectsList &&
+                {metaData && metaData.products_count > 0 && projectsList && regionsList &&
                     <div className={styles.page__container}>
                         <p className={styles.page__title}>Динамика</p>
                         <div className={styles.page__selectWrapper}>
@@ -471,7 +472,7 @@ const PositionTrackingMainPage = () => {
                                 }}
                                 mode={undefined}
                                 allowClear={false}
-                                disabled={false}
+                                disabled={requestStatus.isLoading}
                             />
                             {regionsList &&
                                 <PlainSelect
@@ -484,7 +485,7 @@ const PositionTrackingMainPage = () => {
                                     }}
                                     mode={undefined}
                                     allowClear={false}
-                                    disabled={false}
+                                    disabled={requestStatus.isLoading}
                                 />
                             }
                         </div>
@@ -493,7 +494,7 @@ const PositionTrackingMainPage = () => {
                 {mainPageData?.chart && mainPageData?.chart.length > 0 &&
                     <div className={styles.page__chartWrapper}>
                         <MainChart
-                            loading={false}
+                            loading={requestStatus.isLoading}
                             dataDashBoard={mainPageData?.chart}
                         />
                     </div>}
@@ -510,7 +511,12 @@ const PositionTrackingMainPage = () => {
                             />
                         </ConfigProvider>
                     </div>}
-                {mainPageData?.products && mainPageData?.products.length > 0 &&
+                {requestStatus.isLoading &&
+                    <div className={styles.page__tableWrapper}>
+                        <RadarLoader loaderStyle={{ height: '50vh' }} />
+                    </div>
+                }
+                {mainPageData?.products && mainPageData?.products.length > 0 && !requestStatus.isLoading &&
                     <div className={styles.page__tableWrapper}>
                         <RadarTable
                             config={positionTrackingTableConfig}
