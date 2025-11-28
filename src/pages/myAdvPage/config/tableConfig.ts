@@ -32,7 +32,7 @@ export const getDefaultTableConfig = (): ColumnConfig[] => {
         {title: 'Название кампании', dataIndex: 'company_name', sortable: false, fixed: true, width: 240},
         {title: 'Статус WB', dataIndex: 'company_status', sortable: true, fixed: true, width: 100},
         {title: 'Тип кампании', dataIndex: 'company_type', sortable: true, fixed: true, width: 100},
-      ].map(_ => ({ ..._, key: _.dataIndex }))
+      ].map(_ => ({ ..._, key: _.dataIndex, minWidth: _.width }))
     },
     {
       title: 'Рекламная воронка',

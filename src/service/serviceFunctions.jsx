@@ -2170,8 +2170,8 @@ export interface IPositionCheckMainTableData {
 			body: JSON.stringify({
 				name: projectName,
 			}),
-		})
-		return res
+		});
+		return res;
 	},
 	createPostionTrackingProjectWithProduct: async (token, projectName, sku, productName) => {
 		const res = await fetchApi(`${URL}/api/position-track/radar-product/create`, {
@@ -2185,8 +2185,8 @@ export interface IPositionCheckMainTableData {
 				wb_id: sku,
 				name: productName,
 			}),
-		})
-		return res
+		});
+		return res;
 	},
 	addProductToPositionTrackingProject: async (token, requestObject) => {
 		const res = await fetchApi(`${URL}/api/position-track/radar-product/create`, {
@@ -2196,8 +2196,8 @@ export interface IPositionCheckMainTableData {
 				authorization: 'JWT ' + token,
 			},
 			body: JSON.stringify(requestObject),
-		})
-		return res
+		});
+		return res;
 	},
 	deletePositionTrackingProject: async (token, projectId) => {
 		const res = await fetchApi(`${URL}/api/position-track/project/delete?project_id=${projectId}`, {
@@ -2206,8 +2206,8 @@ export interface IPositionCheckMainTableData {
 				'content-type': 'application/json',
 				authorization: 'JWT ' + token,
 			}
-		})
-		return res
+		});
+		return res;
 	},
 	updatePositionTrackingProject: async (token, projectId, projectName) => {
 		const res = await fetchApi(`${URL}/api/position-track/project/update`, {
@@ -2220,8 +2220,8 @@ export interface IPositionCheckMainTableData {
 				id: projectId,
 				name: projectName
 			}),
-		})
-		return res
+		});
+		return res;
 	},
 	getPositionTrackingMainPageData: async (token, requestObject) => {
 		const res = await fetchApi(`${URL}/api/position-track/web-product/get-totals`, {
@@ -2231,8 +2231,8 @@ export interface IPositionCheckMainTableData {
 				authorization: 'JWT ' + token,
 			},
 			body: JSON.stringify(requestObject),
-		})
-		return res
+		});
+		return res;
 	},
 	getPositionTrackingSkuPageData: async (token, requestObject) => {
 		const res = await fetchApi(`${URL}/api/position-track/web-product/get-product`, {
@@ -2242,8 +2242,8 @@ export interface IPositionCheckMainTableData {
 				authorization: 'JWT ' + token,
 			},
 			body: JSON.stringify(requestObject),
-		})
-		return res
+		});
+		return res;
 	},
 	createPositionTrackingChartMark: async (token, requestObject) => {
 		const res = await fetchApi(`${URL}/api/position-track/radar-product/mark/create`, {
@@ -2253,8 +2253,8 @@ export interface IPositionCheckMainTableData {
 				authorization: 'JWT ' + token,
 			},
 			body: JSON.stringify(requestObject),
-		})
-		return res
+		});
+		return res;
 	},
 	deletePositionTrackingChartMark: async (token, markId) => {
 		const res = await fetchApi(`${URL}/api/position-track/radar-product/mark/delete?mark_id=${markId}`, {
@@ -2263,8 +2263,8 @@ export interface IPositionCheckMainTableData {
 				'content-type': 'application/json',
 				authorization: 'JWT ' + token,
 			},
-		})
-		return res
+		});
+		return res;
 	},
 	updatePositionTrackingChartMark: async (token, requestObject) => {
 		const res = await fetchApi(`${URL}/api/position-track/radar-product/mark/update`, {
