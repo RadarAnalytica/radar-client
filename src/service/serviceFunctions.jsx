@@ -2276,7 +2276,7 @@ export interface IPositionCheckMainTableData {
 			body: JSON.stringify(requestObject),
 		})
 		return res
-
+	},
 	getAdvertData: async (token, requestObject, sorting) => {
 		try {
 			let url = `/api/advert/list?page=${requestObject.page}&per_page=${requestObject.per_page}`;
@@ -2302,7 +2302,6 @@ export interface IPositionCheckMainTableData {
 			throw new Error(error);
 		}
 	},
-
 	getAdvertDataById: async (token, id, requestObject, sorting) => {
 		try {
 			let url = `/api/advert/?adv_id=${id}`;
