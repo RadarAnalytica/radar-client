@@ -1,6 +1,7 @@
+import { useState } from 'react';
 import styles from './shopSelect.module.css';
 import { SelectIcon } from '../../shared';
-import { Select, ConfigProvider } from 'antd';
+import { Select, ConfigProvider, Input, Button } from 'antd';
 
 export const ShopSelect = (
     {
@@ -9,11 +10,42 @@ export const ShopSelect = (
         value, //string | number
         optionsData, //array
         handler, // (e) => void
-        isDataLoading //boolean
+        isDataLoading, //boolean
+        hasSearch //boolean
     }
 ) => {
 
+    const [searchState, setSearchState] = useState('');
+
     const icon = <SelectIcon />;
+
+    const renderPopup = (menu) => {
+
+        return (
+            <>
+                <ConfigProvider
+                    theme={{
+                        token: {
+                            colorPrimary: '#5329FF'
+                        }
+                    }}
+                >
+                    <Input
+                        allowClear
+                        size='large'
+                        placeholder="Поиск"
+                        value={searchState}
+                        onChange={(e) => setSearchState(e.target.value)}
+                        onKeyDown={e => e.stopPropagation()}
+                    />
+                </ConfigProvider>
+                <div style={{ width: '100%', padding: '10px 0' }}>
+                    {menu}
+                </div>
+            </>
+        );
+    };
+    
 
     return (
         <div className={styles.plainSelect}>
@@ -53,14 +85,17 @@ export const ShopSelect = (
                         suffixIcon={icon}
                         className={styles.plainSelect__select}
                         options={optionsData?.map(brand => ({ value: brand.id, label: brand.brand_name }))}
+                        options={optionsData?.map(brand => ({ value: brand.id, label: brand.brand_name }))?.filter(brand => brand.label.toLowerCase().includes(searchState.toLowerCase()))}
                         value={value}
                         id={selectId}
                         onChange={handler}
                         getPopupContainer={(triggerNode) => triggerNode.parentNode}
                         disabled={isDataLoading}
+                        dropdownRender={hasSearch ? (menu) => renderPopup(menu) : undefined}
                     />
                 </ConfigProvider>
             </div>
         </div>
     );
 };
+

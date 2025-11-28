@@ -88,13 +88,6 @@ const inputTheme = {
     }
 }
 
-const chartMockData = {
-    orderCountList: [12, 18, 16, 20, 15, 22, 19, 24, 21, 18, 23, 17, 16, 22, 25, 19, 18, 21, 20, 23, 24, 26, 22, 19, 21, 18, 20, 22, 24, 23],
-    orderAmountList: [12000, 14500, 13200, 15800, 14100, 16700, 15400, 17600, 16900, 15000, 17300, 16000, 15200, 16800, 18200, 15900, 15500, 16300, 16100, 17200, 17800, 18500, 17400, 16200, 16800, 15600, 16400, 17000, 17700, 18100],
-    saleCountList: [9, 14, 12, 15, 11, 17, 13, 18, 16, 13, 17, 12, 11, 16, 18, 14, 13, 15, 14, 17, 18, 19, 16, 14, 15, 13, 14, 16, 18, 17],
-    saleAmountList: [9800, 11200, 10500, 12100, 10700, 13200, 11800, 13800, 13000, 11400, 13600, 12300, 11500, 12900, 14100, 12200, 11800, 12500, 12300, 13400, 13900, 14600, 13300, 12400, 12800, 11600, 12200, 12900, 13500, 14000],
-};
-
 const modalCancelButtonTheme = {
     token: {
         colorPrimary: '#5329FF',
@@ -371,10 +364,10 @@ const PositionTrackingMainPage = () => {
         }
     }, []);
     useEffect(() => {
-        if (authToken) {
+        if (authToken && projectsList) {
             getPositionTrackingMainPageData(authToken);
         }
-    }, [settingsState, activeFilter]);
+    }, [settingsState, activeFilter, projectsList]);
     useEffect(() => {
         if (metaData && metaData.projects_count > 0 && !mainPageData) {
             getPositionTrackingMainPageData(authToken);

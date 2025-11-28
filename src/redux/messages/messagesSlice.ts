@@ -19,21 +19,26 @@ interface MessagesState {
 export const fetchMessages = createAsyncThunk(
     'messages',
     async (token: string) => {
-        const response = await fetchApi('/api/msg/', {
-            method: 'GET',
-            headers: {
-                'content-type': 'application/json',
-                authorization: 'JWT ' + token,
-            },
-        });
+        try {
+            const response = await fetchApi('/api/msg/', {
+                method: 'GET',
+                headers: {
+                    'content-type': 'application/json',
+                    authorization: 'JWT ' + token,
+                },
+            });
 
-        if (!response.ok) {
+            if (!response.ok) {
+                console.error('Failed to fetch messages');
+                return []
+            }
+
+
+            const data = await response.json();
+            return data;
+        } catch (error) {
             console.error('Failed to fetch messages');
-            return [];
         }
-
-        const data = await response.json();
-        return data;
     }
 );
 
