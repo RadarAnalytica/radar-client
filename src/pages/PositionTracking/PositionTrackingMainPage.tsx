@@ -58,8 +58,23 @@ interface PositionTrackingProduct {
     wb_id_image_url: string;
     id: number;
     queries: number;
+    queries_chart: {
+        date: string;
+        queries: number;
+        comparsion_percentage: number;
+    }[];
     shows: number;
+    shows_chart: {
+        date: string;
+        shows: number;
+        comparsion_percentage: number;
+    }[];
     place: number;
+    place_chart: {
+        date: string;
+        place: number;
+        comparsion_percentage: number;
+    }[];
 }
 
 interface PositionTrackingMainPageData {
@@ -296,7 +311,6 @@ const PositionTrackingMainPage = () => {
             return;
         }
     }, [getSkuValidity, getMetaData]);
-
     const getPositionTrackingMainPageData = useCallback(async (token: string): Promise<void> => {
         if (!requestStatus.isLoading) {
             setRequestStatus({ ...initRequestStatus, isLoading: true });
@@ -320,7 +334,6 @@ const PositionTrackingMainPage = () => {
             return;
         }
     }, [requestStatus.isLoading, settingsState, activeFilter]);
-
     const addProductToProject = useCallback(async (token: string, sku: string, projectId: string): Promise<void> => {
         if (!requestStatus.isLoading) {
             setRequestStatus({ ...initRequestStatus, isLoading: true });
@@ -375,8 +388,6 @@ const PositionTrackingMainPage = () => {
             throw new Error('Не удалось получить список регионов');
         }
     }, [requestStatus.isLoading]);
-
-
     const getSortedProductsData = useCallback((products: PositionTrackingProduct[], activeFilter: string): PositionTrackingProduct[] => {
         return products.sort((a, b) => {
             if (activeFilter === 'По просмотрам') {
@@ -390,6 +401,45 @@ const PositionTrackingMainPage = () => {
             }
         });
     }, [activeFilter]);
+    const deleteProduct = useCallback(async (productId: string): Promise<void> => {
+        // Сохраняем предыдущее состояние для возможного отката
+        let previousProductsData: PositionTrackingProduct[] | null = null;
+        setProductsData((prev) => {
+            if (!prev) return prev;
+            previousProductsData = [...prev];
+            // Оптимистичное обновление: сразу удаляем товар из UI
+            return prev.filter((product) => product.wb_id !== productId);
+        });
+
+        if (!requestStatus.isLoading) {
+            setRequestStatus({ ...initRequestStatus, isLoading: true });
+        };
+        
+        try {
+            const res = await ServiceFunctions.deleteProductFromPositionTrackingProject(authToken, productId);
+            if (!res.ok) {
+                console.error('deleteProduct error:');
+                // Откатываем изменения при ошибке
+                if (previousProductsData) {
+                    setProductsData(previousProductsData);
+                }
+                setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось удалить товар из проекта' });
+                return;
+            }
+            // При успехе обновляем данные с сервера
+            getMetaData(authToken, true);
+            getProjectsList(authToken, true);
+            getPositionTrackingMainPageData(authToken);
+        } catch (error) {
+            console.error('deleteProduct error:', error);
+            // Откатываем изменения при ошибке
+            if (previousProductsData) {
+                setProductsData(previousProductsData);
+            }
+            setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось удалить товар из проекта' });
+            return;
+        }
+    }, [authToken, requestStatus.isLoading, getMetaData, getProjectsList, getPositionTrackingMainPageData]);
     
     useEffect(() => {
         if (authToken) {
@@ -561,8 +611,8 @@ const PositionTrackingMainPage = () => {
                             dataSource={getSortedProductsData(productsData, activeFilter)}
                             paginationContainerStyle={{ display: 'none' }}
                             customCellRender={{
-                                idx: ['name'],
-                                renderer: positionTrackingTableCustomCellRender,
+                                idx: [],
+                                renderer: (value: any, record: any, index: number, dataIndex: string) => positionTrackingTableCustomCellRender(value, record, index, dataIndex, deleteProduct),
                             }}
                         />
                     </div>}

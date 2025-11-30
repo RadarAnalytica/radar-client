@@ -33,6 +33,7 @@ import { formatPrice } from '@/service/utils';
 import { verticalDashedLinePlugin } from '@/service/utils';
 import { useNavigate } from 'react-router-dom';
 import { PositionTrackingSkuFilters } from '@/widgets';
+import ErrorModal from '@/components/sharedComponents/modals/errorModal/errorModal';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Tooltip, Filler, verticalDashedLinePlugin);
 
@@ -202,14 +203,13 @@ const positionTrackingSkuMockTableData = [
     },
 ];
 
-
-
 interface ProductMeta {
     id: number
     wb_id: number;
     name: string;
     wb_id_image_url: string;
     created_at: string;
+    marks: Mark[];
 }
 
 interface PresetDay {
@@ -420,14 +420,37 @@ const PositionTrackingSkuPage = () => {
                 return;
             }
             const data: PositionTrackingSkuPageData = await res.json();
-            console.log('sku page data', data);
             setSkuData(data);
+            // Устанавливаем метки из данных сервера
+            if (data.product_meta?.marks) {
+                setMarks(data.product_meta.marks);
+            }
             setTableConfig(getTableConfig(data, tableType));
             setRequestStatus(initRequestStatus);
         }
         catch (error) {
             console.error('getSkuPageData error:', error);
             setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось получить данные для SKU' });
+            return;
+        }
+    }, [requestObject, tableType, requestStatus.isLoading]);
+    const deleteProductFromPositionTrackingProject = useCallback(async (token: string, productId: string) => {
+        if (!requestStatus.isLoading) {
+            setRequestStatus({ ...initRequestStatus, isLoading: true });
+        };
+        try {
+            const res = await ServiceFunctions.deleteProductFromPositionTrackingProject(token, productId);
+            if (!res.ok) {
+                console.error('deleteProductFromPositionTrackingProject error:');
+                setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось удалить продукт из проекта' });
+                return;
+            }
+            setRequestStatus(initRequestStatus);
+            return true;
+        }
+        catch (error) {
+            console.error('deleteProductFromPositionTrackingProject error:', error);
+            setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось удалить продукт из проекта' });
             return;
         }
     }, [requestObject, tableType, requestStatus.isLoading]);
@@ -456,23 +479,37 @@ const PositionTrackingSkuPage = () => {
     }, [requestStatus.isLoading]);
 
     const deleteMark = useCallback(async (token: string, markId: number) => {
+        // Сохраняем предыдущее состояние для возможного отката
+        let previousMarks: Mark[] = [];
+        setMarks((prev) => {
+            previousMarks = [...prev];
+            // Оптимистичное обновление: сразу удаляем метку из UI
+            return prev.filter((mark) => mark.id !== markId);
+        });
+
         if (!requestStatus.isLoading) {
             setRequestStatus({ ...initRequestStatus, isLoading: true });
         };
+        
         try {
             const res = await ServiceFunctions.deletePositionTrackingChartMark(token, markId);
             if (!res.ok) {
                 console.error('deleteMark error:');
+                // Откатываем изменения при ошибке
+                setMarks(previousMarks);
                 setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось удалить метку' });
                 return;
             }
-            const data: Mark = await res.json();
-            console.log('deleteMark data', data);
+            //const data: Mark = await res.json();
+            // console.log('deleteMark data', data);
             setRequestStatus(initRequestStatus);
-            setMarks((prev) => prev.filter((mark) => mark.id !== data.id));
+            // Убеждаемся, что метка удалена (используем markId, а не data.id)
+            setMarks((prev) => prev.filter((mark) => mark.id !== markId));
         }
         catch (error) {
             console.error('deleteMark error:', error);
+            // Откатываем изменения при ошибке
+            setMarks(previousMarks);
             setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось удалить метку' });
             return;
         }
@@ -1049,7 +1086,6 @@ const PositionTrackingSkuPage = () => {
         if (!skuData) return null;
         // Создаем мапу меток по датам для быстрого поиска
         const marksByDate = new Map(marks.map((mark) => [mark.date, mark]));
-        // Все метки имеют значение 1 (максимум скрытой оси y3)
         const markData = skuData.dates.map((date) => (marksByDate.has(date) ? 0.97 : null));
         return {
             labels: skuData.dates.map((date) => formatDateShort(date)),
@@ -1124,7 +1160,7 @@ const PositionTrackingSkuPage = () => {
             ],
         };
     }, [skuData, controlsState, marks]);
-
+    console.log('activityChartData', activityChartData)
 
 
     const getVisibilityChartTooltip = useCallback((context: any) => {
@@ -1349,7 +1385,6 @@ const PositionTrackingSkuPage = () => {
     useEffect(() => {
         if (requestObject && authToken) {
             getSkuPageData(authToken, requestObject);
-            getRegionsList(authToken);
         }
     }, [requestObject, authToken])
 
@@ -1379,7 +1414,15 @@ const PositionTrackingSkuPage = () => {
                                     { name: 'Трекинг позиций', slug: '/position-tracking', },
                                     { name: `Артикул ${sku}` },
                                 ]}
-                                actions={[]}
+                                actions={[{
+                                    type: 'delete',
+                                    action: async () => {
+                                       const res = await deleteProductFromPositionTrackingProject(authToken, sku);
+                                       if (res) {
+                                        navigate('/position-tracking');
+                                       }
+                                    }
+                                }]}
                             />
                         }
                         titlePrefix=''
@@ -1548,7 +1591,11 @@ const PositionTrackingSkuPage = () => {
 
                 <PositionTrackingSkuFilters
                     submitHandler={(formData) => {
-                        console.log(formData);
+                        setRequestObject({ 
+                            ...requestObject, 
+                            ...formData,
+                            keywords: formData.keywords?.split(',').map((keyword: string) => keyword.trim())
+                        });
                     }}
                     loading={requestStatus.isLoading}
                 />
@@ -1653,6 +1700,14 @@ const PositionTrackingSkuPage = () => {
                     </div>
                 </div>
             </Modal>
+            {/*  error modal */}
+            <ErrorModal
+                message={requestStatus.message}
+                open={requestStatus.isError}
+                onCancel={() => setRequestStatus(initRequestStatus)}
+                onClose={() => setRequestStatus(initRequestStatus)}
+                footer={null}
+            />
         </main>
     );
 };

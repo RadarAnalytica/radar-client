@@ -88,3 +88,9 @@
     color: #5329FF;
     opacity: 0.8;
 }
+
+.chartCell {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
