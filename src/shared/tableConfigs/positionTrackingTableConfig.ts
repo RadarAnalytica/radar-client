@@ -29,4 +29,12 @@ export const positionTrackingTableConfig = [
         width: 160,
         minWidth: 160,
     },
+    {
+        key: 'actions',
+        title: '',
+        dataIndex: 'actions',
+        hidden: false,
+        width: 50,
+        minWidth: 50,
+    },
 ]

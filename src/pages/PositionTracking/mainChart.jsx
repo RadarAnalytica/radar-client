@@ -137,10 +137,11 @@ const MarginChartBlock = ({ dataDashBoard, loading }) => {
             tooltip: {
                 backgroundColor: '#FFFFFF',
                 borderWidth: 1,
+                borderColor: '#E0E0E0',
                 borderRadius: 8,
                 padding: 16,
                 titleColor: '#8C8C8C',
-                bodyColor: "#1A1A1A",
+                bodyColor: "#1A1A1A !important",
                 callbacks: {
                     title: function (tooltipItems) {
                         const index = tooltipItems[0].dataIndex;

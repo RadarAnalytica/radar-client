@@ -34,6 +34,7 @@ interface Product {
     name: string;
     wb_id_image_url: string;
     id: number;
+    
 }
 
 interface Project {
@@ -57,8 +58,23 @@ interface PositionTrackingProduct {
     wb_id_image_url: string;
     id: number;
     queries: number;
+    queries_chart: {
+        date: string;
+        queries: number;
+        comparsion_percentage: number;
+    }[];
     shows: number;
+    shows_chart: {
+        date: string;
+        shows: number;
+        comparsion_percentage: number;
+    }[];
     place: number;
+    place_chart: {
+        date: string;
+        place: number;
+        comparsion_percentage: number;
+    }[];
 }
 
 interface PositionTrackingMainPageData {
@@ -163,10 +179,9 @@ const initRequestStatus = {
 const getMainPageDataRequestObject = (
     settings: { project: string | number, dest: string | number },
     tabs: string,
-    projectsList: Project[]
 ) => {
     return {
-        project_ids: settings.project === 0 && projectsList?.length > 0 ? projectsList.map((project) => project.id) : [settings.project],
+        project_ids: settings.project ? [settings.project] : null,
         city: settings.dest ?? null,
         order_by: tabs === 'По просмотрам' ? 'shows' : tabs === 'По ключам' ? 'queries' : tabs === 'По средней позиции' ? 'place' : null,
     }
@@ -183,33 +198,40 @@ const PositionTrackingMainPage = () => {
     const [regionsList, setRegionsList] = useState<Record<string, any>[] | null>([]);
     const [metaData, setMetaData] = useState<MetaData | null>(null);
     const [addModalState, setAddModalState] = useState<{ sku: string, projectId: string }>({ sku: '', projectId: '' });
-    const [settingsState, setSettingsState] = useState<{ project: string | number, dest: string | number }>({ project: 0, dest: -1257786 });
-    const [mainPageData, setMainPageData] = useState<PositionTrackingMainPageData | null>(null);
+    const [settingsState, setSettingsState] = useState<{ project: string | number, dest: string | number } | null>(null);
+    const [productsData, setProductsData] = useState<PositionTrackingProduct[] | null>(null);
+    const [chartData, setChartData] = useState<ChartDataItem[] | null>(null);
     const navigate = useNavigate();
 
-    const getMetaData = async (token: string): Promise<void> => {
-        if (!requestStatus.isLoading) {
+    const getMetaData = useCallback(async (token: string, noRequestStatusUpdate: boolean = false): Promise<void> => {
+        if (!requestStatus.isLoading || !noRequestStatusUpdate) {
             setRequestStatus({ ...initRequestStatus, isLoading: true });
         };
         try {
             const res = await ServiceFunctions.getPostionTrackingMeta(token);
             if (!res.ok) {
                 console.error('getMetaData error:');
-                setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось получить метаданные' });
-                return;
+                if (!noRequestStatusUpdate) {
+                    setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось получить метаданные' });
+                }
+                throw new Error('Не удалось получить метаданные');
             }
             const data: MetaData = await res.json();
             console.log('meta data', data);
             setMetaData(data);
-            setRequestStatus(initRequestStatus);
+            if (!noRequestStatusUpdate) {
+                setRequestStatus(initRequestStatus);
+            }
         } catch (error) {
             console.error('getMetaData error:', error);
-            setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось получить метаданные' });
-            return;
+            if (!noRequestStatusUpdate) {
+                setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось получить метаданные' });
+            }
+            throw error instanceof Error ? error : new Error('Не удалось получить метаданные');
         }
-    }
+    }, [requestStatus.isLoading]);
 
-    const getSkuValidity = async (token: string, sku: string): Promise<SkuValidity | boolean | undefined> => {
+    const getSkuValidity = useCallback(async (token: string, sku: string): Promise<SkuValidity | boolean | undefined> => {
         if (!requestStatus.isLoading) {
             setRequestStatus({ ...initRequestStatus, isLoading: true });
         };
@@ -230,33 +252,39 @@ const PositionTrackingMainPage = () => {
             setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось получить валидность SKU' });
             return;
         }
-    }
+    }, [requestStatus.isLoading]);
 
     //get all projects list
-    const getProjectsList = async (token: string): Promise<void> => {
-        if (!requestStatus.isLoading) {
+    const getProjectsList = useCallback(async (token: string, noRequestStatusUpdate: boolean = false): Promise<void> => {
+        if (!requestStatus.isLoading || !noRequestStatusUpdate) {
             setRequestStatus({ ...initRequestStatus, isLoading: true });
         };
         try {
             const res = await ServiceFunctions.getPostionTrackingProjects(token);
             if (!res.ok) {
-                console.error('getProjectsList error:');
-                setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось получить список проектов' });
-                return
+                console.error('getMetaData error:');
+                if (!noRequestStatusUpdate) {
+                    setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось получить список проектов' });
+                }
+                throw new Error('Не удалось получить список проектов');
             }
             const data: Project[] = await res.json();
             console.log('all projects', data);
             setProjectsList(data);
             setAddModalState({ sku: '', projectId: '' });
-            setRequestStatus(initRequestStatus);
+            if (!noRequestStatusUpdate) {
+                setRequestStatus(initRequestStatus);
+            }
         } catch (error) {
             console.error('getProjectsList error:', error);
-            setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось получить список проектов' });
-            return;
+            if (!noRequestStatusUpdate) {
+                setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось получить список проектов' });
+            }
+            throw new Error('Не удалось получить список проектов');
         }
 
-    }
-    const createProject = async (token: string, product: string, projectName?: string): Promise<void> => {
+    }, [requestStatus.isLoading]);
+    const createProject = useCallback(async (token: string, product: string, projectName?: string): Promise<void> => {
         setRequestStatus({ ...initRequestStatus, isLoading: true });
         try {
             let skuValidity: SkuValidity | boolean | undefined;
@@ -282,8 +310,31 @@ const PositionTrackingMainPage = () => {
             setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось создать проект' });
             return;
         }
-    }
-    const addProductToProject = async (token: string, sku: string, projectId: string): Promise<void> => {
+    }, [getSkuValidity, getMetaData]);
+    const getPositionTrackingMainPageData = useCallback(async (token: string): Promise<void> => {
+        if (!requestStatus.isLoading) {
+            setRequestStatus({ ...initRequestStatus, isLoading: true });
+        };
+        const requestObject = getMainPageDataRequestObject(settingsState, activeFilter);
+        try {
+            const res = await ServiceFunctions.getPositionTrackingMainPageData(token, requestObject);
+            if (!res.ok) {
+                console.error('getPositionTrackingMainPageData error:');
+                setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось получить данные для главной страницы' });
+                return;
+            }
+            const data: PositionTrackingMainPageData = await res.json();
+            console.log('position tracking main page data', data);
+            setProductsData(data.products);
+            setChartData(data.chart);
+            setRequestStatus(initRequestStatus);
+        } catch (error) {
+            console.error('getPositionTrackingMainPageData error:', error);
+            setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось получить данные для главной страницы' });
+            return;
+        }
+    }, [requestStatus.isLoading, settingsState, activeFilter]);
+    const addProductToProject = useCallback(async (token: string, sku: string, projectId: string): Promise<void> => {
         if (!requestStatus.isLoading) {
             setRequestStatus({ ...initRequestStatus, isLoading: true });
         };
@@ -308,7 +359,7 @@ const PositionTrackingMainPage = () => {
             console.log('added product to project', data);
             getMetaData(token);
             getProjectsList(token);
-            if (settingsState.project === projectId) {
+            if (settingsState?.project === projectId) {
                 getPositionTrackingMainPageData(token);
             }
         } catch (error) {
@@ -316,63 +367,106 @@ const PositionTrackingMainPage = () => {
             setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось добавить товар к проекту' });
             return;
         }
-    }
-    const getRegionsList = async (token: string): Promise<void> => {
-        if (!requestStatus.isLoading) {
+    }, [requestStatus.isLoading, getSkuValidity, getMetaData, getProjectsList, settingsState, getPositionTrackingMainPageData]);
+    const getRegionsList = useCallback(async (token: string, noRequestStatusUpdate: boolean = false): Promise<void> => {
+        if (!requestStatus.isLoading || !noRequestStatusUpdate) {
             setRequestStatus({ ...initRequestStatus, isLoading: true });
         };
         try {
             const res: Record<string, any>[] = await ServiceFunctions.getSERPFiltersData(token);
             setRegionsList(res);
-            setSettingsState({ ...settingsState, dest: res?.find((item) => item.city_name === 'Москва')?.dest || res[0]?.dest })
-            setRequestStatus(initRequestStatus);
+            setSettingsState((prev) => ({ ...(prev || { project: 0, dest: -1257786 }), dest: res?.find((item) => item.city_name === 'Москва')?.dest || res[0]?.dest }))
+            if (!noRequestStatusUpdate) {
+                setRequestStatus(initRequestStatus);
+            }
         } catch (error) {
             console.error('getRegionsList error:', error);
             setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось получить список регионов' });
-            return;
+            if (!noRequestStatusUpdate) {
+                setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось получить список проектов' });
+            }
+            throw new Error('Не удалось получить список регионов');
         }
-    }
-    const getPositionTrackingMainPageData = async (token: string): Promise<void> => {
+    }, [requestStatus.isLoading]);
+    const getSortedProductsData = useCallback((products: PositionTrackingProduct[], activeFilter: string): PositionTrackingProduct[] => {
+        return products.sort((a, b) => {
+            if (activeFilter === 'По просмотрам') {
+                return b.shows - a.shows;
+            }
+            if (activeFilter === 'По ключам') {
+                return b.queries - a.queries;
+            }
+            if (activeFilter === 'По средней позиции') {
+                return b.place - a.place;
+            }
+        });
+    }, [activeFilter]);
+    const deleteProduct = useCallback(async (productId: string): Promise<void> => {
+        // Сохраняем предыдущее состояние для возможного отката
+        let previousProductsData: PositionTrackingProduct[] | null = null;
+        setProductsData((prev) => {
+            if (!prev) return prev;
+            previousProductsData = [...prev];
+            // Оптимистичное обновление: сразу удаляем товар из UI
+            return prev.filter((product) => product.wb_id !== productId);
+        });
+
         if (!requestStatus.isLoading) {
             setRequestStatus({ ...initRequestStatus, isLoading: true });
         };
-        const requestObject = getMainPageDataRequestObject(settingsState, activeFilter, projectsList);
+        
         try {
-            const res = await ServiceFunctions.getPositionTrackingMainPageData(token, requestObject);
+            const res = await ServiceFunctions.deleteProductFromPositionTrackingProject(authToken, productId);
             if (!res.ok) {
-                console.error('getPositionTrackingMainPageData error:');
-                setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось получить данные для главной страницы' });
+                console.error('deleteProduct error:');
+                // Откатываем изменения при ошибке
+                if (previousProductsData) {
+                    setProductsData(previousProductsData);
+                }
+                setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось удалить товар из проекта' });
                 return;
             }
-            const data: PositionTrackingMainPageData = await res.json();
-            console.log('position tracking main page data', data);
-            setMainPageData(data);
-            setRequestStatus(initRequestStatus);
+            // При успехе обновляем данные с сервера
+            getMetaData(authToken, true);
+            getProjectsList(authToken, true);
+            getPositionTrackingMainPageData(authToken);
         } catch (error) {
-            console.error('getPositionTrackingMainPageData error:', error);
-            setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось получить данные для главной страницы' });
+            console.error('deleteProduct error:', error);
+            // Откатываем изменения при ошибке
+            if (previousProductsData) {
+                setProductsData(previousProductsData);
+            }
+            setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось удалить товар из проекта' });
             return;
         }
-    }
+    }, [authToken, requestStatus.isLoading, getMetaData, getProjectsList, getPositionTrackingMainPageData]);
+    
     useEffect(() => {
         if (authToken) {
+            setRequestStatus({ ...initRequestStatus, isLoading: true });
             Promise.all([
-                getMetaData(authToken),
-                getProjectsList(authToken),
-                getRegionsList(authToken)
-            ]);
+                getMetaData(authToken, true),
+                getProjectsList(authToken, true),
+                getRegionsList(authToken, true)
+            ])
+            .then(() => {
+                setRequestStatus(initRequestStatus);
+                setSettingsState({ project: 0, dest: -1257786 });
+                return;
+            })
+            .catch((error) => {
+                console.error('Error loading initial data:', error);
+                setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось загрузить начальные данные' });
+            });
         }
     }, []);
+
     useEffect(() => {
-        if (authToken && projectsList) {
+        if (metaData && metaData.projects_count > 0) {
             getPositionTrackingMainPageData(authToken);
         }
-    }, [settingsState, activeFilter, projectsList]);
-    useEffect(() => {
-        if (metaData && metaData.projects_count > 0 && !mainPageData) {
-            getPositionTrackingMainPageData(authToken);
-        }
-    }, [metaData]);
+    }, [settingsState]);
+
     return (
         <main className={styles.page}>
             <MobilePlug />
@@ -451,7 +545,7 @@ const PositionTrackingMainPage = () => {
                     </div>}
 
                 {/* settings block */}
-                {metaData && metaData.products_count > 0 && projectsList && regionsList &&
+                {metaData && metaData.products_count > 0 && projectsList && regionsList && settingsState &&
                     <div className={styles.page__container}>
                         <p className={styles.page__title}>Динамика</p>
                         <div className={styles.page__selectWrapper}>
@@ -484,14 +578,14 @@ const PositionTrackingMainPage = () => {
                         </div>
                     </div>}
 
-                {mainPageData?.chart && mainPageData?.chart.length > 0 &&
+                {chartData && chartData.length > 0 &&
                     <div className={styles.page__chartWrapper}>
                         <MainChart
                             loading={requestStatus.isLoading}
-                            dataDashBoard={mainPageData?.chart}
+                            dataDashBoard={chartData}
                         />
                     </div>}
-                {mainPageData?.products && mainPageData?.products.length > 0 &&
+                {productsData && productsData.length > 0 &&
                     <div className={styles.page__tableConfig}>
                         <p className={styles.page__title}>Лучшие товары</p>
                         <ConfigProvider theme={segmentedTheme}>
@@ -509,16 +603,16 @@ const PositionTrackingMainPage = () => {
                         <RadarLoader loaderStyle={{ height: '50vh' }} />
                     </div>
                 }
-                {mainPageData?.products && mainPageData?.products.length > 0 && !requestStatus.isLoading &&
+                {productsData && productsData.length > 0 && !requestStatus.isLoading &&
                     <div className={styles.page__tableWrapper}>
                         <RadarTable
                             config={positionTrackingTableConfig}
                             preset='radar-table-default'
-                            dataSource={mainPageData?.products}
+                            dataSource={getSortedProductsData(productsData, activeFilter)}
                             paginationContainerStyle={{ display: 'none' }}
                             customCellRender={{
-                                idx: ['name'],
-                                renderer: positionTrackingTableCustomCellRender,
+                                idx: [],
+                                renderer: (value: any, record: any, index: number, dataIndex: string) => positionTrackingTableCustomCellRender(value, record, index, dataIndex, deleteProduct),
                             }}
                         />
                     </div>}
@@ -555,7 +649,7 @@ const PositionTrackingMainPage = () => {
                             }}
                             demoModeValue=''
                         /> */}
-                         <ConfigProvider theme={inputTheme}>
+                        <ConfigProvider theme={inputTheme}>
                             <Input
                                 size='large'
                                 className={styles.modal__input}

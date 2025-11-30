@@ -2199,6 +2199,27 @@ export interface IPositionCheckMainTableData {
 		});
 		return res;
 	},
+	deleteProductFromPositionTrackingProject: async (token, productId) => {
+		const res = await fetchApi(`${URL}/api/position-track/radar-product/delete?product_id=${productId}`, {
+			method: 'DELETE',
+			headers: {
+				'content-type': 'application/json',
+				authorization: 'JWT ' + token,
+			},
+		});
+		return res;
+	},
+	deleteProductToPositionTrackingProject: async (token, requestObject) => {
+		const res = await fetchApi(`${URL}/api/position-track/radar-product/create`, {
+			method: 'POST',
+			headers: {
+				'content-type': 'application/json',
+				authorization: 'JWT ' + token,
+			},
+			body: JSON.stringify(requestObject),
+		});
+		return res;
+	},
 	deletePositionTrackingProject: async (token, projectId) => {
 		const res = await fetchApi(`${URL}/api/position-track/project/delete?project_id=${projectId}`, {
 			method: 'DELETE',
@@ -2211,7 +2232,7 @@ export interface IPositionCheckMainTableData {
 	},
 	updatePositionTrackingProject: async (token, projectId, projectName) => {
 		const res = await fetchApi(`${URL}/api/position-track/project/update`, {
-			method: 'POST',
+			method: 'PATCH',
 			headers: {
 				'content-type': 'application/json',
 				authorization: 'JWT ' + token,
