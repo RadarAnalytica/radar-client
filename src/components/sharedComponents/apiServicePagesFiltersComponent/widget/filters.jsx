@@ -29,7 +29,6 @@ export const Filters = ({
   const { user, authToken } = useContext(AuthContext);
   const dispatch = useAppDispatch();
   const { activeBrand, filters, shops, expenseCategories, activeExpenseCategory } = useAppSelector(store => store.filters);
-  console.log('filters', filters);
   const filtersState = useAppSelector(store => store.filters);
 
   // ---- хэндлер выбора магазина -----------//

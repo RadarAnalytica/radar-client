@@ -14,7 +14,9 @@ export default defineConfig({
       output: {
         manualChunks: {
           'onboarding': ['./src/pages/Onboarding']
-        }
+        },
+        chunkFileNames: 'assets/[name]-[hash].js',
+        assetFileNames: 'assets/[name]-[hash].[ext]'
       }
     }
   },
@@ -29,7 +31,8 @@ export default defineConfig({
       '@/redux': resolve(__dirname, 'src/redux'),
       '@/service': resolve(__dirname, 'src/service'),
       '@/assets': resolve(__dirname, 'src/assets'),
-      '@/types': resolve(__dirname, 'src/types')
+      '@/types': resolve(__dirname, 'src/types'),
+      '@/app': resolve(__dirname, 'src/app')
     }
   },
   plugins: [

@@ -32,7 +32,6 @@ const createFiltersDTO = (data, shopsData) => {
       is_self_cost_set: shopsData?.find(s => s.id === _.shop_data.id) ? shopsData?.find(s => s.id === _.shop_data.id).is_self_cost_set : false,
     }))
   ];
-  console.log('shops', shops);
 
 
   // 2 - Трансформируем дату для опции "все магазины"
@@ -289,8 +288,6 @@ const createFiltersDTO = (data, shopsData) => {
 
   // поднимаем сохраненный период по месяцам, чтобы установить его по умолчанию
   let savedActiveMonths = getSavedActiveMonths(savedActiveBrand.id);
-
-  console.log('shops end', shops)
 
   return {
     shops: [...shops],

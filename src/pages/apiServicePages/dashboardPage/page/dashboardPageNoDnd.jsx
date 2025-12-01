@@ -26,7 +26,7 @@ import TaxTableBlock from '@/components/dashboardPageComponents/blocks/taxTableB
 import HowToLink from '@/components/sharedComponents/howToLink/howToLink';
 import TurnoverBlock from '@/components/dashboardPageComponents/blocks/turnoverBlock/turnoverBlock';
 // import { mockGetDashBoard } from '@/service/mockServiceFunctions';
-import StockAnalysisBlock from '@/components/dashboardPageComponents/blocks/stockAnalysisBlock/stockAnalysisBlock'
+import StockAnalysisBlock from '@/components/dashboardPageComponents/blocks/stockAnalysisBlock/stockAnalysisBlock';
 import NoSubscriptionWarningBlock from '@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock';
 import { useDemoMode } from "@/app/providers";
 import { RadarBar } from '@/shared';

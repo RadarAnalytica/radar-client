@@ -1,12 +1,12 @@
 import { useEffect, useContext, useState } from 'react';
 import styles from './linkedShops.module.css';
-import Header from '../../components/sharedComponents/header/header';
-import Sidebar from '../../components/sharedComponents/sidebar/sidebar';
-import MobilePlug from '../../components/sharedComponents/mobilePlug/mobilePlug';
+import Header from '@/components/sharedComponents/header/header';
+import Sidebar from '@/components/sharedComponents/sidebar/sidebar';
+import MobilePlug from '@/components/sharedComponents/mobilePlug/mobilePlug';
 import { AddShopWidget, ShopCardWidget } from './widgets';
-import { useAppSelector, useAppDispatch } from '../../redux/hooks';
-import { fetchShops } from '../../redux/shops/shopsActions';
-import AuthContext from '../../service/AuthContext';
+import { useAppSelector, useAppDispatch } from '@/redux/hooks';
+import { fetchShops } from '@/redux/shops/shopsActions';
+import AuthContext from '@/service/AuthContext';
 import { useDemoMode } from "@/app/providers";
 import NoSubscriptionWarningBlock from '@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock';
 
