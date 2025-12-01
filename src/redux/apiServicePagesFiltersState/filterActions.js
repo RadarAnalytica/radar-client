@@ -8,7 +8,7 @@ import { fetchApi } from '../../service/fetchApi';
 
 const createFiltersDTO = (data, shopsData) => {
   // если магазинов меньше 5, то добавляем опцию "Все магазины"
-  const hasAllShopsOption = shopsData?.filter(_ => _.is_valid).length <= 5
+  const hasAllShopsOption = shopsData?.filter(_ => _.is_valid).length < 5
   // 0 - собираем список недель для фильтр  а выбора недели
   const weeksListData = weeksList();
   // 1 - создаем массив всех магазинов + опцию "Все магазины"
