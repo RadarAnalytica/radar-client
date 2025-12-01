@@ -4,13 +4,23 @@ import { setLoading } from '../loading/loadingSlice';
 import { weeksList, getSavedActiveWeeks, getSavedActiveMonths } from '@/service/utils';
 import { actions as shopsActions } from '../shops/shopsSlice';
 import { fetchApi } from '../../service/fetchApi';
+import { getMinCustomDate } from '@/service/utils';
+import dayjs from 'dayjs';
 
 
 const createFiltersDTO = (data, shopsData) => {
   // если магазинов меньше 5, то добавляем опцию "Все магазины"
   const hasAllShopsOption = shopsData?.filter(_ => _.is_valid).length < 5
   // 0 - собираем список недель для фильтр  а выбора недели
-  const weeksListData = weeksList();
+
+  // находим минимальную дату created_at по всем магазинам
+  const minCreatedAt = data?.reduce((min, current) => {
+    const currentCreatedAt = current?.shop_data?.created_at;
+    if (!currentCreatedAt) return min;
+    if (!min) return currentCreatedAt;
+    return new Date(currentCreatedAt) < new Date(min) ? currentCreatedAt : min;
+  }, null);
+
   // 1 - создаем массив всех магазинов + опцию "Все магазины"
   const shops = hasAllShopsOption ? [
     {
@@ -19,6 +29,7 @@ const createFiltersDTO = (data, shopsData) => {
       id: 0,
       is_primary_collect: data?.some(_ => _.shop_data.is_primary_collect),
       is_self_cost_set: shopsData?.filter(_ => _.is_valid).length > 0 ? shopsData?.filter(_ => _.is_valid).every(_ => _.is_self_cost_set) : false,
+      created_at: minCreatedAt,
     },
     ...data?.map(_ => ({
       ..._.shop_data,
@@ -98,7 +109,7 @@ const createFiltersDTO = (data, shopsData) => {
       stateKey: 'activeWeeks',
       ruLabel: 'Период',
       enLabel: 'weeks',
-      data: weeksListData
+      data: weeksList(getMinCustomDate(shops[0].created_at, 6, 'month'))
     },
     months: {
       stateKey: 'activeMonths',
@@ -166,7 +177,7 @@ const createFiltersDTO = (data, shopsData) => {
         stateKey: 'activeWeeks',
         ruLabel: 'Период',
         enLabel: 'weeks',
-        data: weeksListData
+        data: weeksList(getMinCustomDate(i?.shop_data?.created_at, 6, 'month'))
       },
       months: {
         stateKey: 'activeMonths',
@@ -236,7 +247,7 @@ const createFiltersDTO = (data, shopsData) => {
         stateKey: 'activeWeeks',
         ruLabel: 'Период',
         enLabel: 'weeks',
-        data: weeksListData
+        data: weeksList(getMinCustomDate(i?.shop_data?.created_at, 6, 'month'))
       },
       months: {
         stateKey: 'activeMonths',
@@ -288,6 +299,34 @@ const createFiltersDTO = (data, shopsData) => {
 
   // поднимаем сохраненный период по месяцам, чтобы установить его по умолчанию
   let savedActiveMonths = getSavedActiveMonths(savedActiveBrand.id);
+
+  // Вычисляем минимальную дату (полгода до created_at магазина)
+  if (savedActiveBrand?.created_at) {
+    const minDate = getMinCustomDate(savedActiveBrand.created_at, 6, 'month');
+    const minDateObj = dayjs(minDate);
+
+    // Фильтруем недели: оставляем только те, которые не раньше минимальной даты
+    if (Array.isArray(savedActiveWeeks)) {
+      savedActiveWeeks = savedActiveWeeks.filter(week => {
+        if (!week?.value) return false;
+        const weekDate = dayjs(week.value);
+        if (!weekDate.isValid()) return false;
+        // Используем стандартные методы dayjs: isAfter или isSame
+        return weekDate.isAfter(minDateObj, 'day') || weekDate.isSame(minDateObj, 'day');
+      });
+    }
+
+    // Проверяем месяцы: если month_from раньше минимальной даты, устанавливаем минимальную дату
+    if (savedActiveMonths?.month_from) {
+      const monthFromDate = dayjs(savedActiveMonths.month_from);
+      if (monthFromDate.isValid() && monthFromDate.isBefore(minDateObj, 'month')) {
+        savedActiveMonths = {
+          ...savedActiveMonths,
+          month_from: minDateObj.format('YYYY-MM')
+        };
+      }
+    }
+  }
 
   return {
     shops: [...shops],

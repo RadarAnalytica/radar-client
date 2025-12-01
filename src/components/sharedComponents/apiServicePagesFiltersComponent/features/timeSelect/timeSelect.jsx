@@ -33,8 +33,7 @@ const predefinedRanges = [
     }
 ];
 
-export const TimeSelect = ({ isDataLoading, maxCustomDate }) => {
-
+export const TimeSelect = ({ isDataLoading, maxCustomDate, minCustomDate }) => {
     const dispatch = useAppDispatch();
     const { selectedRange } = useAppSelector(store => store.filters);
     const [isCalendarOpen, setIsCalendarOpen] = useState(false);
@@ -44,9 +43,11 @@ export const TimeSelect = ({ isDataLoading, maxCustomDate }) => {
     const [selectValue, setSelectValue] = useState();
     const maxDate = maxCustomDate ? maxCustomDate : new Date();
     const today = new Date();
-    const minDate = new Date(today);
-    minDate.setDate(today.getDate() - 90);
+    let minDate = minCustomDate ? new Date(minCustomDate) :  new Date(today);
 
+    if (!minCustomDate) {
+        minDate.setDate(today.getDate() - 90);
+    }
 
     const startMonth = new Date(today);
     startMonth.setDate(today.getDate() - 90);
