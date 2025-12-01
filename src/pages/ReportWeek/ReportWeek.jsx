@@ -157,7 +157,7 @@ export default function ReportWeek() {
 			}
 
 			progress.complete();
-			await setTimeout(() => dataToTableData(weeks), 500);
+			await setTimeout(() => {dataToTableData(weeks), progress.reset()}, 500);
 		} catch (e) {
 			console.error(e);
 			dataToTableData(null);

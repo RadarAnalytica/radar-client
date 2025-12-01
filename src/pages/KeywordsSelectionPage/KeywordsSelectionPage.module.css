@@ -116,6 +116,12 @@
     flex-direction: column;
     overflow: hidden;
     box-sizing: padding-box;
+    border: 1px solid transparent;
+    transition: all .15s ease-in-out;
+}
+
+.page__chartItem:hover {
+    transform: translateY(-3px);
 }
 
 .page__chartItemTitle {
