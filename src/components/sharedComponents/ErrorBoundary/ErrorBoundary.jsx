@@ -20,9 +20,15 @@ class ErrorBoundary extends React.Component {
   }
 
   componentDidCatch(error, errorInfo) {
-    // Логируем ошибку в консоль для отладки
-    console.error('ErrorBoundary caught an error:', error, errorInfo);
+    const errorMessage = error?.message || String(error);
+    // Если ошибка связана с загрузкой чанков, просто перезагружаем страницу
+    if (errorMessage?.includes('Failed to fetch dynamically imported module')) {
+      window.location.reload();
+      return;
+    }
 
+    console.error('ErrorBoundary caught an error:', error, errorInfo);
+    
     this.setState({
       error: error,
       errorInfo: errorInfo
@@ -31,7 +37,7 @@ class ErrorBoundary extends React.Component {
     if (this.enabled) {
       const user = jwtDecode(Cookies.get('radar'));
       reportError({
-        error_text: error?.message || String(error),
+        error_text: errorMessage,
         stack_trace: error?.stack || errorInfo?.componentStack || null,
         user: user ? { id: user?.id, email: user?.email } : null,
       });

@@ -1,8 +1,8 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
-import svgr from 'vite-plugin-svgr'
-import viteCompression from 'vite-plugin-compression'
-import { resolve } from 'path'
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+import svgr from 'vite-plugin-svgr';
+import viteCompression from 'vite-plugin-compression';
+import { resolve } from 'path';
 
 
 // https://vite.dev/config/
@@ -46,4 +46,4 @@ export default defineConfig({
       filter: /\.(js|mjs|json|css|html)$/i, // files to compress
     })
   ],
-})
+});
