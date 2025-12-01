@@ -1,4 +1,4 @@
-export const TABLE_CONFIG_VERSION = '1.0.4';
+export const TABLE_CONFIG_VERSION = '1.0.5';
 export const TABLE_CONFIG_STORAGE_KEY = 'myAdv_tableConfig';
 export const TABLE_MAX_WIDTH = 400;
 
