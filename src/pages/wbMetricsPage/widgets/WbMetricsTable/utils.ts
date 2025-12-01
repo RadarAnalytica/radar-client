@@ -5,11 +5,6 @@ export const getColorForPercentage = (
   metricType: 'drr' | 'spp',
   opacity: number = 1
 ): string => {
-  const range = maxValue - minValue;
-  if (range === 0) return `rgba(240, 240, 240, 1)`;
-
-  const normalizedValue = (percentage - minValue) / range;
-
   const colorScale = [
     `rgba(249, 62, 62, ${opacity})`, // Красный
     `rgba(253, 107, 66, ${opacity})`,
@@ -22,6 +17,10 @@ export const getColorForPercentage = (
     `rgba(28, 215, 0, ${opacity})`, // Зеленый
   ];
 
+  const range = maxValue - minValue;
+  if (range <= 0) return metricType === 'drr' ? colorScale[colorScale.length - 1] : colorScale[0];
+  
+  const normalizedValue = (percentage - minValue) / range;
   const colors = metricType === 'drr' ? [...colorScale].reverse() : colorScale;
   const index = Math.min(Math.floor(normalizedValue * colors.length), colors.length - 1);
   return colors[index];
