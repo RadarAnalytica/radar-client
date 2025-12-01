@@ -8,7 +8,7 @@ import { fetchApi } from '../../service/fetchApi';
 
 const createFiltersDTO = (data, shopsData) => {
   // если магазинов меньше 5, то добавляем опцию "Все магазины"
-  const hasAllShopsOption = shopsData?.filter(_ => _.is_valid).length <= 5
+  const hasAllShopsOption = shopsData?.filter(_ => _.is_valid).length < 5
   // 0 - собираем список недель для фильтр  а выбора недели
   const weeksListData = weeksList();
   // 1 - создаем массив всех магазинов + опцию "Все магазины"
@@ -274,7 +274,7 @@ const createFiltersDTO = (data, shopsData) => {
     // для поиска нужен сложный индекс тк айди магазинов могут совпадать в разных аккаунтах
     const isInShops = shops.some(_ => String(_.id + _.brand_name) === String(savedActiveBrand.id + savedActiveBrand.brand_name));
     // Если магазин нет в массиве (т.е. валиден для этого аккаунта) то...
-    if (!isInShops) {
+    if (!isInShops || !savedActiveBrand.id === 0) {
       savedActiveBrand = shops[0];
     } else {
       savedActiveBrand = shops.find(_ => String(_.id + _.brand_name) === String(savedActiveBrand.id + savedActiveBrand.brand_name));

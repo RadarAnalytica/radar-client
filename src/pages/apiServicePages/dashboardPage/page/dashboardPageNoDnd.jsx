@@ -45,7 +45,6 @@ const MainContent = React.memo(({
     isSidebarHidden
 }) => {
     const isLoading = loading || isFiltersLoading;
-    
     // Если фильтры загружены и shopStatus не подходит, не рендерим
     if (!isFiltersLoading && !shopStatus?.is_primary_collect) return null;
 

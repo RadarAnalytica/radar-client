@@ -123,8 +123,8 @@ function sorter(a, b, direction) {
     return direction === 'DESC' ? a[key] - b[key] : b[key] - a[key];
   } else {
     return direction === 'DESC'
-      ? a[key].localeCompare(b[key])
-      : b[key].localeCompare(a[key]);
+      ? a[key]?.localeCompare(b[key])
+      : b[key]?.localeCompare(a[key]);
   }
 }
 
