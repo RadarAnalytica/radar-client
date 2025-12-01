@@ -1,5 +1,6 @@
 export const TABLE_CONFIG_VERSION = '1.0.4';
 export const TABLE_CONFIG_STORAGE_KEY = 'myAdv_tableConfig';
+export const TABLE_MAX_WIDTH = 400;
 
 export interface ColumnConfig {
   key: string;
@@ -32,7 +33,7 @@ export const getDefaultTableConfig = (): ColumnConfig[] => {
         {title: 'Название кампании', dataIndex: 'company_name', sortable: false, fixed: true, width: 240},
         {title: 'Статус WB', dataIndex: 'company_status', sortable: true, fixed: true, width: 100},
         {title: 'Тип кампании', dataIndex: 'company_type', sortable: true, fixed: true, width: 100},
-      ].map(_ => ({ ..._, key: _.dataIndex, minWidth: _.width }))
+      ].map(_ => ({ ..._, key: _.dataIndex, minWidth: _.width, maxWidth: TABLE_MAX_WIDTH }))
     },
     {
       title: 'Рекламная воронка',
@@ -51,7 +52,7 @@ export const getDefaultTableConfig = (): ColumnConfig[] => {
         {title: 'Просмотр → Заказ', dataIndex: 'view_order', sortable: true, fixed: false, canToggle: true, width: 120},
         {title: 'Прогноз Заказ → Выкуп', dataIndex: 'expected_order_purchase', sortable: true, fixed: false, canToggle: true, width: 120},
         {title: 'Прогноз Клик → Выкуп', dataIndex: 'expected_click_purchase', sortable: true, fixed: false, canToggle: true, width: 120},
-      ].map(_ => ({ ..._, key: _.dataIndex, minWidth: _.width }))
+      ].map(_ => ({ ..._, key: _.dataIndex, minWidth: _.width, maxWidth: TABLE_MAX_WIDTH }))
     },
     {
       title: 'Рекламная статистика',
@@ -72,7 +73,7 @@ export const getDefaultTableConfig = (): ColumnConfig[] => {
         {title: 'Заказов на сумму', dataIndex: 'orders_amount', sortable: true, fixed: false, canToggle: true, width: 120},
         {title: 'Прогноз выкуп на сумму', dataIndex: 'expected_purchase_amount', sortable: true, fixed: false, canToggle: true, width: 120},
         {title: 'Расходы на рекламу', dataIndex: 'ad_spend', sortable: true, fixed: false, canToggle: true, width: 120},
-      ].map(_ => ({ ..._, key: _.dataIndex, minWidth: _.width, className: 'myAdvTableGroupCell' }))
+      ].map(_ => ({ ..._, key: _.dataIndex, minWidth: _.width, maxWidth: TABLE_MAX_WIDTH, className: 'myAdvTableGroupCell' }))
     },
   ].map(_ => ({ ..._, colSpan: _?.children?.length || 1 }));
 

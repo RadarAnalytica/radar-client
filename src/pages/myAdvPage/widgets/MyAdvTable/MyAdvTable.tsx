@@ -3,7 +3,7 @@ import { Table as RadarTable } from 'radar-ui';
 import { useNavigate } from 'react-router-dom';
 import { Filters } from '@/components/sharedComponents/apiServicePagesFiltersComponent';
 import TableSettingsWidget from '../TableSettingsWidget/TableSettingsWidget';
-import { TABLE_CONFIG_VERSION, getDefaultTableConfig, getNormalizedTableConfig, saveTableConfig } from '../../config/tableConfig';
+import { TABLE_CONFIG_VERSION, getDefaultTableConfig, TABLE_MAX_WIDTH } from '../../config/tableConfig';
 import { sortTableData } from './utils';
 import styles from './MyAdvTable.module.css';
 import { CompanyData } from '../../data/mockData';
@@ -13,7 +13,6 @@ import Loader from '@/components/ui/Loader';
 import DataCollectWarningBlock from '@/components/sharedComponents/dataCollectWarningBlock/dataCollectWarningBlock';
 import { useAppSelector } from '@/redux/hooks';
 import { formatNumberWithSpaces } from '@/service/utils';
-import NoData from '@/components/sharedComponents/NoData/NoData';
 
 interface MyAdvTableProps {
   companyId?: string | number;
@@ -79,8 +78,6 @@ const MyAdvTable: React.FC<MyAdvTableProps> = ({
   const onResizeGroup = (columnKey: string, width: number) => {
     // Обновляем конфигурацию колонок с группированной структурой
     const updateColumnWidth = (columns: any[]): any[] => {
-      const maxWidth = 400;
-
       return columns.map(col => {
         // Если это группа с children
         if (col.children && col.children.length > 0) {
@@ -91,12 +88,12 @@ const MyAdvTable: React.FC<MyAdvTableProps> = ({
             if (child.hidden) return sum; // Пропускаем скрытые колонки
             return sum + (child.width || child.minWidth || 200);
           }, 0);
-          return { ...col, width: Math.min(totalWidth, maxWidth), children: updatedChildren, maxWidth };
+          return { ...col, width: Math.min(totalWidth, TABLE_MAX_WIDTH), children: updatedChildren, maxWidth: TABLE_MAX_WIDTH };
         }
 
         // Если это листовая колонка
         if (col.key === columnKey) {
-          return { ...col, width: Math.min(width, maxWidth), maxWidth };
+          return { ...col, width: Math.min(width, TABLE_MAX_WIDTH), maxWidth: TABLE_MAX_WIDTH };
         }
 
         return col;
@@ -273,13 +270,6 @@ const MyAdvTable: React.FC<MyAdvTableProps> = ({
     const stringKeys = keys.map(key => String(key));
     setExpandedRowKeys(stringKeys);
     localStorage.setItem('MY_ADV_EXPANDED_TABLE_ROWS_STATE', JSON.stringify({ keys: stringKeys }));
-  };
-
-  // Обработчик изменения конфигурации таблицы
-  const handleTableColumnsChange = (newConfig: ColumnConfig[]) => {
-    const normalizedConfig = getNormalizedTableConfig(newConfig);
-    setTableConfig(normalizedConfig);
-    saveTableConfig(normalizedConfig);
   };
 
   if (loading) {
