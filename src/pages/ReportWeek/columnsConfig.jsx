@@ -77,7 +77,7 @@ function sorter(a, b, key) {
 	return Number(v1 - v2);
 }
 
-export const CURR_REPORT_WEEK_COLUMNS_CONFIG_VER = '8';
+export const CURR_REPORT_WEEK_COLUMNS_CONFIG_VER = '10';
 
 export const COLUMNS = [
 	{title: 'Неделя', dataIndex: 'week_label', fixed: true, width: 200, minWidth: 200, sortable: false},
@@ -121,6 +121,7 @@ export const COLUMNS = [
 ].map(_ => ({
 	..._,
 	hidden: false,
+	minWidth: _.width / 2,
 	maxWidth: _.width * 2,
 	key: _.dataIndex,
 	units: _.dataIndex !== 'week_label' && !_.units ? ' ' : _.units,
