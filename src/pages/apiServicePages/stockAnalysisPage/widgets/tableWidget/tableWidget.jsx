@@ -121,8 +121,8 @@ const customCellRender = (value, record, index, dataIndex) => {
         </div>);
     }
 
-    return <div className={styles.customCell} data-border-right={rightBorders.includes(dataIndex)} title={typeof value === 'number' ? formatPrice(value, newTableConfig.map(item => item.children).flat().find(item => item.dataIndex === dataIndex)?.units || '') : value}>
-        {typeof value === 'number' ? formatPrice(value, newTableConfig.map(item => item.children).flat().find(item => item.dataIndex === dataIndex)?.units || '') : value}
+    return <div className={styles.customCell} data-border-right={rightBorders.includes(dataIndex)} title={typeof value === 'number' ? formatPrice(value, newTableConfig?.map(item => item.children).flat().find(item => item.dataIndex === dataIndex)?.units || '') : value}>
+        {typeof value === 'number' ? formatPrice(value, newTableConfig?.map(item => item.children).flat().find(item => item.dataIndex === dataIndex)?.units || '') : value}
         {comparsion !== null && comparsion !== undefined && <RadarRateMark value={comparsion} units='%' />}
     </div>;
 };
@@ -139,7 +139,7 @@ const TableWidget = ({ stockAnalysisFilteredData, loading, progress, config, ini
     // задаем начальную дату
     useEffect(() => {
         if (stockAnalysisFilteredData) {
-            const data = stockAnalysisFilteredData.map(item => {
+            const data = stockAnalysisFilteredData?.map(item => {
                 const sizesLength = item?.originalSizesLength ?? item?.sizes?.length ?? 0;
                 //const sizesLength = item?.originalSizesLength || 0;
                 let showSizes = sizesLength > 1;
@@ -154,7 +154,7 @@ const TableWidget = ({ stockAnalysisFilteredData, loading, progress, config, ini
                     vendorСode: item.article,
                     size: showSizes ? `${sizesLength} ${getWordDeclension('размер', sizesLength )}` : item.article_data?.size,
                     isParent: showSizes,
-                    children: showSizes ? item.sizes.map(child => ({
+                    children: showSizes ? item.sizes?.map(child => ({
                         ...child,
                         vendorСode: item.article,
                         isLastChild: child.index === item.article_data.length - 1,
@@ -202,7 +202,7 @@ const TableWidget = ({ stockAnalysisFilteredData, loading, progress, config, ini
     const onResizeGroup = (columnKey, width) => {
         // Обновляем конфигурацию колонок с группированной структурой
         const updateColumnWidth = (columns) => {
-          return columns.map(col => {
+          return columns?.map(col => {
             // Если это группа с children
             if (col.children && col.children.length > 0) {
               const updatedChildren = updateColumnWidth(col.children);

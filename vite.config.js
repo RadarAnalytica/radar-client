@@ -11,13 +11,11 @@ export default defineConfig({
   build: {
     rollupOptions: {
       input: './index.html', // Specify entry point
-      output: {
-        manualChunks: {
-          'onboarding': ['./src/pages/Onboarding']
-        },
-        chunkFileNames: 'assets/[name]-[hash].js',
-        assetFileNames: 'assets/[name]-[hash].[ext]'
-      }
+      // output: {
+      //   manualChunks: {
+      //     'onboarding': ['./src/pages/Onboarding']
+      //   }
+      // }
     }
   },
   server: {
