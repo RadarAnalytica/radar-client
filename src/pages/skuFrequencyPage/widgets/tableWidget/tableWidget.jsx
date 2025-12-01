@@ -58,10 +58,10 @@ const TableWidget = ({ tableConfig, setTableConfig }) => {
               const updatedChildren = updateColumnWidth(col.children);
 
               // Всегда пересчитываем ширину группы на основе суммы ширин дочерних колонок
-              const totalWidth = updatedChildren.reduce((sum, child) => {
-                if (child.hidden) return sum; // Пропускаем скрытые колонки
-                return sum + (child.width || 200);
-              }, 0);
+            //   const totalWidth = updatedChildren.reduce((sum, child) => {
+            //     if (child.hidden) return sum; // Пропускаем скрытые колонки
+            //     return sum + (child.width || 200);
+            //   }, 0);
               return { ...col, children: updatedChildren };
             }
 
@@ -102,6 +102,7 @@ const TableWidget = ({ tableConfig, setTableConfig }) => {
                 ref={containerRef}
             >
                 <RadarTable
+                    key={JSON.stringify(tableConfig)}
                     dataSource={requestData}
                     config={tableConfig}
                     resizeable
