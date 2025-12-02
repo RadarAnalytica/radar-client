@@ -21,6 +21,7 @@ export const Filters = ({
   tempPageCondition,
   isDataLoading,
   maxCustomDate,
+  minCustomDate,
   opExpensesArticles = false,
   children = null,
 }) => {
@@ -66,7 +67,9 @@ export const Filters = ({
               selectId={filters.find((el) => el.shop.id === activeBrand.id).months.enLabel}
               label={`${filters.find((el) => el.shop.id === activeBrand.id).months.ruLabel}:`}
               value={filtersState.activeMonths}
-              isDataLoading={isDataLoading} />
+              isDataLoading={isDataLoading}
+              minCustomDate={minCustomDate}
+            />
           </div>
         }
         {shops && activeBrand && timeSelect &&
@@ -74,6 +77,7 @@ export const Filters = ({
             <TimeSelect
               isDataLoading={isDataLoading}
               maxCustomDate={maxCustomDate}
+              minCustomDate={minCustomDate}
             />
           </div>
         }
@@ -105,7 +109,7 @@ export const Filters = ({
               optionsData={shops}
               handler={shopChangeHandler}
               isDataLoading={isDataLoading}
-              hasSearch={!shops.some(_ => _.id === 0)} // добавляем поиск если нет опции "Все магазины" (значит в получении фильров магазинов больше 5)
+              hasSearch={!shops.some(_ => _.id === 0)} // добавляем поиск если магазинов больше 5
             />
           </div>
         }

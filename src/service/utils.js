@@ -718,12 +718,25 @@ export const verticalDashedLinePlugin = {
   }
 };
 
-export function weeksList() {
+export function weeksList(minDate) {
+    // Определяем начальную дату: если задана minDate, используем её, иначе используем дефолтную дату
+    let startDate;
+    if (minDate) {
+        // Преобразуем minDate в Date объект (может быть dayjs объектом или строкой)
+        const parsedMinDate = dayjs(minDate);
+        if (parsedMinDate.isValid()) {
+            startDate = parsedMinDate.toDate();
+        } else {
+            startDate = new Date(2024, 0, 29);
+        }
+    } else {
+        startDate = new Date(2024, 0, 29);
+    }
 
-    // Выборка дат с 2024-01-29
+    // Выборка дат с startDate
     const weeks = eachWeekOfInterval(
         {
-            start: new Date(2024, 0, 29),
+            start: startDate,
             end: Date.now(),
         },
         {
@@ -748,7 +761,16 @@ export function weeksList() {
             label: `${weekNumber} неделя (${weekStart} - ${weekEnd})`,
         };
     };
-    return weeks.map((el, i) => optionTemplate(el)).reverse();
+    
+    // Фильтруем недели, которые начинаются раньше minDate (на случай если minDate попадает в середину недели)
+    const filteredWeeks = weeks.filter(weekDate => {
+        if (!minDate) return true;
+        const parsedMinDate = dayjs(minDate);
+        if (!parsedMinDate.isValid()) return true;
+        return weekDate >= parsedMinDate.toDate();
+    });
+    
+    return filteredWeeks.map((el, i) => optionTemplate(el)).reverse();
 }
 
 export function getSavedActiveWeeks(id) {
@@ -862,4 +884,15 @@ export function getWordDeclension(word, count) {
   } else {
     return wordObject.many;
   }
+}
+
+
+
+// функция для подсчета минимальной даты для фильтра периода (используется в отчете по неделям и отчете о прибылях и убытках) 
+export const getMinCustomDate = (currentDate, delta, deltaType) => {
+  if (!currentDate) return dayjs().toISOString();
+  if (!delta || !deltaType) return currentDate;
+
+  let parsedCurrentDate = dayjs(currentDate);
+  return parsedCurrentDate.subtract(delta, deltaType);
 }

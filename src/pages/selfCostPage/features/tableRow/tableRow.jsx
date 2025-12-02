@@ -88,9 +88,10 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
             let newTableData = tableData;
             const index = newTableData.findIndex(_ => _.product === parsedData.product);
             newTableData[index] = parsedData;
-            const isAllProductsHasSelfCost = !newTableData.some(_ => _.cost === null);
+            const isAllProductsHadSelfCost = tableData.every(_ => _.cost !== null);
+            const isAllProductsHasSelfCost = newTableData.every(_ => _.cost !== null);
 
-            if (isAllProductsHasSelfCost) {
+            if (isAllProductsHasSelfCost && !isAllProductsHadSelfCost) {
                 let shopsResponse = await fetchApi('/api/shop/all', {
                     method: 'GET',
                     headers: {

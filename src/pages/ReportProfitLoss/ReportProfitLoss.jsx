@@ -17,6 +17,7 @@ import DataCollectWarningBlock from '@/components/sharedComponents/dataCollectWa
 import NoSubscriptionWarningBlock from '@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock';
 import { useDemoMode } from '@/app/providers';
 import { useLoadingProgress } from '@/service/hooks/useLoadingProgress';
+import { getMinCustomDate } from '@/service/utils';
 
 export default function ReportProfitLoss() {
 	const { user, authToken } = useContext(AuthContext);
@@ -44,6 +45,8 @@ export default function ReportProfitLoss() {
 
 		return shops.find(shop => shop.id === activeBrand.id);
 	}, [activeBrand, shops]);
+
+	
 
 	function renderColumn(data) {
 		if (typeof data !== 'object') {
@@ -269,15 +272,15 @@ export default function ReportProfitLoss() {
 		}
 	}, [activeBrand, selectedRange, activeMonths, activeBrandName, activeArticle, activeGroup, isFiltersLoaded]);
 
-	useEffect(() => {
-		if (!activeBrand) return;
-		let savedFilterMonths = JSON.parse(localStorage.getItem('activeMonths')) || {};
-		savedFilterMonths[activeBrand.id] = activeMonths;
-		localStorage.setItem(
-			'activeMonths',
-			JSON.stringify(savedFilterMonths)
-		);
-	}, [activeMonths]);
+	// useEffect(() => {
+	// 	if (!activeBrand) return;
+	// 	let savedFilterMonths = JSON.parse(localStorage.getItem('activeMonths')) || {};
+	// 	savedFilterMonths[activeBrand.id] = activeMonths;
+	// 	localStorage.setItem(
+	// 		'activeMonths',
+	// 		JSON.stringify(savedFilterMonths)
+	// 	);
+	// }, [activeMonths]);
 
 	return (
 		<main className={styles.page}>
@@ -309,6 +312,7 @@ export default function ReportProfitLoss() {
 						timeSelect={false}
 						monthSelect={true}
 						isDataLoading={loading}
+						minCustomDate={getMinCustomDate(activeBrand?.created_at, 6, 'month')}
 					/>
 				</div>
 
