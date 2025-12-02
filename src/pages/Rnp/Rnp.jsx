@@ -22,6 +22,7 @@ import SelfCostWarningBlock from '../../components/sharedComponents/selfCostWran
 import ErrorModal from '../../components/sharedComponents/modals/errorModal/errorModal';
 import { Filters } from '@/components/sharedComponents/apiServicePagesFiltersComponent';
 import { fetchRnpFilters } from '../../redux/filtersRnp/filterRnpActions';
+import { actions as filtersRnpAddActions } from '../../redux/filtersRnpAdd/filtersRnpAddSlice';
 import { actions as filterActions } from '../../redux/filtersRnp/filtersRnpSlice';
 import { actions as filtersActions } from '@/redux/apiServicePagesFiltersState/apiServicePagesFilterState.slice';
 import HowToLink from '../../components/sharedComponents/howToLink/howToLink';
@@ -254,6 +255,12 @@ export default function Rnp() {
 			autoScrollForElements({ element });
 		};
 	}, []);
+
+	useEffect(() => {
+		if (activeBrand) {
+			dispatch(filtersRnpAddActions.setActiveShop(activeBrand));
+		}
+	}, [activeBrand]);
 
 	useEffect(() => {
 		if (selectedRange) {

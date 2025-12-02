@@ -168,16 +168,16 @@ const PositionTrackingProjectsPage = () => {
     const [isAddModalVisible, setIsAddModalVisible] = useState(false);
     const [deleteModalVisible, setDeleteModalVisible] = useState(false);
     const [deleteModalState, setDeleteModalState] = useState<{ projectId: string }>({ projectId: '' });
-    const [projectsList, setProjectsList] = useState<Project[] | null>([]);
+    const [projectsList, setProjectsList] = useState<Project[] | null>(null);
     const [requestStatus, setRequestStatus] = useState<typeof initRequestStatus>(initRequestStatus);
     const [editModalVisible, setEditModalVisible] = useState(false);
     const [editModalState, setEditModalState] = useState<{ projectId: string, projectName: string }>({ projectId: '', projectName: '' });
-    const [addModalNameValue, setAddModalNameValue] = useState<string>('Мой новый проект');
+    const [addModalNameValue, setAddModalNameValue] = useState<string>('');
     const { isDemoMode } = useDemoMode();
     const navigate = useNavigate();
     
-    const getProjectsList = async (token: string): Promise<void> => {
-        if (!requestStatus.isLoading) {
+    const getProjectsList = async (token: string, noRequestStatusUpdate: boolean = false): Promise<void> => {
+        if (!requestStatus.isLoading && !noRequestStatusUpdate) {
             setRequestStatus({ ...initRequestStatus, isLoading: true });
         };
         try {
@@ -190,7 +190,9 @@ const PositionTrackingProjectsPage = () => {
             const data: Project[] = await res.json();
 
             setProjectsList(data);
-            setRequestStatus(initRequestStatus);
+            if (!noRequestStatusUpdate) {
+                setRequestStatus(initRequestStatus);
+            }
         } catch (error) {
             console.error('getProjectsList error:', error);
             setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось получить список проектов' });
@@ -198,52 +200,58 @@ const PositionTrackingProjectsPage = () => {
         }
 
     }
-    const getSkuValidity = async (token: string, sku: string): Promise<SkuValidity | undefined> => {
-        if (!requestStatus.isLoading) {
+    const getSkuValidity = async (token: string, sku: string, noRequestStatusUpdate: boolean = false): Promise<SkuValidity | undefined> => {
+        if (!requestStatus.isLoading && !noRequestStatusUpdate) {
             setRequestStatus({ ...initRequestStatus, isLoading: true });
         };
         try {
             const res = await ServiceFunctions.getPostionTrackingSkuValidity(token, sku);
             if (!res.ok) {
-                console.error('getSkuValidity error:');
-                setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось получить валидность SKU' });
+                const parsed = await res.json();
+                setRequestStatus({ ...initRequestStatus, isError: true, message: typeof parsed === 'string' ? parsed : 'Не удалось проверить валидность артикула' });
                 return;
             }
             const data: SkuValidity = await res.json();
-            setRequestStatus(initRequestStatus);
+            if (!noRequestStatusUpdate) {
+                setRequestStatus(initRequestStatus);
+            }
             return data;
 
         } catch (error) {
             console.error('getSkuValidity error:', error);
-            setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось получить валидность SKU' });
+            setRequestStatus({ ...initRequestStatus, isError: true, message: typeof error === 'string' ? error : 'Не удалось проверить валидность артикула' });
             return;
         }
     }
     const createProject = async (token: string, projectName: string): Promise<void> => {
-        setRequestStatus({ ...initRequestStatus, isLoading: true });
+        if (!requestStatus.isLoading) {
+            setRequestStatus({ ...initRequestStatus, isLoading: true });
+        }
         try {
             const res = await ServiceFunctions.createPostionTrackingProject(token, projectName);
             if (!res.ok) {
-                console.error('createProject error:');
-                setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось создать проект' });
+                const parsed = await res.json();
+                setRequestStatus({ ...initRequestStatus, isError: true, message: typeof parsed === 'string' ? parsed : 'Не удалось создать проект' });
                 setIsAddModalVisible(false);
                 return;
             }
-            await getProjectsList(token);
+            await getProjectsList(token, true);
             setRequestStatus(initRequestStatus);
         } catch (error) {
             console.error('createProject error:', error);
-            setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось создать проект' });
+            setRequestStatus({ ...initRequestStatus, isError: true, message: typeof error === 'string' ? error : 'Не удалось создать проект' });
             setIsAddModalVisible(false);
             return;
         }
     }
     const createProjectWithProduct = async (token: string, product: string, projectName?: string): Promise<void> => {
-        setRequestStatus({ ...initRequestStatus, isLoading: true });
+        if (!requestStatus.isLoading) {
+            setRequestStatus({ ...initRequestStatus, isLoading: true });
+        }
         try {
             let skuValidity: SkuValidity | undefined;
             if (product) {
-                skuValidity = await getSkuValidity(token, product);
+                skuValidity = await getSkuValidity(token, product, true);
             }
 
             if (product && !skuValidity) {
@@ -251,15 +259,16 @@ const PositionTrackingProjectsPage = () => {
             }
             const res = await ServiceFunctions.createPostionTrackingProjectWithProduct(token, projectName ?? null, skuValidity?.wb_id ?? null, skuValidity?.name ?? null);
             if (!res.ok) {
-                console.error('createProject error:');
-                setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось создать проект' });
+                const parsed = await res.json();
+                setRequestStatus({ ...initRequestStatus, isError: true, message: typeof parsed === 'string' ? parsed : 'Не удалось создать проект' });
                 return;
             }
             const data: Project = await res.json();
-            await getProjectsList(token);
+            await getProjectsList(token, true);
+            setRequestStatus(initRequestStatus);
         } catch (error) {
             console.error('createProject error:', error);
-            setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось создать проект' });
+            setRequestStatus({ ...initRequestStatus, isError: true, message: typeof error === 'string' ? error : 'Не удалось создать проект' });
             return;
         }
     }
@@ -270,15 +279,16 @@ const PositionTrackingProjectsPage = () => {
         try {
             const res = await ServiceFunctions.deletePositionTrackingProject(token, projectId);
             if (!res.ok) {
-                console.error('deleteProject error:');
-                setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось удалить проект' });
+                const parsed = await res.json();
+                setRequestStatus({ ...initRequestStatus, isError: true, message: typeof parsed === 'string' ? parsed : 'Не удалось удалить проект' });
                 setDeleteModalVisible(false);
                 return;
             }
-            await getProjectsList(token);
+            await getProjectsList(token, true);
+            setRequestStatus(initRequestStatus);
         } catch (error) {
             console.error('deleteProject error:', error);
-            setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось удалить проект' });
+            setRequestStatus({ ...initRequestStatus, isError: true, message: typeof error === 'string' ? error : 'Не удалось удалить проект' });
             setDeleteModalVisible(false);
         }
     }
@@ -289,15 +299,16 @@ const PositionTrackingProjectsPage = () => {
         try {
             const res = await ServiceFunctions.updatePositionTrackingProject(token, projectId, projectName);
             if (!res.ok) {
-                console.error('updateProject error:');
-                setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось обновить проект' });
+                const parsed = await res.json();
+                setRequestStatus({ ...initRequestStatus, isError: true, message: typeof parsed === 'string' ? parsed : 'Не удалось обновить проект' });
                 setEditModalVisible(false);
                 return;
             }
-            await getProjectsList(token);
+            await getProjectsList(token, true);
+            setRequestStatus(initRequestStatus);
         } catch (error) {
             console.error('updateProject error:', error);
-            setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось обновить проект' });
+            setRequestStatus({ ...initRequestStatus, isError: true, message: typeof error === 'string' ? error : 'Не удалось обновить проект' });
             setEditModalVisible(false);
             return;
         }
@@ -314,7 +325,14 @@ const PositionTrackingProjectsPage = () => {
             navigate('/position-tracking');
         }
     }, [isDemoMode]);
-    return (
+    useEffect(() => {
+        if (!isAddModalVisible) {
+            setAddModalNameValue('');
+        }
+    }, [isAddModalVisible])
+
+
+    return projectsList &&(
         <main className={styles.page}>
             <MobilePlug />
             {/* ------ SIDE BAR ------ */}
@@ -359,7 +377,7 @@ const PositionTrackingProjectsPage = () => {
                         </ConfigProvider>
                     </div>
                 }
-                {!projectsList?.length &&
+                {projectsList && projectsList.length === 0 &&
                     <PositionTrackingMainPageWidget setIsAddModalVisible={setIsAddModalVisible} hasAddBlock={true} hasProceedToBlocks={false} loading={requestStatus.isLoading} createProject={async (sku: string) => {
                         let normilizedId: string;
                         if (/^(|\d+)$/.test(sku)) {
@@ -377,7 +395,7 @@ const PositionTrackingProjectsPage = () => {
                     }}
                     />
                 }
-                {requestStatus.isLoading &&
+                {requestStatus.isLoading && projectsList && projectsList.length > 0 &&
                     <div className={styles.page__tableWrapper}>
                         <RadarLoader loaderStyle={{ height: '50vh' }} />
                     </div>
@@ -460,7 +478,7 @@ const PositionTrackingProjectsPage = () => {
                     width={600}
                 >
                     <div className={styles.addModal}>
-                        <p className={styles.addModal__title}>Добавление товара</p>
+                        <p className={styles.addModal__title}>Создание проекта</p>
                         <ConfigProvider theme={inputTheme}>
                             <Input
                                 size='large'

@@ -262,7 +262,7 @@ const getTableConfig = (skuData: PositionTrackingSkuPageData, tableType: 'Кла
             minWidth: 100,
             maxWidth: 200,
         }
-        const tableConfig = [...initTableConfig, ...datesArray.map((date) => ({ ...templateObject, key: date, title: formatDateHeader(date), dataIndex: date }))]
+        const tableConfig = [...initTableConfig, ...[...datesArray].reverse().map((date) => ({ ...templateObject, key: date, title: formatDateHeader(date), dataIndex: date }))]
         return tableConfig;
     }
     if (tableType === 'По запросам') {
@@ -280,7 +280,7 @@ const getTableConfig = (skuData: PositionTrackingSkuPageData, tableType: 'Кла
             minWidth: 100,
             maxWidth: 200,
         }
-        const tableConfig = [...initTableConfig, ...datesArray.map((date) => ({ ...templateObject, key: date, title: formatDateHeader(date), dataIndex: date }))]
+        const tableConfig = [...initTableConfig, ...[...datesArray].reverse().map((date) => ({ ...templateObject, key: date, title: formatDateHeader(date), dataIndex: date }))]
         return tableConfig;
     }
 }
@@ -725,8 +725,9 @@ const PositionTrackingSkuPage = () => {
         }
 
         const position = context.chart.canvas.getBoundingClientRect();
-        let tooltipLeft = position.left + tooltipModel.caretX;
-        let tooltipTop = position.top + tooltipModel.caretY;
+        const offset = 10; // Отступ от курсора мыши
+        let tooltipLeft = position.left + tooltipModel.caretX + offset;
+        let tooltipTop = position.top + tooltipModel.caretY + offset;
 
         tooltipEl.style.display = 'block';
         const tooltipWidth = tooltipEl.offsetWidth;
@@ -903,7 +904,7 @@ const PositionTrackingSkuPage = () => {
             legend: {
                 display: false,
             },
-            // verticalDashedLine: { enabled: true },
+            verticalDashedLine: { enabled: true },
             tooltip: {
                 backgroundColor: '#FFFFFF',
                 borderColor: '#E5E9F0',
@@ -920,8 +921,9 @@ const PositionTrackingSkuPage = () => {
                     size: 14,
                     weight: 600,
                 },
-
-                enabled: false, // Отключаем стандартный tooltip
+                mode: 'index',
+                intersect: false,
+                enabled: false,
                 external: getActivityChartTooltip, // Используем кастомный external tooltip
             },
         },
@@ -1206,7 +1208,7 @@ const PositionTrackingSkuPage = () => {
         },
     }), [skuData, getVisibilityChartTooltip]);
 
-   
+
 
     useEffect(() => {
         if (sku) {
@@ -1412,15 +1414,15 @@ const PositionTrackingSkuPage = () => {
                     submitHandler={(formData) => {
                         const newRequestObject = {
                             ...requestObject,
-                                place_from: formData.places_from ? parseInt(formData.places_from) : null,
-                                place_to: formData.places_to ? parseInt(formData.places_to) : null,
-                                freq_from: formData.frequency_from ? parseInt(formData.frequency_from) : null,
-                                freq_to: formData.frequency_to ? parseInt(formData.frequency_to) : null,
-                                keywords: formData.keywords ? formData.keywords.split(',').map((keyword: string) => keyword.trim()) : null
+                            place_from: formData.places_from ? parseInt(formData.places_from) : null,
+                            place_to: formData.places_to ? parseInt(formData.places_to) : null,
+                            freq_from: formData.frequency_from ? parseInt(formData.frequency_from) : null,
+                            freq_to: formData.frequency_to ? parseInt(formData.frequency_to) : null,
+                            keywords: formData.keywords ? formData.keywords.split(',').map((keyword: string) => keyword.trim()) : null
                         }
                         setRequestObject({
                             ...requestObject,
-                           ...newRequestObject
+                            ...newRequestObject
                         });
                     }}
                     loading={requestStatus.isLoading}
@@ -1466,10 +1468,10 @@ const PositionTrackingSkuTable = memo(({ requestStatus, skuData }: PositionTrack
     const [tableConfig, setTableConfig] = useState<Record<string, any>[]>(initTableConfig);
     const [paginationState, setPaginationState] = useState<{ current: number, pageSize: number, total: number }>({ current: 1, pageSize: 12, total: 0 });
     const [tableData, setTableData] = useState<any[]>([]);
-
+    const tableContainerRef = useRef<HTMLDivElement>(null);
     const handleTableSort = useCallback((tableData: Record<string, any>[]) => {
         const { sort_field, sort_order } = sortState;
-        if (!tableData || !Array.isArray(tableData)) return [];
+        if (!tableData || !Array.isArray(tableData) || tableData.length === 0) return [];
 
         const sortedData = [...tableData].sort((a, b) => {
             const freqA = a.frequency ?? 0;
@@ -1484,11 +1486,13 @@ const PositionTrackingSkuTable = memo(({ requestStatus, skuData }: PositionTrack
 
         return sortedData.slice((paginationState.current - 1) * paginationState.pageSize, paginationState.current * paginationState.pageSize);;
 
-    }, [sortState, paginationState]);
+    }, [sortState, paginationState, tableData]);
+
+
     useEffect(() => {
         if (skuData) {
             const preparedData = getTableData(skuData, tableType);
-            setPaginationState({ ...paginationState, current: 1, total: Math.ceil(preparedData.length / 10) });
+            setPaginationState(prev => ({ ...prev, current: 1, total: Math.ceil(preparedData.length / 10) }));
             setTableConfig(getTableConfig(skuData, tableType));
             setTableData(preparedData);
         }
@@ -1497,7 +1501,6 @@ const PositionTrackingSkuTable = memo(({ requestStatus, skuData }: PositionTrack
         <>
             {requestStatus.isLoading && <RadarLoader loaderStyle={{ minHeight: '456px', width: '100%', background: 'white', borderRadius: '16px' }} />}
             {/* table */}
-            {tableData && tableConfig && tableData.length > 0 && !requestStatus.isLoading &&
                 <div className={styles.page__tableWrapper}>
                     <ConfigProvider theme={segmentedTheme}>
                         <Segmented options={['Кластеры', 'По запросам']} size='large' value={tableType} onChange={(value) => setTableType(value as 'Кластеры' | 'По запросам')} />
@@ -1506,9 +1509,10 @@ const PositionTrackingSkuTable = memo(({ requestStatus, skuData }: PositionTrack
                         <p className={styles.page__summaryItem}>Найдено ключей: <span>{skuData?.total_queries}</span></p>
                         <p className={styles.page__summaryItem}>Кластеров: <span>{skuData?.total_presets}</span></p>
                     </div>
-
+                   
                     <div className={styles.page__table}>
-                        <div className={styles.page__tableContainer}>
+                        <div className={styles.page__tableContainer} ref={tableContainerRef}>
+                        {!requestStatus.isLoading && tableData && tableData.length > 0 && tableConfig &&
                             <RadarTable
                                 // @ts-ignore
                                 config={tableConfig}
@@ -1529,15 +1533,19 @@ const PositionTrackingSkuTable = memo(({ requestStatus, skuData }: PositionTrack
                                 }}
                                 paginationContainerStyle={{ display: paginationState.total > 1 ? 'block' : 'none' }}
                                 stickyHeader
-                                bodyCellStyle={{ height: '43px'}}
+                                bodyCellStyle={{ height: '43px' }}
                                 customCellRender={{
                                     idx: [],
                                     renderer: positionTrackingSkuTableCustomCellRender as any
                                 }}
                             />
+                            }
+                        {!requestStatus.isLoading && tableData.length === 0 && tableConfig &&
+                            <div className={styles.page__tableNoData}>Нет данных</div>
+                        }
                         </div>
                     </div>
-                </div>}
+                </div>
         </>
     );
 });
@@ -1553,6 +1561,9 @@ interface AddMarkModalProps {
 
 const AddMarkModal = ({ open, onClose, onSubmit }: AddMarkModalProps) => {
     const [inputValue, setInputValue] = useState('');
+    useEffect(() => {
+        setInputValue('');
+    }, [open]);
     return (
         <Modal
             open={open}
@@ -1602,6 +1613,11 @@ const EditDeleteMarkModal = ({ open, onClose, initialInputValue, onEdit, onDelet
     useEffect(() => {
         setInputValue(initialInputValue);
     }, [initialInputValue]);
+    useEffect(() => {
+        if (!open) {
+            setInputValue('');
+        }
+    }, [open]);
     return (
         <Modal
             open={open}

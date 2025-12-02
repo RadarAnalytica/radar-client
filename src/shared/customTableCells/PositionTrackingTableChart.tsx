@@ -32,12 +32,14 @@ export const PositionTrackingTableChart: React.FC<MetricChartProps> = ({
     y: number;
     title: string;
     comparison_percentage: number | null;
+    alignLeft: boolean;
   }>({
     display: false,
     x: 0,
     y: 0,
     title: '',
     comparison_percentage: null,
+    alignLeft: false,
   });
 
   const formatDateShort = (dateInput: string) => {
@@ -151,12 +153,22 @@ export const PositionTrackingTableChart: React.FC<MetricChartProps> = ({
               ? item.comparison_percentage
               : null;
           
+          // Проверяем, достаточно ли места справа от курсора
+          const tooltipWidth = 150; // Примерная ширина тултипа
+          const mouseX = canvasPosition.left + event.x;
+          const screenWidth = window.innerWidth;
+          const spaceOnRight = screenWidth - mouseX;
+          const alignLeft = spaceOnRight < tooltipWidth + 20;
+          
           setTooltip({
             display: true,
-            x: canvasPosition.left + event.x + 10,
+            x: alignLeft 
+              ? mouseX - 10 // Слева от курсора
+              : mouseX + 10, // Справа от курсора
             y: canvasPosition.top + event.y - 10,
             title,
             comparison_percentage,
+            alignLeft,
           });
         }
       } else {
@@ -203,6 +215,7 @@ export const PositionTrackingTableChart: React.FC<MetricChartProps> = ({
     <>
       <div
         ref={containerRef}
+        onMouseLeave={() => setTooltip(prev => ({ ...prev, display: false }))}
         style={{
           width: '100px',
           height: '100%',
@@ -220,37 +233,40 @@ export const PositionTrackingTableChart: React.FC<MetricChartProps> = ({
         <div
           style={{
             position: 'fixed',
-            left: `${tooltip.x}px`,
+            ...(tooltip.alignLeft 
+              ? { right: `${window.innerWidth - tooltip.x}px` }
+              : { left: `${tooltip.x}px` }
+            ),
             top: `${tooltip.y}px`,
             backgroundColor: '#FFFFFF',
             borderWidth: 1,
             borderStyle: 'solid',
             borderColor: '#E0E0E0',
             borderRadius: 8,
-            padding: 16,
+            padding: 8,
             pointerEvents: 'none',
             zIndex: 10000,
             boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
             minWidth: '120px',
           }}
         >
-          <div style={{ 
-            color: '#8C8C8C', 
-            fontSize: '12px',
-            marginBottom: '8px',
-          }}>
-            {tooltip.title}
-          </div>
-          {tooltip.comparison_percentage !== null && 
-           tooltip.comparison_percentage !== undefined ? (
-            <div style={{ display: 'flex', alignItems: 'center' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <div style={{ 
+              color: '#8C8C8C', 
+              fontSize: '12px',
+              whiteSpace: 'nowrap',
+            }}>
+              {tooltip.title}
+            </div>
+            {tooltip.comparison_percentage !== null && 
+             tooltip.comparison_percentage !== undefined ? (
               <RadarRateMark value={tooltip.comparison_percentage} units='%' />
-            </div>
-          ) : (
-            <div style={{ color: '#1A1A1A', fontSize: '12px' }}>
-              Нет данных
-            </div>
-          )}
+            ) : (
+              <div style={{ color: '#1A1A1A', fontSize: '12px' }}>
+                Нет данных
+              </div>
+            )}
+          </div>
         </div>
       )}
     </>

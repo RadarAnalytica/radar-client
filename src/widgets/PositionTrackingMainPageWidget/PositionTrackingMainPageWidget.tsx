@@ -2,6 +2,7 @@ import styles from './PositionTrackingMainPageWidget.module.css';
 import { Button, Form, ConfigProvider, Input } from 'antd';
 import { ProceedToBlock } from '@/features';
 import { useNavigate } from 'react-router-dom';
+import { useCallback } from 'react';
 
 
 
@@ -51,11 +52,35 @@ export const PositionTrackingMainPageWidget: React.FC<IPositionTrackingMainPageW
     loading,
 }) => {
     const navigate = useNavigate();
-    const submitHandler = (fields: Record<string, any>) => {
+    const submitHandler = useCallback((fields: Record<string, any>) => {
         createProject(fields.sku);
         // setIsAddModalVisible(true)
-    }
+    }, [createProject]);
 
+    const handlePositionCheckSubmit = useCallback((inputValue: string) => {
+        let normilizedId: string;
+        if (/^(|\d+)$/.test(inputValue)) {
+            normilizedId = inputValue;
+        } else {
+            const startId = inputValue.indexOf('wildberries.ru/catalog/') + 'wildberries.ru/catalog/'.length;
+            const endId = inputValue.indexOf('/detail.aspx');
+            if (startId === -1 || endId === -1) {
+                return;
+            }
+            normilizedId = inputValue.substring(startId, endId);
+        }
+        navigate(`/position-check/${normilizedId}`);
+    }, [navigate]);
+
+    const handleKeywordsSelectionSubmit = useCallback((inputValue: string, tab?: string) => {
+        console.log('tab', tab);
+        console.log('inputValue', inputValue);
+        navigate(`/keywords-selection/?query=${inputValue}&match_type=${tab}`);
+    }, [navigate]);
+
+    const handleSerpCheckSubmit = useCallback((inputValue: string) => {
+        navigate(`/serp?query=${inputValue}`);
+    }, [navigate]);
 
     return (
         <div className={`${styles.widget} ${hasAddBlock ? styles.widget_hasAddBlock : styles.widget_noAddBlock}`}>
@@ -94,39 +119,19 @@ export const PositionTrackingMainPageWidget: React.FC<IPositionTrackingMainPageW
                     <ProceedToBlock
                         title="Проверка позиции"
                         placeholder="Введите артикул"
-                        submit={(inputValue) => {
-                            let normilizedId: string;
-                            if (/^(|\d+)$/.test(inputValue)) {
-                                normilizedId = inputValue;
-                            } else {
-                                const startId = inputValue.indexOf('wildberries.ru/catalog/') + 'wildberries.ru/catalog/'.length;
-                                const endId = inputValue.indexOf('/detail.aspx');
-                                if (startId === -1 || endId === -1) {
-                                    // setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не верный формат артикула. Вставьте только числа или ссылку вида: https://www.wildberries.ru/catalog/ID/detail.aspx' });
-                                    return;
-                                }
-                                normilizedId = inputValue.substring(startId, endId);
-                            }
-                            navigate(`/position-check/?id=${normilizedId}`);
-                        }}
+                        submit={handlePositionCheckSubmit}
                     />
                     <ProceedToBlock
                         title="Подбор ключей"
                         placeholder="Введите запрос"
                         hasTabs={true}
                         tabsOptions={['Содержит', 'Совпадает полностью']}
-                        submit={(inputValue, tab) => {
-                            console.log('tab', tab);
-                            console.log('inputValue', inputValue);
-                            navigate(`/keywords-selection/?query=${inputValue}&match_type=${tab}`);
-                        }}
+                        submit={handleKeywordsSelectionSubmit}
                     />
                     <ProceedToBlock
                         title="Проверка выдачи (SERP)"
                         placeholder="Введите запрос"
-                        submit={(inputValue) => {
-                            navigate(`/serp-check/?query=${inputValue}`);
-                        }}
+                        submit={handleSerpCheckSubmit}
                     />
                 </>
             }

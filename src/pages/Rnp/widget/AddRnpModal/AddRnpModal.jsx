@@ -16,12 +16,20 @@ import { actions as filterActions } from '@/redux/filtersRnpAdd/filtersRnpAddSli
 import { useDemoMode } from "@/app/providers";
 
 const AddRnpModal = ({ isAddRnpModalVisible, setIsAddRnpModalVisible, addRnp }) => {
-    const { authToken } = useContext(AuthContext);
+    const { authToken, user } = useContext(AuthContext);
     const { isDemoMode } = useDemoMode();
     const { shops, selectedRange } = useAppSelector( (state) => state.filtersRnpAdd );
     const { activeBrandName, activeBrand } = useAppSelector((state) => state.filtersRnpAdd);
     const filters = useAppSelector((state) => state.filtersRnpAdd);
     const [rnpSelected, setRnpSelected] = useState(null);
+
+    const MAX_RNP_SKU_LIMIT = useMemo(() => {
+        let limit = 25 // default limit
+        if (user && user.email === 'nastyaaa.355@gmail.com') {
+            limit = 30;
+        }
+        return limit;
+    }, [user]);
 
     const shopStatus = useMemo(() => {
         if (!activeBrand || !shops) return null;
@@ -195,22 +203,22 @@ const AddRnpModal = ({ isAddRnpModalVisible, setIsAddRnpModalVisible, addRnp }) 
                         {!loading && shopStatus && shopStatus?.is_primary_collect && localrnpDataArticle && localrnpDataArticle?.data?.length > 0 && (<div className={styles.modal__container}>
                             {localrnpDataArticle?.data?.map((el, i) => (
                                 <Flex key={i} className={styles.item} gap={20}>
-                                    {(rnpSelected.length >= 25 && !rnpSelected.includes(el.wb_id)) &&
-                                      <Tooltip title="Максимальное количество артикулов в РНП - 25" arrow={false}>
+                                    {(rnpSelected.length >= MAX_RNP_SKU_LIMIT && !rnpSelected.includes(el.wb_id)) &&
+                                      <Tooltip title={`Максимальное количество артикулов в РНП - ${MAX_RNP_SKU_LIMIT}`} arrow={false}>
                                         <Checkbox
                                             defaultChecked={rnpSelected?.includes(el.wb_id)}
                                             data-value={el.wb_id}
                                             onChange={() => selectRnpHandler(el.wb_id)}
-                                            disabled={rnpSelected.length >= 25 && !rnpSelected.includes(el.wb_id)}
+                                            disabled={rnpSelected.length >= MAX_RNP_SKU_LIMIT && !rnpSelected.includes(el.wb_id)}
                                         />
                                       </Tooltip>
                                     }
-                                    {(rnpSelected.length < 25 || rnpSelected.includes(el.wb_id)) &&
+                                    {(rnpSelected.length < MAX_RNP_SKU_LIMIT || rnpSelected.includes(el.wb_id)) &&
                                         <Checkbox
                                             defaultChecked={rnpSelected?.includes(el.wb_id)}
                                             data-value={el.wb_id}
                                             onChange={() => selectRnpHandler(el.wb_id)}
-                                            disabled={rnpSelected.length >= 25 && !rnpSelected.includes(el.wb_id)}
+                                            disabled={rnpSelected.length >= MAX_RNP_SKU_LIMIT && !rnpSelected.includes(el.wb_id)}
                                         />
                                     }
                                     <RnpItem

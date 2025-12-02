@@ -27,6 +27,7 @@ export const RnpFilters = ({
   const { user, authToken } = useContext(AuthContext);
   const dispatch = useAppDispatch();
   const { activeBrand, shops, filters } = useAppSelector(store => store[slice]);
+  console.log('activeBrandRnp', activeBrand);
   // const filters = useAppSelector((state) => state.filtersRnp);
   const filtersState = useAppSelector(store => store[slice]);
   const { messages } = useAppSelector((state) => state.messagesSlice);

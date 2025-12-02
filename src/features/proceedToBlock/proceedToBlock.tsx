@@ -64,7 +64,7 @@ export const ProceedToBlock: React.FC<IProceedToBlockProps> = ({
     const [form] = Form.useForm();
     const submitHandler = (fields: Record<string, any>) => {
         submit(fields.inputValue, tabs ?? undefined);
-    }
+    };
 
     return (
         <div className={styles.block}>
