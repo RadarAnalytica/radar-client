@@ -240,8 +240,8 @@ const PositionTrackingMainPage = () => {
         try {
             const res = await ServiceFunctions.getPostionTrackingSkuValidity(token, sku);
             if (!res.ok) {
-                console.error('getSkuValidity error:');
-                setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось получить валидность SKU' });
+                const parsed = await res.json();
+                setRequestStatus({ ...initRequestStatus, isError: true, message: typeof parsed === 'string' ? parsed : 'Не удалось проверить валидность артикула' });
                 return false;
             }
             const data: SkuValidity = await res.json();
@@ -250,7 +250,7 @@ const PositionTrackingMainPage = () => {
 
         } catch (error) {
             console.error('getSkuValidity error:', error);
-            setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось получить валидность SKU' });
+            setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось проверить валидность артикула' });
             return;
         }
     }, [requestStatus.isLoading]);
@@ -298,8 +298,8 @@ const PositionTrackingMainPage = () => {
             let productData = skuValidity as SkuValidity;
             const res = await ServiceFunctions.createPostionTrackingProjectWithProduct(token, projectName ?? null, productData?.wb_id ?? null, productData?.name ?? null);
             if (!res.ok) {
-                console.error('createProject error:');
-                setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось создать проект' });
+                const parsed = await res.json();
+                setRequestStatus({ ...initRequestStatus, isError: true, message: typeof parsed === 'string' ? parsed : 'Не удалось создать проект' });
                 return;
             }
             const data: Project = await res.json();
@@ -308,7 +308,7 @@ const PositionTrackingMainPage = () => {
             getPositionTrackingMainPageData(token);
         } catch (error) {
             console.error('createProject error:', error);
-            setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось создать проект' });
+            setRequestStatus({ ...initRequestStatus, isError: true, message: typeof error === 'string' ? error : 'Не удалось создать проект' });
             return;
         }
     }, [getSkuValidity, getMetaData]);
@@ -343,7 +343,7 @@ const PositionTrackingMainPage = () => {
 
             const validity = await getSkuValidity(token, sku);
             if (!validity) {
-                setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось получить валидность SKU' });
+                setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось проверить валидность артикула' });
                 return;
             }
             const requestObject = {
@@ -352,8 +352,8 @@ const PositionTrackingMainPage = () => {
             }
             const res = await ServiceFunctions.addProductToPositionTrackingProject(token, requestObject);
             if (!res.ok) {
-                console.error('addProductToProject error:');
-                setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось добавить товар к проекту' });
+                const parsed = await res.json();
+                setRequestStatus({ ...initRequestStatus, isError: true, message: typeof parsed === 'string' ? parsed : 'Не удалось добавить товар для отслеживания' });
                 return;
             }
             const data: Product = await res.json();
@@ -470,7 +470,13 @@ const PositionTrackingMainPage = () => {
         }
     }, [settingsState]);
 
-    return (
+    useEffect(() => {
+        if (!isAddModalVisible) {
+            setAddModalState({ sku: '', projectId: '' });
+        }
+    }, [isAddModalVisible])
+
+    return metaData && (
         <main className={styles.page}>
             <MobilePlug />
             {/* ------ SIDE BAR ------ */}
@@ -519,7 +525,7 @@ const PositionTrackingMainPage = () => {
                             title="Активные товары"
                             mainValue={metaData?.products_count ?? 0}
                             actionButtonParams={{
-                                text: 'Добавить новый товар к отслеживаню',
+                                text: 'Добавить новый товар к отслеживанию',
                                 action: () => {
                                     if (!isDemoMode) {
                                         setAddModalState({ ...addModalState, projectId: projectsList[0]?.id?.toString() }); 
@@ -533,11 +539,11 @@ const PositionTrackingMainPage = () => {
                             }}
                             isLoading={requestStatus.isLoading}
                         />
-                        <RadarBar
+                        {/* <RadarBar
                             title="Магазины"
                             mainValue={isDemoMode ? 1 : shops?.filter((shop) => shop.id !== 0).length ?? 0}
                             isLoading={requestStatus.isLoading}
-                        />
+                        /> */}
                         <RadarBar
                             title="Проекты"
                             mainValue={metaData?.projects_count ?? 0}

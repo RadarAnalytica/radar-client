@@ -698,7 +698,7 @@ export function formatNumberWithSpaces(value, separator = ' ') {
 
 export const verticalDashedLinePlugin = {
   id: 'verticalDashedLine',
-  afterDraw: function (chart) {
+  afterDatasetsDraw: function (chart) {
     const enabled = chart?.config?._config?.options?.plugins?.verticalDashedLine?.enabled;
     if (chart.tooltip?._active && chart.tooltip._active.length && enabled) {
       const ctx = chart.ctx;

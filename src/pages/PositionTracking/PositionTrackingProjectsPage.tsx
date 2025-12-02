@@ -172,7 +172,7 @@ const PositionTrackingProjectsPage = () => {
     const [requestStatus, setRequestStatus] = useState<typeof initRequestStatus>(initRequestStatus);
     const [editModalVisible, setEditModalVisible] = useState(false);
     const [editModalState, setEditModalState] = useState<{ projectId: string, projectName: string }>({ projectId: '', projectName: '' });
-    const [addModalNameValue, setAddModalNameValue] = useState<string>('Мой новый проект');
+    const [addModalNameValue, setAddModalNameValue] = useState<string>('');
     const { isDemoMode } = useDemoMode();
     const navigate = useNavigate();
     
@@ -205,8 +205,8 @@ const PositionTrackingProjectsPage = () => {
         try {
             const res = await ServiceFunctions.getPostionTrackingSkuValidity(token, sku);
             if (!res.ok) {
-                console.error('getSkuValidity error:');
-                setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось получить валидность SKU' });
+                const parsed = await res.json();
+                setRequestStatus({ ...initRequestStatus, isError: true, message: typeof parsed === 'string' ? parsed : 'Не удалось проверить валидность артикула' });
                 return;
             }
             const data: SkuValidity = await res.json();
@@ -215,7 +215,7 @@ const PositionTrackingProjectsPage = () => {
 
         } catch (error) {
             console.error('getSkuValidity error:', error);
-            setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось получить валидность SKU' });
+            setRequestStatus({ ...initRequestStatus, isError: true, message: typeof error === 'string' ? error : 'Не удалось проверить валидность артикула' });
             return;
         }
     }
@@ -224,8 +224,8 @@ const PositionTrackingProjectsPage = () => {
         try {
             const res = await ServiceFunctions.createPostionTrackingProject(token, projectName);
             if (!res.ok) {
-                console.error('createProject error:');
-                setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось создать проект' });
+                const parsed = await res.json();
+                setRequestStatus({ ...initRequestStatus, isError: true, message: typeof parsed === 'string' ? parsed : 'Не удалось создать проект' });
                 setIsAddModalVisible(false);
                 return;
             }
@@ -233,7 +233,7 @@ const PositionTrackingProjectsPage = () => {
             setRequestStatus(initRequestStatus);
         } catch (error) {
             console.error('createProject error:', error);
-            setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось создать проект' });
+            setRequestStatus({ ...initRequestStatus, isError: true, message: typeof error === 'string' ? error : 'Не удалось создать проект' });
             setIsAddModalVisible(false);
             return;
         }
@@ -251,15 +251,15 @@ const PositionTrackingProjectsPage = () => {
             }
             const res = await ServiceFunctions.createPostionTrackingProjectWithProduct(token, projectName ?? null, skuValidity?.wb_id ?? null, skuValidity?.name ?? null);
             if (!res.ok) {
-                console.error('createProject error:');
-                setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось создать проект' });
+                const parsed = await res.json();
+                setRequestStatus({ ...initRequestStatus, isError: true, message: typeof parsed === 'string' ? parsed : 'Не удалось создать проект' });
                 return;
             }
             const data: Project = await res.json();
             await getProjectsList(token);
         } catch (error) {
             console.error('createProject error:', error);
-            setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось создать проект' });
+            setRequestStatus({ ...initRequestStatus, isError: true, message: typeof error === 'string' ? error : 'Не удалось создать проект' });
             return;
         }
     }
@@ -270,15 +270,15 @@ const PositionTrackingProjectsPage = () => {
         try {
             const res = await ServiceFunctions.deletePositionTrackingProject(token, projectId);
             if (!res.ok) {
-                console.error('deleteProject error:');
-                setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось удалить проект' });
+                const parsed = await res.json();
+                setRequestStatus({ ...initRequestStatus, isError: true, message: typeof parsed === 'string' ? parsed : 'Не удалось удалить проект' });
                 setDeleteModalVisible(false);
                 return;
             }
             await getProjectsList(token);
         } catch (error) {
             console.error('deleteProject error:', error);
-            setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось удалить проект' });
+            setRequestStatus({ ...initRequestStatus, isError: true, message: typeof error === 'string' ? error : 'Не удалось удалить проект' });
             setDeleteModalVisible(false);
         }
     }
@@ -289,15 +289,15 @@ const PositionTrackingProjectsPage = () => {
         try {
             const res = await ServiceFunctions.updatePositionTrackingProject(token, projectId, projectName);
             if (!res.ok) {
-                console.error('updateProject error:');
-                setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось обновить проект' });
+                const parsed = await res.json();
+                setRequestStatus({ ...initRequestStatus, isError: true, message: typeof parsed === 'string' ? parsed : 'Не удалось обновить проект' });
                 setEditModalVisible(false);
                 return;
             }
             await getProjectsList(token);
         } catch (error) {
             console.error('updateProject error:', error);
-            setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось обновить проект' });
+            setRequestStatus({ ...initRequestStatus, isError: true, message: typeof error === 'string' ? error : 'Не удалось обновить проект' });
             setEditModalVisible(false);
             return;
         }
@@ -314,6 +314,11 @@ const PositionTrackingProjectsPage = () => {
             navigate('/position-tracking');
         }
     }, [isDemoMode]);
+    useEffect(() => {
+        if (!isAddModalVisible) {
+            setAddModalNameValue('');
+        }
+    }, [isAddModalVisible])
     return (
         <main className={styles.page}>
             <MobilePlug />
