@@ -359,9 +359,10 @@ const PositionTrackingMainPage = () => {
             console.log('added product to project', data);
             getMetaData(token);
             getProjectsList(token);
-            if (settingsState?.project === projectId) {
-                getPositionTrackingMainPageData(token);
-            }
+            getPositionTrackingMainPageData(token);
+            // if (settingsState?.project === projectId) {
+            //     getPositionTrackingMainPageData(token);
+            // }
         } catch (error) {
             console.error('addProductToProject error:', error);
             setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось добавить товар к проекту' });
@@ -369,22 +370,22 @@ const PositionTrackingMainPage = () => {
         }
     }, [requestStatus.isLoading, getSkuValidity, getMetaData, getProjectsList, settingsState, getPositionTrackingMainPageData]);
     const getRegionsList = useCallback(async (token: string, noRequestStatusUpdate: boolean = false): Promise<void> => {
-        if (!requestStatus.isLoading || !noRequestStatusUpdate) {
-            setRequestStatus({ ...initRequestStatus, isLoading: true });
-        };
+        // if (!requestStatus.isLoading || !noRequestStatusUpdate) {
+        //     setRequestStatus({ ...initRequestStatus, isLoading: true });
+        // };
         try {
             const res: Record<string, any>[] = await ServiceFunctions.getSERPFiltersData(token);
             setRegionsList(res);
             setSettingsState((prev) => ({ ...(prev || { project: 0, dest: -1257786 }), dest: res?.find((item) => item.city_name === 'Москва')?.dest || res[0]?.dest }))
-            if (!noRequestStatusUpdate) {
-                setRequestStatus(initRequestStatus);
-            }
+            // if (!noRequestStatusUpdate) {
+            //     setRequestStatus(initRequestStatus);
+            // }
         } catch (error) {
             console.error('getRegionsList error:', error);
-            setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось получить список регионов' });
-            if (!noRequestStatusUpdate) {
-                setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось получить список проектов' });
-            }
+            // setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось получить список регионов' });
+            // if (!noRequestStatusUpdate) {
+            //     setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось получить список проектов' });
+            // }
             throw new Error('Не удалось получить список регионов');
         }
     }, [requestStatus.isLoading]);
@@ -450,7 +451,7 @@ const PositionTrackingMainPage = () => {
                 getRegionsList(authToken, true)
             ])
             .then(() => {
-                setRequestStatus(initRequestStatus);
+                //setRequestStatus(initRequestStatus);
                 setSettingsState({ project: 0, dest: -1257786 });
                 return;
             })

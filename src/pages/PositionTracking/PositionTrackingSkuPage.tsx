@@ -84,30 +84,6 @@ const modalPrimaryButtonTheme = {
     },
 };
 
-const deleteModalCancelButtonTheme = {
-    token: {
-        colorPrimary: '#1A1A1A',
-        fontSize: 16,
-        fontWeight: 600,
-        fontFamily: 'Mulish',
-        controlHeight: 48,
-        borderRadius: 16,
-    },
-    components: {
-        Button: {
-            paddingInline: 28,
-            paddingBlock: 12,
-            colorBgContainer: '#F4F5F6',
-            colorBgContainerHover: '#E9EBED',
-            colorBgContainerDisabled: '#F4F5F6',
-            colorBorder: 'transparent',
-            colorText: '#1A1A1A',
-            colorTextHover: '#1A1A1A',
-            boxShadow: 'none',
-        },
-    },
-};
-
 const deleteModalPrimaryButtonTheme = {
     token: {
         colorPrimary: '#FF3B5C',
@@ -167,41 +143,6 @@ const inputTheme = {
         }
     }
 }
-
-const positionTrackingSkuMockTableData = [
-    {
-        key: '1',
-        name: 'Худи оверсайз женская',
-        frequency: 1000,
-        goodsCount: 12,
-        mon: 8,
-        tue: 6,
-        wed: 5,
-        thu: 7,
-        fri: 9,
-        sat: 11,
-        sun: 10,
-        mon2: 6,
-        tue2: 5,
-        wed2: 4,
-    },
-    {
-        key: '2',
-        name: 'Джоггеры женские хлопковые',
-        frequency: 2000,
-        goodsCount: 8,
-        mon: 15,
-        tue: 14,
-        wed: 12,
-        thu: 10,
-        fri: 9,
-        sat: 8,
-        sun: 7,
-        mon2: 9,
-        tue2: 12,
-        wed2: 13,
-    },
-];
 
 interface ProductMeta {
     id: number
@@ -409,9 +350,7 @@ const PositionTrackingSkuPage = () => {
     const { sku } = useParams();
 
     const getSkuPageData = useCallback(async (token: string, requestObject: any) => {
-        if (!requestStatus.isLoading) {
-            setRequestStatus({ ...initRequestStatus, isLoading: true });
-        };
+        setRequestStatus(prev => prev.isLoading ? prev : { ...initRequestStatus, isLoading: true });
         try {
             const res = await ServiceFunctions.getPositionTrackingSkuPageData(token, requestObject);
             if (!res.ok) {
@@ -433,11 +372,9 @@ const PositionTrackingSkuPage = () => {
             setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось получить данные для SKU' });
             return;
         }
-    }, [requestObject, tableType, requestStatus.isLoading]);
+    }, [tableType]);
     const deleteProductFromPositionTrackingProject = useCallback(async (token: string, productId: string) => {
-        if (!requestStatus.isLoading) {
-            setRequestStatus({ ...initRequestStatus, isLoading: true });
-        };
+        setRequestStatus(prev => prev.isLoading ? prev : { ...initRequestStatus, isLoading: true });
         try {
             const res = await ServiceFunctions.deleteProductFromPositionTrackingProject(token, productId);
             if (!res.ok) {
@@ -453,12 +390,10 @@ const PositionTrackingSkuPage = () => {
             setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось удалить продукт из проекта' });
             return;
         }
-    }, [requestObject, tableType, requestStatus.isLoading]);
+    }, []);
 
     const createMark = useCallback(async (token: string, requestObject: any) => {
-        if (!requestStatus.isLoading) {
-            setRequestStatus({ ...initRequestStatus, isLoading: true });
-        };
+        setRequestStatus(prev => prev.isLoading ? prev : { ...initRequestStatus, isLoading: true });
         try {
             const res = await ServiceFunctions.createPositionTrackingChartMark(token, requestObject);
             if (!res.ok) {
@@ -467,7 +402,6 @@ const PositionTrackingSkuPage = () => {
                 return;
             }
             const data: Mark = await res.json();
-            console.log('createMark data', data);
             setRequestStatus(initRequestStatus);
             setMarks((prev) => [...prev, data]);
         }
@@ -476,7 +410,7 @@ const PositionTrackingSkuPage = () => {
             setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось создать метку' });
             return;
         }
-    }, [requestStatus.isLoading]);
+    }, []);
 
     const deleteMark = useCallback(async (token: string, markId: number) => {
         // Сохраняем предыдущее состояние для возможного отката
@@ -487,9 +421,7 @@ const PositionTrackingSkuPage = () => {
             return prev.filter((mark) => mark.id !== markId);
         });
 
-        if (!requestStatus.isLoading) {
-            setRequestStatus({ ...initRequestStatus, isLoading: true });
-        };
+        setRequestStatus(prev => prev.isLoading ? prev : { ...initRequestStatus, isLoading: true });
         
         try {
             const res = await ServiceFunctions.deletePositionTrackingChartMark(token, markId);
@@ -500,8 +432,6 @@ const PositionTrackingSkuPage = () => {
                 setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось удалить метку' });
                 return;
             }
-            //const data: Mark = await res.json();
-            // console.log('deleteMark data', data);
             setRequestStatus(initRequestStatus);
             // Убеждаемся, что метка удалена (используем markId, а не data.id)
             setMarks((prev) => prev.filter((mark) => mark.id !== markId));
@@ -513,12 +443,10 @@ const PositionTrackingSkuPage = () => {
             setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось удалить метку' });
             return;
         }
-    }, [requestStatus.isLoading]);
+    }, []);
 
     const updateMark = useCallback(async (token: string, requestObject: any) => {
-        if (!requestStatus.isLoading) {
-            setRequestStatus({ ...initRequestStatus, isLoading: true });
-        };
+        setRequestStatus(prev => prev.isLoading ? prev : { ...initRequestStatus, isLoading: true });
         try {
             const res = await ServiceFunctions.updatePositionTrackingChartMark(token, requestObject);
             if (!res.ok) {
@@ -527,7 +455,6 @@ const PositionTrackingSkuPage = () => {
                 return;
             }
             const data: Mark = await res.json();
-            console.log('updateMark data', data);
             setRequestStatus(initRequestStatus);
             setMarks((prev) => prev.map((mark) => mark.id === data.id ? data : mark));
         }
@@ -536,15 +463,12 @@ const PositionTrackingSkuPage = () => {
             setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось обновить метку' });
             return;
         }
-    }, [requestStatus.isLoading]);
+    }, []);
 
     const getRegionsList = useCallback(async (token: string) => {
-        if (!requestStatus.isLoading) {
-            setRequestStatus({ ...initRequestStatus, isLoading: true });
-        };
+        setRequestStatus(prev => prev.isLoading ? prev : { ...initRequestStatus, isLoading: true });
         try {
             const res = await ServiceFunctions.getSERPFiltersData(token);
-            console.log('getRegionsList data', res);
             setRequestStatus(initRequestStatus);
             setRegionsList(res);
         }
@@ -553,7 +477,7 @@ const PositionTrackingSkuPage = () => {
             setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось получить список регионов' });
             return;
         }
-    }, [requestStatus.isLoading]);
+    }, []);
 
 
     const closeMarkModal = useCallback(() => {
@@ -564,11 +488,11 @@ const PositionTrackingSkuPage = () => {
         setInputValue('');
     }, []);
 
-    const handleCreateMark = useCallback(() => {
+    const handleCreateMark = useCallback((name: string) => {
         if (pendingMarkIndex === null) {
             return;
         }
-        const trimmed = inputValue.trim();
+        const trimmed = name.trim();
         if (!trimmed) {
             return;
         }
@@ -1160,7 +1084,6 @@ const PositionTrackingSkuPage = () => {
             ],
         };
     }, [skuData, controlsState, marks]);
-    console.log('activityChartData', activityChartData)
 
 
     const getVisibilityChartTooltip = useCallback((context: any) => {
@@ -1375,9 +1298,8 @@ const PositionTrackingSkuPage = () => {
     }
 
     useEffect(() => {
-        console.log('sku', sku);
         if (sku) {
-            setRequestObject({ wb_id: sku });
+            setRequestObject({ wb_id: sku, feed_type: 'both' });
         } else {
             navigate('/position-tracking');
         }
@@ -1466,7 +1388,7 @@ const PositionTrackingSkuPage = () => {
                         <PlainSelect
                             selectId='feed_type'
                             label=''
-                            value={0}
+                            value={requestObject?.feed_type === 'both' ? 0 : requestObject?.feed_type === 'organic' ? 2 : 1}
                             optionsData={[{ value: 0, label: 'Органика+реклама' }, { value: 2, label: 'Органика' }, { value: 1, label: 'Реклама' }]}
                             handler={(value: number) => {
                                 setRequestObject({ ...requestObject, feed_type: value === 0 ? 'both' : value === 2 ? 'organic' : 'ad' });
@@ -1633,73 +1555,19 @@ const PositionTrackingSkuPage = () => {
                     </div>}
             </section>
             {/* ---------------------- */}
-                {/* add mark modal */}
-                <Modal
-                    open={isAddModalVisible}
-                    onCancel={closeMarkModal}
-                    onClose={closeMarkModal}
-                    onOk={closeMarkModal}
-                    footer={null}
-                    centered
-                    width={600}
-                >
-                    <div className={styles.addModal}>
-                        <p className={styles.addModal__title}>Новая метка</p>
-                    <ConfigProvider theme={inputTheme}>
-                        <Input
-                            size='large'
-                            className={styles.modal__input}
-                            placeholder='Введите название'
-                            value={inputValue}
-                            onChange={(e) => setInputValue(e.target.value)}
-                        />
-                    </ConfigProvider>
-
-                        <div className={styles.addModal__buttonsWrapper}>
-                            <ConfigProvider theme={modalCancelButtonTheme}>
-                                <Button variant='outlined' onClick={closeMarkModal}>Отмена</Button>
-                            </ConfigProvider>
-                            <ConfigProvider theme={modalPrimaryButtonTheme}>
-                                <Button type='primary' onClick={handleCreateMark} disabled={!inputValue.trim()}>Добавить</Button>
-                            </ConfigProvider>
-                        </div>
-                    </div>
-                </Modal>
-            {/* edit and delete mark modal  */}
-            <Modal
-                open={isEditDeleteMarkModalVisible}
-                onCancel={closeMarkModal}
+            <AddMarkModal
+                open={isAddModalVisible}
                 onClose={closeMarkModal}
-                onOk={closeMarkModal}
-                footer={null}
-                centered
-                width={600}
-            >
-                <div className={styles.addModal}>
-                    <p className={styles.addModal__title}>Редактировать метку</p>
-                    <ConfigProvider theme={inputTheme}>
-                        <Input
-                            size='large'
-                            className={styles.modal__input}
-                            placeholder='Введите название'
-                            value={inputValue}
-                            onChange={(e) => setInputValue(e.target.value)}
-                        />
-                    </ConfigProvider>
-
-                    <div className={styles.addModal__buttonsWrapper}>
-                        {/* <ConfigProvider theme={modalCancelButtonTheme}>
-                                <Button variant='outlined' onClick={closeMarkModal}>Отмена</Button>
-                            </ConfigProvider> */}
-                        <ConfigProvider theme={deleteModalPrimaryButtonTheme}>
-                            <Button type='primary' onClick={handleDeleteMarkFromModal}>Удалить</Button>
-                        </ConfigProvider>
-                        <ConfigProvider theme={modalPrimaryButtonTheme}>
-                            <Button type='primary' onClick={handleEditMark} disabled={!inputValue.trim()}>Сохранить</Button>
-                        </ConfigProvider>
-                    </div>
-                </div>
-            </Modal>
+                onSubmit={(name: string) => handleCreateMark(name)}
+            />
+            <EditDeleteMarkModal
+                open={isEditDeleteMarkModalVisible}
+                onClose={closeMarkModal}
+                inputValue={inputValue}
+                onInputChange={setInputValue}
+                onEdit={handleEditMark}
+                onDelete={handleDeleteMarkFromModal}
+            />
             {/*  error modal */}
             <ErrorModal
                 message={requestStatus.message}
@@ -1709,6 +1577,96 @@ const PositionTrackingSkuPage = () => {
                 footer={null}
             />
         </main>
+    );
+};
+
+// Add Mark Modal Component
+interface AddMarkModalProps {
+    open: boolean;
+    onClose: () => void;
+    onSubmit: (name: string) => void;
+}
+
+const AddMarkModal = ({ open, onClose, onSubmit }: AddMarkModalProps) => {
+    const [inputValue, setInputValue] = useState('');
+    return (
+        <Modal
+            open={open}
+            onCancel={onClose}
+            onClose={onClose}
+            onOk={onClose}
+            footer={null}
+            centered
+            width={600}
+        >
+            <div className={styles.addModal}>
+                <p className={styles.addModal__title}>Новая метка</p>
+                <ConfigProvider theme={inputTheme}>
+                    <Input
+                        size='large'
+                        className={styles.modal__input}
+                        placeholder='Введите название'
+                        value={inputValue}
+                        onChange={(e) => setInputValue(e.target.value)}
+                    />
+                </ConfigProvider>
+
+                <div className={styles.addModal__buttonsWrapper}>
+                    <ConfigProvider theme={modalCancelButtonTheme}>
+                        <Button variant='outlined' onClick={onClose}>Отмена</Button>
+                    </ConfigProvider>
+                    <ConfigProvider theme={modalPrimaryButtonTheme}>
+                        <Button type='primary' onClick={() => onSubmit(inputValue)} disabled={!inputValue.trim()}>Добавить</Button>
+                    </ConfigProvider>
+                </div>
+            </div>
+        </Modal>
+    );
+};
+
+// Edit/Delete Mark Modal Component
+interface EditDeleteMarkModalProps {
+    open: boolean;
+    onClose: () => void;
+    inputValue: string;
+    onInputChange: (value: string) => void;
+    onEdit: () => void;
+    onDelete: () => void;
+}
+
+const EditDeleteMarkModal = ({ open, onClose, inputValue, onInputChange, onEdit, onDelete }: EditDeleteMarkModalProps) => {
+    return (
+        <Modal
+            open={open}
+            onCancel={onClose}
+            onClose={onClose}
+            onOk={onClose}
+            footer={null}
+            centered
+            width={600}
+        >
+            <div className={styles.addModal}>
+                <p className={styles.addModal__title}>Редактировать метку</p>
+                <ConfigProvider theme={inputTheme}>
+                    <Input
+                        size='large'
+                        className={styles.modal__input}
+                        placeholder='Введите название'
+                        value={inputValue}
+                        onChange={(e) => onInputChange(e.target.value)}
+                    />
+                </ConfigProvider>
+
+                <div className={styles.addModal__buttonsWrapper}>
+                    <ConfigProvider theme={deleteModalPrimaryButtonTheme}>
+                        <Button type='primary' onClick={onDelete}>Удалить</Button>
+                    </ConfigProvider>
+                    <ConfigProvider theme={modalPrimaryButtonTheme}>
+                        <Button type='primary' onClick={onEdit} disabled={!inputValue.trim()}>Сохранить</Button>
+                    </ConfigProvider>
+                </div>
+            </div>
+        </Modal>
     );
 };
 
