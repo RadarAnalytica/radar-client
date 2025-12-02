@@ -46,7 +46,6 @@ export default function ReportWeek() {
 	const [tableColumns, setTableColumns] = useState(COLUMNS);
 
 	useEffect(() => {
-		localStorage.removeItem('reportWeekColumns');
 		const savedTableConfigData = localStorage.getItem('reportWeekTableConfig');
 		if (savedTableConfigData) {
 			try {

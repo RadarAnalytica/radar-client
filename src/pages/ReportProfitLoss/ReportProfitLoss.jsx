@@ -272,15 +272,15 @@ export default function ReportProfitLoss() {
 		}
 	}, [activeBrand, selectedRange, activeMonths, activeBrandName, activeArticle, activeGroup, isFiltersLoaded]);
 
-	useEffect(() => {
-		if (!activeBrand) return;
-		let savedFilterMonths = JSON.parse(localStorage.getItem('activeMonths')) || {};
-		savedFilterMonths[activeBrand.id] = activeMonths;
-		localStorage.setItem(
-			'activeMonths',
-			JSON.stringify(savedFilterMonths)
-		);
-	}, [activeMonths]);
+	// useEffect(() => {
+	// 	if (!activeBrand) return;
+	// 	let savedFilterMonths = JSON.parse(localStorage.getItem('activeMonths')) || {};
+	// 	savedFilterMonths[activeBrand.id] = activeMonths;
+	// 	localStorage.setItem(
+	// 		'activeMonths',
+	// 		JSON.stringify(savedFilterMonths)
+	// 	);
+	// }, [activeMonths]);
 
 	return (
 		<main className={styles.page}>

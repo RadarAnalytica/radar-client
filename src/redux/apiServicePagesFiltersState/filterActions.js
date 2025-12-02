@@ -299,6 +299,7 @@ const createFiltersDTO = (data, shopsData) => {
 
   // поднимаем сохраненный период по месяцам, чтобы установить его по умолчанию
   let savedActiveMonths = getSavedActiveMonths(savedActiveBrand.id);
+  console.log('savedActiveMonths', savedActiveMonths);
 
   // Вычисляем минимальную дату (полгода до created_at магазина)
   if (savedActiveBrand?.created_at) {
