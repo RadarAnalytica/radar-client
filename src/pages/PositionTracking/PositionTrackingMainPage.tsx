@@ -34,7 +34,7 @@ interface Product {
     name: string;
     wb_id_image_url: string;
     id: number;
-    
+
 }
 
 interface Project {
@@ -201,6 +201,7 @@ const PositionTrackingMainPage = () => {
     const [settingsState, setSettingsState] = useState<{ project: string | number, dest: string | number } | null>(null);
     const [productsData, setProductsData] = useState<PositionTrackingProduct[] | null>(null);
     const [chartData, setChartData] = useState<ChartDataItem[] | null>(null);
+    const [paginationState, setPaginationState] = useState<{ current: number, pageSize: number, total: number }>({ current: 1, pageSize: 10, total: 0 });
     const navigate = useNavigate();
 
     const getMetaData = useCallback(async (token: string, noRequestStatusUpdate: boolean = false): Promise<void> => {
@@ -217,7 +218,6 @@ const PositionTrackingMainPage = () => {
                 throw new Error('Не удалось получить метаданные');
             }
             const data: MetaData = await res.json();
-            console.log('meta data', data);
             setMetaData(data);
             if (!noRequestStatusUpdate) {
                 setRequestStatus(initRequestStatus);
@@ -243,7 +243,6 @@ const PositionTrackingMainPage = () => {
                 return false;
             }
             const data: SkuValidity = await res.json();
-            console.log('sku validity', data);
             setRequestStatus(initRequestStatus);
             return data;
 
@@ -269,7 +268,6 @@ const PositionTrackingMainPage = () => {
                 throw new Error('Не удалось получить список проектов');
             }
             const data: Project[] = await res.json();
-            console.log('all projects', data);
             setProjectsList(data);
             setAddModalState({ sku: '', projectId: '' });
             if (!noRequestStatusUpdate) {
@@ -304,7 +302,6 @@ const PositionTrackingMainPage = () => {
             }
             const data: Project = await res.json();
             getMetaData(token);
-            console.log('created project', data);
         } catch (error) {
             console.error('createProject error:', error);
             setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось создать проект' });
@@ -324,8 +321,8 @@ const PositionTrackingMainPage = () => {
                 return;
             }
             const data: PositionTrackingMainPageData = await res.json();
-            console.log('position tracking main page data', data);
             setProductsData(data.products);
+            setPaginationState({ ...paginationState, total: Math.ceil(data.products.length / paginationState.pageSize) });
             setChartData(data.chart);
             setRequestStatus(initRequestStatus);
         } catch (error) {
@@ -333,7 +330,7 @@ const PositionTrackingMainPage = () => {
             setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось получить данные для главной страницы' });
             return;
         }
-    }, [requestStatus.isLoading, settingsState, activeFilter]);
+    }, [settingsState, activeFilter]);
     const addProductToProject = useCallback(async (token: string, sku: string, projectId: string): Promise<void> => {
         if (!requestStatus.isLoading) {
             setRequestStatus({ ...initRequestStatus, isLoading: true });
@@ -356,7 +353,6 @@ const PositionTrackingMainPage = () => {
                 return;
             }
             const data: Product = await res.json();
-            console.log('added product to project', data);
             getMetaData(token);
             getProjectsList(token);
             getPositionTrackingMainPageData(token);
@@ -368,7 +364,7 @@ const PositionTrackingMainPage = () => {
             setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось добавить товар к проекту' });
             return;
         }
-    }, [requestStatus.isLoading, getSkuValidity, getMetaData, getProjectsList, settingsState, getPositionTrackingMainPageData]);
+    }, [getSkuValidity, getMetaData, getProjectsList, settingsState, getPositionTrackingMainPageData]);
     const getRegionsList = useCallback(async (token: string, noRequestStatusUpdate: boolean = false): Promise<void> => {
         // if (!requestStatus.isLoading || !noRequestStatusUpdate) {
         //     setRequestStatus({ ...initRequestStatus, isLoading: true });
@@ -388,9 +384,9 @@ const PositionTrackingMainPage = () => {
             // }
             throw new Error('Не удалось получить список регионов');
         }
-    }, [requestStatus.isLoading]);
+    }, []);
     const getSortedProductsData = useCallback((products: PositionTrackingProduct[], activeFilter: string): PositionTrackingProduct[] => {
-        return products.sort((a, b) => {
+        const sortedProducts = products.sort((a, b) => {
             if (activeFilter === 'По просмотрам') {
                 return b.shows - a.shows;
             }
@@ -401,7 +397,9 @@ const PositionTrackingMainPage = () => {
                 return b.place - a.place;
             }
         });
-    }, [activeFilter]);
+        return sortedProducts.slice((paginationState.current - 1) * paginationState.pageSize, paginationState.current * paginationState.pageSize);
+
+    }, [activeFilter, paginationState]);
     const deleteProduct = useCallback(async (productId: string): Promise<void> => {
         // Сохраняем предыдущее состояние для возможного отката
         let previousProductsData: PositionTrackingProduct[] | null = null;
@@ -415,7 +413,7 @@ const PositionTrackingMainPage = () => {
         if (!requestStatus.isLoading) {
             setRequestStatus({ ...initRequestStatus, isLoading: true });
         };
-        
+
         try {
             const res = await ServiceFunctions.deleteProductFromPositionTrackingProject(authToken, productId);
             if (!res.ok) {
@@ -440,8 +438,8 @@ const PositionTrackingMainPage = () => {
             setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось удалить товар из проекта' });
             return;
         }
-    }, [authToken, requestStatus.isLoading, getMetaData, getProjectsList, getPositionTrackingMainPageData]);
-    
+    }, [authToken, getMetaData, getProjectsList, getPositionTrackingMainPageData]);
+
     useEffect(() => {
         if (authToken) {
             setRequestStatus({ ...initRequestStatus, isLoading: true });
@@ -450,15 +448,15 @@ const PositionTrackingMainPage = () => {
                 getProjectsList(authToken, true),
                 getRegionsList(authToken, true)
             ])
-            .then(() => {
-                //setRequestStatus(initRequestStatus);
-                setSettingsState({ project: 0, dest: -1257786 });
-                return;
-            })
-            .catch((error) => {
-                console.error('Error loading initial data:', error);
-                setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось загрузить начальные данные' });
-            });
+                .then(() => {
+                    //setRequestStatus(initRequestStatus);
+                    setSettingsState({ project: 0, dest: -1257786 });
+                    return;
+                })
+                .catch((error) => {
+                    console.error('Error loading initial data:', error);
+                    setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось загрузить начальные данные' });
+                });
         }
     }, []);
 
@@ -610,7 +608,18 @@ const PositionTrackingMainPage = () => {
                             config={positionTrackingTableConfig}
                             preset='radar-table-default'
                             dataSource={getSortedProductsData(productsData, activeFilter)}
-                            paginationContainerStyle={{ display: 'none' }}
+                            pagination={{
+                                current: paginationState.current,
+                                pageSize: paginationState.pageSize,
+                                total: paginationState.total,
+                                showQuickJumper: true,
+                                hideOnSinglePage: true,
+                                onChange: (page, pageSize) => {
+                                    setPaginationState({ ...paginationState, current: page });
+                                }
+                            }}
+                            bodyCellStyle={{ height: '75px'}}
+                            paginationContainerStyle={{ display: paginationState.total > 1 ? 'block' : 'none' }}
                             customCellRender={{
                                 idx: [],
                                 renderer: (value: any, record: any, index: number, dataIndex: string) => positionTrackingTableCustomCellRender(value, record, index, dataIndex, deleteProduct),
