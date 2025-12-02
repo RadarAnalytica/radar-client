@@ -50,6 +50,16 @@ const MetricChart: React.FC<MetricChartProps> = ({
   const chartData = prepareChartData();
   const minPercentage = maxControlValue * MIN_VISIBLE_PERCENTAGE;
 
+  // Создаем массив цветов для каждого bar
+  const barColors = chartData.map(item =>
+    item.percentage === null || item.percentage === undefined
+      ? { top: 'rgba(240, 240, 240, 0.8)', bottom: 'rgba(240, 240, 240, 0.8)' }
+      : {
+          top: getColorForPercentage(item.percentage, minControlValue, maxControlValue, metricType),
+          bottom: getColorForPercentage(item.percentage, minControlValue, maxControlValue, metricType, 0.65)
+        }
+  );
+
   const chartConfig = {
     labels: chartData.map(item => {
       const date = new Date(item.date);
@@ -62,17 +72,24 @@ const MetricChart: React.FC<MetricChartProps> = ({
           if (item.percentage === null || item.percentage === undefined) return null;
           return Math.max(item.percentage, minPercentage);
         }),
-        backgroundColor: chartData.map(item =>
-          item.percentage === null || item.percentage === undefined
-            ? 'rgba(240, 240, 240, 0.8)'
-            : getColorForPercentage(item.percentage, minControlValue, maxControlValue, metricType)
-        ),
-        borderColor: chartData.map(item =>
-          item.percentage === null || item.percentage === undefined
-            ? 'rgba(240, 240, 240, 1)'
-            : getColorForPercentage(item.percentage, minControlValue, maxControlValue, metricType)
-        ),
-        borderWidth: 1,
+        backgroundColor: (context: any) => {
+          const chart = context.chart;
+          const { ctx, chartArea } = chart;
+          
+          if (!chartArea) {
+            return barColors[context.dataIndex]?.top || 'rgba(240, 240, 240, 0.8)';
+          }
+          
+          const colorConfig = barColors[context.dataIndex];
+          if (!colorConfig) return 'rgba(240, 240, 240, 0.8)';
+          
+          const gradient = ctx.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
+          
+          gradient.addColorStop(0, colorConfig.top);
+          gradient.addColorStop(1, colorConfig.bottom);
+          
+          return gradient;
+        },
       },
     ],
   };
