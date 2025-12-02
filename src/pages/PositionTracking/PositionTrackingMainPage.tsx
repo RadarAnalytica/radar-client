@@ -19,7 +19,8 @@ import AuthContext from '@/service/AuthContext';
 import { useAppSelector } from '@/redux/hooks';
 import ErrorModal from '@/components/sharedComponents/modals/errorModal/errorModal';
 import { RadarLoader } from '@/shared';
-
+import { useDemoMode } from '@/app/providers/DemoDataProvider';
+import NoSubscriptionWarningBlock from '@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock';
 
 interface SkuValidity {
     wb_id: string;
@@ -203,6 +204,7 @@ const PositionTrackingMainPage = () => {
     const [chartData, setChartData] = useState<ChartDataItem[] | null>(null);
     const [paginationState, setPaginationState] = useState<{ current: number, pageSize: number, total: number }>({ current: 1, pageSize: 10, total: 0 });
     const navigate = useNavigate();
+    const { isDemoMode } = useDemoMode();
 
     const getMetaData = useCallback(async (token: string, noRequestStatusUpdate: boolean = false): Promise<void> => {
         if (!requestStatus.isLoading || !noRequestStatusUpdate) {
@@ -302,6 +304,8 @@ const PositionTrackingMainPage = () => {
             }
             const data: Project = await res.json();
             getMetaData(token);
+            getProjectsList(token);
+            getPositionTrackingMainPageData(token);
         } catch (error) {
             console.error('createProject error:', error);
             setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось создать проект' });
@@ -449,7 +453,7 @@ const PositionTrackingMainPage = () => {
                 getRegionsList(authToken, true)
             ])
                 .then(() => {
-                    //setRequestStatus(initRequestStatus);
+                    setRequestStatus(initRequestStatus);
                     setSettingsState({ project: 0, dest: -1257786 });
                     return;
                 })
@@ -488,6 +492,7 @@ const PositionTrackingMainPage = () => {
                     />
                 </div>
                 {/* !header */}
+                {isDemoMode && <NoSubscriptionWarningBlock />}
 
                 {/* main widget */}
                 <PositionTrackingMainPageWidget loading={requestStatus.isLoading} setIsAddModalVisible={setIsAddModalVisible} hasAddBlock={metaData && metaData.projects_count === 0} createProject={async (sku: string) => {
@@ -515,7 +520,12 @@ const PositionTrackingMainPage = () => {
                             mainValue={metaData?.products_count ?? 0}
                             actionButtonParams={{
                                 text: 'Добавить новый товар к отслеживаню',
-                                action: () => { setAddModalState({ ...addModalState, projectId: projectsList[0]?.id?.toString() }); setIsAddModalVisible(true) },
+                                action: () => {
+                                    if (!isDemoMode) {
+                                        setAddModalState({ ...addModalState, projectId: projectsList[0]?.id?.toString() }); 
+                                        setIsAddModalVisible(true) 
+                                    }
+                                },
                                 style: {
                                     backgroundColor: 'transparent',
                                     alignSelf: 'flex-end'
@@ -525,7 +535,7 @@ const PositionTrackingMainPage = () => {
                         />
                         <RadarBar
                             title="Магазины"
-                            mainValue={shops?.filter((shop) => shop.id !== 0).length ?? 0}
+                            mainValue={isDemoMode ? 1 : shops?.filter((shop) => shop.id !== 0).length ?? 0}
                             isLoading={requestStatus.isLoading}
                         />
                         <RadarBar
@@ -534,7 +544,7 @@ const PositionTrackingMainPage = () => {
                             isLoading={requestStatus.isLoading}
                             actionButtonParams={{
                                 text: 'Управлять',
-                                action: () => { navigate(`/position-tracking/projects`) },
+                                action: () => { isDemoMode ? null : navigate(`/position-tracking/projects`) },
                                 style: {
                                     backgroundColor: 'transparent',
                                     alignSelf: 'flex-end'
@@ -558,7 +568,7 @@ const PositionTrackingMainPage = () => {
                                 }}
                                 mode={undefined}
                                 allowClear={false}
-                                disabled={requestStatus.isLoading}
+                                disabled={requestStatus.isLoading || isDemoMode}
                             />
                             {/* {regionsList &&
                                 <PlainSelect

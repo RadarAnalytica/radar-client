@@ -312,7 +312,7 @@ export default function ReportProfitLoss() {
 						timeSelect={false}
 						monthSelect={true}
 						isDataLoading={loading}
-						minCustomDate={getMinCustomDate(activeBrand?.created_at, 6, 'month')}
+						//minCustomDate={getMinCustomDate(activeBrand?.created_at, 6, 'month')}
 					/>
 				</div>
 

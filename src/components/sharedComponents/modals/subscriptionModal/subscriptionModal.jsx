@@ -214,7 +214,7 @@ const SubscriptionModal = ({ visible, visibilityHandler }) => {
       {
         // options
         publicId: 'pk_1359b4923cc282c6f76e05d9f138a', //id из личного кабинета
-        description: 'Оплата подписки в Radar Analityca', //назначение
+        description: 'Оплата подписки в Radar Analytica', //назначение
         amount: firstAmount, //сумма
         currency: 'RUB', //валюта
         invoiceId: invoiceId, //номер заказа  (необязательно)
@@ -301,7 +301,7 @@ const SubscriptionModal = ({ visible, visibilityHandler }) => {
     //   widget.pay('charge', // или 'charge'
     //       { //options
     //           publicId: 'pk_1359b4923cc282c6f76e05d9f138a', //id из личного кабинета
-    //           description: 'Оплата подписки в Radar Analityca', //назначение
+    //           description: 'Оплата подписки в Radar Analytica', //назначение
     //           amount: amount, //сумма
     //           currency: 'RUB', //валюта
     //           accountId: user.id, //идентификатор плательщика (необязательно)

@@ -109,7 +109,8 @@ const createFiltersDTO = (data, shopsData) => {
       stateKey: 'activeWeeks',
       ruLabel: 'Период',
       enLabel: 'weeks',
-      data: weeksList(getMinCustomDate(shops[0].created_at, 6, 'month'))
+      //data: weeksList(getMinCustomDate(shops[0].created_at, 6, 'month'))
+      data: weeksList()
     },
     months: {
       stateKey: 'activeMonths',
@@ -177,7 +178,8 @@ const createFiltersDTO = (data, shopsData) => {
         stateKey: 'activeWeeks',
         ruLabel: 'Период',
         enLabel: 'weeks',
-        data: weeksList(getMinCustomDate(i?.shop_data?.created_at, 6, 'month'))
+        //data: weeksList(getMinCustomDate(i?.shop_data?.created_at, 6, 'month'))
+        data: weeksList()
       },
       months: {
         stateKey: 'activeMonths',
@@ -247,7 +249,8 @@ const createFiltersDTO = (data, shopsData) => {
         stateKey: 'activeWeeks',
         ruLabel: 'Период',
         enLabel: 'weeks',
-        data: weeksListData
+        //data: weeksList(getMinCustomDate(i?.shop_data?.created_at, 6, 'month'))
+        data: weeksList(null)
       },
       months: {
         stateKey: 'activeMonths',
@@ -299,35 +302,34 @@ const createFiltersDTO = (data, shopsData) => {
 
   // поднимаем сохраненный период по месяцам, чтобы установить его по умолчанию
   let savedActiveMonths = getSavedActiveMonths(savedActiveBrand.id);
-  console.log('savedActiveMonths', savedActiveMonths);
 
   // Вычисляем минимальную дату (полгода до created_at магазина)
-  if (savedActiveBrand?.created_at) {
-    const minDate = getMinCustomDate(savedActiveBrand.created_at, 6, 'month');
-    const minDateObj = dayjs(minDate);
+  // if (savedActiveBrand?.created_at) {
+  //   const minDate = getMinCustomDate(savedActiveBrand.created_at, 6, 'month');
+  //   const minDateObj = dayjs(minDate);
 
-    // Фильтруем недели: оставляем только те, которые не раньше минимальной даты
-    if (Array.isArray(savedActiveWeeks)) {
-      savedActiveWeeks = savedActiveWeeks.filter(week => {
-        if (!week?.value) return false;
-        const weekDate = dayjs(week.value);
-        if (!weekDate.isValid()) return false;
-        // Используем стандартные методы dayjs: isAfter или isSame
-        return weekDate.isAfter(minDateObj, 'day') || weekDate.isSame(minDateObj, 'day');
-      });
-    }
+  //   // Фильтруем недели: оставляем только те, которые не раньше минимальной даты
+  //   if (Array.isArray(savedActiveWeeks)) {
+  //     savedActiveWeeks = savedActiveWeeks.filter(week => {
+  //       if (!week?.value) return false;
+  //       const weekDate = dayjs(week.value);
+  //       if (!weekDate.isValid()) return false;
+  //       // Используем стандартные методы dayjs: isAfter или isSame
+  //       return weekDate.isAfter(minDateObj, 'day') || weekDate.isSame(minDateObj, 'day');
+  //     });
+  //   }
 
-    // Проверяем месяцы: если month_from раньше минимальной даты, устанавливаем минимальную дату
-    if (savedActiveMonths?.month_from) {
-      const monthFromDate = dayjs(savedActiveMonths.month_from);
-      if (monthFromDate.isValid() && monthFromDate.isBefore(minDateObj, 'month')) {
-        savedActiveMonths = {
-          ...savedActiveMonths,
-          month_from: minDateObj.format('YYYY-MM')
-        };
-      }
-    }
-  }
+  //   // Проверяем месяцы: если month_from раньше минимальной даты, устанавливаем минимальную дату
+  //   if (savedActiveMonths?.month_from) {
+  //     const monthFromDate = dayjs(savedActiveMonths.month_from);
+  //     if (monthFromDate.isValid() && monthFromDate.isBefore(minDateObj, 'month')) {
+  //       savedActiveMonths = {
+  //         ...savedActiveMonths,
+  //         month_from: minDateObj.format('YYYY-MM')
+  //       };
+  //     }
+  //   }
+  // }
 
   return {
     shops: [...shops],
