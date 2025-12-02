@@ -793,7 +793,7 @@ export default function OperatingExpenses() {
 					}}
 					onCancel={() => setDeleteTemplateId(null)}
 					isLoading={loading}
-					buttonText='Удалить шаблон'
+					buttonText='Удалить'
 				/>}
 
 				<SuccessModal
