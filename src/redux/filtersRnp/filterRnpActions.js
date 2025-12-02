@@ -3,7 +3,7 @@ import { fetchApi } from '@/service/fetchApi';
 
 export const createFiltersDTO = (data) => {
   // 1 - создаем массив всех магазинов + опцию "Все магазины"
-  const hasAllShopsOption = data?.map(_ => _.shop_data)?.length < 100;
+  const hasAllShopsOption = data?.map(_ => _.shop_data)?.length < 5;
   const allShopsObject = { brand_name: 'Все', value: 'Все', id: 0, is_primary_collect: data.some(_ => _.shop_data.is_primary_collect), is_self_cost_set: !data.some(_ => !_.shop_data.is_self_cost_set) }
   const shops = hasAllShopsOption ? [allShopsObject, ...data.map(_ => ({ ..._.shop_data, value: _.shop_data.name }))] : [...data.map(_ => ({ ..._.shop_data, value: _.shop_data.name }))]
   // 2 - Трансформируем дату для опции "все магазины"
@@ -237,23 +237,6 @@ export const createFiltersDTO = (data) => {
 
     return newItem;
   })];
-
-  // поднимаем сохраненный магазин чтобы установить его по умолчанию
-  // let savedActiveBrand = localStorage.getItem('activeShop');
-  // if (savedActiveBrand) {
-  //   savedActiveBrand = JSON.parse(savedActiveBrand);
-  //   // проверяем есть ли магазин в массиве (это на случай разных аккаунтов)
-  //   // для поиска нужен сложный индекс тк айди магазинов могут совпадать в разных аккаунтах
-  //   const isInShops = shops.some(_ => String(_.id + _.brand_name) === String(savedActiveBrand.id + savedActiveBrand.brand_name));
-  //   // Если магазин нет в массиве (т.е. валиден для этого аккаунта) то...
-  //   if (!isInShops) {
-  //     savedActiveBrand = shops[0];
-  //   } else {
-  //     savedActiveBrand = shops.find(_ => String(_.id + _.brand_name) === String(savedActiveBrand.id + savedActiveBrand.brand_name));
-  //   }
-  // } else {
-  //   savedActiveBrand = shops[0];
-  // }
 
   return { shops, filtersData: DTO, initState: {activeBrandName: [{ value: 'Все' }], activeArticle: [{ value: 'Все' }], activeCategory: [{ id: 0, value: 'Все' }], activeGroup: [{ id: 0, value: 'Все' }] } };
 };

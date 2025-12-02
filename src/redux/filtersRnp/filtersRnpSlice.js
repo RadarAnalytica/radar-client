@@ -83,7 +83,7 @@ const filtersRnpSlice = createSlice({
         bulder
             .addCase(fetchRnpFilters.fulfilled, (state, action) => {
                 return {
-                    // ...action.payload.initState,
+                    ...action.payload.initState,
                     ...state,
                     filters: action.payload.filtersData,
                     shops: action.payload.shops,

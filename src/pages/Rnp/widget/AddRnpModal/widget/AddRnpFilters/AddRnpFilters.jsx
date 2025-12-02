@@ -57,9 +57,6 @@ export const Filters = ({
       dispatch(filterActions.setActiveShop(shops[0]));
     }
 
-    if (shops && activeBrand && activeBrand.id !== 0) {
-      dispatch(filterActions.setActiveShop(shops[0]));
-    }
     if (shops && activeBrand &&
       (!filtersState.activeBrandName.some(_ => _.value === 'Все') &&
       !filtersState.activeArticle.some(_ => _.value === 'Все') &&
@@ -120,6 +117,7 @@ export const Filters = ({
               value={activeBrand.id}
               optionsData={shops}
               handler={shopChangeHandler}
+              hasSearch={!shops.some(_ => _.id == 0)}
             />
           </div>
         }
