@@ -3,8 +3,9 @@ import { fetchApi } from '@/service/fetchApi';
 
 export const createFiltersDTO = (data) => {
   // 1 - создаем массив всех магазинов + опцию "Все магазины"
-  const shops = [{ brand_name: 'Все', value: 'Все', id: 0, is_primary_collect: data.some(_ => _.shop_data.is_primary_collect), is_self_cost_set: !data.some(_ => !_.shop_data.is_self_cost_set)  }, ...data.map(_ => ({ ..._.shop_data, value: _.shop_data.name }))];
-
+  const hasAllShopsOption = data?.map(_ => _.shop_data)?.length < 100;
+  const allShopsObject = { brand_name: 'Все', value: 'Все', id: 0, is_primary_collect: data.some(_ => _.shop_data.is_primary_collect), is_self_cost_set: !data.some(_ => !_.shop_data.is_self_cost_set) }
+  const shops = hasAllShopsOption ? [allShopsObject, ...data.map(_ => ({ ..._.shop_data, value: _.shop_data.name }))] : [...data.map(_ => ({ ..._.shop_data, value: _.shop_data.name }))]
   // 2 - Трансформируем дату для опции "все магазины"
   // 2.1 - выцепляем все бренды по всем магазинам
   // 2.2 - выцепляем все артикулы всех брендов по всем магазинам
@@ -13,53 +14,54 @@ export const createFiltersDTO = (data) => {
   let allArticlesData = [];
   const allGroupsData = [];
   let allCategoriesData = [];
-  data.forEach((_, id) => {
-    _.categories.forEach(c => {
-      if (_.shop_data.is_primary_collect) {
-        allCategoriesData.push({
-          name: c.name,
-          value: c.name,
-          key: c.id,
-          id: c.id
-        });
-      }
-      c.brand.forEach((b => {
+  if (hasAllShopsOption) {
+    data.forEach((_, id) => {
+      _.categories.forEach(c => {
         if (_.shop_data.is_primary_collect) {
-          allBransdData.push({
-            name: b.name ? b.name : `Без названия&${_.shop_data.id}`,
-            value: b.name ? b.name : `Без названия (${_.shop_data.brand_name})`,
+          allCategoriesData.push({
+            name: c.name,
+            value: c.name,
+            key: c.id,
+            id: c.id
           });
         }
-        b.wb_id.forEach(a => {
+        c.brand.forEach((b => {
           if (_.shop_data.is_primary_collect) {
-            allArticlesData.push({
-              name: a,
-              value: a,
-              brand: b.name ? b.name :`Без названия (${_.shop_data.brand_name})`,
-              category: c.name
+            allBransdData.push({
+              name: b.name ? b.name : `Без названия&${_.shop_data.id}`,
+              value: b.name ? b.name : `Без названия (${_.shop_data.brand_name})`,
             });
           }
-        });
-      }));
+          b.wb_id.forEach(a => {
+            if (_.shop_data.is_primary_collect) {
+              allArticlesData.push({
+                name: a,
+                value: a,
+                brand: b.name ? b.name : `Без названия (${_.shop_data.brand_name})`,
+                category: c.name
+              });
+            }
+          });
+        }));
+      });
+      _.groups.forEach(g => {
+        allGroupsData.push({ ...g, value: g.name, key: g.id });
+      });
     });
-    _.groups.forEach(g => {
-      allGroupsData.push({...g, value: g.name, key: g.id });
-    });
+  }
 
-  });
-
-  allCategoriesData = allCategoriesData.filter((item, index, self) =>
+  allCategoriesData = allCategoriesData?.filter((item, index, self) =>
     index === self.findIndex((t) => (
       t.id === item.id
     )));
 
-  allBransdData = allBransdData.filter((item, index, self) =>
+  allBransdData = allBransdData?.filter((item, index, self) =>
     index === self.findIndex((t) => (
       t.name === item.name
     ))
   );
 
-  allArticlesData = allArticlesData.filter((item, index, self) =>
+  allArticlesData = allArticlesData?.filter((item, index, self) =>
     index === self.findIndex((t) => (
       t.value === item.value
     ))
@@ -94,7 +96,7 @@ export const createFiltersDTO = (data) => {
   };
 
   // формируем итоговый массив для всех данных
-  const DTO = [allShopsOption, ...data?.map(i => {
+  const DTO = hasAllShopsOption ? [allShopsOption, ...data?.map(i => {
 
     const articlesData = [];
     let brandsData = [];
@@ -109,7 +111,7 @@ export const createFiltersDTO = (data) => {
           articlesData.push({
             name: a,
             value: a,
-            brand: b.name ? b.name :`Без названия (${i.shop_data.brand_name})`,
+            brand: b.name ? b.name : `Без названия (${i.shop_data.brand_name})`,
             category: category.name
           });
         });
@@ -117,9 +119,79 @@ export const createFiltersDTO = (data) => {
     });
 
     brandsData = brandsData.filter((item, index, self) =>
-    index === self.findIndex((t) => (
-      t.name === item.name
-    )));
+      index === self.findIndex((t) => (
+        t.name === item.name
+      )));
+
+
+    let newItem = {
+      shop: {
+        ...i.shop_data,
+        value: i.shop_data.brand_name
+      },
+      categories: {
+        stateKey: 'activeCategory',
+        ruLabel: 'Категория',
+        enLabel: 'category',
+        data: i.categories?.map((_, id) => ({
+          id: _.id,
+          key: _.id,
+          name: _.name,
+          value: _.name,
+        })),
+      },
+      brands: {
+        stateKey: 'activeBrandName',
+        ruLabel: 'Бренд',
+        enLabel: 'brands',
+        data: brandsData
+      },
+      articles: {
+        stateKey: 'activeArticle',
+        ruLabel: 'Артикул',
+        enLabel: 'articles',
+        data: articlesData
+      },
+      groups: {
+        stateKey: 'activeGroup',
+        ruLabel: 'Группа товаров',
+        enLabel: 'product_groups',
+        data: i.groups.map(_ => ({
+          ..._,
+          id: _.id,
+          value: _.name,
+          key: _.id
+        }))
+      }
+    };
+
+    return newItem;
+  })]:[...data?.map(i => {
+
+    const articlesData = [];
+    let brandsData = [];
+    i.categories.forEach((category) => {
+      category.brand.forEach((b) => {
+        brandsData.push({
+          name: b.name ? b.name : `Без названия&${i.shop_data.id}`,
+          value: b.name ? b.name : `Без названия (${i.shop_data.brand_name})`,
+        });
+
+        b.wb_id.forEach(a => {
+          articlesData.push({
+            name: a,
+            value: a,
+            brand: b.name ? b.name : `Без названия (${i.shop_data.brand_name})`,
+            category: category.name
+          });
+        });
+      });
+    });
+
+    brandsData = brandsData.filter((item, index, self) =>
+      index === self.findIndex((t) => (
+        t.name === item.name
+      )));
 
 
     let newItem = {
@@ -166,7 +238,24 @@ export const createFiltersDTO = (data) => {
     return newItem;
   })];
 
-  return { shops, filtersData: DTO, initState: { activeBrandName: [{ value: 'Все' }], activeArticle: [{ value: 'Все' }],  activeCategory: [{ id: 0, value: 'Все' }], activeGroup: [{ id: 0, value: 'Все' }] } };
+  // поднимаем сохраненный магазин чтобы установить его по умолчанию
+  // let savedActiveBrand = localStorage.getItem('activeShop');
+  // if (savedActiveBrand) {
+  //   savedActiveBrand = JSON.parse(savedActiveBrand);
+  //   // проверяем есть ли магазин в массиве (это на случай разных аккаунтов)
+  //   // для поиска нужен сложный индекс тк айди магазинов могут совпадать в разных аккаунтах
+  //   const isInShops = shops.some(_ => String(_.id + _.brand_name) === String(savedActiveBrand.id + savedActiveBrand.brand_name));
+  //   // Если магазин нет в массиве (т.е. валиден для этого аккаунта) то...
+  //   if (!isInShops) {
+  //     savedActiveBrand = shops[0];
+  //   } else {
+  //     savedActiveBrand = shops.find(_ => String(_.id + _.brand_name) === String(savedActiveBrand.id + savedActiveBrand.brand_name));
+  //   }
+  // } else {
+  //   savedActiveBrand = shops[0];
+  // }
+
+  return { shops, filtersData: DTO, initState: {activeBrandName: [{ value: 'Все' }], activeArticle: [{ value: 'Все' }], activeCategory: [{ id: 0, value: 'Все' }], activeGroup: [{ id: 0, value: 'Все' }] } };
 };
 
 export const fetchRnpFilters = createAsyncThunk(

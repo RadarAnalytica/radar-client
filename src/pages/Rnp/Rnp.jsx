@@ -255,6 +255,12 @@ export default function Rnp() {
 		};
 	}, []);
 
+	// useEffect(() => {
+	// 	if (activeBrand) {
+	// 		dispatch(filterActions.setActiveShop(activeBrand));
+	// 	}
+	// }, [activeBrand]);
+
 	useEffect(() => {
 		if (selectedRange) {
 			const today = format(new Date(), 'yyyy-MM-dd');
