@@ -302,6 +302,8 @@ const PositionTrackingMainPage = () => {
             }
             const data: Project = await res.json();
             getMetaData(token);
+            getProjectsList(token);
+            getPositionTrackingMainPageData(token);
         } catch (error) {
             console.error('createProject error:', error);
             setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось создать проект' });
@@ -449,7 +451,7 @@ const PositionTrackingMainPage = () => {
                 getRegionsList(authToken, true)
             ])
                 .then(() => {
-                    //setRequestStatus(initRequestStatus);
+                    setRequestStatus(initRequestStatus);
                     setSettingsState({ project: 0, dest: -1257786 });
                     return;
                 })
