@@ -77,16 +77,16 @@ const Rnp = React.lazy(() => import('./pages/Rnp'));
 const ArticleViewPage = React.lazy(() => import('./pages/ArticlesPage/ArticleViewPage'));
 const SerpPage = React.lazy(() => import("./pages/SerpPage/SerpPage"));
 const WbMetricsPage = React.lazy(() => import('./pages/wbMetricsPage/wbMetricsPage'));
-const PositionCheckPage = React.lazy(() => import("@/pages/PositionCheck/PositionCheck"));
-const PositionCheckIDPage = React.lazy(() => import("@/pages/PositionCheck/PositionCheckID"));
-const KeywordsSelectionPage = React.lazy(() => import("@/pages/KeywordsSelectionPage/KeywordsSelectionPage"));
-const PositionTrackingMainPage = React.lazy(() => import("@/pages/PositionTracking/PositionTrackingMainPage"));
-const PositionTrackingProjectsPage = React.lazy(() => import("@/pages/PositionTracking/PositionTrackingProjectsPage"));
-const PositionTrackingSkuPage = React.lazy(() => import("@/pages/PositionTracking/PositionTrackingSkuPage"));
-const MyAdvPage = React.lazy(() => import("@/pages/myAdvPage/myAdvPage"));
-const CompanyAdvPage = React.lazy(() => import("@/pages/myAdvPage/companyAdvPage"));
+const PositionCheckPage = React.lazy(() => import("./pages/PositionCheck/PositionCheck"));
+const PositionCheckIDPage = React.lazy(() => import("./pages/PositionCheck/PositionCheckID"));
+const KeywordsSelectionPage = React.lazy(() => import("./pages/KeywordsSelectionPage/KeywordsSelectionPage"));
+const PositionTrackingMainPage = React.lazy(() => import("./pages/PositionTracking/PositionTrackingMainPage"));
+const PositionTrackingProjectsPage = React.lazy(() => import("./pages/PositionTracking/PositionTrackingProjectsPage"));
+const PositionTrackingSkuPage = React.lazy(() => import("./pages/PositionTracking/PositionTrackingSkuPage"));
+const MyAdvPage = React.lazy(() => import("./pages/myAdvPage/myAdvPage"));
+const CompanyAdvPage = React.lazy(() => import("./pages/myAdvPage/companyAdvPage"));
 //TEMP
-const DashboardPageNoDnd = React.lazy(() => import('@/pages/apiServicePages/dashboardPage/page/dashboardPageNoDnd'));
+const DashboardPageNoDnd = React.lazy(() => import('./pages/apiServicePages/dashboardPage/page/dashboardPageNoDnd'));
 
 // During migration, allow missing props on ProtectedRoute
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment

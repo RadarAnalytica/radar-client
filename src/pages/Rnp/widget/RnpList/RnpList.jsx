@@ -207,8 +207,6 @@ function RnpListItem({ el, index, expanded, setExpanded, setDeleteRnpId, onReord
 	}, [el, onReorder]);
 
 
-
-
 	return (
 		<div className={`${styles.item} ${isDragging ? styles.dragging : ''}`} ref={ref}>
 			<div className={styles.item_content}>

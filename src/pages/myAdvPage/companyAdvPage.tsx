@@ -78,7 +78,7 @@ const CompanyAdvPage: React.FC = () => {
         isParent: true,
         children: responseData?.date_data?.map(item => ({
           ...item,
-          company_name: format(item.date, "d MMMM yyyy", { locale: ru }),
+          company_name: format(item.date, "d MMMM (EEEEEE) yyyy", { locale: ru }),
           ...item.advert_funnel,
           ...item.advert_statistics,
         })) || [],

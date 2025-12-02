@@ -1,10 +1,8 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { ConfigProvider, Table, Button, Tooltip } from 'antd';
 import { Table as RadarTable, Tooltip as RadarTooltip } from 'radar-ui';
 import { formatPrice } from '../../../../service/utils';
 import styles from './RnpTable.module.css';
 import { RadarRateMark } from '@/shared';
-import { URL } from '@/service/config';
 
 const customCellRender = (value, record, index, dataIndex) => {
 	if (dataIndex === 'summary') {
@@ -17,7 +15,7 @@ const customCellRender = (value, record, index, dataIndex) => {
 					</div> :
 					<div className={styles.customCell}>{formatPrice(value, '')}</div>}
 			</>
-		)
+		);
 	}
 	if (dataIndex === 'period' && record.isParent && value !== 'Переходы (шт)') {
 		return <div className={styles.customCellBold}>
