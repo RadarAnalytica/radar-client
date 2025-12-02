@@ -478,7 +478,7 @@ const PositionTrackingProjectsPage = () => {
                     width={600}
                 >
                     <div className={styles.addModal}>
-                        <p className={styles.addModal__title}>Добавление товара</p>
+                        <p className={styles.addModal__title}>Создание проекта</p>
                         <ConfigProvider theme={inputTheme}>
                             <Input
                                 size='large'

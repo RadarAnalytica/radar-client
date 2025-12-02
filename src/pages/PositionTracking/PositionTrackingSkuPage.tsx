@@ -725,8 +725,9 @@ const PositionTrackingSkuPage = () => {
         }
 
         const position = context.chart.canvas.getBoundingClientRect();
-        let tooltipLeft = position.left + tooltipModel.caretX;
-        let tooltipTop = position.top + tooltipModel.caretY;
+        const offset = 10; // Отступ от курсора мыши
+        let tooltipLeft = position.left + tooltipModel.caretX + offset;
+        let tooltipTop = position.top + tooltipModel.caretY + offset;
 
         tooltipEl.style.display = 'block';
         const tooltipWidth = tooltipEl.offsetWidth;
@@ -903,7 +904,7 @@ const PositionTrackingSkuPage = () => {
             legend: {
                 display: false,
             },
-            // verticalDashedLine: { enabled: true },
+            verticalDashedLine: { enabled: true },
             tooltip: {
                 backgroundColor: '#FFFFFF',
                 borderColor: '#E5E9F0',
@@ -920,8 +921,9 @@ const PositionTrackingSkuPage = () => {
                     size: 14,
                     weight: 600,
                 },
-
-                enabled: false, // Отключаем стандартный tooltip
+                mode: 'index',
+                intersect: false,
+                enabled: false,
                 external: getActivityChartTooltip, // Используем кастомный external tooltip
             },
         },
