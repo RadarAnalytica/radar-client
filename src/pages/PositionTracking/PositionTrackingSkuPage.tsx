@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useRef, useState, useEffect, useContext } from 'react';
+import { useCallback, useMemo, useRef, useState, useEffect, useContext, memo } from 'react';
 import { createRoot } from 'react-dom/client';
 import Header from '@/components/sharedComponents/header/header';
 import styles from './PositionTrackingSkuPage.module.css';
@@ -84,30 +84,6 @@ const modalPrimaryButtonTheme = {
     },
 };
 
-const deleteModalCancelButtonTheme = {
-    token: {
-        colorPrimary: '#1A1A1A',
-        fontSize: 16,
-        fontWeight: 600,
-        fontFamily: 'Mulish',
-        controlHeight: 48,
-        borderRadius: 16,
-    },
-    components: {
-        Button: {
-            paddingInline: 28,
-            paddingBlock: 12,
-            colorBgContainer: '#F4F5F6',
-            colorBgContainerHover: '#E9EBED',
-            colorBgContainerDisabled: '#F4F5F6',
-            colorBorder: 'transparent',
-            colorText: '#1A1A1A',
-            colorTextHover: '#1A1A1A',
-            boxShadow: 'none',
-        },
-    },
-};
-
 const deleteModalPrimaryButtonTheme = {
     token: {
         colorPrimary: '#FF3B5C',
@@ -167,41 +143,6 @@ const inputTheme = {
         }
     }
 }
-
-const positionTrackingSkuMockTableData = [
-    {
-        key: '1',
-        name: 'Худи оверсайз женская',
-        frequency: 1000,
-        goodsCount: 12,
-        mon: 8,
-        tue: 6,
-        wed: 5,
-        thu: 7,
-        fri: 9,
-        sat: 11,
-        sun: 10,
-        mon2: 6,
-        tue2: 5,
-        wed2: 4,
-    },
-    {
-        key: '2',
-        name: 'Джоггеры женские хлопковые',
-        frequency: 2000,
-        goodsCount: 8,
-        mon: 15,
-        tue: 14,
-        wed: 12,
-        thu: 10,
-        fri: 9,
-        sat: 8,
-        sun: 7,
-        mon2: 9,
-        tue2: 12,
-        wed2: 13,
-    },
-];
 
 interface ProductMeta {
     id: number
@@ -387,7 +328,6 @@ const PositionTrackingSkuPage = () => {
     const [tableData, setTableData] = useState<Record<string, any>[]>([]);
     const [requestStatus, setRequestStatus] = useState<typeof initRequestStatus>(initRequestStatus);
     const [tableConfig, setTableConfig] = useState<Record<string, any>[]>(initTableConfig);
-    const [sortState, setSortState] = useState<{ sort_field: string, sort_order: 'ASC' | 'DESC' }>({ sort_field: 'frequency', sort_order: 'DESC' });
     const [regionsList, setRegionsList] = useState<Record<string, any>[]>([]);
     const [isEditDeleteMarkModalVisible, setIsEditDeleteMarkModalVisible] = useState(false);
     const [editDeleteMarkId, setEditDeleteMarkId] = useState<number | null>(null);
@@ -409,9 +349,7 @@ const PositionTrackingSkuPage = () => {
     const { sku } = useParams();
 
     const getSkuPageData = useCallback(async (token: string, requestObject: any) => {
-        if (!requestStatus.isLoading) {
-            setRequestStatus({ ...initRequestStatus, isLoading: true });
-        };
+        setRequestStatus(prev => prev.isLoading ? prev : { ...initRequestStatus, isLoading: true });
         try {
             const res = await ServiceFunctions.getPositionTrackingSkuPageData(token, requestObject);
             if (!res.ok) {
@@ -433,11 +371,9 @@ const PositionTrackingSkuPage = () => {
             setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось получить данные для SKU' });
             return;
         }
-    }, [requestObject, tableType, requestStatus.isLoading]);
+    }, [tableType]);
     const deleteProductFromPositionTrackingProject = useCallback(async (token: string, productId: string) => {
-        if (!requestStatus.isLoading) {
-            setRequestStatus({ ...initRequestStatus, isLoading: true });
-        };
+        setRequestStatus(prev => prev.isLoading ? prev : { ...initRequestStatus, isLoading: true });
         try {
             const res = await ServiceFunctions.deleteProductFromPositionTrackingProject(token, productId);
             if (!res.ok) {
@@ -453,12 +389,10 @@ const PositionTrackingSkuPage = () => {
             setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось удалить продукт из проекта' });
             return;
         }
-    }, [requestObject, tableType, requestStatus.isLoading]);
+    }, []);
 
     const createMark = useCallback(async (token: string, requestObject: any) => {
-        if (!requestStatus.isLoading) {
-            setRequestStatus({ ...initRequestStatus, isLoading: true });
-        };
+        setRequestStatus(prev => prev.isLoading ? prev : { ...initRequestStatus, isLoading: true });
         try {
             const res = await ServiceFunctions.createPositionTrackingChartMark(token, requestObject);
             if (!res.ok) {
@@ -467,7 +401,6 @@ const PositionTrackingSkuPage = () => {
                 return;
             }
             const data: Mark = await res.json();
-            console.log('createMark data', data);
             setRequestStatus(initRequestStatus);
             setMarks((prev) => [...prev, data]);
         }
@@ -476,7 +409,7 @@ const PositionTrackingSkuPage = () => {
             setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось создать метку' });
             return;
         }
-    }, [requestStatus.isLoading]);
+    }, []);
 
     const deleteMark = useCallback(async (token: string, markId: number) => {
         // Сохраняем предыдущее состояние для возможного отката
@@ -487,10 +420,8 @@ const PositionTrackingSkuPage = () => {
             return prev.filter((mark) => mark.id !== markId);
         });
 
-        if (!requestStatus.isLoading) {
-            setRequestStatus({ ...initRequestStatus, isLoading: true });
-        };
-        
+        setRequestStatus(prev => prev.isLoading ? prev : { ...initRequestStatus, isLoading: true });
+
         try {
             const res = await ServiceFunctions.deletePositionTrackingChartMark(token, markId);
             if (!res.ok) {
@@ -500,8 +431,6 @@ const PositionTrackingSkuPage = () => {
                 setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось удалить метку' });
                 return;
             }
-            //const data: Mark = await res.json();
-            // console.log('deleteMark data', data);
             setRequestStatus(initRequestStatus);
             // Убеждаемся, что метка удалена (используем markId, а не data.id)
             setMarks((prev) => prev.filter((mark) => mark.id !== markId));
@@ -513,12 +442,10 @@ const PositionTrackingSkuPage = () => {
             setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось удалить метку' });
             return;
         }
-    }, [requestStatus.isLoading]);
+    }, []);
 
     const updateMark = useCallback(async (token: string, requestObject: any) => {
-        if (!requestStatus.isLoading) {
-            setRequestStatus({ ...initRequestStatus, isLoading: true });
-        };
+        setRequestStatus(prev => prev.isLoading ? prev : { ...initRequestStatus, isLoading: true });
         try {
             const res = await ServiceFunctions.updatePositionTrackingChartMark(token, requestObject);
             if (!res.ok) {
@@ -527,7 +454,6 @@ const PositionTrackingSkuPage = () => {
                 return;
             }
             const data: Mark = await res.json();
-            console.log('updateMark data', data);
             setRequestStatus(initRequestStatus);
             setMarks((prev) => prev.map((mark) => mark.id === data.id ? data : mark));
         }
@@ -536,15 +462,12 @@ const PositionTrackingSkuPage = () => {
             setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось обновить метку' });
             return;
         }
-    }, [requestStatus.isLoading]);
+    }, []);
 
     const getRegionsList = useCallback(async (token: string) => {
-        if (!requestStatus.isLoading) {
-            setRequestStatus({ ...initRequestStatus, isLoading: true });
-        };
+        setRequestStatus(prev => prev.isLoading ? prev : { ...initRequestStatus, isLoading: true });
         try {
             const res = await ServiceFunctions.getSERPFiltersData(token);
-            console.log('getRegionsList data', res);
             setRequestStatus(initRequestStatus);
             setRegionsList(res);
         }
@@ -553,7 +476,7 @@ const PositionTrackingSkuPage = () => {
             setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось получить список регионов' });
             return;
         }
-    }, [requestStatus.isLoading]);
+    }, []);
 
 
     const closeMarkModal = useCallback(() => {
@@ -564,11 +487,11 @@ const PositionTrackingSkuPage = () => {
         setInputValue('');
     }, []);
 
-    const handleCreateMark = useCallback(() => {
+    const handleCreateMark = useCallback((name: string) => {
         if (pendingMarkIndex === null) {
             return;
         }
-        const trimmed = inputValue.trim();
+        const trimmed = name.trim();
         if (!trimmed) {
             return;
         }
@@ -580,15 +503,11 @@ const PositionTrackingSkuPage = () => {
         closeMarkModal();
     }, [closeMarkModal, inputValue, pendingMarkIndex, authToken, createMark, skuData]);
 
-    const handleDeleteMark = useCallback((id: string) => {
-        deleteMark(authToken, Number(id));
-    }, [authToken, deleteMark]);
-
-    const handleEditMark = useCallback(() => {
+    const handleEditMark = useCallback((name: string) => {
         if (editDeleteMarkId === null) {
             return;
         }
-        const trimmed = inputValue.trim();
+        const trimmed = name.trim();
         if (!trimmed) {
             return;
         }
@@ -608,14 +527,14 @@ const PositionTrackingSkuPage = () => {
     }, [closeMarkModal, editDeleteMarkId, authToken, deleteMark]);
 
     const handleActivityChartClick = useCallback((chart: ChartJS, elements: ActiveElement[]) => {
-        if (elements.length === 0) {
+        if (elements?.length === 0) {
             return;
         }
         const first = elements[0];
         const dataset = chart.data.datasets[first.datasetIndex];
-        if (dataset?.label === 'Метка') {
-            return;
-        }
+        // if (dataset?.label !== 'Метка') {
+        //     return;
+        // }
 
         const dateIndex = first.index;
         const date = skuData?.dates[dateIndex];
@@ -625,8 +544,7 @@ const PositionTrackingSkuPage = () => {
 
         // Проверяем, есть ли метка для этой даты
         const mark = marks.find((item) => item.date === date);
-
-        if (mark) {
+        if (mark && dataset?.label === 'Метка') {
             // Если метка есть - открываем модалку редактирования
             setEditDeleteMarkId(mark.id);
             setInputValue(mark.name);
@@ -678,85 +596,6 @@ const PositionTrackingSkuPage = () => {
             y: y + canvasRect.top - (containerRect?.top ?? canvasRect.top),
         });
     }, [marks, skuData]);
-
-    const getActivityChartData = useCallback((skuData: PositionTrackingSkuPageData): ChartData<'line'> => {
-        // Создаем мапу меток по датам для быстрого поиска
-        const marksByDate = new Map(marks.map((mark) => [mark.date, mark]));
-        // Все метки имеют значение 1 (максимум скрытой оси y3)
-        const markData = skuData?.dates.map((date) => (marksByDate.has(date) ? 0.97 : null)) || [];
-        return {
-            labels: skuData?.dates.map((date) => formatDateShort(date)),
-            datasets: [
-                {
-                    label: 'Просмотры, шт',
-                    data: controlsState.isShowsActive ? skuData?.charts.map((chart) => chart.shows) : [],
-                    yAxisID: 'y',
-                    borderColor: '#9A81FF',
-                    backgroundColor: 'rgba(83, 41, 255, 0.08)',
-                    fill: {
-                        target: 'origin',
-                        above: 'rgba(245, 242, 255, 0.3)',
-                        below: 'transparent',
-                    },
-                    pointBackgroundColor: '#9A81FF',
-                    pointBorderColor: '#FFFFFF',
-                    pointBorderWidth: 3,
-                    pointRadius: 0,
-                    pointHoverRadius: 7,
-                    pointHoverBorderWidth: 3,
-                    tension: 0.45,
-                    cubicInterpolationMode: 'monotone' as const,
-                    borderWidth: 1.5,
-                    clip: 16,
-                },
-                {
-                    label: 'Ключи, шт',
-                    data: controlsState.isQueriesActive ? skuData?.charts.map((chart) => chart.queries) : [],
-                    yAxisID: 'y2',
-                    borderColor: '#FFDB7E',
-                    pointBackgroundColor: '#FFDB7E',
-                    pointBorderColor: '#FFFFFF',
-                    pointBorderWidth: 3,
-                    pointRadius: 5,
-                    pointHoverRadius: 7,
-                    pointHoverBorderWidth: 3,
-                    tension: 0.45,
-                    cubicInterpolationMode: 'monotone' as const,
-                    borderWidth: 1.5,
-                    fill: false,
-                },
-                {
-                    label: 'Цена, руб',
-                    data: controlsState.isPriceActive ? skuData?.charts.map((chart) => chart.price) : [],
-                    yAxisID: 'y1',
-                    borderColor: '#FF8D8D',
-                    pointBackgroundColor: '#FF8D8D',
-                    pointBorderColor: '#FFFFFF',
-                    pointBorderWidth: 3,
-                    pointRadius: 5,
-                    pointHoverRadius: 7,
-                    pointHoverBorderWidth: 3,
-                    tension: 0.45,
-                    cubicInterpolationMode: 'monotone' as const,
-                    borderWidth: 1.5,
-                    fill: false,
-                },
-                {
-                    label: 'Метка',
-                    data: markData,
-                    yAxisID: 'y3',
-                    showLine: false,
-                    pointBackgroundColor: '#5329FF',
-                    pointBorderColor: '#FFFFFF',
-                    pointBorderWidth: 3,
-                    pointRadius: 6,
-                    pointHoverRadius: 8,
-                    pointHitRadius: 12,
-                    pointStyle: 'circle',
-                },
-            ],
-        };
-    }, [skuData, controlsState, marks]);
 
     const getActivityChartTooltip = useCallback((context: any) => {
         // Tooltip Element
@@ -1156,11 +995,11 @@ const PositionTrackingSkuPage = () => {
                     pointHoverRadius: 8,
                     pointHitRadius: 12,
                     pointStyle: 'circle',
+                    order: -1,
                 },
             ],
         };
     }, [skuData, controlsState, marks]);
-    console.log('activityChartData', activityChartData)
 
 
     const getVisibilityChartTooltip = useCallback((context: any) => {
@@ -1191,13 +1030,13 @@ const PositionTrackingSkuPage = () => {
 
             // Clear previous content
             tooltipEl.innerHTML = '';
-            
+
             // Create container for React components
             const titleContainer = document.createElement('div');
             const valuesRow = document.createElement('div');
             const valueContainer = document.createElement('span');
             const compareContainer = document.createElement('span');
-            
+
             // Title
             titleLines.forEach((title: string) => {
                 const titleDiv = document.createElement('div');
@@ -1355,29 +1194,11 @@ const PositionTrackingSkuPage = () => {
         },
     }), [skuData, getVisibilityChartTooltip]);
 
-    const handleTableSort = (tableData: Record<string, any>[]) => {
-        const { sort_field, sort_order } = sortState;
-        if (!tableData || !Array.isArray(tableData)) return [];
-
-        const sortedData = [...tableData].sort((a, b) => {
-            const freqA = a.frequency ?? 0;
-            const freqB = b.frequency ?? 0;
-
-            if (sort_order === 'ASC') {
-                return freqA - freqB;
-            } else {
-                return freqB - freqA;
-            }
-        });
-
-        return sortedData;
-
-    }
+   
 
     useEffect(() => {
-        console.log('sku', sku);
         if (sku) {
-            setRequestObject({ wb_id: sku });
+            setRequestObject({ wb_id: sku, feed_type: 'both' });
         } else {
             navigate('/position-tracking');
         }
@@ -1417,10 +1238,12 @@ const PositionTrackingSkuPage = () => {
                                 actions={[{
                                     type: 'delete',
                                     action: async () => {
-                                       const res = await deleteProductFromPositionTrackingProject(authToken, sku);
-                                       if (res) {
-                                        navigate('/position-tracking');
-                                       }
+                                        if (!skuData) return;
+                                        const currentProductId = skuData.product_meta.id
+                                        const res = await deleteProductFromPositionTrackingProject(authToken, currentProductId.toString());
+                                        if (res) {
+                                            navigate('/position-tracking');
+                                        }
                                     }
                                 }]}
                             />
@@ -1466,7 +1289,7 @@ const PositionTrackingSkuPage = () => {
                         <PlainSelect
                             selectId='feed_type'
                             label=''
-                            value={0}
+                            value={requestObject?.feed_type === 'both' ? 0 : requestObject?.feed_type === 'organic' ? 2 : 1}
                             optionsData={[{ value: 0, label: 'Органика+реклама' }, { value: 2, label: 'Органика' }, { value: 1, label: 'Реклама' }]}
                             handler={(value: number) => {
                                 setRequestObject({ ...requestObject, feed_type: value === 0 ? 'both' : value === 2 ? 'organic' : 'ad' });
@@ -1487,13 +1310,13 @@ const PositionTrackingSkuPage = () => {
                             allowClear={false}
                             disabled={false}
                         /> */}
-                </div>
+                    </div>
                 </div>
 
                 {/* main chart */}
                 {requestStatus.isLoading && <RadarLoader loaderStyle={{ minHeight: '456px', width: '100%', background: 'white', borderRadius: '16px' }} />}
-            {
-                !requestStatus.isLoading &&
+                {
+                    !requestStatus.isLoading &&
                     <div className={styles.page__activityChart}>
                         <div className={styles.page__activityChartHeader}>
                             <div className={styles.controls__controlWrapper}>
@@ -1561,145 +1384,44 @@ const PositionTrackingSkuPage = () => {
                             </div>
                         </div>
                         <div className={styles.page__activityChartCanvas} ref={activityChartContainerRef}>
-                        {activityChartData && (
-                            <Line
-                                data={activityChartData}
-                                options={activityChartOptions}
-                            />
-                        )}
-                        {/* {markTooltip && (
-                                <div
-                                    className={styles.page__markTooltip}
-                                    style={{ left: `${markTooltip.x}px`, top: `${markTooltip.y - 56}px` }}
-                                >
-                                    <p className={styles.page__markTooltipTitle}>{markTooltip.label}</p>
-                                    <button
-                                        type='button'
-                                        className={styles.page__markTooltipButton}
-                                        onClick={(event) => {
-                                            event.stopPropagation();
-                                            handleDeleteMark(markTooltip.id);
-                                        }}
-                                    >
-                                        Удалить метку
-                                    </button>
-                                </div>
-             )} */}
+                            {activityChartData && (
+                                <Line
+                                    data={activityChartData}
+                                    options={activityChartOptions}
+                                />
+                            )}
                         </div>
                     </div>
                 }
 
                 <PositionTrackingSkuFilters
                     submitHandler={(formData) => {
-                        setRequestObject({ 
-                            ...requestObject, 
+                        setRequestObject({
+                            ...requestObject,
                             ...formData,
                             keywords: formData.keywords?.split(',').map((keyword: string) => keyword.trim())
                         });
                     }}
                     loading={requestStatus.isLoading}
                 />
-                {requestStatus.isLoading && <RadarLoader loaderStyle={{ minHeight: '456px', width: '100%', background: 'white', borderRadius: '16px' }} />}
-                {/* table */}
-                {tableData && tableConfig && tableData.length > 0 && !requestStatus.isLoading &&
-                    <div className={styles.page__tableWrapper}>
-                        <ConfigProvider theme={segmentedTheme}>
-                            <Segmented options={['Кластеры', 'По запросам']} size='large' value={tableType} onChange={(value) => setTableType(value as 'Кластеры' | 'По запросам')} />
-                        </ConfigProvider>
-                        <div className={styles.page__summary}>
-                            <p className={styles.page__summaryItem}>Найдено ключей: <span>{skuData?.total_queries}</span></p>
-                            <p className={styles.page__summaryItem}>Кластеров: <span>{skuData?.total_presets}</span></p>
-                        </div>
-
-                        <div className={styles.page__table}>
-                            <div className={styles.page__tableContainer}>
-                                <RadarTable
-                                    // @ts-ignore
-                                    config={tableConfig}
-                                    treeMode={tableType === 'Кластеры'}
-                                    preset='radar-table-default'
-                                    sorting={sortState}
-                                    onSort={(sort_field, sort_order) => setSortState({ sort_field, sort_order })}
-                                    dataSource={handleTableSort(tableData)}
-                                    paginationContainerStyle={{ display: 'none' }}
-                                    stickyHeader
-                                    customCellRender={{
-                                        idx: [],
-                                        renderer: positionTrackingSkuTableCustomCellRender as any
-                                    }}
-                                />
-                            </div>
-                        </div>
-                    </div>}
+                <PositionTrackingSkuTable
+                    requestStatus={requestStatus}
+                    skuData={skuData}
+                />
             </section>
             {/* ---------------------- */}
-                {/* add mark modal */}
-                <Modal
-                    open={isAddModalVisible}
-                    onCancel={closeMarkModal}
-                    onClose={closeMarkModal}
-                    onOk={closeMarkModal}
-                    footer={null}
-                    centered
-                    width={600}
-                >
-                    <div className={styles.addModal}>
-                        <p className={styles.addModal__title}>Новая метка</p>
-                    <ConfigProvider theme={inputTheme}>
-                        <Input
-                            size='large'
-                            className={styles.modal__input}
-                            placeholder='Введите название'
-                            value={inputValue}
-                            onChange={(e) => setInputValue(e.target.value)}
-                        />
-                    </ConfigProvider>
-
-                        <div className={styles.addModal__buttonsWrapper}>
-                            <ConfigProvider theme={modalCancelButtonTheme}>
-                                <Button variant='outlined' onClick={closeMarkModal}>Отмена</Button>
-                            </ConfigProvider>
-                            <ConfigProvider theme={modalPrimaryButtonTheme}>
-                                <Button type='primary' onClick={handleCreateMark} disabled={!inputValue.trim()}>Добавить</Button>
-                            </ConfigProvider>
-                        </div>
-                    </div>
-                </Modal>
-            {/* edit and delete mark modal  */}
-            <Modal
-                open={isEditDeleteMarkModalVisible}
-                onCancel={closeMarkModal}
+            <AddMarkModal
+                open={isAddModalVisible}
                 onClose={closeMarkModal}
-                onOk={closeMarkModal}
-                footer={null}
-                centered
-                width={600}
-            >
-                <div className={styles.addModal}>
-                    <p className={styles.addModal__title}>Редактировать метку</p>
-                    <ConfigProvider theme={inputTheme}>
-                        <Input
-                            size='large'
-                            className={styles.modal__input}
-                            placeholder='Введите название'
-                            value={inputValue}
-                            onChange={(e) => setInputValue(e.target.value)}
-                        />
-                    </ConfigProvider>
-
-                    <div className={styles.addModal__buttonsWrapper}>
-                        {/* <ConfigProvider theme={modalCancelButtonTheme}>
-                                <Button variant='outlined' onClick={closeMarkModal}>Отмена</Button>
-                            </ConfigProvider> */}
-                        <ConfigProvider theme={deleteModalPrimaryButtonTheme}>
-                            <Button type='primary' onClick={handleDeleteMarkFromModal}>Удалить</Button>
-                        </ConfigProvider>
-                        <ConfigProvider theme={modalPrimaryButtonTheme}>
-                            <Button type='primary' onClick={handleEditMark} disabled={!inputValue.trim()}>Сохранить</Button>
-                        </ConfigProvider>
-                    </div>
-                </div>
-            </Modal>
+                onSubmit={(name: string) => handleCreateMark(name)}
+            />
+            <EditDeleteMarkModal
+                open={isEditDeleteMarkModalVisible}
+                onClose={closeMarkModal}
+                initialInputValue={inputValue}
+                onEdit={(name: string) => handleEditMark(name)}
+                onDelete={handleDeleteMarkFromModal}
+            />
             {/*  error modal */}
             <ErrorModal
                 message={requestStatus.message}
@@ -1709,6 +1431,188 @@ const PositionTrackingSkuPage = () => {
                 footer={null}
             />
         </main>
+    );
+};
+
+// Table Component
+interface PositionTrackingSkuTableProps {
+    requestStatus: typeof initRequestStatus;
+    skuData: PositionTrackingSkuPageData;
+}
+const PositionTrackingSkuTable = memo(({ requestStatus, skuData }: PositionTrackingSkuTableProps) => {
+    const [tableType, setTableType] = useState<'Кластеры' | 'По запросам'>('Кластеры');
+    const [sortState, setSortState] = useState<{ sort_field: string, sort_order: 'ASC' | 'DESC' }>({ sort_field: 'frequency', sort_order: 'DESC' });
+    const [tableConfig, setTableConfig] = useState<Record<string, any>[]>(initTableConfig);
+    const [paginationState, setPaginationState] = useState<{ current: number, pageSize: number, total: number }>({ current: 1, pageSize: 12, total: 0 });
+    const [tableData, setTableData] = useState<any[]>([]);
+
+    const handleTableSort = useCallback((tableData: Record<string, any>[]) => {
+        const { sort_field, sort_order } = sortState;
+        if (!tableData || !Array.isArray(tableData)) return [];
+
+        const sortedData = [...tableData].sort((a, b) => {
+            const freqA = a.frequency ?? 0;
+            const freqB = b.frequency ?? 0;
+
+            if (sort_order === 'ASC') {
+                return freqA - freqB;
+            } else {
+                return freqB - freqA;
+            }
+        });
+
+        return sortedData.slice((paginationState.current - 1) * paginationState.pageSize, paginationState.current * paginationState.pageSize);;
+
+    }, [sortState, paginationState]);
+    useEffect(() => {
+        if (skuData) {
+            const preparedData = getTableData(skuData, tableType);
+            setPaginationState({ ...paginationState, current: 1, total: Math.ceil(preparedData.length / 10) });
+            setTableConfig(getTableConfig(skuData, tableType));
+            setTableData(preparedData);
+        }
+    }, [skuData, tableType]);
+    return (
+        <>
+            {requestStatus.isLoading && <RadarLoader loaderStyle={{ minHeight: '456px', width: '100%', background: 'white', borderRadius: '16px' }} />}
+            {/* table */}
+            {tableData && tableConfig && tableData.length > 0 && !requestStatus.isLoading &&
+                <div className={styles.page__tableWrapper}>
+                    <ConfigProvider theme={segmentedTheme}>
+                        <Segmented options={['Кластеры', 'По запросам']} size='large' value={tableType} onChange={(value) => setTableType(value as 'Кластеры' | 'По запросам')} />
+                    </ConfigProvider>
+                    <div className={styles.page__summary}>
+                        <p className={styles.page__summaryItem}>Найдено ключей: <span>{skuData?.total_queries}</span></p>
+                        <p className={styles.page__summaryItem}>Кластеров: <span>{skuData?.total_presets}</span></p>
+                    </div>
+
+                    <div className={styles.page__table}>
+                        <div className={styles.page__tableContainer}>
+                            <RadarTable
+                                // @ts-ignore
+                                config={tableConfig}
+                                treeMode={tableType === 'Кластеры'}
+                                preset='radar-table-default'
+                                sorting={sortState}
+                                onSort={(sort_field, sort_order) => setSortState({ sort_field, sort_order })}
+                                dataSource={handleTableSort(tableData)}
+                                pagination={{
+                                    current: paginationState.current,
+                                    pageSize: paginationState.pageSize,
+                                    total: paginationState.total,
+                                    showQuickJumper: true,
+                                    hideOnSinglePage: true,
+                                    onChange: (page, pageSize) => {
+                                        setPaginationState({ ...paginationState, current: page });
+                                    }
+                                }}
+                                paginationContainerStyle={{ display: paginationState.total > 1 ? 'block' : 'none' }}
+                                stickyHeader
+                                bodyCellStyle={{ height: '43px'}}
+                                customCellRender={{
+                                    idx: [],
+                                    renderer: positionTrackingSkuTableCustomCellRender as any
+                                }}
+                            />
+                        </div>
+                    </div>
+                </div>}
+        </>
+    );
+});
+
+PositionTrackingSkuTable.displayName = 'PositionTrackingSkuTable';
+
+// Add Mark Modal Component
+interface AddMarkModalProps {
+    open: boolean;
+    onClose: () => void;
+    onSubmit: (name: string) => void;
+}
+
+const AddMarkModal = ({ open, onClose, onSubmit }: AddMarkModalProps) => {
+    const [inputValue, setInputValue] = useState('');
+    return (
+        <Modal
+            open={open}
+            onCancel={onClose}
+            onClose={onClose}
+            onOk={onClose}
+            footer={null}
+            centered
+            width={600}
+        >
+            <div className={styles.addModal}>
+                <p className={styles.addModal__title}>Новая метка</p>
+                <ConfigProvider theme={inputTheme}>
+                    <Input
+                        size='large'
+                        className={styles.modal__input}
+                        placeholder='Введите название'
+                        value={inputValue}
+                        onChange={(e) => setInputValue(e.target.value)}
+                    />
+                </ConfigProvider>
+
+                <div className={styles.addModal__buttonsWrapper}>
+                    <ConfigProvider theme={modalCancelButtonTheme}>
+                        <Button variant='outlined' onClick={onClose}>Отмена</Button>
+                    </ConfigProvider>
+                    <ConfigProvider theme={modalPrimaryButtonTheme}>
+                        <Button type='primary' onClick={() => onSubmit(inputValue)} disabled={!inputValue.trim()}>Добавить</Button>
+                    </ConfigProvider>
+                </div>
+            </div>
+        </Modal>
+    );
+};
+
+// Edit/Delete Mark Modal Component
+interface EditDeleteMarkModalProps {
+    open: boolean;
+    onClose: () => void;
+    initialInputValue: string;
+    onEdit: (name: string) => void;
+    onDelete: () => void;
+}
+
+const EditDeleteMarkModal = ({ open, onClose, initialInputValue, onEdit, onDelete }: EditDeleteMarkModalProps) => {
+    const [inputValue, setInputValue] = useState(initialInputValue);
+    useEffect(() => {
+        setInputValue(initialInputValue);
+    }, [initialInputValue]);
+    return (
+        <Modal
+            open={open}
+            onCancel={onClose}
+            onClose={onClose}
+            onOk={onClose}
+            footer={null}
+            centered
+            width={600}
+        >
+            <div className={styles.addModal}>
+                <p className={styles.addModal__title}>Редактировать метку</p>
+                <ConfigProvider theme={inputTheme}>
+                    <Input
+                        size='large'
+                        className={styles.modal__input}
+                        placeholder='Введите название'
+                        value={inputValue}
+                        onChange={(e) => setInputValue(e.target.value)}
+                    />
+                </ConfigProvider>
+
+                <div className={styles.addModal__buttonsWrapper}>
+                    <ConfigProvider theme={deleteModalPrimaryButtonTheme}>
+                        <Button type='primary' onClick={onDelete}>Удалить</Button>
+                    </ConfigProvider>
+                    <ConfigProvider theme={modalPrimaryButtonTheme}>
+                        <Button type='primary' onClick={() => onEdit(inputValue)} disabled={!inputValue.trim()}>Сохранить</Button>
+                    </ConfigProvider>
+                </div>
+            </div>
+        </Modal>
     );
 };
 

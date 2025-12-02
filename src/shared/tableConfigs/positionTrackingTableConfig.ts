@@ -16,7 +16,7 @@ export const positionTrackingTableConfig = [
     {
         key: 'shows',
         title: 'Просмотров',
-        dataIndex: 'views',
+        dataIndex: 'shows',
         hidden: false,
         width: 160,
         minWidth: 160,
