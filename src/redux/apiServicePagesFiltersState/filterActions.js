@@ -285,7 +285,7 @@ const createFiltersDTO = (data, shopsData) => {
     // для поиска нужен сложный индекс тк айди магазинов могут совпадать в разных аккаунтах
     const isInShops = shops.some(_ => String(_.id + _.brand_name) === String(savedActiveBrand.id + savedActiveBrand.brand_name));
     // Если магазин нет в массиве (т.е. валиден для этого аккаунта) то...
-    if (!isInShops || savedActiveBrand.id === 0) {
+    if (!isInShops) {
       savedActiveBrand = shops[0];
     } else {
       savedActiveBrand = shops.find(_ => String(_.id + _.brand_name) === String(savedActiveBrand.id + savedActiveBrand.brand_name));

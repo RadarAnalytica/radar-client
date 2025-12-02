@@ -213,6 +213,7 @@ const PositionTrackingMainPage = () => {
 
                 <div className={styles.page__chartWrapper}>
                     <MainChart
+                        // @ts-ignore
                         title=''
                         loading={false}
                         dataDashBoard={chartMockData}
@@ -257,6 +258,7 @@ const PositionTrackingMainPage = () => {
                         <p className={styles.addModal__title}>Добавление товара</p>
                         <SearchBlock
                             style={{ padding: 0 }}
+                            demoModeValue=''
                             submitHandler={(value) => {
                                 navigate(`/position-tracking/projects`);
                             }}
