@@ -1396,10 +1396,18 @@ const PositionTrackingSkuPage = () => {
 
                 <PositionTrackingSkuFilters
                     submitHandler={(formData) => {
+                        console.log('formData', formData);
+                        const newRequestObject = {
+                            ...requestObject,
+                                place_from: formData.places_from ? parseInt(formData.places_from) : null,
+                                place_to: formData.places_to ? parseInt(formData.places_to) : null,
+                                freq_from: formData.frequency_from ? parseInt(formData.frequency_from) : null,
+                                freq_to: formData.frequency_to ? parseInt(formData.frequency_to) : null,
+                                keywords: formData.keywords ? formData.keywords.split(',').map((keyword: string) => keyword.trim()) : null
+                        }
                         setRequestObject({
                             ...requestObject,
-                            ...formData,
-                            keywords: formData.keywords?.split(',').map((keyword: string) => keyword.trim())
+                           ...newRequestObject
                         });
                     }}
                     loading={requestStatus.isLoading}
