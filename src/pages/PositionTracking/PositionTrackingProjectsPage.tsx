@@ -185,7 +185,7 @@ const PositionTrackingProjectsPage = () => {
                 return
             }
             const data: Project[] = await res.json();
-            console.log('all projects', data);
+
             setProjectsList(data);
             setRequestStatus(initRequestStatus);
         } catch (error) {
@@ -207,7 +207,6 @@ const PositionTrackingProjectsPage = () => {
                 return;
             }
             const data: SkuValidity = await res.json();
-            console.log('sku validity', data);
             setRequestStatus(initRequestStatus);
             return data;
 
@@ -255,7 +254,6 @@ const PositionTrackingProjectsPage = () => {
             }
             const data: Project = await res.json();
             await getProjectsList(token);
-            console.log('created project', data);
         } catch (error) {
             console.error('createProject error:', error);
             setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось создать проект' });
@@ -274,7 +272,6 @@ const PositionTrackingProjectsPage = () => {
                 setDeleteModalVisible(false);
                 return;
             }
-            console.log('deleted project');
             await getProjectsList(token);
         } catch (error) {
             console.error('deleteProject error:', error);
@@ -294,7 +291,6 @@ const PositionTrackingProjectsPage = () => {
                 setEditModalVisible(false);
                 return;
             }
-            console.log('updated project');
             await getProjectsList(token);
         } catch (error) {
             console.error('updateProject error:', error);
