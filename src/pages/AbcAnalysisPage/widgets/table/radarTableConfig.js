@@ -1,4 +1,4 @@
-export const ABC_ANALYSIS_TABLE_CONFIG_VER = '1.0.6';
+export const ABC_ANALYSIS_TABLE_CONFIG_VER = '1.0.5';
 
 export const getAbcAnalysisTableConfig = (viewType) => {
     const amountTitle = {

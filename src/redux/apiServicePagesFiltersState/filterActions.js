@@ -247,7 +247,7 @@ const createFiltersDTO = (data, shopsData) => {
         stateKey: 'activeWeeks',
         ruLabel: 'Период',
         enLabel: 'weeks',
-        data: weeksList(getMinCustomDate(i?.shop_data?.created_at, 6, 'month'))
+        data: weeksListData
       },
       months: {
         stateKey: 'activeMonths',

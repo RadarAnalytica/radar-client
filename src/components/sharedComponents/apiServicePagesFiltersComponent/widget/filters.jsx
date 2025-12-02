@@ -30,7 +30,6 @@ export const Filters = ({
   const { user, authToken } = useContext(AuthContext);
   const dispatch = useAppDispatch();
   const { activeBrand, filters, shops, expenseCategories, activeExpenseCategory } = useAppSelector(store => store.filters);
-  console.log('filters', filters);
   const filtersState = useAppSelector(store => store.filters);
 
   // ---- хэндлер выбора магазина -----------//
@@ -68,7 +67,7 @@ export const Filters = ({
               selectId={filters.find((el) => el.shop.id === activeBrand.id).months.enLabel}
               label={`${filters.find((el) => el.shop.id === activeBrand.id).months.ruLabel}:`}
               value={filtersState.activeMonths}
-              isDataLoading={isDataLoading} 
+              isDataLoading={isDataLoading}
               minCustomDate={minCustomDate}
             />
           </div>

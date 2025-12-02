@@ -7,22 +7,30 @@ import cover from '@/assets/mobile_plug_cover.png';
 import { reportError } from '@/service/errorReporting/errorReporter';
 import { jwtDecode } from 'jwt-decode';
 
+const RELOAD_PAGE_ERRORS = [
+  'Failed to fetch dynamically imported module',
+  'Unable to preload CSS',
+];
+
 class ErrorBoundary extends React.Component {
   constructor(props) {
     super(props);
     this.state = { hasError: false, error: null, errorInfo: null };
-    this.enabled = true
+    this.enabled = true;
   }
 
   static getDerivedStateFromError(error) {
+    // Если ошибка связана с загрузкой чанков или css, просто перезагружаем страницу
+    if (RELOAD_PAGE_ERRORS.some(e => String(error)?.includes(e))) {
+      setTimeout(() => window.location.reload(), 500);
+      return;
+    }
+
     // Обновляем состояние так, чтобы следующий рендер показал fallback UI
     return { hasError: true };
   }
 
   componentDidCatch(error, errorInfo) {
-    // Логируем ошибку в консоль для отладки
-    console.error('ErrorBoundary caught an error:', error, errorInfo);
-
     this.setState({
       error: error,
       errorInfo: errorInfo

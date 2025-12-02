@@ -6,7 +6,7 @@ import { autoScrollForElements } from '@atlaskit/pragmatic-drag-and-drop-auto-sc
 import MobilePlug from '../../components/sharedComponents/mobilePlug/mobilePlug';
 import Sidebar from '../../components/sharedComponents/sidebar/sidebar';
 import Header from '../../components/sharedComponents/header/header';
-import { NoDataWidget } from '../productsGroupsPages/widgets';
+import { NoDataWidget } from '@/pages/productsGroupsPages/widgets';
 import AddRnpModal from './widget/AddRnpModal/AddRnpModal';
 import styles from './Rnp.module.css';
 import { useAppSelector, useAppDispatch } from '../../redux/hooks';
@@ -58,7 +58,7 @@ const sortBySavedSortState = (data, activeBrand) => {
 	});
 	
 	return sortedItems;
-}
+};
 
 export default function Rnp() {
 	const { user, authToken } = useContext(AuthContext);

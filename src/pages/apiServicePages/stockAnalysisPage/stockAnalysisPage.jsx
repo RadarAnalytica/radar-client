@@ -11,7 +11,7 @@ import { SearchWidget, TableWidget } from './widgets';
 import { ServiceFunctions } from '@/service/serviceFunctions';
 import styles from './stockAnalysisPage.module.css';
 import NoSubscriptionWarningBlock from '@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock';
-import { useDemoMode } from '@/app/providers/DemoDataProvider';
+import { useDemoMode } from '@/app/providers';
 import { useLoadingProgress } from '@/service/hooks/useLoadingProgress';
 import { CURR_STOCK_ANALYSIS_TABLE_CONFIG_VER } from './shared';
 

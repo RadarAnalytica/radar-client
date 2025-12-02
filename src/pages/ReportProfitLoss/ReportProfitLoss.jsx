@@ -15,7 +15,7 @@ import { useAppSelector } from '@/redux/hooks';
 import HowToLink from '@/components/sharedComponents/howToLink/howToLink';
 import DataCollectWarningBlock from '@/components/sharedComponents/dataCollectWarningBlock/dataCollectWarningBlock';
 import NoSubscriptionWarningBlock from '@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock';
-import { useDemoMode } from '@/app/providers/DemoDataProvider';
+import { useDemoMode } from '@/app/providers';
 import { useLoadingProgress } from '@/service/hooks/useLoadingProgress';
 import { getMinCustomDate } from '@/service/utils';
 

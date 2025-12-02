@@ -55,6 +55,7 @@
   }
 
   .tableContainer {
+    width: 100%;
     position: relative;
     height: 100%;
     max-height: calc(90vh - 32px);

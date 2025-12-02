@@ -5,7 +5,7 @@ export const sortTableDataFunc = (sortType, sortedValue, dataToSort) => {
     let sortedData = dataToSort;
     if (sortedValue === 'byRevenue' || sortedValue === 'byProfit') {
         if (sortType === 'ASC') {
-            sortedData = [...dataToSort].sort((a, b) => {
+            sortedData = [...dataToSort]?.sort((a, b) => {
                 if (typeof b[sortedValue] === 'number' && typeof a[sortedValue] === 'number') {
                     return b[sortedValue] - a[sortedValue];
                 } else {
@@ -15,7 +15,7 @@ export const sortTableDataFunc = (sortType, sortedValue, dataToSort) => {
         }
 
         if (sortType === 'DESC') {
-            sortedData = [...dataToSort].sort((a, b) => {
+            sortedData = [...dataToSort]?.sort((a, b) => {
                 if (typeof b[sortedValue] === 'number' && typeof a[sortedValue] === 'number') {
                     return a[sortedValue] - b[sortedValue];
                 } else {
@@ -25,7 +25,7 @@ export const sortTableDataFunc = (sortType, sortedValue, dataToSort) => {
         }
     } else {
         if (sortType === 'ASC') {
-            sortedData = [...dataToSort].sort((a, b) => {
+            sortedData = [...dataToSort]?.sort((a, b) => {
                 if (typeof a[sortedValue] === 'number' && typeof b[sortedValue] === 'number') {
                     return a[sortedValue] - b[sortedValue];
                 } else {
@@ -35,7 +35,7 @@ export const sortTableDataFunc = (sortType, sortedValue, dataToSort) => {
         }
 
         if (sortType === 'DESC') {
-            sortedData = [...dataToSort].sort((a, b) => {
+            sortedData = [...dataToSort]?.sort((a, b) => {
                 if (typeof a[sortedValue] === 'number' && typeof b[sortedValue] === 'number') {
                     return b[sortedValue] - a[sortedValue];
                 } else {

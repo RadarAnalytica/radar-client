@@ -195,7 +195,6 @@ const WbMetricsTable: React.FC<WbMetricsTableProps> = ({
     400,
     TABLE_CONFIG_VERSION
   );
-
   
   
   return (

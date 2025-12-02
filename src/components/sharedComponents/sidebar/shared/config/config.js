@@ -226,6 +226,13 @@ export const menuConfig = [
         icon: menuIcons.seo,
         children: [
             {
+                id: 6,
+                url: '/position-tracking',
+                label: 'Трекинг позиций',
+                isActive: true,
+                isNew: true
+            },
+            {
                 id: 3,
                 url: '/serp',
                 label: 'Проверка выдачи SERP',

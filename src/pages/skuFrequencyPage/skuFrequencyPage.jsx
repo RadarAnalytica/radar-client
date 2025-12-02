@@ -20,7 +20,7 @@ import NoSubscriptionWarningBlock
 
 const SkuFrequencyPage = () => {
     const { isDemoMode } = useDemoMode();
-    const [tableConfig, setTableConfig] = useState();
+    const [tableConfig, setTableConfig] = useState(radarTableConfig);
     const { requestData, formType, requestObject, isLoadingForButton } = useAppSelector(store => store.requestsMonitoring);
     const [downloadStatus, setDownloadStatus] = useState({
         isLoading: false,
@@ -65,25 +65,13 @@ const SkuFrequencyPage = () => {
                     // Версия не совпадает, используем дефолтный конфиг
                     console.log('Table config version mismatch, using default config');
                     setTableConfig(radarTableConfig);
-                    localStorage.setItem('MonitoringTableConfig', JSON.stringify({
-                        version: CURR_MONITORING_TABLE_CONFIG_VER,
-                        config: radarTableConfig
-                    }));
                 }
             } catch (error) {
                 console.error('Error parsing saved table config:', error);
                 setTableConfig(radarTableConfig);
-                localStorage.setItem('MonitoringTableConfig', JSON.stringify({
-                    version: CURR_MONITORING_TABLE_CONFIG_VER,
-                    config: radarTableConfig
-                }));
             }
         } else {
             setTableConfig(radarTableConfig);
-            localStorage.setItem('MonitoringTableConfig', JSON.stringify({
-                version: CURR_MONITORING_TABLE_CONFIG_VER,
-                config: radarTableConfig
-            }));
         }
     }, []);
 

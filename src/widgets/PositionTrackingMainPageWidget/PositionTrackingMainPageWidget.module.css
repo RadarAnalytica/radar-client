@@ -27,6 +27,11 @@
     gap: 20px;
 }
 
+.addBlock_noProceedToBlocks {
+    min-height: 435px;
+    grid-column: span 2;
+}
+
 .addBlock__wrapper {
     width: 100%;
     max-width: 503px;

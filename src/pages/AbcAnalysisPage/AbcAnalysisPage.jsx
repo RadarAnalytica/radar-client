@@ -314,7 +314,7 @@ const AbcAnalysisPage = () => {
 									<div className={styles.tableScrollContainer} ref={scrollContainerRef}>
 										{tableData && tableData.length > 0 && currentTableConfig && (
 											<RadarTable
-												config={currentTableConfig}
+												config={currentTableConfig.filter(col => !col.hidden)}
 												dataSource={tableData}
 												preset='radar-table-simple'
 												className='abc-analysis-table'
@@ -356,7 +356,6 @@ const AbcAnalysisPage = () => {
 												}}
 												style={{
 													tableLayout: 'fixed',
-													minWidth: '100%',
 													width: 'max-content',
 												}}
 											/>

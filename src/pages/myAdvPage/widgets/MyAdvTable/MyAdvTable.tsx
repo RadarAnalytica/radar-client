@@ -3,7 +3,7 @@ import { Table as RadarTable } from 'radar-ui';
 import { useNavigate } from 'react-router-dom';
 import { Filters } from '@/components/sharedComponents/apiServicePagesFiltersComponent';
 import TableSettingsWidget from '../TableSettingsWidget/TableSettingsWidget';
-import { TABLE_CONFIG_VERSION, getDefaultTableConfig } from '../../config/tableConfig';
+import { TABLE_CONFIG_VERSION, getDefaultTableConfig, TABLE_MAX_WIDTH } from '../../config/tableConfig';
 import { sortTableData } from './utils';
 import styles from './MyAdvTable.module.css';
 import { CompanyData } from '../../data/mockData';
@@ -13,7 +13,6 @@ import Loader from '@/components/ui/Loader';
 import DataCollectWarningBlock from '@/components/sharedComponents/dataCollectWarningBlock/dataCollectWarningBlock';
 import { useAppSelector } from '@/redux/hooks';
 import { formatNumberWithSpaces } from '@/service/utils';
-import NoData from '@/components/sharedComponents/NoData/NoData';
 
 interface MyAdvTableProps {
   companyId?: string | number;
@@ -43,7 +42,7 @@ const MyAdvTable: React.FC<MyAdvTableProps> = ({
   const navigate = useNavigate();
   const [tableData, setTableData] = useState<CompanyData[]>([]);
   const { activeBrand } = useAppSelector((state) => state.filters);
-  const isDataCollecting = activeBrand && !activeBrand?.is_primary_collect;
+  const isDataNotCollected = activeBrand && !activeBrand?.is_primary_collect;
 
   const [expandedRowKeys, setExpandedRowKeys] = useState<string[]>([`${companyId || ''}_`]);
 
@@ -63,6 +62,8 @@ const MyAdvTable: React.FC<MyAdvTableProps> = ({
   };
 
   const handleSort = (sort_field: string, sort_order: "ASC" | "DESC") => {
+    if ((companyId ? ['company_name', 'company_status', 'company_type'] : ['company_name']).includes(sort_field)) return;
+
     setPageData({ ...pageData, page: 1 });
     setSortState({ sort_field, sort_order });
     if (data) {
@@ -87,13 +88,12 @@ const MyAdvTable: React.FC<MyAdvTableProps> = ({
             if (child.hidden) return sum; // Пропускаем скрытые колонки
             return sum + (child.width || child.minWidth || 200);
           }, 0);
-          return { ...col, width: totalWidth, children: updatedChildren, maxWidth: 400 };
+          return { ...col, width: Math.min(totalWidth, TABLE_MAX_WIDTH), children: updatedChildren, maxWidth: TABLE_MAX_WIDTH };
         }
 
         // Если это листовая колонка
         if (col.key === columnKey) {
-          const newWidth = width;
-          return { ...col, width: newWidth, maxWidth: 400 };
+          return { ...col, width: Math.min(width, TABLE_MAX_WIDTH), maxWidth: TABLE_MAX_WIDTH };
         }
 
         return col;
@@ -291,15 +291,15 @@ const MyAdvTable: React.FC<MyAdvTableProps> = ({
           />
         </div>
         <div className={styles.settingsWrapper}>
-          {!isDataCollecting && <TableSettingsWidget tableConfig={tableConfig} setTableConfig={setTableConfig} />}
+          {!isDataNotCollected && <TableSettingsWidget tableConfig={tableConfig} setTableConfig={setTableConfig} />}
         </div>
       </div>
 
-      {isDataCollecting && <div className='pb-3'><DataCollectWarningBlock /></div>}
+      {isDataNotCollected && <div className='pb-3'><DataCollectWarningBlock /></div>}
 
       <div className={styles.tableContainer}>
         <div className={styles.tableWrapper} ref={tableContainerRef}>
-          {!isDataCollecting && (
+          {!isDataNotCollected && (
             <RadarTable
               key={JSON.stringify(tableConfig)}
               rowKey={(record: CompanyData) => `${record.company_id || ''}_${record.date || ''}`}
@@ -309,9 +309,9 @@ const MyAdvTable: React.FC<MyAdvTableProps> = ({
               className={companyId ? styles.tableStaticCompany : styles.tableStatic}
               scrollContainerRef={tableContainerRef}
               stickyHeader
-              // resizeable
-              // onResize={onResizeGroup}
-              // resizeThrottle={33}
+              resizeable
+              onResize={onResizeGroup}
+              resizeThrottle={33}
               onSort={handleSort}
               pagination={pageData.total_count <= pageData.per_page ? null : {
                 current: pageData.page,
@@ -359,4 +359,3 @@ const MyAdvTable: React.FC<MyAdvTableProps> = ({
 };
 
 export default MyAdvTable;
-

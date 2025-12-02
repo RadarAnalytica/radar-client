@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import styles from './UnitCalculatorPageDesktop.module.css';
-import MobileHeader from '../components/sharedComponents/mobileHeader/mobileHeader';
+import MobileHeader from '@/components/sharedComponents/mobileHeader/mobileHeader';
 import { useSearchParams } from 'react-router-dom';
 import { Form, Button, ConfigProvider } from 'antd';
 import BasicDataFormBlockDesktop from '../components/unitCalculatorPageComponents/BasicDataFormBlockDesktop';
@@ -12,8 +12,8 @@ import { unitCalcResultFunction, logisticsWithBuyoutPercentagePriceCalcFunc, enc
 import { tempWhouseData } from '../components/unitCalculatorPageComponents/tempWarehouseData';
 import { RETURN_PRICE, FBS_DEADLINE, FBS_DEADLIE_RATE } from '../components/unitCalculatorPageComponents/constatnts';
 import { Helmet } from 'react-helmet-async';
-import Header from '../components/sharedComponents/header/header';
-import Sidebar from '../components/sharedComponents/sidebar/sidebar';
+import Header from '@/components/sharedComponents/header/header';
+import Sidebar from '@/components/sharedComponents/sidebar/sidebar';
 
 const UnitCalculatorPageDesktop = () => {
 

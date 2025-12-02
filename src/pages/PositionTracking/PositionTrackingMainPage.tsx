@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useContext, useState, useEffect, useCallback } from 'react';
 import Header from '@/components/sharedComponents/header/header';
 import styles from './PositionTrackingMainPage.module.css';
 import Sidebar from '@/components/sharedComponents/sidebar/sidebar';
@@ -8,19 +8,101 @@ import { RadarBar } from '@/shared';
 import { PlainSelect } from '@/components/sharedComponents/apiServicePagesFiltersComponent/features/plainSelect/plainSelect';
 // import { MainChart } from '@/features';
 import { Table as RadarTable } from 'radar-ui';
-import { Segmented, ConfigProvider, Button, Modal } from 'antd';
+import { Segmented, ConfigProvider, Button, Modal, Input } from 'antd';
 import { positionTrackingTableConfig } from '@/shared';
 import { positionTrackingTableCustomCellRender } from '@/shared';
-import MainChart from '@/components/dashboardPageComponents/charts/mainChart/mainChart';
-import { SearchBlock } from '@/features';
+import MainChart from './mainChart';
+// import { SearchBlock } from '@/features';
 import { useNavigate } from 'react-router-dom';
+import { ServiceFunctions } from '@/service/serviceFunctions';
+import AuthContext from '@/service/AuthContext';
+import { useAppSelector } from '@/redux/hooks';
+import ErrorModal from '@/components/sharedComponents/modals/errorModal/errorModal';
+import { RadarLoader } from '@/shared';
 
-const chartMockData = {
-    orderCountList: [12, 18, 16, 20, 15, 22, 19, 24, 21, 18, 23, 17, 16, 22, 25, 19, 18, 21, 20, 23, 24, 26, 22, 19, 21, 18, 20, 22, 24, 23],
-    orderAmountList: [12000, 14500, 13200, 15800, 14100, 16700, 15400, 17600, 16900, 15000, 17300, 16000, 15200, 16800, 18200, 15900, 15500, 16300, 16100, 17200, 17800, 18500, 17400, 16200, 16800, 15600, 16400, 17000, 17700, 18100],
-    saleCountList: [9, 14, 12, 15, 11, 17, 13, 18, 16, 13, 17, 12, 11, 16, 18, 14, 13, 15, 14, 17, 18, 19, 16, 14, 15, 13, 14, 16, 18, 17],
-    saleAmountList: [9800, 11200, 10500, 12100, 10700, 13200, 11800, 13800, 13000, 11400, 13600, 12300, 11500, 12900, 14100, 12200, 11800, 12500, 12300, 13400, 13900, 14600, 13300, 12400, 12800, 11600, 12200, 12900, 13500, 14000],
-};
+
+interface SkuValidity {
+    wb_id: string;
+    name: string;
+}
+interface MetaData {
+    projects_count: 0,
+    products_count: 0
+}
+interface Product {
+    wb_id: string;
+    name: string;
+    wb_id_image_url: string;
+    id: number;
+
+}
+
+interface Project {
+    products: Product[];
+    id: number;
+    name: string;
+    created_at: string;
+    updated_at: string;
+    total_products: number;
+}
+
+interface ChartDataItem {
+    date: string;
+    queries: number;
+    shows: number;
+}
+
+interface PositionTrackingProduct {
+    wb_id: string;
+    name: string;
+    wb_id_image_url: string;
+    id: number;
+    queries: number;
+    queries_chart: {
+        date: string;
+        queries: number;
+        comparsion_percentage: number;
+    }[];
+    shows: number;
+    shows_chart: {
+        date: string;
+        shows: number;
+        comparsion_percentage: number;
+    }[];
+    place: number;
+    place_chart: {
+        date: string;
+        place: number;
+        comparsion_percentage: number;
+    }[];
+}
+
+interface PositionTrackingMainPageData {
+    chart: ChartDataItem[];
+    products: PositionTrackingProduct[];
+}
+
+const inputTheme = {
+    token: {
+        colorBgContainer: 'white',
+        colorBorder: '#5329FF1A',
+        borderRadius: 8,
+        fontFamily: 'Mulish',
+        fontSize: 12,
+        fontWeight: 500,
+        controlHeightLG: 38,
+    },
+    components: {
+        Input: {
+            activeBorderColor: '#5329FF1A',
+            hoverBorderColor: '#5329FF1A',
+            activeOutlineColor: 'transparent',
+            hoverBg: 'white',
+            activeShadow: 'transparent',
+            activeBg: 'white',
+        }
+    }
+}
 
 const modalCancelButtonTheme = {
     token: {
@@ -87,38 +169,303 @@ const segmentedTheme = {
         }
     }
 }
+const initRequestStatus = {
+    isLoading: false,
+    isError: false,
+    isSuccess: false,
+    message: '',
+}
 
-const tableMockData = [
-    {
-        "wb_id": 176871648,
-        "wb_id_image_link": "https://basket-12.wbbasket.ru/vol1768/part176871/176871648/images/c246x328/1.webp",
-        "name": "Платье лапша черное офисное больших размеров",
-        "keywords": 0,
-        "views": 0,
-        "averagePosition": 0,
-    },
-    {
-        "wb_id": 176871648,
-        "wb_id_image_link": "https://basket-12.wbbasket.ru/vol1768/part176871/176871648/images/c246x328/1.webp",
-        "name": "Платье лапша черное офисное больших размеров",
-        "keywords": 1,
-        "views": 1,
-        "averagePosition": 1,
-    },
-    {
-        "wb_id": 176871648,
-        "wb_id_image_link": "https://basket-12.wbbasket.ru/vol1768/part176871/176871648/images/c246x328/1.webp",
-        "name": "Платье лапша черное офисное больших размеров",
-        "keywords": 1,
-        "views": 1,
-        "averagePosition": 1,
-    },
-]
+const getMainPageDataRequestObject = (
+    settings: { project: string | number, dest: string | number },
+    tabs: string,
+) => {
+    return {
+        project_ids: settings.project ? [settings.project] : null,
+        city: settings.dest ?? null,
+        order_by: tabs === 'По просмотрам' ? 'shows' : tabs === 'По ключам' ? 'queries' : tabs === 'По средней позиции' ? 'place' : null,
+    }
+
+}
 
 const PositionTrackingMainPage = () => {
+    const { shops } = useAppSelector((state) => state.filters);
+    const { authToken } = useContext(AuthContext);
     const [activeFilter, setActiveFilter] = useState('По просмотрам');
+    const [requestStatus, setRequestStatus] = useState<typeof initRequestStatus>(initRequestStatus);
     const [isAddModalVisible, setIsAddModalVisible] = useState(false);
+    const [projectsList, setProjectsList] = useState<Project[] | null>([]);
+    const [regionsList, setRegionsList] = useState<Record<string, any>[] | null>([]);
+    const [metaData, setMetaData] = useState<MetaData | null>(null);
+    const [addModalState, setAddModalState] = useState<{ sku: string, projectId: string }>({ sku: '', projectId: '' });
+    const [settingsState, setSettingsState] = useState<{ project: string | number, dest: string | number } | null>(null);
+    const [productsData, setProductsData] = useState<PositionTrackingProduct[] | null>(null);
+    const [chartData, setChartData] = useState<ChartDataItem[] | null>(null);
+    const [paginationState, setPaginationState] = useState<{ current: number, pageSize: number, total: number }>({ current: 1, pageSize: 10, total: 0 });
     const navigate = useNavigate();
+
+    const getMetaData = useCallback(async (token: string, noRequestStatusUpdate: boolean = false): Promise<void> => {
+        if (!requestStatus.isLoading || !noRequestStatusUpdate) {
+            setRequestStatus({ ...initRequestStatus, isLoading: true });
+        };
+        try {
+            const res = await ServiceFunctions.getPostionTrackingMeta(token);
+            if (!res.ok) {
+                console.error('getMetaData error:');
+                if (!noRequestStatusUpdate) {
+                    setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось получить метаданные' });
+                }
+                throw new Error('Не удалось получить метаданные');
+            }
+            const data: MetaData = await res.json();
+            setMetaData(data);
+            if (!noRequestStatusUpdate) {
+                setRequestStatus(initRequestStatus);
+            }
+        } catch (error) {
+            console.error('getMetaData error:', error);
+            if (!noRequestStatusUpdate) {
+                setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось получить метаданные' });
+            }
+            throw error instanceof Error ? error : new Error('Не удалось получить метаданные');
+        }
+    }, [requestStatus.isLoading]);
+
+    const getSkuValidity = useCallback(async (token: string, sku: string): Promise<SkuValidity | boolean | undefined> => {
+        if (!requestStatus.isLoading) {
+            setRequestStatus({ ...initRequestStatus, isLoading: true });
+        };
+        try {
+            const res = await ServiceFunctions.getPostionTrackingSkuValidity(token, sku);
+            if (!res.ok) {
+                console.error('getSkuValidity error:');
+                setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось получить валидность SKU' });
+                return false;
+            }
+            const data: SkuValidity = await res.json();
+            setRequestStatus(initRequestStatus);
+            return data;
+
+        } catch (error) {
+            console.error('getSkuValidity error:', error);
+            setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось получить валидность SKU' });
+            return;
+        }
+    }, [requestStatus.isLoading]);
+
+    //get all projects list
+    const getProjectsList = useCallback(async (token: string, noRequestStatusUpdate: boolean = false): Promise<void> => {
+        if (!requestStatus.isLoading || !noRequestStatusUpdate) {
+            setRequestStatus({ ...initRequestStatus, isLoading: true });
+        };
+        try {
+            const res = await ServiceFunctions.getPostionTrackingProjects(token);
+            if (!res.ok) {
+                console.error('getMetaData error:');
+                if (!noRequestStatusUpdate) {
+                    setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось получить список проектов' });
+                }
+                throw new Error('Не удалось получить список проектов');
+            }
+            const data: Project[] = await res.json();
+            setProjectsList(data);
+            setAddModalState({ sku: '', projectId: '' });
+            if (!noRequestStatusUpdate) {
+                setRequestStatus(initRequestStatus);
+            }
+        } catch (error) {
+            console.error('getProjectsList error:', error);
+            if (!noRequestStatusUpdate) {
+                setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось получить список проектов' });
+            }
+            throw new Error('Не удалось получить список проектов');
+        }
+
+    }, [requestStatus.isLoading]);
+    const createProject = useCallback(async (token: string, product: string, projectName?: string): Promise<void> => {
+        setRequestStatus({ ...initRequestStatus, isLoading: true });
+        try {
+            let skuValidity: SkuValidity | boolean | undefined;
+            if (product) {
+                skuValidity = await getSkuValidity(token, product);
+            }
+
+            if (product && !skuValidity) {
+                return
+            }
+            let productData = skuValidity as SkuValidity;
+            const res = await ServiceFunctions.createPostionTrackingProjectWithProduct(token, projectName ?? null, productData?.wb_id ?? null, productData?.name ?? null);
+            if (!res.ok) {
+                console.error('createProject error:');
+                setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось создать проект' });
+                return;
+            }
+            const data: Project = await res.json();
+            getMetaData(token);
+        } catch (error) {
+            console.error('createProject error:', error);
+            setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось создать проект' });
+            return;
+        }
+    }, [getSkuValidity, getMetaData]);
+    const getPositionTrackingMainPageData = useCallback(async (token: string): Promise<void> => {
+        if (!requestStatus.isLoading) {
+            setRequestStatus({ ...initRequestStatus, isLoading: true });
+        };
+        const requestObject = getMainPageDataRequestObject(settingsState, activeFilter);
+        try {
+            const res = await ServiceFunctions.getPositionTrackingMainPageData(token, requestObject);
+            if (!res.ok) {
+                console.error('getPositionTrackingMainPageData error:');
+                setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось получить данные для главной страницы' });
+                return;
+            }
+            const data: PositionTrackingMainPageData = await res.json();
+            setProductsData(data.products);
+            setPaginationState({ ...paginationState, total: Math.ceil(data.products.length / paginationState.pageSize) });
+            setChartData(data.chart);
+            setRequestStatus(initRequestStatus);
+        } catch (error) {
+            console.error('getPositionTrackingMainPageData error:', error);
+            setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось получить данные для главной страницы' });
+            return;
+        }
+    }, [settingsState, activeFilter]);
+    const addProductToProject = useCallback(async (token: string, sku: string, projectId: string): Promise<void> => {
+        if (!requestStatus.isLoading) {
+            setRequestStatus({ ...initRequestStatus, isLoading: true });
+        };
+        try {
+
+            const validity = await getSkuValidity(token, sku);
+            if (!validity) {
+                setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось получить валидность SKU' });
+                return;
+            }
+            const requestObject = {
+                ...(validity as SkuValidity),
+                project_id: projectId,
+            }
+            const res = await ServiceFunctions.addProductToPositionTrackingProject(token, requestObject);
+            if (!res.ok) {
+                console.error('addProductToProject error:');
+                setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось добавить товар к проекту' });
+                return;
+            }
+            const data: Product = await res.json();
+            getMetaData(token);
+            getProjectsList(token);
+            getPositionTrackingMainPageData(token);
+            // if (settingsState?.project === projectId) {
+            //     getPositionTrackingMainPageData(token);
+            // }
+        } catch (error) {
+            console.error('addProductToProject error:', error);
+            setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось добавить товар к проекту' });
+            return;
+        }
+    }, [getSkuValidity, getMetaData, getProjectsList, settingsState, getPositionTrackingMainPageData]);
+    const getRegionsList = useCallback(async (token: string, noRequestStatusUpdate: boolean = false): Promise<void> => {
+        // if (!requestStatus.isLoading || !noRequestStatusUpdate) {
+        //     setRequestStatus({ ...initRequestStatus, isLoading: true });
+        // };
+        try {
+            const res: Record<string, any>[] = await ServiceFunctions.getSERPFiltersData(token);
+            setRegionsList(res);
+            setSettingsState((prev) => ({ ...(prev || { project: 0, dest: -1257786 }), dest: res?.find((item) => item.city_name === 'Москва')?.dest || res[0]?.dest }))
+            // if (!noRequestStatusUpdate) {
+            //     setRequestStatus(initRequestStatus);
+            // }
+        } catch (error) {
+            console.error('getRegionsList error:', error);
+            // setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось получить список регионов' });
+            // if (!noRequestStatusUpdate) {
+            //     setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось получить список проектов' });
+            // }
+            throw new Error('Не удалось получить список регионов');
+        }
+    }, []);
+    const getSortedProductsData = useCallback((products: PositionTrackingProduct[], activeFilter: string): PositionTrackingProduct[] => {
+        const sortedProducts = products.sort((a, b) => {
+            if (activeFilter === 'По просмотрам') {
+                return b.shows - a.shows;
+            }
+            if (activeFilter === 'По ключам') {
+                return b.queries - a.queries;
+            }
+            if (activeFilter === 'По средней позиции') {
+                return b.place - a.place;
+            }
+        });
+        return sortedProducts.slice((paginationState.current - 1) * paginationState.pageSize, paginationState.current * paginationState.pageSize);
+
+    }, [activeFilter, paginationState]);
+    const deleteProduct = useCallback(async (productId: string): Promise<void> => {
+        // Сохраняем предыдущее состояние для возможного отката
+        let previousProductsData: PositionTrackingProduct[] | null = null;
+        setProductsData((prev) => {
+            if (!prev) return prev;
+            previousProductsData = [...prev];
+            // Оптимистичное обновление: сразу удаляем товар из UI
+            return prev.filter((product) => product.wb_id !== productId);
+        });
+
+        if (!requestStatus.isLoading) {
+            setRequestStatus({ ...initRequestStatus, isLoading: true });
+        };
+
+        try {
+            const res = await ServiceFunctions.deleteProductFromPositionTrackingProject(authToken, productId);
+            if (!res.ok) {
+                console.error('deleteProduct error:');
+                // Откатываем изменения при ошибке
+                if (previousProductsData) {
+                    setProductsData(previousProductsData);
+                }
+                setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось удалить товар из проекта' });
+                return;
+            }
+            // При успехе обновляем данные с сервера
+            getMetaData(authToken, true);
+            getProjectsList(authToken, true);
+            getPositionTrackingMainPageData(authToken);
+        } catch (error) {
+            console.error('deleteProduct error:', error);
+            // Откатываем изменения при ошибке
+            if (previousProductsData) {
+                setProductsData(previousProductsData);
+            }
+            setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось удалить товар из проекта' });
+            return;
+        }
+    }, [authToken, getMetaData, getProjectsList, getPositionTrackingMainPageData]);
+
+    useEffect(() => {
+        if (authToken) {
+            setRequestStatus({ ...initRequestStatus, isLoading: true });
+            Promise.all([
+                getMetaData(authToken, true),
+                getProjectsList(authToken, true),
+                getRegionsList(authToken, true)
+            ])
+                .then(() => {
+                    //setRequestStatus(initRequestStatus);
+                    setSettingsState({ project: 0, dest: -1257786 });
+                    return;
+                })
+                .catch((error) => {
+                    console.error('Error loading initial data:', error);
+                    setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось загрузить начальные данные' });
+                });
+        }
+    }, []);
+
+    useEffect(() => {
+        if (metaData && metaData.projects_count > 0) {
+            getPositionTrackingMainPageData(authToken);
+        }
+    }, [settingsState]);
+
     return (
         <main className={styles.page}>
             <MobilePlug />
@@ -143,108 +490,144 @@ const PositionTrackingMainPage = () => {
                 {/* !header */}
 
                 {/* main widget */}
-                <PositionTrackingMainPageWidget hasAddBlock={true} setIsAddModalVisible={setIsAddModalVisible} />
+                <PositionTrackingMainPageWidget loading={requestStatus.isLoading} setIsAddModalVisible={setIsAddModalVisible} hasAddBlock={metaData && metaData.projects_count === 0} createProject={async (sku: string) => {
+                    let normilizedId: string;
+                    if (/^(|\d+)$/.test(sku)) {
+                        normilizedId = sku;
+                    } else {
+                        const startId = sku.indexOf('wildberries.ru/catalog/') + 'wildberries.ru/catalog/'.length;
+                        const endId = sku.indexOf('/detail.aspx');
+                        if (startId === -1 || endId === -1) {
+                            setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не верный формат артикула. Вставьте только числа или ссылку вида: https://www.wildberries.ru/catalog/ID/detail.aspx' });
+                            return;
+                        }
+                        normilizedId = sku.substring(startId, endId);
+                    }
+                    await createProject(authToken, normilizedId, undefined);
+                }}
+                />
 
                 {/* info bars */}
-                <div className={styles.page__barsWrapper}>
-                    <RadarBar
-                        title="Активные товары"
-                        mainValue={1}
-                        isLoading={false}
-                        actionButtonParams={{
-                            text: 'Добавить новый товар к отслеживаню',
-                            action: () => {setIsAddModalVisible(true)},
-                            style: {
-                                backgroundColor: 'transparent',
-                                alignSelf: 'flex-end'
-                            }
-                        }}
-                    />
-                    <RadarBar
-                        title="Магазины"
-                        mainValue={2}
-                        isLoading={false}
-                    />
-                    <RadarBar
-                        title="Проект"
-                        mainValue={1}
-                        isLoading={false}
-                        actionButtonParams={{
-                            text: 'Управлять',
-                            action: () => {navigate(`/position-tracking/projects`)},
-                            style: {
-                                backgroundColor: 'transparent',
-                                alignSelf: 'flex-end'
-                            }
-                        }}
-                    />
-                </div>
+                {metaData && metaData.projects_count > 0 &&
+                    <div className={styles.page__barsWrapper}>
+                        <RadarBar
+                            title="Активные товары"
+                            mainValue={metaData?.products_count ?? 0}
+                            actionButtonParams={{
+                                text: 'Добавить новый товар к отслеживаню',
+                                action: () => { setAddModalState({ ...addModalState, projectId: projectsList[0]?.id?.toString() }); setIsAddModalVisible(true) },
+                                style: {
+                                    backgroundColor: 'transparent',
+                                    alignSelf: 'flex-end'
+                                }
+                            }}
+                            isLoading={requestStatus.isLoading}
+                        />
+                        <RadarBar
+                            title="Магазины"
+                            mainValue={shops?.filter((shop) => shop.id !== 0).length ?? 0}
+                            isLoading={requestStatus.isLoading}
+                        />
+                        <RadarBar
+                            title="Проекты"
+                            mainValue={metaData?.projects_count ?? 0}
+                            isLoading={requestStatus.isLoading}
+                            actionButtonParams={{
+                                text: 'Управлять',
+                                action: () => { navigate(`/position-tracking/projects`) },
+                                style: {
+                                    backgroundColor: 'transparent',
+                                    alignSelf: 'flex-end'
+                                }
+                            }}
+                        />
+                    </div>}
 
                 {/* settings block */}
-                <div className={styles.page__container}>
-                    <p className={styles.page__title}>Динамика</p>
-                    <div className={styles.page__selectWrapper}>
-                        <PlainSelect
-                            selectId='brandSelect'
-                            label=''
-                            value={0}
-                            optionsData={[{ value: 0, label: 'Все проекты' }, { value: 2, label: 'Проект 1' }]}
-                            handler={(value: number) => {
-                                //setActiveFilter(filtersData?.find((item) => item.dest === value) || null);
-                            }}
-                            mode={undefined}
-                            allowClear={false}
-                            disabled={false}
+                {metaData && metaData.products_count > 0 && projectsList && regionsList && settingsState &&
+                    <div className={styles.page__container}>
+                        <p className={styles.page__title}>Динамика</p>
+                        <div className={styles.page__selectWrapper}>
+                            <PlainSelect
+                                selectId='projectSelect'
+                                label=''
+                                value={settingsState.project}
+                                optionsData={[{ value: 0, label: 'Все проекты' }, ...projectsList?.map((project) => ({ value: project.id, label: project.name }))]}
+                                handler={(value: number | string) => {
+                                    setSettingsState({ ...settingsState, project: value });
+                                }}
+                                mode={undefined}
+                                allowClear={false}
+                                disabled={requestStatus.isLoading}
+                            />
+                            {/* {regionsList &&
+                                <PlainSelect
+                                    selectId='destSelect'
+                                    label=''
+                                    value={settingsState.dest}
+                                    optionsData={regionsList?.map((item) => ({ value: item.dest, label: item.city_name }))}
+                                    handler={(value: number | string) => {
+                                        setSettingsState({ ...settingsState, dest: value });
+                                    }}
+                                    mode={undefined}
+                                    allowClear={false}
+                                    disabled={requestStatus.isLoading}
+                                />
+                            } */}
+                        </div>
+                    </div>}
+
+                {chartData && chartData.length > 0 &&
+                    <div className={styles.page__chartWrapper}>
+                        <MainChart
+                            loading={requestStatus.isLoading}
+                            dataDashBoard={chartData}
                         />
-                        <PlainSelect
-                            selectId='brandSelect'
-                            label=''
-                            value={1}
-                            optionsData={[{ value: 1, label: 'Москва' }, { value: 2, label: 'Санкт-Петербург' }]}
-                            handler={(value: number) => {
-                                //setActiveFilter(filtersData?.find((item) => item.dest === value) || null);
-                            }}
-                            mode={undefined}
-                            allowClear={false}
-                            disabled={false}
-                        />
+                    </div>}
+                {productsData && productsData.length > 0 &&
+                    <div className={styles.page__tableConfig}>
+                        <p className={styles.page__title}>Лучшие товары</p>
+                        <ConfigProvider theme={segmentedTheme}>
+                            <Segmented
+                                options={['По просмотрам', 'По ключам', 'По средней позиции']}
+                                value={activeFilter}
+                                onChange={(value) => {
+                                    setActiveFilter(value);
+                                }}
+                            />
+                        </ConfigProvider>
+                    </div>}
+                {requestStatus.isLoading &&
+                    <div className={styles.page__tableWrapper}>
+                        <RadarLoader loaderStyle={{ height: '50vh' }} />
                     </div>
-                </div>
-
-                <div className={styles.page__chartWrapper}>
-                    <MainChart
-                        // @ts-ignore
-                        title=''
-                        loading={false}
-                        dataDashBoard={chartMockData}
-                        selectedRange={{ period: 30 }}
-                    />
-                </div>
-                <div className={styles.page__tableConfig}>
-                    <p className={styles.page__title}>Лучшие товары</p>
-                    <ConfigProvider theme={segmentedTheme}>
-                        <Segmented
-                            options={['По просмотрам', 'По ключам', 'По средней позиции']}
-                            value={activeFilter}
-                            onChange={(value) => {
-                                setActiveFilter(value);
+                }
+                {productsData && productsData.length > 0 && !requestStatus.isLoading &&
+                    <div className={styles.page__tableWrapper}>
+                        <RadarTable
+                            config={positionTrackingTableConfig}
+                            preset='radar-table-default'
+                            dataSource={getSortedProductsData(productsData, activeFilter)}
+                            pagination={{
+                                current: paginationState.current,
+                                pageSize: paginationState.pageSize,
+                                total: paginationState.total,
+                                showQuickJumper: true,
+                                hideOnSinglePage: true,
+                                onChange: (page, pageSize) => {
+                                    setPaginationState({ ...paginationState, current: page });
+                                }
+                            }}
+                            bodyCellStyle={{ height: '75px'}}
+                            paginationContainerStyle={{ display: paginationState.total > 1 ? 'block' : 'none' }}
+                            customCellRender={{
+                                idx: [],
+                                renderer: (value: any, record: any, index: number, dataIndex: string) => positionTrackingTableCustomCellRender(value, record, index, dataIndex, deleteProduct),
                             }}
                         />
-                    </ConfigProvider>
-                </div>
-                <div className={styles.page__tableWrapper}>
-                    <RadarTable
-                        config={positionTrackingTableConfig}
-                        preset='radar-table-default'
-                        dataSource={tableMockData}
-                        paginationContainerStyle={{ display: 'none' }}
-                        customCellRender={{
-                            idx: ['name'],
-                            renderer: positionTrackingTableCustomCellRender,
-                        }}
-                    />
-                </div>
+                    </div>}
 
+                {/* add product modal */}
                 <Modal
                     open={isAddModalVisible}
                     onCancel={() => setIsAddModalVisible(false)}
@@ -256,21 +639,43 @@ const PositionTrackingMainPage = () => {
                 >
                     <div className={styles.addModal}>
                         <p className={styles.addModal__title}>Добавление товара</p>
-                        <SearchBlock
+                        {/* <SearchBlock
                             style={{ padding: 0 }}
-                            demoModeValue=''
-                            submitHandler={(value) => {
-                                navigate(`/position-tracking/projects`);
+                            submitHandler={async (value) => {
+                                let normilizedId: string;
+                                if (/^(|\d+)$/.test(value)) {
+                                    normilizedId = value;
+                                } else {
+                                    const startId = value.indexOf('wildberries.ru/catalog/') + 'wildberries.ru/catalog/'.length;
+                                    const endId = value.indexOf('/detail.aspx');
+                                    if (startId === -1 || endId === -1) {
+                                        setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не верный формат артикула. Вставьте только числа или ссылку вида: https://www.wildberries.ru/catalog/ID/detail.aspx' });
+                                        return;
+                                    }
+                                    normilizedId = value.substring(startId, endId);
+                                }
+                                const res = await getSkuValidity(authToken, normilizedId);
+                                console.log(res)
                             }}
-                        />
+                            demoModeValue=''
+                        /> */}
+                        <ConfigProvider theme={inputTheme}>
+                            <Input
+                                size='large'
+                                className={styles.modal__input}
+                                placeholder='Введите cсылку или артикул'
+                                value={addModalState.sku}
+                                onChange={(e) => setAddModalState({ ...addModalState, sku: e.target.value.toString() })}
+                            />
+                        </ConfigProvider>
 
                         <PlainSelect
                             selectId='brandSelect'
                             label='Проект'
-                            value={1}
-                            optionsData={[{ value: 1, label: 'Москва' }, { value: 2, label: 'Санкт-Петербург' }]}
+                            value={projectsList?.find((project) => project.id.toString() === addModalState.projectId)?.name ?? ''}
+                            optionsData={projectsList?.map((project) => ({ value: project.id, label: project.name }))}
                             handler={(value: number) => {
-                                //setActiveFilter(filtersData?.find((item) => item.dest === value) || null);
+                                setAddModalState({ ...addModalState, projectId: value.toString() });
                             }}
                             mode={undefined}
                             allowClear={false}
@@ -280,14 +685,33 @@ const PositionTrackingMainPage = () => {
 
                         <div className={styles.addModal__buttonsWrapper}>
                             <ConfigProvider theme={modalCancelButtonTheme}>
-                                <Button variant='outlined' onClick={() => setIsAddModalVisible(false)}>Отмена</Button>
+                                <Button
+                                    variant='outlined'
+                                    onClick={() => { setIsAddModalVisible(false); setAddModalState({ sku: '', projectId: '' }) }}
+                                    loading={requestStatus.isLoading}
+                                >Отмена</Button>
                             </ConfigProvider>
                             <ConfigProvider theme={modalPrimaryButtonTheme}>
-                                <Button type='primary' onClick={() => {setIsAddModalVisible(false); navigate(`/position-tracking/projects`)}}>Добавить</Button>
+                                <Button
+                                    loading={requestStatus.isLoading}
+                                    type='primary'
+                                    disabled={requestStatus.isError || !addModalState.sku || !addModalState.projectId}
+                                    onClick={() => {
+                                        if (!addModalState.sku || !addModalState.projectId) return;
+                                        addProductToProject(authToken, addModalState.sku, addModalState.projectId);
+                                        setIsAddModalVisible(false)
+                                    }}>Добавить</Button>
                             </ConfigProvider>
                         </div>
                     </div>
                 </Modal>
+                {/* error modal */}
+                <ErrorModal
+                    message={requestStatus.message}
+                    open={requestStatus.isError}
+                    onCancel={() => setRequestStatus(initRequestStatus)}
+                    onClose={() => setRequestStatus(initRequestStatus)}
+                />
             </section>
             {/* ---------------------- */}
         </main>
