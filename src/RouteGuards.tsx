@@ -301,7 +301,7 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   return (
     <Suspense fallback={<LoaderPage/>}>
       <Helmet>
-        <title>Radar Analityca</title>
+        <title>Radar Analytica</title>
         <meta name="description" content={routeRuName}/>
       </Helmet>
       {children}
