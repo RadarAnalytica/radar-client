@@ -166,16 +166,16 @@ export default function ExpenseFormModal({
 
 	// Заголовки для разных режимов
 	const titles = {
-		create: isTemplate ? 'Добавление шаблона' : 'Добавление расхода',
-		edit: isTemplate ? 'Редактирование шаблона' : 'Редактирование расхода',
-		copy: isTemplate ? 'Копирование шаблона' : 'Копирование расхода',
+		create: isTemplate ? 'Добавление запланированного расхода' : 'Добавление расхода',
+		edit: isTemplate ? 'Редактирование запланированного расхода' : 'Редактирование расхода',
+		copy: isTemplate ? 'Копирование запланированного расхода' : 'Копирование расхода',
 	};
 
 	// Текст кнопки для разных режимов
 	const buttonTexts = {
-		create: isTemplate ? 'Добавить шаблон' : 'Добавить расход',
-		edit: isTemplate ? 'Сохранить шаблон' : 'Сохранить расход',
-		copy: isTemplate ? 'Копировать шаблон' : 'Копировать расход',
+		create: 'Добавить расход',
+		edit: 'Сохранить расход',
+		copy: 'Копировать расход',
 	};
 
 	useEffect(() => {
@@ -375,10 +375,7 @@ export default function ExpenseFormModal({
 						{/* Подзаголовок типа расхода/шаблона (для режимов редактирования и копирования) */}
 						{(mode === 'edit' || mode === 'copy') && (
 							<p className={styles.modal__typeSubtitle}>
-								{isTemplate 
-									? (isPeriodicExpense ? 'Плановый шаблон' : 'Разовый шаблон')
-									: (isPeriodicExpense ? 'Плановый расход' : 'Разовый расход')
-								}
+								{isPeriodicExpense ? 'Плановый расход' : 'Разовый расход'}
 							</p>
 						)}
 

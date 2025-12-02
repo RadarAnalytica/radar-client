@@ -23,12 +23,13 @@ const customCellExpenseRender = (
 ) => {
 
     if (dataIndex === 'is_periodic' && record.key !== 'summary') {
+        const isPeriodic = record?.is_periodic || record?.is_template;
         return (
             <div 
-                className={record?.is_template ? styles.periodicBadge_template : record.is_periodic ? styles.periodicBadge_periodic : styles.periodicBadge_static} 
-                title={record?.is_template ? 'Шаблон' : record?.is_periodic ? 'Плановый' : 'Разовый'}
+                className={isPeriodic ? styles.periodicBadge_periodic : styles.periodicBadge_static} 
+                title={isPeriodic ? 'Плановый' : 'Разовый'}
             >
-                {record?.is_template ? 'Шаблон' : record?.is_periodic ? 'Плановый' : 'Разовый'}
+                {isPeriodic ? 'Плановый' : 'Разовый'}
             </div>
         );
     }
@@ -109,7 +110,7 @@ const customCellExpenseRender = (
                                 setAlertState({
                                     status: 'error',
                                     isVisible: true,
-                                    message: 'Не удалось получить шаблон расхода',
+                                    message: 'Не удалось получить запланированный расход',
                                 });
                             }
                         }
@@ -154,7 +155,7 @@ const customCellExpenseRender = (
                             setAlertState({
                                 status: 'error',
                                 isVisible: true,
-                                message: 'Не удалось получить шаблон расхода',
+                                message: 'Не удалось получить запланированный расход',
                             });
                         }
                     }}

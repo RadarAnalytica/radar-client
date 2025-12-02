@@ -1,5 +1,4 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { ConfigProvider, Table, Button, Tooltip } from 'antd';
 import { Table as RadarTable } from 'radar-ui';
 import { formatPrice } from '../../../../service/utils';
 import styles from './RnpTable.module.css';

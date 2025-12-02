@@ -466,11 +466,11 @@ export default function OperatingExpenses() {
 		try {
 			const res = await ServiceFunctions.postOperatingExpensesTemplateCreate(authToken, requestObject, requestUrl);
 			await updateTemplates(true); // Сбрасываем пагинацию и обновляем данные
-			const successMessage = templateModal.mode === 'copy' ? 'Шаблон скопирован' : 'Шаблон добавлен';
+			const successMessage = templateModal.mode === 'copy' ? 'Запланированный расход скопирован' : 'Запланированный расход добавлен';
 			setAlertState({ message: successMessage, status: 'success', isVisible: true });
 		} catch (error) {
 			console.error('createTemplate error', error);
-			const errorMessage = templateModal.mode === 'copy' ? 'Не удалось скопировать шаблон' : 'Не удалось добавить шаблон';
+			const errorMessage = templateModal.mode === 'copy' ? 'Не удалось скопировать запланированный расход' : 'Не удалось добавить запланированный расход';
 			setAlertState({ message: errorMessage, status: 'error', isVisible: true });
 		} finally {
 			setTemplateModal({ mode: null, isOpen: false, data: null });
@@ -485,10 +485,10 @@ export default function OperatingExpenses() {
 			const res = await ServiceFunctions.patchOperatingExpensesTemplate(authToken, requestObject, requestUrl);
 			await updateTemplates(); // Обновляем данные без сброса пагинации
 			await updateExpenses();
-			setAlertState({ message: 'Шаблон обновлен', status: 'success', isVisible: true });
+			setAlertState({ message: 'Запланированный расход обновлен', status: 'success', isVisible: true });
 		} catch (error) {
 			console.error('editTemplate error', error);
-			setAlertState({ message: 'Не удалось обновить шаблон', status: 'error', isVisible: true });
+			setAlertState({ message: 'Не удалось обновить запланированный расход', status: 'error', isVisible: true });
 		} finally {
 			setTemplateModal({ mode: null, isOpen: false, data: null });
 			setLoading(false);
@@ -500,7 +500,7 @@ export default function OperatingExpenses() {
 		try {
 			let templateToCopy = templates.find((item) => item.id === templateId);
 			if (!templateToCopy) {
-				throw new Error('Шаблон не найден');
+				throw new Error('Запланированный расход не найден');
 			}
 			// Prepare template data for copying (remove id and any timestamps)
 			const { id, ...templateData } = templateToCopy;
@@ -539,10 +539,10 @@ export default function OperatingExpenses() {
 			await ServiceFunctions.postOperatingExpensesTemplateCreate(authToken, templateData, url);
 			await updateTemplates(true);
 			await updateExpenses();
-			setAlertState({ message: 'Шаблон скопирован', status: 'success', isVisible: true });
+			setAlertState({ message: 'Запланированный расход скопирован', status: 'success', isVisible: true });
 		} catch (error) {
 			console.error('copyTemplate error', error);
-			setAlertState({ message: 'Не удалось скопировать шаблон', status: 'error', isVisible: true });
+			setAlertState({ message: 'Не удалось скопировать запланированный расход', status: 'error', isVisible: true });
 		} finally {
 			setLoading(false);
 		}
@@ -558,10 +558,10 @@ export default function OperatingExpenses() {
 			}
 			await updateExpenses();
 			await updateTemplates(); // Обновляем данные без сброса пагинации
-			setAlertState({ message: 'Шаблон удален', status: 'success', isVisible: true });
+			setAlertState({ message: 'Запланированный расход удален', status: 'success', isVisible: true });
 		} catch (error) {
 			console.error('deleteTemplate error', error);
-			setAlertState({ message: 'Не удалось удалить шаблон', status: 'error', isVisible: true });
+			setAlertState({ message: 'Не удалось удалить запланированный расход', status: 'error', isVisible: true });
 		} finally {
 			setDeleteTemplateId(null);
 			setLoading(false);
@@ -682,7 +682,7 @@ export default function OperatingExpenses() {
 					: <NoData />
 				)}
 
-				{/* Шаблоны */}
+				{/* Запланированные расходы */}
 				{view === 'template' && !loading && activeBrand && activeBrand?.is_primary_collect && (
 					templateData.data?.length > 0
 					? <TableWidget
@@ -774,12 +774,12 @@ export default function OperatingExpenses() {
 				/>}
 
 				{deleteTemplateId && <ModalDeleteConfirm
-					title={'Вы уверены, что хотите удалить шаблон?'}
+					title={'Вы уверены, что хотите удалить запланированный расход?'}
 					text={templateData.data.find((el) => el.id === deleteTemplateId)?.is_template ? (
 						<div className={styles.deleteModal__text}>
-							Вы удаляете шаблон. Это действие также удалит все созданные расходы по этому шаблону.
+							Вы удаляете запланированный расход. Это действие также удалит все расходы, связанные с ним.
 							<RadarTooltip
-								text='Вы также можете запретить создавать новые расходы по этому шаблону. Для этого зайдите в редактирование шаблона и установите/измените дату окончания.'
+								text='Вы также можете запретить создавать новые расходы по этому запланированному расходу. Для этого зайдите в редактирование запланированного расхода и установите/измените дату окончания.'
 							>
 								<span
 									style={{ color: '#F93C65', textDecoration: 'underline' }}

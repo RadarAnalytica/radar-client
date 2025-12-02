@@ -23,7 +23,7 @@ export default function Tabs({ view, setView }) {
 				onClick={() => { setView('template'); }}
 				style={{ fontWeight: 500, fontSize: 14 }}
 			>
-				Шаблоны
+				Запланированные расходы
 			</button>
 		</Flex>
 	);
