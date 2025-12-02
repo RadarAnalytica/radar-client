@@ -35,6 +35,8 @@ import serpQueryData from './mock/serp-query-data.json';
 import keywordsSelectionData from './mock/position-check/positionCheckMainData.json';
 import advertListData from './mock/my-adv-list.json';
 import advertCompanyData from './mock/my-adv-company.json';
+import positionTrackingMetaData from './mock/position-tracking/positionTrackingMainPageData.json';
+import positionTrackingSkuPageData from './mock/position-tracking/positionTrackingSkuData.json';
 
 export class DemoDataService {
   private static instance: DemoDataService;
@@ -131,6 +133,9 @@ export class DemoDataService {
       '/api/advert/': () => this.getAdvertCompanyData(filters, query),
       '/api/product/self-costs': () => ({ message: "Success", updated_items: [{ product: 'Демо', cost: 100, fulfillment: 100 }] }),
       '/api/msg/': () => ([]),
+      '/api/position-track/web-product/get-totals': () => this.getPositionTrackingMainPageData(),
+      '/api/position-track/radar-product/user-meta': () => this.getPositionTrackingMetaData(),
+      '/api/position-track/web-product/get-product': () => this.getPositionTrackingSkuPageData(),
       'https://radarmarket.ru/api/web-service/monitoring-oracle/easy/get': () => this.getEasyMonitoringData(),
       'https://radarmarket.ru/api/web-service/monitoring-oracle/get': () => this.getMonitoringData(),
       'https://radarmarket.ru/api/web-service/trending-queries/get': () => this.getTrendingQueries(),
@@ -226,6 +231,18 @@ export class DemoDataService {
       days = Math.round((Number(new Date(filters.selectedRange.to)) - Number(new Date(filters.selectedRange.from))) / 3600 / 24 / 1000);
     }
     return days || 30;
+  }
+
+  private getPositionTrackingSkuPageData(): any {
+    return positionTrackingSkuPageData;
+  }
+
+  private getPositionTrackingMainPageData(): any {
+    return positionTrackingMetaData;
+  }
+
+  private getPositionTrackingMetaData(): any {
+    return JSON.stringify({"projects_count":1,"products_count":1});
   }
 
   private getGeoData(filters?: any): any {

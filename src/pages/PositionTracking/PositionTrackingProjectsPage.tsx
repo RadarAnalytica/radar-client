@@ -18,6 +18,7 @@ import { ServiceFunctions } from '@/service/serviceFunctions';
 import AuthContext from '@/service/AuthContext';
 import { getWordDeclension } from '@/service/utils';
 import ErrorModal from '@/components/sharedComponents/modals/errorModal/errorModal';
+import { useDemoMode } from '@/app/providers/DemoDataProvider';
 
 
 
@@ -172,7 +173,9 @@ const PositionTrackingProjectsPage = () => {
     const [editModalVisible, setEditModalVisible] = useState(false);
     const [editModalState, setEditModalState] = useState<{ projectId: string, projectName: string }>({ projectId: '', projectName: '' });
     const [addModalNameValue, setAddModalNameValue] = useState<string>('Мой новый проект');
-
+    const { isDemoMode } = useDemoMode();
+    const navigate = useNavigate();
+    
     const getProjectsList = async (token: string): Promise<void> => {
         if (!requestStatus.isLoading) {
             setRequestStatus({ ...initRequestStatus, isLoading: true });
@@ -305,6 +308,12 @@ const PositionTrackingProjectsPage = () => {
             getProjectsList(authToken);
         }
     }, []);
+
+    useEffect(() => {
+        if (isDemoMode) {
+            navigate('/position-tracking');
+        }
+    }, [isDemoMode]);
     return (
         <main className={styles.page}>
             <MobilePlug />

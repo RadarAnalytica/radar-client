@@ -1,0 +1,606 @@
+{
+    "chart": [
+        {
+            "date": "2025-11-05",
+            "queries": 1,
+            "shows": 60
+        },
+        {
+            "date": "2025-11-06",
+            "queries": 5,
+            "shows": 10085
+        },
+        {
+            "date": "2025-11-07",
+            "queries": 6,
+            "shows": 555
+        },
+        {
+            "date": "2025-11-08",
+            "queries": 13,
+            "shows": 6322
+        },
+        {
+            "date": "2025-11-09",
+            "queries": 6,
+            "shows": 472
+        },
+        {
+            "date": "2025-11-10",
+            "queries": 5,
+            "shows": 680
+        },
+        {
+            "date": "2025-11-11",
+            "queries": 4,
+            "shows": 519
+        },
+        {
+            "date": "2025-11-12",
+            "queries": 4,
+            "shows": 499
+        },
+        {
+            "date": "2025-11-13",
+            "queries": 9,
+            "shows": 780
+        },
+        {
+            "date": "2025-11-14",
+            "queries": 9,
+            "shows": 861
+        },
+        {
+            "date": "2025-11-15",
+            "queries": 11,
+            "shows": 1132
+        },
+        {
+            "date": "2025-11-16",
+            "queries": 9,
+            "shows": 1203
+        },
+        {
+            "date": "2025-11-17",
+            "queries": 6,
+            "shows": 616
+        },
+        {
+            "date": "2025-11-18",
+            "queries": 6,
+            "shows": 797
+        },
+        {
+            "date": "2025-11-19",
+            "queries": 7,
+            "shows": 836
+        },
+        {
+            "date": "2025-11-20",
+            "queries": 6,
+            "shows": 848
+        },
+        {
+            "date": "2025-11-21",
+            "queries": 6,
+            "shows": 848
+        },
+        {
+            "date": "2025-11-22",
+            "queries": 5,
+            "shows": 686
+        },
+        {
+            "date": "2025-11-23",
+            "queries": 5,
+            "shows": 910
+        },
+        {
+            "date": "2025-11-24",
+            "queries": 5,
+            "shows": 748
+        },
+        {
+            "date": "2025-11-25",
+            "queries": 9,
+            "shows": 1116
+        },
+        {
+            "date": "2025-11-26",
+            "queries": 10,
+            "shows": 1106
+        },
+        {
+            "date": "2025-11-27",
+            "queries": 9,
+            "shows": 953
+        },
+        {
+            "date": "2025-11-28",
+            "queries": 62,
+            "shows": 18328
+        },
+        {
+            "date": "2025-11-29",
+            "queries": 74,
+            "shows": 54503
+        },
+        {
+            "date": "2025-11-30",
+            "queries": 72,
+            "shows": 59183
+        },
+        {
+            "date": "2025-12-01",
+            "queries": 101,
+            "shows": 65789
+        }
+    ],
+    "products": [
+        {
+            "wb_id": 505539854,
+            "name": "Плотная футболка оверсайз с надписью дрейн",
+            "wb_id_image_url": "https://basket-27.wbbasket.ru/vol5055/part505539/505539854/images/c246x328/1.webp",
+            "id": 114,
+            "queries": 500,
+            "queries_chart": [
+                {
+                    "value": 0.0,
+                    "comparison_percentage": 0.0,
+                    "date": "2025-11-02"
+                },
+                {
+                    "value": 0.0,
+                    "comparison_percentage": 0.0,
+                    "date": "2025-11-03"
+                },
+                {
+                    "value": 0.0,
+                    "comparison_percentage": 0.0,
+                    "date": "2025-11-04"
+                },
+                {
+                    "value": 1.0,
+                    "comparison_percentage": 100.0,
+                    "date": "2025-11-05"
+                },
+                {
+                    "value": 6.0,
+                    "comparison_percentage": 500.0,
+                    "date": "2025-11-06"
+                },
+                {
+                    "value": 6.0,
+                    "comparison_percentage": 0.0,
+                    "date": "2025-11-07"
+                },
+                {
+                    "value": 14.0,
+                    "comparison_percentage": 133.33,
+                    "date": "2025-11-08"
+                },
+                {
+                    "value": 6.0,
+                    "comparison_percentage": -57.14,
+                    "date": "2025-11-09"
+                },
+                {
+                    "value": 6.0,
+                    "comparison_percentage": 0.0,
+                    "date": "2025-11-10"
+                },
+                {
+                    "value": 5.0,
+                    "comparison_percentage": -16.67,
+                    "date": "2025-11-11"
+                },
+                {
+                    "value": 5.0,
+                    "comparison_percentage": 0.0,
+                    "date": "2025-11-12"
+                },
+                {
+                    "value": 10.0,
+                    "comparison_percentage": 100.0,
+                    "date": "2025-11-13"
+                },
+                {
+                    "value": 11.0,
+                    "comparison_percentage": 10.0,
+                    "date": "2025-11-14"
+                },
+                {
+                    "value": 12.0,
+                    "comparison_percentage": 9.09,
+                    "date": "2025-11-15"
+                },
+                {
+                    "value": 11.0,
+                    "comparison_percentage": -8.33,
+                    "date": "2025-11-16"
+                },
+                {
+                    "value": 6.0,
+                    "comparison_percentage": -45.45,
+                    "date": "2025-11-17"
+                },
+                {
+                    "value": 6.0,
+                    "comparison_percentage": 0.0,
+                    "date": "2025-11-18"
+                },
+                {
+                    "value": 7.0,
+                    "comparison_percentage": 16.67,
+                    "date": "2025-11-19"
+                },
+                {
+                    "value": 7.0,
+                    "comparison_percentage": 0.0,
+                    "date": "2025-11-20"
+                },
+                {
+                    "value": 6.0,
+                    "comparison_percentage": -14.29,
+                    "date": "2025-11-21"
+                },
+                {
+                    "value": 5.0,
+                    "comparison_percentage": -16.67,
+                    "date": "2025-11-22"
+                },
+                {
+                    "value": 5.0,
+                    "comparison_percentage": 0.0,
+                    "date": "2025-11-23"
+                },
+                {
+                    "value": 6.0,
+                    "comparison_percentage": 20.0,
+                    "date": "2025-11-24"
+                },
+                {
+                    "value": 9.0,
+                    "comparison_percentage": 50.0,
+                    "date": "2025-11-25"
+                },
+                {
+                    "value": 10.0,
+                    "comparison_percentage": 11.11,
+                    "date": "2025-11-26"
+                },
+                {
+                    "value": 9.0,
+                    "comparison_percentage": -10.0,
+                    "date": "2025-11-27"
+                },
+                {
+                    "value": 72.0,
+                    "comparison_percentage": 700.0,
+                    "date": "2025-11-28"
+                },
+                {
+                    "value": 79.0,
+                    "comparison_percentage": 9.72,
+                    "date": "2025-11-29"
+                },
+                {
+                    "value": 76.0,
+                    "comparison_percentage": -3.8,
+                    "date": "2025-11-30"
+                },
+                {
+                    "value": 104.0,
+                    "comparison_percentage": 36.84,
+                    "date": "2025-12-01"
+                }
+            ],
+            "shows": 230435,
+            "shows_chart": [
+                {
+                    "value": 0.0,
+                    "comparison_percentage": 0.0,
+                    "date": "2025-11-02"
+                },
+                {
+                    "value": 0.0,
+                    "comparison_percentage": 0.0,
+                    "date": "2025-11-03"
+                },
+                {
+                    "value": 0.0,
+                    "comparison_percentage": 0.0,
+                    "date": "2025-11-04"
+                },
+                {
+                    "value": 60.0,
+                    "comparison_percentage": 100.0,
+                    "date": "2025-11-05"
+                },
+                {
+                    "value": 10085.0,
+                    "comparison_percentage": 16708.33,
+                    "date": "2025-11-06"
+                },
+                {
+                    "value": 555.0,
+                    "comparison_percentage": -94.5,
+                    "date": "2025-11-07"
+                },
+                {
+                    "value": 6322.0,
+                    "comparison_percentage": 1039.1,
+                    "date": "2025-11-08"
+                },
+                {
+                    "value": 472.0,
+                    "comparison_percentage": -92.53,
+                    "date": "2025-11-09"
+                },
+                {
+                    "value": 680.0,
+                    "comparison_percentage": 44.07,
+                    "date": "2025-11-10"
+                },
+                {
+                    "value": 519.0,
+                    "comparison_percentage": -23.68,
+                    "date": "2025-11-11"
+                },
+                {
+                    "value": 499.0,
+                    "comparison_percentage": -3.85,
+                    "date": "2025-11-12"
+                },
+                {
+                    "value": 780.0,
+                    "comparison_percentage": 56.31,
+                    "date": "2025-11-13"
+                },
+                {
+                    "value": 861.0,
+                    "comparison_percentage": 10.38,
+                    "date": "2025-11-14"
+                },
+                {
+                    "value": 1132.0,
+                    "comparison_percentage": 31.48,
+                    "date": "2025-11-15"
+                },
+                {
+                    "value": 1203.0,
+                    "comparison_percentage": 6.27,
+                    "date": "2025-11-16"
+                },
+                {
+                    "value": 616.0,
+                    "comparison_percentage": -48.79,
+                    "date": "2025-11-17"
+                },
+                {
+                    "value": 797.0,
+                    "comparison_percentage": 29.38,
+                    "date": "2025-11-18"
+                },
+                {
+                    "value": 836.0,
+                    "comparison_percentage": 4.89,
+                    "date": "2025-11-19"
+                },
+                {
+                    "value": 848.0,
+                    "comparison_percentage": 1.44,
+                    "date": "2025-11-20"
+                },
+                {
+                    "value": 848.0,
+                    "comparison_percentage": 0.0,
+                    "date": "2025-11-21"
+                },
+                {
+                    "value": 686.0,
+                    "comparison_percentage": -19.1,
+                    "date": "2025-11-22"
+                },
+                {
+                    "value": 910.0,
+                    "comparison_percentage": 32.65,
+                    "date": "2025-11-23"
+                },
+                {
+                    "value": 748.0,
+                    "comparison_percentage": -17.8,
+                    "date": "2025-11-24"
+                },
+                {
+                    "value": 1116.0,
+                    "comparison_percentage": 49.2,
+                    "date": "2025-11-25"
+                },
+                {
+                    "value": 1106.0,
+                    "comparison_percentage": -0.9,
+                    "date": "2025-11-26"
+                },
+                {
+                    "value": 953.0,
+                    "comparison_percentage": -13.83,
+                    "date": "2025-11-27"
+                },
+                {
+                    "value": 18328.0,
+                    "comparison_percentage": 1823.19,
+                    "date": "2025-11-28"
+                },
+                {
+                    "value": 54503.0,
+                    "comparison_percentage": 197.38,
+                    "date": "2025-11-29"
+                },
+                {
+                    "value": 59183.0,
+                    "comparison_percentage": 8.59,
+                    "date": "2025-11-30"
+                },
+                {
+                    "value": 65789.0,
+                    "comparison_percentage": 11.16,
+                    "date": "2025-12-01"
+                }
+            ],
+            "place": 98,
+            "place_chart": [
+                {
+                    "value": 0.0,
+                    "comparison_percentage": 0.0,
+                    "date": "2025-11-02"
+                },
+                {
+                    "value": 0.0,
+                    "comparison_percentage": 0.0,
+                    "date": "2025-11-03"
+                },
+                {
+                    "value": 0.0,
+                    "comparison_percentage": 0.0,
+                    "date": "2025-11-04"
+                },
+                {
+                    "value": 177.0,
+                    "comparison_percentage": -100.0,
+                    "date": "2025-11-05"
+                },
+                {
+                    "value": 141.0,
+                    "comparison_percentage": 20.34,
+                    "date": "2025-11-06"
+                },
+                {
+                    "value": 160.0,
+                    "comparison_percentage": -13.48,
+                    "date": "2025-11-07"
+                },
+                {
+                    "value": 87.0,
+                    "comparison_percentage": 45.62,
+                    "date": "2025-11-08"
+                },
+                {
+                    "value": 156.0,
+                    "comparison_percentage": -79.31,
+                    "date": "2025-11-09"
+                },
+                {
+                    "value": 151.0,
+                    "comparison_percentage": 3.21,
+                    "date": "2025-11-10"
+                },
+                {
+                    "value": 127.0,
+                    "comparison_percentage": 15.89,
+                    "date": "2025-11-11"
+                },
+                {
+                    "value": 127.0,
+                    "comparison_percentage": 0.0,
+                    "date": "2025-11-12"
+                },
+                {
+                    "value": 117.0,
+                    "comparison_percentage": 7.87,
+                    "date": "2025-11-13"
+                },
+                {
+                    "value": 115.0,
+                    "comparison_percentage": 1.71,
+                    "date": "2025-11-14"
+                },
+                {
+                    "value": 99.0,
+                    "comparison_percentage": 13.91,
+                    "date": "2025-11-15"
+                },
+                {
+                    "value": 94.0,
+                    "comparison_percentage": 5.05,
+                    "date": "2025-11-16"
+                },
+                {
+                    "value": 98.0,
+                    "comparison_percentage": -4.26,
+                    "date": "2025-11-17"
+                },
+                {
+                    "value": 43.0,
+                    "comparison_percentage": 56.12,
+                    "date": "2025-11-18"
+                },
+                {
+                    "value": 55.0,
+                    "comparison_percentage": -27.91,
+                    "date": "2025-11-19"
+                },
+                {
+                    "value": 55.0,
+                    "comparison_percentage": 0.0,
+                    "date": "2025-11-20"
+                },
+                {
+                    "value": 64.0,
+                    "comparison_percentage": -16.36,
+                    "date": "2025-11-21"
+                },
+                {
+                    "value": 42.0,
+                    "comparison_percentage": 34.38,
+                    "date": "2025-11-22"
+                },
+                {
+                    "value": 66.0,
+                    "comparison_percentage": -57.14,
+                    "date": "2025-11-23"
+                },
+                {
+                    "value": 67.0,
+                    "comparison_percentage": -1.52,
+                    "date": "2025-11-24"
+                },
+                {
+                    "value": 106.0,
+                    "comparison_percentage": -58.21,
+                    "date": "2025-11-25"
+                },
+                {
+                    "value": 104.0,
+                    "comparison_percentage": 1.89,
+                    "date": "2025-11-26"
+                },
+                {
+                    "value": 92.0,
+                    "comparison_percentage": 11.54,
+                    "date": "2025-11-27"
+                },
+                {
+                    "value": 86.0,
+                    "comparison_percentage": 6.52,
+                    "date": "2025-11-28"
+                },
+                {
+                    "value": 78.0,
+                    "comparison_percentage": 9.3,
+                    "date": "2025-11-29"
+                },
+                {
+                    "value": 75.0,
+                    "comparison_percentage": 3.85,
+                    "date": "2025-11-30"
+                },
+                {
+                    "value": 74.0,
+                    "comparison_percentage": 1.33,
+                    "date": "2025-12-01"
+                }
+            ]
+        }
+    ]
+}

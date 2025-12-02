@@ -34,6 +34,8 @@ import { verticalDashedLinePlugin } from '@/service/utils';
 import { useNavigate } from 'react-router-dom';
 import { PositionTrackingSkuFilters } from '@/widgets';
 import ErrorModal from '@/components/sharedComponents/modals/errorModal/errorModal';
+import { useDemoMode } from '@/app/providers/DemoDataProvider';
+import NoSubscriptionWarningBlock from '@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Tooltip, Filler, verticalDashedLinePlugin);
 
@@ -337,6 +339,7 @@ const PositionTrackingSkuPage = () => {
         isQueriesActive: true,
         isPriceActive: true,
     });
+    const { isDemoMode } = useDemoMode();
 
 
     const controlsCheckboxHandler = (e) => {
@@ -488,6 +491,9 @@ const PositionTrackingSkuPage = () => {
     }, []);
 
     const handleCreateMark = useCallback((name: string) => {
+        if (isDemoMode) {
+            return;
+        }
         if (pendingMarkIndex === null) {
             return;
         }
@@ -504,6 +510,9 @@ const PositionTrackingSkuPage = () => {
     }, [closeMarkModal, inputValue, pendingMarkIndex, authToken, createMark, skuData]);
 
     const handleEditMark = useCallback((name: string) => {
+        if (isDemoMode) {
+            return;
+        }
         if (editDeleteMarkId === null) {
             return;
         }
@@ -519,6 +528,9 @@ const PositionTrackingSkuPage = () => {
     }, [closeMarkModal, inputValue, editDeleteMarkId, authToken, updateMark]);
 
     const handleDeleteMarkFromModal = useCallback(() => {
+        if (isDemoMode) {
+            return;
+        }
         if (editDeleteMarkId === null) {
             return;
         }
@@ -1256,6 +1268,8 @@ const PositionTrackingSkuPage = () => {
                         children={null}
                     />
                 </div>
+
+                {isDemoMode && <NoSubscriptionWarningBlock />}
                 {/* meta */}
                 <div className={styles.page__skuBlock}>
                     <RadarProductBar
@@ -1296,7 +1310,7 @@ const PositionTrackingSkuPage = () => {
                             }}
                             mode={undefined}
                             allowClear={false}
-                            disabled={false}
+                            disabled={requestStatus.isLoading || isDemoMode}
                         />
                         {/* <PlainSelect
                             selectId='brandSelect'
@@ -1396,7 +1410,6 @@ const PositionTrackingSkuPage = () => {
 
                 <PositionTrackingSkuFilters
                     submitHandler={(formData) => {
-                        console.log('formData', formData);
                         const newRequestObject = {
                             ...requestObject,
                                 place_from: formData.places_from ? parseInt(formData.places_from) : null,
