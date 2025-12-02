@@ -527,14 +527,14 @@ const PositionTrackingSkuPage = () => {
     }, [closeMarkModal, editDeleteMarkId, authToken, deleteMark]);
 
     const handleActivityChartClick = useCallback((chart: ChartJS, elements: ActiveElement[]) => {
-        if (elements.length === 0) {
+        if (elements?.length === 0) {
             return;
         }
         const first = elements[0];
         const dataset = chart.data.datasets[first.datasetIndex];
-        if (dataset?.label === 'Метка') {
-            return;
-        }
+        // if (dataset?.label !== 'Метка') {
+        //     return;
+        // }
 
         const dateIndex = first.index;
         const date = skuData?.dates[dateIndex];
@@ -544,8 +544,7 @@ const PositionTrackingSkuPage = () => {
 
         // Проверяем, есть ли метка для этой даты
         const mark = marks.find((item) => item.date === date);
-
-        if (mark) {
+        if (mark && dataset?.label === 'Метка') {
             // Если метка есть - открываем модалку редактирования
             setEditDeleteMarkId(mark.id);
             setInputValue(mark.name);

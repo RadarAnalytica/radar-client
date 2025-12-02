@@ -560,7 +560,7 @@ const PositionTrackingMainPage = () => {
                                 allowClear={false}
                                 disabled={requestStatus.isLoading}
                             />
-                            {regionsList &&
+                            {/* {regionsList &&
                                 <PlainSelect
                                     selectId='destSelect'
                                     label=''
@@ -573,7 +573,7 @@ const PositionTrackingMainPage = () => {
                                     allowClear={false}
                                     disabled={requestStatus.isLoading}
                                 />
-                            }
+                            } */}
                         </div>
                     </div>}
 
