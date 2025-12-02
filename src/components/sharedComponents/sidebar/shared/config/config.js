@@ -19,7 +19,7 @@ export const menuConfig = [
                 url: '/supplier-analysis',
                 label: 'Анализ поставщика',
                 isActive: true,
-                isNew: true,
+                isNew: false,
                 features: ['popular']
             },
             {
@@ -56,7 +56,7 @@ export const menuConfig = [
                 url: '/monitoring',
                 label: 'Поиск прибыльной ниши',
                 isActive: true,
-                isNew: true,
+                isNew: false,
                 features: ['popular']
             },
             {
@@ -158,7 +158,7 @@ export const menuConfig = [
                 url: '/control/drr',
                 label: 'Контроль ДРР',
                 isActive: true,
-                isNew: true
+                isNew: false
             },
         ]
     },
@@ -187,21 +187,21 @@ export const menuConfig = [
                 url: '/control/spp',
                 label: 'Контроль СПП',
                 isActive: true,
-                isNew: true
+                isNew: false
             },
             {
                 id: 5,
                 url: '/abc-data',
                 label: 'ABC-анализ',
                 isActive: true,
-                isNew: false
+                isNew: true,
             },
             {
                 id: 6,
                 url: '/operating-expenses',
                 label: 'Операционные расходы',
                 isActive: true,
-                isNew: true,
+                isNew: false,
                 hasTopBorder: true,
             },
             {
@@ -237,21 +237,21 @@ export const menuConfig = [
                 url: '/serp',
                 label: 'Проверка выдачи SERP',
                 isActive: true,
-                isNew: true
+                isNew: false
             },
             {
                 id: 4,
                 url: '/position-check',
                 label: 'Проверка позиций',
                 isActive: true,
-                isNew: true
+                isNew: false
             },
             {
                 id: 5,
                 url: '/keywords-selection',
                 label: 'Подбор ключевых запросов',
                 isActive: true,
-                isNew: true
+                isNew: false
             },
             {
                 id: 1,
