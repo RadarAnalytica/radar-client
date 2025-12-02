@@ -249,7 +249,7 @@ const ReportMain = () => {
 
         {/* instruction */}
         <div className={styles.instructionWrapper}>
-          <div className={styles.instructionTop}>
+          <div className={styles.instructionTop} onClick={() => handleOpenClose()}>
             <div className={styles.topTextTitle}>
               <img
                 src={cursor}
@@ -262,10 +262,13 @@ const ReportMain = () => {
               className={styles.lineWrapper}
               onClick={() => handleOpenClose()}
             >
-              <span
+              {/* <span
                 className={`${styles.line} ${openBlock ? styles.open : styles.closed
                   }`}
-              ></span>
+              ></span> */}
+              <svg width="17" height="12" viewBox="0 0 12 7" fill="none" xmlns="http://www.w3.org/2000/svg" className={openBlock ? `${styles.arrowIcon} ${styles.arrowIcon_open}` : `${styles.arrowIcon}`}>
+                <path d="M4.99264 6.05328C5.28553 6.34617 5.76041 6.34617 6.0533 6.05328L10.8263 1.28031C11.1192 0.987415 11.1192 0.512542 10.8263 0.219648C10.5334 -0.073245 10.0585 -0.073245 9.76561 0.219648L6.27297 3.71229L5.5 4.48526L4.77297 3.71229L1.28033 0.219648C0.987437 -0.073245 0.512563 -0.073245 0.21967 0.219648C-0.0732234 0.512542 -0.0732234 0.987415 0.21967 1.28031L4.99264 6.05328Z" fill="#8C8C8C" />
+              </svg>
             </div>
           </div>
           {openBlock && (

@@ -49,10 +49,20 @@
     border-radius: 16px;
 }
 
+.arrowIcon {
+    transform: rotate(0deg);
+    transition: transform 0.2s ease;
+}
+
+.arrowIcon_open {
+    transform: rotate(180deg);
+}
+
 .instructionTop {
     display: flex;
     justify-content: space-between;
     width: 100%;
+    cursor: pointer;
 }
 
 .instructionColsWrapper {
