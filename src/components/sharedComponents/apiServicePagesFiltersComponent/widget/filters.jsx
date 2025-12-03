@@ -24,6 +24,7 @@ export const Filters = ({
   minCustomDate,
   opExpensesArticles = false,
   children = null,
+  disabled
 }) => {
 
   // ------ это база ------//
@@ -78,6 +79,7 @@ export const Filters = ({
               isDataLoading={isDataLoading}
               maxCustomDate={maxCustomDate}
               minCustomDate={minCustomDate}
+              disabled={disabled}
             />
           </div>
         }
@@ -110,6 +112,7 @@ export const Filters = ({
               handler={shopChangeHandler}
               isDataLoading={isDataLoading}
               hasSearch={!shops.some(_ => _.id === 0)} // добавляем поиск если магазинов больше 5
+              disabled={disabled}
             />
           </div>
         }
@@ -126,6 +129,7 @@ export const Filters = ({
                   value={filtersState[i.brands.stateKey]}
                   optionsData={i.brands.data}
                   isDataLoading={isDataLoading}
+                  disabled={disabled}
                 />
               </div>}
               {articleSelect && <div className={styles.filters__inputWrapper}>

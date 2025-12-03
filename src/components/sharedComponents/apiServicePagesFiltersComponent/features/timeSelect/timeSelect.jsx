@@ -33,7 +33,7 @@ const predefinedRanges = [
     }
 ];
 
-export const TimeSelect = ({ isDataLoading, maxCustomDate, minCustomDate }) => {
+export const TimeSelect = ({ isDataLoading, maxCustomDate, minCustomDate, disabled }) => {
     const dispatch = useAppDispatch();
     const { selectedRange } = useAppSelector(store => store.filters);
     const [isCalendarOpen, setIsCalendarOpen] = useState(false);
@@ -225,7 +225,7 @@ export const TimeSelect = ({ isDataLoading, maxCustomDate, minCustomDate }) => {
                         }}
                         value={selectValue}
                         onSelect={timeSelectChangeHandler}
-                        disabled={isCalendarOpen || isDataLoading}
+                        disabled={isCalendarOpen || isDataLoading || disabled}
                         placeholder={'опция'}
                     />
                 </ConfigProvider>
