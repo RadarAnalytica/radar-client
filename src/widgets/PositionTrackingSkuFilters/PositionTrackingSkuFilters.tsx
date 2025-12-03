@@ -77,6 +77,21 @@ export const PositionTrackingSkuFilters: React.FC<IPositionTrackingSkuFiltersFor
 
     const numberOnlyRule = { pattern: /^\d*$/, message: '' };
     const parseLocaleNumber = (val: string) => Number((val ?? '').toString().replace(',', '.'));
+    const maxValueRule = {
+        validator(_: unknown, value: string) {
+            if (!value) {
+                return Promise.resolve();
+            }
+            const num = parseLocaleNumber(value);
+            if (Number.isNaN(num)) {
+                return Promise.resolve();
+            }
+            if (num <= 1200) {
+                return Promise.resolve();
+            }
+            return Promise.reject(new Error(''));
+        }
+    };
     const createFromValidator = (toField: string) => ({
         validator(_: unknown, value: string) {
             const toValueRaw = form.getFieldValue(toField);
@@ -161,7 +176,7 @@ export const PositionTrackingSkuFilters: React.FC<IPositionTrackingSkuFiltersFor
                                 name="places_from"
                                 className={styles.filters__formItem}
                                 dependencies={['places_to']}
-                                rules={[numberOnlyRule, createFromValidator('places_to')]}
+                                rules={[numberOnlyRule, maxValueRule, createFromValidator('places_to')]}
                                 normalize={(val) => (typeof val === 'string' ? val.replace(/\D/g, '') : val)}
                             >
                                 <Input
@@ -177,7 +192,7 @@ export const PositionTrackingSkuFilters: React.FC<IPositionTrackingSkuFiltersFor
                                 name="places_to"
                                 className={styles.filters__formItem}
                                 dependencies={['places_from']}
-                                rules={[numberOnlyRule, createToValidator('places_from')]}
+                                rules={[numberOnlyRule, maxValueRule, createToValidator('places_from')]}
                                 normalize={(val) => (typeof val === 'string' ? val.replace(/\D/g, '') : val)}
                             >
                                 <Input

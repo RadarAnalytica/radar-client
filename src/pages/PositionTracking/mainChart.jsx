@@ -41,6 +41,16 @@ const MarginChartBlock = ({ dataDashBoard, loading }) => {
         return `${day} ${months[date.getMonth()]}`;
     };
 
+    const formatDateWithWeekday = (dateInput) => {
+        const date = new Date(dateInput);
+        const day = date.getDate();
+        const weekdays = ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
+        const weekday = weekdays[date.getDay()];
+        const months = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'];
+        const month = months[date.getMonth()];
+        return `${weekday}, ${day} ${month}`;
+    };
+
 
     const data = {
         labels: dataDashBoard.map((item) => formatDateShort(item.date)),
@@ -141,10 +151,14 @@ const MarginChartBlock = ({ dataDashBoard, loading }) => {
                 borderRadius: 8,
                 padding: 16,
                 titleColor: '#8C8C8C',
-                bodyColor: "#1A1A1A !important",
+                bodyColor: '#1A1A1A',
                 callbacks: {
                     title: function (tooltipItems) {
                         const index = tooltipItems[0].dataIndex;
+                        const dateInput = dataDashBoard[index]?.date;
+                        if (dateInput) {
+                            return formatDateWithWeekday(dateInput);
+                        }
                         return data.labels[index];
                     },
                     label: function (tooltipItem) {
@@ -201,7 +215,7 @@ const MarginChartBlock = ({ dataDashBoard, loading }) => {
         scales: {
             A: {
                 id: 'A',
-                position: 'left',
+                position: 'right',
                 //min: roiAxisMin === 0 ? roiAxisMin : roiAxisMin - 10,
                 //max: roiAxisMax + 10,
                 grid: {
@@ -212,14 +226,13 @@ const MarginChartBlock = ({ dataDashBoard, loading }) => {
                     color: 'white',
                 },
                 ticks: {
-                    tickLength: 0,
-                    color: '#5329FF',
+                    color: '#F0AD00',
                 },
             },
             B: {
                 id: 'B',
                 type: 'linear',
-                position: 'right',
+                position: 'left',
                 //min: marginAxisMin === 0 ? marginAxisMin : marginAxisMin - 10,
                 //max: marginAxisMax + 10,
                 grid: {
@@ -230,7 +243,8 @@ const MarginChartBlock = ({ dataDashBoard, loading }) => {
                     color: 'white',
                 },
                 ticks: {
-                    color: '#F0AD00',
+                    tickLength: 0,
+                    color: '#5329FF',
                 },
             },
             x: {

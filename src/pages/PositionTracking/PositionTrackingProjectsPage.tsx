@@ -25,11 +25,11 @@ import { useDemoMode } from '@/app/providers/DemoDataProvider';
 const modalCancelButtonTheme = {
     token: {
         colorPrimary: '#5329FF',
-        fontSize: 16,
+        fontSize: 14,
         fontWeight: 600,
         fontFamily: 'Mulish',
-        controlHeight: 44,
-        borderRadius: 12,
+        controlHeight: 38,
+        borderRadius: 8,
     },
     components: {
         Button: {
@@ -44,6 +44,7 @@ const modalCancelButtonTheme = {
             colorBorderHover: '#D1C2FF',
             colorBgTextActive: '#E2D8FF',
             boxShadow: 'none',
+            ontrolHeight: 38,
         },
     },
 };
@@ -51,19 +52,20 @@ const modalCancelButtonTheme = {
 const modalPrimaryButtonTheme = {
     token: {
         colorPrimary: '#5329FF',
-        fontSize: 16,
+        fontSize: 14,
         fontWeight: 600,
         fontFamily: 'Mulish',
-        controlHeight: 44,
-        borderRadius: 12,
+        controlHeight: 38,
+        borderRadius: 8,
     },
     components: {
         Button: {
-            paddingInline: 24,
+            paddingInline: 12,
             paddingBlock: 10,
             colorPrimaryHover: '#6942FF',
             colorPrimaryActive: '#421BCF',
             boxShadow: 'none',
+            controlHeight: 38
         },
     },
 };
@@ -71,11 +73,10 @@ const modalPrimaryButtonTheme = {
 const deleteModalCancelButtonTheme = {
     token: {
         colorPrimary: '#1A1A1A',
-        fontSize: 16,
+        fontSize: 14,
         fontWeight: 600,
         fontFamily: 'Mulish',
-        controlHeight: 48,
-        borderRadius: 16,
+        borderRadius: 8,
     },
     components: {
         Button: {
@@ -88,6 +89,7 @@ const deleteModalCancelButtonTheme = {
             colorText: '#1A1A1A',
             colorTextHover: '#1A1A1A',
             boxShadow: 'none',
+            controlHeight: 38,
         },
     },
 };
@@ -95,11 +97,11 @@ const deleteModalCancelButtonTheme = {
 const deleteModalPrimaryButtonTheme = {
     token: {
         colorPrimary: '#FF3B5C',
-        fontSize: 16,
+        fontSize: 14,
         fontWeight: 600,
         fontFamily: 'Mulish',
         controlHeight: 48,
-        borderRadius: 16,
+        borderRadius: 8,
     },
     components: {
         Button: {
@@ -108,6 +110,7 @@ const deleteModalPrimaryButtonTheme = {
             colorPrimaryHover: '#FF5370',
             colorPrimaryActive: '#E82646',
             boxShadow: 'none',
+            controlHeight: 38,
         },
     },
 };
@@ -175,7 +178,7 @@ const PositionTrackingProjectsPage = () => {
     const [addModalNameValue, setAddModalNameValue] = useState<string>('');
     const { isDemoMode } = useDemoMode();
     const navigate = useNavigate();
-    
+
     const getProjectsList = async (token: string, noRequestStatusUpdate: boolean = false): Promise<void> => {
         if (!requestStatus.isLoading && !noRequestStatusUpdate) {
             setRequestStatus({ ...initRequestStatus, isLoading: true });
@@ -332,7 +335,7 @@ const PositionTrackingProjectsPage = () => {
     }, [isAddModalVisible])
 
 
-    return projectsList &&(
+    return projectsList && (
         <main className={styles.page}>
             <MobilePlug />
             {/* ------ SIDE BAR ------ */}
@@ -436,15 +439,18 @@ const PositionTrackingProjectsPage = () => {
                 >
                     <div className={styles.addModal}>
                         <p className={styles.addModal__title}>Изменить название проекта</p>
-                        <ConfigProvider theme={inputTheme}>
-                            <Input
-                                size='large'
-                                className={styles.modal__input}
-                                placeholder='Введите название'
-                                value={editModalState.projectName}
-                                onChange={(e) => setEditModalState({ ...editModalState, projectName: e.target.value })}
-                            />
-                        </ConfigProvider>
+                        <div className={styles.modal__inputWrapper}>
+                            <label>Название</label>
+                            <ConfigProvider theme={inputTheme}>
+                                <Input
+                                    size='large'
+                                    className={styles.modal__input}
+                                    placeholder='Введите название'
+                                    value={editModalState.projectName}
+                                    onChange={(e) => setEditModalState({ ...editModalState, projectName: e.target.value })}
+                                />
+                            </ConfigProvider>
+                        </div>
                         <div className={styles.addModal__buttonsWrapper}>
                             <ConfigProvider theme={modalCancelButtonTheme}>
                                 <Button variant='outlined' onClick={() => setEditModalVisible(false)} loading={requestStatus.isLoading}>Отмена</Button>
@@ -478,17 +484,20 @@ const PositionTrackingProjectsPage = () => {
                     width={600}
                 >
                     <div className={styles.addModal}>
-                        <p className={styles.addModal__title}>Создание проекта</p>
-                        <ConfigProvider theme={inputTheme}>
-                            <Input
-                                size='large'
-                                className={styles.modal__input}
-                                placeholder='Введите название'
-                                value={addModalNameValue}
-                                onChange={(e) => setAddModalNameValue(e.target.value)}
-                                status={projectsList?.some(_ => _.name === addModalNameValue?.trim()) ? 'error' : ''}
-                            />
-                        </ConfigProvider>
+                        <p className={styles.addModal__title}>Добавление проекта</p>
+                        <div className={styles.modal__inputWrapper}>
+                            <label>Название</label>
+                            <ConfigProvider theme={inputTheme}>
+                                <Input
+                                    size='large'
+                                    className={styles.modal__input}
+                                    placeholder='Введите название'
+                                    value={addModalNameValue}
+                                    onChange={(e) => setAddModalNameValue(e.target.value)}
+                                    status={projectsList?.some(_ => _.name === addModalNameValue?.trim()) ? 'error' : ''}
+                                />
+                            </ConfigProvider>
+                        </div>
                         <div className={styles.addModal__buttonsWrapper}>
                             <ConfigProvider theme={modalCancelButtonTheme}>
                                 <Button
@@ -546,7 +555,7 @@ const PositionTrackingProjectsPage = () => {
                                     onClick={() => setDeleteModalVisible(false)}
                                     style={{ width: '50%' }}
                                 >
-                                    Отменить
+                                    Отмена
                                 </Button>
                             </ConfigProvider>
                             <ConfigProvider theme={deleteModalPrimaryButtonTheme}>

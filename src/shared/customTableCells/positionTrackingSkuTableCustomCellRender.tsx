@@ -41,27 +41,44 @@ export const positionTrackingSkuTableCustomCellRender = (value: any, record: any
     }
 
     if (dataIndex === 'query') {
-        return <div className={styles.parentCustomCell} style={{ fontWeight: 500}}>
+        return <div className={styles.parentCustomCell} style={{ fontWeight: 500 }}>
             {value}
         </div>
     }
     if (dataIndex !== 'frequency' && dataIndex !== 'total_goods') {
         const colorParams = getColorByValue(value.shows_compare);
-        return (
-            <Popover
-                content={<PopoverContent value={value} />}
-                arrow={false}
-                color='white'
-                destroyTooltipOnHide
-            >
-                <div className={styles.bar__compareValuesBlock} style={{backgroundColor: colorParams.backgroundColor}}>
-                    <div className={styles.bar__comparativeValue} style={{ color: '#1A1A1A' }}>{value.shows}</div>
-                    {value.shows_compare !== 0 && <div className={styles.bar__absoluteValue} style={{ color: colorParams.color }}>{`${colorParams.sign}${value.shows_compare}`}</div>}  
-                    <div className={styles.bar__middleLine}></div>
-                    <div className={styles.bar__absoluteValue} style={{ color: '#1A1A1A' }}>{value.place}</div>
-                </div>
-            </Popover>
-        )
+
+        if (value.place > 0) {
+            return (
+                <Popover
+                    content={<PopoverContent value={value} />}
+                    arrow={false}
+                    color='white'
+                    destroyTooltipOnHide
+                >
+                    <div className={styles.bar__compareValuesBlock} style={{ backgroundColor: colorParams.backgroundColor }}>
+                        <div className={styles.bar__comparativeValue} style={{ color: '#1A1A1A' }}>{value.shows}</div>
+                        {value.shows_compare !== 0 && <div className={styles.bar__absoluteValue} style={{ color: colorParams.color }}>{`${colorParams.sign}${value.shows_compare}`}</div>}
+                        <div className={styles.bar__middleLine}></div>
+                        <div className={styles.bar__absoluteValue} style={{ color: '#1A1A1A' }}>{value.place}</div>
+                    </div>
+                </Popover>
+            )
+        } else {
+            return (
+                <Popover
+                    content={<PopoverContent value={value} />}
+                    arrow={false}
+                    color='white'
+                    destroyTooltipOnHide
+                >
+                    <div className={styles.bar__compareValuesBlock}>
+                        —
+                    </div>
+                </Popover>
+            )
+        }
+
     } else {
         return <>{formatPrice(value, ' ')}</>
     }

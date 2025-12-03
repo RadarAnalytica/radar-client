@@ -137,3 +137,16 @@
     align-items: center;
     gap: 12px;
 }
+.modal__inputWrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
+    gap: 4px;
+}
+
+.modal__inputWrapper label {
+    font-size: 12px;
+    font-weight: 500;
+    color: #1A1A1A;
+}

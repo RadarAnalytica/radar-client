@@ -63,6 +63,9 @@ export const ProceedToBlock: React.FC<IProceedToBlockProps> = ({
     const [ tabs, setTabs ] = useState<string | undefined>(tabsOptions?.[0] ?? undefined);
     const [form] = Form.useForm();
     const submitHandler = (fields: Record<string, any>) => {
+        if (!fields?.inputValue?.trim()) {
+            return;
+        }
         submit(fields.inputValue, tabs ?? undefined);
     };
 
@@ -93,6 +96,7 @@ export const ProceedToBlock: React.FC<IProceedToBlockProps> = ({
                         <Form.Item
                             name="inputValue"
                             className={styles.block__formItem}
+                            // rules={[{ required: true, message: '' }]}
                         >
                             <Input placeholder={placeholder} />
                         </Form.Item>
