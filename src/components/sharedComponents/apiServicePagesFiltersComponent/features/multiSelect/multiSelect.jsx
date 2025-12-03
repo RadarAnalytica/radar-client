@@ -20,7 +20,8 @@ export const MultiSelect = (
         dispatch,
         filterActions,
         params,
-        isDataLoading
+        isDataLoading,
+        disabled
     }
 ) => {
     const [searchState, setSearchState] = useState('');
@@ -221,7 +222,7 @@ export const MultiSelect = (
                             </>
                         )}
                         menuItemSelectedIcon={<span style={{ background: '#5329FF', width: 4, height: 4, borderRadius: '50% 50%' }}></span>}
-                        disabled={isDataLoading}
+                        disabled={isDataLoading || disabled}
                     />
                 </ConfigProvider>
             </div>

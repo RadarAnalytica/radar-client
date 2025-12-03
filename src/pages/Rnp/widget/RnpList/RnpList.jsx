@@ -117,7 +117,7 @@ function DropZone({ index, isActive, isDragging, draggedIndex, onDrop }) {
 	);
 }
 
-function RnpListItem({ el, index, expanded, setExpanded, setDeleteRnpId, onReorder, isDragging }) {
+function RnpListItem({ el, index, expanded, setExpanded, setDeleteRnpId, onReorder, isDragging, isPublicVersion }) {
 	const ref = useRef(null);
 	const gripRef = useRef(null);
 	const [closestEdge, setClosestEdge] = useState(null);
@@ -223,6 +223,7 @@ function RnpListItem({ el, index, expanded, setExpanded, setDeleteRnpId, onReord
 							ref={gripRef}
 							onClick={() => setExpanded([])}
 							disabled={expanded === el.article_data.wb_id }
+							hidden={isPublicVersion}
 						/>
 						<div className={styles.item__product}>
 							<RnpItem
@@ -271,7 +272,7 @@ function RnpListItem({ el, index, expanded, setExpanded, setDeleteRnpId, onReord
 	);
 }
 
-export default function RnpList({ view, expanded, setExpanded, setAddRnpModalShow, rnpDataByArticle, setRnpDataByArticle, rnpDataTotal, setDeleteRnpId, loading }) {
+export default function RnpList({ view, expanded, setExpanded, setAddRnpModalShow, rnpDataByArticle, setRnpDataByArticle, rnpDataTotal, setDeleteRnpId, loading, isPublicVersion }) {
 	const { activeBrand } = useAppSelector((state) => state.filters);
 	const items = useMemo(() => rnpDataByArticle || [], [rnpDataByArticle]);
 
@@ -489,6 +490,7 @@ export default function RnpList({ view, expanded, setExpanded, setAddRnpModalSho
 											setDeleteRnpId={setDeleteRnpId}
 											onReorder={handleReorder}
 											isDragging={isDragging}
+											isPublicVersion={isPublicVersion}
 										/>
 									</React.Fragment>
 								);

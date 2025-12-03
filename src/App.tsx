@@ -191,6 +191,7 @@ function App() {
                 <Route path='/restore-error' element={<Suspense fallback={<LoaderPage />}>{' '}<RestoreError /></Suspense>} />
                 <Route path='/confirmation/:email/:code' element={<Suspense fallback={<LoaderPage />}>{' '}<ConfirmationPage /></Suspense>} />
                 <Route path='/after-payment' element={<Suspense fallback={<LoaderPage />}>{' '}<NewAfterPayment devMode={false} /></Suspense>} />
+                <Route path='/rnp-public' element={<Suspense fallback={<LoaderPage />}>{' '}<Rnp isPublicVersion /></Suspense>} />
                 {/* 404 */}
                 <Route path='*' element={<Page404 />} />
                 </Routes>
