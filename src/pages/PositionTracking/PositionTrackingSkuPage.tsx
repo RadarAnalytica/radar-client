@@ -1469,6 +1469,8 @@ const PositionTrackingSkuTable = memo(({ requestStatus, skuData }: PositionTrack
     const [sortState, setSortState] = useState<{ sort_field: string, sort_order: 'ASC' | 'DESC' }>({ sort_field: 'frequency', sort_order: 'DESC' });
     const [tableConfig, setTableConfig] = useState<Record<string, any>[]>(initTableConfig);
     const [paginationState, setPaginationState] = useState<{ current: number, pageSize: number, total: number }>({ current: 1, pageSize: 12, total: 0 });
+    console.log('paginationState', paginationState);
+    console.log('paginationState', paginationState);
     const [tableData, setTableData] = useState<any[]>([]);
     const tableContainerRef = useRef<HTMLDivElement>(null);
 
@@ -1489,6 +1491,7 @@ const PositionTrackingSkuTable = memo(({ requestStatus, skuData }: PositionTrack
         const newPaginationState = {
             ...paginationState,
             current: 1,
+            total: Math.ceil(sortedData.length / paginationState.pageSize),
         }
         setPaginationState(newPaginationState);
         return sortedData.slice((newPaginationState.current - 1) * newPaginationState.pageSize, newPaginationState.current * newPaginationState.pageSize);;;
@@ -1566,7 +1569,7 @@ const PositionTrackingSkuTable = memo(({ requestStatus, skuData }: PositionTrack
                                     hideOnSinglePage: true,
                                     onChange: paginationHandler,
                                 }}
-                                paginationContainerStyle={{ display: paginationState.total > 1 ? 'block' : 'none' }}
+                                //paginationContainerStyle={{ display: paginationState.total > 1 ? 'block' : 'none' }}
                                 stickyHeader
                                 bodyCellStyle={{ height: '43px' }}
                                 customCellRender={{
