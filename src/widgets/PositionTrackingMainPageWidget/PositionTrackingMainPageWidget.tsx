@@ -73,8 +73,6 @@ export const PositionTrackingMainPageWidget: React.FC<IPositionTrackingMainPageW
     }, [navigate]);
 
     const handleKeywordsSelectionSubmit = useCallback((inputValue: string, tab?: string) => {
-        console.log('tab', tab);
-        console.log('inputValue', inputValue);
         navigate(`/keywords-selection/?query=${inputValue}&match_type=${tab}`);
     }, [navigate]);
 
@@ -94,21 +92,23 @@ export const PositionTrackingMainPageWidget: React.FC<IPositionTrackingMainPageW
                                 className={styles.addBlock__form}
                                 onFinish={submitHandler}
                             >
-                                <Form.Item
-                                    name="sku"
-                                    rules={[{ required: true, message: 'Пожалуйста, заполните это поле' }]}
-                                    className={styles.addBlock__formItem}
-                                >
-                                    <Input placeholder="Введите артикул или ссылку" />
-                                </Form.Item>
-                                <Button
-                                    type="primary"
-                                    htmlType="submit"
-                                    style={{ fontWeight: 600 }}
-                                    loading={loading}
-                                >
-                                    Добавить
-                                </Button>
+                                <div className={styles.addBlock__formRow}>
+                                    <Form.Item
+                                        name="sku"
+                                        rules={[{ required: true, message: 'Пожалуйста, заполните это поле' }]}
+                                        className={styles.addBlock__formItem}
+                                    >
+                                        <Input placeholder="Введите артикул или ссылку" />
+                                    </Form.Item>
+                                    <Button
+                                        type="primary"
+                                        htmlType="submit"
+                                        style={{ fontWeight: 600 }}
+                                        loading={loading}
+                                    >
+                                        Добавить
+                                    </Button>
+                                </div>
                             </Form>
                         </ConfigProvider>
                     </div>

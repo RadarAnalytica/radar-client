@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { Bar } from 'react-chartjs-2';
 import type { Chart } from 'chart.js';
 import { RadarRateMark } from '@/shared';
@@ -26,6 +26,8 @@ export const PositionTrackingTableChart: React.FC<MetricChartProps> = ({
   maxControlValue,
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const chartRef = useRef<Chart | null>(null);
+  const hideTooltipTimeoutRef = useRef<number | null>(null);
   const [tooltip, setTooltip] = useState<{
     display: boolean;
     x: number;
@@ -131,6 +133,23 @@ export const PositionTrackingTableChart: React.FC<MetricChartProps> = ({
       const { event, replay } = args;
       if (replay) return;
       
+      // Очищаем предыдущий таймер
+      if (hideTooltipTimeoutRef.current) {
+        clearTimeout(hideTooltipTimeoutRef.current);
+        hideTooltipTimeoutRef.current = null;
+      }
+      
+      // Обрабатываем события выхода мыши
+      if (event.type === 'mouseout' || event.type === 'mouseleave') {
+        setTooltip(prev => ({ ...prev, display: false }));
+        return;
+      }
+      
+      // Пропускаем события, которые не связаны с мышью
+      if (event.type !== 'mousemove' && event.type !== 'mouseenter') {
+        return;
+      }
+      
       const canvasPosition = chart.canvas.getBoundingClientRect();
       const activeElements = chart.getElementsAtEventForMode(
         event,
@@ -172,10 +191,23 @@ export const PositionTrackingTableChart: React.FC<MetricChartProps> = ({
           });
         }
       } else {
-        setTooltip(prev => ({ ...prev, display: false }));
+        // Если нет активных элементов, устанавливаем таймер для скрытия тултипа
+        // Это помогает в случаях, когда событие mouseleave не срабатывает
+        hideTooltipTimeoutRef.current = setTimeout(() => {
+          setTooltip(prev => ({ ...prev, display: false }));
+        }, 100);
       }
     },
   };
+
+  // Очистка таймера при размонтировании
+  useEffect(() => {
+    return () => {
+      if (hideTooltipTimeoutRef.current) {
+        clearTimeout(hideTooltipTimeoutRef.current);
+      }
+    };
+  }, []);
 
   const options = {
     responsive: true,
@@ -215,7 +247,12 @@ export const PositionTrackingTableChart: React.FC<MetricChartProps> = ({
     <>
       <div
         ref={containerRef}
-        onMouseLeave={() => setTooltip(prev => ({ ...prev, display: false }))}
+        onMouseLeave={() => {
+          if (hideTooltipTimeoutRef.current) {
+            clearTimeout(hideTooltipTimeoutRef.current);
+          }
+          setTooltip(prev => ({ ...prev, display: false }));
+        }}
         style={{
           width: '100px',
           height: '100%',
@@ -227,6 +264,9 @@ export const PositionTrackingTableChart: React.FC<MetricChartProps> = ({
           data={chartConfig} 
           options={options} 
           plugins={[externalTooltipPlugin]}
+          ref={(ref) => {
+            chartRef.current = ref;
+          }}
         />
       </div>
       {tooltip.display && (

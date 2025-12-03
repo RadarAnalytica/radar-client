@@ -51,7 +51,7 @@ const modalCancelButtonTheme = {
 const modalPrimaryButtonTheme = {
     token: {
         colorPrimary: '#5329FF',
-        fontSize: 16,
+        fontSize: 14,
         fontWeight: 600,
         fontFamily: 'Mulish',
         controlHeight: 44,
@@ -59,11 +59,12 @@ const modalPrimaryButtonTheme = {
     },
     components: {
         Button: {
-            paddingInline: 24,
+            paddingInline: 12,
             paddingBlock: 10,
             colorPrimaryHover: '#6942FF',
             colorPrimaryActive: '#421BCF',
             boxShadow: 'none',
+            controlHeight: 38
         },
     },
 };

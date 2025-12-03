@@ -410,7 +410,7 @@ const PositionTrackingMainPage = () => {
                 return b.queries - a.queries;
             }
             if (activeFilter === 'По средней позиции') {
-                return b.place - a.place;
+                return a.place - b.place;
             }
         });
         return sortedProducts.slice((paginationState.current - 1) * paginationState.pageSize, paginationState.current * paginationState.pageSize);
@@ -628,12 +628,26 @@ const PositionTrackingMainPage = () => {
                         <RadarLoader loaderStyle={{ height: '50vh' }} />
                     </div>
                 }
-                {productsData && productsData.length > 0 && !requestStatus.isLoading &&
+                {productsData && !requestStatus.isLoading &&
                     <div className={styles.page__tableWrapper}>
                         <RadarTable
                             config={positionTrackingTableConfig}
                             preset='radar-table-default'
                             dataSource={getSortedProductsData(productsData, activeFilter)}
+                            noDataRender={() => {
+                                const currentProject = projectsList?.find((project) => project.id.toString() === settingsState.project.toString());
+
+                                if (currentProject && currentProject.products.length === 0) {
+                                    return (<div style={{ height: '100%', display: 'flex', alignItems: 'center', paddingLeft: '16px', fontSize: '14px' }}>
+                                        В выбранном проекте нет добавленных товаров
+                                        </div>)
+                                }
+                                if (currentProject && currentProject.products.length > 0) {
+                                    return (<div style={{ height: '100%', display: 'flex', alignItems: 'center', paddingLeft: '16px', fontSize: '14px' }}>
+                                        К сожалению ничего не найдено
+                                        </div>)
+                                }
+                            }}
                             pagination={{
                                 current: paginationState.current,
                                 pageSize: paginationState.pageSize,
@@ -645,7 +659,7 @@ const PositionTrackingMainPage = () => {
                                 }
                             }}
                             bodyCellStyle={{ height: '75px' }}
-                            paginationContainerStyle={{ display: paginationState.total > 1 ? 'block' : 'none' }}
+                            paginationContainerStyle={{ display: paginationState.total > 1 || productsData.length > 0 ? 'block' : 'none' }}
                             customCellRender={{
                                 idx: [],
                                 renderer: (value: any, record: any, index: number, dataIndex: string) => positionTrackingTableCustomCellRender(value, record, index, dataIndex, deleteProduct),
