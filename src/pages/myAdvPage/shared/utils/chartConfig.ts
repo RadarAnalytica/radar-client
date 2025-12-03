@@ -10,6 +10,7 @@ export interface ChartControlConfig {
   isAnnotation: boolean;
   isControl: boolean;
   defaultActive: boolean;
+  tooltipText?: string;
 }
 
 export const chartCompareConfigObject: ChartControlConfig[] = [
@@ -22,7 +23,8 @@ export const chartCompareConfigObject: ChartControlConfig[] = [
     isOnChart: true, 
     isAnnotation: false, 
     isControl: true, 
-    defaultActive: true 
+    defaultActive: true,
+    tooltipText: 'Сколько раз товар был добавлен в корзину после клика по рекламе. Показывает рост интереса и намерение купить',
   },
   { 
     engName: 'orders', 
@@ -33,7 +35,8 @@ export const chartCompareConfigObject: ChartControlConfig[] = [
     isOnChart: true, 
     isAnnotation: false, 
     isControl: true, 
-    defaultActive: true 
+    defaultActive: true,
+    tooltipText: 'Общее число оформленных заказов, атрибутированных к данной рекламной кампании',
   },
   { 
     engName: 'order_item_count', 
@@ -44,7 +47,8 @@ export const chartCompareConfigObject: ChartControlConfig[] = [
     isOnChart: true, 
     isAnnotation: false, 
     isControl: true, 
-    defaultActive: true 
+    defaultActive: true,
+    tooltipText: 'Суммарное количество единиц товара во всех заказах, привлеченных этой кампанией',
   },
   { 
     engName: 'expected_purchase', 
@@ -55,7 +59,8 @@ export const chartCompareConfigObject: ChartControlConfig[] = [
     isOnChart: true, 
     isAnnotation: false, 
     isControl: true, 
-    defaultActive: true 
+    defaultActive: true,
+    tooltipText: 'Ожидаемое количество единиц товара, которые будут оплачены. Для точного расчёта используется финальный процент выкупа на основе данных 14-дневной давности, когда все заказы уже перешли в статус «Выкуплен» или «Возврат/Невыкуп». Это исключает влияние незавершённых заказов на статистику',
   },
   { 
     engName: 'view_click', 
@@ -67,7 +72,8 @@ export const chartCompareConfigObject: ChartControlConfig[] = [
     isOnChart: true, 
     isAnnotation: false, 
     isControl: true, 
-    defaultActive: true 
+    defaultActive: true,
+    tooltipText: 'Коэффициент кликабельности объявления. Показывает, какая доля показов привлекла внимание пользователя и вызвала переход. Ключевой показатель релевантности рекламного объявления',
   },
   { 
     engName: 'click_cart', 
@@ -79,7 +85,8 @@ export const chartCompareConfigObject: ChartControlConfig[] = [
     isOnChart: true, 
     isAnnotation: false, 
     isControl: true, 
-    defaultActive: true 
+    defaultActive: true,
+    tooltipText: 'Доля пользователей, которые после перехода на карточку проявили серьезное намерение к покупке, добавив товар в корзину. Говорит о качестве карточки и оффера',
   },
   { 
     engName: 'cart_order', 
@@ -91,7 +98,8 @@ export const chartCompareConfigObject: ChartControlConfig[] = [
     isOnChart: true, 
     isAnnotation: false, 
     isControl: true, 
-    defaultActive: true 
+    defaultActive: true,
+    tooltipText: 'Показывает эффективность завершения покупки. Отражает, насколько легко пользователю оформить заказ после добавления в корзину',
   },
   { 
     engName: 'view_order', 
@@ -103,7 +111,8 @@ export const chartCompareConfigObject: ChartControlConfig[] = [
     isOnChart: true, 
     isAnnotation: false, 
     isControl: true, 
-    defaultActive: true 
+    defaultActive: true,
+    tooltipText: 'Ключевой показатель общей эффективности кампании: какая часть всех показов привела к оформлению заказа. Формула: (Заказы / Просмотры) * 100%',
   },
   { 
     engName: 'expected_order_purchase', 
@@ -115,7 +124,8 @@ export const chartCompareConfigObject: ChartControlConfig[] = [
     isOnChart: true, 
     isAnnotation: false, 
     isControl: true, 
-    defaultActive: true 
+    defaultActive: true,
+    tooltipText: 'Ожидаемая доля заказанных товаров, которая будет оплачена. Для точности используется конверсия в выкуп по заказам, завершенным 14 дней назад, что исключает влияние "висящих" заказов',
   },
   { 
     engName: 'expected_click_purchase', 
@@ -127,7 +137,8 @@ export const chartCompareConfigObject: ChartControlConfig[] = [
     isOnChart: true, 
     isAnnotation: false, 
     isControl: true, 
-    defaultActive: true 
+    defaultActive: true,
+    tooltipText: 'Показывает, какой процент кликов по рекламе в итоге конвертируется в выкуп. Расчет основан на финальных данных о выкупе товаров за предыдущие периоды',
   },
   { 
     engName: 'views', 
@@ -138,7 +149,8 @@ export const chartCompareConfigObject: ChartControlConfig[] = [
     isOnChart: true, 
     isAnnotation: false, 
     isControl: true, 
-    defaultActive: true 
+    defaultActive: true,
+    tooltipText: 'Сколько раз ваше рекламное объявление было показано пользователям площадки в выбранном периоде. Базовый показатель охвата аудитории',
   },
   { 
     engName: 'clicks', 
@@ -149,7 +161,8 @@ export const chartCompareConfigObject: ChartControlConfig[] = [
     isOnChart: true, 
     isAnnotation: false, 
     isControl: true, 
-    defaultActive: true 
+    defaultActive: true,
+    tooltipText: 'Число переходов пользователей на вашу карточку товара после показа рекламного объявления. Отражает уровень интереса',
   },
   { 
     engName: 'cpc', 
@@ -161,7 +174,8 @@ export const chartCompareConfigObject: ChartControlConfig[] = [
     isOnChart: true, 
     isAnnotation: false, 
     isControl: true, 
-    defaultActive: true 
+    defaultActive: true,
+    tooltipText: 'Рассчитывается как Расходы на рекламу / Клики. Показатель того, сколько в среднем вы платите за один переход на карточку',
   },
   { 
     engName: 'avg_cpm', 
@@ -173,7 +187,8 @@ export const chartCompareConfigObject: ChartControlConfig[] = [
     isOnChart: true, 
     isAnnotation: false, 
     isControl: true, 
-    defaultActive: true 
+    defaultActive: true,
+    tooltipText: 'Средняя стоимость 1000 показов рекламного объявления в рамках данной рекламной кампании за выбранный период. Показатель помогает понять, сколько стоит охват аудитории на уровне показов, независимо от кликов или других действий. Формула: (Расходы на рекламу / Просмотры) * 1000',
   },
   // { 
   //   engName: 'avg_position', 
@@ -196,7 +211,8 @@ export const chartCompareConfigObject: ChartControlConfig[] = [
     isOnChart: true, 
     isAnnotation: false, 
     isControl: true, 
-    defaultActive: true 
+    defaultActive: true,
+    tooltipText: 'Показывает, какой процент от суммы всех оформленных заказов составляют затраты на рекламу. Помогает оценить рентабельность привлечения заказов. Формула: (Расходы на рекламу / Сумма заказов) * 100%',
   },
   { 
     engName: 'drr_purchase', 
@@ -208,7 +224,8 @@ export const chartCompareConfigObject: ChartControlConfig[] = [
     isOnChart: true, 
     isAnnotation: false, 
     isControl: true, 
-    defaultActive: true 
+    defaultActive: true,
+    tooltipText: 'Ожидаемый процент рекламных затрат от суммы прогнозируемой выручки. Более точный показатель рентабельности инвестиций в рекламу (ROAS), так как основан на прогнозе реальных продаж. Формула: (Расходы на рекламу / Прогноз выкупа на сумму) * 100%',
   },
   { 
     engName: 'cp_cart', 
@@ -220,7 +237,8 @@ export const chartCompareConfigObject: ChartControlConfig[] = [
     isOnChart: true, 
     isAnnotation: false, 
     isControl: true, 
-    defaultActive: true 
+    defaultActive: true,
+    tooltipText: 'Средние затраты на то, чтобы пользователь добавил товар в корзину. Оценивает эффективность рекламы на этапе формирования спроса. Формула: Расходы на рекламу / Добавления в корзину',
   },
   { 
     engName: 'expected_cps', 
@@ -232,7 +250,8 @@ export const chartCompareConfigObject: ChartControlConfig[] = [
     isOnChart: true, 
     isAnnotation: false, 
     isControl: true, 
-    defaultActive: true 
+    defaultActive: true,
+    tooltipText: 'Оценка средних рекламных затрат на одну фактическую продажу (выкуп). Учитывает прогнозируемое количество выкупов. Формула: Расходы на рекламу / Прогноз выкупа (шт)',
   },
   { 
     engName: 'orders_amount', 
@@ -244,7 +263,8 @@ export const chartCompareConfigObject: ChartControlConfig[] = [
     isOnChart: true, 
     isAnnotation: false, 
     isControl: true, 
-    defaultActive: true 
+    defaultActive: true,
+    tooltipText: 'Общий объем заказов, привлеченных кампанией, в денежном выражении. До вычета возможных отмен и невыкупов',
   },
   { 
     engName: 'expected_purchase_amount', 
@@ -256,7 +276,8 @@ export const chartCompareConfigObject: ChartControlConfig[] = [
     isOnChart: true, 
     isAnnotation: false, 
     isControl: true, 
-    defaultActive: true 
+    defaultActive: true,
+    tooltipText: 'Оценка реальной выручки от кампании после выкупа товаров. Прогноз строится на финальном проценте выкупа, рассчитанном по заказам двухнедельной давности с известным итогом. Это позволяет оценить рентабельность кампании без искажений из-за незавершённых заказов. Формула: Сумма заказов × Исторический % выкупа',
   },
   { 
     engName: 'ad_spend', 
@@ -268,7 +289,8 @@ export const chartCompareConfigObject: ChartControlConfig[] = [
     isOnChart: true, 
     isAnnotation: false, 
     isControl: true, 
-    defaultActive: true 
+    defaultActive: true,
+    tooltipText: 'Общая сумма, списанная площадкой за показы вашего рекламного объявления в выбранном периоде',
   },
 ];
 
