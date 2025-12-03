@@ -81,7 +81,7 @@ export const RadarProductBar: React.FC<IRadarProductBarProps> = ({ data, isLoadi
                 {hasWbLink && data?.wb_id &&
                     <Link to={`https://www.wildberries.ru/catalog/${data?.wb_id}/detail.aspx`} target='_blank' className={styles.head__link}>
                         <img src={wb_icon} alt='wb_icon' width={20} height={20} style={{ transform: 'scale(1.2)' }} />
-                        Артикул
+                        {data?.wb_id}
                     </Link>
                 }
                 {additionalInfo &&

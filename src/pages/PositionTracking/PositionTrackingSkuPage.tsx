@@ -243,7 +243,7 @@ const formatDateLong = (dateInput: string): string => {
     const day = date.getDate();
     const months = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'];
     const year = date.getFullYear();
-    return `${day} ${months[date.getMonth()]}, ${year}`;
+    return `${day} ${months[date.getMonth()]} ${year}`;
 };
 
 const getTableConfig = (skuData: PositionTrackingSkuPageData, tableType: 'Кластеры' | 'По запросам') => {
@@ -832,7 +832,7 @@ const PositionTrackingSkuPage = () => {
                         family: 'Mulish',
                         size: 12,
                     },
-                    callback: (value: string | number) => `${value}к`,
+                    callback: (value: string | number) => `${formatPrice(value, ' ')}`,
                 },
                 border: {
                     color: 'white',
@@ -856,6 +856,7 @@ const PositionTrackingSkuPage = () => {
                         family: 'Mulish',
                         size: 12,
                     },
+                    callback: (value: string | number) => `${formatPrice(value, ' ')}`,
                 },
                 border: {
                     color: 'white',
@@ -879,6 +880,7 @@ const PositionTrackingSkuPage = () => {
                         family: 'Mulish',
                         size: 12,
                     },
+                    callback: (value: string | number) => `${formatPrice(value, ' ')}`,
                 },
                 border: {
                     color: 'white',
@@ -1070,9 +1072,9 @@ const PositionTrackingSkuPage = () => {
 
             // Compare value with RadarRateMark component
             if (visibilityCompare !== undefined && visibilityCompare !== null) {
-                const diff = visibility - visibilityCompare;
+                const diff = visibilityCompare;
                 const root = createRoot(compareContainer);
-                root.render(<RadarRateMark value={Math.round(diff)} units='%' />);
+                root.render(<RadarRateMark value={diff} units='%' />);
                 valuesRow.appendChild(compareContainer);
             }
 
@@ -1306,7 +1308,7 @@ const PositionTrackingSkuPage = () => {
                             selectId='feed_type'
                             label=''
                             value={requestObject?.feed_type === 'both' ? 0 : requestObject?.feed_type === 'organic' ? 2 : 1}
-                            optionsData={[{ value: 0, label: 'Органика+реклама' }, { value: 2, label: 'Органика' }, { value: 1, label: 'Реклама' }]}
+                            optionsData={[{ value: 0, label: 'Органика+Реклама' }, { value: 2, label: 'Органика' }, { value: 1, label: 'Реклама' }]}
                             handler={(value: number) => {
                                 setRequestObject({ ...requestObject, feed_type: value === 0 ? 'both' : value === 2 ? 'organic' : 'ad' });
                             }}
@@ -1469,11 +1471,12 @@ const PositionTrackingSkuTable = memo(({ requestStatus, skuData }: PositionTrack
     const [paginationState, setPaginationState] = useState<{ current: number, pageSize: number, total: number }>({ current: 1, pageSize: 12, total: 0 });
     const [tableData, setTableData] = useState<any[]>([]);
     const tableContainerRef = useRef<HTMLDivElement>(null);
-    const handleTableSort = useCallback((tableData: Record<string, any>[]) => {
-        const { sort_field, sort_order } = sortState;
-        if (!tableData || !Array.isArray(tableData) || tableData.length === 0) return [];
 
-        const sortedData = [...tableData].sort((a, b) => {
+
+    const dataSorter = useCallback((sort_field: string, sort_order: 'ASC' | 'DESC') => {
+        if (!skuData) return [];
+        const preparedData = getTableData(skuData, tableType);
+        const sortedData = [...preparedData].sort((a, b) => {
             const freqA = a.frequency ?? 0;
             const freqB = b.frequency ?? 0;
 
@@ -1483,18 +1486,48 @@ const PositionTrackingSkuTable = memo(({ requestStatus, skuData }: PositionTrack
                 return freqB - freqA;
             }
         });
+        const newPaginationState = {
+            ...paginationState,
+            current: 1,
+        }
+        setPaginationState(newPaginationState);
+        return sortedData.slice((newPaginationState.current - 1) * newPaginationState.pageSize, newPaginationState.current * newPaginationState.pageSize);;;
 
-        return sortedData.slice((paginationState.current - 1) * paginationState.pageSize, paginationState.current * paginationState.pageSize);;
+    }, [sortState, skuData, paginationState, tableType]);
 
-    }, [sortState, paginationState, tableData]);
+    const paginationHandler = useCallback((page: number, pageSize: number) => {
+        const newPaginationState = {
+            ...paginationState,
+            current: page,
+        }
+
+        if (!skuData) return [];
+        const preparedData = getTableData(skuData, tableType);
+        const sortedData = [...preparedData].sort((a, b) => {
+            const freqA = a.frequency ?? 0;
+            const freqB = b.frequency ?? 0;
+
+            if (sortState.sort_order === 'ASC') {
+                return freqA - freqB;
+            } else {
+                return freqB - freqA;
+            }
+        });
+       
+        const paginatedData = sortedData.slice((newPaginationState.current - 1) * newPaginationState.pageSize, newPaginationState.current * newPaginationState.pageSize);
+        setTableData(paginatedData);
+        setPaginationState(newPaginationState);
+    }, [paginationState, skuData, tableType, sortState]);
 
 
     useEffect(() => {
         if (skuData) {
             const preparedData = getTableData(skuData, tableType);
-            setPaginationState(prev => ({ ...prev, current: 1, total: Math.ceil(preparedData.length / 10) }));
+            setPaginationState(prev => ({ ...prev, current: 1, total: Math.ceil(preparedData.length / paginationState.pageSize) }));
             setTableConfig(getTableConfig(skuData, tableType));
-            setTableData(preparedData);
+            const sortedData = dataSorter('frequency', 'DESC');
+            setSortState({ sort_field: 'frequency', sort_order: 'DESC' });
+            setTableData(sortedData);
         }
     }, [skuData, tableType]);
     return (
@@ -1519,17 +1552,19 @@ const PositionTrackingSkuTable = memo(({ requestStatus, skuData }: PositionTrack
                                 treeMode={tableType === 'Кластеры'}
                                 preset='radar-table-default'
                                 sorting={sortState}
-                                onSort={(sort_field, sort_order) => setSortState({ sort_field, sort_order })}
-                                dataSource={handleTableSort(tableData)}
+                                onSort={(sort_field, sort_order) => {
+                                    setSortState({ sort_field, sort_order });
+                                    const sortedData = dataSorter(sort_field, sort_order);
+                                    setTableData(sortedData);
+                                }}
+                                dataSource={tableData}
                                 pagination={{
                                     current: paginationState.current,
                                     pageSize: paginationState.pageSize,
                                     total: paginationState.total,
                                     showQuickJumper: true,
                                     hideOnSinglePage: true,
-                                    onChange: (page, pageSize) => {
-                                        setPaginationState({ ...paginationState, current: page });
-                                    }
+                                    onChange: paginationHandler,
                                 }}
                                 paginationContainerStyle={{ display: paginationState.total > 1 ? 'block' : 'none' }}
                                 stickyHeader

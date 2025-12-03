@@ -69,6 +69,12 @@
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
+    transition: all .2s ease;
+    text-decoration: none;
+}
+
+.nameCell__title:hover {
+    color: #5329FF;
 }
 
 .nameCell__skuBlock {
