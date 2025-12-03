@@ -167,7 +167,9 @@ const WbMetricsTable: React.FC<WbMetricsTableProps> = ({
           <div 
             className={styles.percentageCell}
             style={{ 
-              backgroundColor: value ? getColorForPercentage(value, data.min_control_value, data.max_control_value, metricType) : 'transparent'
+              backgroundColor: value !== null 
+                ? getColorForPercentage(value, data.min_control_value, data.max_control_value, metricType) 
+                : 'transparent'
             }}
           >
             {value !== null ? `${value}%` : '-'}
