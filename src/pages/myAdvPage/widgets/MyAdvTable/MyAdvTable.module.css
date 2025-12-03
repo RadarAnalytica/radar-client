@@ -87,13 +87,6 @@
   padding-left: 30px;
 }
 
-.labelCell {
-  width: 100%;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
-}
-
 .customCell, .labelCell {
   font-size: 14px;
 }
@@ -227,7 +220,7 @@
   }
 
   :global(.radar-table__header-cell-text-wrapper) {
-    text-wrap: nowrap;
+    -webkit-line-clamp: 3;
   }
 
   :global(.radar-table-pagination-container) {

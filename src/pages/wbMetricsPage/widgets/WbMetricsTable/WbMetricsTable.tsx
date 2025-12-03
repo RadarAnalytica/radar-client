@@ -161,15 +161,13 @@ const WbMetricsTable: React.FC<WbMetricsTableProps> = ({
       } else if (value === null) {
         tooltipContent = 'Продажи по данному товару не зафиксированы';
       }
-  
+
       return (
         <TippyTooltip content={tooltipContent}>
           <div 
             className={styles.percentageCell}
             style={{ 
-              backgroundColor: value !== null 
-                ? getColorForPercentage(value, data.min_control_value, data.max_control_value, metricType, 0.2)
-                : 'transparent'
+              backgroundColor: value ? getColorForPercentage(value, data.min_control_value, data.max_control_value, metricType) : 'transparent'
             }}
           >
             {value !== null ? `${value}%` : '-'}

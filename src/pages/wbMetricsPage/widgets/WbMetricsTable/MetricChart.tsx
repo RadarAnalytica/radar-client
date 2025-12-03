@@ -2,6 +2,7 @@ import React from 'react';
 import { Bar } from 'react-chartjs-2';
 import { getColorForPercentage } from './utils';
 import styles from './WbMetricsTable.module.css';
+import { getRGBA } from '@/service/utils';
 
 interface ControlDataItem {
   date: string;
@@ -51,14 +52,12 @@ const MetricChart: React.FC<MetricChartProps> = ({
   const minPercentage = maxControlValue * MIN_VISIBLE_PERCENTAGE;
 
   // Создаем массив цветов для каждого bar
-  const barColors = chartData.map(item =>
-    item.percentage === null || item.percentage === undefined
-      ? { top: 'rgba(240, 240, 240, 0.8)', bottom: 'rgba(240, 240, 240, 0.8)' }
-      : {
-          top: getColorForPercentage(item.percentage, minControlValue, maxControlValue, metricType),
-          bottom: getColorForPercentage(item.percentage, minControlValue, maxControlValue, metricType, 0.65)
-        }
-  );
+  const barColors = chartData.map(item => {
+    if (!item?.percentage) return { top: 'rgba(240, 240, 240, 0.8)', bottom: 'rgba(240, 240, 240, 0.8)' };
+    
+    const color = getColorForPercentage(item.percentage, minControlValue, maxControlValue, metricType, true);
+    return { top: color, bottom: getRGBA(color, 0.6) };
+  });
 
   const chartConfig = {
     labels: chartData.map(item => {

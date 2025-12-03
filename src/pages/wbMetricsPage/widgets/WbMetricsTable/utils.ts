@@ -3,19 +3,12 @@ export const getColorForPercentage = (
   minValue: number,
   maxValue: number,
   metricType: 'drr' | 'spp',
-  opacity: number = 1
+  isChart: boolean = false
 ): string => {
-  const colorScale = [
-    `rgba(249, 62, 62, ${opacity})`, // Красный
-    `rgba(253, 107, 66, ${opacity})`,
-    `rgba(254, 143, 40, ${opacity})`,
-    `rgba(250, 179, 19, ${opacity})`,
-    `rgba(242, 209, 2, ${opacity})`, // Желтый
-    `rgba(198, 211, 17, ${opacity})`,
-    `rgba(148, 208, 44, ${opacity})`,
-    `rgba(89, 212, 1, ${opacity})`,
-    `rgba(28, 215, 0, ${opacity})`, // Зеленый
-  ];
+  // От красного к зеленому
+  const colorScale = isChart 
+    ? [`#F93E3E`, `#FD6B42`, `#FE8F28`, `#FAB313`, `#F2D102`, `#C6D311`, `#94D02C`, `#59D401`, `#1CD700`] 
+    : [`#FED9D8`, `#FEDFD5`, `#FEE7D2`, `#FFEECF`, `#FEF5CC`, `#F4F5CD`, `#E8F6CC`, `#DEF6CC`, `#D2F7CD`];
 
   const range = maxValue - minValue;
   if (range <= 0) return metricType === 'drr' ? colorScale[colorScale.length - 1] : colorScale[0];

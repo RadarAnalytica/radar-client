@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import { Filters } from '@/components/sharedComponents/apiServicePagesFiltersComponent';
 import TableSettingsWidget from '../TableSettingsWidget/TableSettingsWidget';
 import { TABLE_CONFIG_VERSION, getDefaultTableConfig, TABLE_MAX_WIDTH } from '../../config/tableConfig';
-import { sortTableData } from './utils';
 import styles from './MyAdvTable.module.css';
 import { CompanyData } from '../../data/mockData';
 import { ColumnConfig } from '../../config/tableConfig';
@@ -40,18 +39,10 @@ const MyAdvTable: React.FC<MyAdvTableProps> = ({
 }) => {
   const tableContainerRef = useRef(null);
   const navigate = useNavigate();
-  const [tableData, setTableData] = useState<CompanyData[]>([]);
   const { activeBrand } = useAppSelector((state) => state.filters);
   const isDataNotCollected = activeBrand && !activeBrand?.is_primary_collect;
 
   const [expandedRowKeys, setExpandedRowKeys] = useState<string[]>([`${companyId || ''}_`]);
-
-  // Инициализация данных таблицы
-  useEffect(() => {
-    if (data) {
-      setTableData(data.map(item => ({ ...item, ...item.advert_funnel, ...item.advert_statistics, key: item.company_id })));
-    }
-  }, [data, sortState]);
 
   const handlePageChange = (page: number, pageSize?: number) => {
     setPageData({ ...pageData, page: page, per_page: pageSize || pageData.per_page });
@@ -66,9 +57,7 @@ const MyAdvTable: React.FC<MyAdvTableProps> = ({
 
     setPageData({ ...pageData, page: 1 });
     setSortState({ sort_field, sort_order });
-    if (data) {
-      setTableData([...sortTableData(data, { sort_field, sort_order })]);
-    }
+
     tableContainerRef.current?.scrollTo({
       top: 0,
       behavior: 'smooth'
