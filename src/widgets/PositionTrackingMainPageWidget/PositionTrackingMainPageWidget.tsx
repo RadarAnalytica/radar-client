@@ -2,7 +2,8 @@ import styles from './PositionTrackingMainPageWidget.module.css';
 import { Button, Form, ConfigProvider, Input } from 'antd';
 import { ProceedToBlock } from '@/features';
 import { useNavigate } from 'react-router-dom';
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
+import ErrorModal from '@/components/sharedComponents/modals/errorModal/errorModal';
 
 
 
@@ -51,6 +52,7 @@ export const PositionTrackingMainPageWidget: React.FC<IPositionTrackingMainPageW
     createProject,
     loading,
 }) => {
+    const [error, setError] = useState<string | null>(null);
     const navigate = useNavigate();
     const submitHandler = useCallback((fields: Record<string, any>) => {
         createProject(fields.sku);
@@ -65,6 +67,7 @@ export const PositionTrackingMainPageWidget: React.FC<IPositionTrackingMainPageW
             const startId = inputValue.indexOf('wildberries.ru/catalog/') + 'wildberries.ru/catalog/'.length;
             const endId = inputValue.indexOf('/detail.aspx');
             if (startId === -1 || endId === -1) {
+                setError('Не верный формат артикула. Вставьте только числа или ссылку вида: https://www.wildberries.ru/catalog/ID/detail.aspx')
                 return;
             }
             normilizedId = inputValue.substring(startId, endId);
@@ -132,6 +135,12 @@ export const PositionTrackingMainPageWidget: React.FC<IPositionTrackingMainPageW
                         title="Проверка выдачи (SERP)"
                         placeholder="Введите запрос"
                         submit={handleSerpCheckSubmit}
+                    />
+                    <ErrorModal
+                        message={error}
+                        open={!!error}
+                        onCancel={() => setError(null)}
+                        onClose={() => setError(null)}
                     />
                 </>
             }

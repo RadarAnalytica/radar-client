@@ -96,7 +96,7 @@ export const ProceedToBlock: React.FC<IProceedToBlockProps> = ({
                         <Form.Item
                             name="inputValue"
                             className={styles.block__formItem}
-                            // rules={[{ required: true, message: '' }]}
+                            rules={[{ required: true, message: '' }]}
                         >
                             <Input placeholder={placeholder} />
                         </Form.Item>

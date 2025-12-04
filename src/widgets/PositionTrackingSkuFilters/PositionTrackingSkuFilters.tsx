@@ -166,10 +166,28 @@ export const PositionTrackingSkuFilters: React.FC<IPositionTrackingSkuFiltersFor
                     initialValues={{
                     }}
                 >
-                      {/* Items block */}
-                      <div className={styles.filters__block}>
-                        <label>
+                    {/* Items block */}
+                    <div className={styles.filters__block}>
+                        <label style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
                             Позиции
+                            <ConfigProvider
+                                theme={{
+                                    token: {
+                                        colorTextLightSolid: '#1A1A1A'
+                                    }
+                                }}
+                            >
+                                <Tooltip
+                                    arrow={false}
+                                    color='white'
+                                    title='Позиция артикула (допустимы значения от 0 до 1200)'
+                                >
+                                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" style={{cursor: 'pointer' }}>
+                                        <rect x="0.75" y="0.75" width="18.5" height="18.5" rx="9.25" stroke="black" strokeOpacity="0.1" strokeWidth="1.5" />
+                                        <path d="M9.064 15V7.958H10.338V15H9.064ZM8.952 6.418V5.046H10.464V6.418H8.952Z" fill="#1A1A1A" fillOpacity="0.5" />
+                                    </svg>
+                                </Tooltip>
+                            </ConfigProvider>
                         </label>
                         <div className={styles.filters__blockWrapper}>
                             <Form.Item
@@ -260,7 +278,7 @@ export const PositionTrackingSkuFilters: React.FC<IPositionTrackingSkuFiltersFor
                             </Form.Item>
                         </div>
                     </div>
-                   
+
                     {/* Keywords to include select */}
                     <Form.Item
                         name="keywords"
