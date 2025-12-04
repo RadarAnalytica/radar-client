@@ -105,6 +105,51 @@ const inputTheme = {
     }
 }
 
+const deleteModalCancelButtonTheme = {
+    token: {
+        colorPrimary: '#1A1A1A',
+        fontSize: 14,
+        fontWeight: 600,
+        fontFamily: 'Mulish',
+        borderRadius: 8,
+    },
+    components: {
+        Button: {
+            paddingInline: 28,
+            paddingBlock: 12,
+            colorBgContainer: '#F4F5F6',
+            colorBgContainerHover: '#E9EBED',
+            colorBgContainerDisabled: '#F4F5F6',
+            colorBorder: 'transparent',
+            colorText: '#1A1A1A',
+            colorTextHover: '#1A1A1A',
+            boxShadow: 'none',
+            controlHeight: 38,
+        },
+    },
+};
+
+const deleteModalPrimaryButtonTheme = {
+    token: {
+        colorPrimary: '#FF3B5C',
+        fontSize: 14,
+        fontWeight: 600,
+        fontFamily: 'Mulish',
+        controlHeight: 48,
+        borderRadius: 8,
+    },
+    components: {
+        Button: {
+            paddingInline: 28,
+            paddingBlock: 12,
+            colorPrimaryHover: '#FF5370',
+            colorPrimaryActive: '#E82646',
+            boxShadow: 'none',
+            controlHeight: 38,
+        },
+    },
+};
+
 const modalCancelButtonTheme = {
     token: {
         colorPrimary: '#5329FF',
@@ -203,6 +248,7 @@ const PositionTrackingMainPage = () => {
     const [productsData, setProductsData] = useState<PositionTrackingProduct[] | null>(null);
     const [chartData, setChartData] = useState<ChartDataItem[] | null>(null);
     const [paginationState, setPaginationState] = useState<{ current: number, pageSize: number, total: number }>({ current: 1, pageSize: 10, total: 0 });
+    const [ productIdToDelete, setProductIdToDelete ] = useState<string | null>(null);
     const navigate = useNavigate();
     const { isDemoMode } = useDemoMode();
 
@@ -662,7 +708,7 @@ const PositionTrackingMainPage = () => {
                             paginationContainerStyle={{ display: paginationState.total > 1 || productsData.length > 0 ? 'block' : 'none' }}
                             customCellRender={{
                                 idx: [],
-                                renderer: (value: any, record: any, index: number, dataIndex: string) => positionTrackingTableCustomCellRender(value, record, index, dataIndex, deleteProduct),
+                                renderer: (value: any, record: any, index: number, dataIndex: string) => positionTrackingTableCustomCellRender(value, record, index, dataIndex, setProductIdToDelete),
                             }}
                         />
                     </div>}
@@ -741,6 +787,51 @@ const PositionTrackingMainPage = () => {
                                         addProductToProject(authToken, addModalState.sku, addModalState.projectId);
                                         setIsAddModalVisible(false)
                                     }}>Добавить</Button>
+                            </ConfigProvider>
+                        </div>
+                    </div>
+                </Modal>
+                {/* delete modal */}
+                <Modal
+                    open={productIdToDelete !==  null}
+                    onCancel={() => {
+                        if (requestStatus.isLoading) return;
+                        setProductIdToDelete(null)
+                    }}
+                    onClose={() => {
+                        if (requestStatus.isLoading) return;
+                        setProductIdToDelete(null)
+                    }}
+                    onOk={() => {
+                        if (requestStatus.isLoading) return;
+                        setProductIdToDelete(null)
+                    }}
+                    footer={null}
+                    centered
+                    width={400}
+                >
+                    <div className={styles.addModal}>
+                        <p className={styles.addModal__title} style={{ maxWidth: '300px' }}>Вы уверены, что хотите удалить товар из проекта?</p>
+                        <div className={styles.addModal__buttonsWrapper}>
+                            <ConfigProvider theme={deleteModalCancelButtonTheme}>
+                                <Button
+                                    loading={requestStatus.isLoading}
+                                    onClick={() => setProductIdToDelete(null)}
+                                    style={{ width: '50%' }}
+                                >
+                                    Отмена
+                                </Button>
+                            </ConfigProvider>
+                            <ConfigProvider theme={deleteModalPrimaryButtonTheme}>
+                                <Button
+                                    loading={requestStatus.isLoading}
+                                    type='primary'
+                                    onClick={async () => {
+                                        if (!productIdToDelete) return;
+                                        await deleteProduct(productIdToDelete);
+                                        setProductIdToDelete(null);
+                                    }
+                                    } style={{ width: '50%' }}>Удалить</Button>
                             </ConfigProvider>
                         </div>
                     </div>

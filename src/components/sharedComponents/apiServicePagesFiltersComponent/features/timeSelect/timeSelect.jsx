@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { DayPicker } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
 import { ru } from 'date-fns/locale';
@@ -33,21 +33,52 @@ const predefinedRanges = [
     }
 ];
 
-export const TimeSelect = ({ isDataLoading, maxCustomDate, minCustomDate }) => {
+/**
+ * customSubmit - отдает выбранные значения наруду (если нет то диспатчит в фильтры)
+ * customValue - уонтроллед-значение (если нет то берет из selectedRange из фильтров)
+ * allowedRanges - массив доступных диапазонов для predefinedRanges (если не передан или пустой то используется predefinedRanges)
+ * allowedRanges - массив values из predefinedRanges
+ * TODO: переделать компонент на полностью тупой
+ */
+
+export const TimeSelect = ({ 
+    isDataLoading, 
+    maxCustomDate, 
+    minCustomDate, 
+    customSubmit, 
+    customValue, 
+    allowedRanges,
+    hasLabel = true,
+}) => {
+
+    const getAllowedRanges = useCallback((allowedRanges) => {
+        let ranges = predefinedRanges;
+        if (!allowedRanges || allowedRanges.length === 0) {
+            return ranges;
+        } else {
+            ranges = predefinedRanges.filter(range => allowedRanges.includes(range.value));
+            return ranges;
+        }
+    }, [allowedRanges]);
+
+
+
     const dispatch = useAppDispatch();
     const { selectedRange } = useAppSelector(store => store.filters);
     const [isCalendarOpen, setIsCalendarOpen] = useState(false);
     const [month, setMonth] = useState(new Date());
     const [localSelectedRange, setLocalSelectedRange] = useState({ from: null, to: null });
-    const [selectOptions, setSelectOptions] = useState([...predefinedRanges]);
+    const [selectOptions, setSelectOptions] = useState(getAllowedRanges(allowedRanges));
     const [selectValue, setSelectValue] = useState();
     const maxDate = maxCustomDate ? maxCustomDate : new Date();
     const today = new Date();
-    let minDate = minCustomDate ? new Date(minCustomDate) :  new Date(today);
+    let minDate = minCustomDate ? new Date(minCustomDate) : new Date(today);
 
     if (!minCustomDate) {
         minDate.setDate(today.getDate() - 90);
     }
+
+   
 
     const startMonth = new Date(today);
     startMonth.setDate(today.getDate() - 90);
@@ -77,8 +108,12 @@ export const TimeSelect = ({ isDataLoading, maxCustomDate, minCustomDate }) => {
                 : { from: format(from, 'yyyy-MM-dd'), to: format(day, 'yyyy-MM-dd') };
             setLocalSelectedRange(newRange);
             setSelectValue(0);
-            dispatch(filtersActions.setPeriod(newRange));
-            localStorage.setItem('selectedRange', JSON.stringify(newRange));
+            if (customSubmit) {
+                customSubmit(newRange);
+            } else {
+                dispatch(filtersActions.setPeriod(newRange));
+                localStorage.setItem('selectedRange', JSON.stringify(newRange));
+            }
             setIsCalendarOpen(false);
         }
     };
@@ -89,10 +124,14 @@ export const TimeSelect = ({ isDataLoading, maxCustomDate, minCustomDate }) => {
     const timeSelectChangeHandler = (value) => {
         if (value !== 0) {
             setSelectValue(value);
-            setSelectOptions(predefinedRanges);
+            setSelectOptions(getAllowedRanges(allowedRanges));
             setLocalSelectedRange({ from: null, to: null });
-            dispatch(filtersActions.setPeriod({ period: value }));
-            localStorage.setItem('selectedRange', JSON.stringify({ period: value }));
+            if (customSubmit) {
+                customSubmit({ period: value });
+            } else {
+                dispatch(filtersActions.setPeriod({ period: value }));
+                localStorage.setItem('selectedRange', JSON.stringify({ period: value }));
+            }
         } else {
             setLocalSelectedRange({ from: null, to: null });
             setIsCalendarOpen(true);
@@ -100,13 +139,22 @@ export const TimeSelect = ({ isDataLoading, maxCustomDate, minCustomDate }) => {
     };
 
     useEffect(() => {
-        if (selectedRange && selectedRange.period && selectedRange.period !== selectValue) {
-            setSelectValue(selectedRange.period);
+        if (customValue) {
+            if (customValue.period && customValue.period !== selectValue) {
+                setSelectValue(customValue.period);
+            }
+            if (!selectedRange.period && selectValue !== 0) {
+                setSelectValue(0);
+            }
+        } else {
+            if (selectedRange && selectedRange.period && selectedRange.period !== selectValue) {
+                setSelectValue(selectedRange.period);
+            }
+            if (selectedRange && !selectedRange.period && selectValue !== 0) {
+                setSelectValue(0);
+            }
         }
-        if (selectedRange && !selectedRange.period && selectValue !== 0) {
-            setSelectValue(0);
-        }
-    }, [selectedRange]);
+    }, [selectedRange, customValue]);
 
     useEffect(() => {
         if (selectValue === undefined) {
@@ -130,25 +178,46 @@ export const TimeSelect = ({ isDataLoading, maxCustomDate, minCustomDate }) => {
 
     useEffect(() => {
         let newOptions = selectOptions;
-        if (selectValue === 0 && !selectedRange.period) {
-            newOptions = [...newOptions].map(_ => {
-                if (_.value === 0) {
-                    _.title = `${format(selectedRange.from, 'dd.MM.yyyy')} - ${format(selectedRange.to, 'dd.MM.yyyy')}`;
-                }
-
-                return _;
-            });
+        if (customValue) {
+            if (selectValue === 0 && !customValue.period) {
+                newOptions = [...newOptions].map(_ => {
+                    if (_.value === 0) {
+                        _.title = `${format(customValue.from, 'dd.MM.yyyy')} - ${format(customValue.to, 'dd.MM.yyyy')}`;
+                    }
+    
+                    return _;
+                });
+            } else {
+                newOptions = [...newOptions].map(_ => {
+                    if (_.value === 0) {
+                        _.title = `Произвольные даты`;
+                    }
+    
+                    return _;
+                });
+            }
         } else {
-            newOptions = [...newOptions].map(_ => {
-                if (_.value === 0) {
-                    _.title = `Произвольные даты`;
-                }
-
-                return _;
-            });
+            if (selectValue === 0 && !selectedRange.period) {
+                newOptions = [...newOptions].map(_ => {
+                    if (_.value === 0) {
+                        _.title = `${format(selectedRange.from, 'dd.MM.yyyy')} - ${format(selectedRange.to, 'dd.MM.yyyy')}`;
+                    }
+    
+                    return _;
+                });
+            } else {
+                newOptions = [...newOptions].map(_ => {
+                    if (_.value === 0) {
+                        _.title = `Произвольные даты`;
+                    }
+    
+                    return _;
+                });
+            }
         }
+        
         setSelectOptions(newOptions);
-    }, [selectedRange, selectValue]);
+    }, [selectedRange, selectValue, customValue]);
 
 
     useEffect(() => {
@@ -167,9 +236,9 @@ export const TimeSelect = ({ isDataLoading, maxCustomDate, minCustomDate }) => {
 
     return (
         <div className={styles.calendarContainer} ref={periodRef}>
-            <label className={styles.label} htmlFor="period">
+            {hasLabel && <label className={styles.label} htmlFor="period">
                 Период:
-            </label>
+            </label>}
             <div className={styles.mainSelectWrapper}>
                 <ConfigProvider
                     theme={{

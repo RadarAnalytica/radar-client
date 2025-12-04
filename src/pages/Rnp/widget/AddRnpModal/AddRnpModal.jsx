@@ -73,15 +73,14 @@ const AddRnpModal = ({ isAddRnpModalVisible, setIsAddRnpModalVisible, addRnp }) 
     };
 
     const updateData = async () => {
-        if (activeBrand?.id &&
-            initLoad.current &&
-            (filters.activeBrandName.some(_ => _.value === 'Все') &&
-            filters.activeArticle.some(_ => _.value === 'Все') &&
-            filters.activeGroup.some(_ => _.value === 'Все') &&
-            filters.activeCategory.some(_ => _.value === 'Все'))) {
-            return;
-        }
-
+        // if (activeBrand?.id &&
+        //     initLoad.current &&
+        //     (filters.activeBrandName.some(_ => _.value === 'Все') &&
+        //     filters.activeArticle.some(_ => _.value === 'Все') &&
+        //     filters.activeGroup.some(_ => _.value === 'Все') &&
+        //     filters.activeCategory.some(_ => _.value === 'Все'))) {
+        //     return;
+        // }
         setLoading(true);
         try {
             const response = await ServiceFunctions.getRnpProducts(

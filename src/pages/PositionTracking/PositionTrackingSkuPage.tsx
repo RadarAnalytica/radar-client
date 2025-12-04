@@ -36,9 +36,33 @@ import { PositionTrackingSkuFilters } from '@/widgets';
 import ErrorModal from '@/components/sharedComponents/modals/errorModal/errorModal';
 import { useDemoMode } from '@/app/providers/DemoDataProvider';
 import NoSubscriptionWarningBlock from '@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock';
+import { TimeSelect } from '@/components/sharedComponents/apiServicePagesFiltersComponent/features/timeSelect/timeSelect';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Tooltip, Filler, verticalDashedLinePlugin);
 
+const deleteModalCancelButtonTheme = {
+    token: {
+        colorPrimary: '#1A1A1A',
+        fontSize: 14,
+        fontWeight: 600,
+        fontFamily: 'Mulish',
+        borderRadius: 8,
+    },
+    components: {
+        Button: {
+            paddingInline: 28,
+            paddingBlock: 12,
+            colorBgContainer: '#F4F5F6',
+            colorBgContainerHover: '#E9EBED',
+            colorBgContainerDisabled: '#F4F5F6',
+            colorBorder: 'transparent',
+            colorText: '#1A1A1A',
+            colorTextHover: '#1A1A1A',
+            boxShadow: 'none',
+            controlHeight: 38,
+        },
+    },
+};
 
 const modalCancelButtonTheme = {
     token: {
@@ -205,22 +229,22 @@ interface Mark {
     id: number;
 }
 
+interface ISettingsState {
+    wb_id: string;
+    place_from?: number | null;
+    place_to?: number | null;
+    freq_from?: number | null;
+    freq_to?: number | null;
+    keywords?: string[];
+    feed_type?: 'both' | 'ad' | 'organic' | null;
+    range: { period: number | string } | { from: string, to: string };
+}
+
 const initRequestStatus = {
     isLoading: false,
     isError: false,
     message: '',
 };
-
-const getSkuPageDataRequestObject = (sku: string) => {
-    return {
-        wb_id: sku,
-        place_from: null,
-        place_to: null,
-        freq_from: null,
-        freq_to: null,
-        keywords: null, // string[]
-    }
-}
 
 const formatDateHeader = (dateString: string): string => {
     const date = new Date(dateString);
@@ -284,6 +308,7 @@ const getTableConfig = (skuData: PositionTrackingSkuPageData, tableType: 'Кла
         return tableConfig;
     }
 }
+
 const getTableData = (skuData: PositionTrackingSkuPageData, tableType: 'Кластеры' | 'По запросам') => {
     if (tableType === 'Кластеры') {
         return skuData.presets.map(preset => {
@@ -333,13 +358,15 @@ const PositionTrackingSkuPage = () => {
     const [regionsList, setRegionsList] = useState<Record<string, any>[]>([]);
     const [isEditDeleteMarkModalVisible, setIsEditDeleteMarkModalVisible] = useState(false);
     const [editDeleteMarkId, setEditDeleteMarkId] = useState<number | null>(null);
-    const [requestObject, setRequestObject] = useState<{ wb_id: string, place_from?: number | null, place_to?: number | null, freq_from?: number | null, freq_to?: number | null, keywords?: string[], feed_type?: 'both' | 'ad' | 'organic' | null } | null>(null);
+    const [requestObject, setRequestObject] = useState<ISettingsState | null>(null);
     const [controlsState, setControlsState] = useState({
         isShowsActive: true,
         isQueriesActive: true,
         isPriceActive: true,
     });
     const { isDemoMode } = useDemoMode();
+    const { sku } = useParams();
+    const [productIdToDelete, setProductIdToDelete] = useState<string | null>(null);
 
 
     const controlsCheckboxHandler = (e) => {
@@ -349,15 +376,15 @@ const PositionTrackingSkuPage = () => {
         });
     };
 
-    const { sku } = useParams();
+
 
     const getSkuPageData = useCallback(async (token: string, requestObject: any) => {
         setRequestStatus(prev => prev.isLoading ? prev : { ...initRequestStatus, isLoading: true });
         try {
             const res = await ServiceFunctions.getPositionTrackingSkuPageData(token, requestObject);
             if (!res.ok) {
-                console.error('getSkuPageData error:');
-                setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось получить данные для SKU' });
+                const parsed = await res.json();
+                setRequestStatus({ ...initRequestStatus, isError: true, message: typeof parsed === 'string' ? parsed : 'Не удалось получить данные для SKU' });
                 return;
             }
             const data: PositionTrackingSkuPageData = await res.json();
@@ -371,10 +398,11 @@ const PositionTrackingSkuPage = () => {
         }
         catch (error) {
             console.error('getSkuPageData error:', error);
-            setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось получить данные для SKU' });
+            setRequestStatus({ ...initRequestStatus, isError: true, message: typeof error === 'string' ? error : 'Не удалось получить данные для SKU' });
             return;
         }
     }, [tableType]);
+
     const deleteProductFromPositionTrackingProject = useCallback(async (token: string, productId: string) => {
         setRequestStatus(prev => prev.isLoading ? prev : { ...initRequestStatus, isLoading: true });
         try {
@@ -480,7 +508,6 @@ const PositionTrackingSkuPage = () => {
             return;
         }
     }, []);
-
 
     const closeMarkModal = useCallback(() => {
         setIsAddModalVisible(false);
@@ -1017,7 +1044,6 @@ const PositionTrackingSkuPage = () => {
         };
     }, [skuData, controlsState, marks]);
 
-
     const getVisibilityChartTooltip = useCallback((context: any) => {
         // Tooltip Element
         let tooltipEl = document.getElementById('visibility-chart-tooltip');
@@ -1214,14 +1240,28 @@ const PositionTrackingSkuPage = () => {
 
     useEffect(() => {
         if (sku) {
-            setRequestObject({ wb_id: sku, feed_type: 'both' });
+            setRequestObject({ wb_id: sku, feed_type: 'both', range: { period: 30 } });
         } else {
             navigate('/position-tracking');
         }
     }, [sku])
+
     useEffect(() => {
         if (requestObject && authToken) {
-            getSkuPageData(authToken, requestObject);
+            const { range } = requestObject;
+            let requestPeriod: { period: number | string } | { date_from: string; date_to: string };
+            if (range && 'period' in range) {
+                requestPeriod = range;
+            }
+            if (range && 'from' in range && 'to' in range) {
+                requestPeriod = { date_from: range.from, date_to: range.to };
+            }
+            const finalRequestObject = {
+                ...requestObject,
+                range: undefined,
+                ...requestPeriod,
+            }
+            getSkuPageData(authToken, finalRequestObject);
         }
     }, [requestObject, authToken])
 
@@ -1256,10 +1296,7 @@ const PositionTrackingSkuPage = () => {
                                     action: async () => {
                                         if (!skuData) return;
                                         const currentProductId = skuData.product_meta.id
-                                        const res = await deleteProductFromPositionTrackingProject(authToken, currentProductId.toString());
-                                        if (res) {
-                                            navigate('/position-tracking');
-                                        }
+                                        setProductIdToDelete(currentProductId.toString());
                                     }
                                 }]}
                             />
@@ -1328,6 +1365,33 @@ const PositionTrackingSkuPage = () => {
                             allowClear={false}
                             disabled={false}
                         /> */}
+                        {requestObject?.range &&
+                            <div style={{ height: '100%', width: '240px', display: 'flex', alignItems: 'flex-end' }}>
+                                {(() => {
+                                    const yesterday = new Date();
+                                    yesterday.setDate(yesterday.getDate() - 1);
+                                    yesterday.setHours(0, 0, 0, 0);
+
+                                    const minDate = new Date(yesterday);
+                                    minDate.setDate(minDate.getDate() - 30);
+
+                                    return (
+                                        <TimeSelect
+                                            isDataLoading={requestStatus.isLoading}
+                                            maxCustomDate={yesterday}
+                                            minCustomDate={minDate}
+                                            customSubmit={(value) => {
+                                                console.log('timeSelect', value);
+                                                setRequestObject({ ...requestObject, range: value });
+                                            }}
+                                            hasLabel={false}
+                                            customValue={requestObject.range}
+                                            allowedRanges={[0, 7, 14, 30]}
+                                        />
+                                    );
+                                })()}
+                            </div>
+                        }
                     </div>
                 </div>
 
@@ -1447,6 +1511,13 @@ const PositionTrackingSkuPage = () => {
                 onEdit={(name: string) => handleEditMark(name)}
                 onDelete={handleDeleteMarkFromModal}
             />
+            <DeleteProductFromPositionTrackingProjectModal
+                productIdToDelete={productIdToDelete}
+                setProductIdToDelete={setProductIdToDelete}
+                requestStatus={requestStatus}
+                deleteProduct={deleteProductFromPositionTrackingProject}
+                authToken={authToken}
+            />
             {/*  error modal */}
             <ErrorModal
                 message={requestStatus.message}
@@ -1469,8 +1540,6 @@ const PositionTrackingSkuTable = memo(({ requestStatus, skuData }: PositionTrack
     const [sortState, setSortState] = useState<{ sort_field: string, sort_order: 'ASC' | 'DESC' }>({ sort_field: 'frequency', sort_order: 'DESC' });
     const [tableConfig, setTableConfig] = useState<Record<string, any>[]>(initTableConfig);
     const [paginationState, setPaginationState] = useState<{ current: number, pageSize: number, total: number }>({ current: 1, pageSize: 12, total: 0 });
-    console.log('paginationState', paginationState);
-    console.log('paginationState', paginationState);
     const [tableData, setTableData] = useState<any[]>([]);
     const tableContainerRef = useRef<HTMLDivElement>(null);
 
@@ -1516,7 +1585,7 @@ const PositionTrackingSkuTable = memo(({ requestStatus, skuData }: PositionTrack
                 return freqB - freqA;
             }
         });
-       
+
         const paginatedData = sortedData.slice((newPaginationState.current - 1) * newPaginationState.pageSize, newPaginationState.current * newPaginationState.pageSize);
         setTableData(paginatedData);
         setPaginationState(newPaginationState);
@@ -1537,17 +1606,17 @@ const PositionTrackingSkuTable = memo(({ requestStatus, skuData }: PositionTrack
         <>
             {requestStatus.isLoading && <RadarLoader loaderStyle={{ minHeight: '456px', width: '100%', background: 'white', borderRadius: '16px' }} />}
             {/* table */}
-                <div className={styles.page__tableWrapper}>
-                    <ConfigProvider theme={segmentedTheme}>
-                        <Segmented options={['Кластеры', 'По запросам']} size='large' value={tableType} onChange={(value) => setTableType(value as 'Кластеры' | 'По запросам')} />
-                    </ConfigProvider>
-                    <div className={styles.page__summary}>
-                        <p className={styles.page__summaryItem}>Найдено ключей: <span>{skuData?.total_queries}</span></p>
-                        <p className={styles.page__summaryItem}>Кластеров: <span>{skuData?.total_presets}</span></p>
-                    </div>
-                   
-                    <div className={styles.page__table}>
-                        <div className={styles.page__tableContainer} ref={tableContainerRef}>
+            <div className={styles.page__tableWrapper}>
+                <ConfigProvider theme={segmentedTheme}>
+                    <Segmented options={['Кластеры', 'По запросам']} size='large' value={tableType} onChange={(value) => setTableType(value as 'Кластеры' | 'По запросам')} />
+                </ConfigProvider>
+                <div className={styles.page__summary}>
+                    <p className={styles.page__summaryItem}>Найдено ключей: <span>{skuData?.total_queries}</span></p>
+                    <p className={styles.page__summaryItem}>Кластеров: <span>{skuData?.total_presets}</span></p>
+                </div>
+
+                <div className={styles.page__table}>
+                    <div className={styles.page__tableContainer} ref={tableContainerRef}>
                         {!requestStatus.isLoading && tableData && tableData.length > 0 && tableConfig &&
                             <RadarTable
                                 // @ts-ignore
@@ -1577,13 +1646,13 @@ const PositionTrackingSkuTable = memo(({ requestStatus, skuData }: PositionTrack
                                     renderer: positionTrackingSkuTableCustomCellRender as any
                                 }}
                             />
-                            }
+                        }
                         {!requestStatus.isLoading && tableData.length === 0 && tableConfig &&
                             <div className={styles.page__tableNoData}>Нет данных</div>
                         }
-                        </div>
                     </div>
                 </div>
+            </div>
         </>
     );
 });
@@ -1620,7 +1689,12 @@ const AddMarkModal = ({ open, onClose, onSubmit }: AddMarkModalProps) => {
                         className={styles.modal__input}
                         placeholder='Введите название'
                         value={inputValue}
-                        onChange={(e) => setInputValue(e.target.value)}
+                        onChange={(e) => {
+                            if (e.target.value.length <= 30) {
+                                setInputValue(e.target.value);
+                            }
+                        }}
+                        maxLength={30}
                     />
                 </ConfigProvider>
 
@@ -1629,7 +1703,7 @@ const AddMarkModal = ({ open, onClose, onSubmit }: AddMarkModalProps) => {
                         <Button variant='outlined' onClick={onClose}>Отмена</Button>
                     </ConfigProvider>
                     <ConfigProvider theme={modalPrimaryButtonTheme}>
-                        <Button type='primary' onClick={() => onSubmit(inputValue)} disabled={!inputValue.trim()}>Добавить</Button>
+                        <Button type='primary' onClick={() => onSubmit(inputValue)} disabled={!inputValue.trim() || inputValue.length > 30}>Добавить</Button>
                     </ConfigProvider>
                 </div>
             </div>
@@ -1674,7 +1748,12 @@ const EditDeleteMarkModal = ({ open, onClose, initialInputValue, onEdit, onDelet
                         className={styles.modal__input}
                         placeholder='Введите название'
                         value={inputValue}
-                        onChange={(e) => setInputValue(e.target.value)}
+                        onChange={(e) => {
+                            if (e.target.value.length <= 30) {
+                                setInputValue(e.target.value);
+                            }
+                        }}
+                        maxLength={30}
                     />
                 </ConfigProvider>
 
@@ -1683,12 +1762,81 @@ const EditDeleteMarkModal = ({ open, onClose, initialInputValue, onEdit, onDelet
                         <Button type='primary' onClick={onDelete}>Удалить</Button>
                     </ConfigProvider>
                     <ConfigProvider theme={modalPrimaryButtonTheme}>
-                        <Button type='primary' onClick={() => onEdit(inputValue)} disabled={!inputValue.trim()}>Сохранить</Button>
+                        <Button type='primary' onClick={() => onEdit(inputValue)} disabled={!inputValue.trim() || inputValue.length > 30}>Сохранить</Button>
                     </ConfigProvider>
                 </div>
             </div>
         </Modal>
     );
 };
+
+
+interface DeleteProductFromPositionTrackingProjectModalProps {
+    productIdToDelete: string | null;
+    setProductIdToDelete: (productId: string | null) => void;
+    requestStatus: typeof initRequestStatus;
+    deleteProduct: (token: string, productId: string) => Promise<boolean | undefined>;
+    authToken: string | null;
+}
+
+const DeleteProductFromPositionTrackingProjectModal = ({
+    productIdToDelete,
+    setProductIdToDelete,
+    requestStatus,
+    deleteProduct,
+    authToken
+}: DeleteProductFromPositionTrackingProjectModalProps) => {
+    return (
+        <>
+            {/* delete modal */}
+            <Modal
+                open={productIdToDelete !== null}
+                onCancel={() => {
+                    if (requestStatus.isLoading) return;
+                    setProductIdToDelete(null)
+                }}
+                onClose={() => {
+                    if (requestStatus.isLoading) return;
+                    setProductIdToDelete(null)
+                }}
+                onOk={() => {
+                    if (requestStatus.isLoading) return;
+                    setProductIdToDelete(null)
+                }}
+                footer={null}
+                centered
+                width={400}
+            >
+                <div className={styles.addModal}>
+                    <p className={styles.addModal__title} style={{ maxWidth: '300px' }}>Вы уверены, что хотите удалить товар из проекта?</p>
+                    <div className={styles.addModal__buttonsWrapper}>
+                        <ConfigProvider theme={deleteModalCancelButtonTheme}>
+                            <Button
+                                loading={requestStatus.isLoading}
+                                onClick={() => setProductIdToDelete(null)}
+                                style={{ width: '50%' }}
+                            >
+                                Отмена
+                            </Button>
+                        </ConfigProvider>
+                        <ConfigProvider theme={deleteModalPrimaryButtonTheme}>
+                            <Button
+                                loading={requestStatus.isLoading}
+                                type='primary'
+                                onClick={async () => {
+                                    if (!productIdToDelete || !authToken) return;
+                                    const result = await deleteProduct(authToken, productIdToDelete);
+                                    if (result) {
+                                        setProductIdToDelete(null);
+                                    }
+                                }
+                                } style={{ width: '50%' }}>Удалить</Button>
+                        </ConfigProvider>
+                    </div>
+                </div>
+            </Modal>
+        </>
+    )
+}
 
 export default PositionTrackingSkuPage;
