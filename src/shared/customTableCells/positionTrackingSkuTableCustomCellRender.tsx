@@ -40,8 +40,9 @@ export const positionTrackingSkuTableCustomCellRender = (value: any, record: any
         </div>
     }
 
-    if (dataIndex === 'query') {
+    if (dataIndex === 'query' && !record.isParent) {
         return <div className={styles.parentCustomCell} style={{ fontWeight: 500 }}>
+            <img src={wb_icon} alt='wb_icon' width={20} height={20} style={{ transform: 'scale(1.2)' }} />
             {value}
         </div>
     }

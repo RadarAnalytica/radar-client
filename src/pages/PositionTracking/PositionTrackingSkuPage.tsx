@@ -270,6 +270,15 @@ const formatDateLong = (dateInput: string): string => {
     return `${day} ${months[date.getMonth()]} ${year}`;
 };
 
+const formatDateTooltip = (dateInput: string): string => {
+    const date = new Date(dateInput);
+    const dayNames = ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
+    const dayName = dayNames[date.getDay()];
+    const day = date.getDate();
+    const months = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'];
+    return `${dayName}, ${day} ${months[date.getMonth()]}`;
+};
+
 const getTableConfig = (skuData: PositionTrackingSkuPageData, tableType: 'Кластеры' | 'По запросам') => {
 
     if (tableType === 'Кластеры') {
@@ -658,13 +667,14 @@ const PositionTrackingSkuPage = () => {
 
         // Set Text
         if (tooltipModel.body) {
-            const titleLines = tooltipModel.title || [];
-            const bodyLines = tooltipModel.body.map((b: any) => b.lines);
+            const dataIndex = tooltipModel.dataPoints[0]?.dataIndex;
+            const dateString = skuData?.dates?.[dataIndex];
+            const formattedDate = dateString ? formatDateTooltip(dateString) : '';
 
             let innerHtml = '<thead>';
-            titleLines.forEach((title: string) => {
-                innerHtml += '<tr><th style="color: #8C8C8C; font-weight: 500; font-size: 12px; font-family: Mulish; padding-bottom: 8px;">' + title + '</th></tr>';
-            });
+            if (formattedDate) {
+                innerHtml += '<tr><th style="color: #8C8C8C; font-weight: 500; font-size: 12px; font-family: Mulish; padding-bottom: 8px;">' + formattedDate + '</th></tr>';
+            }
             innerHtml += '</thead><tbody>';
 
             // Обрабатываем каждый элемент tooltip
@@ -676,20 +686,24 @@ const PositionTrackingSkuPage = () => {
                 // Определяем цвет и форму иконки
                 let iconColor = '#5329FF';
                 let iconStyle = '';
-                let labelText = '';
+                let labelName = '';
+                let labelValue = '';
 
                 if (label === 'Просмотры, шт') {
                     iconColor = '#9A81FF';
                     iconStyle = 'width: 12px; height: 3px; border-radius: 0;'; // Прямоугольник высотой 3px
-                    labelText = `${label} — ${value}`;
+                    labelName = 'Просмотры, шт';
+                    labelValue = String(value);
                 } else if (label === 'Ключи, шт') {
                     iconColor = '#FFDB7E';
                     iconStyle = 'width: 12px; height: 12px; border-radius: 0;'; // Квадрат
-                    labelText = `${label} — ${value}`;
+                    labelName = 'Ключи, шт';
+                    labelValue = String(value);
                 } else if (label === 'Цена, руб') {
                     iconColor = '#FF8D8D';
                     iconStyle = 'width: 12px; height: 12px; border-radius: 0;'; // Квадрат
-                    labelText = `${label} — ${value}`;
+                    labelName = 'Цена, руб';
+                    labelValue = String(value);
                 } else if (label === 'Метка') {
                     iconColor = '#5329FF';
                     iconStyle = 'width: 12px; height: 12px; border-radius: 50%;'; // Круг
@@ -698,12 +712,15 @@ const PositionTrackingSkuPage = () => {
                     if (date) {
                         const mark = marks.find((m: Mark) => m.date === date);
                         if (mark) {
-                            labelText = `Метка — ${mark.name}`;
+                            labelName = 'Метка';
+                            labelValue = mark.name;
                         } else {
-                            labelText = '';
+                            labelName = '';
+                            labelValue = '';
                         }
                     } else {
-                        labelText = '';
+                        labelName = '';
+                        labelValue = '';
                     }
                 }
 
@@ -714,13 +731,23 @@ const PositionTrackingSkuPage = () => {
                         return prevDataset.label !== 'Метка';
                     });
                     if (hasNonMarkItemsBefore) {
-                        innerHtml += '<tr><td style="height: 8px;"></td></tr>'; // Отступ
+                        innerHtml += '<tr><td colspan="2" style="height: 8px;"></td></tr>'; // Отступ
                     }
                 }
 
-                if (labelText) {
-                    const span = `<span style="display: inline-block; ${iconStyle} background-color: ${iconColor}; margin-right: 8px; vertical-align: middle;"></span><span style="color: #1A1A1A; font-size: 14px; font-weight: 600; font-family: Mulish;">${labelText}</span>`;
-                    innerHtml += '<tr><td style="padding: 2px 0;">' + span + '</td></tr>';
+                if (labelName) {
+                    const row = `
+                        <tr>
+                            <td style="padding: 2px 0; display: flex; align-items: center;">
+                                <span style="display: inline-block; ${iconStyle} background-color: ${iconColor}; margin-right: 8px; flex-shrink: 0;"></span>
+                                <span style="color: #1A1A1A; font-size: 14px; font-weight: 600; font-family: Mulish; white-space: nowrap;">${labelName}</span>
+                            </td>
+                            <td style="padding: 2px 0 2px 16px; text-align: right;">
+                                <span style="color: #1A1A1A; font-size: 14px; font-weight: 700; font-family: Mulish;">${labelValue}</span>
+                            </td>
+                        </tr>
+                    `;
+                    innerHtml += row;
                 }
             });
 
@@ -739,8 +766,8 @@ const PositionTrackingSkuPage = () => {
             });
 
             if (!hasMark) {
-                innerHtml += '<tr><td style="height: 8px;"></td></tr>'; // Отступ
-                innerHtml += '<tr><td style="color: #8C8C8C; font-size: 12px; font-family: Mulish; padding-top: 4px;">Кликните чтобы добавить метку</td></tr>';
+                innerHtml += '<tr><td colspan="2" style="height: 8px;"></td></tr>'; // Отступ
+                innerHtml += '<tr><td colspan="2" style="color: #8C8C8C; font-size: 12px; font-family: Mulish; padding-top: 4px;">Кликните чтобы добавить метку</td></tr>';
             }
 
             innerHtml += '</tbody>';
@@ -1065,10 +1092,11 @@ const PositionTrackingSkuPage = () => {
 
         // Set Text
         if (tooltipModel.body) {
-            const titleLines = tooltipModel.title || [];
             const dataIndex = tooltipModel.dataPoints[0]?.dataIndex;
             const visibility = tooltipModel.dataPoints[0]?.parsed.y;
             const visibilityCompare = skuData?.charts[dataIndex]?.visibility_compare;
+            const dateString = skuData?.dates?.[dataIndex];
+            const formattedDate = dateString ? formatDateTooltip(dateString) : '';
 
             // Clear previous content
             tooltipEl.innerHTML = '';
@@ -1080,12 +1108,12 @@ const PositionTrackingSkuPage = () => {
             const compareContainer = document.createElement('span');
 
             // Title
-            titleLines.forEach((title: string) => {
+            if (formattedDate) {
                 const titleDiv = document.createElement('div');
                 titleDiv.style.cssText = 'color: #8C8C8C; font-weight: 500; font-size: 12px; font-family: Mulish; padding-bottom: 8px;';
-                titleDiv.textContent = title;
+                titleDiv.textContent = formattedDate;
                 titleContainer.appendChild(titleDiv);
-            });
+            }
 
             // Values row container
             valuesRow.style.cssText = 'display: flex; align-items: center; gap: 8px; flex-wrap: wrap;';
@@ -1493,10 +1521,20 @@ const PositionTrackingSkuPage = () => {
                     }}
                     loading={requestStatus.isLoading}
                 />
-                <PositionTrackingSkuTable
-                    requestStatus={requestStatus}
-                    skuData={skuData}
-                />
+                <div className={styles.page__tableWrapper}>
+                    <ConfigProvider theme={segmentedTheme}>
+                        <Segmented options={['Кластеры', 'По запросам']} size='large' value={tableType} onChange={(value) => setTableType(value as 'Кластеры' | 'По запросам')} />
+                    </ConfigProvider>
+                    <div className={styles.page__summary}>
+                        <p className={styles.page__summaryItem}>Найдено ключей: <span>{skuData?.total_queries}</span></p>
+                        <p className={styles.page__summaryItem}>Кластеров: <span>{skuData?.total_presets}</span></p>
+                    </div>
+                    <PositionTrackingSkuTable
+                        requestStatus={requestStatus}
+                        skuData={skuData}
+                        tableType={tableType}
+                    />
+                </div>
             </section>
             {/* ---------------------- */}
             <AddMarkModal
@@ -1534,9 +1572,10 @@ const PositionTrackingSkuPage = () => {
 interface PositionTrackingSkuTableProps {
     requestStatus: typeof initRequestStatus;
     skuData: PositionTrackingSkuPageData;
+    tableType: 'Кластеры' | 'По запросам'
 }
-const PositionTrackingSkuTable = memo(({ requestStatus, skuData }: PositionTrackingSkuTableProps) => {
-    const [tableType, setTableType] = useState<'Кластеры' | 'По запросам'>('Кластеры');
+const PositionTrackingSkuTable = memo(({ requestStatus, skuData, tableType }: PositionTrackingSkuTableProps) => {
+   
     const [sortState, setSortState] = useState<{ sort_field: string, sort_order: 'ASC' | 'DESC' }>({ sort_field: 'frequency', sort_order: 'DESC' });
     const [tableConfig, setTableConfig] = useState<Record<string, any>[]>(initTableConfig);
     const [paginationState, setPaginationState] = useState<{ current: number, pageSize: number, total: number }>({ current: 1, pageSize: 12, total: 0 });
@@ -1606,65 +1645,57 @@ const PositionTrackingSkuTable = memo(({ requestStatus, skuData }: PositionTrack
         <>
             {requestStatus.isLoading && <RadarLoader loaderStyle={{ minHeight: '456px', width: '100%', background: 'white', borderRadius: '16px' }} />}
             {/* table */}
-            <div className={styles.page__tableWrapper}>
-                <ConfigProvider theme={segmentedTheme}>
-                    <Segmented options={['Кластеры', 'По запросам']} size='large' value={tableType} onChange={(value) => setTableType(value as 'Кластеры' | 'По запросам')} />
-                </ConfigProvider>
-                <div className={styles.page__summary}>
-                    <p className={styles.page__summaryItem}>Найдено ключей: <span>{skuData?.total_queries}</span></p>
-                    <p className={styles.page__summaryItem}>Кластеров: <span>{skuData?.total_presets}</span></p>
-                </div>
 
-                <div className={styles.page__table}>
-                    {!requestStatus.isLoading && tableData && tableData.length > 0 && tableConfig &&
-                        <div className={styles.page__tableContainer} ref={tableContainerRef}>
-                            <RadarTable
-                                // @ts-ignore
-                                config={tableConfig}
-                                treeMode={tableType === 'Кластеры'}
-                                preset='radar-table-default'
-                                sorting={sortState}
-                                resizeable
-                                style={{ width: 'max-content', tableLayout: 'fixed' }}
-                                onSort={(sort_field, sort_order) => {
-                                    setSortState({ sort_field, sort_order });
-                                    const sortedData = dataSorter(sort_field, sort_order);
-                                    setTableData(sortedData);
-                                }}
-                                onResize={(colKey, width) => {
-                                    const newConfig = tableConfig.map((item) => {
-                                        if (item.key === colKey) {
-                                            return { ...item, width };
-                                        }
-                                        return item;
-                                    });
-                                    setTableConfig(newConfig);
-                                }}
-                                scrollContainerRef={tableContainerRef}
-                                dataSource={tableData}
-                                pagination={{
-                                    current: paginationState.current,
-                                    pageSize: paginationState.pageSize,
-                                    total: paginationState.total,
-                                    showQuickJumper: true,
-                                    hideOnSinglePage: true,
-                                    onChange: paginationHandler,
-                                }}
-                                //paginationContainerStyle={{ display: paginationState.total > 1 ? 'block' : 'none' }}
-                                stickyHeader
-                                bodyCellStyle={{ height: '43px' }}
-                                customCellRender={{
-                                    idx: [],
-                                    renderer: positionTrackingSkuTableCustomCellRender as any
-                                }}
-                            />
 
-                            {!requestStatus.isLoading && tableData.length === 0 && tableConfig &&
-                                <div className={styles.page__tableNoData}>Нет данных</div>
-                            }
-                        </div>
-                    }
-                </div>
+            <div className={styles.page__table}>
+                {!requestStatus.isLoading && tableData && tableData.length > 0 && tableConfig &&
+                    <div className={styles.page__tableContainer} ref={tableContainerRef}>
+                        <RadarTable
+                            // @ts-ignore
+                            config={tableConfig}
+                            treeMode={tableType === 'Кластеры'}
+                            preset='radar-table-default'
+                            sorting={sortState}
+                            resizeable
+                            style={{ width: 'max-content', tableLayout: 'fixed' }}
+                            onSort={(sort_field, sort_order) => {
+                                setSortState({ sort_field, sort_order });
+                                const sortedData = dataSorter(sort_field, sort_order);
+                                setTableData(sortedData);
+                            }}
+                            onResize={(colKey, width) => {
+                                const newConfig = tableConfig.map((item) => {
+                                    if (item.key === colKey) {
+                                        return { ...item, width };
+                                    }
+                                    return item;
+                                });
+                                setTableConfig(newConfig);
+                            }}
+                            scrollContainerRef={tableContainerRef}
+                            dataSource={tableData}
+                            pagination={{
+                                current: paginationState.current,
+                                pageSize: paginationState.pageSize,
+                                total: paginationState.total,
+                                showQuickJumper: true,
+                                hideOnSinglePage: true,
+                                onChange: paginationHandler,
+                            }}
+                            //paginationContainerStyle={{ display: paginationState.total > 1 ? 'block' : 'none' }}
+                            stickyHeader
+                            bodyCellStyle={{ height: '43px' }}
+                            customCellRender={{
+                                idx: [],
+                                renderer: positionTrackingSkuTableCustomCellRender as any
+                            }}
+                        />
+
+                        {!requestStatus.isLoading && tableData.length === 0 && tableConfig &&
+                            <div className={styles.page__tableNoData}>Нет данных</div>
+                        }
+                    </div>
+                }
             </div>
         </>
     );
@@ -1702,7 +1733,7 @@ const AddMarkModal = ({ open, onClose, onSubmit }: AddMarkModalProps) => {
                         <Input
                             size='large'
                             className={styles.modal__input}
-                            placeholder='Введите название'
+                            placeholder='Например, запустил рекламу'
                             value={inputValue}
                             onChange={(e) => {
                                 if (e.target.value.length <= 30) {
@@ -1717,7 +1748,7 @@ const AddMarkModal = ({ open, onClose, onSubmit }: AddMarkModalProps) => {
 
                 <div className={styles.addModal__buttonsWrapper}>
                     <ConfigProvider theme={modalCancelButtonTheme}>
-                        <Button variant='outlined' onClick={onClose}>Отмена</Button>
+                        <Button variant='outlined' onClick={onClose}>Отменить</Button>
                     </ConfigProvider>
                     <ConfigProvider theme={modalPrimaryButtonTheme}>
                         <Button type='primary' onClick={() => onSubmit(inputValue)} disabled={!inputValue.trim() || inputValue.length > 30}>Добавить</Button>
@@ -1765,7 +1796,7 @@ const EditDeleteMarkModal = ({ open, onClose, initialInputValue, onEdit, onDelet
                         <Input
                             size='large'
                             className={styles.modal__input}
-                            placeholder='Введите название'
+                            placeholder='Например, запустил рекламу'
                             value={inputValue}
                             onChange={(e) => {
                                 if (e.target.value.length <= 30) {
