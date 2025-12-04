@@ -60,7 +60,7 @@ const ChartControls: React.FC<ChartControlsProps> = ({ chartControls, setChartCo
                 onChange={chartControlsChangeHandler}
               >
                 <label className={styles.controls__label}>
-                  {i.ruName} <TooltipInfo text={i.tooltipText} />
+                  {i.ruName} <TooltipInfo text={i.tooltipText} style={{ fontSize: '12px' }} />
                 </label>
               </Checkbox>
             </ConfigProvider>

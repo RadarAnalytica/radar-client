@@ -169,6 +169,10 @@
       }
     }
   }
+
+  :global(.radar-table__tooltip-text) {
+    font-size: 12px !important;
+  }
   
   :global(.radar-table__body-row--child) {
     td {

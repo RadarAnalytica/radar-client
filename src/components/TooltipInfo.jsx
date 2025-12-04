@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 
-const TooltipInfo = ({ text }) => {
+const TooltipInfo = ({ text, style = {} }) => {
   const [isVisible, setIsVisible] = useState(false);
   const [tooltipPosition, setTooltipPosition] = useState({
     left: "100%",
@@ -63,7 +63,7 @@ const TooltipInfo = ({ text }) => {
       {isVisible && (
         <div
           className='tooltip-content'
-          style={tooltipPosition}
+          style={{ ...tooltipPosition, ...style }}
           ref={tooltipRef}
         >
           {text}
