@@ -1,12 +1,12 @@
-:global(.radar-table-default__header-cell-wrapper) {
+.tableContainer :global(.radar-table-default__header-cell-wrapper) {
     height: 35px !important;
 }
 
-:global(.radar-table-default__body-cell-wrapper) {
+.tableContainer :global(.radar-table-default__body-cell-wrapper) {
     height: 47px !important;
 }
 
-:global(.radar-table__header-cell-text-wrapper) {
+.tableContainer :global(.radar-table__header-cell-text-wrapper) {
     text-wrap: nowrap;
 }
 

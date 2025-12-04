@@ -86,7 +86,7 @@ export const RadarProductBar: React.FC<IRadarProductBarProps> = ({ data, isLoadi
                 }
                 {additionalInfo &&
                     <div className={styles.head__priceWrapper}>
-                        <p className={styles.head__text}>{additionalInfo}</p>
+                        <p className={styles.head__text} style={{ fontSize: '14px' }}>{additionalInfo}</p>
                     </div>
                 }
             </div>
