@@ -1683,20 +1683,24 @@ const AddMarkModal = ({ open, onClose, onSubmit }: AddMarkModalProps) => {
         >
             <div className={styles.addModal}>
                 <p className={styles.addModal__title}>Новая метка</p>
-                <ConfigProvider theme={inputTheme}>
-                    <Input
-                        size='large'
-                        className={styles.modal__input}
-                        placeholder='Введите название'
-                        value={inputValue}
-                        onChange={(e) => {
-                            if (e.target.value.length <= 30) {
-                                setInputValue(e.target.value);
-                            }
-                        }}
-                        maxLength={30}
-                    />
-                </ConfigProvider>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                    <label>Текст метки</label>
+                    <ConfigProvider theme={inputTheme}>
+                        <Input
+                            size='large'
+                            className={styles.modal__input}
+                            placeholder='Введите название'
+                            value={inputValue}
+                            onChange={(e) => {
+                                if (e.target.value.length <= 30) {
+                                    setInputValue(e.target.value);
+                                }
+                            }}
+                            maxLength={30}
+                        />
+                    </ConfigProvider>
+                </div>
+
 
                 <div className={styles.addModal__buttonsWrapper}>
                     <ConfigProvider theme={modalCancelButtonTheme}>
@@ -1742,20 +1746,24 @@ const EditDeleteMarkModal = ({ open, onClose, initialInputValue, onEdit, onDelet
         >
             <div className={styles.addModal}>
                 <p className={styles.addModal__title}>Редактировать метку</p>
-                <ConfigProvider theme={inputTheme}>
-                    <Input
-                        size='large'
-                        className={styles.modal__input}
-                        placeholder='Введите название'
-                        value={inputValue}
-                        onChange={(e) => {
-                            if (e.target.value.length <= 30) {
-                                setInputValue(e.target.value);
-                            }
-                        }}
-                        maxLength={30}
-                    />
-                </ConfigProvider>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                    <label>Текст метки</label>
+                    <ConfigProvider theme={inputTheme}>
+                        <Input
+                            size='large'
+                            className={styles.modal__input}
+                            placeholder='Введите название'
+                            value={inputValue}
+                            onChange={(e) => {
+                                if (e.target.value.length <= 30) {
+                                    setInputValue(e.target.value);
+                                }
+                            }}
+                            maxLength={30}
+                        />
+                    </ConfigProvider>
+                </div>
+
 
                 <div className={styles.addModal__buttonsWrapper}>
                     <ConfigProvider theme={deleteModalPrimaryButtonTheme}>
