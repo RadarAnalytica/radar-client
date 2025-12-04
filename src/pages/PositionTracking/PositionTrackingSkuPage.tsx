@@ -282,9 +282,9 @@ const getTableConfig = (skuData: PositionTrackingSkuPageData, tableType: 'Кла
             })
         });
         const templateObject = {
-            width: 100,
+            width: 50,
             minWidth: 100,
-            maxWidth: 200,
+            maxWidth: 240,
         }
         const tableConfig = [...initTableConfig, ...[...datesArray].reverse().map((date) => ({ ...templateObject, key: date, title: formatDateHeader(date), dataIndex: date }))]
         return tableConfig;
@@ -1616,19 +1616,31 @@ const PositionTrackingSkuTable = memo(({ requestStatus, skuData }: PositionTrack
                 </div>
 
                 <div className={styles.page__table}>
-                    <div className={styles.page__tableContainer} ref={tableContainerRef}>
-                        {!requestStatus.isLoading && tableData && tableData.length > 0 && tableConfig &&
+                    {!requestStatus.isLoading && tableData && tableData.length > 0 && tableConfig &&
+                        <div className={styles.page__tableContainer} ref={tableContainerRef}>
                             <RadarTable
                                 // @ts-ignore
                                 config={tableConfig}
                                 treeMode={tableType === 'Кластеры'}
                                 preset='radar-table-default'
                                 sorting={sortState}
+                                resizeable
+                                style={{ width: 'max-content', tableLayout: 'fixed' }}
                                 onSort={(sort_field, sort_order) => {
                                     setSortState({ sort_field, sort_order });
                                     const sortedData = dataSorter(sort_field, sort_order);
                                     setTableData(sortedData);
                                 }}
+                                onResize={(colKey, width) => {
+                                    const newConfig = tableConfig.map((item) => {
+                                        if (item.key === colKey) {
+                                            return { ...item, width };
+                                        }
+                                        return item;
+                                    });
+                                    setTableConfig(newConfig);
+                                }}
+                                scrollContainerRef={tableContainerRef}
                                 dataSource={tableData}
                                 pagination={{
                                     current: paginationState.current,
@@ -1646,11 +1658,12 @@ const PositionTrackingSkuTable = memo(({ requestStatus, skuData }: PositionTrack
                                     renderer: positionTrackingSkuTableCustomCellRender as any
                                 }}
                             />
-                        }
-                        {!requestStatus.isLoading && tableData.length === 0 && tableConfig &&
-                            <div className={styles.page__tableNoData}>Нет данных</div>
-                        }
-                    </div>
+
+                            {!requestStatus.isLoading && tableData.length === 0 && tableConfig &&
+                                <div className={styles.page__tableNoData}>Нет данных</div>
+                            }
+                        </div>
+                    }
                 </div>
             </div>
         </>
