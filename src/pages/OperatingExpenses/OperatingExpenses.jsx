@@ -466,6 +466,7 @@ export default function OperatingExpenses() {
 		try {
 			const res = await ServiceFunctions.postOperatingExpensesTemplateCreate(authToken, requestObject, requestUrl);
 			await updateTemplates(true); // Сбрасываем пагинацию и обновляем данные
+			await updateExpenses(true);
 			const successMessage = templateModal.mode === 'copy' ? 'Запланированный расход скопирован' : 'Запланированный расход добавлен';
 			setAlertState({ message: successMessage, status: 'success', isVisible: true });
 		} catch (error) {
