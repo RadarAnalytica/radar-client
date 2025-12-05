@@ -49,6 +49,7 @@ export const TimeSelect = ({
     customValue, 
     allowedRanges,
     hasLabel = true,
+    disabled = false,
 }) => {
 
     const getAllowedRanges = useCallback((allowedRanges) => {
@@ -294,7 +295,7 @@ export const TimeSelect = ({
                         }}
                         value={selectValue}
                         onSelect={timeSelectChangeHandler}
-                        disabled={isCalendarOpen || isDataLoading}
+                        disabled={isCalendarOpen || isDataLoading || disabled}
                         placeholder={'опция'}
                     />
                 </ConfigProvider>
