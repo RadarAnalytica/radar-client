@@ -49,6 +49,7 @@ export const TimeSelect = ({
     customValue, 
     allowedRanges,
     hasLabel = true,
+    disabled = false,
 }) => {
 
     const getAllowedRanges = useCallback((allowedRanges) => {

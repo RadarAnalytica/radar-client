@@ -1409,12 +1409,12 @@ const PositionTrackingSkuPage = () => {
                                             maxCustomDate={yesterday}
                                             minCustomDate={minDate}
                                             customSubmit={(value) => {
-                                                console.log('timeSelect', value);
                                                 setRequestObject({ ...requestObject, range: value });
                                             }}
                                             hasLabel={false}
                                             customValue={requestObject.range}
                                             allowedRanges={[0, 7, 14, 30]}
+                                            disabled={isDemoMode}
                                         />
                                     );
                                 })()}
@@ -1651,6 +1651,7 @@ const PositionTrackingSkuTable = memo(({ requestStatus, skuData, tableType }: Po
                 {!requestStatus.isLoading && tableData && tableData.length > 0 && tableConfig &&
                     <div className={styles.page__tableContainer} ref={tableContainerRef}>
                         <RadarTable
+                            key={JSON.stringify(tableConfig)}
                             // @ts-ignore
                             config={tableConfig}
                             treeMode={tableType === 'Кластеры'}
