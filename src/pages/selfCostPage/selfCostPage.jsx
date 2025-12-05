@@ -137,6 +137,9 @@ const SelfCostPage = () => {
 
                             <SelfCostXLSXuploadComponent
                                 authToken={authToken}
+                                updateFunc={() => {
+                                    getTableData(authToken, activeBrand.id, filters, 1);
+                                }}
                             />
                         </div>
 
@@ -180,7 +183,7 @@ const SelfCostPage = () => {
 };
 
 
-const SelfCostXLSXuploadComponent = ({ authToken }) => {
+const SelfCostXLSXuploadComponent = ({ authToken, updateFunc }) => {
 
     const [isUploadModalVisible, setIsUploadModalVisible] = useState(false);
     const [file, setFile] = useState(null);
@@ -225,6 +228,8 @@ const SelfCostXLSXuploadComponent = ({ authToken }) => {
                         setIsUploadModalVisible(false);
                     }, 2000);
                 }
+
+                updateFunc();
             }
         } catch (error) {
             setStatus({ ...initDataStatus, isError: true, message: 'Что-то пошло не так :( Попробуйте оновить страницу' });
