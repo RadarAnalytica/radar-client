@@ -37,6 +37,7 @@ import advertListData from './mock/my-adv-list.json';
 import advertCompanyData from './mock/my-adv-company.json';
 import positionTrackingMetaData from './mock/position-tracking/positionTrackingMainPageData.json';
 import positionTrackingSkuPageData from './mock/position-tracking/positionTrackingSkuData.json';
+import positionTrackingProjectsList from './mock/position-tracking/positionTrackingProjectsList.json';
 
 export class DemoDataService {
   private static instance: DemoDataService;
@@ -136,6 +137,7 @@ export class DemoDataService {
       '/api/position-track/web-product/get-totals': () => this.getPositionTrackingMainPageData(),
       '/api/position-track/radar-product/user-meta': () => this.getPositionTrackingMetaData(),
       '/api/position-track/web-product/get-product': () => this.getPositionTrackingSkuPageData(),
+      '/api/position-track/project/get-all': () => this.getPositionTrackingProjectsList(),
       'https://radarmarket.ru/api/web-service/monitoring-oracle/easy/get': () => this.getEasyMonitoringData(),
       'https://radarmarket.ru/api/web-service/monitoring-oracle/get': () => this.getMonitoringData(),
       'https://radarmarket.ru/api/web-service/trending-queries/get': () => this.getTrendingQueries(),
@@ -242,7 +244,11 @@ export class DemoDataService {
   }
 
   private getPositionTrackingMetaData(): any {
-    return JSON.stringify({"projects_count":1,"products_count":1});
+    return {"projects_count":1,"products_count":1};
+  }
+
+  private getPositionTrackingProjectsList(): any {
+    return positionTrackingProjectsList;
   }
 
   private getGeoData(filters?: any): any {

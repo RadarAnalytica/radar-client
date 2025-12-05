@@ -2128,7 +2128,7 @@ export interface IPositionCheckMainTableData {
 		return res;
 	},
 	getPostionTrackingMeta: async (token) => {
-		const res = await fetchApi(`${URL}/api/position-track/radar-product/user-meta`, {
+		const res = await fetchApi(`/api/position-track/radar-product/user-meta`, {
 			method: 'GET',
 			headers: {
 				'content-type': 'application/json',
@@ -2138,7 +2138,7 @@ export interface IPositionCheckMainTableData {
 		return res
 	},
 	getPostionTrackingSkuValidity: async (token, sku) => {
-		const res = await fetchApi(`${URL}/api/position-track/radar-product/check-product`, {
+		const res = await fetchApi(`/api/position-track/radar-product/check-product`, {
 			method: 'POST',
 			headers: {
 				'content-type': 'application/json',
@@ -2151,7 +2151,7 @@ export interface IPositionCheckMainTableData {
 		return res
 	},
 	getPostionTrackingProjects: async (token) => {
-		const res = await fetchApi(`${URL}/api/position-track/project/get-all`, {
+		const res = await fetchApi(`/api/position-track/project/get-all`, {
 			method: 'GET',
 			headers: {
 				'content-type': 'application/json',
@@ -2161,7 +2161,7 @@ export interface IPositionCheckMainTableData {
 		return res
 	},
 	createPostionTrackingProject: async (token, projectName) => {
-		const res = await fetchApi(`${URL}/api/position-track/project/create`, {
+		const res = await fetchApi(`/api/position-track/project/create`, {
 			method: 'POST',
 			headers: {
 				'content-type': 'application/json',
@@ -2174,7 +2174,7 @@ export interface IPositionCheckMainTableData {
 		return res;
 	},
 	createPostionTrackingProjectWithProduct: async (token, projectName, sku, productName) => {
-		const res = await fetchApi(`${URL}/api/position-track/radar-product/create`, {
+		const res = await fetchApi(`/api/position-track/radar-product/create`, {
 			method: 'POST',
 			headers: {
 				'content-type': 'application/json',
@@ -2189,7 +2189,7 @@ export interface IPositionCheckMainTableData {
 		return res;
 	},
 	addProductToPositionTrackingProject: async (token, requestObject) => {
-		const res = await fetchApi(`${URL}/api/position-track/radar-product/create`, {
+		const res = await fetchApi(`/api/position-track/radar-product/create`, {
 			method: 'POST',
 			headers: {
 				'content-type': 'application/json',
@@ -2200,7 +2200,7 @@ export interface IPositionCheckMainTableData {
 		return res;
 	},
 	deleteProductFromPositionTrackingProject: async (token, productId) => {
-		const res = await fetchApi(`${URL}/api/position-track/radar-product/delete?product_id=${productId}`, {
+		const res = await fetchApi(`/api/position-track/radar-product/delete?product_id=${productId}`, {
 			method: 'DELETE',
 			headers: {
 				'content-type': 'application/json',
@@ -2210,7 +2210,7 @@ export interface IPositionCheckMainTableData {
 		return res;
 	},
 	deleteProductToPositionTrackingProject: async (token, requestObject) => {
-		const res = await fetchApi(`${URL}/api/position-track/radar-product/create`, {
+		const res = await fetchApi(`/api/position-track/radar-product/create`, {
 			method: 'POST',
 			headers: {
 				'content-type': 'application/json',
@@ -2221,7 +2221,7 @@ export interface IPositionCheckMainTableData {
 		return res;
 	},
 	deletePositionTrackingProject: async (token, projectId) => {
-		const res = await fetchApi(`${URL}/api/position-track/project/delete?project_id=${projectId}`, {
+		const res = await fetchApi(`/api/position-track/project/delete?project_id=${projectId}`, {
 			method: 'DELETE',
 			headers: {
 				'content-type': 'application/json',
@@ -2231,7 +2231,7 @@ export interface IPositionCheckMainTableData {
 		return res;
 	},
 	updatePositionTrackingProject: async (token, projectId, projectName) => {
-		const res = await fetchApi(`${URL}/api/position-track/project/update`, {
+		const res = await fetchApi(`/api/position-track/project/update`, {
 			method: 'PATCH',
 			headers: {
 				'content-type': 'application/json',
@@ -2245,7 +2245,7 @@ export interface IPositionCheckMainTableData {
 		return res;
 	},
 	getPositionTrackingMainPageData: async (token, requestObject) => {
-		const res = await fetchApi(`${URL}/api/position-track/web-product/get-totals`, {
+		const res = await fetchApi(`/api/position-track/web-product/get-totals`, {
 			method: 'POST',
 			headers: {
 				'content-type': 'application/json',
@@ -2256,7 +2256,7 @@ export interface IPositionCheckMainTableData {
 		return res;
 	},
 	getPositionTrackingSkuPageData: async (token, requestObject) => {
-		const res = await fetchApi(`${URL}/api/position-track/web-product/get-product`, {
+		const res = await fetchApi(`/api/position-track/web-product/get-product`, {
 			method: 'POST',
 			headers: {
 				'content-type': 'application/json',
@@ -2267,7 +2267,7 @@ export interface IPositionCheckMainTableData {
 		return res;
 	},
 	createPositionTrackingChartMark: async (token, requestObject) => {
-		const res = await fetchApi(`${URL}/api/position-track/radar-product/mark/create`, {
+		const res = await fetchApi(`/api/position-track/radar-product/mark/create`, {
 			method: 'POST',
 			headers: {
 				'content-type': 'application/json',
@@ -2278,7 +2278,7 @@ export interface IPositionCheckMainTableData {
 		return res;
 	},
 	deletePositionTrackingChartMark: async (token, markId) => {
-		const res = await fetchApi(`${URL}/api/position-track/radar-product/mark/delete?mark_id=${markId}`, {
+		const res = await fetchApi(`/api/position-track/radar-product/mark/delete?mark_id=${markId}`, {
 			method: 'DELETE',
 			headers: {
 				'content-type': 'application/json',
@@ -2288,7 +2288,7 @@ export interface IPositionCheckMainTableData {
 		return res;
 	},
 	updatePositionTrackingChartMark: async (token, requestObject) => {
-		const res = await fetchApi(`${URL}/api/position-track/radar-product/mark/update`, {
+		const res = await fetchApi(`/api/position-track/radar-product/mark/update`, {
 			method: 'PATCH',
 			headers: {
 				'content-type': 'application/json',
