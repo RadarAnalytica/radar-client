@@ -171,7 +171,7 @@ const MyAdvTable: React.FC<MyAdvTableProps> = ({
     }
 
     // Рендер для денежных значений
-    if (['cpc', 'cpm', 'cp_cart', 'expected_cps', 'orders_amount', 'expected_purchase_amount', 'ad_spend', 'avg_cpm'].includes(dataIndex)) {
+    if (['cpc', 'cpm', 'cp_cart', 'cpo', 'expected_cps', 'orders_amount', 'expected_purchase_amount', 'ad_spend', 'avg_cpm'].includes(dataIndex)) {
       const formattedValue = typeof value === 'number' 
         ? new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB', minimumFractionDigits: 0 }).format(value)
         : value;
