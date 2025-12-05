@@ -878,9 +878,20 @@ export const ServiceFunctions = {
 
 		return data;
 	},
-
+	//old version
+	//getCostTemplate: async (token) => {
+	// 	const res = await fetch(`${URL}/api/report/cost/get-template`, {
+	// 		method: 'GET',
+	// 		headers: {
+	// 			accept: 'application/json',
+	// 			authorization: 'JWT ' + token,
+	// 		},
+	// 	});
+	// 	const data = await res.blob();
+	// 	return data;
+	// },
 	getCostTemplate: async (token) => {
-		const res = await fetch(`${URL}/api/report/cost/get-template`, {
+		const res = await fetch(`${URL}/api/product/self-costs/template`, {
 			method: 'GET',
 			headers: {
 				accept: 'application/json',
@@ -890,13 +901,38 @@ export const ServiceFunctions = {
 		const data = await res.blob();
 		return data;
 	},
+	//old version
+	// postCostUpdate: async (token, file) => {
+	// 	const formData = new FormData();
+	// 	formData.append('file', file);
 
+	// 	try {
+	// 		const response = await fetch(`${URL}/api/report/cost/update`, {
+	// 			method: 'POST',
+	// 			headers: {
+	// 				Authorization: 'JWT ' + token,
+	// 			},
+	// 			body: formData,
+	// 		});
+
+	// 		if (response.ok) {
+	// 			return await response.json();
+	// 		} else {
+	// 			console.error('Ошибка при загрузке файла:', response.statusText);
+	// 			throw new Error(response.statusText);
+	// 		}
+
+	// 	} catch (error) {
+	// 		console.error('Ошибка сети или запроса:', error);
+	// 		throw error; // Прокидываем ошибку выше
+	// 	}
+	// },
 	postCostUpdate: async (token, file) => {
 		const formData = new FormData();
 		formData.append('file', file);
 
 		try {
-			const response = await fetch(`${URL}/api/report/cost/update`, {
+			const response = await fetch(`${URL}/api/product/self-costs/upload`, {
 				method: 'POST',
 				headers: {
 					Authorization: 'JWT ' + token,

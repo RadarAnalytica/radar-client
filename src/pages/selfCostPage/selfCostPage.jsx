@@ -17,12 +17,15 @@ import { useLoadingProgress } from '@/service/hooks/useLoadingProgress';
 import AlertWidget from '@/components/sharedComponents/AlertWidget/AlertWidget';
 import FilterLoader from '@/components/ui/FilterLoader';
 import DragDropFile from '@/components/DragAndDropFiles';
+import { ConfigProvider, Button } from 'antd';
 import Modal from 'react-bootstrap/Modal';
+import { fileDownload } from '@/service/utils';
+import { formatPrice } from '@/service/utils';
 
 const initDataStatus = {
     isError: false,
     isLoading: false,
-    message: ''
+    message: 'error'
 };
 
 const SelfCostPage = () => {
@@ -132,7 +135,9 @@ const SelfCostPage = () => {
                                 isLoading={dataStatus.isLoading}
                             />
 
-                            <SelfCostXLSXuploadComponent />
+                            <SelfCostXLSXuploadComponent
+                                authToken={authToken}
+                            />
                         </div>
 
                         <SelfCostTableWidget
@@ -175,114 +180,210 @@ const SelfCostPage = () => {
 };
 
 
-const SelfCostXLSXuploadComponent = () => {
+const SelfCostXLSXuploadComponent = ({ authToken }) => {
 
     const [isUploadModalVisible, setIsUploadModalVisible] = useState(false);
     const [file, setFile] = useState(null);
-    const [isFileUpload, setIsFileUpload] = useState();
-    console.log(isUploadModalVisible, 'isUploadModalVisible');
+    const [status, setStatus] = useState(initDataStatus);
+    const [result, setResult] = useState(null);
+
+    const timeoutRef = useRef(null);
 
     const handleTemplateDownload = async () => {
-        const fileBlob = await ServiceFunctions.getCostTemplate(authToken);
-        fileDownload(fileBlob, 'Себестоимость.xlsx');
-    };
-
-    const handleCostPriceSave = async () => {
-        setIsFileUpload(true);
+        setStatus({ ...initDataStatus, isLoading: true });
+        setResult(null);
         try {
-            await ServiceFunctions.postCostUpdate(authToken, file);
-            setShowSuccessPopup(true);
-            getCostPiceStatus();
+            const fileBlob = await ServiceFunctions.getCostTemplate(authToken);
+            fileDownload(fileBlob, 'Себестоимость.xlsx');
         } catch (error) {
-            // Обработка ошибки
-            console.error('Ошибка при загрузке файла:', error);
-            setErrorMessage(error == 'Error: Unprocessable Entity' ? 'Некорректный формат файла' : 'Ошибка при загрузке файла');
-            setShowModalError(true);
+            setStatus({ ...initDataStatus, isError: true, message: 'Что-то пошло не так :( Попробуйте оновить страницу' });
         } finally {
-            setCostPriceShow(false);
-            setTimeout(() => setFile(null), 500);
-            setIsFileUpload(false);
+            setStatus({ ...initDataStatus });
         }
     };
 
+    const handleCostPriceSave = async () => {
+        setStatus({ ...initDataStatus, isLoading: true });
+        setResult(null);
+        try {
+            const response = await ServiceFunctions.postCostUpdate(authToken, file);
+
+            if (response && "success_count" in response) {
+                setStatus(initDataStatus);
+                setFile(null);
+
+                const resultObject = {
+                    total_processed_rows: {value: response.total_processed_rows, title: 'Строк обработано'},
+                    success_count: {value: response.success_count, title: 'Успешно загружено'},
+                    error_count: {value: response.error_count, title: 'Ошибок'},
+                }
+
+                setResult(resultObject);
+                if (response.error_count === 0) {
+                    timeoutRef.current = setTimeout(() => {
+                        setResult(null);
+                        setIsUploadModalVisible(false);
+                    }, 2000);
+                }
+            }
+        } catch (error) {
+            setStatus({ ...initDataStatus, isError: true, message: 'Что-то пошло не так :( Попробуйте оновить страницу' });
+        } finally {
+            setStatus({ ...initDataStatus });
+        }
+    };
+
+    useEffect(() => {
+        let timeout = null;
+        if (status.isError) {
+            timeout = setTimeout(() => {
+                setStatus({ ...initDataStatus });
+            }, 1500);
+        }
+        return () => {
+            if (timeout) {
+                clearTimeout(timeout);
+            }
+        };
+    }, [status]);
+
+    useEffect(() => {
+        if (file) {
+            setResult(null);
+            setStatus({ ...initDataStatus });
+        }
+    }, [file]);
+
     return (
         <>
-            <button
-                onClick={() => setIsUploadModalVisible(true)}
-                className='prime-btn'
-                style={{ height: '46px', display: 'flex', alignItems: 'center', justifyContent: 'center', minWidth: '220px' }}
-            >
-                Загрузить EXEL
-            </button>
+            <div>
+                <div>
+                    <ConfigProvider
+                        wave={{ disabled: true }}
+                        theme={{
+                            token: {
+                                colorPrimary: '#5329FF',
+                                colorTextLightSolid: 'white',
+                                fontSize: 14,
+                                controlHeightLG: 38,
+                                fontWeight: 600,
+                            },
+                            Button: {
+                                defaultShadow: 'none',
+                                primaryShadow: 'none',
+                                paddingInlineLG: 12,
+                                controlHeightLG: 38,
+                            }
+                        }}
+                    >
+                        <Button
+                            type='primary'
+                            size='large'
+                            loading={status.isLoading}
+                            onClick={() => setIsUploadModalVisible(true)}
+                            style={{ fontWeight: 600, height: 38, width: 149, fontSize: 14 }}
+                        >
+                            Загрузить Excel
+                        </Button>
+                    </ConfigProvider>
+                </div>
 
-            <Modal
-                show={isUploadModalVisible}
-                onHide={() => setIsUploadModalVisible(false)}
-                className='add-token-modal'
-            >
-                <Modal.Header closeButton>
-                    <div className='d-flex align-items-center gap-2'>
-                        <div style={{ width: '100%' }}>
-                            <div className='d-flex justify-content-between'>
-                                <h4 className='fw-bold mb-0' style={{ fontSize: '18px' }}>Установка себестоимости товара</h4>
-                            </div>
-                        </div>
-                    </div>
-                </Modal.Header>
-                <Modal.Body>
-                    {file ? (
-                        <div>
-                            <div className='d-flex align-items-center justify-content-between w-100 mt-2 gap-2'>
-                                <div className='d-flex gap-2'>
-                                    <svg
-                                        width='17'
-                                        height='23'
-                                        viewBox='0 0 17 23'
-                                        fill='none'
-                                        xmlns='http://www.w3.org/2000/svg'
-                                    >
-                                        <path
-                                            d='M14 21.75H3C1.75736 21.75 0.75 20.7426 0.75 19.5V3.5C0.75 2.25736 1.75736 1.25 3 1.25H10.8588L16.25 6.32405V19.5C16.25 20.7426 15.2426 21.75 14 21.75Z'
-                                            stroke='black'
-                                            strokeOpacity='0.5'
-                                            strokeWidth='1.5'
-                                        />
-                                    </svg>
-                                    <span style={{ fontSize: '14px' }}>{file ? file.name : ''}</span>
-                                </div>
-                                <div>
-                                    <a
-                                        href='#'
-                                        className='link'
-                                        onClick={() => setFile(null)}
-                                        style={{ color: 'red', cursor: 'pointer', fontSize: '14px' }}
-                                    >
-                                        Удалить
-                                    </a>
+                <Modal
+                    show={isUploadModalVisible}
+                    onHide={() => {
+                        if (status.isLoading) return;
+                        setIsUploadModalVisible(false)
+                        setStatus({ ...initDataStatus });
+                        setResult(null);
+                        setFile(null);
+                        clearTimeout(timeoutRef?.current);
+                    }}
+                    className='add-token-modal'
+                >
+                    <Modal.Header closeButton>
+                        <div className='d-flex align-items-center gap-2'>
+                            <div style={{ width: '100%' }}>
+                                <div className='d-flex justify-content-between'>
+                                    <h4 className='fw-bold mb-0' style={{ fontSize: '18px' }}>Установка себестоимости товара</h4>
                                 </div>
                             </div>
-                            <div className='d-flex justify-content-center w-100 mt-2 gap-2'>
-                                <button
-                                    onClick={handleCostPriceSave}
-                                    className='prime-btn'
-                                    style={{ height: '46px', display: 'flex', alignItems: 'center', justifyContent: 'center', minWidth: '220px' }}
-                                    disabled={isFileUpload}
-                                >
-                                    <span style={{ fontSize: '14px' }}>Сохранить</span>
-                                </button>
-
-
-                            </div>
-                            <div className='d-flex justify-content-center w-100 gap-2'>
-                                <a href='#' className='link' onClick={() => setIsUploadModalVisible(false)} style={{ fontSize: '14px' }}>
-                                    Отмена
-                                </a>
-                            </div>
-
                         </div>
-                    ) : (
-                        <div className='d-flex flex-column align-items-center justify-content-around w-100'>
-                            {/* <div className="file-block d-flex flex-column align-items-center justify-content-around w-100 mt-2 gap-2">
+                    </Modal.Header>
+                    <Modal.Body>
+                        {file ? (
+                            <div>
+                                <div className='d-flex align-items-center justify-content-between w-100 mt-2 gap-2'>
+                                    <div className='d-flex gap-2'>
+                                        <svg
+                                            width='17'
+                                            height='23'
+                                            viewBox='0 0 17 23'
+                                            fill='none'
+                                            xmlns='http://www.w3.org/2000/svg'
+                                        >
+                                            <path
+                                                d='M14 21.75H3C1.75736 21.75 0.75 20.7426 0.75 19.5V3.5C0.75 2.25736 1.75736 1.25 3 1.25H10.8588L16.25 6.32405V19.5C16.25 20.7426 15.2426 21.75 14 21.75Z'
+                                                stroke='black'
+                                                strokeOpacity='0.5'
+                                                strokeWidth='1.5'
+                                            />
+                                        </svg>
+                                        <span style={{ fontSize: '14px' }}>{file ? file.name : ''}</span>
+                                    </div>
+                                    <div>
+                                        <button
+                                            className={styles.textButton}
+                                            onClick={() => setFile(null)}
+                                            style={{ color: 'red', cursor: 'pointer', fontSize: '14px' }}
+                                            disabled={status.isLoading}
+                                        >
+                                            Удалить
+                                        </button>
+                                    </div>
+                                </div>
+                                <div className='d-flex justify-content-center w-100 mt-2 gap-2'>
+                                    <ConfigProvider
+                                        wave={{ disabled: true }}
+                                        theme={{
+                                            token: {
+                                                colorPrimary: '#5329FF',
+                                                colorTextLightSolid: 'white',
+                                                fontSize: 14,
+                                                controlHeightLG: 46,
+                                                fontWeight: 600,
+                                            },
+                                            Button: {
+                                                defaultShadow: 'none',
+                                                primaryShadow: 'none',
+                                                paddingInlineLG: 12,
+                                                controlHeightLG: 38,
+                                            }
+                                        }}
+                                    >
+                                        <Button
+                                            type='primary'
+                                            size='large'
+                                            loading={status.isLoading}
+                                            onClick={handleCostPriceSave}
+                                            style={{ fontWeight: 600, fontSize: 14, margin: '10px 0', width: '100%' }}
+                                            loading={status.isLoading}
+                                        >
+                                            Сохранить
+                                        </Button>
+                                    </ConfigProvider>
+
+
+                                </div>
+                                <div className='d-flex justify-content-center w-100 gap-2'>
+                                    <button className={styles.textButton} onClick={() => setIsUploadModalVisible(false)} style={{ fontSize: '14px' }} disabled={status.isLoading}>
+                                        Отмена
+                                    </button>
+                                </div>
+
+                            </div>
+                        ) : (
+                            <div className='d-flex flex-column align-items-center justify-content-around w-100'>
+                                {/* <div className="file-block d-flex flex-column align-items-center justify-content-around w-100 mt-2 gap-2">
                                     <svg width="64" height="48" viewBox="0 0 64 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M20 11C17.5147 11 15.5 13.0147 15.5 15.5V16C15.5 18.4853 17.5147 20.5 20 20.5C22.4853 20.5 24.5 18.4853 24.5 16V15.5C24.5 13.0147 22.4853 11 20 11Z" fill="#5329FF" />
                                         <path d="M11.5 47H53.5C58.4706 47 62.5 42.9706 62.5 38V30L47.8422 21.4198C44.3822 19.3944 39.9996 19.902 37.0941 22.6647L26.75 32.5L11.5 47Z" fill="#5329FF" />
@@ -295,16 +396,32 @@ const SelfCostXLSXuploadComponent = () => {
                                         Выбрать файл
                                     </button>
                                 </div> */}
-                            <DragDropFile files={file} setFiles={setFile} />
-                            <div className='d-flex justify-content-center w-100 mt-2 gap-2'>
-                                <a href='#' className='link' onClick={handleTemplateDownload} style={{ fontSize: '14px' }}>
-                                    Скачать шаблон
-                                </a>
+                                <DragDropFile files={file} setFiles={setFile} disabled={status.isLoading || status.isError} />
+                                <div className='d-flex justify-content-center w-100 mt-2 gap-2'>
+                                    <a href='#' className='link' onClick={handleTemplateDownload} style={{ fontSize: '14px' }}>
+                                        Скачать шаблон
+                                    </a>
+                                </div>
                             </div>
-                        </div>
-                    )}
-                </Modal.Body>
-            </Modal>
+                        )}
+                        {status.isError && (
+                            <div style={{ color: 'red', fontSize: '14px', textAlign: 'left', width: '100%', marginTop: '10px' }}>
+                                {status.message}
+                            </div>
+                        )}
+                        {result && (
+                            <div style={{ display: 'flex', flexDirection: 'column', width: '100%', marginTop: '10px' }}>
+                                {Object.keys(result).map((key) => (
+                                    <div key={key} style={{ display: 'flex', flexDirection: 'row', width: '100%', marginTop: '10px' }}>
+                                        <span style={{ fontSize: '14px', lineHeight: '1' }}>{result[key].title}:&nbsp;</span>
+                                        <span style={{ fontSize: '14px', lineHeight: '1' }}>{formatPrice(result[key].value, ' ')}</span>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                    </Modal.Body>
+                </Modal>
+            </div>
         </>
     )
 }

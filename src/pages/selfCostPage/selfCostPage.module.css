@@ -51,3 +51,20 @@
     align-items: center;
     justify-content: space-between;
 }
+
+.textButton {
+    background: none;
+    border: none;
+    color: #5329FF;
+    cursor: pointer;
+    transition: all .2s ease;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 140%;
+    letter-spacing: 0%;
+}
+
+.textButton:disabled {
+    filter: grayscale(100%);
+    opacity: 0.5;
+}
