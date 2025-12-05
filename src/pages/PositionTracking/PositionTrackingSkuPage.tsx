@@ -309,9 +309,9 @@ const getTableConfig = (skuData: PositionTrackingSkuPageData, tableType: 'Кла
             })
         });
         const templateObject = {
-            width: 100,
-            minWidth: 100,
-            maxWidth: 200,
+            width: 120,
+            minWidth: 120,
+            maxWidth: 240,
         }
         const tableConfig = [...initTableConfig, ...[...datesArray].reverse().map((date) => ({ ...templateObject, key: date, title: formatDateHeader(date), dataIndex: date }))]
         return tableConfig;
