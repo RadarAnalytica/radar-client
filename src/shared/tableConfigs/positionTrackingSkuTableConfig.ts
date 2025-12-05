@@ -4,7 +4,7 @@ export const positionTrackingSkuTableConfig = [
         title: 'Название',
         dataIndex: 'query',
         hidden: false,
-        width: 200,
+        width: 250,
         fixed: true,
     },
     {

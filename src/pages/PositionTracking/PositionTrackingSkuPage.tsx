@@ -291,8 +291,8 @@ const getTableConfig = (skuData: PositionTrackingSkuPageData, tableType: 'Кла
             })
         });
         const templateObject = {
-            width: 50,
-            minWidth: 100,
+            width: 120,
+            minWidth: 120,
             maxWidth: 240,
         }
         const tableConfig = [...initTableConfig, ...[...datesArray].reverse().map((date) => ({ ...templateObject, key: date, title: formatDateHeader(date), dataIndex: date }))]
@@ -1577,7 +1577,7 @@ interface PositionTrackingSkuTableProps {
 const PositionTrackingSkuTable = memo(({ requestStatus, skuData, tableType }: PositionTrackingSkuTableProps) => {
    
     const [sortState, setSortState] = useState<{ sort_field: string, sort_order: 'ASC' | 'DESC' }>({ sort_field: 'frequency', sort_order: 'DESC' });
-    const [tableConfig, setTableConfig] = useState<Record<string, any>[]>(initTableConfig);
+    const [tableConfig, setTableConfig] = useState<Record<string, any>[]>(null);
     const [paginationState, setPaginationState] = useState<{ current: number, pageSize: number, total: number }>({ current: 1, pageSize: 12, total: 0 });
     const [tableData, setTableData] = useState<any[]>([]);
     const tableContainerRef = useRef<HTMLDivElement>(null);
@@ -1635,7 +1635,7 @@ const PositionTrackingSkuTable = memo(({ requestStatus, skuData, tableType }: Po
         if (skuData) {
             const preparedData = getTableData(skuData, tableType);
             setPaginationState(prev => ({ ...prev, current: 1, total: Math.ceil(preparedData.length / paginationState.pageSize) }));
-            setTableConfig(getTableConfig(skuData, tableType));
+            setTableConfig([...getTableConfig(skuData, tableType)]);
             const sortedData = dataSorter('frequency', 'DESC');
             setSortState({ sort_field: 'frequency', sort_order: 'DESC' });
             setTableData(sortedData);
@@ -1651,7 +1651,6 @@ const PositionTrackingSkuTable = memo(({ requestStatus, skuData, tableType }: Po
                 {!requestStatus.isLoading && tableData && tableData.length > 0 && tableConfig &&
                     <div className={styles.page__tableContainer} ref={tableContainerRef}>
                         <RadarTable
-                            key={JSON.stringify(tableConfig)}
                             // @ts-ignore
                             config={tableConfig}
                             treeMode={tableType === 'Кластеры'}
