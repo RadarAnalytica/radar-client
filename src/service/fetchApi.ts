@@ -56,7 +56,6 @@ export const fetchApi = async (endpoint: string, options: RequestInit = {}) => {
     const demoService = DemoDataService.getInstance();
     const { store } = await import('../redux/store'); // Динамически импортируем store для получения filters без циклической зависимости
     const filters = store.getState().filters;
-
     const demoData = await demoService.getDataForEndpoint(endpoint, filters, options);
 
     if (demoData?.data) {
