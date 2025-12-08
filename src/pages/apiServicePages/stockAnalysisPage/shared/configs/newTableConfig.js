@@ -1,4 +1,4 @@
-export const CURR_STOCK_ANALYSIS_TABLE_CONFIG_VER = '15';
+export const CURR_STOCK_ANALYSIS_TABLE_CONFIG_VER = '17';
 
 export const newTableConfig = [
     {
@@ -142,6 +142,7 @@ export const newTableConfig = [
                 maxWidth: 240,
                 key: 'toPayoff',
                 units: '₽',
+                tooltipText: 'Сумма, которую продавец получит за товар. Формула: Оплата на РС – Хранение',
                 style: {
                     background: '#F7F6FE',
                     verticalAlign: 'middle',
@@ -157,6 +158,7 @@ export const newTableConfig = [
                 maxWidth: 320,
                 key: 'marginalProfit',
                 units: '₽',
+                tooltipText: 'Прибыль до вычета расходов. Формула: Сумма продаж – Себестоимость проданных товаров',
                 style: {
                     background: '#F7F6FE',
                     verticalAlign: 'middle',
@@ -172,6 +174,7 @@ export const newTableConfig = [
                 maxWidth: 280,
                 key: 'averageProfit',
                 units: '₽',
+                tooltipText: 'Средняя прибыль за день. Формула: (Сумма продаж – Текущая себестоимость × Количество продаж) / Количество дней',
                 style: {
                     background: '#F7F6FE',
                     verticalAlign: 'middle',
@@ -187,6 +190,7 @@ export const newTableConfig = [
                 maxWidth: 520,
                 key: 'profitabilityOfProductsSold',
                 units: '%',
+                tooltipText: 'Рентабельность продаж. Формула: (Количество продаж / Сумма продаж) × 100%',
                 style: {
                     background: '#F7F6FE',
                     verticalAlign: 'middle',
@@ -202,6 +206,7 @@ export const newTableConfig = [
                 maxWidth: 280,
                 key: 'marginal',
                 units: '%',
+                tooltipText: 'Маржинальность продаж. Формула: (Сумма продаж – Текущая себестоимость × Количество продаж) / Сумма продаж × 100%',
                 style: {
                     background: '#F7F6FE',
                     verticalAlign: 'middle',
@@ -217,6 +222,7 @@ export const newTableConfig = [
                 maxWidth: 560,
                 key: 'annualReturnOnInventory',
                 units: '%',
+                tooltipText: 'Рентабельность запасов в пересчёте на год. Формула: ((Оплата на РС – Себестоимость проданных товаров) / Себестоимость товарного запаса) × (365 / Дней в периоде)',
                 style: {
                     background: '#F7F6FE',
                     verticalAlign: 'middle',
@@ -232,6 +238,7 @@ export const newTableConfig = [
                 maxWidth: 320,
                 key: 'lostRevenue',
                 units: '₽',
+                tooltipText: 'Неполученная выручка из-за отсутствия товара. Формула: Дни отсутствия × Средняя выручка в день',
                 style: {
                     background: '#F7F6FE',
                     verticalAlign: 'middle',
@@ -264,6 +271,7 @@ export const newTableConfig = [
                 maxWidth: 220,
                 key: 'purchased',
                 units: 'шт',
+                tooltipText: 'Количество выкупленных единиц.',
                 style: {
                     background: '#F7F6FE',
                     verticalAlign: 'middle',
@@ -279,6 +287,7 @@ export const newTableConfig = [
                 maxWidth: 240,
                 key: 'notPurchased',
                 units: 'шт',
+                tooltipText: 'Количество невыкупленных единиц.',
                 style: {
                     background: '#F7F6FE',
                     verticalAlign: 'middle',
@@ -294,6 +303,7 @@ export const newTableConfig = [
                 maxWidth: 280,
                 key: 'purchasedPercent',
                 units: '%',
+                tooltipText: 'Доля выкупленных единиц от всех доставленных. Формула: (Выкуплено / (Выкуплено + Не выкуплено)) × 100%',
                 style: {
                     background: '#F7F6FE',
                     verticalAlign: 'middle',
@@ -309,6 +319,7 @@ export const newTableConfig = [
                 maxWidth: 220,
                 key: 'completed',
                 units: 'шт',
+                tooltipText: 'Общее количество доставок (выкуп + невыкуп).',
                 style: {
                     background: '#F7F6FE',
                     verticalAlign: 'middle',
@@ -340,6 +351,7 @@ export const newTableConfig = [
                 maxWidth: 240,
                 key: 'saleSum',
                 units: '₽',
+                tooltipText: 'Выручка от продаж товара.',
                 style: {
                     background: '#F7F6FE',
                     verticalAlign: 'middle',
@@ -355,6 +367,7 @@ export const newTableConfig = [
                 maxWidth: 220,
                 key: 'quantity',
                 units: 'шт',
+                tooltipText: 'Количество проданных единиц.',
                 style: {
                     background: '#F7F6FE',
                     verticalAlign: 'middle',
@@ -370,6 +383,7 @@ export const newTableConfig = [
                 maxWidth: 440,
                 key: 'sold_cost',
                 units: '₽',
+                tooltipText: 'Себестоимость проданных единиц.',
                 style: {
                     background: '#F7F6FE',
                     verticalAlign: 'middle',
@@ -401,6 +415,7 @@ export const newTableConfig = [
                 maxWidth: 240,
                 key: 'returnsSum',
                 units: '₽',
+                tooltipText: 'Сумма возвратов по товару.',
                 style: {
                     background: '#F7F6FE',
                     verticalAlign: 'middle',
@@ -416,6 +431,7 @@ export const newTableConfig = [
                 maxWidth: 240,
                 key: 'returnsQuantity',
                 units: 'шт',
+                tooltipText: 'Количество возвращённых единиц.',
                 style: {
                     background: '#F7F6FE',
                     verticalAlign: 'middle',
@@ -431,6 +447,7 @@ export const newTableConfig = [
                 maxWidth: 480,
                 key: 'return_cost',
                 units: '₽',
+                tooltipText: 'Себестоимость возвращённых единиц.',
                 style: {
                     background: '#F7F6FE',
                     verticalAlign: 'middle',
@@ -462,6 +479,7 @@ export const newTableConfig = [
                 maxWidth: 240,
                 key: 'product_cost',
                 units: '₽',
+                tooltipText: 'Текущая себестоимость единицы товара (включая фулфилмент).',
                 style: {
                     background: '#F7F6FE',
                     verticalAlign: 'middle',
@@ -477,6 +495,7 @@ export const newTableConfig = [
                 maxWidth: 560,
                 key: 'product_cost_stock',
                 units: '₽',
+                tooltipText: 'Сумма себестоимостей остатков (без фулфилмента).',
                 style: {
                     background: '#F7F6FE',
                     verticalAlign: 'middle',
@@ -508,6 +527,7 @@ export const newTableConfig = [
                 maxWidth: 200,
                 key: 'toClient',
                 units: 'шт',
+                tooltipText: 'Количество прямых доставок.',
                 style: {
                     background: '#F7F6FE',
                     verticalAlign: 'middle',
@@ -523,6 +543,7 @@ export const newTableConfig = [
                 maxWidth: 200,
                 key: 'to_client_sum',
                 units: '₽',
+                tooltipText: 'Затраты на прямую доставку.',
                 style: {
                     background: '#F7F6FE',
                     verticalAlign: 'middle',
@@ -538,6 +559,7 @@ export const newTableConfig = [
                 maxWidth: 200,
                 key: 'fromClient',
                 units: 'шт',
+                tooltipText: 'Количество обратных доставок.',
                 style: {
                     background: '#F7F6FE',
                     verticalAlign: 'middle',
@@ -553,6 +575,7 @@ export const newTableConfig = [
                 maxWidth: 200,
                 key: 'from_client_sum',
                 units: '₽',
+                tooltipText: 'Затраты на обратную доставку.',
                 style: {
                     background: '#F7F6FE',
                     verticalAlign: 'middle',
@@ -584,6 +607,7 @@ export const newTableConfig = [
                 maxWidth: 260,
                 key: 'commissionWB',
                 units: '₽',
+                tooltipText: 'Комиссия по товару.',
                 style: {
                     background: '#F7F6FE',
                     verticalAlign: 'middle',
@@ -599,6 +623,7 @@ export const newTableConfig = [
                 maxWidth: 200,
                 key: 'fines',
                 units: '₽',
+                tooltipText: 'Штрафы по товару.',
                 style: {
                     background: '#F7F6FE',
                     verticalAlign: 'middle',
@@ -614,6 +639,7 @@ export const newTableConfig = [
                 maxWidth: 200,
                 key: 'additionalPayment',
                 units: '₽',
+                tooltipText: 'Доплаты по товару.',
                 style: {
                     background: '#F7F6FE',
                     verticalAlign: 'middle',
@@ -644,6 +670,7 @@ export const newTableConfig = [
                 minWidth: 120,
                 maxWidth: 200,
                 key: 'byRevenue',
+                tooltipText: 'Категория товара по объёму выручки.',
                 style: {
                     background: '#F7F6FE',
                     verticalAlign: 'middle',
@@ -658,6 +685,7 @@ export const newTableConfig = [
                 minWidth: 120,
                 maxWidth: 200,
                 key: 'byProfit',
+                tooltipText: 'Категория товара по прибыли.',
                 style: {
                     background: '#F7F6FE',
                     verticalAlign: 'middle',
@@ -689,6 +717,7 @@ export const newTableConfig = [
                 maxWidth: 200,
                 key: 'basic',
                 units: '₽',
+                tooltipText: 'Цена продавца без скидок.',
                 style: {
                     background: '#F7F6FE',
                     verticalAlign: 'middle',
@@ -704,6 +733,7 @@ export const newTableConfig = [
                 maxWidth: 240,
                 key: 'maxDiscount',
                 units: '%',
+                tooltipText: 'Максимальная скидка, которую может установить продавец.',
                 style: {
                     background: '#F7F6FE',
                     verticalAlign: 'middle',
@@ -719,6 +749,7 @@ export const newTableConfig = [
                 maxWidth: 320,
                 key: 'minDiscountPrice',
                 units: '₽',
+                tooltipText: 'Минимальная цена с учётом скидки продавца.',
                 style: {
                     background: '#F7F6FE',
                     verticalAlign: 'middle',
@@ -812,6 +843,7 @@ export const newTableConfig = [
                 maxWidth: 200,
                 key: 'saleCountDay',
                 units: 'шт/день',
+                tooltipText: 'Среднее количество продаж в день. Формула: Сумма продаж / Количество дней в периоде',
                 style: {
                     background: '#F7F6FE',
                     verticalAlign: 'middle',
@@ -842,6 +874,7 @@ export const newTableConfig = [
                 maxWidth: 240,
                 key: 'dataRadar',
                 units: 'шт',
+                tooltipText: 'Остаток товара на складах WB (ФБС + ФБО).',
                 style: {
                     background: '#F7F6FE',
                     borderRadius: '0 12px 12px 0',
