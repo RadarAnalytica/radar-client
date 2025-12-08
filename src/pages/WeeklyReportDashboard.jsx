@@ -25,7 +25,7 @@ const WeeklyReportDashboard = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { dashboardFilters, isFiltersLoading } = useSelector((state) => state?.dashboardFiltersSlice);
   const [isEditing, setIsEditing] = useState(false);
-  const [taxRate, setTaxRate] = useState(dashboardData?.tax_rate);
+  const [taxRate, setTaxRate] = useState(null);
   const [selectedValue, setSelectedValue] = useState('УСН-доходы');
   const filterSectionRef = useRef();
 
@@ -36,25 +36,29 @@ const WeeklyReportDashboard = () => {
 
   }, [authToken, dispatch]);
 
+  useEffect(() => {
+    if (!taxRate) {
+      setTaxRate(dashboardData?.tax_rate ?? 0);
+    }
+  }, [dashboardData]);
+
   const handleTaxSubmit = async ({ taxType, taxRate: inputTaxRate, submit } = {}) => {
     const currentTaxType = taxType || selectedValue;
     // Если выбран тип "Не считать налог", принудительно ставим 0
     const currentTaxRate =
-      currentTaxType === "Не считать налог"
-        ? 0
-        : (inputTaxRate !== undefined ? inputTaxRate : taxRate);
+      currentTaxType === "Не считать налог" ? 0 : inputTaxRate !== undefined ? inputTaxRate : taxRate;
 
     try {
       if (taxType) {
         await ServiceFunctions.postTaxRateUpdate(authToken, {
           tax_rate: Number(currentTaxRate),
-          tax_type: taxType,
+          tax_type: currentTaxType,
         });
         dispatch(fetchDashboardReport());
         filterSectionRef.current?.handleApplyFilters();
         handleApplyFilters();
         if (taxType === "Не считать налог") {
-          setTaxRate(0);
+          // setTaxRate(0);
           setIsEditing(false);
         } else {
           setTaxRate(dashboardData?.tax_rate);
@@ -604,12 +608,11 @@ const WeeklyReportDashboard = () => {
                           className={styles.customSelect}
                           options={[{ value: 'УСН-доходы', label: 'УСН-доходы' }, { value: 'УСН Д-Р', label: 'УСН Д-Р' }, { value: 'Не считать налог', label: 'Не считать налог' }, { value: 'Считать от РС', label: 'Считать от РС' }]}
                           value={selectedValue}
-                          onChange={(e) => {
-                            const selected = e.target.value;
-                            setSelectedValue(selected);
+                          onChange={(value) => {
+                            setSelectedValue(value);
                             handleTaxSubmit({
-                              taxType: selected,
-                              taxRate: selected === "Не считать налог" ? 0 : taxRate,
+                              taxType: value,
+                              taxRate: taxRate,
                             });
                           }}
                           getPopupContainer={(triggerNode) => triggerNode.parentNode}
@@ -619,7 +622,7 @@ const WeeklyReportDashboard = () => {
                   </div>
                   <div className={styles.salesChartRow}>
                     <div className={styles.titleInRow}>Ставка налога</div>
-                    <div className={styles.mumbersInRow}>
+                    {taxRate && <div className={styles.mumbersInRow}>
                       {isEditing ? (
                         <div className={styles.editTaxRate}>
                           <input
@@ -649,18 +652,17 @@ const WeeklyReportDashboard = () => {
                         <div
                           onClick={() => {
                             if (selectedValue !== 'Не считать налог') {
-                              setTaxRate(dashboardData?.tax_rate || 0); // Устанавливаем начальное значение
                               setIsEditing(true);
                             }
                           }}
                           className={styles.taxRateWrapper}
                         >
 
-                          {formatPrice(dashboardData?.tax_rate || 0, '%')}
+                          {formatPrice(selectedValue === 'Не считать налог' ? 0 : (dashboardData?.tax_rate || 0), '%')}
 
                         </div>
                       )}
-                    </div>
+                    </div>}
                   </div>
                   <div className={styles.salesChartRow}>
                     <div className={styles.titleInRow}>WB реализовал</div>
