@@ -26,7 +26,29 @@ const customCellRender = (value, record, index, dataIndex) => {
 		}
 		return (
 			<div className={styles.customCell} data-year-attribute={yearAttribute}>
-				<span className={styles.customCellValueText} title={value}><b>{value}</b></span>
+				<span className={styles.customCellValueText} title={value}><b>{value}</b>
+					{record.tooltip &&
+						<ConfigProvider
+							theme={{
+								components: {
+									Tooltip: {
+										colorBgSpotlight: '#FFFFFF',
+										colorTextLightSolid: '#000000',
+										fontSize: 12,
+									},
+								},
+							}}
+						>
+							<Tooltip title={record.tooltip}>
+								<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ cursor: 'pointer', minWidth: '20px', minHeight: '20px', marginLeft: '8px' }}>
+									<rect x="0.75" y="0.75" width="18.5" height="18.5" rx="9.25" stroke="black" strokeOpacity="0.1" strokeWidth="1.5" />
+									<path d="M9.064 15V7.958H10.338V15H9.064ZM8.952 6.418V5.046H10.464V6.418H8.952Z" fill="#1A1A1A" fillOpacity="0.5" />
+								</svg>
+							</Tooltip>
+						</ConfigProvider>
+					}
+				</span>
+
 			</div>
 		);
 	}
@@ -35,27 +57,28 @@ const customCellRender = (value, record, index, dataIndex) => {
 		dataIndex === 'article' && record.isChild) {
 		return (
 			<div className={`${styles.customCell} ${styles.customCellChildren}`} data-year-attribute={yearAttribute}>
-				<span className={styles.customCellValueText} style={{ color: 'rgba(0, 0, 0, .5)' }} title={value}>{value}</span>
-				{record.article === 'Штрафы и прочие удержания' &&
-					<ConfigProvider
-						theme={{
-							components: {
-								Tooltip: {
-									colorBgSpotlight: '#FFFFFF',
-									colorTextLightSolid: '#000000',
-									fontSize: 12,
+				<span className={styles.customCellValueText} style={{ color: 'rgba(0, 0, 0, .5)' }} title={value}>{value}
+					{record.tooltip &&
+						<ConfigProvider
+							theme={{
+								components: {
+									Tooltip: {
+										colorBgSpotlight: '#FFFFFF',
+										colorTextLightSolid: '#000000',
+										fontSize: 12,
+									},
 								},
-							},
-						}}
-					>
-						<Tooltip title='К прочим удержания отнесены: платежи по договору займа, предоставление услуг по подписке «Джем», страхование заказов, услуги по размещению рекламного материала, списания за отзывы, утилизации товара'>
-							<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ cursor: 'pointer', minWidth: '20px', minHeight: '20px' }}>
-								<rect x="0.75" y="0.75" width="18.5" height="18.5" rx="9.25" stroke="black" strokeOpacity="0.1" strokeWidth="1.5" />
-								<path d="M9.064 15V7.958H10.338V15H9.064ZM8.952 6.418V5.046H10.464V6.418H8.952Z" fill="#1A1A1A" fillOpacity="0.5" />
-							</svg>
-						</Tooltip>
-					</ConfigProvider>
-				}
+							}}
+						>
+							<Tooltip title={record.tooltip}>
+								<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ cursor: 'pointer', minWidth: '20px', minHeight: '20px', marginLeft: '8px' }}>
+									<rect x="0.75" y="0.75" width="18.5" height="18.5" rx="9.25" stroke="black" strokeOpacity="0.1" strokeWidth="1.5" />
+									<path d="M9.064 15V7.958H10.338V15H9.064ZM8.952 6.418V5.046H10.464V6.418H8.952Z" fill="#1A1A1A" fillOpacity="0.5" />
+								</svg>
+							</Tooltip>
+						</ConfigProvider>
+					}
+				</span>
 			</div>
 		);
 	}
@@ -77,7 +100,28 @@ const customCellRender = (value, record, index, dataIndex) => {
 	}
 	return (
 		<div className={styles.customCell} data-year-attribute={yearAttribute}>
-			<span className={styles.customCellValueText} title={value}>{value}</span>
+			<span className={styles.customCellValueText} title={value}>{value}
+				{record.tooltip &&
+					<ConfigProvider
+						theme={{
+							components: {
+								Tooltip: {
+									colorBgSpotlight: '#FFFFFF',
+									colorTextLightSolid: '#000000',
+									fontSize: 12,
+								},
+							},
+						}}
+					>
+						<Tooltip title={record.tooltip}>
+							<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ cursor: 'pointer', minWidth: '20px', minHeight: '20px', marginLeft: '8px' }}>
+								<rect x="0.75" y="0.75" width="18.5" height="18.5" rx="9.25" stroke="black" strokeOpacity="0.1" strokeWidth="1.5" />
+								<path d="M9.064 15V7.958H10.338V15H9.064ZM8.952 6.418V5.046H10.464V6.418H8.952Z" fill="#1A1A1A" fillOpacity="0.5" />
+							</svg>
+						</Tooltip>
+					</ConfigProvider>
+				}
+			</span>
 		</div>
 	);
 
@@ -153,7 +197,6 @@ const TableWidget = ({ loading, columns, data, rowSelection = false, virtual = t
 						paginationContainerStyle={{ display: 'none' }}
 						bodyRowClassName={styles.bodyRowSpecial}
 						defaultExpandedRowKeys={expandedRows}
-						benchmark={URL === 'https://test-server-pro.ru'}
 					/>
 				}
 			</div>
