@@ -57,7 +57,7 @@ const SelfCostPage = () => {
 
         setTableData([...items]);
         setFilteredTableData([...items]);
-        setPaginationState(prev => ({ ...prev, total: total || items.length }));
+        setPaginationState(prev => ({ ...prev, current: parsedData.data.page, total: total || items.length}));
         // setTotalItems(total || items.length);
         progress.complete();
 
@@ -82,9 +82,9 @@ const SelfCostPage = () => {
     //задаем начальную дату
     useEffect(() => {
         if (activeBrand && activeBrand.is_primary_collect && isFiltersLoaded) {
-            getTableData(authToken, activeBrand.id, filters, paginationState.current);
+            getTableData(authToken, activeBrand.id, filters, 1);
         }
-    }, [activeBrand, selectedRange, isFiltersLoaded, activeBrandName, activeArticle, activeGroup, paginationState.current]);
+    }, [activeBrand, selectedRange, isFiltersLoaded, activeBrandName, activeArticle, activeGroup]);
 
     const memoizedDataStatus = useMemo(() => dataStatus, [dataStatus]);
     const memoizedFilteredTableData = useMemo(() => filteredTableData, [filteredTableData]);
@@ -93,7 +93,7 @@ const SelfCostPage = () => {
     return (
         <main className={styles.page}>
             <MobilePlug />
-            <FilterLoader antiloading={dataStatus.isLoading} />
+            {/* <FilterLoader antiloading={dataStatus.isLoading} /> */}
 
             <section className={styles.page__sideNavWrapper}>
                 <Sidebar />
@@ -140,6 +140,7 @@ const SelfCostPage = () => {
                                 updateFunc={() => {
                                     getTableData(authToken, activeBrand.id, filters, 1);
                                 }}
+                                isLoading={dataStatus.isLoading}
                             />
                         </div>
 
@@ -159,6 +160,7 @@ const SelfCostPage = () => {
                             searchInputValue={memoizedSearchInputValue}
                             paginationState={paginationState}
                             setPaginationState={setPaginationState}
+                            isFiltersLoaded={isFiltersLoaded}
                         />
                     </>
                 }
@@ -183,7 +185,7 @@ const SelfCostPage = () => {
 };
 
 
-const SelfCostXLSXuploadComponent = ({ authToken, updateFunc }) => {
+const SelfCostXLSXuploadComponent = ({ authToken, updateFunc, isLoading }) => {
 
     const [isUploadModalVisible, setIsUploadModalVisible] = useState(false);
     const [file, setFile] = useState(null);
@@ -284,7 +286,7 @@ const SelfCostXLSXuploadComponent = ({ authToken, updateFunc }) => {
                         <Button
                             type='primary'
                             size='large'
-                            loading={status.isLoading}
+                            loading={status.isLoading || isLoading}
                             onClick={() => setIsUploadModalVisible(true)}
                             style={{ fontWeight: 600, height: 38, width: 149, fontSize: 14 }}
                         >

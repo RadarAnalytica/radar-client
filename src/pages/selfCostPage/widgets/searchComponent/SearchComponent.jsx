@@ -54,6 +54,7 @@ const SearchComponent = ({ searchInputValue, setSearchInputValue, handleSearch, 
                         autoCorrect='off'
                         spellCheck={false}
                         autoComplete='off'
+                        disabled={isLoading}
                         style={{
                             fontSize: 14,
                         }}

@@ -4,6 +4,7 @@ import { tableConfig } from '../../shared';
 import { TableRow } from '../../features';
 import { Pagination, ConfigProvider } from 'antd';
 import Loader from '@/components/ui/Loader';
+import { RadarLoader } from '@/shared';
 
 const initDataStatus = {
     isError: false,
@@ -26,20 +27,14 @@ const SelfCostTableWidget = ({
     totalItems,
     searchInputValue,
     paginationState,
-    setPaginationState
+    setPaginationState,
+    isFiltersLoaded
 }) => {
-   //const [paginationState, setPaginationState] = useState({ current: 1, total: 0, pageSize: 50 });
 
     const paginationHandler = (page) => {
         setPaginationState({ ...paginationState, current: page });
-        // if (getTableData && authToken && activeBrand) {
-        //     getTableData(authToken, activeBrand.id, filters, page, searchInputValue || '');
-        // }
+        getTableData(authToken, activeBrand.id, filters, page);
     };
-
-    // useEffect(() => {
-    //     setPaginationState(prev => ({ ...prev, current: 1, total: totalItems }));
-    // }, [totalItems]);
 
     useEffect(() => {
         const paginationNextButton = document.querySelector('.ant-pagination-jump-next');
@@ -63,6 +58,11 @@ const SelfCostTableWidget = ({
 
     return (
         <div className={styles.widget}>
+            {dataStatus.isLoading && (
+                <div className={`${styles.widget__loaderWrapper} ${progress.value !== null ? 'bg-white' : ''}`}>
+                    <RadarLoader loaderStyle={{ height: '100%', width: '100%' }} />
+                </div>
+            )}
             <div className={styles.widget__container}>
                 <div className={`${styles.table} ${styles.table_leftMargin} ${styles.table_rightMargin}`}>
 
@@ -84,11 +84,6 @@ const SelfCostTableWidget = ({
 
                     {/* Тело таблицы */}
                     <div className={styles.table__body}>
-                        {dataStatus.isLoading && (
-                            <div className={`${styles.widget__loaderWrapper} ${progress.value !== null ? 'bg-white' : ''}`}>
-                                <Loader loading={dataStatus.isLoading} progress={progress.value} />
-                            </div>
-                        )}
                         {tableData?.length > 0 && activeBrand && tableData?.map((product, id) => {
                             return (
                                 <TableRow
