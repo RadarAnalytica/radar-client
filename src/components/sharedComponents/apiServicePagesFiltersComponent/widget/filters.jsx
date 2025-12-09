@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import AuthContext from '@/service/AuthContext';
 import styles from './filters.module.css';
 import { TimeSelect, PlainSelect, FrequencyModeSelect, ShopSelect, MultiSelect, MonthSelect } from '../features';
@@ -8,6 +8,7 @@ import { fetchShops } from '@/redux/shops/shopsActions';
 import { fetchFilters } from '@/redux/apiServicePagesFiltersState/filterActions';
 import { URL } from '@/service/config';
 import { getSavedActiveWeeks } from '@/service/utils';
+import { RadarMultiSelect, RadarSelect } from '@/shared';
 
 export const Filters = ({
   shopSelect = true,
@@ -32,12 +33,32 @@ export const Filters = ({
   const dispatch = useAppDispatch();
   const { activeBrand, filters, shops, expenseCategories, activeExpenseCategory } = useAppSelector(store => store.filters);
   const filtersState = useAppSelector(store => store.filters);
+  console.log('activeBrand', activeBrand);
+  // console.log('filtersState', filtersState);
+  const [ internalFiltersState, setInternalFiltersState ] = useState(filtersState);
 
   // ---- хэндлер выбора магазина -----------//
   const shopChangeHandler = (value) => {
     const selectedShop = shops?.find(_ => _.id === value);
     dispatch(filterActions.setActiveShop(selectedShop));
   };
+
+
+  const syncInternalFiltersWithGlobalState = () => {
+    Object.keys(internalFiltersState).forEach(key => {
+      dispatch(filterActions.setActiveFilters({ stateKey: key, data: internalFiltersState[key] }));
+    });
+  }
+
+  useEffect(() => {
+    // let initialObject = {}
+    // Object.keys(filtersState).forEach(key => {
+    //   if (key.includes('active')) {
+    //     initialObject[key] = filtersState[key];
+    //   }
+    // });
+    // setInternalFiltersState(initialObject);
+  }, [filtersState]);
 
 
   return (
@@ -116,6 +137,27 @@ export const Filters = ({
             />
           </div>
         }
+        {shops && activeBrand && shopSelect &&
+          <div className={styles.filters__inputWrapper}>
+            <RadarSelect
+              selectId='store'
+              label='Магазин:'
+              value={activeBrand.brand_name}
+              optionsData={shops.map(_ => ({ value: _.brand_name, label: _.brand_name }))}
+              isDataLoading={isDataLoading}
+              disabled={disabled}
+              hasDropdownSearch={!shops.some(_ => _.id === 0)}
+              actionHandler={(value) => {
+                const filterKey = 'activeBrand';
+                const normalizedValue = shops.find(_ => _.brand_name.toLowerCase() === value.toLowerCase());
+                setInternalFiltersState(prev => ({
+                  ...prev,
+                  [filterKey]: normalizedValue
+                }));
+              }}
+            />
+          </div>
+        }
         {filters && activeBrand && filters?.map((i, id) => {
           return activeBrand.id === i.shop.id && (
             <React.Fragment key={id}>
@@ -130,6 +172,24 @@ export const Filters = ({
                   optionsData={i.brands.data}
                   isDataLoading={isDataLoading}
                   disabled={disabled}
+                />
+                <RadarMultiSelect
+                  selectId={i.brands.enLabel}
+                  label={`${i.brands.ruLabel}:`}
+                  value={internalFiltersState[i.brands.stateKey]?.map(_ => _.value) ?? ['Все']}
+                  optionsData={i.brands.data.map(_ => ({ value: _.value, label: _.label }))}
+                  isDataLoading={isDataLoading}
+                  disabled={disabled}
+                  hasDropdownSearch
+                  actionHandler={(value) => {
+                    console.log('value', value);
+                    const filterKey = i.brands.stateKey;
+                    const normalizedValue = i.brands.data.filter(_ => value.includes(_.value));
+                    setInternalFiltersState(prev => ({
+                      ...prev,
+                      [filterKey]: normalizedValue
+                    }));
+                  }}
                 />
               </div>}
               {articleSelect && <div className={styles.filters__inputWrapper}>
@@ -161,6 +221,9 @@ export const Filters = ({
           );
         })}
       </div>
+      <button onClick={syncInternalFiltersWithGlobalState}>
+        Применить
+      </button>
     </div>
   );
 };
