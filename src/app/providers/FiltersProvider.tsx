@@ -90,7 +90,7 @@ const FiltersProvider = ({ children }: { children: React.ReactNode }) => {
         }
 
         // Если это последующие сообщения ....
-        if (messages && activeBrand?.id === 0 && prevMessages?.current) {
+        if (messages && prevMessages?.current) {
             // Ищем свежие сообщения
             let filteredMessages = messages.filter((m: any) => !prevMessages.current?.some(_ => _.id === m.id));
             // Выходим если свежих нет
