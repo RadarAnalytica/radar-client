@@ -148,6 +148,10 @@ const TableWidget = ({ stockAnalysisFilteredData, loading, progress, config, ini
                     showSizes = true;
                     setExpandedRowKeys(prev => [...prev, `${item.article}_${item.article_data?.sku}_${sizesLength}`]);
                 }
+                if (sizesLength === 1) {
+                    item.article_data.size = item.sizes[0].size;
+                    item.article_data.sku = item.sizes[0].sku;
+                }
                 
                 return {
                     ...item.article_data,
