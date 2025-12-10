@@ -42,12 +42,12 @@ const MainContent = React.memo(({
     authToken,
     filters,
     updateDataDashBoard,
-    isSidebarHidden
+    isSidebarHidden,
+    stockAnalysisData
 }) => {
     const isLoading = loading || isFiltersLoading;
     // Если фильтры загружены и shopStatus не подходит, не рендерим
     if (!isFiltersLoading && !shopStatus?.is_primary_collect) return null;
-    console.log('__RENDER_2__')
 
     return (
         <div className={styles.page__mainContentWrapper}>
@@ -121,10 +121,10 @@ const MainContent = React.memo(({
                 /> */}
             </div>
 
+
             <StockAnalysisBlock
-                // data={dataDashBoard?.stockAnalysis}
-                data={[]}
-                loading={isLoading}
+                data={stockAnalysisData}
+                dashboardLoading={isLoading}
             />
 
             <AbcDataBlock
@@ -142,14 +142,29 @@ const _DashboardPage = () => {
     const { isFiltersLoaded, activeBrand, shops } = useAppSelector((state) => state.filters);
     const filters = useAppSelector((state) => state.filters);
     const { isSidebarHidden } = useAppSelector((state) => state.utils);
-    console.log('__RENDER__')
 
     const [pageState, setPageState] = useState({
         dataDashBoard: null,
         loading: true,
         primaryCollect: null,
-        shopStatus: null
+        shopStatus: null,
+        stockAnalysisData: null,
     });
+
+    const fetchAnalysisData = async (filters, authToken) => {
+        try {
+            const data = await ServiceFunctions.getAnalysisData(
+                authToken,
+                filters.selectedRange,
+                filters.activeBrand?.id,
+                filters
+            );
+
+            setPageState(prev => ({ ...prev, stockAnalysisData: data }));
+        } catch (error) {
+            console.error(error);
+        }
+    };
 
     const updateDataDashBoard = async (filters, authToken) => {
         setPageState(prev => ({ ...prev, loading: true }));
@@ -192,6 +207,7 @@ const _DashboardPage = () => {
         if (activeBrand && activeBrand.is_primary_collect && isFiltersLoaded) {
             setPageState(prev => ({ ...prev, primaryCollect: activeBrand.is_primary_collect }));
             updateDataDashBoard(filters, authToken);
+            fetchAnalysisData(filters, authToken);
         }
 
         if (activeBrand && !activeBrand.is_primary_collect && isFiltersLoaded) {
@@ -231,6 +247,7 @@ const _DashboardPage = () => {
                         isDataLoading={pageState.loading}
                         submitHandler={(filters, authToken) => {
                             updateDataDashBoard(filters, authToken);
+                            fetchAnalysisData(filters, authToken);
                         }}
                     />
                 </div>
@@ -250,6 +267,7 @@ const _DashboardPage = () => {
                     filters={filters}
                     updateDataDashBoard={updateDataDashBoard}
                     isSidebarHidden={isSidebarHidden}
+                    stockAnalysisData={pageState.stockAnalysisData}
                 />
             </section>
         </main>

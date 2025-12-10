@@ -69,7 +69,7 @@ export default function Rnp({
 	const { user, authToken } = useContext(AuthContext);
 	const { isDemoMode } = useDemoMode();
 	const dispatch = useAppDispatch();
-	const { selectedRange, activeBrand, shops, activeBrandName } = useAppSelector((state) => state.filters);
+	const { selectedRange, activeBrand, shops, activeBrandName, isFiltersLoaded } = useAppSelector((state) => state.filters);
 	const filters = useAppSelector((state) => state.filters);
 	const initLoad = useRef(true);
 	const pageContentRef = useRef(null);
@@ -85,16 +85,17 @@ export default function Rnp({
 	const [expanded, setExpanded] = useState('collapsed');
 	const [searchParams, setSearchParams] = useSearchParams();
 	const [shareButtonState, setShareButtonState] = useState('Поделиться');
+	const abortControllerRef = useRef(null);
 
-	const updateRnpListByArticle = async (signal) => {
+	const updateRnpListByArticle = async (signal, filters, authToken) => {
 		setLoading(true);
 		progress.start();
 		try {
 			if (activeBrand) {
 				const response = await ServiceFunctions.postRnpByArticle(
 					authToken,
-					selectedRange,
-					activeBrand.id,
+					filters.selectedRange,
+					filters.activeBrand.id,
 					filters,
 					signal
 				);
@@ -112,15 +113,15 @@ export default function Rnp({
 		}
 	};
 
-	const updateRnpListSummary = async (signal) => {
+	const updateRnpListSummary = async (signal, filters, authToken) => {
 		setLoading(true);
 		progress.start();
 		try {
 			if (activeBrand) {
 				const response = await ServiceFunctions.postRnpSummary(
 					authToken,
-					selectedRange,
-					activeBrand.id,
+					filters.selectedRange,
+					filters.activeBrand.id,
 					filters,
 					signal
 				);
@@ -153,7 +154,7 @@ export default function Rnp({
 			console.error('deleteRnp error', error);
 		} finally {
 			setPage(1);
-			updateRnpListByArticle();
+			updateRnpListByArticle(abortControllerRef?.current?.signal, filters, authToken);
 		}
 	};
 
@@ -222,7 +223,7 @@ export default function Rnp({
 			console.error('addRnpList error', error);
 		} finally {
 			setPage(1);
-			updateRnpListByArticle();
+			updateRnpListByArticle(abortControllerRef?.current?.signal, filters, authToken);
 		}
 	};
 
@@ -265,7 +266,7 @@ export default function Rnp({
 	}, [searchParams, isPublicVersion])
 
 	useLayoutEffect(() => {
-		const controller = new AbortController();
+		abortControllerRef.current = new AbortController();
 
 		if (
 			activeBrand
@@ -273,9 +274,9 @@ export default function Rnp({
 		) {
 			if (activeBrand?.is_primary_collect) {
 				if (view === 'articles') {
-					updateRnpListByArticle(controller.signal);
+					updateRnpListByArticle(abortControllerRef?.current?.signal, filters, authToken);
 				} else {
-					updateRnpListSummary(controller.signal);
+					updateRnpListSummary(abortControllerRef?.current?.signal, filters, authToken);
 				}
 			} else {
 				setLoading(false);
@@ -287,9 +288,9 @@ export default function Rnp({
 		}
 
 		return () => {
-			controller.abort();
+			abortControllerRef?.current?.abort();
 		};
-	}, [filters, page, view, selectedRange]);
+	}, [isFiltersLoaded, view]);
 
 	// Добавляем автоскролл к контейнеру страницы
 	useEffect(() => {
@@ -518,6 +519,14 @@ export default function Rnp({
 						categorySelect={false}
 						maxCustomDate={new Date(Date.now() - 24 * 60 * 60 * 1000)}
 						disabled={isPublicVersion}
+						submitHandler={!isPublicVersion ? (filters, authToken) => {
+							if (view === 'articles') {
+								updateRnpListByArticle(abortControllerRef?.current?.signal, filters, authToken);
+							} else {
+								updateRnpListSummary(abortControllerRef?.current?.signal, filters, authToken);
+							}
+
+						} : undefined} 
 					/>
 				</div>
 

@@ -18,54 +18,54 @@ const StockAnalysisBlock = memo(({ dashboardLoading, dragHandle, data}) => {
     const { isDemoMode } = useDemoMode();
     const { activeBrand, selectedRange } = useAppSelector((state) => state.filters);
     const filters = useAppSelector((state) => state.filters);
-    const [stockAnalysisData, setStockAnalysisData] = useState([]); // это базовые данные для таблицы
-    const [stockAnalysisFilteredData, setStockAnalysisFilteredData] = useState(); // это данные для таблицы c учетом поиска
+    const [stockAnalysisData, setStockAnalysisData] = useState(null); // это базовые данные для таблицы
+    const [stockAnalysisFilteredData, setStockAnalysisFilteredData] = useState(null); // это данные для таблицы c учетом поиска
     const [hasSelfCostPrice, setHasSelfCostPrice] = useState(false);
     const [loading, setLoading] = useState(false);
     const progress = useLoadingProgress({ loading });
 
-    const fetchAnalysisData = async () => {
-        setLoading(true);
-        setStockAnalysisData([]);
-        setStockAnalysisFilteredData([]);
-        progress.start();
-        try {
-            const data = await ServiceFunctions.getAnalysisData(
-                authToken,
-                selectedRange,
-                activeBrand?.id,
-                filters
-            );
+    // const fetchAnalysisData = async () => {
+    //     setLoading(true);
+    //     setStockAnalysisData([]);
+    //     setStockAnalysisFilteredData([]);
+    //     progress.start();
+    //     try {
+    //         const data = await ServiceFunctions.getAnalysisData(
+    //             authToken,
+    //             selectedRange,
+    //             activeBrand?.id,
+    //             filters
+    //         );
 
-            progress.complete();
-            await setTimeout(() => {
-                setStockAnalysisData(data);
-                setStockAnalysisFilteredData(data);
-                setHasSelfCostPrice(data.every(_ => _.costPriceOne !== null));
-                setLoading(false);
-                progress.reset();
-            }, 500);
-        } catch (error) {
-            setLoading(false);
-            progress.reset();
-            console.error(error);
-        }
-    };
+    //         progress.complete();
+    //         await setTimeout(() => {
+    //             setStockAnalysisData(data);
+    //             setStockAnalysisFilteredData(data);
+    //             setHasSelfCostPrice(data.every(_ => _.costPriceOne !== null));
+    //             setLoading(false);
+    //             progress.reset();
+    //         }, 500);
+    //     } catch (error) {
+    //         setLoading(false);
+    //         progress.reset();
+    //         console.error(error);
+    //     }
+    // };
 
-    useEffect(() => {
-        if (filters.activeBrand) {
-            fetchAnalysisData();
-        }
-    }, [filters]);
+    // useEffect(() => {
+    //     if (filters.activeBrand) {
+    //         fetchAnalysisData();
+    //     }
+    // }, [filters]);
 
     // раскоментить когда введем днд (данные буду фетчится в основной странице дашборда)
-    // useEffect(() => {
-    //     if (data) {
-    //         setStockAnalysisData(data);
-    //         setStockAnalysisFilteredData(data);
-    //         setHasSelfCostPrice(data.every(_ => _.costPriceOne !== null));
-    //     }
-    // }, [data]);
+    useEffect(() => {
+        if (data) {
+            setStockAnalysisData(data);
+            setStockAnalysisFilteredData(data);
+            setHasSelfCostPrice(data.every(_ => _.costPriceOne !== null));
+        }
+    }, [data]);
 
 
 

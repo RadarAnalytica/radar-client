@@ -63,7 +63,7 @@ interface WbMetricsTableProps {
   setSortState: (sortState: { sort_field: string, sort_order: "ASC" | "DESC" }) => void;
 }
 
-const WbMetricsTable: React.FC<WbMetricsTableProps> = ({
+const WbMetricsTable: React.FC<WbMetricsTableProps> = React.memo(({
   data,
   columns,
   loading,
@@ -232,6 +232,7 @@ const WbMetricsTable: React.FC<WbMetricsTableProps> = ({
       </div>
     </div>
   );
-};
+});
+WbMetricsTable.displayName = 'WbMetricsTable';
 
 export default WbMetricsTable;

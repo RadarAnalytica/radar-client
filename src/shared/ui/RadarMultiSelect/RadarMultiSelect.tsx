@@ -77,17 +77,18 @@ export const RadarMultiSelect: React.FC<IRadarMultiSelectProps> = ({
 
 
     const selectHandler = (value: string | number) => {
-        setSelectState(() => {
-            if (Array.isArray(value) && value.length > 0) {
-                const newValue = value.filter(item => item !== 'Все');
-                actionHandler?.(newValue);
-                return newValue;
-            }
-            if (Array.isArray(value) && value.length === 0) {
-                actionHandler?.(value);
-                return ['Все'];
-            }
-        });
+        console.log('value', value);
+        if (Array.isArray(value) && value.length > 0) {
+            const newValue = value.filter(item => item !== 'Все');
+            setSelectState(newValue);
+            actionHandler?.(newValue);
+            return newValue;
+        }
+        if (Array.isArray(value) && value.length === 0) {
+            setSelectState(['Все']);
+            actionHandler?.(value);
+            return ['Все'];
+        }
     };
 
 
@@ -140,9 +141,13 @@ export const RadarMultiSelect: React.FC<IRadarMultiSelectProps> = ({
                         dropdownRender={(menu) => RenderPopup({ menu, selectState, optionsData, selectId, searchState, setSelectState, hasDropdownSearch, setSearchState, actionHandler, setIsDropdownOpen })}
                         onDropdownVisibleChange={(open) => {
                             setIsDropdownOpen(open)
+                            if (open) {
+                                prevSelectState.current = selectState;
+                            }
                             if (!open) {
                                 setSearchState('');
-                                prevSelectState.current = selectState;
+                                if (JSON.stringify(prevSelectState.current) === JSON.stringify(selectState)) return;
+                                actionHandler?.(selectState);
                             }
                         }}
                         maxTagPlaceholder={omittedValues => (

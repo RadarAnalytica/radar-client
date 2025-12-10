@@ -128,7 +128,7 @@ const customCellRender = (value, record, index, dataIndex) => {
 };
 
 
-const TableWidget = ({ stockAnalysisFilteredData, loading, progress, config, initPaginationState, hasShadow = true, configVersion, configKey, maxHeight }) => {
+const TableWidget = React.memo(({ stockAnalysisFilteredData, loading, progress, config, initPaginationState, hasShadow = true, configVersion, configKey, maxHeight }) => {
     const containerRef = useRef(null); // реф скролл-контейнера (используется чтобы седить за позицией скрола)
     const [tableData, setTableData] = useState(); // данные для рендера таблицы
     const [sortState, setSortState] = useState(initSortState); // стейт сортировки (см initSortState)
@@ -276,7 +276,8 @@ const TableWidget = ({ stockAnalysisFilteredData, loading, progress, config, ini
             <div className={styles.widget__scrollContainer} ref={containerRef} style={{ maxHeight: maxHeight ?? '100%' }}>
                 {tableData && tableData.length > 0 && tableConfig &&
                     <RadarTable
-                        rowKey={(record) => `${record.sku}_${record?.children?.length || 0}`}
+                        // key={`page-${paginationState.current}`}
+                        // rowKey={(record) => `${record.sku}_${record?.children?.length || 0}`}
                         config={tableConfig}
                         dataSource={[...tableData.slice((paginationState.current - 1) * paginationState.pageSize, paginationState.current * paginationState.pageSize)]}
                         preset='radar-table-simple'
@@ -376,6 +377,7 @@ const TableWidget = ({ stockAnalysisFilteredData, loading, progress, config, ini
             </div>
         </div>
     );
-};
+});
+TableWidget.displayName = 'TableWidget';
 
 export default TableWidget;

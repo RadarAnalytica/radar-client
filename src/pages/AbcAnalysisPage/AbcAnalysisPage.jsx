@@ -102,7 +102,7 @@ const AbcAnalysisPage = () => {
 				setLoading(false);
 			}
 		}
-	}, [viewType, paginationState.current, sorting, activeBrand, selectedRange, isFiltersLoaded, activeBrandName, activeArticle, activeGroup, authToken]);
+	}, [viewType, paginationState.current, sorting, isFiltersLoaded]);
 
 	useEffect(() => {
 		setPaginationState({ ...paginationState, current: 1 });
@@ -260,7 +260,7 @@ const AbcAnalysisPage = () => {
 				)}
 
 				<div className="pt-1">
-					<Filters setLoading={setLoading} isDataLoading={loading} />
+					<Filters setLoading={setLoading} isDataLoading={loading} submitHandler={() => updateDataAbcAnalysis(viewType, authToken, selectedRange, activeBrand.id.toString())} />
 				</div>
 
 				{activeBrand && !activeBrand?.is_primary_collect && 

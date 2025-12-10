@@ -18,7 +18,7 @@ import { CURR_STOCK_ANALYSIS_TABLE_CONFIG_VER } from './shared';
 const StockAnalysisPage = () => {
     const { authToken } = useContext(AuthContext);
     const { isDemoMode } = useDemoMode();
-    const { activeBrand, selectedRange } = useAppSelector((state) => state.filters);
+    const { activeBrand, selectedRange, isFiltersLoaded } = useAppSelector((state) => state.filters);
     const filters = useAppSelector((state) => state.filters);
     const [stockAnalysisData, setStockAnalysisData] = useState([]); // это базовые данные для таблицы
     const [stockAnalysisFilteredData, setStockAnalysisFilteredData] = useState(); // это данные для таблицы c учетом поиска
@@ -58,7 +58,7 @@ const StockAnalysisPage = () => {
         if (filters.activeBrand) {
             fetchAnalysisData();
         }
-    }, [filters]);
+    }, [isFiltersLoaded]);
 
 
     return (
@@ -88,6 +88,7 @@ const StockAnalysisPage = () => {
                         <Filters
                             setLoading={setLoading}
                             isDataLoading={loading}
+                            submitHandler={fetchAnalysisData}
                         />
                     </div>
 

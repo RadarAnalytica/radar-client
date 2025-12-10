@@ -239,16 +239,16 @@ export default function ReportProfitLoss() {
 		setColumns(getConfig(data));
 	};
 
-	const updateDataReportProfitLoss = async () => {
+	const updateDataReportProfitLoss = async (filters, authToken) => {
 		setLoading(true);
 		progress.start();
 		try {
 			const response = await ServiceFunctions.getReportProfitLoss(
 				authToken,
-				selectedRange,
-				activeBrand.id,
+				filters.selectedRange,
+				filters.activeBrand.id,
 				filters,
-				activeMonths
+				filters.activeMonths
 			);
 			progress.complete();
 			await setTimeout(() => {
@@ -266,12 +266,12 @@ export default function ReportProfitLoss() {
 
 	useEffect(() => {
 		if (activeBrand && activeBrand.is_primary_collect && isFiltersLoaded) {
-			updateDataReportProfitLoss();
+			updateDataReportProfitLoss(filters, authToken);
 		}
 		if (activeBrand && !activeBrand.is_primary_collect && isFiltersLoaded) {
 			setLoading(false);
 		}
-	}, [activeBrand, selectedRange, activeMonths, activeBrandName, activeArticle, activeGroup, isFiltersLoaded]);
+	}, [isFiltersLoaded]);
 
 	// useEffect(() => {
 	// 	if (!activeBrand) return;
@@ -314,6 +314,9 @@ export default function ReportProfitLoss() {
 						monthSelect={true}
 						isDataLoading={loading}
 						//minCustomDate={getMinCustomDate(activeBrand?.created_at, 6, 'month')}
+						submitHandler={() => {
+							updateDataReportProfitLoss(filters, authToken);
+						}}
 					/>
 				</div>
 

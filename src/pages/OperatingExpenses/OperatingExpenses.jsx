@@ -39,7 +39,7 @@ export default function OperatingExpenses() {
 	const dispatch = useAppDispatch();
 	const { authToken } = useContext(AuthContext);
 	const { isDemoMode } = useDemoMode();
-	const { activeBrand, selectedRange, shops, activeBrandName, activeArticle, activeExpenseCategory, expenseCategories } = useAppSelector((state) => state.filters);
+	const { activeBrand, selectedRange, shops, activeBrandName, activeArticle, activeExpenseCategory, expenseCategories, isFiltersLoaded } = useAppSelector((state) => state.filters);
 	const firstLoad = useRef(true);
 	const [loading, setLoading] = useState(true);
 	const progress = useLoadingProgress({ loading });
@@ -251,7 +251,7 @@ export default function OperatingExpenses() {
 				setLoading(false);
 			}
         }
-    }, [activeBrand, activeArticle, selectedRange, expPagination.page, activeExpenseCategory]);
+    }, [expPagination.page, isFiltersLoaded]);
 
 	useEffect(() => {
 		if (activeBrand) {
@@ -635,6 +635,7 @@ export default function OperatingExpenses() {
 							isDataLoading={loading}
 							groupSelect={false}
 							opExpensesArticles
+							submitHandler={() => updateExpenses(true, true)}
 						/>
 					</div>
 				}

@@ -84,7 +84,7 @@ const SelfCostPage = () => {
         if (activeBrand && activeBrand.is_primary_collect && isFiltersLoaded) {
             getTableData(authToken, activeBrand.id, filters, 1);
         }
-    }, [activeBrand, selectedRange, isFiltersLoaded, activeBrandName, activeArticle, activeGroup]);
+    }, [isFiltersLoaded]);
 
     const memoizedDataStatus = useMemo(() => dataStatus, [dataStatus]);
     const memoizedFilteredTableData = useMemo(() => filteredTableData, [filteredTableData]);
@@ -111,6 +111,7 @@ const SelfCostPage = () => {
                         timeSelect={false}
                         articleSelect={false}
                         isDataLoading={dataStatus.isLoading}
+                        submitHandler={() => getTableData(authToken, activeBrand.id, filters, 1, searchInputValue || '')}
                     />
                     <HowToLink
                         text='Инструкция по загрузке себестоимости'

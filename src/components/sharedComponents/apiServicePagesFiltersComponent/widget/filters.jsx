@@ -34,6 +34,7 @@ export const Filters = ({
   const dispatch = useAppDispatch();
   const { activeBrand, filters, shops, expenseCategories, activeExpenseCategory } = useAppSelector(store => store.filters);
   const filtersState = useAppSelector(store => store.filters);
+  console.log('filtersState', filtersState);
 
   // ---- хэндлер выбора магазина -----------//
   const shopChangeHandler = (value) => {
@@ -237,6 +238,7 @@ export const Filters = ({
                   disabled={disabled}
                   hasDropdownSearch
                   actionHandler={(value) => {
+                    console.log('value', value);
                     const filterKey = i.groups.stateKey;
                     const normalizedValue = i.groups.data.filter(_ => value.includes(_.value));
                     dispatch(filterActions.setActiveFilters({ stateKey: filterKey, data: normalizedValue }));
