@@ -93,8 +93,8 @@ const customCellRender = (value, record, index, dataIndex) => {
                         width={30} 
                         height={40} 
                         alt='Product'
-                        onLoad={() => { setIsImgVisible(true); }}
-                        onError={(e) => { setIsImgVisible(false) }}
+                        onLoad={() => setIsImgVisible(true)}
+                        onError={(e) => setIsImgVisible(false)}
                         hidden={!isImgVisible}
                     ></img>
                 </div>
@@ -146,7 +146,7 @@ const TableWidget = ({ stockAnalysisFilteredData, loading, progress, config, ini
 
                 if (item?.showSizes) {
                     showSizes = true;
-                    setExpandedRowKeys(prev => [...prev, `${item.article_data?.sku}_${sizesLength}`]);
+                    setExpandedRowKeys(prev => [...prev, `${item.article}_${item.article_data?.sku}_${sizesLength}`]);
                 }
                 
                 return {
@@ -276,7 +276,7 @@ const TableWidget = ({ stockAnalysisFilteredData, loading, progress, config, ini
             <div className={styles.widget__scrollContainer} ref={containerRef} style={{ maxHeight: maxHeight ?? '100%' }}>
                 {tableData && tableData.length > 0 && tableConfig &&
                     <RadarTable
-                        rowKey={(record) => `${record.sku}_${record?.children?.length || 0}`}
+                        rowKey={(record) => `${record.vendorCode}_${record.sku}_${record?.children?.length || 0}`}
                         config={tableConfig}
                         dataSource={[...tableData.slice((paginationState.current - 1) * paginationState.pageSize, paginationState.current * paginationState.pageSize)]}
                         preset='radar-table-simple'
