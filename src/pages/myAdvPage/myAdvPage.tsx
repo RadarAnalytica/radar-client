@@ -5,7 +5,6 @@ import Header from '@/components/sharedComponents/header/header';
 import { useDemoMode } from "@/app/providers";
 import NoSubscriptionWarningBlock from '@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock';
 import { useLoadingProgress } from '@/service/hooks/useLoadingProgress';
-import Loader from '@/components/ui/Loader';
 import MyAdvTable from './widgets/MyAdvTable/MyAdvTable';
 import SearchBlock from './widgets/SearchBlock/SearchBlock';
 import { useAppSelector } from '@/redux/hooks';
@@ -144,19 +143,18 @@ const MyAdvPage: React.FC = () => {
           loading={loading}
         />
 
-        {loading ? <div className={styles.loader__container}><Loader loading={loading} progress={progress.value} /></div> : (
-          <MyAdvTable
-            data={data}
-            columns={tableConfig}
-            loading={loading}
-            pageData={pageData}
-            setPageData={setPageData}
-            sortState={sortState}
-            setSortState={setSortState}
-            tableConfig={tableConfig}
-            setTableConfig={handleTableConfigChange}
-          />
-        )}
+        <MyAdvTable
+          data={data}
+          columns={tableConfig}
+          loading={loading}
+          progress={progress}
+          pageData={pageData}
+          setPageData={setPageData}
+          sortState={sortState}
+          setSortState={setSortState}
+          tableConfig={tableConfig}
+          setTableConfig={handleTableConfigChange}
+        />
       </section>
     </main>
   );

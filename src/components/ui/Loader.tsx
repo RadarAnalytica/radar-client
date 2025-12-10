@@ -10,7 +10,7 @@ const Loader = ({ loading, progress }: LoaderProps) => {
     if (!loading) return null;
 
     return (
-        <div className='container d-flex flex-column justify-content-center align-items-center h-100 w-100 p-3'>
+        <div className='loader-container container d-flex flex-column justify-content-center align-items-center h-100 w-100 p-3'>
             <span className='loader'></span>
             <div className={`${styles.loadingProgress} ${progress === null ? 'opacity-0' : ''}`}>
                 <Progress
@@ -21,7 +21,7 @@ const Loader = ({ loading, progress }: LoaderProps) => {
                 />
             </div>
         </div>
-    )
-}
+    );
+};
 
 export default Loader;
