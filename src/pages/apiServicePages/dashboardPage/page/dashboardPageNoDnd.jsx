@@ -47,6 +47,7 @@ const MainContent = React.memo(({
     const isLoading = loading || isFiltersLoading;
     // Если фильтры загружены и shopStatus не подходит, не рендерим
     if (!isFiltersLoading && !shopStatus?.is_primary_collect) return null;
+    console.log('__RENDER_2__')
 
     return (
         <div className={styles.page__mainContentWrapper}>
@@ -138,9 +139,10 @@ const MainContent = React.memo(({
 const _DashboardPage = () => {
     const { authToken } = useContext(AuthContext);
     const { isDemoMode } = useDemoMode();
-    const { activeBrand, selectedRange, isFiltersLoaded, activeBrandName, activeArticle, activeGroup, shops } = useAppSelector((state) => state.filters);
+    const { isFiltersLoaded, activeBrand, shops } = useAppSelector((state) => state.filters);
     const filters = useAppSelector((state) => state.filters);
     const { isSidebarHidden } = useAppSelector((state) => state.utils);
+    console.log('__RENDER__')
 
     const [pageState, setPageState] = useState({
         dataDashBoard: null,
@@ -149,14 +151,15 @@ const _DashboardPage = () => {
         shopStatus: null
     });
 
-    const updateDataDashBoard = async (selectedRange, activeBrand, authToken) => {
+    const updateDataDashBoard = async (filters, authToken) => {
         setPageState(prev => ({ ...prev, loading: true }));
+        console.log('filters', filters);
         try {
             if (activeBrand !== null && activeBrand !== undefined) {
                 const data = await ServiceFunctions.getDashBoard(
                     authToken,
-                    selectedRange,
-                    activeBrand,
+                    filters.selectedRange,
+                    filters.activeBrand.id,
                     filters
                 );
                 setPageState(prev => ({ ...prev, dataDashBoard: data }));
@@ -188,13 +191,13 @@ const _DashboardPage = () => {
     useEffect(() => {
         if (activeBrand && activeBrand.is_primary_collect && isFiltersLoaded) {
             setPageState(prev => ({ ...prev, primaryCollect: activeBrand.is_primary_collect }));
-            updateDataDashBoard(selectedRange, activeBrand.id, authToken);
+            updateDataDashBoard(filters, authToken);
         }
 
         if (activeBrand && !activeBrand.is_primary_collect && isFiltersLoaded) {
             setPageState(prev => ({ ...prev, loading: false }));
         }
-    }, [activeBrand, selectedRange, isFiltersLoaded, activeBrandName, activeArticle, activeGroup]);
+    }, [isFiltersLoaded]);
 
     return (
         <main className={styles.page}>
@@ -226,6 +229,9 @@ const _DashboardPage = () => {
                 <div className={styles.page__controlsWrapper}>
                     <Filters
                         isDataLoading={pageState.loading}
+                        submitHandler={(filters, authToken) => {
+                            updateDataDashBoard(filters, authToken);
+                        }}
                     />
                 </div>
 
@@ -238,7 +244,7 @@ const _DashboardPage = () => {
                     loading={pageState.loading}
                     isFiltersLoading={!isFiltersLoaded}
                     dataDashBoard={pageState.dataDashBoard}
-                    selectedRange={selectedRange}
+                    selectedRange={filters?.selectedRange}
                     activeBrand={activeBrand}
                     authToken={authToken}
                     filters={filters}

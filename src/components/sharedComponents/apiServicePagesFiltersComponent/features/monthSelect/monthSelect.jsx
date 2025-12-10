@@ -100,6 +100,7 @@ export const MonthSelect = ({
                             getPopupContainer={() => monthRef.current}
                             disabled={isDataLoading}
                             allowEmpty
+                            style={{ height: '38px' }}
                         />
                     </div>
                 </ConfigProvider>

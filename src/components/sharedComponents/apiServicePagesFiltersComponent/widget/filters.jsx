@@ -25,7 +25,8 @@ export const Filters = ({
   minCustomDate,
   opExpensesArticles = false,
   children = null,
-  disabled
+  disabled,
+  submitHandler
 }) => {
 
   // ------ это база ------//
@@ -33,32 +34,13 @@ export const Filters = ({
   const dispatch = useAppDispatch();
   const { activeBrand, filters, shops, expenseCategories, activeExpenseCategory } = useAppSelector(store => store.filters);
   const filtersState = useAppSelector(store => store.filters);
-  console.log('activeBrand', activeBrand);
-  // console.log('filtersState', filtersState);
-  const [ internalFiltersState, setInternalFiltersState ] = useState(filtersState);
 
   // ---- хэндлер выбора магазина -----------//
   const shopChangeHandler = (value) => {
     const selectedShop = shops?.find(_ => _.id === value);
+
     dispatch(filterActions.setActiveShop(selectedShop));
   };
-
-
-  const syncInternalFiltersWithGlobalState = () => {
-    Object.keys(internalFiltersState).forEach(key => {
-      dispatch(filterActions.setActiveFilters({ stateKey: key, data: internalFiltersState[key] }));
-    });
-  }
-
-  useEffect(() => {
-    // let initialObject = {}
-    // Object.keys(filtersState).forEach(key => {
-    //   if (key.includes('active')) {
-    //     initialObject[key] = filtersState[key];
-    //   }
-    // });
-    // setInternalFiltersState(initialObject);
-  }, [filtersState]);
 
 
   return (
@@ -66,7 +48,7 @@ export const Filters = ({
       <div className={styles.filters__inputsMainWrapper}>
         {shops && activeBrand && weekSelect &&
           <div className={styles.filters__inputWrapper}>
-            <MultiSelect
+            {/* <MultiSelect
               dispatch={dispatch}
               filterActions={filterActions}
               params={filters.find((el) => el.shop.id === activeBrand.id).weeks}
@@ -75,6 +57,21 @@ export const Filters = ({
               value={filtersState.activeWeeks}
               optionsData={filters.find((el) => el.shop.id === activeBrand.id).weeks.data}
               isDataLoading={isDataLoading}
+            /> */}
+            <RadarMultiSelect
+              selectId={filters.find((el) => el.shop.id === activeBrand.id).weeks.enLabel}
+              label={`${filters.find((el) => el.shop.id === activeBrand.id).weeks.ruLabel}:`}
+              value={filtersState.activeWeeks}
+              optionsData={filters.find((el) => el.shop.id === activeBrand.id).weeks.data}
+              isDataLoading={isDataLoading}
+              disabled={disabled}
+              hasDropdownSearch
+              actionHandler={(value) => {
+                console.log('value', value);
+                const currOptions = filters.find((el) => el.shop.id === activeBrand.id).weeks.data;
+                const normalizedValue = currOptions.filter(_ => value.includes(_.value));
+                dispatch(filterActions.setActiveFilters({ stateKey: 'activeWeeks', data: normalizedValue }));
+              }}
             />
           </div>
         }
@@ -82,7 +79,7 @@ export const Filters = ({
           <FrequencyModeSelect isDataLoading={isDataLoading} />
         }
         {shops && activeBrand && monthSelect &&
-          <div className={styles.filters__inputWrapper}>
+          <div className={styles.filters__inputWrapper_month}>
             <MonthSelect
               dispatch={dispatch}
               filterActions={filterActions}
@@ -106,7 +103,7 @@ export const Filters = ({
         }
         {expenseCategories && activeExpenseCategory && opExpensesArticles &&
           <div className={styles.filters__inputWrapper}>
-            <MultiSelect
+            {/* <MultiSelect
               dispatch={dispatch}
               filterActions={filterActions}
               params={{
@@ -120,12 +117,25 @@ export const Filters = ({
               value={activeExpenseCategory}
               optionsData={expenseCategories}
               isDataLoading={isDataLoading}
-            />
+            /> */}
+            <RadarMultiSelect
+                  selectId={'expenseCategories'}
+                  label={`Статья:`}
+                  value={activeExpenseCategory && activeExpenseCategory.length > 0 ? activeExpenseCategory?.map(_ => _.value) : ['Все']}
+                  optionsData={expenseCategories.map(_ => ({ ..._, label: _.name }))}
+                  isDataLoading={isDataLoading}
+                  disabled={disabled}
+                  hasDropdownSearch
+                  actionHandler={(value) => {
+                    const normalizedValue = expenseCategories.filter(_ => value.includes(_.value));
+                    dispatch(filterActions.setActiveFilters({ stateKey: 'activeExpenseCategory', data: normalizedValue }));
+                  }}
+                />
           </div>
         }
         {shops && activeBrand && shopSelect &&
           <div className={styles.filters__inputWrapper}>
-            <ShopSelect
+            {/* <ShopSelect
               selectId='store'
               label='Магазин:'
               value={activeBrand.id}
@@ -134,11 +144,7 @@ export const Filters = ({
               isDataLoading={isDataLoading}
               hasSearch={!shops.some(_ => _.id === 0)} // добавляем поиск если магазинов больше 5
               disabled={disabled}
-            />
-          </div>
-        }
-        {shops && activeBrand && shopSelect &&
-          <div className={styles.filters__inputWrapper}>
+            /> */}
             <RadarSelect
               selectId='store'
               label='Магазин:'
@@ -150,10 +156,7 @@ export const Filters = ({
               actionHandler={(value) => {
                 const filterKey = 'activeBrand';
                 const normalizedValue = shops.find(_ => _.brand_name.toLowerCase() === value.toLowerCase());
-                setInternalFiltersState(prev => ({
-                  ...prev,
-                  [filterKey]: normalizedValue
-                }));
+                dispatch(filterActions.setActiveShop(normalizedValue));
               }}
             />
           </div>
@@ -162,7 +165,7 @@ export const Filters = ({
           return activeBrand.id === i.shop.id && (
             <React.Fragment key={id}>
               {brandSelect && <div className={styles.filters__inputWrapper}>
-                <MultiSelect
+                {/* <MultiSelect
                   dispatch={dispatch}
                   filterActions={filterActions}
                   params={i.brands}
@@ -172,28 +175,24 @@ export const Filters = ({
                   optionsData={i.brands.data}
                   isDataLoading={isDataLoading}
                   disabled={disabled}
-                />
+                /> */}
                 <RadarMultiSelect
                   selectId={i.brands.enLabel}
                   label={`${i.brands.ruLabel}:`}
-                  value={internalFiltersState[i.brands.stateKey]?.map(_ => _.value) ?? ['Все']}
-                  optionsData={i.brands.data.map(_ => ({ value: _.value, label: _.label }))}
+                  value={filtersState[i.brands.stateKey] && filtersState[i.brands.stateKey].length > 0 ? filtersState[i.brands.stateKey]?.map(_ => _.value) : ['Все']}
+                  optionsData={i.brands.data.map(_ => ({ ..._, label: _.name }))}
                   isDataLoading={isDataLoading}
                   disabled={disabled}
                   hasDropdownSearch
                   actionHandler={(value) => {
-                    console.log('value', value);
                     const filterKey = i.brands.stateKey;
                     const normalizedValue = i.brands.data.filter(_ => value.includes(_.value));
-                    setInternalFiltersState(prev => ({
-                      ...prev,
-                      [filterKey]: normalizedValue
-                    }));
+                    dispatch(filterActions.setActiveFilters({ stateKey: filterKey, data: normalizedValue }));
                   }}
                 />
               </div>}
               {articleSelect && <div className={styles.filters__inputWrapper}>
-                <MultiSelect
+                {/* <MultiSelect
                   dispatch={dispatch}
                   filterActions={filterActions}
                   params={i.articles}
@@ -202,10 +201,24 @@ export const Filters = ({
                   value={filtersState[i.articles.stateKey]}
                   optionsData={filtersState?.activeBrandName?.some(_ => _.value === 'Все') ? i.articles.data : i.articles.data.filter(_ => filtersState?.activeBrandName?.some(b => _.brand === b.value))}
                   isDataLoading={isDataLoading}
+                /> */}
+                <RadarMultiSelect
+                  selectId={i.articles.enLabel}
+                  label={`${i.articles.ruLabel}:`}
+                  value={filtersState[i.articles.stateKey] && filtersState[i.articles.stateKey].length > 0 ? filtersState[i.articles.stateKey]?.map(_ => _.value) : ['Все']}
+                  optionsData={i.articles.data.map(_ => ({ ..._, label: _.name }))}
+                  isDataLoading={isDataLoading}
+                  disabled={disabled}
+                  hasDropdownSearch
+                  actionHandler={(value) => {
+                    const filterKey = i.articles.stateKey;
+                    const normalizedValue = i.articles.data.filter(_ => value.includes(_.value));
+                    dispatch(filterActions.setActiveFilters({ stateKey: filterKey, data: normalizedValue }));
+                  }}
                 />
               </div>}
               {groupSelect && <div className={styles.filters__inputWrapper}>
-                <MultiSelect
+                {/* <MultiSelect
                   dispatch={dispatch}
                   filterActions={filterActions}
                   params={i.groups}
@@ -214,6 +227,20 @@ export const Filters = ({
                   value={filtersState[i.groups.stateKey]}
                   optionsData={i.groups.data}
                   isDataLoading={isDataLoading}
+                /> */}
+                <RadarMultiSelect
+                  selectId={i.groups.enLabel}
+                  label={`${i.groups.ruLabel}:`}
+                  value={filtersState[i.groups.stateKey] && filtersState[i.groups.stateKey].length > 0 ? filtersState[i.groups.stateKey]?.map(_ => _.value) : ['Все']}
+                  optionsData={i.groups.data.map(_ => ({ ..._, label: _.name }))}
+                  isDataLoading={isDataLoading}
+                  disabled={disabled}
+                  hasDropdownSearch
+                  actionHandler={(value) => {
+                    const filterKey = i.groups.stateKey;
+                    const normalizedValue = i.groups.data.filter(_ => value.includes(_.value));
+                    dispatch(filterActions.setActiveFilters({ stateKey: filterKey, data: normalizedValue }));
+                  }}
                 />
               </div>}
               {children}
@@ -221,9 +248,15 @@ export const Filters = ({
           );
         })}
       </div>
-      <button onClick={syncInternalFiltersWithGlobalState}>
-        Применить
-      </button>
+      {submitHandler &&
+        <button
+          className={styles.filters__submitButton}
+          onClick={() => submitHandler(filtersState, authToken)}
+          disabled={isDataLoading || disabled}
+        >
+          Применить
+        </button>
+      }
     </div>
   );
 };

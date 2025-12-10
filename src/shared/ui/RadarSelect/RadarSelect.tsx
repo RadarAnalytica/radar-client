@@ -22,6 +22,7 @@ const selectTheme = {
             optionSelectedBg: 'transparent',
             optionSelectedColor: '#5329FF',
             optionPadding: '5px 8px',
+            controlHeightLG: 38,
         }
     }
 }

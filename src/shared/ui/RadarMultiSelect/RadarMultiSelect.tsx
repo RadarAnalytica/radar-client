@@ -23,6 +23,7 @@ const selectTheme = {
             optionSelectedBg: 'transparent',
             optionSelectedColor: '#5329FF',
             optionPadding: '5px 8px',
+            controlHeightLG: 38,
         }
     }
 }
@@ -78,9 +79,12 @@ export const RadarMultiSelect: React.FC<IRadarMultiSelectProps> = ({
     const selectHandler = (value: string | number) => {
         setSelectState(() => {
             if (Array.isArray(value) && value.length > 0) {
-                return value.filter(item => item !== 'Все');
+                const newValue = value.filter(item => item !== 'Все');
+                actionHandler?.(newValue);
+                return newValue;
             }
             if (Array.isArray(value) && value.length === 0) {
+                actionHandler?.(value);
                 return ['Все'];
             }
         });
@@ -145,7 +149,7 @@ export const RadarMultiSelect: React.FC<IRadarMultiSelectProps> = ({
                             <>
                                 {omittedValues.length > 1 && <p className={styles.plainSelect__multiLabel}>Выбрано: {omittedValues.length}</p>}
                                 {omittedValues.length === 1 &&
-                                    <p className={styles.plainSelect__multiLabel} title={omittedValues[0].value.toString()}>{omittedValues[0].value.toString()}</p>
+                                    <p className={styles.plainSelect__multiLabel} title={omittedValues[0].value.toString()}>{omittedValues[0].label.toString()}</p>
                                 }
                                 {/* {omittedValues.length === 1 && params.stateKey === 'activeWeeks' &&
                                     <p className={styles.plainSelect__multiLabel} title={omittedValues[0].label}>{omittedValues[0].label}</p>
@@ -162,7 +166,7 @@ export const RadarMultiSelect: React.FC<IRadarMultiSelectProps> = ({
                                             style={{ pointerEvents: 'none' }}
                                         />
                                     </ConfigProvider>
-                                    <span className={styles.radarSelect__multiLabel} style={{ color: selectState?.includes(option.value) ? '#5329FF' : '#1A1A1A' }}>{option?.value}</span>
+                                    <span className={styles.radarSelect__multiLabel} style={{ color: selectState?.includes(option.value) ? '#5329FF' : '#1A1A1A' }}>{option?.label}</span>
                                 </div>)
                         }}
                         menuItemSelectedIcon={null}
@@ -252,7 +256,7 @@ const RenderPopup = ({
                     }
                 }}
             >
-                <Button
+                {/* <Button
                     type='primary'
                     size='large'
                     style={{ fontSize: 14, width: '100%', fontWeight: 600 }}
@@ -265,7 +269,7 @@ const RenderPopup = ({
                     }}
                 >
                     Применить
-                </Button>
+                </Button> */}
             </ConfigProvider>
         </>
     );

@@ -13,19 +13,19 @@ import DatePickerCustomDropdown from '../../shared/datePickerCustomDropdown/date
 const predefinedRanges = [
     {
         value: 7,
-        title: '7 дней'
+        title: 'Последние 7 дней'
     },
     {
         value: 14,
-        title: '14 дней'
+        title: 'Последние 14 дней'
     },
     {
         value: 30,
-        title: '30 дней'
+        title: 'Последние 30 дней'
     },
     {
         value: 90,
-        title: '90 дней'
+        title: 'Последние 90 дней'
     },
     {
         value: 0,
@@ -260,6 +260,7 @@ export const TimeSelect = ({
                                 optionFontSize: 14,
                                 optionSelectedBg: 'transparent',
                                 optionSelectedColor: '#5329FF',
+                                optionPadding: '5px 8px',
                             }
                         }
                     }}
@@ -297,6 +298,7 @@ export const TimeSelect = ({
                         onSelect={timeSelectChangeHandler}
                         disabled={isCalendarOpen || isDataLoading || disabled}
                         placeholder={'опция'}
+                        menuItemSelectedIcon={(<span style={{ background: '#5329FF', width: 4, height: 4, borderRadius: '50% 50%' }}></span>)}
                     />
                 </ConfigProvider>
             </div>
