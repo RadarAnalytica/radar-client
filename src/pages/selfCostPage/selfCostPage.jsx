@@ -288,9 +288,9 @@ const SelfCostXLSXuploadComponent = ({ authToken, updateFunc, isLoading }) => {
                             size='large'
                             loading={status.isLoading || isLoading}
                             onClick={() => setIsUploadModalVisible(true)}
-                            style={{ fontWeight: 600, height: 38, width: 149, fontSize: 14 }}
+                            style={{ fontWeight: 600, height: 38, fontSize: 14 }}
                         >
-                            Загрузить Excel
+                            Загрузить Себестоимость
                         </Button>
                     </ConfigProvider>
                 </div>

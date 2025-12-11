@@ -77,7 +77,7 @@ function sorter(a, b, key) {
 	return Number(v1 - v2);
 }
 
-export const CURR_REPORT_WEEK_COLUMNS_CONFIG_VER = '12';
+export const CURR_REPORT_WEEK_COLUMNS_CONFIG_VER = '13';
 
 export const COLUMNS = [
 	{title: 'Неделя', dataIndex: 'week_label', fixed: true, width: 200, minWidth: 200, sortable: false},
@@ -111,8 +111,8 @@ export const COLUMNS = [
 	{title: 'Платная приёмка', dataIndex: 'acceptance_rub', sortable: true, width: 150, minWidth: 150, units: '₽', tooltipText: 'Сумма платной приёмки.'},
 	{title: 'Все удержания WB', dataIndex: 'wb_retentions_amount', sortable: true, width: 150, minWidth: 150, units: '₽', tooltipText: 'Сумма всех удержаний. Формула: Комиссия + Логистика + Хранение + Штрафы + Платная приемка + Реклама'},
 	{title: 'СПП + WB реализовал', dataIndex: 'sold_by_wb', sortable: true, width: 150, minWidth: 150, tooltipText: 'Сумма реализации товара с учетом согласованной скидки продавца и СПП', units: '₽',},
-	{title: 'Налоговая база', dataIndex: 'tax_base', sortable: true, width: 150, minWidth: 150, units: '₽', tooltipText: 'Сумма для расчёта налога'},
-	{title: 'Налог', dataIndex: 'tax', sortable: true, width: 150, minWidth: 150, units: '₽', tooltipText: 'Сумма налога. Формула: Ставка налога × Налоговая база'},
+	{title: 'Налоговая база', dataIndex: 'tax_base', sortable: true, width: 150, minWidth: 150, units: '₽'},
+	{title: 'Налог', dataIndex: 'tax', sortable: true, width: 150, minWidth: 150, units: '₽'},
 	{title: 'Оплата на Р/С', dataIndex: 'payment', sortable: true, width: 150, minWidth: 150, units: '₽', tooltipText: 'Сумма к перечислению на расчётный счет. Формула: [Продажи до СПП] – [Комиссия] – [Эквайринг] + [Корректировка эквайринга] + [Компенсации] – [Штрафы] – [Корректировка вознаграждения ВБ] – [Платная приемка] – [Удержания] – [Логистика]'},
 	{title: 'Чистая прибыль', dataIndex: 'profit', sortable: true, width: 150, minWidth: 150, units: '₽', tooltipText: 'Прибыль после всех вычетов. Формула: Оплата на РС – Себестоимость продаж – Налог'},
 	{title: 'Чистая прибыль на единицу', dataIndex: 'profit_per_one', sortable: true, width: 150, minWidth: 150, units: '₽', tooltipText: 'Чистая прибыль на одну проданную единицу. Формула: Чистая прибыль / Продажи'},
