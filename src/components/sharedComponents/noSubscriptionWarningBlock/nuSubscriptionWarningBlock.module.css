@@ -1,6 +1,6 @@
 .block {
   width: 100%;
-  box-shadow: 0px 0px 20px 0px #00000014;
+  /* box-shadow: 0px 0px 20px 0px #00000014; */
   background: #E4DEFF;
   padding: 20px;
   border-radius: 12px;
@@ -115,7 +115,7 @@
 
 .demoUserBlock {
   width: 100%;
-  box-shadow: 0px 0px 20px 0px #00000014;
+  /* box-shadow: 0px 0px 20px 0px #00000014; */
   background: #EFECFE;
   padding: 20px;
   border-radius: 12px;
