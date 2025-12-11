@@ -305,14 +305,14 @@ const metricsOrder = [
   { key: 'one_order_price', title: 'Стоимость 1 заказа (руб)', isChildren: true, parentKey: 'rk_budget_data', tooltip: 'Затраты на привлечение одного заказа. Формула: Бюджет РК / Заказы' },
   { key: 'one_sale_price', title: 'Стоимость 1 продажи (руб)', isChildren: true, parentKey: 'rk_budget_data', tooltip: 'Затраты на одну продажу. Формула: Бюджет РК / Продажи' },
 
-  { key: 'auction_rk_budget_data', title: 'Бюджет РК (Аукцион) (руб)', isParent: true, tooltip: 'Сумма, потраченная на рекламные кампании типа «Аукцион».' },
+  { key: 'auction_rk_budget_data', title: 'Бюджет РК (Единая ставка) (руб)', isParent: true, tooltip: 'Сумма, потраченная на рекламные кампании типа «Аукцион».' },
   { key: 'ctr', title: 'CTR (%)', isChildren: true, parentKey: 'auction_rk_budget_data', tooltip: 'Отражает, насколько эффективно ваше рекламное объявление привлекает внимание и вызывает интерес у целевой аудитории. Формула: (Клики / Просмотры) × 100%' },
   { key: 'impressions', title: 'Показы (шт)', isChildren: true, parentKey: 'auction_rk_budget_data', tooltip: 'Количество показов рекламы.' },
   { key: 'clicks', title: 'Клики (шт)', isChildren: true, parentKey: 'auction_rk_budget_data', tooltip: 'Количество кликов по рекламе.' },
   { key: 'cpc', title: 'CPC (руб)', isChildren: true, parentKey: 'auction_rk_budget_data', tooltip: 'Средняя стоимость клика. Формула: Бюджет РК / Клики' },
   { key: 'cpm', title: 'CPM (руб)', isChildren: true, parentKey: 'auction_rk_budget_data', tooltip: 'Средняя стоимость 1000 показов. Формула: (Бюджет РК / Показы) × 1000' },
 
-  { key: 'ark_budget_data', title: 'Бюджет РК (АРК) (руб)', isParent: true, tooltip: 'Затраты на автоматические рекламные кампании.' },
+  { key: 'ark_budget_data', title: 'Бюджет РК (Ручная ставка) (руб)', isParent: true, tooltip: 'Затраты на автоматические рекламные кампании.' },
   { key: 'ctr', title: 'CTR (%)', isChildren: true, parentKey: 'ark_budget_data', tooltip: 'Отражает, насколько эффективно ваше рекламное объявление привлекает внимание и вызывает интерес у целевой аудитории. Формула: (Клики / Просмотры) × 100%' },
   { key: 'impressions', title: 'Показы (шт)', isChildren: true, parentKey: 'ark_budget_data', tooltip: 'Количество показов рекламы.' },
   { key: 'clicks', title: 'Клики (шт)', isChildren: true, parentKey: 'ark_budget_data', tooltip: 'Количество кликов по рекламе.' },

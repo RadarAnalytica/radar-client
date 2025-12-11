@@ -6,7 +6,8 @@ import Sidebar from '@/components/sharedComponents/sidebar/sidebar';
 import MobilePlug from '@/components/sharedComponents/mobilePlug/mobilePlug';
 // import { MainChart } from '@/features';
 import { Table as RadarTable } from 'radar-ui';
-import { Segmented, ConfigProvider, Button, Modal, Input, Checkbox } from 'antd';
+import { Segmented, ConfigProvider, Button, Modal, Input, Checkbox, Tooltip as AntdTooltip } from 'antd';
+import { Tooltip as RadarTooltip } from 'radar-ui';
 import { positionTrackingSkuTableConfig as initTableConfig, RadarLoader } from '@/shared';
 import { positionTrackingSkuTableCustomCellRender } from '@/shared';
 import Breadcrumbs from '@/components/sharedComponents/header/headerBreadcrumbs/breadcrumbs';
@@ -1354,7 +1355,28 @@ const PositionTrackingSkuPage = () => {
                     {requestStatus.isLoading && <RadarLoader loaderStyle={{ height: '130px', width: '100%', background: 'white', borderRadius: '16px' }} />}
                     {!requestStatus.isLoading && <div className={styles.page__miniChart}>
                         <div className={styles.page__miniChartHeader}>
-                            <p className={styles.page__miniChartTitle}>Видимость</p>
+                            <p className={styles.page__miniChartTitle}>
+                                Видимость
+                                <ConfigProvider
+                                    theme={{
+                                        token: {
+                                            colorTextLightSolid: '#1A1A1A',
+                                            fontSize: 12,
+                                        }
+                                    }}
+                                >
+                                    <AntdTooltip
+                                        arrow={false}
+                                        color='white'
+                                        title={'Показывает, какая доля потенциального трафика по ключевым запросам была охвачена вашим товаром. Чем выше значение, тем лучше товар заметен в поиске и привлекает внимание покупателей.'}
+                                    >
+                                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ marginLeft: '8px', cursor: 'pointer' }}>
+                                            <rect x="0.75" y="0.75" width="18.5" height="18.5" rx="9.25" stroke="black" strokeOpacity="0.1" strokeWidth="1.5" />
+                                            <path d="M9.064 15V7.958H10.338V15H9.064ZM8.952 6.418V5.046H10.464V6.418H8.952Z" fill="#1A1A1A" fillOpacity="0.5" />
+                                        </svg>
+                                    </AntdTooltip>
+                                </ConfigProvider>
+                            </p>
                             <div className={styles.page__miniChartValues}>
                                 {skuData?.visibility && <span className={styles.page__miniChartMainValue}>{formatPrice(skuData?.visibility?.toString(), '%')}</span>}
                                 {skuData?.visibility_compare && <RadarRateMark value={skuData?.visibility_compare.toString()} units='%' />}
@@ -1575,7 +1597,7 @@ interface PositionTrackingSkuTableProps {
     tableType: 'Кластеры' | 'По запросам'
 }
 const PositionTrackingSkuTable = memo(({ requestStatus, skuData, tableType }: PositionTrackingSkuTableProps) => {
-   
+
     const [sortState, setSortState] = useState<{ sort_field: string, sort_order: 'ASC' | 'DESC' }>({ sort_field: 'frequency', sort_order: 'DESC' });
     const [tableConfig, setTableConfig] = useState<Record<string, any>[]>(null);
     const [paginationState, setPaginationState] = useState<{ current: number, pageSize: number, total: number }>({ current: 1, pageSize: 12, total: 0 });
