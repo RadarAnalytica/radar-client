@@ -38,7 +38,7 @@ const SelfCostPage = () => {
     const [filteredTableData, setFilteredTableData] = useState(); // данные для рендера таблицы
     const [totalItems, setTotalItems] = useState(0);
     const { authToken } = useContext(AuthContext);
-    const { activeBrand, selectedRange, isFiltersLoaded, activeBrandName, activeArticle, activeGroup } = useAppSelector((state) => state.filters);
+    const { activeBrand, isFiltersLoaded, activeBrandName, activeGroup } = useAppSelector((state) => state.filters);
     const filters = useAppSelector(store => store.filters);
     const [paginationState, setPaginationState] = useState({ current: 1, total: 0, pageSize: 50 });
 
@@ -84,7 +84,7 @@ const SelfCostPage = () => {
         if (activeBrand && activeBrand.is_primary_collect && isFiltersLoaded) {
             getTableData(authToken, activeBrand.id, filters, 1);
         }
-    }, [isFiltersLoaded]);
+    }, [isFiltersLoaded, activeBrand, activeBrandName, activeGroup]);
 
     const memoizedDataStatus = useMemo(() => dataStatus, [dataStatus]);
     const memoizedFilteredTableData = useMemo(() => filteredTableData, [filteredTableData]);
@@ -111,7 +111,6 @@ const SelfCostPage = () => {
                         timeSelect={false}
                         articleSelect={false}
                         isDataLoading={dataStatus.isLoading}
-                        submitHandler={() => getTableData(authToken, activeBrand.id, filters, 1, searchInputValue || '')}
                     />
                     <HowToLink
                         text='Инструкция по загрузке себестоимости'

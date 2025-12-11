@@ -33,7 +33,7 @@ const WbMetricsPage: React.FC = () => {
   const { authToken } = useContext(AuthContext);
   const { isDemoMode } = useDemoMode();
   const filters = useAppSelector((state) => state.filters);
-  const { activeBrand, isFiltersLoaded } = useAppSelector((state) => state.filters);;
+  const { activeBrand, activeBrandName, activeArticle, activeGroup, isFiltersLoaded } = useAppSelector((state) => state.filters);;
   
   const [loading, setLoading] = useState(true);
   const [tableConfig, setTableConfig] = useState<ColumnConfig[]>([]);
@@ -72,7 +72,7 @@ const WbMetricsPage: React.FC = () => {
         setLoading(false);
       }
     }
-  }, [pageData.page, isFiltersLoaded, metricType, sortState]);
+  }, [pageData.page, isFiltersLoaded, metricType, sortState, activeBrand, activeBrandName, activeArticle, activeGroup]);
 
   // Инициализация конфигурации таблицы при загрузке данных
   useEffect(() => {
@@ -124,9 +124,6 @@ const WbMetricsPage: React.FC = () => {
                 isDataLoading={loading}
                 tempPageCondition={true}
                 maxCustomDate={new Date(Date.now() - 24 * 60 * 60 * 1000)}
-                submitHandler={() => {
-                  loadData(filters, authToken);
-                }}
             />
 
             <div className={styles.page__controlsButtonsWrapper}>

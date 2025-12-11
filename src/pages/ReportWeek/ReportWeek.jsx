@@ -294,7 +294,7 @@ export default function ReportWeek() {
 		if (activeBrand && !activeBrand.is_primary_collect && isFiltersLoaded) {
 			setLoading(false);
 		}
-	}, [isFiltersLoaded]);
+	}, [isFiltersLoaded, activeBrand, activeWeeks, activeBrandName, activeArticle, activeGroup]);
 
 	const popoverHandler = (status) => {
 		setIsPopoverOpen(status);
@@ -396,9 +396,6 @@ export default function ReportWeek() {
 							setLoading={setLoading}
 							weekSelect={true}
 							isDataLoading={loading}
-							submitHandler={() => {
-								updateDataReportWeek(filters, authToken);
-							}}
 						/>
 					</div>
 					<div className={styles.btns}>

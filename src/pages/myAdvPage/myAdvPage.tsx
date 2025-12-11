@@ -94,7 +94,7 @@ const MyAdvPage: React.FC = () => {
         setLoading(false);
       }
     }
-  }, [searchQuery, sortState, isFiltersLoaded]);
+  }, [searchQuery, sortState, isFiltersLoaded, activeBrand, selectedRange]);
 
   useEffect(() => {
     if (activeBrand) {
@@ -155,7 +155,6 @@ const MyAdvPage: React.FC = () => {
             setSortState={setSortState}
             tableConfig={tableConfig}
             setTableConfig={handleTableConfigChange}
-            loadData={loadData}
           />
         )}
       </section>

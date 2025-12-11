@@ -110,7 +110,7 @@ export const TimeSelect = ({
             setLocalSelectedRange(newRange);
             setSelectValue(0);
             if (customSubmit) {
-                customSubmit(newRange);
+                customSubmit(newRange)
             } else {
                 dispatch(filtersActions.setPeriod(newRange));
                 localStorage.setItem('selectedRange', JSON.stringify(newRange));

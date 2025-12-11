@@ -110,6 +110,7 @@ const SkuIdPage = () => {
                                 brandSelect={false}
                                 articleSelect={false}
                                 groupSelect={false}
+                                uncontrolledTimeSelect={true}
                                 isDataLoading={dataStatus.isLoading}
                             />
                         </div>

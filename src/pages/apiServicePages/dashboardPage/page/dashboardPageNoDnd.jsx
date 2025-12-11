@@ -139,7 +139,7 @@ const MainContent = React.memo(({
 const _DashboardPage = () => {
     const { authToken } = useContext(AuthContext);
     const { isDemoMode } = useDemoMode();
-    const { isFiltersLoaded, activeBrand, shops } = useAppSelector((state) => state.filters);
+    const { isFiltersLoaded, activeBrand, shops, activeBrandName, activeArticle, activeGroup, selectedRange } = useAppSelector((state) => state.filters);
     const filters = useAppSelector((state) => state.filters);
     const { isSidebarHidden } = useAppSelector((state) => state.utils);
 
@@ -168,7 +168,6 @@ const _DashboardPage = () => {
 
     const updateDataDashBoard = async (filters, authToken) => {
         setPageState(prev => ({ ...prev, loading: true }));
-        console.log('filters', filters);
         try {
             if (activeBrand !== null && activeBrand !== undefined) {
                 const data = await ServiceFunctions.getDashBoard(
@@ -213,7 +212,7 @@ const _DashboardPage = () => {
         if (activeBrand && !activeBrand.is_primary_collect && isFiltersLoaded) {
             setPageState(prev => ({ ...prev, loading: false }));
         }
-    }, [isFiltersLoaded]);
+    }, [activeBrand, isFiltersLoaded, selectedRange, activeBrandName, activeArticle, activeGroup]);
 
     return (
         <main className={styles.page}>
@@ -245,10 +244,6 @@ const _DashboardPage = () => {
                 <div className={styles.page__controlsWrapper}>
                     <Filters
                         isDataLoading={pageState.loading}
-                        submitHandler={(filters, authToken) => {
-                            updateDataDashBoard(filters, authToken);
-                            fetchAnalysisData(filters, authToken);
-                        }}
                     />
                 </div>
 

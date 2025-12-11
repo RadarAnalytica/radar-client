@@ -37,7 +37,6 @@ const MyAdvTable: React.FC<MyAdvTableProps> = React.memo(({
   setSortState,
   tableConfig,
   setTableConfig,
-  loadData,
 }) => {
   const tableContainerRef = useRef(null);
   const navigate = useNavigate();
@@ -279,7 +278,7 @@ const MyAdvTable: React.FC<MyAdvTableProps> = React.memo(({
             brandSelect={false}
             tempPageCondition={true}
             maxCustomDate={new Date(Date.now() - 24 * 60 * 60 * 1000)}
-            submitHandler={loadData}
+            uncontrolledMode={true}
           />
         </div>
         <div className={styles.settingsWrapper}>

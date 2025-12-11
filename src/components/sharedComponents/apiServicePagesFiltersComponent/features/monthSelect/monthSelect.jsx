@@ -8,14 +8,13 @@ import { initialMonths } from '@/service/utils';
 const { RangePicker } = DatePicker;
 
 export const MonthSelect = ({
-    dispatch,
-    filterActions,
     selectId,
     label,
     value,
     monthHandler,
     isDataLoading,
-    minCustomDate
+    minCustomDate,
+    actionHandler
 }) => {
     const monthRef = useRef(null);
 
@@ -38,7 +37,7 @@ export const MonthSelect = ({
                 month_to: dayjs(end).format('YYYY-MM')
             };
         }
-        dispatch(filterActions.setActiveFilters({ stateKey: 'activeMonths', data: selectedMonths }));
+        actionHandler?.(selectedMonths);
     };
 
     return (

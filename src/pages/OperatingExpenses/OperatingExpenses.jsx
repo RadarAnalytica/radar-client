@@ -251,7 +251,7 @@ export default function OperatingExpenses() {
 				setLoading(false);
 			}
         }
-    }, [expPagination.page, isFiltersLoaded]);
+    }, [expPagination.page, isFiltersLoaded, selectedRange, activeExpenseCategory, activeBrand, activeBrandName, activeArticle]);
 
 	useEffect(() => {
 		if (activeBrand) {
@@ -635,7 +635,6 @@ export default function OperatingExpenses() {
 							isDataLoading={loading}
 							groupSelect={false}
 							opExpensesArticles
-							submitHandler={() => updateExpenses(true, true)}
 						/>
 					</div>
 				}

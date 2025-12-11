@@ -105,6 +105,7 @@ const SkuFrequencyPage = () => {
                             articleSelect={false}
                             groupSelect={false}
                             timeSelect={false}
+                            uncontrolledMode={true}
                             isDataLoading={isLoadingForButton}
                         />
                         {/* {skuFrequencyMode === 'Продвинутый' &&

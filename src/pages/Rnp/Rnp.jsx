@@ -290,7 +290,7 @@ export default function Rnp({
 		return () => {
 			abortControllerRef?.current?.abort();
 		};
-	}, [isFiltersLoaded, view]);
+	}, [isFiltersLoaded, view, activeBrand, selectedRange, activeBrandName]);
 
 	// Добавляем автоскролл к контейнеру страницы
 	useEffect(() => {
@@ -519,14 +519,6 @@ export default function Rnp({
 						categorySelect={false}
 						maxCustomDate={new Date(Date.now() - 24 * 60 * 60 * 1000)}
 						disabled={isPublicVersion}
-						submitHandler={!isPublicVersion ? (filters, authToken) => {
-							if (view === 'articles') {
-								updateRnpListByArticle(abortControllerRef?.current?.signal, filters, authToken);
-							} else {
-								updateRnpListSummary(abortControllerRef?.current?.signal, filters, authToken);
-							}
-
-						} : undefined} 
 					/>
 				</div>
 

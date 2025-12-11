@@ -271,7 +271,7 @@ export default function ReportProfitLoss() {
 		if (activeBrand && !activeBrand.is_primary_collect && isFiltersLoaded) {
 			setLoading(false);
 		}
-	}, [isFiltersLoaded]);
+	}, [isFiltersLoaded, activeBrand, activeMonths, activeBrandName, activeArticle, activeGroup]);
 
 	// useEffect(() => {
 	// 	if (!activeBrand) return;
@@ -314,9 +314,6 @@ export default function ReportProfitLoss() {
 						monthSelect={true}
 						isDataLoading={loading}
 						//minCustomDate={getMinCustomDate(activeBrand?.created_at, 6, 'month')}
-						submitHandler={() => {
-							updateDataReportProfitLoss(filters, authToken);
-						}}
 					/>
 				</div>
 
