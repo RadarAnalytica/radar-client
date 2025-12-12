@@ -115,11 +115,7 @@ const MyAdvTable: React.FC<MyAdvTableProps> = ({
         isDateCell 
           ? <div className={styles.cellDate}>{value}</div>
           : (
-            <div 
-              className={styles.companyCell}
-              onClick={() => handleCompanyClick(record.company_id)}
-              style={{ cursor: 'pointer' }}
-            >
+            <div className={styles.companyCell}>
               {/* {record.company_photo 
                 ? <img src={record.company_photo} alt={companyName} {...imageSize} className={styles.companyImage} />
                 : <div className={styles.companyImage} style={imageSize} />
@@ -127,6 +123,9 @@ const MyAdvTable: React.FC<MyAdvTableProps> = ({
               <span className={styles.companyName}>
                 {value}
               </span>
+              <button className={styles.companyButton} onClick={() => handleCompanyClick(record.company_id)}>
+                Смотреть подробнее
+              </button>
             </div>
           )
       );
