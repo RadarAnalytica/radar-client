@@ -53,7 +53,7 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    gap: 8px;
+    gap: 2px;
 }
 
 .nameCell__title {
@@ -99,4 +99,21 @@
     display: flex;
     align-items: center;
     gap: 10px;
+}
+
+.proceedLink {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 4px 8px;
+    border-radius: 8px;
+    background: #5329FF0D;
+    color: #5329FF;
+    font-size: 12px;
+    font-weight: 600;
+    text-decoration: none;
+    width: min-content;
+    white-space: nowrap;
+    flex-grow: 0;
+
 }

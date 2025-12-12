@@ -40,6 +40,9 @@ export const positionTrackingTableCustomCellRender = (value: any, record: any, i
                             <img src={wb_icon} alt='wb_icon' width={20} height={20} style={{ transform: 'scale(1.2)' }} />
                             {record.wb_id}
                         </Link>
+                        <Link to={`/position-tracking/${record.wb_id}`} className={styles.proceedLink}>
+                            Смотреть подробнее
+                        </Link>
                     </div>
                 </div>
             </div>
