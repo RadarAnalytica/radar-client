@@ -454,8 +454,9 @@ export default function Rnp({
 								},
 							}}
 						>
-							{!isPublicVersion &&
+							
 								<div className={styles.page__shareAndAddButtonsWrapper}>
+								{isPublicVersion &&
 									<ConfigProvider
 										theme={{
 											token: {
@@ -489,7 +490,8 @@ export default function Rnp({
 												whiteSpace: 'nowrap'
 											}}
 										>{shareButtonState}</Button>
-									</ConfigProvider>
+									</ConfigProvider>}
+									{!isPublicVersion &&
 									<Button
 										type="primary"
 										size="large"
@@ -500,10 +502,10 @@ export default function Rnp({
 											<path d="M9 1V9M9 17V9M9 9H1H17" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
 										</svg>
 
-										Добавить артикул
-									</Button>
+											Добавить артикул
+										</Button>
+									}
 								</div>
-							}
 						</ConfigProvider>
 					</Flex>
 				</ConfigProvider>)}

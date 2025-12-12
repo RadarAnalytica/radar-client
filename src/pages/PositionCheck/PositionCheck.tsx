@@ -29,17 +29,18 @@ const PositionCheckPage = () => {
 
 
     const submitHandler = (inputValue: string) => {
+        if (!inputValue?.trim()) return
         let normilizedId: string;
-        if (/^(|\d+)$/.test(inputValue)) {
-            normilizedId = inputValue;
+        if (/^(|\d+)$/.test(inputValue?.trim())) {
+            normilizedId = inputValue?.trim();
         } else {
-            const startId = inputValue.indexOf('wildberries.ru/catalog/') + 'wildberries.ru/catalog/'.length;
-            const endId = inputValue.indexOf('/detail.aspx');
+            const startId = inputValue?.trim().indexOf('wildberries.ru/catalog/') + 'wildberries.ru/catalog/'.length;
+            const endId = inputValue?.trim().indexOf('/detail.aspx');
             if (startId === -1 || endId === -1) {
                 setRequestStatus({ ...requestInitState, isError: true, message: 'Не верный формат артикула. Вставьте только числа или ссылку вида: https://www.wildberries.ru/catalog/ID/detail.aspx' });
                 return;
             }
-            normilizedId = inputValue.substring(startId, endId);
+            normilizedId = inputValue?.trim().substring(startId, endId);
         }
         dispatch(skuAnalysisActions.skuSearchHistoryAdd(normilizedId));
         navigate(`/position-check/${normilizedId}`);

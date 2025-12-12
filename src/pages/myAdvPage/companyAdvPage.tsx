@@ -6,7 +6,6 @@ import Header from '@/components/sharedComponents/header/header';
 import { useDemoMode } from "@/app/providers";
 import NoSubscriptionWarningBlock from '@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock';
 import { useLoadingProgress } from '@/service/hooks/useLoadingProgress';
-import Loader from '@/components/ui/Loader';
 import BarsGroup from './widgets/BarsGroup/BarsGroup';
 import StatisticsChart from './widgets/StatisticsChart/StatisticsChart';
 import MyAdvTable from './widgets/MyAdvTable/MyAdvTable';
@@ -170,29 +169,20 @@ const CompanyAdvPage: React.FC = () => {
 
         <BarsGroup data={data} loadData={loadData} loading={loading} />
 
-        {loading && (
-          <div className={styles.loader__container}>
-            <Loader loading={loading} progress={progress.value} />
-          </div>
-        )}
-
-        {!loading && (
-          <>
-            <MyAdvTable
-              companyId={companyId}
-              data={isNoData ? [] : [data]}
-              columns={tableConfig}
-              loading={loading}
-              pageData={pageData}
-              setPageData={setPageData}
-              sortState={sortState}
-              setSortState={setSortState}
-              tableConfig={tableConfig}
-              setTableConfig={handleTableConfigChange}
-            />
-            <StatisticsChart data={data} loading={loading} isNoData={isNoData} />
-          </>
-        )}
+        <MyAdvTable
+          companyId={companyId}
+          data={isNoData ? [] : [data]}
+          columns={tableConfig}
+          loading={loading}
+          progress={progress}
+          pageData={pageData}
+          setPageData={setPageData}
+          sortState={sortState}
+          setSortState={setSortState}
+          tableConfig={tableConfig}
+          setTableConfig={handleTableConfigChange}
+        />
+        <StatisticsChart data={data} loading={loading} isNoData={isNoData} />
       </section>
     </main>
   );

@@ -45,15 +45,15 @@ export const getFiltersRequestObject = (filters, selectedRange, shopId) => {
 	if (filters.activeBrandName && Array.isArray(filters.activeBrandName) && !filters.activeBrandName.some(_ => _.value === 'Все')) {
 		requestObject.brands = filters.activeBrandName.map(_ => _.name);
 	}
-	if (filters.activeArticle && Array.isArray(filters.activeArticle) && !filters.activeArticle.some(_ => _.value === 'Все')) {
-		requestObject.articles = filters.activeArticle.map(_ => _.value);
-	}
-	if (filters.activeGroup && Array.isArray(filters.activeGroup) && !filters.activeGroup.some(_ => _.value === 'Все')) {
-		requestObject.product_groups = filters.activeGroup.map(_ => _.id);
-	}
-	if (filters.activeCategory && Array.isArray(filters.activeCategory) && !filters.activeCategory.some(_ => _.value === 'Все')) {
-		requestObject.categories = filters.activeCategory.map(_ => _.id);
-	}
+	// if (filters.activeArticle && Array.isArray(filters.activeArticle) && !filters.activeArticle.some(_ => _.value === 'Все')) {
+	// 	requestObject.articles = filters.activeArticle.map(_ => _.value);
+	// }
+	// if (filters.activeGroup && Array.isArray(filters.activeGroup) && !filters.activeGroup.some(_ => _.value === 'Все')) {
+	// 	requestObject.product_groups = filters.activeGroup.map(_ => _.id);
+	// }
+	// if (filters.activeCategory && Array.isArray(filters.activeCategory) && !filters.activeCategory.some(_ => _.value === 'Все')) {
+	// 	requestObject.categories = filters.activeCategory.map(_ => _.id);
+	// }
 	return requestObject;
 };
 
@@ -878,9 +878,20 @@ export const ServiceFunctions = {
 
 		return data;
 	},
-
+	//old version
+	//getCostTemplate: async (token) => {
+	// 	const res = await fetch(`${URL}/api/report/cost/get-template`, {
+	// 		method: 'GET',
+	// 		headers: {
+	// 			accept: 'application/json',
+	// 			authorization: 'JWT ' + token,
+	// 		},
+	// 	});
+	// 	const data = await res.blob();
+	// 	return data;
+	// },
 	getCostTemplate: async (token) => {
-		const res = await fetch(`${URL}/api/report/cost/get-template`, {
+		const res = await fetch(`${URL}/api/product/self-costs/template`, {
 			method: 'GET',
 			headers: {
 				accept: 'application/json',
@@ -890,13 +901,38 @@ export const ServiceFunctions = {
 		const data = await res.blob();
 		return data;
 	},
+	//old version
+	// postCostUpdate: async (token, file) => {
+	// 	const formData = new FormData();
+	// 	formData.append('file', file);
 
+	// 	try {
+	// 		const response = await fetch(`${URL}/api/report/cost/update`, {
+	// 			method: 'POST',
+	// 			headers: {
+	// 				Authorization: 'JWT ' + token,
+	// 			},
+	// 			body: formData,
+	// 		});
+
+	// 		if (response.ok) {
+	// 			return await response.json();
+	// 		} else {
+	// 			console.error('Ошибка при загрузке файла:', response.statusText);
+	// 			throw new Error(response.statusText);
+	// 		}
+
+	// 	} catch (error) {
+	// 		console.error('Ошибка сети или запроса:', error);
+	// 		throw error; // Прокидываем ошибку выше
+	// 	}
+	// },
 	postCostUpdate: async (token, file) => {
 		const formData = new FormData();
 		formData.append('file', file);
 
 		try {
-			const response = await fetch(`${URL}/api/report/cost/update`, {
+			const response = await fetch(`${URL}/api/product/self-costs/upload`, {
 				method: 'POST',
 				headers: {
 					Authorization: 'JWT ' + token,
@@ -2128,7 +2164,7 @@ export interface IPositionCheckMainTableData {
 		return res;
 	},
 	getPostionTrackingMeta: async (token) => {
-		const res = await fetchApi(`${URL}/api/position-track/radar-product/user-meta`, {
+		const res = await fetchApi(`/api/position-track/radar-product/user-meta`, {
 			method: 'GET',
 			headers: {
 				'content-type': 'application/json',
@@ -2138,7 +2174,7 @@ export interface IPositionCheckMainTableData {
 		return res
 	},
 	getPostionTrackingSkuValidity: async (token, sku) => {
-		const res = await fetchApi(`${URL}/api/position-track/radar-product/check-product`, {
+		const res = await fetchApi(`/api/position-track/radar-product/check-product`, {
 			method: 'POST',
 			headers: {
 				'content-type': 'application/json',
@@ -2151,7 +2187,7 @@ export interface IPositionCheckMainTableData {
 		return res
 	},
 	getPostionTrackingProjects: async (token) => {
-		const res = await fetchApi(`${URL}/api/position-track/project/get-all`, {
+		const res = await fetchApi(`/api/position-track/project/get-all`, {
 			method: 'GET',
 			headers: {
 				'content-type': 'application/json',
@@ -2161,7 +2197,7 @@ export interface IPositionCheckMainTableData {
 		return res
 	},
 	createPostionTrackingProject: async (token, projectName) => {
-		const res = await fetchApi(`${URL}/api/position-track/project/create`, {
+		const res = await fetchApi(`/api/position-track/project/create`, {
 			method: 'POST',
 			headers: {
 				'content-type': 'application/json',
@@ -2174,7 +2210,7 @@ export interface IPositionCheckMainTableData {
 		return res;
 	},
 	createPostionTrackingProjectWithProduct: async (token, projectName, sku, productName) => {
-		const res = await fetchApi(`${URL}/api/position-track/radar-product/create`, {
+		const res = await fetchApi(`/api/position-track/radar-product/create`, {
 			method: 'POST',
 			headers: {
 				'content-type': 'application/json',
@@ -2189,7 +2225,7 @@ export interface IPositionCheckMainTableData {
 		return res;
 	},
 	addProductToPositionTrackingProject: async (token, requestObject) => {
-		const res = await fetchApi(`${URL}/api/position-track/radar-product/create`, {
+		const res = await fetchApi(`/api/position-track/radar-product/create`, {
 			method: 'POST',
 			headers: {
 				'content-type': 'application/json',
@@ -2200,7 +2236,7 @@ export interface IPositionCheckMainTableData {
 		return res;
 	},
 	deleteProductFromPositionTrackingProject: async (token, productId) => {
-		const res = await fetchApi(`${URL}/api/position-track/radar-product/delete?product_id=${productId}`, {
+		const res = await fetchApi(`/api/position-track/radar-product/delete?product_id=${productId}`, {
 			method: 'DELETE',
 			headers: {
 				'content-type': 'application/json',
@@ -2210,7 +2246,7 @@ export interface IPositionCheckMainTableData {
 		return res;
 	},
 	deleteProductToPositionTrackingProject: async (token, requestObject) => {
-		const res = await fetchApi(`${URL}/api/position-track/radar-product/create`, {
+		const res = await fetchApi(`/api/position-track/radar-product/create`, {
 			method: 'POST',
 			headers: {
 				'content-type': 'application/json',
@@ -2221,7 +2257,7 @@ export interface IPositionCheckMainTableData {
 		return res;
 	},
 	deletePositionTrackingProject: async (token, projectId) => {
-		const res = await fetchApi(`${URL}/api/position-track/project/delete?project_id=${projectId}`, {
+		const res = await fetchApi(`/api/position-track/project/delete?project_id=${projectId}`, {
 			method: 'DELETE',
 			headers: {
 				'content-type': 'application/json',
@@ -2231,7 +2267,7 @@ export interface IPositionCheckMainTableData {
 		return res;
 	},
 	updatePositionTrackingProject: async (token, projectId, projectName) => {
-		const res = await fetchApi(`${URL}/api/position-track/project/update`, {
+		const res = await fetchApi(`/api/position-track/project/update`, {
 			method: 'PATCH',
 			headers: {
 				'content-type': 'application/json',
@@ -2245,7 +2281,7 @@ export interface IPositionCheckMainTableData {
 		return res;
 	},
 	getPositionTrackingMainPageData: async (token, requestObject) => {
-		const res = await fetchApi(`${URL}/api/position-track/web-product/get-totals`, {
+		const res = await fetchApi(`/api/position-track/web-product/get-totals`, {
 			method: 'POST',
 			headers: {
 				'content-type': 'application/json',
@@ -2256,7 +2292,7 @@ export interface IPositionCheckMainTableData {
 		return res;
 	},
 	getPositionTrackingSkuPageData: async (token, requestObject) => {
-		const res = await fetchApi(`${URL}/api/position-track/web-product/get-product`, {
+		const res = await fetchApi(`/api/position-track/web-product/get-product`, {
 			method: 'POST',
 			headers: {
 				'content-type': 'application/json',
@@ -2267,7 +2303,7 @@ export interface IPositionCheckMainTableData {
 		return res;
 	},
 	createPositionTrackingChartMark: async (token, requestObject) => {
-		const res = await fetchApi(`${URL}/api/position-track/radar-product/mark/create`, {
+		const res = await fetchApi(`/api/position-track/radar-product/mark/create`, {
 			method: 'POST',
 			headers: {
 				'content-type': 'application/json',
@@ -2278,7 +2314,7 @@ export interface IPositionCheckMainTableData {
 		return res;
 	},
 	deletePositionTrackingChartMark: async (token, markId) => {
-		const res = await fetchApi(`${URL}/api/position-track/radar-product/mark/delete?mark_id=${markId}`, {
+		const res = await fetchApi(`/api/position-track/radar-product/mark/delete?mark_id=${markId}`, {
 			method: 'DELETE',
 			headers: {
 				'content-type': 'application/json',
@@ -2288,7 +2324,7 @@ export interface IPositionCheckMainTableData {
 		return res;
 	},
 	updatePositionTrackingChartMark: async (token, requestObject) => {
-		const res = await fetchApi(`${URL}/api/position-track/radar-product/mark/update`, {
+		const res = await fetchApi(`/api/position-track/radar-product/mark/update`, {
 			method: 'PATCH',
 			headers: {
 				'content-type': 'application/json',

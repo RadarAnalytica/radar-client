@@ -4,7 +4,7 @@ function handleFile(files) {
   // console.log(files[0]);
 }
 
-function DragDropFile({ files, setFiles }) {
+function DragDropFile({ files, setFiles, disabled }) {
   // drag state
   const [dragActive, setDragActive] = React.useState(false);
   // ref
@@ -58,6 +58,7 @@ function DragDropFile({ files, setFiles }) {
         id='input-file-upload'
         multiple={true}
         onChange={handleChange}
+        disabled={disabled}
       />
       <label
         id='label-file-upload'
@@ -93,6 +94,7 @@ function DragDropFile({ files, setFiles }) {
             className='prime-btn'
             style={{ width: '100%', height: '46px', display: 'flex', alignItems: 'center', justifyContent: 'center', minWidth: '220px' }}
             onClick={onButtonClick}
+            disabled={disabled}
           >
             <span style={{ fontSize: '14px' }}>Выбрать файл</span>
           </button>

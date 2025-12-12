@@ -435,6 +435,9 @@ const ReportMain = () => {
               pagination={false}
               paginationContainerStyle={{ display: 'none' }}
               style={{ width: '100%' }}
+              recalculateRowHeight
+              // bodyCellWrapperStyle={{ minHeight: '100px' }}
+              // bodyCellWrapperStyle={{ height: 'auto' }}
               headerCellWrapperStyle={{ backgroundColor: 'white' }}
               headerCellStyle={{ backgroundColor: 'white' }}
               bodyCellWrapperClassName={styles.bodyCellWrapperCustomClassName}

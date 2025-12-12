@@ -141,13 +141,14 @@ export default function ReportProfitLoss() {
 		};
 
 		metricsOrder.forEach((metric, index) => {
-			const { key, title, isChildren, isParent, parentKey, isExpanded } = metric;
+			const { key, title, isChildren, isParent, parentKey, isExpanded, tooltip } = metric;
 			let rowObject = {
 				article: title,
 				isParent,
 				id: index,
 				key,
 				isExpanded,
+				tooltip,
 			};
 
 			data.forEach(item => {
@@ -199,23 +200,23 @@ export default function ReportProfitLoss() {
 
 		// Define the order of metrics (articles) as they should appear in the table
 		const metricsOrder = [
-			{ key: 'sales', title: 'Фактические продажи' },
-			{ key: 'mp_discount', title: 'Скидка за счет МП' },
-			{ key: 'realization', title: 'Реализация' },
-			{ key: 'total_expenses', title: 'Прямые расходы', isParent: true, isExpanded: true },
-			{ key: 'cost', title: 'Себестоимость', isChildren: true, parentKey: 'total_expenses' },
-			{ key: 'advert', title: 'Внутренняя реклама', isChildren: true, parentKey: 'total_expenses' },
-			{ key: 'storage', title: 'Хранение', isChildren: true, parentKey: 'total_expenses' },
-			{ key: 'paid_acceptance', title: 'Платная приемка', isChildren: true, parentKey: 'total_expenses' },
-			{ key: 'commission', title: 'Комиссия', isChildren: true, parentKey: 'total_expenses' },
-			{ key: 'logistic', title: 'Логистика', isChildren: true, parentKey: 'total_expenses' },
-			{ key: 'penalties', title: 'Штрафы и прочие удержания', isChildren: true, parentKey: 'total_expenses', tooltipText: 'К прочим удержания отнесены: платежи по договору займа, предоставление услуг по подписке «Джем», страхование заказов, услуги по размещению рекламного материала, списания за отзывы, утилизации товара' },
-			{ key: 'compensation', title: 'Компенсация' },
-			{ key: 'gross_margin', title: 'Маржинальная прибыль' },
-			{ key: 'operating_expenses', title: 'Операционные расходы', isParent: true, isExpanded: false },
-			{ key: 'operating_profit', title: 'Операционная прибыль (EBITDA)' },
+			{ key: 'sales', title: 'Фактические продажи', tooltip: 'Выручка от продаж по ценам до СПП.' },
+			{ key: 'mp_discount', title: 'Скидка за счет МП', tooltip: 'Суммарная скидка, предоставленной маркетплейсом.' },
+			{ key: 'realization', title: 'Реализация', tooltip: 'Сумма, на которую WB реализовал товар (после СПП).' },
+			{ key: 'total_expenses', title: 'Прямые расходы', isParent: true, isExpanded: true, tooltip: 'Сумма всех прямых расходов. Формула: Себестоимость + Реклама + Хранение + Приемка + Комиссия + Логистика + Штрафы – Компенсации' },
+			{ key: 'cost', title: 'Себестоимость', isChildren: true, parentKey: 'total_expenses', tooltip: 'Себестоимость проданных товаров.' },
+			{ key: 'advert', title: 'Внутренняя реклама', isChildren: true, parentKey: 'total_expenses', tooltip: 'Расходы на рекламу внутри WB.' },
+			{ key: 'storage', title: 'Хранение', isChildren: true, parentKey: 'total_expenses', tooltip: 'Расходы на хранение.' },
+			{ key: 'paid_acceptance', title: 'Платная приемка', isChildren: true, parentKey: 'total_expenses', tooltip: 'Расходы на приёмку.' },
+			{ key: 'commission', title: 'Комиссия', isChildren: true, parentKey: 'total_expenses', tooltip: 'Комиссия WB.' },
+			{ key: 'logistic', title: 'Логистика', isChildren: true, parentKey: 'total_expenses', tooltip: 'Расходы на логистику.' },
+			{ key: 'penalties', title: 'Штрафы и прочие удержания', isChildren: true, parentKey: 'total_expenses', tooltip: 'К прочим удержания отнесены: платежи по договору займа, предоставление услуг по подписке «Джем», страхование заказов, услуги по размещению рекламного материала, списания за отзывы, утилизации товара' },
+			{ key: 'compensation', title: 'Компенсация', tooltip: 'Компенсации от WB.' },
+			{ key: 'gross_margin', title: 'Маржинальная прибыль', tooltip: 'Выручка за вычетом себестоимости. Формула: Выручка – Себестоимость' },
+			{ key: 'operating_expenses', title: 'Операционные расходы', isParent: true, isExpanded: false, tooltip: 'Сумма операционных расходов за период.' },
+			{ key: 'operating_profit', title: 'Операционная прибыль (EBITDA)', tooltip: 'Прибыль до вычета налогов, процентов и амортизации. Формула: Маржинальная прибыль – (Комиссии + Логистика + Реклама)' },
 			{ key: 'tax', title: 'Налоги' },
-			{ key: 'net_profit', title: 'Чистая прибыль' },
+			{ key: 'net_profit', title: 'Чистая прибыль', tooltip: 'Итоговая прибыль. Формула: Оплата на РС – Себестоимость продаж – Налог – Операционные расходы' },
 		];
 
 		try {

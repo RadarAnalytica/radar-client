@@ -557,7 +557,7 @@ const PositionTrackingMainPage = () => {
                 {isDemoMode && <NoSubscriptionWarningBlock />}
 
                 {/* main widget */}
-                <PositionTrackingMainPageWidget loading={requestStatus.isLoading} setIsAddModalVisible={setIsAddModalVisible} hasAddBlock={metaData && metaData.projects_count === 0} createProject={async (sku: string) => {
+                <PositionTrackingMainPageWidget hasProceedToBlocks={false} loading={requestStatus.isLoading} setIsAddModalVisible={setIsAddModalVisible} hasAddBlock={metaData && metaData.projects_count === 0} createProject={async (sku: string) => {
                     let normilizedId: string;
                     if (/^(|\d+)$/.test(sku)) {
                         normilizedId = sku;
@@ -694,6 +694,7 @@ const PositionTrackingMainPage = () => {
                                         </div>)
                                 }
                             }}
+                            style={{ overflow: 'auto' }}
                             pagination={{
                                 current: paginationState.current,
                                 pageSize: paginationState.pageSize,
