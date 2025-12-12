@@ -694,6 +694,7 @@ const PositionTrackingMainPage = () => {
                                         </div>)
                                 }
                             }}
+                            style={{ overflow: 'auto' }}
                             pagination={{
                                 current: paginationState.current,
                                 pageSize: paginationState.pageSize,

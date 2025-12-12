@@ -141,6 +141,7 @@ const SelfCostPage = () => {
                                     getTableData(authToken, activeBrand.id, filters, 1);
                                 }}
                                 isLoading={dataStatus.isLoading}
+                                isDemoMode={isDemoMode}
                             />
                         </div>
 
@@ -185,7 +186,7 @@ const SelfCostPage = () => {
 };
 
 
-const SelfCostXLSXuploadComponent = ({ authToken, updateFunc, isLoading }) => {
+const SelfCostXLSXuploadComponent = ({ authToken, updateFunc, isLoading, isDemoMode }) => {
 
     const [isUploadModalVisible, setIsUploadModalVisible] = useState(false);
     const [file, setFile] = useState(null);
@@ -289,6 +290,7 @@ const SelfCostXLSXuploadComponent = ({ authToken, updateFunc, isLoading }) => {
                             loading={status.isLoading || isLoading}
                             onClick={() => setIsUploadModalVisible(true)}
                             style={{ fontWeight: 600, height: 38, fontSize: 14 }}
+                            disabled={isDemoMode}
                         >
                             Загрузить себестоимость
                         </Button>
