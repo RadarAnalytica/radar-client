@@ -73,6 +73,7 @@ const AbcAnalysisPage = () => {
 				setDataAbcAnalysis(data?.results ? data : []);
 				setPaginationState(prev => ({ ...prev, total: data?.total ? Math.ceil(data.total / data.per_page) : 0 }));
 				setLoading(false);
+				progress.reset();
 			}, 500);
 		} catch (e) {
 			console.error(e);
