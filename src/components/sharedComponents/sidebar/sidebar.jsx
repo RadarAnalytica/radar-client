@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useRef } from 'react';
 import styles from './sidebar.module.css';
 import { Link } from 'react-router-dom';
 import logo from '../../../assets/logo.png';
@@ -16,11 +16,21 @@ const Sidebar = () => {
     const dispatch = useAppDispatch();
     const { user } = useContext(AuthContext);
     const { isSidebarHidden } = useAppSelector(store => store.utils);
+    const sidebarRef = useRef(null);
+
+    const handleMouseLeave = (e) => {
+        const relatedTarget = e.relatedTarget;
+        if (!relatedTarget || (sidebarRef.current && !sidebarRef.current.contains(relatedTarget))) {
+            dispatch(utilsActions.setIsSidebarHidden(true));
+        }
+    };
 
     return (
-        <nav className={isSidebarHidden ? `${styles.sidebar} ${styles.sidebar_hidden}` : styles.sidebar}
+        <nav 
+            ref={sidebarRef}
+            className={isSidebarHidden ? `${styles.sidebar} ${styles.sidebar_hidden}` : styles.sidebar}
             onMouseEnter={() => dispatch(utilsActions.setIsSidebarHidden(false))}
-            onMouseLeave={() => dispatch(utilsActions.setIsSidebarHidden(true))}
+            onMouseLeave={handleMouseLeave}
         >
 
             <div className={styles.sidebar__mainWrapper}>
