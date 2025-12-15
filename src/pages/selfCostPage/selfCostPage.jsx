@@ -199,7 +199,7 @@ const SelfCostXLSXuploadComponent = ({ authToken, updateFunc, isLoading, isDemoM
         setStatus({ ...initDataStatus, isLoading: true });
         setResult(null);
         try {
-            const fileBlob = await ServiceFunctions.getCostTemplate(authToken);
+            const fileBlob = await ServiceFunctions.getCostTemplateSSPage(authToken);
             fileDownload(fileBlob, 'Себестоимость.xlsx');
         } catch (error) {
             setStatus({ ...initDataStatus, isError: true, message: 'Что-то пошло не так :( Попробуйте оновить страницу' });
@@ -212,7 +212,7 @@ const SelfCostXLSXuploadComponent = ({ authToken, updateFunc, isLoading, isDemoM
         setStatus({ ...initDataStatus, isLoading: true });
         setResult(null);
         try {
-            const response = await ServiceFunctions.postCostUpdate(authToken, file);
+            const response = await ServiceFunctions.postCostUpdateSSPage(authToken, file);
 
             if (response && "success_count" in response) {
                 setStatus(initDataStatus);
