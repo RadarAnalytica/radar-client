@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useMemo } from 'react';
 import styles from './searchBlock.module.css';
 import { Input, ConfigProvider, Button } from 'antd';
 import type { InputRef } from 'antd';
@@ -21,9 +21,10 @@ const inputAntdTheme = {
             activeBorderColor: '#5329FF1A',
             hoverBorderColor: '#5329FF1A',
             activeOutlineColor: 'transparent',
-            activeBg: 'transparent',
-            hoverBg: 'transparent',
-            activeShadow: 'transparent'
+            activeBg: 'white',
+            hoverBg: 'white',
+            activeShadow: 'transparent',
+            
         }
     }
 }
@@ -42,6 +43,29 @@ const buttonAntdTheme = {
     }
 }
 
+const secButtonAntdTheme = {
+    token: {
+        colorPrimary: '#E9DFFF',
+        fontSize: 14,
+        fontWeight: 600,
+        fontFamily: 'Mulish',
+        controlHeight: 38,
+        borderRadius: 8,
+    },
+    components: {
+        Button: {
+            paddingInline: 24,
+            paddingBlock: 10,
+            primaryColor: '#5329FF',
+            colorPrimaryHover: '#E9DFFF',
+            colorPrimaryActive: '#E9DFFF',
+            boxShadow: 'none',
+            border: 'none',
+            borderColor: 'transparent',
+        },
+    },
+};
+
 interface ISearchBlockProps {
     title?: string | React.ReactNode;
     hasBackground?: boolean;
@@ -56,7 +80,10 @@ interface ISearchBlockProps {
     disableEnter?: boolean,
     demoModeValue: string,
     externalInputRef?: React.RefObject<InputRef>,
-    externalValue?: string
+    externalValue?: string,
+    buttonIcon?: React.ReactNode | 'search',
+    inputPrefix?: React.ReactNode | 'search',
+    buttonType?: 'primary' | 'secondary'
 }
 
 export const SearchBlock: React.FC<ISearchBlockProps> = ({
@@ -73,13 +100,41 @@ export const SearchBlock: React.FC<ISearchBlockProps> = ({
     disableEnter = false,
     demoModeValue = '',
     externalInputRef,
-    externalValue
+    externalValue,
+    buttonIcon = 'search',
+    inputPrefix = 'search',
+    buttonType = 'primary'
 }) => {
 
 
     const inputRef = useRef<InputRef>(null);
     const [inputValue, setInputValue] = useState('');
     const { isDemoMode } = useDemoMode();
+
+    const currInputPrefix = useMemo(() => {
+        if (!inputPrefix) return null;
+        if (inputPrefix && inputPrefix === 'search') {
+            return (
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M9.12793 0C14.1687 0.000149462 18.2549 4.08714 18.2549 9.12793C18.2548 11.3852 17.4328 13.4488 16.0752 15.042L20 18.9678L19.4834 19.4834L18.9678 20L15.042 16.0752C13.4488 17.4328 11.3852 18.2548 9.12793 18.2549C4.08714 18.2549 0.000149459 14.1687 0 9.12793C0 4.08705 4.08705 0 9.12793 0ZM9.12793 1.46094C4.89354 1.46094 1.46094 4.89354 1.46094 9.12793C1.46109 13.3622 4.89363 16.7949 9.12793 16.7949C13.3621 16.7948 16.7948 13.3621 16.7949 9.12793C16.7949 4.89363 13.3622 1.46109 9.12793 1.46094Z" fill="#8C8C8C" />
+                </svg>
+            )
+        }
+        if (inputPrefix && typeof inputPrefix !== 'string') {
+            return inputPrefix
+        }
+
+        return null
+    }, [inputPrefix]);
+
+    const currButtonStyle = useMemo(() => {
+        if (buttonType === 'primary') {
+            return buttonAntdTheme;
+        }
+        if (buttonType === 'secondary') {
+            return secButtonAntdTheme;
+        }
+    }, [buttonType]);
 
     const historyButtonClickHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
         const { id } = e.target as HTMLButtonElement;
@@ -144,12 +199,7 @@ export const SearchBlock: React.FC<ISearchBlockProps> = ({
                         />
                     ) : (
                         <Input
-                            prefix={
-                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M9.12793 0C14.1687 0.000149462 18.2549 4.08714 18.2549 9.12793C18.2548 11.3852 17.4328 13.4488 16.0752 15.042L20 18.9678L19.4834 19.4834L18.9678 20L15.042 16.0752C13.4488 17.4328 11.3852 18.2548 9.12793 18.2549C4.08714 18.2549 0.000149459 14.1687 0 9.12793C0 4.08705 4.08705 0 9.12793 0ZM9.12793 1.46094C4.89354 1.46094 1.46094 4.89354 1.46094 9.12793C1.46109 13.3622 4.89363 16.7949 9.12793 16.7949C13.3621 16.7948 16.7948 13.3621 16.7949 9.12793C16.7949 4.89363 13.3622 1.46109 9.12793 1.46094Z" fill="#8C8C8C" />
-                                </svg>
-
-                            }
+                            prefix={currInputPrefix}
                             ref={externalInputRef || inputRef}
                             placeholder={placeholder}
                             size='large'
@@ -161,7 +211,7 @@ export const SearchBlock: React.FC<ISearchBlockProps> = ({
                     )}
                 </ConfigProvider>
                 <ConfigProvider
-                    theme={buttonAntdTheme}
+                    theme={currButtonStyle}
                 >
                     <Button
                         size='large'
@@ -169,10 +219,12 @@ export const SearchBlock: React.FC<ISearchBlockProps> = ({
                         onClick={() => runSearch()}
                         className={styles.search__button}
                     >
-                        <svg width="18" height="18" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path fillRule="evenodd" clipRule="evenodd" d="M1.95312 9.60353C1.95312 5.25398 5.47914 1.72797 9.82869 1.72797C14.1782 1.72797 17.7043 5.25398 17.7043 9.60353C17.7043 13.9531 14.1782 17.4791 9.82869 17.4791C5.47914 17.4791 1.95312 13.9531 1.95312 9.60353ZM9.82869 0.227966C4.65071 0.227966 0.453125 4.42555 0.453125 9.60353C0.453125 14.7815 4.65071 18.9791 9.82869 18.9791C12.1477 18.9791 14.2701 18.1371 15.9068 16.7423L19.9365 20.772L20.9972 19.7114L16.9674 15.6816C18.3623 14.0449 19.2043 11.9225 19.2043 9.60353C19.2043 4.42555 15.0067 0.227966 9.82869 0.227966Z" fill="white" />
-                        </svg>
-
+                        {buttonIcon && buttonIcon === 'search' &&
+                            <svg width="18" height="18" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path fillRule="evenodd" clipRule="evenodd" d="M1.95312 9.60353C1.95312 5.25398 5.47914 1.72797 9.82869 1.72797C14.1782 1.72797 17.7043 5.25398 17.7043 9.60353C17.7043 13.9531 14.1782 17.4791 9.82869 17.4791C5.47914 17.4791 1.95312 13.9531 1.95312 9.60353ZM9.82869 0.227966C4.65071 0.227966 0.453125 4.42555 0.453125 9.60353C0.453125 14.7815 4.65071 18.9791 9.82869 18.9791C12.1477 18.9791 14.2701 18.1371 15.9068 16.7423L19.9365 20.772L20.9972 19.7114L16.9674 15.6816C18.3623 14.0449 19.2043 11.9225 19.2043 9.60353C19.2043 4.42555 15.0067 0.227966 9.82869 0.227966Z" fill="white" />
+                            </svg>
+                        }
+                        {buttonIcon && typeof buttonIcon !== 'string' && buttonIcon}
                         {searchButtonText}
                     </Button>
                 </ConfigProvider>

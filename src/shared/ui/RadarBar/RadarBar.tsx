@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import styles from './RadarBar.module.css';
 import { Tooltip as RadarTooltip } from 'radar-ui';
 import { formatPrice } from '../../../service/utils';
@@ -10,37 +10,73 @@ import { RadarLoader } from '../RadarLoader/RadarLoader';
 
 //service
 // getColorByValue
-const getColorByValue = (value: number | string) => {
+const getColorByValue = (value: number | string, direction: 'up' | 'down' = 'down') => {
     const intValue = typeof value === 'number' ? value : parseInt(value);
-    if (intValue > 0) {
-        return {
-            backgroundColor: '#00B69B0D',
-            color: '#00B69B',
-        }
-    }
-    if (intValue < 0) {
-        return {
-            backgroundColor: '#F93C650D',
-            color: '#F93C65',
-        }
-    }
 
-    return {
-        color: '#1A1A1A50',
-        backgroundColor: '#1A1A1A0D',
+    if (direction === 'down') {
+        if (intValue > 0) {
+            return {
+                backgroundColor: '#00B69B0D',
+                color: '#00B69B',
+            }
+        }
+        if (intValue < 0) {
+            return {
+                backgroundColor: '#F93C650D',
+                color: '#F93C65',
+            }
+        }
+
+        return {
+            color: '#1A1A1A50',
+            backgroundColor: '#1A1A1A0D',
+        }
+    }
+    if (direction === 'up') {
+        if (intValue < 0) {
+            return {
+                backgroundColor: '#00B69B0D',
+                color: '#00B69B',
+            }
+        }
+        if (intValue > 0) {
+            return {
+                backgroundColor: '#F93C650D',
+                color: '#F93C65',
+            }
+        }
+
+        return {
+            color: '#1A1A1A50',
+            backgroundColor: '#1A1A1A0D',
+        }
     }
 }
 
 
 // above or below zero
-const isValueBelowZero = (value: number | string) => {
+const isValueBelowZeroFunction = (value: number | string, direction: 'up' | 'down' = 'down') => {
     const intValue = typeof value === 'number' ? value : parseInt(value);
-    if (intValue > 0) {
-        return false;
+
+    if (direction === 'down') {
+        if (intValue >= 0) {
+            return false;
+        }
+        if (intValue < 0) {
+            return true;
+        }
     }
-    if (intValue < 0) {
-        return true;
+    if (direction === 'up') {
+        if (intValue >= 0) {
+            return true;
+        }
+        if (intValue < 0) {
+            return false;
+        }
     }
+   
+
+    return false;
 }
 
 
@@ -53,7 +89,8 @@ interface RadarBarProps {
     mainValue?: number | string; // main value of the bar
     mainValueUnits?: string; // units of the main value (eg "шт", "%" or whatever)
     mainValuePrefix?: string; // prefix of the main value (eg ">" or "<")
-    hasColoredBackground?: boolean; // if true, the background of the bar will be red if compareValue is negative
+    hasColoredBackground?: boolean; // if true, the background of the bar will be red if compareValue is negative (u are able to manage the direction of this feature trough negativeDirection)
+    negativeDirection?: 'up' | 'down'
     linkParams?: {
         url: string;
         text: string;
@@ -82,13 +119,21 @@ export const RadarBar: React.FC<RadarBarProps> = ({
     mainValue,
     mainValueUnits,
     mainValuePrefix,
-    //hasColoredBackground = false,
+    hasColoredBackground = false,
     linkParams,
     actionButtonParams,
     compareValue,
     isLoading,
+    negativeDirection = 'down',
     dragHandle
 }) => {
+
+    const hasBackgroundClass = useMemo(() => {
+        if (!hasColoredBackground || !compareValue?.comparativeValue) return false;
+        if (hasColoredBackground && compareValue?.comparativeValue && negativeDirection) {
+            return isValueBelowZeroFunction(compareValue?.comparativeValue, negativeDirection)
+        }
+    }, [hasColoredBackground, negativeDirection, compareValue?.comparativeValue])
 
 
     if (isLoading) {
@@ -99,10 +144,7 @@ export const RadarBar: React.FC<RadarBarProps> = ({
         )
     }
     return (
-        // Расскоментируй когда будет нужно вернуть красный фон у карточки при отрицательном сравнительном значении
-        // <div className={`${styles.bar} ${hasColoredBackground && compareValue?.comparativeValue && isValueBelowZero(compareValue?.comparativeValue) ? styles.bar_negative : ''}`}>
-        // а этот дивв удали
-        <div className={`${styles.bar}`}>
+        <div className={`${styles.bar} ${hasBackgroundClass ? styles.bar_negative : ''}`}>
             {/* header */}
             <div className={styles.bar__header}>
                 <div className={`${styles.bar__side} ${styles.bar__side_left}`} style={{ alignItems: 'flex-start', flexWrap: 'nowrap' }}>
@@ -163,7 +205,7 @@ export const RadarBar: React.FC<RadarBarProps> = ({
                     }
                     {compareValue && (compareValue.comparativeValue !== undefined || compareValue.absoluteValue !== undefined) &&
 
-                        <div className={styles.bar__compareValuesBlock} style={{ ...getColorByValue(compareValue.comparativeValue) }}>
+                        <div className={styles.bar__compareValuesBlock} style={{ ...getColorByValue(compareValue.comparativeValue, negativeDirection) }}>
                             {compareValue.comparativeValue !== undefined &&
                                 <div className={styles.bar__comparativeValue}>{formatPrice(compareValue.comparativeValue.toString(), '%', true)}</div>
                             }

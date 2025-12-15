@@ -43,6 +43,14 @@
     scrollbar-color: #5329ff80 transparent;
 }
 
+.search__input input::placeholder {
+    font-size: 14px !important;
+}
+
+.search__input textarea::placeholder {
+    font-size: 14px !important;
+}
+
 .search__input::-webkit-scrollbar {
     width: 3px;
     height: 3px;
@@ -61,7 +69,7 @@
 }
 
 .search__input::placeholder {
-    font-size: 16px;
+    font-size: 14px;
 }
 
 .search__button {
@@ -69,6 +77,9 @@
     height: 38px;
     font-size: 14px;
     font-weight: 600 !important;
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
 }
 
 .search__searchHistory {
@@ -125,3 +136,4 @@
 .search__historyDeleteButton:active {
     transform: scale(0.975);
 }
+

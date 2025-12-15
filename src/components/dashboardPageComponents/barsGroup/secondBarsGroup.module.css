@@ -1,6 +1,5 @@
 .group {
     width: 100%;
-    display: grid;
     grid-template-columns: repeat(4, 1fr);
     grid-template-rows: auto;
     gap: 12px;
@@ -8,9 +7,25 @@
     justify-content: stretch;
     box-sizing: border-box;
 
-   
+
     @media (max-width: 1360px) {
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(6, 1fr);
+    }
+}
+
+.group_desktop {
+    display: grid;
+    @media (max-width: 1360px) {
+        display: none;
+    }
+
+}
+
+.group_tablet {
+    display: none;
+
+    @media (max-width: 1360px) {
+        display: grid;
     }
 }
 
@@ -20,7 +35,27 @@
     grid-template-columns: repeat(3, 1fr);
     gap: 12px;
     box-sizing: border-box;
+
     @media (max-width: 1360px) {
         grid-column: span 3;
     }
+}
+
+.group_5cols {
+    grid-column: span 4;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+    box-sizing: border-box;
+}
+
+.tabletWrapperBasic {
+    grid-column: span 2;
+    height: 100%;
+    align-self: stretch;
+    display: flex;
+    flex-direction: column;
+}
+.tabletWrapper2cols {
+    grid-column: span 3;
 }
