@@ -32,7 +32,7 @@ const MyAdvPage: React.FC = () => {
   const [data, setData] = useState<CompanyData[]>([]);
   const [pageData, setPageData] = useState({ page: 1, per_page: 25, total_count: 25 });
   const [searchQuery, setSearchQuery] = useState<string>('');
-  const { selectedRange, activeBrand } = useAppSelector((state) => state.filters);
+  const { selectedRange, activeBrand, activeBrandName } = useAppSelector((state) => state.filters);
   const currentPageRef = useRef(1);
   const progress = useLoadingProgress({ loading });
 
@@ -50,7 +50,7 @@ const MyAdvPage: React.FC = () => {
     setLoading(true);
     progress.start();
     try {
-      const requestObject = getRequestObject({}, selectedRange, activeBrand?.id);
+      const requestObject = getRequestObject({ activeBrandName }, selectedRange, activeBrand?.id);
       const response: ApiResponse = await ServiceFunctions.getAdvertData(authToken, {...requestObject, ...pageData, search_query: searchQuery}, sortState);
       if (response.total) {
         setPageData(prev => ({ ...prev, total_count: response.total }));
@@ -93,7 +93,7 @@ const MyAdvPage: React.FC = () => {
         setLoading(false);
       }
     }
-  }, [searchQuery, selectedRange, activeBrand, sortState]);
+  }, [searchQuery, selectedRange, activeBrand, activeBrandName, sortState]);
 
   useEffect(() => {
     if (activeBrand) {

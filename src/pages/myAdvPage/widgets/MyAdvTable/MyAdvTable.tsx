@@ -271,7 +271,6 @@ const MyAdvTable: React.FC<MyAdvTableProps> = ({
             articleSelect={false}
             groupSelect={false}
             shopSelect={!companyId}
-            brandSelect={false}
             tempPageCondition={true}
             maxCustomDate={new Date(Date.now() - 24 * 60 * 60 * 1000)}
           />
