@@ -243,6 +243,7 @@ const SecondBarsGroup = ({ dataDashBoard, loading, selectedRange, activeBrand, a
                     title='Себестоимость проданных товаров'
                     tooltipText='Суммарная себестоимость проданных товаров (основана на данных раздела "Себестоимость"'
                     mainValue={dataDashBoard?.costPriceAmount}
+                    neuturalComparsionColor
                     mainValueUnits='₽'
                     compareValue={{
                         comparativeValue: dataDashBoard?.costPriceAmountCompare,
@@ -251,7 +252,6 @@ const SecondBarsGroup = ({ dataDashBoard, loading, selectedRange, activeBrand, a
                         tooltipText: 'Значение предыдущего периода'
                     }}
                     isLoading={loading}
-                    hasColoredBackground
                 />
                 <TurnoverBlock
                     loading={loading}
@@ -528,6 +528,7 @@ const SecondBarsGroup = ({ dataDashBoard, loading, selectedRange, activeBrand, a
                     tooltipText='Суммарная себестоимость проданных товаров (основана на данных раздела "Себестоимость"'
                     mainValue={dataDashBoard?.costPriceAmount}
                     mainValueUnits='₽'
+                    neuturalComparsionColor
                     compareValue={{
                         comparativeValue: dataDashBoard?.costPriceAmountCompare,
                         absoluteValue: dataDashBoard?.prev_costPriceAmount,
@@ -535,7 +536,6 @@ const SecondBarsGroup = ({ dataDashBoard, loading, selectedRange, activeBrand, a
                         tooltipText: 'Значение предыдущего периода'
                     }}
                     isLoading={loading}
-                    hasColoredBackground
                 />
                 </div>
                 <div className={styles.tabletWrapper2cols}>

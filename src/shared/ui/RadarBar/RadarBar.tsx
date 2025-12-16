@@ -10,8 +10,15 @@ import { RadarLoader } from '../RadarLoader/RadarLoader';
 
 //service
 // getColorByValue
-const getColorByValue = (value: number | string, direction: 'up' | 'down' = 'down') => {
+const getColorByValue = (value: number | string, direction: 'up' | 'down' = 'down', neuturalComparsionColor: boolean = false) => {
     const intValue = typeof value === 'number' ? value : parseInt(value);
+
+    if (neuturalComparsionColor) { 
+        return {
+            color: '#1A1A1A50',
+            backgroundColor: '#1A1A1A0D',
+        }
+    }
 
     if (direction === 'down') {
         if (intValue > 0) {
@@ -91,6 +98,7 @@ interface RadarBarProps {
     mainValuePrefix?: string; // prefix of the main value (eg ">" or "<")
     hasColoredBackground?: boolean; // if true, the background of the bar will be red if compareValue is negative (u are able to manage the direction of this feature trough negativeDirection)
     negativeDirection?: 'up' | 'down'
+    neuturalComparsionColor?: boolean;
     linkParams?: {
         url: string;
         text: string;
@@ -125,6 +133,7 @@ export const RadarBar: React.FC<RadarBarProps> = ({
     compareValue,
     isLoading,
     negativeDirection = 'down',
+    neuturalComparsionColor = false,
     dragHandle
 }) => {
 
@@ -205,7 +214,7 @@ export const RadarBar: React.FC<RadarBarProps> = ({
                     }
                     {compareValue && (compareValue.comparativeValue !== undefined || compareValue.absoluteValue !== undefined) &&
 
-                        <div className={styles.bar__compareValuesBlock} style={{ ...getColorByValue(compareValue.comparativeValue, negativeDirection) }}>
+                        <div className={styles.bar__compareValuesBlock} style={{ ...getColorByValue(compareValue.comparativeValue, negativeDirection, neuturalComparsionColor) }}>
                             {compareValue.comparativeValue !== undefined &&
                                 <div className={styles.bar__comparativeValue}>{formatPrice(compareValue.comparativeValue.toString(), '%', true)}</div>
                             }
