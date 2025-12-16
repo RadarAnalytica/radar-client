@@ -225,7 +225,7 @@ const SubjectFieldset = ({ prefered_items, form }) => {
                             placeholder='Выберите'
                             getPopupContainer={(triggerNode) => triggerNode.parentNode}
                             tagRender={tagRender}
-                            onDropdownVisibleChange={(open) => {
+                            onOpenChange={(open) => {
                                 if (!open) {
                                     setSearchState('');
                                 }
@@ -235,7 +235,7 @@ const SubjectFieldset = ({ prefered_items, form }) => {
                                     <path d="M1 1L7 7L13 1" stroke="#8C8C8C" strokeWidth="2" strokeLinecap="round" />
                                 </svg>
                             }
-                            dropdownRender={renderPopup}
+                            popupRender={renderPopup}
                             options={preferedItemsData.filter(i => i.children.filter(c => c.name.toLowerCase().includes(searchState.toLowerCase())).length > 0).map(_ => {
                                 return {
                                     label: <>{_.name}</>,

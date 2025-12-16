@@ -77,10 +77,10 @@ export const DateSelect = (
                     placeholder="Выберите дату"
                     suffixIcon={<SelectIcon />}
                     open={openCalendar}
-                    onDropdownVisibleChange={() => setOpenCalendar((prev) => !prev)}
-                    dropdownStyle={{ width: 'fit-content' }}
+                    onOpenChange={() => setOpenCalendar((prev) => !prev)}
+                    styles={{popup: { root: {width: 'fit-content', border: '1px solid red'}}}}
                     allowClear={allowClear}
-                    dropdownRender={() => (
+                    popupRender={() => (
                         <div
                             style={{
                                 padding: '10px 16px',

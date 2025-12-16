@@ -56,7 +56,7 @@ export const SmallButton: React.FC<ISmallButtonProps> = ({ title, dataDashBoard,
             placement='rightBottom'
             color='white'
             arrow={false}
-            destroyTooltipOnHide
+            destroyOnHidden
             style={{ width: '424px' }}
         >
             <button className={styles.smallButton} {...props} onClick={handleClick}>

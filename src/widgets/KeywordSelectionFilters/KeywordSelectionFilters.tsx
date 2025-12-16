@@ -356,14 +356,14 @@ export const KeywordSelectionFilters: React.FC<IKeywordSelectionFiltersForm> = (
                             className={styles.filters__select}
                             getPopupContainer={(triggerNode) => triggerNode.parentNode}
                             open={keywordDropdownIncludeOpen}
-                            onDropdownVisibleChange={setKeywordDropdownIncludeOpen}
+                            onOpenChange={setKeywordDropdownIncludeOpen}
                             onKeyDown={(e) => {
                                 if (e.key === 'Enter') {
                                     e.preventDefault();
                                     e.stopPropagation();
                                 }
                             }}
-                            dropdownRender={() =>
+                            popupRender={() =>
                                 <KeywordSelectDropdown
                                     handler={(matchType, keywords) => {
                                         form.setFieldValue('keywords_to_include', keywords);
@@ -392,14 +392,14 @@ export const KeywordSelectionFilters: React.FC<IKeywordSelectionFiltersForm> = (
                             className={styles.filters__select}
                             getPopupContainer={(triggerNode) => triggerNode.parentNode}
                             open={keywordDropdownExcludeOpen}
-                            onDropdownVisibleChange={setKeywordDropdownExcludeOpen}
+                            onOpenChange={setKeywordDropdownExcludeOpen}
                             onKeyDown={(e) => {
                                 if (e.key === 'Enter') {
                                     e.preventDefault();
                                     e.stopPropagation();
                                 }
                             }}
-                            dropdownRender={() =>
+                            popupRender={() =>
                                 <KeywordSelectDropdown
                                     handler={(matchType, keywords) => {
                                         form.setFieldValue('keywords_to_exclude', keywords);

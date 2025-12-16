@@ -200,7 +200,7 @@ export const TimeSelect = ({ isDataLoading }) => {
                         options={[...selectOptions].map(i => {
                             return ({ value: i.value, label: i.title });
                         })}
-                        onDropdownVisibleChange={(visible) => {
+                        onOpenChange={(visible) => {
                             let newOptions = selectOptions;
                             if (!visible && !selectedRange.period) {
                                 newOptions = [...newOptions].map(_ => {

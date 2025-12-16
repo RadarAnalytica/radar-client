@@ -200,8 +200,8 @@ export const MultiSelect = (
                         //onChange={handler}
                         onChange={selectHandler}
                         getPopupContainer={(triggerNode) => triggerNode.parentNode}
-                        dropdownRender={renderPopup}
-                        onDropdownVisibleChange={(open) => {
+                        popupRender={renderPopup}
+                        onOpenChange={(open) => {
                             if (!open) {
                                 setSearchState('');
                                 if (JSON.stringify(prevSelectState.current) === JSON.stringify(selectState)) return;

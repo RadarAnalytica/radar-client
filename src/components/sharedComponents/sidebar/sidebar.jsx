@@ -20,7 +20,7 @@ const Sidebar = () => {
 
     const handleMouseLeave = (e) => {
         const relatedTarget = e.relatedTarget;
-        if (!relatedTarget || (sidebarRef.current && !sidebarRef.current.contains(relatedTarget))) {
+        if (!relatedTarget || !(relatedTarget instanceof Node) || (sidebarRef.current && !sidebarRef.current.contains(relatedTarget))) {
             dispatch(utilsActions.setIsSidebarHidden(true));
         }
     };

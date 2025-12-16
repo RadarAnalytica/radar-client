@@ -212,11 +212,11 @@ export const PositionCheckFilters: React.FC<IPositionCheckFiltersForm> = ({ subm
                             className={styles.filters__select}
                             getPopupContainer={(triggerNode) => triggerNode.parentNode}
                             open={keywordDropdownOpen}
-                            onDropdownVisibleChange={setKeywordDropdownOpen}
+                            onOpenChange={setKeywordDropdownOpen}
                             placeholder='Выбрать'
                             onFocus={handleFocus}
                             id='keyword_select'
-                            dropdownRender={() =>
+                            popupRender={() =>
                                 <KeywordSelectDropdown
                                     handler={(matchType, keywords) => {
                                         form.setFieldValue('keyword', keywords);

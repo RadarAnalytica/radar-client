@@ -494,7 +494,7 @@ const DynamicFieldset = ({ form }) => {
                                         options={monthsOptions}
                                         style={{ height: '44px' }}
                                         tagRender={tagRender}
-                                        dropdownRender={(menu) => renderPopup(menu, 'months_grow')}
+                                        popupRender={(menu) => renderPopup(menu, 'months_grow')}
                                         showSearch={false}
                                         suffixIcon={
                                             <svg width="14" height="9" viewBox="0 0 14 9" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -550,7 +550,7 @@ const DynamicFieldset = ({ form }) => {
                                         options={monthsOptions}
                                         style={{ height: '44px' }}
                                         tagRender={tagRender}
-                                        dropdownRender={(menu) => renderPopup(menu, 'months_fall')}
+                                        popupRender={(menu) => renderPopup(menu, 'months_fall')}
                                         showSearch={false}
                                         suffixIcon={
                                             <svg width="14" height="9" viewBox="0 0 14 9" fill="none" xmlns="http://www.w3.org/2000/svg">

@@ -92,7 +92,7 @@ export const ShopSelect = (
                         onChange={handler}
                         getPopupContainer={(triggerNode) => triggerNode.parentNode}
                         disabled={isDataLoading || disabled}
-                        dropdownRender={hasSearch ? (menu) => renderPopup(menu) : undefined}
+                        popupRender={hasSearch ? (menu) => renderPopup(menu) : undefined}
                     />
                 </ConfigProvider>
             </div>

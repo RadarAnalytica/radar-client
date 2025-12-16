@@ -869,7 +869,7 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                                     placeholder='Выберите предметы'
                                                     getPopupContainer={(triggerNode) => triggerNode.parentNode}
                                                     tagRender={tagRender}
-                                                    onDropdownVisibleChange={(open) => {
+                                                    onOpenChange={(open) => {
                                                         if (!open) {
                                                             setSearchState('');
                                                         }
@@ -879,7 +879,7 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                                             <path d="M0.800781 1.5L5.80078 6.5L10.8008 1.5" stroke="#8C8C8C" strokeWidth="1.5" strokeLinecap="round" />
                                                         </svg>
                                                     }
-                                                    dropdownRender={renderPopup}
+                                                    popupRender={renderPopup}
                                                     options={preferedItemsData.filter(i => i.children.filter(c => c.name.toLowerCase().includes(searchState.toLowerCase())).length > 0).map(_ => {
                                                         return {
                                                             label: <>{_.name}</>,
