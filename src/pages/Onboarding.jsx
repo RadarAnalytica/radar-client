@@ -33,7 +33,7 @@ const initRequestStatus = {
 };
 
 const Onboarding = () => {
-  const { user, authToken, setUser, logout, refreshUser } = useContext(AuthContext);
+  const { user, authToken, setUser, logout, refreshOnboardingCheck } = useContext(AuthContext);
   const navigate = useNavigate();
   const location = useLocation();
   const [activeShop, setActiveShop] = useState();
@@ -55,7 +55,7 @@ const Onboarding = () => {
   // };
 
   const refreshUserToken = async () => {
-    const res = await refreshUser()
+    const res = await refreshOnboardingCheck()
     if (res && res?.success) {
       setReqStatus({ ...initRequestStatus, isSuccess: true, message: 'Токен успешно добавлен' });
     } else {
