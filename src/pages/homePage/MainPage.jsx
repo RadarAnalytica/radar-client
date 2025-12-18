@@ -23,7 +23,7 @@ export default function MainPage() {
 
             <section className={styles.page__content}>
                 <div className={styles.page__headerWrapper}>
-                    <Header title='Главная' />
+                    <Header title='Главная' hasShadow={false} />
                 </div>
 
                 {user?.subscription_status === null && !user?.is_onboarded && !user?.is_test_used && <NoSubscriptionWarningBlock isOnMainPage />}

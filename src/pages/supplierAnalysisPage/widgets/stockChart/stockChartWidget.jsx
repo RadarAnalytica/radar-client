@@ -171,6 +171,7 @@ const StockChartWidget = ({
                             token: {
                                 colorPrimary: '#5329FF',
                                 controlInteractiveSize: 20,
+                                fontSize: '14px'
                             }
                         }}
                     >

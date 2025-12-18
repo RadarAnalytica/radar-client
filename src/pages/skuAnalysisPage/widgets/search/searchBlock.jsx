@@ -63,12 +63,16 @@ const SearchBlock = () => {
                         token: {
                             colorPrimary: '#5329FF',
                             fontFamily: 'Mulish',
-                            fontSize: 16,
+                            fontSize: 12,
+                          
                         },
                         components: {
                             Input: {
-                                activeBorderColor: '#5329FF',
-                                hoverBorderColor: '#5329FF'
+                                activeBorderColor: '#5329FF1A',
+                                hoverBorderColor: '#5329FF1A',
+                                colorBorder: '#5329FF1A',
+                                controlHeightLG: 38,
+                                activeShadow: 'transparent'
                             }
                         }
                     }}

@@ -53,6 +53,7 @@ const ResultBlockDesktop = ({result, token, investValue, setInvestValue}) => {
                         token: {
                             colorBorder: '#00000033',
                             colorPrimary: '#E7E1FE',
+                            fontSize: '14px',
                         },
                         components: {
                             Button: {
@@ -60,13 +61,14 @@ const ResultBlockDesktop = ({result, token, investValue, setInvestValue}) => {
                                 //paddingInline: 8,
                                 paddingBlockLG: 10,
                                 paddingInlineLG: 8,
+                                controlHeightLG: 38
                             }
                         }
                     }}
                 >
                     <Button
                         type='primary'
-                        //style={{ color: '#5329FF' }}
+                        style={{ fontWeight: 600 }}
                         iconPosition='start'
                         icon={result !== undefined && <ShareIcon />}
                         disabled={result === undefined}
@@ -80,11 +82,14 @@ const ResultBlockDesktop = ({result, token, investValue, setInvestValue}) => {
                         token: {
                             colorBorder: '#00000033',
                             colorPrimary: '#5329FF',
+                            fontSize: '14px',
+                            controlHeightLG: 38
                         }
                     }}
                 >
                     <Button
                         type='primary'
+                        style={{ fontWeight: 600 }}
                         icon={result !== undefined && <DownloadIcon />}
                         iconPosition='start'
                         disabled={result === undefined}

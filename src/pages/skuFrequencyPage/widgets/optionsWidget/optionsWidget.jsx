@@ -116,12 +116,24 @@ const OptionsWidget = () => {
             <ConfigProvider
                 theme={{
                     token: {
-                        fontFamily: 'Mulish'
+                        fontFamily: 'Mulish',
+                        fontSize: 12
                     },
                     components: {
                         Form: {
-                            labelFontSize: 16
+                            labelFontSize: 12
                         },
+                        components: {
+                            Select: {
+                                activeBorderColor: '#5329FF1A',
+                                activeOutlineColor: 'transparent',
+                                hoverBorderColor: '#5329FF1A',
+                                optionActiveBg: 'transparent',
+                                optionFontSize: 14,
+                                optionSelectedBg: 'transparent',
+                                optionSelectedColor: '#5329FF',
+                            }
+                        }
                     }
                 }}
             >
@@ -141,11 +153,22 @@ const OptionsWidget = () => {
                         <ConfigProvider
                             theme={{
                                 token: {
-                                    colorPrimary: '#5329FF',
-                                    colorBorder: '#5329FF'
+                                    colorBgContainer: 'white',
+                                    colorBorder: '#5329FF1A',
+                                    borderRadius: 8,
+                                    fontFamily: 'Mulish',
+                                    fontSize: 12,
+                                    fontWeight: 500,
                                 },
                                 components: {
-                                    Input: {}
+                                    Input: {
+                                        activeBorderColor: '#5329FF1A',
+                                        hoverBorderColor: '#5329FF1A',
+                                        activeOutlineColor: 'transparent',
+                                        activeShadow: 'transparent',
+                                        controlHeight: 38,
+                                        controlHeightLG: 38,
+                                    },
                                 }
                             }}
                         >
@@ -160,7 +183,7 @@ const OptionsWidget = () => {
                                 <Input
                                     prefix={
                                         <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M9.37598 0C14.5538 0.000222652 18.751 4.19813 18.751 9.37598C18.7509 11.6947 17.9064 13.8146 16.5117 15.4512L20.5439 19.4834L19.4834 20.5439L15.4512 16.5117C13.8146 17.9064 11.6947 18.7509 9.37598 18.751C4.19813 18.751 0.000222647 14.5538 0 9.37598C0 4.198 4.198 0 9.37598 0ZM9.37598 1.5C5.02642 1.5 1.5 5.02642 1.5 9.37598C1.50022 13.7253 5.02656 17.251 9.37598 17.251C13.7252 17.2508 17.2508 13.7252 17.251 9.37598C17.251 5.02656 13.7253 1.50022 9.37598 1.5Z" fill="#5329FF" fillOpacity="0.5" />
+                                            <path d="M9.37598 0C14.5538 0.000222652 18.751 4.19813 18.751 9.37598C18.7509 11.6947 17.9064 13.8146 16.5117 15.4512L20.5439 19.4834L19.4834 20.5439L15.4512 16.5117C13.8146 17.9064 11.6947 18.7509 9.37598 18.751C4.19813 18.751 0.000222647 14.5538 0 9.37598C0 4.198 4.198 0 9.37598 0ZM9.37598 1.5C5.02642 1.5 1.5 5.02642 1.5 9.37598C1.50022 13.7253 5.02656 17.251 9.37598 17.251C13.7252 17.2508 17.2508 13.7252 17.251 9.37598C17.251 5.02656 13.7253 1.50022 9.37598 1.5Z" fill="#5329FF1A" fillOpacity="1" />
                                         </svg>
 
                                     }
@@ -172,15 +195,20 @@ const OptionsWidget = () => {
                         <ConfigProvider
                             theme={{
                                 token: {
-                                    colorPrimary: '#5329FF',
+                                    colorBgContainer: 'white',
+                                    colorBorder: '#5329FF1A',
+                                    borderRadius: 8,
+                                    fontFamily: 'Mulish',
+                                    fontSize: 12,
+                                    fontWeight: 500,
                                 },
                                 components: {
                                     Select: {
-                                        //activeBorderColor: 'transparent',
+                                        activeBorderColor: '#5329FF1A',
                                         activeOutlineColor: 'transparent',
-                                        //hoverBorderColor: 'transparent',
+                                        hoverBorderColor: '#5329FF1A',
                                         optionActiveBg: 'transparent',
-                                        optionFontSize: 16,
+                                        optionFontSize: 14,
                                         optionSelectedBg: 'transparent',
                                         optionSelectedColor: '#5329FF',
                                     }
@@ -260,7 +288,7 @@ const OptionsWidget = () => {
                                     onClick={() => simpleForm.resetFields()}
                                     type='text'
                                     size='large'
-                                    style={{ height: 45, width: 112 }}
+                                    style={{ height: 38, width: 112, fontWeight: 600 }}
                                 >
                                     Очистить
                                 </Button>
@@ -276,7 +304,7 @@ const OptionsWidget = () => {
                                     htmlType='submit'
                                     type='primary'
                                     size='large'
-                                    style={{ height: 45, minWidth: 112 }}
+                                    style={{ height: 38, minWidth: 112, fontWeight: 600 }}
                                     loading={isLoadingForButton}
                                     title={isDemoMode ? 'Отображение данных будет доступно после оформления подписки' : 'Применить параметры'}
                                     disabled={isDemoMode}
@@ -334,7 +362,7 @@ const OptionsWidget = () => {
                                         type='text'
                                         size='large'
                                         onClick={() => complexForm.resetFields()}
-                                        style={{ height: 45, width: 112 }}
+                                        style={{ height: 38, width: 112, fontWeight: 600 }}
                                     >
                                         Очистить
                                     </Button>
@@ -350,7 +378,7 @@ const OptionsWidget = () => {
                                         htmlType='submit'
                                         type='primary'
                                         size='large'
-                                        style={{ height: 45, minWidth: 112 }}
+                                        style={{ height: 38, minWidth: 112, fontWeight: 600 }}
                                         loading={isLoadingForButton}
                                         title={isDemoMode ? 'Отображение данных будет доступно после оформления подписки' : 'Применить параметры'}
                                         disabled={isDemoMode}

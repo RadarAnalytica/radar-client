@@ -114,6 +114,7 @@ const SupplierIdPage = () => {
                                     ]}
                                 />
                             }
+                            hasShadow={false}
                         />
                     </div>
 
@@ -155,10 +156,9 @@ const SupplierIdPage = () => {
                     <TableWidget
                         id={mainSupplierData?.supplier_id}
                         tableConfig={mainTableConfig}
-                        //downloadButton
                         dataType='byDatesTableData'
                         dataHandler={fetchSupplierAnalysisByDatesTableData}
-                        containerHeight='90vh'
+                        minRowHeight='40px'
                     />
                 </div>
                 {/* Товары поставщика */}
@@ -167,24 +167,22 @@ const SupplierIdPage = () => {
                     <TableWidget
                         id={mainSupplierData?.supplier_id}
                         tableConfig={goodsTableConfig}
-                        //downloadButton
                         dataType='byBrandsTableData'
                         dataHandler={fetchSupplierAnalysisByBrandTableData}
-                        containerHeight='90vh'
                         hasPagination
+                         minRowHeight='75px'
                     />
                 </div>
                 {/* Продажи по категориям поставщика */}
                 <div className={styles.page__tableWrapper}>
+                    <p className={styles.page__tableTitle}>Продажи по категориям поставщика: {mainSupplierData?.display_name}</p>
                     <TableWidget
                         tableConfig={salesTableConfig}
                         id={mainSupplierData?.supplier_id}
-                        //downloadButton
                         dataType='bySubjectsTableData'
                         dataHandler={fetchSupplierAnalysisBySubjectsTableData}
-                        title={`Продажи по категориям поставщика: ${mainSupplierData?.display_name}`}
-                        containerHeight='400px'
                         hasPagination
+                         minRowHeight='50px'
                     />
                 </div>
                 {/* Структура заказов по складам и размерам */}
@@ -229,6 +227,7 @@ const TableTabsWrapper = () => {
                     dataType='byWarehousesTableData'
                     dataHandler={fetchSupplierAnalysisByWarehousesTableData}
                     containerHeight='450px'
+                    minRowHeight='50px'
                 />
             }
             {ordersStructureTab === 'По размерам' &&
@@ -238,6 +237,7 @@ const TableTabsWrapper = () => {
                     dataType='bySizesTableData'
                     dataHandler={fetchSupplierAnalysisBySizesTableData}
                     containerHeight='450px'
+                    minRowHeight='50px'
                 />
             }
         </>

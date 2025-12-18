@@ -35,10 +35,10 @@ const Sidebar = () => {
 
             <div className={styles.sidebar__mainWrapper}>
                 <div className={isSidebarHidden ? `${styles.sidebar__mainLinkWrapper} ${styles.sidebar__mainLinkWrapper_hidden}` : styles.sidebar__mainLinkWrapper}>
-                    <Link to='/main' className={isSidebarHidden ? `${styles.sidebar__mainLink} ${styles.sidebar__mainLink_bigHidden}` : `${styles.sidebar__mainLink} ${styles.sidebar__mainLink_bigVisible}`}>
+                    <Link to='/main' className={isSidebarHidden ? `${styles.sidebar__mainLink} ${styles.sidebar__mainLink_bigHidden}` : `${styles.sidebar__mainLink} ${styles.sidebar__mainLink_bigVisible}`} onClick={() => {dispatch(utilsActions.setIsSidebarHidden(true));}}>
                         <img src={logo} alt='логотип' className={styles.sidebar__mainLinklogo} />
                     </Link>
-                    <Link to='/main' className={isSidebarHidden ? `${styles.sidebar__mainLink} ${styles.sidebar__mainLink_smallVisible}` : `${styles.sidebar__mainLink} ${styles.sidebar__mainLink_smallHidden}`}>
+                    <Link to='/main' className={isSidebarHidden ? `${styles.sidebar__mainLink} ${styles.sidebar__mainLink_smallVisible}` : `${styles.sidebar__mainLink} ${styles.sidebar__mainLink_smallHidden}`}  onClick={() => {dispatch(utilsActions.setIsSidebarHidden(true));}}>
                         <img src={smallLogo} alt='логотип' className={styles.sidebar__mainLinkSmallLogo} />
                     </Link>
                 </div>

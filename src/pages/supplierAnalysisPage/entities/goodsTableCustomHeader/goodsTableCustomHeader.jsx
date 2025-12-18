@@ -35,28 +35,30 @@ const GoodsTableCustomHeader = ({ id }) => {
         <div className={styles.header}>
             <p className={styles.header__title}>Товары поставщика</p>
             <ConfigProvider
-                renderEmpty={() => (<div style={{ cursor: 'default' }}>Нет данных</div>)}
-                theme={{
-                    token: {
-                        colorBgContainer: '#EAEAF1',
-                        colorBorder: 'transparent',
-                        borderRadius: 8,
-                        fontFamily: 'Mulish',
-                        fontSize: 14,
-                    },
-                    components: {
-                        Select: {
-                            activeBorderColor: 'transparent',
-                            activeOutlineColor: 'transparent',
-                            hoverBorderColor: 'transparent',
-                            optionActiveBg: 'transparent',
-                            optionFontSize: 16,
-                            optionSelectedBg: 'transparent',
-                            optionSelectedColor: '#5329FF',
+                    renderEmpty={ () => (<div>Нет данных</div>)}
+                    theme={{
+                        token: {
+                            colorBgContainer: 'white',
+                            colorBorder: '#5329FF1A',
+                            borderRadius: 8,
+                            fontFamily: 'Mulish',
+                            fontSize: 12,
+                            fontWeight: 500,
+                        },
+                        components: {
+                            Select: {
+                                activeBorderColor: '#5329FF1A',
+                                activeOutlineColor: 'transparent',
+                                hoverBorderColor: '#5329FF1A',
+                                optionActiveBg: 'transparent',
+                                optionFontSize: 14,
+                                optionSelectedBg: 'transparent',
+                                optionSelectedColor: '#5329FF',
+                               
+                            }
                         }
-                    }
-                }}
-            >
+                    }}
+                >
                 {supplierBrands &&
                     <Select
                         style={{ width: 240 }}
@@ -67,7 +69,6 @@ const GoodsTableCustomHeader = ({ id }) => {
                                 <path d="M1 1L7 7L13 1" stroke="#8C8C8C" strokeWidth="2" strokeLinecap="round" />
                             </svg>
                         }
-                        variant="filled"
                         options={supplierBrands?.map(_ => ({ value: _.brand_id, label: _.brand_name }))}
                         value={[{ value: supplierCurrentBrand, label: supplierBrands?.find(_ => _?.brand_id === supplierCurrentBrand)?.brand_name || '' }]}
                         onChange={(value) => dispatch(supplierAnalysisActions.setSupplierCurrentBrand(value))}

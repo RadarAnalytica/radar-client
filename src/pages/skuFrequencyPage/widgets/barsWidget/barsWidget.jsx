@@ -3,6 +3,7 @@ import styles from './barsWidget.module.css';
 import Bar from '../../features/bar/bar';
 import { useAppSelector } from '../../../../redux/hooks';
 import ErrorModal from '../../../../components/sharedComponents/modals/errorModal/errorModal';
+import { RadarBar } from '@/shared';
 
 const initRequestStatus = {
     isLoading: false,
@@ -66,10 +67,10 @@ const BarsWidget = ({currentQuery}) => {
 
     return queryDetailsData && (
         <section className={styles.widget}>
-            <Bar.Medium title='Выручка (с СПП)' data={queryDetailsData.revenue} units='₽' />
-            <Bar.Medium title='Ср. выручка в день' data={queryDetailsData.avg_day_revenue} units='₽' />
-            <Bar.Medium title='Ср. цена (с СПП)' data={queryDetailsData.avg_price} units='₽' />
-            <Bar.Medium title='Ср. выручка на товар с продажами' data={queryDetailsData.avg_goods_with_sales_revenue} units='₽' />
+            <RadarBar title='Выручка (с СПП)' mainValue={queryDetailsData.revenue} mainValueUnits='₽' />
+            <RadarBar title='Ср. выручка в день' mainValue={queryDetailsData.avg_day_revenue} mainValueUnits='₽' />
+            <RadarBar title='Ср. цена (с СПП)' mainValue={queryDetailsData.avg_price} mainValueUnits='₽' />
+            <RadarBar title='Ср. выручка на товар с продажами' mainValue={queryDetailsData.avg_goods_with_sales_revenue} mainValueUnits='₽' />
             <div className={styles.widget__largeBarWrapper}>
                 <Bar.Large
                     icon='gold'
@@ -100,9 +101,9 @@ const BarsWidget = ({currentQuery}) => {
                 />
             </div>
             <div className={styles.widget__smallBarsWrapper}>
-                <Bar.Small title='Ср. рейтинг товаров' data={queryDetailsData.avg_rating} />
-                <Bar.Small title='Ср. кол-во оценок' data={queryDetailsData.avg_reviews} />
-                <Bar.Small title='Категории' data={queryDetailsData.subjects} />
+                <RadarBar title='Ср. рейтинг товаров' mainValue={queryDetailsData.avg_rating} />
+                <RadarBar title='Ср. кол-во оценок' mainValue={queryDetailsData.avg_reviews} />
+                <RadarBar title='Категории' mainValue={queryDetailsData.subjects} />
             </div>
 
         </section>

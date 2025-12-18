@@ -935,7 +935,7 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                             colorPrimary: '#5329FF1A',
                                             fontSize: 14,
                                             fontWeight: 600,
-                                            controlHeightLG: 46,
+                                            controlHeightLG: 38,
                                         },
                                         components: {
                                             Button: {
@@ -968,7 +968,7 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                             colorText: '#5329FF',
                                             fontSize: 14,
                                             fontWeight: 600,
-                                            controlHeightLG: 46,
+                                            controlHeightLG: 38,
                                         },
                                         components: {
                                             Button: {
@@ -978,7 +978,7 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                     }}
                                 >
                                     <Button
-                                        style={{ width: '187px', height: '46px' }}
+                                        style={{ width: '187px', height: '38px' }}
                                         htmlType='submit'
                                         type='primary'
                                         size='large'

@@ -193,10 +193,10 @@ const UnitCalculatorPageDesktop = () => {
             <div className={styles.page__sidebarWrapper}>
                 <Sidebar />
             </div>
-            
+
             <section className={styles.page__content} ref={sectionRef}>
                 <div className={styles.page__headerWrapper}>
-                    <Header title={'Калькулятор unit-экономики товара'} />
+                    <Header title={'Калькулятор unit-экономики товара'} hasShadow={false} />
                 </div>
 
                 <div className={styles.page__mobileHeaderWrapper}>
@@ -208,17 +208,28 @@ const UnitCalculatorPageDesktop = () => {
                         token: {
                             fontFamily: 'Mulish',
                             colorBorder: 'white',
+                            colorBgContainer: 'white',
+                            colorBorder: '#5329FF1A',
+                            borderRadius: 8,
+                            fontFamily: 'Mulish',
+                            fontSize: 14,
+                            fontWeight: 500,
                             // colorTextLightSolid: '#000'
                         },
                         components: {
                             Form: {
-                                labelFontSize: 16,
-                                labelRequiredMarkColor: '#000'
+                                labelFontSize: 12,
+                                labelRequiredMarkColor: '#000',
+                                verticalLabelPadding: 4
                             },
                             Input: {
-                                activeBorderColor: '#5329FF',
-                                hoverBorderColor: '#5329FF',
-                                activeBg: '#F2F2F2',
+                                activeBorderColor: '#5329FF1A',
+                                hoverBorderColor: '#5329FF1A',
+                                activeOutlineColor: 'transparent',
+                                activeShadow: 'transparent',
+                                controlHeight: 38,
+                                controlHeightLG: 38,
+                                fontSize: 12
                             },
                         }
                     }}
@@ -258,7 +269,10 @@ const UnitCalculatorPageDesktop = () => {
                                     theme={{
                                         token: {
                                             colorBorder: '#00000033',
-                                            colorPrimary: '#5329FF'
+                                            colorPrimary: '#5329FF',
+                                            controlHeightLG: 38,
+                                            fontSize: 14,
+                                            fontWeight: 600
                                         }
 
                                     }}
@@ -267,6 +281,7 @@ const UnitCalculatorPageDesktop = () => {
                                         type='primary'
                                         size='large'
                                         htmlType='submit'
+                                        style={{ fontSize: '14px', fontWeight: 600}}
                                     >Рассчитать</Button>
                                 </ConfigProvider>
 
