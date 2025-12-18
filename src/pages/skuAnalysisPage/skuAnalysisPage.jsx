@@ -24,7 +24,7 @@ const SkuAnalysisPage = () => {
       <section className={styles.page__content}>
         <div className={styles.page__additionalWrapper}>
           <div className={styles.page__headerWrapper}>
-            <Header title='Анализ артикула'/>
+            <Header title='Анализ артикула' hasShadow={false} />
           </div>
 
           <SearchBlock/>

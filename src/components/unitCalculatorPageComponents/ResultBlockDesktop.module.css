@@ -20,7 +20,7 @@
     flex-wrap: nowrap;
     padding-bottom: 20px;
 
-    @media (max-width: 1550px) {
+    @media (max-width: 1900px) {
         flex-direction: column;
         align-items: flex-end;
     };
@@ -29,7 +29,7 @@
 
 .result__tableWrapper {
     width: 100%;
-    padding: 24px 32px;
+    padding: 20px;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -43,8 +43,8 @@
 
 .result__title {
     font-family: Mulish;
-    font-weight: 700;
-    font-size: 24px;
+    font-weight: 600;
+    font-size: 22px;
     line-height: 30.12px;
     letter-spacing: 0%;
     color: #1A1A1A;
@@ -61,10 +61,10 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
-    gap: 10px;
+    gap: 4px;
     font-family: Mulish;
     font-weight: 500;
-    font-size: 16px;
+    font-size: 12px;
     line-height: 20px;
     letter-spacing: 0%;
 
@@ -93,29 +93,19 @@
     padding-bottom: 8px;
     border-bottom: 1px solid #E8E8E8;
     font-family: Mulish;
-    font-weight: 600;
-    font-size: 16px;
+    font-weight: 500;
+    font-size: 14px;
     line-height: 20px;
     letter-spacing: 0%;
-
-    @media (max-width: 1550px) {
-        font-size: 14px;
-    }
-   
 }
 
 .result__tableRow > span {
     font-family: Mulish;
     font-weight: 700;
-    font-size: 18px;
+    font-size: 14px;
     line-height: 23px;
     letter-spacing: 0%;
     text-align: right;
-
-    @media (max-width: 1550px) {
-        font-size: 16px;
-    }
-   
 }
 
 .result__mainResultTable {
@@ -140,7 +130,7 @@
 .result__mainTablePrice {
     font-family: Mulish;
     font-weight: 700;
-    font-size: 24px;
+    font-size: 18px;
     line-height: 30px;
     letter-spacing: 0%;
     text-align: right;
@@ -150,21 +140,16 @@
 
 .result__mainTableText {
     font-family: Mulish;
-    font-weight: 600;
-    font-size: 16px;
+    font-weight: 500;
+    font-size: 14px;
     line-height: 20px;
     letter-spacing: 0%;
     color: #1A1A1A;
-
-    @media (max-width: 1550px) {
-        font-size: 14px;
-    }
-
-   
 }
 
 .result__mainTableText_gray {
-    color: #1A1A1A80
+    color: #1A1A1A80;
+    font-size: 12px;
 }
 
 

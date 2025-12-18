@@ -254,19 +254,6 @@
     font-size: 18px;
   }
 
-  .keywordCountNumber {
-    font-weight: 700;
-    font-size: 16px;
-    line-height: 20px;
-  }
-
-  .keywordCountText {
-    font-weight: 500;
-    font-size: 16px;
-    line-height: 20px;
-    color: rgba(26, 26, 26, 0.5);
-  }
-
   .tableContentItemKey {
     color: rgba(83, 41, 255, 1);
     cursor: pointer;
@@ -274,14 +261,14 @@
 
   .keywordCountNumber {
     font-weight: 700;
-    font-size: 16px;
+    font-size: 18px;
     line-height: 20px;
   }
 
   .keywordCountText {
     font-weight: 500;
-    font-size: 16px;
-    line-height: 20px;
+    font-size: 14px;
+    line-height: 1;
     color: rgba(26, 26, 26, 0.5);
 }
 

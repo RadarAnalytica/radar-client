@@ -110,7 +110,7 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: stretch;
-    gap: 8px;
+    gap: 2px;
 }
 
 .form__inputsContainer {
@@ -124,7 +124,7 @@
 .form__inputTextSuffix {
     font-family: Mulish;
     font-weight: 500;
-    font-size: 16px;
+    font-size: 14px;
     line-height: 100%;
     letter-spacing: 0%;
     color: #8C8C8C;

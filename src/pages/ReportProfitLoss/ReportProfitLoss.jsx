@@ -293,7 +293,7 @@ export default function ReportProfitLoss() {
 			
 			<section className={styles.page__content}>
 				<div className={styles.page__headerWrapper}>
-					<Header title="Отчет о прибыли и убытках"></Header>
+					<Header title="Отчет о прибыли и убытках" hasShadow={false}></Header>
 				</div>
 
 				{!loading && activeBrand?.is_primary_collect && !activeBrand?.is_self_cost_set && (

@@ -117,7 +117,8 @@ const MainChartWidget = ({ id, dataType, dataHandler }) => {
                         <ConfigProvider
                             theme={{
                                 token: {
-                                    colorPrimary: '#5329FF'
+                                    colorPrimary: '#5329FF',
+                                    fontSize: '14px'
                                 }
                             }}
                         >

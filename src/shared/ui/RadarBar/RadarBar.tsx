@@ -13,7 +13,7 @@ import { RadarLoader } from '../RadarLoader/RadarLoader';
 const getColorByValue = (value: number | string, direction: 'up' | 'down' = 'down', neuturalComparsionColor: boolean = false) => {
     const intValue = typeof value === 'number' ? value : parseInt(value);
 
-    if (neuturalComparsionColor) { 
+    if (neuturalComparsionColor) {
         return {
             color: '#1A1A1A50',
             backgroundColor: '#1A1A1A0D',
@@ -81,7 +81,7 @@ const isValueBelowZeroFunction = (value: number | string, direction: 'up' | 'dow
             return false;
         }
     }
-   
+
 
     return false;
 }
@@ -116,6 +116,9 @@ interface RadarBarProps {
     }
     isLoading: boolean
     dragHandle?: () => React.ReactNode;
+    elementsStyles?: {
+        title?: React.CSSProperties 
+    }
 }
 
 //component
@@ -134,6 +137,7 @@ export const RadarBar: React.FC<RadarBarProps> = ({
     isLoading,
     negativeDirection = 'down',
     neuturalComparsionColor = false,
+    elementsStyles,
     dragHandle
 }) => {
 
@@ -157,13 +161,14 @@ export const RadarBar: React.FC<RadarBarProps> = ({
             {/* header */}
             <div className={styles.bar__header}>
                 <div className={`${styles.bar__side} ${styles.bar__side_left}`} style={{ alignItems: 'flex-start', flexWrap: 'nowrap' }}>
-                    <span className={styles.bar__title}>{title}</span>
+                    <span className={styles.bar__title} style={elementsStyles?.title}>{title}</span>
                     {tooltipText &&
                         <ConfigProvider
                             theme={{
                                 token: {
                                     colorTextLightSolid: '#1A1A1A',
                                     fontSize: 12,
+                                    colorText: '#1A1A1A',
                                 }
                             }}
                         >

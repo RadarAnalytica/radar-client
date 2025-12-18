@@ -2,7 +2,7 @@
     width: 100%;
     background: #5329FF0D;
     border-radius: 16px;
-    padding: 24px 32px;
+    padding: 20px;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -20,7 +20,7 @@
 .widget__title {
     font-family: Mulish;
     font-weight: 700;
-    font-size: 24px;
+    font-size: 18px;
     line-height: 100%;
     letter-spacing: 0%;
     color: #1A1A1A;
@@ -33,7 +33,7 @@
     background: transparent;
     font-family: Mulish;
     font-weight: 600;
-    font-size: 16px;
+    font-size: 14px;
     line-height: 160%;
     letter-spacing: 0%;
     color: #5329FF;
@@ -72,7 +72,7 @@
 .widget__text {
     font-family: Mulish;
     font-weight: 500;
-    font-size: 16px;
+    font-size: 14px;
     line-height: 160%;
     letter-spacing: 0%;
     color: #1A1A1A;
@@ -83,7 +83,7 @@
 .widget__link {
     font-family: Mulish;
     font-weight: 600;
-    font-size: 16px;
+    font-size: 14px;
     line-height: 160%;
     letter-spacing: 0%;
     color: #5329FF;

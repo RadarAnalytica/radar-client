@@ -3,12 +3,10 @@
     padding: 16px;
     border-radius: 16px;
     background: white;
-    box-shadow: 0px 0px 20px 0px #00000014;
-    height: 200px;
     display: flex;
     justify-content: flex-start;
     align-items: stretch;
-    gap: 20px;
+    gap: 10px;
 }
 
 .info__column {
@@ -17,14 +15,14 @@
     flex-direction: column;
     justify-content: space-between;
     align-items: flex-start;
-    gap: 12px;
+    gap: 6px;
 }
 
 .info__row {
     font-family: Mulish;
     font-weight: 500;
-    font-size: 16px;
-    line-height: 100%;
+    font-size: 14px;
+    line-height: 160%;
     letter-spacing: 0%;
     color: #8C8C8C;
     margin: 0;
@@ -55,14 +53,10 @@
     border-radius: 8px;
     font-family: Mulish;
     font-weight: 600;
-    font-size: 16px;
+    font-size: 14px;
     line-height: 160%;
     letter-spacing: 0%;
     color: #5329FF;
-
-    @media (max-width: 1500px) {
-        font-size: 14px;
-    }
     @media (max-width: 1210px) {
         padding: 8px 4px;
     }

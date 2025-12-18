@@ -24,7 +24,7 @@ const SupplierAnalysisPage = () => {
       <section className={styles.page__content}>
         <div className={styles.page__additionalWrapper}>
           <div className={styles.page__headerWrapper}>
-            <Header title='Анализ поставщика'/>
+            <Header title='Анализ поставщика' hasShadow={false} />
           </div>
 
           <SearchBlock/>

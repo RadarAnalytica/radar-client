@@ -378,7 +378,7 @@ export default function ReportWeek() {
 
 			<section className={styles.page__content}>
 				<div className={styles.page__headerWrapper}>
-					<Header title="По неделям"></Header>
+					<Header title="По неделям" hasShadow={false}></Header>
 				</div>
 
 				{!loading && activeBrand?.is_primary_collect && !activeBrand?.is_self_cost_set && (

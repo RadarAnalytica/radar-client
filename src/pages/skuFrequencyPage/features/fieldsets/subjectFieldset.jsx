@@ -116,20 +116,25 @@ const SubjectFieldset = ({ prefered_items, form }) => {
     // ----------------- theme -----------------------//
     const memoizedConfigProviderTheme = useMemo(() => ({
         token: {
-            colorPrimary: '#5329FF'
+            colorPrimary: '#5329FF',
+            fontSize: 12
         },
         components: {
             Form: {
-                labelFontSize: 15
+                labelFontSize: 12
             },
             Select: {
+                activeBorderColor: '#5329FF1A',
                 activeOutlineColor: 'transparent',
+                hoverBorderColor: '#5329FF1A',
                 optionActiveBg: 'transparent',
-                optionFontSize: 16,
+                optionFontSize: 14,
                 optionSelectedBg: 'transparent',
                 optionSelectedColor: '#5329FF',
-                selectorBg: 'transparent'
-            }
+                colorBorder: '#5329FF1A',
+                controlHeight: 38,
+                controlHeightLG: 38,
+            },
         }
     }), []);
 
@@ -192,21 +197,22 @@ const SubjectFieldset = ({ prefered_items, form }) => {
                             //colorBorder: 'transparent',
                             //borderRadius: 8,
                             fontFamily: 'Mulish',
-                            fontSize: 14,
-                            controlHeightLG: 44
+                            fontSize: 12,
+                            controlHeightLG: 38
                         },
                         components: {
                             Select: {
-                                //activeBorderColor: 'transparent',
+                                activeBorderColor: '#5329FF1A',
                                 activeOutlineColor: 'transparent',
-                                //hoverBorderColor: 'transparent',
+                                hoverBorderColor: '#5329FF1A',
                                 optionActiveBg: 'transparent',
-                                optionFontSize: 16,
+                                optionFontSize: 14,
                                 optionSelectedBg: 'transparent',
                                 optionSelectedColor: '#5329FF',
-                                singleItemHeightLG: 44,
-                                colorBorder: 'transparent'
-                            }
+                                colorBorder: '#5329FF1A',
+                                controlHeight: 38,
+                                controlHeightLG: 38,
+                            },
                         }
                     }}
                 >
