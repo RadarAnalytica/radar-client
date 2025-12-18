@@ -23,7 +23,7 @@ import { reportError } from '@/service/errorReporting/errorReporter';
 // }
 
 const AfterPayment = ({ devMode }) => {
-  const { authToken, user, refreshUser } = useContext(AuthContext);
+  const { authToken, user, refreshSubscriprionCheck } = useContext(AuthContext);
   const navigate = useNavigate();
   const location = useLocation();
   const [status, setStatus] = useState(location?.state?.paymentStatus && location?.state?.paymentStatus === 'success' ? true : false);
@@ -31,7 +31,7 @@ const AfterPayment = ({ devMode }) => {
 
 
   const refreshUserToken = async () => {
-    const res = await refreshUser()
+    const res = await refreshSubscriprionCheck()
     if (res && res?.success) {
       const timeout = setTimeout(() => {
         navigate('/main')
