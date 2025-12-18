@@ -1454,7 +1454,7 @@ export const ServiceFunctions = {
 		try {
 			let body = getFiltersRequestObject(filters, selectedRange, shopId, 'rnp');
 			const res = await fetchApi(
-				'/api/rnp/by_article?page=1&per_page=25',
+				'/api/rnp/by_article?page=1&per_page=40',
 				{
 					method: 'POST', // метод по идее должен быть get
 					headers: {
@@ -2041,7 +2041,7 @@ export const ServiceFunctions = {
 		}
 	},
 
-	getControlMetrics: async (token, metricType, filters = {}, page = 1, per_page = 50, sorting = {}) => {
+	getControlMetrics: async(token, metricType, filters = {}, page = 1, per_page = 20, sorting = {}) => {
 		try {
 			const requestObject = {
 				...getFiltersRequestObject(filters, { period: 30 }),

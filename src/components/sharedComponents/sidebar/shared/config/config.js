@@ -206,6 +206,7 @@ export const menuConfig = [
             },
             {
                 id: 7,
+
                 url: '/selfcost',
                 label: 'Себестоимость',
                 isActive: true,

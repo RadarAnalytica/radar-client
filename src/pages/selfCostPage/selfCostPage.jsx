@@ -292,7 +292,7 @@ const SelfCostXLSXuploadComponent = ({ authToken, updateFunc, isLoading, isDemoM
                             style={{ fontWeight: 600, height: 38, fontSize: 14 }}
                             disabled={isDemoMode}
                         >
-                            Загрузить себестоимость
+                            Загрузить Excel
                         </Button>
                     </ConfigProvider>
                 </div>

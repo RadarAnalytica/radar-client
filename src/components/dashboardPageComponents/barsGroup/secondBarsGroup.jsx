@@ -80,6 +80,7 @@ const SecondBarsGroup = ({ dataDashBoard, loading, selectedRange, activeBrand, a
                     tooltipText: 'Значение предыдущего периода'
                 }}
             />
+
             <RadarBar
                 title='Комиссия'
                 tooltipText='Суммарная комиссия маркетплейса, рассчитывается от суммарного объема продаж по коэффициентам, определенным Wildberries'
