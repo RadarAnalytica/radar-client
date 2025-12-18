@@ -166,7 +166,7 @@ const SeoCompaire = ({ compaireData, linksToSend }) => {
       });
 
       if (filteredData.length === 0) {
-        return <div>Ничего не найдено</div>;
+        return <div style={{fontSize: '14px'}}>Ничего не найдено</div>;
       }
 
       return filteredData.map((item, index) => {
@@ -181,12 +181,12 @@ const SeoCompaire = ({ compaireData, linksToSend }) => {
             >
               {item.key}
             </div>
-            <div>{item.value}</div>
+            <div style={{fontSize: '14px'}}>{item.value}</div>
           </div>
         );
       });
     }
-    return <div>Ничего не найдено</div>;
+    return <div style={{fontSize: '14px'}}>Ничего не найдено</div>;
   }, [sortedData, searchQuery, paginationState]);
 
   const renderSortArrows = (columnKey) => {
@@ -240,7 +240,7 @@ const SeoCompaire = ({ compaireData, linksToSend }) => {
             className={styles.keywordCount}
           >
             <span className={styles.keywordCountNumber}>{sortedData.length}</span>
-            <span className={styles.keywordCountText}>ключевых слов</span>
+            <span className={styles.keywordCountText}>Ключевых слов</span>
           </div>
         </div>
         <div className={styles.seoTableWrapper}>
