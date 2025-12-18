@@ -125,6 +125,7 @@ const Onboarding = () => {
 
   return (
     user && (
+
       <>
         <main className={styles.page}>
           <MobilePlug />

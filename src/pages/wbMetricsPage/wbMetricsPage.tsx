@@ -38,7 +38,7 @@ const WbMetricsPage: React.FC = () => {
   const [tableConfig, setTableConfig] = useState<ColumnConfig[]>([]);
   const [sortState, setSortState] = useState({ sort_field: undefined, sort_order: undefined });
   const [data, setData] = useState(null);
-  const [pageData, setPageData] = useState({ page: 1, per_page: 50, total_count: 0 });
+  const [pageData, setPageData] = useState({ page: 1, per_page: 25, total_count: 0 });
   
   const progress = useLoadingProgress({ loading });
   const pageTitle = metricType === 'drr' ? 'Контроль ДРР' : 'Контроль СПП';

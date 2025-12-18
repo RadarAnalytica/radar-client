@@ -142,11 +142,8 @@ function App() {
                 <Route path='/rank-analysis' element={<ProtectedRoute expireProtected routeRuName='Сравнение SEO'><SeoPage /></ProtectedRoute>} />
                 {/* <Route path='/ai-generator' element={<ProtectedRoute expireProtected underDevelopmentProtected routeRuName='Генерация описания AI'><AiDescriptionGeneratorPage /></ProtectedRoute>} /> */}
                 <Route path='/serp' element={<ProtectedRoute expireProtected routeRuName='SERP'><SerpPage /></ProtectedRoute>} />
-                <Route path='/position-check' element={<ProtectedRoute expireProtected routeRuName='Проверка позиций'><PositionCheckPage /></ProtectedRoute>} />
-                <Route path='/position-check/:id' element={<ProtectedRoute testPeriodGuardType='redirect' testPeriodRedirect='/position-check' expireProtected routeRuName='Проверка позиций'><PositionCheckIDPage /></ProtectedRoute>} />
-                <Route path='/keywords-selection' element={<ProtectedRoute expireProtected routeRuName='Подбор ключевых запросов'><KeywordsSelectionPage /></ProtectedRoute>} />
                 <Route path='/stock-analysis' element={<ProtectedRoute expireProtected onboardProtected routeRuName='Аналитика по товарам'><StockAnalysisPage /></ProtectedRoute>} />
-                <Route path='/orders-map' element={<ProtectedRoute expireProtected onboardProtected routeRuName='География заказов и продаж'><OrdersMap /></ProtectedRoute>} />
+                <Route path='/orders-map' element={<ProtectedRoute underDevProtected expireProtected onboardProtected routeRuName='География заказов и продаж'><OrdersMap /></ProtectedRoute>} />
                 <Route path='/linked-shops' element={<ProtectedRoute expireProtected onboardProtected routeRuName='Подключенные магазины'><LinkedShopsPage /></ProtectedRoute>} />
                 <Route path='/report-main' element={<ProtectedRoute expireProtected routeRuName='Отчёт / Главная'><ReportMain /></ProtectedRoute>} />
                 <Route path='/weeklyreport-dashboard' element={<ProtectedRoute expireProtected routeRuName='Отчёт / Дашборд'><WeeklyReportDashboard /></ProtectedRoute>} />
@@ -173,6 +170,9 @@ function App() {
                 <Route path='/referal' element={<ProtectedRoute expireProtected routeRuName='Реферальная программа'><ReferalPage /></ProtectedRoute>} />
                 <Route path='/rnp' element={<ProtectedRoute expireProtected onboardProtected routeRuName='Рука на пульсе (РНП)'><Rnp /></ProtectedRoute>} />
                 <Route path='/serp' element={<ProtectedRoute expireProtected onboardProtected routeRuName='SERP'><SerpPage /></ProtectedRoute>} />
+                <Route path='/position-check' element={<ProtectedRoute expireProtected routeRuName='Проверка позиций'><PositionCheckPage /></ProtectedRoute>} />
+                <Route path='/position-check/:id' element={<ProtectedRoute testPeriodGuardType='redirect' testPeriodRedirect='/position-check' expireProtected routeRuName='Проверка позиций'><PositionCheckIDPage /></ProtectedRoute>} />
+                <Route path='/keywords-selection' element={<ProtectedRoute expireProtected routeRuName='Подбор ключевых запросов'><KeywordsSelectionPage /></ProtectedRoute>} />
                 <Route path='/control/drr' element={<ProtectedRoute expireProtected onboardProtected routeRuName='Контроль ДРР'><WbMetricsPage key='drr' /></ProtectedRoute>} />
                 <Route path='/control/spp' element={<ProtectedRoute expireProtected onboardProtected routeRuName='Контроль СПП'><WbMetricsPage key='spp' /></ProtectedRoute>} />
                 <Route path='/position-tracking' element={<ProtectedRoute expireProtected routeRuName='Трекинг позиций'><PositionTrackingMainPage /></ProtectedRoute>} />
@@ -205,3 +205,5 @@ function App() {
 }
 
 export default App;
+
+

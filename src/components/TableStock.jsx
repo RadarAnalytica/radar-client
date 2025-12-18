@@ -1367,7 +1367,7 @@ const TableStock = ({ data, setDataTable, loading }) => {
                     </div>
                   ))}
                 </div>
-                <div className='column'>
+                {/* <div className='column'>
                   <div
                     className='cell header-cell'
                     style={{
@@ -1444,7 +1444,7 @@ const TableStock = ({ data, setDataTable, loading }) => {
                       {formatNumber(row.orderSum)} ₽
                     </div>
                   ))}
-                </div>
+                </div> */}
                 <div className='column'>
                   <div
                     className='cell header-cell'
@@ -1601,7 +1601,7 @@ const TableStock = ({ data, setDataTable, loading }) => {
                   >
                     Скорость
                   </div>
-                  <div
+                  {/* <div
                     className='cell cell-header'
                     style={{
                       minWidth: '120px',
@@ -1628,7 +1628,7 @@ const TableStock = ({ data, setDataTable, loading }) => {
                       {formatNumber(row.orderCountDay)}
                     </div>
                   ))}
-                </div>
+                </div> */}
                 <div className='column'>
                   <div
                     className='cell header-cell'

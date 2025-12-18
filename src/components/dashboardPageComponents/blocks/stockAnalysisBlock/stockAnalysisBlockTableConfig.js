@@ -127,17 +127,17 @@ export const stockAnalysisTableConfig = [
             {title: 'Мин. цена со скидкой', dataIndex: 'minDiscountPrice', units: '₽', sortable: true, fixed: false, width: 250},
         ].map(_ => ({ ..._, render: _.render?.bind(_), key: _.dataIndex, minWidth: _.width }))
     },
-    {
-        title: 'Заказы',
-        key: 'm11',
-        hidden: false,
-        fixed: false,
-        groupColor: 'white',
-        children: [
-            {title: 'Количество', dataIndex: 'orderQuantity', units: 'шт', sortable: true, fixed: false, width: 200},
-            {title: 'Сумма', dataIndex: 'orderSum', units: '₽', sortable: true, fixed: false, width: 200},
-        ].map(_ => ({ ..._, render: _.render?.bind(_), key: _.dataIndex, minWidth: _.width }))
-    },
+    // {
+    //     title: 'Заказы',
+    //     key: 'm11',
+    //     hidden: false,
+    //     fixed: false,
+    //     groupColor: 'white',
+    //     children: [
+    //         {title: 'Количество', dataIndex: 'orderQuantity', units: 'шт', sortable: true, fixed: false, width: 200},
+    //         {title: 'Сумма', dataIndex: 'orderSum', units: '₽', sortable: true, fixed: false, width: 200},
+    //     ].map(_ => ({ ..._, render: _.render?.bind(_), key: _.dataIndex, minWidth: _.width }))
+    // },
     {
         title: 'Выкупы',
         key: 'm12',
@@ -158,7 +158,7 @@ export const stockAnalysisTableConfig = [
         fixed: false,
         groupColor: 'white',
         children: [
-            {title: 'Заказов', dataIndex: 'orderCountDay', units: 'шт/день', sortable: false, fixed: false, width: 200},
+            // {title: 'Заказов', dataIndex: 'orderCountDay', units: 'шт/день', sortable: false, fixed: false, width: 200},
             {title: 'Продаж', dataIndex: 'saleCountDay', units: 'шт/день', sortable: false, fixed: false, width: 200},
         ].map(_ => ({ ..._, render: _.render?.bind(_), key: _.dataIndex, minWidth: _.width }))
     },

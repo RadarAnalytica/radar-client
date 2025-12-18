@@ -26,7 +26,7 @@ const AddRnpModal = ({ isAddRnpModalVisible, setIsAddRnpModalVisible, addRnp }) 
     const MAX_RNP_SKU_LIMIT = useMemo(() => {
         let limit = 25 // default limit
         if (user && user.email === 'nastyaaa.355@gmail.com') {
-            limit = 30;
+            limit = 210;
         }
         return limit;
     }, [user]);
