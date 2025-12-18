@@ -34,8 +34,6 @@ const LinkedShopsPage = () => {
     });
     const [addAndEditModalState, setAddAndEditModalState] = useState<{ type: 'edit' | 'add' | 'delete' | 'tax', shop?: Record<string, any> } | null>(null);
     const [addShopRequestStatus, setAddShopRequestStatus] = useState(initRequestStatus);
-    const [taxModalOpen, setTaxModalOpen] = useState(false);
-    const [taxValue, setTaxValue] = useState<string>('');
     const dispatch = useAppDispatch();
     const shops = useAppSelector((state) => state.shopsSlice.shops);
 
@@ -87,11 +85,9 @@ const LinkedShopsPage = () => {
 
 
     useEffect(() => {
-        // View Transition при входе на страницу
         if (isFirstMount.current && document.startViewTransition) {
             isFirstMount.current = false;
             const transition = document.startViewTransition(() => {
-                // View Transition запущен
             });
         } else if (isFirstMount.current) {
             isFirstMount.current = false;
