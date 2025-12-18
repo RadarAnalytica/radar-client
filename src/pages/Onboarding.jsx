@@ -21,6 +21,7 @@ import NoSubscriptionPage from './NoSubscriptionPage';
 import Sidebar from '../components/sharedComponents/sidebar/sidebar';
 import { Modal as AntdModal } from 'antd';
 import ErrorModal from '../components/sharedComponents/modals/errorModal/errorModal';
+import { reportError } from '@/service/errorReporting/errorReporter';
 
 
 
@@ -32,7 +33,7 @@ const initRequestStatus = {
 };
 
 const Onboarding = () => {
-  const { user, authToken, setUser, logout } = useContext(AuthContext);
+  const { user, authToken, setUser, logout, refreshUser } = useContext(AuthContext);
   const navigate = useNavigate();
   const location = useLocation();
   const [activeShop, setActiveShop] = useState();
@@ -46,15 +47,29 @@ const Onboarding = () => {
   const getBrand = (e) => setBrandName(e.target.value);
   const getToken = (e) => setToken(e.target.value);
 
-  const updateIsOnboarded = () => {
-    ServiceFunctions.refreshUser(authToken).then((data) => {
-      setUser(jwtDecode(data?.token));
-      navigate('/dashboard');
-    });
+  // const updateIsOnboarded = () => {
+  //   ServiceFunctions.refreshUser(authToken).then((data) => {
+  //     setUser(jwtDecode(data?.token));
+  //     navigate('/dashboard');
+  //   });
+  // };
+
+  const refreshUserToken = async () => {
+    const res = await refreshUser()
+    if (res && res?.success) {
+      setReqStatus({ ...initRequestStatus, isSuccess: true, message: 'Токен успешно добавлен' });
+    } else {
+      reportError({
+        error_text: 'Не удалось обновить токен пользователя после онбординга - /onboarding',
+        stack_trace: null,
+        user: user ? { id: user?.id, email: user?.email } : null,
+      });
+      setReqStatus({ ...initRequestStatus, isError: true, message: 'Токен добавлен успешно, но нам не удалось обновить ваши данные. Пожалуйста, перезагрузите страницу!' })
+    }
   };
 
   const handleClose = () => {
-    updateIsOnboarded();
+    // updateIsOnboarded();
     setShow(false);
   };
   const handleShow = () => setShow(true);
@@ -68,11 +83,10 @@ const Onboarding = () => {
       let res = await ServiceFunctions.updateToken(brandName, token, authToken)
       if (!res.ok) {
         res = await res.json();
-        console.log(res);
         setReqStatus({ ...initRequestStatus, isError: true, message: res.message || 'Не удалось добавить магазин' });
         return;
       } else {
-        setReqStatus({ ...initRequestStatus, isSuccess: true, message: 'Токен успешно добавлен' });
+        await refreshUserToken()
         return
       }
     }
