@@ -1,5 +1,4 @@
 .widget {
-    box-shadow: 0px 0px 20px 0px #00000014;
     background: white;
     border-radius: 16px;
     width: 100%;
@@ -9,7 +8,15 @@
     justify-content: space-between;
     gap: 20px;
     overflow: hidden;
+    transform: scale(1);
+    transition: all .5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
+
+.widget:hover {
+    box-shadow: 0px 0px 20px 0px #00000014;
+    transform: scale(1.005);
+}
+
 
 .widget__header {
     width: 100%;
@@ -29,17 +36,17 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    gap: 10px;
+    /* gap: 10px; */
     flex-grow: 1;
     flex-shrink: 1;
 }
 
 .widget__title {
     font-family: Mulish;
-    font-weight: 700;
+    font-weight: 600;
     font-style: Bold;
-    font-size: 24px;
-    line-height: 120%;
+    font-size: 18px;
+    line-height: 150%;
     letter-spacing: 0%;
     margin: 0;
     padding: 0;
@@ -54,8 +61,8 @@
     font-family: Mulish;
     font-weight: 500;
     font-style: Medium;
-    font-size: 16px;
-    line-height: 100%;
+    font-size: 14px;
+    line-height: 150%;
     letter-spacing: 0%;
     margin: 0;
     padding: 0;
@@ -70,79 +77,65 @@
     gap: 20px;
     padding-top: 20px;
     border-top: 1px solid #E8E8E8;
-    height: 56px
 }
 
-.widget__token {
+.widget__paramsBlock {
     display: flex;
-    align-items: center;
+    flex-direction: column;
     gap: 8px;
-    font-family: Mulish;
-    font-weight: 500;
-    font-style: Medium;
-    font-size: 20px;
-    line-height: 100%;
-    letter-spacing: 0%;
-
 }
 
 .widget__shopStatusIcon {
-    height: 36px;
+    padding: 6px 12px;
     border-radius: 8px;
-    padding: 0 16px;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 8px;
-    font-family: Mulish;
-    font-weight: 500;
-    font-style: Medium;
-    font-size: 16px;
+    font-weight: 600;
+    font-size: 12px;
     line-height: 100%;
+    min-height: 29px;
+}
+
+.widget__shopStatusIcon::before {
+    content: '';
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    flex: 0 0 auto;
+    background-color: currentColor;
+}
+
+.widget__shopParam {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+    font-size: 12px;
     letter-spacing: 0%;
-    color: #1A1A1A;
 }
 
-.widget__shopStatusIcon_active {
-    background: #00B69B1A;
+.widget__shopParam span {
+   color: #1A1A1A
 }
 
-.widget__shopStatusIcon_active:before {
-    content: ' ';
-    width: 8px;
-    height: 8px;
-    border-radius: 50% 50%;
-    background: #00B69B;
-    flex-grow: 0;
-    flex-shrink: 0;
+/* inherited from .widget__shopParam */
+.widget__shopParamItem {
+    font-size: inherit;
+    font-weight: inherit;
+    display: flex;
+    align-items: center;
+    gap: 4px;
 }
 
-.widget__shopStatusIcon_error {
-    background: #F93C650D;
-}
-
-.widget__shopStatusIcon_error:before {
-    content: ' ';
-    width: 8px;
-    height: 8px;
-    border-radius: 50% 50%;
-    background: #F93C65;
-    flex-grow: 0;
-    flex-shrink: 0;
-}
-
-.widget__shopStatusIcon_loading {
-    background: rgba(128, 128, 128, .15);
-}
-
-.widget__shopStatusIcon_loading:before {
-    content: ' ';
-    width: 8px;
-    height: 8px;
-    border-radius: 50% 50%;
-    background: rgb(128, 128, 128);
-    flex-grow: 0;
-    flex-shrink: 0;
+.widget__shopParamItem::before {
+    content: '';
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    flex: 0 0 auto;
+    background-color: currentColor;
 }
 
 
@@ -154,8 +147,8 @@
 }
 
 .widget__controlButton {
-    height: 42px;
-    padding: 0 8px;
+    height: 33px;
+    padding: 0 10px;
     border-radius: 8px;
     display: flex;
     align-items: center;
@@ -163,7 +156,7 @@
     font-family: Mulish;
     font-weight: 600;
     font-style: SemiBold;
-    font-size: 16px;
+    font-size: 12px;
     line-height: 160%;
     letter-spacing: 0%;
     border: none;
@@ -185,46 +178,7 @@
     color: #F93C65;
 }
 
-.deleteModal {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
 
-.deleteModal__header {
-    width: 100%;
-    display: flex;
-    gap: 16px;
-    align-items: center;
-    font-family: Mulish;
-    font-weight: 700;
-    font-style: Bold;
-    font-size: 24px;
-    color: #1A1A1A;
-    line-height: 100%;
-    letter-spacing: 0%;
-}
-
-.deleteModal__text {
-    font-family: Mulish;
-    font-weight: 500;
-    font-style: Medium;
-    font-size: 20px;
-    color: #1A1A1A;
-    margin: 0;
-    padding: 0;
-    line-height: 150%;
-    letter-spacing: 0%;
-}
-
-.deleteModal__footer {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    gap: 8px;
-}
 
 /* modal */
 .modal {

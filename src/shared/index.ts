@@ -17,3 +17,4 @@ export { positionTrackingSkuTableCustomCellRender } from './customTableCells/pos
 export { keywordsSelectionTableConfig } from './tableConfigs/keywordsSelectionTableConfig';
 export { keywordsSelectionTableCustomCellRender } from './customTableCells/keywordsSelectionTableCustomCellRender';
 export { SmallButton } from './ui/SmallButton/SmallButton';
+export { GeneralLayout } from './ui/GeneralLayout/GeneralLayout'

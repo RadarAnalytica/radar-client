@@ -2,7 +2,7 @@ import React from 'react';
 
 const WbIcon = () => {
   return (
-    <svg width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
+    <svg width="46" height="46" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
 <rect width="60" height="60" rx="12" fill="url(#pattern0_944_7808)"/>
 <defs>
 <pattern id="pattern0_944_7808" patternContentUnits="objectBoundingBox" width="1" height="1">
