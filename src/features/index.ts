@@ -1,2 +1,3 @@
 export { SearchBlock } from './searchBlock/searchBlock';
 export { ProceedToBlock } from './proceedToBlock/proceedToBlock';
+export { RadarShopCard } from './RadarShopCard/RadarShopCard'
