@@ -209,8 +209,8 @@ const AbcAnalysisPage = () => {
 							/>
 						) : null}
 					</div>
-					<div>
-						<Tooltip title={record.title}>{record.title}</Tooltip>
+					<div title={record.title}>
+						{record.title}
 					</div>
 				</div>
 			);
