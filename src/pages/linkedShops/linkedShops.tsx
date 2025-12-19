@@ -1,4 +1,4 @@
-import { useEffect, useContext, useState, useMemo, useRef } from 'react';
+import React, { useEffect, useContext, useState, useMemo, useRef } from 'react';
 import styles from './linkedShops.module.css';
 import { useAppSelector, useAppDispatch } from '@/redux/hooks';
 import { fetchShops } from '@/redux/shops/shopsActions';
@@ -26,7 +26,6 @@ const LinkedShopsPage = () => {
     const { isDemoMode } = useDemoMode();
     const { authToken } = useContext(AuthContext);
     const location = useLocation();
-    const isFirstMount = useRef(true);
     const [statusBarState, setStatusBarState] = useState({
         type: '',
         message: '',
@@ -34,8 +33,11 @@ const LinkedShopsPage = () => {
     });
     const [addAndEditModalState, setAddAndEditModalState] = useState<{ type: 'edit' | 'add' | 'delete' | 'tax', shop?: Record<string, any> } | null>(null);
     const [addShopRequestStatus, setAddShopRequestStatus] = useState(initRequestStatus);
+    const [isMiniCardVisible, setIsMiniCardVisible] = useState(false);
+    const addShopBlockRef = useRef<HTMLDivElement>(null);
     const dispatch = useAppDispatch();
     const shops = useAppSelector((state) => state.shopsSlice.shops);
+    const firstMountRef = useRef(true)
 
     const addOrEditSubmitHandler = async (fields) => {
         setAddShopRequestStatus({ ...initRequestStatus, isLoading: true })
@@ -85,25 +87,54 @@ const LinkedShopsPage = () => {
 
 
     useEffect(() => {
-        if (isFirstMount.current && document.startViewTransition) {
-            isFirstMount.current = false;
-            const transition = document.startViewTransition(() => {
-            });
-        } else if (isFirstMount.current) {
-            isFirstMount.current = false;
-        }
         (!shops || shops.length === 0) && dispatch(fetchShops(authToken));
+        // const timeout = setTimeout(() => {
+        //     firstMountRef.current = false
+        // }, 1500)
+
+        // return () => clearTimeout(timeout)
     }, [location.pathname]);
 
 
     useEffect(() => {
+        let timeout;
         if (addShopRequestStatus.isSuccess) {
             dispatch(fetchShops(authToken))
             //@ts-ignore
             dispatch(fetchFilters(authToken));
             setAddShopRequestStatus(initRequestStatus);
         }
+        if (addShopRequestStatus.isError) {
+            timeout = setTimeout(() => {setAddShopRequestStatus(initRequestStatus);}, 2000);
+        }
     }, [addShopRequestStatus]);
+
+    useEffect(() => {
+        //@ts-ignore
+        dispatch(fetchFilters({authToken, shopsData: shops}));
+    }, [shops])
+
+    // Отслеживание видимости карточки добавления магазина
+    useEffect(() => {
+        const element = addShopBlockRef.current;
+        if (!element) return;
+
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                setIsMiniCardVisible(!entry.isIntersecting);
+            },
+            {
+                threshold: 0.1, // 10% видимости достаточно
+                rootMargin: '-50px 0px -50px 0px' // небольшой отступ от краев
+            }
+        );
+
+        observer.observe(element);
+
+        return () => {
+            observer.unobserve(element);
+        };
+    }, []);
 
     return (
         <GeneralLayout
@@ -116,12 +147,13 @@ const LinkedShopsPage = () => {
 
             <div className={styles.page__layout}>
                 {shops && shops.length > 0 && [...shops].sort((a, b) => a.id - b.id).map((shop) => (
-                    <div 
-                        key={shop.id} 
+                    <div
+                        key={shop.id}
                         className={styles.shopCardWrapper}
-                        style={{
-                            '--shop-id': `shop-card-${shop.id}`
-                        } as React.CSSProperties}
+                        // className={firstMountRef.current ? styles.shopCardWrapper : ''}
+                        // style={{
+                        //    '--shop-id': `shop-card-${shop.id}`
+                        // } as React.CSSProperties}
                     >
                         <RadarShopCard
                             shop={shop}
@@ -131,7 +163,10 @@ const LinkedShopsPage = () => {
                         />
                     </div>
                 ))}
-                <div className={`${styles.addShopBlock} ${styles.addShopBlock_animated}`}>
+                <div
+                    ref={addShopBlockRef}
+                    className={`${styles.addShopBlock} ${styles.addShopBlock_animated}`}
+                >
                     <div className={styles.addShopBlock__header}>
                         <svg width="46" height="46" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <rect width="60" height="60" rx="10" fill="#5329FF" fillOpacity="0.15" />
@@ -201,11 +236,25 @@ const LinkedShopsPage = () => {
 
             {/* Tax setup modal */}
             <TaxSetupModal
-                 setAddAndEditModalState={setAddAndEditModalState}
-                 addAndEditModalState={addAndEditModalState}
-                 addShopRequestStatus={addShopRequestStatus}
-                 submitHandler={addOrEditSubmitHandler}
+                setAddAndEditModalState={setAddAndEditModalState}
+                addAndEditModalState={addAndEditModalState}
+                addShopRequestStatus={addShopRequestStatus}
+                submitHandler={addOrEditSubmitHandler}
             />
+
+            {/* Mini add shop card */}
+            {isMiniCardVisible && (
+                <button
+                    className={styles.miniAddShopCard}
+                    onClick={() => setAddAndEditModalState({ type: 'add' })}
+                    disabled={isDemoMode}
+                    title={isDemoMode && 'Функция доступна для пользователей с подпиской'}
+                >
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 4V20M4 12H20" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                </button>
+            )}
 
         </GeneralLayout>
     );
@@ -519,15 +568,15 @@ const EditAndCreateModal = ({
     )
 }
 
-const TaxSetupModal = ({  
+const TaxSetupModal = ({
     setAddAndEditModalState,
     addAndEditModalState,
     addShopRequestStatus,
-    submitHandler 
+    submitHandler
 }) => {
     const [form] = Form.useForm();
 
-    
+
     useEffect(() => {
         if (addAndEditModalState?.type === 'tax' && addAndEditModalState.shop) {
             form.setFieldValue('tax', addAndEditModalState?.shop?.tax);
@@ -564,7 +613,7 @@ const TaxSetupModal = ({
                     <div className={styles.taxModal__header}>
                         <h2 className={styles.taxModal__title}>Установка налога</h2>
                     </div>
-                    
+
                     <p className={styles.taxModal__description}>
                         Введите процент налога, который наша система будет удерживать в расчетах от ваших показателей
                     </p>
