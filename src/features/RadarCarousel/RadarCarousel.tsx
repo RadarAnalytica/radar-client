@@ -170,6 +170,16 @@ export const RadarCarousel: React.FC<ICarouselProps> = ({
                     e.stopPropagation();
                     return;
                 }}
+                onWheel={(e) => {
+                    if (!scrollable) return
+                    // Определяем основное направление скролла
+                    const isHorizontalScroll = Math.abs(e.deltaX) > Math.abs(e.deltaY);
+                    const delta = isHorizontalScroll ? e.deltaX : e.deltaY;
+
+                    // delta > 0 - скролл вправо/вниз  
+                    // delta < 0 - скролл влево/вверх
+                    const scrollDirection = delta > 0 ? 'right' : 'left';
+                }}
             >
                 {carouselContent.map((_, index) => (
                     <div
