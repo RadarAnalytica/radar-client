@@ -1,0 +1,111 @@
+.carousel {
+    width: 100%;
+    border-radius: 16px;
+    overflow: hidden;
+    position: relative;
+}
+
+.carousel__container {
+    height: 100%;
+    display: flex;
+    overflow-x: hidden;
+    scroll-snap-type: x mandatory;
+    min-width: 100%;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    position: relative;
+}
+
+.carousel__container::-webkit-scrollbar {
+    display: none;
+}
+
+.carosuel__contentWrapper {
+    width: 100%;
+    height: 100%;
+    scroll-snap-align: center;
+    scroll-padding-inline: 25%;
+    flex: 1 0 auto
+}
+
+.carousel__controls {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    background-color: #1A1A1A0D;
+    backdrop-filter: blur(2px);
+    padding: 6px 20px;
+    border-radius: 20px;
+}
+
+.carousel__controlButton {
+    background-color: transparent;
+    height: 24px;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: max-content;
+    padding: 0 6px;
+}
+
+.carousel__controlButton div {
+    background-color: black;
+    width: 20px;
+    height: 4px;
+    border-radius: 4px;
+    max-width: 4px;
+    transition: all .2s ease;
+    border: none;
+}
+
+.carousel__controlButton_active div {
+    display: flex;
+    align-items: center;
+    max-width: 20px;
+    transform-origin: 100% 100% 100%;
+}
+.carousel__controlButton_active:first-of-type div {
+    display: flex;
+    align-items: center;
+    max-width: 20px;
+    transform-origin: 0% 0% 0%;
+}
+
+.carousel_arrowControlButton {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: none;
+    background-color: #1A1A1A0D;
+    backdrop-filter: blur(2px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.carousel__progressBar {
+    height: 2px;
+    width: 18px;
+    max-width: 2px;
+    border-radius: 2px;
+    background-color: white;
+}
+
+.carousel_arrowControlButton_left {
+    left: 12px
+}
+.carousel_arrowControlButton_right {
+    right: 12px
+}
+.carousel_arrowControlButton_right svg {
+    transform: rotate(180deg);
+}

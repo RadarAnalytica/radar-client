@@ -9,34 +9,38 @@ import NoSubscriptionWarningBlock from '@/components/sharedComponents/noSubscrip
 import { OnboardingWidget } from '@/widgets';
 import { useContext } from 'react';
 import AuthContext from '@/service/AuthContext';
+import { GeneralLayout } from '@/shared';
+import { RadarCarousel } from '@/features';
+
+const mock = ['lightgray', 'blue', 'red', 'green']
 
 export default function MainPage() {
+    
     const { isDemoMode } = useDemoMode();
     const { user } = useContext(AuthContext);
     return (
-        <main className={styles.page}>
-            <MobilePlug />
-
-            <section className={styles.page__sideNavWrapper}>
-                <Sidebar />
-            </section>
-
+        <GeneralLayout
+            headerProps={{
+                title: 'Главная',
+                hasShadow: false
+            }}
+        >
             <section className={styles.page__content}>
-                <div className={styles.page__headerWrapper}>
-                    <Header title='Главная' hasShadow={false} />
-                </div>
 
                 {user?.subscription_status === null && !user?.is_onboarded && !user?.is_test_used && <NoSubscriptionWarningBlock isOnMainPage />}
                 {user?.subscription_status === 'test' && !user?.is_onboarded && <OnboardingWidget />}
 
                 <div className={styles.page__content__widgets}>
-                    <FeaturesWidget />
+                    {/* <FeaturesWidget /> */}
+                    <RadarCarousel
+                        data={mock}
+                    />
                     <ArticlesWidget />
                 </div>
 
                 <VideoWidgetOneLine />
                 <Banner.Bottom />
             </section>
-        </main>
-    );
+        </GeneralLayout>
+    )
 }
