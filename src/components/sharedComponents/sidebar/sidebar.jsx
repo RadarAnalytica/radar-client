@@ -1,8 +1,10 @@
 import { useContext } from 'react';
 import styles from './sidebar.module.css';
 import { Link } from 'react-router-dom';
-import logo from '../../../assets/logo.png';
-import smallLogo from '../../../assets/small_logo.png';
+//import logo from '../../../assets/logo.png';
+import logo from '../../../assets/logo_Xmas.png';
+// import smallLogo from '../../../assets/small_logo.png';
+import smallLogo from '../../../assets/small_logo_christmas.png';
 import Dropdown from './dropdown/dropdown';
 import Support from './supportBlock/support';
 import NestedLink from './nestedLink/nestedLink';
