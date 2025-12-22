@@ -97,7 +97,7 @@
 }
 .sidebar__mainLink_bigVisible {
     text-decoration: none;
-    transform: translateX(0px) scale(1);
+    transform: translateX(0px) scale(1.2);
     transition: all 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.25);
 }
 .sidebar__mainLink_smallHidden {
