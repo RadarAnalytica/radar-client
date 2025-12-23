@@ -708,6 +708,8 @@ const WeeklyReportByGoods = () => {
                     'wb_commission',
                     'acquiring',
                     'logistics_total',
+                    'logistics_straight',
+                    'logistics_reverse',
                     'compensation_defects',
                     'compensation_damage',
                     'storage',
