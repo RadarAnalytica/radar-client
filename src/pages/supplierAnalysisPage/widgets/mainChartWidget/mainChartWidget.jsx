@@ -29,13 +29,13 @@ const MainChartWidget = ({ id, dataType, dataHandler }) => {
     const dispatch = useAppDispatch();
     const [chartControls, setChartControls] = useState(undefined);
     const [normilizedChartData, setNormilizedChartData] = useState();
-    const { selectedRange } = useAppSelector(store => store.filters);
+    const { selectedRange, isFiltersLoaded } = useAppSelector(store => store.filters);
     const widgetData = useAppSelector(store => store.supplierAnalysis[dataType]);
 
 
     //data fetching
     useEffect(() => {
-        if (selectedRange && id) {
+        if (selectedRange && id && isFiltersLoaded) {
             let datesRange;
 
             if (selectedRange.period) {
@@ -54,7 +54,7 @@ const MainChartWidget = ({ id, dataType, dataHandler }) => {
             };
             dispatch(dataHandler(reqData));
         }
-    }, [selectedRange, id]);
+    }, [selectedRange, id, isFiltersLoaded]);
 
     useEffect(() => {
         const chartControlsFromLocalStorage = JSON.parse(localStorage.getItem('SuppierAnalysysMainChartControls'));
@@ -98,7 +98,7 @@ const MainChartWidget = ({ id, dataType, dataHandler }) => {
         }
     }, [widgetData.data, chartControls]);
 
-    if (widgetData.isLoading) {
+    if (widgetData.isLoading || !isFiltersLoaded) {
         return (
             <div className={styles.loaderWrapper}>
                 <span className='loader'></span>

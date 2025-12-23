@@ -41,6 +41,7 @@ const SupplierIdPage = () => {
     const { isDemoMode } = useDemoMode();
     const dispatch = useAppDispatch();
     const mainSupplierData = useAppSelector(selectMainSupplierData);
+    const { isFiltersLoaded } = useAppSelector(store => store.filters);
     const isAnyDataLoading = useAppSelector(store => store.supplierAnalysis.isAnyDataLoading);
     const params = useParams();
     const navigate = useNavigate();
@@ -59,7 +60,7 @@ const SupplierIdPage = () => {
         // если его нет то редиректим
         if (!id) { navigate('/supplier-analysis'); return; };
         // если айди найден и уже есть данные поставщика и айди совпадают то ничего не делаем
-        if (mainSupplierData && mainSupplierData.supplier_id === parseInt(id)) { return; } else {
+        if (mainSupplierData && mainSupplierData.supplier_id === parseInt(id)) { return; } else if (isFiltersLoaded) {
             const supplierChecker = async (id) => {
                 // запускаем поиск
                 const res = await ServiceFunctions.getSupplierAnalysisSuggestData(id, () => { });
@@ -83,7 +84,7 @@ const SupplierIdPage = () => {
             // если все выше не прошло - проверяем
             supplierChecker(id);
         }
-    }, [params, mainSupplierData]);
+    }, [params, mainSupplierData, isFiltersLoaded]);
 
 
     //сброс при анмаунте
@@ -134,7 +135,7 @@ const SupplierIdPage = () => {
                                 articleSelect={false}
                                 groupSelect={false}
                                 tempPageCondition='supplier'
-                                isDataLoading={isAnyDataLoading}
+                                isDataLoading={isAnyDataLoading || !isFiltersLoaded}
                                 maxCustomDate={maxDate}
                             />
                         </div>

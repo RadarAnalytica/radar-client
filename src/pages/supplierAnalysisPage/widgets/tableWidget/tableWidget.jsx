@@ -120,7 +120,7 @@ const TableWidget = ({
 }) => {
     const dispatch = useAppDispatch();
     const containerRef = useRef(null);
-    const { selectedRange } = useAppSelector(store => store.filters);
+    const { selectedRange, isFiltersLoaded } = useAppSelector(store => store.filters);
     const currentBrand = useAppSelector(selectSupplierCurrentBrand);
     const { data: tableData, isLoading, isError, isSuccess, message, pagination: paginationConfig, sort } = useAppSelector(state => selectSupplierAnalysisDataByType(state, dataType));
     
@@ -208,25 +208,25 @@ const TableWidget = ({
 
     //data fetching (all tables except 'products')
     useEffect(() => {
-        if (dataType !== 'byBrandsTableData') {
+        if (dataType !== 'byBrandsTableData' && isFiltersLoaded) {
             const requestObject = getRequestObject(id, selectedRange, paginationConfig, sort, currentBrand, dataType, hasPagination);
             requestObject && dispatch(dataHandler({ data: requestObject, hasLoadingStatus: true }));
         }
-    }, [id, selectedRange, paginationConfig?.page, sort, dataType]);
+    }, [id, selectedRange, paginationConfig?.page, sort, dataType, isFiltersLoaded]);
 
     //data fetching 'products' table
     useEffect(() => {
-        if (dataType === 'byBrandsTableData') {
+        if (dataType === 'byBrandsTableData' && isFiltersLoaded) {
             const requestObject = getRequestObject(id, selectedRange, paginationConfig, sort, currentBrand, dataType, hasPagination);
             requestObject && dispatch(dataHandler({ data: requestObject, hasLoadingStatus: true }));
         }
-    }, [id, selectedRange, paginationConfig?.page, sort, currentBrand, dataType, hasPagination]);
+    }, [id, selectedRange, paginationConfig?.page, sort, currentBrand, dataType, hasPagination, isFiltersLoaded]);
 
     // -------------------------------------------------------//
 
 
     // ---------------------- loading layout -----------------//
-    if (!tableData && isLoading) {
+    if (isLoading || !isFiltersLoaded) {
         return (
             <div className={styles.widget}>
                 <div className={styles.loaderWrapper} style={{ height: containerHeight }}>
@@ -307,101 +307,6 @@ const TableWidget = ({
             </div>
         </div>
     )
-
-    return (
-        <div className={styles.widget}>
-            <div className={!title && !customHeader && !downloadButton ? `${styles.widget__header} ${styles.widget__header_hidden}` : styles.widget__header}>
-                {!customHeader && <p className={styles.widget__title} title={title}>{title}</p>}
-                {customHeader && customHeader}
-                {downloadButton &&
-                    <DownloadButton />
-                }
-            </div>
-
-
-            <div className={styles.widget__tableWrapper} ref={containerRef}>
-                {tableData && isLoading &&
-                    <div className={styles.dataExistLoader}>
-                        <span className='loader'></span>
-                    </div>
-                }
-                <ConfigProvider
-                    renderEmpty={() => (<div>Нет данных</div>)}
-                    theme={{
-                        token: {
-                            colorPrimary: '#5329FF',
-                            colorText: '#5329FF',
-                            //lineWidth: 0,
-                        },
-                        components: {
-                            Table: {
-                                headerColor: '#8c8c8c',
-                                headerBg: '#f7f6fe',
-                                headerBorderRadius: 20,
-                                selectionColumnWidth: 32,
-                                cellFontSize: 16,
-                                borderColor: '#e8e8e8',
-                                cellPaddingInline: 16,
-                                cellPaddingBlock: 17,
-                                bodySortBg: '#f7f6fe',
-                                headerSortActiveBg: '#e7e1fe',
-                                headerSortHoverBg: '#e7e1fe',
-                                rowSelectedBg: '#f7f6fe',
-                                rowSelectedHoverBg: '#e7e1fe',
-                                colorText: '#1A1A1A',
-                                lineHeight: 1.2,
-                                fontWeightStrong: 500
-                            },
-                            Pagination: {
-                                itemActiveBg: '#EEEAFF',
-                                itemBg: '#F7F7F7',
-                                itemColor: '#8C8C8C',
-                            },
-                            Checkbox: {
-                                colorBorder: '#ccc',
-                                colorPrimary: '#5329ff',
-                                colorPrimaryBorder: '#5329ff',
-                                colorPrimaryHover: '#5329ff',
-                            },
-                        },
-                    }}
-                >
-                    {tableData &&
-                        <Table
-                            columns={tableConfig.map(_ => {
-                                if (sort && _.dataIndex === sort.sort_field) {
-                                    return {
-                                        ..._,
-                                        sortOrder: sort.sort_order
-                                    };
-                                } else {
-                                    return _;
-                                }
-                            })}
-                            dataSource={tableData?.map((_, id) => ({ ..._, key: id }))}
-                            pagination={hasPagination && paginationConfig ? {
-                                position: ['bottomLeft'],
-                                defaultCurrent: 1,
-                                current: paginationConfig?.page,
-                                total: paginationConfig?.total * paginationConfig?.limit,
-                                pageSize: paginationConfig?.limit,
-                                showSizeChanger: false,
-                                showQuickJumper: true,
-                                hideOnSinglePage: true,
-                            } : false}
-                            rowSelection={false}
-                            showSorterTooltip={false}
-                            sticky={{ offsetHeader: -30, offsetScroll: -0 }}
-                            onChange={tableChangeHandler}
-                            preserveScrollPosition={false}
-                            scroll={{ x: tableConfig?.reduce((acc, a) => acc += a.width, 0) + 16, y: `calc(${containerHeight} + 16px)`, scrollToFirstRowOnChange: true, }}
-                        />
-                    }
-                </ConfigProvider>
-            </div>
-        </div>
-    );
-
 };
 
 const CopyButton = ({ url }) => {

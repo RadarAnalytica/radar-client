@@ -57,11 +57,11 @@ const BarsWidget = ({ dataHandler, dataType, id }) => {
     const dispatch = useAppDispatch();
     const widgetData = useAppSelector(state => selectSupplierAnalysisDataByType(state, dataType));
     const { isSidebarHidden } = useAppSelector(store => store.utils);
-    const { selectedRange } = useAppSelector(store => store.filters);
+    const { selectedRange, isFiltersLoaded } = useAppSelector(store => store.filters);
 
 
     useEffect(() => {
-        if (selectedRange && id) {
+        if (selectedRange && id && isFiltersLoaded) {
             let datesRange;
 
             if (selectedRange.period) {
@@ -80,9 +80,9 @@ const BarsWidget = ({ dataHandler, dataType, id }) => {
             };
             dispatch(dataHandler(reqData));
         }
-    }, [id, selectedRange]);
+    }, [id, selectedRange, isFiltersLoaded]);
 
-    if (widgetData.isLoading) {
+    if (widgetData.isLoading || !isFiltersLoaded) {
         return (
             <div className={styles.loaderWrapper}>
                 <span className='loader'></span>
