@@ -104,7 +104,7 @@ export const Filters = React.memo(({
   return (
     <div className={styles.filters}>
       <div className={styles.filters__inputsMainWrapper}>
-        {shops && internalActiveFiltersState.activeBrand && weekSelect &&
+        {shops && internalActiveFiltersState?.activeBrand && weekSelect &&
           <div className={styles.filters__inputWrapper}>
             <RadarMultiSelect
               selectId={filters.find((el) => el.shop.id === internalActiveFiltersState.activeBrand.id).weeks.enLabel}

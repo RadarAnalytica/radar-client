@@ -136,6 +136,7 @@ const SupplierIdPage = () => {
                                 tempPageCondition='supplier'
                                 isDataLoading={isAnyDataLoading}
                                 maxCustomDate={maxDate}
+                                uncontrolledMode
                             />
                         </div>
                     </div>

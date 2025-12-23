@@ -112,6 +112,7 @@ const SkuIdPage = () => {
                                 groupSelect={false}
                                 uncontrolledTimeSelect={true}
                                 isDataLoading={dataStatus.isLoading}
+                                uncontrolledMode
                             />
                         </div>
                     </div>
