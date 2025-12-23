@@ -36,7 +36,6 @@ export const Filters = React.memo(({
   const { activeBrand, filters, shops, expenseCategories, activeExpenseCategory } = useAppSelector(store => store.filters);
   const filtersState = useAppSelector(store => store.filters);
   const [internalActiveFiltersState, setInternalActiveFiltersState] = useState(null);
-  console.log(internalActiveFiltersState?.activeBrandName)
 
   const internalFiltersStateUpdateHandler = (key, value) => {
     if (key === 'activeBrand') {
@@ -101,21 +100,22 @@ export const Filters = React.memo(({
   }, [filtersState, uncontrolledMode]);
 
 
+
   return (
     <div className={styles.filters}>
       <div className={styles.filters__inputsMainWrapper}>
-        {shops && activeBrand && weekSelect &&
+        {shops && internalActiveFiltersState.activeBrand && weekSelect &&
           <div className={styles.filters__inputWrapper}>
             <RadarMultiSelect
-              selectId={filters.find((el) => el.shop.id === activeBrand.id).weeks.enLabel}
-              label={`${filters.find((el) => el.shop.id === activeBrand.id).weeks.ruLabel}:`}
-              value={internalActiveFiltersState?.activeWeeks}
-              optionsData={filters.find((el) => el.shop.id === activeBrand.id).weeks.data}
+              selectId={filters.find((el) => el.shop.id === internalActiveFiltersState.activeBrand.id).weeks.enLabel}
+              label={`${filters.find((el) => el.shop.id === internalActiveFiltersState.activeBrand.id).weeks.ruLabel}:`}
+              value={internalActiveFiltersState?.activeWeeks.map(_ => _.value)}
+              optionsData={filters.find((el) => el.shop.id === internalActiveFiltersState.activeBrand.id).weeks.data}
               isDataLoading={isDataLoading}
               disabled={disabled}
               hasDropdownSearch
               actionHandler={(value) => {
-                const currOptions = filters.find((el) => el.shop.id === activeBrand.id).weeks.data;
+                const currOptions = filters.find((el) => el.shop.id === internalActiveFiltersState.activeBrand.id).weeks.data;
                 const normalizedValue = currOptions.filter(_ => value.includes(_.value));
                 internalFiltersStateUpdateHandler('activeWeeks', normalizedValue);
               }}

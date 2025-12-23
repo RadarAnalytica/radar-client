@@ -77,7 +77,6 @@ export const RadarMultiSelect: React.FC<IRadarMultiSelectProps> = ({
 
 
     const selectHandler = (value: string | number) => {
-        console.log('value', value);
         if (Array.isArray(value) && value.length > 0) {
             const newValue = value.filter(item => item !== 'Все');
             setSelectState(newValue);
@@ -129,7 +128,12 @@ export const RadarMultiSelect: React.FC<IRadarMultiSelectProps> = ({
                         suffixIcon={<SelectIcon />}
                         className={styles.plainSelect__select}
                         options={getOnlyUniqueOptions(optionsData)
-                            .filter((_) => typeof _.value === 'string' ? _.value.toLowerCase().includes(searchState.toLowerCase()) : true)
+                            .filter((_) => {
+                                if (selectId === 'weeks') {
+                                    return typeof _.label === 'string' ? _.label.toLowerCase().includes(searchState.toLowerCase()) : true;
+                                }
+                                return typeof _.value === 'string' ? _.value.toLowerCase().includes(searchState.toLowerCase()) : true;
+                            })
                             .map((option, id) => ({ ...option, key: JSON.stringify(option) }))
                         }
                         value={selectState}
