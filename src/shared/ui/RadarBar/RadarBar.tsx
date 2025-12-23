@@ -141,10 +141,15 @@ export const RadarBar: React.FC<RadarBarProps> = ({
     dragHandle
 }) => {
 
+
     const hasBackgroundClass = useMemo(() => {
-        if (!hasColoredBackground || !compareValue?.comparativeValue) return false;
-        if (hasColoredBackground && compareValue?.comparativeValue && negativeDirection) {
-            return isValueBelowZeroFunction(compareValue?.comparativeValue, negativeDirection)
+        let value = compareValue?.comparativeValue;
+        if (value && typeof value === 'string') {
+            value = parseInt(value)
+        }
+        if (!hasColoredBackground || !value) return false;
+        if (hasColoredBackground && value && negativeDirection) {
+            return isValueBelowZeroFunction(value, negativeDirection)
         }
     }, [hasColoredBackground, negativeDirection, compareValue?.comparativeValue])
 
