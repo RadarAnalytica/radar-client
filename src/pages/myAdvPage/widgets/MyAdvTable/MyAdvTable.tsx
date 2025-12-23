@@ -123,9 +123,11 @@ const MyAdvTable: React.FC<MyAdvTableProps> = ({
               <span className={styles.companyName}>
                 {value}
               </span>
-              <button className={styles.companyButton} onClick={() => handleCompanyClick(record.company_id)}>
-                Смотреть подробнее
-              </button>
+              {!companyId && 
+                <button className={styles.companyButton} onClick={() => handleCompanyClick(record.company_id)}>
+                  Смотреть подробнее
+                </button>
+              }
             </div>
           )
       );
