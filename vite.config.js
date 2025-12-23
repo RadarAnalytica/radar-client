@@ -9,6 +9,7 @@ import { resolve } from 'path';
 export default defineConfig({
   root: './',
   build: {
+    sourcemap: 'hidden',
     rollupOptions: {
       input: './index.html', // Specify entry point
       // output: {
