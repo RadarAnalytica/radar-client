@@ -18,19 +18,23 @@ const initSortState = {
 
 const customCellRender = (value, record, index, dataIndex) => {
 
+    const [isImageVisible, setIsImageVisible] = useState(true)
+
     if (dataIndex === 'date') {
         return <>{moment(value).format('DD.MM.YYYY')}</>
     }
-    if (dataIndex === 'color_name' || (dataIndex === 'name' && record.photo_url)) {
+    if (dataIndex === 'color_name' || (dataIndex === 'name')) {
         return (
             <div className={styles.nameCell}>
                 <div className={styles.nameCell__header}>
                     <div className={styles.nameCell__imgWrapper}>
-                        <img
-                            src={record.photo_url}
-                            alt={record.color_name}
-                            onError={e => { e.target.style.display = 'none'; }}
-                        />
+                        {isImageVisible && record.photo_url &&
+                            <img
+                                src={record.photo_url}
+                                alt={record.color_name}
+                                onError={e => { e.target.style.display = 'none'; setIsImageVisible(false)}}
+                            />
+                        }
                     </div>
                     <div className={styles.nameCell__titleBlock}>
                         <p className={styles.nameCell__title} title={value}>{value}</p>
@@ -166,9 +170,9 @@ const TableWidget = ({ data, tableConfig, minRowHeight = '40px' }) => {
                     stickyHeader
                     scrollContainerRef={containerRef}
                     bodyCellClassName={styles.bodyCellIndex}
-                    headerStyle={{ zIndex: 3}}
-                    bodyCellWrapperStyle={{ minHeight: minRowHeight}}
-                    headerCellWrapperStyle={{ minHeight: '50px'}}
+                    headerStyle={{ zIndex: 3 }}
+                    bodyCellWrapperStyle={{ minHeight: minRowHeight }}
+                    headerCellWrapperStyle={{ minHeight: '50px' }}
                 />
             </div>
         </div>
