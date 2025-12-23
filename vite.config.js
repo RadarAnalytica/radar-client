@@ -13,6 +13,7 @@ export default defineConfig({
     globals: true,
   },
   build: {
+    sourcemap: 'hidden',
     rollupOptions: {
       input: './index.html', // Specify entry point
       // output: {

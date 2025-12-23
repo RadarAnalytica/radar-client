@@ -180,7 +180,7 @@ export default function ExpenseFormModal({
 
 	useEffect(() => {
 		if (Array.isArray(filters)) {
-			const targetFilters = filters.slice(1);
+			const targetFilters = [...filters];
 			let shops = [], brands = [], vendor_codes = [];
 
 			targetFilters.forEach(filter => {
