@@ -99,7 +99,7 @@ const BasicDataFormBlock = ({ form, setMpMainFee, isProductFromToken, setIsProdu
             <ConfigProvider
                 theme={{
                     token: {
-                        fontFamily: 'Mulish',
+                        fontFamily: 'Manrope',
                         colorBgContainer: 'white',
                         colorPrimary: 'black',
                         colorPrimaryActive: 'black'

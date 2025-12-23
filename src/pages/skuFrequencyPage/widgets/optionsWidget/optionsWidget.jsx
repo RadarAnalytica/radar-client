@@ -116,7 +116,7 @@ const OptionsWidget = () => {
             <ConfigProvider
                 theme={{
                     token: {
-                        fontFamily: 'Mulish',
+                        fontFamily: 'Manrope',
                         fontSize: 12
                     },
                     components: {
@@ -156,7 +156,7 @@ const OptionsWidget = () => {
                                     colorBgContainer: 'white',
                                     colorBorder: '#5329FF1A',
                                     borderRadius: 8,
-                                    fontFamily: 'Mulish',
+                                    fontFamily: 'Manrope',
                                     fontSize: 12,
                                     fontWeight: 500,
                                 },
@@ -198,7 +198,7 @@ const OptionsWidget = () => {
                                     colorBgContainer: 'white',
                                     colorBorder: '#5329FF1A',
                                     borderRadius: 8,
-                                    fontFamily: 'Mulish',
+                                    fontFamily: 'Manrope',
                                     fontSize: 12,
                                     fontWeight: 500,
                                 },

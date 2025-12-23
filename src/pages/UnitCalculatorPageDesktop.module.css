@@ -270,7 +270,7 @@
 }
 
 .result__title {
-    font-family: Mulish;
+    font-family: Manrope;
     font-weight: 700;
     font-size: 24px;
     line-height: 30.12px;
@@ -289,7 +289,7 @@
     justify-content: flex-start;
     align-items: flex-start;
     gap: 10px;
-    font-family: Mulish;
+    font-family: Manrope;
     font-weight: 500;
     font-size: 16px;
     line-height: 20px;
@@ -315,7 +315,7 @@
     align-items: center;
     padding-bottom: 8px;
     border-bottom: 1px solid #E8E8E8;
-    font-family: Mulish;
+    font-family: Manrope;
     font-weight: 600;
     font-size: 16px;
     line-height: 20px;
@@ -327,7 +327,7 @@
 }
 
 .result__tableRow > span {
-    font-family: Mulish;
+    font-family: Manrope;
     font-weight: 700;
     font-size: 18px;
     line-height: 23px;
@@ -359,7 +359,7 @@
 }
 
 .result__mainTablePrice {
-    font-family: Mulish;
+    font-family: Manrope;
     font-weight: 700;
     font-size: 24px;
     line-height: 30px;
@@ -368,7 +368,7 @@
 }
 
 .result__mainTableText {
-    font-family: Mulish;
+    font-family: Manrope;
     font-weight: 600;
     font-size: 16px;
     line-height: 20px;
@@ -393,7 +393,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    font-family: Mulish;
+    font-family: Manrope;
     font-weight: 500;
     font-size: 14px;
     line-height: 18px;

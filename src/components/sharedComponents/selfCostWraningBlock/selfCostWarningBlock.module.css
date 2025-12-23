@@ -19,7 +19,7 @@
 }
 
 .block__title {
-    font-family: 'Mulish';
+    font-family: 'Manrope';
     font-weight: 700;
     font-size: 18px;
     line-height: 1;
@@ -28,7 +28,7 @@
     padding: 0;
 }
 .block__text {
-    font-family: 'Mulish';
+    font-family: 'Manrope';
     font-weight: 400;
     font-size: 14px;
     line-height: 1.5;
@@ -38,7 +38,7 @@
 }
 
 .block__addButton {
-    font-family: 'Mulish';
+    font-family: 'Manrope';
     font-weight: 700;
     font-size: 14px;
     line-height: 1;

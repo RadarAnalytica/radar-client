@@ -41,7 +41,7 @@ function AddRnpModalSearch({
                 fontSize: 14,
                 contentFontSizeLG: 16,
                 controlHeightLG: 38,
-                fontFamily: 'Mulish',
+                fontFamily: 'Manrope',
             },
             components: {
               Form: {

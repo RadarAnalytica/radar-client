@@ -173,7 +173,7 @@
     width: 60px;
     height: 60px;
     transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-     font-family: Mulish;
+     font-family: Manrope;
     font-weight: 600;
     font-size: 22px;
     line-height: 12px;
@@ -235,7 +235,7 @@
     align-items: center;
     gap: 16px;
     min-width: 700px;
-    font-family: Mulish;
+    font-family: Manrope;
     font-weight: 700;
     font-style: Bold;
     font-size: 16px;
@@ -299,7 +299,7 @@
 .addShopBlock__title {
     margin: 0;
     padding: 0;
-    font-family: Mulish;
+    font-family: Manrope;
     font-weight: 600;
     font-size: 22px;
     line-height: 100%;
@@ -308,7 +308,7 @@
 }
 
 .addShopBlock__text {
-    font-family: Mulish;
+    font-family: Manrope;
     font-weight: 500;
     font-size: 14px;
     line-height: 150%;
@@ -370,7 +370,7 @@
 .modal__title {
     margin: 0;
     padding: 0;
-    font-family: Mulish;
+    font-family: Manrope;
     font-weight: 600;
     font-size: 22px;
     line-height: 100%;
@@ -405,7 +405,7 @@
     display: flex;
     gap: 16px;
     align-items: center;
-    font-family: Mulish;
+    font-family: Manrope;
     font-weight: 700;
     font-style: Bold;
     font-size: 24px;
@@ -415,7 +415,7 @@
 }
 
 .deleteModal__text {
-    font-family: Mulish;
+    font-family: Manrope;
     font-weight: 500;
     font-style: Medium;
     font-size: 20px;
@@ -460,7 +460,7 @@
 .taxModal__title {
     margin: 0;
     padding: 0;
-    font-family: Mulish;
+    font-family: Manrope;
     font-weight: 600;
     font-size: 22px;
     line-height: 100%;
@@ -471,7 +471,7 @@
 .taxModal__description {
     margin: 0;
     padding: 0;
-    font-family: Mulish;
+    font-family: Manrope;
     font-weight: 400;
     font-size: 14px;
     line-height: 150%;

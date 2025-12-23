@@ -56,7 +56,7 @@ const DatePickerCustomDropdown = (props) => {
                         colorBgContainer: 'white',
                         colorBorder: 'white !important',
                         borderRadius: 8,
-                        fontFamily: 'Mulish',
+                        fontFamily: 'Manrope',
                         colorTextPlaceholder: 'black !important',
                         fontSize: 14,
                         controlOutlineWidth: 0,

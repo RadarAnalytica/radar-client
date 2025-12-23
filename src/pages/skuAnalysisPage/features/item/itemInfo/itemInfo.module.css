@@ -19,7 +19,7 @@
 }
 
 .info__row {
-    font-family: Mulish;
+    font-family: Manrope;
     font-weight: 500;
     font-size: 14px;
     line-height: 160%;
@@ -51,7 +51,7 @@
     background: #F6F4FF;
     padding: 10px;
     border-radius: 8px;
-    font-family: Mulish;
+    font-family: Manrope;
     font-weight: 600;
     font-size: 14px;
     line-height: 160%;
@@ -70,7 +70,7 @@
 }
 
 .info__link {
-    font-family: Mulish;
+    font-family: Manrope;
     font-weight: 500;
     font-size: 16px;
     line-height: 100%;

@@ -126,6 +126,6 @@ export const COLUMNS = [
 	key: _.dataIndex,
 	units: _.dataIndex !== 'week_label' && !_.units ? ' ' : _.units,
 	style: {
-		fontFamily: 'Manrope, Mulish, Arial, sans-serif'
+		fontFamily: 'Manrope, Manrope, Arial, sans-serif'
 	}
 }));

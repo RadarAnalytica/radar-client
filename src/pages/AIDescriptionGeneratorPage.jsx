@@ -534,7 +534,7 @@ const AiDescriptionGeneratorPage = () => {
               theme={{
                 token: {
                   colorPrimary: '#5329FF',
-                  fontFamily: 'Mulish',
+                  fontFamily: 'Manrope',
                 },
                 components: {
                   Form: {

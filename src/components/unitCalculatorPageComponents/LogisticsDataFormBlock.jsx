@@ -85,7 +85,7 @@ const LogisticsDataFormBlock = ({ form, current_storage_logistic_price, buyout_l
                 <ConfigProvider
                     theme={{
                         token: {
-                            fontFamily: 'Mulish',
+                            fontFamily: 'Manrope',
                             colorBgContainer: 'white',
                             //colorBorder: 'white',
                             // colorTextLightSolid: '#000'
@@ -108,7 +108,7 @@ const LogisticsDataFormBlock = ({ form, current_storage_logistic_price, buyout_l
                     <ConfigProvider
                         theme={{
                             token: {
-                                fontFamily: 'Mulish',
+                                fontFamily: 'Manrope',
                                 colorBgContainer: 'white',
                                 colorPrimary: 'black',
                                 colorPrimaryActive: 'black'

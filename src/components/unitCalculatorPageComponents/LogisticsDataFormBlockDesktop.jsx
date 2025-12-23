@@ -86,7 +86,7 @@ const LogisticsDataFormBlockDesktop = ({ form, current_storage_logistic_price, b
                 <ConfigProvider
                     theme={{
                         token: {
-                            fontFamily: 'Mulish',
+                            fontFamily: 'Manrope',
                             colorBgContainer: 'white',
                             //colorBorder: 'white',
                             // colorTextLightSolid: '#000'
@@ -112,7 +112,7 @@ const LogisticsDataFormBlockDesktop = ({ form, current_storage_logistic_price, b
                                 colorBgContainer: 'white',
                                 colorBorder: '#5329FF1A',
                                 borderRadius: 8,
-                                fontFamily: 'Mulish',
+                                fontFamily: 'Manrope',
                                 fontSize: 12,
                                 fontWeight: 500,
                             },

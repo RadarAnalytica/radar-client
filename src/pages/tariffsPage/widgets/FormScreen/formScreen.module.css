@@ -25,7 +25,7 @@
 }
 
 .screen__title {
-    font-family: Mulish;
+    font-family: Manrope;
     color: #222;
     letter-spacing: 0px;
     font-weight: 600;
@@ -45,7 +45,7 @@
 }
 
 .screen__formTitle {
-    font-family: Mulish;
+    font-family: Manrope;
     color: #222;
     letter-spacing: 0px;
     font-weight: 600;
@@ -67,7 +67,7 @@
 }
 
 .screen__text {
-    font-family: Mulish;
+    font-family: Manrope;
     color: #222;
     font-weight: 500;
     line-height: 140%;

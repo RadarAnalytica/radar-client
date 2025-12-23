@@ -30,7 +30,7 @@
 .errorBoundary__title {
     margin: 0;
     padding: 0;
-    font-family: Mulish;
+    font-family: Manrope;
     font-weight: 600;
     font-size: 24px;
     line-height: 100%;
@@ -60,7 +60,7 @@
 }
 
 .errorBoundary__telegramText {
-    font-family: Mulish;
+    font-family: Manrope;
     font-weight: 500;
     font-size: 14px;
     line-height: 120%;
@@ -70,7 +70,7 @@
 
 .errorBoundary__telegramLink {
     display: inline-block;
-    font-family: Mulish;
+    font-family: Manrope;
     font-weight: 700;
     font-size: 16px;
     line-height: 100%;
@@ -89,7 +89,7 @@
 
 .errorBoundary__retryButton {
     margin-top: 30px;
-    font-family: Mulish;
+    font-family: Manrope;
     font-weight: 600;
     font-size: 16px;
     line-height: 100%;

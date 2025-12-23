@@ -332,7 +332,7 @@ const EditAndCreateModal = ({
                             theme={{
                                 token: {
                                     colorPrimary: '#5329FF',
-                                    fontFamily: 'Mulish',
+                                    fontFamily: 'Manrope',
                                     fontSize: 12
                                 },
                                 components: {
@@ -416,7 +416,7 @@ const EditAndCreateModal = ({
                                                 fontSize: 14,
                                                 //@ts-ignore
                                                 fontWeight: 600,
-                                                fontFamily: 'Mulish',
+                                                fontFamily: 'Manrope',
                                                 borderRadius: 8,
                                                 controlHeight: 46
                                             },
@@ -480,7 +480,7 @@ const EditAndCreateModal = ({
                                             fontSize: 14,
                                             //@ts-ignore
                                             fontWeight: 600,
-                                            fontFamily: 'Mulish',
+                                            fontFamily: 'Manrope',
                                             borderRadius: 8,
                                             controlHeight: 46
                                         },
@@ -518,7 +518,7 @@ const EditAndCreateModal = ({
                                             fontSize: 14,
                                             //@ts-ignore
                                             fontWeight: 600,
-                                            fontFamily: 'Mulish',
+                                            fontFamily: 'Manrope',
                                             borderRadius: 8,
                                             controlHeight: 46
                                         },
@@ -622,7 +622,7 @@ const TaxSetupModal = ({
                         theme={{
                             token: {
                                 colorPrimary: '#5329FF',
-                                fontFamily: 'Mulish',
+                                fontFamily: 'Manrope',
                                 fontSize: 12
                             },
                             components: {
@@ -691,7 +691,7 @@ const TaxSetupModal = ({
                                             fontSize: 14,
                                             //@ts-ignore
                                             fontWeight: 600,
-                                            fontFamily: 'Mulish',
+                                            fontFamily: 'Manrope',
                                             borderRadius: 8,
                                             controlHeight: 46
                                         },

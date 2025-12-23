@@ -62,7 +62,7 @@ const SearchBlock = () => {
                     theme={{
                         token: {
                             colorPrimary: '#5329FF',
-                            fontFamily: 'Mulish',
+                            fontFamily: 'Manrope',
                             fontSize: 12,
                           
                         },

@@ -59,7 +59,7 @@ export const SettingsModal: React.FC<ISettingsModalProps> = (
         <ConfigProvider
             theme={{
                 token: {
-                    fontFamily: 'Mulish, sans-serif',
+                    fontFamily: 'Manrope, sans-serif',
                     fontSize: 14,
                 },
                 components: {

@@ -55,7 +55,7 @@ export const MonthSelect = ({
                             colorBgContainer: 'white',
                             colorBorder: '#5329FF1A',
                             borderRadius: 8,
-                            fontFamily: 'Mulish',
+                            fontFamily: 'Manrope',
                             fontSize: 14,
                             activeBorderColor: '#5329FF',
                             colorTextDisabled: '#000'

@@ -21,7 +21,7 @@
     align-items: center;
 }
 .header__titleBlock {
-    font-family: Mulish;
+    font-family: Manrope;
     font-weight: 700;
     font-size: 18px;
     line-height: 100%;
@@ -50,7 +50,7 @@
     width: 60%;
     background: #5329FF;
     color: white;
-    font-family: Mulish;
+    font-family: Manrope;
     font-weight: 700;
     font-size: 16px;
     line-height: 100%;
@@ -67,7 +67,7 @@
     width: 60%;
     background: white;
     color: #5329FF !important;
-    font-family: Mulish;
+    font-family: Manrope;
     font-weight: 700;
     font-size: 16px;
     line-height: 100%;
