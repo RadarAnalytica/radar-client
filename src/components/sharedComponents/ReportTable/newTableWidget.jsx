@@ -192,7 +192,7 @@ const TableWidget = ({ loading, columns, data, rowSelection = false, virtual = t
 							idx: [],
 							renderer: customCellRender,
 						}}
-						style={{ fontFamily: 'Mulish', width: 'max-content', tableLayout: 'fixed' }}
+						style={{ fontFamily: 'Manrope', width: 'max-content', tableLayout: 'fixed' }}
 						pagination={false}
 						paginationContainerStyle={{ display: 'none' }}
 						bodyRowClassName={styles.bodyRowSpecial}

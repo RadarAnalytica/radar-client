@@ -234,7 +234,7 @@ const BlogUpdate = ({ categories, post, setPostIdForUpdate, token }) => {
                 colorBgContainer: 'white',
                 colorBorder: '#EAEAF1',
                 borderRadius: 8,
-                fontFamily: 'Mulish',
+                fontFamily: 'Manrope',
                 //fontSize: 16,
                 colorPrimary: 'black'
               },

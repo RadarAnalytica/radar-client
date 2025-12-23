@@ -42,7 +42,7 @@
 }
 
 .widget__title {
-    font-family: Mulish;
+    font-family: Manrope;
     font-weight: 600;
     font-style: Bold;
     font-size: 18px;
@@ -58,7 +58,7 @@
 }
 
 .widget__subtitle {
-    font-family: Mulish;
+    font-family: Manrope;
     font-weight: 500;
     font-style: Medium;
     font-size: 14px;
@@ -153,7 +153,7 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    font-family: Mulish;
+    font-family: Manrope;
     font-weight: 600;
     font-style: SemiBold;
     font-size: 12px;
@@ -198,7 +198,7 @@
 .modal__title {
     margin: 0;
     padding: 0;
-    font-family: Mulish;
+    font-family: Manrope;
     font-weight: 700;
     font-size: 24px;
     line-height: 100%;
@@ -212,7 +212,7 @@
     justify-content: space-between;
     align-items: center;
     gap: 10px;
-    font-family: Mulish;
+    font-family: Manrope;
     font-weight: 500;
     font-style: Medium;
     font-size: 18px;
@@ -229,7 +229,7 @@
 
 .modal__ssLink {
     text-decoration: none;
-    font-family: Mulish;
+    font-family: Manrope;
     font-weight: 700;
     font-style: Bold;
     font-size: 16px;
@@ -261,7 +261,7 @@
 
 
 .form__errorText {
-    font-family: Mulish;
+    font-family: Manrope;
     font-weight: 500;
     font-size: 16px;
     line-height: 150%;

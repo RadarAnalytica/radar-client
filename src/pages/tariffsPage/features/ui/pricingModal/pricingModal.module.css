@@ -101,7 +101,7 @@
 }
 
 .modal__title {
-    font-family: 'Mulish';
+    font-family: 'Manrope';
     color: #222;
     letter-spacing: 0px;
     font-weight: 600;
@@ -126,7 +126,7 @@
 }
 
 .modal__bodyTitle {
-    font-family: 'Mulish';
+    font-family: 'Manrope';
     color: #222;
     letter-spacing: 0px;
     font-weight: 600;
@@ -148,7 +148,7 @@
     }
 }
 .modal__listTitle {
-    font-family: 'Mulish';
+    font-family: 'Manrope';
     color: #222;
     letter-spacing: 0px;
     font-weight: 600;
@@ -179,7 +179,7 @@
     justify-content: center;
     gap: 12px;
     color: white;
-    font-family: 'Mulish';
+    font-family: 'Manrope';
     font-weight: 500;
     font-size: 20px;
     line-height: 140%;
@@ -316,7 +316,7 @@
     display: flex;
     align-items: center;
     gap: 14px;
-    font-family: Mulish;
+    font-family: Manrope;
     font-weight: 500;
     font-size: 22px;
     line-height: 140%;

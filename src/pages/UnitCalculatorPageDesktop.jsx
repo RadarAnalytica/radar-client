@@ -206,12 +206,12 @@ const UnitCalculatorPageDesktop = () => {
                 <ConfigProvider
                     theme={{
                         token: {
-                            fontFamily: 'Mulish',
+                            fontFamily: 'Manrope',
                             colorBorder: 'white',
                             colorBgContainer: 'white',
                             colorBorder: '#5329FF1A',
                             borderRadius: 8,
-                            fontFamily: 'Mulish',
+                            fontFamily: 'Manrope',
                             fontSize: 14,
                             fontWeight: 500,
                             // colorTextLightSolid: '#000'

@@ -18,7 +18,7 @@
 }
 
 .widget__title {
-    font-family: Mulish;
+    font-family: Manrope;
     font-weight: 700;
     font-size: 18px;
     line-height: 100%;
@@ -31,7 +31,7 @@
 .widget__openButton {
     border: none;
     background: transparent;
-    font-family: Mulish;
+    font-family: Manrope;
     font-weight: 600;
     font-size: 14px;
     line-height: 160%;
@@ -70,7 +70,7 @@
 }
 
 .widget__text {
-    font-family: Mulish;
+    font-family: Manrope;
     font-weight: 500;
     font-size: 14px;
     line-height: 160%;
@@ -81,7 +81,7 @@
 }
 
 .widget__link {
-    font-family: Mulish;
+    font-family: Manrope;
     font-weight: 600;
     font-size: 14px;
     line-height: 160%;

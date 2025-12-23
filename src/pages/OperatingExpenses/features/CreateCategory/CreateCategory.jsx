@@ -48,7 +48,7 @@ export default function ModalCreateCategory({
 					colorLink: '#5329ff',
 					colorText: '#1a1a1a',
 					colorBorder: '#e8e8e8',
-					fontFamily: 'Mulish',
+					fontFamily: 'Manrope',
 				},
 				components: {
 					Modal: {},

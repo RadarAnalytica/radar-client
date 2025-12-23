@@ -61,12 +61,12 @@ export default function TrendAnalysisQueryChart({ data }) {
 				cornerRadius: 8,
 				titleColor: '#8c8c8c',
 				titleFont: {
-					family: 'Mulish',
+					family: 'Manrope',
 					size: 12,
 					weight: 500,
 				},
 				bodyFont: {
-					family: 'Mulish',
+					family: 'Manrope',
 					size: 12,
 					weight: 500,
 					lineHeight: 1.5,

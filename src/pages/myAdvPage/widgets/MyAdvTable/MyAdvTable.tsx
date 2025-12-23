@@ -337,7 +337,7 @@ const MyAdvTable: React.FC<MyAdvTableProps> = ({
                 }}
                 style={{ 
                   width: 'max-content',
-                  minWidth: '100%'
+                  minWidth: '100%',
                 }}
               />
           </div>

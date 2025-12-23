@@ -82,7 +82,7 @@ const centerTextPlugin = {
         const fontSize = 14;
 
         ctx.restore();
-        ctx.font = `${fontSize}px Mulish`;
+        ctx.font = `${fontSize}px Manrope`;
         ctx.textBaseline = 'middle';
         ctx.fillStyle = '#000';
 
@@ -110,10 +110,10 @@ const centerTextPlugin = {
             ctx.fillStyle = '#000';
             ctx.fillText(labelText, labelX, labelY);
 
-            ctx.font = `bold ${fontSize}px Mulish`;
+            ctx.font = `bold ${fontSize}px Manrope`;
             ctx.fillText(valueText, valueX - 10, valueY);
 
-            ctx.font = `${fontSize}px Mulish`;
+            ctx.font = `${fontSize}px Manrope`;
         });
 
         ctx.save();

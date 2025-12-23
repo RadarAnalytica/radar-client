@@ -45,7 +45,7 @@
 }
 
 .fieldset__title {
-    font-family: Mulish;
+    font-family: Manrope;
     font-weight: 700;
     font-size: 18px;
     line-height: 100%;
@@ -131,7 +131,7 @@
 }
 
 .form__inputTextSuffix {
-    font-family: Mulish;
+    font-family: Manrope;
     font-weight: 500;
     font-size: 14px;
     line-height: 100%;
@@ -140,7 +140,7 @@
 }
 
 .form__complexWrapperLabel {
-    font-family: Mulish;
+    font-family: Manrope;
     font-weight: 500;
     font-size: 16px;
     line-height: 100%;

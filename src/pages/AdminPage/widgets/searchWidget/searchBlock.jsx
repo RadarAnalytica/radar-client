@@ -27,7 +27,7 @@ const SearchWidget = ({ setData, authToken, setStatus, initStatus, inputValue, s
                     theme={{
                         token: {
                             colorPrimary: '#5329FF',
-                            fontFamily: 'Mulish',
+                            fontFamily: 'Manrope',
                             fontSize: 16,
                         },
                         components: {

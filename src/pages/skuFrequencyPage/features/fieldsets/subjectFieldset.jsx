@@ -196,7 +196,7 @@ const SubjectFieldset = ({ prefered_items, form }) => {
                             colorBgContainer: 'white',
                             //colorBorder: 'transparent',
                             //borderRadius: 8,
-                            fontFamily: 'Mulish',
+                            fontFamily: 'Manrope',
                             fontSize: 12,
                             controlHeightLG: 38
                         },

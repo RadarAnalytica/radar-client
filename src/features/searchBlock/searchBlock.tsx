@@ -11,7 +11,7 @@ const inputAntdTheme = {
         colorBgContainer: 'white',
         colorBorder: '#5329FF1A',
         borderRadius: 8,
-        fontFamily: 'Mulish',
+        fontFamily: 'Manrope',
         fontSize: 12,
         fontWeight: 500,
         controlHeightLG: 38,
@@ -32,7 +32,7 @@ const inputAntdTheme = {
 const buttonAntdTheme = {
     token: {
         colorPrimary: '#5329FF',
-        fontFamily: 'Mulish',
+        fontFamily: 'Manrope',
         fontSize: 16,
     },
     components: {
@@ -48,7 +48,7 @@ const secButtonAntdTheme = {
         colorPrimary: '#E9DFFF',
         fontSize: 14,
         fontWeight: 600,
-        fontFamily: 'Mulish',
+        fontFamily: 'Manrope',
         controlHeight: 38,
         borderRadius: 8,
     },

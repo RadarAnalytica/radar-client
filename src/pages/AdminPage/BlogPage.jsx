@@ -47,7 +47,7 @@ const BlogPage = () => {
                         theme={{
                             token: {
                                 fontSize: '18px',
-                                fontFamily: 'Mulish'
+                                fontFamily: 'Manrope'
                             },
                             components: {
                                 Segmented: {

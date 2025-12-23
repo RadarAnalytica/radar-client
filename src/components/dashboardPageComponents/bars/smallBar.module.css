@@ -26,7 +26,7 @@
 }
 
 .bar__title {
-    font-family: Mulish;
+    font-family: Manrope;
     font-weight: 500;
     font-size: 14px;
     line-height: 100%;
@@ -42,7 +42,7 @@
 }
 
 .bar__mainData {
-    font-family: Mulish;
+    font-family: Manrope;
     font-weight: 600;
     font-size: 22px;
     line-height: 100%;
@@ -65,7 +65,7 @@
 }
 
 .bar__absoluteData {
-    font-family: Mulish;
+    font-family: Manrope;
     font-weight: 700;
     font-size: 18px;
     line-height: 100%;
@@ -83,7 +83,7 @@
 }
 
 .bar__mainSubData {
-    font-family: Mulish;
+    font-family: Manrope;
     font-weight: 600;
     font-size: 12px;
     line-height: 100%;

@@ -203,7 +203,7 @@ const BlogAdd = ({ categories, token, setActivePage }) => {
                 colorBgContainer: 'white',
                 colorBorder: '#EAEAF1',
                 borderRadius: 8,
-                fontFamily: 'Mulish',
+                fontFamily: 'Manrope',
                 //fontSize: 16,
                 colorPrimary: 'black'
               },

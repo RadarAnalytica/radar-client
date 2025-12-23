@@ -46,7 +46,7 @@ const SearchBlock: React.FC<SearchBlockProps> = ({ onSearch, loading = false }) 
           theme={{
             token: {
               colorPrimary: '#5329FF',
-              fontFamily: 'Mulish',
+              fontFamily: 'Manrope',
               fontSize: 16,
             },
             components: {

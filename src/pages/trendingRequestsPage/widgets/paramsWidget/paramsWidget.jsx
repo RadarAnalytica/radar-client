@@ -293,7 +293,7 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
         token: {
             colorBgContainer: 'white',
             borderRadius: 8,
-            fontFamily: 'Mulish',
+            fontFamily: 'Manrope',
             fontSize: 12,
             fontWeight: 500,
             colorBorder: '#5329FF1A',
@@ -837,7 +837,7 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                         //         colorBgContainer: 'white',
                                         //         //colorBorder: 'transparent',
                                         //         //borderRadius: 8,
-                                        //         fontFamily: 'Mulish',
+                                        //         fontFamily: 'Manrope',
                                         //         fontSize: 14,
                                         //         controlHeightLG: 44
                                         //     },

@@ -222,7 +222,7 @@ const WbMetricsTable: React.FC<WbMetricsTableProps> = ({
               onChange: handlePageChange,
               showQuickJumper: true,
             }}
-            style={{ fontFamily: 'Mulish', width: 'max-content', tableLayout: 'fixed' }}
+            style={{ fontFamily: 'Manrope', width: 'max-content', tableLayout: 'fixed' }}
             bodyCellWrapperStyle={{
               justifyContent: 'flex-start',
               height: '70px',
