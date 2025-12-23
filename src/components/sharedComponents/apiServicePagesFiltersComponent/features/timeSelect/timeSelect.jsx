@@ -144,7 +144,7 @@ export const TimeSelect = ({
             if (customValue.period && customValue.period !== selectValue) {
                 setSelectValue(customValue.period);
             }
-            if (!selectedRange.period && selectValue !== 0) {
+            if (!customValue.period && selectValue !== 0) {
                 setSelectValue(0);
             }
         } else {
@@ -159,6 +159,22 @@ export const TimeSelect = ({
 
     useEffect(() => {
         if (selectValue === undefined) {
+            if (customValue?.period) {
+                setSelectValue(customValue.period);
+                return;
+            }
+            if (customValue?.from && customValue?.to) {
+                setSelectValue(0);
+                const newOptions = [...selectOptions].map(_ => {
+                    if (_.value === 0) {
+                        _.title = `${format(customValue.from, 'dd.MM.yyyy')} - ${format(customValue.to, 'dd.MM.yyyy')}`;
+                    }
+
+                    return _;
+                });
+                setSelectOptions(newOptions);
+                return
+            }
             if (selectedRange.period) {
                 setSelectValue(selectedRange.period);
             }

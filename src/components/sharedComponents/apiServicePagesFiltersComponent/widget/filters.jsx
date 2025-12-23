@@ -36,6 +36,7 @@ export const Filters = React.memo(({
   const { activeBrand, filters, shops, expenseCategories, activeExpenseCategory } = useAppSelector(store => store.filters);
   const filtersState = useAppSelector(store => store.filters);
   const [internalActiveFiltersState, setInternalActiveFiltersState] = useState(null);
+  console.log(internalActiveFiltersState?.activeBrandName)
 
   const internalFiltersStateUpdateHandler = (key, value) => {
     if (key === 'activeBrand') {
@@ -91,7 +92,7 @@ export const Filters = React.memo(({
     if (filtersState && !uncontrolledMode) {
       let internalFiltersStateObject = {}
       Object.keys(filtersState).forEach(key => {
-        if (key.toLowerCase().includes('active')) {
+        if (key.toLowerCase().includes('active') || key.toLowerCase().includes('selectedrange')) {
           internalFiltersStateObject[key] = filtersState[key];
         }
       });
@@ -197,7 +198,7 @@ export const Filters = React.memo(({
                   selectId={i.brands.enLabel}
                   label={`${i.brands.ruLabel}:`}
                   value={internalActiveFiltersState.activeBrandName && internalActiveFiltersState.activeBrandName.length > 0 ? internalActiveFiltersState.activeBrandName?.map(_ => _.value) : ['Все']}
-                  optionsData={i.brands.data.map(_ => ({ ..._, label: _.name }))}
+                  optionsData={i.brands.data.map(_ => ({ ..._, label: _.value }))}
                   isDataLoading={isDataLoading}
                   disabled={disabled}
                   hasDropdownSearch
@@ -212,7 +213,7 @@ export const Filters = React.memo(({
                   selectId={i.articles.enLabel}
                   label={`${i.articles.ruLabel}:`}
                   value={internalActiveFiltersState.activeArticle && internalActiveFiltersState.activeArticle.length > 0 ? internalActiveFiltersState.activeArticle?.map(_ => _.value) : ['Все']}
-                  optionsData={i.articles.data.map(_ => ({ ..._, label: _.name }))}
+                  optionsData={internalActiveFiltersState?.activeBrandName?.some(_ => _.value === 'Все') ? i.articles.data.map(_ => ({ ..._, label: _.value })) : i.articles.data.filter(_ => internalActiveFiltersState?.activeBrandName?.some(b => _.brand === b.value)).map(_ => ({ ..._, label: _.value }))}
                   isDataLoading={isDataLoading}
                   disabled={disabled}
                   hasDropdownSearch
