@@ -18,6 +18,8 @@ import NoSubscriptionWarningBlock from '@/components/sharedComponents/noSubscrip
 import { useDemoMode } from '@/app/providers';
 import { useLoadingProgress } from '@/service/hooks/useLoadingProgress';
 import { getMinCustomDate } from '@/service/utils';
+import DownloadButton from '@/components/DownloadButton';
+import { fileDownload } from '@/service/utils';
 
 export default function ReportProfitLoss() {
 	const { user, authToken } = useContext(AuthContext);
@@ -28,6 +30,7 @@ export default function ReportProfitLoss() {
 	const progress = useLoadingProgress({ loading });
 	const [columns, setColumns] = useState([]);
 	const [data, setData] = useState([]);
+	const [downloadLoading, setDownloadLoading] = useState(false);
 
 	const shopStatus = useMemo(() => {
 		if (!activeBrand || !shops) return null;
@@ -45,6 +48,23 @@ export default function ReportProfitLoss() {
 
 		return shops.find(shop => shop.id === activeBrand.id);
 	}, [activeBrand, shops]);
+
+	const handleDownload = async () => {
+        setDownloadLoading(true);
+        try {
+            const fileBlob = await ServiceFunctions.getDownloadReportProfitLossExel(
+                authToken,
+                selectedRange,
+                activeBrand.id,
+                filters,
+            );
+            fileDownload(fileBlob, 'Отчет_по_неделям.xlsx');
+        } catch (e) {
+            console.error('Ошибка скачивания: ', e);
+        } finally {
+            setDownloadLoading(false);
+        }
+    };
 
 	
 
@@ -315,6 +335,10 @@ export default function ReportProfitLoss() {
 						isDataLoading={loading}
 						//minCustomDate={getMinCustomDate(activeBrand?.created_at, 6, 'month')}
 					/>
+					 <DownloadButton
+                        handleDownload={handleDownload}
+                        loading={loading || downloadLoading}
+                    />
 				</div>
 
 				{!loading && shops && user?.subscription_status && !shopStatus?.is_primary_collect && (

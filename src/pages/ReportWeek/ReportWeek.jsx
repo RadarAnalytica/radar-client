@@ -29,6 +29,7 @@ import TableWidget from './widgets/TableWidget/TableWidget';
 import { useDemoMode } from '@/app/providers/DemoDataProvider';
 import { fetchFilters } from '@/redux/apiServicePagesFiltersState/filterActions';
 import { useLoadingProgress } from '@/service/hooks/useLoadingProgress';
+import DownloadButton from '@/components/DownloadButton';
 
 export default function ReportWeek() {
 	const { user, authToken } = useContext(AuthContext);
@@ -362,7 +363,7 @@ export default function ReportWeek() {
 			);
 			fileDownload(fileBlob, 'Отчет_по_неделям.xlsx');
 		} catch (e) {
-			console.error('Ошибка скачивания: ', error);
+			console.error('Ошибка скачивания: ', e);
 		} finally {
 			setDownloadLoading(false);
 		}
@@ -399,6 +400,10 @@ export default function ReportWeek() {
 						/>
 					</div>
 					<div className={styles.btns}>
+						<DownloadButton
+							handleDownload={handleDownload}
+							loading={loading || downloadLoading}
+						/>
 						<ConfigProvider
 							theme={{
 								token: {
@@ -415,7 +420,7 @@ export default function ReportWeek() {
 										primaryColor: '#5329FF',
 										paddingInlineLG: 9.5,
 										defaultShadow: false,
-										controlHeightLG: 45,
+										controlHeightLG: 38,
 									},
 								},
 							}}

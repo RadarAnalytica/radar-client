@@ -197,6 +197,10 @@
   box-sizing: border-box;
 }
 
+.mainSelectWrapper :global(input) {
+  border: none !important;
+}
+
 .selectedOption {
   color: #000;
   /* margin-left: 5px; */

@@ -35,6 +35,13 @@
     width: 100%;
 }
 
+.controls {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 20px;
+}
+
 /* Report profit loss */
 
 .container{

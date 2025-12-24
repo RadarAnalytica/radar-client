@@ -134,6 +134,25 @@ export const ServiceFunctions = {
 		return data;
 	},
 
+	getDownloadDashboard: async (token, selectedRange, shopId, filters) => {
+		const body = getRequestObject(filters, selectedRange, shopId);
+
+		const res = await fetch(
+			`${URL}/api/dashboard/download`,
+			{
+				method: 'POST',
+				headers: {
+					authorization: 'JWT ' + token,
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify(body)
+			}
+		);
+
+		const data = await res.blob();
+		return data;
+	},
+
 	getSelfCostData: async (token, idShop, filters, page = 1, per_page = 50, searchInputValue = '') => {
 		const body = getRequestObject(filters, undefined, idShop);
 		const res = await fetchApi(
@@ -1238,8 +1257,8 @@ export const ServiceFunctions = {
 		const body = getRequestObject(filters, null, shopId);
 		body.week_starts = [];
 
-		if (!activeWeeks.find((week) => week.value === 'Все')) {
-			body.week_starts = activeWeeks.map((week) => week.value);
+		if (!filters.activeWeeks.find((week) => week.value === 'Все')) {
+			body.week_starts = filters.activeWeeks.map((week) => week.value);
 		}
 
 		const res = await fetch(
@@ -1350,6 +1369,24 @@ export const ServiceFunctions = {
 
 		const data = await res.json();
 
+		return data;
+	},
+	getDownloadReportProfitLossExel: async (token, selectedRange, shopId, filters) => {
+		const body = getRequestObject(filters, selectedRange, shopId);
+
+		const res = await fetch(
+			`${URL}/api/profit_loss/report/download`,
+			{
+				method: 'POST',
+				headers: {
+					authorization: 'JWT ' + token,
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify(body)
+			}
+		);
+
+		const data = await res.blob();
 		return data;
 	},
 	getReferalData: async (token, page) => {
