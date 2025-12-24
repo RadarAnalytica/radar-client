@@ -23,7 +23,7 @@ export const noSubBanners = [
         hasLeadBlock: true,
         leadBlockButtonAction: () => console.log('action'),
         background: noSubsBg,
-        mainImage: noSubsMain
+        mainImage: ['nosub_main-400w', 'nosub_main-800w', 'nosub_main-1200w']
     }
 ]
 
@@ -40,7 +40,7 @@ export const onboardingBanners = [
         leadBlockButtonLink: '/onboarding',
         hasLeadBlock: true,
         background: onboardingBg,
-        mainImage: onboardingMain
+        mainImage: ['onboard_main-400w', 'onboard_main-800w', 'onboard_main-1200w']
     }
 ]
 
@@ -57,14 +57,15 @@ export const regularUserBanners = [
         leadBlockButtonLink: '/rnp',
         hasLeadBlock: true,
         background: regUser1Bg,
-        mainImage: regUser1Main,
+        mainImage: ['rnp_main-400w', 'rnp_main-800w', 'rnp_main-1200w'],
         plainText: 'и многое другое, что помогает принимать взвешенные управленческие решения.',
-        headerButtons: ['Прогноз маржинальности', 'Плановый процент выкупа', 'ДРР по продажам и заказам', 'Рекламные показатели']
+        headerButtons: ['Прогноз маржинальности', 'Плановый процент выкупа', 'ДРР по продажам и заказам', 'Рекламные показатели'],
+        smallTitle: true,
     },
     {
         cardKey: 'regUserBanner2',
         title: 'Хотите держать под контролем все рекламные показатели и управлять ими максимально эффективно?',
-        plainText: 'В разделе «Моя реклама» → «Статистика» вы получите подробную аналитику по всем рекламным кампаниям, которая поможет:',
+        altSubtitle: 'В разделе «Моя реклама» → «Статистика» вы получите подробную аналитику по всем рекламным кампаниям, которая поможет:',
         hasBackBullet: false,
         leadBlockTitle: 'Найти раздел очень просто: «Моя реклама» → «Статистика».',
         leadBlockSubtitle: 'Желаем успешной работы и высоких результатов!',
@@ -73,9 +74,10 @@ export const regularUserBanners = [
         leadBlockButtonLink: '/my-adv',
         hasLeadBlock: true,
         background: regUser2Bg,
-        mainImage: regUser2Main,
+        mainImage: ['stat_main-400w', 'stat_main-800w', 'stat_main-1200w'],
         headerButtons: ['Глубже понять их результативность', 'Отследить динамику показателей', 'Оценить реальное влияние рекламы на ваши продажи и бизнес в целом'],
-        attentionText: 'В сервисе Радар-Аналитика есть всё необходимое для этого.'
+        attentionText: 'В сервисе Радар-Аналитика есть всё необходимое для этого.',
+        smallTitle: true,
     },
     {
         cardKey: 'regUserBanner3',
@@ -87,8 +89,9 @@ export const regularUserBanners = [
         leadBlockButtonLink: '/position-tracking',
         hasLeadBlock: true,
         background: regUser3Bg,
-        mainImage: regUser3Main,
+        mainImage: ['track_main-400w', 'track_main-800w', 'track_main-1200w'],
         attentionText: 'Поэтому работа с SEO становится важным элементом продвижения.',
-        hasSeoPlate: true
+        hasSeoPlate: true,
+        smallTitle: true,
     },
 ]

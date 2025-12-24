@@ -86,12 +86,13 @@ export const RadarCarousel: React.FC<ICarouselProps> = ({
                 newCarouselContent.push(firstItem)
                 setCarouselContent(newCarouselContent)
                 setActiveItem(firstItem.cardKey)
-                setControlButtonProgressBar(6)
+                setControlButtonProgressBar(0)
                 return
             }
 
         }
         setActiveItem(carouselContent[nextActiveItemIndex].cardKey)
+        setControlButtonProgressBar(0)
     }
 
     const progressBarFunction = () => {
@@ -109,14 +110,11 @@ export const RadarCarousel: React.FC<ICarouselProps> = ({
         if (data) {
             setActiveItem(data[0].cardKey)
             setCarouselContent([...data])
+            setControlButtonProgressBar(0)
         }
     }, [data])
 
     useEffect(() => {
-        if (!timeoutRef?.current && isAutoScrollActive && autoScroll) {
-            timeoutRef.current = setInterval(timeoutFunction, 2000);
-            progressBarIntervalRef.current = setInterval(progressBarFunction, 33)
-        }
         if (activeItem) {
             if (!carouselScrollContainerRef?.current) return;
             if (!carouselItemRefs?.current) return;
@@ -124,6 +122,14 @@ export const RadarCarousel: React.FC<ICarouselProps> = ({
             const items = carouselItemRefs?.current
             const nextItemFromRef = items?.find(_ => _.id === `carousel-card-${activeItem}`)
             container.scrollTo({ left: nextItemFromRef?.offsetLeft, behavior: 'smooth' })
+        }
+    }, [activeItem])
+
+    useEffect(() => {
+        if (!timeoutRef?.current && isAutoScrollActive && autoScroll && activeItem) {
+            setControlButtonProgressBar(0)
+            timeoutRef.current = setInterval(timeoutFunction, 2000);
+            progressBarIntervalRef.current = setInterval(progressBarFunction, 33)
         }
         return () => {
             if (timeoutRef?.current) {
@@ -133,7 +139,7 @@ export const RadarCarousel: React.FC<ICarouselProps> = ({
                 progressBarIntervalRef.current = null
             }
         }
-    }, [activeItem, isAutoScrollActive])
+    }, [activeItem, isAutoScrollActive, autoScroll])
 
 
 

@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 interface IBannerProps {
     title: string,
     subtitle?: string,
+    altSubtitle?: string,
     hasBackBullet?: boolean,
     hasLeadBlock?: boolean,
     hasSeoPlate?: boolean,
@@ -14,10 +15,11 @@ interface IBannerProps {
     leadBlockButtonLink?: string,
     leadBlockButtonAction?: () => void
     background: string,
-    mainImage: string,
+    mainImage: Array<string>,
     plainText?: string,
     headerButtons?: any[],
     attentionText?: string
+    smallTitle?: string
 }
 
 
@@ -37,19 +39,22 @@ export const RadarMainPageBanner: React.FC<IBannerProps> = ({
     plainText,
     headerButtons,
     attentionText,
-    hasSeoPlate = false
+    hasSeoPlate = false,
+    smallTitle = false,
+    altSubtitle
 }) => {
 
     return (
         <div className={styles.banner}>
             <div className={styles.banner__header}>
-                <p className={styles.banner__title}>{title}</p>
+                <p className={smallTitle ? `${styles.banner__title} ${styles.banner__title_small}` : styles.banner__title}>{title}</p>
                 {attentionText &&
                     <div className={styles.banner__attentionBar}>
                         {attentionText}
                     </div>
                 }
                 {subtitle && <p className={styles.banner__subtitle}>{subtitle}</p>}
+                {altSubtitle && <p className={styles.banner__altSubtitle}>{altSubtitle}</p>}
                 {hasBackBullet &&
                     <div className={styles.banner__backBullet}>
                         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ flex: '0 0 auto' }}>
@@ -107,7 +112,30 @@ export const RadarMainPageBanner: React.FC<IBannerProps> = ({
             </div>
 
             <div className={styles.banner__mainImageWrapper}>
-                <img src={mainImage} alt='' />
+                <picture>
+                    {mainImage[2] && (
+                        <source 
+                            media="(min-width: 1701px)" 
+                            srcSet={`/main_page_banners/${mainImage[2]}.png 1200w`}
+                        />
+                    )}
+                    {mainImage[1] && mainImage[2] && (
+                        <source 
+                            media="(min-width: 1391px) and (max-width: 1700px)" 
+                            srcSet={`/main_page_banners/${mainImage[1]}.png 800w, /main_page_banners/${mainImage[2]}.png 1200w`}
+                        />
+                    )}
+                    {mainImage[0] && mainImage[1] && (
+                        <source 
+                            media="(max-width: 1390px)" 
+                            srcSet={`/main_page_banners/${mainImage[0]}.png 400w, /main_page_banners/${mainImage[1]}.png 800w`}
+                        />
+                    )}
+                    <img 
+                        src={mainImage[0] ? `/main_page_banners/${mainImage[0]}.png` : ''} 
+                        alt='' 
+                    />
+                </picture>
             </div>
             <div className={styles.banner__backgroundWrapper}>
                 <img src={background} alt='' />
