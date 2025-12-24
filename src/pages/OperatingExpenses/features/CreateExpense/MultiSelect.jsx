@@ -36,7 +36,7 @@ export const MultiSelect = (
                             colorBgContainer: 'white',
                             colorBorder: '#5329FF1A',
                             borderRadius: 8,
-                            fontFamily: 'Mulish',
+                            fontFamily: 'Manrope',
                             fontSize: 12,
                             fontWeight: 500,
                             controlHeightLG: 40,
@@ -136,7 +136,7 @@ export const MultiSelect = (
             value={currentFormValue}
             onChange={selectHandler}
             getPopupContainer={(triggerNode) => triggerNode.parentNode}
-            dropdownRender={renderPopup}
+            popupRender={renderPopup}
             maxTagPlaceholder={omittedValues => (
                 <>
                     {omittedValues.length > 1 && <p className={styles.plainSelect__multiLabel}>Выбрано: {omittedValues.length}</p>}

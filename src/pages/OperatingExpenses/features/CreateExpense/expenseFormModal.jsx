@@ -180,7 +180,7 @@ export default function ExpenseFormModal({
 
 	useEffect(() => {
 		if (Array.isArray(filters)) {
-			const targetFilters = filters.slice(1);
+			const targetFilters = [...filters];
 			let shops = [], brands = [], vendor_codes = [];
 
 			targetFilters.forEach(filter => {
@@ -398,7 +398,7 @@ export default function ExpenseFormModal({
 											colorBgContainer: 'white',
 											colorBorder: '#5329FF1A',
 											borderRadius: 8,
-											fontFamily: 'Mulish',
+											fontFamily: 'Manrope',
 											fontSize: 12,
 											fontWeight: 500,
 											controlHeightLG: 40,
@@ -466,7 +466,7 @@ export default function ExpenseFormModal({
 												colorBgContainer: 'white !important',
 												colorBorder: '#5329FF1A',
 												borderRadius: 8,
-												fontFamily: 'Mulish',
+												fontFamily: 'Manrope',
 												fontSize: 12,
 												fontWeight: 500,
 												controlHeightLG: 40,
@@ -514,7 +514,7 @@ export default function ExpenseFormModal({
 													colorBgContainer: 'white',
 													colorBorder: '#5329FF1A',
 													borderRadius: 8,
-													fontFamily: 'Mulish',
+													fontFamily: 'Manrope',
 													fontSize: 12,
 													fontWeight: 500,
 													controlHeightLG: 40,
@@ -596,7 +596,7 @@ export default function ExpenseFormModal({
 													colorBgContainer: 'white',
 													colorBorder: '#5329FF1A',
 													borderRadius: 8,
-													fontFamily: 'Mulish',
+													fontFamily: 'Manrope',
 													fontSize: 12,
 												},
 												components: {
@@ -648,7 +648,7 @@ export default function ExpenseFormModal({
 												colorBgContainer: 'white !important',
 												colorBorder: '#5329FF1A',
 												borderRadius: 8,
-												fontFamily: 'Mulish',
+												fontFamily: 'Manrope',
 												fontSize: 12,
 												fontWeight: 500,
 												controlHeightLG: 40,
@@ -689,7 +689,7 @@ export default function ExpenseFormModal({
 										colorBgContainer: 'white',
 										colorBorder: '#5329FF1A',
 										borderRadius: 8,
-										fontFamily: 'Mulish',
+										fontFamily: 'Manrope',
 										fontSize: 12,
 									},
 									components: {
@@ -754,7 +754,7 @@ export default function ExpenseFormModal({
 										colorBgContainer: 'white',
 										colorBorder: '#5329FF1A',
 										borderRadius: 8,
-										fontFamily: 'Mulish',
+										fontFamily: 'Manrope',
 										fontSize: 12,
 										fontWeight: 500,
 										controlHeightLG: 40,
@@ -821,7 +821,7 @@ export default function ExpenseFormModal({
 													colorBgContainer: 'white',
 													colorBorder: '#5329FF1A',
 													borderRadius: 8,
-													fontFamily: 'Mulish',
+													fontFamily: 'Manrope',
 													fontSize: 12,
 												},
 												components: {
@@ -866,7 +866,7 @@ export default function ExpenseFormModal({
 												colorBgContainer: 'white',
 												colorBorder: '#5329FF1A',
 												borderRadius: 8,
-												fontFamily: 'Mulish',
+												fontFamily: 'Manrope',
 												fontSize: 12,
 											},
 											components: {
@@ -915,7 +915,7 @@ export default function ExpenseFormModal({
 													form={form}
 													hasSelectAll
 													optionsData={distributeOptions.brands?.map(el => ({
-														key: el.brand_name,
+														key: `${el.brand_name}_${el.shop}`,
 														value: JSON.stringify(el),
 														label: el.brand_name,
 													}))}
@@ -938,7 +938,7 @@ export default function ExpenseFormModal({
 											colorBgContainer: 'white !important',
 											colorBorder: '#5329FF1A',
 											borderRadius: 8,
-											fontFamily: 'Mulish',
+											fontFamily: 'Manrope',
 											fontSize: 12,
 											fontWeight: 500,
 											controlHeightLG: 40,

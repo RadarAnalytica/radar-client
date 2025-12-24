@@ -204,7 +204,7 @@ const UnitCalculatorPage = () => {
                 <ConfigProvider
                     theme={{
                         token: {
-                            fontFamily: 'Mulish',
+                            fontFamily: 'Manrope',
                             colorBorder: 'white',
                             // colorTextLightSolid: '#000'
                         },

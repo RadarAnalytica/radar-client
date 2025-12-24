@@ -31,7 +31,7 @@ export const getRequestObject = (filters, selectedRange, shopId) => {
 	return requestObject;
 };
 
-export const getFiltersRequestObject = (filters, selectedRange, shopId, pageType) => {
+export const getFiltersRequestObject = (filters, selectedRange, shopId, pageName) => {
 	let requestObject = {
 		articles: null,
 		product_groups: null,
@@ -46,7 +46,10 @@ export const getFiltersRequestObject = (filters, selectedRange, shopId, pageType
 		requestObject.brands = filters.activeBrandName.map(_ => _.name);
 	}
 
-	if (pageType === 'rnp') {return requestObject;}
+	if (pageName && pageName === 'rnp') {
+		return requestObject
+	}
+	
 	if (filters.activeArticle && Array.isArray(filters.activeArticle) && !filters.activeArticle.some(_ => _.value === 'Все')) {
 		requestObject.articles = filters.activeArticle.map(_ => _.value);
 	}
@@ -128,6 +131,25 @@ export const ServiceFunctions = {
 		}
 
 		const data = await res.json();
+		return data;
+	},
+
+	getDownloadDashboard: async (token, selectedRange, shopId, filters) => {
+		const body = getRequestObject(filters, selectedRange, shopId);
+
+		const res = await fetch(
+			`${URL}/api/dashboard/download`,
+			{
+				method: 'POST',
+				headers: {
+					authorization: 'JWT ' + token,
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify(body)
+			}
+		);
+
+		const data = await res.blob();
 		return data;
 	},
 
@@ -880,19 +902,20 @@ export const ServiceFunctions = {
 
 		return data;
 	},
-	//old version
-	//getCostTemplate: async (token) => {
-	// 	const res = await fetch(`${URL}/api/report/cost/get-template`, {
-	// 		method: 'GET',
-	// 		headers: {
-	// 			accept: 'application/json',
-	// 			authorization: 'JWT ' + token,
-	// 		},
-	// 	});
-	// 	const data = await res.blob();
-	// 	return data;
-	// },
+	//reports self cost template
 	getCostTemplate: async (token) => {
+		const res = await fetch(`${URL}/api/report/cost/get-template`, {
+			method: 'GET',
+			headers: {
+				accept: 'application/json',
+				authorization: 'JWT ' + token,
+			},
+		});
+		const data = await res.blob();
+		return data;
+	},
+	// self cost page template
+	getCostTemplateSSPage: async (token) => {
 		const res = await fetch(`${URL}/api/product/self-costs/template`, {
 			method: 'GET',
 			headers: {
@@ -903,33 +926,34 @@ export const ServiceFunctions = {
 		const data = await res.blob();
 		return data;
 	},
-	//old version
-	// postCostUpdate: async (token, file) => {
-	// 	const formData = new FormData();
-	// 	formData.append('file', file);
-
-	// 	try {
-	// 		const response = await fetch(`${URL}/api/report/cost/update`, {
-	// 			method: 'POST',
-	// 			headers: {
-	// 				Authorization: 'JWT ' + token,
-	// 			},
-	// 			body: formData,
-	// 		});
-
-	// 		if (response.ok) {
-	// 			return await response.json();
-	// 		} else {
-	// 			console.error('Ошибка при загрузке файла:', response.statusText);
-	// 			throw new Error(response.statusText);
-	// 		}
-
-	// 	} catch (error) {
-	// 		console.error('Ошибка сети или запроса:', error);
-	// 		throw error; // Прокидываем ошибку выше
-	// 	}
-	// },
+	// reports version
 	postCostUpdate: async (token, file) => {
+		const formData = new FormData();
+		formData.append('file', file);
+
+		try {
+			const response = await fetch(`${URL}/api/report/cost/update`, {
+				method: 'POST',
+				headers: {
+					Authorization: 'JWT ' + token,
+				},
+				body: formData,
+			});
+
+			if (response.ok) {
+				return await response.json();
+			} else {
+				console.error('Ошибка при загрузке файла:', response.statusText);
+				throw new Error(response.statusText);
+			}
+
+		} catch (error) {
+			console.error('Ошибка сети или запроса:', error);
+			throw error; // Прокидываем ошибку выше
+		}
+	},
+	// self cost page version
+	postCostUpdateSSPage: async (token, file) => {
 		const formData = new FormData();
 		formData.append('file', file);
 
@@ -1233,8 +1257,8 @@ export const ServiceFunctions = {
 		const body = getRequestObject(filters, null, shopId);
 		body.week_starts = [];
 
-		if (!activeWeeks.find((week) => week.value === 'Все')) {
-			body.week_starts = activeWeeks.map((week) => week.value);
+		if (!filters.activeWeeks.find((week) => week.value === 'Все')) {
+			body.week_starts = filters.activeWeeks.map((week) => week.value);
 		}
 
 		const res = await fetch(
@@ -1347,6 +1371,24 @@ export const ServiceFunctions = {
 
 		return data;
 	},
+	getDownloadReportProfitLossExel: async (token, selectedRange, shopId, filters) => {
+		const body = getRequestObject(filters, selectedRange, shopId);
+
+		const res = await fetch(
+			`${URL}/api/profit_loss/report/download`,
+			{
+				method: 'POST',
+				headers: {
+					authorization: 'JWT ' + token,
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify(body)
+			}
+		);
+
+		const data = await res.blob();
+		return data;
+	},
 	getReferalData: async (token, page) => {
 		try {
 			const res = await fetch(
@@ -1449,7 +1491,7 @@ export const ServiceFunctions = {
 		try {
 			let body = getFiltersRequestObject(filters, selectedRange, shopId, 'rnp');
 			const res = await fetchApi(
-				'/api/rnp/by_article?page=1&per_page=25',
+				'/api/rnp/by_article?page=1&per_page=40',
 				{
 					method: 'POST', // метод по идее должен быть get
 					headers: {
@@ -2036,7 +2078,7 @@ export const ServiceFunctions = {
 		}
 	},
 
-	getControlMetrics: async (token, metricType, filters = {}, page = 1, per_page = 50, sorting = {}) => {
+	getControlMetrics: async(token, metricType, filters = {}, page = 1, per_page = 20, sorting = {}) => {
 		try {
 			const requestObject = {
 				...getFiltersRequestObject(filters, { period: 30 }),

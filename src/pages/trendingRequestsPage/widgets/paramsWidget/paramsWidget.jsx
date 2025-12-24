@@ -293,7 +293,7 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
         token: {
             colorBgContainer: 'white',
             borderRadius: 8,
-            fontFamily: 'Mulish',
+            fontFamily: 'Manrope',
             fontSize: 12,
             fontWeight: 500,
             colorBorder: '#5329FF1A',
@@ -837,7 +837,7 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                         //         colorBgContainer: 'white',
                                         //         //colorBorder: 'transparent',
                                         //         //borderRadius: 8,
-                                        //         fontFamily: 'Mulish',
+                                        //         fontFamily: 'Manrope',
                                         //         fontSize: 14,
                                         //         controlHeightLG: 44
                                         //     },
@@ -869,7 +869,7 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                                     placeholder='Выберите предметы'
                                                     getPopupContainer={(triggerNode) => triggerNode.parentNode}
                                                     tagRender={tagRender}
-                                                    onDropdownVisibleChange={(open) => {
+                                                    onOpenChange={(open) => {
                                                         if (!open) {
                                                             setSearchState('');
                                                         }
@@ -879,7 +879,7 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                                             <path d="M0.800781 1.5L5.80078 6.5L10.8008 1.5" stroke="#8C8C8C" strokeWidth="1.5" strokeLinecap="round" />
                                                         </svg>
                                                     }
-                                                    dropdownRender={renderPopup}
+                                                    popupRender={renderPopup}
                                                     options={preferedItemsData.filter(i => i.children.filter(c => c.name.toLowerCase().includes(searchState.toLowerCase())).length > 0).map(_ => {
                                                         return {
                                                             label: <>{_.name}</>,
@@ -935,7 +935,7 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                             colorPrimary: '#5329FF1A',
                                             fontSize: 14,
                                             fontWeight: 600,
-                                            controlHeightLG: 46,
+                                            controlHeightLG: 38,
                                         },
                                         components: {
                                             Button: {
@@ -968,7 +968,7 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                             colorText: '#5329FF',
                                             fontSize: 14,
                                             fontWeight: 600,
-                                            controlHeightLG: 46,
+                                            controlHeightLG: 38,
                                         },
                                         components: {
                                             Button: {
@@ -978,7 +978,7 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                     }}
                                 >
                                     <Button
-                                        style={{ width: '187px', height: '46px' }}
+                                        style={{ width: '187px', height: '38px' }}
                                         htmlType='submit'
                                         type='primary'
                                         size='large'

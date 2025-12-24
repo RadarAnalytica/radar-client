@@ -10,7 +10,7 @@
 }
 
 .page__stepOneFormTitle {
-    font-family: Mulish;
+    font-family: Manrope;
     font-weight: 700;
     font-size: 18px;
     line-height: 100%;
@@ -20,7 +20,7 @@
 }
 
 .page__formStepCounter {
-    font-family: Mulish;
+    font-family: Manrope;
     font-weight: 600;
     font-size: 16px;
     line-height: 160%;
@@ -141,7 +141,7 @@
     background-color: transparent;
     border: 1px solid #5329FF;
     color: #5329FF;
-    font-family: "Mulish", sans-serif;
+    font-family: "Manrope", sans-serif;
     padding: 16px 20px;
     border-radius: 8px;
     cursor: pointer;
@@ -196,7 +196,7 @@
     border-radius: 8px;
     font-size: 16px;
     margin-bottom: 10px;
-    font-family: Mulish;
+    font-family: Manrope;
 }
 
 @media screen and (min-width: 2000px) {
@@ -254,13 +254,13 @@
 .textArea::placeholder {
     color: #8C8C8C;
     font-weight: 400;
-    font-family: Mulish;
+    font-family: Manrope;
 }
 
 .submitBtn {
     background-color: #5329FF;
     color: white;
-    font-family: "Mulish", sans-serif;
+    font-family: "Manrope", sans-serif;
     border: none;
     padding: 16px 20px;
     width: 100%;

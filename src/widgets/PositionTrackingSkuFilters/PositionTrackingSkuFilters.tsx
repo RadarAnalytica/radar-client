@@ -13,7 +13,7 @@ const theme = {
         colorBgContainer: 'white',
         colorBorder: '#5329FF1A',
         borderRadius: 8,
-        fontFamily: 'Mulish',
+        fontFamily: 'Manrope',
         fontSize: 12,
         fontWeight: 500,
     },
@@ -293,14 +293,14 @@ export const PositionTrackingSkuFilters: React.FC<IPositionTrackingSkuFiltersFor
                             className={styles.filters__select}
                             getPopupContainer={(triggerNode) => triggerNode.parentNode}
                             open={keywordDropdownIncludeOpen}
-                            onDropdownVisibleChange={setKeywordDropdownIncludeOpen}
+                            onOpenChange={setKeywordDropdownIncludeOpen}
                             onKeyDown={(e) => {
                                 if (e.key === 'Enter') {
                                     e.preventDefault();
                                     e.stopPropagation();
                                 }
                             }}
-                            dropdownRender={() =>
+                            popupRender={() =>
                                 <KeywordSelectDropdown
                                     handler={(matchType, keywords) => {
                                         form.setFieldValue('keywords', keywords);

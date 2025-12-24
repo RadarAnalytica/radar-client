@@ -6,7 +6,7 @@
 }
 
 .modal__title {
-    font-family: 'Mulish';
+    font-family: 'Manrope';
     font-size: 24px;
     line-height: 100%;
     color: #1A1A1A;
@@ -41,7 +41,7 @@
     background: transparent;
     color: #5329FF;
     cursor: pointer;
-    font-family: Mulish;
+    font-family: Manrope;
     font-weight: 600;
     font-size: 16px;
     line-height: 160%;

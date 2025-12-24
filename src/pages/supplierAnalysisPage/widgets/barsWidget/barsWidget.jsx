@@ -6,6 +6,7 @@ import { formatPrice } from '../../../../service/utils';
 import { useAppDispatch, useAppSelector } from '../../../../redux/hooks';
 import { selectSupplierAnalysisDataByType } from '../../../../redux/supplierAnalysis/supplierAnalysisSelectors';
 import { Bar } from '../../features';
+import { RadarBar } from '@/shared';
 
 
 /**
@@ -56,11 +57,11 @@ const BarsWidget = ({ dataHandler, dataType, id }) => {
     const dispatch = useAppDispatch();
     const widgetData = useAppSelector(state => selectSupplierAnalysisDataByType(state, dataType));
     const { isSidebarHidden } = useAppSelector(store => store.utils);
-    const { selectedRange } = useAppSelector(store => store.filters);
+    const { selectedRange, isFiltersLoaded } = useAppSelector(store => store.filters);
 
 
     useEffect(() => {
-        if (selectedRange && id) {
+        if (selectedRange && id && isFiltersLoaded) {
             let datesRange;
 
             if (selectedRange.period) {
@@ -79,9 +80,9 @@ const BarsWidget = ({ dataHandler, dataType, id }) => {
             };
             dispatch(dataHandler(reqData));
         }
-    }, [id, selectedRange]);
+    }, [id, selectedRange, isFiltersLoaded]);
 
-    if (widgetData.isLoading) {
+    if (widgetData.isLoading || !isFiltersLoaded) {
         return (
             <div className={styles.loaderWrapper}>
                 <span className='loader'></span>
@@ -140,17 +141,17 @@ const BarsWidget = ({ dataHandler, dataType, id }) => {
             {widgetData?.data && Object.keys(widgetData.data).map((_, id) => {
                 const CONFIG = BARS_CONFIG.find(i => i.index === _);
                 return CONFIG && (
-                    <Bar
-                        key={id}
-                        rating={CONFIG.hasRateStar}
-                        data={widgetData.data[_]}
-                        title={CONFIG.title}
-                        units={CONFIG.units}
-                        titleColor={CONFIG.hasColoredTitle ? '#5329FF' : ''}
-                        hasAdditionalData={CONFIG.hasAdditionalData}
-                        additionalData={widgetData.data[CONFIG.additionalData?.index]}
-                        additionalDataUnits={CONFIG.additionalData?.units}
-                    />
+                    <>
+                        <RadarBar
+                            key={id}
+                            title={CONFIG?.title}
+                            mainValue={widgetData?.data[_]}
+                            mainValueUnits={CONFIG?.units}
+                            midValue={widgetData?.data[CONFIG.additionalData?.index]}
+                            midValueUnits={CONFIG?.additionalData?.units}
+                            elementsStyles={{ title: CONFIG?.index === 'brands' ? {color: '#5329FF'} : {}}}
+                        />
+                    </>
                 );
             })}
         </div>

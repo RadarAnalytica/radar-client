@@ -41,6 +41,7 @@ const SupplierIdPage = () => {
     const { isDemoMode } = useDemoMode();
     const dispatch = useAppDispatch();
     const mainSupplierData = useAppSelector(selectMainSupplierData);
+    const { isFiltersLoaded } = useAppSelector(store => store.filters);
     const isAnyDataLoading = useAppSelector(store => store.supplierAnalysis.isAnyDataLoading);
     const params = useParams();
     const navigate = useNavigate();
@@ -59,7 +60,7 @@ const SupplierIdPage = () => {
         // если его нет то редиректим
         if (!id) { navigate('/supplier-analysis'); return; };
         // если айди найден и уже есть данные поставщика и айди совпадают то ничего не делаем
-        if (mainSupplierData && mainSupplierData.supplier_id === parseInt(id)) { return; } else {
+        if (mainSupplierData && mainSupplierData.supplier_id === parseInt(id)) { return; } else if (isFiltersLoaded) {
             const supplierChecker = async (id) => {
                 // запускаем поиск
                 const res = await ServiceFunctions.getSupplierAnalysisSuggestData(id, () => { });
@@ -83,7 +84,7 @@ const SupplierIdPage = () => {
             // если все выше не прошло - проверяем
             supplierChecker(id);
         }
-    }, [params, mainSupplierData]);
+    }, [params, mainSupplierData, isFiltersLoaded]);
 
 
     //сброс при анмаунте
@@ -114,6 +115,7 @@ const SupplierIdPage = () => {
                                     ]}
                                 />
                             }
+                            hasShadow={false}
                         />
                     </div>
 
@@ -134,7 +136,7 @@ const SupplierIdPage = () => {
                                 groupSelect={false}
                                 uncontrolledTimeSelect={true}
                                 tempPageCondition='supplier'
-                                isDataLoading={isAnyDataLoading}
+                                isDataLoading={isAnyDataLoading || !isFiltersLoaded}
                                 maxCustomDate={maxDate}
                                 uncontrolledMode
                             />
@@ -157,10 +159,9 @@ const SupplierIdPage = () => {
                     <TableWidget
                         id={mainSupplierData?.supplier_id}
                         tableConfig={mainTableConfig}
-                        //downloadButton
                         dataType='byDatesTableData'
                         dataHandler={fetchSupplierAnalysisByDatesTableData}
-                        containerHeight='90vh'
+                        minRowHeight='40px'
                     />
                 </div>
                 {/* Товары поставщика */}
@@ -169,24 +170,22 @@ const SupplierIdPage = () => {
                     <TableWidget
                         id={mainSupplierData?.supplier_id}
                         tableConfig={goodsTableConfig}
-                        //downloadButton
                         dataType='byBrandsTableData'
                         dataHandler={fetchSupplierAnalysisByBrandTableData}
-                        containerHeight='90vh'
                         hasPagination
+                         minRowHeight='75px'
                     />
                 </div>
                 {/* Продажи по категориям поставщика */}
                 <div className={styles.page__tableWrapper}>
+                    <p className={styles.page__tableTitle}>Продажи по категориям поставщика: {mainSupplierData?.display_name}</p>
                     <TableWidget
                         tableConfig={salesTableConfig}
                         id={mainSupplierData?.supplier_id}
-                        //downloadButton
                         dataType='bySubjectsTableData'
                         dataHandler={fetchSupplierAnalysisBySubjectsTableData}
-                        title={`Продажи по категориям поставщика: ${mainSupplierData?.display_name}`}
-                        containerHeight='400px'
                         hasPagination
+                         minRowHeight='50px'
                     />
                 </div>
                 {/* Структура заказов по складам и размерам */}
@@ -231,6 +230,7 @@ const TableTabsWrapper = () => {
                     dataType='byWarehousesTableData'
                     dataHandler={fetchSupplierAnalysisByWarehousesTableData}
                     containerHeight='450px'
+                    minRowHeight='50px'
                 />
             }
             {ordersStructureTab === 'По размерам' &&
@@ -240,6 +240,7 @@ const TableTabsWrapper = () => {
                     dataType='bySizesTableData'
                     dataHandler={fetchSupplierAnalysisBySizesTableData}
                     containerHeight='450px'
+                    minRowHeight='50px'
                 />
             }
         </>

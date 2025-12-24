@@ -13,7 +13,7 @@
 }
 
 .search__title {
-    font-family: Mulish;
+    font-family: Manrope;
     font-weight: 700;
     font-size: 20px;
     line-height: 100%;
@@ -53,7 +53,7 @@
 }
 
 .search__historyItem {
-    font-family: Mulish;
+    font-family: Manrope;
     font-weight: 500;
     font-size: 16px;
     line-height: 100%;
@@ -73,7 +73,7 @@
     justify-content: flex-start;
     align-items: center;
     gap: 8px;
-    font-family: Mulish;
+    font-family: Manrope;
     font-weight: 500;
     font-size: 16px;
     line-height: 100%;

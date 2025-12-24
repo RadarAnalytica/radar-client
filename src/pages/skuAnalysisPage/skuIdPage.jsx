@@ -96,6 +96,7 @@ const SkuIdPage = () => {
                                     ]}
                                 />
                             }
+                            hasShadow={false}
                         />
                     </div>
 
@@ -124,7 +125,8 @@ const SkuIdPage = () => {
                     <TableWidget
                         tableConfig={mainTableConfig}
                         data={skuMainTableData}
-                        tinyRows
+                        minRowHeight='40px'
+
                     />
                 </div>
 
@@ -136,7 +138,7 @@ const SkuIdPage = () => {
                                 <ConfigProvider
                                     theme={{
                                         token: {
-                                            fontSize: '18px'
+                                            fontSize: '14px'
                                         },
                                         components: {
                                             Segmented: {
@@ -167,18 +169,21 @@ const SkuIdPage = () => {
                         <TableWidget
                             data={skuByColorTableData}
                             tableConfig={byColorTableConfig}
+                            minRowHeight='70px'
                         />
                     }
                     {tabsState === 'По складам' &&
                         <TableWidget
                             data={skuByWarehouseTableData}
                             tableConfig={byWarehouseTableConfig}
+                            minRowHeight='50px'
                         />
                     }
                     {tabsState === 'По размерам' &&
                         <TableWidget
                             data={skuBySizeTableData}
                             tableConfig={bySizeTableConfig}
+                            minRowHeight='70px'
                         />
                     }
 

@@ -3,10 +3,12 @@ import {
   useState,
   useEffect,
   useMemo,
+  useRef,
 } from 'react';
 import { URL } from './config';
 import { jwtDecode } from 'jwt-decode';
 import { useCookie } from './utils';
+import Cookies from 'js-cookie';
 
 const AuthContext = createContext(null);
 
@@ -123,6 +125,10 @@ export const AuthProvider = ({ children }) => {
 
   const [showMobile, setShowMobile] = useState(false);
 
+  const refreshUserPromiseRef = useRef(null);
+  const refreshSubscriptionCheckPromiseRef = useRef(null);
+  const refreshOnboardingCheckPromiseRef = useRef(null);
+
   // const [userImage, setUserImage] = useState()
   // useEffect(() => {
   //     user && user.id ? ServiceFunctions.getOneUser(user.id, authToken.token).then(data => setUserImage(data.image)) : setUserImage()
@@ -145,6 +151,174 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const refreshUser = async () => {
+    if (refreshUserPromiseRef.current) {
+      return refreshUserPromiseRef.current;
+    }
+
+    const refreshPromise = (async () => {
+      const maxAttempts = 5;
+      const delay = 1000;
+      
+      try {
+        for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+          try {
+            const headers = {
+              'content-type': 'application/json',
+            };
+            
+            if (authToken) {
+              headers.authorization = 'JWT ' + authToken;
+            }
+            
+            const res = await fetch(`${URL}/api/user/refresh`, {
+              method: 'GET',
+              headers,
+            });
+            const data = await res.json();
+            
+            if (res.ok && data?.token) {
+              // Обновляем токен в cookie
+              Cookies.set('radar', data.token, { expires: 7 });
+              
+              setAuthToken(data.token);
+              setUser(decode(data.token));
+              
+              return { success: true, token: data.token };
+            }
+          } catch (error) {
+            console.error(`Попытка ${attempt} не удалась:`, error);
+          }
+          
+          if (attempt < maxAttempts) {
+            await new Promise(resolve => setTimeout(resolve, delay));
+          }
+        }
+        
+        return { success: false, token: null };
+      } finally {
+        refreshUserPromiseRef.current = null;
+      }
+    })();
+
+    refreshUserPromiseRef.current = refreshPromise;
+    return refreshPromise;
+  };
+
+  const refreshSubscriprionCheck = async () => {
+    if (refreshSubscriptionCheckPromiseRef.current) {
+      return refreshSubscriptionCheckPromiseRef.current;
+    }
+
+    const refreshPromise = (async () => {
+      const maxAttempts = 5;
+      const delay = 1000;
+      
+      try {
+        for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+          try {
+            const headers = {
+              'content-type': 'application/json',
+            };
+            
+            if (authToken) {
+              headers.authorization = 'JWT ' + authToken;
+            }
+            
+            const res = await fetch(`${URL}/api/user/refresh`, {
+              method: 'GET',
+              headers,
+            });
+            const data = await res.json();
+            
+            if (res.ok && data?.token) {
+              Cookies.set('radar', data.token, { expires: 7 });
+              
+              setAuthToken(data.token);
+              const decodedUser = decode(data.token);
+              setUser(decodedUser);
+              
+              const subscriptionStatus = decodedUser?.subscription_status;
+              const isValidSubscription = subscriptionStatus !== null && subscriptionStatus?.toLowerCase() !== 'expired';
+              
+              return { success: isValidSubscription, token: data.token };
+            }
+          } catch (error) {
+            console.error(`Попытка ${attempt} не удалась:`, error);
+          }
+          
+          if (attempt < maxAttempts) {
+            await new Promise(resolve => setTimeout(resolve, delay));
+          }
+        }
+        
+        return { success: false, token: null };
+      } finally {
+        refreshSubscriptionCheckPromiseRef.current = null;
+      }
+    })();
+
+    refreshSubscriptionCheckPromiseRef.current = refreshPromise;
+    return refreshPromise;
+  };
+
+  const refreshOnboardingCheck = async () => {
+    if (refreshOnboardingCheckPromiseRef.current) {
+      return refreshOnboardingCheckPromiseRef.current;
+    }
+
+    const refreshPromise = (async () => {
+      const maxAttempts = 5;
+      const delay = 1000;
+      
+      try {
+        for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+          try {
+            const headers = {
+              'content-type': 'application/json',
+            };
+            
+            if (authToken) {
+              headers.authorization = 'JWT ' + authToken;
+            }
+            
+            const res = await fetch(`${URL}/api/user/refresh`, {
+              method: 'GET',
+              headers,
+            });
+            const data = await res.json();
+            
+            if (res.ok && data?.token) {
+              Cookies.set('radar', data.token, { expires: 7 });
+              
+              setAuthToken(data.token);
+              const decodedUser = decode(data.token);
+              setUser(decodedUser);
+              
+              const isOnboarded = decodedUser?.is_onboarded === true;
+              
+              return { success: isOnboarded, token: data.token };
+            }
+          } catch (error) {
+            console.error(`Попытка ${attempt} не удалась:`, error);
+          }
+          
+          if (attempt < maxAttempts) {
+            await new Promise(resolve => setTimeout(resolve, delay));
+          }
+        }
+        
+        return { success: false, token: null };
+      } finally {
+        refreshOnboardingCheckPromiseRef.current = null;
+      }
+    })();
+
+    refreshOnboardingCheckPromiseRef.current = refreshPromise;
+    return refreshPromise;
+  };
+
+
   // Offcanvas functions
   const [showMenu, setShowMenu] = useState(false);
   const handleOpenMenu = () => setShowMenu(true);
@@ -165,6 +339,9 @@ export const AuthProvider = ({ children }) => {
       setDataobject,
       showMobile,
       setShowMobile,
+      refreshUser,
+      refreshSubscriprionCheck,
+      refreshOnboardingCheck
     }),
     [user, authToken]
   );

@@ -89,7 +89,7 @@ const getAnnotations = (initData) => {
                 font: {
                     size: 14,
                     weight: 'normal',
-                    family: 'Mulish'
+                    family: 'Manrope'
                 },
                 padding: 4
             }

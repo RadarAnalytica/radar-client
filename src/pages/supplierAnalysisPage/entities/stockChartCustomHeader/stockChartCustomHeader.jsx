@@ -15,7 +15,7 @@ const tabs = [
 
 const theme = {
     token: {
-        fontSize: '18px'
+        fontSize: '14px'
     },
     components: {
         Segmented: {

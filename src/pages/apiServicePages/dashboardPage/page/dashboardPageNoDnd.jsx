@@ -30,6 +30,8 @@ import StockAnalysisBlock from '@/components/dashboardPageComponents/blocks/stoc
 import NoSubscriptionWarningBlock from '@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock';
 import { useDemoMode } from "@/app/providers";
 import { RadarBar } from '@/shared';
+import { fileDownload } from '@/service/utils';
+import DownloadButton from '@/components/DownloadButton';
 
 
 const MainContent = React.memo(({
@@ -142,6 +144,7 @@ const _DashboardPage = () => {
     const { isFiltersLoaded, activeBrand, shops, activeBrandName, activeArticle, activeGroup, selectedRange } = useAppSelector((state) => state.filters);
     const filters = useAppSelector((state) => state.filters);
     const { isSidebarHidden } = useAppSelector((state) => state.utils);
+    const [downloadLoading, setDownloadLoading] = useState(false);
 
     const [pageState, setPageState] = useState({
         dataDashBoard: null,
@@ -182,6 +185,23 @@ const _DashboardPage = () => {
             console.error(e);
         } finally {
             setPageState(prev => ({ ...prev, loading: false }));
+        }
+    };
+
+    const handleDownload = async () => {
+        setDownloadLoading(true);
+        try {
+            const fileBlob = await ServiceFunctions.getDownloadDashboard(
+                authToken,
+                selectedRange,
+                activeBrand.id,
+                filters,
+            );
+            fileDownload(fileBlob, 'Отчет_по_неделям.xlsx');
+        } catch (e) {
+            console.error('Ошибка скачивания: ', e);
+        } finally {
+            setDownloadLoading(false);
         }
     };
 
@@ -243,7 +263,11 @@ const _DashboardPage = () => {
 
                 <div className={styles.page__controlsWrapper}>
                     <Filters
-                        isDataLoading={pageState.loading}
+                        isDataLoading={pageState?.loading}
+                    />
+                    <DownloadButton
+                        handleDownload={handleDownload}
+                        loading={pageState?.loading || downloadLoading}
                     />
                 </div>
 

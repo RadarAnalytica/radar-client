@@ -9,7 +9,7 @@ const antdTheme = {
         colorBgContainer: 'white',
         colorBorder: '#5329FF1A',
         borderRadius: 8,
-        fontFamily: 'Mulish',
+        fontFamily: 'Manrope',
         fontSize: 14,
         fontWeight: 500,
         controlHeightLG: 38,

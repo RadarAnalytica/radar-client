@@ -56,7 +56,7 @@ const DatePickerCustomDropdown = (props) => {
                         colorBgContainer: 'white',
                         colorBorder: 'white !important',
                         borderRadius: 8,
-                        fontFamily: 'Mulish',
+                        fontFamily: 'Manrope',
                         colorTextPlaceholder: 'black !important',
                         fontSize: 14,
                         controlOutlineWidth: 0,
@@ -89,13 +89,9 @@ const DatePickerCustomDropdown = (props) => {
                     options={options}
                     suffixIcon={<Suffix />}
                     className={styles.dropdown__select}
-                    dropdownStyle={{ minWidth: '120px' }}
+                    styles={{popup: { root: { minWidth: '120px', border: '1px solid red'}}}}
+                    // dropdownStyle={{ minWidth: '120px' }}
                     tagRender={tagRender}
-                    styles={{
-                        root: {
-                            color: 'black'
-                        }
-                    }}
                     style={{
                         border: 'none',
                         color: 'black',

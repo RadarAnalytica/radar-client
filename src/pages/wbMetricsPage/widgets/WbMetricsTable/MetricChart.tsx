@@ -56,7 +56,9 @@ const MetricChart: React.FC<MetricChartProps> = ({
     if (!item?.percentage) return { top: 'rgba(240, 240, 240, 0.8)', bottom: 'rgba(240, 240, 240, 0.8)' };
     
     const color = getColorForPercentage(item.percentage, minControlValue, maxControlValue, metricType, true);
-    return { top: color, bottom: getRGBA(color, 0.6) };
+    const topColor = color || '#F0F0F0';
+    const bottomColor = getRGBA(topColor, 0.6);
+    return { top: topColor, bottom: bottomColor };
   });
 
   const chartConfig = {
@@ -82,10 +84,14 @@ const MetricChart: React.FC<MetricChartProps> = ({
           const colorConfig = barColors[context.dataIndex];
           if (!colorConfig) return 'rgba(240, 240, 240, 0.8)';
           
+          // Проверяем, что цвета валидны
+          const topColor = colorConfig.top || 'rgba(240, 240, 240, 0.8)';
+          const bottomColor = colorConfig.bottom || 'rgba(240, 240, 240, 0.8)';
+          
           const gradient = ctx.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
           
-          gradient.addColorStop(0, colorConfig.top);
-          gradient.addColorStop(1, colorConfig.bottom);
+          gradient.addColorStop(0, topColor);
+          gradient.addColorStop(1, bottomColor);
           
           return gradient;
         },

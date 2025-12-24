@@ -141,13 +141,13 @@ const TableWidget = ({ tableConfig, setTableConfig }) => {
                     }}
                     sorting={{sort_field: requestObject?.sorting?.sort_field, sort_order: requestObject?.sorting?.sort_order}}
                     scrollContainerRef={containerRef}
-                    bodyCellWrapperStyle={{
-                        minHeight: '85px'
-                    }}
                     style={{
                         width: 'max-content',
-                        tableLayout: 'fixed'
+                        tableLayout: 'fixed',
+                        fontSize: '14px'
                     }}
+                    headerCellWrapperStyle={{ fontSize: '14px', fontWeight: 500}}
+                    bodyCellWrapperStyle={{ fontSize: '14px', fontWeight: 500, minHeight: '50px', padding: '8px 12px'}}
                 />
             </div>
         </div>

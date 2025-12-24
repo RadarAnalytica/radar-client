@@ -69,7 +69,7 @@ const SearchWidget = ({ stockAnalysisData, setStockAnalysisFilteredData, filters
                             colorBgContainer: 'white',
                             colorBorder: '#5329FF1A',
                             borderRadius: 8,
-                            fontFamily: 'Mulish',
+                            fontFamily: 'Manrope',
                             fontSize: 12,
                             fontWeight: 500,
                             controlHeightLG: 38,

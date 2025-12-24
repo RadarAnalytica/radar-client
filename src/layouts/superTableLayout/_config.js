@@ -71,13 +71,13 @@ export const tableConfig = [
             {ruName: 'Мин. цена со скидкой', engName: 'minDiscountPrice', units: '₽', isSortable: true},
         ]
     },
-    {
-        tableName: 'Заказы',
-        values: [
-            {ruName: 'Количество', engName: 'orderQuantity', units: 'шт', isSortable: true},
-            {ruName: 'Сумма', engName: 'orderSum', units: '₽', isSortable: true},
-        ]
-    },
+    // {
+    //     tableName: 'Заказы',
+    //     values: [
+    //         {ruName: 'Количество', engName: 'orderQuantity', units: 'шт', isSortable: true},
+    //         {ruName: 'Сумма', engName: 'orderSum', units: '₽', isSortable: true},
+    //     ]
+    // },
     {
         tableName: 'Выкупы',
         values: [
@@ -90,7 +90,7 @@ export const tableConfig = [
     {
         tableName: 'Скорость',
         values: [
-            {ruName: 'Заказов', engName: 'orderCountDay', units: 'шт/день', isSortable: false},
+            // {ruName: 'Заказов', engName: 'orderCountDay', units: 'шт/день', isSortable: false},
             {ruName: 'Продаж', engName: 'saleCountDay', units: '₽/день', isSortable: false},
         ]
     },

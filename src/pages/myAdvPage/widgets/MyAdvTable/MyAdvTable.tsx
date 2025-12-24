@@ -18,6 +18,7 @@ interface MyAdvTableProps {
   data: CompanyData[];
   columns: ColumnConfig[];
   loading: boolean;
+  progress: { value: number | null };
   pageData: { page: number, per_page: number, total_count: number };
   setPageData: (pageData: { page: number, per_page: number, total_count: number }) => void;
   sortState: { sort_field: string | undefined, sort_order: "ASC" | "DESC" | undefined };
@@ -31,6 +32,7 @@ const MyAdvTable: React.FC<MyAdvTableProps> = React.memo(({
   companyId,
   data,
   loading,
+  progress,
   pageData,
   setPageData,
   sortState,
@@ -114,11 +116,7 @@ const MyAdvTable: React.FC<MyAdvTableProps> = React.memo(({
         isDateCell 
           ? <div className={styles.cellDate}>{value}</div>
           : (
-            <div 
-              className={styles.companyCell}
-              onClick={() => handleCompanyClick(record.company_id)}
-              style={{ cursor: 'pointer' }}
-            >
+            <div className={styles.companyCell}>
               {/* {record.company_photo 
                 ? <img src={record.company_photo} alt={companyName} {...imageSize} className={styles.companyImage} />
                 : <div className={styles.companyImage} style={imageSize} />
@@ -126,6 +124,11 @@ const MyAdvTable: React.FC<MyAdvTableProps> = React.memo(({
               <span className={styles.companyName}>
                 {value}
               </span>
+              {!companyId && 
+                <button className={styles.companyButton} onClick={() => handleCompanyClick(record.company_id)}>
+                  Смотреть подробнее
+                </button>
+              }
             </div>
           )
       );
@@ -262,10 +265,6 @@ const MyAdvTable: React.FC<MyAdvTableProps> = React.memo(({
     localStorage.setItem('MY_ADV_EXPANDED_TABLE_ROWS_STATE', JSON.stringify({ keys: stringKeys }));
   };
 
-  if (loading) {
-    return <Loader loading={loading} progress={0} />;
-  }
-
   return (
     <div className={styles.table}>
       <div className={styles.tableControls}>
@@ -275,7 +274,6 @@ const MyAdvTable: React.FC<MyAdvTableProps> = React.memo(({
             articleSelect={false}
             groupSelect={false}
             shopSelect={!companyId}
-            brandSelect={false}
             tempPageCondition={true}
             maxCustomDate={new Date(Date.now() - 24 * 60 * 60 * 1000)}
             uncontrolledMode={true}
@@ -288,63 +286,65 @@ const MyAdvTable: React.FC<MyAdvTableProps> = React.memo(({
 
       {isDataNotCollected && <div className='pb-3'><DataCollectWarningBlock /></div>}
 
-      <div className={styles.tableContainer}>
-        <div className={styles.tableWrapper} ref={tableContainerRef}>
-          {!isDataNotCollected && (
-            <RadarTable
-              key={JSON.stringify(tableConfig)}
-              rowKey={(record: CompanyData) => `${record.company_id || ''}_${record.date || ''}`}
-              config={tableConfig}
-              dataSource={data}
-              preset="radar-table-simple"
-              className={companyId ? styles.tableStaticCompany : styles.tableStatic}
-              scrollContainerRef={tableContainerRef}
-              stickyHeader
-              resizeable
-              onResize={onResizeGroup}
-              resizeThrottle={33}
-              onSort={handleSort}
-              pagination={pageData.total_count <= pageData.per_page ? null : {
-                current: pageData.page,
-                pageSize: pageData.per_page,
-                total: Math.ceil(pageData.total_count / pageData.per_page),
-                onChange: handlePageChange,
-                showQuickJumper: true,
-              }}
-              treeMode
-              indentSize={45}
-              expandedRowKeys={expandedRowKeys}
-              onExpandedRowsChange={(keys: React.Key[]) => handleExpandedRowsChange(keys)}
-              paginationContainerStyle={{
-                bottom: 0
-              }}
-              sorting={{ sort_field: sortState?.sort_field, sort_order: sortState?.sort_order }}
-              customCellRender={{
-                idx: [],
-                renderer: customCellRender,
-              }}
-              noDataRender={() => <div className={styles.noDataBlock}>Нет данных в выбранном периоде</div>}
-              headerCellWrapperStyle={{
-                minHeight: '0px',
-                padding: '12px 10px',
-                fontSize: 'inherit',
-              }}
-              bodyCellWrapperStyle={{
-                padding: '5px 10px',
-                border: 'none',
-              }}
-              bodyCellStyle={{
-                borderBottom: '1px solid #E8E8E8',
-                height: '50px',
-              }}
-              style={{ 
-                width: 'max-content',
-                minWidth: '100%'
-              }}
-            />
-          )}
+      {loading && <Loader loading={loading} progress={progress?.value} />}
+
+      {!loading && !isDataNotCollected && (
+        <div className={styles.tableContainer}>
+          <div className={styles.tableWrapper} ref={tableContainerRef}>
+              <RadarTable
+                key={JSON.stringify(tableConfig)}
+                rowKey={(record: CompanyData) => `${record.company_id || ''}_${record.date || ''}`}
+                config={tableConfig}
+                dataSource={data}
+                preset="radar-table-simple"
+                className={companyId ? styles.tableStaticCompany : styles.tableStatic}
+                scrollContainerRef={tableContainerRef}
+                stickyHeader
+                resizeable
+                onResize={onResizeGroup}
+                resizeThrottle={33}
+                onSort={handleSort}
+                pagination={pageData.total_count <= pageData.per_page ? null : {
+                  current: pageData.page,
+                  pageSize: pageData.per_page,
+                  total: Math.ceil(pageData.total_count / pageData.per_page),
+                  onChange: handlePageChange,
+                  showQuickJumper: true,
+                }}
+                treeMode
+                indentSize={45}
+                expandedRowKeys={expandedRowKeys}
+                onExpandedRowsChange={(keys: React.Key[]) => handleExpandedRowsChange(keys)}
+                paginationContainerStyle={{
+                  bottom: 0
+                }}
+                sorting={{ sort_field: sortState?.sort_field, sort_order: sortState?.sort_order }}
+                customCellRender={{
+                  idx: [],
+                  renderer: customCellRender,
+                }}
+                noDataRender={() => <div className={styles.noDataBlock}>Нет данных в выбранном периоде</div>}
+                headerCellWrapperStyle={{
+                  minHeight: '0px',
+                  padding: '12px 10px',
+                  fontSize: 'inherit',
+                }}
+                bodyCellWrapperStyle={{
+                  padding: '5px 10px',
+                  border: 'none',
+                }}
+                bodyCellStyle={{
+                  borderBottom: '1px solid #E8E8E8',
+                  height: '50px',
+                }}
+                style={{ 
+                  width: 'max-content',
+                  minWidth: '100%',
+                }}
+              />
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 });

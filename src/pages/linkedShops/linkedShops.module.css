@@ -1,4 +1,59 @@
-/* Page */
+
+/* View Transition  */
+@supports (view-transition-name: none) {
+    @view-transition {
+        navigation: auto;
+    }
+
+    ::view-transition-old(root),
+    ::view-transition-new(root) {
+        animation-duration: 4s;
+        animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    ::view-transition-old(root) {
+        animation-name: slide-out-left;
+    }
+
+    ::view-transition-new(root) {
+        animation-name: slide-in-right;
+    }
+}
+
+@keyframes slide-out-left {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(-30px);
+        opacity: 0;
+    }
+}
+
+@keyframes slide-in-right {
+    from {
+        transform: translateX(30px);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes fadeInLayout {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* page styles */
 
 .page {
     background-color: #F7F6FE;
@@ -44,13 +99,125 @@
     display: grid;
     gap: 20px;
     grid-template-columns: repeat(4, 1fr);
+    /* Fallback анимация для браузеров без поддержки View Transition */
+    animation: fadeInLayout 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+    @supports (view-transition-name: none) {
+        view-transition-name: linked-shops-layout;
+        animation: none; /* Отключаем fallback анимацию если View Transition поддерживается */
+    }
 
     @media (max-width: 2000px) {
         grid-template-columns: repeat(3, 1fr);
     }
 
-    @media (max-width: 1700px) {
+    @media (max-width: 1400px) {
         grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+.shopCardWrapper {
+    animation: fadeInUp 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) backwards;
+}
+
+/* Stagger анимация для карточек */
+.shopCardWrapper:nth-child(1) {
+    animation-delay: 0s;
+}
+
+.shopCardWrapper:nth-child(2) {
+    animation-delay: 0.05s;
+}
+
+.shopCardWrapper:nth-child(3) {
+    animation-delay: 0.1s;
+}
+
+.shopCardWrapper:nth-child(4) {
+    animation-delay: 0.15s;
+}
+
+.shopCardWrapper:nth-child(5) {
+    animation-delay: 0.2s;
+}
+
+.shopCardWrapper:nth-child(6) {
+    animation-delay: 0.25s;
+}
+
+.shopCardWrapper:nth-child(7) {
+    animation-delay: 0.3s;
+}
+
+.shopCardWrapper:nth-child(8) {
+    animation-delay: 0.35s;
+}
+
+.shopCardWrapper:nth-child(n+9) {
+    animation-delay: 0.4s;
+}
+
+/* Mini add shop card */
+.miniAddShopCard {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #5329FF;
+    border-radius: 50%;
+    box-shadow: 0px 4px 20px 0px rgba(0, 0, 0, 0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    animation: miniCardSlideIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    width: 60px;
+    height: 60px;
+    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+     font-family: Manrope;
+    font-weight: 600;
+    font-size: 22px;
+    line-height: 12px;
+    color: white;
+    white-space: nowrap;
+    border: none;
+}
+
+.miniAddShopCard:hover:not(:disabled) {
+    background: #4524E0;
+    transform: scale(1.05);
+}
+
+.miniAddShopCard:disabled {
+    background: #CCCCCC;
+    cursor: not-allowed;
+}
+
+@keyframes miniCardSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* View Transition для карточек */
+@supports (view-transition-name: none) {
+    .shopCardWrapper {
+        view-transition-name: var(--shop-id);
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }
 
@@ -68,17 +235,266 @@
     align-items: center;
     gap: 16px;
     min-width: 700px;
-    font-family: Mulish;
+    font-family: Manrope;
     font-weight: 700;
     font-style: Bold;
     font-size: 16px;
     color: #1A1A1A;
     line-height: 100%;
     letter-spacing: 0%;
+    animation: slideInRight 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
 }
 
 .page__iconWrapper {
     width: 30px;
     height: 30px;
 
+}
+
+
+
+/* add shop block and addmodal modal */
+
+.addShopBlock {
+    background-color: white;
+    border-radius: 16px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+    gap: 20px;
+    max-height: 270px;
+    transform: scale(1);
+    transition: all .2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.addShopBlock_animated {
+    animation: fadeInUp 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.2s backwards;
+}
+
+.addShopBlock:hover {
+    box-shadow: 0px 0px 20px 0px #00000014;
+    transform: scale(1.005);
+}
+
+.addShopBlock__header {
+    width: 100%;
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.addShopBlock__title {
+    margin: 0;
+    padding: 0;
+    font-family: Manrope;
+    font-weight: 600;
+    font-size: 22px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    color: #1A1A1A;
+}
+
+.addShopBlock__text {
+    font-family: Manrope;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 150%;
+    letter-spacing: 0%;
+    margin: 0;
+    padding: 0;
+    color: #1A1A1A;
+}
+
+.addShopBlock__buttonHelper {
+    width: fit-content;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    text-decoration: none;
+    color: #8C8C8C;
+    margin-top: -10px;
+}
+
+.addShopBlock__buttonHelper>a {
+    color: #5329FF;
+    text-decoration: none;
+}
+
+.addShopBlock__decorativeWrapper {
+    padding: 20px 0 0;
+    width: 100%;
+    border-top: 1px solid #e8e8e8;
+}
+
+.addShopBlock__buttonsWrapper {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    width: 100%;
+    gap: 12px
+}
+
+
+/* modal */
+.modal {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 4px 0
+}
+
+.modal__header {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.modal__title {
+    margin: 0;
+    padding: 0;
+    font-family: Manrope;
+    font-weight: 600;
+    font-size: 22px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    color: #1A1A1A;
+}
+
+
+
+/*  form */
+
+.form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.form__item {
+    margin: 0;
+}
+
+.deleteModal {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.deleteModal__header {
+    width: 100%;
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    font-family: Manrope;
+    font-weight: 700;
+    font-style: Bold;
+    font-size: 24px;
+    color: #1A1A1A;
+    line-height: 100%;
+    letter-spacing: 0%;
+}
+
+.deleteModal__text {
+    font-family: Manrope;
+    font-weight: 500;
+    font-style: Medium;
+    font-size: 20px;
+    color: #1A1A1A;
+    margin: 0;
+    padding: 0;
+    line-height: 150%;
+    letter-spacing: 0%;
+}
+
+.deleteModal__footer {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
+.deleteModal__text { 
+    margin: 0;
+    padding: 0;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+/* Tax setup modal */
+.taxModal {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 4px 0;
+}
+
+.taxModal__header {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.taxModal__title {
+    margin: 0;
+    padding: 0;
+    font-family: Manrope;
+    font-weight: 600;
+    font-size: 22px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    color: #1A1A1A;
+}
+
+.taxModal__description {
+    margin: 0;
+    padding: 0;
+    font-family: Manrope;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 150%;
+    letter-spacing: 0%;
+    color: #1A1A1A;
+}
+
+.taxModal__form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.taxModal__formItem {
+    margin: 0;
+}
+
+.taxModal__buttonsWrapper {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    width: 100%;
+    gap: 12px;
+    margin-top: 8px;
 }

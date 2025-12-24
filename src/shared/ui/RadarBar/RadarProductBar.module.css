@@ -20,8 +20,8 @@
 .head__gallery {
     flex-grow: 0;
     flex-shrink: 0;
-    width: 120px;
     height: 100%;
+    width: 120px;
     max-width: 120px;
     display: grid;
     grid-template-columns: 3fr 1fr;
@@ -38,7 +38,7 @@
     border-radius: 6px;
     grid-row: span 3;
     overflow: hidden;
-    flex-grow: 0;
+    flex: 0 0 auto;
 }
 
 .head__secPhotoWrapper {
@@ -72,8 +72,7 @@
     justify-content: space-between;
     align-items: flex-start;
     padding: 12px;
-    gap: 16px;
-    height: 122px;
+    gap: 12px;
 }
 
 .head__title {
@@ -95,7 +94,7 @@
 }
 
 .head__text {
-    font-family: Mulish;
+    font-family: Manrope;
     font-weight: 500;
     font-size: 12px;
     line-height: 140%;
@@ -134,7 +133,7 @@
     background: #F6F4FF;
     padding: 10px;
     border-radius: 8px;
-    font-family: Mulish;
+    font-family: Manrope;
     font-weight: 600;
     font-size: 16px;
     line-height: 160%;

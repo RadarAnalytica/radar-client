@@ -36,23 +36,34 @@ const DynamicFieldset = ({ form }) => {
 
     const memoizedConfigProviderTheme = useMemo(() => ({
         token: {
-            colorPrimary: '#5329FF'
+            colorPrimary: '#5329FF',
+            fontSize: 12
         },
         components: {
             Form: {
+                labelFontSize: 12
             },
             Select: {
+                activeBorderColor: '#5329FF1A',
                 activeOutlineColor: 'transparent',
+                hoverBorderColor: '#5329FF1A',
                 optionActiveBg: 'transparent',
-                optionFontSize: 16,
+                optionFontSize: 14,
                 optionSelectedBg: 'transparent',
                 optionSelectedColor: '#5329FF',
-                selectorBg: 'white',
-                colorBorder: 'transparent'
+                colorBorder: '#5329FF1A',
+                controlHeight: 38,
+                controlHeightLG: 38,
             },
             Input: {
-                colorBorder: 'transparent'
-            }
+                activeBorderColor: '#5329FF1A',
+                hoverBorderColor: '#5329FF1A',
+                activeOutlineColor: 'transparent',
+                activeShadow: 'transparent',
+                controlHeight: 38,
+                controlHeightLG: 38,
+                 colorBorder: '#5329FF1A'
+            },
         }
     }), []);
 
@@ -201,7 +212,6 @@ const DynamicFieldset = ({ form }) => {
                             >
                                 <Select
                                     size='large'
-                                    style={{ height: '44px' }}
                                     placeholder='Изменение'
                                     options={dynamicOptions}
                                     suffixIcon={
@@ -241,7 +251,6 @@ const DynamicFieldset = ({ form }) => {
                                             // placeholder={'от 20'}
                                             prefix={<span style={{ color: '#8C8C8C' }}>от</span>}
                                             suffix={<span style={{ color: '#8C8C8C' }}>%</span>}
-                                            style={{ height: '44px' }}
                                         />
                                     </Form.Item>
                                     <Form.Item
@@ -272,7 +281,6 @@ const DynamicFieldset = ({ form }) => {
                                             // placeholder={'до 100'}
                                             prefix={<span style={{ color: '#8C8C8C' }}>до</span>}
                                             suffix={<span style={{ color: '#8C8C8C' }}>%</span>}
-                                            style={{ height: '44px' }}
                                         />
                                     </Form.Item>
                                 </>
@@ -293,7 +301,6 @@ const DynamicFieldset = ({ form }) => {
                                     size='large'
                                     placeholder='Изменение'
                                     options={dynamicOptions}
-                                    style={{ height: '44px' }}
                                     suffixIcon={
                                         <svg width="14" height="9" viewBox="0 0 14 9" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path d="M1 1L7 7L13 1" stroke="#8C8C8C" strokeWidth="2" strokeLinecap="round" />
@@ -328,7 +335,6 @@ const DynamicFieldset = ({ form }) => {
                                     >
                                         <Input
                                             size='large'
-                                            style={{ height: '44px' }}
                                             // placeholder={'от 20'}
                                             prefix={<span style={{ color: '#8C8C8C' }}>от</span>}
                                             suffix={<span style={{ color: '#8C8C8C' }}>%</span>}
@@ -358,7 +364,6 @@ const DynamicFieldset = ({ form }) => {
                                     >
                                         <Input
                                             size='large'
-                                            style={{ height: '44px' }}
                                             // placeholder={'до 100'}
                                             prefix={<span style={{ color: '#8C8C8C' }}>до</span>}
                                             suffix={<span style={{ color: '#8C8C8C' }}>%</span>}
@@ -383,7 +388,6 @@ const DynamicFieldset = ({ form }) => {
                                     size='large'
                                     placeholder='Изменение'
                                     options={dynamicOptions}
-                                    style={{ height: '44px' }}
                                     suffixIcon={
                                         <svg width="14" height="9" viewBox="0 0 14 9" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path d="M1 1L7 7L13 1" stroke="#8C8C8C" strokeWidth="2" strokeLinecap="round" />
@@ -417,7 +421,6 @@ const DynamicFieldset = ({ form }) => {
                                     >
                                         <Input
                                             size='large'
-                                            style={{ height: '44px' }}
                                             // placeholder={'от 20'}
                                             prefix={<span style={{ color: '#8C8C8C' }}>от</span>}
                                             suffix={<span style={{ color: '#8C8C8C' }}>%</span>}
@@ -447,7 +450,6 @@ const DynamicFieldset = ({ form }) => {
                                     >
                                         <Input
                                             size='large'
-                                            style={{ height: '44px' }}
                                             // placeholder={'до 100'}
                                             prefix={<span style={{ color: '#8C8C8C' }}>до</span>}
                                             suffix={<span style={{ color: '#8C8C8C' }}>%</span>}
@@ -494,7 +496,7 @@ const DynamicFieldset = ({ form }) => {
                                         options={monthsOptions}
                                         style={{ height: '44px' }}
                                         tagRender={tagRender}
-                                        dropdownRender={(menu) => renderPopup(menu, 'months_grow')}
+                                        popupRender={(menu) => renderPopup(menu, 'months_grow')}
                                         showSearch={false}
                                         suffixIcon={
                                             <svg width="14" height="9" viewBox="0 0 14 9" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -550,7 +552,7 @@ const DynamicFieldset = ({ form }) => {
                                         options={monthsOptions}
                                         style={{ height: '44px' }}
                                         tagRender={tagRender}
-                                        dropdownRender={(menu) => renderPopup(menu, 'months_fall')}
+                                        popupRender={(menu) => renderPopup(menu, 'months_fall')}
                                         showSearch={false}
                                         suffixIcon={
                                             <svg width="14" height="9" viewBox="0 0 14 9" fill="none" xmlns="http://www.w3.org/2000/svg">

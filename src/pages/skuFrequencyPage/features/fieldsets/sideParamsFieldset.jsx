@@ -93,7 +93,7 @@ const FormItemBlock = ({ i }) => {
     return (
         <div className={itemStyles}>
             <label className={i.hasTooltip ? `${styles.form__complexWrapperLabel} ${styles.form__complexWrapperLabel_lowMargin}` : styles.form__complexWrapperLabel}>
-                <span style={{ color: errorState.fromInput || errorState.toInput ? '#F93C65' : '#1A1A1A' }}>{i.label}</span>
+                <span style={{ color: errorState.fromInput || errorState.toInput ? '#F93C65' : '#1A1A1A', fontSize: 12 }}>{i.label}</span>
                 {i.hasTooltip &&
                     <ConfigProvider
                         theme={{
@@ -119,7 +119,22 @@ const FormItemBlock = ({ i }) => {
                 <ConfigProvider
                     theme={{
                         token: {
-                            colorTextLightSolid: '#F93C65',
+                            colorPrimary: '#5329FF',
+                            fontSize: 12
+                        },
+                        components: {
+                            Form: {
+                                labelFontSize: 12
+                            },
+                            Input: {
+                                activeBorderColor: '#5329FF1A',
+                                hoverBorderColor: '#5329FF1A',
+                                activeOutlineColor: 'transparent',
+                                activeShadow: 'transparent',
+                                controlHeight: 38,
+                                controlHeightLG: 38,
+                                colorBorder: '#5329FF1A'
+                            },
                         }
                     }}
                 >
@@ -167,7 +182,22 @@ const FormItemBlock = ({ i }) => {
                 <ConfigProvider
                     theme={{
                         token: {
-                            colorTextLightSolid: '#F93C65',
+                            colorPrimary: '#5329FF',
+                            fontSize: 12
+                        },
+                        components: {
+                            Form: {
+                                labelFontSize: 12
+                            },
+                            Input: {
+                                activeBorderColor: '#5329FF1A',
+                                hoverBorderColor: '#5329FF1A',
+                                activeOutlineColor: 'transparent',
+                                activeShadow: 'transparent',
+                                controlHeight: 38,
+                                controlHeightLG: 38,
+                                colorBorder: '#5329FF1A'
+                            },
                         }
                     }}
                 >

@@ -21,15 +21,14 @@
 
 .seoTableWrapper {
     background: rgba(255, 255, 255, 1);
-    box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.08);
     border-radius: 16px;
     padding: 16px;
 }
 
 .seoTableHeaderItem {
     font-weight: 500;
-    font-size: 16px;
-    line-height: 20px;
+    font-size: 14px;
+    line-height: 100%;
     color: rgba(140, 140, 140, 1);
     margin-bottom: 8px;
 }
@@ -61,9 +60,9 @@
     padding: 8px 8px 8px 4px;
     gap: 8px;
     align-items: center;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 600;
-    line-height: 20px;
+    line-height: 120%;
     color: rgba(26, 26, 26, 1);
     border-bottom: 1px solid rgba(232, 232, 232, 1);
 }
@@ -75,7 +74,6 @@
 
 .bottomBlock {
     background: rgba(255, 255, 255, 1);
-    box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.08);
     padding: 16px;
     border-radius: 16px;
     max-height: 700px;
@@ -105,7 +103,7 @@
     align-items: stretch;
     gap: 8px;
     width: 100%;
-    margin-bottom: 5px;
+    margin-bottom: 12px;
 }
 
 .search button {
@@ -113,10 +111,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 50px;
+  height: 38px;
   border-radius: 8px;
   background: rgba(83, 41, 255, 0.1);
   cursor: pointer;
+  font-size: 14px;
 }
 
 .unionImage {
@@ -132,9 +131,9 @@
 }
 
 .searchButtonText {
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 600;
-  line-height: 25px;
+  line-height: 100%;
   color: rgba(83, 41, 255, 1);
   margin-right: 8px;
 }
@@ -143,6 +142,8 @@
     width: 100%;
     padding: 12px;
     border-radius: 8px;
+    height: 38px;
+    font-size: 14px;
 }
 
 .tableHeader {
@@ -150,8 +151,8 @@
     grid-template-columns: 1fr 1fr;
     background: rgba(247, 246, 254, 1);
     padding: 8px;
-    font-weight: 500;
-    font-size: 16px;
+    font-weight: 600;
+    font-size: 14px;
     line-height: 20px;
     color: rgba(140, 140, 140, 1);
     border-radius: 12px;
@@ -254,34 +255,22 @@
     font-size: 18px;
   }
 
-  .keywordCountNumber {
-    font-weight: 700;
-    font-size: 16px;
-    line-height: 20px;
-  }
-
-  .keywordCountText {
-    font-weight: 500;
-    font-size: 16px;
-    line-height: 20px;
-    color: rgba(26, 26, 26, 0.5);
-  }
-
   .tableContentItemKey {
     color: rgba(83, 41, 255, 1);
     cursor: pointer;
+    font-size: 14px;
   }
 
   .keywordCountNumber {
     font-weight: 700;
-    font-size: 16px;
-    line-height: 20px;
+    font-size: 18px;
+    line-height: 160%;
   }
 
   .keywordCountText {
-    font-weight: 500;
-    font-size: 16px;
-    line-height: 20px;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 1;
     color: rgba(26, 26, 26, 0.5);
 }
 

@@ -55,7 +55,7 @@ export const positionTrackingSkuTableCustomCellRender = (value: any, record: any
                     content={<PopoverContent value={value} />}
                     arrow={false}
                     color='white'
-                    destroyTooltipOnHide
+                    destroyOnHidden
                 >
                     <div className={styles.bar__compareValuesBlock} style={{ backgroundColor: colorParams.backgroundColor }}>
                         <div className={styles.bar__comparativeValue} style={{ color: '#1A1A1A' }}>{value.shows}</div>
@@ -71,7 +71,7 @@ export const positionTrackingSkuTableCustomCellRender = (value: any, record: any
                     content={<PopoverContent value={value} />}
                     arrow={false}
                     color='white'
-                    destroyTooltipOnHide
+                    destroyOnHidden
                 >
                     <div className={styles.bar__compareValuesBlock}>
                         —

@@ -62,7 +62,7 @@ const MPFeesDataFormBlockDesktop = ({ mp_fee, form }) => {
                     name='additional_mp_fee'
                 >
                     <Input
-                        style={{background: additional_mp_fee ? '#F2F2F2' : ''}}
+                        //style={{background: additional_mp_fee ? '#F2F2F2' : ''}}
                         size='large'
                         placeholder='Укажите комиссию'
                         className={styles.formItem__input}
@@ -104,7 +104,7 @@ const MPFeesDataFormBlockDesktop = ({ mp_fee, form }) => {
                     name='equiring_fee'
                 >
                     <Input
-                        style={{background: equiring_fee ? '#F2F2F2' : ''}}
+                        //style={{background: equiring_fee ? '#F2F2F2' : ''}}
                         size='large'
                         placeholder='Укажите комиссию'
                         className={styles.formItem__input}

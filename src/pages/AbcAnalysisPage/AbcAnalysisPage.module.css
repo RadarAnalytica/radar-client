@@ -87,6 +87,23 @@
   min-height: 0;
   overflow: hidden;
 
+  .productNameCell {
+    width: 100%;
+		color: #5329FF;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    .productNameCellImg {
+      width: 30px;
+      height: 40px;
+      border-radius: 5px;
+      background-color: #D3D3D3;
+      flex-grow: 0;
+      flex-shrink: 0;
+    }
+  }
+
   :global(.radar-table__header) {
     tr {
       th {

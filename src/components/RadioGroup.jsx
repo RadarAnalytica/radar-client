@@ -1,27 +1,28 @@
 import React from 'react';
+import { Radio, ConfigProvider } from 'antd';
 
 const RadioGroup = ({ options, name, defaultValue, onChange }) => {
   return (
     <div className='map-radio mb-3'>
-      {options.map((option) => (
-        <div key={option.value} className='radio-item' style={{ cursor: 'pointer' }}>
-          <input
-            type='radio'
-            name={name}
-            id={`${name}-${option.value}`}
-            value={option.value}
-            defaultChecked={option.value === defaultValue}
-            onChange={() => onChange(option.value)}
-            style={{ cursor: 'pointer' }}
-          />
-          <label
-            htmlFor={`${name}-${option.value}`}
-            style={{ cursor: 'pointer', fontSize: '2vh' }}
-          >
-            {option.label}
-          </label>
-        </div>
-      ))}
+      <ConfigProvider
+        theme={{
+          token: {
+            colorPrimary: '#5329FF'
+          }
+        }}
+      >
+        <Radio.Group
+          name={name}
+          defaultValue={defaultValue}
+          onChange={(e) => onChange(e.target.value)}
+        >
+          {options.map((option) => (
+            <Radio key={option.value} value={option.value} style={{ fontSize: '14px' }}>
+              {option.label}
+            </Radio>
+          ))}
+        </Radio.Group>
+      </ConfigProvider>
     </div>
   );
 };

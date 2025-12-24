@@ -130,7 +130,7 @@ const AdditionalOptionsDataFormBlockDesktop = ({ form, mpMainFee }) => {
                                 }}
                             >
                                 <Input
-                                    style={{ background: inhouse_logistics_price ? '#F2F2F2' : '' }}
+                                    //style={{ background: inhouse_logistics_price ? '#F2F2F2' : '' }}
                                     size='large'
                                     placeholder='Укажите стоимость'
                                     className={styles.formItem__input}
@@ -152,7 +152,7 @@ const AdditionalOptionsDataFormBlockDesktop = ({ form, mpMainFee }) => {
                                 }}
                             >
                                 <Input
-                                    style={{ background: packaging_price ? '#F2F2F2' : '' }}
+                                    //style={{ background: packaging_price ? '#F2F2F2' : '' }}
                                     size='large'
                                     placeholder='Укажите стоимость упаковки'
                                     className={styles.formItem__input}
@@ -174,7 +174,7 @@ const AdditionalOptionsDataFormBlockDesktop = ({ form, mpMainFee }) => {
                                 }}
                             >
                                 <Input
-                                    style={{ background: mp_logistics_price ? '#F2F2F2' : '' }}
+                                    //style={{ background: mp_logistics_price ? '#F2F2F2' : '' }}
                                     size='large'
                                     placeholder='Укажите стоимость'
                                     className={styles.formItem__input}
@@ -196,7 +196,7 @@ const AdditionalOptionsDataFormBlockDesktop = ({ form, mpMainFee }) => {
                                 }}
                             >
                                 <Input
-                                    style={{ background: fullfilment_price ? '#F2F2F2' : '' }}
+                                   // style={{ background: fullfilment_price ? '#F2F2F2' : '' }}
                                     size='large'
                                     placeholder='Укажите стоимость'
                                     className={styles.formItem__input}
@@ -260,7 +260,7 @@ const AdditionalOptionsDataFormBlockDesktop = ({ form, mpMainFee }) => {
                             name='tax_rate'
                         >
                             <Input
-                                style={{ background: tax_rate ? '#F2F2F2' : '' }}
+                                //style={{ background: tax_rate ? '#F2F2F2' : '' }}
                                 size='large'
                                 placeholder='Укажите ставку'
                                 className={styles.formItem__input}
@@ -298,7 +298,7 @@ const AdditionalOptionsDataFormBlockDesktop = ({ form, mpMainFee }) => {
                                 }}
                             >
                                 <Input
-                                    style={{ background: adv_price ? '#F2F2F2' : '' }}
+                                    //style={{ background: adv_price ? '#F2F2F2' : '' }}
                                     size='large'
                                     placeholder='Укажите стоимость'
                                     className={styles.formItem__input}
@@ -320,7 +320,7 @@ const AdditionalOptionsDataFormBlockDesktop = ({ form, mpMainFee }) => {
                                 }}
                             >
                                 <Input
-                                    style={{ background: defective_percentage ? '#F2F2F2' : '' }}
+                                    //style={{ background: defective_percentage ? '#F2F2F2' : '' }}
                                     size='large'
                                     placeholder='Укажите процент'
                                     className={styles.formItem__input}
@@ -344,7 +344,7 @@ const AdditionalOptionsDataFormBlockDesktop = ({ form, mpMainFee }) => {
                             name='other_costs'
                         >
                             <Input
-                                style={{ background: other_costs ? '#F2F2F2' : '' }}
+                                //style={{ background: other_costs ? '#F2F2F2' : '' }}
                                 size='large'
                                 placeholder='Укажите стоимость'
                                 className={styles.formItem__input}

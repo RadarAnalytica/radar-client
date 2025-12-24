@@ -6,7 +6,8 @@ import Sidebar from '@/components/sharedComponents/sidebar/sidebar';
 import MobilePlug from '@/components/sharedComponents/mobilePlug/mobilePlug';
 // import { MainChart } from '@/features';
 import { Table as RadarTable } from 'radar-ui';
-import { Segmented, ConfigProvider, Button, Modal, Input, Checkbox } from 'antd';
+import { Segmented, ConfigProvider, Button, Modal, Input, Checkbox, Tooltip as AntdTooltip } from 'antd';
+import { Tooltip as RadarTooltip } from 'radar-ui';
 import { positionTrackingSkuTableConfig as initTableConfig, RadarLoader } from '@/shared';
 import { positionTrackingSkuTableCustomCellRender } from '@/shared';
 import Breadcrumbs from '@/components/sharedComponents/header/headerBreadcrumbs/breadcrumbs';
@@ -45,7 +46,7 @@ const deleteModalCancelButtonTheme = {
         colorPrimary: '#1A1A1A',
         fontSize: 14,
         fontWeight: 600,
-        fontFamily: 'Mulish',
+        fontFamily: 'Manrope',
         borderRadius: 8,
     },
     components: {
@@ -69,7 +70,7 @@ const modalCancelButtonTheme = {
         colorPrimary: '#5329FF',
         fontSize: 16,
         fontWeight: 600,
-        fontFamily: 'Mulish',
+        fontFamily: 'Manrope',
         controlHeight: 44,
         borderRadius: 12,
     },
@@ -95,7 +96,7 @@ const modalPrimaryButtonTheme = {
         colorPrimary: '#5329FF',
         fontSize: 16,
         fontWeight: 600,
-        fontFamily: 'Mulish',
+        fontFamily: 'Manrope',
         controlHeight: 44,
         borderRadius: 12,
     },
@@ -115,7 +116,7 @@ const deleteModalPrimaryButtonTheme = {
         colorPrimary: '#FF3B5C',
         fontSize: 16,
         fontWeight: 600,
-        fontFamily: 'Mulish',
+        fontFamily: 'Manrope',
         controlHeight: 48,
         borderRadius: 16,
     },
@@ -153,7 +154,7 @@ const inputTheme = {
         colorBgContainer: 'white',
         colorBorder: '#5329FF1A',
         borderRadius: 8,
-        fontFamily: 'Mulish',
+        fontFamily: 'Manrope',
         fontSize: 12,
         fontWeight: 500,
         controlHeightLG: 38,
@@ -673,7 +674,7 @@ const PositionTrackingSkuPage = () => {
 
             let innerHtml = '<thead>';
             if (formattedDate) {
-                innerHtml += '<tr><th style="color: #8C8C8C; font-weight: 500; font-size: 12px; font-family: Mulish; padding-bottom: 8px;">' + formattedDate + '</th></tr>';
+                innerHtml += '<tr><th style="color: #8C8C8C; font-weight: 500; font-size: 12px; font-family: Manrope; padding-bottom: 8px;">' + formattedDate + '</th></tr>';
             }
             innerHtml += '</thead><tbody>';
 
@@ -740,10 +741,10 @@ const PositionTrackingSkuPage = () => {
                         <tr>
                             <td style="padding: 2px 0; display: flex; align-items: center;">
                                 <span style="display: inline-block; ${iconStyle} background-color: ${iconColor}; margin-right: 8px; flex-shrink: 0;"></span>
-                                <span style="color: #1A1A1A; font-size: 14px; font-weight: 600; font-family: Mulish; white-space: nowrap;">${labelName}</span>
+                                <span style="color: #1A1A1A; font-size: 14px; font-weight: 600; font-family: Manrope; white-space: nowrap;">${labelName}</span>
                             </td>
                             <td style="padding: 2px 0 2px 16px; text-align: right;">
-                                <span style="color: #1A1A1A; font-size: 14px; font-weight: 700; font-family: Mulish;">${labelValue}</span>
+                                <span style="color: #1A1A1A; font-size: 14px; font-weight: 700; font-family: Manrope;">${labelValue}</span>
                             </td>
                         </tr>
                     `;
@@ -767,7 +768,7 @@ const PositionTrackingSkuPage = () => {
 
             if (!hasMark) {
                 innerHtml += '<tr><td colspan="2" style="height: 8px;"></td></tr>'; // Отступ
-                innerHtml += '<tr><td colspan="2" style="color: #8C8C8C; font-size: 12px; font-family: Mulish; padding-top: 4px;">Кликните чтобы добавить метку</td></tr>';
+                innerHtml += '<tr><td colspan="2" style="color: #8C8C8C; font-size: 12px; font-family: Manrope; padding-top: 4px;">Кликните чтобы добавить метку</td></tr>';
             }
 
             innerHtml += '</tbody>';
@@ -820,7 +821,7 @@ const PositionTrackingSkuPage = () => {
         tooltipEl.style.boxShadow = '0px 0px 20px 0px #00000014';
         tooltipEl.style.pointerEvents = 'none';
         tooltipEl.style.zIndex = '1000';
-        tooltipEl.style.fontFamily = 'Mulish';
+        tooltipEl.style.fontFamily = 'Manrope';
     }, [skuData, marks]);
 
     const activityChartOptions = useMemo<ChartOptions<'line'>>(() => ({
@@ -860,7 +861,7 @@ const PositionTrackingSkuPage = () => {
                 ticks: {
                     color: '#8C8C8C',
                     font: {
-                        family: 'Mulish',
+                        family: 'Manrope',
                         size: 12,
                     },
                 },
@@ -883,7 +884,7 @@ const PositionTrackingSkuPage = () => {
                     padding: 12,
                     color: '#5B3BE1',
                     font: {
-                        family: 'Mulish',
+                        family: 'Manrope',
                         size: 12,
                     },
                     callback: (value: string | number) => `${formatPrice(value, ' ')}`,
@@ -907,7 +908,7 @@ const PositionTrackingSkuPage = () => {
                     padding: 12,
                     color: '#FF5470',
                     font: {
-                        family: 'Mulish',
+                        family: 'Manrope',
                         size: 12,
                     },
                     callback: (value: string | number) => `${formatPrice(value, ' ')}`,
@@ -931,7 +932,7 @@ const PositionTrackingSkuPage = () => {
                     padding: 12,
                     color: '#FFDB7E',
                     font: {
-                        family: 'Mulish',
+                        family: 'Manrope',
                         size: 12,
                     },
                     callback: (value: string | number) => `${formatPrice(value, ' ')}`,
@@ -968,12 +969,12 @@ const PositionTrackingSkuPage = () => {
                 titleColor: '#8C8C8C',
                 bodyColor: '#1A1A1A',
                 titleFont: {
-                    family: 'Mulish',
+                    family: 'Manrope',
                     size: 12,
                     weight: 500,
                 },
                 bodyFont: {
-                    family: 'Mulish',
+                    family: 'Manrope',
                     size: 14,
                     weight: 600,
                 },
@@ -1110,7 +1111,7 @@ const PositionTrackingSkuPage = () => {
             // Title
             if (formattedDate) {
                 const titleDiv = document.createElement('div');
-                titleDiv.style.cssText = 'color: #8C8C8C; font-weight: 500; font-size: 12px; font-family: Mulish; padding-bottom: 8px;';
+                titleDiv.style.cssText = 'color: #8C8C8C; font-weight: 500; font-size: 12px; font-family: Manrope; padding-bottom: 8px;';
                 titleDiv.textContent = formattedDate;
                 titleContainer.appendChild(titleDiv);
             }
@@ -1120,7 +1121,7 @@ const PositionTrackingSkuPage = () => {
 
             // Main value
             const visibilityFormatted = formatPrice(visibility.toFixed(2), '%', false);
-            valueContainer.style.cssText = 'color: #1A1A1A; font-size: 14px; font-weight: 600; font-family: Mulish;';
+            valueContainer.style.cssText = 'color: #1A1A1A; font-size: 14px; font-weight: 600; font-family: Manrope;';
             valueContainer.textContent = visibilityFormatted;
             valuesRow.appendChild(valueContainer);
 
@@ -1177,7 +1178,7 @@ const PositionTrackingSkuPage = () => {
         tooltipEl.style.boxShadow = '0px 0px 20px 0px #00000014';
         tooltipEl.style.pointerEvents = 'none';
         tooltipEl.style.zIndex = '1000';
-        tooltipEl.style.fontFamily = 'Mulish';
+        tooltipEl.style.fontFamily = 'Manrope';
     }, [skuData]);
 
     const getVisibilityChartData = useCallback((skuData: PositionTrackingSkuPageData): ChartData<'line'> => {
@@ -1354,7 +1355,28 @@ const PositionTrackingSkuPage = () => {
                     {requestStatus.isLoading && <RadarLoader loaderStyle={{ height: '130px', width: '100%', background: 'white', borderRadius: '16px' }} />}
                     {!requestStatus.isLoading && <div className={styles.page__miniChart}>
                         <div className={styles.page__miniChartHeader}>
-                            <p className={styles.page__miniChartTitle}>Видимость</p>
+                            <p className={styles.page__miniChartTitle}>
+                                Видимость
+                                <ConfigProvider
+                                    theme={{
+                                        token: {
+                                            colorTextLightSolid: '#1A1A1A',
+                                            fontSize: 12,
+                                        }
+                                    }}
+                                >
+                                    <AntdTooltip
+                                        arrow={false}
+                                        color='white'
+                                        title={'Показывает, какая доля потенциального трафика по ключевым запросам была охвачена вашим товаром. Чем выше значение, тем лучше товар заметен в поиске и привлекает внимание покупателей.'}
+                                    >
+                                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ marginLeft: '8px', cursor: 'pointer' }}>
+                                            <rect x="0.75" y="0.75" width="18.5" height="18.5" rx="9.25" stroke="black" strokeOpacity="0.1" strokeWidth="1.5" />
+                                            <path d="M9.064 15V7.958H10.338V15H9.064ZM8.952 6.418V5.046H10.464V6.418H8.952Z" fill="#1A1A1A" fillOpacity="0.5" />
+                                        </svg>
+                                    </AntdTooltip>
+                                </ConfigProvider>
+                            </p>
                             <div className={styles.page__miniChartValues}>
                                 {skuData?.visibility && <span className={styles.page__miniChartMainValue}>{formatPrice(skuData?.visibility?.toString(), '%')}</span>}
                                 {skuData?.visibility_compare && <RadarRateMark value={skuData?.visibility_compare.toString()} units='%' />}
@@ -1575,7 +1597,7 @@ interface PositionTrackingSkuTableProps {
     tableType: 'Кластеры' | 'По запросам'
 }
 const PositionTrackingSkuTable = memo(({ requestStatus, skuData, tableType }: PositionTrackingSkuTableProps) => {
-   
+
     const [sortState, setSortState] = useState<{ sort_field: string, sort_order: 'ASC' | 'DESC' }>({ sort_field: 'frequency', sort_order: 'DESC' });
     const [tableConfig, setTableConfig] = useState<Record<string, any>[]>(null);
     const [paginationState, setPaginationState] = useState<{ current: number, pageSize: number, total: number }>({ current: 1, pageSize: 12, total: 0 });

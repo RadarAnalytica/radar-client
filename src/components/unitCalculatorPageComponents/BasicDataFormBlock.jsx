@@ -99,7 +99,7 @@ const BasicDataFormBlock = ({ form, setMpMainFee, isProductFromToken, setIsProdu
             <ConfigProvider
                 theme={{
                     token: {
-                        fontFamily: 'Mulish',
+                        fontFamily: 'Manrope',
                         colorBgContainer: 'white',
                         colorPrimary: 'black',
                         colorPrimaryActive: 'black'
@@ -144,13 +144,13 @@ const BasicDataFormBlock = ({ form, setMpMainFee, isProductFromToken, setIsProdu
                         style={{background: product ? '#F2F2F2' : ''}}
                         id='autocomp'
                         // autoComplete='off'
-                        dropdownRender={menu => (
+                        popupRender={menu => (
                             <div style={{ maxHeight: '200px', overflowY: 'auto', overscrollBehavior: 'none' }}>
                                 {menu}
                             </div>
                         )}
                         getPopupContainer={(triggerNode) => triggerNode.parentNode}
-                        onDropdownVisibleChange={(open) => {
+                        onOpenChange={(open) => {
                             const p = document.querySelector('#calc-content');
                             if (open) {
                                 // Отключаем прокрутку при открытии
@@ -181,7 +181,7 @@ const BasicDataFormBlock = ({ form, setMpMainFee, isProductFromToken, setIsProdu
                         onSearch={handleSearch}
                         onSelect={handleSelect}
                         options={autocompleteOptions && autocompleteOptions.length > 0 ? autocompleteOptions.map(_ => ({ value: _.name})) : undefined}
-                        // dropdownRender={menu => (
+                        // popupRender={menu => (
                         //     <div ref={dropdownRef} style={{ maxHeight: '200px', overflowY: 'auto' }}>
                         //         {menu}
                         //     </div>

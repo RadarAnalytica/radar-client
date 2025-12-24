@@ -1,244 +1,702 @@
 {
   "results": [
     {
-      "title": "Контейнер для еды стеклянный с крышкой набор",
-      "wb_id": 101010101,
-      "supplier_id": "Демо-поставщик",
-      "amount": 547012.7,
-      "amount_percent": 18.5,
-      "photo": "https://basket-26.wbbasket.ru/vol4855/part485557/485557912/images/c246x328/1.webp",
-      "category": "A",
-      "marginality": 20.0,
-      "roi": 20.0,
-      "tech_size": "0"
+      "article": "Контейнер для еды стеклянный с крышкой набор",
+      "article_data": {
+        "title": "Контейнер для еды стеклянный с крышкой набор",
+        "wb_id": 101010101,
+        "supplier_id": "Демо-поставщик",
+        "amount": 547012.7,
+        "amount_percent": 18.5,
+        "photo": "https://basket-26.wbbasket.ru/vol4855/part485557/485557912/images/c246x328/1.webp",
+        "category": "A",
+        "marginality": 20.0,
+        "roi": 20.0,
+        "tech_size": "0"
+      },
+      "sizes": [
+        {
+          "size": "0",
+          "size_data": {
+            "title": "Контейнер для еды стеклянный с крышкой набор",
+            "wb_id": 101010101,
+            "supplier_id": "Демо-поставщик",
+            "amount": 547012.7,
+            "amount_percent": 18.5,
+            "photo": "https://basket-26.wbbasket.ru/vol4855/part485557/485557912/images/c246x328/1.webp",
+            "category": "A",
+            "marginality": 20.0,
+            "roi": 20.0,
+            "tech_size": "0"
+          }
+        }
+      ]
     },
     {
-      "title": "Форма для запекания в духовке стекло с крышкой",
-      "wb_id": 101010101,
-      "supplier_id": "Демо-поставщик",
-      "amount": 498701.67,
-      "amount_percent": 16.85,
-      "photo": "https://basket-10.wbbasket.ru/vol1592/part159244/159244282/images/c246x328/1.webp",
-      "category": "A",
-      "marginality": 30.0,
-      "roi": 30.0,
-      "tech_size": "0"
+      "article": "Форма для запекания в духовке стекло с крышкой",
+      "article_data": {
+        "title": "Форма для запекания в духовке стекло с крышкой",
+        "wb_id": 101010101,
+        "supplier_id": "Демо-поставщик",
+        "amount": 498701.67,
+        "amount_percent": 16.85,
+        "photo": "https://basket-10.wbbasket.ru/vol1592/part159244/159244282/images/c246x328/1.webp",
+        "category": "A",
+        "marginality": 30.0,
+        "roi": 30.0,
+        "tech_size": "0"
+      },
+      "sizes": [
+        {
+          "size": "0",
+          "size_data": {
+            "title": "Форма для запекания в духовке стекло с крышкой",
+            "wb_id": 101010101,
+            "supplier_id": "Демо-поставщик",
+            "amount": 498701.67,
+            "amount_percent": 16.85,
+            "photo": "https://basket-10.wbbasket.ru/vol1592/part159244/159244282/images/c246x328/1.webp",
+            "category": "A",
+            "marginality": 30.0,
+            "roi": 30.0,
+            "tech_size": "0"
+          }
+        }
+      ]
     },
     {
-      "title": "Контейнер для еды стеклянный с крышкой набор герметичный",
-      "wb_id": 101010101,
-      "supplier_id": "Демо-поставщик",
-      "amount": 335843.8,
-      "amount_percent": 11.35,
-      "photo": "https://basket-26.wbbasket.ru/vol4853/part485365/485365491/images/c246x328/1.webp",
-      "category": "A",
-      "marginality": 40.0,
-      "roi": 40.0,
-      "tech_size": "0"
+      "article": "Контейнер для еды стеклянный с крышкой набор герметичный",
+      "article_data": {
+        "title": "Контейнер для еды стеклянный с крышкой набор герметичный",
+        "wb_id": 101010101,
+        "supplier_id": "Демо-поставщик",
+        "amount": 335843.8,
+        "amount_percent": 11.35,
+        "photo": "https://basket-26.wbbasket.ru/vol4853/part485365/485365491/images/c246x328/1.webp",
+        "category": "A",
+        "marginality": 40.0,
+        "roi": 40.0,
+        "tech_size": "0"
+      },
+      "sizes": [
+        {
+          "size": "0",
+          "size_data": {
+            "title": "Контейнер для еды стеклянный с крышкой набор герметичный",
+            "wb_id": 101010101,
+            "supplier_id": "Демо-поставщик",
+            "amount": 335843.8,
+            "amount_percent": 11.35,
+            "photo": "https://basket-26.wbbasket.ru/vol4853/part485365/485365491/images/c246x328/1.webp",
+            "category": "A",
+            "marginality": 40.0,
+            "roi": 40.0,
+            "tech_size": "0"
+          }
+        }
+      ]
     },
     {
-      "title": "Контейнер для еды стеклянный с крышкой набор",
-      "wb_id": 101010101,
-      "supplier_id": "Демо-поставщик",
-      "amount": 272628.78,
-      "amount_percent": 9.22,
-      "photo": "https://basket-13.wbbasket.ru/vol1986/part198653/198653800/images/c246x328/1.webp",
-      "category": "A",
-      "marginality": 20.0,
-      "roi": 20.0,
-      "tech_size": "0"
+      "article": "Контейнер для еды стеклянный с крышкой набор",
+      "article_data": {
+        "title": "Контейнер для еды стеклянный с крышкой набор",
+        "wb_id": 101010101,
+        "supplier_id": "Демо-поставщик",
+        "amount": 272628.78,
+        "amount_percent": 9.22,
+        "photo": "https://basket-13.wbbasket.ru/vol1986/part198653/198653800/images/c246x328/1.webp",
+        "category": "A",
+        "marginality": 20.0,
+        "roi": 20.0,
+        "tech_size": "0"
+      },
+      "sizes": [
+        {
+          "size": "0",
+          "size_data": {
+            "title": "Контейнер для еды стеклянный с крышкой набор",
+            "wb_id": 101010101,
+            "supplier_id": "Демо-поставщик",
+            "amount": 272628.78,
+            "amount_percent": 9.22,
+            "photo": "https://basket-13.wbbasket.ru/vol1986/part198653/198653800/images/c246x328/1.webp",
+            "category": "A",
+            "marginality": 20.0,
+            "roi": 20.0,
+            "tech_size": "0"
+          }
+        }
+      ]
     },
     {
-      "title": "Форма для запекания в духовке стекло с крышкой",
-      "wb_id": 101010101,
-      "supplier_id": "Демо-поставщик",
-      "amount": 184090.9,
-      "amount_percent": 6.22,
-      "photo": "https://basket-14.wbbasket.ru/vol2116/part211666/211666051/images/c246x328/1.webp",
-      "category": "A",
-      "marginality": 30.0,
-      "roi": 30.0,
-      "tech_size": "0"
+      "article": "Форма для запекания в духовке стекло с крышкой",
+      "article_data": {
+        "title": "Форма для запекания в духовке стекло с крышкой",
+        "wb_id": 101010101,
+        "supplier_id": "Демо-поставщик",
+        "amount": 184090.9,
+        "amount_percent": 6.22,
+        "photo": "https://basket-14.wbbasket.ru/vol2116/part211666/211666051/images/c246x328/1.webp",
+        "category": "A",
+        "marginality": 30.0,
+        "roi": 30.0,
+        "tech_size": "0"
+      },
+      "sizes": [
+        {
+          "size": "0",
+          "size_data": {
+            "title": "Форма для запекания в духовке стекло с крышкой",
+            "wb_id": 101010101,
+            "supplier_id": "Демо-поставщик",
+            "amount": 184090.9,
+            "amount_percent": 6.22,
+            "photo": "https://basket-14.wbbasket.ru/vol2116/part211666/211666051/images/c246x328/1.webp",
+            "category": "A",
+            "marginality": 30.0,
+            "roi": 30.0,
+            "tech_size": "0"
+          }
+        }
+      ]
     },
     {
-      "title": "Контейнер для еды стеклянный с крышкой набор",
-      "wb_id": 101010101,
-      "supplier_id": "Демо-поставщик",
-      "amount": 142883.78,
-      "amount_percent": 4.83,
-      "photo": "https://basket-13.wbbasket.ru/vol1986/part198653/198653800/images/c246x328/1.webp",
-      "category": "A",
-      "marginality": 40.0,
-      "roi": 40.0,
-      "tech_size": "0"
+      "article": "Контейнер для еды стеклянный с крышкой набор",
+      "article_data": {
+        "title": "Контейнер для еды стеклянный с крышкой набор",
+        "wb_id": 101010101,
+        "supplier_id": "Демо-поставщик",
+        "amount": 142883.78,
+        "amount_percent": 4.83,
+        "photo": "https://basket-13.wbbasket.ru/vol1986/part198653/198653800/images/c246x328/1.webp",
+        "category": "A",
+        "marginality": 40.0,
+        "roi": 40.0,
+        "tech_size": "0"
+      },
+      "sizes": [
+        {
+          "size": "0",
+          "size_data": {
+            "title": "Контейнер для еды стеклянный с крышкой набор",
+            "wb_id": 101010101,
+            "supplier_id": "Демо-поставщик",
+            "amount": 142883.78,
+            "amount_percent": 4.83,
+            "photo": "https://basket-13.wbbasket.ru/vol1986/part198653/198653800/images/c246x328/1.webp",
+            "category": "A",
+            "marginality": 40.0,
+            "roi": 40.0,
+            "tech_size": "0"
+          }
+        }
+      ]
     },
     {
-      "title": "Форма для запекания в духовке стекло с крышкой",
-      "wb_id": 101010101,
-      "supplier_id": "Демо-поставщик",
-      "amount": 130564,
-      "amount_percent": 4.41,
-      "photo": "https://basket-14.wbbasket.ru/vol2116/part211665/211665958/images/c246x328/1.webp",
-      "category": "A",
-      "marginality": 20.0,
-      "roi": 20.0,
-      "tech_size": "0"
+      "article": "Форма для запекания в духовке стекло с крышкой",
+      "article_data": {
+        "title": "Форма для запекания в духовке стекло с крышкой",
+        "wb_id": 101010101,
+        "supplier_id": "Демо-поставщик",
+        "amount": 130564,
+        "amount_percent": 4.41,
+        "photo": "https://basket-14.wbbasket.ru/vol2116/part211665/211665958/images/c246x328/1.webp",
+        "category": "A",
+        "marginality": 20.0,
+        "roi": 20.0,
+        "tech_size": "0"
+      },
+      "sizes": [
+        {
+          "size": "0",
+          "size_data": {
+            "title": "Форма для запекания в духовке стекло с крышкой",
+            "wb_id": 101010101,
+            "supplier_id": "Демо-поставщик",
+            "amount": 130564,
+            "amount_percent": 4.41,
+            "photo": "https://basket-14.wbbasket.ru/vol2116/part211665/211665958/images/c246x328/1.webp",
+            "category": "A",
+            "marginality": 20.0,
+            "roi": 20.0,
+            "tech_size": "0"
+          }
+        }
+      ]
     },
     {
-      "title": "Форма для выпечки в духовке из алюминия с антипригарным покрытием",
-      "wb_id": 101010101,
-      "supplier_id": "Демо-поставщик",
-      "amount": 122480.93,
-      "amount_percent": 4.14,
-      "photo": "https://basket-18.wbbasket.ru/vol2875/part287568/287568831/images/c246x328/1.webp",
-      "category": "A",
-      "marginality": 30.0,
-      "roi": 30.0,
-      "tech_size": "0"
+      "article": "Форма для выпечки в духовке из алюминия с антипригарным покрытием",
+      "article_data": {
+        "title": "Форма для выпечки в духовке из алюминия с антипригарным покрытием",
+        "wb_id": 101010101,
+        "supplier_id": "Демо-поставщик",
+        "amount": 122480.93,
+        "amount_percent": 4.14,
+        "photo": "https://basket-18.wbbasket.ru/vol2875/part287568/287568831/images/c246x328/1.webp",
+        "category": "A",
+        "marginality": 30.0,
+        "roi": 30.0,
+        "tech_size": "0"
+      },
+      "sizes": [
+        {
+          "size": "0",
+          "size_data": {
+            "title": "Форма для выпечки в духовке из алюминия с антипригарным покрытием",
+            "wb_id": 101010101,
+            "supplier_id": "Демо-поставщик",
+            "amount": 122480.93,
+            "amount_percent": 4.14,
+            "photo": "https://basket-18.wbbasket.ru/vol2875/part287568/287568831/images/c246x328/1.webp",
+            "category": "A",
+            "marginality": 30.0,
+            "roi": 30.0,
+            "tech_size": "0"
+          }
+        }
+      ]
     },
     {
-      "title": "Контейнер для еды стеклянный с крышкой набор",
-      "wb_id": 101010101,
-      "supplier_id": "Демо-поставщик",
-      "amount": 114866.62,
-      "amount_percent": 3.88,
-      "photo": "https://basket-13.wbbasket.ru/vol1986/part198653/198653800/images/c246x328/1.webp",
-      "category": "A",
-      "marginality": 40.0,
-      "roi": 40.0,
-      "tech_size": "0"
+      "article": "Контейнер для еды стеклянный с крышкой набор",
+      "article_data": {
+        "title": "Контейнер для еды стеклянный с крышкой набор",
+        "wb_id": 101010101,
+        "supplier_id": "Демо-поставщик",
+        "amount": 114866.62,
+        "amount_percent": 3.88,
+        "photo": "https://basket-13.wbbasket.ru/vol1986/part198653/198653800/images/c246x328/1.webp",
+        "category": "A",
+        "marginality": 40.0,
+        "roi": 40.0,
+        "tech_size": "0"
+      },
+      "sizes": [
+        {
+          "size": "0",
+          "size_data": {
+            "title": "Контейнер для еды стеклянный с крышкой набор",
+            "wb_id": 101010101,
+            "supplier_id": "Демо-поставщик",
+            "amount": 114866.62,
+            "amount_percent": 3.88,
+            "photo": "https://basket-13.wbbasket.ru/vol1986/part198653/198653800/images/c246x328/1.webp",
+            "category": "A",
+            "marginality": 40.0,
+            "roi": 40.0,
+            "tech_size": "0"
+          }
+        }
+      ]
     },
     {
-      "title": "Контейнер для еды стеклянный с крышкой набор",
-      "wb_id": 101010101,
-      "supplier_id": "Демо-поставщик",
-      "amount": 104820.8,
-      "amount_percent": 3.54,
-      "photo": "https://basket-13.wbbasket.ru/vol1986/part198653/198653800/images/c246x328/1.webp",
-      "category": "A",
-      "marginality": 20.0,
-      "roi": 20.0,
-      "tech_size": "0"
+      "article": "Контейнер для еды стеклянный с крышкой набор",
+      "article_data": {
+        "title": "Контейнер для еды стеклянный с крышкой набор",
+        "wb_id": 101010101,
+        "supplier_id": "Демо-поставщик",
+        "amount": 104820.8,
+        "amount_percent": 3.54,
+        "photo": "https://basket-13.wbbasket.ru/vol1986/part198653/198653800/images/c246x328/1.webp",
+        "category": "A",
+        "marginality": 20.0,
+        "roi": 20.0,
+        "tech_size": "0"
+      },
+      "sizes": [
+        {
+          "size": "0",
+          "size_data": {
+            "title": "Контейнер для еды стеклянный с крышкой набор",
+            "wb_id": 101010101,
+            "supplier_id": "Демо-поставщик",
+            "amount": 104820.8,
+            "amount_percent": 3.54,
+            "photo": "https://basket-13.wbbasket.ru/vol1986/part198653/198653800/images/c246x328/1.webp",
+            "category": "A",
+            "marginality": 20.0,
+            "roi": 20.0,
+            "tech_size": "0"
+          }
+        }
+      ]
     },
     {
-      "title": "Контейнер для еды стеклянный с крышкой набор",
-      "wb_id": 101010101,
-      "supplier_id": "Демо-поставщик",
-      "amount": 98654.4,
-      "amount_percent": 3.33,
-      "photo": "https://basket-14.wbbasket.ru/vol2136/part213699/213699516/images/c246x328/1.webp",
-      "category": "A",
-      "marginality": 30.0,
-      "roi": 30.0,
-      "tech_size": "0"
+      "article": "Контейнер для еды стеклянный с крышкой набор",
+      "article_data": {
+        "title": "Контейнер для еды стеклянный с крышкой набор",
+        "wb_id": 101010101,
+        "supplier_id": "Демо-поставщик",
+        "amount": 98654.4,
+        "amount_percent": 3.33,
+        "photo": "https://basket-14.wbbasket.ru/vol2136/part213699/213699516/images/c246x328/1.webp",
+        "category": "A",
+        "marginality": 30.0,
+        "roi": 30.0,
+        "tech_size": "0"
+      },
+      "sizes": [
+        {
+          "size": "0",
+          "size_data": {
+            "title": "Контейнер для еды стеклянный с крышкой набор",
+            "wb_id": 101010101,
+            "supplier_id": "Демо-поставщик",
+            "amount": 98654.4,
+            "amount_percent": 3.33,
+            "photo": "https://basket-14.wbbasket.ru/vol2136/part213699/213699516/images/c246x328/1.webp",
+            "category": "A",
+            "marginality": 30.0,
+            "roi": 30.0,
+            "tech_size": "0"
+          }
+        }
+      ]
     },
     {
-      "title": "Контейнер для еды стеклянный с крышкой набор",
-      "wb_id": 101010101,
-      "supplier_id": "Демо-поставщик",
-      "amount": 89225.6,
-      "amount_percent": 3.02,
-      "photo": "https://basket-14.wbbasket.ru/vol2136/part213699/213699516/images/c246x328/1.webp",
-      "category": "A",
-      "marginality": 40.0,
-      "roi": 40.0,
-      "tech_size": "0"
+      "article": "Контейнер для еды стеклянный с крышкой набор",
+      "article_data": {
+        "title": "Контейнер для еды стеклянный с крышкой набор",
+        "wb_id": 101010101,
+        "supplier_id": "Демо-поставщик",
+        "amount": 89225.6,
+        "amount_percent": 3.02,
+        "photo": "https://basket-14.wbbasket.ru/vol2136/part213699/213699516/images/c246x328/1.webp",
+        "category": "A",
+        "marginality": 40.0,
+        "roi": 40.0,
+        "tech_size": "0"
+      },
+      "sizes": [
+        {
+          "size": "0",
+          "size_data": {
+            "title": "Контейнер для еды стеклянный с крышкой набор",
+            "wb_id": 101010101,
+            "supplier_id": "Демо-поставщик",
+            "amount": 89225.6,
+            "amount_percent": 3.02,
+            "photo": "https://basket-14.wbbasket.ru/vol2136/part213699/213699516/images/c246x328/1.webp",
+            "category": "A",
+            "marginality": 40.0,
+            "roi": 40.0,
+            "tech_size": "0"
+          }
+        }
+      ]
     },
     {
-      "title": "Форма для запекания в духовке стекло с крышкой",
-      "wb_id": 101010101,
-      "supplier_id": "Демо-поставщик",
-      "amount": 52840.5,
-      "amount_percent": 1.79,
-      "photo": "https://basket-14.wbbasket.ru/vol2137/part213702/213702056/images/c246x328/1.webp",
-      "category": "B",
-      "marginality": 20.0,
-      "roi": 20.0,
-      "tech_size": "0"
+      "article": "Форма для запекания в духовке стекло с крышкой",
+      "article_data": {
+        "title": "Форма для запекания в духовке стекло с крышкой",
+        "wb_id": 101010101,
+        "supplier_id": "Демо-поставщик",
+        "amount": 52840.5,
+        "amount_percent": 1.79,
+        "photo": "https://basket-14.wbbasket.ru/vol2137/part213702/213702056/images/c246x328/1.webp",
+        "category": "B",
+        "marginality": 20.0,
+        "roi": 20.0,
+        "tech_size": "0"
+      },
+      "sizes": [
+        {
+          "size": "0",
+          "size_data": {
+            "title": "Форма для запекания в духовке стекло с крышкой",
+            "wb_id": 101010101,
+            "supplier_id": "Демо-поставщик",
+            "amount": 52840.5,
+            "amount_percent": 1.79,
+            "photo": "https://basket-14.wbbasket.ru/vol2137/part213702/213702056/images/c246x328/1.webp",
+            "category": "B",
+            "marginality": 20.0,
+            "roi": 20.0,
+            "tech_size": "0"
+          }
+        }
+      ]
     },
     {
-      "title": "Контейнер для еды стеклянный с крышкой набор",
-      "wb_id": 101010101,
-      "supplier_id": "Демо-поставщик",
-      "amount": 48920.3,
-      "amount_percent": 1.65,
-      "photo": "https://basket-14.wbbasket.ru/vol2116/part211666/211666075/images/c246x328/1.webp",
-      "category": "B",
-      "marginality": 30.0,
-      "roi": 30.0,
-      "tech_size": "0"
+      "article": "Контейнер для еды стеклянный с крышкой набор",
+      "article_data": {
+        "title": "Контейнер для еды стеклянный с крышкой набор",
+        "wb_id": 101010101,
+        "supplier_id": "Демо-поставщик",
+        "amount": 48920.3,
+        "amount_percent": 1.65,
+        "photo": "https://basket-14.wbbasket.ru/vol2116/part211666/211666075/images/c246x328/1.webp",
+        "category": "B",
+        "marginality": 30.0,
+        "roi": 30.0,
+        "tech_size": "0"
+      },
+      "sizes": [
+        {
+          "size": "0",
+          "size_data": {
+            "title": "Контейнер для еды стеклянный с крышкой набор",
+            "wb_id": 101010101,
+            "supplier_id": "Демо-поставщик",
+            "amount": 48920.3,
+            "amount_percent": 1.65,
+            "photo": "https://basket-14.wbbasket.ru/vol2116/part211666/211666075/images/c246x328/1.webp",
+            "category": "B",
+            "marginality": 30.0,
+            "roi": 30.0,
+            "tech_size": "0"
+          }
+        }
+      ]
     },
     {
-      "title": "Форма для запекания в духовке стекло с крышкой",
-      "wb_id": 101010101,
-      "supplier_id": "Демо-поставщик",
-      "amount": 45280.8,
-      "amount_percent": 1.53,
-      "photo": "https://basket-14.wbbasket.ru/vol2137/part213702/213702068/images/c246x328/1.webp",
-      "category": "B",
-      "marginality": 40.0,
-      "roi": 40.0,
-      "tech_size": "0"
+      "article": "Форма для запекания в духовке стекло с крышкой",
+      "article_data": {
+        "title": "Форма для запекания в духовке стекло с крышкой",
+        "wb_id": 101010101,
+        "supplier_id": "Демо-поставщик",
+        "amount": 45280.8,
+        "amount_percent": 1.53,
+        "photo": "https://basket-14.wbbasket.ru/vol2137/part213702/213702068/images/c246x328/1.webp",
+        "category": "B",
+        "marginality": 40.0,
+        "roi": 40.0,
+        "tech_size": "0"
+      },
+      "sizes": [
+        {
+          "size": "0",
+          "size_data": {
+            "title": "Форма для запекания в духовке стекло с крышкой",
+            "wb_id": 101010101,
+            "supplier_id": "Демо-поставщик",
+            "amount": 45280.8,
+            "amount_percent": 1.53,
+            "photo": "https://basket-14.wbbasket.ru/vol2137/part213702/213702068/images/c246x328/1.webp",
+            "category": "B",
+            "marginality": 40.0,
+            "roi": 40.0,
+            "tech_size": "0"
+          }
+        }
+      ]
     },
     {
-      "title": "Раздельный купальник с шортами и майкой",
-      "wb_id": 101010101,
-      "supplier_id": "Демо-поставщик",
-      "amount": 38435.12,
-      "amount_percent": 1.30,
-      "photo": "https://basket-24.wbbasket.ru/vol4136/part413639/413639573/images/c246x328/1.webp",
-      "category": "B",
-      "marginality": 20.0,
-      "roi": 20.0,
-      "tech_size": "3XL(54Rus)"
+      "article": "Раздельный купальник с шортами и майкой",
+      "article_data": {
+        "title": "Раздельный купальник с шортами и майкой",
+        "wb_id": 101010102,
+        "supplier_id": "Демо-поставщик",
+        "amount": 38435.12,
+        "amount_percent": 1.30,
+        "photo": "https://basket-24.wbbasket.ru/vol4136/part413639/413639573/images/c246x328/1.webp",
+        "category": "B",
+        "marginality": 20.0,
+        "roi": 20.0,
+        "tech_size": "3XL(54Rus)"
+      },
+      "sizes": [
+        {
+          "size": "XL(50Rus)",
+          "size_data": {
+            "title": "Раздельный купальник с шортами и майкой",
+            "wb_id": 101010102,
+            "supplier_id": "Демо-поставщик",
+            "amount": 42580.25,
+            "amount_percent": 1.44,
+            "photo": "https://basket-24.wbbasket.ru/vol4136/part413639/413639573/images/c246x328/1.webp",
+            "category": "B",
+            "marginality": 18.5,
+            "roi": 18.5,
+            "tech_size": "XL(50Rus)"
+          }
+        },
+        {
+          "size": "2XL(52Rus)",
+          "size_data": {
+            "title": "Раздельный купальник с шортами и майкой",
+            "wb_id": 101010103,
+            "supplier_id": "Демо-поставщик",
+            "amount": 40520.18,
+            "amount_percent": 1.37,
+            "photo": "https://basket-24.wbbasket.ru/vol4136/part413639/413639573/images/c246x328/1.webp",
+            "category": "B",
+            "marginality": 19.2,
+            "roi": 19.2,
+            "tech_size": "2XL(52Rus)"
+          }
+        },
+        {
+          "size": "3XL(54Rus)",
+          "size_data": {
+            "title": "Раздельный купальник с шортами и майкой",
+            "wb_id": 101010104,
+            "supplier_id": "Демо-поставщик",
+            "amount": 38435.12,
+            "amount_percent": 1.30,
+            "photo": "https://basket-24.wbbasket.ru/vol4136/part413639/413639573/images/c246x328/1.webp",
+            "category": "B",
+            "marginality": 20.0,
+            "roi": 20.0,
+            "tech_size": "3XL(54Rus)"
+          }
+        }
+      ]
     },
     {
-      "title": "Накидка на купальник больших размеров",
-      "wb_id": 101010101,
-      "supplier_id": "Демо-поставщик",
-      "amount": 35776.0,
-      "amount_percent": 1.21,
-      "photo": "https://basket-15.wbbasket.ru/vol2210/part221031/221031209/images/c246x328/1.webp",
-      "category": "B",
-      "marginality": 30.0,
-      "roi": 30.0,
-      "tech_size": "Единый(48-60)"
+      "article": "Накидка на купальник больших размеров",
+      "article_data": {
+        "title": "Накидка на купальник больших размеров",
+        "wb_id": 101010105,
+        "supplier_id": "Демо-поставщик",
+        "amount": 35776.0,
+        "amount_percent": 1.21,
+        "photo": "https://basket-15.wbbasket.ru/vol2210/part221031/221031209/images/c246x328/1.webp",
+        "category": "B",
+        "marginality": 30.0,
+        "roi": 30.0,
+        "tech_size": "Единый(48-60)"
+      },
+      "sizes": [
+        {
+          "size": "Единый(44-52)",
+          "size_data": {
+            "title": "Накидка на купальник больших размеров",
+            "wb_id": 101010105,
+            "supplier_id": "Демо-поставщик",
+            "amount": 39250.30,
+            "amount_percent": 1.33,
+            "photo": "https://basket-15.wbbasket.ru/vol2210/part221031/221031209/images/c246x328/1.webp",
+            "category": "B",
+            "marginality": 28.5,
+            "roi": 28.5,
+            "tech_size": "Единый(44-52)"
+          }
+        },
+        {
+          "size": "Единый(48-60)",
+          "size_data": {
+            "title": "Накидка на купальник больших размеров",
+            "wb_id": 101010106,
+            "supplier_id": "Демо-поставщик",
+            "amount": 35776.0,
+            "amount_percent": 1.21,
+            "photo": "https://basket-15.wbbasket.ru/vol2210/part221031/221031209/images/c246x328/1.webp",
+            "category": "B",
+            "marginality": 30.0,
+            "roi": 30.0,
+            "tech_size": "Единый(48-60)"
+          }
+        },
+        {
+          "size": "Единый(52-64)",
+          "size_data": {
+            "title": "Накидка на купальник больших размеров",
+            "wb_id": 101010107,
+            "supplier_id": "Демо-поставщик",
+            "amount": 32320.15,
+            "amount_percent": 1.09,
+            "photo": "https://basket-15.wbbasket.ru/vol2210/part221031/221031209/images/c246x328/1.webp",
+            "category": "B",
+            "marginality": 31.5,
+            "roi": 31.5,
+            "tech_size": "Единый(52-64)"
+          }
+        }
+      ]
     },
     {
-      "title": "Ножи Трамонтина набор универсальный 4 шт",
-      "wb_id": 101010101,
-      "supplier_id": "Демо-поставщик",
-      "amount": 32732.09,
-      "amount_percent": 1.11,
-      "photo": "https://basket-22.wbbasket.ru/vol3866/part386615/386615599/images/c246x328/1.webp",
-      "category": "B",
-      "marginality": 40.0,
-      "roi": 40.0,
-      "tech_size": "0"
+      "article": "Контейнер для еды стеклянный круглый с крышкой",
+      "article_data": {
+        "title": "Контейнер для еды стеклянный круглый с крышкой",
+        "wb_id": 101010101,
+        "supplier_id": "Демо-поставщик",
+        "amount": 18450.25,
+        "amount_percent": 0.62,
+        "photo": "https://basket-12.wbbasket.ru/vol1751/part175175/175175738/images/c246x328/1.webp",
+        "category": "C",
+        "marginality": 20.0,
+        "roi": 20.0,
+        "tech_size": "0"
+      },
+      "sizes": [
+        {
+          "size": "0",
+          "size_data": {
+            "title": "Контейнер для еды стеклянный круглый с крышкой",
+            "wb_id": 101010101,
+            "supplier_id": "Демо-поставщик",
+            "amount": 18450.25,
+            "amount_percent": 0.62,
+            "photo": "https://basket-12.wbbasket.ru/vol1751/part175175/175175738/images/c246x328/1.webp",
+            "category": "C",
+            "marginality": 20.0,
+            "roi": 20.0,
+            "tech_size": "0"
+          }
+        }
+      ]
     },
     {
-      "title": "Контейнер для еды стеклянный круглый с крышкой",
-      "wb_id": 101010101,
-      "supplier_id": "Демо-поставщик",
-      "amount": 18450.25,
-      "amount_percent": 0.62,
-      "photo": "https://basket-12.wbbasket.ru/vol1751/part175175/175175738/images/c246x328/1.webp",
-      "category": "C",
-      "marginality": 20.0,
-      "roi": 20.0,
-      "tech_size": "0"
-    },
-    {
-      "title": "Лонгслив кружевной",
-      "wb_id": 101010101,
-      "supplier_id": "Демо-поставщик",
-      "amount": 15375.19,
-      "amount_percent": 0.52,
-      "photo": "https://basket-19.wbbasket.ru/vol3223/part322361/322361671/images/c246x328/1.webp",
-      "category": "C",
-      "marginality": 30.0,
-      "roi": 30.0,
-      "tech_size": "XXS"
+      "article": "Лонгслив кружевной",
+      "article_data": {
+        "title": "Лонгслив кружевной",
+        "wb_id": 101010108,
+        "supplier_id": "Демо-поставщик",
+        "amount": 15375.19,
+        "amount_percent": 0.52,
+        "photo": "https://basket-19.wbbasket.ru/vol3223/part322361/322361671/images/c246x328/1.webp",
+        "category": "C",
+        "marginality": 30.0,
+        "roi": 30.0,
+        "tech_size": "XXS"
+      },
+      "sizes": [
+        {
+          "size": "XXS",
+          "size_data": {
+            "title": "Лонгслив кружевной",
+            "wb_id": 101010108,
+            "supplier_id": "Демо-поставщик",
+            "amount": 15375.19,
+            "amount_percent": 0.52,
+            "photo": "https://basket-19.wbbasket.ru/vol3223/part322361/322361671/images/c246x328/1.webp",
+            "category": "C",
+            "marginality": 30.0,
+            "roi": 30.0,
+            "tech_size": "XXS"
+          }
+        },
+        {
+          "size": "XS",
+          "size_data": {
+            "title": "Лонгслив кружевной",
+            "wb_id": 101010109,
+            "supplier_id": "Демо-поставщик",
+            "amount": 18250.45,
+            "amount_percent": 0.62,
+            "photo": "https://basket-19.wbbasket.ru/vol3223/part322361/322361671/images/c246x328/1.webp",
+            "category": "C",
+            "marginality": 28.5,
+            "roi": 28.5,
+            "tech_size": "XS"
+          }
+        },
+        {
+          "size": "S",
+          "size_data": {
+            "title": "Лонгслив кружевной",
+            "wb_id": 101010110,
+            "supplier_id": "Демо-поставщик",
+            "amount": 16820.30,
+            "amount_percent": 0.57,
+            "photo": "https://basket-19.wbbasket.ru/vol3223/part322361/322361671/images/c246x328/1.webp",
+            "category": "C",
+            "marginality": 29.2,
+            "roi": 29.2,
+            "tech_size": "S"
+          }
+        }
+      ]
     }
   ],
   "is_need_cost": false,

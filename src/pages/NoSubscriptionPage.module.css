@@ -77,7 +77,7 @@
 .page__infoTitle {
     margin: 0;
     padding: 0;
-    font-family: 'Mulish';
+    font-family: 'Manrope';
     font-weight: 700;
     font-size: 34px;
     color: #f93c65;
@@ -86,7 +86,7 @@
 .page__infoText {
     margin: 0;
     padding: 0;
-    font-family: 'Mulish';
+    font-family: 'Manrope';
     font-weight: 700;
     font-size: 24px;
     color: #1A1A1A;
@@ -95,7 +95,7 @@
 }
 .page__mainLink {
     padding: 20px 24px;
-    font-family: 'Mulish';
+    font-family: 'Manrope';
     font-weight: 700;
     font-size: 16px;
     color: white;

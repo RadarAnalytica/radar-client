@@ -888,6 +888,8 @@ export function getWordDeclension(word, count) {
 
 // Получает RGBA цвет из HEX цвета
 export const getRGBA = (hexColor, opacity = 1) => {
+  if (!hexColor || typeof hexColor !== 'string') return `rgba(0, 0, 0, ${opacity})`;
+
   const hex = hexColor.replace('#', '');
   const r = parseInt(hex.substring(0, 2), 16);
   const g = parseInt(hex.substring(2, 4), 16);

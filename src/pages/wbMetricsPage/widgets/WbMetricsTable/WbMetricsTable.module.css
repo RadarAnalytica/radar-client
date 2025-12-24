@@ -1,8 +1,9 @@
 .tableContainer {
   height: 100%;
-  padding: 8px;
+  padding: 8px 8px 0;
   background-color: white;
   border-radius: 12px;
+  box-shadow: 0px 0px 20px 0px #00000014;
 }
 
 .labelCell {
@@ -34,7 +35,7 @@
 }
 
 .tableWrapper {
-  max-height: calc(100vh - 260px);
+  max-height: calc(100vh - 210px);
   position: relative;
   width: 100%;
   overflow: auto;
@@ -80,7 +81,7 @@
 
   :global(.radar-table__body-cell-wrapper) {
     justify-content: center;
-    height: 70px;
+    height: 60px !important;
   }
 
   :global(.radar-table__header-cell-text-wrapper) {
@@ -110,8 +111,8 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 8px 0;
   width: 100%;
+  height: 40px;
 }
 
 .productImage {

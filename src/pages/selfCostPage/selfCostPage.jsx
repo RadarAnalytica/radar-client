@@ -141,6 +141,7 @@ const SelfCostPage = () => {
                                     getTableData(authToken, activeBrand.id, filters, 1);
                                 }}
                                 isLoading={dataStatus.isLoading}
+                                isDemoMode={isDemoMode}
                             />
                         </div>
 
@@ -185,7 +186,7 @@ const SelfCostPage = () => {
 };
 
 
-const SelfCostXLSXuploadComponent = ({ authToken, updateFunc, isLoading }) => {
+const SelfCostXLSXuploadComponent = ({ authToken, updateFunc, isLoading, isDemoMode }) => {
 
     const [isUploadModalVisible, setIsUploadModalVisible] = useState(false);
     const [file, setFile] = useState(null);
@@ -198,7 +199,7 @@ const SelfCostXLSXuploadComponent = ({ authToken, updateFunc, isLoading }) => {
         setStatus({ ...initDataStatus, isLoading: true });
         setResult(null);
         try {
-            const fileBlob = await ServiceFunctions.getCostTemplate(authToken);
+            const fileBlob = await ServiceFunctions.getCostTemplateSSPage(authToken);
             fileDownload(fileBlob, 'Себестоимость.xlsx');
         } catch (error) {
             setStatus({ ...initDataStatus, isError: true, message: 'Что-то пошло не так :( Попробуйте оновить страницу' });
@@ -211,7 +212,7 @@ const SelfCostXLSXuploadComponent = ({ authToken, updateFunc, isLoading }) => {
         setStatus({ ...initDataStatus, isLoading: true });
         setResult(null);
         try {
-            const response = await ServiceFunctions.postCostUpdate(authToken, file);
+            const response = await ServiceFunctions.postCostUpdateSSPage(authToken, file);
 
             if (response && "success_count" in response) {
                 setStatus(initDataStatus);
@@ -288,9 +289,10 @@ const SelfCostXLSXuploadComponent = ({ authToken, updateFunc, isLoading }) => {
                             size='large'
                             loading={status.isLoading || isLoading}
                             onClick={() => setIsUploadModalVisible(true)}
-                            style={{ fontWeight: 600, height: 38, width: 149, fontSize: 14 }}
+                            style={{ fontWeight: 600, height: 38, fontSize: 14 }}
+                            disabled={isDemoMode}
                         >
-                            Загрузить Excel
+                            Загрузить себестоимость
                         </Button>
                     </ConfigProvider>
                 </div>

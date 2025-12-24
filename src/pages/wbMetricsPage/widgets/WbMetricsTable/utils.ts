@@ -10,13 +10,18 @@ export const getColorForPercentage = (
     ? [`#F93E3E`, `#FD6B42`, `#FE8F28`, `#FAB313`, `#F2D102`, `#C6D311`, `#94D02C`, `#59D401`, `#1CD700`] 
     : [`#FED9D8`, `#FEDFD5`, `#FEE7D2`, `#FFEECF`, `#FEF5CC`, `#F4F5CD`, `#E8F6CC`, `#DEF6CC`, `#D2F7CD`];
 
+  // Защита от некорректных значений
+  if (typeof percentage !== 'number' || isNaN(percentage)) {
+    return isChart ? `#F0F0F0` : `#FED9D8`;
+  }
+
   const range = maxValue - minValue;
   if (range <= 0) return metricType === 'drr' ? colorScale[colorScale.length - 1] : colorScale[0];
   
   const normalizedValue = (percentage - minValue) / range;
   const colors = metricType === 'drr' ? [...colorScale].reverse() : colorScale;
-  const index = Math.min(Math.floor(normalizedValue * colors.length), colors.length - 1);
-  return colors[index];
+  const index = Math.min(Math.max(0, Math.floor(normalizedValue * colors.length)), colors.length - 1);
+  return colors[index] || (isChart ? `#F0F0F0` : `#FED9D8`);
 };
 
 export const sortTableData = (tableData: any[], sortState: any) => {

@@ -38,7 +38,7 @@
 }
 
 .block__title {
-    font-family: Mulish;
+    font-family: Manrope;
     font-weight: 600;
     font-size: 22px;
     line-height: 100%;
@@ -87,7 +87,7 @@
 }
 
 .pagination__info {
-    font-family: Mulish;
+    font-family: Manrope;
     font-weight: 600;
     font-size: 12px;
     color: #1A1A1A;
@@ -123,7 +123,7 @@
     gap: 8px
 }
 .block__legendItemText {
-    font-family: Mulish;
+    font-family: Manrope;
     font-weight: 400;
     font-size: 16px;
     line-height: 100%;

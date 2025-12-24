@@ -29,7 +29,7 @@
 .uploader__title {
     margin: 0;
     padding: 0;
-    font-family: Mulish;
+    font-family: Manrope;
     font-weight: 700;
     font-size: 18px;
     line-height: 100%;
@@ -40,7 +40,7 @@
 .uploader__text {
     margin: 0;
     padding: 0;
-    font-family: Mulish;
+    font-family: Manrope;
     font-weight: 500;
     font-size: 14px;
     line-height: 120%;
@@ -71,7 +71,7 @@
 .modal__title {
     margin: 0;
     padding: 0;
-    font-family: Mulish;
+    font-family: Manrope;
     font-weight: 700;
     font-size: 14px;
     line-height: 100%;
@@ -97,7 +97,7 @@
 .modal__filename {
     margin: 0;
     padding: 0;
-    font-family: Mulish;
+    font-family: Manrope;
     font-weight: 500;
     font-size: 12px;
     line-height: 100%;

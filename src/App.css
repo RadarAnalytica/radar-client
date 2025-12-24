@@ -19,7 +19,8 @@
 * {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  font-family: 'Mulish', 'Arial', sans-serif;
+  /* font-family: 'Mulish', 'Arial', sans-serif; */
+  font-family: 'Manrope', 'Arial', sans-serif;
   margin: 0;
   padding: 0;
   text-rendering: optimizeLegibility;
@@ -4499,4 +4500,13 @@ canvas {
 #root {
   width: 100%;
   max-width: 100vw;
+}
+
+/* Fix tooltip text color after antd update */
+.ant-tooltip .ant-tooltip-inner {
+  color: #1A1A1A !important;
+}
+
+.ant-tooltip .ant-tooltip-arrow::before {
+  background: white;
 }

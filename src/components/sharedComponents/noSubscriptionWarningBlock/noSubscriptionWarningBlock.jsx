@@ -116,7 +116,7 @@ const NoSubscriptionWarningBlock = ({ className = '', isOnMainPage = false }) =>
             size='large'
             type='primary'
             style={{
-              height: 64
+              height: 38
             }}
             loading={requestStatus.isLoading}
           >

@@ -4,8 +4,7 @@ import {URL} from '../../service/config';
 
 export const deleteShop = createAsyncThunk("deleteShop", async (reqData) => {
     const {shop, authToken} = reqData.deleteShopData;
-    const {setDeleteShopRequestStatus, initRequestStatus} = reqData;
-    setDeleteShopRequestStatus({...initRequestStatus, isLoading: true});
+    const {setAddShopRequestStatus, initRequestStatus} = reqData;
 
     try {
         let res = await fetch(URL + '/api/shop/' + shop?.id, {
@@ -16,13 +15,13 @@ export const deleteShop = createAsyncThunk("deleteShop", async (reqData) => {
             },
         });
         if (!res.ok) {
-            setStatus({...initRequestStatus, isLoading: false, isError: true, message: 'Не удалось удалить магазин'});
+            setAddShopRequestStatus({...initRequestStatus, isLoading: false, isError: true, message: 'Не удалось удалить магазин'});
             return;
         }
 
-        setDeleteShopRequestStatus({...initRequestStatus, isLoading: false, isSuccess: true, message: 'Магазин успешно удален!'});
+        setAddShopRequestStatus({...initRequestStatus, isLoading: false, isSuccess: true, message: 'Магазин успешно удален!'});
     } catch {
-        setDeleteShopRequestStatus({...initRequestStatus, isLoading: false, isError: true, message: 'Не удалось удалить магазин'});
+        setAddShopRequestStatus({...initRequestStatus, isLoading: false, isError: true, message: 'Не удалось удалить магазин'});
     }
 
 });

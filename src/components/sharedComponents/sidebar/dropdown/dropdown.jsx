@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
 import styles from './dropdown.module.css';
 import { Link } from 'react-router-dom';
+import { useAppDispatch } from '../../../../redux/hooks';
+import { actions as utilsActions } from '../../../../redux/utils/utilsSlice';
 
 const Dropdown = ({ isMenuHidden }) => {
-
+    const dispatch = useAppDispatch()
     const [isOpen, setIsOpen] = useState(true);
 
     useEffect(() => {
@@ -46,6 +48,7 @@ const Dropdown = ({ isMenuHidden }) => {
                     to='https://chromewebstore.google.com/detail/radar-%E2%80%93-%D0%B1%D0%B5%D1%81%D0%BF%D0%BB%D0%B0%D1%82%D0%BD%D0%B0%D1%8F-%D0%B0%D0%BD%D0%B0%D0%BB%D0%B8%D1%82/haelmohfdnapjehnhgncjdnjmchdahhb'
                     target='_blank'
                     className={styles.dropdown__link}
+                    onClick={() => {dispatch(utilsActions.setIsSidebarHidden(true));}}
                 >
                     Radar - плагин для браузера
                 </Link>

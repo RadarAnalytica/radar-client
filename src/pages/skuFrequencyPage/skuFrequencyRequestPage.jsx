@@ -49,13 +49,14 @@ const SkuFrequencyRequestPage = () => {
                                 ]}
                             />
                         }
+                        hasShadow={false}
                     />
                 </div>
                 <div className={styles.page__segmentsWrapper}>
                     <ConfigProvider
                         theme={{
                             token: {
-                                fontSize: '18px'
+                                fontSize: '14px',
                             },
                             components: {
                                 Segmented: {
@@ -66,7 +67,8 @@ const SkuFrequencyRequestPage = () => {
                                     itemHoverBg: 'transparent',
                                     itemHoverColor: '#1A1A1A',
                                     itemSelectedColor: '#1A1A1A',
-                                    trackPadding: 0
+                                    trackPadding: 0,
+                                    controlHeightLG: 38
                                 }
                             }
                         }}
@@ -76,6 +78,7 @@ const SkuFrequencyRequestPage = () => {
                             size='large'
                             value={mainTabsState}
                             onChange={(value) => setMainTabsState(value)}
+
                         />
                     </ConfigProvider>
                 </div>
@@ -93,7 +96,7 @@ const SkuFrequencyRequestPage = () => {
                         <ConfigProvider
                             theme={{
                                 token: {
-                                    fontSize: '18px'
+                                    fontSize: '14px'
                                 },
                                 components: {
                                     Segmented: {
@@ -104,7 +107,8 @@ const SkuFrequencyRequestPage = () => {
                                         itemHoverBg: 'transparent',
                                         itemHoverColor: '#1A1A1A',
                                         itemSelectedColor: '#1A1A1A',
-                                        trackPadding: 0
+                                        trackPadding: 0,
+                                        controlHeightLG: 38
                                     }
                                 }
                             }}

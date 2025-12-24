@@ -351,7 +351,7 @@ const StatisticsChart: React.FC<StatisticsChartProps> = ({ data, loading = false
         },
         ticks: {
           font: {
-            family: 'Mulish',
+            family: 'Manrope',
             size: 12,
           },
           color: '#6B7280',
@@ -363,7 +363,7 @@ const StatisticsChart: React.FC<StatisticsChartProps> = ({ data, loading = false
         },
         ticks: {
           font: {
-            family: 'Mulish',
+            family: 'Manrope',
             size: 12,
           },
           color: '#6B7280',

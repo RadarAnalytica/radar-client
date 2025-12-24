@@ -88,7 +88,7 @@ const inputTheme = {
         colorBgContainer: 'white',
         colorBorder: '#5329FF1A',
         borderRadius: 8,
-        fontFamily: 'Mulish',
+        fontFamily: 'Manrope',
         fontSize: 12,
         fontWeight: 500,
         controlHeightLG: 38,
@@ -110,7 +110,7 @@ const deleteModalCancelButtonTheme = {
         colorPrimary: '#1A1A1A',
         fontSize: 14,
         fontWeight: 600,
-        fontFamily: 'Mulish',
+        fontFamily: 'Manrope',
         borderRadius: 8,
     },
     components: {
@@ -134,7 +134,7 @@ const deleteModalPrimaryButtonTheme = {
         colorPrimary: '#FF3B5C',
         fontSize: 14,
         fontWeight: 600,
-        fontFamily: 'Mulish',
+        fontFamily: 'Manrope',
         controlHeight: 48,
         borderRadius: 8,
     },
@@ -155,7 +155,7 @@ const modalCancelButtonTheme = {
         colorPrimary: '#5329FF',
         fontSize: 16,
         fontWeight: 600,
-        fontFamily: 'Mulish',
+        fontFamily: 'Manrope',
         controlHeight: 44,
         borderRadius: 12,
     },
@@ -181,7 +181,7 @@ const modalPrimaryButtonTheme = {
         colorPrimary: '#5329FF',
         fontSize: 16,
         fontWeight: 600,
-        fontFamily: 'Mulish',
+        fontFamily: 'Manrope',
         controlHeight: 44,
         borderRadius: 12,
     },
@@ -557,7 +557,7 @@ const PositionTrackingMainPage = () => {
                 {isDemoMode && <NoSubscriptionWarningBlock />}
 
                 {/* main widget */}
-                <PositionTrackingMainPageWidget loading={requestStatus.isLoading} setIsAddModalVisible={setIsAddModalVisible} hasAddBlock={metaData && metaData.projects_count === 0} createProject={async (sku: string) => {
+                <PositionTrackingMainPageWidget hasProceedToBlocks={false} loading={requestStatus.isLoading} setIsAddModalVisible={setIsAddModalVisible} hasAddBlock={metaData && metaData.projects_count === 0} createProject={async (sku: string) => {
                     let normilizedId: string;
                     if (/^(|\d+)$/.test(sku)) {
                         normilizedId = sku;
@@ -694,6 +694,7 @@ const PositionTrackingMainPage = () => {
                                         </div>)
                                 }
                             }}
+                            style={{ overflow: 'auto' }}
                             pagination={{
                                 current: paginationState.current,
                                 pageSize: paginationState.pageSize,
