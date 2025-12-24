@@ -18,3 +18,4 @@ export { keywordsSelectionTableConfig } from './tableConfigs/keywordsSelectionTa
 export { keywordsSelectionTableCustomCellRender } from './customTableCells/keywordsSelectionTableCustomCellRender';
 export { SmallButton } from './ui/SmallButton/SmallButton';
 export { GeneralLayout } from './ui/GeneralLayout/GeneralLayout'
+export {  RadarMainPageBanner } from './ui/RadarMainPageBanner/RadarMainPageBanner'

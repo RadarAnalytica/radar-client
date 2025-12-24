@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import styles from './MainPage.module.css';
 import Sidebar from '../../components/sharedComponents/sidebar/sidebar';
 import MobilePlug from '../../components/sharedComponents/mobilePlug/mobilePlug';
@@ -11,13 +12,20 @@ import { useContext } from 'react';
 import AuthContext from '@/service/AuthContext';
 import { GeneralLayout } from '@/shared';
 import { RadarCarousel } from '@/features';
-
-const mock = ['lightgray', 'blue', 'red', 'green']
+import { noSubBanners, onboardingBanners, regularUserBanners } from '@/entities'
+import { RadarMainPageBanner } from '@/shared';
 
 export default function MainPage() {
     
     const { isDemoMode } = useDemoMode();
     const { user } = useContext(AuthContext);
+    const currentBannersArr = useMemo((
+    ) => {
+        if (user?.subscription_status === null && !user?.is_onboarded && !user?.is_test_used) return noSubBanners;
+        if (user?.subscription_status === 'test' && !user?.is_onboarded) return onboardingBanners;
+        return regularUserBanners
+    }, [])
+
     return (
         <GeneralLayout
             headerProps={{
@@ -33,7 +41,10 @@ export default function MainPage() {
                 <div className={styles.page__content__widgets}>
                     {/* <FeaturesWidget /> */}
                     <RadarCarousel
-                        data={mock}
+                        data={currentBannersArr?.map(_ => ({..._, render: (_) => <RadarMainPageBanner {..._} />}))}
+                        arrowControls={currentBannersArr?.length > 1}
+                        dotControls={currentBannersArr?.length > 1}
+                        autoScroll={currentBannersArr?.length > 1}
                     />
                     <ArticlesWidget />
                 </div>

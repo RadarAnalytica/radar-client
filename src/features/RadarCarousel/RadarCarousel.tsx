@@ -3,7 +3,6 @@ import styles from './RadarCarousel.module.css';
 
 interface ICarouselProps {
     carouselStyles: React.CSSProperties,
-    scrollable?: boolean,
     arrowControls?: boolean,
     dotControls?: boolean,
     loop?: boolean,
@@ -18,47 +17,27 @@ interface ICarouselProps {
 
 export const RadarCarousel: React.FC<ICarouselProps> = ({
     carouselStyles,
-    scrollable = true,
     arrowControls = true,
     dotControls = true,
     loop = true,
     data,
     autoScroll = true
 }) => {
-    const [carouselContent, setCarouselContent] = useState([...data])
-    // console.log(carouselContent)
+    const [carouselContent, setCarouselContent] = useState(null)
     const [activeItem, setActiveItem] = useState(null)
-    const [isScrollBlocked, setIsScrollBlocked] = useState(false)
     const carouselMainContainerRef = useRef<HTMLDivElement>(null)
     const carouselScrollContainerRef = useRef<HTMLDivElement>(null)
     const carouselItemRefs = useRef<HTMLDivElement[]>([])
-    // console.log(carouselItemRefs?.current)
     const timeoutRef = useRef<number | null>(null)
-    const isUpdatedFromControls = useRef<boolean>(false)
+    const progressBarIntervalRef = useRef<number | null>(null)
     const [isAutoScrollActive, setIsAutocsrollActive] = useState(autoScroll)
+    const [controlButtonProgressBar, setControlButtonProgressBar] = useState(6)
+    const [isArrowsVisible, setIsArrowsVisible] = useState(false)
 
-    const controlsHandler = (elIndex: number) => {
-        // if (!carouselScrollContainerRef?.current) return;
-        // if (!carouselItemRefs?.current) return;
-        // const scrollContainer = carouselScrollContainerRef?.current
-        // const items = carouselItemRefs?.current
-        // const currentItem = items.find((_, index) => index === elIndex)
-        // const currInitialItem = carouselContent[elIndex]
-
-        // if (currentItem) {
-        //     setActiveItem(currInitialItem)
-        //     scrollContainer.scrollTo({
-        //         left: currentItem.offsetLeft,
-        //         behavior: 'smooth'
-        //     })
-        // }
-
-    };
 
     const arrowHandler = (direction: 'left' | 'right') => {
-        isUpdatedFromControls.current = true
         if (direction === 'right') {
-            let nextActiveItemIndex = carouselContent.findIndex(_ => _ === activeItem) + 1
+            let nextActiveItemIndex = carouselContent.findIndex(_ => _.cardKey === activeItem) + 1
             if (!carouselContent[nextActiveItemIndex]) {
                 if (!loop) {
                     nextActiveItemIndex = 0
@@ -68,15 +47,15 @@ export const RadarCarousel: React.FC<ICarouselProps> = ({
                     newCarouselContent.shift()
                     newCarouselContent.push(firstItem)
                     setCarouselContent(() => newCarouselContent)
-                    setActiveItem(firstItem)
+                    setActiveItem(firstItem.cardKey)
                     return
                 }
 
             }
-            setActiveItem(carouselContent[nextActiveItemIndex])
+            setActiveItem(carouselContent[nextActiveItemIndex].cardKey)
         }
         if (direction === 'left') {
-            let nextActiveItemIndex = carouselContent.findIndex(_ => _ === activeItem) - 1
+            let nextActiveItemIndex = carouselContent.findIndex(_ => _.cardKey === activeItem) - 1
             if (!carouselContent[nextActiveItemIndex]) {
                 if (!loop) {
                     nextActiveItemIndex = carouselContent?.length - 1
@@ -86,18 +65,17 @@ export const RadarCarousel: React.FC<ICarouselProps> = ({
                     newCarouselContent.pop()
                     newCarouselContent.unshift(lastItem)
                     setCarouselContent(() => newCarouselContent)
-                    setActiveItem(lastItem)
+                    setActiveItem(lastItem.cardKey)
                     return
                 }
 
             }
-            setActiveItem(carouselContent[nextActiveItemIndex])
+            setActiveItem(carouselContent[nextActiveItemIndex].cardKey)
         }
     };
 
     const timeoutFunction = () => {
-        isUpdatedFromControls.current = true
-        let nextActiveItemIndex = carouselContent.findIndex(_ => _ === activeItem) + 1
+        let nextActiveItemIndex = carouselContent.findIndex(_ => _.cardKey === activeItem) + 1
         if (!carouselContent[nextActiveItemIndex]) {
             if (!loop) {
                 nextActiveItemIndex = 0
@@ -107,23 +85,37 @@ export const RadarCarousel: React.FC<ICarouselProps> = ({
                 newCarouselContent.shift()
                 newCarouselContent.push(firstItem)
                 setCarouselContent(newCarouselContent)
-                setActiveItem(firstItem)
+                setActiveItem(firstItem.cardKey)
+                setControlButtonProgressBar(6)
                 return
             }
 
         }
-        setActiveItem(carouselContent[nextActiveItemIndex])
+        setActiveItem(carouselContent[nextActiveItemIndex].cardKey)
+    }
+
+    const progressBarFunction = () => {
+        setControlButtonProgressBar((prev) => prev + 1)
     }
 
     useEffect(() => {
+        if (!data) {
+            setCarouselContent([]);
+            return;
+        }
+        if (!data?.every(_ => _.cardKey)) {
+           console.error('You must define a "cardKey" property for the every item of the data array an it should ne unique')
+        }
         if (data) {
-            setActiveItem(data[0])
+            setActiveItem(data[0].cardKey)
+            setCarouselContent([...data])
         }
     }, [data])
 
     useEffect(() => {
-        if (!timeoutRef?.current && isAutoScrollActive) {
+        if (!timeoutRef?.current && isAutoScrollActive && autoScroll) {
             timeoutRef.current = setInterval(timeoutFunction, 2000);
+            progressBarIntervalRef.current = setInterval(progressBarFunction, 33)
         }
         if (activeItem) {
             if (!carouselScrollContainerRef?.current) return;
@@ -132,12 +124,13 @@ export const RadarCarousel: React.FC<ICarouselProps> = ({
             const items = carouselItemRefs?.current
             const nextItemFromRef = items?.find(_ => _.id === `carousel-card-${activeItem}`)
             container.scrollTo({ left: nextItemFromRef?.offsetLeft, behavior: 'smooth' })
-            isUpdatedFromControls.current = false
         }
         return () => {
             if (timeoutRef?.current) {
                 clearInterval(timeoutRef?.current);
+                clearInterval(progressBarIntervalRef?.current);
                 timeoutRef.current = null
+                progressBarIntervalRef.current = null
             }
         }
     }, [activeItem, isAutoScrollActive])
@@ -153,12 +146,25 @@ export const RadarCarousel: React.FC<ICarouselProps> = ({
                 if (timeoutRef?.current) {
                     clearInterval(timeoutRef.current)
                     timeoutRef.current = null
+                    clearInterval(progressBarIntervalRef.current)
+                    progressBarIntervalRef.current = null
                     setIsAutocsrollActive(false)
+                }
+                if (progressBarIntervalRef?.current) {
+                    clearInterval(progressBarIntervalRef.current)
+                    progressBarIntervalRef.current = null
+                }
+                if (arrowControls) {
+                    setIsArrowsVisible(true)
                 }
             }}
             onMouseLeave={() => {
                 if (!timeoutRef?.current) {
                     setIsAutocsrollActive(true)
+                    setControlButtonProgressBar(0)
+                }
+                if (arrowControls) {
+                    setIsArrowsVisible(false)
                 }
             }}
         >
@@ -170,29 +176,19 @@ export const RadarCarousel: React.FC<ICarouselProps> = ({
                     e.stopPropagation();
                     return;
                 }}
-                onWheel={(e) => {
-                    if (!scrollable) return
-                    // Определяем основное направление скролла
-                    const isHorizontalScroll = Math.abs(e.deltaX) > Math.abs(e.deltaY);
-                    const delta = isHorizontalScroll ? e.deltaX : e.deltaY;
-
-                    // delta > 0 - скролл вправо/вниз  
-                    // delta < 0 - скролл влево/вверх
-                    const scrollDirection = delta > 0 ? 'right' : 'left';
-                }}
             >
-                {carouselContent.map((_, index) => (
+                {carouselContent?.map((_, index) => (
                     <div
-                        key={_}
+                        key={_.cardKey}
                         className={styles.carosuel__contentWrapper}
-                        style={{ background: _ }}
-                        id={`carousel-card-${_}`}
+                        id={`carousel-card-${_.cardKey}`}
                         ref={(el) => {
                             if (el) {
                                 carouselItemRefs.current[index] = el
                             }
                         }}
                     >
+                        {_.render(_)}
                     </div>
                 ))}
                 {/* controls */}
@@ -200,7 +196,7 @@ export const RadarCarousel: React.FC<ICarouselProps> = ({
             {arrowControls &&
                 <>
                     <button
-                        className={`${styles.carousel_arrowControlButton} ${styles.carousel_arrowControlButton_left}`}
+                        className={`${styles.carousel_arrowControlButton} ${styles.carousel_arrowControlButton_left} ${isArrowsVisible ? styles.carousel_arrowControlButton_left_visible : null}`}
                         onClick={() => arrowHandler('left')}
                     >
                         <svg width="5" height="9" viewBox="0 0 5 9" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -208,7 +204,7 @@ export const RadarCarousel: React.FC<ICarouselProps> = ({
                         </svg>
                     </button>
                     <button
-                        className={`${styles.carousel_arrowControlButton} ${styles.carousel_arrowControlButton_right}`}
+                        className={`${styles.carousel_arrowControlButton} ${styles.carousel_arrowControlButton_right} ${isArrowsVisible ? styles.carousel_arrowControlButton_right_visible : null}`}
                         onClick={() => arrowHandler('right')}
                     >
                         <svg width="5" height="9" viewBox="0 0 5 9" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -219,15 +215,24 @@ export const RadarCarousel: React.FC<ICarouselProps> = ({
             }
             {dotControls &&
                 <div className={styles.carousel__controls}>
-                    {[...data].map((_, index) => (
+                    {[...data]?.map((_, index) => (
                         <button
-                            key={_}
-                            className={activeItem === _ ? `${styles.carousel__controlButton} ${styles.carousel__controlButton_active}` : styles.carousel__controlButton}
-                            onClick={() => { controlsHandler(index); }}
-
+                            key={_.cardKey}
+                            className={activeItem === _.cardKey ? `${styles.carousel__controlButton} ${styles.carousel__controlButton_active}` : styles.carousel__controlButton}
+                            onClick={() => {
+                                setCarouselContent([...data]);
+                                setActiveItem(_.cardKey)
+                            }}
                         >
                             <div>
-                                {activeItem === _ && isAutoScrollActive && <div className={styles.carousel__progressBar}></div>}
+                                {activeItem === _.cardKey &&
+                                    <div 
+                                        className={styles.carousel__progressBar}
+                                        style={{
+                                            maxWidth: `${controlButtonProgressBar}px`
+                                        }}
+                                    ></div>
+                                }
                             </div>
                         </button>
                     ))}

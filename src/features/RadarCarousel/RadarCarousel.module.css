@@ -14,6 +14,7 @@
     -ms-overflow-style: none;
     scrollbar-width: none;
     position: relative;
+    gap: 4px;
 }
 
 .carousel__container::-webkit-scrollbar {
@@ -25,27 +26,26 @@
     height: 100%;
     scroll-snap-align: center;
     scroll-padding-inline: 25%;
-    flex: 1 0 auto
+    flex: 1 0 auto;
+    position: relative;
 }
 
 .carousel__controls {
     position: absolute;
-    bottom: 20px;
+    bottom: 0px;
     left: 50%;
     transform: translateX(-50%);
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 0;
-    background-color: #1A1A1A0D;
     backdrop-filter: blur(2px);
-    padding: 6px 20px;
-    border-radius: 20px;
+    z-index: 3;
 }
 
 .carousel__controlButton {
     background-color: transparent;
-    height: 24px;
+    height: 30px;
     border: none;
     display: flex;
     align-items: center;
@@ -55,25 +55,26 @@
 }
 
 .carousel__controlButton div {
-    background-color: black;
-    width: 20px;
-    height: 4px;
-    border-radius: 4px;
-    max-width: 4px;
+    background-color: #5329FF33;
+    width: 30px;
+    height: 6px;
+    border-radius: 6px;
+    max-width: 6px;
     transition: all .2s ease;
     border: none;
+    display: flex;
 }
 
 .carousel__controlButton_active div {
     display: flex;
     align-items: center;
-    max-width: 20px;
+    max-width: 30px;
     transform-origin: 100% 100% 100%;
 }
 .carousel__controlButton_active:first-of-type div {
     display: flex;
     align-items: center;
-    max-width: 20px;
+    max-width: 30px;
     transform-origin: 0% 0% 0%;
 }
 
@@ -82,29 +83,48 @@
     height: 36px;
     border-radius: 50%;
     border: none;
-    background-color: #1A1A1A0D;
+    background-color: #5329FF33;
     backdrop-filter: blur(2px);
     display: flex;
     justify-content: center;
     align-items: center;
     position: absolute;
     top: 50%;
-    transform: translateY(-50%);
+    z-index: 3;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    opacity: 0;
+    pointer-events: none;
 }
 
 .carousel__progressBar {
-    height: 2px;
-    width: 18px;
-    max-width: 2px;
-    border-radius: 2px;
-    background-color: white;
+    height: 6px;
+    width: 30px;
+    max-width: 6px;
+    border-radius: 6px;
+    background-color: #5329FF;
+    transition: all .2s ease;
 }
 
 .carousel_arrowControlButton_left {
-    left: 12px
+    left: 12px;
+    transform: translate(-100%, -50%);
 }
+
+.carousel_arrowControlButton_left_visible {
+    transform: translate(0, -50%);
+    opacity: 1;
+    pointer-events: auto;
+}
+
 .carousel_arrowControlButton_right {
-    right: 12px
+    right: 12px;
+    transform: translate(100%, -50%);
+}
+
+.carousel_arrowControlButton_right_visible {
+    transform: translate(0, -50%);
+    opacity: 1;
+    pointer-events: auto;
 }
 .carousel_arrowControlButton_right svg {
     transform: rotate(180deg);
