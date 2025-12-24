@@ -136,16 +136,16 @@ export default function ReportWeek() {
 		}
 	}, [filters.filters, weekOptions, isDemoMode]);
 
-	const updateDataReportWeek = async () => {
+	const updateDataReportWeek = async (filters, authToken) => {
 		setLoading(true);
 		progress.start();
 		try {
 			const response = await ServiceFunctions.getReportWeek(
 				authToken,
-				selectedRange,
-				activeBrand.id,
+				filters.selectedRange,
+				filters.activeBrand.id,
 				filters,
-				activeWeeks
+				filters.activeWeeks
 			);
 
 			// Собираем общий массив неделей по всем годам из ответа
@@ -290,12 +290,12 @@ export default function ReportWeek() {
 
 	useLayoutEffect(() => {
 		if (activeBrand && activeBrand.is_primary_collect && isFiltersLoaded) {
-			updateDataReportWeek();
+			updateDataReportWeek(filters, authToken);
 		}
 		if (activeBrand && !activeBrand.is_primary_collect && isFiltersLoaded) {
 			setLoading(false);
 		}
-	}, [activeBrand, selectedRange, activeBrandName, activeArticle, activeGroup, activeWeeks, isFiltersLoaded]);
+	}, [isFiltersLoaded, activeBrand, activeWeeks, activeBrandName, activeArticle, activeGroup]);
 
 	const popoverHandler = (status) => {
 		setIsPopoverOpen(status);

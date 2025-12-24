@@ -126,7 +126,7 @@ const AbcAnalysisPage = () => {
 				setLoading(false);
 			}
 		}
-	}, [viewType, paginationState.current, sorting, activeBrand, selectedRange, isFiltersLoaded, activeBrandName, activeArticle, activeGroup, authToken]);
+	}, [viewType, paginationState.current, sorting, isFiltersLoaded, activeBrand, activeBrandName, activeArticle, activeGroup, selectedRange]);
 
 	useEffect(() => {
 		setPaginationState({ ...paginationState, current: 1 });

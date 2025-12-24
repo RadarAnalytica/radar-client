@@ -32,7 +32,7 @@ const MyAdvPage: React.FC = () => {
   const [data, setData] = useState<CompanyData[]>([]);
   const [pageData, setPageData] = useState({ page: 1, per_page: 25, total_count: 25 });
   const [searchQuery, setSearchQuery] = useState<string>('');
-  const { selectedRange, activeBrand, activeBrandName } = useAppSelector((state) => state.filters);
+  const { selectedRange, activeBrand, isFiltersLoaded } = useAppSelector((state) => state.filters);
   const currentPageRef = useRef(1);
   const progress = useLoadingProgress({ loading });
 
@@ -93,7 +93,7 @@ const MyAdvPage: React.FC = () => {
         setLoading(false);
       }
     }
-  }, [searchQuery, selectedRange, activeBrand, activeBrandName, sortState]);
+  }, [searchQuery, sortState, isFiltersLoaded, activeBrand, selectedRange]);
 
   useEffect(() => {
     if (activeBrand) {

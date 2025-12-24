@@ -53,6 +53,20 @@ const apiServicePagesFilterStateSlice = createSlice({
         skuFrequencyMode: action.payload
       };
     },
+    setActiveFiltersMassively: (state, action) => {
+      Object.keys(action.payload).forEach(key => {
+        if (key === 'selectedRange' && action.payload[key]) {
+          localStorage.setItem('selectedRange', JSON.stringify(action.payload[key]));
+        }
+        if (key === 'activeWeeks' && action.payload[key]) {
+          localStorage.setItem(`SAVED_ACTIVE_WEEKS_${action.payload.activeBrand.id}`, JSON.stringify(action.payload[key]));
+        }
+      });
+      return {
+        ...state,
+        ...action.payload
+      };
+    },
     setActiveFilters: (state, action) => {
       const { stateKey, data } = action.payload;
 

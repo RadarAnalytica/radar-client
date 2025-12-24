@@ -187,7 +187,6 @@ export const MultiSelect = (
                         showSearch={false}
                         size='large'
                         mode='multiple'
-                        //maxTagCount='responsive'
                         tagRender={tagRender}
                         suffixIcon={icon}
                         className={styles.plainSelect__select}

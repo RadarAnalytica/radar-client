@@ -27,12 +27,13 @@ import styles from './wbMetricsPage.module.css';
 
 
 const WbMetricsPage: React.FC = () => {
+  console.log('__RE_RENDER__');
   const location = useLocation();
   const metricType = location.pathname.includes('/drr') ? 'drr' : 'spp';
   const { authToken } = useContext(AuthContext);
   const { isDemoMode } = useDemoMode();
   const filters = useAppSelector((state) => state.filters);
-  const { activeBrand, activeBrandName, activeArticle, activeGroup } = filters;
+  const { activeBrand, activeBrandName, activeArticle, activeGroup, isFiltersLoaded } = useAppSelector((state) => state.filters);;
   
   const [loading, setLoading] = useState(true);
   const [tableConfig, setTableConfig] = useState<ColumnConfig[]>([]);
@@ -43,7 +44,7 @@ const WbMetricsPage: React.FC = () => {
   const progress = useLoadingProgress({ loading });
   const pageTitle = metricType === 'drr' ? 'Контроль ДРР' : 'Контроль СПП';
 
-  const loadData = async () => {
+  const loadData = async (filters, authToken) => {
     setLoading(true);
     progress.start();
     
@@ -66,12 +67,12 @@ const WbMetricsPage: React.FC = () => {
   useEffect(() => {
     if (activeBrand) {
       if (activeBrand?.is_primary_collect) {
-        loadData();
+        loadData(filters, authToken);
       } else {
         setLoading(false);
       }
     }
-  }, [activeBrand, pageData.page, activeBrandName, activeArticle, activeGroup, metricType, sortState]);
+  }, [pageData.page, isFiltersLoaded, metricType, sortState, activeBrand, activeBrandName, activeArticle, activeGroup]);
 
   // Инициализация конфигурации таблицы при загрузке данных
   useEffect(() => {

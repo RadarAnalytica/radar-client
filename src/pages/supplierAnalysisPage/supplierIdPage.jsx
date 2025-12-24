@@ -134,9 +134,11 @@ const SupplierIdPage = () => {
                                 brandSelect={false}
                                 articleSelect={false}
                                 groupSelect={false}
+                                uncontrolledTimeSelect={true}
                                 tempPageCondition='supplier'
                                 isDataLoading={isAnyDataLoading || !isFiltersLoaded}
                                 maxCustomDate={maxDate}
+                                uncontrolledMode
                             />
                         </div>
                     </div>

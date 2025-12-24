@@ -25,9 +25,10 @@ interface MyAdvTableProps {
   setSortState: (sortState: { sort_field: string | undefined, sort_order: "ASC" | "DESC" | undefined }) => void;
   tableConfig: ColumnConfig[];
   setTableConfig: (config: ColumnConfig[]) => void;
+  loadData: () => void;
 }
 
-const MyAdvTable: React.FC<MyAdvTableProps> = ({
+const MyAdvTable: React.FC<MyAdvTableProps> = React.memo(({
   companyId,
   data,
   loading,
@@ -275,6 +276,7 @@ const MyAdvTable: React.FC<MyAdvTableProps> = ({
             shopSelect={!companyId}
             tempPageCondition={true}
             maxCustomDate={new Date(Date.now() - 24 * 60 * 60 * 1000)}
+            uncontrolledMode={true}
           />
         </div>
         <div className={styles.settingsWrapper}>
@@ -345,6 +347,6 @@ const MyAdvTable: React.FC<MyAdvTableProps> = ({
       )}
     </div>
   );
-};
+});
 
 export default MyAdvTable;

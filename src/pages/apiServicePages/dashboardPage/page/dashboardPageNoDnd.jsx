@@ -44,7 +44,8 @@ const MainContent = React.memo(({
     authToken,
     filters,
     updateDataDashBoard,
-    isSidebarHidden
+    isSidebarHidden,
+    stockAnalysisData
 }) => {
     const isLoading = loading || isFiltersLoading;
     // Если фильтры загружены и shopStatus не подходит, не рендерим
@@ -122,10 +123,10 @@ const MainContent = React.memo(({
                 /> */}
             </div>
 
+
             <StockAnalysisBlock
-                // data={dataDashBoard?.stockAnalysis}
-                data={[]}
-                loading={isLoading}
+                data={stockAnalysisData}
+                dashboardLoading={isLoading}
             />
 
             <AbcDataBlock
@@ -140,7 +141,7 @@ const MainContent = React.memo(({
 const _DashboardPage = () => {
     const { authToken } = useContext(AuthContext);
     const { isDemoMode } = useDemoMode();
-    const { activeBrand, selectedRange, isFiltersLoaded, activeBrandName, activeArticle, activeGroup, shops } = useAppSelector((state) => state.filters);
+    const { isFiltersLoaded, activeBrand, shops, activeBrandName, activeArticle, activeGroup, selectedRange } = useAppSelector((state) => state.filters);
     const filters = useAppSelector((state) => state.filters);
     const { isSidebarHidden } = useAppSelector((state) => state.utils);
     const [downloadLoading, setDownloadLoading] = useState(false);
@@ -149,17 +150,33 @@ const _DashboardPage = () => {
         dataDashBoard: null,
         loading: true,
         primaryCollect: null,
-        shopStatus: null
+        shopStatus: null,
+        stockAnalysisData: null,
     });
 
-    const updateDataDashBoard = async (selectedRange, activeBrand, authToken) => {
+    const fetchAnalysisData = async (filters, authToken) => {
+        try {
+            const data = await ServiceFunctions.getAnalysisData(
+                authToken,
+                filters.selectedRange,
+                filters.activeBrand?.id,
+                filters
+            );
+
+            setPageState(prev => ({ ...prev, stockAnalysisData: data }));
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    const updateDataDashBoard = async (filters, authToken) => {
         setPageState(prev => ({ ...prev, loading: true }));
         try {
             if (activeBrand !== null && activeBrand !== undefined) {
                 const data = await ServiceFunctions.getDashBoard(
                     authToken,
-                    selectedRange,
-                    activeBrand,
+                    filters.selectedRange,
+                    filters.activeBrand.id,
                     filters
                 );
                 setPageState(prev => ({ ...prev, dataDashBoard: data }));
@@ -208,13 +225,14 @@ const _DashboardPage = () => {
     useEffect(() => {
         if (activeBrand && activeBrand.is_primary_collect && isFiltersLoaded) {
             setPageState(prev => ({ ...prev, primaryCollect: activeBrand.is_primary_collect }));
-            updateDataDashBoard(selectedRange, activeBrand.id, authToken);
+            updateDataDashBoard(filters, authToken);
+            fetchAnalysisData(filters, authToken);
         }
 
         if (activeBrand && !activeBrand.is_primary_collect && isFiltersLoaded) {
             setPageState(prev => ({ ...prev, loading: false }));
         }
-    }, [activeBrand, selectedRange, isFiltersLoaded, activeBrandName, activeArticle, activeGroup]);
+    }, [activeBrand, isFiltersLoaded, selectedRange, activeBrandName, activeArticle, activeGroup]);
 
     return (
         <main className={styles.page}>
@@ -262,12 +280,13 @@ const _DashboardPage = () => {
                     loading={pageState.loading}
                     isFiltersLoading={!isFiltersLoaded}
                     dataDashBoard={pageState.dataDashBoard}
-                    selectedRange={selectedRange}
+                    selectedRange={filters?.selectedRange}
                     activeBrand={activeBrand}
                     authToken={authToken}
                     filters={filters}
                     updateDataDashBoard={updateDataDashBoard}
                     isSidebarHidden={isSidebarHidden}
+                    stockAnalysisData={pageState.stockAnalysisData}
                 />
             </section>
         </main>
