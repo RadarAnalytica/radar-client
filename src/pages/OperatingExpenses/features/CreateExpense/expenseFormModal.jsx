@@ -184,7 +184,7 @@ export default function ExpenseFormModal({
 			let shops = [], brands = [], vendor_codes = [];
 
 			targetFilters.forEach(filter => {
-				if (!filter.shop?.is_primary_collect) return;
+				if (!filter.shop?.is_primary_collect || filter.shop?.id === 0) return;
 
 				const brandsOptions = filter.brands?.data?.map(brand => ({
 					shop: filter.shop?.id,
@@ -893,7 +893,7 @@ export default function ExpenseFormModal({
 													form={form}
 													hasSelectAll
 													optionsData={distributeOptions.vendor_codes?.map(el => ({
-														key: el.vendor_code,
+														key: `${el.vendor_code}_${el.shop}`,
 														value: JSON.stringify(el),
 														label: el.vendor_code,
 													}))}
