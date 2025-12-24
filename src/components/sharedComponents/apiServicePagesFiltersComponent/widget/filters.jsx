@@ -36,6 +36,7 @@ export const Filters = React.memo(({
   const { activeBrand, filters, shops, expenseCategories, activeExpenseCategory } = useAppSelector(store => store.filters);
   const filtersState = useAppSelector(store => store.filters);
   const [internalActiveFiltersState, setInternalActiveFiltersState] = useState(null);
+  console.log(internalActiveFiltersState?.activeBrandName)
 
   const internalFiltersStateUpdateHandler = (key, value) => {
     if (key === 'activeBrand') {
@@ -45,7 +46,7 @@ export const Filters = React.memo(({
         activeBrandName: [{ value: 'Все' }],
         activeArticle: [{ value: 'Все' }],
         activeGroup: [{ id: 0, value: 'Все' }],
-        activeWeeks: getSavedActiveWeeks(value.id),
+        // activeWeeks: getSavedActiveWeeks(value.id),
         activeMonths: getSavedActiveMonths(value.id),
       }));
       return;
@@ -213,7 +214,7 @@ export const Filters = React.memo(({
                   selectId={i.articles.enLabel}
                   label={`${i.articles.ruLabel}:`}
                   value={internalActiveFiltersState.activeArticle && internalActiveFiltersState.activeArticle.length > 0 ? internalActiveFiltersState.activeArticle?.map(_ => _.value) : ['Все']}
-                  optionsData={internalActiveFiltersState?.activeBrandName?.some(_ => _.value === 'Все') ? i.articles.data.map(_ => ({ ..._, label: _.value })) : i.articles.data.filter(_ => internalActiveFiltersState?.activeBrandName?.some(b => _.brand === b.value)).map(_ => ({ ..._, label: _.value }))}
+                  optionsData={(internalActiveFiltersState?.activeBrandName?.some(_ => _.value === 'Все') || internalActiveFiltersState?.activeBrandName?.length === 0) ? i.articles.data.map(_ => ({ ..._, label: _.value })) : i.articles.data.filter(_ => internalActiveFiltersState?.activeBrandName?.some(b => _.brand === b.value)).map(_ => ({ ..._, label: _.value }))}
                   isDataLoading={isDataLoading}
                   disabled={disabled}
                   hasDropdownSearch
