@@ -915,7 +915,7 @@ export default function ExpenseFormModal({
 													form={form}
 													hasSelectAll
 													optionsData={distributeOptions.brands?.map(el => ({
-														key: el.brand_name,
+														key: `${el.brand_name}_${el.shop}`,
 														value: JSON.stringify(el),
 														label: el.brand_name,
 													}))}
