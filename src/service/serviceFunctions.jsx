@@ -1516,6 +1516,36 @@ export const ServiceFunctions = {
 			throw new Error(error);
 		}
 	},
+	postRnpByArticlePublic: async (token, selectedRange, shopId, filters, signal, publicUserCredentials) => {
+		try {
+			let body = getFiltersRequestObject(filters, selectedRange, shopId, 'rnp');
+			const res = await fetchApi(
+				'/api/rnp/public/by_article?page=1&per_page=40',
+				{
+					method: 'POST', // метод по идее должен быть get
+					headers: {
+						'content-type': 'application/json',
+						authorization: 'JWT ' + token,
+					},
+					body: JSON.stringify({
+						filters: body,
+						...publicUserCredentials
+					}),
+					signal
+				}
+			);
+
+			if (res.status !== 200) {
+				throw new Error('Ошибка запроса');
+			}
+
+			return res.json();
+
+		} catch (error) {
+			console.error('postRnpByArticle ', error);
+			throw new Error(error);
+		}
+	},
 	postRnpSummary: async (token, selectedRange, shopId, filters, signal) => {
 		try {
 			let body = getFiltersRequestObject(filters, selectedRange, shopId, 'rnp');
@@ -1528,6 +1558,36 @@ export const ServiceFunctions = {
 						authorization: 'JWT ' + token,
 					},
 					body: JSON.stringify(body),
+					signal
+				}
+			);
+
+			if (res.status !== 200) {
+				throw new Error('Ошибка запроса');
+			}
+
+			return res.json();
+
+		} catch (error) {
+			console.error('postRnpSummary ', error);
+			throw new Error(error);
+		}
+	},
+	postRnpSummaryPublic: async (token, selectedRange, shopId, filters, signal, publicUserCredentials) => {
+		try {
+			let body = getFiltersRequestObject(filters, selectedRange, shopId, 'rnp');
+			const res = await fetchApi(
+				'/api//rnp/public/summary',
+				{
+					method: 'POST',
+					headers: {
+						'content-type': 'application/json',
+						authorization: 'JWT ' + token,
+					},
+					body: JSON.stringify({
+						filters: body,
+						...publicUserCredentials
+					}),
 					signal
 				}
 			);
