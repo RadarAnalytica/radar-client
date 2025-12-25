@@ -8,6 +8,7 @@ import AuthContext from '../service/AuthContext';
 import { ServiceFunctions } from '../service/serviceFunctions';
 import DownloadButton from './DownloadButton';
 import { ConfigProvider, Pagination } from 'antd';
+import { formatPrice } from '@/service/utils';
 
 const SeoCompaire = ({ compaireData, linksToSend }) => {
   const scrollContainerRef = useRef(null);
@@ -181,7 +182,7 @@ const SeoCompaire = ({ compaireData, linksToSend }) => {
             >
               {item.key}
             </div>
-            <div style={{fontSize: '14px'}}>{item.value}</div>
+            <div style={{fontSize: '14px'}}>{formatPrice(item.value, ' ')}</div>
           </div>
         );
       });

@@ -14,6 +14,7 @@ import { RETURN_PRICE, FBS_DEADLINE, FBS_DEADLIE_RATE } from '../components/unit
 import { Helmet } from 'react-helmet-async';
 import Header from '@/components/sharedComponents/header/header';
 import Sidebar from '@/components/sharedComponents/sidebar/sidebar';
+import { GeneralLayout } from '@/shared';
 
 const UnitCalculatorPageDesktop = () => {
 
@@ -183,119 +184,111 @@ const UnitCalculatorPageDesktop = () => {
     //------------------------------------------------------------------------------------//
 
     return (
-        <main className={styles.page}>
+        <GeneralLayout
+            headerProps={{
+                hasShadow: false,
+                title: 'Калькулятор unit-экономики товара'
+            }}
+            scrollContainerRef={sectionRef}
+        >
             <Helmet>
                 <title>Калькулятор unit-экономики товара от Radar Analytica — сервис аналитики маркетплейсов</title>
                 <meta name="description" content='Расчет unit-экономики товара  онлайн на калькуляторе Radar Analytica — сервис аналитики маркетплейсов.' />
                 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=1.0, minimum-scale=1.0, maximum-scale=1.0" />
             </Helmet>
 
-            <div className={styles.page__sidebarWrapper}>
-                <Sidebar />
-            </div>
-
-            <section className={styles.page__content} ref={sectionRef}>
-                <div className={styles.page__headerWrapper}>
-                    <Header title={'Калькулятор unit-экономики товара'} hasShadow={false} />
-                </div>
-
-                <div className={styles.page__mobileHeaderWrapper}>
-                    <MobileHeader title='Калькулятор unit-экономики товара' />
-                </div>
-
-                <ConfigProvider
-                    theme={{
-                        token: {
-                            fontFamily: 'Manrope',
-                            colorBorder: 'white',
-                            colorBgContainer: 'white',
-                            colorBorder: '#5329FF1A',
-                            borderRadius: 8,
-                            fontFamily: 'Manrope',
-                            fontSize: 14,
-                            fontWeight: 500,
-                            // colorTextLightSolid: '#000'
+            <ConfigProvider
+                theme={{
+                    token: {
+                        fontFamily: 'Manrope',
+                        colorBorder: 'white',
+                        colorBgContainer: 'white',
+                        colorBorder: '#5329FF1A',
+                        borderRadius: 8,
+                        fontFamily: 'Manrope',
+                        fontSize: 14,
+                        fontWeight: 500,
+                        // colorTextLightSolid: '#000'
+                    },
+                    components: {
+                        Form: {
+                            labelFontSize: 12,
+                            labelRequiredMarkColor: '#000',
+                            verticalLabelPadding: 4
                         },
-                        components: {
-                            Form: {
-                                labelFontSize: 12,
-                                labelRequiredMarkColor: '#000',
-                                verticalLabelPadding: 4
-                            },
-                            Input: {
-                                activeBorderColor: '#5329FF1A',
-                                hoverBorderColor: '#5329FF1A',
-                                activeOutlineColor: 'transparent',
-                                activeShadow: 'transparent',
-                                controlHeight: 38,
-                                controlHeightLG: 38,
-                                fontSize: 12
-                            },
-                        }
-                    }}
-                >
-                    <div className={styles.page__mainContentWrapper}>
-                        <div className={styles.page__formWrapper}>
-                            <Form
-                                scrollToFirstError
-                                className={styles.form}
-                                layout="vertical"
-                                onFinish={submitHandler}
-                                form={form}
-                                onFieldsChange={onFieldsChanged}
-                                initialValues={{
-                                    product_price: 3000,
-                                    product_cost: 1000,
-                                    isSPP: false,
-                                    isHeavy: false,
-                                    is_paid_cargo_acceptance: false,
-                                    storage_price: 'daily',
-                                    tax_state: 'УСН-доходы',
-                                    tax_rate: 6,
-                                    defective_percentage: 2,
-                                    equiring_fee: 1,
-                                    package_length: 10,
-                                    package_width: 10,
-                                    package_height: 10,
-                                    PackageType: 'Короб'
+                        Input: {
+                            activeBorderColor: '#5329FF1A',
+                            hoverBorderColor: '#5329FF1A',
+                            activeOutlineColor: 'transparent',
+                            activeShadow: 'transparent',
+                            controlHeight: 38,
+                            controlHeightLG: 38,
+                            fontSize: 12
+                        },
+                    }
+                }}
+            >
+                <div className={styles.page__mainContentWrapper}>
+                    <div className={styles.page__formWrapper}>
+                        <Form
+                            scrollToFirstError
+                            className={styles.form}
+                            layout="vertical"
+                            onFinish={submitHandler}
+                            form={form}
+                            onFieldsChange={onFieldsChanged}
+                            initialValues={{
+                                product_price: 3000,
+                                product_cost: 1000,
+                                isSPP: false,
+                                isHeavy: false,
+                                is_paid_cargo_acceptance: false,
+                                storage_price: 'daily',
+                                tax_state: 'УСН-доходы',
+                                tax_rate: 6,
+                                defective_percentage: 2,
+                                equiring_fee: 1,
+                                package_length: 10,
+                                package_width: 10,
+                                package_height: 10,
+                                PackageType: 'Короб'
+                            }}
+                        >
+                            <BasicDataFormBlockDesktop form={form} setMpMainFee={setMpMainFee} isProductFromToken={isProductFromToken} setIsProductFromToken={setIsProductFromToken} />
+                            <LogisticsDataFormBlockDesktop form={form} current_storage_logistic_price={lastMileLogisticsPrice} buyout_log_price={lastMileLogisticsPriceWBuyout} storagePrice={storagePrice} />
+                            <MPFeesDataFormBlockDesktop mp_fee={mpMainFee} form={form} />
+                            <AdditionalOptionsDataFormBlockDesktop form={form} mpMainFee={mpMainFee} />
+
+                            <ConfigProvider
+                                theme={{
+                                    token: {
+                                        colorBorder: '#00000033',
+                                        colorPrimary: '#5329FF',
+                                        controlHeightLG: 38,
+                                        fontSize: 14,
+                                        fontWeight: 600
+                                    }
+
                                 }}
                             >
-                                <BasicDataFormBlockDesktop form={form} setMpMainFee={setMpMainFee} isProductFromToken={isProductFromToken} setIsProductFromToken={setIsProductFromToken} />
-                                <LogisticsDataFormBlockDesktop form={form} current_storage_logistic_price={lastMileLogisticsPrice} buyout_log_price={lastMileLogisticsPriceWBuyout} storagePrice={storagePrice} />
-                                <MPFeesDataFormBlockDesktop mp_fee={mpMainFee} form={form} />
-                                <AdditionalOptionsDataFormBlockDesktop form={form} mpMainFee={mpMainFee} />
+                                <Button
+                                    type='primary'
+                                    size='large'
+                                    htmlType='submit'
+                                    style={{ fontSize: '14px', fontWeight: 600 }}
+                                >Рассчитать</Button>
+                            </ConfigProvider>
 
-                                <ConfigProvider
-                                    theme={{
-                                        token: {
-                                            colorBorder: '#00000033',
-                                            colorPrimary: '#5329FF',
-                                            controlHeightLG: 38,
-                                            fontSize: 14,
-                                            fontWeight: 600
-                                        }
-
-                                    }}
-                                >
-                                    <Button
-                                        type='primary'
-                                        size='large'
-                                        htmlType='submit'
-                                        style={{ fontSize: '14px', fontWeight: 600}}
-                                    >Рассчитать</Button>
-                                </ConfigProvider>
-
-                            </Form>
-                        </div>
-
-                        <div className={styles.page__resultWrapper}>
-                            <ResultBlockDesktop result={result} token={token} investValue={investValue} setInvestValue={setInvestValue} />
-                        </div>
-
+                        </Form>
                     </div>
-                </ConfigProvider>
-            </section>
-        </main>
+
+                    <div className={styles.page__resultWrapper}>
+                        <ResultBlockDesktop result={result} token={token} investValue={investValue} setInvestValue={setInvestValue} />
+                    </div>
+
+                </div>
+            </ConfigProvider>
+        </GeneralLayout>
     );
 };
 

@@ -33,7 +33,7 @@ export const Filters = React.memo(({
   // ------ это база ------//
   const { user, authToken } = useContext(AuthContext);
   const dispatch = useAppDispatch();
-  const { activeBrand, filters, shops, expenseCategories, activeExpenseCategory } = useAppSelector(store => store.filters);
+  const { activeBrand, filters, shops, expenseCategories, activeExpenseCategory, isFiltersLoaded } = useAppSelector(store => store.filters);
   const filtersState = useAppSelector(store => store.filters);
   const [internalActiveFiltersState, setInternalActiveFiltersState] = useState(null);
 
@@ -243,7 +243,7 @@ export const Filters = React.memo(({
           );
         })}
         
-        {!uncontrolledMode && <button
+        {!uncontrolledMode && isFiltersLoaded && <button
           className={styles.filters__submitButton}
           onClick={applyFiltersClickHandler}
           disabled={isDataLoading || disabled}

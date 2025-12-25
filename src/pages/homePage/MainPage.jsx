@@ -27,7 +27,7 @@ export default function MainPage() {
         if (user?.subscription_status === null && !user?.is_onboarded && !user?.is_test_used) return noSubBanners.map(_ => ({ ..._, leadBlockButtonAction: () => setIsTestPeriodModalVisible(true)}));
         if (user?.subscription_status === 'test' && !user?.is_onboarded) return onboardingBanners;
         return regularUserBanners
-    }, [])
+    }, [user])
 
     return (
         <GeneralLayout
