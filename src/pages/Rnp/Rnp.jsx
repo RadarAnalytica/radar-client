@@ -76,6 +76,7 @@ export default function Rnp({
 	const initLoad = useRef(true);
 	const pageContentRef = useRef(null);
 	const [loading, setLoading] = useState(true);
+	const [downloadLoading, setDownloadLoading] = useState(false);
 	const progress = useLoadingProgress({ loading });
 	const [addRnpModalShow, setAddRnpModalShow] = useState(false);
 	const [page, setPage] = useState(1);
@@ -163,7 +164,7 @@ export default function Rnp({
 	const handleDownload = async () => {
 		setDownloadLoading(true);
 		try {
-			const fileBlob = await ServiceFunctions.getDownloadReportProfitLossExel(
+			const fileBlob = await ServiceFunctions.getDownloadReportRnp(
 				authToken,
 				selectedRange,
 				activeBrand.id,
@@ -528,7 +529,7 @@ export default function Rnp({
 								{!isPublicVersion && view === 'total' &&
 									<DownloadButton
 										handleDownload={handleDownload}
-										loading={downloadLoading}
+										loading={loading || downloadLoading}
 									/>
 								}
 							</div>
@@ -573,6 +574,8 @@ export default function Rnp({
 						expanded={expanded}
 						setExpanded={setExpanded}
 						isPublicVersion={isPublicVersion}
+						authToken={authToken}
+						filters={filters}
 					/>
 				)}
 

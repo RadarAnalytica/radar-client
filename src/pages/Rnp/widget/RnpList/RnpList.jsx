@@ -16,6 +16,7 @@ import { NoDataWidget } from '@/pages/productsGroupsPages/widgets';
 import RnpTableTotal from '../RnpTable/RnpTableTotal';
 import { fileDownload } from '@/service/utils';
 import DownloadButton from '@/components/DownloadButton';
+import { ServiceFunctions } from '@/service/serviceFunctions';
 
 // Компонент edge drop-зон (верх и низ viewport)
 function EdgeDropZone({ position, isActive, isDragging, onDrop }) {
@@ -119,7 +120,7 @@ function DropZone({ index, isActive, isDragging, draggedIndex, onDrop }) {
 	);
 }
 
-function RnpListItem({ el, index, expanded, setExpanded, setDeleteRnpId, onReorder, isDragging, isPublicVersion }) {
+function RnpListItem({ el, index, expanded, setExpanded, setDeleteRnpId, onReorder, isDragging, isPublicVersion, authToken, filters }) {
 	const ref = useRef(null);
 	const gripRef = useRef(null);
 	const [closestEdge, setClosestEdge] = useState(null);
@@ -127,11 +128,12 @@ function RnpListItem({ el, index, expanded, setExpanded, setDeleteRnpId, onReord
 
 	const handleDownload = async () => {
 		setDownloadLoading(true);
+		console.log(filters)
 		try {
-			const fileBlob = await ServiceFunctions.getDownloadReportProfitLossExel(
+			const fileBlob = await ServiceFunctions.getDownloadReportRnp(
 				authToken,
-				selectedRange,
-				activeBrand.id,
+				filters?.selectedRange,
+				filters?.activeBrand.id,
 				filters,
 				el.article_data.vendor_code
 			);
@@ -299,7 +301,7 @@ function RnpListItem({ el, index, expanded, setExpanded, setDeleteRnpId, onReord
 	);
 }
 
-export default function RnpList({ view, expanded, setExpanded, setAddRnpModalShow, rnpDataByArticle, setRnpDataByArticle, rnpDataTotal, setDeleteRnpId, loading, isPublicVersion }) {
+export default function RnpList({ view, expanded, setExpanded, setAddRnpModalShow, rnpDataByArticle, setRnpDataByArticle, rnpDataTotal, setDeleteRnpId, loading, isPublicVersion, authToken, filters }) {
 	const { activeBrand } = useAppSelector((state) => state.filters);
 	const items = useMemo(() => rnpDataByArticle || [], [rnpDataByArticle]);
 
@@ -518,6 +520,8 @@ export default function RnpList({ view, expanded, setExpanded, setAddRnpModalSho
 											onReorder={handleReorder}
 											isDragging={isDragging}
 											isPublicVersion={isPublicVersion}
+											authToken={authToken}
+											filters={filters}
 										/>
 									</React.Fragment>
 								);
