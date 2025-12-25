@@ -1372,7 +1372,9 @@ export const ServiceFunctions = {
 		return data;
 	},
 	getDownloadReportProfitLossExel: async (token, selectedRange, shopId, filters) => {
-		const body = getRequestObject(filters, selectedRange, shopId);
+		let body = getRequestObject(filters, selectedRange, shopId);
+		body.month_from = filters?.activeMonths?.month_from || null;
+		body.month_to = filters?.activeMonths?.month_to || null;
 
 		const res = await fetch(
 			`${URL}/api/profit_loss/report/download`,
@@ -1540,6 +1542,24 @@ export const ServiceFunctions = {
 			console.error('postRnpSummary ', error);
 			throw new Error(error);
 		}
+	},
+	getDownloadReportRnp: async (token, selectedRange, shopId, filters, vendorCode) => {
+		let body = getRequestObject(filters, selectedRange, shopId);
+		body.articles = vendorCode ? [vendorCode] : []
+		const res = await fetch(
+			`${URL}/api/rnp/by_article/download`,
+			{
+				method: 'POST',
+				headers: {
+					authorization: 'JWT ' + token,
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify(body)
+			}
+		);
+
+		const data = await res.blob();
+		return data;
 	},
 	getRnpProducts: async (token, selectedRange, shopId, filters, page, search) => {
 		try {

@@ -50,6 +50,21 @@
         max-width: 483px;
     }
 }
+.banner__title_small {
+    font-size: 32px;
+    line-height: 36px;
+
+    @media (max-width: 1700px) {
+        font-size: 24px;
+        line-height: 28px;
+        max-width: 669px;
+    }
+
+    @media (max-width: 1390px) {
+        font-size: 16px;
+        line-height: 18px;
+    }
+}
 
 .banner__attentionBar {
     width: max-content;
@@ -90,6 +105,26 @@
 
     @media (max-width: 1390px) {
         font-size: 12px;
+        max-width: 390px;
+    }
+}
+.banner__altSubtitle {
+    font-family: 'Manrope';
+    width: 100%;
+    max-width: 707px;
+    margin: 0;
+    padding: 0;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 140%;
+
+    @media (max-width: 1700px) {
+        font-size: 14px;
+        max-width: 541px;
+    }
+
+    @media (max-width: 1390px) {
+        font-size: 10px;
         max-width: 390px;
     }
 }
@@ -153,14 +188,14 @@
     gap: 12px;
     padding: 12px;
     border-radius: 8px;
-    background-color: white;
+    background-color: #FFFFFF66;
 }
 
 .banner__backBullet span {
     font-family: 'Manrope';
     font-weight: 500;
     font-size: 14px;
-    line-height: 16px;
+    line-height: 140%;
     letter-spacing: 0%;
 
     @media (max-width: 1390px) {
@@ -174,7 +209,7 @@
     gap: 12px;
     padding: 8px;
     border-radius: 8px;
-    background-color: #FFFFFF66;
+    background-color:#FFFFFF66;
     max-width: 625px;
 
     @media (max-width: 1700px) {
@@ -190,7 +225,7 @@
     font-family: Manrope;
     font-weight: 600;
     font-size: 16px;
-    line-height: 100%;
+    line-height: 140%;
     letter-spacing: 0%;
     margin: 0;
     padding: 0;
@@ -245,7 +280,7 @@
     font-family: 'Manrope';
     font-weight: 600;
     font-size: 22px;
-    line-height: 100%;
+    line-height: 140%;
     letter-spacing: 0%;
     margin: 0;
     padding: 0;
@@ -317,17 +352,13 @@
 .banner__mainImageWrapper {
     position: absolute;
     top: 0;
-    right: 0;
+    right: -110px;
     bottom: 0;
     max-width: 50%;
     z-index: 1;
-    transform-origin: right center;
 
-    @media (max-width: 1700px) {
-        transform: scale(0.9);
-    }
     @media (max-width: 1390px) {
-        transform: scale(0.85);
+       right: -10px
     }
 }
 
