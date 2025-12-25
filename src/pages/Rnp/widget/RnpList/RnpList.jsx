@@ -14,6 +14,8 @@ import { attachClosestEdge, extractClosestEdge, } from '@atlaskit/pragmatic-drag
 import { useAppSelector } from '../../../../redux/hooks';
 import { NoDataWidget } from '@/pages/productsGroupsPages/widgets';
 import RnpTableTotal from '../RnpTable/RnpTableTotal';
+import { fileDownload } from '@/service/utils';
+import DownloadButton from '@/components/DownloadButton';
 
 // Компонент edge drop-зон (верх и низ viewport)
 function EdgeDropZone({ position, isActive, isDragging, onDrop }) {
@@ -121,6 +123,25 @@ function RnpListItem({ el, index, expanded, setExpanded, setDeleteRnpId, onReord
 	const ref = useRef(null);
 	const gripRef = useRef(null);
 	const [closestEdge, setClosestEdge] = useState(null);
+	const [downloadLoading, setDownloadLoading] = useState(false);
+
+	const handleDownload = async () => {
+		setDownloadLoading(true);
+		try {
+			const fileBlob = await ServiceFunctions.getDownloadReportProfitLossExel(
+				authToken,
+				selectedRange,
+				activeBrand.id,
+				filters,
+				el.article_data.vendor_code
+			);
+			fileDownload(fileBlob, `РНП_${el.article_data.title}.xlsx`);
+		} catch (e) {
+			console.error('Ошибка скачивания: ', e);
+		} finally {
+			setDownloadLoading(false);
+		}
+	};
 
 	const expandHandler = (value) => {
 		const timeout = setTimeout(() => {
@@ -210,10 +231,10 @@ function RnpListItem({ el, index, expanded, setExpanded, setDeleteRnpId, onReord
 	return (
 		<div className={`${styles.item} ${isDragging ? styles.dragging : ''}`} ref={ref}>
 			<div className={styles.item_content}>
-			{closestEdge === 'top' && (
-				<div className={styles.edge_top}></div>
-			)}
-			<header 	
+				{closestEdge === 'top' && (
+					<div className={styles.edge_top}></div>
+				)}
+				<header
 					className={`${styles.item__header}`}
 				>
 					<Flex gap={20} align="center">
@@ -222,7 +243,7 @@ function RnpListItem({ el, index, expanded, setExpanded, setDeleteRnpId, onReord
 							icon={grip}
 							ref={gripRef}
 							onClick={() => setExpanded([])}
-							disabled={expanded === el.article_data.wb_id }
+							disabled={expanded === el.article_data.wb_id}
 							hidden={isPublicVersion}
 						/>
 						<div className={styles.item__product}>
@@ -237,6 +258,12 @@ function RnpListItem({ el, index, expanded, setExpanded, setDeleteRnpId, onReord
 								shop={el.article_data.shop_name}
 							/>
 						</div>
+						{!isPublicVersion &&
+							<DownloadButton
+								handleDownload={handleDownload}
+								loading={downloadLoading}
+							/>
+						}
 						<Button
 							className={styles.item__button}
 							onClick={() => setDeleteRnpId(el.article_data.wb_id)}

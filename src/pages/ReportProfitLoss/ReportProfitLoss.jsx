@@ -58,7 +58,7 @@ export default function ReportProfitLoss() {
                 activeBrand.id,
                 filters,
             );
-            fileDownload(fileBlob, 'Отчет_по_неделям.xlsx');
+            fileDownload(fileBlob, 'Отчет_о_прибылях_и_убытках.xlsx');
         } catch (e) {
             console.error('Ошибка скачивания: ', e);
         } finally {

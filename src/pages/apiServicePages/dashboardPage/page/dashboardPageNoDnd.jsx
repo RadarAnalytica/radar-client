@@ -197,7 +197,7 @@ const _DashboardPage = () => {
                 activeBrand.id,
                 filters,
             );
-            fileDownload(fileBlob, 'Отчет_по_неделям.xlsx');
+            fileDownload(fileBlob, 'Сводка_продаж.xlsx');
         } catch (e) {
             console.error('Ошибка скачивания: ', e);
         } finally {
