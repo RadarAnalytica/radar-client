@@ -3,7 +3,7 @@ import { ConfigProvider, Segmented } from 'antd';
 import { useAppSelector, useAppDispatch } from '../../../../redux/hooks';
 import { actions as supplierAnalysisActions } from '../../../../redux/supplierAnalysis/supplierAnalysisSlice';
 import { selectStockChartTab } from '../../../../redux/supplierAnalysis/supplierAnalysisSelectors';
-import { useCallback, memo } from 'react';
+import { useCallback, memo, useEffect, useState } from 'react';
 
 const tabs = [
     'Входящие заказы',
@@ -32,23 +32,33 @@ const theme = {
 };
 
 const StockChartCustomHeader = memo(() => {
-
     const dispatch = useAppDispatch();
     const stockChartTab = useAppSelector(selectStockChartTab);
+    const [tabsState, setTabsState] = useState(null) 
 
-    const handleTabChange = useCallback((value) => {
-        dispatch(supplierAnalysisActions.setStockChartTab(value));
-    }, [dispatch]);
+    useEffect(() => {
+        if (!tabsState && stockChartTab) {
+            setTabsState(stockChartTab)
+        }
+    }, [stockChartTab, tabsState])
 
-    return (
+    useEffect(() => {
+        // dispatch(supplierAnalysisActions.setStockChartTab(value))
+        const timeout = setTimeout(() => {dispatch(supplierAnalysisActions.setStockChartTab(tabsState));}, 300)
+        return () => {
+            clearTimeout(timeout)
+        }
+    }, [tabsState])
+
+    return tabsState && (
         <div className={styles.header}>
             <p className={styles.header__title}>Сравнение с другими поставщиками</p>
             <ConfigProvider theme={theme}>
                 <Segmented
                     size='large'
                     options={tabs}
-                    value={stockChartTab}
-                    onChange={handleTabChange}
+                    value={tabsState}
+                    onChange={setTabsState}
                 />
             </ConfigProvider>
         </div>

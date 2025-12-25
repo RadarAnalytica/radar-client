@@ -136,15 +136,16 @@
 .getReportBtn {
   width: 100%;
   background: rgba(83, 41, 255, 1);
-  padding: 1.25em 0 1.25em 0;
   color: rgba(255, 255, 255, 1);
   font-weight: 700;
-  font-size: 1rem;
+  font-size: 14px;
   line-height: 1.25;
   border-radius: 8px;
-  margin-top: 1.25em;
-  margin-bottom: 1.25em;
   border: none;
+  height: 38px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .infoSeoGroupWrapper form {

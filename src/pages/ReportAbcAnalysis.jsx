@@ -171,6 +171,15 @@ const ReportAbcAnalysis = () => {
     TABLE_CONFIG_VERSION
   );
 
+  const getSortedTableData = useCallback((data) => {
+    if (!data || data.length === 0) return []
+    if (activeTab === 'По выручке') {
+      return data.sort((a,b) => b.proceed - a.proceed)
+    } else {
+      return data.sort((a,b) => b.profit - a.profit)
+    }
+  }, [dataRevenue, activeTab])
+
   useEffect(() => {
     dispatch(fetchABCFilters(authToken));
   }, [authToken, dispatch]);
@@ -233,7 +242,7 @@ const ReportAbcAnalysis = () => {
                 resizeable
                 rowKey={(record) => record.rowKey}
                 config={tableConfig}
-                dataSource={dataRevenue}
+                dataSource={getSortedTableData(dataRevenue)}
                 treeMode
                 preset='radar-table-default'
                 pagination={false}

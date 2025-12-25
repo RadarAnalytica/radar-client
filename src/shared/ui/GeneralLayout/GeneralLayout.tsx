@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { RefObject } from 'react';
 import styles from './GeneralLayout.module.css';
 import Header from '@/components/sharedComponents/header/header';
 import Sidebar from '@/components/sharedComponents/sidebar/sidebar';
@@ -16,18 +16,19 @@ interface IGeneralLayoutProps {
         howToLinkText?: string,
         hasShadow?: boolean,
     },
-    children: React.ReactNode 
+    children: React.ReactNode,
+    scrollContainerRef?: RefObject<HTMLElement>
 }
 
 
 // dont forget to rename the component and its export
-export const GeneralLayout: React.FC<IGeneralLayoutProps> = ({ headerProps, children }) => {
+export const GeneralLayout: React.FC<IGeneralLayoutProps> = ({ headerProps, children, scrollContainerRef }) => {
 
     return (
         <main className={styles.page}>
             <MobilePlug />
             {/* ------ SIDE BAR ------ */}
-            <section className={styles.page__sideNavWrapper}>
+            <section className={styles.page__sideNavWrapper} ref={scrollContainerRef}>
                 <Sidebar />
             </section>
             {/* ------ CONTENT ------ */}

@@ -89,7 +89,7 @@ export const TableChart: React.FC<MetricChartProps> = ({
         label: 'chart data',
         type: 'bar' as const,
         data: data?.map(item => {
-          if (item.item === null || item.item === undefined) return null;
+          if (item.item === null || item.item === undefined || item.item === 0) return null;
           return Math.max(item.item, minPercentage);
         }),
         backgroundColor: function (context) {
