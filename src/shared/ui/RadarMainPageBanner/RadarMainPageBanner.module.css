@@ -63,6 +63,7 @@
     @media (max-width: 1390px) {
         font-size: 16px;
         line-height: 18px;
+        max-width: 390px;
     }
 }
 
@@ -156,6 +157,7 @@
     font-size: 14px;
     line-height: 16px;
     letter-spacing: 0%;
+    cursor: default !important;
 
     @media (max-width: 1390px) {
         font-size: 10px;
@@ -224,7 +226,7 @@
 .banner__seoPlateText {
     font-family: Manrope;
     font-weight: 600;
-    font-size: 16px;
+    font-size: 18px;
     line-height: 140%;
     letter-spacing: 0%;
     margin: 0;
