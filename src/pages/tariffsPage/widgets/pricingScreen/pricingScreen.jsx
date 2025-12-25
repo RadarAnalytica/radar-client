@@ -89,8 +89,8 @@ export const PricingScreen = () => {
         const searchParams = new URLSearchParams(location.search);
         const idQueryParam = searchParams.get('id');
         if (idQueryParam && parseInt(idQueryParam) !== user.id) {
-            //logout();
-            //navigate('/signin');
+            logout();
+            navigate('/signin');
         } else {
             return;
         }
