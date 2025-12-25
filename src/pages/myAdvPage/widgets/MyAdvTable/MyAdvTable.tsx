@@ -349,4 +349,6 @@ const MyAdvTable: React.FC<MyAdvTableProps> = React.memo(({
   );
 });
 
+MyAdvTable.displayName = 'MyAdvTable';
+
 export default MyAdvTable;

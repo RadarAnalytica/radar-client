@@ -50,7 +50,7 @@ const MyAdvPage: React.FC = () => {
     setLoading(true);
     progress.start();
     try {
-      const requestObject = getRequestObject({ activeBrandName }, selectedRange, activeBrand?.id);
+      const requestObject = getRequestObject({ activeBrandName: activeBrand?.brand_name }, selectedRange, activeBrand?.id);
       const response: ApiResponse = await ServiceFunctions.getAdvertData(authToken, {...requestObject, ...pageData, search_query: searchQuery}, sortState);
       if (response.total) {
         setPageData(prev => ({ ...prev, total_count: response.total }));
