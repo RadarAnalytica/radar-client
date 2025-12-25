@@ -76,6 +76,7 @@ export default function Rnp({
 	const initLoad = useRef(true);
 	const pageContentRef = useRef(null);
 	const [loading, setLoading] = useState(true);
+	const [downloadLoading, setDownloadLoading] = useState(false);
 	const progress = useLoadingProgress({ loading });
 	const [addRnpModalShow, setAddRnpModalShow] = useState(false);
 	const [page, setPage] = useState(1);
@@ -87,58 +88,113 @@ export default function Rnp({
 	const [expanded, setExpanded] = useState('collapsed');
 	const [searchParams, setSearchParams] = useSearchParams();
 	const [shareButtonState, setShareButtonState] = useState('Поделиться');
+	const [publicUserCredentials, setPublicUserCredentials] = useState(null) // user_id & secret for requests from public version of te page
 	const abortControllerRef = useRef(null);
 
-	const updateRnpListByArticle = async (signal, filters, authToken) => {
+	const updateRnpListByArticle = async (signal, filters, authToken, publicUserCredentials, isPublicVersion) => {
 		setLoading(true);
 		progress.start();
-		try {
-			if (activeBrand) {
-				const response = await ServiceFunctions.postRnpByArticle(
-					authToken,
-					filters.selectedRange,
-					filters.activeBrand.id,
-					filters,
-					signal
-				);
+		const handler = isPublicVersion ? ServiceFunctions.postRnpByArticlePublic : ServiceFunctions.postRnpByArticle;
 
-				progress.complete();
-				await setTimeout(() => {
-					dataToRnpList(response);
-					setLoading(false);
-					progress.reset();
-				}, 500);
+		if (isPublicVersion) {
+			try {
+				if (activeBrand) {
+					const response = await handler(
+						authToken,
+						filters.selectedRange,
+						filters.activeBrand.id,
+						filters,
+						signal,
+						publicUserCredentials
+					);
+
+					progress.complete();
+					await setTimeout(() => {
+						dataToRnpList(response);
+						setLoading(false);
+						progress.reset();
+					}, 500);
+				}
+			} catch (error) {
+				console.error('UpdateRnpListByArticle error', error);
+				progress.reset();
 			}
-		} catch (error) {
-			console.error('UpdateRnpListByArticle error', error);
-			progress.reset();
+		} else {
+			try {
+				if (activeBrand) {
+					const response = await handler(
+						authToken,
+						filters.selectedRange,
+						filters.activeBrand.id,
+						filters,
+						signal
+					);
+
+					progress.complete();
+					await setTimeout(() => {
+						dataToRnpList(response);
+						setLoading(false);
+						progress.reset();
+					}, 500);
+				}
+			} catch (error) {
+				console.error('UpdateRnpListByArticle error', error);
+				progress.reset();
+			}
 		}
 	};
 
-	const updateRnpListSummary = async (signal, filters, authToken) => {
+	const updateRnpListSummary = async (signal, filters, authToken, publicUserCredentials, isPublicVersion) => {
 		setLoading(true);
 		progress.start();
-		try {
-			if (activeBrand) {
-				const response = await ServiceFunctions.postRnpSummary(
-					authToken,
-					filters.selectedRange,
-					filters.activeBrand.id,
-					filters,
-					signal
-				);
-
-				progress.complete();
-				await setTimeout(() => {
-					dataToRnpTotalList(response);
-					setLoading(false);
-					progress.reset();
-				}, 500);
+		const handler = isPublicVersion ? ServiceFunctions.postRnpSummaryPublic : ServiceFunctions.postRnpSummary;
+		if (isPublicVersion) {
+			try {
+				if (activeBrand) {
+					const response = await handler(
+						authToken,
+						filters.selectedRange,
+						filters.activeBrand.id,
+						filters,
+						signal,
+						publicUserCredentials
+					);
+	
+					progress.complete();
+					await setTimeout(() => {
+						dataToRnpTotalList(response);
+						setLoading(false);
+						progress.reset();
+					}, 500);
+				}
+			} catch (error) {
+				console.error('updateRnpListSummary error', error);
+				setRnpDataTotal(null);
+				progress.reset();
 			}
-		} catch (error) {
-			console.error('updateRnpListSummary error', error);
-			setRnpDataTotal(null);
-			progress.reset();
+		} else {
+			try {
+				if (activeBrand) {
+					const response = await handler(
+						authToken,
+						filters.selectedRange,
+						filters.activeBrand.id,
+						filters,
+						signal
+					);
+	
+					progress.complete();
+					await setTimeout(() => {
+						dataToRnpTotalList(response);
+						setLoading(false);
+						progress.reset();
+					}, 500);
+				}
+			} catch (error) {
+				console.error('updateRnpListSummary error', error);
+				setRnpDataTotal(null);
+				progress.reset();
+			}
 		}
 	};
 
@@ -163,7 +219,7 @@ export default function Rnp({
 	const handleDownload = async () => {
 		setDownloadLoading(true);
 		try {
-			const fileBlob = await ServiceFunctions.getDownloadReportProfitLossExel(
+			const fileBlob = await ServiceFunctions.getDownloadReportRnp(
 				authToken,
 				selectedRange,
 				activeBrand.id,
@@ -258,6 +314,8 @@ export default function Rnp({
 			selectedRange,
 			activeBrand: { id: activeBrand.id, brand_name: activeBrand.brand_name },
 			activeBrandName,
+			secret: 'RADAR_SECRET',
+			user_id: user?.id
 
 		}
 		const json = JSON.stringify(filtersToEncode);
@@ -277,10 +335,11 @@ export default function Rnp({
 			if (!filters) return;
 			const decodedFilters = decodeBase64ToUnicode(filters);
 			if (!decodedFilters) { setError('Не удалось получить параметры фильтрации'); return; }
-			const { selectedRange, activeBrand, activeBrandName } = decodedFilters;
+			const { selectedRange, activeBrand, activeBrandName, user_id, secret } = decodedFilters;
 			dispatch(filtersActions.setActiveFilters({ stateKey: 'activeBrand', data: activeBrand }));
 			dispatch(filtersActions.setPeriod(selectedRange));
 			dispatch(filtersActions.setActiveFilters({ stateKey: 'activeBrandName', data: activeBrandName }));
+			setPublicUserCredentials({ user_id, secret })
 		}
 	}, [searchParams, isPublicVersion])
 
@@ -289,7 +348,7 @@ export default function Rnp({
 
 		if (
 			activeBrand
-			//&& !isPublicVersion
+			&& !isPublicVersion
 		) {
 			if (activeBrand?.is_primary_collect) {
 				if (view === 'articles') {
@@ -302,14 +361,18 @@ export default function Rnp({
 			}
 		}
 
-		if (isPublicVersion) {
-			// PUBLIC DATA REQUEST HERE
+		if (isPublicVersion && publicUserCredentials) {
+			if (view === 'articles') {
+				updateRnpListByArticle(abortControllerRef?.current?.signal, filters, authToken, publicUserCredentials, isPublicVersion);
+			} else {
+				updateRnpListSummary(abortControllerRef?.current?.signal, filters, authToken, publicUserCredentials, isPublicVersion);
+			}
 		}
 
 		return () => {
 			abortControllerRef?.current?.abort();
 		};
-	}, [isFiltersLoaded, view, activeBrand, selectedRange, activeBrandName]);
+	}, [isFiltersLoaded, view, activeBrand, selectedRange, activeBrandName, publicUserCredentials]);
 
 	// Добавляем автоскролл к контейнеру страницы
 	useEffect(() => {
@@ -476,7 +539,7 @@ export default function Rnp({
 						>
 
 							<div className={styles.page__shareAndAddButtonsWrapper}>
-								{isPublicVersion &&
+								{!isPublicVersion &&
 									<ConfigProvider
 										theme={{
 											token: {
@@ -528,7 +591,7 @@ export default function Rnp({
 								{!isPublicVersion && view === 'total' &&
 									<DownloadButton
 										handleDownload={handleDownload}
-										loading={downloadLoading}
+										loading={loading || downloadLoading}
 									/>
 								}
 							</div>
@@ -573,6 +636,8 @@ export default function Rnp({
 						expanded={expanded}
 						setExpanded={setExpanded}
 						isPublicVersion={isPublicVersion}
+						authToken={authToken}
+						filters={filters}
 					/>
 				)}
 
