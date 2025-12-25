@@ -561,7 +561,7 @@ export default function Rnp({
 											type='primary'
 											iconPosition='start'
 											icon={shareButtonState === 'Поделиться' ? <ShareIcon /> : undefined}
-											disabled={loading}
+											disabled={loading || isDemoMode}
 											size='large'
 											onClick={() => { shareButtonClickHandler(); }}
 											style={{

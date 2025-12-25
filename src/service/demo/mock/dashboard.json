@@ -1567,6 +1567,8 @@
     "profit_per_one_compare": "+18%",
     "paid_acceptance_compare": "+10%",
     "penalty_compare": "-10%",
+    "operating_expenses": 176000,
+    "operating_expense_compare": "+12%",
     "compensation_compare": "+0%",
     "logistic_per_one_compare": "-35%",
     "penalty_details": [
@@ -1608,6 +1610,11 @@
             "value": 156350.0,
             "compare": "4%"
         }
+    },
+    "to_account_payment": {
+        "current": 147000,
+        "previous": 140000,
+        "comparison": "5%"
     },
     "commission_without_acquiring": 2220848.7299999995,
     "commission_without_acquiring_compare": "14%",
