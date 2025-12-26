@@ -159,7 +159,7 @@ export default function Rnp({
 						signal,
 						publicUserCredentials
 					);
-	
+
 					progress.complete();
 					await setTimeout(() => {
 						dataToRnpTotalList(response);
@@ -182,7 +182,7 @@ export default function Rnp({
 						filters,
 						signal
 					);
-	
+
 					progress.complete();
 					await setTimeout(() => {
 						dataToRnpTotalList(response);
@@ -473,131 +473,132 @@ export default function Rnp({
 					/>
 				)}
 
-				{!loading && ((rnpDataByArticle?.length > 0 && view === 'articles') || (view === 'total' && rnpDataTotal)) && (<ConfigProvider
-					theme={{
-						token: {
-							colorPrimary: '#EEEAFF',
-							colorTextLightSolid: '#1a1a1a',
-							fontSize: 16,
-							borderRadius: 8,
-						},
-						components: {
-							Button: {
-								paddingInlineLG: 12,
-								controlHeightLG: 38,
-								defaultShadow: false,
-								contentFontSize: 16,
-								fontWeight: 500,
-								defaultBorderColor: 'transparent',
-								defaultColor: 'rgba(26, 26, 26, 0.5)',
-								defaultBg: 'transparent',
-								defaultHoverBg: '#EEEAFF',
-								defaultHoverColor: '#1a1a1a',
-								defaultHoverBorderColor: 'transparent',
-								defaultActiveColor: 'rgba(26, 26, 26, 1)',
-								defaultActiveBg: '#EEEAFF',
-								defaultActiveBorderColor: '#EEEAFF',
+				{!loading && ((rnpDataByArticle?.length > 0 && view === 'articles') || (view === 'total' && rnpDataTotal)) && (
+					<ConfigProvider
+						theme={{
+							token: {
+								colorPrimary: '#EEEAFF',
+								colorTextLightSolid: '#1a1a1a',
+								fontSize: 16,
+								borderRadius: 8,
 							},
-						},
-					}}
-				>
-					<Flex justify="space-between">
-						<Flex gap={4} align="center">
-							<button
-								className={view === 'articles' ? `${styles.segmented__button} ${styles.segmented__button_active}` : styles.segmented__button}
-								onClick={() => {
-									viewHandler('articles');
-								}}
-								style={{ fontWeight: 500, fontSize: 14 }}
-							>
-								По артикулам
-							</button>
-							<button
-								className={view === 'total' ? `${styles.segmented__button} ${styles.segmented__button_active}` : styles.segmented__button}
-								onClick={() => {
-									viewHandler('total');
-								}}
-								style={{ fontWeight: 500, fontSize: 14 }}
-							>
-								Сводный
-							</button>
-						</Flex>
-						<ConfigProvider
-							theme={{
-								token: {
-									colorPrimary: '#5329ff',
-									colorText: '#fff',
+							components: {
+								Button: {
+									paddingInlineLG: 12,
+									controlHeightLG: 38,
+									defaultShadow: false,
+									contentFontSize: 16,
+									fontWeight: 500,
+									defaultBorderColor: 'transparent',
+									defaultColor: 'rgba(26, 26, 26, 0.5)',
+									defaultBg: 'transparent',
+									defaultHoverBg: '#EEEAFF',
+									defaultHoverColor: '#1a1a1a',
+									defaultHoverBorderColor: 'transparent',
+									defaultActiveColor: 'rgba(26, 26, 26, 1)',
+									defaultActiveBg: '#EEEAFF',
+									defaultActiveBorderColor: '#EEEAFF',
 								},
-								components: {
-									Button: {
-										primaryColor: '#fff',
-										paddingInlineLG: 16,
-										contentFontSizeLG: 16
+							},
+						}}
+					>
+						<Flex justify="space-between">
+							<Flex gap={4} align="center">
+								<button
+									className={view === 'articles' ? `${styles.segmented__button} ${styles.segmented__button_active}` : styles.segmented__button}
+									onClick={() => {
+										viewHandler('articles');
+									}}
+									style={{ fontWeight: 500, fontSize: 14 }}
+								>
+									По артикулам
+								</button>
+								<button
+									className={view === 'total' ? `${styles.segmented__button} ${styles.segmented__button_active}` : styles.segmented__button}
+									onClick={() => {
+										viewHandler('total');
+									}}
+									style={{ fontWeight: 500, fontSize: 14 }}
+								>
+									Сводный
+								</button>
+							</Flex>
+							<ConfigProvider
+								theme={{
+									token: {
+										colorPrimary: '#5329ff',
+										colorText: '#fff',
 									},
-								},
-							}}
-						>
+									components: {
+										Button: {
+											primaryColor: '#fff',
+											paddingInlineLG: 16,
+											contentFontSizeLG: 16
+										},
+									},
+								}}
+							>
 
-							<div className={styles.page__shareAndAddButtonsWrapper}>
-								{!isPublicVersion &&
-									<ConfigProvider
-										theme={{
-											token: {
-												colorBorder: '#00000033',
-												colorPrimary: '#E7E1FE',
-											},
-											components: {
-												Button: {
-													primaryColor: '#5329FF',
-													//paddingInline: 8,
-													paddingBlockLG: 10,
-													paddingInlineLG: 8,
-													defaultShadow: false,
+								<div className={styles.page__shareAndAddButtonsWrapper}>
+									{!isPublicVersion &&
+										<ConfigProvider
+											theme={{
+												token: {
+													colorBorder: '#00000033',
+													colorPrimary: '#E7E1FE',
+												},
+												components: {
+													Button: {
+														primaryColor: '#5329FF',
+														//paddingInline: 8,
+														paddingBlockLG: 10,
+														paddingInlineLG: 8,
+														defaultShadow: false,
+													}
 												}
-											}
-										}}
-									>
-										<Button
-											type='primary'
-											iconPosition='start'
-											icon={shareButtonState === 'Поделиться' ? <ShareIcon /> : undefined}
-											disabled={loading || isDemoMode}
-											size='large'
-											onClick={() => { shareButtonClickHandler(); }}
-											style={{
-												fontWeight: 600,
-												fontSize: 14,
-												width: shareButtonState === 'Поделиться' ? 145 : 175,
-												transition: 'width 0.3s ease',
-												overflow: 'hidden',
-												whiteSpace: 'nowrap'
 											}}
-										>{shareButtonState}</Button>
-									</ConfigProvider>}
-								{!isPublicVersion &&
-									<Button
-										type="primary"
-										size="large"
-										onClick={setAddRnpModalShow}
-										style={{ fontWeight: 600, fontSize: 14 }}
-									>
-										<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-											<path d="M9 1V9M9 17V9M9 9H1H17" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-										</svg>
+										>
+											<Button
+												type='primary'
+												iconPosition='start'
+												icon={shareButtonState === 'Поделиться' ? <ShareIcon /> : undefined}
+												disabled={loading || isDemoMode}
+												size='large'
+												onClick={() => { shareButtonClickHandler(); }}
+												style={{
+													fontWeight: 600,
+													fontSize: 14,
+													width: shareButtonState === 'Поделиться' ? 145 : 175,
+													transition: 'width 0.3s ease',
+													overflow: 'hidden',
+													whiteSpace: 'nowrap'
+												}}
+											>{shareButtonState}</Button>
+										</ConfigProvider>}
+									{!isPublicVersion &&
+										<Button
+											type="primary"
+											size="large"
+											onClick={setAddRnpModalShow}
+											style={{ fontWeight: 600, fontSize: 14 }}
+										>
+											<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+												<path d="M9 1V9M9 17V9M9 9H1H17" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+											</svg>
 
-										Добавить артикул
-									</Button>
-								}
-								{!isPublicVersion && view === 'total' &&
-									<DownloadButton
-										handleDownload={handleDownload}
-										loading={loading || downloadLoading}
-									/>
-								}
-							</div>
-						</ConfigProvider>
-					</Flex>
-				</ConfigProvider>)}
+											Добавить артикул
+										</Button>
+									}
+									{!isPublicVersion && view === 'total' &&
+										<DownloadButton
+											handleDownload={handleDownload}
+											loading={loading || downloadLoading}
+										/>
+									}
+								</div>
+							</ConfigProvider>
+						</Flex>
+					</ConfigProvider>)}
 
 				<div className={styles.page__filtersWrapper}>
 					<Filters

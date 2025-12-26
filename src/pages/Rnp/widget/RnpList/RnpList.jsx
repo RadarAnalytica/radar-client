@@ -266,12 +266,12 @@ function RnpListItem({ el, index, expanded, setExpanded, setDeleteRnpId, onReord
 								loading={downloadLoading}
 							/>
 						}
-						<Button
+						{!isPublicVersion && <Button
 							className={styles.item__button}
 							onClick={() => setDeleteRnpId(el.article_data.wb_id)}
 							icon={remove}
 							title="Удалить артикул"
-						/>
+						/>}
 						<Button
 							className={`${styles.item__button} ${expanded === el.article_data.wb_id &&
 								styles.item__button_expand
