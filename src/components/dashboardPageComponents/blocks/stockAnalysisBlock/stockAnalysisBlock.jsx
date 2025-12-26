@@ -23,6 +23,7 @@ const StockAnalysisBlock = memo(({ dashboardLoading, dragHandle, data}) => {
     const [hasSelfCostPrice, setHasSelfCostPrice] = useState(false);
     const [loading, setLoading] = useState(false);
     const progress = useLoadingProgress({ loading });
+   
 
     // const fetchAnalysisData = async () => {
     //     setLoading(true);
@@ -104,13 +105,6 @@ const StockAnalysisBlock = memo(({ dashboardLoading, dragHandle, data}) => {
             />
         </div>
     );
-}, (prevProps, nextProps) => {
-    // Кастомная функция сравнения для оптимизации ререндеров
-    return (
-        prevProps.dashboardLoading === nextProps.dashboardLoading &&
-        prevProps.dragHandle === nextProps.dragHandle &&
-        prevProps.stockAnalysisData === nextProps.stockAnalysisData
-    );
-});
+})
 
 export default StockAnalysisBlock;
