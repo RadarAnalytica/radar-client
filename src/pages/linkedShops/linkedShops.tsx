@@ -34,7 +34,7 @@ const LinkedShopsPage = () => {
     const [addAndEditModalState, setAddAndEditModalState] = useState<{ type: 'edit' | 'add' | 'delete' | 'tax', shop?: Record<string, any> } | null>(null);
     const [addShopRequestStatus, setAddShopRequestStatus] = useState(initRequestStatus);
     const [isMiniCardVisible, setIsMiniCardVisible] = useState(false);
-    const [isSuccessModalVisible, setIsSuccessModalVisible] = useState(true);
+    const [isSuccessModalVisible, setIsSuccessModalVisible] = useState(false);
     const addShopBlockRef = useRef<HTMLDivElement>(null);
     const lastOperationTypeRef = useRef<'add' | 'edit' | 'delete' | 'tax' | null>(null);
     const dispatch = useAppDispatch();

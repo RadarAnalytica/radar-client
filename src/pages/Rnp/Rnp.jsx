@@ -21,6 +21,8 @@ import DataCollectWarningBlock from '../../components/sharedComponents/dataColle
 import SelfCostWarningBlock from '../../components/sharedComponents/selfCostWraningBlock/selfCostWarningBlock';
 import ErrorModal from '../../components/sharedComponents/modals/errorModal/errorModal';
 import { Filters } from '@/components/sharedComponents/apiServicePagesFiltersComponent';
+import { TimeSelect } from '@/components/sharedComponents/apiServicePagesFiltersComponent/features';
+import { RadarSelect, RadarMultiSelect } from '@/shared';
 import { fetchRnpFilters } from '../../redux/filtersRnp/filterRnpActions';
 import { actions as filtersRnpAddActions } from '../../redux/filtersRnpAdd/filtersRnpAddSlice';
 import { actions as filterActions } from '../../redux/filtersRnp/filtersRnpSlice';
@@ -601,14 +603,47 @@ export default function Rnp({
 					</ConfigProvider>)}
 
 				<div className={styles.page__filtersWrapper}>
-					<Filters
-						isDataLoading={loading}
-						articleSelect={false}
-						groupSelect={false}
-						categorySelect={false}
-						maxCustomDate={new Date(Date.now() - 24 * 60 * 60 * 1000)}
-						disabled={isPublicVersion}
-					/>
+					{!isPublicVersion ?
+						(<Filters
+							isDataLoading={loading}
+							articleSelect={false}
+							groupSelect={false}
+							categorySelect={false}
+							maxCustomDate={new Date(Date.now() - 24 * 60 * 60 * 1000)}
+							disabled={isPublicVersion}
+						/>)
+						:
+						(
+							<div className={styles.filters}>
+								<div className={styles.filters__inputsMainWrapper}>
+									<div className={styles.filters__inputWrapper}>
+										<TimeSelect
+											disabled={true}
+											customValue={selectedRange}
+										/>
+									</div>
+									<div className={styles.filters__inputWrapper}>
+										<RadarSelect
+											selectId='store'
+											label='Магазин:'
+											value={activeBrand?.brand_name}
+											optionsData={[]}
+											disabled={true}
+										/>
+									</div>
+									<div className={styles.filters__inputWrapper}>
+										<RadarSelect
+											selectId='b'
+											label='Бренд:'
+											value={activeBrandName ?? 'Все'}
+											optionsData={[]}
+											disabled={true}
+										/>
+									</div>
+								</div>
+							</div>
+						)
+					}
 				</div>
 
 				{!loading && activeBrand && !activeBrand?.is_primary_collect && !isPublicVersion && (

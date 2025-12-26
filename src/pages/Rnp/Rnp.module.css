@@ -130,3 +130,30 @@
   align-items: flex-end;
   gap: 20px;
 }
+
+.filters {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  flex-grow: 1;
+}
+
+.filters__inputsMainWrapper {
+  width: auto;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  flex-grow: 1;
+}
+
+.filters__inputWrapper {
+  max-width: 240px;
+  min-width: 190px;
+  flex-grow: 1;
+  width: max-content;
+}
