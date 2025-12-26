@@ -466,7 +466,8 @@ export default function ReportWeek() {
 					<TableWidget
 						loading={loading}
 						columns={tableColumns}
-						data={tableRows}
+						data={tableRows ?? []}
+						// data={tableRows}
 						is_primary_collect={activeBrand?.is_primary_collect}
 						progress={progress.value}
 						setTableColumns={setTableColumns}
