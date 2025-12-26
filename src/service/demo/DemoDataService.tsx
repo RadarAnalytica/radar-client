@@ -428,6 +428,9 @@ export class DemoDataService {
 
     data.results.map(item => {
       item.article_data.amount = item.article_data.amount / denominator;
+      item.sizes.map(size => {
+        size.size_data.amount = size.size_data.amount / denominator;
+      });
     });
 
     return data;
@@ -441,6 +444,10 @@ export class DemoDataService {
     data.results.map(item => {
       item.article_data.amount = item.article_data.amount / denominator;
       item.article_data.logistic = item.article_data.logistic / denominator;
+      item.sizes.map(size => {
+        size.size_data.amount = size.size_data.amount / denominator;
+        size.size_data.logistic = size.size_data.logistic / denominator;
+      });
     });
 
     return data;
