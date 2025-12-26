@@ -274,9 +274,8 @@ const MyAdvTable: React.FC<MyAdvTableProps> = React.memo(({
             articleSelect={false}
             groupSelect={false}
             shopSelect={!companyId}
-            tempPageCondition={true}
+            brandSelect={!companyId}
             maxCustomDate={new Date(Date.now() - 24 * 60 * 60 * 1000)}
-            uncontrolledMode={true}
           />
         </div>
         <div className={styles.settingsWrapper}>
@@ -323,7 +322,7 @@ const MyAdvTable: React.FC<MyAdvTableProps> = React.memo(({
                   idx: [],
                   renderer: customCellRender,
                 }}
-                noDataRender={() => <div className={styles.noDataBlock}>Нет данных в выбранном периоде</div>}
+                noDataRender={() => <div className={styles.noDataBlock}>Нет данных с выбранными фильтрами</div>}
                 headerCellWrapperStyle={{
                   minHeight: '0px',
                   padding: '12px 10px',
