@@ -429,8 +429,8 @@ const EditAndCreateModal = ({
                                     <Input
                                         placeholder='Что-то вроде: GJys67G7sbNw178F'
                                         size='large'
-                                        // disabled={addAndEditModalState?.shop?.is_valid && addAndEditModalState?.shop?.is_active && addAndEditModalState?.shop?.is_primary_collect}
-                                        disabled={true}
+                                        disabled={addAndEditModalState?.shop?.is_valid && addAndEditModalState?.shop?.is_active && !addAndEditModalState?.shop?.is_primary_collect}
+                                        // disabled={true}
                                     />
                                 </Form.Item>
                                 <div className={styles.addShopBlock__buttonHelper}>

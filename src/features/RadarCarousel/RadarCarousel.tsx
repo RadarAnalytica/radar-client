@@ -128,8 +128,8 @@ export const RadarCarousel: React.FC<ICarouselProps> = ({
     useEffect(() => {
         if (!timeoutRef?.current && isAutoScrollActive && autoScroll && activeItem) {
             setControlButtonProgressBar(0)
-            timeoutRef.current = setInterval(timeoutFunction, 2000);
-            progressBarIntervalRef.current = setInterval(progressBarFunction, 33)
+            timeoutRef.current = setInterval(timeoutFunction, 4500);
+            progressBarIntervalRef.current = setInterval(progressBarFunction, 125)
         }
         return () => {
             if (timeoutRef?.current) {
