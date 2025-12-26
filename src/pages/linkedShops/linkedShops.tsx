@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useState, useMemo, useRef } from 'react';
+import React, { useEffect, useLayoutEffect, useContext, useState, useMemo, useRef } from 'react';
 import styles from './linkedShops.module.css';
 import { useAppSelector, useAppDispatch } from '@/redux/hooks';
 import { fetchShops } from '@/redux/shops/shopsActions';
@@ -150,6 +150,11 @@ const LinkedShopsPage = () => {
             observer.unobserve(element);
         };
     }, []);
+
+    useLayoutEffect(() => {
+        //@ts-ignore
+        dispatch(fetchFilters(authToken))
+    }, [])
 
     return (
         <GeneralLayout
