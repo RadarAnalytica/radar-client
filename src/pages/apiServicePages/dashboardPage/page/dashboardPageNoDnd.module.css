@@ -16,7 +16,6 @@
     align-items: stretch;
     gap: 12px;
     box-sizing: border-box;
-    height: 100%;
 }
 .page__sideNavWrapper {
     height: 100%;
