@@ -19,7 +19,8 @@ interface IBannerProps {
     plainText?: string,
     headerButtons?: any[],
     attentionText?: string
-    smallTitle?: string
+    smallTitle?: string,
+    imageOverflow?: boolean,
 }
 
 
@@ -41,7 +42,8 @@ export const RadarMainPageBanner: React.FC<IBannerProps> = ({
     attentionText,
     hasSeoPlate = false,
     smallTitle = false,
-    altSubtitle
+    altSubtitle,
+    imageOverflow = true,
 }) => {
 
     return (
@@ -111,7 +113,7 @@ export const RadarMainPageBanner: React.FC<IBannerProps> = ({
                 )}
             </div>
 
-            <div className={styles.banner__mainImageWrapper}>
+            <div className={styles.banner__mainImageWrapper} style={imageOverflow ? {} : {right: 0}}>
                 <picture>
                     {mainImage[2] && (
                         <source 
