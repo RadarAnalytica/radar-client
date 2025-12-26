@@ -6,10 +6,10 @@ import { actions as supplierAnalysisActions } from '../../../../redux/supplierAn
 import { selectSupplierCurrentBrand, selectSupplierBrands } from '../../../../redux/supplierAnalysis/supplierAnalysisSelectors';
 import { fetchSupplierAnalysisBrandsData } from '../../../../redux/supplierAnalysis/supplierAnalysisActions';
 
-const GoodsTableCustomHeader = ({ id }) => {
+const GoodsTableCustomHeader = ({ id, supplierCurrentBrand }) => {
 
     const dispatch = useAppDispatch();
-    const supplierCurrentBrand = useAppSelector(selectSupplierCurrentBrand);
+    // const supplierCurrentBrand = useAppSelector(selectSupplierCurrentBrand);
     const supplierBrands = useAppSelector(selectSupplierBrands);
     const [selectState, setSelectState] = useState(null)
 
@@ -28,13 +28,6 @@ const GoodsTableCustomHeader = ({ id }) => {
             setSelectState(supplierCurrentBrand)
         }
     }, [selectState, supplierCurrentBrand])
-
-    useEffect(() => {
-        const timeout = setTimeout(() => { dispatch(supplierAnalysisActions.setSupplierCurrentBrand(selectState)) }, 100)
-        return () => {
-            clearTimeout(timeout)
-        }
-    }, [selectState])
 
     return (
         <div className={styles.header}>
@@ -75,8 +68,11 @@ const GoodsTableCustomHeader = ({ id }) => {
                     }
                     options={supplierBrands ? supplierBrands?.map(_ => ({ value: _.brand_id, label: _.brand_name })) : []}
                     value={selectState}
-                    // value={[{ value: supplierCurrentBrand, label: supplierBrands?.find(_ => _?.brand_id === supplierCurrentBrand)?.brand_name || '' }]}
-                    onChange={setSelectState}
+
+                    onChange={(value) => {
+                        setSelectState(value)
+                        dispatch(supplierAnalysisActions.setSupplierCurrentBrand(value))
+                    }}
                 />
             </ConfigProvider>
         </div>

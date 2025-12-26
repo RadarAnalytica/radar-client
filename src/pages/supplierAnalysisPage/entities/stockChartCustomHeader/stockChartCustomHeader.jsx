@@ -31,9 +31,8 @@ const theme = {
     }
 };
 
-const StockChartCustomHeader = memo(() => {
+const StockChartCustomHeader = memo(({stockChartTab}) => {
     const dispatch = useAppDispatch();
-    const stockChartTab = useAppSelector(selectStockChartTab);
     const [tabsState, setTabsState] = useState(null) 
 
     useEffect(() => {
@@ -42,15 +41,7 @@ const StockChartCustomHeader = memo(() => {
         }
     }, [stockChartTab, tabsState])
 
-    useEffect(() => {
-        // dispatch(supplierAnalysisActions.setStockChartTab(value))
-        const timeout = setTimeout(() => {dispatch(supplierAnalysisActions.setStockChartTab(tabsState));}, 300)
-        return () => {
-            clearTimeout(timeout)
-        }
-    }, [tabsState])
-
-    return tabsState && (
+    return (
         <div className={styles.header}>
             <p className={styles.header__title}>Сравнение с другими поставщиками</p>
             <ConfigProvider theme={theme}>
@@ -58,7 +49,10 @@ const StockChartCustomHeader = memo(() => {
                     size='large'
                     options={tabs}
                     value={tabsState}
-                    onChange={setTabsState}
+                    onChange={(value) => {
+                        setTabsState(value)
+                        dispatch(supplierAnalysisActions.setStockChartTab(value))
+                    }}
                 />
             </ConfigProvider>
         </div>

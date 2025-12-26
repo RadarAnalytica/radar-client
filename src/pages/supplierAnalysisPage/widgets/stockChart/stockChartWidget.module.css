@@ -4,6 +4,7 @@
     flex-direction: column;
     gap: 20px;
     overflow-x: hidden;
+    position: relative;
 }
 
 .widget__header {
@@ -15,6 +16,13 @@
 }
 .widget__header_hidden {
     display: none;
+}
+
+.widget__innerLoader {
+    position: absolute;
+    inset: 0;
+    background-color: rgba(255,255,255,.7);
+    height: 100%;
 }
 
 .widget__title {

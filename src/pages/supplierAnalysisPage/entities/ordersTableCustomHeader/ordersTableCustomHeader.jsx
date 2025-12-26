@@ -11,10 +11,9 @@ const tabs = [
     'По размерам'
 ];
 
-const OrdersTableCustomHeader = () => {
+const OrdersTableCustomHeader = ({ ordersStructureTab }) => {
 
     const dispatch = useAppDispatch();
-    const ordersStructureTab = useAppSelector(selectOrdersStructureTab);
     const [tabsState, setTabsState] = useState(null) 
 
     useEffect(() => {
@@ -22,13 +21,6 @@ const OrdersTableCustomHeader = () => {
             setTabsState(ordersStructureTab)
         }
     }, [ordersStructureTab, tabsState])
-
-    useEffect(() => {
-        const timeout = setTimeout(() => {dispatch(supplierAnalysisActions.setOrdersStructureTab(tabsState))}, 300)
-        return () => {
-            clearTimeout(timeout)
-        }
-    }, [tabsState])
 
     return (
         <div className={styles.header}>
@@ -56,7 +48,10 @@ const OrdersTableCustomHeader = () => {
                     size='large'
                     options={tabs}
                     value={tabsState}
-                    onChange={setTabsState}
+                    onChange={(value) => {
+                        setTabsState(value)
+                        dispatch(supplierAnalysisActions.setOrdersStructureTab(value))
+                    }}
                 />
             </ConfigProvider>
         </div>

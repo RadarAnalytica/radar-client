@@ -7,6 +7,7 @@ import { useAppDispatch, useAppSelector } from '../../../../redux/hooks';
 import SearchBlock from '../search/searchBlock';
 import { CompareChart } from '../../features';
 import { selectMainSupplierData, selectCompareSupplierData, selectSupplierAnalysisDataByType } from '../../../../redux/supplierAnalysis/supplierAnalysisSelectors';
+import { RadarLoader } from '@/shared';
 
 
 /**
@@ -154,6 +155,9 @@ const StockChartWidget = ({
 
     return (
         <div className={styles.widget}>
+            {(!isFiltersLoaded || isLoading) && <div className={styles.widget__innerLoader}>
+                <RadarLoader />
+            </div>}
             <div className={!customHeader && !downloadButton && !title ? `${styles.widget__header} ${styles.widget__header_hidden}` : styles.widget__header}>
                 {!customHeader && <p className={styles.widget__title}>{title}</p>}
                 {customHeader && customHeader}
@@ -222,7 +226,7 @@ const StockChartWidget = ({
                                 }}
                             >
                                 <label className={styles.widget__checkboxLabel}>
-                                        {compareSupplierData?.display_name}
+                                    {compareSupplierData?.display_name}
                                     <div>
                                         {chartData && formatPrice(getSummary(chartData[compareSupplierData?.supplier_id?.toString()], summaryType).toString(), units)}
                                     </div>

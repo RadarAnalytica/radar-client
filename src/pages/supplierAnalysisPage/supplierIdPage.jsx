@@ -31,7 +31,8 @@ import { actions as supplierActions } from '@/redux/supplierAnalysis/supplierAna
 import {
     selectMainSupplierData,
     selectStockChartTab,
-    selectOrdersStructureTab
+    selectOrdersStructureTab,
+    selectSupplierCurrentBrand
 } from '@/redux/supplierAnalysis/supplierAnalysisSelectors';
 import NoSubscriptionWarningBlock
   from "@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock";
@@ -41,6 +42,9 @@ const SupplierIdPage = () => {
     const { isDemoMode } = useDemoMode();
     const dispatch = useAppDispatch();
     const mainSupplierData = useAppSelector(selectMainSupplierData);
+    const stockChartTab = useAppSelector(selectStockChartTab);
+    const supplierCurrentBrand = useAppSelector(selectSupplierCurrentBrand);
+    const ordersStructureTab = useAppSelector(selectOrdersStructureTab);
     const { isFiltersLoaded } = useAppSelector(store => store.filters);
     const isAnyDataLoading = useAppSelector(store => store.supplierAnalysis.isAnyDataLoading);
     const params = useParams();
@@ -166,7 +170,7 @@ const SupplierIdPage = () => {
                 </div>
                 {/* Товары поставщика */}
                 <div className={styles.page__tableWrapper}>
-                    <GoodsTableCustomHeader id={mainSupplierData?.supplier_id} />
+                    <GoodsTableCustomHeader id={mainSupplierData?.supplier_id} supplierCurrentBrand={supplierCurrentBrand} />
                     <TableWidget
                         id={mainSupplierData?.supplier_id}
                         tableConfig={goodsTableConfig}
@@ -190,7 +194,7 @@ const SupplierIdPage = () => {
                 </div>
                 {/* Структура заказов по складам и размерам */}
                 <div className={styles.page__tableWrapper}>
-                    <OrdersTableCustomHeader />
+                    <OrdersTableCustomHeader ordersStructureTab={ordersStructureTab} />
                     <TableTabsWrapper />
                 </div>
 
@@ -206,7 +210,7 @@ const SupplierIdPage = () => {
                     />
                 </div>
                 <div className={styles.page__additionalWrapper}>
-                    <StockChartCustomHeader />
+                    <StockChartCustomHeader stockChartTab={stockChartTab} />
                     <ChartTabsWrapper />
                 </div>
             </section>

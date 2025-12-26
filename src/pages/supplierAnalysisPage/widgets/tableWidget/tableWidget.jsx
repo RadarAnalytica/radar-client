@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState, memo } from 'react';
 import styles from './tableWidget.module.css';
 import DownloadButton from '../../../../components/DownloadButton';
 import { ConfigProvider, Table, Button } from 'antd';
@@ -10,6 +10,7 @@ import moment from 'moment';
 import { Link } from 'react-router-dom';
 import { TableChart } from './tableChart'
 import { sortTableDataFunc } from '../../shared/utils/tablesUtils'
+import { RadarLoader } from '@/shared';
 
 const getRequestObject = (id, selectedRange, paginationConfig, sort, currentBrand, dataType, hasPagination) => {
     if (!id) return undefined;
@@ -106,7 +107,7 @@ const customCellRender = (value, record, index, dataIndex) => {
 }
 
 
-const TableWidget = ({
+const TableWidget = memo(({
     tableConfig,
     id,
     title,
@@ -226,7 +227,7 @@ const TableWidget = ({
 
 
     // ---------------------- loading layout -----------------//
-    if (isLoading || !isFiltersLoaded) {
+    if ((isLoading || !isFiltersLoaded) && !tableData) {
         return (
             <div className={styles.widget}>
                 <div className={styles.loaderWrapper} style={{ height: containerHeight }}>
@@ -277,6 +278,9 @@ const TableWidget = ({
 
     return tableData && (
         <div className={styles.widget}>
+            {(!isFiltersLoaded || isLoading) &&<div className={styles.widget__innerLoader}>
+                <RadarLoader />
+            </div>}
             <div className={styles.widget__tableWrapper} ref={containerRef}>
                 <RadarTable
                     config={tableConfig}
@@ -307,7 +311,7 @@ const TableWidget = ({
             </div>
         </div>
     )
-};
+});
 
 const CopyButton = ({ url }) => {
 
@@ -344,7 +348,7 @@ const CopyButton = ({ url }) => {
             }
         </button>
     );
-};
+}
 
 export default TableWidget;
 
