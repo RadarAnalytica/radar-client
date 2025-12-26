@@ -160,7 +160,7 @@ const GroupEditModal = ({ isEditGroupModalVisible, setIsEditGroupModalVisible, d
                         token: {
                             colorPrimary: '#5329FF',
                             fontSize: 18,
-                            fontFamily: 'Mulish'
+                            fontFamily: 'Manrope'
                         }
                     }}
                 >

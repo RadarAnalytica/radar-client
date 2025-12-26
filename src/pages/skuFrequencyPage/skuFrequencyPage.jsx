@@ -57,7 +57,6 @@ const SkuFrequencyPage = () => {
         if (savedTableConfigData) {
             try {
                 const parsed = JSON.parse(savedTableConfigData);
-                console.log(parsed)
                 // Проверяем версию конфига
                 if (parsed.version === CURR_MONITORING_TABLE_CONFIG_VER) {
                     setTableConfig(parsed.config);
@@ -89,6 +88,7 @@ const SkuFrequencyPage = () => {
                         <Header
                             title='Поиск прибыльной ниши'
                             videoReviewLink='https://play.boomstream.com/4yHYrlLW?color=%23FFFFFF&size=cover&autostart=0&loop=1&title=0'
+                            hasShadow={false}
                         />
                     </div>
 
@@ -105,6 +105,7 @@ const SkuFrequencyPage = () => {
                             articleSelect={false}
                             groupSelect={false}
                             timeSelect={false}
+                            uncontrolledMode={true}
                             isDataLoading={isLoadingForButton}
                         />
                         {/* {skuFrequencyMode === 'Продвинутый' &&

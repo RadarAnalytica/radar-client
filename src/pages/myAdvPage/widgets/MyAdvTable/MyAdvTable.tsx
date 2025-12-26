@@ -25,9 +25,10 @@ interface MyAdvTableProps {
   setSortState: (sortState: { sort_field: string | undefined, sort_order: "ASC" | "DESC" | undefined }) => void;
   tableConfig: ColumnConfig[];
   setTableConfig: (config: ColumnConfig[]) => void;
+  loadData: () => void;
 }
 
-const MyAdvTable: React.FC<MyAdvTableProps> = ({
+const MyAdvTable: React.FC<MyAdvTableProps> = React.memo(({
   companyId,
   data,
   loading,
@@ -123,9 +124,11 @@ const MyAdvTable: React.FC<MyAdvTableProps> = ({
               <span className={styles.companyName}>
                 {value}
               </span>
-              <button className={styles.companyButton} onClick={() => handleCompanyClick(record.company_id)}>
-                Смотреть подробнее
-              </button>
+              {!companyId && 
+                <button className={styles.companyButton} onClick={() => handleCompanyClick(record.company_id)}>
+                  Смотреть подробнее
+                </button>
+              }
             </div>
           )
       );
@@ -271,9 +274,9 @@ const MyAdvTable: React.FC<MyAdvTableProps> = ({
             articleSelect={false}
             groupSelect={false}
             shopSelect={!companyId}
-            brandSelect={false}
             tempPageCondition={true}
             maxCustomDate={new Date(Date.now() - 24 * 60 * 60 * 1000)}
+            uncontrolledMode={true}
           />
         </div>
         <div className={styles.settingsWrapper}>
@@ -336,7 +339,7 @@ const MyAdvTable: React.FC<MyAdvTableProps> = ({
                 }}
                 style={{ 
                   width: 'max-content',
-                  minWidth: '100%'
+                  minWidth: '100%',
                 }}
               />
           </div>
@@ -344,6 +347,8 @@ const MyAdvTable: React.FC<MyAdvTableProps> = ({
       )}
     </div>
   );
-};
+});
+
+MyAdvTable.displayName = 'MyAdvTable';
 
 export default MyAdvTable;

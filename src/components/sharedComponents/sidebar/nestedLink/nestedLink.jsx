@@ -3,6 +3,7 @@ import NavLink from '../navLink/navLink';
 import { useLocation } from 'react-router-dom';
 import styles from './nestedLink.module.css';
 
+
 const finReportsUrls = [
     '/weeklyreport-dashboard',
     '/weeklyreport-pl',
@@ -17,6 +18,7 @@ const finReportsUrls = [
 ];
 
 const NestedLink = ({ title, icon, links, isMenuHidden }) => {
+   
     const { pathname } = useLocation();
     const [isInList, setIsInList] = useState(false);
     const [isOpen, setIsOpen] = useState(false);

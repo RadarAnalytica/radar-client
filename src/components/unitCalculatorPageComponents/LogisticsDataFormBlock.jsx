@@ -85,7 +85,7 @@ const LogisticsDataFormBlock = ({ form, current_storage_logistic_price, buyout_l
                 <ConfigProvider
                     theme={{
                         token: {
-                            fontFamily: 'Mulish',
+                            fontFamily: 'Manrope',
                             colorBgContainer: 'white',
                             //colorBorder: 'white',
                             // colorTextLightSolid: '#000'
@@ -108,7 +108,7 @@ const LogisticsDataFormBlock = ({ form, current_storage_logistic_price, buyout_l
                     <ConfigProvider
                         theme={{
                             token: {
-                                fontFamily: 'Mulish',
+                                fontFamily: 'Manrope',
                                 colorBgContainer: 'white',
                                 colorPrimary: 'black',
                                 colorPrimaryActive: 'black'
@@ -171,13 +171,13 @@ const LogisticsDataFormBlock = ({ form, current_storage_logistic_price, buyout_l
                                 id='autocomp'
                                 options={whouseData?.map(_ => ({ value: _.name })) || null}
                                 onSelect={handleSelect}
-                                dropdownRender={menu => (
+                                popupRender={menu => (
                                     <div style={{ maxHeight: '200px', overflowY: 'auto', overscrollBehavior: 'none' }}>
                                         {menu}
                                     </div>
                                 )}
                                 getPopupContainer={(triggerNode) => triggerNode.parentNode}
-                                onDropdownVisibleChange={(open) => {
+                                onOpenChange={(open) => {
                                     const p = document.querySelector('#calc-content');
                                     if (open) {
                                         // Отключаем прокрутку при открытии
@@ -201,7 +201,7 @@ const LogisticsDataFormBlock = ({ form, current_storage_logistic_price, buyout_l
                             //onSearch={handleSearch}
                             //onSelect={handleSelect}
                             // options={visibleOptions}
-                            // dropdownRender={menu => (
+                            // popupRender={menu => (
                             //     <div ref={dropdownRef} style={{ maxHeight: '200px', overflowY: 'auto' }}>
                             //         {menu}
                             //     </div>

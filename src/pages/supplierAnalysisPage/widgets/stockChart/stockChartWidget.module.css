@@ -4,6 +4,7 @@
     flex-direction: column;
     gap: 20px;
     overflow-x: hidden;
+    position: relative;
 }
 
 .widget__header {
@@ -17,12 +18,19 @@
     display: none;
 }
 
+.widget__innerLoader {
+    position: absolute;
+    inset: 0;
+    background-color: rgba(255,255,255,.7);
+    height: 100%;
+}
+
 .widget__title {
     margin: 0;
     padding: 0;
-    font-family: Mulish;
-    font-weight: 700;
-    font-size: 24px;
+    font-family: Manrope;
+    font-weight: 600;
+    font-size: 18px;
     line-height: 100%;
     letter-spacing: 0%;
     color: #1A1A1A;
@@ -63,9 +71,9 @@
 }
 
 .widget__checkboxLabel {
-    font-family: Mulish;
+    font-family: Manrope;
     font-weight: 500;
-    font-size: 16px;
+    font-size: 14px;
     line-height: 100%;
     letter-spacing: 0%;
     color: #1A1A1A;
@@ -102,7 +110,7 @@
     display: flex;
     align-items: flex-start;
     gap: 8px;
-    font-family: Mulish;
+    font-family: Manrope;
     font-weight: 600;
     font-size: 16px;
     line-height: 100%;

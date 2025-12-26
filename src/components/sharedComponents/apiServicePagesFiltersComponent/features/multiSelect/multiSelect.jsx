@@ -165,7 +165,7 @@ export const MultiSelect = (
                             colorBgContainer: 'white',
                             colorBorder: '#5329FF1A',
                             borderRadius: 8,
-                            fontFamily: 'Mulish',
+                            fontFamily: 'Manrope',
                             fontSize: 12,
                         },
                         components: {
@@ -187,7 +187,6 @@ export const MultiSelect = (
                         showSearch={false}
                         size='large'
                         mode='multiple'
-                        //maxTagCount='responsive'
                         tagRender={tagRender}
                         suffixIcon={icon}
                         className={styles.plainSelect__select}
@@ -200,8 +199,8 @@ export const MultiSelect = (
                         //onChange={handler}
                         onChange={selectHandler}
                         getPopupContainer={(triggerNode) => triggerNode.parentNode}
-                        dropdownRender={renderPopup}
-                        onDropdownVisibleChange={(open) => {
+                        popupRender={renderPopup}
+                        onOpenChange={(open) => {
                             if (!open) {
                                 setSearchState('');
                                 if (JSON.stringify(prevSelectState.current) === JSON.stringify(selectState)) return;

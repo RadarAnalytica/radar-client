@@ -4,8 +4,7 @@ import { URL } from '../../service/config';
 
 export const editShop = createAsyncThunk("editShop", async (reqData) => {
     const { shopId, authToken, name, shopToken } = reqData.editData;
-    const {setEditShopRequestStatus, initRequestStatus } = reqData;
-    setEditShopRequestStatus({...initRequestStatus, isLoading: true});
+    const {setAddShopRequestStatus, initRequestStatus } = reqData;
     try {
         let response = await fetch(URL + '/api/shop/' + shopId, {
             method: 'PATCH',
@@ -23,17 +22,17 @@ export const editShop = createAsyncThunk("editShop", async (reqData) => {
             const errorText = await response.text();
             console.log('Error response text:', errorText);
             const message = errorText || 'Не удалось обновить данные магазина';
-            setEditShopRequestStatus({...initRequestStatus, isLoading: false, isError: true, message });
+            setAddShopRequestStatus({...initRequestStatus, isLoading: false, isError: true, message });
             return;
         }
 
-        setEditShopRequestStatus({...initRequestStatus, isLoading: false, isSuccess: true, message: 'Магазин успешно обновлен'});
+        setAddShopRequestStatus({...initRequestStatus, isLoading: false, isSuccess: true, message: 'Магазин успешно обновлен'});
         const data = await response.json();
         return data;
 
     } catch (e) {
         console.log('e', e);
-        setEditShopRequestStatus({...initRequestStatus, isLoading: false, isError: true, message: 'Не удалось обновить данные магазина'});
+        setAddShopRequestStatus({...initRequestStatus, isLoading: false, isError: true, message: 'Не удалось обновить данные магазина'});
     }
 });
 

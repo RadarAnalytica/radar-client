@@ -175,7 +175,7 @@ export const TimeSelect = ({ isDataLoading }) => {
                             colorBgContainer: 'white',
                             colorBorder: '#5329FF1A',
                             borderRadius: 8,
-                            fontFamily: 'Mulish',
+                            fontFamily: 'Manrope',
                             fontSize: 14,
                             fontWeight: 500,
                         },
@@ -200,7 +200,7 @@ export const TimeSelect = ({ isDataLoading }) => {
                         options={[...selectOptions].map(i => {
                             return ({ value: i.value, label: i.title });
                         })}
-                        onDropdownVisibleChange={(visible) => {
+                        onOpenChange={(visible) => {
                             let newOptions = selectOptions;
                             if (!visible && !selectedRange.period) {
                                 newOptions = [...newOptions].map(_ => {

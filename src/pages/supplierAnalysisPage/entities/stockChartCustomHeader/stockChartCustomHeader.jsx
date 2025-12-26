@@ -3,7 +3,7 @@ import { ConfigProvider, Segmented } from 'antd';
 import { useAppSelector, useAppDispatch } from '../../../../redux/hooks';
 import { actions as supplierAnalysisActions } from '../../../../redux/supplierAnalysis/supplierAnalysisSlice';
 import { selectStockChartTab } from '../../../../redux/supplierAnalysis/supplierAnalysisSelectors';
-import { useCallback, memo } from 'react';
+import { useCallback, memo, useEffect, useState } from 'react';
 
 const tabs = [
     'Входящие заказы',
@@ -15,7 +15,7 @@ const tabs = [
 
 const theme = {
     token: {
-        fontSize: '18px'
+        fontSize: '14px'
     },
     components: {
         Segmented: {
@@ -31,14 +31,15 @@ const theme = {
     }
 };
 
-const StockChartCustomHeader = memo(() => {
-
+const StockChartCustomHeader = memo(({stockChartTab}) => {
     const dispatch = useAppDispatch();
-    const stockChartTab = useAppSelector(selectStockChartTab);
+    const [tabsState, setTabsState] = useState(null) 
 
-    const handleTabChange = useCallback((value) => {
-        dispatch(supplierAnalysisActions.setStockChartTab(value));
-    }, [dispatch]);
+    useEffect(() => {
+        if (!tabsState && stockChartTab) {
+            setTabsState(stockChartTab)
+        }
+    }, [stockChartTab, tabsState])
 
     return (
         <div className={styles.header}>
@@ -47,8 +48,11 @@ const StockChartCustomHeader = memo(() => {
                 <Segmented
                     size='large'
                     options={tabs}
-                    value={stockChartTab}
-                    onChange={handleTabChange}
+                    value={tabsState}
+                    onChange={(value) => {
+                        setTabsState(value)
+                        dispatch(supplierAnalysisActions.setStockChartTab(value))
+                    }}
                 />
             </ConfigProvider>
         </div>

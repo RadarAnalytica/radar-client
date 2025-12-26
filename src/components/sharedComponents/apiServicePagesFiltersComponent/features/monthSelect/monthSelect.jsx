@@ -8,14 +8,13 @@ import { initialMonths } from '@/service/utils';
 const { RangePicker } = DatePicker;
 
 export const MonthSelect = ({
-    dispatch,
-    filterActions,
     selectId,
     label,
     value,
     monthHandler,
     isDataLoading,
-    minCustomDate
+    minCustomDate,
+    actionHandler
 }) => {
     const monthRef = useRef(null);
 
@@ -38,7 +37,7 @@ export const MonthSelect = ({
                 month_to: dayjs(end).format('YYYY-MM')
             };
         }
-        dispatch(filterActions.setActiveFilters({ stateKey: 'activeMonths', data: selectedMonths }));
+        actionHandler?.(selectedMonths);
     };
 
     return (
@@ -55,7 +54,7 @@ export const MonthSelect = ({
                             colorBgContainer: 'white',
                             colorBorder: '#5329FF1A',
                             borderRadius: 8,
-                            fontFamily: 'Mulish',
+                            fontFamily: 'Manrope',
                             fontSize: 14,
                             activeBorderColor: '#5329FF',
                             colorTextDisabled: '#000'
@@ -100,6 +99,7 @@ export const MonthSelect = ({
                             getPopupContainer={() => monthRef.current}
                             disabled={isDataLoading}
                             allowEmpty
+                            style={{ height: '38px' }}
                         />
                     </div>
                 </ConfigProvider>

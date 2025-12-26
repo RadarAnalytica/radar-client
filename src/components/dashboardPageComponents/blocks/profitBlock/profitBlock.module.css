@@ -16,7 +16,7 @@
 }
 
 .block__title {
-    font-family: Mulish;
+    font-family: Manrope;
     font-weight: 600;
     font-size: 22px;
     line-height: 100%;
@@ -65,7 +65,7 @@
 
 .block__tableRowTitle {
     width: 50%;
-    font-family: Mulish;
+    font-family: Manrope;
     font-weight: 500;
     font-size: 14px;
     line-height: 100%;
@@ -86,7 +86,7 @@
 }
 
 .block__mainData {
-    font-family: Mulish;
+    font-family: Manrope;
     font-weight: 700;
     font-size: 14px;
     line-height: 100%;
@@ -104,7 +104,7 @@
 }
 
 .block__mainSubData {
-    font-family: Mulish;
+    font-family: Manrope;
     font-weight: 600;
     font-size: 14px;
     line-height: 100%;

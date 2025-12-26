@@ -134,6 +134,25 @@ export const ServiceFunctions = {
 		return data;
 	},
 
+	getDownloadDashboard: async (token, selectedRange, shopId, filters) => {
+		const body = getRequestObject(filters, selectedRange, shopId);
+
+		const res = await fetch(
+			`${URL}/api/dashboard/download`,
+			{
+				method: 'POST',
+				headers: {
+					authorization: 'JWT ' + token,
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify(body)
+			}
+		);
+
+		const data = await res.blob();
+		return data;
+	},
+
 	getSelfCostData: async (token, idShop, filters, page = 1, per_page = 50, searchInputValue = '') => {
 		const body = getRequestObject(filters, undefined, idShop);
 		const res = await fetchApi(
@@ -1238,8 +1257,8 @@ export const ServiceFunctions = {
 		const body = getRequestObject(filters, null, shopId);
 		body.week_starts = [];
 
-		if (!activeWeeks.find((week) => week.value === 'Все')) {
-			body.week_starts = activeWeeks.map((week) => week.value);
+		if (!filters.activeWeeks.find((week) => week.value === 'Все')) {
+			body.week_starts = filters.activeWeeks.map((week) => week.value);
 		}
 
 		const res = await fetch(
@@ -1350,6 +1369,26 @@ export const ServiceFunctions = {
 
 		const data = await res.json();
 
+		return data;
+	},
+	getDownloadReportProfitLossExel: async (token, selectedRange, shopId, filters) => {
+		let body = getRequestObject(filters, selectedRange, shopId);
+		body.month_from = filters?.activeMonths?.month_from || null;
+		body.month_to = filters?.activeMonths?.month_to || null;
+
+		const res = await fetch(
+			`${URL}/api/profit_loss/report/download`,
+			{
+				method: 'POST',
+				headers: {
+					authorization: 'JWT ' + token,
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify(body)
+			}
+		);
+
+		const data = await res.blob();
 		return data;
 	},
 	getReferalData: async (token, page) => {
@@ -1477,6 +1516,36 @@ export const ServiceFunctions = {
 			throw new Error(error);
 		}
 	},
+	postRnpByArticlePublic: async (token, selectedRange, shopId, filters, signal, publicUserCredentials) => {
+		try {
+			let body = getFiltersRequestObject(filters, selectedRange, shopId, 'rnp');
+			const res = await fetchApi(
+				'/api/rnp/public/by_article?page=1&per_page=40',
+				{
+					method: 'POST', // метод по идее должен быть get
+					headers: {
+						'content-type': 'application/json',
+						authorization: 'JWT ' + token,
+					},
+					body: JSON.stringify({
+						filters: body,
+						...publicUserCredentials
+					}),
+					signal
+				}
+			);
+
+			if (res.status !== 200) {
+				throw new Error('Ошибка запроса');
+			}
+
+			return res.json();
+
+		} catch (error) {
+			console.error('postRnpByArticle ', error);
+			throw new Error(error);
+		}
+	},
 	postRnpSummary: async (token, selectedRange, shopId, filters, signal) => {
 		try {
 			let body = getFiltersRequestObject(filters, selectedRange, shopId, 'rnp');
@@ -1503,6 +1572,54 @@ export const ServiceFunctions = {
 			console.error('postRnpSummary ', error);
 			throw new Error(error);
 		}
+	},
+	postRnpSummaryPublic: async (token, selectedRange, shopId, filters, signal, publicUserCredentials) => {
+		try {
+			let body = getFiltersRequestObject(filters, selectedRange, shopId, 'rnp');
+			const res = await fetchApi(
+				'/api//rnp/public/summary',
+				{
+					method: 'POST',
+					headers: {
+						'content-type': 'application/json',
+						authorization: 'JWT ' + token,
+					},
+					body: JSON.stringify({
+						filters: body,
+						...publicUserCredentials
+					}),
+					signal
+				}
+			);
+
+			if (res.status !== 200) {
+				throw new Error('Ошибка запроса');
+			}
+
+			return res.json();
+
+		} catch (error) {
+			console.error('postRnpSummary ', error);
+			throw new Error(error);
+		}
+	},
+	getDownloadReportRnp: async (token, selectedRange, shopId, filters, vendorCode) => {
+		let body = getRequestObject(filters, selectedRange, shopId);
+		body.articles = vendorCode ? [vendorCode] : []
+		const res = await fetch(
+			`${URL}/api/rnp/by_article/download`,
+			{
+				method: 'POST',
+				headers: {
+					authorization: 'JWT ' + token,
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify(body)
+			}
+		);
+
+		const data = await res.blob();
+		return data;
 	},
 	getRnpProducts: async (token, selectedRange, shopId, filters, page, search) => {
 		try {

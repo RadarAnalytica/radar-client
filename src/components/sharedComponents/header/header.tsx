@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect } from 'react';
+import { useState, useContext, useEffect, ReactNode } from 'react';
 import styles from './header.module.css';
 import Icon from './headerIcon/icon';
 import { Popover } from 'antd';
@@ -11,14 +11,37 @@ import { VideoReview } from './videoReviewButton/videoReview';
 import { StatusBanner } from '../../../shared';
 import { getDayDeclension } from '../../../service/utils';
 import HowToLink from '../howToLink/howToLink';
-import { useLocation, Link } from 'react-router-dom';
 
+interface User {
+  email?: string;
+  id?: number;
+  role?: string;
+  test_days_left?: number | null;
+  exp?: number;
+  [key: string]: unknown;
+}
+
+interface AuthContextType {
+  user: User | null;
+  logout: () => void;
+  authToken: string | null;
+}
 
 const popoverOptions = {
   arrow: false,
-  trigger: 'click',
-  placement: 'bottomLeft'
+  trigger: 'click' as const,
+  placement: 'bottomLeft' as const
 };
+
+export interface HeaderProps {
+  title?: string | ReactNode;
+  titlePrefix?: string;
+  children?: ReactNode;
+  videoReviewLink?: string;
+  howToLink?: string;
+  howToLinkText?: string;
+  hasShadow?: boolean;
+}
 
 const Header = ({
   title = 'Radar Analytica',
@@ -28,35 +51,44 @@ const Header = ({
   howToLink,
   howToLinkText,
   hasShadow = true,
-}) => {
+}: HeaderProps) => {
   const dispatch = useAppDispatch();
   const {
     user,
     logout,
-    authToken } = useContext(AuthContext);
+    authToken
+  } = useContext(AuthContext) as AuthContextType;
+  
   // стейт видимости поповера меню
-  const [isMenuPopoverVisible, setIsMenuPopoverVisible] = useState(false);
+  const [isMenuPopoverVisible, setIsMenuPopoverVisible] = useState<boolean>(false);
+  
   // сообщения
   const { messages } = useAppSelector((state) => state.messagesSlice);
+  
   // получение и обновление сообщений
   useEffect(() => {
-    let intervalId;
+    let intervalId: ReturnType<typeof setInterval> | undefined;
     if (!messages) {
-      dispatch(fetchMessages(authToken));
+      dispatch(fetchMessages(authToken || ''));
     } else {
       intervalId = setInterval(() => {
-        dispatch(fetchMessages(authToken));
+        dispatch(fetchMessages(authToken || ''));
       }, 60000);
     }
-    return () => { intervalId && clearInterval(intervalId); };
-  }, [authToken, messages]);
+    return () => { 
+      if (intervalId) {
+        clearInterval(intervalId);
+      }
+    };
+  }, [authToken, messages, dispatch]);
 
   // пропс для кнопки внутри меню
-  const menuPopoverCloseHandler = () => {
+  const menuPopoverCloseHandler = (): void => {
     setIsMenuPopoverVisible(false);
   };
+  
   // хэндлер видимости поповера меню
-  const menuPopoverOpenHandler = (open) => {
+  const menuPopoverOpenHandler = (open: boolean): void => {
     setIsMenuPopoverVisible(open);
   };
 
@@ -124,6 +156,7 @@ const Header = ({
               className={styles.header__popover}
             >
               <>
+                {/* @ts-expect-error - Icon component accepts optional counter but TypeScript infers it as required */}
                 <Icon type='menu' />
               </>
             </Popover>

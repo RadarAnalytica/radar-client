@@ -33,6 +33,8 @@ import { useLoadingProgress } from '@/service/hooks/useLoadingProgress';
 import NoData from '@/components/sharedComponents/NoData/NoData';
 import { useSearchParams } from 'react-router-dom';
 import { encodeUnicodeToBase64, decodeBase64ToUnicode } from '@/components/unitCalculatorPageComponents/UnitCalcUtils';
+import { fileDownload } from '@/service/utils';
+import DownloadButton from '@/components/DownloadButton';
 
 const sortBySavedSortState = (data, activeBrand) => {
 	const { id } = activeBrand;
@@ -69,11 +71,12 @@ export default function Rnp({
 	const { user, authToken } = useContext(AuthContext);
 	const { isDemoMode } = useDemoMode();
 	const dispatch = useAppDispatch();
-	const { selectedRange, activeBrand, shops, activeBrandName } = useAppSelector((state) => state.filters);
+	const { selectedRange, activeBrand, shops, activeBrandName, isFiltersLoaded } = useAppSelector((state) => state.filters);
 	const filters = useAppSelector((state) => state.filters);
 	const initLoad = useRef(true);
 	const pageContentRef = useRef(null);
 	const [loading, setLoading] = useState(true);
+	const [downloadLoading, setDownloadLoading] = useState(false);
 	const progress = useLoadingProgress({ loading });
 	const [addRnpModalShow, setAddRnpModalShow] = useState(false);
 	const [page, setPage] = useState(1);
@@ -85,57 +88,113 @@ export default function Rnp({
 	const [expanded, setExpanded] = useState('collapsed');
 	const [searchParams, setSearchParams] = useSearchParams();
 	const [shareButtonState, setShareButtonState] = useState('Поделиться');
+	const [publicUserCredentials, setPublicUserCredentials] = useState(null) // user_id & secret for requests from public version of te page
+	const abortControllerRef = useRef(null);
 
-	const updateRnpListByArticle = async (signal) => {
+	const updateRnpListByArticle = async (signal, filters, authToken, publicUserCredentials, isPublicVersion) => {
 		setLoading(true);
 		progress.start();
-		try {
-			if (activeBrand) {
-				const response = await ServiceFunctions.postRnpByArticle(
-					authToken,
-					selectedRange,
-					activeBrand.id,
-					filters,
-					signal
-				);
+		const handler = isPublicVersion ? ServiceFunctions.postRnpByArticlePublic : ServiceFunctions.postRnpByArticle;
 
-				progress.complete();
-				await setTimeout(() => {
-					dataToRnpList(response);
-					setLoading(false);
-					progress.reset();
-				}, 500);
+		if (isPublicVersion) {
+			try {
+				if (activeBrand) {
+					const response = await handler(
+						authToken,
+						filters.selectedRange,
+						filters.activeBrand.id,
+						filters,
+						signal,
+						publicUserCredentials
+					);
+
+					progress.complete();
+					await setTimeout(() => {
+						dataToRnpList(response);
+						setLoading(false);
+						progress.reset();
+					}, 500);
+				}
+			} catch (error) {
+				console.error('UpdateRnpListByArticle error', error);
+				progress.reset();
 			}
-		} catch (error) {
-			console.error('UpdateRnpListByArticle error', error);
-			progress.reset();
+		} else {
+			try {
+				if (activeBrand) {
+					const response = await handler(
+						authToken,
+						filters.selectedRange,
+						filters.activeBrand.id,
+						filters,
+						signal
+					);
+
+					progress.complete();
+					await setTimeout(() => {
+						dataToRnpList(response);
+						setLoading(false);
+						progress.reset();
+					}, 500);
+				}
+			} catch (error) {
+				console.error('UpdateRnpListByArticle error', error);
+				progress.reset();
+			}
 		}
 	};
 
-	const updateRnpListSummary = async (signal) => {
+	const updateRnpListSummary = async (signal, filters, authToken, publicUserCredentials, isPublicVersion) => {
 		setLoading(true);
 		progress.start();
-		try {
-			if (activeBrand) {
-				const response = await ServiceFunctions.postRnpSummary(
-					authToken,
-					selectedRange,
-					activeBrand.id,
-					filters,
-					signal
-				);
+		const handler = isPublicVersion ? ServiceFunctions.postRnpSummaryPublic : ServiceFunctions.postRnpSummary;
+		if (isPublicVersion) {
+			try {
+				if (activeBrand) {
+					const response = await handler(
+						authToken,
+						filters.selectedRange,
+						filters.activeBrand.id,
+						filters,
+						signal,
+						publicUserCredentials
+					);
 
-				progress.complete();
-				await setTimeout(() => {
-					dataToRnpTotalList(response);
-					setLoading(false);
-					progress.reset();
-				}, 500);
+					progress.complete();
+					await setTimeout(() => {
+						dataToRnpTotalList(response);
+						setLoading(false);
+						progress.reset();
+					}, 500);
+				}
+			} catch (error) {
+				console.error('updateRnpListSummary error', error);
+				setRnpDataTotal(null);
+				progress.reset();
 			}
-		} catch (error) {
-			console.error('updateRnpListSummary error', error);
-			setRnpDataTotal(null);
-			progress.reset();
+		} else {
+			try {
+				if (activeBrand) {
+					const response = await handler(
+						authToken,
+						filters.selectedRange,
+						filters.activeBrand.id,
+						filters,
+						signal
+					);
+
+					progress.complete();
+					await setTimeout(() => {
+						dataToRnpTotalList(response);
+						setLoading(false);
+						progress.reset();
+					}, 500);
+				}
+			} catch (error) {
+				console.error('updateRnpListSummary error', error);
+				setRnpDataTotal(null);
+				progress.reset();
+			}
 		}
 	};
 
@@ -153,7 +212,24 @@ export default function Rnp({
 			console.error('deleteRnp error', error);
 		} finally {
 			setPage(1);
-			updateRnpListByArticle();
+			updateRnpListByArticle(abortControllerRef?.current?.signal, filters, authToken);
+		}
+	};
+
+	const handleDownload = async () => {
+		setDownloadLoading(true);
+		try {
+			const fileBlob = await ServiceFunctions.getDownloadReportRnp(
+				authToken,
+				selectedRange,
+				activeBrand.id,
+				filters,
+			);
+			fileDownload(fileBlob, `РНП_сводный_отчет.xlsx`);
+		} catch (e) {
+			console.error('Ошибка скачивания: ', e);
+		} finally {
+			setDownloadLoading(false);
 		}
 	};
 
@@ -222,7 +298,7 @@ export default function Rnp({
 			console.error('addRnpList error', error);
 		} finally {
 			setPage(1);
-			updateRnpListByArticle();
+			updateRnpListByArticle(abortControllerRef?.current?.signal, filters, authToken);
 		}
 	};
 
@@ -236,19 +312,21 @@ export default function Rnp({
 	const shareButtonClickHandler = () => {
 		const filtersToEncode = {
 			selectedRange,
-			activeBrand: {id: activeBrand.id, brand_name: activeBrand.brand_name},
+			activeBrand: { id: activeBrand.id, brand_name: activeBrand.brand_name },
 			activeBrandName,
+			secret: 'RADAR_SECRET',
+			user_id: user?.id
 
 		}
 		const json = JSON.stringify(filtersToEncode);
-        const token = encodeUnicodeToBase64(json);
-        if (token) {
-            const currentDomain = `${window.location.protocol}//${window.location.hostname}${window.location.port ? `:${window.location.port}` : ''}`;
-            navigator.clipboard.writeText(`${currentDomain}/rnp-public?filters=${token}`)
-            .catch(err => console.log('Error'));
-            setShareButtonState('Ссылка скопирована');
-        }
-    };
+		const token = encodeUnicodeToBase64(json);
+		if (token) {
+			const currentDomain = `${window.location.protocol}//${window.location.hostname}${window.location.port ? `:${window.location.port}` : ''}`;
+			navigator.clipboard.writeText(`${currentDomain}/rnp-public?filters=${token}`)
+				.catch(err => console.log('Error'));
+			setShareButtonState('Ссылка скопирована');
+		}
+	};
 
 	// Поулчаем параметры фильтров из URL если это публичная страница
 	useEffect(() => {
@@ -256,40 +334,45 @@ export default function Rnp({
 			const filters = searchParams.get('filters');
 			if (!filters) return;
 			const decodedFilters = decodeBase64ToUnicode(filters);
-			if (!decodedFilters) {setError('Не удалось получить параметры фильтрации'); return;}
-			const { selectedRange, activeBrand, activeBrandName } = decodedFilters;
-			dispatch(filtersActions.setActiveFilters({stateKey: 'activeBrand', data: activeBrand}));
+			if (!decodedFilters) { setError('Не удалось получить параметры фильтрации'); return; }
+			const { selectedRange, activeBrand, activeBrandName, user_id, secret } = decodedFilters;
+			dispatch(filtersActions.setActiveFilters({ stateKey: 'activeBrand', data: activeBrand }));
 			dispatch(filtersActions.setPeriod(selectedRange));
-			dispatch(filtersActions.setActiveFilters({stateKey: 'activeBrandName', data: activeBrandName}));
+			dispatch(filtersActions.setActiveFilters({ stateKey: 'activeBrandName', data: activeBrandName }));
+			setPublicUserCredentials({ user_id, secret })
 		}
 	}, [searchParams, isPublicVersion])
 
 	useLayoutEffect(() => {
-		const controller = new AbortController();
+		abortControllerRef.current = new AbortController();
 
 		if (
 			activeBrand
-			//&& !isPublicVersion
+			&& !isPublicVersion
 		) {
 			if (activeBrand?.is_primary_collect) {
 				if (view === 'articles') {
-					updateRnpListByArticle(controller.signal);
+					updateRnpListByArticle(abortControllerRef?.current?.signal, filters, authToken);
 				} else {
-					updateRnpListSummary(controller.signal);
+					updateRnpListSummary(abortControllerRef?.current?.signal, filters, authToken);
 				}
 			} else {
 				setLoading(false);
 			}
 		}
 
-		if (isPublicVersion) {
-			// PUBLIC DATA REQUEST HERE
+		if (isPublicVersion && publicUserCredentials) {
+			if (view === 'articles') {
+				updateRnpListByArticle(abortControllerRef?.current?.signal, filters, authToken, publicUserCredentials, isPublicVersion);
+			} else {
+				updateRnpListSummary(abortControllerRef?.current?.signal, filters, authToken, publicUserCredentials, isPublicVersion);
+			}
 		}
 
 		return () => {
-			controller.abort();
+			abortControllerRef?.current?.abort();
 		};
-	}, [filters, page, view, selectedRange]);
+	}, [isFiltersLoaded, view, activeBrand, selectedRange, activeBrandName, publicUserCredentials]);
 
 	// Добавляем автоскролл к контейнеру страницы
 	useEffect(() => {
@@ -390,125 +473,132 @@ export default function Rnp({
 					/>
 				)}
 
-				{!loading && ((rnpDataByArticle?.length > 0 && view === 'articles') || (view === 'total' && rnpDataTotal)) && (<ConfigProvider
-					theme={{
-						token: {
-							colorPrimary: '#EEEAFF',
-							colorTextLightSolid: '#1a1a1a',
-							fontSize: 16,
-							borderRadius: 8,
-						},
-						components: {
-							Button: {
-								paddingInlineLG: 12,
-								controlHeightLG: 38,
-								defaultShadow: false,
-								contentFontSize: 16,
-								fontWeight: 500,
-								defaultBorderColor: 'transparent',
-								defaultColor: 'rgba(26, 26, 26, 0.5)',
-								defaultBg: 'transparent',
-								defaultHoverBg: '#EEEAFF',
-								defaultHoverColor: '#1a1a1a',
-								defaultHoverBorderColor: 'transparent',
-								defaultActiveColor: 'rgba(26, 26, 26, 1)',
-								defaultActiveBg: '#EEEAFF',
-								defaultActiveBorderColor: '#EEEAFF',
+				{!loading && ((rnpDataByArticle?.length > 0 && view === 'articles') || (view === 'total' && rnpDataTotal)) && (
+					<ConfigProvider
+						theme={{
+							token: {
+								colorPrimary: '#EEEAFF',
+								colorTextLightSolid: '#1a1a1a',
+								fontSize: 16,
+								borderRadius: 8,
 							},
-						},
-					}}
-				>
-					<Flex justify="space-between">
-						<Flex gap={4} align="center">
-							<button
-								className={view === 'articles' ? `${styles.segmented__button} ${styles.segmented__button_active}` : styles.segmented__button}
-								onClick={() => {
-									viewHandler('articles');
-								}}
-								style={{ fontWeight: 500, fontSize: 14 }}
-							>
-								По артикулам
-							</button>
-							<button
-								className={view === 'total' ? `${styles.segmented__button} ${styles.segmented__button_active}` : styles.segmented__button}
-								onClick={() => {
-									viewHandler('total');
-								}}
-								style={{ fontWeight: 500, fontSize: 14 }}
-							>
-								Сводный
-							</button>
-						</Flex>
-						<ConfigProvider
-							theme={{
-								token: {
-									colorPrimary: '#5329ff',
-									colorText: '#fff',
+							components: {
+								Button: {
+									paddingInlineLG: 12,
+									controlHeightLG: 38,
+									defaultShadow: false,
+									contentFontSize: 16,
+									fontWeight: 500,
+									defaultBorderColor: 'transparent',
+									defaultColor: 'rgba(26, 26, 26, 0.5)',
+									defaultBg: 'transparent',
+									defaultHoverBg: '#EEEAFF',
+									defaultHoverColor: '#1a1a1a',
+									defaultHoverBorderColor: 'transparent',
+									defaultActiveColor: 'rgba(26, 26, 26, 1)',
+									defaultActiveBg: '#EEEAFF',
+									defaultActiveBorderColor: '#EEEAFF',
 								},
-								components: {
-									Button: {
-										primaryColor: '#fff',
-										paddingInlineLG: 16,
-										contentFontSizeLG: 16
+							},
+						}}
+					>
+						<Flex justify="space-between">
+							<Flex gap={4} align="center">
+								<button
+									className={view === 'articles' ? `${styles.segmented__button} ${styles.segmented__button_active}` : styles.segmented__button}
+									onClick={() => {
+										viewHandler('articles');
+									}}
+									style={{ fontWeight: 500, fontSize: 14 }}
+								>
+									По артикулам
+								</button>
+								<button
+									className={view === 'total' ? `${styles.segmented__button} ${styles.segmented__button_active}` : styles.segmented__button}
+									onClick={() => {
+										viewHandler('total');
+									}}
+									style={{ fontWeight: 500, fontSize: 14 }}
+								>
+									Сводный
+								</button>
+							</Flex>
+							<ConfigProvider
+								theme={{
+									token: {
+										colorPrimary: '#5329ff',
+										colorText: '#fff',
 									},
-								},
-							}}
-						>
-							
+									components: {
+										Button: {
+											primaryColor: '#fff',
+											paddingInlineLG: 16,
+											contentFontSizeLG: 16
+										},
+									},
+								}}
+							>
+
 								<div className={styles.page__shareAndAddButtonsWrapper}>
-								{isPublicVersion &&
-									<ConfigProvider
-										theme={{
-											token: {
-												colorBorder: '#00000033',
-												colorPrimary: '#E7E1FE',
-											},
-											components: {
-												Button: {
-													primaryColor: '#5329FF',
-													//paddingInline: 8,
-													paddingBlockLG: 10,
-													paddingInlineLG: 8,
-													defaultShadow: false,
-												}
-											}
-										}}
-									>
-										<Button
-											type='primary'
-											iconPosition='start'
-											icon={shareButtonState === 'Поделиться' ? <ShareIcon /> : undefined}
-											disabled={loading}
-											size='large'
-											onClick={() => { shareButtonClickHandler(); }}
-											style={{ 
-												fontWeight: 600, 
-												fontSize: 14, 
-												width: shareButtonState === 'Поделиться' ? 145 : 175,
-												transition: 'width 0.3s ease',
-												overflow: 'hidden',
-												whiteSpace: 'nowrap'
-											}}
-										>{shareButtonState}</Button>
-									</ConfigProvider>}
 									{!isPublicVersion &&
-									<Button
-										type="primary"
-										size="large"
-										onClick={setAddRnpModalShow}
-										style={{ fontWeight: 600, fontSize: 14 }}
-									>
-										<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-											<path d="M9 1V9M9 17V9M9 9H1H17" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-										</svg>
+										<ConfigProvider
+											theme={{
+												token: {
+													colorBorder: '#00000033',
+													colorPrimary: '#E7E1FE',
+												},
+												components: {
+													Button: {
+														primaryColor: '#5329FF',
+														//paddingInline: 8,
+														paddingBlockLG: 10,
+														paddingInlineLG: 8,
+														defaultShadow: false,
+													}
+												}
+											}}
+										>
+											<Button
+												type='primary'
+												iconPosition='start'
+												icon={shareButtonState === 'Поделиться' ? <ShareIcon /> : undefined}
+												disabled={loading || isDemoMode}
+												size='large'
+												onClick={() => { shareButtonClickHandler(); }}
+												style={{
+													fontWeight: 600,
+													fontSize: 14,
+													width: shareButtonState === 'Поделиться' ? 145 : 175,
+													transition: 'width 0.3s ease',
+													overflow: 'hidden',
+													whiteSpace: 'nowrap'
+												}}
+											>{shareButtonState}</Button>
+										</ConfigProvider>}
+									{!isPublicVersion &&
+										<Button
+											type="primary"
+											size="large"
+											onClick={setAddRnpModalShow}
+											style={{ fontWeight: 600, fontSize: 14 }}
+										>
+											<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+												<path d="M9 1V9M9 17V9M9 9H1H17" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+											</svg>
 
 											Добавить артикул
 										</Button>
 									}
+									{!isPublicVersion && view === 'total' &&
+										<DownloadButton
+											handleDownload={handleDownload}
+											loading={loading || downloadLoading}
+										/>
+									}
 								</div>
-						</ConfigProvider>
-					</Flex>
-				</ConfigProvider>)}
+							</ConfigProvider>
+						</Flex>
+					</ConfigProvider>)}
 
 				<div className={styles.page__filtersWrapper}>
 					<Filters
@@ -547,6 +637,8 @@ export default function Rnp({
 						expanded={expanded}
 						setExpanded={setExpanded}
 						isPublicVersion={isPublicVersion}
+						authToken={authToken}
+						filters={filters}
 					/>
 				)}
 
@@ -577,11 +669,11 @@ export default function Rnp({
 }
 
 const ShareIcon = () => {
-    return (
-        <svg width="18" height="19" viewBox="0 0 18 19" fill="none" xmlns="http://www.w3.org/2000/svg" style={{marginTop: 2}}>
-            <path d="M15.3367 3.16335C13.958 1.7847 11.7228 1.7847 10.3441 3.16335L8.80798 4.69951C8.48983 5.01766 7.97401 5.01766 7.65586 4.69951C7.33771 4.38136 7.33771 3.86554 7.65586 3.54739L9.19202 2.01123C11.207 -0.00372148 14.4738 -0.00372148 16.4888 2.01123C18.5037 4.02617 18.5037 7.29305 16.4888 9.30799L14.9526 10.8442C14.6345 11.1623 14.1187 11.1623 13.8005 10.8442C13.4824 10.526 13.4824 10.0102 13.8005 9.69203L15.3367 8.15587C16.7153 6.77722 16.7153 4.54199 15.3367 3.16335Z" fill="#5329FF" />
-            <path d="M4.19949 8.15587C4.51764 8.47402 4.51764 8.98985 4.19949 9.308L2.66333 10.8442C1.28468 12.2228 1.28468 14.458 2.66333 15.8367C4.04198 17.2153 6.27721 17.2153 7.65586 15.8367L9.19202 14.3005C9.51017 13.9824 10.026 13.9824 10.3441 14.3005C10.6623 14.6187 10.6623 15.1345 10.3441 15.4526L8.80798 16.9888C6.79303 19.0038 3.52616 19.0038 1.51121 16.9888C-0.503737 14.9739 -0.503737 11.707 1.51121 9.69204L3.04737 8.15587C3.36552 7.83773 3.88134 7.83773 4.19949 8.15587Z" fill="#5329FF" />
-            <path d="M6.11966 11.2282C5.80151 11.5464 5.80151 12.0622 6.11966 12.3803C6.43781 12.6985 6.95363 12.6985 7.27178 12.3803L11.8803 7.77184C12.1984 7.45369 12.1984 6.93787 11.8803 6.61972C11.5621 6.30157 11.0463 6.30157 10.7281 6.61972L6.11966 11.2282Z" fill="#5329FF" />
-        </svg>
-    );
+	return (
+		<svg width="18" height="19" viewBox="0 0 18 19" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ marginTop: 2 }}>
+			<path d="M15.3367 3.16335C13.958 1.7847 11.7228 1.7847 10.3441 3.16335L8.80798 4.69951C8.48983 5.01766 7.97401 5.01766 7.65586 4.69951C7.33771 4.38136 7.33771 3.86554 7.65586 3.54739L9.19202 2.01123C11.207 -0.00372148 14.4738 -0.00372148 16.4888 2.01123C18.5037 4.02617 18.5037 7.29305 16.4888 9.30799L14.9526 10.8442C14.6345 11.1623 14.1187 11.1623 13.8005 10.8442C13.4824 10.526 13.4824 10.0102 13.8005 9.69203L15.3367 8.15587C16.7153 6.77722 16.7153 4.54199 15.3367 3.16335Z" fill="#5329FF" />
+			<path d="M4.19949 8.15587C4.51764 8.47402 4.51764 8.98985 4.19949 9.308L2.66333 10.8442C1.28468 12.2228 1.28468 14.458 2.66333 15.8367C4.04198 17.2153 6.27721 17.2153 7.65586 15.8367L9.19202 14.3005C9.51017 13.9824 10.026 13.9824 10.3441 14.3005C10.6623 14.6187 10.6623 15.1345 10.3441 15.4526L8.80798 16.9888C6.79303 19.0038 3.52616 19.0038 1.51121 16.9888C-0.503737 14.9739 -0.503737 11.707 1.51121 9.69204L3.04737 8.15587C3.36552 7.83773 3.88134 7.83773 4.19949 8.15587Z" fill="#5329FF" />
+			<path d="M6.11966 11.2282C5.80151 11.5464 5.80151 12.0622 6.11966 12.3803C6.43781 12.6985 6.95363 12.6985 7.27178 12.3803L11.8803 7.77184C12.1984 7.45369 12.1984 6.93787 11.8803 6.61972C11.5621 6.30157 11.0463 6.30157 10.7281 6.61972L6.11966 11.2282Z" fill="#5329FF" />
+		</svg>
+	);
 };

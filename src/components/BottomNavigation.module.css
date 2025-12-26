@@ -41,6 +41,7 @@
     text-decoration: none;
     border-radius: 8px;
     padding: 4px 12px;
+    font-size: 14px;
 }
 .navItemActive {
     cursor: pointer;
@@ -49,6 +50,7 @@
     color: rgba(26, 26, 26, 1);
     text-decoration: none;
     padding: 4px 12px;
+    font-size: 14px;
 }
 
 .bNav__menuButton {

@@ -10,7 +10,7 @@
 .modal__title {
     margin: 0;
     padding: 0;
-    font-family: Mulish;
+    font-family: Manrope;
     font-weight: 700;
     font-size: 20px;
     line-height: 100%;
@@ -31,7 +31,7 @@
 .modal__leadText {
     margin: 0;
     padding: 0;
-    font-family: Mulish;
+    font-family: Manrope;
     font-weight: 700;
     font-size: 20px;
     line-height: 140%;
@@ -50,7 +50,7 @@
 }
 
 .modal__mainTextTitle {
-    font-family: Mulish;
+    font-family: Manrope;
     font-weight: 700;
     font-size: 18px;
     line-height: 100%;
@@ -61,7 +61,7 @@
 }
 
 .modal__mainText {
-    font-family: Mulish;
+    font-family: Manrope;
     font-weight: 600;
     font-size: 14px;
     line-height: 150%;
@@ -80,7 +80,7 @@
     justify-content: flex-start;
     align-items: center;
     gap: 8px;
-    font-family: Mulish;
+    font-family: Manrope;
     font-weight: 600;
     font-size: 14px;
     line-height: 150%;
@@ -118,7 +118,7 @@
     justify-content: flex-start;
     align-items: center;
     gap: 8px;
-    font-family: Mulish;
+    font-family: Manrope;
     font-weight: 500;
     font-size: 14px;
     line-height: 100%;
@@ -129,7 +129,7 @@
 .modal__actionButton {
     border: none;
     background: #1A1A1A;
-    font-family: Mulish;
+    font-family: Manrope;
     font-weight: 600;
     font-size: 16px;
     line-height: 100%;

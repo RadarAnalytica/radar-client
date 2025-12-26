@@ -7,6 +7,7 @@ import { useAppDispatch, useAppSelector } from '../../../../redux/hooks';
 import SearchBlock from '../search/searchBlock';
 import { CompareChart } from '../../features';
 import { selectMainSupplierData, selectCompareSupplierData, selectSupplierAnalysisDataByType } from '../../../../redux/supplierAnalysis/supplierAnalysisSelectors';
+import { RadarLoader } from '@/shared';
 
 
 /**
@@ -63,14 +64,14 @@ const StockChartWidget = ({
     const mainSupplierData = useAppSelector(selectMainSupplierData);
     const compareSupplierData = useAppSelector(selectCompareSupplierData);
     const { data: chartData, isLoading, isError, message } = useAppSelector(state => selectSupplierAnalysisDataByType(state, dataType));
-    const { selectedRange } = useAppSelector(store => store.filters);
+    const { selectedRange, isFiltersLoaded } = useAppSelector(store => store.filters);
     const [isMainSupplierActive, setIsMainSupplierActive] = useState(true);
     const [isCompareSupplierActive, setIsCompareSupplierActive] = useState(true);
 
 
     //data fetch
     useEffect(() => {
-        if (mainSupplierData) {
+        if (mainSupplierData && isFiltersLoaded) {
             let datesRange;
 
             if (selectedRange.period) {
@@ -88,17 +89,17 @@ const StockChartWidget = ({
             };
             dispatch(dataHandler({ data: requestObject, hasLoadingStatus: chartData ? false : true }));
         }
-    }, [mainSupplierData, compareSupplierData, selectedRange, dataType, units, dataHandler, summaryType, chartType]);
+    }, [mainSupplierData, compareSupplierData, selectedRange, dataType, units, dataHandler, summaryType, chartType, isFiltersLoaded]);
 
-    // if (isLoading) {
-    //     return (
-    //         <div className={styles.widget}>
-    //             <div className={styles.loaderWrapper}>
-    //                 <span className='loader'></span>
-    //             </div>
-    //         </div>
-    //     )
-    // }
+    if (isLoading || !isFiltersLoaded) {
+        return (
+            <div className={styles.widget}>
+                <div className={styles.loaderWrapper}>
+                    <span className='loader'></span>
+                </div>
+            </div>
+        )
+    }
 
 
     if (isError) {
@@ -154,6 +155,9 @@ const StockChartWidget = ({
 
     return (
         <div className={styles.widget}>
+            {(!isFiltersLoaded || isLoading) && <div className={styles.widget__innerLoader}>
+                <RadarLoader />
+            </div>}
             <div className={!customHeader && !downloadButton && !title ? `${styles.widget__header} ${styles.widget__header_hidden}` : styles.widget__header}>
                 {!customHeader && <p className={styles.widget__title}>{title}</p>}
                 {customHeader && customHeader}
@@ -171,6 +175,7 @@ const StockChartWidget = ({
                             token: {
                                 colorPrimary: '#5329FF',
                                 controlInteractiveSize: 20,
+                                fontSize: '14px'
                             }
                         }}
                     >
@@ -221,7 +226,7 @@ const StockChartWidget = ({
                                 }}
                             >
                                 <label className={styles.widget__checkboxLabel}>
-                                        {compareSupplierData?.display_name}
+                                    {compareSupplierData?.display_name}
                                     <div>
                                         {chartData && formatPrice(getSummary(chartData[compareSupplierData?.supplier_id?.toString()], summaryType).toString(), units)}
                                     </div>

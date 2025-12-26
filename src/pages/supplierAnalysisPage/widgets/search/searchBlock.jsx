@@ -81,16 +81,28 @@ const SearchBlock = ({ supplierType = 'main' }) => {
             {supplierType === 'main' && <p className={styles.search__title}>Поиск по поставщику</p>}
             <div className={styles.search__wrapper}>
                 <ConfigProvider
+                    renderEmpty={() => (<div>Нет данных</div>)}
                     theme={{
                         token: {
-                            colorPrimary: '#5329FF',
-                            fontFamily: 'Mulish',
-                            fontSize: 16,
+                            colorBgContainer: 'white',
+                            colorBorder: '#5329FF1A',
+                            borderRadius: 8,
+                            fontFamily: 'Manrope',
+                            fontSize: 12,
+                            fontWeight: 500,
                         },
                         components: {
-                            Input: {
-                                activeBorderColor: '#5329FF',
-                                hoverBorderColor: '#5329FF'
+                            Select: {
+                                activeBorderColor: '#5329FF1A',
+                                activeOutlineColor: 'transparent',
+                                hoverBorderColor: '#5329FF1A',
+                                optionActiveBg: 'transparent',
+                                optionFontSize: 14,
+                                optionSelectedBg: 'transparent',
+                                optionSelectedColor: '#5329FF',
+                            },
+                            Button: {
+                                colorPrimaryHover: '#5329FF90',
                             }
                         }
                     }}
@@ -106,11 +118,26 @@ const SearchBlock = ({ supplierType = 'main' }) => {
                         id='autocomp'
                         loading={loadingOptions}
                         suffixIcon={
-                            <svg width="14" height="9" viewBox="0 0 14 9" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M1 1L7 7L13 1" stroke="#1A1A1A" strokeWidth="2" strokeLinecap="round" />
+                            <svg
+                                style={{
+                                    // transform: 'translateY(-50%)',
+                                    width: '14px',
+                                    height: '9px',
+                                    pointerEvents: 'none',
+                                }}
+                                viewBox='0 0 28 17'
+                                fill='none'
+                                xmlns='http://www.w3.org/2000/svg'
+                            >
+                                <path
+                                    d='M2 2L14 14L26 2'
+                                    stroke='rgba(140, 140, 140, 1)'
+                                    strokeWidth='4'
+                                    strokeLinecap='round'
+                                />
                             </svg>
                         }
-                        notFoundContent={<div style={{ color: 'black' }}>
+                        notFoundContent={<div style={{ color: 'black', padding: '8px' }}>
                             {!loadingOptions && !autocompleteOptions && 'Введите название поставщика'}
                             {!loadingOptions && autocompleteOptions && autocompleteOptions.length === 0 && 'Ничего не найдено'}
                             {loadingOptions && 'Идет загрузка...'}
@@ -118,7 +145,7 @@ const SearchBlock = ({ supplierType = 'main' }) => {
                         value={searchValue}
                         onSearch={handleSearch}
                         onSelect={handleSelect}
-                        options={autocompleteOptions && [...autocompleteOptions]?.sort((a,b) => {
+                        options={autocompleteOptions && [...autocompleteOptions]?.sort((a, b) => {
                             const a_index = a.display_name.toLowerCase().indexOf(searchValue.toLowerCase());
                             const b_index = b.display_name.toLowerCase().indexOf(searchValue.toLowerCase());
 

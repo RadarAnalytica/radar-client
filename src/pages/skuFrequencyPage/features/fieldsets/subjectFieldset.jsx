@@ -116,20 +116,25 @@ const SubjectFieldset = ({ prefered_items, form }) => {
     // ----------------- theme -----------------------//
     const memoizedConfigProviderTheme = useMemo(() => ({
         token: {
-            colorPrimary: '#5329FF'
+            colorPrimary: '#5329FF',
+            fontSize: 12
         },
         components: {
             Form: {
-                labelFontSize: 15
+                labelFontSize: 12
             },
             Select: {
+                activeBorderColor: '#5329FF1A',
                 activeOutlineColor: 'transparent',
+                hoverBorderColor: '#5329FF1A',
                 optionActiveBg: 'transparent',
-                optionFontSize: 16,
+                optionFontSize: 14,
                 optionSelectedBg: 'transparent',
                 optionSelectedColor: '#5329FF',
-                selectorBg: 'transparent'
-            }
+                colorBorder: '#5329FF1A',
+                controlHeight: 38,
+                controlHeightLG: 38,
+            },
         }
     }), []);
 
@@ -191,22 +196,23 @@ const SubjectFieldset = ({ prefered_items, form }) => {
                             colorBgContainer: 'white',
                             //colorBorder: 'transparent',
                             //borderRadius: 8,
-                            fontFamily: 'Mulish',
-                            fontSize: 14,
-                            controlHeightLG: 44
+                            fontFamily: 'Manrope',
+                            fontSize: 12,
+                            controlHeightLG: 38
                         },
                         components: {
                             Select: {
-                                //activeBorderColor: 'transparent',
+                                activeBorderColor: '#5329FF1A',
                                 activeOutlineColor: 'transparent',
-                                //hoverBorderColor: 'transparent',
+                                hoverBorderColor: '#5329FF1A',
                                 optionActiveBg: 'transparent',
-                                optionFontSize: 16,
+                                optionFontSize: 14,
                                 optionSelectedBg: 'transparent',
                                 optionSelectedColor: '#5329FF',
-                                singleItemHeightLG: 44,
-                                colorBorder: 'transparent'
-                            }
+                                colorBorder: '#5329FF1A',
+                                controlHeight: 38,
+                                controlHeightLG: 38,
+                            },
                         }
                     }}
                 >
@@ -225,7 +231,7 @@ const SubjectFieldset = ({ prefered_items, form }) => {
                             placeholder='Выберите'
                             getPopupContainer={(triggerNode) => triggerNode.parentNode}
                             tagRender={tagRender}
-                            onDropdownVisibleChange={(open) => {
+                            onOpenChange={(open) => {
                                 if (!open) {
                                     setSearchState('');
                                 }
@@ -235,7 +241,7 @@ const SubjectFieldset = ({ prefered_items, form }) => {
                                     <path d="M1 1L7 7L13 1" stroke="#8C8C8C" strokeWidth="2" strokeLinecap="round" />
                                 </svg>
                             }
-                            dropdownRender={renderPopup}
+                            popupRender={renderPopup}
                             options={preferedItemsData.filter(i => i.children.filter(c => c.name.toLowerCase().includes(searchState.toLowerCase())).length > 0).map(_ => {
                                 return {
                                     label: <>{_.name}</>,

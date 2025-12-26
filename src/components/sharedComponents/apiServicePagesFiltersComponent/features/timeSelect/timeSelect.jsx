@@ -13,19 +13,19 @@ import DatePickerCustomDropdown from '../../shared/datePickerCustomDropdown/date
 const predefinedRanges = [
     {
         value: 7,
-        title: '7 дней'
+        title: 'Последние 7 дней'
     },
     {
         value: 14,
-        title: '14 дней'
+        title: 'Последние 14 дней'
     },
     {
         value: 30,
-        title: '30 дней'
+        title: 'Последние 30 дней'
     },
     {
         value: 90,
-        title: '90 дней'
+        title: 'Последние 90 дней'
     },
     {
         value: 0,
@@ -110,7 +110,7 @@ export const TimeSelect = ({
             setLocalSelectedRange(newRange);
             setSelectValue(0);
             if (customSubmit) {
-                customSubmit(newRange);
+                customSubmit(newRange)
             } else {
                 dispatch(filtersActions.setPeriod(newRange));
                 localStorage.setItem('selectedRange', JSON.stringify(newRange));
@@ -144,7 +144,7 @@ export const TimeSelect = ({
             if (customValue.period && customValue.period !== selectValue) {
                 setSelectValue(customValue.period);
             }
-            if (!selectedRange.period && selectValue !== 0) {
+            if (!customValue.period && selectValue !== 0) {
                 setSelectValue(0);
             }
         } else {
@@ -159,6 +159,22 @@ export const TimeSelect = ({
 
     useEffect(() => {
         if (selectValue === undefined) {
+            if (customValue?.period) {
+                setSelectValue(customValue.period);
+                return;
+            }
+            if (customValue?.from && customValue?.to) {
+                setSelectValue(0);
+                const newOptions = [...selectOptions].map(_ => {
+                    if (_.value === 0) {
+                        _.title = `${format(customValue.from, 'dd.MM.yyyy')} - ${format(customValue.to, 'dd.MM.yyyy')}`;
+                    }
+
+                    return _;
+                });
+                setSelectOptions(newOptions);
+                return
+            }
             if (selectedRange.period) {
                 setSelectValue(selectedRange.period);
             }
@@ -248,7 +264,7 @@ export const TimeSelect = ({
                             colorBgContainer: 'white',
                             colorBorder: '#5329FF1A',
                             borderRadius: 8,
-                            fontFamily: 'Mulish',
+                            fontFamily: 'Manrope',
                             fontSize: 12
                         },
                         components: {
@@ -260,6 +276,7 @@ export const TimeSelect = ({
                                 optionFontSize: 14,
                                 optionSelectedBg: 'transparent',
                                 optionSelectedColor: '#5329FF',
+                                optionPadding: '5px 8px',
                             }
                         }
                     }}
@@ -272,7 +289,7 @@ export const TimeSelect = ({
                         options={[...selectOptions].map(i => {
                             return ({ value: i.value, label: i.title });
                         })}
-                        onDropdownVisibleChange={(visible) => {
+                        onOpenChange={(visible) => {
                             let newOptions = selectOptions;
                             if (!visible && !selectedRange.period) {
                                 newOptions = [...newOptions].map(_ => {
@@ -297,6 +314,7 @@ export const TimeSelect = ({
                         onSelect={timeSelectChangeHandler}
                         disabled={isCalendarOpen || isDataLoading || disabled}
                         placeholder={'опция'}
+                        menuItemSelectedIcon={(<span style={{ background: '#5329FF', width: 4, height: 4, borderRadius: '50% 50%' }}></span>)}
                     />
                 </ConfigProvider>
             </div>

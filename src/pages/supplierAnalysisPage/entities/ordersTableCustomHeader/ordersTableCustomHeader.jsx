@@ -1,3 +1,4 @@
+import React, { useEffect, useState } from 'react';
 import styles from './ordersTableCustomHeader.module.css';
 import { ConfigProvider, Segmented } from 'antd';
 import { useAppSelector, useAppDispatch } from '../../../../redux/hooks';
@@ -10,10 +11,16 @@ const tabs = [
     'По размерам'
 ];
 
-const OrdersTableCustomHeader = () => {
+const OrdersTableCustomHeader = ({ ordersStructureTab }) => {
 
     const dispatch = useAppDispatch();
-    const ordersStructureTab = useAppSelector(selectOrdersStructureTab);
+    const [tabsState, setTabsState] = useState(null) 
+
+    useEffect(() => {
+        if (!tabsState && ordersStructureTab) {
+            setTabsState(ordersStructureTab)
+        }
+    }, [ordersStructureTab, tabsState])
 
     return (
         <div className={styles.header}>
@@ -21,7 +28,7 @@ const OrdersTableCustomHeader = () => {
             <ConfigProvider
                 theme={{
                     token: {
-                        fontSize: '18px'
+                        fontSize: '14px'
                     },
                     components: {
                         Segmented: {
@@ -40,8 +47,11 @@ const OrdersTableCustomHeader = () => {
                 <Segmented
                     size='large'
                     options={tabs}
-                    value={ordersStructureTab}
-                    onChange={(value) => dispatch(supplierAnalysisActions.setOrdersStructureTab(value))}
+                    value={tabsState}
+                    onChange={(value) => {
+                        setTabsState(value)
+                        dispatch(supplierAnalysisActions.setOrdersStructureTab(value))
+                    }}
                 />
             </ConfigProvider>
         </div>

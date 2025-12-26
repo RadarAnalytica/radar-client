@@ -87,6 +87,7 @@ const TrendingRequestsPage = () => {
                         <Header
                             {...memoizedHeaderProps}
                             videoReviewLink='https://play.boomstream.com/JDw00KbS?size=cover&color=%23ffffff&autostart=0&loop=1&title=0&volume=50'
+                            hasShadow={false}
                         />
                     </div>
 

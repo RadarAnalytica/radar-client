@@ -14,6 +14,9 @@ import { attachClosestEdge, extractClosestEdge, } from '@atlaskit/pragmatic-drag
 import { useAppSelector } from '../../../../redux/hooks';
 import { NoDataWidget } from '@/pages/productsGroupsPages/widgets';
 import RnpTableTotal from '../RnpTable/RnpTableTotal';
+import { fileDownload } from '@/service/utils';
+import DownloadButton from '@/components/DownloadButton';
+import { ServiceFunctions } from '@/service/serviceFunctions';
 
 // Компонент edge drop-зон (верх и низ viewport)
 function EdgeDropZone({ position, isActive, isDragging, onDrop }) {
@@ -117,10 +120,30 @@ function DropZone({ index, isActive, isDragging, draggedIndex, onDrop }) {
 	);
 }
 
-function RnpListItem({ el, index, expanded, setExpanded, setDeleteRnpId, onReorder, isDragging, isPublicVersion }) {
+function RnpListItem({ el, index, expanded, setExpanded, setDeleteRnpId, onReorder, isDragging, isPublicVersion, authToken, filters }) {
 	const ref = useRef(null);
 	const gripRef = useRef(null);
 	const [closestEdge, setClosestEdge] = useState(null);
+	const [downloadLoading, setDownloadLoading] = useState(false);
+
+	const handleDownload = async () => {
+		setDownloadLoading(true);
+		console.log(filters)
+		try {
+			const fileBlob = await ServiceFunctions.getDownloadReportRnp(
+				authToken,
+				filters?.selectedRange,
+				filters?.activeBrand.id,
+				filters,
+				el.article_data.vendor_code
+			);
+			fileDownload(fileBlob, `РНП_${el.article_data.title}.xlsx`);
+		} catch (e) {
+			console.error('Ошибка скачивания: ', e);
+		} finally {
+			setDownloadLoading(false);
+		}
+	};
 
 	const expandHandler = (value) => {
 		const timeout = setTimeout(() => {
@@ -210,10 +233,10 @@ function RnpListItem({ el, index, expanded, setExpanded, setDeleteRnpId, onReord
 	return (
 		<div className={`${styles.item} ${isDragging ? styles.dragging : ''}`} ref={ref}>
 			<div className={styles.item_content}>
-			{closestEdge === 'top' && (
-				<div className={styles.edge_top}></div>
-			)}
-			<header 	
+				{closestEdge === 'top' && (
+					<div className={styles.edge_top}></div>
+				)}
+				<header
 					className={`${styles.item__header}`}
 				>
 					<Flex gap={20} align="center">
@@ -222,7 +245,7 @@ function RnpListItem({ el, index, expanded, setExpanded, setDeleteRnpId, onReord
 							icon={grip}
 							ref={gripRef}
 							onClick={() => setExpanded([])}
-							disabled={expanded === el.article_data.wb_id }
+							disabled={expanded === el.article_data.wb_id}
 							hidden={isPublicVersion}
 						/>
 						<div className={styles.item__product}>
@@ -237,12 +260,18 @@ function RnpListItem({ el, index, expanded, setExpanded, setDeleteRnpId, onReord
 								shop={el.article_data.shop_name}
 							/>
 						</div>
-						<Button
+						{!isPublicVersion &&
+							<DownloadButton
+								handleDownload={handleDownload}
+								loading={downloadLoading}
+							/>
+						}
+						{!isPublicVersion && <Button
 							className={styles.item__button}
 							onClick={() => setDeleteRnpId(el.article_data.wb_id)}
 							icon={remove}
 							title="Удалить артикул"
-						/>
+						/>}
 						<Button
 							className={`${styles.item__button} ${expanded === el.article_data.wb_id &&
 								styles.item__button_expand
@@ -272,7 +301,7 @@ function RnpListItem({ el, index, expanded, setExpanded, setDeleteRnpId, onReord
 	);
 }
 
-export default function RnpList({ view, expanded, setExpanded, setAddRnpModalShow, rnpDataByArticle, setRnpDataByArticle, rnpDataTotal, setDeleteRnpId, loading, isPublicVersion }) {
+export default function RnpList({ view, expanded, setExpanded, setAddRnpModalShow, rnpDataByArticle, setRnpDataByArticle, rnpDataTotal, setDeleteRnpId, loading, isPublicVersion, authToken, filters }) {
 	const { activeBrand } = useAppSelector((state) => state.filters);
 	const items = useMemo(() => rnpDataByArticle || [], [rnpDataByArticle]);
 
@@ -491,6 +520,8 @@ export default function RnpList({ view, expanded, setExpanded, setAddRnpModalSho
 											onReorder={handleReorder}
 											isDragging={isDragging}
 											isPublicVersion={isPublicVersion}
+											authToken={authToken}
+											filters={filters}
 										/>
 									</React.Fragment>
 								);

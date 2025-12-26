@@ -26,8 +26,8 @@
 .fieldset__title {
     margin: 0;
     padding: 0;
-    font-weight: 700;
-    font-size: 24px;
+    font-weight: 600;
+    font-size: 18px;
     line-height: 30px;
     color: #1A1A1A;
 }
@@ -36,7 +36,7 @@
     margin: 0;
     padding: 0;
     font-weight: 600;
-    font-size: 16px;
+    font-size: 14px;
     line-height: 20px;
     color: #1A1A1A80
 }
@@ -174,13 +174,18 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    font-family: Mulish;
+    font-family: Manrope;
     font-weight: 500;
-    font-size: 14px;
+    font-size: 12px;
     line-height: 18px;
     letter-spacing: 0%;
     color: #1A1A1A80;
     cursor: pointer;
+}
+
+.formItem__input {
+    font-size: 14px !important;
+    height: 38px !important;
 }
 
 .tooltip_red {

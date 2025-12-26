@@ -30,6 +30,8 @@ import StockAnalysisBlock from '@/components/dashboardPageComponents/blocks/stoc
 import NoSubscriptionWarningBlock from '@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock';
 import { useDemoMode } from "@/app/providers";
 import { RadarBar } from '@/shared';
+import { fileDownload } from '@/service/utils';
+import DownloadButton from '@/components/DownloadButton';
 
 
 const MainContent = React.memo(({
@@ -42,7 +44,8 @@ const MainContent = React.memo(({
     authToken,
     filters,
     updateDataDashBoard,
-    isSidebarHidden
+    isSidebarHidden,
+    stockAnalysisData
 }) => {
     const isLoading = loading || isFiltersLoading;
     // Если фильтры загружены и shopStatus не подходит, не рендерим
@@ -120,10 +123,10 @@ const MainContent = React.memo(({
                 /> */}
             </div>
 
+
             <StockAnalysisBlock
-                // data={dataDashBoard?.stockAnalysis}
-                data={[]}
-                loading={isLoading}
+                data={stockAnalysisData}
+                dashboardLoading={isLoading}
             />
 
             <AbcDataBlock
@@ -138,25 +141,42 @@ const MainContent = React.memo(({
 const _DashboardPage = () => {
     const { authToken } = useContext(AuthContext);
     const { isDemoMode } = useDemoMode();
-    const { activeBrand, selectedRange, isFiltersLoaded, activeBrandName, activeArticle, activeGroup, shops } = useAppSelector((state) => state.filters);
+    const { isFiltersLoaded, activeBrand, shops, activeBrandName, activeArticle, activeGroup, selectedRange } = useAppSelector((state) => state.filters);
     const filters = useAppSelector((state) => state.filters);
     const { isSidebarHidden } = useAppSelector((state) => state.utils);
+    const [downloadLoading, setDownloadLoading] = useState(false);
 
     const [pageState, setPageState] = useState({
         dataDashBoard: null,
         loading: true,
         primaryCollect: null,
-        shopStatus: null
+        shopStatus: null,
+        stockAnalysisData: null,
     });
 
-    const updateDataDashBoard = async (selectedRange, activeBrand, authToken) => {
+    const fetchAnalysisData = async (filters, authToken) => {
+        try {
+            const data = await ServiceFunctions.getAnalysisData(
+                authToken,
+                filters.selectedRange,
+                filters.activeBrand?.id,
+                filters
+            );
+
+            setPageState(prev => ({ ...prev, stockAnalysisData: data }));
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    const updateDataDashBoard = async (filters, authToken) => {
         setPageState(prev => ({ ...prev, loading: true }));
         try {
             if (activeBrand !== null && activeBrand !== undefined) {
                 const data = await ServiceFunctions.getDashBoard(
                     authToken,
-                    selectedRange,
-                    activeBrand,
+                    filters.selectedRange,
+                    filters.activeBrand.id,
                     filters
                 );
                 setPageState(prev => ({ ...prev, dataDashBoard: data }));
@@ -165,6 +185,23 @@ const _DashboardPage = () => {
             console.error(e);
         } finally {
             setPageState(prev => ({ ...prev, loading: false }));
+        }
+    };
+
+    const handleDownload = async () => {
+        setDownloadLoading(true);
+        try {
+            const fileBlob = await ServiceFunctions.getDownloadDashboard(
+                authToken,
+                selectedRange,
+                activeBrand.id,
+                filters,
+            );
+            fileDownload(fileBlob, 'Сводка_продаж.xlsx');
+        } catch (e) {
+            console.error('Ошибка скачивания: ', e);
+        } finally {
+            setDownloadLoading(false);
         }
     };
 
@@ -188,13 +225,14 @@ const _DashboardPage = () => {
     useEffect(() => {
         if (activeBrand && activeBrand.is_primary_collect && isFiltersLoaded) {
             setPageState(prev => ({ ...prev, primaryCollect: activeBrand.is_primary_collect }));
-            updateDataDashBoard(selectedRange, activeBrand.id, authToken);
+            updateDataDashBoard(filters, authToken);
+            fetchAnalysisData(filters, authToken);
         }
 
         if (activeBrand && !activeBrand.is_primary_collect && isFiltersLoaded) {
             setPageState(prev => ({ ...prev, loading: false }));
         }
-    }, [activeBrand, selectedRange, isFiltersLoaded, activeBrandName, activeArticle, activeGroup]);
+    }, [activeBrand, isFiltersLoaded, selectedRange, activeBrandName, activeArticle, activeGroup]);
 
     return (
         <main className={styles.page}>
@@ -225,7 +263,11 @@ const _DashboardPage = () => {
 
                 <div className={styles.page__controlsWrapper}>
                     <Filters
-                        isDataLoading={pageState.loading}
+                        isDataLoading={pageState?.loading}
+                    />
+                    <DownloadButton
+                        handleDownload={handleDownload}
+                        loading={pageState?.loading || downloadLoading}
                     />
                 </div>
 
@@ -238,12 +280,13 @@ const _DashboardPage = () => {
                     loading={pageState.loading}
                     isFiltersLoading={!isFiltersLoaded}
                     dataDashBoard={pageState.dataDashBoard}
-                    selectedRange={selectedRange}
+                    selectedRange={filters?.selectedRange}
                     activeBrand={activeBrand}
                     authToken={authToken}
                     filters={filters}
                     updateDataDashBoard={updateDataDashBoard}
                     isSidebarHidden={isSidebarHidden}
+                    stockAnalysisData={pageState.stockAnalysisData}
                 />
             </section>
         </main>

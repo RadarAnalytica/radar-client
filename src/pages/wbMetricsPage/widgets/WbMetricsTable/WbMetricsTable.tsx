@@ -63,7 +63,7 @@ interface WbMetricsTableProps {
   setSortState: (sortState: { sort_field: string, sort_order: "ASC" | "DESC" }) => void;
 }
 
-const WbMetricsTable: React.FC<WbMetricsTableProps> = ({
+const WbMetricsTable: React.FC<WbMetricsTableProps> = React.memo(({
   data,
   columns,
   loading,
@@ -222,7 +222,7 @@ const WbMetricsTable: React.FC<WbMetricsTableProps> = ({
               onChange: handlePageChange,
               showQuickJumper: true,
             }}
-            style={{ fontFamily: 'Mulish', width: 'max-content', tableLayout: 'fixed' }}
+            style={{ fontFamily: 'Manrope', width: 'max-content', tableLayout: 'fixed' }}
             bodyCellWrapperStyle={{
               justifyContent: 'flex-start',
               height: '70px',
@@ -232,6 +232,7 @@ const WbMetricsTable: React.FC<WbMetricsTableProps> = ({
       </div>
     </div>
   );
-};
+});
+WbMetricsTable.displayName = 'WbMetricsTable';
 
 export default WbMetricsTable;

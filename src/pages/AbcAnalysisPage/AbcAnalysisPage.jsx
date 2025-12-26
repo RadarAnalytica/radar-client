@@ -21,6 +21,7 @@ import Loader from '@/components/ui/Loader';
 import { formatPrice } from '@/service/utils';
 import { Tooltip } from 'antd';
 import { useTableColumnResize } from '@/service/hooks/useTableColumnResize';
+import { getWordDeclension } from '@/service/utils';
 
 const AbcAnalysisPage = () => {
 	const filters = useAppSelector(state => state.filters);
@@ -43,6 +44,7 @@ const AbcAnalysisPage = () => {
 		profit: getAbcAnalysisTableConfig('profit'),
 	}));
 	const [sortState, setSortState] = useState({ sort_field: null, sort_order: null });
+	const [expandedRowKeys, setExpandedRowKeys] = useState([]);
 
 	// Получаем текущую конфигурацию для активного viewType
 	const tableConfig = useMemo(() => tableConfigs[viewType] || getAbcAnalysisTableConfig(viewType), [tableConfigs, viewType]);
@@ -73,6 +75,7 @@ const AbcAnalysisPage = () => {
 				setDataAbcAnalysis(data?.results ? data : []);
 				setPaginationState(prev => ({ ...prev, total: data?.total ? Math.ceil(data.total / data.per_page) : 0 }));
 				setLoading(false);
+				progress.reset();
 			}, 500);
 		} catch (e) {
 			console.error(e);
@@ -83,10 +86,31 @@ const AbcAnalysisPage = () => {
 	};
 
 	const tableData = useMemo(() => {
-		return dataAbcAnalysis?.results?.length > 0 ? dataAbcAnalysis.results.map((el, i) => ({
-			key: i,
-			...el,
-		})) : [];
+		if (dataAbcAnalysis?.results?.length > 0 ) {
+			const data = dataAbcAnalysis.results.map((item) => {
+				const sizesLength = item?.sizes?.length ?? 0;
+				const showSizes = sizesLength > 1;
+
+				if (sizesLength === 1) {
+					item.article_data.tech_size = item.sizes[0].size;
+				}
+
+				return {
+					article: item.article,
+					...item.article_data,
+					tech_size: showSizes ? `${sizesLength} ${getWordDeclension('размер', sizesLength )}` : item.article_data?.tech_size,
+					expandedKey: `${item.article_data?.wb_id}_${sizesLength}`,
+                    isParent: showSizes,
+                    children: showSizes ? item.sizes?.map(child => ({
+                        size: child.size,
+						...child.size_data,
+                    })) : null,
+				};
+			});
+			console.log('data: ', data);
+			return data;
+		}
+		return [];
 	}, [dataAbcAnalysis]);
 
 	useEffect(() => {
@@ -102,7 +126,7 @@ const AbcAnalysisPage = () => {
 				setLoading(false);
 			}
 		}
-	}, [viewType, paginationState.current, sorting, activeBrand, selectedRange, isFiltersLoaded, activeBrandName, activeArticle, activeGroup, authToken]);
+	}, [viewType, paginationState.current, sorting, isFiltersLoaded, activeBrand, activeBrandName, activeArticle, activeGroup, selectedRange]);
 
 	useEffect(() => {
 		setPaginationState({ ...paginationState, current: 1 });
@@ -162,25 +186,10 @@ const AbcAnalysisPage = () => {
 	// Custom cell render для RadarTable
 	const customCellRender = (value, record, index, dataIndex) => {
 		if (dataIndex === 'item') {
+			const paddingLeft = record.isParent === false ? '30px' : !record.children?.length ? '36px' : '0px';
 			return (
-				<div
-					style={{
-						color: '#5329FF',
-						display: 'flex',
-						alignItems: 'center',
-						gap: 8,
-					}}
-				>
-					<div
-						style={{
-							width: '30px',
-							height: '40px',
-							borderRadius: '5px',
-							backgroundColor: '#D3D3D3',
-							flexGrow: 0,
-							flexShrink: 0,
-						}}
-					>
+				<div className={styles.productNameCell} style={{ paddingLeft }}>
+					<div className={styles.productNameCellImg}>
 						{record.photo ? (
 							<img
 								src={record.photo}
@@ -200,8 +209,8 @@ const AbcAnalysisPage = () => {
 							/>
 						) : null}
 					</div>
-					<div>
-						<Tooltip title={record.title}>{record.title}</Tooltip>
+					<div title={record.title}>
+						{record.title}
 					</div>
 				</div>
 			);
@@ -314,6 +323,7 @@ const AbcAnalysisPage = () => {
 									<div className={styles.tableScrollContainer} ref={scrollContainerRef}>
 										{tableData && tableData.length > 0 && currentTableConfig && (
 											<RadarTable
+												rowKey={(record) => record.expandedKey}
 												config={currentTableConfig.filter(col => !col.hidden)}
 												dataSource={tableData}
 												preset='radar-table-simple'
@@ -322,6 +332,9 @@ const AbcAnalysisPage = () => {
 												resizeable
 												onResize={onResizeGroup}
 												onSort={sortButtonClickHandler}
+												treeMode
+												expandedRowKeys={expandedRowKeys}
+												onExpandedRowsChange={setExpandedRowKeys}
 												pagination={{
 													current: paginationState.current,
 													pageSize: paginationState.pageSize,

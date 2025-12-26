@@ -188,6 +188,7 @@ const TurnoverBlock = ({ loading, turnover, turnoverCompare, selectedRange, acti
                 mainValue={turnover}
                 mainValueUnits='дн.'
                 hasColoredBackground
+                negativeDirection='up'
                 compareValue={{
                     comparativeValue: turnoverCompare,
                     absoluteValue: prevTurnover,

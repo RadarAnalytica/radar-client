@@ -1,8 +1,58 @@
+/* Page */
+
+.page {
+  background-color: #F7F6FE;
+  height: 100vh;
+  overflow: hidden;
+  width: 100%;
+  display: flex;
+  box-sizing: border-box;
+  min-width: 1200px;
+}
+
+.page__content {
+  width: calc(100% - 74px);
+  padding: 20px 32px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
+  gap: 20px;
+  box-sizing: border-box;
+  height: 100%;
+  overflow: auto;
+  flex-grow: 0;
+  flex-shrink: 0;
+}
+
+.page__container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.page__sideNavWrapper {
+  height: 100%;
+  width: auto;
+  overflow: visible;
+  display: flex;
+  justify-content: stretch;
+  align-items: stretch;
+  flex-grow: 1;
+  flex-shrink: 0;
+}
+
+.page__headerWrapper {
+  width: 100%;
+}
+
+
 .pageWrapper {
-    min-height: 100vh;
-    display: flex;
-    min-width: 1200px;
-    overflow-x: hidden;
+  min-height: 100vh;
+  display: flex;
+  min-width: 1200px;
+  overflow-x: hidden;
 }
 
 .scrollableContent {
@@ -13,22 +63,93 @@
   width: 100%;
 }
 
-  .newTopNavButton {
-    border-radius: 16px;
-    background: rgba(83, 41, 255, 0.1);
-    box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.08);
-    /* height: 8vh; */
-    display: flex;
-    align-items: center;
-    padding: 0 24px;
-    /* margin-right: 8px; */
-    cursor: pointer;
-   }
+.newTopNavButton {
+  border-radius: 16px;
+  background: rgba(83, 41, 255, 0.1);
+  /* height: 8vh; */
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+  /* margin-right: 8px; */
+  cursor: pointer;
+}
 
-   .newTopNavButton span {
-    font-weight: 700;
-    font-size: 16px;
-    line-height: 20px;
-    color: rgba(83, 41, 255, 1);
-    text-wrap: nowrap;
-   }
+.newTopNavButton span {
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 20px;
+  color: rgba(83, 41, 255, 1);
+  text-wrap: nowrap;
+}
+
+.page__mainContent {
+  width: 100%;
+  display: flex;
+  gap: 20px;
+  align-items: stretch;
+}
+
+
+
+.infoSeoGroupWrapper {
+  width: 50%;
+  padding: 20px;
+  background: rgba(255, 255, 255, 1);
+  border-radius: 16px;
+}
+
+.infoSeoGroupTitle {
+  font-weight: 700;
+  font-size: 1.125rem;
+  line-height: 1.2;
+  color: rgba(26, 26, 26, 1);
+}
+
+.groupBoxTitle {
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 1.25;
+  color: rgba(26, 26, 26, 1);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.groupTextarea {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  resize: vertical;
+  font-family: inherit;
+  font-size: 14px;
+  line-height: 1.4;
+  resize: none;
+  margin-top: 8px;
+  outline: none;
+}
+
+.getReportBtn {
+  width: 100%;
+  background: rgba(83, 41, 255, 1);
+  color: rgba(255, 255, 255, 1);
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 1.25;
+  border-radius: 8px;
+  border: none;
+  height: 38px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.infoSeoGroupWrapper form {
+  display: flex;
+  flex-direction: column;
+  border: none;
+}

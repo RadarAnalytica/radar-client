@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useCallback, useMemo } from 'react';
 import styles from './chartControls.module.css';
-import { Checkbox, ConfigProvider, Tooltip } from 'antd';
+import { Checkbox, ConfigProvider, CheckboxChangeEvent } from 'antd';
 import { ChartControlConfig } from '../../../shared';
 import TooltipInfo from '@/components/TooltipInfo';
 
@@ -14,27 +14,44 @@ interface ChartControlsProps {
 }
 
 const ChartControls: React.FC<ChartControlsProps> = ({ chartControls, setChartControls }) => {
-  const chartControlsChangeHandler = (e: any) => {
+  const chartControlsChangeHandler = useCallback((e: CheckboxChangeEvent) => {
     const { value, checked } = e.target;
-    setChartControls([...chartControls.map(i => {
-      if (i.engName === value) {
-        return {
-          ...i,
-          isActive: checked
-        };
-      } else {
-        return i;
-      }
-    })]);
-  };
+    setChartControls((prevControls) => {
+      if (!prevControls || prevControls.length === 0) return prevControls;
+      return prevControls.map(i => {
+        if (i.engName === value) {
+          return {
+            ...i,
+            isActive: checked
+          };
+        } else {
+          return i;
+        }
+      });
+    });
+  }, [setChartControls]);
 
-  const deselectButtonClickHandler = () => {
-    setChartControls([...chartControls].map(i => ({ ...i, isActive: false })));
-  };
+  const deselectButtonClickHandler = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setChartControls((prevControls) => {
+      if (!prevControls || prevControls.length === 0) return prevControls;
+      return prevControls.map(i => ({ ...i, isActive: false }));
+    });
+  }, [setChartControls]);
 
-  const selectAllButtonClickHandler = () => {
-    setChartControls([...chartControls].map(i => ({ ...i, isActive: true })));
-  };
+  const selectAllButtonClickHandler = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setChartControls((prevControls) => {
+      if (!prevControls || prevControls.length === 0) return prevControls;
+      return prevControls.map(i => ({ ...i, isActive: true }));
+    });
+  }, [setChartControls]);
+
+  const hasActiveControls = useMemo(() => {
+    return chartControls && chartControls.length > 0 && chartControls.some(_ => _.isActive);
+  }, [chartControls]);
 
   return (
     <div className={styles.controls}>
@@ -59,23 +76,31 @@ const ChartControls: React.FC<ChartControlsProps> = ({ chartControls, setChartCo
                 className={styles.controls__checkbox}
                 onChange={chartControlsChangeHandler}
               >
-                <label className={styles.controls__label}>
+                <span className={styles.controls__label}>
                   {i.ruName} <TooltipInfo text={i.tooltipText} style={{ fontSize: '12px' }} />
-                </label>
+                </span>
               </Checkbox>
             </ConfigProvider>
           </div>
         );
       })}
-      {chartControls.some(_ => _.isActive) ?
-        <button className={styles.controls__deselectButton} onClick={deselectButtonClickHandler}>
+      {hasActiveControls ? (
+        <button 
+          type="button"
+          className={styles.controls__deselectButton} 
+          onClick={deselectButtonClickHandler}
+        >
           Снять все
         </button>
-        :
-        <button className={styles.controls__deselectButton} onClick={selectAllButtonClickHandler}>
+      ) : (
+        <button 
+          type="button"
+          className={styles.controls__deselectButton} 
+          onClick={selectAllButtonClickHandler}
+        >
           Включить все
         </button>
-      }
+      )}
     </div>
   );
 };

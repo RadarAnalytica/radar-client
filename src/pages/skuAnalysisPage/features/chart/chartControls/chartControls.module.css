@@ -11,7 +11,7 @@
 }
 
 .controls__checkbox {
-    padding: 8px 0;
+    padding: 0;
     display: flex;
     justify-content: flex-start;
     align-items: center;
@@ -24,9 +24,9 @@
 }
 
 .controls__label {
-    font-family: Mulish;
+    font-family: Manrope;
     font-weight: 500;
-    font-size: 16px;
+    font-size: 14px;
     line-height: 100%;
     letter-spacing: 0%;
     color: #1A1A1A;
@@ -43,9 +43,9 @@
     align-items: center;
     border: none;
     background: transparent;
-    font-family: Mulish;
+    font-family: Manrope;
     font-weight: 600;
-    font-size: 16px;
+    font-size: 14px;
     line-height: 100%;
     letter-spacing: 0%;
     color: #5329FF;

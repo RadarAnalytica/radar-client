@@ -41,6 +41,7 @@ const ChartControls = ({ chartControls, setChartControls }) => {
                                 token: {
                                     colorPrimary: i.color,
                                     controlInteractiveSize: 20,
+                                    fontSize: '14px'
                                 }
                             }}
                         >

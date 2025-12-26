@@ -118,7 +118,7 @@ const OptionsSettingsWidget = () => {
                 theme={{
                     token: {
                         colorPrimary: '#5329FF',
-                        fontFamily: 'Mulish, sans-serif',
+                        fontFamily: 'Manrope, sans-serif',
                     },
                     components: {
                         Modal: {

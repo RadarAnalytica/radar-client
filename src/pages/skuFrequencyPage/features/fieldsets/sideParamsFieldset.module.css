@@ -45,7 +45,7 @@
 }
 
 .fieldset__title {
-    font-family: Mulish;
+    font-family: Manrope;
     font-weight: 700;
     font-size: 18px;
     line-height: 100%;
@@ -115,7 +115,7 @@
     flex-direction: column;
     justify-content: space-between;
     align-items: stretch;
-    gap: 8px;
+    gap: 2px;
 }
 
 .form__complexInputWrapper_wide {
@@ -131,16 +131,16 @@
 }
 
 .form__inputTextSuffix {
-    font-family: Mulish;
+    font-family: Manrope;
     font-weight: 500;
-    font-size: 16px;
+    font-size: 14px;
     line-height: 100%;
     letter-spacing: 0%;
     color: #8C8C8C;
 }
 
 .form__complexWrapperLabel {
-    font-family: Mulish;
+    font-family: Manrope;
     font-weight: 500;
     font-size: 16px;
     line-height: 100%;

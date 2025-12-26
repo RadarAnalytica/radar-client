@@ -51,7 +51,7 @@ export const PricingScreen = () => {
     const [modalItem, setModalItem] = useState(undefined);
     const [isScriptLoaded, setIsScriptLoaded] = useState(false);
     const [isWidgetActive, setIsWidgetActive] = useState(false);
-    const { isDemoMode } = useDemoMode();
+    const { isDemoUser } = useDemoMode();
     const [trialExpired, setTrialExpired] = useState(user?.is_test_used);
     const [subscriptionDiscount, setSubscriptionDiscount] = useState(
         user?.is_subscription_discount
@@ -178,16 +178,13 @@ export const PricingScreen = () => {
 
      // -------------------------------- pay function -------------------------------//
      const pay = async (_) => {
-        if (isDemoMode) {
+        if (isDemoUser) {
             await logout();
             return;
         }
-
         const selectedPeriod = _.value;
         const refresh_result = await refreshUserToken();
-        // console.log('refresh_result', refresh_result);
 
-        // localStorage.setItem("authToken", refresh_result);
         const decodedUser = jwtDecode(refresh_result);
         let newTrialExpired;
         if (decodedUser.is_test_used) {

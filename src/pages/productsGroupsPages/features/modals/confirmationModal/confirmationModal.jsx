@@ -51,7 +51,7 @@ const ConfirmationModal = ({
                             token: {
                                 colorPrimary: '#5329FF',
                                 fontSize: 18,
-                                fontFamily: 'Mulish'
+                                fontFamily: 'Manrope'
                             },
                             components: {
                                 Button: {
@@ -75,7 +75,7 @@ const ConfirmationModal = ({
                             token: {
                                 colorPrimary: '#5329FF',
                                 fontSize: 18,
-                                fontFamily: 'Mulish'
+                                fontFamily: 'Manrope'
                             }
                         }}
                     >

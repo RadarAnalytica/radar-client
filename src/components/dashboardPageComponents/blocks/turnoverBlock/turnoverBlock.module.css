@@ -37,7 +37,7 @@
 }
 
 .block__title {
-    font-family: Mulish;
+    font-family: Manrope;
     font-weight: 500;
     font-size: 14px;
     line-height: 100%;
@@ -58,7 +58,7 @@
 .block__mainData {
     margin: 0;
     padding: 0;
-    font-family: Mulish;
+    font-family: Manrope;
     font-weight: 600;
     font-size: 22px;
     line-height: 100%;
@@ -73,7 +73,7 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    font-family: Mulish;
+    font-family: Manrope;
     font-weight: 600;
     font-size: 14px;
     line-height: 160%;
@@ -106,7 +106,7 @@
 }
 
 .modal__title {
-    font-family: Mulish;
+    font-family: Manrope;
     font-weight: 600;
     font-size: 22px;
     line-height: 100%;
@@ -162,7 +162,7 @@
     display: flex;
     align-items: center;
     gap: 10px;
-    font-family: Mulish;
+    font-family: Manrope;
     font-weight: 600;
     font-size: 14px;
     line-height: 100%;
@@ -227,7 +227,7 @@
 .table__headerItemTitle {
     margin: 0;
     padding: 0;
-    font-family: Mulish;
+    font-family: Manrope;
     font-weight: 500;
     font-size: 14px;
     line-height: 100%;
@@ -266,7 +266,7 @@
     justify-content: flex-start;
     align-items: center;
     gap: 20px;
-    font-family: Mulish;
+    font-family: Manrope;
     font-weight: 500;
     font-size: 14px;
     line-height: 100%;
@@ -285,7 +285,7 @@
     justify-content: flex-start;
     align-items: center;
     gap: 20px;
-    font-family: Mulish;
+    font-family: Manrope;
     font-weight: 500;
     font-size: 14px;
     line-height: 100%;
@@ -298,7 +298,7 @@
 }
 
 .table__rowTitle {
-    font-family: Mulish;
+    font-family: Manrope;
     font-weight: 500;
     font-size: 14px;
     line-height: 100%;
@@ -331,7 +331,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    font-family: Mulish;
+    font-family: Manrope;
     font-weight: 600;
     font-size: 14px;
     line-height: 160%;

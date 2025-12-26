@@ -2,6 +2,8 @@ import { Link, useLocation } from "react-router-dom";
 import aiGenIcon from '../../../../assets/aiGenerator.svg';
 import styles from './navLink.module.css';
 import { featuresIcons } from "../shared/icons/icons";
+import { useAppDispatch } from '../../../../redux/hooks';
+import { actions as utilsActions } from '../../../../redux/utils/utilsSlice';
 
 const finReportsUrls = [
     '/weeklyreport-dashboard',
@@ -18,6 +20,7 @@ const finReportsUrls = [
 
 const NavLink = ({ url, title, icon, isMenuHidden, item }) => {
     const { pathname } = useLocation();
+    const dispatch = useAppDispatch()
 
     let style = styles.navLink;
     if (title !== 'Оцифровка еженедельных отчетов' && pathname !== '/abc-data-reports') {
@@ -41,7 +44,7 @@ const NavLink = ({ url, title, icon, isMenuHidden, item }) => {
                 <div className={styles.navLink__lineWrapper}>
                 </div>
             }
-            <Link to={url} className={style}>
+            <Link to={url} className={style}  onClick={() => {dispatch(utilsActions.setIsSidebarHidden(true));}}>
                 {isMenuHidden &&
                     <div className={styles.navLink__iconWrapper}>
                         {icon && icon}

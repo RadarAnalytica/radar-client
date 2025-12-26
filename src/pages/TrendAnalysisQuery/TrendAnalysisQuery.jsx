@@ -199,7 +199,7 @@ export default function TrendAnalysisQuery() {
 
 			<section className={styles.page__content}>
 				<div className={styles.page__headerWrapper}>
-					<Header title="Анализ трендовой динамики запросов"></Header>
+					<Header title="Анализ трендовой динамики запросов" hasShadow={false}></Header>
 				</div>
 
 				{isDemoMode && <NoSubscriptionWarningBlock />}
@@ -209,7 +209,7 @@ export default function TrendAnalysisQuery() {
 						token: {
 							colorBgContainer: 'white',
 							borderRadius: 8,
-							fontFamily: 'Mulish',
+							fontFamily: 'Manrope',
 							fontSize: 12,
 							fontWeight: 500,
 							colorBorder: '#5329FF1A',

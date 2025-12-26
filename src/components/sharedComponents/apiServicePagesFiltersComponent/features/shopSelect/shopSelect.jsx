@@ -64,7 +64,7 @@ export const ShopSelect = (
                             colorBgContainer: 'white',
                             colorBorder: '#5329FF1A',
                             borderRadius: 8,
-                            fontFamily: 'Mulish',
+                            fontFamily: 'Manrope',
                             fontSize: 12,
                             fontWeight: 500,
                         },
@@ -92,7 +92,7 @@ export const ShopSelect = (
                         onChange={handler}
                         getPopupContainer={(triggerNode) => triggerNode.parentNode}
                         disabled={isDataLoading || disabled}
-                        dropdownRender={hasSearch ? (menu) => renderPopup(menu) : undefined}
+                        popupRender={hasSearch ? (menu) => renderPopup(menu) : undefined}
                     />
                 </ConfigProvider>
             </div>

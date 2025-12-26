@@ -31,7 +31,7 @@
 }
 
 .block__title {
-    font-family: Mulish;
+    font-family: Manrope;
     font-weight: 600;
     font-size: 22px;
     line-height: 100%;
@@ -71,7 +71,7 @@
     gap: 8px
 }
 .block__legendItemText {
-    font-family: Mulish;
+    font-family: Manrope;
     font-weight: 500;
     font-size: 14px;
     line-height: 100%;

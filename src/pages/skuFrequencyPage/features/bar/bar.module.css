@@ -2,7 +2,6 @@
     width: 100%;
     background: white;
     border-radius: 16px;
-    box-shadow: 0px 0px 20px 0px #00000014;
 }
 
 .bar_small {
@@ -45,18 +44,18 @@
     top: 16px;
     right: 16px;
     text-decoration: none;
-    font-family: Mulish;
+    font-family: Manrope;
     font-weight: 600;
-    font-size: 16px;
+    font-size: 14px;
     line-height: 100%;
     letter-spacing: 0%;
     color: #5329FF
 }
 
 .bar__heading {
-    font-family: Mulish;
-    font-weight: 700;
-    font-size: 24px;
+    font-family: Manrope;
+    font-weight: 600;
+    font-size: 18px;
     line-height: 100%;
     letter-spacing: 0%;
     color: #1A1A1A;
@@ -92,7 +91,7 @@
 }
 
 .bar__rate {
-    font-family: Mulish;
+    font-family: Manrope;
     font-weight: 600;
     font-size: 20px;
     line-height: 100%;
@@ -102,9 +101,9 @@
 .bar__title {
     margin: 0;
     padding: 0;
-    font-family: Mulish;
+    font-family: Manrope;
     font-weight: 500;
-    font-size: 20px;
+    font-size: 14px;
     line-height: 100%;
     letter-spacing: 0%;
     color: #8C8C8C;
@@ -118,11 +117,11 @@
 }
 
 .bar__title_small {
-    font-size: 16px;
+    font-size: 14px;
 }
 
 .bar__data {
-    font-family: Mulish;
+    font-family: Manrope;
     font-weight: 700;
     font-size: 32px;
     line-height: 100%;
@@ -138,7 +137,7 @@
 }
 
 .bar__data_small {
-    font-size: 24px;
+    font-size: 22px;
 }
 
 .bar__dataContainer {

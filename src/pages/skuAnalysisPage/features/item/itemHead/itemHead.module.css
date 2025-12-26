@@ -4,7 +4,6 @@
     padding-right: 20px;
     border-radius: 16px;
     background: white;
-    box-shadow: 0px 0px 20px 0px #00000014;
     height: 200px;
     display: flex;
     justify-content: flex-start;
@@ -73,7 +72,7 @@
 .head__title {
     margin: 0;
     padding: 0;
-    font-family: Mulish;
+    font-family: Manrope;
     font-weight: 700;
     font-size: 24px;
     line-height: 100%;
@@ -94,7 +93,7 @@
 }
 
 .head__text {
-    font-family: Mulish;
+    font-family: Manrope;
     font-weight: 500;
     font-size: 16px;
     line-height: 100%;
@@ -125,7 +124,7 @@
     background: #F6F4FF;
     padding: 10px;
     border-radius: 8px;
-    font-family: Mulish;
+    font-family: Manrope;
     font-weight: 600;
     font-size: 16px;
     line-height: 160%;

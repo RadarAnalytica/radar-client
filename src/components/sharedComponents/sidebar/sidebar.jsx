@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useRef } from 'react';
 import styles from './sidebar.module.css';
 import { Link } from 'react-router-dom';
 //import logo from '../../../assets/logo.png';
@@ -18,19 +18,29 @@ const Sidebar = () => {
     const dispatch = useAppDispatch();
     const { user } = useContext(AuthContext);
     const { isSidebarHidden } = useAppSelector(store => store.utils);
+    const sidebarRef = useRef(null);
+
+    const handleMouseLeave = (e) => {
+        const relatedTarget = e.relatedTarget;
+        if (!relatedTarget || !(relatedTarget instanceof Node) || (sidebarRef.current && !sidebarRef.current.contains(relatedTarget))) {
+            dispatch(utilsActions.setIsSidebarHidden(true));
+        }
+    };
 
     return (
-        <nav className={isSidebarHidden ? `${styles.sidebar} ${styles.sidebar_hidden}` : styles.sidebar}
+        <nav 
+            ref={sidebarRef}
+            className={isSidebarHidden ? `${styles.sidebar} ${styles.sidebar_hidden}` : styles.sidebar}
             onMouseEnter={() => dispatch(utilsActions.setIsSidebarHidden(false))}
-            onMouseLeave={() => dispatch(utilsActions.setIsSidebarHidden(true))}
+            onMouseLeave={handleMouseLeave}
         >
 
             <div className={styles.sidebar__mainWrapper}>
                 <div className={isSidebarHidden ? `${styles.sidebar__mainLinkWrapper} ${styles.sidebar__mainLinkWrapper_hidden}` : styles.sidebar__mainLinkWrapper}>
-                    <Link to='/main' className={isSidebarHidden ? `${styles.sidebar__mainLink} ${styles.sidebar__mainLink_bigHidden}` : `${styles.sidebar__mainLink} ${styles.sidebar__mainLink_bigVisible}`}>
+                    <Link to='/main' className={isSidebarHidden ? `${styles.sidebar__mainLink} ${styles.sidebar__mainLink_bigHidden}` : `${styles.sidebar__mainLink} ${styles.sidebar__mainLink_bigVisible}`} onClick={() => {dispatch(utilsActions.setIsSidebarHidden(true));}}>
                         <img src={logo} alt='логотип' className={styles.sidebar__mainLinklogo} />
                     </Link>
-                    <Link to='/main' className={isSidebarHidden ? `${styles.sidebar__mainLink} ${styles.sidebar__mainLink_smallVisible}` : `${styles.sidebar__mainLink} ${styles.sidebar__mainLink_smallHidden}`}>
+                    <Link to='/main' className={isSidebarHidden ? `${styles.sidebar__mainLink} ${styles.sidebar__mainLink_smallVisible}` : `${styles.sidebar__mainLink} ${styles.sidebar__mainLink_smallHidden}`}  onClick={() => {dispatch(utilsActions.setIsSidebarHidden(true));}}>
                         <img src={smallLogo} alt='логотип' className={styles.sidebar__mainLinkSmallLogo} />
                     </Link>
                 </div>

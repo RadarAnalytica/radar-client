@@ -34,7 +34,7 @@ export const SerpSchema = ({ products }: { products: IProduct[] }) => {
                             color='white'
                             arrow={false}
                             key={index}
-                            destroyTooltipOnHide
+                            destroyOnHidden
                             style={{ width: '424px' }}
                         >
                             <div className={`${styles.schema__icon} ${styles.schema__icon_adv}`} />
@@ -48,7 +48,7 @@ export const SerpSchema = ({ products }: { products: IProduct[] }) => {
                             color='white'
                             arrow={false}
                             key={index}
-                            destroyTooltipOnHide
+                            destroyOnHidden
                             style={{ width: '424px' }}
                         >
                             <div className={`${styles.schema__icon}`} />

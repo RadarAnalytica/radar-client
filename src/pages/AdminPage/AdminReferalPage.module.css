@@ -63,7 +63,7 @@
 .mainData__title {
     margin: 0;
     padding: 0;
-    font-family: Mulish;
+    font-family: Manrope;
     font-weight: 500;
     font-size: 20px;
     line-height: 100%;
@@ -97,7 +97,7 @@
 }
 
 .mainData__rowText {
-    font-family: Mulish;
+    font-family: Manrope;
     font-weight: 700;
     font-size: 16px;
     line-height: 100%;
@@ -155,7 +155,7 @@
 }
 
 .userHistoryData__rowDate {
-    font-family: Mulish;
+    font-family: Manrope;
     font-weight: 700;
     font-size: 20px;
     line-height: 100%;
@@ -173,7 +173,7 @@
     }
 }
 .userHistoryData__rowText {
-    font-family: Mulish;
+    font-family: Manrope;
     font-weight: 700;
     font-size: 16px;
     line-height: 100%;

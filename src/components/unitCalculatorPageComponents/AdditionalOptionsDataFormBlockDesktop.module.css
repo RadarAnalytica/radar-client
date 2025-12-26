@@ -27,8 +27,8 @@
 .fieldset__title {
     margin: 0;
     padding: 0;
-    font-weight: 700;
-    font-size: 24px;
+    font-weight: 600;
+    font-size: 18px;
     line-height: 30px;
     color: #1A1A1A;
 
@@ -144,7 +144,7 @@
     margin: 0;
     padding: 0;
     font-weight: 700;
-    font-size: 18px;
+    font-size: 16px;
     line-height: 23px;
     color: #1A1A1A;
 }
@@ -165,7 +165,8 @@
 }
 
 .formItem__input {
-    
+    font-size: 14px !important;
+    height: 38px !important;
 }
 
 .radioLabel {
@@ -183,7 +184,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    font-family: Mulish;
+    font-family: Manrope;
     font-weight: 500;
     font-size: 14px;
     line-height: 18px;

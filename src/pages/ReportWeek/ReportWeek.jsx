@@ -29,6 +29,7 @@ import TableWidget from './widgets/TableWidget/TableWidget';
 import { useDemoMode } from '@/app/providers/DemoDataProvider';
 import { fetchFilters } from '@/redux/apiServicePagesFiltersState/filterActions';
 import { useLoadingProgress } from '@/service/hooks/useLoadingProgress';
+import DownloadButton from '@/components/DownloadButton';
 
 export default function ReportWeek() {
 	const { user, authToken } = useContext(AuthContext);
@@ -135,16 +136,16 @@ export default function ReportWeek() {
 		}
 	}, [filters.filters, weekOptions, isDemoMode]);
 
-	const updateDataReportWeek = async () => {
+	const updateDataReportWeek = async (filters, authToken) => {
 		setLoading(true);
 		progress.start();
 		try {
 			const response = await ServiceFunctions.getReportWeek(
 				authToken,
-				selectedRange,
-				activeBrand.id,
+				filters.selectedRange,
+				filters.activeBrand.id,
 				filters,
-				activeWeeks
+				filters.activeWeeks
 			);
 
 			// Собираем общий массив неделей по всем годам из ответа
@@ -289,12 +290,12 @@ export default function ReportWeek() {
 
 	useLayoutEffect(() => {
 		if (activeBrand && activeBrand.is_primary_collect && isFiltersLoaded) {
-			updateDataReportWeek();
+			updateDataReportWeek(filters, authToken);
 		}
 		if (activeBrand && !activeBrand.is_primary_collect && isFiltersLoaded) {
 			setLoading(false);
 		}
-	}, [activeBrand, selectedRange, activeBrandName, activeArticle, activeGroup, activeWeeks, isFiltersLoaded]);
+	}, [isFiltersLoaded, activeBrand, activeWeeks, activeBrandName, activeArticle, activeGroup]);
 
 	const popoverHandler = (status) => {
 		setIsPopoverOpen(status);
@@ -362,7 +363,7 @@ export default function ReportWeek() {
 			);
 			fileDownload(fileBlob, 'Отчет_по_неделям.xlsx');
 		} catch (e) {
-			console.error('Ошибка скачивания: ', error);
+			console.error('Ошибка скачивания: ', e);
 		} finally {
 			setDownloadLoading(false);
 		}
@@ -378,7 +379,7 @@ export default function ReportWeek() {
 
 			<section className={styles.page__content}>
 				<div className={styles.page__headerWrapper}>
-					<Header title="По неделям"></Header>
+					<Header title="По неделям" hasShadow={false}></Header>
 				</div>
 
 				{!loading && activeBrand?.is_primary_collect && !activeBrand?.is_self_cost_set && (
@@ -399,6 +400,10 @@ export default function ReportWeek() {
 						/>
 					</div>
 					<div className={styles.btns}>
+						<DownloadButton
+							handleDownload={handleDownload}
+							loading={loading || downloadLoading}
+						/>
 						<ConfigProvider
 							theme={{
 								token: {
@@ -415,7 +420,7 @@ export default function ReportWeek() {
 										primaryColor: '#5329FF',
 										paddingInlineLG: 9.5,
 										defaultShadow: false,
-										controlHeightLG: 45,
+										controlHeightLG: 38,
 									},
 								},
 							}}

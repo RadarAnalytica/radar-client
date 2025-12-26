@@ -184,7 +184,7 @@ export default function ExpenseFormModal({
 			let shops = [], brands = [], vendor_codes = [];
 
 			targetFilters.forEach(filter => {
-				if (!filter.shop?.is_primary_collect) return;
+				if (!filter.shop?.is_primary_collect || !filter.shop?.id) return;
 
 				const brandsOptions = filter.brands?.data?.map(brand => ({
 					shop: filter.shop?.id,
@@ -398,7 +398,7 @@ export default function ExpenseFormModal({
 											colorBgContainer: 'white',
 											colorBorder: '#5329FF1A',
 											borderRadius: 8,
-											fontFamily: 'Mulish',
+											fontFamily: 'Manrope',
 											fontSize: 12,
 											fontWeight: 500,
 											controlHeightLG: 40,
@@ -466,7 +466,7 @@ export default function ExpenseFormModal({
 												colorBgContainer: 'white !important',
 												colorBorder: '#5329FF1A',
 												borderRadius: 8,
-												fontFamily: 'Mulish',
+												fontFamily: 'Manrope',
 												fontSize: 12,
 												fontWeight: 500,
 												controlHeightLG: 40,
@@ -514,7 +514,7 @@ export default function ExpenseFormModal({
 													colorBgContainer: 'white',
 													colorBorder: '#5329FF1A',
 													borderRadius: 8,
-													fontFamily: 'Mulish',
+													fontFamily: 'Manrope',
 													fontSize: 12,
 													fontWeight: 500,
 													controlHeightLG: 40,
@@ -596,7 +596,7 @@ export default function ExpenseFormModal({
 													colorBgContainer: 'white',
 													colorBorder: '#5329FF1A',
 													borderRadius: 8,
-													fontFamily: 'Mulish',
+													fontFamily: 'Manrope',
 													fontSize: 12,
 												},
 												components: {
@@ -648,7 +648,7 @@ export default function ExpenseFormModal({
 												colorBgContainer: 'white !important',
 												colorBorder: '#5329FF1A',
 												borderRadius: 8,
-												fontFamily: 'Mulish',
+												fontFamily: 'Manrope',
 												fontSize: 12,
 												fontWeight: 500,
 												controlHeightLG: 40,
@@ -689,7 +689,7 @@ export default function ExpenseFormModal({
 										colorBgContainer: 'white',
 										colorBorder: '#5329FF1A',
 										borderRadius: 8,
-										fontFamily: 'Mulish',
+										fontFamily: 'Manrope',
 										fontSize: 12,
 									},
 									components: {
@@ -754,7 +754,7 @@ export default function ExpenseFormModal({
 										colorBgContainer: 'white',
 										colorBorder: '#5329FF1A',
 										borderRadius: 8,
-										fontFamily: 'Mulish',
+										fontFamily: 'Manrope',
 										fontSize: 12,
 										fontWeight: 500,
 										controlHeightLG: 40,
@@ -821,7 +821,7 @@ export default function ExpenseFormModal({
 													colorBgContainer: 'white',
 													colorBorder: '#5329FF1A',
 													borderRadius: 8,
-													fontFamily: 'Mulish',
+													fontFamily: 'Manrope',
 													fontSize: 12,
 												},
 												components: {
@@ -846,8 +846,8 @@ export default function ExpenseFormModal({
 												<MultiSelect
 													form={form}
 													hasSelectAll
-													optionsData={distributeOptions.shops?.map(el => ({
-														key: el.shop,
+													optionsData={distributeOptions.shops?.map((el, key) => ({
+														key,
 														value: JSON.stringify({ shop: el.shop, shop_name: el.shop_name }),
 														label: el.brand_name,
 													}))}
@@ -866,7 +866,7 @@ export default function ExpenseFormModal({
 												colorBgContainer: 'white',
 												colorBorder: '#5329FF1A',
 												borderRadius: 8,
-												fontFamily: 'Mulish',
+												fontFamily: 'Manrope',
 												fontSize: 12,
 											},
 											components: {
@@ -892,8 +892,8 @@ export default function ExpenseFormModal({
 												<MultiSelect
 													form={form}
 													hasSelectAll
-													optionsData={distributeOptions.vendor_codes?.map(el => ({
-														key: el.vendor_code,
+													optionsData={distributeOptions.vendor_codes?.map((el, key) => ({
+														key,
 														value: JSON.stringify(el),
 														label: el.vendor_code,
 													}))}
@@ -914,8 +914,8 @@ export default function ExpenseFormModal({
 												<MultiSelect
 													form={form}
 													hasSelectAll
-													optionsData={distributeOptions.brands?.map(el => ({
-														key: el.brand_name,
+													optionsData={distributeOptions.brands?.map((el, key) => ({
+														key,
 														value: JSON.stringify(el),
 														label: el.brand_name,
 													}))}
@@ -938,7 +938,7 @@ export default function ExpenseFormModal({
 											colorBgContainer: 'white !important',
 											colorBorder: '#5329FF1A',
 											borderRadius: 8,
-											fontFamily: 'Mulish',
+											fontFamily: 'Manrope',
 											fontSize: 12,
 											fontWeight: 500,
 											controlHeightLG: 40,

@@ -105,7 +105,8 @@ const QualityFieldset = () => {
                             token: {
                                 colorPrimary: '#5329FF',
                                 colorBorder: '#5329FF',
-                                fontFamily: 'Mulish'
+                                fontFamily: 'Manrope',
+                                fontSize: 14
                             },
                             components: {
                                 Input: {}

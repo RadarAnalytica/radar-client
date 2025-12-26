@@ -60,7 +60,7 @@
     gap: 12px;
 }
 .banner__title {
-    font-family: Mulish;
+    font-family: Manrope;
     font-weight: 700;
     font-size: 18px;
     line-height: 140%;
@@ -74,7 +74,7 @@
     }
 }
 .banner__mainLink {
-    font-family: Mulish;
+    font-family: Manrope;
     font-weight: 600;
     font-size: 16px;
     line-height: 160%;

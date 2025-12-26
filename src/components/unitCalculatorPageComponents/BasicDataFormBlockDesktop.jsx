@@ -15,7 +15,7 @@ const BasicDataFormBlockDesktop = ({ form, setMpMainFee, isProductFromToken, set
 
     const getSubjectsDataWSetter = async (value) => {
         setLoadingOptions(true);
-        const res = await getCalculatorSubjects({search_string: value.trim()});
+        const res = await getCalculatorSubjects({ search_string: value.trim() });
 
         if (res.rows) {
             const sortedRows = sortByRelevance(res.rows, value.trim(), 'name');
@@ -28,7 +28,7 @@ const BasicDataFormBlockDesktop = ({ form, setMpMainFee, isProductFromToken, set
 
     const debouncedDataFetch = useDebouncedFunction(getSubjectsDataWSetter, 500);
 
-    useEffect( () => {
+    useEffect(() => {
         getSubjectsDataWSetter('');
     }, []);
 
@@ -52,7 +52,7 @@ const BasicDataFormBlockDesktop = ({ form, setMpMainFee, isProductFromToken, set
     const autocompleteValidation = (_, value) => { //custom validation for autocomplete
         if (!value) {
             return Promise.reject('Пожалуйста, заполните это поле');
-        // } else if (!isOptionClicked && !isProductFromToken) {
+            // } else if (!isOptionClicked && !isProductFromToken) {
         } else if (isProductFromToken !== null && isProductFromToken === false) {
             return Promise.reject('Пожалуйста, выберите опцию');
         } else {
@@ -66,7 +66,7 @@ const BasicDataFormBlockDesktop = ({ form, setMpMainFee, isProductFromToken, set
         // setIsOptionClicked(false)
         // setInputValue(value)
         // if (value === '') {
-            // setAutocompleteOptions([])
+        // setAutocompleteOptions([])
         // }
         value && debouncedDataFetch(value);
     };
@@ -87,9 +87,9 @@ const BasicDataFormBlockDesktop = ({ form, setMpMainFee, isProductFromToken, set
             <Modal
                 open={error}
                 title='Что-то пошло не так'
-                onClose={() => {setError(false);}}
-                onOk={() => {setError(false);}}
-                onCancel={() => {setError(false);}}
+                onClose={() => { setError(false); }}
+                onOk={() => { setError(false); }}
+                onCancel={() => { setError(false); }}
                 footer={null}
             />
             <div className={styles.fieldset__header}>
@@ -100,27 +100,23 @@ const BasicDataFormBlockDesktop = ({ form, setMpMainFee, isProductFromToken, set
             <ConfigProvider
                 theme={{
                     token: {
-                        fontFamily: 'Mulish',
                         colorBgContainer: 'white',
-                        colorPrimary: 'black',
-                        colorPrimaryActive: 'black'
-                        //colorBorder: 'white',
-                        // colorTextLightSolid: '#000'
+                        colorBorder: '#5329FF1A',
+                        borderRadius: 8,
+                        fontFamily: 'Manrope',
+                        fontSize: 12,
+                        fontWeight: 500,
+                        controlHeightLG: 38
                     },
                     components: {
                         Select: {
-                            activeBorderColor: 'rgba(232, 232, 232, 1)',
-                            colorBorder: 'rgba(232, 232, 232, 1)',
-                            hoverBorderColor: 'rgba(232, 232, 232, 1)',
-                            activeOutlineColor: 'rgba(0,0,0,0)',
-                            selectorBg: product ? '#F2F2F2' : '',
-                            clearBg: 'black',
-                            optionSelectedBg: 'rgba(232, 232, 232, 1)',
-                        },
-                        Input: {
-                            activeBorderColor: '#5329FF',
-                            hoverBorderColor: '#5329FF',
-                            activeBg: '#F2F2F2',
+                            activeBorderColor: '#5329FF1A',
+                            activeOutlineColor: 'transparent',
+                            hoverBorderColor: '#5329FF1A',
+                            optionActiveBg: 'transparent',
+                            optionFontSize: 14,
+                            optionSelectedBg: 'transparent',
+                            optionSelectedColor: '#5329FF',
                         },
                     }
                 }}
@@ -139,26 +135,46 @@ const BasicDataFormBlockDesktop = ({ form, setMpMainFee, isProductFromToken, set
                         size='large'
                         placeholder='Введите название товара'
                         className={styles.formItem__input}
-                        style={{background: product ? '#F2F2F2' : ''}}
+                        //style={{ background: product ? '#F2F2F2' : '' }}
                         id='autocomp'
                         loading={loadingOptions}
-                        notFoundContent={<div style={{color: 'black'}}>
+                        notFoundContent={<div style={{ color: 'black' }}>
                             {!loadingOptions && autocompleteOptions && autocompleteOptions.length === 0 && 'Ничего не найдено'}
                             {loadingOptions && 'Идет загрузка...'
-                        }
+                            }
                         </div>}
+                        suffixIcon={
+                            <svg
+                                style={{
+                                    // transform: 'translateY(-50%)',
+                                    width: '14px',
+                                    height: '9px',
+                                    pointerEvents: 'none',
+                                }}
+                                viewBox='0 0 28 17'
+                                fill='none'
+                                xmlns='http://www.w3.org/2000/svg'
+                            >
+                                <path
+                                    d='M2 2L14 14L26 2'
+                                    stroke='rgba(140, 140, 140, 1)'
+                                    strokeWidth='4'
+                                    strokeLinecap='round'
+                                />
+                            </svg>
+                        }
                         allowClear={{
                             clearIcon: (
-                                <div style={{ marginLeft: -20, background: 'transparent'}}>
+                                <div style={{ marginLeft: -20, background: 'transparent' }}>
                                     <svg width="10" height="10" viewBox="0 0 15 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path fillRule="evenodd" clipRule="evenodd" d="M14.7074 2.60356C15.0979 2.21304 15.0979 1.57987 14.7074 1.18935C14.3168 0.798823 13.6837 0.798823 13.2931 1.18935L7.58602 6.89646L2.08601 1.39645C1.69549 1.00593 1.06232 1.00593 0.671799 1.39645C0.281275 1.78698 0.281275 2.42014 0.671799 2.81067L5.96469 8.10356L0.671799 13.3965C0.281275 13.787 0.281275 14.4201 0.671799 14.8107C1.06232 15.2012 1.69549 15.2012 2.08601 14.8107L7.79313 9.10355L13.2931 14.6036C13.6837 14.9941 14.3168 14.9941 14.7074 14.6036C15.0979 14.213 15.0979 13.5799 14.7074 13.1893L9.41446 7.89645L14.7074 2.60356Z" fill="currentColor"/>
+                                        <path fillRule="evenodd" clipRule="evenodd" d="M14.7074 2.60356C15.0979 2.21304 15.0979 1.57987 14.7074 1.18935C14.3168 0.798823 13.6837 0.798823 13.2931 1.18935L7.58602 6.89646L2.08601 1.39645C1.69549 1.00593 1.06232 1.00593 0.671799 1.39645C0.281275 1.78698 0.281275 2.42014 0.671799 2.81067L5.96469 8.10356L0.671799 13.3965C0.281275 13.787 0.281275 14.4201 0.671799 14.8107C1.06232 15.2012 1.69549 15.2012 2.08601 14.8107L7.79313 9.10355L13.2931 14.6036C13.6837 14.9941 14.3168 14.9941 14.7074 14.6036C15.0979 14.213 15.0979 13.5799 14.7074 13.1893L9.41446 7.89645L14.7074 2.60356Z" fill="currentColor" />
                                     </svg>
                                 </div>
                             )
                         }}
                         onSearch={handleSearch}
                         onSelect={handleSelect}
-                        options={autocompleteOptions && autocompleteOptions.length > 0 ? autocompleteOptions.map(_ => ({ value: _.name})) : undefined}
+                        options={autocompleteOptions && autocompleteOptions.length > 0 ? autocompleteOptions.map(_ => ({ value: _.name })) : undefined}
                     />
                 </Form.Item>
             </ConfigProvider>
@@ -169,7 +185,7 @@ const BasicDataFormBlockDesktop = ({ form, setMpMainFee, isProductFromToken, set
                     label='Цена товара'
                     className={isSPP ? styles.formItem : `${styles.formItem} ${styles.formItem_wide}`}
                     getValueProps={(value) => {
-                        const transformedValue = {value: value ? value + ' ₽' : value};
+                        const transformedValue = { value: value ? value + ' ₽' : value };
                         return transformedValue;
                     }}
                     normalize={(value, prevValue) => {
@@ -180,12 +196,12 @@ const BasicDataFormBlockDesktop = ({ form, setMpMainFee, isProductFromToken, set
                     }}
                     rules={
                         [
-                            { required: true, message: 'Пожалуйста, заполните это поле!'},
+                            { required: true, message: 'Пожалуйста, заполните это поле!' },
                         ]
                     }
                 >
                     <Input
-                        style={{background: product_price ? '#F2F2F2' : ''}}
+                        //style={{ background: product_price ? '#F2F2F2' : '' }}
                         size='large'
                         placeholder='Укажите цену товара'
                         className={styles.formItem__input}
@@ -196,7 +212,7 @@ const BasicDataFormBlockDesktop = ({ form, setMpMainFee, isProductFromToken, set
                     className={styles.formItem}
                     name='SPP'
                     getValueProps={(value) => {
-                        const transformedValue = {value: value ? value + ' %' : value};
+                        const transformedValue = { value: value ? value + ' %' : value };
                         return transformedValue;
                     }}
                     normalize={(value, prevValue) => {
@@ -207,12 +223,12 @@ const BasicDataFormBlockDesktop = ({ form, setMpMainFee, isProductFromToken, set
                     }}
                     rules={
                         [
-                            { required: true, message: 'Пожалуйста, заполните это поле!'},
+                            { required: true, message: 'Пожалуйста, заполните это поле!' },
                         ]
                     }
                 >
                     <Input
-                        style={{background: SPP ? '#F2F2F2' : ''}}
+                        //style={{ background: SPP ? '#F2F2F2' : '' }}
                         size='large'
                         placeholder='Укажите СПП, %'
                         className={styles.formItem__input}
@@ -252,7 +268,7 @@ const BasicDataFormBlockDesktop = ({ form, setMpMainFee, isProductFromToken, set
                 label='Закупочная цена'
                 className={styles.formItem}
                 getValueProps={(value) => {
-                    const transformedValue = {value: value ? value + ' ₽' : value};
+                    const transformedValue = { value: value ? value + ' ₽' : value };
                     return transformedValue;
                 }}
                 normalize={(value, prevValue) => {
@@ -263,12 +279,12 @@ const BasicDataFormBlockDesktop = ({ form, setMpMainFee, isProductFromToken, set
                 }}
                 rules={
                     [
-                        { required: true, message: 'Пожалуйста, заполните это поле!'},
+                        { required: true, message: 'Пожалуйста, заполните это поле!' },
                     ]
                 }
             >
                 <Input
-                    style={{background: product_cost ? '#F2F2F2' : ''}}
+                    //style={{ background: product_cost ? '#F2F2F2' : '' }}
                     size='large'
                     placeholder='Укажите цену товара'
                     className={styles.formItem__input}
@@ -281,7 +297,7 @@ const BasicDataFormBlockDesktop = ({ form, setMpMainFee, isProductFromToken, set
                     name='package_length'
                     className={styles.formItem}
                     getValueProps={(value) => {
-                        const transformedValue = {value: value ? value + ' см' : value};
+                        const transformedValue = { value: value ? value + ' см' : value };
                         return transformedValue;
                     }}
                     normalize={(value, prevValue) => {
@@ -292,12 +308,12 @@ const BasicDataFormBlockDesktop = ({ form, setMpMainFee, isProductFromToken, set
                     }}
                     rules={
                         [
-                            { required: true, message: 'Пожалуйста, заполните это поле!'},
+                            { required: true, message: 'Пожалуйста, заполните это поле!' },
                         ]
                     }
                 >
                     <Input
-                        style={{background: package_length ? '#F2F2F2' : '', alignSelf: 'end'}}
+                        style={{ alignSelf: 'end' }}
                         size='large'
                         placeholder='Укажите длину упаковки'
                         className={styles.formItem__input}
@@ -308,7 +324,7 @@ const BasicDataFormBlockDesktop = ({ form, setMpMainFee, isProductFromToken, set
                     name='package_width'
                     className={styles.formItem}
                     getValueProps={(value) => {
-                        const transformedValue = {value: value ? value + ' см' : value};
+                        const transformedValue = { value: value ? value + ' см' : value };
                         return transformedValue;
                     }}
                     normalize={(value, prevValue) => {
@@ -319,12 +335,12 @@ const BasicDataFormBlockDesktop = ({ form, setMpMainFee, isProductFromToken, set
                     }}
                     rules={
                         [
-                            { required: true, message: 'Пожалуйста, заполните это поле!'},
+                            { required: true, message: 'Пожалуйста, заполните это поле!' },
                         ]
                     }
                 >
                     <Input
-                        style={{background: package_width ? '#F2F2F2' : ''}}
+                        //style={{ background: package_width ? '#F2F2F2' : '' }}
                         size='large'
                         placeholder='Укажите ширину упаковки'
                         className={styles.formItem__input}
@@ -335,7 +351,7 @@ const BasicDataFormBlockDesktop = ({ form, setMpMainFee, isProductFromToken, set
                     className={styles.formItem}
                     name='package_height'
                     getValueProps={(value) => {
-                        const transformedValue = {value: value ? value + ' см' : value};
+                        const transformedValue = { value: value ? value + ' см' : value };
                         return transformedValue;
                     }}
                     normalize={(value, prevValue) => {
@@ -346,12 +362,12 @@ const BasicDataFormBlockDesktop = ({ form, setMpMainFee, isProductFromToken, set
                     }}
                     rules={
                         [
-                            { required: true, message: 'Пожалуйста, заполните это поле!'},
+                            { required: true, message: 'Пожалуйста, заполните это поле!' },
                         ]
                     }
                 >
                     <Input
-                        style={{background: package_height ? '#F2F2F2' : ''}}
+                       // style={{ background: package_height ? '#F2F2F2' : '' }}
                         size='large'
                         placeholder='Укажите высоту упаковки'
                         className={styles.formItem__input}

@@ -128,7 +128,7 @@ const customCellRender = (value, record, index, dataIndex) => {
 };
 
 
-const TableWidget = ({ stockAnalysisFilteredData, loading, progress, config, initPaginationState, hasShadow = true, configVersion, configKey, maxHeight }) => {
+const TableWidget = React.memo(({ stockAnalysisFilteredData, loading, progress, config, initPaginationState, hasShadow = true, configVersion, configKey, maxHeight }) => {
     const containerRef = useRef(null); // реф скролл-контейнера (используется чтобы седить за позицией скрола)
     const [tableData, setTableData] = useState(); // данные для рендера таблицы
     const [sortState, setSortState] = useState(initSortState); // стейт сортировки (см initSortState)
@@ -380,6 +380,7 @@ const TableWidget = ({ stockAnalysisFilteredData, loading, progress, config, ini
             </div>
         </div>
     );
-};
+});
+TableWidget.displayName = 'TableWidget';
 
 export default TableWidget;

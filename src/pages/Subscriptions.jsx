@@ -19,6 +19,7 @@ import { getDayDeclension } from "@/service/utils";
 import { fetchApi } from "@/service/fetchApi";
 import { useDemoMode } from "@/app/providers";
 import NoSubscriptionWarningBlock from '@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock';
+import { SearchBlock } from "@/features";
 
 const Subscriptions = () => {
   const navigate = useNavigate();
@@ -48,7 +49,7 @@ const Subscriptions = () => {
     const checkSubscriptions = async () => {
       const data = await fetchSubscriptions();
       if (data.length === 0) {
-        navigate('/tariffs');
+        //navigate('/tariffs');
       }
     };
 
@@ -162,13 +163,26 @@ const Subscriptions = () => {
 
       <div className="sub-page-content" style={{ padding: '0 32px' }}>
         <div style={{ margin: '20px 0' }}>
-          <Header title={"Моя подписка"} />
+          <Header title={"Моя подписка"} hasShadow={false} />
         </div>
 
         {isDemoMode && <NoSubscriptionWarningBlock />}
 
+        {/* <SearchBlock
+          title={<span style={{ fontSize: '12px' }}>Промокод</span>}
+          hasBackground={false}
+          submitHandler={(value) => console.log(value)}
+          placeholder='Если есть'
+          searchButtonText='Применить'
+          demoModeValue=''
+          style={{ padding: 0, gap: 8, maxWidth: '414px' }}
+          buttonIcon={null}
+          inputPrefix={null}
+          buttonType="secondary"
+        /> */}
+
         <div className="container dash-container sub-page-grid">
-          {subscriptions.map((item) => {
+          {subscriptions?.map((item) => {
             const activeText = item.active ? "Активна" : "Неактивна";
             const activeColor = item.active ? "#00B69B" : "#808080";
             const activeWidth = item.active ? 120 : 140;
@@ -288,3 +302,11 @@ const Subscriptions = () => {
 };
 
 export default Subscriptions;
+
+
+
+const PromocodeBlock = () => {
+  return (
+    <></>
+  )
+}

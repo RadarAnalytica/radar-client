@@ -22,7 +22,7 @@
 }
 
 .label {
-  font-family: Mulish;
+  font-family: Manrope;
   font-weight: 500;
   font-size: 12px;
   line-height: 100%;
@@ -147,7 +147,7 @@
   padding: 0px 16px 0px 16px;
   border-radius: 8px;
   cursor: pointer;
-  font-family: Mulish;
+  font-family: Manrope;
   font-weight: 400;
   font-size: 16px;
   line-height: 1.5;
@@ -166,7 +166,7 @@
   appearance: none;
   cursor: pointer;
   /* padding: 0px 32px 0px 16px; */
-  font-family: Mulish;
+  font-family: Manrope;
   font-weight: 400;
   font-size: 16px;
   line-height: 1.5;
@@ -195,6 +195,10 @@
   max-height: 38px;
   min-height: 38px;
   box-sizing: border-box;
+}
+
+.mainSelectWrapper :global(input) {
+  border: none !important;
 }
 
 .selectedOption {

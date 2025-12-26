@@ -78,7 +78,7 @@ export default function TableSettingModal({
 		<ConfigProvider
 			theme={{
 				token: {
-					fontFamily: 'Mulish, sans-serif',
+					fontFamily: 'Manrope, sans-serif',
 				},
 				components: {
 					Modal: {
