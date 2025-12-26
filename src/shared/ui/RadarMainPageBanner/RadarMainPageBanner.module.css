@@ -361,6 +361,9 @@
     bottom: 0;
     z-index: 1;
 
+    @media (max-width: 1430px) {
+       right: -140px
+    }
     @media (max-width: 1390px) {
        right: -10px
     }

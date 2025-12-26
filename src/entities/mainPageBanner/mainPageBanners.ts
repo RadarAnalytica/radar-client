@@ -18,7 +18,8 @@ export const noSubBanners = [
         hasLeadBlock: true,
         leadBlockButtonAction: () => {},
         background: noSubsBg,
-        mainImage: ['nosub_main-400w', 'nosub_main-800w', 'nosub_main-1200w']
+        mainImage: ['nosub_main-400w', 'nosub_main-800w', 'nosub_main-1200w'],
+        imageOverflow: false
     }
 ]
 

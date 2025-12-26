@@ -920,6 +920,7 @@ export const ServiceFunctions = {
 		const res = await fetch(`${URL}/api/product/self-costs/template`, {
 			method: 'POST',
 			headers: {
+				"content-type": "application/json",
 				accept: 'application/json',
 				authorization: 'JWT ' + token,
 			},
