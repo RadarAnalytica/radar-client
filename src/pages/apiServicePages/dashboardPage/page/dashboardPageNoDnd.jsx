@@ -32,6 +32,7 @@ import { useDemoMode } from "@/app/providers";
 import { RadarBar } from '@/shared';
 import { fileDownload } from '@/service/utils';
 import DownloadButton from '@/components/DownloadButton';
+import { GeneralLayout } from '@/shared';
 
 
 const MainContent = React.memo(({
@@ -235,23 +236,15 @@ const _DashboardPage = () => {
     }, [activeBrand, isFiltersLoaded, selectedRange, activeBrandName, activeArticle, activeGroup]);
 
     return (
-        <main className={styles.page}>
-            <MobilePlug />
-
-            <section className={styles.page__sideNavWrapper}>
-                <Sidebar />
-            </section>
-
+        <GeneralLayout
+            headerProps={{
+                title: 'Сводка продаж',
+                howToLink: "https://radar.usedocs.com/article/75916",
+                howToLinkText: "Как проверить данные?",
+                hasShadow: false
+            }}
+        >
             <section className={styles.page__content}>
-                <div className={styles.page__headerWrapper}>
-                    <Header
-                        title='Сводка продаж'
-                        howToLink="https://radar.usedocs.com/article/75916"
-                        howToLinkText="Как проверить данные?"
-                        hasShadow={false}
-                    />
-                </div>
-
                 {activeBrand && activeBrand.is_primary_collect && !activeBrand.is_self_cost_set && (
                     <SelfCostWarningBlock
                         shopId={activeBrand?.id}
@@ -289,7 +282,7 @@ const _DashboardPage = () => {
                     stockAnalysisData={pageState.stockAnalysisData}
                 />
             </section>
-        </main>
+        </GeneralLayout>
     );
 };
 
