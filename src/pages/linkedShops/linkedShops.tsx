@@ -180,6 +180,7 @@ const LinkedShopsPage = () => {
                             editButtonAction={() => setAddAndEditModalState({ type: 'edit', shop })}
                             deleteButtonAction={() => setAddAndEditModalState({ type: 'delete', shop })}
                             setTaxAction={() => setAddAndEditModalState({ type: 'tax', shop })}
+                            isDemoMode={isDemoMode}
                         />
                     </div>
                 ))}
@@ -428,6 +429,8 @@ const EditAndCreateModal = ({
                                     <Input
                                         placeholder='Что-то вроде: GJys67G7sbNw178F'
                                         size='large'
+                                        // disabled={addAndEditModalState?.shop?.is_valid && addAndEditModalState?.shop?.is_active && addAndEditModalState?.shop?.is_primary_collect}
+                                        disabled={true}
                                     />
                                 </Form.Item>
                                 <div className={styles.addShopBlock__buttonHelper}>
@@ -480,7 +483,8 @@ const EditAndCreateModal = ({
                                         disabled={addShopRequestStatus.isError}
                                         loading={addShopRequestStatus.isLoading}
                                     >
-                                        Добавить
+                                        {addAndEditModalState?.type !== 'edit' && 'Добавить'}
+                                        {addAndEditModalState?.type === 'edit' && 'Сохранить'}
                                     </Button>
                                 </div>
                                 {addShopRequestStatus.isError &&
