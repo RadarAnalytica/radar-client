@@ -123,13 +123,13 @@ export const RadarMainPageBanner: React.FC<IBannerProps> = ({
                     )}
                     {mainImage[1] && mainImage[2] && (
                         <source 
-                            media={imageOverflow ? "(min-width: 1391px) and (max-width: 1700px)" : "(min-width: 1471px) and (max-width: 1700px)"}
+                            media={imageOverflow ? "(min-width: 1431px) and (max-width: 1700px)" : "(min-width: 1471px) and (max-width: 1700px)"}
                             srcSet={`/main_page_banners/${mainImage[1]}.png 800w, /main_page_banners/${mainImage[2]}.png 1200w`}
                         />
                     )}
                     {mainImage[0] && mainImage[1] && (
                         <source 
-                            media={imageOverflow ? "(max-width: 1390px)" : "(max-width: 1470px)"}
+                            media={imageOverflow ? "(max-width: 1430px)" : "(max-width: 1470px)"}
                             srcSet={`/main_page_banners/${mainImage[0]}.png 400w, /main_page_banners/${mainImage[1]}.png 800w`}
                         />
                     )}
