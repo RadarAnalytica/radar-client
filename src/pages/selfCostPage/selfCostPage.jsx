@@ -142,6 +142,7 @@ const SelfCostPage = () => {
                                 }}
                                 isLoading={dataStatus.isLoading}
                                 isDemoMode={isDemoMode}
+                                filters={filters}
                             />
                         </div>
 
@@ -186,7 +187,7 @@ const SelfCostPage = () => {
 };
 
 
-const SelfCostXLSXuploadComponent = ({ authToken, updateFunc, isLoading, isDemoMode }) => {
+const SelfCostXLSXuploadComponent = ({ authToken, updateFunc, isLoading, isDemoMode, filters }) => {
 
     const [isUploadModalVisible, setIsUploadModalVisible] = useState(false);
     const [file, setFile] = useState(null);
@@ -199,7 +200,7 @@ const SelfCostXLSXuploadComponent = ({ authToken, updateFunc, isLoading, isDemoM
         setStatus({ ...initDataStatus, isLoading: true });
         setResult(null);
         try {
-            const fileBlob = await ServiceFunctions.getCostTemplateSSPage(authToken);
+            const fileBlob = await ServiceFunctions.getCostTemplateSSPage(authToken, filters);
             fileDownload(fileBlob, 'Себестоимость.xlsx');
         } catch (error) {
             setStatus({ ...initDataStatus, isError: true, message: 'Что-то пошло не так :( Попробуйте оновить страницу' });
