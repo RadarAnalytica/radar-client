@@ -147,8 +147,8 @@ export const RadarShopCard = ({
 
             {/* footer */}
             <div className={styles.widget__footer}>
-                {getShopStatus(shop.is_active, shop.is_valid, shop.is_primary_collect)?.status === 'active' &&
-                    <div className={styles.widget__paramsBlock}>
+                <div className={styles.widget__paramsBlock}>
+                    {getShopStatus(shop.is_active, shop.is_valid, shop.is_primary_collect)?.status === 'active' &&
                         <div className={styles.widget__shopParam}>
                             <span>Себестоимость</span>
                             <div className={styles.widget__shopParamItem} style={{ color: getShopParamColor(shop?.is_self_cost_set) }}>
@@ -161,8 +161,9 @@ export const RadarShopCard = ({
                                 </svg>
                             </Link>
                         </div>
+                    }
 
-                        <div className={styles.widget__shopParam}>
+                    {/* <div className={styles.widget__shopParam}>
                             <span>Налог</span>
                             <div className={styles.widget__shopParamItem} style={{ color: getShopParamColor((shop?.tax !== undefined && shop?.tax !== null)) }}>
                                 {(shop?.tax !== undefined && shop?.tax !== null) ? 'Установлен' : 'Не установлен'}
@@ -174,9 +175,8 @@ export const RadarShopCard = ({
                                     <path d="M6 9.85702C5.72386 9.85702 5.5 10.0809 5.5 10.357C5.5 10.6332 5.72386 10.857 6 10.857H10.6667C10.9428 10.857 11.1667 10.6332 11.1667 10.357C11.1667 10.0809 10.9428 9.85702 10.6667 9.85702H6Z" fill="#5329FF" />
                                 </svg>
                             </button>
-                        </div>
-                    </div>
-                }
+                        </div> */}
+                </div>
                 {getShopStatus(shop.is_active, shop.is_valid, shop.is_primary_collect)?.render}
             </div>
         </div>

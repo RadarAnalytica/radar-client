@@ -10,7 +10,7 @@ import { RadarShopCard } from '@/features';
 import { Input, Form, Button, ConfigProvider, Modal, InputNumber } from 'antd';
 import { addShop } from '../../service/api/api';
 import WbIcon from "../../assets/WbIcon";
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { editShop } from '@/redux/editShop/editShopActions';
 import { deleteShop } from '@/redux/deleteShop/deleteShopActions';
 import { fetchFilters } from '@/redux/apiServicePagesFiltersState/filterActions';
@@ -34,7 +34,9 @@ const LinkedShopsPage = () => {
     const [addAndEditModalState, setAddAndEditModalState] = useState<{ type: 'edit' | 'add' | 'delete' | 'tax', shop?: Record<string, any> } | null>(null);
     const [addShopRequestStatus, setAddShopRequestStatus] = useState(initRequestStatus);
     const [isMiniCardVisible, setIsMiniCardVisible] = useState(false);
+    const [isSuccessModalVisible, setIsSuccessModalVisible] = useState(true);
     const addShopBlockRef = useRef<HTMLDivElement>(null);
+    const lastOperationTypeRef = useRef<'add' | 'edit' | 'delete' | 'tax' | null>(null);
     const dispatch = useAppDispatch();
     const shops = useAppSelector((state) => state.shopsSlice.shops);
     const firstMountRef = useRef(true)
@@ -42,6 +44,7 @@ const LinkedShopsPage = () => {
     const addOrEditSubmitHandler = async (fields) => {
         setAddShopRequestStatus({ ...initRequestStatus, isLoading: true })
         if (addAndEditModalState?.type === 'add' && fields) {
+            lastOperationTypeRef.current = 'add';
             const addShopData = {
                 brandName: fields.name,
                 tkn: fields.token,
@@ -53,14 +56,17 @@ const LinkedShopsPage = () => {
                     res = await res.json();
                     //@ts-ignore
                     setAddShopRequestStatus({ ...initRequestStatus, isLoading: false, isError: true, message: res.message || 'Не удалось добавить магазин' });
+                    lastOperationTypeRef.current = null;
                     return;
                 }
                 setAddShopRequestStatus({ ...initRequestStatus, isLoading: false, isSuccess: true, message: 'Магазин успешно добавлен' });
             } catch {
                 setAddShopRequestStatus({ ...initRequestStatus, isLoading: false, isError: true, message: 'Что-то пошло не так :(' });
+                lastOperationTypeRef.current = null;
             }
         }
         if (addAndEditModalState?.type === 'edit' && addAndEditModalState?.shop && fields) {
+            lastOperationTypeRef.current = 'edit';
             const editData = {
                 shopId: addAndEditModalState.shop.id,
                 name: fields.name,
@@ -71,6 +77,7 @@ const LinkedShopsPage = () => {
             dispatch(editShop({ editData, setAddShopRequestStatus, initRequestStatus }));
         }
         if (addAndEditModalState?.type === 'delete' && addAndEditModalState?.shop) {
+            lastOperationTypeRef.current = 'delete';
             const deleteShopData = {
                 shop: addAndEditModalState?.shop,
                 authToken
@@ -79,6 +86,7 @@ const LinkedShopsPage = () => {
             dispatch(deleteShop({ deleteShopData, setAddShopRequestStatus, initRequestStatus }));
         }
         if (addAndEditModalState?.type === 'tax' && addAndEditModalState?.shop && fields) {
+            lastOperationTypeRef.current = 'tax';
             // логика добавления налога здесь
             setAddShopRequestStatus({ ...initRequestStatus, isLoading: false, isSuccess: true, message: 'Налог успешно установлен' });
         }
@@ -102,10 +110,17 @@ const LinkedShopsPage = () => {
             dispatch(fetchShops(authToken))
             //@ts-ignore
             dispatch(fetchFilters(authToken));
+            // Показываем модальное окно успешного добавления только если это было добавление нового магазина
+            if (lastOperationTypeRef.current === 'add') {
+                setIsSuccessModalVisible(true);
+                setAddAndEditModalState(null);
+                lastOperationTypeRef.current = null;
+            }
             setAddShopRequestStatus(initRequestStatus);
         }
         if (addShopRequestStatus.isError) {
             timeout = setTimeout(() => {setAddShopRequestStatus(initRequestStatus);}, 2000);
+            lastOperationTypeRef.current = null;
         }
     }, [addShopRequestStatus]);
 
@@ -240,6 +255,12 @@ const LinkedShopsPage = () => {
                 addAndEditModalState={addAndEditModalState}
                 addShopRequestStatus={addShopRequestStatus}
                 submitHandler={addOrEditSubmitHandler}
+            />
+
+            {/* Success modal */}
+            <SuccessAddShopModal
+                isVisible={isSuccessModalVisible}
+                onClose={() => setIsSuccessModalVisible(false)}
             />
 
             {/* Mini add shop card */}
@@ -732,6 +753,89 @@ const TaxSetupModal = ({
                             </div>
                         </Form>
                     </ConfigProvider>
+                </div>
+            </Modal>
+        </ConfigProvider>
+    );
+};
+
+const SuccessAddShopModal = ({ isVisible, onClose }) => {
+    const navigate = useNavigate();
+
+    return (
+        <ConfigProvider
+            theme={{
+                token: {},
+                components: {
+                    Modal: {
+                        borderRadiusLG: 20,
+                    }
+                }
+            }}
+        >
+            <Modal
+                open={isVisible}
+                closeIcon={
+                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M6 4.66688L10.6669 0L12 1.33312L7.33312 6L12 10.6669L10.6669 12L6 7.33312L1.33312 12L0 10.6669L4.66688 6L0 1.33312L1.33312 0L6 4.66688Z" fill="#1A1A1A" fillOpacity="0.5" />
+                    </svg>
+                }
+                footer={null}
+                width={600}
+                centered
+                onCancel={onClose}
+                closable={true}
+            >
+                <div className={styles.successModal}>
+                    <div className={styles.successModal__header}>
+                        <div className={styles.successModal__iconWrapper}>
+                            <svg width="32" height="32" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect width="60" height="60" rx="12" fill="#00B69B" fillOpacity="0.1" />
+                                <path d="M26.6248 35.8244L43.4153 19L46 21.5878L26.6248 41L15 29.353L17.5829 26.7652L26.6248 35.8244Z" fill="#00B69B" />
+                            </svg>
+                        </div>
+                        <h2 className={styles.successModal__title}>Токен успешно добавлен</h2>
+                    </div>
+
+                    <div className={styles.successModal__content}>
+                        <p className={styles.successModal__text}>
+                            Ваш токен успешно подключен к сервису и находится на проверке. В ближайшее время данные начнут отображаться в разделе{' '}
+                            <Link to="/dashboard" className={styles.successModal__link} onClick={onClose}>
+                                Сводка продаж
+                            </Link>
+                        </p>
+
+                        {/* <div className={styles.successModal__buttonWrapper}>
+                            <ConfigProvider
+                                theme={{
+                                    token: {
+                                        colorPrimary: '#5329FF',
+                                        fontSize: 14,
+                                        fontFamily: 'Manrope',
+                                        borderRadius: 8,
+                                        controlHeight: 46
+                                    },
+                                    components: {
+                                        Button: {
+                                            controlHeight: 46,
+                                        }
+                                    }
+                                }}
+                            >
+                                <Button
+                                    type='primary'
+                                    size='large'
+                                    style={{ fontSize: 14, fontWeight: 600, padding: '0 16px' }}
+                                    onClick={() => {
+                                        onClose();
+                                        navigate('/selfcost');
+                                    }}
+                                >
+                                    Внести себестоимость товаров
+                                </Button>
+                            </ConfigProvider>
+                        </div> */}
+                    </div>
                 </div>
             </Modal>
         </ConfigProvider>

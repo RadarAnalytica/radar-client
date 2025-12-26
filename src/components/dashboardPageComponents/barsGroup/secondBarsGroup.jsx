@@ -4,6 +4,7 @@ import { useAppSelector } from '../../../redux/hooks';
 import { RadarBar } from '../../../shared/ui/RadarBar/RadarBar';
 import TurnoverBlock from '../blocks/turnoverBlock/turnoverBlock';
 import { SmallButton } from '@/shared';
+import { Link } from 'react-router-dom';
 
 const SecondBarsGroup = ({ dataDashBoard, loading, selectedRange, activeBrand, authToken, filters }) => {
     return (
@@ -175,6 +176,7 @@ const SecondBarsGroup = ({ dataDashBoard, loading, selectedRange, activeBrand, a
                     isLoading={loading}
                     hasColoredBackground
                     negativeDirection='up'
+                    midValue={<Link className={styles.smallButton} to='/operating-expenses'>Изменить</Link>}
                     compareValue={{
                         comparativeValue: dataDashBoard?.operating_expense_compare,
                     }}
@@ -243,6 +245,7 @@ const SecondBarsGroup = ({ dataDashBoard, loading, selectedRange, activeBrand, a
                     title='Себестоимость проданных товаров'
                     tooltipText='Суммарная себестоимость проданных товаров (основана на данных раздела "Себестоимость"'
                     mainValue={dataDashBoard?.costPriceAmount}
+                    midValue={<Link className={styles.smallButton} to='/selfcost'>Изменить</Link>}
                     neuturalComparsionColor
                     mainValueUnits='₽'
                     compareValue={{
