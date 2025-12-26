@@ -27,7 +27,7 @@ const AfterPayment = ({ devMode }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [status, setStatus] = useState(location?.state?.paymentStatus && location?.state?.paymentStatus === 'success' ? true : false);
-  const [error, setError] = useState('Оплата прошла успешно, но нам не удалось обновить ваши данные. Пожалуйста, перезагрузите страницу!')
+  const [error, setError] = useState(null)
 
 
   const refreshUserToken = async () => {

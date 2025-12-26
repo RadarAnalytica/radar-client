@@ -178,16 +178,13 @@ export const PricingScreen = () => {
 
      // -------------------------------- pay function -------------------------------//
      const pay = async (_) => {
-        if (isDemoMode) {
-            await logout();
-            return;
-        }
-
+        // if (isDemoMode) {
+        //     await logout();
+        //     return;
+        // }
         const selectedPeriod = _.value;
         const refresh_result = await refreshUserToken();
-        // console.log('refresh_result', refresh_result);
 
-        // localStorage.setItem("authToken", refresh_result);
         const decodedUser = jwtDecode(refresh_result);
         let newTrialExpired;
         if (decodedUser.is_test_used) {
