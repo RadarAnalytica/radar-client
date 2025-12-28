@@ -1,10 +1,64 @@
+.topActions {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 16px;
+}
+
+.actionLink {
+    background: none;
+    border: none;
+    color: #5329FF;
+    font-size: 16px;
+    font-family: 'Manrope', sans-serif;
+    cursor: pointer;
+    padding: 0;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.actionLink:hover {
+    color: #7a52ff;
+}
+
+.actionLink:active {
+    color: #3818d9;
+}
+
+.searchContainer {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 16px;
+    align-items: center;
+}
+
+.searchInput {
+    flex: 1;
+}
+
+.searchButton {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.clearButton {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .list {
     padding-bottom: 12px;
     width: 100%;
     max-height: 496px;
     overflow: auto;
-    row-gap: 12px;
-    column-gap: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
 }
 
 .list::-webkit-scrollbar {
@@ -25,15 +79,58 @@
     border-radius: 6px;
 }
 
-.item {
-    padding-top: 2px;
-    padding-bottom: 2px;
-    width: 30%;
-    max-width: 30%;
+.sortableItem {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 0;
+    cursor: move;
+}
+
+.sortableItem:hover {
+    background-color: #f5f5f5;
+    border-radius: 8px;
+}
+
+.dragHandle {
+    cursor: grab;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px;
+    user-select: none;
+}
+
+.dragHandle:active {
+    cursor: grabbing;
+}
+
+.checkbox {
+    flex: 1;
+    font-size: 16px;
 }
 
 .controls {
-    flex: 1 0 30%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     margin-top: 12px;
-    margin-left: auto;
+    width: 100%;
+}
+
+.cancelButton {
+    background-color: #e7e1fe;
+    border-color: #e7e1fe;
+    color: #5329FF;
+}
+
+.cancelButton:hover {
+    background-color: #f3f0ff;
+    border-color: #f3f0ff;
+    color: #5329FF;
+}
+
+.saveButton {
+    background-color: #5329FF;
+    border-color: #5329FF;
 }

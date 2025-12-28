@@ -101,7 +101,7 @@ const MainChart = memo(({ title, loading, dataDashBoard, selectedRange, dragHand
                     <div className={styles.chart__content}>
                         {chartData && chartData.labels.length > 0 &&
                             <Chart
-                                type='bar'
+                                type='line'
                                 data={chartData}
                                 width={100}
                                 height={40}
