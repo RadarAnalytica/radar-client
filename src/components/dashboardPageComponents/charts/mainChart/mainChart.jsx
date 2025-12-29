@@ -24,6 +24,7 @@ ChartJS.register(
 );
 
 const MainChart = memo(({ title, loading, dataDashBoard, selectedRange, dragHandle }) => {
+    const [ isChartVisible, setIsChartVisible ] = useState(true)
     const [chartData, setChartData] = useState();
     const [days, setDays] = useState();
     const [controlsState, setControlsState] = useState({
@@ -57,16 +58,21 @@ const MainChart = memo(({ title, loading, dataDashBoard, selectedRange, dragHand
             }
             {/* Main */}
             {!loading &&
-                <div className={styles.chart}>
+                <div className={styles.chart} style={{height: isChartVisible ? '432px' : 'auto'}}>
                     <div className={styles.chart__header}>
                         <div className={styles.chart__titleWrapper}>
-                            <p className={styles.chart__title}>{title}</p>
-                            <MainChartControls
+                            <div className={isChartVisible ? `${styles.chart__titleBox} ${styles.chart__titleBox_open}` : styles.chart__titleBox} onClick={() => setIsChartVisible(!isChartVisible)}>
+                                <svg width="17" height="10" viewBox="0 0 17 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M15.0508 8.48492L8.05078 1.48492L1.05078 8.48492" stroke="#8C8C8C" strokeWidth="2.1" strokeLinecap="round" />
+                                </svg>
+                                <p className={styles.chart__title}>{title}</p>
+                            </div>
+                            {isChartVisible && <MainChartControls
                                 constrolsState={controlsState}
                                 setControlsState={setControlsState}
-                            />
+                            />}
                         </div>
-                        <div className={styles.chart__headerRight}>
+                        {isChartVisible && <div className={styles.chart__headerRight}>
                             <button className={styles.chart__detailsButton} onClick={() => setIsModalOpen(true)}>
                                 <svg
                                     width='18'
@@ -95,10 +101,10 @@ const MainChart = memo(({ title, loading, dataDashBoard, selectedRange, dragHand
                                 Детализировать заказы по времени
                             </button>
                             {dragHandle && dragHandle()}
-                        </div>
+                        </div>}
                     </div>
 
-                    <div className={styles.chart__content}>
+                    {isChartVisible && <div className={styles.chart__content}>
                         {chartData && chartData.labels.length > 0 &&
                             <Chart
                                 type='line'
@@ -107,7 +113,7 @@ const MainChart = memo(({ title, loading, dataDashBoard, selectedRange, dragHand
                                 height={40}
                                 options={getChartOptions(chartData, days)}
                             />}
-                    </div>
+                    </div>}
                 </div>
             }
 

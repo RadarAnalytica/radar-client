@@ -954,16 +954,35 @@ const MainContent = React.memo(({
 }) => {
     const isLoading = loading || !isFiltersLoading; // Флаг загрузки данных
 
-
-
     // Если фильтры загружены и shopStatus не подходит, не рендерим
     if (!isFiltersLoading && !shopStatus?.is_primary_collect) return null;
+    
+    // Сортируем элементы: первые 4 включенных блока с dropKey === '1' должны быть первыми
+    const sortedItems = React.useMemo(() => {
+        // Находим первые 4 включенных блока с dropKey === '1' в исходном порядке
+        const firstFourDropKey1 = [];
+        const firstFourIds = new Set();
+        
+        for (const item of items) {
+            if (item.dropKey === '1' && item.isVisible && firstFourDropKey1.length < 4) {
+                firstFourDropKey1.push(item);
+                firstFourIds.add(item.id);
+            }
+        }
+        
+        // Разделяем остальные элементы, сохраняя исходный порядок
+        const restItems = items.filter(item => !firstFourIds.has(item.id));
+        
+        // Объединяем: первые 4 + остальные элементы в исходном порядке
+        return [...firstFourDropKey1, ...restItems];
+    }, [items]);
+    
     // ------------------------------------------------------------------------------------------------
     // Рендер
     return (
         <>
             <div className={styles.page__mainContentWrapper} >
-                {items.map((row) => {
+                {sortedItems.map((row) => {
 
                     if (row.container && row.isVisible) {
                         return (
@@ -978,28 +997,6 @@ const MainContent = React.memo(({
                                 {row.render(row, dataDashBoard, loading, selectedRange, activeBrand, authToken, filters, updateDataDashBoard, stockAnalysisData)}
                             </React.Fragment>)
                     }
-
-                    // return (
-                    //     <SortableRow
-                    //         key={row}
-                    //         row={{ rowId: row, children: visibleChildren }}
-                    //         items={items}
-                    //         dataDashBoard={dataDashBoard}
-                    //         loading={loading}
-                    //         children={visibleChildren}
-                    //         isDraggingActive={!!activeId}
-                    //         overId={overId}
-                    //         activeId={activeId}
-                    //         selectedRange={selectedRange}
-                    //         activeBrand={activeBrand}
-                    //         authToken={authToken}
-                    //         filters={filters}
-                    //         activeRowId={activeRowId}
-                    //         overRowId={overRowId}
-                    //         updateDataDashBoard={updateDataDashBoard}
-                    //         stockAnalysisData={stockAnalysisData}
-                    //     />
-                    // );
                 })}
             </div >
         </>
