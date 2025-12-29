@@ -141,6 +141,7 @@ export const Filters = React.memo(({
               isDataLoading={isDataLoading}
               minCustomDate={minCustomDate}
               actionHandler={(value) => {
+                console.log(value)
                 internalFiltersStateUpdateHandler('activeMonths', value);
               }}
             />

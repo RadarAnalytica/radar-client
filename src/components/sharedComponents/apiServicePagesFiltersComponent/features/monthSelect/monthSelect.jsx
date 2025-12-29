@@ -16,13 +16,14 @@ export const MonthSelect = ({
     minCustomDate,
     actionHandler
 }) => {
+    console.log('mv', value)
     const monthRef = useRef(null);
 
     const initialValue = useMemo(() => {
         if (value) {
             return [
-                dayjs(value?.month_from),
-                dayjs(value?.month_to),
+                value?.month_from ? dayjs(value.month_from) : null,
+                value?.month_to ? dayjs(value.month_to) : null,
             ];
         }
         return [];
@@ -34,8 +35,8 @@ export const MonthSelect = ({
         if (data) {
             const [start, end] = data;
             selectedMonths = {
-                month_from: dayjs(start).format('YYYY-MM'),
-                month_to: dayjs(end).format('YYYY-MM')
+                month_from: start ? dayjs(start).format('YYYY-MM') : undefined,
+                month_to: end ? dayjs(end).format('YYYY-MM') : undefined,
             };
         }
         actionHandler?.(selectedMonths);
