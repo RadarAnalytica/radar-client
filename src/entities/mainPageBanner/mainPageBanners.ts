@@ -1,13 +1,8 @@
 import noSubsBg from './assets/noSubsBanner_bg.png';
-import noSubsMain from './assets/noSubsBanner_main.png';
 import onboardingBg from './assets/onboardingBanner_bg.png';
-import onboardingMain from './assets/onboardingBanner_main.png'
 import regUser1Bg from './assets/regUser1_bg.png'
 import regUser2Bg from './assets/regUser2_bg.png'
 import regUser3Bg from './assets/regUser3_bg.png'
-import regUser1Main from './assets/regUser1_main.png'
-import regUser2Main from './assets/regUser2_main.png'
-import regUser3Main from './assets/regUser3_main.png'
 
 
 export const noSubBanners = [
@@ -21,16 +16,17 @@ export const noSubBanners = [
         leadBlockButtonText: 'Активировать тестовый период',
         leadBlockButtonType: 'button',
         hasLeadBlock: true,
-        leadBlockButtonAction: () => console.log('action'),
+        leadBlockButtonAction: () => {},
         background: noSubsBg,
-        mainImage: ['nosub_main-400w', 'nosub_main-800w', 'nosub_main-1200w']
+        mainImage: ['nosub_main-400w', 'nosub_main-800w', 'nosub_main-1200w'],
+        imageOverflow: false
     }
 ]
 
 export const onboardingBanners = [
     {
         cardKey: 'onboardingBanner1',
-        title: 'Ваш тестовый доступ активирован! Теперь вам доступны все разделы сервиса «Радар-Аналитика',
+        title: 'Ваш тестовый доступ активирован! Теперь вам доступны все разделы сервиса «Радар-Аналитика»',
         subtitle: 'Один из ключевых модулей — «Мои финансы». В нём доступно более 5 видов отчётов и детализаций, а также свыше 60 бизнес-метрик для анализа вашего бизнеса.',
         hasBackBullet: false,
         leadBlockTitle: 'Подключите API-ключ, чтобы мы смогли загрузить и оцифровать ваши данные.',
@@ -40,7 +36,8 @@ export const onboardingBanners = [
         leadBlockButtonLink: '/onboarding',
         hasLeadBlock: true,
         background: onboardingBg,
-        mainImage: ['onboard_main-400w', 'onboard_main-800w', 'onboard_main-1200w']
+        mainImage: ['onboard_main-400w', 'onboard_main-800w', 'onboard_main-1200w'],
+        imageOverflow: false
     }
 ]
 

@@ -59,6 +59,7 @@ const LinkedShopsPage = () => {
                     lastOperationTypeRef.current = null;
                     return;
                 }
+                dispatch(fetchShops(authToken))
                 setAddShopRequestStatus({ ...initRequestStatus, isLoading: false, isSuccess: true, message: 'Магазин успешно добавлен' });
             } catch {
                 setAddShopRequestStatus({ ...initRequestStatus, isLoading: false, isError: true, message: 'Что-то пошло не так :(' });
@@ -94,14 +95,19 @@ const LinkedShopsPage = () => {
     }
 
 
-    useEffect(() => {
-        (!shops || shops.length === 0) && dispatch(fetchShops(authToken));
-        // const timeout = setTimeout(() => {
-        //     firstMountRef.current = false
-        // }, 1500)
+    // useEffect(() => {
+    //     (!shops || shops.length === 0) && dispatch(fetchShops(authToken));
+    //     // const timeout = setTimeout(() => {
+    //     //     firstMountRef.current = false
+    //     // }, 1500)
 
-        // return () => clearTimeout(timeout)
-    }, [location.pathname]);
+    //     // return () => clearTimeout(timeout)
+    // }, [location.pathname]);
+
+    useLayoutEffect(() => {
+        //@ts-ignore
+        dispatch(fetchShops(authToken))
+    }, [])
 
 
     useEffect(() => {
@@ -119,15 +125,15 @@ const LinkedShopsPage = () => {
             setAddShopRequestStatus(initRequestStatus);
         }
         if (addShopRequestStatus.isError) {
-            timeout = setTimeout(() => {setAddShopRequestStatus(initRequestStatus);}, 2000);
+            timeout = setTimeout(() => { setAddShopRequestStatus(initRequestStatus); }, 2000);
             lastOperationTypeRef.current = null;
         }
     }, [addShopRequestStatus]);
 
-    useEffect(() => {
-        //@ts-ignore
-        dispatch(fetchFilters({authToken, shopsData: shops}));
-    }, [shops])
+    // useEffect(() => {
+    //     //@ts-ignore
+    //     dispatch(fetchFilters({authToken, shopsData: shops}));
+    // }, [shops])
 
     // Отслеживание видимости карточки добавления магазина
     useEffect(() => {
@@ -151,11 +157,6 @@ const LinkedShopsPage = () => {
         };
     }, []);
 
-    useLayoutEffect(() => {
-        //@ts-ignore
-        dispatch(fetchFilters(authToken))
-    }, [])
-
     return (
         <GeneralLayout
             headerProps={{
@@ -170,10 +171,10 @@ const LinkedShopsPage = () => {
                     <div
                         key={shop.id}
                         className={styles.shopCardWrapper}
-                        // className={firstMountRef.current ? styles.shopCardWrapper : ''}
-                        // style={{
-                        //    '--shop-id': `shop-card-${shop.id}`
-                        // } as React.CSSProperties}
+                    // className={firstMountRef.current ? styles.shopCardWrapper : ''}
+                    // style={{
+                    //    '--shop-id': `shop-card-${shop.id}`
+                    // } as React.CSSProperties}
                     >
                         <RadarShopCard
                             shop={shop}
@@ -430,7 +431,7 @@ const EditAndCreateModal = ({
                                         placeholder='Что-то вроде: GJys67G7sbNw178F'
                                         size='large'
                                         disabled={addAndEditModalState?.shop?.is_valid && addAndEditModalState?.shop?.is_active && !addAndEditModalState?.shop?.is_primary_collect}
-                                        // disabled={true}
+                                    // disabled={true}
                                     />
                                 </Form.Item>
                                 <div className={styles.addShopBlock__buttonHelper}>

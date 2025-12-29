@@ -42,7 +42,6 @@ export default function MainPage() {
                 {user?.subscription_status === 'test' && !user?.is_onboarded && <OnboardingWidget />}
 
                 <div className={styles.page__content__widgets}>
-                    {/* <FeaturesWidget /> */}
                     <RadarCarousel
                         data={currentBannersArr?.map(_ => ({ ..._, render: (_) => <RadarMainPageBanner {..._} /> }))}
                         arrowControls={currentBannersArr?.length > 1}

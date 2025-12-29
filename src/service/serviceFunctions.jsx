@@ -915,13 +915,16 @@ export const ServiceFunctions = {
 		return data;
 	},
 	// self cost page template
-	getCostTemplateSSPage: async (token) => {
+	getCostTemplateSSPage: async (token, filters) => {
+		const body = getRequestObject(filters, filters?.selectedRange, filters?.activeBrand?.id)
 		const res = await fetch(`${URL}/api/product/self-costs/template`, {
-			method: 'GET',
+			method: 'POST',
 			headers: {
+				"content-type": "application/json",
 				accept: 'application/json',
 				authorization: 'JWT ' + token,
 			},
+			body: JSON.stringify(body)
 		});
 		const data = await res.blob();
 		return data;
