@@ -39,6 +39,7 @@ export const Filters = React.memo(({
   const previousFilters = useRef(null)
 
   const internalFiltersStateUpdateHandler = (key, value) => {
+    console.log(key, value)
     if (key === 'activeBrand') {
       setInternalActiveFiltersState(prev => ({
         ...prev,
@@ -47,7 +48,7 @@ export const Filters = React.memo(({
         activeArticle: [{ value: 'Все' }],
         activeGroup: [{ id: 0, value: 'Все' }],
         // activeWeeks: getSavedActiveWeeks(value.id),
-        activeMonths: getSavedActiveMonths(value.id),
+       // activeMonths: getSavedActiveMonths(value.id),
       }));
       return;
     }
@@ -84,7 +85,11 @@ export const Filters = React.memo(({
     setInternalActiveFiltersState(prev => ({ ...prev, [key]: value }));
   }
   const applyFiltersClickHandler = () => {
-    dispatch(filterActions.setActiveFiltersMassively(internalActiveFiltersState));
+    console.log(internalActiveFiltersState.activeMonths)
+    dispatch(filterActions.setActiveFiltersMassively({
+      ...internalActiveFiltersState,
+      activeMonths: internalActiveFiltersState.activeMonths ? internalActiveFiltersState.activeMonths : getSavedActiveMonths(value.id)
+    }));
     submitHandler?.();
   }
 
