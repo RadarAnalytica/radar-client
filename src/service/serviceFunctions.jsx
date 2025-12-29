@@ -1608,7 +1608,9 @@ export const ServiceFunctions = {
 	},
 	getDownloadReportRnp: async (token, selectedRange, shopId, filters, vendorCode) => {
 		let body = getRequestObject(filters, selectedRange, shopId);
-		body.articles = vendorCode ? [vendorCode] : []
+		body.articles = vendorCode ? [vendorCode] : [];
+		body.shop = undefined;
+		body.shops = [filters?.activeBrand?.id];
 		const res = await fetch(
 			`${URL}/api/rnp/by_article/download`,
 			{
