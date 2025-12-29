@@ -36,6 +36,7 @@ export const Filters = React.memo(({
   const { activeBrand, filters, shops, expenseCategories, activeExpenseCategory, isFiltersLoaded } = useAppSelector(store => store.filters);
   const filtersState = useAppSelector(store => store.filters);
   const [internalActiveFiltersState, setInternalActiveFiltersState] = useState(null);
+  const previousFilters = useRef(null)
 
   const internalFiltersStateUpdateHandler = (key, value) => {
     if (key === 'activeBrand') {
@@ -96,6 +97,7 @@ export const Filters = React.memo(({
         }
       });
       setInternalActiveFiltersState(internalFiltersStateObject);
+      previousFilters.current = JSON.stringify(internalFiltersStateObject)
     }
   }, [filtersState, uncontrolledMode]);
 
@@ -246,7 +248,7 @@ export const Filters = React.memo(({
         {!uncontrolledMode && isFiltersLoaded && <button
           className={styles.filters__submitButton}
           onClick={applyFiltersClickHandler}
-          disabled={isDataLoading || disabled}
+          disabled={isDataLoading || disabled || previousFilters?.current === JSON.stringify(internalActiveFiltersState)}
         >
           Применить
         </button>}
