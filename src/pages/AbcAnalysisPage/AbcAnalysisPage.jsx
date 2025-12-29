@@ -107,15 +107,31 @@ const AbcAnalysisPage = () => {
                     })) : null,
 				};
 			});
-			console.log('data: ', data);
 			return data;
 		}
 		return [];
 	}, [dataAbcAnalysis]);
 
 	useEffect(() => {
+		const logData = {
+			timestamp: new Date().toISOString(),
+			viewType,
+			paginationCurrent: paginationState.current,
+			sorting: JSON.stringify(sorting),
+			isFiltersLoaded,
+			activeBrand: activeBrand ? { id: activeBrand.id, name: activeBrand.brand_name } : null,
+			activeBrandName: JSON.stringify(activeBrandName),
+			activeArticle: JSON.stringify(activeArticle),
+			activeGroup: JSON.stringify(activeGroup),
+			selectedRange: JSON.stringify(selectedRange),
+		};
+		
+		console.log('🔍 [AbcAnalysis] useEffect triggered:', logData);
+		console.trace('📍 Call stack:');
+
 		if (activeBrand) {
 			if (activeBrand?.is_primary_collect && viewType && isFiltersLoaded) {
+				console.log('✅ [AbcAnalysis] Calling updateDataAbcAnalysis');
 				updateDataAbcAnalysis(
 					viewType,
 					authToken,
@@ -123,12 +139,25 @@ const AbcAnalysisPage = () => {
 					activeBrand.id.toString()
 				);
 			} else {
+				console.log('⏸️ [AbcAnalysis] Skipping update:', {
+					is_primary_collect: activeBrand?.is_primary_collect,
+					viewType,
+					isFiltersLoaded
+				});
 				setLoading(false);
 			}
 		}
 	}, [viewType, paginationState.current, sorting, isFiltersLoaded, activeBrand, activeBrandName, activeArticle, activeGroup, selectedRange]);
 
 	useEffect(() => {
+		console.log('🔄 [AbcAnalysis] Pagination reset useEffect triggered:', {
+			activeBrand: activeBrand?.id,
+			selectedRange: JSON.stringify(selectedRange),
+			isFiltersLoaded,
+			activeBrandName: JSON.stringify(activeBrandName),
+			activeArticle: JSON.stringify(activeArticle),
+			activeGroup: JSON.stringify(activeGroup),
+		});
 		setPaginationState({ ...paginationState, current: 1 });
 	}, [activeBrand, selectedRange, isFiltersLoaded, activeBrandName, activeArticle, activeGroup]);
 
