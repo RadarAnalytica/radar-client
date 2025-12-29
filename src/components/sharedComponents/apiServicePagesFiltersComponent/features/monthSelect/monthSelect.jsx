@@ -29,7 +29,8 @@ export const MonthSelect = ({
     }, [value]);
 
     const onChangeHandler = (data) => {
-        let selectedMonths = initialMonths;
+        // let selectedMonths = initialMonths;
+        let selectedMonths;
         if (data) {
             const [start, end] = data;
             selectedMonths = {

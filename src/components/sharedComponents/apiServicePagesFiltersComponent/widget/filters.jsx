@@ -85,10 +85,9 @@ export const Filters = React.memo(({
     setInternalActiveFiltersState(prev => ({ ...prev, [key]: value }));
   }
   const applyFiltersClickHandler = () => {
-    console.log(internalActiveFiltersState.activeMonths)
     dispatch(filterActions.setActiveFiltersMassively({
       ...internalActiveFiltersState,
-      activeMonths: internalActiveFiltersState.activeMonths ? internalActiveFiltersState.activeMonths : getSavedActiveMonths(value.id)
+      activeMonths: internalActiveFiltersState.activeMonths ? internalActiveFiltersState.activeMonths : getSavedActiveMonths(internalActiveFiltersState?.activeBrand?.id)
     }));
     submitHandler?.();
   }
