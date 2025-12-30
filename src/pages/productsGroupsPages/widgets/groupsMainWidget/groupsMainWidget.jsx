@@ -1,6 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
 import styles from './groupsMainWidget.module.css';
-import HowToLink from '@/components/sharedComponents/howToLink/howToLink';
 import { groupsMainTableConfig, buttonIcons } from '../../shared';
 import { Checkbox, ConfigProvider, message } from 'antd';
 import { Link } from 'react-router-dom';
@@ -96,11 +95,6 @@ const GroupsMainWidget = ({ setIsAddGroupModalVisible, groupsMainData, getGroups
     return (
         <div className={styles.widget}>
             <div className={styles.widget__controlsWrapper}>
-                <HowToLink
-                    text='Как использовать?'
-                    target='_blank'
-                    url='https://radar.usedocs.com/article/76887'
-                />
                 <button className={styles.widget__addButton} onClick={() => setIsAddGroupModalVisible(true)}>
                     Создать группу
                 </button>

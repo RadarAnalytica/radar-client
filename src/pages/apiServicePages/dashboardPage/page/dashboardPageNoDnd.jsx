@@ -3,10 +3,6 @@ import styles from './dashboardPageNoDnd.module.css';
 import { useAppSelector } from '@/redux/hooks';
 import AuthContext from '@/service/AuthContext';
 import { ServiceFunctions } from '@/service/serviceFunctions';
-
-import Header from '@/components/sharedComponents/header/header';
-import Sidebar from '@/components/sharedComponents/sidebar/sidebar';
-import MobilePlug from '@/components/sharedComponents/mobilePlug/mobilePlug';
 import { Filters } from '@/components/sharedComponents/apiServicePagesFiltersComponent';
 import SelfCostWarningBlock from '@/components/sharedComponents/selfCostWraningBlock/selfCostWarningBlock';
 import DataCollectWarningBlock from '@/components/sharedComponents/dataCollectWarningBlock/dataCollectWarningBlock';
@@ -17,23 +13,16 @@ import AbcDataBlock from '@/components/dashboardPageComponents/blocks/abcDataBlo
 import FinanceBlock from '@/components/dashboardPageComponents/blocks/financeBlock/financeBlock';
 import ProfitBlock from '@/components/dashboardPageComponents/blocks/profitBlock/profitBlock';
 import MarginChartBlock from '@/components/dashboardPageComponents/blocks/marginChartBlock/marginChartBlock';
-import ProfitChartBlock from '@/components/dashboardPageComponents/blocks/profitChartBlock/profitChartBlock';
 import StorageBlock from '@/components/dashboardPageComponents/blocks/storageBlock/storageBlock';
 import StorageRevenueChartBlock from '@/components/dashboardPageComponents/blocks/storageRevenueChartBlock/storageRevenueChartBlock';
-import CostsBlock from '@/components/dashboardPageComponents/blocks/costsBlock/costsBlock';
 import RevenueStructChartBlock from '@/components/dashboardPageComponents/blocks/revenueStructChartBlock/revenueStructChartBlock';
 import TaxTableBlock from '@/components/dashboardPageComponents/blocks/taxTableBlock/taxTableBlock';
-import HowToLink from '@/components/sharedComponents/howToLink/howToLink';
-import TurnoverBlock from '@/components/dashboardPageComponents/blocks/turnoverBlock/turnoverBlock';
-// import { mockGetDashBoard } from '@/service/mockServiceFunctions';
 import StockAnalysisBlock from '@/components/dashboardPageComponents/blocks/stockAnalysisBlock/stockAnalysisBlock';
 import NoSubscriptionWarningBlock from '@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock';
 import { useDemoMode } from "@/app/providers";
-import { RadarBar } from '@/shared';
 import { fileDownload } from '@/service/utils';
 import DownloadButton from '@/components/DownloadButton';
 import { GeneralLayout } from '@/shared';
-
 
 const MainContent = React.memo(({
     shopStatus,
@@ -116,14 +105,11 @@ const MainContent = React.memo(({
                     dataDashBoard={dataDashBoard}
                 />
 
-
-
                 {/* <CostsBlock
                     loading={isLoading}
                     dataDashBoard={dataDashBoard}
                 /> */}
             </div>
-
 
             <StockAnalysisBlock
                 data={stockAnalysisData}
@@ -139,7 +125,9 @@ const MainContent = React.memo(({
     );
 });
 
-const _DashboardPage = () => {
+MainContent.displayName = 'MainContent';
+
+const DashboardPageContent = () => {
     const { authToken } = useContext(AuthContext);
     const { isDemoMode } = useDemoMode();
     const { isFiltersLoaded, activeBrand, shops, activeBrandName, activeArticle, activeGroup, selectedRange } = useAppSelector((state) => state.filters);
@@ -155,7 +143,7 @@ const _DashboardPage = () => {
         stockAnalysisData: null,
     });
 
-    const fetchAnalysisData = async (filters, authToken) => {
+    const fetchAnalysisData = useCallback(async (filters, authToken) => {
         try {
             const data = await ServiceFunctions.getAnalysisData(
                 authToken,
@@ -168,9 +156,9 @@ const _DashboardPage = () => {
         } catch (error) {
             console.error(error);
         }
-    };
+    }, []);
 
-    const updateDataDashBoard = async (filters, authToken) => {
+    const updateDataDashBoard = useCallback(async (filters, authToken) => {
         setPageState(prev => ({ ...prev, loading: true }));
         try {
             if (activeBrand !== null && activeBrand !== undefined) {
@@ -187,7 +175,7 @@ const _DashboardPage = () => {
         } finally {
             setPageState(prev => ({ ...prev, loading: false }));
         }
-    };
+    }, [activeBrand]);
 
     const handleDownload = async () => {
         setDownloadLoading(true);
@@ -286,5 +274,5 @@ const _DashboardPage = () => {
     );
 };
 
-const DashboardPage = React.memo(_DashboardPage);
+const DashboardPage = React.memo(DashboardPageContent);
 export default DashboardPage;

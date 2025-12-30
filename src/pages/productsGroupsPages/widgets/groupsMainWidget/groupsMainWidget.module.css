@@ -18,23 +18,19 @@
 }
 
 .widget__addButton {
-    height: 46px;
+    height: 38px;
     border: none;
     border-radius: 8px;
-    padding: 8px;
+    padding: 0 15px;
     background: #5329FF;
-    font-family: Manrope;
     font-weight: 600;
-    font-size: 16px;
-    line-height: 160%;
-    letter-spacing: 0%;
+    font-size: 14px;
     color: white;
     transition: all .1s ease-in-out;
 }
 
 .widget__addButton:hover {
-    opacity: .95;
-    transform: translateY(-3px);
+    background: #7a52ff;
 }
 
 .widget__tableWrapper {

@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import styles from './RadarBar.module.css';
 import { Tooltip as RadarTooltip } from 'radar-ui';
-import { formatPrice } from '../../../service/utils';
+import { formatPrice } from '@/service/utils';
 import { Link } from 'react-router-dom';
 import { ConfigProvider, Tooltip } from 'antd';
 import { RadarLoader } from '../RadarLoader/RadarLoader';
