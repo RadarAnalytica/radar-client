@@ -245,6 +245,7 @@ const DashboardPageContent = () => {
                 <div className={styles.page__controlsWrapper}>
                     <Filters
                         isDataLoading={pageState?.loading}
+                        hasShopCreationLimit
                     />
                     <DownloadButton
                         handleDownload={handleDownload}

@@ -89,6 +89,7 @@ const StockAnalysisPage = () => {
                             setLoading={setLoading}
                             isDataLoading={loading}
                             submitHandler={fetchAnalysisData}
+                            hasShopCreationLimit
                         />
                     </div>
 

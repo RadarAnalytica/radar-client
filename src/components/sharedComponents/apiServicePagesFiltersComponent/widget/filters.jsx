@@ -27,7 +27,8 @@ export const Filters = React.memo(({
   children = null,
   disabled,
   submitHandler,
-  uncontrolledMode = false
+  uncontrolledMode = false,
+  hasShopCreationLimit = false,
 }) => {
 
   // ------ это база ------//
@@ -39,7 +40,6 @@ export const Filters = React.memo(({
   const previousFilters = useRef(null)
 
   const internalFiltersStateUpdateHandler = (key, value) => {
-    console.log(key, value)
     if (key === 'activeBrand') {
       setInternalActiveFiltersState(prev => ({
         ...prev,
@@ -47,8 +47,8 @@ export const Filters = React.memo(({
         activeBrandName: [{ value: 'Все' }],
         activeArticle: [{ value: 'Все' }],
         activeGroup: [{ id: 0, value: 'Все' }],
-        // activeWeeks: getSavedActiveWeeks(value.id),
-       // activeMonths: getSavedActiveMonths(value.id),
+        activeWeeks: getSavedActiveWeeks(value),
+        activeMonths: getSavedActiveMonths(value),
       }));
       return;
     }
@@ -87,7 +87,7 @@ export const Filters = React.memo(({
   const applyFiltersClickHandler = () => {
     dispatch(filterActions.setActiveFiltersMassively({
       ...internalActiveFiltersState,
-      activeMonths: internalActiveFiltersState.activeMonths ? internalActiveFiltersState.activeMonths : getSavedActiveMonths(internalActiveFiltersState?.activeBrand?.id)
+      activeMonths: internalActiveFiltersState.activeMonths ? internalActiveFiltersState.activeMonths : getSavedActiveMonths(internalActiveFiltersState?.activeBrand)
     }));
     submitHandler?.();
   }
@@ -140,8 +140,8 @@ export const Filters = React.memo(({
               value={internalActiveFiltersState?.activeMonths}
               isDataLoading={isDataLoading}
               minCustomDate={minCustomDate}
+              activeBrand={internalActiveFiltersState?.activeBrand}
               actionHandler={(value) => {
-                console.log(value)
                 internalFiltersStateUpdateHandler('activeMonths', value);
               }}
             />
@@ -153,7 +153,9 @@ export const Filters = React.memo(({
               isDataLoading={isDataLoading}
               maxCustomDate={maxCustomDate}
               minCustomDate={minCustomDate}
+              hasShopCreationLimit={hasShopCreationLimit}
               disabled={disabled}
+              activeBrand={internalActiveFiltersState?.activeBrand}
               customValue={uncontrolledMode ? undefined : internalActiveFiltersState?.selectedRange}
               customSubmit={uncontrolledMode ? undefined : (value) => {
                 internalFiltersStateUpdateHandler('selectedRange', value);

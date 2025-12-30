@@ -14,9 +14,9 @@ export const MonthSelect = ({
     monthHandler,
     isDataLoading,
     minCustomDate,
-    actionHandler
+    actionHandler,
+    activeBrand
 }) => {
-    console.log('mv', value)
     const monthRef = useRef(null);
 
     const initialValue = useMemo(() => {
@@ -28,6 +28,13 @@ export const MonthSelect = ({
         }
         return [];
     }, [value]);
+
+    const minDate = useMemo(() => {
+        if (activeBrand?.created_at) {
+            return dayjs(activeBrand.created_at).subtract(4, 'month');
+        }
+        return dayjs().subtract(4, 'month');
+    }, [activeBrand]);
 
     const onChangeHandler = (data) => {
         // let selectedMonths = initialMonths;
@@ -86,15 +93,14 @@ export const MonthSelect = ({
                             onChange={onChangeHandler}
                             disabledTime={{
                                 // Начальная дата
-                                start: minCustomDate ? dayjs(minCustomDate) : dayjs('2024-02'),
+                                start: minDate,
                                 end: dayjs()
                             }}
                             disabledDate={(current) => {
-                                const minDate = minCustomDate ? dayjs(minCustomDate) : dayjs('2024-02');
                                 const maxDate = dayjs();
                                 return current && (current < minDate || current > maxDate);
                             }}
-                            minDate={minCustomDate ? dayjs(minCustomDate) : dayjs('2024-02')}
+                            minDate={minDate}
                             maxDate={dayjs()}
                             value={initialValue}
                             id={selectId}

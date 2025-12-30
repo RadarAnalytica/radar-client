@@ -37,8 +37,8 @@ const apiServicePagesFilterStateSlice = createSlice({
         activeBrandName: [{value: 'Все'}],
         activeArticle: [{value: 'Все'}],
         activeGroup: [{id: 0, value: 'Все'}],
-        activeWeeks: getSavedActiveWeeks(action.payload.id),
-        activeMonths: getSavedActiveMonths(action.payload.id),
+        activeWeeks: getSavedActiveWeeks(action.payload),
+        activeMonths: getSavedActiveMonths(action.payload),
       };
     },
     setPeriod: (state, action) => {
@@ -60,6 +60,15 @@ const apiServicePagesFilterStateSlice = createSlice({
         }
         if (key === 'activeWeeks' && action.payload[key]) {
           localStorage.setItem(`SAVED_ACTIVE_WEEKS_${action.payload.activeBrand.id}`, JSON.stringify(action.payload[key]));
+        }
+        if (key === 'activeMonths' && action.payload[key]) {
+          let previouslySavedMonths = localStorage.getItem('activeMonths')
+          if (previouslySavedMonths) {
+            previouslySavedMonths = JSON.parse(previouslySavedMonths)
+            localStorage.setItem(`activeMonths`, JSON.stringify({...previouslySavedMonths, [action.payload.activeBrand.id]: action.payload[key]}));
+          } else {
+            localStorage.setItem(`activeMonths`, JSON.stringify({[action.payload.activeBrand.id]: action.payload[key]}));
+          }
         }
       });
       return {
