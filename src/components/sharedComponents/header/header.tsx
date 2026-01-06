@@ -1,7 +1,7 @@
 import { useState, useContext, useEffect, ReactNode } from 'react';
 import styles from './header.module.css';
 import Icon from './headerIcon/icon';
-import { Popover } from 'antd';
+import { ConfigProvider, Popover } from 'antd';
 import HeaderMenu from './headerMenu/headerMenu';
 import HeaderAlerts from './headerAlerts/headerAlerts';
 import AuthContext from '../../../service/AuthContext';
@@ -58,13 +58,13 @@ const Header = ({
     logout,
     authToken
   } = useContext(AuthContext) as AuthContextType;
-  
+
   // стейт видимости поповера меню
   const [isMenuPopoverVisible, setIsMenuPopoverVisible] = useState<boolean>(false);
-  
+
   // сообщения
   const { messages } = useAppSelector((state) => state.messagesSlice);
-  
+
   // получение и обновление сообщений
   useEffect(() => {
     let intervalId: ReturnType<typeof setInterval> | undefined;
@@ -75,7 +75,7 @@ const Header = ({
         dispatch(fetchMessages(authToken || ''));
       }, 60000);
     }
-    return () => { 
+    return () => {
       if (intervalId) {
         clearInterval(intervalId);
       }
@@ -86,7 +86,7 @@ const Header = ({
   const menuPopoverCloseHandler = (): void => {
     setIsMenuPopoverVisible(false);
   };
-  
+
   // хэндлер видимости поповера меню
   const menuPopoverOpenHandler = (open: boolean): void => {
     setIsMenuPopoverVisible(open);
@@ -138,28 +138,38 @@ const Header = ({
         {children && children}
         {user &&
           <div className={styles.header__menu} style={{ filter: hasShadow ? 'drop-shadow(0px 0px 20px #00000014)' : 'none' }}>
-            <Popover
-              {...popoverOptions}
-              className={styles.header__popover}
-              content={<HeaderAlerts messages={messages} />}
+            <ConfigProvider
+              theme={{
+                token: {
+                  borderRadiusLG: 16,
+                  //borderRadiusSM: 50,
+                  //borderRadius: 50,
+                }
+              }}
             >
-              <>
-                <Icon type='alert' counter={messages?.length} />
-              </>
-            </Popover>
+              <Popover
+                {...popoverOptions}
+                className={styles.header__popover}
+                content={<HeaderAlerts messages={messages} />}
+              >
+                <>
+                  <Icon type='alert' counter={messages?.length} />
+                </>
+              </Popover>
 
-            <Popover
-              {...popoverOptions}
-              content={<HeaderMenu popoverCloseHandler={menuPopoverCloseHandler} logout={logout} />}
-              open={isMenuPopoverVisible}
-              onOpenChange={menuPopoverOpenHandler}
-              className={styles.header__popover}
-            >
-              <>
-                {/* @ts-expect-error - Icon component accepts optional counter but TypeScript infers it as required */}
-                <Icon type='menu' />
-              </>
-            </Popover>
+              <Popover
+                {...popoverOptions}
+                content={<HeaderMenu popoverCloseHandler={menuPopoverCloseHandler} logout={logout} user={user} />}
+                open={isMenuPopoverVisible}
+                onOpenChange={menuPopoverOpenHandler}
+                className={styles.header__popover}
+              >
+                <>
+                  {/* @ts-expect-error - Icon component accepts optional counter but TypeScript infers it as required */}
+                  <Icon type='profile' />
+                </>
+              </Popover>
+            </ConfigProvider>
           </div>
         }
       </header>

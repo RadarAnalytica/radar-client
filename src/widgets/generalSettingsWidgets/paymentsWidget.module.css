@@ -1,0 +1,28 @@
+.widget__tableBlock {
+    background-color: white;
+    border-radius: 16px;
+    padding: 8px;
+    max-height: 75dvh;
+    overflow: hidden;
+}
+
+.widget__tableWrapper {
+    overflow: auto;
+    height: 100%;
+}
+
+.widget__settingsButton {
+    position: absolute;
+    top: 16px;
+    right: 16px; 
+    background-color: #F7F7F7;
+    height: 38px;
+    width: 38px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    opacity: 1;
+    transition: all .2s ease;
+}

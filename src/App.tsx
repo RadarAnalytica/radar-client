@@ -87,6 +87,7 @@ const MyAdvPage = React.lazy(() => import("./pages/myAdvPage/myAdvPage"));
 const CompanyAdvPage = React.lazy(() => import("./pages/myAdvPage/companyAdvPage"));
 //TEMP
 const DashboardPageNoDnd = React.lazy(() => import('./pages/apiServicePages/dashboardPage/page/dashboardPageNoDnd'));
+const GeneralSettingsPage = React.lazy(() => import('./pages/GeneralSettingsPage/GeneralSettingsPage'))
 
 // During migration, allow missing props on ProtectedRoute
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -180,6 +181,7 @@ function App() {
                 <Route path='/position-tracking/:sku' element={<ProtectedRoute expireProtected routeRuName='Трекинг позиций'><PositionTrackingSkuPage /></ProtectedRoute>} />
                 <Route path='/my-adv' element={<ProtectedRoute expireProtected routeRuName='Мои реклама'><MyAdvPage /></ProtectedRoute>} />
                 <Route path='/my-adv/:companyId' element={<ProtectedRoute expireProtected routeRuName='Мои реклама'><CompanyAdvPage /></ProtectedRoute>} />
+                <Route path='/settings' element={<ProtectedRoute routeRuName='Профиль'><GeneralSettingsPage /></ProtectedRoute>} />
                 {/* Public routes */}
                 <Route path='/admin/article/demo/:slugOrId' element={<Suspense fallback={<LoaderPage />}><ArticleViewPage /></Suspense>} />
                 <Route path='/calculate' element={<Suspense fallback={<LoaderPage />}>{deviceRegexp.test(userAgent) ? <UnitCalculatorPage /> : <UnitCalculatorPageDesktop />}</Suspense>} />

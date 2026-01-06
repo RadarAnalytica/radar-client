@@ -1,0 +1,107 @@
+.addUser {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.addUser__block {
+    background-color: white;
+    width: 100%;
+    max-width: 496px;
+    border-radius: 16px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    align-items: center;
+}
+
+.addUser__titleWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: center;
+}
+
+.addUser__title {
+    font-weight: 600;
+    font-size: 22px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    margin: 0;
+    padding: 0;
+}
+
+.addUser__subtitle {
+    margin: 0;
+    padding: 0;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 100%;
+    letter-spacing: 0%;
+}
+
+.addUser__addButton {
+    height: 46px;
+    border-radius: 8px;
+    border: none;
+    background-color: #5329FF;
+    color: white;
+    padding: 0 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: Manrope;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 160%;
+    letter-spacing: 0%;
+}
+
+.page__titleWrapper {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+.page__title {
+    font-weight: 600;
+    font-size: 22px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    margin: 0;
+    padding: 0;
+}
+
+.widget__tableBlock {
+    background-color: white;
+    border-radius: 16px;
+    padding: 8px;
+    max-height: 75dvh;
+    overflow: hidden;
+}
+
+.widget__tableWrapper {
+    overflow: auto;
+    height: 100%;
+}
+
+.widget__settingsButton {
+    position: absolute;
+    top: 16px;
+    right: 16px; 
+    background-color: #F7F7F7;
+    height: 38px;
+    width: 38px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    opacity: 1;
+    transition: all .2s ease;
+}
