@@ -32,7 +32,7 @@ const initState = {
 const BlogItem = ({ title, category, preview, created_at, description, is_published, allData, setPostIdForUpdate, slug, is_recommended, is_popular, ...rest }: BlogItemProps) => {
 
   const dispatch = useAppDispatch();
-  const { authToken } = useContext(AuthContext);
+  const { adminToken: authToken } = useContext(AuthContext);
   const [isConfirmationModalActive, setIsConfirmationModalActive] = useState(false);
   const [status, setStatus] = useState(initState);
 

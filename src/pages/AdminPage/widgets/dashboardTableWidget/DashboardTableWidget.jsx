@@ -97,7 +97,8 @@ const TABLE_CONFIG = [
                     padding: '5px 10px',
                     borderRadius: '8px',
                     textDecoration: 'none',
-                    fontWeight: 700
+                    fontWeight: 700,
+                    whiteSpace: 'nowrap'
                 }}
             >
                 Начислить бонусы

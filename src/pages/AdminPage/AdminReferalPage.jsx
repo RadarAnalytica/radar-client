@@ -93,7 +93,7 @@ const accountRefill = async (token, reqData, setStatus, initStatus, setData, set
 
 const AdminReferalPage = () => {
 
-    const { authToken, user } = useContext(AuthContext);
+    const { adminToken: authToken, user } = useContext(AuthContext);
     const [status, setStatus] = useState(initStatus);
     const [data, setData] = useState();
     const [searchInputValue, setSearchInputValue] = useState('');
