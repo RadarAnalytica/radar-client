@@ -48,8 +48,25 @@
     width: 100%;
     background-color: white;
     border-radius: 16px;
-    box-shadow: 0px 0px 20px 0px #00000014;
+    /* box-shadow: 0px 0px 20px 0px #00000014; */
     padding: 16px;
     overflow: auto;
     max-height: 80vh;
+}
+
+.page__userLogin {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.page__userLogin > span {
+    font-size: 22px;
+    font-weight: 600;
+}
+
+.page__inputWrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
