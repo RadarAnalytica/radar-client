@@ -1,6 +1,6 @@
 import React, { useEffect, useContext, useState, useMemo } from 'react';
 import styles from './TariffsWidget.module.css';
-import { ConfigProvider, Button, Switch, Input, Radio, Select } from 'antd';
+import { ConfigProvider, Button, Switch, Input, Radio, Select, InputNumber } from 'antd';
 import { formatPrice } from '@/service/utils';
 import AuthContext from '@/service/AuthContext';
 import cover from './calc_cover.png'
@@ -958,6 +958,33 @@ const sections = [
     { id: 'rnp', name: 'РНП (Рука на пульсе)', price: 3000, oldPrice: 3900, pricePerMonth: 1000, isNew: true },
 ];
 
+const inputTheme = {
+    token: {
+        colorBgContainer: 'white',
+        colorBorder: '#5329FF1A',
+        borderRadius: 8,
+        fontFamily: 'Manrope',
+        fontSize: 12,
+        fontWeight: 500,
+        controlHeightLG: 38,
+    },
+    components: {
+        Input: {
+            activeBorderColor: '#5329FF1A',
+            hoverBorderColor: '#5329FF1A',
+            activeOutlineColor: 'transparent',
+            hoverBg: 'white',
+            activeShadow: 'transparent',
+            activeBg: 'white',
+        },
+        Select: {
+            activeBorderColor: '#5329FF1A',
+            hoverBorderColor: '#5329FF1A',
+            activeOutlineColor: 'transparent',
+        }
+    }
+}
+
 const TariffCalculator = ({ open, setIsOpen }) => {
 
     const [activeTab, setActiveTab] = useState('3 месяца')
@@ -1050,7 +1077,7 @@ const TariffCalculator = ({ open, setIsOpen }) => {
                                         handler={() => { }}
                                         disabled={false}
                                         allowClear={false}
-                                        style={{maxWidth: 'unset'}}
+                                        style={{ maxWidth: 'unset' }}
                                         mode=''
                                     />
                                 </div>
@@ -1069,7 +1096,7 @@ const TariffCalculator = ({ open, setIsOpen }) => {
                                         handler={() => { }}
                                         disabled={false}
                                         allowClear={false}
-                                        style={{maxWidth: 'unset'}}
+                                        style={{ maxWidth: 'unset' }}
                                         mode=''
                                     />
                                 </div>
@@ -1113,17 +1140,21 @@ const TariffCalculator = ({ open, setIsOpen }) => {
                                 <>
                                     <div className={styles.tariffCalc__promocode}>
                                         <p className={styles.tariffCalc__promocodeLabel}>Промокод</p>
-                                        <Input
-                                            placeholder="Если есть"
-                                            value={promocode}
-                                            onChange={(e) => setPromocode(e.target.value)}
-                                            style={{
-                                                height: '38px',
-                                                borderRadius: '8px',
-                                                fontSize: '14px',
-                                                border: '1px solid #E8E8E8'
-                                            }}
-                                        />
+                                        <ConfigProvider
+                                            theme={inputTheme}
+                                        >
+                                            <Input
+                                                placeholder="Если есть"
+                                                value={promocode}
+                                                onChange={(e) => setPromocode(e.target.value)}
+                                                style={{
+                                                    height: '38px',
+                                                    borderRadius: '8px',
+                                                    fontSize: '14px',
+                                                    border: '1px solid #E8E8E8'
+                                                }}
+                                            />
+                                        </ConfigProvider>
                                     </div>
 
 
