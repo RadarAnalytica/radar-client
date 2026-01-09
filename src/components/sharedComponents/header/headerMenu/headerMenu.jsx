@@ -88,6 +88,7 @@ const HeaderMenu = ({ popoverCloseHandler, logout, user }) => {
                                 className={styles.menu__link} 
                                 to={item?.url}
                                 state={item?.linkState}
+                                onClick={popoverCloseHandler}
                             >
                                 {item?.icon}
                                 {item?.title}

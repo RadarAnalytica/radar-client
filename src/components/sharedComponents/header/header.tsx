@@ -61,6 +61,7 @@ const Header = ({
 
   // стейт видимости поповера меню
   const [isMenuPopoverVisible, setIsMenuPopoverVisible] = useState<boolean>(false);
+  const [isAlertsPopoverVisible, setIsAlertsPopoverVisible] = useState<boolean>(false);
 
   // сообщения
   const { messages } = useAppSelector((state) => state.messagesSlice);
@@ -149,8 +150,10 @@ const Header = ({
             >
               <Popover
                 {...popoverOptions}
+                open={isAlertsPopoverVisible}
+                onOpenChange={setIsAlertsPopoverVisible}
                 className={styles.header__popover}
-                content={<HeaderAlerts messages={messages} />}
+                content={<HeaderAlerts messages={messages} closeHandler={() => setIsAlertsPopoverVisible(false)} />}
               >
                 <>
                   <Icon type='alert' counter={messages?.length} />

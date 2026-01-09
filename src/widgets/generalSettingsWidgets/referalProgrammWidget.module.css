@@ -1,5 +1,16 @@
 /* Referal */
 
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 .loading{
     position: relative;
     display: flex;
@@ -18,10 +29,12 @@
     border-radius: 16px;
     /* box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.08); */
     background: #fff;
+    animation: fadeInUp 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) backwards;
 }
 
 .header {
     margin-bottom: 20px;
+    animation: fadeInUp 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.05s backwards;
 }
 
 .header__icon {
@@ -62,6 +75,18 @@
     background: #f8f7ff;
 }
 
+.tiles > .tile:nth-child(1) {
+    animation: fadeInUp 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.1s backwards;
+}
+
+.tiles > .tile:nth-child(2) {
+    animation: fadeInUp 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.15s backwards;
+}
+
+.tiles > .tile:nth-child(3) {
+    animation: fadeInUp 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.2s backwards;
+}
+
 .tile__text {
     margin-bottom: 12px;
     font-weight: 500;
@@ -92,6 +117,10 @@
     justify-content: space-between;
     align-items: stretch;
     gap: 20px;
+}
+
+.row > * {
+    animation: fadeInUp 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.25s backwards;
 }
 
 .col {
@@ -193,6 +222,7 @@
     /* box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.08); */
     border-radius: 16px;
     background: #fff;
+    animation: fadeInUp 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.25s backwards;
 }
 
 .info__content {
@@ -220,6 +250,7 @@
     font-weight: 500;
     font-size: 16px;
     color: #000;
+    animation: fadeInUp 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.3s backwards;
 }
 
 .transactions__item {

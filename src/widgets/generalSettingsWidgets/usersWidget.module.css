@@ -1,3 +1,14 @@
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 .addUser {
     width: 100%;
     height: 100%;
@@ -16,6 +27,7 @@
     flex-direction: column;
     gap: 32px;
     align-items: center;
+    animation: fadeInUp 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) backwards;
 }
 
 .addUser__titleWrapper {
@@ -83,6 +95,7 @@
     padding: 8px;
     max-height: 75dvh;
     overflow: hidden;
+    animation: fadeInUp 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) backwards;
 }
 
 .widget__tableWrapper {

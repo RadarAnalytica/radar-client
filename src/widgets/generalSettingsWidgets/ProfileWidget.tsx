@@ -8,7 +8,7 @@ import moment from "moment";
 import "moment/locale/ru";
 import { URL } from "@/service/config";
 import { useNavigate } from "react-router";
-import { Modal, Input, ConfigProvider, Dropdown } from "antd";
+import { Modal, Input, ConfigProvider, Dropdown, Form } from "antd";
 import type { MenuProps } from 'antd';
 import MobilePlug from "@/components/sharedComponents/mobilePlug/mobilePlug";
 import Header from "@/components/sharedComponents/header/header";
@@ -18,6 +18,8 @@ import { useDemoMode } from "@/app/providers";
 import NoSubscriptionWarningBlock from '@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock';
 import Breadcrumbs from "@/components/sharedComponents/header/headerBreadcrumbs/breadcrumbs";
 import SubscriptionModal from "@/components/sharedComponents/modals/subscriptionModal/subscriptionModal";
+import { ServiceFunctions } from '@/service/serviceFunctions';
+import ErrorModal from '@/components/sharedComponents/modals/errorModal/errorModal';
 
 const inputTheme = {
     token: {
@@ -28,6 +30,8 @@ const inputTheme = {
         fontSize: 12,
         fontWeight: 500,
         controlHeightLG: 38,
+        colorError: '#ff4d4f',
+        colorErrorBorder: '#ff4d4f',
     },
     components: {
         Input: {
@@ -37,6 +41,11 @@ const inputTheme = {
             hoverBg: 'white',
             activeShadow: 'transparent',
             activeBg: 'white',
+        },
+        Form: {
+            labelColor: '#1A1A1A',
+            labelFontSize: 12,
+            verticalLabelPadding: '0 0 8px',
         }
     }
 }
@@ -53,6 +62,13 @@ const dropdownTheme = {
     }
 }
 
+const initStatus = {
+    isLoading: false,
+    isError: false,
+    isSuccess: false,
+    message: ''
+}
+
 export const ProfileWidget = () => {
 
     const { user, authToken } = useContext(AuthContext)
@@ -63,11 +79,8 @@ export const ProfileWidget = () => {
         email: '',
         phone: ''
     })
-    const [passwordData, setPasswordData] = useState({
-        currentPassword: '',
-        newPassword: '',
-        confirmPassword: ''
-    })
+    const [status, setStatus] = useState(initStatus)
+    console.log(status)
 
     useEffect(() => {
         if (user) {
@@ -99,77 +112,41 @@ export const ProfileWidget = () => {
 
     const handleCloseChangePasswordModal = () => {
         setIsChangePasswordModalOpen(false)
-        // Сброс формы паролей
-        setPasswordData({
-            currentPassword: '',
-            newPassword: '',
-            confirmPassword: ''
-        })
     }
 
-    const handleInputChange = (field: string, value: string) => {
-        setFormData(prev => ({
-            ...prev,
-            [field]: value
-        }))
-    }
-
-    const handlePasswordChange = (field: string, value: string) => {
-        setPasswordData(prev => ({
-            ...prev,
-            [field]: value
-        }))
-    }
-
-    const handleSaveChanges = async () => {
+    const handleSaveChanges = async (values: any) => {
+        if (!status.isLoading) {
+            setStatus({ ...initStatus, isLoading: true })
+        }
         try {
-            // Здесь будет API запрос для сохранения данных
-            // const response = await fetchApi('/api/user/profile/update', {
-            //     method: "PUT",
-            //     headers: {
-            //         "content-type": "application/json",
-            //         authorization: "JWT " + authToken,
-            //     },
-            //     body: JSON.stringify(formData)
-            // });
-
-            console.log('Сохранение данных:', formData)
+            let res = await ServiceFunctions.updatUser(authToken, values);
+            if (!res.ok) {
+                setStatus({ ...initStatus, isError: true, message: 'Не удалось обновить данные пользователя' });
+                return;
+            }
             setIsEditModalOpen(false)
+            setStatus({ ...initStatus })
         } catch (error) {
             console.error('Ошибка при сохранении:', error)
+            setStatus({ ...initStatus, isError: true, message: 'Не удалось обновить данные пользователя' })
         }
     }
 
-    const handleChangePassword = async () => {
+    const handleChangePassword = async (values: any) => {
+        if (!status.isLoading) {
+            setStatus({ ...initStatus, isLoading: true })
+        }
         try {
-            // Проверка совпадения паролей
-            if (passwordData.newPassword !== passwordData.confirmPassword) {
-                console.error('Пароли не совпадают')
-                return
+            let res = await ServiceFunctions.updatUserPwd(authToken, values);
+            if (!res.ok) {
+                setStatus({ ...initStatus, isError: true, message: 'Не удалось обновить данные пользователя' });
+                return;
             }
-
-            // Здесь будет API запрос для изменения пароля
-            // const response = await fetchApi('/api/user/password/change', {
-            //     method: "PUT",
-            //     headers: {
-            //         "content-type": "application/json",
-            //         authorization: "JWT " + authToken,
-            //     },
-            //     body: JSON.stringify({
-            //         currentPassword: passwordData.currentPassword,
-            //         newPassword: passwordData.newPassword
-            //     })
-            // });
-
-            console.log('Изменение пароля:', passwordData)
             setIsChangePasswordModalOpen(false)
-            setPasswordData({
-                currentPassword: '',
-                newPassword: '',
-                confirmPassword: ''
-            })
+            setStatus({ ...initStatus })
         } catch (error) {
-            console.error('Ошибка при изменении пароля:', error)
+            console.error('Ошибка при сохранении:', error)
+            setStatus({ ...initStatus, isError: true, message: 'Не удалось обновить данные пользователя' })
         }
     }
 
@@ -271,21 +248,26 @@ export const ProfileWidget = () => {
                 isEditModalOpen={isEditModalOpen}
                 handleCloseEditModal={handleCloseEditModal}
                 formData={formData}
-                handleInputChange={handleInputChange}
                 handleSaveChanges={handleSaveChanges}
             />
 
             <ChangePasswordModal
                 isChangePasswordModalOpen={isChangePasswordModalOpen}
                 handleCloseChangePasswordModal={handleCloseChangePasswordModal}
-                passwordData={passwordData}
-                handlePasswordChange={handlePasswordChange}
                 handleChangePassword={handleChangePassword}
                 handleForgotPassword={handleForgotPassword}
             />
 
             <SubscriptonInfo />
 
+            <ErrorModal
+                open={status.isError}
+                footer={null}
+                onOk={() => setStatus(initStatus)}
+                onClose={() => setStatus(initStatus)}
+                onCancel={() => setStatus(initStatus)}
+                message={status.message}
+            />
         </>
     )
 }
@@ -298,17 +280,69 @@ interface EditUserModalProps {
         email: string;
         phone: string;
     };
-    handleInputChange: (field: string, value: string) => void;
-    handleSaveChanges: () => void;
+    handleSaveChanges: (values: any) => void;
 }
 
 const EditUserModal: React.FC<EditUserModalProps> = ({
     isEditModalOpen,
     handleCloseEditModal,
     formData,
-    handleInputChange,
     handleSaveChanges
 }) => {
+    const [form] = Form.useForm();
+
+    // Обновляем значения формы при изменении formData
+    useEffect(() => {
+        const formattedData = {
+            ...formData,
+            phone: formData.phone ? formatPhoneNumber(formData.phone) : '+7 '
+        };
+        form.setFieldsValue(formattedData);
+    }, [formData, form]);
+
+    const handleFinish = (values: any) => {
+        handleSaveChanges(values);
+    };
+
+    // Функция форматирования телефона
+    const formatPhoneNumber = (value: string) => {
+        if (!value) return '+7 ';
+
+        // Удаляем все нецифровые символы кроме +
+        let phone = value.replace(/[^\d]/g, '');
+
+        // Если начинается с 7 или 8, убираем первую цифру
+        if (phone.startsWith('7') || phone.startsWith('8')) {
+            phone = phone.slice(1);
+        }
+
+        // Ограничиваем количество цифр (максимум 10 после +7)
+        phone = phone.slice(0, 10);
+
+        // Форматируем: +7 XXX XXX XX XX
+        let formatted = '+7';
+
+        if (phone.length > 0) {
+            formatted += ' ' + phone.slice(0, 3);
+        }
+        if (phone.length > 3) {
+            formatted += ' ' + phone.slice(3, 6);
+        }
+        if (phone.length > 6) {
+            formatted += ' ' + phone.slice(6, 8);
+        }
+        if (phone.length > 8) {
+            formatted += ' ' + phone.slice(8, 10);
+        }
+
+        return formatted;
+    };
+
+    const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const formatted = formatPhoneNumber(e.target.value);
+        form.setFieldsValue({ phone: formatted });
+    };
+
     return (
         <Modal
             open={isEditModalOpen}
@@ -323,18 +357,26 @@ const EditUserModal: React.FC<EditUserModalProps> = ({
             }
             title={<span style={{ fontSize: '22px', fontWeight: 600 }}>Редактировать профиль</span>}
         >
-
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', marginTop: '24px' }}>
-                <ConfigProvider
-                    theme={inputTheme}
+            <ConfigProvider
+                theme={inputTheme}
+            >
+                <Form
+                    form={form}
+                    layout="vertical"
+                    onFinish={handleFinish}
+                    style={{ marginTop: '24px' }}
+                    requiredMark={false}
                 >
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                        <label style={{ fontSize: '12px', color: '#1A1A1A', fontWeight: 500 }}>
-                            Имя пользователя
-                        </label>
+                    <Form.Item
+                        label={<span style={{ fontSize: '12px', color: '#1A1A1A', fontWeight: 500 }}>Имя пользователя</span>}
+                        name="name"
+                        rules={[
+                            { required: true, message: 'Имя не может быть пустым' },
+                            { whitespace: true, message: 'Имя не может состоять только из пробелов' }
+                        ]}
+                        style={{ marginBottom: '20px' }}
+                    >
                         <Input
-                            value={formData.name}
-                            onChange={(e) => handleInputChange('name', e.target.value)}
                             placeholder="Введите имя"
                             style={{
                                 height: '38px',
@@ -342,16 +384,16 @@ const EditUserModal: React.FC<EditUserModalProps> = ({
                                 fontSize: '14px'
                             }}
                         />
-                    </div>
+                    </Form.Item>
 
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                        <label style={{ fontSize: '12px', color: '#1A1A1A', fontWeight: 500 }}>
-                            Контактная почта
-                        </label>
+                    <Form.Item
+                        label={<span style={{ fontSize: '12px', color: '#1A1A1A', fontWeight: 500 }}>Контактная почта</span>}
+                        name="email"
+                        style={{ marginBottom: '20px' }}
+                    >
                         <Input
-                            value={formData.email}
-                            onChange={(e) => handleInputChange('email', e.target.value)}
                             placeholder="Введите email"
+                            disabled
                             type="email"
                             style={{
                                 height: '38px',
@@ -359,62 +401,100 @@ const EditUserModal: React.FC<EditUserModalProps> = ({
                                 fontSize: '14px'
                             }}
                         />
-                    </div>
+                    </Form.Item>
 
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                        <label style={{ fontSize: '12px', color: '#1A1A1A', fontWeight: 500 }}>
-                            Телефон
-                        </label>
+                    <Form.Item
+                        label={<span style={{ fontSize: '12px', color: '#1A1A1A', fontWeight: 500 }}>Телефон</span>}
+                        name="phone"
+                        rules={[
+                            {
+                                validator: (_, value) => {
+                                    if (!value || value === '+7 ') {
+                                        return Promise.resolve();
+                                    }
+                                    // Проверяем, что номер полный (16 символов: +7 XXX XXX XX XX)
+                                    const digitsOnly = value.replace(/[^\d]/g, '');
+                                    if (digitsOnly.length === 11) {
+                                        return Promise.resolve();
+                                    }
+                                    return Promise.reject(new Error('Введите полный номер телефона'));
+                                },
+                            },
+                        ]}
+                        style={{ marginBottom: '20px' }}
+                    >
                         <Input
-                            value={formData.phone}
-                            onChange={(e) => handleInputChange('phone', e.target.value)}
                             placeholder="Введите телефон"
+                            onChange={handlePhoneChange}
+                            onFocus={(e) => {
+                                // При фокусе, если поле пустое, устанавливаем +7 
+                                if (!e.target.value || e.target.value === '') {
+                                    form.setFieldsValue({ phone: '+7 ' });
+                                }
+                            }}
+                            onKeyDown={(e) => {
+                                const input = e.target as HTMLInputElement;
+                                const cursorPosition = input.selectionStart || 0;
+
+                                // Запрещаем удаление +7 (первые 2 символа)
+                                if ((e.key === 'Backspace' || e.key === 'Delete') && cursorPosition <= 3) {
+                                    e.preventDefault();
+                                }
+                            }}
+                            onPaste={(e) => {
+                                e.preventDefault();
+                                const pastedText = e.clipboardData.getData('text');
+                                const formatted = formatPhoneNumber(pastedText);
+                                form.setFieldsValue({ phone: formatted });
+                            }}
+                            maxLength={16}
                             style={{
                                 height: '38px',
                                 borderRadius: '8px',
                                 fontSize: '14px'
                             }}
                         />
-                    </div>
-                </ConfigProvider>
+                    </Form.Item>
 
-                <div style={{ display: 'flex', gap: '12px', marginTop: '8px', justifyContent: 'flex-end' }}>
-                    <button
-                        onClick={handleCloseEditModal}
-                        style={{
-                            flex: '0 0 auto',
-                            height: '46px',
-                            border: 'none',
-                            borderRadius: '8px',
-                            background: '#5329FF1A',
-                            fontSize: '14px',
-                            fontWeight: 600,
-                            color: '#5329FF',
-                            cursor: 'pointer',
-                            padding: '0 16px'
-                        }}
-                    >
-                        Отменить
-                    </button>
-                    <button
-                        onClick={handleSaveChanges}
-                        style={{
-                            flex: '0 0 auto',
-                            height: '46px',
-                            border: 'none',
-                            borderRadius: '8px',
-                            background: '#5329FF',
-                            fontSize: '14px',
-                            fontWeight: 600,
-                            color: 'white',
-                            cursor: 'pointer',
-                            padding: '0 16px'
-                        }}
-                    >
-                        Сохранить изменения
-                    </button>
-                </div>
-            </div>
+                    <div style={{ display: 'flex', gap: '12px', marginTop: '8px', justifyContent: 'flex-end' }}>
+                        <button
+                            type="button"
+                            onClick={handleCloseEditModal}
+                            style={{
+                                flex: '0 0 auto',
+                                height: '46px',
+                                border: 'none',
+                                borderRadius: '8px',
+                                background: '#5329FF1A',
+                                fontSize: '14px',
+                                fontWeight: 600,
+                                color: '#5329FF',
+                                cursor: 'pointer',
+                                padding: '0 16px'
+                            }}
+                        >
+                            Отменить
+                        </button>
+                        <button
+                            type="submit"
+                            style={{
+                                flex: '0 0 auto',
+                                height: '46px',
+                                border: 'none',
+                                borderRadius: '8px',
+                                background: '#5329FF',
+                                fontSize: '14px',
+                                fontWeight: 600,
+                                color: 'white',
+                                cursor: 'pointer',
+                                padding: '0 16px'
+                            }}
+                        >
+                            Сохранить изменения
+                        </button>
+                    </div>
+                </Form>
+            </ConfigProvider>
         </Modal >
     )
 }
@@ -422,24 +502,23 @@ const EditUserModal: React.FC<EditUserModalProps> = ({
 interface ChangePasswordModalProps {
     isChangePasswordModalOpen: boolean;
     handleCloseChangePasswordModal: () => void;
-    passwordData: {
-        currentPassword: string;
-        newPassword: string;
-        confirmPassword: string;
-    };
-    handlePasswordChange: (field: string, value: string) => void;
-    handleChangePassword: () => void;
+    handleChangePassword: (values: any) => void;
     handleForgotPassword: () => void;
 }
 
 const ChangePasswordModal: React.FC<ChangePasswordModalProps> = ({
     isChangePasswordModalOpen,
     handleCloseChangePasswordModal,
-    passwordData,
-    handlePasswordChange,
     handleChangePassword,
     handleForgotPassword
 }) => {
+    const [form] = Form.useForm();
+
+    const handleFinish = (values: any) => {
+        handleChangePassword(values);
+        form.resetFields();
+    };
+
     return (
         <Modal
             open={isChangePasswordModalOpen}
@@ -454,18 +533,25 @@ const ChangePasswordModal: React.FC<ChangePasswordModalProps> = ({
             }
             title={<span style={{ fontSize: '22px', fontWeight: 600 }}>Изменить пароль</span>}
         >
-
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', marginTop: '24px' }}>
-                <ConfigProvider
-                    theme={inputTheme}
+            <ConfigProvider
+                theme={inputTheme}
+            >
+                <Form
+                    form={form}
+                    layout="vertical"
+                    onFinish={handleFinish}
+                    style={{ marginTop: '24px' }}
+                    requiredMark={false}
                 >
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                        <label style={{ fontSize: '12px', color: '#1A1A1A', fontWeight: 500 }}>
-                            Текущий пароль
-                        </label>
+                    <Form.Item
+                        label={<span style={{ fontSize: '12px', color: '#1A1A1A', fontWeight: 500 }}>Текущий пароль</span>}
+                        name="password"
+                        rules={[
+                            { required: true, message: 'Введите текущий пароль' }
+                        ]}
+                        style={{ marginBottom: '8px' }}
+                    >
                         <Input.Password
-                            value={passwordData.currentPassword}
-                            onChange={(e) => handlePasswordChange('currentPassword', e.target.value)}
                             placeholder="Введите текущий пароль"
                             style={{
                                 height: '38px',
@@ -473,28 +559,42 @@ const ChangePasswordModal: React.FC<ChangePasswordModalProps> = ({
                                 fontSize: '14px'
                             }}
                         />
-                        <a
-                            onClick={handleForgotPassword}
-                            style={{
-                                fontSize: '12px',
-                                color: '#5329FF',
-                                cursor: 'pointer',
-                                textDecoration: 'none',
-                                alignSelf: 'flex-end',
-                                marginTop: '-4px'
-                            }}
-                        >
-                            Не помню текущий пароль
-                        </a>
-                    </div>
+                    </Form.Item>
+                    <a
+                        onClick={handleForgotPassword}
+                        style={{
+                            fontSize: '12px',
+                            color: '#5329FF',
+                            cursor: 'pointer',
+                            textDecoration: 'none',
+                            display: 'block',
+                            textAlign: 'right',
+                            marginBottom: '20px',
+                            marginTop: '-4px'
+                        }}
+                    >
+                        Не помню текущий пароль
+                    </a>
 
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                        <label style={{ fontSize: '12px', color: '#1A1A1A', fontWeight: 500 }}>
-                            Новый пароль
-                        </label>
+                    <Form.Item
+                        label={<span style={{ fontSize: '12px', color: '#1A1A1A', fontWeight: 500 }}>Новый пароль</span>}
+                        name="new_password"
+                        dependencies={['password']}
+                        rules={[
+                            { required: true, message: 'Введите новый пароль' },
+                            { min: 6, message: 'Пароль должен содержать минимум 5 символов' },
+                            ({ getFieldValue }) => ({
+                                validator(_, value) {
+                                    if (!value || getFieldValue('password') !== value) {
+                                        return Promise.resolve();
+                                    }
+                                    return Promise.reject(new Error('Новый пароль не может совпадать с текущим'));
+                                },
+                            }),
+                        ]}
+                        style={{ marginBottom: '20px' }}
+                    >
                         <Input.Password
-                            value={passwordData.newPassword}
-                            onChange={(e) => handlePasswordChange('newPassword', e.target.value)}
                             placeholder="От 5 знаков, используйте заглавные"
                             style={{
                                 height: '38px',
@@ -502,15 +602,26 @@ const ChangePasswordModal: React.FC<ChangePasswordModalProps> = ({
                                 fontSize: '14px'
                             }}
                         />
-                    </div>
+                    </Form.Item>
 
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                        <label style={{ fontSize: '12px', color: '#1A1A1A', fontWeight: 500 }}>
-                            Повторите новый пароль
-                        </label>
+                    <Form.Item
+                        label={<span style={{ fontSize: '12px', color: '#1A1A1A', fontWeight: 500 }}>Повторите новый пароль</span>}
+                        name="confirm_password"
+                        dependencies={['new_password']}
+                        rules={[
+                            { required: true, message: 'Повторите новый пароль' },
+                            ({ getFieldValue }) => ({
+                                validator(_, value) {
+                                    if (!value || getFieldValue('new_password') === value) {
+                                        return Promise.resolve();
+                                    }
+                                    return Promise.reject(new Error('Пароли не совпадают'));
+                                },
+                            }),
+                        ]}
+                        style={{ marginBottom: '20px' }}
+                    >
                         <Input.Password
-                            value={passwordData.confirmPassword}
-                            onChange={(e) => handlePasswordChange('confirmPassword', e.target.value)}
                             placeholder="Повторите"
                             style={{
                                 height: '38px',
@@ -518,46 +629,47 @@ const ChangePasswordModal: React.FC<ChangePasswordModalProps> = ({
                                 fontSize: '14px'
                             }}
                         />
-                    </div>
-                </ConfigProvider>
+                    </Form.Item>
 
-                <div style={{ display: 'flex', gap: '12px', marginTop: '8px', justifyContent: 'flex-end' }}>
-                    <button
-                        onClick={handleCloseChangePasswordModal}
-                        style={{
-                            flex: '0 0 auto',
-                            height: '46px',
-                            border: 'none',
-                            borderRadius: '8px',
-                            background: '#5329FF1A',
-                            fontSize: '14px',
-                            fontWeight: 600,
-                            color: '#5329FF',
-                            cursor: 'pointer',
-                            padding: '0 16px'
-                        }}
-                    >
-                        Отменить
-                    </button>
-                    <button
-                        onClick={handleChangePassword}
-                        style={{
-                            flex: '0 0 auto',
-                            height: '46px',
-                            border: 'none',
-                            borderRadius: '8px',
-                            background: '#5329FF',
-                            fontSize: '14px',
-                            fontWeight: 600,
-                            color: 'white',
-                            cursor: 'pointer',
-                            padding: '0 16px'
-                        }}
-                    >
-                        Сохранить изменения
-                    </button>
-                </div>
-            </div>
+                    <div style={{ display: 'flex', gap: '12px', marginTop: '8px', justifyContent: 'flex-end' }}>
+                        <button
+                            type="button"
+                            onClick={handleCloseChangePasswordModal}
+                            style={{
+                                flex: '0 0 auto',
+                                height: '46px',
+                                border: 'none',
+                                borderRadius: '8px',
+                                background: '#5329FF1A',
+                                fontSize: '14px',
+                                fontWeight: 600,
+                                color: '#5329FF',
+                                cursor: 'pointer',
+                                padding: '0 16px'
+                            }}
+                        >
+                            Отменить
+                        </button>
+                        <button
+                            type="submit"
+                            style={{
+                                flex: '0 0 auto',
+                                height: '46px',
+                                border: 'none',
+                                borderRadius: '8px',
+                                background: '#5329FF',
+                                fontSize: '14px',
+                                fontWeight: 600,
+                                color: 'white',
+                                cursor: 'pointer',
+                                padding: '0 16px'
+                            }}
+                        >
+                            Сохранить изменения
+                        </button>
+                    </div>
+                </Form>
+            </ConfigProvider>
         </Modal >
     )
 }

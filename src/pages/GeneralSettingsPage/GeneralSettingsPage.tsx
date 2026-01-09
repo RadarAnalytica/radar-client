@@ -12,7 +12,7 @@ const segmentedOptions = [
     { value: 'payments', label: 'История платежей' },
     { value: 'referral', label: 'Реферальная программа' },
     { value: 'tariffs', label: 'Тарифы' },
-    { value: 'notifications', label: 'Бот уведомлений' },
+    // { value: 'notifications', label: 'Бот уведомлений' },
 ];
 
 const segmentedTheme = {
