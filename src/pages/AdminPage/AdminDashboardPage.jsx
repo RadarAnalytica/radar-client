@@ -111,78 +111,9 @@ const modalPrimaryButtonTheme = {
 
 const AdminDashboardPage = () => {
 
-    const { adminToken, isImpersonateModeActive, setIsImpersonateModeActive, setAuthToken, setAdminToken } = useContext(AuthContext);
+    const { adminToken } = useContext(AuthContext);
     const [status, setStatus] = useState(initStatus);
     const [dashboardData, setData] = useState();
-    const [impersonateUserId, setImpersonateUserId] = useState(null)
-    const dispatch = useAppDispatch()
-
-    const getFiltersData = async (token) => {
-        if (!status.isLoading) {
-            setStatus({ ...initStatus, isLoading: true })
-        }
-        try {
-          let shopsResponse = await fetch(`${URL}/api/shop/all`, {
-            method: 'GET',
-            headers: {
-              'content-type': 'application/json',
-              authorization: 'JWT ' + token,
-            }
-          });
-          if (!shopsResponse?.ok) {
-            setStatus({ ...initStatus, isError: true});
-            return;
-          }
-          let shopsData = null;
-          shopsData = await shopsResponse.json();
-  
-          // @ts-ignore
-          await dispatch(fetchFilters({
-            authToken: token,
-            shopsData
-            //shopsData: null
-          }));
-          setStatus({ ...initStatus});
-        } catch (error) {
-          console.error("FiltersProvider: Error fetching initial data:", error);
-          setStatus({ ...initStatus, isError: true});
-        }
-      };
-
-    const getImpersonateUser = async () => {
-        setStatus({ ...initStatus, isLoading: true })
-        try {
-            let res = await fetch(`${URL}/api/admin/get_impersonate_user?user_id=${impersonateUserId}`, {
-                headers: {
-                    'content-type': 'application/json',
-                    'authorization': 'JWT ' + adminToken
-                }
-            })
-
-            if (!res?.ok) {
-                res = await res.json()
-                setStatus({ ...initStatus, isError: true, message: res?.detail ?? 'Не удалось зайти за пользователя' });
-                return;
-            }
-
-            res = await res.json();
-            setStatus({ ...initStatus, isSuccess: true, message: `Вы успешно зашли за пользователя с id ${impersonateUserId}` });
-            setImpersonateUserId(null)
-            setIsImpersonateModeActive(true)
-            setAuthToken(res)
-            getFiltersData(res)
-        } catch (e) {
-            setStatus({ ...initStatus, isError: true, message: e ?? 'Не удалось зайти за пользователя' })
-            console.error(e)
-        }
-    }
-
-    const impersonateLogout = async () => {
-        setStatus({ ...initStatus, isLoading: true })
-        setIsImpersonateModeActive(false),
-        setAuthToken(adminToken) 
-        getFiltersData(adminToken)
-    }
 
     useEffect(() => {
         fetchStatistics(adminToken, setStatus, initStatus, setData);
@@ -215,59 +146,6 @@ const AdminDashboardPage = () => {
                             units='%'
                         />
                     </>
-                }
-            </div>
-
-            <div className={styles.page__userLogin}>
-                <span>Войти за пользователя</span>
-                {!isImpersonateModeActive &&
-                    <div className={styles.page__inputWrapper}>
-                        <ConfigProvider
-                            theme={inputTheme}
-                        >
-                            <Input
-                                value={impersonateUserId}
-                                onChange={(e) => {
-                                    const value = e.target.value.replace(/\D/g, '');
-                                    setImpersonateUserId(value);
-                                }}
-                                style={{ maxWidth: 275, height: 38 }}
-                                placeholder='Введите id пользователя'
-                            />
-                        </ConfigProvider>
-                        <ConfigProvider
-                            theme={modalPrimaryButtonTheme}
-                        >
-                            <Button
-                                type='primary'
-                                // size='large'
-                                style={{ fontWeight: 600 }}
-                                loading={status.isLoading}
-                                disabled={!impersonateUserId}
-                                onClick={getImpersonateUser}
-                            >
-                                Войти
-                            </Button>
-                        </ConfigProvider>
-                    </div>
-                }
-                {isImpersonateModeActive &&
-                    <div className={styles.page__inputWrapper}>
-                        Вы просматриваете сервис от имени другого пользователя
-                        <ConfigProvider
-                            theme={modalPrimaryButtonTheme}
-                        >
-                            <Button
-                                type='primary'
-                                // size='large'
-                                style={{ fontWeight: 600 }}
-                                loading={status.isLoading}
-                                onClick={impersonateLogout}
-                            >
-                                Выйти
-                            </Button>
-                        </ConfigProvider>
-                    </div>
                 }
             </div>
 

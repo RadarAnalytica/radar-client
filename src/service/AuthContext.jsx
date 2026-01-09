@@ -31,7 +31,7 @@ export const AuthProvider = ({ children }) => {
   const [authToken, setAuthToken] = useState();
   const [adminToken, setAdminToken] = useState();
   const [user, setUser] = useState(decode(value));
-  const [ isImpersonateModeActive, setIsImpersonateModeActive] = useState(false)
+  const [ impersonateUser, setImpersonateUser] = useState(null)
   let prevToken = authToken;
 
   useEffect(() => {
@@ -351,8 +351,8 @@ export const AuthProvider = ({ children }) => {
       refreshOnboardingCheck,
       adminToken,
       setAuthToken,
-      isImpersonateModeActive,
-      setIsImpersonateModeActive
+      impersonateUser,
+      setImpersonateUser
     }),
     [user, authToken]
   );
