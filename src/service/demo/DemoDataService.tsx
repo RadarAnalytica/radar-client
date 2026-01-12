@@ -127,7 +127,7 @@ export class DemoDataService {
       '/api/blog/articles': () => this.getArticlesData(),
       '/api/operating-expenses/category/get-all': () => this.getOperatingExpensesCategoriesData(),
       '/api/operating-expenses/expense/get-all': () => this.getOperatingExpensesData(filters),
-      '/api/operating-expenses/periodic-expense/get': () => this.getPeriodicExpenseData(),
+      '/api/operating-expenses/periodic-templates/get-all': () => this.getOperatingExpensesData(filters),
       '/api/control/spp': () => this.getWbControlsData(filters),
       '/api/control/drr': () => this.getWbControlsData(filters),
       '/api/advert/list': () => this.getAdvertData(filters, JSON.parse(options?.body)),
@@ -627,6 +627,10 @@ export class DemoDataService {
 
   private getOperatingExpensesData(filters?: any) {
     const today = new Date().toISOString().split('T')[0];
+    const oneMonthLater = new Date();
+    oneMonthLater.setMonth(oneMonthLater.getMonth() + 1);
+    const oneMonthLaterStr = oneMonthLater.toISOString().split('T')[0];
+    
     const data = [
       {
         "id": 1,
@@ -647,6 +651,8 @@ export class DemoDataService {
           },
         ],
         "date": today,
+        "date_from": today,
+        "finished_at": oneMonthLaterStr,
         "periodic_expense_id": null,
         "is_periodic": true,
         "created_at": today,
@@ -671,6 +677,7 @@ export class DemoDataService {
             },
           ],
           "date": today,
+          "date_from": today,
           "periodic_expense_id": null,
           "is_periodic": false,
           "created_at": today,
@@ -694,6 +701,7 @@ export class DemoDataService {
             },
           ],
           "date": today,
+          "date_from": today,
           "periodic_expense_id": null,
           "is_periodic": false,
           "created_at": today,
@@ -740,32 +748,6 @@ export class DemoDataService {
       total_pages: 1,
       limit: 25,
       total_sum: 225000,
-    };
-  }
-
-  private getPeriodicExpenseData() {
-    const today = new Date().toISOString().split('T')[0];
-
-    return {
-      "id": 1,
-      "expense_categories": [
-          {
-              "id": 1,
-              "name": "Заработная плата"
-          }
-      ],
-      "period_type": "month",
-      "period_values": [1],
-      "description": "Выдача заработной платы сотрудникам отдела маркетинга",
-      "value": 100000,
-      "vendor_code": null,
-      "brand_name": null,
-      "shops": [1],
-      "date_from": today,
-      "periodic_expense_id": null,
-      "is_periodic": true,
-      "created_at": today,
-      "updated_at": today
     };
   }
 
