@@ -1553,25 +1553,27 @@ export class DemoDataService {
       
       // Вычисляем дату начала - 1 июля прошлого года
       const currentYear = currentDate.getFullYear();
-      const startDate = new Date(currentYear - 1, 6, 1); // 1 июля прошлого года
+      const julyFirst = new Date(currentYear - 1, 6, 1); // 1 июля прошлого года
+      
+      // Находим понедельник, который наступает до или в день 1 июля
+      const dayOfWeek = julyFirst.getDay(); // 0 = воскресенье, 1 = понедельник, ..., 6 = суббота
+      const daysToMonday = dayOfWeek === 0 ? -6 : dayOfWeek - 1; // Количество дней назад до понедельника
+      const startDate = new Date(julyFirst);
+      startDate.setDate(julyFirst.getDate() - daysToMonday); // Понедельник до или в день 1 июля
       
       // Вычисляем количество недель от начала до текущей даты
       const weeksDiff = Math.ceil((currentDate.getTime() - startDate.getTime()) / (7 * 24 * 60 * 60 * 1000));
       
       for (let i = 1; i <= weeksDiff; i++) {
         const weekStartDate = new Date(currentDate);
-        const dayOfWeek = weekStartDate.getDay();
         weekStartDate.setDate(weekStartDate.getDate() - (i * 7));
         
+        // Находим понедельник этой недели
+        const dayOfWeekForDate = weekStartDate.getDay();
+        const daysToMondayFromDate = dayOfWeekForDate === 0 ? -6 : 1 - dayOfWeekForDate;
+        weekStartDate.setDate(weekStartDate.getDate() + daysToMondayFromDate);
+        
         // Проверяем, что неделя не раньше даты начала
-        if (weekStartDate < startDate) {
-          break;
-        }
-        
-        const daysToMonday = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
-        weekStartDate.setDate(weekStartDate.getDate() + daysToMonday);
-        
-        // Проверяем еще раз после корректировки на понедельник
         if (weekStartDate < startDate) {
           break;
         }
@@ -1620,11 +1622,18 @@ export class DemoDataService {
       return Math.max(0, baseValue + randomInRange(-variation, variation));
     };
 
+    // Функция для извлечения значения из объекта или числа
+    const getValue = (obj: any): number => {
+      return typeof obj === 'object' && obj !== null && 'value' in obj ? obj.value : obj;
+    };
+
     // Функция для генерации пары связанных значений (rub/quantity или rub/percent)
-    const generatePair = (value1: number, value2: number) => {
+    const generatePair = (value1: any, value2: any) => {
+      const val1 = getValue(value1);
+      const val2 = getValue(value2);
       const randomMultiplier = randomInRange(0.25, 0.5);
-      const result1 = Math.round(randomVariation(value1, randomMultiplier));
-      const result2 = Math.round(randomVariation(value2, randomMultiplier));
+      const result1 = Math.round(randomVariation(val1, randomMultiplier));
+      const result2 = Math.round(randomVariation(val2, randomMultiplier));
 
       if (result1 === 0 || result2 === 0) {
         return { first: 0, second: 0 };
@@ -1633,7 +1642,27 @@ export class DemoDataService {
       return { first: {value: result1, comparison_percentage: this.generateRandomPercent(-10, 10)}, second: {value: result2, comparison_percentage: this.generateRandomPercent(-10, 10)} };
     };
 
-    const roundToTwo = (v: number) => Math.round(v * 100) / 100;
+    // Генерация объекта с value и comparison_percentage на основе базового значения
+    const generateValueWithComparison = (baseValue: any, variationPercent: number, round: boolean = true): {value: number, comparison_percentage: number} => {
+      const getValue = (obj: any): number => {
+        return typeof obj === 'object' && obj !== null && 'value' in obj ? obj.value : obj;
+      };
+
+      const randomInRange = (min: number, max: number) => Math.random() * (max - min) + min;
+      const randomVariation = (baseVal: number, variation: number) => {
+        const varAmount = baseVal * variation;
+        return Math.max(0, baseVal + randomInRange(-varAmount, varAmount));
+      };
+
+      const roundToTwo = (v: number) => Math.round(v * 100) / 100;
+      const val = getValue(baseValue);
+      const result = round ? roundToTwo(randomVariation(val, variationPercent)) : Math.round(randomVariation(val, variationPercent));
+
+      return {
+        value: result,
+        comparison_percentage: this.generateRandomPercent(-10, 10)
+      };
+    };
 
     const revenue = generatePair(baseData.data.revenue.rub, baseData.data.revenue.quantity);
     const purchases = generatePair(baseData.data.purchases.rub, baseData.data.purchases.quantity);
@@ -1657,18 +1686,18 @@ export class DemoDataService {
         rub: returnData.first,
         quantity: returnData.second
       },
-      avg_check: roundToTwo(randomVariation(baseData.data.avg_check, 0.2)),
-      purchase_percent: roundToTwo(randomVariation(baseData.data.purchase_percent, 0.2)),
-      avg_spp: roundToTwo(randomVariation(baseData.data.avg_spp, 0.2)),
-      cost_price: Math.round(randomVariation(baseData.data.cost_price, 0.3)),
-      cost_price_percent: roundToTwo(randomVariation(baseData.data.cost_price_percent, 0.2)),
-      cost_price_per_one: roundToTwo(randomVariation(baseData.data.cost_price_per_one, 0.3)),
-      deliveries: Math.round(randomVariation(baseData.data.deliveries, 0.2)),
-      payment: roundToTwo(randomVariation(baseData.data.payment, 0.2)),
-      profit: roundToTwo(randomVariation(baseData.data.profit, 0.3)),
-      profit_per_one: roundToTwo(randomVariation(baseData.data.profit_per_one, 0.2)),
-      marginality: roundToTwo(randomVariation(baseData.data.marginality, 0.2)),
-      return_on_investment: roundToTwo(randomVariation(baseData.data.return_on_investment, 0.2)),
+      avg_check: generateValueWithComparison(baseData.data.avg_check, 0.2),
+      purchase_percent: generateValueWithComparison(baseData.data.purchase_percent, 0.2),
+      avg_spp: generateValueWithComparison(baseData.data.avg_spp, 0.2),
+      cost_price: generateValueWithComparison(baseData.data.cost_price, 0.3, false),
+      cost_price_percent: generateValueWithComparison(baseData.data.cost_price_percent, 0.2),
+      cost_price_per_one: generateValueWithComparison(baseData.data.cost_price_per_one, 0.3),
+      deliveries: generateValueWithComparison(baseData.data.deliveries, 0.2, false),
+      payment: generateValueWithComparison(baseData.data.payment, 0.2),
+      profit: generateValueWithComparison(baseData.data.profit, 0.3),
+      profit_per_one: generateValueWithComparison(baseData.data.profit_per_one, 0.2),
+      marginality: generateValueWithComparison(baseData.data.marginality, 0.2),
+      return_on_investment: generateValueWithComparison(baseData.data.return_on_investment, 0.2),
       wb_commission: {
         rub: wbCommission.first,
         percent: wbCommission.second
@@ -1685,31 +1714,44 @@ export class DemoDataService {
         rub: logisticsReverse.first,
         percent: logisticsReverse.second
       },
-      logistics_per_product: roundToTwo(randomVariation(baseData.data.logistics_per_product, 0.2)),
+      logistics_per_product: generateValueWithComparison(baseData.data.logistics_per_product, 0.2),
       logistics_total: {
         rub: logisticsTotal.first,
         percent: logisticsTotal.second
       },
-      compensation_defects_rub: roundToTwo(randomVariation(baseData.data.compensation_defects.rub, 0.2)),
-      compensation_defects_quantity: Math.round(randomVariation(baseData.data.compensation_defects.quantity, 0.5)),
-      compensation_damage_rub: roundToTwo(randomVariation(baseData.data.compensation_damage.rub, 0.2)),
-      compensation_damage_quantity: Math.round(randomVariation(baseData.data.compensation_damage.quantity, 0.5)),
-      penalties: roundToTwo(randomVariation(baseData.data.penalties, 0.2)),
-      additional_payments: roundToTwo(randomVariation(baseData.data.additional_payments, 0.2)),
-      storage_rub: roundToTwo(randomVariation(baseData.data.storage.rub, 0.2)),
-      storage_percent: roundToTwo(randomVariation(baseData.data.storage.percent, 0.2)),
-      other_retentions_rub: roundToTwo(randomVariation(baseData.data.other_retentions.rub, 0.2)),
-      other_retentions_percent: roundToTwo(randomVariation(baseData.data.other_retentions.percent, 0.2)),
-      acceptance_rub: roundToTwo(randomVariation(baseData.data.acceptance.rub, 0.2)),
-      acceptance_percent: roundToTwo(randomVariation(baseData.data.acceptance.percent, 0.2)),
-      compensation_penalties_rub: roundToTwo(randomVariation(baseData.data.compensation_penalties.rub, 0.2)),
-      compensation_penalties_percent: roundToTwo(randomVariation(baseData.data.compensation_penalties.percent, 0.2)),
-      sold_by_wb: roundToTwo(randomVariation(baseData.data.sold_by_wb, 0.2)),
-      tax_base: roundToTwo(randomVariation(baseData.data.tax_base, 0.2)),
-      tax: roundToTwo(randomVariation(baseData.data.tax, 0.2)),
-      advert_amount: roundToTwo(randomVariation(baseData.data.advert_amount, 0.2)),
-      drr: roundToTwo(randomVariation(baseData.data.drr, 0.2)),
-      wb_retentions_amount: roundToTwo(randomVariation(baseData.data.wb_retentions_amount, 0.2)),
+      compensation_defects: {
+        rub: generateValueWithComparison(baseData.data.compensation_defects.rub, 0.2),
+        quantity: generateValueWithComparison(baseData.data.compensation_defects.quantity, 0.5, false)
+      },
+      compensation_damage: {
+        rub: generateValueWithComparison(baseData.data.compensation_damage.rub, 0.2),
+        quantity: generateValueWithComparison(baseData.data.compensation_damage.quantity, 0.5, false)
+      },
+      penalties: generateValueWithComparison(baseData.data.penalties, 0.2),
+      additional_payments: generateValueWithComparison(baseData.data.additional_payments, 0.2),
+      storage: {
+        rub: generateValueWithComparison(baseData.data.storage.rub, 0.2),
+        percent: generateValueWithComparison(baseData.data.storage.percent, 0.2)
+      },
+      other_retentions: {
+        rub: generateValueWithComparison(baseData.data.other_retentions.rub, 0.2),
+        percent: generateValueWithComparison(baseData.data.other_retentions.percent, 0.2)
+      },
+      acceptance: {
+        rub: generateValueWithComparison(baseData.data.acceptance.rub, 0.2),
+        percent: generateValueWithComparison(baseData.data.acceptance.percent, 0.2)
+      },
+      compensation_penalties: {
+        rub: generateValueWithComparison(baseData.data.compensation_penalties.rub, 0.2),
+        percent: generateValueWithComparison(baseData.data.compensation_penalties.percent, 0.2)
+      },
+      sold_by_wb: generateValueWithComparison(baseData.data.sold_by_wb, 0.2),
+      tax_base: generateValueWithComparison(baseData.data.tax_base, 0.2),
+      tax: generateValueWithComparison(baseData.data.tax, 0.2),
+      advert_amount: generateValueWithComparison(baseData.data.advert_amount, 0.2),
+      drr: generateValueWithComparison(baseData.data.drr, 0.2),
+      wb_retentions_amount: generateValueWithComparison(baseData.data.wb_retentions_amount, 0.2),
+      operating_expenses: generateValueWithComparison(baseData.data.operating_expenses || 0, 0.2),
     };
   }
 
