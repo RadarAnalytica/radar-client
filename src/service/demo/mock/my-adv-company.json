@@ -3389,7 +3389,7 @@
             "drr_purchase": 0.38,
             "cp_cart": 15.93,
             "cpo": 17.52,
-                "expected_cps": 46.94,
+            "expected_cps": 46.94,
             "orders_amount": 3059391,
             "expected_purchase_amount": 4553172,
             "ad_spend": 43141.93

@@ -305,6 +305,8 @@ export class DemoDataService {
       if (processedItem.advert_funnel) {
         processedItem.advert_funnel = { ...processedItem.advert_funnel };
         Object.keys(processedItem.advert_funnel).forEach(key => {
+          if (['cart_order', 'click_cart', 'expected_click_purchase', 'expected_order_purchase', 'view_click', 'view_order'].includes(key)) return;
+          
           if (typeof processedItem.advert_funnel[key] === 'number') {
             processedItem.advert_funnel[key] = Math.round(processedItem.advert_funnel[key] / denominator);
           }
@@ -314,6 +316,8 @@ export class DemoDataService {
       if (processedItem.advert_statistics) {
         processedItem.advert_statistics = { ...processedItem.advert_statistics };
         Object.keys(processedItem.advert_statistics).forEach(key => {
+          if (['drr_orders', 'views'].includes(key)) return;
+
           if (typeof processedItem.advert_statistics[key] === 'number') {
             processedItem.advert_statistics[key] = Math.round(processedItem.advert_statistics[key] / denominator);
           }
@@ -357,6 +361,86 @@ export class DemoDataService {
           date: date.toISOString().split('T')[0] // Формат YYYY-MM-DD
         };
       });
+
+      // Вычисляем суммы для summary_data из date_data
+      if (data.summary_data) {
+        // Поля для суммирования в advert_funnel
+        const advertFunnelFields = [
+          'cart',
+          'expected_purchase',
+          'order_item_count',
+          'orders',
+        ];
+
+        // Поля для среднего значения в advert_funnel
+        const advertFunnelAvgFields = [
+          'cart_order',
+          'click_cart',
+          'expected_click_purchase',
+          'expected_order_purchase',
+          'view_click',
+          'view_order',
+        ];
+
+        // Поля для суммирования в advert_statistics
+        const advertStatisticsFields = [
+          'ad_spend',
+          'clicks',
+          'cp_cart',
+          'cpc',
+          'expected_cps',
+          'cpo',
+          'orders_amount',
+          'views',
+        ];
+
+        // Поля для среднего значения в advert_statistics
+        const advertStatisticsAvgFields = [
+          'drr_orders',
+          'drr_purchase',
+          'avg_cpm',
+        ];
+
+        // Инициализируем summary_data если её нет
+        if (!data.summary_data.advert_funnel) {
+          data.summary_data.advert_funnel = {};
+        }
+        if (!data.summary_data.advert_statistics) {
+          data.summary_data.advert_statistics = {};
+        }
+
+        const dateDataLength = data.date_data.length;
+
+        // Суммируем значения из date_data для advert_funnel
+        advertFunnelFields.forEach(field => {
+          data.summary_data.advert_funnel[field] = data.date_data.reduce((sum: number, item: any) => {
+            return sum + (item.advert_funnel?.[field] || 0);
+          }, 0);
+        });
+
+        // Вычисляем среднее значение для advert_funnel
+        advertFunnelAvgFields.forEach(field => {
+          const sum = data.date_data.reduce((sum: number, item: any) => {
+            return sum + (item.advert_funnel?.[field] || 0);
+          }, 0);
+          data.summary_data.advert_funnel[field] = dateDataLength > 0 ? sum / dateDataLength : 0;
+        });
+
+        // Суммируем значения из date_data для advert_statistics
+        advertStatisticsFields.forEach(field => {
+          data.summary_data.advert_statistics[field] = data.date_data.reduce((sum: number, item: any) => {
+            return sum + (item.advert_statistics?.[field] || 0);
+          }, 0);
+        });
+
+        // Вычисляем среднее значение для advert_statistics
+        advertStatisticsAvgFields.forEach(field => {
+          const sum = data.date_data.reduce((sum: number, item: any) => {
+            return sum + (item.advert_statistics?.[field] || 0);
+          }, 0);
+          data.summary_data.advert_statistics[field] = dateDataLength > 0 ? sum / dateDataLength : 0;
+        });
+      }
     }
     
     return data;
@@ -630,7 +714,7 @@ export class DemoDataService {
     const oneMonthLater = new Date();
     oneMonthLater.setMonth(oneMonthLater.getMonth() + 1);
     const oneMonthLaterStr = oneMonthLater.toISOString().split('T')[0];
-    
+
     const data = [
       {
         "id": 1,
