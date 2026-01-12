@@ -116,7 +116,7 @@ const customCellRender = (value, record, index, dataIndex) => {
                 style={{ backgroundColor: getABCBarOptions(value) }}
                 title={value}
             >
-                {value}
+                {value || '-'}
             </div>
         </div>);
     }
