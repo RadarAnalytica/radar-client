@@ -441,6 +441,8 @@ export class DemoDataService {
           data.summary_data.advert_statistics[field] = dateDataLength > 0 ? sum / dateDataLength : 0;
         });
       }
+
+      data.date_data = data.date_data.reverse();
     }
     
     return data;
