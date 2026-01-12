@@ -1403,10 +1403,11 @@ export class DemoDataService {
       };
     };
 
-    // Выборка дат с 2025-01-29
+    // Выборка дат с середины прошлого года (1 июля)
+    const currentYear = new Date().getFullYear();
     const weeks = eachWeekOfInterval(
       {
-        start: new Date(2025, 0, 1),
+        start: new Date(currentYear - 1, 6, 1), // 1 июля прошлого года
         end: Date.now(),
       },
       {
@@ -1543,21 +1544,37 @@ export class DemoDataService {
     const currentDate = new Date();
     const weeklyData = weeklyReportData as any[];
     const baseData = weeklyData[0]; // Берем базовые данные для генерации
-    const currentWeekNumber = this.getWeekNumber(currentDate); // Получаем текущую дату и вычисляем количество недель от начала года
     const dynamicWeeklyData = []; // Генерируем данные только для выбранных недель
     let activeWeeks = filters?.activeWeeks || [];
 
-    // Если нет выбранных недель, или выбрано 'Все', то генерируем 42 недели от текущей даты
+    // Если нет выбранных недель, или выбрано 'Все', то генерируем недели от текущей даты до середины прошлого года (1 июля)
     if (activeWeeks.length === 0 || activeWeeks[0]?.value === 'Все') {
       activeWeeks = [];
       
-      for (let i = 1; i <= 42; i++) {
+      // Вычисляем дату начала - 1 июля прошлого года
+      const currentYear = currentDate.getFullYear();
+      const startDate = new Date(currentYear - 1, 6, 1); // 1 июля прошлого года
+      
+      // Вычисляем количество недель от начала до текущей даты
+      const weeksDiff = Math.ceil((currentDate.getTime() - startDate.getTime()) / (7 * 24 * 60 * 60 * 1000));
+      
+      for (let i = 1; i <= weeksDiff; i++) {
         const weekStartDate = new Date(currentDate);
         const dayOfWeek = weekStartDate.getDay();
         weekStartDate.setDate(weekStartDate.getDate() - (i * 7));
         
+        // Проверяем, что неделя не раньше даты начала
+        if (weekStartDate < startDate) {
+          break;
+        }
+        
         const daysToMonday = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
         weekStartDate.setDate(weekStartDate.getDate() + daysToMonday);
+        
+        // Проверяем еще раз после корректировки на понедельник
+        if (weekStartDate < startDate) {
+          break;
+        }
         
         const weekStartISO = weekStartDate.toISOString().split('T')[0];
         activeWeeks.push({ value: weekStartISO });
@@ -1568,30 +1585,23 @@ export class DemoDataService {
       const weekDate = new Date(selectedWeek.value);
       weekDate.setDate(weekDate.getDate() + 7); // берем по последнему дню недели
       const weekNumber = this.getWeekNumber(weekDate) - 1;
+      const weekStartDate = this.getDateFromWeekNumber(weekDate.getFullYear(), weekNumber);
+      const weekEndDate = new Date(weekStartDate);
+      weekEndDate.setDate(weekStartDate.getDate() + 6);
 
-      // Проверяем, что неделя не в будущем
-      if (weekNumber <= currentWeekNumber) {
-        const weekStartDate = this.getDateFromWeekNumber(weekDate.getFullYear(), weekNumber);
-        const weekEndDate = new Date(weekStartDate);
-        weekEndDate.setDate(weekStartDate.getDate() + 6);
+      const startDateStr = this.formatDate(weekStartDate);
+      const endDateStr = this.formatDate(weekEndDate);
+      const weekLabel = `${weekNumber} неделя (${startDateStr} - ${endDateStr})`;
 
-        const startDateStr = this.formatDate(weekStartDate);
-        const endDateStr = this.formatDate(weekEndDate);
-        const weekLabel = `${weekNumber} неделя (${startDateStr} - ${endDateStr})`;
+      // Генерируем случайные данные на основе базовых данных
+      const generatedData = this.generateRandomWeeklyData(baseData);
 
-        // Генерируем случайные данные на основе базовых данных
-        const generatedData = this.generateRandomWeeklyData(baseData);
-
-        dynamicWeeklyData.push({
-          week: weekNumber,
-          week_label: weekLabel,
-          data: generatedData
-        });
-      }
+      dynamicWeeklyData.push({
+        week: weekNumber,
+        week_label: weekLabel,
+        data: generatedData
+      });
     }
-
-    // Сортируем по номеру недели (от большей к меньшей)
-    dynamicWeeklyData.sort((a, b) => b.week - a.week);
 
     return {
       data: [{weeks: dynamicWeeklyData, year: currentDate.getFullYear()}],
