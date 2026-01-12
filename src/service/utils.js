@@ -777,7 +777,7 @@ export function getSavedActiveWeeks(activeBrand) {
   const { id, created_at } = activeBrand
   const minDate = getMinCustomDate(created_at, 68, 'days');
   const weeksListData = weeksList(minDate);
-  let savedActiveWeeks = localStorage.getItem(`SAVED_ACTIVE_WEEKS_${id}`);
+  let savedActiveWeeks = localStorage.getItem(`SAVED_ACTIVE_WEEKS_NEW_${id}`);
   if (savedActiveWeeks) {
     return JSON.parse(savedActiveWeeks);
   } else {
