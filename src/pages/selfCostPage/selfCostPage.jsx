@@ -4,7 +4,6 @@ import Header from '@/components/sharedComponents/header/header';
 import Sidebar from '@/components/sharedComponents/sidebar/sidebar';
 import MobilePlug from '@/components/sharedComponents/mobilePlug/mobilePlug';
 import { Filters } from '@/components/sharedComponents/apiServicePagesFiltersComponent';
-import HowToLink from '@/components/sharedComponents/howToLink/howToLink';
 import { SelfCostTableWidget, SearchComponent } from './widgets';
 import AuthContext from '@/service/AuthContext';
 import ErrorModal from '@/components/sharedComponents/modals/errorModal/errorModal';
@@ -101,7 +100,12 @@ const SelfCostPage = () => {
 
             <section className={styles.page__content}>
                 <div className={styles.page__headerWrapper}>
-                    <Header title='Себестоимость' hasShadow={false} />
+                    <Header 
+                        title='Себестоимость' 
+                        howToLink="https://radar.usedocs.com/article/76556"
+                        howToLinkText="Инструкция по загрузке себестоимости"
+                        hasShadow={false} 
+                    />
                 </div>
 
                 {isDemoMode && <NoSubscriptionWarningBlock />}
@@ -111,11 +115,6 @@ const SelfCostPage = () => {
                         timeSelect={false}
                         articleSelect={false}
                         isDataLoading={dataStatus.isLoading}
-                    />
-                    <HowToLink
-                        text='Инструкция по загрузке себестоимости'
-                        url='https://radar.usedocs.com/article/76556'
-                        target='_blank'
                     />
                 </div>
 

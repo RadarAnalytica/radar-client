@@ -126,6 +126,7 @@ export default function ExpenseFormModal({
 	const { shops, filters } = useAppSelector((state) => state.filters);
 	const [form] = Form.useForm();
 	const dateFrom = Form.useWatch('date', form);
+	const endDate = Form.useWatch('end_date', form);
 	const { isDemoMode } = useDemoMode();
 	const selection = Form.useWatch('selection', form);
 	const frequency = Form.useWatch('frequency', form);
@@ -142,18 +143,11 @@ export default function ExpenseFormModal({
 	const isPeriodicExpense = mode === 'create' ? typeValue === 'plan' || isTemplate : editData?.is_periodic;
 
 	const today = new Date();
-	const minDateFrom = new Date(today);
-	const maxDateFrom = new Date(today);
-	minDateFrom.setDate(today.getDate() - 1800);
-	maxDateFrom.setDate(today.getDate() + 1800);
-
-	const minDateTo = dateFrom
-		? (() => {
-			const parsedDate = parse(dateFrom, 'dd.MM.yyyy', new Date());
-			parsedDate.setDate(parsedDate.getDate() + 1);
-			return parsedDate;
-		})()
-		: today;
+	const minDate = new Date(today);
+	const maxDate = new Date(today);
+	minDate.setDate(today.getDate() - 1096);
+	maxDate.setDate(today.getDate() + 1096);
+	const [minDateTo, setMinDateTo] = useState(today);
 
 	const onFinish = (values) => {
 		handle(getRequestObject(values, editData, mode, isTemplate));
@@ -386,8 +380,19 @@ export default function ExpenseFormModal({
 									form={form}
 									label={isPeriodicExpense ? 'Дата начала' : 'Дата'}
 									formId='date'
-									minDate={minDateFrom}
-									maxDate={maxDateFrom}
+									minDate={minDate}
+									maxDate={maxDate}
+									onSelect={(day) => {
+										setMinDateTo(day);
+										
+										// Проверяем, если новая дата больше даты окончания, сбрасываем дату окончания
+										if (endDate) {
+											const endDateParsed = parse(endDate, 'dd.MM.yyyy', new Date());
+											if (day > endDateParsed) {
+												form.setFieldValue('end_date', null);
+											}
+										}
+									}}
 								/>
 							</Col>
 							<Col span={12}>
@@ -671,7 +676,7 @@ export default function ExpenseFormModal({
 											label="Дата окончания"
 											formId='end_date'
 											minDate={minDateTo}
-											maxDate={undefined}
+											maxDate={maxDate}
 											required={false}
 											allowClear
 										/>

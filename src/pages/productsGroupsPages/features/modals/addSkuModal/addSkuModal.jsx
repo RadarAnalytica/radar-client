@@ -96,7 +96,6 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, groupData,
             setTableData(parsedRes.data?.products.sort((a, b) => a.article.localeCompare(b.article)));
             setInitData(parsedRes.data?.products.sort((a, b) => a.article.localeCompare(b.article)));
             setPaginationState({ ...paginationState, total: parsedRes.data?.products.length });
-            console.log(parsedRes.data?.products);
             setCheckedList(parsedRes.data?.products.filter(_ => _.in_group).map(_ => _.id));
             setDataFetchingStatus(initDataFetchingStatus);
         } catch {

@@ -1,3 +1,8 @@
+export { PaymentWidget } from './generalSettingsWidgets/paymentsWidget';
+export { UsersWidget } from './generalSettingsWidgets/usersWidget';
+export { ProfileWidget } from './generalSettingsWidgets/ProfileWidget';
+export { ReferalProgrammWidget } from './generalSettingsWidgets/referalProgrammWidget';
+export { LinkedShopsWidget } from './generalSettingsWidgets/linkedShopsWidget';
 export { PaymentStatus } from './PaymentStatus/PaymentStatus.jsx';
 export { ExternalHeader } from './ExternalHeader/Header';
 export { ExternalFooter } from './ExternalFooter/Footer';
@@ -8,3 +13,5 @@ export { KeywordSelectionFilters } from './KeywordSelectionFilters/KeywordSelect
 export { OnboardingWidget } from './OnboardingWidget/OnboardingWidget';
 export { PositionTrackingMainPageWidget } from './PositionTrackingMainPageWidget/PositionTrackingMainPageWidget';
 export { PositionTrackingSkuFilters } from './PositionTrackingSkuFilters/PositionTrackingSkuFilters';
+export { TariffsWidget } from './generalSettingsWidgets/TariffsWidget';
+export { TariffsWidgetOld } from './generalSettingsWidgets/TariffsWidgetOld';

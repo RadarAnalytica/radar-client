@@ -10,7 +10,7 @@ import Header from '@/components/sharedComponents/header/header';
 import Sidebar from '@/components/sharedComponents/sidebar/sidebar';
 
 const BlogPage = () => {
-    const { authToken } = useContext(AuthContext);
+    const { adminToken: authToken } = useContext(AuthContext);
     const [activePage, setActivePage] = useState('Список статей');
     const [postIdForUpdate, setPostIdForUpdate] = useState();
     const dispatch = useAppDispatch();

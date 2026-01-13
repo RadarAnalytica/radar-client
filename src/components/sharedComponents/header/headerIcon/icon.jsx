@@ -1,5 +1,5 @@
 import styles from './icon.module.css';
-import { alertIcon, menuIcon } from './svgIcons';
+import { alertIcon, menuIcon, profileIcon } from './svgIcons';
 
 // type: 'alert' | 'menu'
 // counter: number
@@ -22,6 +22,13 @@ const Icon = ({ type, counter }) => {
             return (
                 <div className={styles.menuIcon}>
                     {menuIcon}
+                </div>
+            );
+        }
+        case 'profile': {
+            return (
+                <div className={styles.profileIcon}>
+                    {profileIcon}
                 </div>
             );
         }

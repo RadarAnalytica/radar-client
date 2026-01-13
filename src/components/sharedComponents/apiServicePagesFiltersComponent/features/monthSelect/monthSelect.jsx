@@ -14,27 +14,36 @@ export const MonthSelect = ({
     monthHandler,
     isDataLoading,
     minCustomDate,
-    actionHandler
+    actionHandler,
+    activeBrand
 }) => {
     const monthRef = useRef(null);
 
     const initialValue = useMemo(() => {
         if (value) {
             return [
-                dayjs(value?.month_from),
-                dayjs(value?.month_to),
+                value?.month_from ? dayjs(value.month_from) : null,
+                value?.month_to ? dayjs(value.month_to) : null,
             ];
         }
         return [];
     }, [value]);
 
+    const minDate = useMemo(() => {
+        if (activeBrand?.created_at) {
+            return dayjs(activeBrand.created_at).subtract(4, 'month');
+        }
+        return dayjs().subtract(4, 'month');
+    }, [activeBrand]);
+
     const onChangeHandler = (data) => {
-        let selectedMonths = initialMonths;
+        // let selectedMonths = initialMonths;
+        let selectedMonths;
         if (data) {
             const [start, end] = data;
             selectedMonths = {
-                month_from: dayjs(start).format('YYYY-MM'),
-                month_to: dayjs(end).format('YYYY-MM')
+                month_from: start ? dayjs(start).format('YYYY-MM') : undefined,
+                month_to: end ? dayjs(end).format('YYYY-MM') : undefined,
             };
         }
         actionHandler?.(selectedMonths);
@@ -84,15 +93,14 @@ export const MonthSelect = ({
                             onChange={onChangeHandler}
                             disabledTime={{
                                 // Начальная дата
-                                start: minCustomDate ? dayjs(minCustomDate) : dayjs('2024-02'),
+                                start: minDate,
                                 end: dayjs()
                             }}
                             disabledDate={(current) => {
-                                const minDate = minCustomDate ? dayjs(minCustomDate) : dayjs('2024-02');
                                 const maxDate = dayjs();
                                 return current && (current < minDate || current > maxDate);
                             }}
-                            minDate={minCustomDate ? dayjs(minCustomDate) : dayjs('2024-02')}
+                            minDate={minDate}
                             maxDate={dayjs()}
                             value={initialValue}
                             id={selectId}

@@ -688,11 +688,11 @@ export function detectBrowser() {
  */
 export function formatNumberWithSpaces(value, separator = ' ') {
   if (value === null || value === undefined) return '';
-  
+
   const numStr = String(value);
   const parts = numStr.split('.');
   const integerPart = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, separator);
-  
+
   return parts.length > 1 ? `${integerPart}.${parts[1]}` : integerPart;
 }
 
@@ -719,85 +719,104 @@ export const verticalDashedLinePlugin = {
 };
 
 export function weeksList(minDate) {
-    // Определяем начальную дату: если задана minDate, используем её, иначе используем дефолтную дату
-    let startDate;
-    if (minDate) {
-        // Преобразуем minDate в Date объект (может быть dayjs объектом или строкой)
-        const parsedMinDate = dayjs(minDate);
-        if (parsedMinDate.isValid()) {
-            startDate = parsedMinDate.toDate();
-        } else {
-            startDate = new Date(2024, 0, 29);
-        }
+  // Определяем начальную дату: если задана minDate, используем её, иначе используем дефолтную дату
+  let startDate;
+  if (minDate) {
+    // Преобразуем minDate в Date объект (может быть dayjs объектом или строкой)
+    const parsedMinDate = dayjs(minDate);
+    if (parsedMinDate.isValid()) {
+      startDate = parsedMinDate.toDate();
     } else {
-        startDate = new Date(2024, 0, 29);
+      startDate = new Date(2024, 0, 29);
     }
+  } else {
+    startDate = new Date(2024, 0, 29);
+  }
 
-    // Выборка дат с startDate
-    const weeks = eachWeekOfInterval(
-        {
-            start: startDate,
-            end: Date.now(),
-        },
-        {
-            weekStartsOn: 1,
-        }
+  // Выборка дат с startDate
+  const weeks = eachWeekOfInterval(
+    {
+      start: startDate,
+      end: Date.now(),
+    },
+    {
+      weekStartsOn: 1,
+    }
+  );
+
+  // удаляем последнюю неделю
+  weeks.pop();
+
+  const optionTemplate = (date) => {
+    const weekValue = formatISO(date, { representation: 'date' });
+    const weekStart = format(date, 'dd.MM.yyyy');
+    const weekEnd = format(
+      endOfWeek(date, { weekStartsOn: 1 }),
+      'dd.MM.yyyy'
     );
-
-    // удаляем последнюю неделю
-    weeks.pop();
-
-    const optionTemplate = (date) => {
-        const weekValue = formatISO(date, { representation: 'date' });
-        const weekStart = format(date, 'dd.MM.yyyy');
-        const weekEnd = format(
-            endOfWeek(date, { weekStartsOn: 1 }),
-            'dd.MM.yyyy'
-        );
-        const weekNumber = getISOWeek(date);
-        return {
-            // key: weekNumber,
-            value: weekValue,
-            label: `${weekNumber} неделя (${weekStart} - ${weekEnd})`,
-        };
+    const weekNumber = getISOWeek(date);
+    return {
+      // key: weekNumber,
+      value: weekValue,
+      label: `${weekNumber} неделя (${weekStart} - ${weekEnd})`,
     };
-    
-    // Фильтруем недели, которые начинаются раньше minDate (на случай если minDate попадает в середину недели)
-    const filteredWeeks = weeks.filter(weekDate => {
-        if (!minDate) return true;
-        const parsedMinDate = dayjs(minDate);
-        if (!parsedMinDate.isValid()) return true;
-        return weekDate >= parsedMinDate.toDate();
-    });
-    
-    return filteredWeeks.map((el, i) => optionTemplate(el)).reverse();
+  };
+
+  // Фильтруем недели, которые начинаются раньше minDate (на случай если minDate попадает в середину недели)
+  const filteredWeeks = weeks.filter(weekDate => {
+    if (!minDate) return true;
+    const parsedMinDate = dayjs(minDate);
+    if (!parsedMinDate.isValid()) return true;
+    return weekDate >= parsedMinDate.toDate();
+  });
+
+  return filteredWeeks.map((el, i) => optionTemplate(el)).reverse();
 }
 
-export function getSavedActiveWeeks(id) {
-  const weeksListData = weeksList();
-  let savedActiveWeeks = localStorage.getItem(`SAVED_ACTIVE_WEEKS_${id}`);
+export function getSavedActiveWeeks(activeBrand) {
+  const { id, created_at } = activeBrand
+  const minDate = getMinCustomDate(created_at, 68, 'days');
+  const weeksListData = weeksList(minDate);
+  let savedActiveWeeks = localStorage.getItem(`SAVED_ACTIVE_WEEKS_NEW_${id}`);
   if (savedActiveWeeks) {
     return JSON.parse(savedActiveWeeks);
   } else {
-    return weeksListData.slice(0, 12);
+    return weeksListData;
   }
 }
 
 export const initialMonths = {
-    month_to: dayjs().format('YYYY-MM'),
-    month_from: dayjs().startOf('year').format('YYYY-MM')
+  month_to: dayjs().format('YYYY-MM'),
+  month_from: dayjs().startOf('year').format('YYYY-MM')
 };
 
-export function getSavedActiveMonths(id) {
+export function getSavedActiveMonths(activeBrand) {
+  const { id, created_at } = activeBrand
+  const minDate = getMinCustomDate(created_at, 4, 'month');
+  const minDateObj = dayjs(minDate);
   let savedActiveMonths = localStorage.getItem('activeMonths');
   if (savedActiveMonths) {
     const data = JSON.parse(savedActiveMonths);
     if (id in data) {
-      return data[id];
+      let months = data[id]
+      const monthFromDate = dayjs(months?.month_from);
+      if (monthFromDate.isValid() && monthFromDate.isBefore(minDateObj, 'month')) {
+        months = {
+          ...months,
+          month_from: minDateObj.format('YYYY-MM')
+        };
+      }
+      return months;
     }
-    savedActiveMonths = initialMonths;
+    savedActiveMonths = {
+      ...initialMonths,
+      month_from: minDateObj.format('YYYY-MM')
+    };
   } else {
-    savedActiveMonths = initialMonths;
+    savedActiveMonths = {
+      ...initialMonths,
+      month_from: minDateObj.format('YYYY-MM')
+    };
   }
   return savedActiveMonths;
 }

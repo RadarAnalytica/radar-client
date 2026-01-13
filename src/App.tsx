@@ -12,6 +12,7 @@ import { FiltersProvider } from "./app/index";
 import { DemoDataProvider } from "./app/providers/DemoDataProvider";
 import ErrorBoundary from "./components/sharedComponents/ErrorBoundary/ErrorBoundary";
 import { initErrorReporter } from "./service/errorReporting/errorReporter";
+import { ConfigProvider } from "antd";
 
 const StockAnalysisGlitter = React.lazy(() => import("./components/StockAnalysisGlitter"));
 const Subscriptions = React.lazy(() => import("./pages/Subscriptions"));
@@ -87,6 +88,7 @@ const MyAdvPage = React.lazy(() => import("./pages/myAdvPage/myAdvPage"));
 const CompanyAdvPage = React.lazy(() => import("./pages/myAdvPage/companyAdvPage"));
 //TEMP
 const DashboardPageNoDnd = React.lazy(() => import('./pages/apiServicePages/dashboardPage/page/dashboardPageNoDnd'));
+const GeneralSettingsPage = React.lazy(() => import('./pages/GeneralSettingsPage/GeneralSettingsPage'))
 
 // During migration, allow missing props on ProtectedRoute
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -117,83 +119,96 @@ function App() {
           <FiltersProvider>
             <DemoDataProvider>
               <HelmetProvider>
-                <Routes>
-                {/* dev */}
-                <Route path='/dev/after-payment' element={<ProtectedRoute><NewAfterPayment devMode /></ProtectedRoute>} />
-                {/* Admin */}
-                <Route path='/admin/blog' element={<ProtectedRoute userRoleProtected routeRuName='Админ панель / Блог'><BlogPage /></ProtectedRoute>} />
-                <Route path='/admin/dashboard' element={<ProtectedRoute userRoleProtected routeRuName='Админ панель / Дашборд'><AdminDashboardPage /></ProtectedRoute>} />
-                <Route path='/admin/referal' element={<ProtectedRoute userRoleProtected routeRuName='Админ панель / Реферальная программа'><AdminReferalPage /></ProtectedRoute>} />
-                {/* Protected routes */}
-                <Route path='/supplier-analysis' element={<ProtectedRoute expireProtected routeRuName='Анализ поставщика'><SupplierAnalysisPage /></ProtectedRoute>} />
-                <Route path='/supplier-analysis/:id' element={<ProtectedRoute testPeriodGuardType='redirect' testPeriodRedirect='/supplier-analysis' expireProtected routeRuName='Анализ поставщика'><SupplierIdPage /></ProtectedRoute>} />
-                <Route path='/monitoring' element={<ProtectedRoute expireProtected routeRuName='Поиск прибыльной ниши'><SkuFrequencyPage /></ProtectedRoute>} />
-                <Route path='/monitoring/request' element={<ProtectedRoute testPeriodProtected expireProtected routeRuName='Поиск прибыльной ниши'><SkuFrequencyRequestPage /></ProtectedRoute>} />
-                <Route path='/trend-analysis' element={<ProtectedRoute expireProtected routeRuName='Анализ трендовой динамики запросов'><TrendAnalysisQuery /></ProtectedRoute>} />
-                <Route path='/trending-requests' element={<ProtectedRoute expireProtected routeRuName='Поиск трендовых запросов'><TrendingRequestsPage /></ProtectedRoute>} />
-                <Route path='/groups' element={<ProtectedRoute expireProtected onboardProtected routeRuName='Группы товаров'><ProductGroupsPage /></ProtectedRoute>} />
-                <Route path='/groups/:group_id' element={<ProtectedRoute expireProtected onboardProtected routeRuName='Группа товаров'><SingleGroupPage /></ProtectedRoute>} />
-                <Route path='/selfcost' element={<ProtectedRoute expireProtected onboardProtected routeRuName='Себестоимость товаров'><SelfCostPage /></ProtectedRoute>} />
-                <Route path='/sku-analysis' element={<ProtectedRoute expireProtected routeRuName='Анализ артикула'><SkuAnalysisPage /></ProtectedRoute>} />
-                <Route path='/sku-analysis/:id' element={<ProtectedRoute testPeriodGuardType='redirect' testPeriodRedirect='/sku-analysis' expireProtected routeRuName='Анализ артикула'><SkuIdPage /></ProtectedRoute>} />
-                <Route path='/dashboard' element={<ProtectedRoute expireProtected onboardProtected routeRuName='Сводка продаж'><DashboardPage /></ProtectedRoute>} />
-                <Route path='/abc-data' element={<ProtectedRoute expireProtected onboardProtected routeRuName='ABC-анализ'><AbcAnalysisPage /></ProtectedRoute>} />
-                <Route path='/rank-analysis' element={<ProtectedRoute expireProtected routeRuName='Сравнение SEO'><SeoPage /></ProtectedRoute>} />
-                {/* <Route path='/ai-generator' element={<ProtectedRoute expireProtected underDevelopmentProtected routeRuName='Генерация описания AI'><AiDescriptionGeneratorPage /></ProtectedRoute>} /> */}
-                <Route path='/serp' element={<ProtectedRoute expireProtected routeRuName='SERP'><SerpPage /></ProtectedRoute>} />
-                <Route path='/stock-analysis' element={<ProtectedRoute expireProtected onboardProtected routeRuName='Аналитика по товарам'><StockAnalysisPage /></ProtectedRoute>} />
-                <Route path='/orders-map' element={<ProtectedRoute underDevProtected expireProtected onboardProtected routeRuName='География заказов и продаж'><OrdersMap /></ProtectedRoute>} />
-                <Route path='/linked-shops' element={<ProtectedRoute expireProtected onboardProtected routeRuName='Подключенные магазины'><LinkedShopsPage /></ProtectedRoute>} />
-                <Route path='/report-main' element={<ProtectedRoute expireProtected routeRuName='Отчёт / Главная'><ReportMain /></ProtectedRoute>} />
-                <Route path='/weeklyreport-dashboard' element={<ProtectedRoute expireProtected routeRuName='Отчёт / Дашборд'><WeeklyReportDashboard /></ProtectedRoute>} />
-                <Route path='/weeklyreport-pl' element={<ProtectedRoute expireProtected routeRuName='Отчёт / P&L'><WeeklyReportPL /></ProtectedRoute>} />
-                <Route path='/weeklyreport-month' element={<ProtectedRoute expireProtected routeRuName='Отчёт / По месяцам'><WeeklyReportByMonth /></ProtectedRoute>} />
-                <Route path='/weeklyreport-goods' element={<ProtectedRoute expireProtected routeRuName='Отчёт / По товарам'><WeeklyReportByGoods /></ProtectedRoute>} />
-                <Route path='/weeklyreport-penalties' element={<ProtectedRoute expireProtected routeRuName='Отчёт / Штрафы'><WeeklyReportPenaltiesPage /></ProtectedRoute>} />
-                <Route path='/abc-data-reports' element={<ProtectedRoute expireProtected routeRuName='ABC анализ'><ReportAbcAnalysis /></ProtectedRoute>} />
-                <Route path='/prime-cost' element={<ProtectedRoute expireProtected routeRuName='Отчёт / Себестоимость'><PrimeCost /></ProtectedRoute>} />
-                <Route path='/external-expenses' element={<ProtectedRoute expireProtected routeRuName='Отчёт / Внешние расходы'><ExternalExpensesPage /></ProtectedRoute>} />
-                <Route path='/buy-back' element={<ProtectedRoute expireProtected routeRuName='Отчёт / Самовыкуп'><ReportBuyBack /></ProtectedRoute>} />
-                <Route path='/main' element={<ProtectedRoute><MainPage /></ProtectedRoute>} />
-                <Route path='/home' element={<ProtectedRoute><MainPage /></ProtectedRoute>} />
-                <Route path='/instruction' element={<ProtectedRoute authGuardType="redirect"><Instructions /></ProtectedRoute>} />
-                <Route path='/onboarding' element={<ProtectedRoute authGuardType="redirect" testPeriodProtected testPeriodGuardType="redirect" testPeriodRedirect="/linked-shops" expireProtected><Onboarding /></ProtectedRoute>} />
-                <Route path='/user/:email' element={<ProtectedRoute authGuardType="redirect"><UserInfo /></ProtectedRoute>} />
-                <Route path='/tariffs' element={<ProtectedRoute authGuardType="redirect"><TariffsPage /></ProtectedRoute>} />
-                <Route path='/subscription' element={<ProtectedRoute authGuardType="redirect"><Subscriptions /></ProtectedRoute>} />
-                <Route path='/schedule' element={<ProtectedRoute expireProtected authGuardType="redirect"><Schedule /></ProtectedRoute>} />
-                <Route path='/product/:id' element={<ProtectedRoute><StockAnalysisGlitter /></ProtectedRoute>} />
-                <Route path='/report-profit-loss' element={<ProtectedRoute onboardProtected expireProtected routeRuName='Отчет о прибыли и убытках'><ReportProfitLoss /></ProtectedRoute>} />
-                <Route path='/report-week' element={<ProtectedRoute expireProtected onboardProtected routeRuName='По неделям'><ReportWeek /></ProtectedRoute>} />
-                <Route path='/operating-expenses' element={<ProtectedRoute expireProtected onboardProtected routeRuName='Операционные расходы'><OperatingExpenses /></ProtectedRoute>} />
-                <Route path='/referal' element={<ProtectedRoute expireProtected routeRuName='Реферальная программа'><ReferalPage /></ProtectedRoute>} />
-                <Route path='/rnp' element={<ProtectedRoute expireProtected onboardProtected routeRuName='Рука на пульсе (РНП)'><Rnp /></ProtectedRoute>} />
-                <Route path='/serp' element={<ProtectedRoute expireProtected onboardProtected routeRuName='SERP'><SerpPage /></ProtectedRoute>} />
-                <Route path='/position-check' element={<ProtectedRoute expireProtected routeRuName='Проверка позиций'><PositionCheckPage /></ProtectedRoute>} />
-                <Route path='/position-check/:id' element={<ProtectedRoute testPeriodGuardType='redirect' testPeriodRedirect='/position-check' expireProtected routeRuName='Проверка позиций'><PositionCheckIDPage /></ProtectedRoute>} />
-                <Route path='/keywords-selection' element={<ProtectedRoute expireProtected routeRuName='Подбор ключевых запросов'><KeywordsSelectionPage /></ProtectedRoute>} />
-                <Route path='/control/drr' element={<ProtectedRoute expireProtected onboardProtected routeRuName='Контроль ДРР'><WbMetricsPage key='drr' /></ProtectedRoute>} />
-                <Route path='/control/spp' element={<ProtectedRoute expireProtected onboardProtected routeRuName='Контроль СПП'><WbMetricsPage key='spp' /></ProtectedRoute>} />
-                <Route path='/position-tracking' element={<ProtectedRoute expireProtected routeRuName='Трекинг позиций'><PositionTrackingMainPage /></ProtectedRoute>} />
-                <Route path='/position-tracking/projects' element={<ProtectedRoute expireProtected routeRuName='Трекинг позиций'><PositionTrackingProjectsPage /></ProtectedRoute>} />
-                <Route path='/position-tracking/:sku' element={<ProtectedRoute expireProtected routeRuName='Трекинг позиций'><PositionTrackingSkuPage /></ProtectedRoute>} />
-                <Route path='/my-adv' element={<ProtectedRoute expireProtected routeRuName='Мои реклама'><MyAdvPage /></ProtectedRoute>} />
-                <Route path='/my-adv/:companyId' element={<ProtectedRoute expireProtected routeRuName='Мои реклама'><CompanyAdvPage /></ProtectedRoute>} />
-                {/* Public routes */}
-                <Route path='/admin/article/demo/:slugOrId' element={<Suspense fallback={<LoaderPage />}><ArticleViewPage /></Suspense>} />
-                <Route path='/calculate' element={<Suspense fallback={<LoaderPage />}>{deviceRegexp.test(userAgent) ? <UnitCalculatorPage /> : <UnitCalculatorPageDesktop />}</Suspense>} />
-                <Route path='/stub' element={<Suspense fallback={<LoaderPage />}>{' '}<StubPage /></Suspense>} />
-                <Route path='/spasibo' element={<Suspense fallback={<LoaderPage />}>{' '}<Spasibo /></Suspense>} />
-                <Route path='/app' element={<Suspense fallback={<LoaderPage />}>{' '}<MainWidget /></Suspense>} />
-                <Route path='/reset' element={<Suspense fallback={<LoaderPage />}>{' '}<RequestResetLink /></Suspense>} />
-                <Route path='/restore/:email/:code' element={<Suspense fallback={<LoaderPage />}>{' '}<ResetPage /></Suspense>} />
-                <Route path='/restore-error' element={<Suspense fallback={<LoaderPage />}>{' '}<RestoreError /></Suspense>} />
-                <Route path='/confirmation/:email/:code' element={<Suspense fallback={<LoaderPage />}>{' '}<ConfirmationPage /></Suspense>} />
-                <Route path='/after-payment' element={<Suspense fallback={<LoaderPage />}>{' '}<NewAfterPayment devMode={false} /></Suspense>} />
-                <Route path='/rnp-public' element={<Suspense fallback={<LoaderPage />}>{' '}<Rnp isPublicVersion /></Suspense>} />
-                {/* 404 */}
-                <Route path='*' element={<Page404 />} />
-                </Routes>
+                <ConfigProvider
+                  theme={{
+                    components: {
+                      Tooltip: {
+                        colorBgSpotlight: 'white',
+                        colorText: 'black',
+                        fontSize: 12
+                      }
+                    }
+                  }}
+                >
+                  <Routes>
+                    {/* dev */}
+                    <Route path='/dev/after-payment' element={<ProtectedRoute><NewAfterPayment devMode /></ProtectedRoute>} />
+                    {/* Admin */}
+                    <Route path='/admin/blog' element={<ProtectedRoute userRoleProtected routeRuName='Админ панель / Блог'><BlogPage /></ProtectedRoute>} />
+                    <Route path='/admin/dashboard' element={<ProtectedRoute userRoleProtected routeRuName='Админ панель / Дашборд'><AdminDashboardPage /></ProtectedRoute>} />
+                    <Route path='/admin/referal' element={<ProtectedRoute userRoleProtected routeRuName='Админ панель / Реферальная программа'><AdminReferalPage /></ProtectedRoute>} />
+                    {/* Protected routes */}
+                    <Route path='/supplier-analysis' element={<ProtectedRoute expireProtected routeRuName='Анализ поставщика'><SupplierAnalysisPage /></ProtectedRoute>} />
+                    <Route path='/supplier-analysis/:id' element={<ProtectedRoute testPeriodGuardType='redirect' testPeriodRedirect='/supplier-analysis' expireProtected routeRuName='Анализ поставщика'><SupplierIdPage /></ProtectedRoute>} />
+                    <Route path='/monitoring' element={<ProtectedRoute expireProtected routeRuName='Поиск прибыльной ниши'><SkuFrequencyPage /></ProtectedRoute>} />
+                    <Route path='/monitoring/request' element={<ProtectedRoute testPeriodProtected expireProtected routeRuName='Поиск прибыльной ниши'><SkuFrequencyRequestPage /></ProtectedRoute>} />
+                    <Route path='/trend-analysis' element={<ProtectedRoute expireProtected routeRuName='Анализ трендовой динамики запросов'><TrendAnalysisQuery /></ProtectedRoute>} />
+                    <Route path='/trending-requests' element={<ProtectedRoute expireProtected routeRuName='Поиск трендовых запросов'><TrendingRequestsPage /></ProtectedRoute>} />
+                    <Route path='/groups' element={<ProtectedRoute expireProtected onboardProtected routeRuName='Группы товаров'><ProductGroupsPage /></ProtectedRoute>} />
+                    <Route path='/groups/:group_id' element={<ProtectedRoute expireProtected onboardProtected routeRuName='Группа товаров'><SingleGroupPage /></ProtectedRoute>} />
+                    <Route path='/selfcost' element={<ProtectedRoute expireProtected onboardProtected routeRuName='Себестоимость товаров'><SelfCostPage /></ProtectedRoute>} />
+                    <Route path='/sku-analysis' element={<ProtectedRoute expireProtected routeRuName='Анализ артикула'><SkuAnalysisPage /></ProtectedRoute>} />
+                    <Route path='/sku-analysis/:id' element={<ProtectedRoute testPeriodGuardType='redirect' testPeriodRedirect='/sku-analysis' expireProtected routeRuName='Анализ артикула'><SkuIdPage /></ProtectedRoute>} />
+                    <Route path='/dashboard' element={<ProtectedRoute expireProtected onboardProtected routeRuName='Сводка продаж'><DashboardPage /></ProtectedRoute>} />
+                    <Route path='/abc-data' element={<ProtectedRoute expireProtected onboardProtected routeRuName='ABC-анализ'><AbcAnalysisPage /></ProtectedRoute>} />
+                    <Route path='/rank-analysis' element={<ProtectedRoute expireProtected routeRuName='Сравнение SEO'><SeoPage /></ProtectedRoute>} />
+                    {/* <Route path='/ai-generator' element={<ProtectedRoute expireProtected underDevelopmentProtected routeRuName='Генерация описания AI'><AiDescriptionGeneratorPage /></ProtectedRoute>} /> */}
+                    <Route path='/serp' element={<ProtectedRoute expireProtected routeRuName='SERP'><SerpPage /></ProtectedRoute>} />
+                    <Route path='/stock-analysis' element={<ProtectedRoute expireProtected onboardProtected routeRuName='Аналитика по товарам'><StockAnalysisPage /></ProtectedRoute>} />
+                    <Route path='/orders-map' element={<ProtectedRoute underDevProtected expireProtected onboardProtected routeRuName='География заказов и продаж'><OrdersMap /></ProtectedRoute>} />
+                    <Route path='/linked-shops' element={<ProtectedRoute expireProtected onboardProtected routeRuName='Подключенные магазины'><LinkedShopsPage /></ProtectedRoute>} />
+                    <Route path='/report-main' element={<ProtectedRoute expireProtected routeRuName='Отчёт / Главная'><ReportMain /></ProtectedRoute>} />
+                    <Route path='/weeklyreport-dashboard' element={<ProtectedRoute expireProtected routeRuName='Отчёт / Дашборд'><WeeklyReportDashboard /></ProtectedRoute>} />
+                    <Route path='/weeklyreport-pl' element={<ProtectedRoute expireProtected routeRuName='Отчёт / P&L'><WeeklyReportPL /></ProtectedRoute>} />
+                    <Route path='/weeklyreport-month' element={<ProtectedRoute expireProtected routeRuName='Отчёт / По месяцам'><WeeklyReportByMonth /></ProtectedRoute>} />
+                    <Route path='/weeklyreport-goods' element={<ProtectedRoute expireProtected routeRuName='Отчёт / По товарам'><WeeklyReportByGoods /></ProtectedRoute>} />
+                    <Route path='/weeklyreport-penalties' element={<ProtectedRoute expireProtected routeRuName='Отчёт / Штрафы'><WeeklyReportPenaltiesPage /></ProtectedRoute>} />
+                    <Route path='/abc-data-reports' element={<ProtectedRoute expireProtected routeRuName='ABC анализ'><ReportAbcAnalysis /></ProtectedRoute>} />
+                    <Route path='/prime-cost' element={<ProtectedRoute expireProtected routeRuName='Отчёт / Себестоимость'><PrimeCost /></ProtectedRoute>} />
+                    <Route path='/external-expenses' element={<ProtectedRoute expireProtected routeRuName='Отчёт / Внешние расходы'><ExternalExpensesPage /></ProtectedRoute>} />
+                    <Route path='/buy-back' element={<ProtectedRoute expireProtected routeRuName='Отчёт / Самовыкуп'><ReportBuyBack /></ProtectedRoute>} />
+                    <Route path='/main' element={<ProtectedRoute><MainPage /></ProtectedRoute>} />
+                    <Route path='/home' element={<ProtectedRoute><MainPage /></ProtectedRoute>} />
+                    <Route path='/instruction' element={<ProtectedRoute authGuardType="redirect"><Instructions /></ProtectedRoute>} />
+                    <Route path='/onboarding' element={<ProtectedRoute authGuardType="redirect" testPeriodProtected testPeriodGuardType="redirect" testPeriodRedirect="/linked-shops" expireProtected><Onboarding /></ProtectedRoute>} />
+                    <Route path='/user/:email' element={<ProtectedRoute authGuardType="redirect"><UserInfo /></ProtectedRoute>} />
+                    <Route path='/tariffs' element={<ProtectedRoute authGuardType="redirect"><TariffsPage /></ProtectedRoute>} />
+                    <Route path='/subscription' element={<ProtectedRoute authGuardType="redirect"><Subscriptions /></ProtectedRoute>} />
+                    <Route path='/schedule' element={<ProtectedRoute expireProtected authGuardType="redirect"><Schedule /></ProtectedRoute>} />
+                    <Route path='/product/:id' element={<ProtectedRoute><StockAnalysisGlitter /></ProtectedRoute>} />
+                    <Route path='/report-profit-loss' element={<ProtectedRoute onboardProtected expireProtected routeRuName='Отчет о прибыли и убытках'><ReportProfitLoss /></ProtectedRoute>} />
+                    <Route path='/report-week' element={<ProtectedRoute expireProtected onboardProtected routeRuName='По неделям'><ReportWeek /></ProtectedRoute>} />
+                    <Route path='/operating-expenses' element={<ProtectedRoute expireProtected onboardProtected routeRuName='Операционные расходы'><OperatingExpenses /></ProtectedRoute>} />
+                    <Route path='/referal' element={<ProtectedRoute expireProtected routeRuName='Реферальная программа'><ReferalPage /></ProtectedRoute>} />
+                    <Route path='/rnp' element={<ProtectedRoute expireProtected onboardProtected routeRuName='Рука на пульсе (РНП)'><Rnp /></ProtectedRoute>} />
+                    <Route path='/serp' element={<ProtectedRoute expireProtected onboardProtected routeRuName='SERP'><SerpPage /></ProtectedRoute>} />
+                    <Route path='/position-check' element={<ProtectedRoute expireProtected routeRuName='Проверка позиций'><PositionCheckPage /></ProtectedRoute>} />
+                    <Route path='/position-check/:id' element={<ProtectedRoute testPeriodGuardType='redirect' testPeriodRedirect='/position-check' expireProtected routeRuName='Проверка позиций'><PositionCheckIDPage /></ProtectedRoute>} />
+                    <Route path='/keywords-selection' element={<ProtectedRoute expireProtected routeRuName='Подбор ключевых запросов'><KeywordsSelectionPage /></ProtectedRoute>} />
+                    <Route path='/control/drr' element={<ProtectedRoute expireProtected onboardProtected routeRuName='Контроль ДРР'><WbMetricsPage key='drr' /></ProtectedRoute>} />
+                    <Route path='/control/spp' element={<ProtectedRoute expireProtected onboardProtected routeRuName='Контроль СПП'><WbMetricsPage key='spp' /></ProtectedRoute>} />
+                    <Route path='/position-tracking' element={<ProtectedRoute expireProtected routeRuName='Трекинг позиций'><PositionTrackingMainPage /></ProtectedRoute>} />
+                    <Route path='/position-tracking/projects' element={<ProtectedRoute expireProtected routeRuName='Трекинг позиций'><PositionTrackingProjectsPage /></ProtectedRoute>} />
+                    <Route path='/position-tracking/:sku' element={<ProtectedRoute expireProtected routeRuName='Трекинг позиций'><PositionTrackingSkuPage /></ProtectedRoute>} />
+                    <Route path='/my-adv' element={<ProtectedRoute expireProtected routeRuName='Мои реклама'><MyAdvPage /></ProtectedRoute>} />
+                    <Route path='/my-adv/:companyId' element={<ProtectedRoute expireProtected routeRuName='Мои реклама'><CompanyAdvPage /></ProtectedRoute>} />
+                    <Route path='/settings' element={<ProtectedRoute routeRuName='Профиль'><GeneralSettingsPage /></ProtectedRoute>} />
+                    {/* Public routes */}
+                    <Route path='/admin/article/demo/:slugOrId' element={<Suspense fallback={<LoaderPage />}><ArticleViewPage /></Suspense>} />
+                    <Route path='/calculate' element={<Suspense fallback={<LoaderPage />}>{deviceRegexp.test(userAgent) ? <UnitCalculatorPage /> : <UnitCalculatorPageDesktop />}</Suspense>} />
+                    <Route path='/stub' element={<Suspense fallback={<LoaderPage />}>{' '}<StubPage /></Suspense>} />
+                    <Route path='/spasibo' element={<Suspense fallback={<LoaderPage />}>{' '}<Spasibo /></Suspense>} />
+                    <Route path='/app' element={<Suspense fallback={<LoaderPage />}>{' '}<MainWidget /></Suspense>} />
+                    <Route path='/reset' element={<Suspense fallback={<LoaderPage />}>{' '}<RequestResetLink /></Suspense>} />
+                    <Route path='/restore/:email/:code' element={<Suspense fallback={<LoaderPage />}>{' '}<ResetPage /></Suspense>} />
+                    <Route path='/restore-error' element={<Suspense fallback={<LoaderPage />}>{' '}<RestoreError /></Suspense>} />
+                    <Route path='/confirmation/:email/:code' element={<Suspense fallback={<LoaderPage />}>{' '}<ConfirmationPage /></Suspense>} />
+                    <Route path='/after-payment' element={<Suspense fallback={<LoaderPage />}>{' '}<NewAfterPayment devMode={false} /></Suspense>} />
+                    <Route path='/rnp-public' element={<Suspense fallback={<LoaderPage />}>{' '}<Rnp isPublicVersion /></Suspense>} />
+                    {/* 404 */}
+                    <Route path='*' element={<Page404 />} />
+                  </Routes>
+                </ConfigProvider>
               </HelmetProvider>
             </DemoDataProvider>
           </FiltersProvider>

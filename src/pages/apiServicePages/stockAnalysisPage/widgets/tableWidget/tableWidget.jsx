@@ -116,7 +116,7 @@ const customCellRender = (value, record, index, dataIndex) => {
                 style={{ backgroundColor: getABCBarOptions(value) }}
                 title={value}
             >
-                {value}
+                {value || '-'}
             </div>
         </div>);
     }
@@ -155,6 +155,8 @@ const TableWidget = React.memo(({ stockAnalysisFilteredData, loading, progress, 
                 
                 return {
                     ...item.article_data,
+                    byRevenue: item?.sizes[0]?.byRevenue,
+                    byProfit: item?.sizes[0]?.byProfit,
                     vendorСode: item.article,
                     size: showSizes ? `${sizesLength} ${getWordDeclension('размер', sizesLength )}` : item.article_data?.size,
                     isParent: showSizes,

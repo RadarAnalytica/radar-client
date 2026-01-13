@@ -109,6 +109,40 @@ export const ServiceFunctions = {
 		return data;
 	},
 
+	updatUser: async (authToken, userData) => {
+		const res = await fetchApi(`${URL}/api/user/me/update`, {
+			method: 'PATCH',
+			headers: {
+				'content-type': 'application/json',
+				authorization: 'JWT ' + authToken,
+			},
+			body: JSON.stringify(userData)
+		});
+		return res;
+	},
+
+	updatUserPwd: async (authToken, userData) => {
+		const res = await fetchApi(`${URL}/api/user/me/update-pwd`, {
+			method: 'PATCH',
+			headers: {
+				'content-type': 'application/json',
+				authorization: 'JWT ' + authToken,
+			},
+			body: JSON.stringify(userData)
+		});
+		return res;
+	},
+
+	getUserPayments: async (authToken) => {
+		const res = await fetchApi(`${URL}/api/user/me/payments`, {
+			headers: {
+				'content-type': 'application/json',
+				authorization: 'JWT ' + authToken,
+			},
+		});
+		return res;
+	},
+
 	getDashBoard: async (token, selectedRange, idShop, filters) => {
 		//let rangeParams = rangeApiFormat(selectedRange);
 		const body = getRequestObject(filters, selectedRange, idShop);
@@ -1608,7 +1642,9 @@ export const ServiceFunctions = {
 	},
 	getDownloadReportRnp: async (token, selectedRange, shopId, filters, vendorCode) => {
 		let body = getRequestObject(filters, selectedRange, shopId);
-		body.articles = vendorCode ? [vendorCode] : []
+		body.articles = vendorCode ? [vendorCode] : [];
+		body.shop = undefined;
+		body.shops = [filters?.activeBrand?.id];
 		const res = await fetch(
 			`${URL}/api/rnp/by_article/download`,
 			{

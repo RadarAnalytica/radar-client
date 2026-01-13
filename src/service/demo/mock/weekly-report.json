@@ -4,84 +4,269 @@
         "week_label": "39 неделя (22.09.2025 - 28.09.2025)",
         "data": {
             "revenue": {
-                "rub": 2500231.14,
-                "quantity": 1001
+                "rub": {
+                    "value": 2500231.14,
+                    "comparison_percentage": 0
+                },
+                "quantity": {
+                    "value": 1001,
+                    "comparison_percentage": 0
+                }
             },
             "purchases": {
-                "rub": 2676941.09,
-                "quantity": 1051
+                "rub": {
+                    "value": 2676941.09,
+                    "comparison_percentage": 0
+                },
+                "quantity": {
+                    "value": 1051,
+                    "comparison_percentage": 0
+                }
             },
             "return": {
-                "rub": 176709.95,
-                "quantity": 50
+                "rub": {
+                    "value": 176709.95,
+                    "comparison_percentage": 0
+                },
+                "quantity": {
+                    "value": 50,
+                    "comparison_percentage": 0
+                }
             },
-            "avg_check": 2497.73,
-            "purchase_percent": 49.95,
-            "avg_spp": 36.23,
-            "cost_price": 2500,
-            "cost_price_percent": 30,
-            "cost_price_per_one": 2500,
-            "deliveries": 2004,
-            "payment": 1259794.8299999998,
-            "profit": 1184207.14,
-            "profit_per_one": 1183.02,
-            "marginality": 47.36,
-            "return_on_investment": 121.9,
+            "avg_check": {
+                "value": 2497.73,
+                "comparison_percentage": 0
+            },
+            "purchase_percent": {
+                "value": 49.95,
+                "comparison_percentage": 0
+            },
+            "avg_spp": {
+                "value": 36.23,
+                "comparison_percentage": 0
+            },
+            "cost_price": {
+                "value": 2500,
+                "comparison_percentage": 0
+            },
+            "cost_price_percent": {
+                "value": 30,
+                "comparison_percentage": 0
+            },
+            "cost_price_per_one": {
+                "value": 2500,
+                "comparison_percentage": 0
+            },
+            "deliveries": {
+                "value": 2004,
+                "comparison_percentage": 0
+            },
+            "payment": {
+                "value": 1259794.83,
+                "comparison_percentage": 0
+            },
+            "profit": {
+                "value": 1184207.14,
+                "comparison_percentage": 0
+            },
+            "profit_per_one": {
+                "value": 1183.02,
+                "comparison_percentage": 0
+            },
+            "marginality": {
+                "value": 47.36,
+                "comparison_percentage": 0
+            },
+            "return_on_investment": {
+                "value": 121.9,
+                "comparison_percentage": 0
+            },
             "wb_commission": {
-                "rub": 696213.31,
-                "percent": 27.85
+                "rub": {
+                    "value": 696213.31,
+                    "comparison_percentage": 0
+                },
+                "percent": {
+                    "value": 27.85,
+                    "comparison_percentage": 0
+                }
             },
             "acquiring": {
-                "rub": 31208.36,
-                "percent": 1.25
+                "rub": {
+                    "value": 31208.36,
+                    "comparison_percentage": 0
+                },
+                "percent": {
+                    "value": 1.25,
+                    "comparison_percentage": 0
+                }
             },
             "logistics_straight": {
-                "rub": 223846.62,
-                "percent": 8.95
+                "rub": {
+                    "value": 223846.62,
+                    "comparison_percentage": 0
+                },
+                "percent": {
+                    "value": 8.95,
+                    "comparison_percentage": 0
+                }
             },
             "logistics_reverse": {
-                "rub": 48650,
-                "percent": 1.95
+                "rub": {
+                    "value": 48650,
+                    "comparison_percentage": 0
+                },
+                "percent": {
+                    "value": 1.95,
+                    "comparison_percentage": 0
+                }
             },
-            "logistics_per_product": 272.22,
+            "logistics_per_product": {
+                "value": 272.22,
+                "comparison_percentage": 0
+            },
             "logistics_total": {
-                "rub": 272496.62,
-                "percent": 10.9
+                "rub": {
+                    "value": 272496.62,
+                    "comparison_percentage": 0
+                },
+                "percent": {
+                    "value": 10.9,
+                    "comparison_percentage": 0
+                }
+            },
+            "logistic_details": {
+                "logistic_to_client_sale": {
+                    "value": 0,
+                    "compare": 0
+                },
+                "logistic_to_client_cancel": {
+                    "value": 0,
+                    "compare": 0
+                },
+                "logistic_reverse_return": {
+                    "value": 0,
+                    "compare": 0
+                },
+                "logistic_reverse_cancel": {
+                    "value": 0,
+                    "compare": 0
+                }
             },
             "storage": {
-                "rub": 731.83,
-                "percent": 0.03
+                "rub": {
+                    "value": 731.83,
+                    "comparison_percentage": 0
+                },
+                "percent": {
+                    "value": 0.03,
+                    "comparison_percentage": 0
+                }
             },
             "other_retentions": {
-                "rub": 969541.76,
-                "percent": 38.78
+                "rub": {
+                    "value": 969541.76,
+                    "comparison_percentage": 0
+                },
+                "percent": {
+                    "value": 38.78,
+                    "comparison_percentage": 0
+                }
             },
             "acceptance": {
-                "rub": 954,
-                "percent": 12
+                "rub": {
+                    "value": 954,
+                    "comparison_percentage": 0
+                },
+                "percent": {
+                    "value": 12,
+                    "comparison_percentage": 0
+                }
             },
             "compensation_defects": {
-                "rub": 579,
-                "quantity": 9
+                "rub": {
+                    "value": 579,
+                    "comparison_percentage": 0
+                },
+                "quantity": {
+                    "value": 9,
+                    "comparison_percentage": 0
+                }
             },
             "compensation_damage": {
-                "rub": 1534.02,
-                "quantity": 2
+                "rub": {
+                    "value": 1534.02,
+                    "comparison_percentage": 0
+                },
+                "quantity": {
+                    "value": 2,
+                    "comparison_percentage": 0
+                }
             },
-            "penalties": 100,
-            "additional_payments": 50,
+            "penalties": {
+                "value": 100,
+                "comparison_percentage": 0
+            },
+            "penalty_details": [
+                {
+                    "value": 100,
+                    "compare": 0,
+                    "description": "Оказание услуг «WB Продвижение»"
+                },
+                {
+                    "value": 0,
+                    "compare": 0,
+                    "description": "Штрафы"
+                }
+            ],
+            "additional_payments": {
+                "value": 50,
+                "comparison_percentage": 0
+            },
             "compensation_penalties": {
-                "rub": 1534.02,
-                "percent": 0.06
+                "rub": {
+                    "value": 1534.02,
+                    "comparison_percentage": 0
+                },
+                "percent": {
+                    "value": 0.06,
+                    "comparison_percentage": 0
+                }
             },
             "tax_type": "Считать от РС",
-            "tax_rate": 0.06,
-            "sold_by_wb": 1594326.65,
-            "tax_base": 1259794.83,
-            "tax": 75587.69,
-            "advert_amount": 1931,
-            "drr": 0.08,
-            "wb_retentions_amount": 971472.76
+            "tax_rate": {
+                "value": 0.06,
+                "comparison_percentage": 0
+            },
+            "sold_by_wb": {
+                "value": 1594326.65,
+                "comparison_percentage": 0
+            },
+            "tax_base": {
+                "value": 1259794.83,
+                "comparison_percentage": 0
+            },
+            "tax": {
+                "value": 75587.69,
+                "comparison_percentage": 0
+            },
+            "advert_amount": {
+                "value": 1931,
+                "comparison_percentage": 0
+            },
+            "drr": {
+                "value": 0.08,
+                "comparison_percentage": 0
+            },
+            "wb_retentions_amount": {
+                "value": 971472.76,
+                "comparison_percentage": 0
+            },
+            "operating_expenses": {
+                "value": 0,
+                "comparison_percentage": 0
+            },
+            "operating_expenses_categorized": []
         }
     }
 ]

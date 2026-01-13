@@ -12,22 +12,22 @@ import { useContext } from 'react';
 import AuthContext from '@/service/AuthContext';
 import { GeneralLayout } from '@/shared';
 import { RadarCarousel } from '@/features';
-import { noSubBanners, onboardingBanners, regularUserBanners } from '@/entities'
+import { noSubBanners, onboardingBanners, regularUserBanners } from '@/entities';
 import { RadarMainPageBanner } from '@/shared';
 import SubscriptionModal from "@/components/sharedComponents/modals/subscriptionModal/subscriptionModal";
 
 export default function MainPage() {
 
-    const [isTestPeriodModalVisible, setIsTestPeriodModalVisible] = useState(false)
+    const [isTestPeriodModalVisible, setIsTestPeriodModalVisible] = useState(false);
 
     const { isDemoMode } = useDemoMode();
     const { user } = useContext(AuthContext);
-    const currentBannersArr = useMemo((
-    ) => {
+
+    const currentBannersArr = useMemo(() => {
         if (user?.subscription_status === null && !user?.is_onboarded && !user?.is_test_used) return noSubBanners.map(_ => ({ ..._, leadBlockButtonAction: () => setIsTestPeriodModalVisible(true)}));
         if (user?.subscription_status === 'test' && !user?.is_onboarded) return onboardingBanners;
-        return regularUserBanners
-    }, [user])
+        return regularUserBanners;
+    }, [user]);
 
     return (
         <GeneralLayout
@@ -59,5 +59,5 @@ export default function MainPage() {
                 visibilityHandler={setIsTestPeriodModalVisible}
             />
         </GeneralLayout>
-    )
-}
+    );
+};

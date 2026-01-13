@@ -1,7 +1,7 @@
 import { useState, useContext, useEffect, ReactNode } from 'react';
 import styles from './header.module.css';
 import Icon from './headerIcon/icon';
-import { Popover } from 'antd';
+import { ConfigProvider, Popover } from 'antd';
 import HeaderMenu from './headerMenu/headerMenu';
 import HeaderAlerts from './headerAlerts/headerAlerts';
 import AuthContext from '../../../service/AuthContext';
@@ -11,6 +11,8 @@ import { VideoReview } from './videoReviewButton/videoReview';
 import { StatusBanner } from '../../../shared';
 import { getDayDeclension } from '../../../service/utils';
 import HowToLink from '../howToLink/howToLink';
+import { fetchFilters } from '@/redux/apiServicePagesFiltersState/filterActions';
+import { URL } from '@/service/config';
 
 interface User {
   email?: string;
@@ -56,15 +58,24 @@ const Header = ({
   const {
     user,
     logout,
-    authToken
+    authToken,
+    //@ts-ignore
+    adminToken,
+    //@ts-ignore
+    impersonateUser,
+    //@ts-ignore
+    setImpersonateUser,
+    //@ts-ignore
+    setAuthToken,
   } = useContext(AuthContext) as AuthContextType;
-  
+
   // стейт видимости поповера меню
   const [isMenuPopoverVisible, setIsMenuPopoverVisible] = useState<boolean>(false);
-  
+  const [isAlertsPopoverVisible, setIsAlertsPopoverVisible] = useState<boolean>(false);
+
   // сообщения
   const { messages } = useAppSelector((state) => state.messagesSlice);
-  
+
   // получение и обновление сообщений
   useEffect(() => {
     let intervalId: ReturnType<typeof setInterval> | undefined;
@@ -75,7 +86,7 @@ const Header = ({
         dispatch(fetchMessages(authToken || ''));
       }, 60000);
     }
-    return () => { 
+    return () => {
       if (intervalId) {
         clearInterval(intervalId);
       }
@@ -86,11 +97,40 @@ const Header = ({
   const menuPopoverCloseHandler = (): void => {
     setIsMenuPopoverVisible(false);
   };
-  
+
   // хэндлер видимости поповера меню
   const menuPopoverOpenHandler = (open: boolean): void => {
     setIsMenuPopoverVisible(open);
   };
+
+  const getFiltersData = async (token) => {
+    try {
+        let shopsResponse = await fetch(`${URL}/api/shop/all`, {
+            method: 'GET',
+            headers: {
+                'content-type': 'application/json',
+                authorization: 'JWT ' + token,
+            }
+        });
+        let shopsData = null;
+        shopsData = await shopsResponse.json();
+
+        // @ts-ignore
+        await dispatch(fetchFilters({
+            authToken: token,
+            shopsData
+            //shopsData: null
+        }));
+    } catch (error) {
+        console.error("FiltersProvider: Error fetching initial data:", error);
+    }
+};
+
+  const impersonateLogout = async () => {
+    setAuthToken(adminToken)
+    getFiltersData(adminToken)
+    setImpersonateUser(null)
+}
 
   return (
     <div className={styles.headerWrapper}>
@@ -110,6 +150,17 @@ const Header = ({
             </p>
           }
         />
+      }
+      {user?.role?.toLowerCase() === 'admin' && impersonateUser &&
+        <div className={styles.header__adminModeBanner}>
+            <span>
+              Вы просматриваете сервис от имени другого пользователя <br/>
+              id:{impersonateUser.id} / email:{impersonateUser.email}
+            </span>
+            <button onClick={impersonateLogout}>
+              Выйти
+            </button>
+        </div>
       }
       <header className={styles.header}>
         <div className={styles.header__titleBlock} style={{ boxShadow: hasShadow ? '0px 0px 20px 0px #00000014' : 'none' }}>
@@ -138,28 +189,40 @@ const Header = ({
         {children && children}
         {user &&
           <div className={styles.header__menu} style={{ filter: hasShadow ? 'drop-shadow(0px 0px 20px #00000014)' : 'none' }}>
-            <Popover
-              {...popoverOptions}
-              className={styles.header__popover}
-              content={<HeaderAlerts messages={messages} />}
+            <ConfigProvider
+              theme={{
+                token: {
+                  borderRadiusLG: 16,
+                  //borderRadiusSM: 50,
+                  //borderRadius: 50,
+                }
+              }}
             >
-              <>
-                <Icon type='alert' counter={messages?.length} />
-              </>
-            </Popover>
+              <Popover
+                {...popoverOptions}
+                open={isAlertsPopoverVisible}
+                onOpenChange={setIsAlertsPopoverVisible}
+                className={styles.header__popover}
+                content={<HeaderAlerts messages={messages} closeHandler={() => setIsAlertsPopoverVisible(false)} />}
+              >
+                <>
+                  <Icon type='alert' counter={messages?.length} />
+                </>
+              </Popover>
 
-            <Popover
-              {...popoverOptions}
-              content={<HeaderMenu popoverCloseHandler={menuPopoverCloseHandler} logout={logout} />}
-              open={isMenuPopoverVisible}
-              onOpenChange={menuPopoverOpenHandler}
-              className={styles.header__popover}
-            >
-              <>
-                {/* @ts-expect-error - Icon component accepts optional counter but TypeScript infers it as required */}
-                <Icon type='menu' />
-              </>
-            </Popover>
+              <Popover
+                {...popoverOptions}
+                content={<HeaderMenu popoverCloseHandler={menuPopoverCloseHandler} logout={logout} user={user} />}
+                open={isMenuPopoverVisible}
+                onOpenChange={menuPopoverOpenHandler}
+                className={styles.header__popover}
+              >
+                <>
+                  {/* @ts-expect-error - Icon component accepts optional counter but TypeScript infers it as required */}
+                  <Icon type='profile' />
+                </>
+              </Popover>
+            </ConfigProvider>
           </div>
         }
       </header>

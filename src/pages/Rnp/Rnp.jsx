@@ -612,6 +612,7 @@ export default function Rnp({
 							categorySelect={false}
 							maxCustomDate={new Date(Date.now() - 24 * 60 * 60 * 1000)}
 							disabled={isPublicVersion}
+							hasShopCreationLimit
 						/>)
 						:
 						(

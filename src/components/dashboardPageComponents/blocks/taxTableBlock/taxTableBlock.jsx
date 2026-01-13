@@ -16,7 +16,7 @@ const TaxTableBlock = ({ dataDashBoard, loading, updateDashboard, dragHandle }) 
     const [taxType, setTaxType] = useState();
     const [taxRate, setTaxRate] = useState();
     const [isButtonVisible, setIsButtonVisible] = useState(false);
-    const { activeBrand, selectedRange } = useAppSelector((state) => state.filters);
+    const filters = useAppSelector((state) => state.filters);
 
 
     const handleTaxSubmit = async (type, submit) => {
@@ -26,7 +26,7 @@ const TaxTableBlock = ({ dataDashBoard, loading, updateDashboard, dragHandle }) 
         try {
             await ServiceFunctions.postTaxRateUpdateDashboard(authToken, currentTaxRate, currentTaxType);
             // Обновляем данные дашборда
-            await updateDashboard(selectedRange, activeBrand.id, authToken);
+            await updateDashboard(filters, authToken);
             if (submit) {
                 setIsButtonVisible(false);
             }
