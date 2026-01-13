@@ -1,78 +1,137 @@
 :global(.ant-popover-inner) {
-    padding: 0 !important;
+  padding: 0 !important;
 }
 
 .menu {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: stretch;
-    min-height: 160px;
-    min-width: 270px;
-    max-width: 270px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
+  min-height: 160px;
+  min-width: 400px;
+  max-width: 400px;
+  padding: 12px;
+  gap: 8px;
+}
+
+.menu__subscription {
+  width: 100%;
+  border-radius: 8px;
+  background-color: #F7F6FE;
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.menu__subscriptionTitleWrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  color: #5329FF;
+}
+
+.menu__subscriptionLeft {
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 140%;
+  letter-spacing: 0%;
+  color: #8c8c8c;
+}
+
+.menu__userInfo {
+  display: flex;
+  flex-direction: column;
+  padding: 0 8px 8px;
+  border-bottom: 1px solid #E8E8E8;
+}
+
+.menu__userName {
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 100%;
+  letter-spacing: 0%;
+}
+
+.menu__userEmail {
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 160%;
+  letter-spacing: 0%;
+  color: #1A1A1A80;
 }
 
 .menu__linkList {
-    width: 100;
-    margin: 0;
-    padding: 14px;
-    border-bottom: 1px solid silver;
-    list-style-type: none;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-start;
-    gap: 4px;
-  }
+  width: 100;
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 8px;
+}
 
-  .menu__listItem {
-    width: 100%;
-  }
+.menu__listItem {
+  width: 100%;
+}
 
-  .menu__link {
-    color: black;
-    text-decoration: none;
-    transition: all .3s ease-in-out;
-    font-family: 'Manrope';
-    font-size: 16px;
-    font-weight: 400;
-  }
+.menu__link {
+  color: black;
+  text-decoration: none;
+  transition: all .3s ease-in-out;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 160%;
+  letter-spacing: 0%;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: none;
+  background-color: transparent;
+}
 
-  .menu__link:hover {
-    color: var(--primary-color);
-  }
+.menu__link:hover {
+  color: var(--primary-color);
+}
 
-  .menu__closeButtonWrapper {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    padding: 14px;
-    position: absolute;
-    top: 0;
-    right: 0;
-  }
+.menu__closeButtonWrapper {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 14px;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
 
-  .menu__closeButton {
-    background: transparent;
-    border: none;
-  }
+.menu__closeButton {
+  background: transparent;
+  border: none;
+}
 
-  .menu__logoutWrapper {
-    width: 100%;
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    padding: 14px;
-  }
+.menu__logoutWrapper {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 14px;
+}
 
-  .menu__logoutLink {
-    border: none;
-    background: transparent;
-    color: var(--primary-color);
-    cursor: pointer;
-    text-decoration: none;
-    font-weight: bold;
-    font-family: 'Manrope';
-    font-size: 16px;
-    font-weight: 400;
-  }
+.menu__logoutLink {
+  border: none;
+  background: transparent;
+  color: var(--primary-color);
+  cursor: pointer;
+  text-decoration: none;
+  font-weight: bold;
+  font-family: 'Manrope';
+  font-size: 16px;
+  font-weight: 400;
+}

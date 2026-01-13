@@ -18,23 +18,32 @@
     transition: transform .2s ease-in;
 }
 .ringIcon {
-    width: auto;
-    height: auto;
+    width: 32px;
+    height: 32px;
     display: flex;
+    flex: 0 0 32px;
     justify-content: center;
     align-items: center;
     box-sizing: border-box;
     cursor: pointer;
     position: relative;
-    transition: transform .1s ease-in;
+    transition: all .2s ease;
+    /* transition: transform .1s ease-in; */
     transform-origin: top center;
-    display: inline-block;
+    color: #1A1A1A;
+    border-radius: 50%;
 }
 .menuIcon:hover {
     transform: rotate(100deg) scale(110%);
 }
+
+.ringIcon:hover {
+    color: #5329FF;
+    background-color: #5329FF1A;
+    transform: scale(1.05);
+}
 .ringIcon:hover > svg {
-    animation: shake 0.5s ease-in-out;
+    /* animation: shake 0.5s ease-in-out; */
 }
 .icon__messageCounter {
     padding: 0px 5px;
@@ -52,4 +61,24 @@
     font-weight: 600;
     font-size: 12px;
     line-height: 1;
+}
+
+.profileIcon {
+    position: relative;
+    color: #1A1A1A;
+    width: 32px;
+    height: 32px;
+    flex: 0 0 32px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    transition: all .2s ease;
+    cursor: pointer;
+}
+
+.profileIcon:hover {
+    background-color: #5329FF1A;
+    color: #5329FF;
+    transform: scale(1.1);
 }
