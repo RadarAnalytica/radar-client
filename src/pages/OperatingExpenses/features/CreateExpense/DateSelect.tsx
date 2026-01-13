@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import { ConfigProvider, Form, Select } from 'antd';
-import { format } from 'date-fns';
+import { ConfigProvider, Form, Select, FormInstance } from 'antd';
+import { format, Month } from 'date-fns';
 import { DayPicker } from 'react-day-picker';
+import { NamePath } from 'antd/es/form/interface';
 import 'react-day-picker/dist/style.css';
 import { ru } from 'date-fns/locale';
 import styles from './expenseMainModal.module.css';
@@ -12,31 +13,42 @@ const customRuLocale = {
     ...ru,
     localize: {
         ...ru.localize,
-        month: (n, options) => {
+        month: (n: Month, options?: { width?: 'abbreviated' | 'wide' | 'narrow'; context?: 'standalone' | 'formatting' }) => {
             const monthName = ru.localize.month(n, options);
             return monthName.charAt(0).toUpperCase() + monthName.slice(1);
         },
     },
 };
 
-export const DateSelect = (
-    {
-        form,
-        label,
-        formId,
-        minDate,
-        maxDate,
-        required = true,
-        allowClear = false,
-    }
-) => {
+interface DateSelectProps {
+    form: FormInstance;
+    label: string;
+    formId: NamePath;
+    minDate?: Date;
+    maxDate?: Date;
+    required?: boolean;
+    allowClear?: boolean;
+    onSelect?: (day: Date) => void;
+}
+
+export const DateSelect = ({
+    form,
+    label,
+    formId,
+    minDate,
+    maxDate,
+    required = true,
+    allowClear = false,
+    onSelect = () => {},
+}: DateSelectProps) => {
     const [openCalendar, setOpenCalendar] = useState(false);
     const date = Form.useWatch([formId], form);
 
-    const handleDayClick = (day, modifiers) => {
-        setOpenCalendar(false);
+    const handleDayClick = (day: Date) => {
         form?.setFieldValue([formId], format(day, 'dd.MM.yyyy'));
-    }
+        onSelect(day);
+        setOpenCalendar(false);
+    };
 
     return (
         <ConfigProvider
@@ -48,7 +60,6 @@ export const DateSelect = (
                     borderRadius: 8,
                     fontFamily: 'Manrope',
                     fontSize: 12,
-                    fontWeight: 500,
                     controlHeightLG: 40,
                 },
                 components: {
@@ -72,7 +83,6 @@ export const DateSelect = (
                 ]}
             >
                 <Select
-                    name='date'
                     size="large"
                     placeholder="Выберите дату"
                     suffixIcon={<SelectIcon />}
@@ -92,15 +102,13 @@ export const DateSelect = (
                             }}
                         >
                             <DayPicker
-                                minDate={minDate}
-                                maxDate={maxDate}
-                                fromDate={minDate}
-                                toDate={maxDate}
-                                disabled={[
-                                    { before: minDate },
-                                    { after: maxDate },
-                                ]}
-                                selected={new Date(date)}
+                                startMonth={minDate}
+                                endMonth={maxDate}
+                                disabled={{ 
+                                    before: minDate,
+                                    after: maxDate
+                                }}
+                                selected={date ? new Date(date) : undefined}
                                 mode="single"
                                 captionLayout="dropdown"
                                 className={styles.customDayPicker}
@@ -115,5 +123,5 @@ export const DateSelect = (
                 />
             </Form.Item>
         </ConfigProvider>
-    )
-}
+    );
+};

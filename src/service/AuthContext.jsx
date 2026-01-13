@@ -29,13 +29,20 @@ export const AuthProvider = ({ children }) => {
 
   const [value, deleteCookie] = useCookie('radar');
   const [authToken, setAuthToken] = useState();
+  const [adminToken, setAdminToken] = useState();
   const [user, setUser] = useState(decode(value));
+  const [ impersonateUser, setImpersonateUser] = useState(null)
   let prevToken = authToken;
 
   useEffect(() => {
     if (value && value !== prevToken) {
+      const user = decode(value);
       setAuthToken(value);
-      setUser(decode(value));
+      setUser(user);
+
+      if (user?.role?.toLowerCase() === 'admin') {
+        setAdminToken(value)
+      }
     }
 
     console.log('user', user);
@@ -341,7 +348,11 @@ export const AuthProvider = ({ children }) => {
       setShowMobile,
       refreshUser,
       refreshSubscriprionCheck,
-      refreshOnboardingCheck
+      refreshOnboardingCheck,
+      adminToken,
+      setAuthToken,
+      impersonateUser,
+      setImpersonateUser
     }),
     [user, authToken]
   );

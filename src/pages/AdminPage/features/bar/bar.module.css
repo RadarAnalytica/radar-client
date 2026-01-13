@@ -2,7 +2,7 @@
     width: 100%;
     background: white;
     border-radius: 16px;
-    box-shadow: 0px 0px 20px 0px #00000014;
+    /* box-shadow: 0px 0px 20px 0px #00000014; */
 }
 
 .bar_small {
@@ -118,7 +118,7 @@
 }
 
 .bar__title_small {
-    font-size: 16px;
+    font-size: 14px;
 }
 
 .bar__data {
@@ -138,7 +138,8 @@
 }
 
 .bar__data_small {
-    font-size: 24px;
+    font-size: 22px;
+    font-weight: 600;
 }
 
 .bar__dataContainer {

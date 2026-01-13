@@ -11,6 +11,8 @@ import { VideoReview } from './videoReviewButton/videoReview';
 import { StatusBanner } from '../../../shared';
 import { getDayDeclension } from '../../../service/utils';
 import HowToLink from '../howToLink/howToLink';
+import { fetchFilters } from '@/redux/apiServicePagesFiltersState/filterActions';
+import { URL } from '@/service/config';
 
 interface User {
   email?: string;
@@ -56,7 +58,15 @@ const Header = ({
   const {
     user,
     logout,
-    authToken
+    authToken,
+    //@ts-ignore
+    adminToken,
+    //@ts-ignore
+    impersonateUser,
+    //@ts-ignore
+    setImpersonateUser,
+    //@ts-ignore
+    setAuthToken,
   } = useContext(AuthContext) as AuthContextType;
 
   // стейт видимости поповера меню
@@ -93,6 +103,35 @@ const Header = ({
     setIsMenuPopoverVisible(open);
   };
 
+  const getFiltersData = async (token) => {
+    try {
+        let shopsResponse = await fetch(`${URL}/api/shop/all`, {
+            method: 'GET',
+            headers: {
+                'content-type': 'application/json',
+                authorization: 'JWT ' + token,
+            }
+        });
+        let shopsData = null;
+        shopsData = await shopsResponse.json();
+
+        // @ts-ignore
+        await dispatch(fetchFilters({
+            authToken: token,
+            shopsData
+            //shopsData: null
+        }));
+    } catch (error) {
+        console.error("FiltersProvider: Error fetching initial data:", error);
+    }
+};
+
+  const impersonateLogout = async () => {
+    setAuthToken(adminToken)
+    getFiltersData(adminToken)
+    setImpersonateUser(null)
+}
+
   return (
     <div className={styles.headerWrapper}>
       {user && user.test_days_left !== undefined && user.test_days_left !== null && user.test_days_left >= 0 &&
@@ -111,6 +150,17 @@ const Header = ({
             </p>
           }
         />
+      }
+      {user?.role?.toLowerCase() === 'admin' && impersonateUser &&
+        <div className={styles.header__adminModeBanner}>
+            <span>
+              Вы просматриваете сервис от имени другого пользователя <br/>
+              id:{impersonateUser.id} / email:{impersonateUser.email}
+            </span>
+            <button onClick={impersonateLogout}>
+              Выйти
+            </button>
+        </div>
       }
       <header className={styles.header}>
         <div className={styles.header__titleBlock} style={{ boxShadow: hasShadow ? '0px 0px 20px 0px #00000014' : 'none' }}>
