@@ -129,21 +129,21 @@
     letter-spacing: 0px;
     margin: 0;
     padding: 0;
-    font-size: 22px;
+    font-size: 14px;
 
     @media (max-width: 1680px) {
-        font-size: 18px;
+        font-size: 14px;
     }
     @media (max-width: 1380px) {
-        font-size: 16px;
+        font-size: 14px;
         max-width: 268px;
     }
     @media (max-width: 1050px) {
-        font-size: 16px;
+        font-size: 14px;
         max-width: 100%;
     }
     @media (max-width: 600px) {
-        font-size: 15px;
+        font-size: 14px;
         line-height: 130%;
     }
 }
