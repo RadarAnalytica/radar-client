@@ -30,6 +30,7 @@ const SearchBlock = () => {
     };
 
     const searchSubmitHandler = (e) => {
+        if (!inputValue?.trim()) return
         if (e && e.key && e.key !== 'Enter') return;
         let normilizedId;
         if (/^(|\d+)$/.test(inputValue)) {

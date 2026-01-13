@@ -478,7 +478,7 @@ const barsConfig = [
                 isLoading={loading}
                 hasColoredBackground
                 negativeDirection='up'
-                midValue={<Link className={styles.smallButton} to='/operating-expenses'>Изменить</Link>}
+                midValue={<Link className={styles.smallButton} target='_blank' to='/operating-expenses'>Изменить</Link>}
                 compareValue={{
                     comparativeValue: dataDashBoard?.operating_expense_compare,
                 }}
@@ -587,7 +587,7 @@ const barsConfig = [
                 title='Себестоимость проданных товаров'
                 tooltipText='Суммарная себестоимость проданных товаров (основана на данных раздела "Себестоимость"'
                 mainValue={dataDashBoard?.costPriceAmount}
-                midValue={<Link className={styles.smallButton} to='/selfcost'>Изменить</Link>}
+                midValue={<Link className={styles.smallButton} to='/selfcost' target='_blank'>Изменить</Link>}
                 mainValueUnits='₽'
                 compareValue={{
                     comparativeValue: dataDashBoard?.costPriceAmountCompare,

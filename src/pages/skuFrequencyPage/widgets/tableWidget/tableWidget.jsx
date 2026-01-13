@@ -88,7 +88,7 @@ const TableWidget = ({ tableConfig, setTableConfig }) => {
     if (!requestData?.length) {
         return (
             <div className={`${styles.widget} ${styles.emptyContainer}`}>
-                <div className={`${styles.container}`}> 
+                <div className={`${styles.container}`} style={{ fontSize: '14px'}}> 
                     По заданным параметрам запроса данные не найдены
                 </div>
             </div>

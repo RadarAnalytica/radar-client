@@ -1,10 +1,10 @@
 import { useContext, useRef } from 'react';
 import styles from './sidebar.module.css';
 import { Link } from 'react-router-dom';
-//import logo from '../../../assets/logo.png';
-import logo from '../../../assets/logo_Xmas.png';
-// import smallLogo from '../../../assets/small_logo.png';
-import smallLogo from '../../../assets/small_logo_christmas.png';
+import logo from '../../../assets/logo.png';
+//import logo from '../../../assets/logo_Xmas.png'; // xmas
+import smallLogo from '../../../assets/small_logo.png';
+//import smallLogo from '../../../assets/small_logo_christmas.png'; //xmas
 import Dropdown from './dropdown/dropdown';
 import Support from './supportBlock/support';
 import NestedLink from './nestedLink/nestedLink';
@@ -38,7 +38,7 @@ const Sidebar = () => {
             <div className={styles.sidebar__mainWrapper}>
                 <div className={isSidebarHidden ? `${styles.sidebar__mainLinkWrapper} ${styles.sidebar__mainLinkWrapper_hidden}` : styles.sidebar__mainLinkWrapper}>
                     <Link to='/main' className={isSidebarHidden ? `${styles.sidebar__mainLink} ${styles.sidebar__mainLink_bigHidden}` : `${styles.sidebar__mainLink} ${styles.sidebar__mainLink_bigVisible}`} onClick={() => {dispatch(utilsActions.setIsSidebarHidden(true));}}>
-                        <img src={logo} alt='логотип' className={styles.sidebar__mainLinklogo} />
+                        <img src={logo} alt='логотип' className={styles.sidebar__mainLinklogo} style={{marginLeft: 20}} />
                     </Link>
                     <Link to='/main' className={isSidebarHidden ? `${styles.sidebar__mainLink} ${styles.sidebar__mainLink_smallVisible}` : `${styles.sidebar__mainLink} ${styles.sidebar__mainLink_smallHidden}`}  onClick={() => {dispatch(utilsActions.setIsSidebarHidden(true));}}>
                         <img src={smallLogo} alt='логотип' className={styles.sidebar__mainLinkSmallLogo} />
