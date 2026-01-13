@@ -29,13 +29,20 @@ export const AuthProvider = ({ children }) => {
 
   const [value, deleteCookie] = useCookie('radar');
   const [authToken, setAuthToken] = useState();
+  const [adminToken, setAdminToken] = useState();
   const [user, setUser] = useState(decode(value));
+  const [ impersonateUser, setImpersonateUser] = useState(null)
   let prevToken = authToken;
 
   useEffect(() => {
     if (value && value !== prevToken) {
+      const user = decode(value);
       setAuthToken(value);
-      setUser(decode(value));
+      setUser(user);
+
+      if (user?.role?.toLowerCase() === 'admin') {
+        setAdminToken(value)
+      }
     }
 
     console.log('user', user);
@@ -211,8 +218,8 @@ export const AuthProvider = ({ children }) => {
     }
 
     const refreshPromise = (async () => {
-      const maxAttempts = 5;
-      const delay = 1000;
+      const maxAttempts = 36;
+      const delay = 5000;
       
       try {
         for (let attempt = 1; attempt <= maxAttempts; attempt++) {
@@ -241,7 +248,9 @@ export const AuthProvider = ({ children }) => {
               const subscriptionStatus = decodedUser?.subscription_status;
               const isValidSubscription = subscriptionStatus !== null && subscriptionStatus?.toLowerCase() !== 'expired';
               
-              return { success: isValidSubscription, token: data.token };
+              if (isValidSubscription) {
+                return { success: true, token: data.token };
+              }
             }
           } catch (error) {
             console.error(`Попытка ${attempt} не удалась:`, error);
@@ -341,7 +350,11 @@ export const AuthProvider = ({ children }) => {
       setShowMobile,
       refreshUser,
       refreshSubscriprionCheck,
-      refreshOnboardingCheck
+      refreshOnboardingCheck,
+      adminToken,
+      setAuthToken,
+      impersonateUser,
+      setImpersonateUser
     }),
     [user, authToken]
   );
