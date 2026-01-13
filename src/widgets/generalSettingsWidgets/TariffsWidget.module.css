@@ -16,6 +16,17 @@
     gap: 20px;
     align-items: stretch;
 }
+.page__tariffsListOld {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    align-items: stretch;
+
+    @media (max-width: 1330px) {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
 
 .widget__tabs {
     width: 100%;

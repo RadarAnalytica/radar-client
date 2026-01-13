@@ -14,3 +14,4 @@ export { OnboardingWidget } from './OnboardingWidget/OnboardingWidget';
 export { PositionTrackingMainPageWidget } from './PositionTrackingMainPageWidget/PositionTrackingMainPageWidget';
 export { PositionTrackingSkuFilters } from './PositionTrackingSkuFilters/PositionTrackingSkuFilters';
 export { TariffsWidget } from './generalSettingsWidgets/TariffsWidget';
+export { TariffsWidgetOld } from './generalSettingsWidgets/TariffsWidgetOld';

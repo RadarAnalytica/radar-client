@@ -3,15 +3,16 @@ import styles from './GeneralSettingsPage.module.css'
 import { GeneralLayout } from '@/shared';
 import { Segmented, ConfigProvider } from 'antd';
 import { useLocation } from 'react-router-dom';
-import { LinkedShopsWidget, ReferalProgrammWidget, ProfileWidget, UsersWidget, PaymentWidget, TariffsWidget } from '@/widgets';
+import { LinkedShopsWidget, ReferalProgrammWidget, ProfileWidget, UsersWidget, PaymentWidget, TariffsWidget, TariffsWidgetOld } from '@/widgets';
 
 const segmentedOptions = [
     { value: 'profile', label: 'Профиль' },
     { value: 'shops', label: 'Подключенные магазины' },
-    { value: 'users', label: 'Настройки пользователей' },
+    // { value: 'users', label: 'Настройки пользователей' },
     { value: 'payments', label: 'История платежей' },
     { value: 'referral', label: 'Реферальная программа' },
     { value: 'tariffs', label: 'Тарифы' },
+    { value: 'tariffsNew', label: 'Тарифы2' },
     // { value: 'notifications', label: 'Бот уведомлений' },
 ];
 
@@ -74,7 +75,8 @@ const GeneralSettingsPage = () => {
             {activeTab === 'users' && <UsersWidget />}
             {activeTab === 'payments' && <PaymentWidget />}
             {activeTab === 'referral' && <ReferalProgrammWidget />}
-            {activeTab === 'tariffs' && <TariffsWidget />}
+            {activeTab === 'tariffsNew' && <TariffsWidget />}
+            {activeTab === 'tariffs' && <TariffsWidgetOld />}
         </GeneralLayout>
     )
 }
