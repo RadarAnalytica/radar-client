@@ -28,11 +28,13 @@ const AfterPayment = ({ devMode }) => {
   const location = useLocation();
   const [status, setStatus] = useState(location?.state?.paymentStatus && location?.state?.paymentStatus === 'success' ? true : false);
   const [error, setError] = useState(null)
+  const [successCheck, setSuccessCheck] = useState(false)
 
 
   const refreshUserToken = async () => {
     const res = await refreshSubscriprionCheck()
     if (res && res?.success) {
+      setSuccessCheck(true)
       const timeout = setTimeout(() => {
         navigate('/main')
       }, 4000)
@@ -76,7 +78,7 @@ const AfterPayment = ({ devMode }) => {
       <div className={styles.page__wrapper}>
         <ExternalHeader />
         <div className={styles.page__content}>
-          {status && <PaymentStatus.Success />}
+          {status && <PaymentStatus.Success successCheck={successCheck} />}
           {!status && <PaymentStatus.Fail />}
         </div>
       </div>
