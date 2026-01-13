@@ -4,12 +4,23 @@ import successImage from './success.png';
 import failImage from './fail.png';
 import { Link } from 'react-router-dom';
 
-const Success = () => {
+const Success = ({ successCheck }) => {
     return (
         <section className={`${styles.widget} ${styles.widget_success}`}>
             <div className={styles.widget_textBlock}>
                 <h1 className={styles.widget__title}>Оплата прошла успешно!</h1>
-                <p className={styles.widget__text}>Скоро вы будете перенаправлены на страницу сервиса</p>
+                {/* <p className={styles.widget__text}>Скоро вы будете перенаправлены на страницу сервиса</p> */}
+                {!successCheck &&
+                    <>
+                        <p className={styles.widget__text}>Ваша оплата обрабатывается. Это может занять до 5 минут. Пожалуйста, не закрывайте страницу — после подтверждения вы будете автоматически перенаправлены в сервис.</p>
+                        <p className={styles.widget__text}>Среднее время ожидания - до 3 минут. Если время ожидания превышает 5 минут - обратитесь в поддержку.</p>
+                    </>
+                }
+                {successCheck &&
+                    <>
+                        <p className={styles.widget__text}>Обработка успешно завершена! Сейчас вы будете перенаправлены на главную страницу...</p>
+                    </>
+                }
             </div>
             <div className={styles.widget_imgWrapper}>
                 <img src={successImage} alt="Payment Success" decoding='async' />
