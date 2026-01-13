@@ -136,8 +136,7 @@ function App() {
                 <Route path='/selfcost' element={<ProtectedRoute expireProtected onboardProtected routeRuName='Себестоимость товаров'><SelfCostPage /></ProtectedRoute>} />
                 <Route path='/sku-analysis' element={<ProtectedRoute expireProtected routeRuName='Анализ артикула'><SkuAnalysisPage /></ProtectedRoute>} />
                 <Route path='/sku-analysis/:id' element={<ProtectedRoute testPeriodGuardType='redirect' testPeriodRedirect='/sku-analysis' expireProtected routeRuName='Анализ артикула'><SkuIdPage /></ProtectedRoute>} />
-                <Route path='/dashboard' element={<ProtectedRoute expireProtected onboardProtected routeRuName='Сводка продаж'><DashboardPageNoDnd /></ProtectedRoute>} />
-                <Route path='/dashboard-dnd' element={<ProtectedRoute expireProtected onboardProtected routeRuName='Сводка продаж'><DashboardPage /></ProtectedRoute>} />
+                <Route path='/dashboard' element={<ProtectedRoute expireProtected onboardProtected routeRuName='Сводка продаж'><DashboardPage /></ProtectedRoute>} />
                 <Route path='/abc-data' element={<ProtectedRoute expireProtected onboardProtected routeRuName='ABC-анализ'><AbcAnalysisPage /></ProtectedRoute>} />
                 <Route path='/rank-analysis' element={<ProtectedRoute expireProtected routeRuName='Сравнение SEO'><SeoPage /></ProtectedRoute>} />
                 {/* <Route path='/ai-generator' element={<ProtectedRoute expireProtected underDevelopmentProtected routeRuName='Генерация описания AI'><AiDescriptionGeneratorPage /></ProtectedRoute>} /> */}
