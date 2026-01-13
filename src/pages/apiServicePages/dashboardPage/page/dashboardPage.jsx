@@ -37,6 +37,10 @@ import { SortableRow } from '../components/SortableRow';
 import { SettingsModal } from '../components/SettingsModal';
 import { v4 as uuidv4 } from 'uuid';
 import { SmallButton } from '@/shared';
+import { GeneralLayout } from '@/shared';
+import { fileDownload } from '@/service/utils';
+import DownloadButton from '@/components/DownloadButton';
+import { Link } from 'react-router-dom';
 
 
 
@@ -73,7 +77,6 @@ const barsConfig = [
         id: 'bar-1',
         title: 'Чистая прибыль',
         isVisible: true,
-        container: styles.group__lgBarWrapperTop,
         dropKey: '1',
         rowId: 'row-1',
         render: (bar, dataDashBoard, loading, selectedRange, activeBrand, authToken, filters, updateDataDashBoard, stockAnalysisData) => (
@@ -98,7 +101,6 @@ const barsConfig = [
         id: 'bar-2',
         title: 'Продажи',
         isVisible: true,
-        container: styles.group__lgBarWrapperTop,
         dropKey: '1',
         rowId: 'row-1',
         render: (bar, dataDashBoard, loading, selectedRange, activeBrand, authToken, filters, updateDataDashBoard, stockAnalysisData) => (
@@ -125,7 +127,6 @@ const barsConfig = [
         id: 'bar-3',
         title: 'WB Реализовал',
         isVisible: true,
-        container: styles.group__lgBarWrapperTop,
         dropKey: '1',
         rowId: 'row-1',
         render: (bar, dataDashBoard, loading, selectedRange, activeBrand, authToken, filters, updateDataDashBoard, stockAnalysisData) => (
@@ -148,22 +149,21 @@ const barsConfig = [
         ),
     },
     {
-        id: 'bar-5',
-        title: 'ROI',
+        id: 'bar-4',
+        title: 'Процент выкупа',
         isVisible: true,
-        container: styles.group__lgBarWrapperTop,
         dropKey: '1',
-        rowId: 'row-1',
+        rowId: 'row-3',
         render: (bar, dataDashBoard, loading, selectedRange, activeBrand, authToken, filters, updateDataDashBoard, stockAnalysisData) => (
             <RadarBar
-                title='ROI'
-                tooltipText='Показывает общую рентабельность ваших вложений. Насколько прибыльны или убыточны ваши продажи с учетом всех затрат'
-                mainValue={dataDashBoard?.roi}
+                title='Процент выкупа'
+                tooltipText='Доля заказов, которые были оплачены и получены покупателями, от общего числа созданных заказов.'
+                mainValue={dataDashBoard?.buyoutPercent}
                 mainValueUnits='%'
                 hasColoredBackground
                 compareValue={{
-                    comparativeValue: dataDashBoard?.roi_compare,
-                    absoluteValue: dataDashBoard?.prev_roi,
+                    comparativeValue: dataDashBoard?.buyoutPercentCompare,
+                    absoluteValue: dataDashBoard?.prev_buyoutPercent,
                     absoluteValueUnits: '%',
                     tooltipText: 'Значение предыдущего периода'
                 }}
@@ -201,10 +201,33 @@ const barsConfig = [
     },
     //row-3
     {
+        id: 'bar-5',
+        title: 'ROI',
+        isVisible: true,
+        dropKey: '1',
+        rowId: 'row-1',
+        render: (bar, dataDashBoard, loading, selectedRange, activeBrand, authToken, filters, updateDataDashBoard, stockAnalysisData) => (
+            <RadarBar
+                title='ROI'
+                tooltipText='Показывает общую рентабельность ваших вложений. Насколько прибыльны или убыточны ваши продажи с учетом всех затрат'
+                mainValue={dataDashBoard?.roi}
+                mainValueUnits='%'
+                hasColoredBackground
+                compareValue={{
+                    comparativeValue: dataDashBoard?.roi_compare,
+                    absoluteValue: dataDashBoard?.prev_roi,
+                    absoluteValueUnits: '%',
+                    tooltipText: 'Значение предыдущего периода'
+                }}
+                isLoading={loading}
+                dragHandle={() => <DragHandle context={DragHandleContext} />}
+            />
+        ),
+    },
+    {
         id: 'sec-orders',
         title: 'Заказы',
         isVisible: true,
-        container: styles.group__lgBarWrapper,
         dropKey: '1',
         rowId: 'row-3',
         render: (bar, dataDashBoard, loading, selectedRange, activeBrand, authToken, filters, updateDataDashBoard, stockAnalysisData) => (
@@ -228,10 +251,32 @@ const barsConfig = [
         ),
     },
     {
+        id: 'sec-rc-payments',
+        title: 'Оплата на Р/С',
+        isVisible: true,
+        dropKey: '1',
+        rowId: 'row-3',
+        render: (bar, dataDashBoard, loading, selectedRange, activeBrand, authToken, filters, updateDataDashBoard, stockAnalysisData) => (
+            <RadarBar
+                title='Оплата на Р/С'
+                // tooltipText=''
+                mainValue={dataDashBoard?.to_account_payment?.current}
+                mainValueUnits='₽'
+                hasColoredBackground
+                compareValue={{
+                    comparativeValue: dataDashBoard?.to_account_payment?.comparison,
+                    absoluteValue: dataDashBoard?.to_account_payment?.previous,
+                    absoluteValueUnits: '₽',
+                    tooltipText: 'Значение предыдущего периода'
+                }}
+                isLoading={loading}
+            />
+        ),
+    },
+    {
         id: 'sec-returns',
         title: 'Возвраты',
         isVisible: true,
-        container: styles.group__lgBarWrapper,
         dropKey: '1',
         rowId: 'row-3',
         render: (bar, dataDashBoard, loading, selectedRange, activeBrand, authToken, filters, updateDataDashBoard, stockAnalysisData) => (
@@ -258,7 +303,6 @@ const barsConfig = [
         id: 'sec-logistics',
         title: 'Расходы на логистику',
         isVisible: true,
-        container: styles.group__lgBarWrapper,
         dropKey: '1',
         rowId: 'row-3',
         render: (bar, dataDashBoard, loading, selectedRange, activeBrand, authToken, filters, updateDataDashBoard, stockAnalysisData) => (
@@ -283,7 +327,6 @@ const barsConfig = [
         id: 'sec-storage-bar',
         title: 'Хранение',
         isVisible: true,
-        container: styles.group__lgBarWrapper,
         dropKey: '1',
         rowId: 'row-3',
         render: (bar, dataDashBoard, loading, selectedRange, activeBrand, authToken, filters, updateDataDashBoard, stockAnalysisData) => (
@@ -307,7 +350,6 @@ const barsConfig = [
         id: 'sec-paid-acceptance',
         title: 'Платная приемка',
         isVisible: true,
-        container: styles.group__lgBarWrapper,
         dropKey: '1',
         rowId: 'row-3',
         render: (bar, dataDashBoard, loading, selectedRange, activeBrand, authToken, filters, updateDataDashBoard, stockAnalysisData) => (
@@ -331,7 +373,6 @@ const barsConfig = [
         id: 'sec-commission',
         title: 'Комиссия',
         isVisible: true,
-        container: styles.group__lgBarWrapper,
         dropKey: '1',
         rowId: 'row-3',
         render: (bar, dataDashBoard, loading, selectedRange, activeBrand, authToken, filters, updateDataDashBoard, stockAnalysisData) => (
@@ -357,7 +398,6 @@ const barsConfig = [
         id: 'sec-tax',
         title: 'Налог',
         isVisible: true,
-        container: styles.group__lgBarWrapper,
         dropKey: '1',
         rowId: 'row-3',
         render: (bar, dataDashBoard, loading, selectedRange, activeBrand, authToken, filters, updateDataDashBoard, stockAnalysisData) => (
@@ -380,7 +420,6 @@ const barsConfig = [
         id: 'sec-advert',
         title: 'Реклама (ДРР)',
         isVisible: true,
-        container: styles.group__lgBarWrapper,
         dropKey: '1',
         rowId: 'row-3',
         render: (bar, dataDashBoard, loading, selectedRange, activeBrand, authToken, filters, updateDataDashBoard, stockAnalysisData) => (
@@ -405,7 +444,6 @@ const barsConfig = [
         id: 'sec-penalty',
         title: 'Штрафы и прочие удержания',
         isVisible: true,
-        container: styles.group__lgBarWrapper,
         dropKey: '1',
         rowId: 'row-3',
         render: (bar, dataDashBoard, loading, selectedRange, activeBrand, authToken, filters, updateDataDashBoard, stockAnalysisData) => (
@@ -427,10 +465,30 @@ const barsConfig = [
         ),
     },
     {
+        id: 'sec-opcosts',
+        title: 'Операционные расходы',
+        isVisible: true,
+        dropKey: '1',
+        render: (bar, dataDashBoard, loading, selectedRange, activeBrand, authToken, filters, updateDataDashBoard, stockAnalysisData) => (
+            <RadarBar
+                title='Операционные расходы'
+                // tooltipText={''}
+                mainValue={dataDashBoard?.operating_expenses}
+                mainValueUnits='₽'
+                isLoading={loading}
+                hasColoredBackground
+                negativeDirection='up'
+                midValue={<Link className={styles.smallButton} to='/operating-expenses'>Изменить</Link>}
+                compareValue={{
+                    comparativeValue: dataDashBoard?.operating_expense_compare,
+                }}
+            />
+        ),
+    },
+    {
         id: 'sec-compensation',
         title: 'Компенсации',
         isVisible: true,
-        container: styles.group__lgBarWrapper,
         dropKey: '1',
         rowId: 'row-3',
         render: (bar, dataDashBoard, loading, selectedRange, activeBrand, authToken, filters, updateDataDashBoard, stockAnalysisData) => (
@@ -454,7 +512,6 @@ const barsConfig = [
         id: 'sec-logistic-per-one',
         title: 'Ср. стоимость логистики на 1 шт',
         isVisible: true,
-        container: styles.group__lgBarWrapper,
         dropKey: '1',
         rowId: 'row-3',
         render: (bar, dataDashBoard, loading, selectedRange, activeBrand, authToken, filters, updateDataDashBoard, stockAnalysisData) => (
@@ -478,7 +535,6 @@ const barsConfig = [
         id: 'sec-profit-per-one',
         title: 'Средняя прибыль на 1 шт',
         isVisible: true,
-        container: styles.group__lgBarWrapper,
         dropKey: '1',
         rowId: 'row-3',
         render: (bar, dataDashBoard, loading, selectedRange, activeBrand, authToken, filters, updateDataDashBoard, stockAnalysisData) => (
@@ -502,7 +558,6 @@ const barsConfig = [
         id: 'sec-lost-sales-amount',
         title: 'Упущенные продажи',
         isVisible: true,
-        container: styles.group__lgBarWrapper,
         dropKey: '1',
         rowId: 'row-3',
         render: (bar, dataDashBoard, loading, selectedRange, activeBrand, authToken, filters, updateDataDashBoard, stockAnalysisData) => (
@@ -525,8 +580,6 @@ const barsConfig = [
     {
         id: 'sec-cost-price-amount',
         title: 'Себестоимость проданных товаров',
-        isVisible: true,
-        container: styles.group__lgBarWrapper,
         dropKey: '1',
         rowId: 'row-3',
         render: (bar, dataDashBoard, loading, selectedRange, activeBrand, authToken, filters, updateDataDashBoard, stockAnalysisData) => (
@@ -534,6 +587,7 @@ const barsConfig = [
                 title='Себестоимость проданных товаров'
                 tooltipText='Суммарная себестоимость проданных товаров (основана на данных раздела "Себестоимость"'
                 mainValue={dataDashBoard?.costPriceAmount}
+                midValue={<Link className={styles.smallButton} to='/selfcost'>Изменить</Link>}
                 mainValueUnits='₽'
                 compareValue={{
                     comparativeValue: dataDashBoard?.costPriceAmountCompare,
@@ -550,7 +604,6 @@ const barsConfig = [
         id: 'sec-turnover',
         title: 'Оборачиваемость',
         isVisible: true,
-        container: styles.group__lgBarWrapper,
         dropKey: '1',
         rowId: 'row-3',
         render: (bbar, dataDashBoard, loading, selectedRange, activeBrand, authToken, filters, updateDataDashBoard, stockAnalysisData) => (
@@ -568,24 +621,125 @@ const barsConfig = [
         ),
     },
     {
-        id: 'bar-4',
-        title: 'Процент выкупа',
+        id: 'sec-revenue-bar',
+        title: 'Выручка',
         isVisible: true,
-        container: styles.group__lgBarWrapper,
         dropKey: '1',
         rowId: 'row-3',
         render: (bar, dataDashBoard, loading, selectedRange, activeBrand, authToken, filters, updateDataDashBoard, stockAnalysisData) => (
             <RadarBar
-                title='Процент выкупа'
-                tooltipText='Доля заказов, которые были оплачены и получены покупателями, от общего числа созданных заказов.'
-                mainValue={dataDashBoard?.buyoutPercent}
-                mainValueUnits='%'
+                title='Выручка'
+                tooltipText='Сумма, заработанная при продаже товаров'
+                mainValue={dataDashBoard?.proceeds}
                 hasColoredBackground
                 compareValue={{
-                    comparativeValue: dataDashBoard?.buyoutPercentCompare,
-                    absoluteValue: dataDashBoard?.prev_buyoutPercent,
-                    absoluteValueUnits: '%',
-                    tooltipText: 'Значение предыдущего периода'
+                    comparativeValue: dataDashBoard?.proceedsCompare,
+                    // tooltipText: 'Значение предыдущего периода'
+                }}
+                isLoading={loading}
+                dragHandle={() => <DragHandle context={DragHandleContext} />}
+            />
+        ),
+    },
+    {
+        id: 'sec-net-revenue-bar',
+        title: 'EBITDA',
+        isVisible: true,
+        dropKey: '1',
+        rowId: 'row-3',
+        render: (bar, dataDashBoard, loading, selectedRange, activeBrand, authToken, filters, updateDataDashBoard, stockAnalysisData) => (
+            <RadarBar
+                title='Валовая прибыль'
+                tooltipText='Разность между выручкой и себестоимостью продаж'
+                mainValue={dataDashBoard?.grossProfit}
+                hasColoredBackground
+                compareValue={{
+                    comparativeValue: dataDashBoard?.grossProfitCompare,
+                    // tooltipText: 'Значение предыдущего периода'
+                }}
+                isLoading={loading}
+                dragHandle={() => <DragHandle context={DragHandleContext} />}
+            />
+        ),
+    },
+    {
+        id: 'sec-ebitda-bar',
+        title: 'EBITDA',
+        isVisible: true,
+        dropKey: '1',
+        rowId: 'row-3',
+        render: (bar, dataDashBoard, loading, selectedRange, activeBrand, authToken, filters, updateDataDashBoard, stockAnalysisData) => (
+            <RadarBar
+                title='EBITDA'
+                tooltipText='EBITDA — это показатель прибыли до вычета процентов, налогов, амортизации и износа, показывающий операционную рентабельность'
+                mainValue={dataDashBoard?.ebitda}
+                hasColoredBackground
+                compareValue={{
+                    comparativeValue: dataDashBoard?.ebitda_compare,
+                    // tooltipText: 'Значение предыдущего периода'
+                }}
+                isLoading={loading}
+                dragHandle={() => <DragHandle context={DragHandleContext} />}
+            />
+        ),
+    },
+    {
+        id: 'sec-margin-ebitda-bar',
+        title: 'Маржа EBITDA',
+        isVisible: true,
+        dropKey: '1',
+        rowId: 'row-3',
+        render: (bar, dataDashBoard, loading, selectedRange, activeBrand, authToken, filters, updateDataDashBoard, stockAnalysisData) => (
+            <RadarBar
+                title='Маржа EBITDA'
+                tooltipText='Маржа EBITDA — это процент от выручки, который остаётся после вычета операционных расходов, но до налогов, процентов и износа'
+                mainValue={dataDashBoard?.ebitda_margin}
+                hasColoredBackground
+                compareValue={{
+                    comparativeValue: dataDashBoard?.ebitda_margin_compare,
+                    // tooltipText: 'Значение предыдущего периода'
+                }}
+                isLoading={loading}
+                dragHandle={() => <DragHandle context={DragHandleContext} />}
+            />
+        ),
+    },
+    {
+        id: 'sec-profitability-vp-bar',
+        title: 'Рентабельность ВП',
+        isVisible: true,
+        dropKey: '1',
+        rowId: 'row-3',
+        render: (bar, dataDashBoard, loading, selectedRange, activeBrand, authToken, filters, updateDataDashBoard, stockAnalysisData) => (
+            <RadarBar
+                title='Рентабельность ВП'
+                tooltipText='Отношение валовой прибыли к суммарной выручке'
+                mainValue={dataDashBoard?.grossProfitAbility}
+                hasColoredBackground
+                compareValue={{
+                    //comparativeValue: dataDashBoard?.ebitda_margin_compare,
+                    // tooltipText: 'Значение предыдущего периода'
+                }}
+                isLoading={loading}
+                dragHandle={() => <DragHandle context={DragHandleContext} />}
+            />
+        ),
+    },
+    {
+        id: 'sec-profitability-op-bar',
+        title: 'Рентабельность ОП',
+        isVisible: true,
+        dropKey: '1',
+        rowId: 'row-3',
+        render: (bar, dataDashBoard, loading, selectedRange, activeBrand, authToken, filters, updateDataDashBoard, stockAnalysisData) => (
+            <RadarBar
+                title='Рентабельность ОП'
+                tooltipText='Отношение операционной прибыли к суммарной выручке'
+                mainValue={dataDashBoard?.operatingProfitAbility}
+                hasColoredBackground
+                compareValue={{
+                    //comparativeValue: dataDashBoard?.ebitda_margin_compare,
+                    // tooltipText: 'Значение предыдущего периода'
                 }}
                 isLoading={loading}
                 dragHandle={() => <DragHandle context={DragHandleContext} />}
@@ -593,115 +747,136 @@ const barsConfig = [
         ),
     },
     //row-4
-    {
-        id: 'sec-finance',
-        title: 'Финансы',
-        dropKey: '2',
-        isVisible: true,
-        container: styles.group__halfWrapper,
-        rowId: 'row-4',
-        render: (bar, dataDashBoard, loading, selectedRange, activeBrand, authToken, filters, updateDataDashBoard, stockAnalysisData) => (
-            <FinanceBlock
-                dataDashBoard={dataDashBoard}
-                loading={loading}
-                dragHandle={() => <DragHandle context={DragHandleContext} />}
-            />
-        ),
-    },
-    {
-        id: 'sec-profit',
-        title: 'Прибыльность',
-        dropKey: '2',
-        isVisible: true,
-        container: styles.group__halfWrapper,
-        rowId: 'row-4',
-        render: (bar, dataDashBoard, loading, selectedRange, activeBrand, authToken, filters, updateDataDashBoard, stockAnalysisData) => (
-            <ProfitBlock
-                dataDashBoard={dataDashBoard}
-                loading={loading}
-                dragHandle={() => <DragHandle context={DragHandleContext} />}
-            />
-        ),
-    },
+    // {
+    //     id: 'sec-finance',
+    //     title: 'Финансы',
+    //     dropKey: '2',
+    //     isVisible: true,
+    //     rowId: 'row-4',
+    //     render: (bar, dataDashBoard, loading, selectedRange, activeBrand, authToken, filters, updateDataDashBoard, stockAnalysisData) => (
+    //         <FinanceBlock
+    //             dataDashBoard={dataDashBoard}
+    //             loading={loading}
+    //             dragHandle={() => <DragHandle context={DragHandleContext} />}
+    //         />
+    //     ),
+    // },
+    // {
+    //     id: 'sec-profit',
+    //     title: 'Прибыльность',
+    //     dropKey: '2',
+    //     isVisible: true,
+    //     rowId: 'row-4',
+    //     render: (bar, dataDashBoard, loading, selectedRange, activeBrand, authToken, filters, updateDataDashBoard, stockAnalysisData) => (
+    //         <ProfitBlock
+    //             dataDashBoard={dataDashBoard}
+    //             loading={loading}
+    //             dragHandle={() => <DragHandle context={DragHandleContext} />}
+    //         />
+    //     ),
+    // },
     //row-5
-    {
-        id: 'sec-tax-struct',
-        title: 'Налог',
-        isVisible: true,
-        dropKey: '3',
-        container: styles.group__doubleBlockWrapper,
-        rowId: 'row-5',
-        render: (bar, dataDashBoard, loading, selectedRange, activeBrand, authToken, filters, updateDataDashBoard, stockAnalysisData) => (
-            <TaxTableBlock
-                loading={loading}
-                dataDashBoard={dataDashBoard}
-                updateDashboard={updateDataDashBoard}
-                dragHandle={() => <DragHandle context={DragHandleContext} />}
-            />
-        ),
-    },
-    {
-        id: 'sec-revenue-struct',
-        title: 'Структура выручки',
-        isVisible: true,
-        dropKey: '3',
-        container: styles.group__doubleBlockWrapper,
-        rowId: 'row-5',
-        render: (bar, dataDashBoard, loading, selectedRange, activeBrand, authToken, filters, updateDataDashBoard, stockAnalysisData) => (
-            <RevenueStructChartBlock
-                loading={loading}
-                dataDashBoard={dataDashBoard}
-                dragHandle={() => <DragHandle context={DragHandleContext} />}
-            />
-        ),
-    },
-    {
-        id: 'sec-margin-chart',
-        title: 'Рентабельность и маржинальность',
-        isVisible: true,
-        dropKey: '3',
-        container: styles.group__halfToFullWrapper,
-        rowId: 'row-5',
-        render: (bar, dataDashBoard, loading, selectedRange, activeBrand, authToken, filters, updateDataDashBoard, stockAnalysisData) => (
-            <MarginChartBlock
-                loading={loading}
-                dataDashBoard={dataDashBoard}
-                dragHandle={() => <DragHandle context={DragHandleContext} />}
-            />
-        ),
-    },
+    // {
+    //     id: 'sec-tax-struct',
+    //     title: 'Налог',
+    //     isVisible: true,
+    //     dropKey: '3',
+    //     rowId: 'row-5',
+    //     render: (bar, dataDashBoard, loading, selectedRange, activeBrand, authToken, filters, updateDataDashBoard, stockAnalysisData) => (
+    //         <TaxTableBlock
+    //             loading={loading}
+    //             dataDashBoard={dataDashBoard}
+    //             updateDashboard={updateDataDashBoard}
+    //             dragHandle={() => <DragHandle context={DragHandleContext} />}
+    //         />
+    //     ),
+    // },
+    // {
+    //     id: 'sec-revenue-struct',
+    //     title: 'Структура выручки',
+    //     isVisible: true,
+    //     dropKey: '3',
+    //     container: styles.group__doubleBlockWrapper,
+    //     rowId: 'row-5',
+    //     render: (bar, dataDashBoard, loading, selectedRange, activeBrand, authToken, filters, updateDataDashBoard, stockAnalysisData) => (
+    //         <RevenueStructChartBlock
+    //             loading={loading}
+    //             dataDashBoard={dataDashBoard}
+    //             dragHandle={() => <DragHandle context={DragHandleContext} />}
+    //         />
+    //     ),
+    // },
+    // {
+    //     id: 'sec-margin-chart',
+    //     title: 'Рентабельность и маржинальность',
+    //     isVisible: true,
+    //     dropKey: '3',
+    //     container: styles.group__halfToFullWrapper,
+    //     rowId: 'row-5',
+    //     render: (bar, dataDashBoard, loading, selectedRange, activeBrand, authToken, filters, updateDataDashBoard, stockAnalysisData) => (
+    //         <MarginChartBlock
+    //             loading={loading}
+    //             dataDashBoard={dataDashBoard}
+    //             dragHandle={() => <DragHandle context={DragHandleContext} />}
+    //         />
+    //     ),
+    // },
 
     //row-6
     {
-        id: 'sec-storage-revenue-chart',
-        title: 'Выручка по складам',
-        isVisible: true,
-        dropKey: '4',
-        rowId: 'row-6',
-        container: styles.group__halfToFullWrapper,
-        render: (bar, dataDashBoard, loading, selectedRange, activeBrand, authToken, filters, updateDataDashBoard, stockAnalysisData) => (
-            <StorageRevenueChartBlock
-                loading={loading}
-                dataDashBoard={dataDashBoard}
-                dragHandle={() => <DragHandle context={DragHandleContext} />}
-            />
-        ),
-    },
-    {
         id: 'sec-storage',
-        title: 'Склад',
+        title: 'Склады',
         isVisible: true,
         dropKey: '4',
         rowId: 'row-6',
-        container: styles.group__halfToFullWrapper,
+        container: styles.group__fullWrapper,
         render: (bar, dataDashBoard, loading, selectedRange, activeBrand, authToken, filters, updateDataDashBoard, stockAnalysisData) => (
-            <StorageBlock
-                loading={loading}
-                dataDashBoard={dataDashBoard}
-                dragHandle={() => <DragHandle context={DragHandleContext} />}
-            />
+            <div className={styles.group__storageWrapper}>
+                <StorageRevenueChartBlock
+                    loading={loading}
+                    dataDashBoard={dataDashBoard}
+                    dragHandle={() => <DragHandle context={DragHandleContext} />}
+                />
+                <div className={styles.line}></div>
+                <StorageBlock
+                    loading={loading}
+                    dataDashBoard={dataDashBoard}
+                    dragHandle={() => <DragHandle context={DragHandleContext} />}
+                />
+            </div>
+
         ),
     },
+    // {
+    //     id: 'sec-storage-revenue-chart',
+    //     title: 'Выручка по складам',
+    //     isVisible: true,
+    //     dropKey: '4',
+    //     rowId: 'row-6',
+    //     container: styles.group__halfToFullWrapper,
+    //     render: (bar, dataDashBoard, loading, selectedRange, activeBrand, authToken, filters, updateDataDashBoard, stockAnalysisData) => (
+    //         <StorageRevenueChartBlock
+    //             loading={loading}
+    //             dataDashBoard={dataDashBoard}
+    //             dragHandle={() => <DragHandle context={DragHandleContext} />}
+    //         />
+    //     ),
+    // },
+    // {
+    //     id: 'sec-storage',
+    //     title: 'Склад',
+    //     isVisible: true,
+    //     dropKey: '4',
+    //     rowId: 'row-6',
+    //     container: styles.group__halfToFullWrapper,
+    //     render: (bar, dataDashBoard, loading, selectedRange, activeBrand, authToken, filters, updateDataDashBoard, stockAnalysisData) => (
+    //         <StorageBlock
+    //             loading={loading}
+    //             dataDashBoard={dataDashBoard}
+    //             dragHandle={() => <DragHandle context={DragHandleContext} />}
+    //         />
+    //     ),
+    // },
     //row-7
     {
         id: 'sec-stock-analysis',
@@ -738,7 +913,7 @@ const barsConfig = [
 ]
 
 const saveBarsConfig = (items, BARS_STORAGE_KEY, DASHBOARD_CONFIG_VER) => {
-    const serializableConfig = items.map(item => ({id: item.id, isVisible: item.isVisible, rowId: item.rowId}));
+    const serializableConfig = items.map(item => ({ id: item.id, isVisible: item.isVisible, rowId: item.rowId }));
     localStorage.setItem(BARS_STORAGE_KEY, JSON.stringify({ version: DASHBOARD_CONFIG_VER, items: serializableConfig }));
 }
 const inferBarsConfig = (barsConfig, savedConfig, DASHBOARD_CONFIG_VER) => {
@@ -774,361 +949,56 @@ const MainContent = React.memo(({
     visibilityMap,
     onSaveSettings,
     stockAnalysisData,
-    rows,
     items,
     setItems,
-    setRows
 }) => {
     const isLoading = loading || !isFiltersLoading; // Флаг загрузки данных
-    // const [rows, setRows] = useState(rowsConfig);
-    // const [items, setItems] = useState(barsConfig);
-    const [overId, setOverId] = useState(null); // ID целевого элемента
-    const [overRowId, setOverRowId] = useState(null); // ID целевой строки
-    const [activeId, setActiveId] = useState(null); // ID активного элемента
-    const [activeRowId, setActiveRowId] = useState(null); // ID активной строки
-    const tempItemsRef = useRef(null);
-    const tempOverRowIdRef = useRef(null);
 
-    useEffect(() => {
-        // Восстанавливаем исходное состояние, если пользователь убрал мышь с целевой строки
-        if (tempOverRowIdRef?.current &&
-            tempItemsRef?.current &&
-            tempOverRowIdRef.current !== overRowId &&
-            activeId) { // Перетаскивание активно
-            setItems([...tempItemsRef.current]); // Восстанавливаем исходное состояние
-            tempItemsRef.current = null;
-            tempOverRowIdRef.current = null;
-        }
-    }, [overRowId, activeId]); // Добавляем activeId в зависимости
-
-
-    // ------------------------------------------------------------------------------------------------
-    // Собственно логика днд
-    useDndMonitor({
-        onDragStart: ({ active }) => {
-            tempItemsRef.current = [...items]
-            const activeItem = items.find(item => item.id === active.id);
-            const currentRow = rows.find(r => r === activeItem?.rowId);
-            if (!activeItem || !currentRow) return;
-            setActiveId(activeItem?.id);
-            setActiveRowId(currentRow ?? null);
-
-            if (activeItem.dropKey !== 'full') {
-                const newRows = [...rows];
-                const hasAddRow = newRows.some(row => row === 'addRow');
-                const currRowItems = items.filter(item => item.rowId === currentRow);
-
-                if (!hasAddRow && currRowItems.length > 1) {
-                    const activeRowIndex = newRows.findIndex(r => r === currentRow);
-                    if (activeRowIndex === -1) {
-                        newRows.splice(0, 0, 'addRow');
-                    } else {
-                        newRows.splice(activeRowIndex + 1, 0, 'addRow');
-                    }
-                    setRows(newRows);
-                }
-            }
-        },
-        onDragOver: ({ active, over }) => {
-            if (!over) return;
-            const activeItem = items?.find(item => item.id === activeId);
-            const isTargetIsRow = rows.some(r => r === over.id);
-            let targetElem;
-            let targetRow;
-            if (isTargetIsRow) {
-                targetRow = rows.find(r => r === over.id);
-                setOverRowId(targetRow ?? null);
-            } else {
-                targetElem = items.find(item => item.id === over.id);
-                setOverId(targetElem?.id ?? null);
-                targetRow = targetElem?.rowId ?? null;
-                setOverRowId(targetRow ?? null);
-            }
-
-            if (!targetRow && !targetElem) return;
-
-            // 0 ------------------------------ Сортировка внутри строки на лету -----------------------------------------------------------
-            if (targetRow !== activeRowId && targetElem && activeItem?.dropKey === targetElem?.dropKey && activeItem.dropKey !== 'full' && targetElem.dropKey !== 'full') {
-                // Сохраняем исходное состояние ПЕРЕД первым изменением
-                if (tempOverRowIdRef.current !== targetRow) {
-                    // Это первое наведение на эту строку - сохраняем исходное состояние
-                    if (!tempItemsRef.current) {
-                        tempItemsRef.current = [...items];
-                    }
-                    tempOverRowIdRef.current = targetRow;
-                }
-
-                // Временно меняем rowId для визуальной сортировки
-                const targetElemIndex = items.findIndex(item => item.id === targetElem?.id);
-                const currElemIndex = items.findIndex(item => item.id === activeId);
-                const arr = arrayMove(items, currElemIndex, targetElemIndex);
-                const newItems = arr.map(item => {
-                    if (item.id === activeId) {
-                        return { ...item, rowId: targetRow }; // Временно меняем rowId
-                    }
-                    return item;
-                })
-                setItems(newItems);
-            } else {
-                // Если условия не выполняются, но мы были на целевой строке - восстанавливаем
-                if (tempOverRowIdRef.current && tempOverRowIdRef.current !== targetRow) {
-                    if (tempItemsRef.current) {
-                        setItems([...tempItemsRef.current]);
-                        tempItemsRef.current = null;
-                        tempOverRowIdRef.current = null;
-                    }
-                }
-            }
-            // ----------------------------------------------------------------------------------------------------------------
-        },
-        onDragCancel: () => {
-            // Восстанавливаем исходное состояние
-            if (tempItemsRef?.current) {
-                setItems([...tempItemsRef.current]);
-                tempItemsRef.current = null;
-                tempOverRowIdRef.current = null;
-            }
-
-            setActiveId(null);
-            setActiveRowId(null);
-            setOverId(null);
-            setOverRowId(null);
-            setRows(rows.filter(r => r !== 'addRow'));
-        },
-        onDragEnd: ({ active, over }) => {
-            const activeItem = items?.find(item => item.id === activeId);
-            const isTargetIsRow = rows?.some(r => r === over?.id);
-            let targetElem;
-            let targetRow;
-            if (isTargetIsRow) {
-                targetRow = rows?.find(r => r === over?.id);
-                setOverRowId(targetRow ?? null);
-            } else {
-                targetElem = items?.find(item => item.id === over?.id);
-                setOverId(targetElem?.id ?? null);
-                targetRow = targetElem?.rowId ?? null;
-                setOverRowId(targetRow ?? null);
-            }
-            // 0 ------------------------------ Сортировка внутри строки -----------------------------------------------------------
-            if (targetRow === activeRowId && targetElem?.id !== activeId) {
-                const newItems = [...items];
-                const activeItemIndex = newItems.findIndex(item => item.id === activeId);
-                const targetItemIndex = newItems.findIndex(item => item.id === targetElem?.id);
-                if (activeItemIndex !== -1 && targetItemIndex !== -1) {
-                    const arr = arrayMove(newItems, activeItemIndex, targetItemIndex);
-                    setItems(arr);
-                    saveBarsConfig(arr, BARS_STORAGE_KEY, DASHBOARD_CONFIG_VER);
-                    tempItemsRef.current = null;
-                    tempOverRowIdRef.current = null;
-
-                    setActiveId(null);
-                    setActiveRowId(null);
-                    setOverId(null);
-                    setOverRowId(null);
-                    setRows(rows.filter(r => r !== 'addRow'));
-                    return;
-                }
-            }
-            // 1 ------------------------------ Cоздание новой строки --------------------------------------------------------------
-            if (targetRow === 'addRow') {
-                const newAddRowId = 'row-' + Date.now();
-                const newRows = rows.map(row => {
-                    if (row === 'addRow') {
-                        return newAddRowId;
-                    }
-                    return row;
-                })
-                const newItems = items.map(item => {
-                    if (item.id === activeId) {
-                        return { ...item, rowId: newAddRowId };
-                    }
-                    return item;
-                })
-
-
-                setRows(newRows);
-                localStorage.setItem(ROWS_STORAGE_KEY, JSON.stringify({ version: DASHBOARD_CONFIG_VER, rows: newRows }));
-                setItems(newItems);
-                saveBarsConfig(newItems, BARS_STORAGE_KEY, DASHBOARD_CONFIG_VER);
-                setActiveId(null);
-                setActiveRowId(null);
-                setOverId(null);
-                setOverRowId(null);
-                return;
-            }
-            // 2 ------------------------------ Перемещение элемента в другую строку (при дропе на элемент) ------------------------
-            // TODO: Написать эту логику если можно будет когда-то перетаскивать разные элементы на строку (Сейчас по сути элемент встраивается в строку и отрабатывает вариант №0)
-
-            // 3 ------------------------------ Перемещение большого элемента ------------------------------------------------------
-            if (targetRow && targetRow !== activeRowId && activeItem.dropKey === 'full') {
-                setRows(prevRows => {
-                    const targetRowIndex = prevRows.findIndex(r => r === targetRow);
-                    const activeRowIndex = prevRows.findIndex(r => r === activeRowId);
-
-                    if (targetRowIndex !== -1 && activeRowIndex !== -1) {
-                        const arr = arrayMove(prevRows, activeRowIndex, targetRowIndex);
-                        localStorage.setItem(ROWS_STORAGE_KEY, JSON.stringify({ version: DASHBOARD_CONFIG_VER, rows: arr.filter(r => r !== 'addRow') }));
-                        return arr.filter(r => r !== 'addRow');
-                    }
-                    return prevRows.filter(r => r !== 'addRow');
-                });
-
-                tempItemsRef.current = null;
-                tempOverRowIdRef.current = null;
-
-                setActiveId(null);
-                setActiveRowId(null);
-                setOverId(null);
-                setOverRowId(null);
-                return;
-            }
-            // 4 ------------------------------ Перемещение на большой элемент ------------------------------------------------------
-            if (targetElem && targetRow !== activeRowId && targetElem.dropKey === 'full') {
-
-                setRows(prevRows => {
-                    const targetRowIndex = prevRows.findIndex(r => r === targetRow);
-                    const activeRowIndex = prevRows.findIndex(r => r === activeRowId);
-
-                    if (targetRowIndex !== -1 && activeRowIndex !== -1) {
-                        const arr = arrayMove(prevRows, activeRowIndex, targetRowIndex);
-                        localStorage.setItem(ROWS_STORAGE_KEY, JSON.stringify({ version: DASHBOARD_CONFIG_VER, rows: arr.filter(r => r !== 'addRow') }));
-                        return arr.filter(r => r !== 'addRow');
-                    }
-                    return prevRows.filter(r => r !== 'addRow');
-                });
-
-                tempItemsRef.current = null;
-                tempOverRowIdRef.current = null;
-
-                setActiveId(null);
-                setActiveRowId(null);
-                setOverId(null);
-                setOverRowId(null);
-                return;
-            }
-            // 5 ------------------------------ Перемещение элементов с разными dropKey ---------------------------------------------
-            if (targetElem && activeItem && targetRow !== activeRowId && activeItem.dropKey !== targetElem.dropKey && targetElem.dropKey !== 'full' && activeItem.dropKey !== 'full') {
-                setRows(prevRows => {
-                    const targetRowIndex = prevRows.findIndex(r => r === targetRow);
-                    const activeRowIndex = prevRows.findIndex(r => r === activeRowId);
-
-                    if (targetRowIndex !== -1 && activeRowIndex !== -1) {
-                        const arr = arrayMove(prevRows, activeRowIndex, targetRowIndex);
-                        localStorage.setItem(ROWS_STORAGE_KEY, JSON.stringify({ version: DASHBOARD_CONFIG_VER, rows: arr.filter(r => r !== 'addRow') }));
-                        return arr.filter(r => r !== 'addRow');
-                    }
-                    return prevRows.filter(r => r !== 'addRow');
-                });
-
-                tempItemsRef.current = null;
-                tempOverRowIdRef.current = null;
-
-                setActiveId(null);
-                setActiveRowId(null);
-                setOverId(null);
-                setOverRowId(null);
-                return;
-            }
-            // 6 ------------------------------ Перемещение элемента на строку ------------------------------------------------
-            if (!targetElem && targetRow && targetRow !== activeRowId && activeItem.dropKey !== 'full') {
-                const rowItems = items.filter(item => item.rowId === targetRow);
-                const isSameDropKey = rowItems.length === 0 || rowItems.every(item => item.dropKey === activeItem.dropKey);
-                if (isSameDropKey) {
-                    // Находим индекс последнего элемента в целевой строке
-                    let lastElemIndex = -1;
-                    for (let i = items.length - 1; i >= 0; i--) {
-                        if (items[i].rowId === targetRow) {
-                            lastElemIndex = i;
-                            break;
-                        }
-                    }
-
-                    // Если строка пустая, добавляем в конец
-                    const insertIndex = lastElemIndex !== -1 ? lastElemIndex + 1 : items.length;
-                    const activeElemIndex = items.findIndex(item => item.id === activeId);
-
-                    if (activeElemIndex !== -1) {
-                        const arr = arrayMove(items, activeElemIndex, insertIndex);
-                        const newItems = arr.map(item => {
-                            if (item.id === activeId) {
-                                return { ...item, rowId: targetRow };
-                            }
-                            return item;
-                        })
-                        setItems(newItems); // ИСПРАВЛЕНИЕ: используем newItems
-                        saveBarsConfig(newItems, BARS_STORAGE_KEY, DASHBOARD_CONFIG_VER);
-                        tempItemsRef.current = null;
-                        tempOverRowIdRef.current = null;
-
-                        setActiveId(null);
-                        setActiveRowId(null);
-                        setOverId(null);
-                        setOverRowId(null);
-                        setRows(rows.filter(r => r !== 'addRow'));
-                        return;
-                    }
-                }
-            }
-            // ----------------------------------------------------------------------------------------------------------------
-
-            tempItemsRef.current = null;
-            tempOverRowIdRef.current = null;
-
-            setActiveId(null);
-            setActiveRowId(null);
-            setOverId(null);
-            setOverRowId(null);
-            setRows(rows.filter(r => r !== 'addRow'));
-        },
-    });
-    // ------------------------------------------------------------------------------------------------
     // Если фильтры загружены и shopStatus не подходит, не рендерим
     if (!isFiltersLoading && !shopStatus?.is_primary_collect) return null;
+    
+    // Сортируем элементы: первые 4 включенных блока с dropKey === '1' должны быть первыми
+    const sortedItems = React.useMemo(() => {
+        // Находим первые 4 включенных блока с dropKey === '1' в исходном порядке
+        const firstFourDropKey1 = [];
+        const firstFourIds = new Set();
+        
+        for (const item of items) {
+            if (item.dropKey === '1' && item.isVisible && firstFourDropKey1.length < 4) {
+                firstFourDropKey1.push(item);
+                firstFourIds.add(item.id);
+            }
+        }
+        
+        // Разделяем остальные элементы, сохраняя исходный порядок
+        const restItems = items.filter(item => !firstFourIds.has(item.id));
+        
+        // Объединяем: первые 4 + остальные элементы в исходном порядке
+        return [...firstFourDropKey1, ...restItems];
+    }, [items]);
+    
     // ------------------------------------------------------------------------------------------------
     // Рендер
     return (
         <>
-            <SortableContext items={rows.map((i) => i)} strategy={rectSortingStrategy}>
-                <div className={styles.page__mainContentWrapper} >
-                    {rows.map((row) => {
-                        const children = items?.filter(child => child.rowId === row);
-                        // Фильтруем children по isVisible
-                        const visibleChildren = children?.filter(child => child.isVisible);
-                        // Если в строке не осталось видимых элементов, не рендерим строку
-                        if (visibleChildren?.length === 0 && row !== 'addRow') return null;
+            <div className={styles.page__mainContentWrapper} >
+                {sortedItems.map((row) => {
 
+                    if (row.container && row.isVisible) {
                         return (
-                            <SortableRow
-                                key={row}
-                                row={{ rowId: row, children: visibleChildren }}
-                                items={items}
-                                dataDashBoard={dataDashBoard}
-                                loading={loading}
-                                children={visibleChildren}
-                                isDraggingActive={!!activeId}
-                                overId={overId}
-                                activeId={activeId}
-                                selectedRange={selectedRange}
-                                activeBrand={activeBrand}
-                                authToken={authToken}
-                                filters={filters}
-                                activeRowId={activeRowId}
-                                overRowId={overRowId}
-                                updateDataDashBoard={updateDataDashBoard}
-                                stockAnalysisData={stockAnalysisData}
-                            />
-                        );
-                    })}
-                </div >
-            </SortableContext>
-            {/* TODO: Добавить снэпшоты как dragImage чтобы не рендерить компоненты */}
-            <DragOverlay
-                style={{ cursor: (overId || overRowId) ? 'copy' : 'not-allowed' }}
-            >
-                <div className={items?.find(item => item.id === activeId)?.container} style={{ opacity: 0.25, boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)', borderRadius: '16px', overflow: 'hidden' }}>
-                    {items?.find(item => item.id === activeId)?.render(items?.find(item => item.id === activeId), dataDashBoard, loading, selectedRange, activeBrand, authToken, filters, updateDataDashBoard, stockAnalysisData)}
-                </div>
-            </DragOverlay>
+                            <div className={row.container} key={row.id}>
+                                {row.render(row, dataDashBoard, loading, selectedRange, activeBrand, authToken, filters, updateDataDashBoard, stockAnalysisData)}
+                            </div>)
+                    }
+
+                    if (!row.container && row.isVisible) {
+                        return (
+                            <React.Fragment key={row.id}>
+                                {row.render(row, dataDashBoard, loading, selectedRange, activeBrand, authToken, filters, updateDataDashBoard, stockAnalysisData)}
+                            </React.Fragment>)
+                    }
+                })}
+            </div >
         </>
     );
 });
@@ -1142,8 +1012,8 @@ const _DashboardPage = () => {
     const { isSidebarHidden } = useAppSelector((state) => state.utils);
     const [isSettingsOpen, setIsSettingsOpen] = useState(false);
     const [stockAnalysisData, setStockAnalysisData] = useState([]);
-    const [rows, setRows] = useState(rowsConfig);
     const [items, setItems] = useState(barsConfig);
+    const [downloadLoading, setDownloadLoading] = useState(false);
     const [pageState, setPageState] = useState({
         dataDashBoard: null,
         loading: true,
@@ -1185,6 +1055,23 @@ const _DashboardPage = () => {
         }
     };
 
+    const handleDownload = async () => {
+        setDownloadLoading(true);
+        try {
+            const fileBlob = await ServiceFunctions.getDownloadDashboard(
+                authToken,
+                selectedRange,
+                activeBrand.id,
+                filters,
+            );
+            fileDownload(fileBlob, 'Сводка_продаж.xlsx');
+        } catch (e) {
+            console.error('Ошибка скачивания: ', e);
+        } finally {
+            setDownloadLoading(false);
+        }
+    };
+
     const shopStatus = useMemo(() => {
         if (!activeBrand || !shops) return null;
 
@@ -1216,14 +1103,7 @@ const _DashboardPage = () => {
     }, [activeBrand, selectedRange, isFiltersLoaded, activeBrandName, activeArticle, activeGroup]);
 
     useEffect(() => {
-        const savedRows = localStorage.getItem(ROWS_STORAGE_KEY);
         const savedBars = localStorage.getItem(BARS_STORAGE_KEY);
-        if (savedRows) {
-            const { version, rows } = JSON.parse(savedRows);
-            if (!version || !rows) return;
-            if (version !== DASHBOARD_CONFIG_VER) return;
-            setRows(rows);
-        }
         if (savedBars) {
             try {
                 const parsed = JSON.parse(savedBars);
@@ -1232,27 +1112,19 @@ const _DashboardPage = () => {
             } catch (error) {
                 console.error('Error parsing saved bars config:', error);
             }
-        }   
+        }
     }, []);
 
     return (
-        <main className={styles.page}>
-            <MobilePlug />
-
-            <section className={styles.page__sideNavWrapper}>
-                <Sidebar />
-            </section>
-
+        <GeneralLayout
+            headerProps={{
+                title: 'Сводка продаж',
+                howToLink: "https://radar.usedocs.com/article/75916",
+                howToLinkText: "Как проверить данные?",
+                hasShadow: false
+            }}
+        >
             <section className={styles.page__content}>
-                <div className={styles.page__headerWrapper}>
-                    <Header
-                        title='Сводка продаж'
-                        howToLink="https://radar.usedocs.com/article/75916"
-                        howToLinkText="Как проверить данные?"
-                        hasShadow={false}
-                    />
-                </div>
-
                 {activeBrand && activeBrand.is_primary_collect && !activeBrand.is_self_cost_set && (
                     <SelfCostWarningBlock
                         shopId={activeBrand?.id}
@@ -1265,6 +1137,10 @@ const _DashboardPage = () => {
                 <div className={styles.page__controlsWrapper}>
                     <Filters
                         isDataLoading={pageState.loading}
+                    />
+                    <DownloadButton
+                        handleDownload={handleDownload}
+                        loading={pageState?.loading || downloadLoading}
                     />
                     {!pageState.loading &&
                         <button
@@ -1283,27 +1159,21 @@ const _DashboardPage = () => {
                 {activeBrand && !activeBrand.is_primary_collect && (
                     <DataCollectWarningBlock />
                 )}
-                
-                <DndContext
-                >
-                    <MainContent
-                        shopStatus={shopStatus}
-                        loading={pageState?.loading}
-                        isFiltersLoading={!isFiltersLoaded}
-                        dataDashBoard={pageState?.dataDashBoard}
-                        selectedRange={selectedRange}
-                        activeBrand={activeBrand}
-                        authToken={authToken}
-                        filters={filters}
-                        updateDataDashBoard={updateDataDashBoard}
-                        isSidebarHidden={isSidebarHidden}
-                        stockAnalysisData={stockAnalysisData}
-                        rows={rows}
-                        items={items}
-                        setItems={setItems}
-                        setRows={setRows}
-                    />
-                </DndContext>
+                <MainContent
+                    shopStatus={shopStatus}
+                    loading={pageState?.loading}
+                    isFiltersLoading={!isFiltersLoaded}
+                    dataDashBoard={pageState?.dataDashBoard}
+                    selectedRange={selectedRange}
+                    activeBrand={activeBrand}
+                    authToken={authToken}
+                    filters={filters}
+                    updateDataDashBoard={updateDataDashBoard}
+                    isSidebarHidden={isSidebarHidden}
+                    stockAnalysisData={stockAnalysisData}
+                    items={items}
+                    setItems={setItems}
+                />
 
                 <SettingsModal
                     isOpen={isSettingsOpen}
@@ -1315,7 +1185,7 @@ const _DashboardPage = () => {
                     onSave={saveBarsConfig}
                 />
             </section>
-        </main>
+        </GeneralLayout>
     );
 };
 

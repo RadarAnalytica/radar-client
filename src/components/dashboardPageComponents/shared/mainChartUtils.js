@@ -28,8 +28,8 @@ export const getMaxValue = (chartData) => {
 };
 
 export const getMaxAmount = (chartData) => {
-    const bar = chartData?.datasets?.filter((item) => item?.type === 'bar');
-    const maxAmount = bar
+    const bAxisDatasets = chartData?.datasets?.filter((item) => item?.yAxisID === 'B');
+    const maxAmount = bAxisDatasets
         ?.map((arr) => arr?.data)
         ?.flat(1)
         ?.sort((a, b) => b - a)[0];
@@ -74,138 +74,111 @@ export const getChartData = (dataDashBoard, selectedRange, controlsState) => {
             controlsState.isOrderAmountActive
                 ? {
                     label: 'Заказы',
-                    borderRadius: 8,
                     type: 'line',
-                    backgroundColor: 'rgba(255, 219, 126, 1)',
+                    backgroundColor: '#5329FF',
                     borderWidth: 2,
-                    pointRadius: 5,
+                    pointRadius: 6,
+                    hoverRadius: 8,
                     pointBorderColor: 'white',
-                    borderColor: 'rgba(255, 219, 126, 1)',
-                    hoverBackgroundColor: 'rgba(240, 173, 0, 7)',
+                    borderColor: '#5329FF',
+                    tension: 0.4,
                     yAxisID: 'A',
                     data: dataDashBoard?.orderAmountList || [],
                     xAxisID: 'x',
                 }
                 : {
                     label: 'Заказы',
-                    borderRadius: 8,
                     type: 'line',
-                    backgroundColor: 'rgba(255, 219, 126, 1)',
+                    backgroundColor: '#5329FF',
                     borderWidth: 2,
-                    pointRadius: 5,
+                    pointRadius: 6,
+                    hoverRadius: 8,
                     pointBorderColor: 'white',
-                    borderColor: 'rgba(255, 219, 126, 1)',
-                    hoverBackgroundColor: 'rgba(240, 173, 0, 7)',
+                    borderColor: '#5329FF',
+                    tension: 0.4,
                     yAxisID: 'A',
                     data: [],
                 },
             controlsState.isSalesAmountActive
                 ? {
                     label: 'Продажи',
-                    borderRadius: 8,
                     type: 'line',
-                    backgroundColor: 'rgba(154, 129, 255, 1)',
+                    backgroundColor: '#AA5BFF',
                     borderWidth: 2,
-                    pointRadius: 5,
+                    pointRadius: 6,
+                    hoverRadius: 8,
                     pointBorderColor: 'white',
-                    borderColor: 'rgba(154, 129, 255, 1)',
-                    hoverBackgroundColor: 'rgba(83, 41, 255, 0.7)',
+                    borderColor: '#AA5BFF',
+                    tension: 0.4,
                     yAxisID: 'A',
                     data: dataDashBoard?.saleAmountList || [],
                 }
                 : {
                     label: 'Продажи',
-                    borderRadius: 8,
                     type: 'line',
-                    backgroundColor: 'rgba(154, 129, 255, 1)',
+                    backgroundColor: '#AA5BFF',
                     borderWidth: 2,
-                    pointRadius: 5,
+                    pointRadius: 6,
+                    hoverRadius: 8,
                     pointBorderColor: 'white',
-                    borderColor: 'rgba(154, 129, 255, 1)',
-                    hoverBackgroundColor: 'rgba(83, 41, 255, 0.7)',
+                    borderColor: '#88E473',
+                    tension: 0.4,
                     yAxisID: 'A',
                     data: [],
                 },
             controlsState.isOrderQuantityActive
                 ? {
                     label: 'Заказы',
-                    borderRadius: 3,
-                    type: 'bar',
-                    backgroundColor: (context) => {
-                        const ctx = context.chart.ctx;
-                        const gradient = ctx.createLinearGradient(0, 0, 0, 400);
-                        // gradient.addColorStop(0, 'rgba(240, 173, 0, 1)');
-                        // gradient.addColorStop(0.5, 'rgba(240, 173, 0, 0.9)');
-                        // gradient.addColorStop(1, 'rgba(240, 173, 0, 0.5)');
-                        gradient.addColorStop(0, '#F0AD00');
-                        gradient.addColorStop(1, '#F0AD0080');
-                        return gradient;
-                    },
-                    borderColor: 'transparent',
-                    borderWidth: 1,
-                    hoverBackgroundColor: 'rgba(240, 173, 0, 7)',
+                    type: 'line',
+                    borderColor: '#F0AD00',
+                    // borderColor: 'red',
                     yAxisID: 'B',
+                    tension: 0.4,
+                    pointBorderColor: 'white',
+                    backgroundColor: '#F0AD00',
+                    pointRadius: 6,
+                    hoverRadius: 8,
+                    borderWidth: 2,
                     data: dataDashBoard?.orderCountList || [],
                 }
                 : {
                     label: 'Заказы',
-                    borderRadius: 3,
-                    type: 'bar',
-                    backgroundColor: (context) => {
-                        const ctx = context.chart.ctx;
-                        const gradient = ctx.createLinearGradient(0, 0, 0, 400);
-                        // gradient.addColorStop(0, 'rgba(240, 173, 0, 1)');
-                        // gradient.addColorStop(0.5, 'rgba(240, 173, 0, 0.9)');
-                        // gradient.addColorStop(1, 'rgba(240, 173, 0, 0.5)');
-                        gradient.addColorStop(0, '#F0AD00');
-                        gradient.addColorStop(1, '#F0AD0080');
-                        return gradient;
-                    },
-                    borderColor: 'transparent',
-                    borderWidth: 1,
-                    hoverBackgroundColor: 'rgba(240, 173, 0, 7)',
+                    type: 'line',
+                    borderColor: '#F0AD00',
                     yAxisID: 'B',
+                    tension: 0.4,
+                    pointBorderColor: 'white',
+                    backgroundColor: '#F0AD00',
+                    pointRadius: 6,
+                    hoverRadius: 8,
+                    borderWidth: 2,
                     data: [],
                 },
             controlsState.isSalesQuantityActive
                 ? {
                     label: 'Продажи',
-                    borderRadius: 3,
-                    type: 'bar',
-                    backgroundColor: (context) => {
-                        const ctx = context.chart.ctx;
-                        const gradient = ctx.createLinearGradient(0, 0, 0, 500);
-                        // gradient.addColorStop(0, 'rgba(83, 41, 255, 1)');
-                        // gradient.addColorStop(0.5, 'rgba(83, 41, 255, 0.9)');
-                        // gradient.addColorStop(1, 'rgba(83, 41, 255, 0.5)');
-                        gradient.addColorStop(0, '#5329FF');
-                        gradient.addColorStop(1, '#5329FF80');
-                        return gradient;
-                    },
-                    borderColor: 'transparent',
-                    borderWidth: 1,
-                    hoverBackgroundColor: 'rgba(83, 41, 255, 0.7)',
+                    type: 'line',
+                    borderColor: '#88E473',
                     yAxisID: 'B',
+                    tension: 0.4,
+                    pointBorderColor: 'white',
+                    backgroundColor: '#88E473',
+                    pointRadius: 6,
+                    hoverRadius: 8,
+                    borderWidth: 2,
                     data: dataDashBoard?.saleCountList || [],
                 }
                 : {
                     label: 'Продажи',
-                    borderRadius: 3,
-                    type: 'bar',
-                    backgroundColor: (context) => {
-                        const ctx = context.chart.ctx;
-                        const gradient = ctx.createLinearGradient(0, 0, 0, 500);
-                        // gradient.addColorStop(0, 'rgba(83, 41, 255, 1)');
-                        // gradient.addColorStop(0.5, 'rgba(83, 41, 255, 0.9)');
-                        // gradient.addColorStop(1, 'rgba(83, 41, 255, 0.5)');
-                        gradient.addColorStop(0, '#5329FF');
-                        gradient.addColorStop(1, '#5329FF80');
-                        return gradient;
-                    },
-                    borderColor: 'transparent',
-                    borderWidth: 1,
-                    hoverBackgroundColor: 'rgba(83, 41, 255, 0.7)',
+                    type: 'line',
+                    borderColor: '#88E473',
                     yAxisID: 'B',
+                    tension: 0.4,
+                    pointBorderColor: 'white',
+                    backgroundColor: '#88E473',
+                    pointRadius: 6,
+                    hoverRadius: 8,
+                    borderWidth: 2,
                     data: [],
                 },
         ],
@@ -269,13 +242,8 @@ export const getChartTooltip = (context, chartData) => {
         });
         innerHtml += '</thead><tbody>';
         datasets?.forEach(function (set, i) {
-            const colors = [
-                'rgba(240, 173, 0, 1)',
-                'rgba(83, 41, 255, 1)',
-            ];
-            const targetColor =
-                set.label === 'Заказы' ? colors[0] : colors[1];
-            const targetDescr = set.type === 'bar' ? ' шт' : ' руб';
+            const targetColor = set.borderColor || set.backgroundColor || 'rgba(240, 173, 0, 1)';
+            const targetDescr = set.yAxisID === 'B' ? ' шт' : ' руб';
             let value = set?.data[targetInex] || '0';
             let style = '';
             style += '; border-width: 2px';
@@ -389,11 +357,11 @@ export const getChartOptions = (chartData, days) => {
                 suggestedMax: getMaxValue(chartData),
                 min: 0,
                 grid: {
-                    drawOnChartArea: false,
+                    drawOnChartArea: true,
                     tickLength: 0,
                 },
                 border: {
-                    color: 'white',
+                    // color: 'white',
                 },
                 ticks: {
                     stepSize: getArrayStep(getMaxValue(chartData)),
@@ -403,7 +371,7 @@ export const getChartOptions = (chartData, days) => {
                         weight: 500,
                     },
                     tickMarkLength: 0,
-                    tickColor: 'transparent',
+                    // tickColor: 'transparent',
                 },
                 major: {
                     enabled: false,
@@ -423,7 +391,7 @@ export const getChartOptions = (chartData, days) => {
                     tickLength: 0,
                 },
                 border: {
-                    color: 'white',
+                    // color: 'white',
                 },
                 ticks: {
                     stepSize: getArrayStep(getMaxAmount(chartData)),
@@ -444,7 +412,7 @@ export const getChartOptions = (chartData, days) => {
             },
             x: {
                 grid: {
-                    drawOnChartArea: false,
+                    drawOnChartArea: true,
                     // display: false,
                 },
                 ticks: {
