@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { ConfigProvider, Form, Select, FormInstance } from 'antd';
 import { format, Month } from 'date-fns';
-import { DayPicker } from 'react-day-picker';
+import { DayPicker, Matcher } from 'react-day-picker';
 import { NamePath } from 'antd/es/form/interface';
 import 'react-day-picker/dist/style.css';
 import { ru } from 'date-fns/locale';
@@ -26,6 +26,7 @@ interface DateSelectProps {
     formId: NamePath;
     minDate?: Date;
     maxDate?: Date;
+    disabled?: Matcher;
     required?: boolean;
     allowClear?: boolean;
     onSelect?: (day: Date) => void;
@@ -37,6 +38,7 @@ export const DateSelect = ({
     formId,
     minDate,
     maxDate,
+    disabled,
     required = true,
     allowClear = false,
     onSelect = () => {},
@@ -104,10 +106,7 @@ export const DateSelect = ({
                             <DayPicker
                                 startMonth={minDate}
                                 endMonth={maxDate}
-                                disabled={{ 
-                                    before: minDate,
-                                    after: maxDate
-                                }}
+                                disabled={disabled}
                                 selected={date ? new Date(date) : undefined}
                                 mode="single"
                                 captionLayout="dropdown"

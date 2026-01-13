@@ -675,8 +675,9 @@ export default function ExpenseFormModal({
 											form={form}
 											label="Дата окончания"
 											formId='end_date'
-											minDate={minDateTo}
+											minDate={minDate}
 											maxDate={maxDate}
+											disabled={{ before: minDateTo, after: maxDate }}
 											required={false}
 											allowClear
 										/>
