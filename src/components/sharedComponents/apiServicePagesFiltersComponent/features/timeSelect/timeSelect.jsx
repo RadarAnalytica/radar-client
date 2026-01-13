@@ -89,7 +89,7 @@ export const TimeSelect = ({
             minDateValue.setDate(today.getDate() - 90);
         }
         return minDateValue;
-    }, [activeBrand, minCustomDate]);
+    }, [activeBrand, minCustomDate, hasShopCreationLimit]);
 
     const startMonth = useMemo(() => {
         return new Date(minDate);

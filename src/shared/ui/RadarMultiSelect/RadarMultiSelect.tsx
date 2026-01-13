@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useMemo } from 'react';
 import styles from './RadarMultiSelect.module.css';
 import { SelectIcon } from '../icons/selectIcon';
 import { ConfigProvider, Input, Button, Tag, Select, SelectProps, Checkbox } from 'antd';
@@ -45,6 +45,11 @@ const getOnlyUniqueOptions = (options: Array<{ value: string | number; label: st
         index === self.findIndex((t) => t.value === option.value)
     );
 };
+const getOnlyUniqueValues = (options: Array<string>) => {
+    return options.filter((option, index, self) =>
+        index === self.findIndex((t) => t === option)
+    );
+};
 
 interface IRadarMultiSelectProps extends Omit<SelectProps, 'options'> {
     selectId?: string;
@@ -72,6 +77,11 @@ export const RadarMultiSelect: React.FC<IRadarMultiSelectProps> = ({
     const [selectState, setSelectState] = useState<Array<string | number> | null>(null);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const prevSelectState = useRef(null);
+
+    const filteredOptionsData = useMemo(() => {
+        if (!optionsData) return []
+        return getOnlyUniqueOptions(optionsData)
+    }, [optionsData])
 
 
 
@@ -101,7 +111,7 @@ export const RadarMultiSelect: React.FC<IRadarMultiSelectProps> = ({
             return
         }
         //@ts-ignore
-        setSelectState(value);
+        setSelectState(getOnlyUniqueValues(value));
 
     }, [value]);
 
@@ -127,7 +137,7 @@ export const RadarMultiSelect: React.FC<IRadarMultiSelectProps> = ({
                         tagRender={TagRender}
                         suffixIcon={<SelectIcon />}
                         className={styles.plainSelect__select}
-                        options={getOnlyUniqueOptions(optionsData)
+                        options={filteredOptionsData
                             .filter((_) => {
                                 if (selectId === 'weeks') {
                                     return typeof _.label === 'string' ? _.label.toLowerCase().includes(searchState.toLowerCase()) : true;
@@ -142,7 +152,7 @@ export const RadarMultiSelect: React.FC<IRadarMultiSelectProps> = ({
                         //onChange={handler}
                         onChange={selectHandler}
                         getPopupContainer={(triggerNode) => triggerNode.parentNode}
-                        dropdownRender={(menu) => RenderPopup({ menu, selectState, optionsData, selectId, searchState, setSelectState, hasDropdownSearch, setSearchState, actionHandler, setIsDropdownOpen })}
+                        dropdownRender={(menu) => RenderPopup({ menu, selectState, filteredOptionsData, selectId, searchState, setSelectState, hasDropdownSearch, setSearchState, actionHandler, setIsDropdownOpen })}
                         onDropdownVisibleChange={(open) => {
                             setIsDropdownOpen(open)
                             if (open) {
@@ -193,7 +203,7 @@ export const RadarMultiSelect: React.FC<IRadarMultiSelectProps> = ({
 interface IRenderPopupProps {
     menu: React.ReactNode;
     selectState: Array<string | number> | null;
-    optionsData: Array<{ value: string | number; label: string }>;
+    filteredOptionsData: Array<{ value: string | number; label: string; [x: string]: any }>;
     selectId: string;
     searchState: string;
     setSelectState: (value: Array<string | number> | null) => void;
@@ -210,14 +220,14 @@ const RenderPopup = ({
     setSearchState,
     actionHandler,
     setIsDropdownOpen,
-    optionsData,
+    filteredOptionsData,
     setSelectState,
 }: IRenderPopupProps) => {
 
     const checkAllButtonHandler = () => {
-        if (selectState && selectState?.filter(_ => _ !== 'Все').length < optionsData.length && !searchState) {
-            setSelectState(optionsData?.map(_ => _.value))
-        } else if (selectState && selectState?.filter(_ => _ !== 'Все').length === optionsData?.length) {
+        if (selectState && selectState?.filter(_ => _ !== 'Все').length < filteredOptionsData.length && !searchState) {
+            setSelectState(filteredOptionsData?.map(_ => _.value))
+        } else if (selectState && selectState?.filter(_ => _ !== 'Все').length === filteredOptionsData?.length) {
             setSelectState(['Все' as string])
         }
     }
@@ -248,11 +258,11 @@ const RenderPopup = ({
                 <button
                     className={styles.radarSelect__checkAllButton}
                     onClick={checkAllButtonHandler}
-                    disabled={optionsData?.length === 0}
+                    disabled={filteredOptionsData?.length === 0}
                     style={{ fontSize: 14, width: '100%' }}
                 >
-                    {selectState?.filter(_ => _ !== 'Все').length < optionsData?.length && 'Выбрать все'}
-                    {selectState?.filter(_ => _ !== 'Все').length === optionsData?.length && 'Снять все'}
+                    {selectState?.filter(_ => _ !== 'Все').length < filteredOptionsData?.length && 'Выбрать все'}
+                    {selectState?.filter(_ => _ !== 'Все').length === filteredOptionsData?.length && 'Снять все'}
                 </button>
             }
             <div style={{ width: '100%', padding: '10px 0' }}>

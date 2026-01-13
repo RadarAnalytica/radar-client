@@ -19,7 +19,9 @@ export const noSubBanners = [
         leadBlockButtonAction: () => {},
         background: noSubsBg,
         mainImage: ['nosub_main-400w', 'nosub_main-800w', 'nosub_main-1200w'],
-        imageOverflow: false
+        imageOverflow: false,
+        backgroundGradient: 'linear-gradient(76.56deg, #D8CFFC 8.09%, #FEF0E7 89.79%)'
+
     }
 ]
 
@@ -37,7 +39,9 @@ export const onboardingBanners = [
         hasLeadBlock: true,
         background: onboardingBg,
         mainImage: ['onboard_main-400w', 'onboard_main-800w', 'onboard_main-1200w'],
-        imageOverflow: false
+        imageOverflow: false,
+        backgroundGradient: 'linear-gradient(299.24deg, #D8CFFC 18.67%, #FEF0E7 66.13%)'
+
     }
 ]
 
@@ -58,6 +62,9 @@ export const regularUserBanners = [
         plainText: 'и многое другое, что помогает принимать взвешенные управленческие решения.',
         headerButtons: ['Прогноз маржинальности', 'Плановый процент выкупа', 'ДРР по продажам и заказам', 'Рекламные показатели'],
         smallTitle: true,
+        backgroundGradient: 'linear-gradient(111.39deg, #D8CFFC 15.88%, #FEF0E7 69.04%)',
+
+
     },
     {
         cardKey: 'regUserBanner2',
@@ -75,6 +82,8 @@ export const regularUserBanners = [
         headerButtons: ['Глубже понять их результативность', 'Отследить динамику показателей', 'Оценить реальное влияние рекламы на ваши продажи и бизнес в целом'],
         attentionText: 'В сервисе Радар-Аналитика есть всё необходимое для этого.',
         smallTitle: true,
+        backgroundGradient: 'linear-gradient(238.39deg, #D8CFFC 29.29%, #FEF0E7 81.96%)'
+
     },
     {
         cardKey: 'regUserBanner3',
@@ -90,5 +99,7 @@ export const regularUserBanners = [
         attentionText: 'Поэтому работа с SEO становится важным элементом продвижения.',
         hasSeoPlate: true,
         smallTitle: true,
+        backgroundGradient: 'linear-gradient(102.51deg, #D8CFFC 0.42%, #FEF0E7 72.52%)'
+
     },
 ]

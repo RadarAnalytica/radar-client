@@ -49,6 +49,19 @@ export const Filters = React.memo(({
         activeGroup: [{ id: 0, value: 'Все' }],
         activeWeeks: getSavedActiveWeeks(value),
         activeMonths: getSavedActiveMonths(value),
+        selectedRange: (() => {
+          const currentRange = prev?.selectedRange;
+          if (currentRange && typeof currentRange === 'object' && currentRange.from && value?.created_at) {
+            const shopCreatedAt = new Date(value.created_at);
+            const rangeFrom = new Date(currentRange.from);
+            const daysSinceCreation = (rangeFrom - shopCreatedAt) / (1000 * 60 * 60 * 24);
+            
+            if (daysSinceCreation < 90) {
+              return { period: 30 };
+            }
+          }
+          return currentRange;
+        })()
       }));
       return;
     }

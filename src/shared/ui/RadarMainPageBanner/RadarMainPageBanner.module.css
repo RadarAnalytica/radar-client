@@ -362,7 +362,7 @@
     z-index: 1;
 
     @media (max-width: 1430px) {
-       right: -20px
+       right: -30px
     }
     @media (max-width: 1380px) {
        right: -10px

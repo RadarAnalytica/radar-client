@@ -21,6 +21,7 @@ interface IBannerProps {
     attentionText?: string
     smallTitle?: string,
     imageOverflow?: boolean,
+    backgroundGradient?: string
 }
 
 
@@ -44,10 +45,15 @@ export const RadarMainPageBanner: React.FC<IBannerProps> = ({
     smallTitle = false,
     altSubtitle,
     imageOverflow = true,
+    backgroundGradient,
 }) => {
 
     return (
-        <div className={styles.banner}>
+        <div className={styles.banner}
+            style={{
+                backgroundImage: backgroundGradient
+            }}
+        >
             <div className={styles.banner__header}>
                 <p className={smallTitle ? `${styles.banner__title} ${styles.banner__title_small}` : styles.banner__title}>{title}</p>
                 {attentionText &&

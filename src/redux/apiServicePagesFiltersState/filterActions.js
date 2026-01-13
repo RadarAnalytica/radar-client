@@ -18,7 +18,7 @@ const createFiltersDTO = (data, shopsData) => {
     const currentCreatedAt = current?.shop_data?.created_at;
     if (!currentCreatedAt) return min;
     if (!min) return currentCreatedAt;
-    return new Date(currentCreatedAt) < new Date(min) ? currentCreatedAt : min;
+    return new Date(currentCreatedAt) > new Date(min) ? currentCreatedAt : min;
   }, null);
 
   // 1 - создаем массив всех магазинов + опцию "Все магазины"
