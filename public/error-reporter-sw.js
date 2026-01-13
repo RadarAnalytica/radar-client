@@ -189,6 +189,8 @@ async function flushQueue() {
       log("Successfully sent", envelope.id);
       await deleteEnvelope(envelope.id);
     } catch (error) {
+      if (DEBUG) continue;
+      
       log("Failed to send", envelope.id, error);
       const nextAttempt = (envelope.attempt ?? 0) + 1;
 
@@ -271,5 +273,4 @@ function scheduleSync(delay = 0) {
       syncScheduled = false;
     });
 }
-
 
