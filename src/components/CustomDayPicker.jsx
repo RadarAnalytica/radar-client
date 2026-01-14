@@ -89,7 +89,7 @@ const CustomDayPicker = ({ selectedDate, setSelectedDate }) => {
                         onMonthChange={setMonth}
                         captionLayout="dropdown"
                         fromYear={2021}
-                        toYear={2025}
+                        //toYear={2025}
                         className={styles.customDayPicker}
                         locale={customRuLocale}
                         onDayClick={handleDayClick}
