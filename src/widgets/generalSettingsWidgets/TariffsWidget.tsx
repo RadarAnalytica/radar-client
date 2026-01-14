@@ -1321,3 +1321,103 @@ const CalcOptionItem = ({
         </div>
     )
 }
+
+
+
+/**
+ * {
+  "TransactionId": "3261706281", // -- засунуть что-нить рандомное (uuid?)
+  "Amount": "10.00", // -- сумма подписки
+  "Currency": "RUB",
+  "PaymentAmount": "10.00", // -- сумма подписки
+  "PaymentCurrency": "RUB",
+  "OperationType": "Payment",
+  "InvoiceId": "radar-2424-05012026-104726", // -- см строку 306
+  "AccountId": "radar-2424", // -- radar-${user.id}
+  "SubscriptionId": "sc_d475206edbee8ee7bb9b8888e6594", // -- sc_invoiceId - строка 1335
+  "Name": "",
+  "Email": "aam051@yandex.ru", // -- почта юзера
+  "DateTime": "2026-01-05 05:49:44", // -- текущая
+  "IpAddress": "38.97.7.143",
+  "IpCountry": "US",
+  "IpCity": "Остин",
+  "IpRegion": "Техас",
+  "IpDistrict": "Остин",
+  "IpLatitude": "30.26715",
+  "IpLongitude": "-97.74306",
+  "CardId": "",
+  "CardFirstSix": "220070",
+  "CardLastFour": "4377",
+  "CardType": "MIR",
+  "CardExpDate": "07/34",
+  "Issuer": "T-Bank (Tinkoff)",
+  "IssuerBankCountry": "RU",
+  "Description": "Оплата подписки в Radar Analytica",
+  "AuthCode": "085458",
+  "Token": "tk_80040cbc23c68dbf209009d56aa2c", // tk_invoiceId
+  "TestMode": "0",
+  "Status": "Completed",
+  "GatewayName": "Tbank",
+  "Data": {
+    "CloudPayments": {
+      "CustomerReceipt": {
+        "Items": [
+          {
+            "label": "Подписка Радар Аналитика",
+            "price": 5460,
+            "quantity": 1,
+            "amount": 5460,
+            "vat": 20,
+            "method": 0,
+            "object": 0
+          }
+        ],
+        "email": "staf118@mail.ru",
+        "phone": "",
+        "isBso": false,
+        "amounts": {
+          "electronic": 5460,
+          "advancePayment": 0,
+          "credit": 0,
+          "provision": 0
+        }
+      },
+      "recurrent": {
+        "interval": "Month",
+        "period": 6,
+        "startDate": "2026-07-07T10:00:00",
+        "amount": 5460,
+        "customerReceipt": {
+          "Items": [
+            {
+              "label": "Подписка Радар Аналитика",
+              "price": 5460,
+              "quantity": 1,
+              "amount": 5460,
+              "vat": 20,
+              "method": 0,
+              "object": 0
+            }
+          ],
+          "email": "staf118@mail.ru",
+          "phone": "",
+          "isBso": false,
+          "amounts": {
+            "electronic": 5460,
+            "advancePayment": 0,
+            "credit": 0,
+            "provision": 0
+          }
+        }
+      }
+    }
+  },
+  "TotalFee": "3.90",
+  "CardProduct": "TKN",
+  "PaymentMethod": "TinkoffPay",
+  "Rrn": "135021423974",
+  "InstallmentTerm": "",
+  "InstallmentMonthlyPayment": "",
+  "CustomFields": ""
+}
+ */

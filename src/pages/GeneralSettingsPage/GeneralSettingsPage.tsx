@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import styles from './GeneralSettingsPage.module.css'
 import { GeneralLayout } from '@/shared';
 import { Segmented, ConfigProvider } from 'antd';
 import { useLocation } from 'react-router-dom';

@@ -76,7 +76,6 @@ const HeaderAlerts = ({ messages, closeHandler }) => {
                 <p className={styles.modal__title}>Уведомления</p>
                 <div
                     className={styles.modal__controls}
-                    style={{ height: 32 }} // <---- Temporary thing. To delete it when code below will be uncommented
                 >
                     {/* <ConfigProvider
                         theme={segmentedTheme}
@@ -150,13 +149,13 @@ const MessageItem = ({
                 <p className={styles.list__title}>{m.title}</p>
             </div> */}
                 <div className={`${styles.list__itemHeaderWrapper} ${styles.list__itemHeaderWrapper_end}`}>
-                    <p className={styles.list__text}>{moment(m.created_at).locale('ru').format('D MMMM, HH:mm')}</p>
+                    <p className={styles.list__text}>{moment(`${m.created_at.split(' ').join('T')}+00:00`).locale('ru').local().format('DD MMMM, HH:mm')}</p>
                 </div>
             </div>
 
             <button
                 className={styles.list__deleteButton}
-                onClick={() => {
+                onClick={(e) => {
                     // const item = document.querySelector(`#message_id_${m.id}`);
                     // if (item) {
                     //     //item.style.transition = 'max-height .3s'
@@ -165,6 +164,8 @@ const MessageItem = ({
 
 
                     // }
+                    e.preventDefault();
+                    e.stopPropagation()
                     onDeleteMsg(m.id);
                 }}
             >
