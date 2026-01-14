@@ -87,7 +87,7 @@ const PositionTrackingSkuPage = React.lazy(() => import("./pages/PositionTrackin
 const MyAdvPage = React.lazy(() => import("./pages/myAdvPage/myAdvPage"));
 const CompanyAdvPage = React.lazy(() => import("./pages/myAdvPage/companyAdvPage"));
 //TEMP
-const DashboardPageNoDnd = React.lazy(() => import('./pages/apiServicePages/dashboardPage/page/dashboardPageNoDnd'));
+// const DashboardPageNoDnd = React.lazy(() => import('./pages/apiServicePages/dashboardPage/page/dashboardPageNoDnd'));
 const GeneralSettingsPage = React.lazy(() => import('./pages/GeneralSettingsPage/GeneralSettingsPage'))
 
 // During migration, allow missing props on ProtectedRoute

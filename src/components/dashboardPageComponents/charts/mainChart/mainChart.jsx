@@ -32,6 +32,8 @@ const MainChart = memo(({ title, loading, dataDashBoard, selectedRange, dragHand
         isSalesQuantityActive: true,
         isOrderAmountActive: true,
         isSalesAmountActive: true,
+        isRoiActive: true,
+        isMarginalityActive: true,
     });
     const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -53,7 +55,7 @@ const MainChart = memo(({ title, loading, dataDashBoard, selectedRange, dragHand
             {/* Loader */}
             {loading &&
                 (<div className={styles.chart}>
-                    <RadarLoader />
+                    <RadarLoader loaderStyle={{minHeight: 432}}  />
                 </div>)
             }
             {/* Main */}

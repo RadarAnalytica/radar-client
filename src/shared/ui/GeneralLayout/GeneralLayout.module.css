@@ -23,6 +23,8 @@
     overflow: auto;
     flex-grow: 0;
     flex-shrink: 0;
+    transition: width .4s cubic-bezier(0.23, 1, 0.32, 1);
+    will-change: width;
 }
 
 .page__sideNavWrapper {

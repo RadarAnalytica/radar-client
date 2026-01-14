@@ -80,7 +80,12 @@ export const regularUserBanners = [
         hasLeadBlock: true,
         background: regUser5Bg,
         mainImage: ['abc_main-400w', 'abc_main-800w', 'abc_main-1200w'],
-        headerButtons: ['Какие позиции формируют основную выручку (группа A)', 'Какие поддерживают оборот (B)', 'А какие не дают ощутимого эффекта (C)', '— с учётом выручки, маржинальности и ROI.'],
+        headerButtons: [
+            <span>Какие позиции формируют основную выручку <span style={{color: '#00B69B'}}>(группа A)</span></span>, 
+            <span>Какие поддерживают оборот <span style={{color: '#F0AD00'}}>(B)</span></span>, 
+            <span>А какие не дают ощутимого эффекта <span style={{color: '#F93C65'}}>(C)</span></span>, 
+            '— с учётом выручки, маржинальности и ROI.'
+        ],
         noBgforThelastHeaderButton: true,
         smallTitle: true,
         bottomAttentionText: 'Так проще расставлять приоритеты в ассортименте, рекламе и закупках.',

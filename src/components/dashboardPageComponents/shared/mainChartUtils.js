@@ -1,3 +1,35 @@
+// Полные названия месяцев для тултипа
+export const MONTH_NAMES_FULL = [
+    'января',
+    'февраля',
+    'марта',
+    'апреля',
+    'мая',
+    'июня',
+    'июля',
+    'августа',
+    'сентября',
+    'октября',
+    'ноября',
+    'декабря',
+];
+
+// Сокращенные названия месяцев для оси X
+export const MONTH_NAMES_SHORT = [
+    'янв',
+    'фев',
+    'мар',
+    'апр',
+    'мая',
+    'июн',
+    'июл',
+    'авг',
+    'сен',
+    'окт',
+    'ноя',
+    'дек',
+];
+
 export const getArrayStep = (max) => {
     let expectStep = Math.ceil(max / 6);
     let range = 0;
@@ -36,27 +68,23 @@ export const getMaxAmount = (chartData) => {
     return maxAmount;
 };
 
-export const getPastDays = (number, selectedRange) => {
+export const getMaxRoi = (chartData) => {
+    const cAxisDatasets = chartData?.datasets?.filter((item) => item?.yAxisID === 'C');
+    const maxRoi = cAxisDatasets
+        ?.map((arr) => arr?.data)
+        ?.flat(1)
+        ?.sort((a, b) => b - a)[0];
+    return maxRoi || 0;
+};
+
+export const getPastDays = (number, selectedRange, useShortMonth = false) => {
     const today = selectedRange.to ? new Date(selectedRange.to) : new Date();
     const pastDays = [];
+    const monthNames = useShortMonth ? MONTH_NAMES_SHORT : MONTH_NAMES_FULL;
 
     for (let i = 0; i < number; i++) {
         const pastDate = new Date(today.getTime() - i * 24 * 60 * 60 * 1000);
-        const day = pastDate.getDate().toString().padStart(2, '0');
-        const monthNames = [
-            'янв',
-            'фев',
-            'мар',
-            'апр',
-            'май',
-            'июн',
-            'июл',
-            'авг',
-            'сен',
-            'окт',
-            'ноя',
-            'дек',
-        ];
+        const day = pastDate.getDate().toString().padStart(2, '');
         const month = monthNames[pastDate.getMonth()];
 
         pastDays.push(`${day} ${month}`);
@@ -65,11 +93,20 @@ export const getPastDays = (number, selectedRange) => {
     return pastDays;
 };
 
+// Функция для преобразования сокращенной даты в полную для тултипа
+export const convertShortDateToFull = (shortDate) => {
+    let fullDate = shortDate;
+    MONTH_NAMES_SHORT.forEach((shortMonth, index) => {
+        fullDate = fullDate.replace(shortMonth, MONTH_NAMES_FULL[index]);
+    });
+    return fullDate;
+};
+
 
 export const getChartData = (dataDashBoard, selectedRange, controlsState) => {
     const countDays = dataDashBoard?.orderCountList?.length;
     return {
-        labels: getPastDays(countDays, selectedRange).reverse(),
+        labels: getPastDays(countDays, selectedRange, true).reverse(), // true = использовать сокращенные названия
         datasets: [
             controlsState.isOrderAmountActive
                 ? {
@@ -181,6 +218,60 @@ export const getChartData = (dataDashBoard, selectedRange, controlsState) => {
                     borderWidth: 2,
                     data: [],
                 },
+                controlsState.isRoiActive
+                ? {
+                    label: 'Roi',
+                    type: 'line',
+                    borderColor: '#0099FF',
+                    yAxisID: 'C', // Отдельная ось для ROI
+                    tension: 0.4,
+                    pointBorderColor: 'white',
+                    backgroundColor: '#0099FF',
+                    pointRadius: 6,
+                    hoverRadius: 8,
+                    borderWidth: 2,
+                    data: dataDashBoard?.marginalityRoiChart?.map(_ => _.roi) || [],
+                }
+                : {
+                    label: 'Roi',
+                    type: 'line',
+                    borderColor: '#0099FF',
+                    yAxisID: 'C', // Отдельная ось для ROI
+                    tension: 0.4,
+                    pointBorderColor: 'white',
+                    backgroundColor: '#0099FF',
+                    pointRadius: 6,
+                    hoverRadius: 8,
+                    borderWidth: 2,
+                    data: [],
+                },
+                controlsState.isMarginalityActive
+                ? {
+                    label: 'Маржинальность',
+                    type: 'line',
+                    borderColor: '#F9813C',
+                    yAxisID: 'C', // Латинская буква C для скрытой оси
+                    tension: 0.4,
+                    pointBorderColor: 'white',
+                    backgroundColor: '#F9813C',
+                    pointRadius: 6,
+                    hoverRadius: 8,
+                    borderWidth: 2,
+                    data: dataDashBoard?.marginalityRoiChart?.map(_ => _.marginality) || [],
+                }
+                : {
+                    label: 'Маржинальность',
+                    type: 'line',
+                    borderColor: '#F9813C',
+                    yAxisID: 'C', // Латинская буква C для скрытой оси
+                    tension: 0.4,
+                    pointBorderColor: 'white',
+                    backgroundColor: '#F9813C',
+                    pointRadius: 6,
+                    hoverRadius: 8,
+                    borderWidth: 2,
+                    data: [],
+                },
         ],
     };
 
@@ -235,15 +326,22 @@ export const getChartTooltip = (context, chartData) => {
         let innerHtml = '<thead>';
 
         titleLines.forEach(function (title) {
+            const fullDateTitle = convertShortDateToFull(title);
             innerHtml +=
                 '<tr><th style="color: silver; font-weight: 400;">' +
-                title?.split(',').join(' ') +
+                fullDateTitle?.split(',').join(' ') +
                 '</th></tr>';
         });
         innerHtml += '</thead><tbody>';
         datasets?.forEach(function (set, i) {
             const targetColor = set.borderColor || set.backgroundColor || 'rgba(240, 173, 0, 1)';
-            const targetDescr = set.yAxisID === 'B' ? ' шт' : ' руб';
+            // Определяем единицы измерения в зависимости от типа данных
+            let targetDescr;
+            if (set?.label === 'Roi' || set?.label === 'Маржинальность') {
+                targetDescr = ' %';
+            } else {
+                targetDescr = set.yAxisID === 'B' ? ' шт' : ' руб';
+            }
             let value = set?.data[targetInex] || '0';
             let style = '';
             style += '; border-width: 2px';
@@ -408,6 +506,22 @@ export const getChartOptions = (chartData, days) => {
                 },
                 minor: {
                     enabled: false,
+                },
+            },
+            C: {
+                id: 'C',
+                type: 'linear',
+                position: 'left',
+                min: 0,
+                suggestedMax: getMaxRoi(chartData),
+                display: false, // Скрываем ось ROI с графика
+                grid: {
+                    drawOnChartArea: false,
+                    display: false,
+                },
+                ticks: {
+                    display: false,
+                    stepSize: getArrayStep(getMaxRoi(chartData)),
                 },
             },
             x: {

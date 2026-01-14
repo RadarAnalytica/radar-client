@@ -103,6 +103,52 @@ const MainChartControls = ({ constrolsState, setControlsState }) => {
                     </Checkbox>
                 </ConfigProvider>
             </div>
+            <div className={styles.controls__controlWrapper}>
+                <ConfigProvider
+                    theme={{
+                        token: {
+                            colorPrimary: '#0099FF',
+                            controlInteractiveSize: 20,
+                            // borderRadiusSM: 10,
+                        }
+                    }}
+                >
+                    <Checkbox
+                        size='large'
+                        defaultChecked
+                        checked={constrolsState.isRoiActive}
+                        value='isRoiActive'
+                        onChange={controlsCheckboxHandler}
+                    >
+                        <label className={styles.controls__label}>
+                           Roi, %
+                        </label>
+                    </Checkbox>
+                </ConfigProvider>
+            </div>
+            <div className={styles.controls__controlWrapper}>
+                <ConfigProvider
+                    theme={{
+                        token: {
+                            colorPrimary: '#F9813C',
+                            controlInteractiveSize: 20,
+                            // borderRadiusSM: 10,
+                        }
+                    }}
+                >
+                    <Checkbox
+                        size='large'
+                        defaultChecked
+                        checked={constrolsState.isMarginalityActive}
+                        value='isMarginalityActive'
+                        onChange={controlsCheckboxHandler}
+                    >
+                        <label className={styles.controls__label}>
+                           Маржинальность, %
+                        </label>
+                    </Checkbox>
+                </ConfigProvider>
+            </div>
         </div>
     );
 };

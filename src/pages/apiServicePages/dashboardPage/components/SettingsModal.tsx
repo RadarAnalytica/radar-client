@@ -12,6 +12,7 @@ import {
 import { DndContext, closestCenter, DragEndEvent, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
 import { SortableContext, useSortable, verticalListSortingStrategy, arrayMove } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
+import { restrictToVerticalAxis, restrictToParentElement } from '@dnd-kit/modifiers';
 
 interface ISettingsModalProps {
     isOpen: boolean;
@@ -21,6 +22,7 @@ interface ISettingsModalProps {
     items: Array<Record<string, any>>;
     setItems: React.Dispatch<React.SetStateAction<Array<Record<string, any>>>>;
     onSave: (items: Array<Record<string, any>>, BARS_STORAGE_KEY: string, DASHBOARD_CONFIG_VER: string) => void;
+    originalConfig: Array<Record<string, any>>; // Исходная конфигурация без изменений из localStorage
 }
 
 interface SortableItemProps {
@@ -90,13 +92,18 @@ export const SettingsModal: React.FC<ISettingsModalProps> = (
         DASHBOARD_CONFIG_VER,
         items,
         setItems,
-        onSave
+        onSave,
+        originalConfig
     }
 ) => {
     const [form] = Form.useForm();
-    const [searchValue, setSearchValue] = useState('');
+    const [searchValue, setSearchValue] = useState(''); // Значение в input
+    const [activeSearchValue, setActiveSearchValue] = useState(''); // Активное значение для фильтрации
     const [displayItems, setDisplayItems] = useState<Array<Record<string, any>>>([]);
     const [originalItems, setOriginalItems] = useState<Array<Record<string, any>>>([]);
+    
+    // Отслеживаем изменения формы для обновления текста кнопки
+    const formValues = Form.useWatch([], form);
 
     const sensors = useSensors(
         useSensor(PointerSensor, {
@@ -116,6 +123,7 @@ export const SettingsModal: React.FC<ISettingsModalProps> = (
             setOriginalItems([...itemsWithDropKey1]);
             setDisplayItems([...itemsWithDropKey1]);
             setSearchValue('');
+            setActiveSearchValue(''); // Сбрасываем активный поиск
             form.setFieldsValue(itemsWithDropKey1.reduce((acc, item) => {
                 acc[item.id] = item.isVisible;
                 return acc;
@@ -124,13 +132,22 @@ export const SettingsModal: React.FC<ISettingsModalProps> = (
     }, [itemsWithDropKey1, isOpen, form]);
 
     const filteredItems = useMemo(() => {
-        if (!searchValue.trim()) {
+        if (!activeSearchValue.trim()) {
             return displayItems;
         }
         return displayItems.filter(item =>
-            item.title?.toLowerCase().includes(searchValue.toLowerCase())
+            item.title?.toLowerCase().includes(activeSearchValue.toLowerCase())
         );
-    }, [displayItems, searchValue]);
+    }, [displayItems, activeSearchValue]);
+
+    // Проверяем, все ли элементы выбраны
+    const allSelected = useMemo(() => {
+        if (filteredItems.length === 0) return false;
+        return filteredItems.every(item => {
+            const value = form.getFieldValue(item.id);
+            return value !== false;
+        });
+    }, [filteredItems, formValues, form]);
 
     const handleDragEnd = (event: DragEndEvent) => {
         const { active, over } = event;
@@ -160,15 +177,17 @@ export const SettingsModal: React.FC<ISettingsModalProps> = (
     };
 
     const handleRevertToOriginal = () => {
-        setDisplayItems([...originalItems]);
-        form.setFieldsValue(originalItems.reduce((acc, item) => {
-            acc[item.id] = item.isVisible;
+        // Используем исходную конфигурацию (без изменений из localStorage)
+        const originalDropKey1Items = originalConfig.filter(item => item.dropKey === '1');
+        setDisplayItems([...originalDropKey1Items]);
+        form.setFieldsValue(originalDropKey1Items.reduce((acc, item) => {
+            acc[item.id] = item.isVisible !== false; // Устанавливаем видимость по умолчанию
             return acc;
         }, {}));
     };
 
     const handleSearch = () => {
-        // Search is handled by filteredItems useMemo
+        setActiveSearchValue(searchValue);
     };
 
     const handleOk = () => {
@@ -288,6 +307,7 @@ export const SettingsModal: React.FC<ISettingsModalProps> = (
                         colorPrimary: '#5329ff',
                         colorPrimaryBorder: '#5329ff',
                         colorPrimaryHover: '#5329ff',
+                        controlInteractiveSize: 20
                     },
                     Form: {
                         itemMarginBottom: 0,
@@ -301,21 +321,21 @@ export const SettingsModal: React.FC<ISettingsModalProps> = (
                 // onClose={handleCancel}
                 title={
                     <div className={styles.modalHeader}>
-                        <span className={styles.modalTitle}>Шаблон настройки значений</span>
+                        <span className={styles.modalTitle}>Настройка Сводки продаж</span>
                         <div className={styles.headerActions}>
                             <button
                                 type="button"
                                 onClick={handleSelectAll}
                                 className={styles.actionLink}
                             >
-                                Выбрать все
+                                {allSelected ? 'Снять все' : 'Выбрать все'}
                             </button>
                             <button
                                 type="button"
                                 onClick={handleRevertToOriginal}
                                 className={styles.actionLink}
                             >
-                                Вернуть к исходному
+                                Вернуть к исходному варианту
                             </button>
                         </div>
                     </div>
@@ -394,7 +414,10 @@ export const SettingsModal: React.FC<ISettingsModalProps> = (
                                     searchValue && (
                                         <button
                                             type="button"
-                                            onClick={() => setSearchValue('')}
+                                            onClick={() => {
+                                                setSearchValue('');
+                                                setActiveSearchValue(''); // Также сбрасываем активный поиск
+                                            }}
                                             className={styles.clearButton}
                                         >
                                             <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -425,15 +448,27 @@ export const SettingsModal: React.FC<ISettingsModalProps> = (
                         sensors={sensors}
                         collisionDetection={closestCenter}
                         onDragEnd={handleDragEnd}
+                        modifiers={[restrictToVerticalAxis, restrictToParentElement]}
                     >
                         <SortableContext
                             items={filteredItems.map(item => item.id)}
                             strategy={verticalListSortingStrategy}
                         >
                             <div className={styles.list}>
-                                {filteredItems.map((card) => (
-                                    <SortableItem key={card.id} id={card.id} card={card} form={form} />
-                                ))}
+                                {filteredItems.length > 0 ? (
+                                    filteredItems.map((card) => (
+                                        <SortableItem key={card.id} id={card.id} card={card} form={form} />
+                                    ))
+                                ) : activeSearchValue.trim() ? (
+                                    <div style={{ 
+                                        padding: '40px 20px', 
+                                        textAlign: 'center', 
+                                        color: '#999999',
+                                        fontSize: '14px'
+                                    }}>
+                                        Ничего не найдено
+                                    </div>
+                                ) : null}
                             </div>
                         </SortableContext>
                     </DndContext>

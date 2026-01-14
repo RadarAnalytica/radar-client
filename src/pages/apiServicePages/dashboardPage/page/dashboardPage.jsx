@@ -371,7 +371,7 @@ const barsConfig = [
     },
     {
         id: 'sec-commission',
-        title: 'Комиссия',
+        title: 'Комиссия + эквайринг',
         isVisible: true,
         dropKey: '1',
         rowId: 'row-3',
@@ -585,7 +585,7 @@ const barsConfig = [
         render: (bar, dataDashBoard, loading, selectedRange, activeBrand, authToken, filters, updateDataDashBoard, stockAnalysisData) => (
             <RadarBar
                 title='Себестоимость проданных товаров'
-                tooltipText='Суммарная себестоимость проданных товаров (основана на данных раздела "Себестоимость"'
+                tooltipText='Суммарная себестоимость проданных товаров (основана на данных раздела "Себестоимость")'
                 mainValue={dataDashBoard?.costPriceAmount}
                 midValue={<Link className={styles.smallButton} to='/selfcost' target='_blank'>Изменить</Link>}
                 mainValueUnits='₽'
@@ -631,6 +631,7 @@ const barsConfig = [
                 title='Выручка'
                 tooltipText='Сумма, заработанная при продаже товаров'
                 mainValue={dataDashBoard?.proceeds}
+                mainValueUnits='₽'
                 hasColoredBackground
                 compareValue={{
                     comparativeValue: dataDashBoard?.proceedsCompare,
@@ -643,7 +644,7 @@ const barsConfig = [
     },
     {
         id: 'sec-net-revenue-bar',
-        title: 'EBITDA',
+        title: 'Валовая прибыль',
         isVisible: true,
         dropKey: '1',
         rowId: 'row-3',
@@ -652,6 +653,7 @@ const barsConfig = [
                 title='Валовая прибыль'
                 tooltipText='Разность между выручкой и себестоимостью продаж'
                 mainValue={dataDashBoard?.grossProfit}
+                mainValueUnits='₽'
                 hasColoredBackground
                 compareValue={{
                     comparativeValue: dataDashBoard?.grossProfitCompare,
@@ -673,6 +675,7 @@ const barsConfig = [
                 title='EBITDA'
                 tooltipText='EBITDA — это показатель прибыли до вычета процентов, налогов, амортизации и износа, показывающий операционную рентабельность'
                 mainValue={dataDashBoard?.ebitda}
+                mainValueUnits='₽'
                 hasColoredBackground
                 compareValue={{
                     comparativeValue: dataDashBoard?.ebitda_compare,
@@ -694,6 +697,7 @@ const barsConfig = [
                 title='Маржа EBITDA'
                 tooltipText='Маржа EBITDA — это процент от выручки, который остаётся после вычета операционных расходов, но до налогов, процентов и износа'
                 mainValue={dataDashBoard?.ebitda_margin}
+                mainValueUnits='%'
                 hasColoredBackground
                 compareValue={{
                     comparativeValue: dataDashBoard?.ebitda_margin_compare,
@@ -715,10 +719,11 @@ const barsConfig = [
                 title='Рентабельность ВП'
                 tooltipText='Отношение валовой прибыли к суммарной выручке'
                 mainValue={dataDashBoard?.grossProfitAbility}
+                mainValueUnits='%'
                 hasColoredBackground
                 compareValue={{
-                    //comparativeValue: dataDashBoard?.ebitda_margin_compare,
-                    // tooltipText: 'Значение предыдущего периода'
+                    comparativeValue: dataDashBoard?.gross_profit_ability_compare,
+                    //tooltipText: 'Значение предыдущего периода'
                 }}
                 isLoading={loading}
                 dragHandle={() => <DragHandle context={DragHandleContext} />}
@@ -736,9 +741,10 @@ const barsConfig = [
                 title='Рентабельность ОП'
                 tooltipText='Отношение операционной прибыли к суммарной выручке'
                 mainValue={dataDashBoard?.operatingProfitAbility}
+                mainValueUnits='%'
                 hasColoredBackground
                 compareValue={{
-                    //comparativeValue: dataDashBoard?.ebitda_margin_compare,
+                    comparativeValue: dataDashBoard?.operating_profit_ability_compare,
                     // tooltipText: 'Значение предыдущего периода'
                 }}
                 isLoading={loading}
@@ -913,7 +919,12 @@ const barsConfig = [
 ]
 
 const saveBarsConfig = (items, BARS_STORAGE_KEY, DASHBOARD_CONFIG_VER) => {
-    const serializableConfig = items.map(item => ({ id: item.id, isVisible: item.isVisible, rowId: item.rowId }));
+    const serializableConfig = items.map((item, index) => ({ 
+        id: item.id, 
+        isVisible: item.isVisible, 
+        rowId: item.rowId,
+        order: index // Сохраняем порядок элемента
+    }));
     localStorage.setItem(BARS_STORAGE_KEY, JSON.stringify({ version: DASHBOARD_CONFIG_VER, items: serializableConfig }));
 }
 const inferBarsConfig = (barsConfig, savedConfig, DASHBOARD_CONFIG_VER) => {
@@ -921,16 +932,28 @@ const inferBarsConfig = (barsConfig, savedConfig, DASHBOARD_CONFIG_VER) => {
     const { version, items } = savedConfig;
     if (!version || !items) return barsConfig;
     if (version !== DASHBOARD_CONFIG_VER) return barsConfig;
+    
+    // Создаем карту для быстрого поиска сохраненных элементов
+    const savedItemsMap = new Map(items.map(item => [item.id, item]));
+    
+    // Обновляем элементы с сохраненными значениями
     const updatedConfig = barsConfig.map(item => {
-        const savedItem = items.find(i => i.id === item.id);
+        const savedItem = savedItemsMap.get(item.id);
         if (savedItem) {
-            // Мержим сохраненные значения, включая isVisible
+            // Мержим сохраненные значения, включая isVisible и order
             return { ...item, ...savedItem };
         }
         // Если элемент не найден в сохраненных, устанавливаем isVisible по умолчанию
         return { ...item, isVisible: item.isVisible !== false };
-    })
-    return updatedConfig;
+    });
+    
+    // Сортируем элементы согласно сохраненному порядку
+    // Элементы с order идут в начале в правильном порядке, остальные - в конце
+    return updatedConfig.sort((a, b) => {
+        const orderA = a.order !== undefined ? a.order : Infinity;
+        const orderB = b.order !== undefined ? b.order : Infinity;
+        return orderA - orderB;
+    });
 }
 
 
@@ -945,9 +968,6 @@ const MainContent = React.memo(({
     authToken,
     filters,
     updateDataDashBoard,
-    isSidebarHidden,
-    visibilityMap,
-    onSaveSettings,
     stockAnalysisData,
     items,
     setItems,
@@ -956,27 +976,27 @@ const MainContent = React.memo(({
 
     // Если фильтры загружены и shopStatus не подходит, не рендерим
     if (!isFiltersLoading && !shopStatus?.is_primary_collect) return null;
-    
+
     // Сортируем элементы: первые 4 включенных блока с dropKey === '1' должны быть первыми
     const sortedItems = React.useMemo(() => {
         // Находим первые 4 включенных блока с dropKey === '1' в исходном порядке
         const firstFourDropKey1 = [];
         const firstFourIds = new Set();
-        
+
         for (const item of items) {
             if (item.dropKey === '1' && item.isVisible && firstFourDropKey1.length < 4) {
                 firstFourDropKey1.push(item);
                 firstFourIds.add(item.id);
             }
         }
-        
+
         // Разделяем остальные элементы, сохраняя исходный порядок
         const restItems = items.filter(item => !firstFourIds.has(item.id));
-        
+
         // Объединяем: первые 4 + остальные элементы в исходном порядке
         return [...firstFourDropKey1, ...restItems];
     }, [items]);
-    
+
     // ------------------------------------------------------------------------------------------------
     // Рендер
     return (
@@ -1009,7 +1029,6 @@ const _DashboardPage = () => {
     const { isDemoMode } = useDemoMode();
     const { activeBrand, selectedRange, isFiltersLoaded, activeBrandName, activeArticle, activeGroup, shops } = useAppSelector((state) => state.filters);
     const filters = useAppSelector((state) => state.filters);
-    const { isSidebarHidden } = useAppSelector((state) => state.utils);
     const [isSettingsOpen, setIsSettingsOpen] = useState(false);
     const [stockAnalysisData, setStockAnalysisData] = useState([]);
     const [items, setItems] = useState(barsConfig);
@@ -1148,6 +1167,7 @@ const _DashboardPage = () => {
                             className={styles.page__settingsButton}
                             onClick={() => setIsSettingsOpen(true)}
                             disabled={pageState.loading}
+                            title='Настроить виджеты'
                         >
                             <svg width="19" height="18" viewBox="0 0 19 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path fillRule="evenodd" clipRule="evenodd" d="M13.75 8.64276C13.75 11.1741 11.698 13.2261 9.16667 13.2261C6.63536 13.2261 4.58333 11.1741 4.58333 8.64276C4.58333 6.11146 6.63536 4.05943 9.16667 4.05943C11.698 4.05943 13.75 6.11146 13.75 8.64276ZM12.375 8.64276C12.375 10.4147 10.9386 11.8511 9.16667 11.8511C7.39475 11.8511 5.95833 10.4147 5.95833 8.64276C5.95833 6.87085 7.39475 5.43443 9.16667 5.43443C10.9386 5.43443 12.375 6.87085 12.375 8.64276Z" fill="#5329FF" />
@@ -1170,7 +1190,6 @@ const _DashboardPage = () => {
                     authToken={authToken}
                     filters={filters}
                     updateDataDashBoard={updateDataDashBoard}
-                    isSidebarHidden={isSidebarHidden}
                     stockAnalysisData={stockAnalysisData}
                     items={items}
                     setItems={setItems}
@@ -1184,6 +1203,7 @@ const _DashboardPage = () => {
                     items={items}
                     setItems={setItems}
                     onSave={saveBarsConfig}
+                    originalConfig={barsConfig}
                 />
             </section>
         </GeneralLayout>
