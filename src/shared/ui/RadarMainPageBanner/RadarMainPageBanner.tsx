@@ -21,7 +21,9 @@ interface IBannerProps {
     attentionText?: string
     smallTitle?: string,
     imageOverflow?: boolean,
-    backgroundGradient?: string
+    backgroundGradient?: string,
+    bottomAttentionText?: string,
+    noBgforThelastHeaderButton?: boolean
 }
 
 
@@ -46,6 +48,8 @@ export const RadarMainPageBanner: React.FC<IBannerProps> = ({
     altSubtitle,
     imageOverflow = true,
     backgroundGradient,
+    bottomAttentionText,
+    noBgforThelastHeaderButton = false
 }) => {
 
     return (
@@ -82,21 +86,26 @@ export const RadarMainPageBanner: React.FC<IBannerProps> = ({
                         </svg>
 
                         <p className={styles.banner__seoPlateText}>
-                            В сервисе Радар-Аналитика представлено более <span>5 новых инструментов</span> для эффективной SEO-работы, включая 
+                            В сервисе Радар-Аналитика представлено более <span>5 новых инструментов</span> для эффективной SEO-работы, включая
                             <span>«Трекинг позиций»</span>, который позволяет автоматически отслеживать ваши органические позиции и позиции конкурентов на ежедневной основе.
                         </p>
                     </div>
                 }
                 {headerButtons && Array.isArray(headerButtons) &&
                     <div className={styles.banner__buttons}>
-                        {headerButtons.map(_ => (
-                            <button className={styles.banner__button} key={_}>
+                        {headerButtons.map((_, idx) => (
+                            <button className={styles.banner__button} key={_} style={{backgroundColor: noBgforThelastHeaderButton && idx === headerButtons.length - 1 ? 'transparent' : ''}}>
                                 {_}
                             </button>
                         ))}
                     </div>
                 }
                 {plainText && <p className={styles.banner__plainText}>{plainText}</p>}
+                {bottomAttentionText &&
+                    <div className={`${styles.banner__attentionBar} ${styles.banner__attentionBar_bottom}`}>
+                        {bottomAttentionText}
+                    </div>
+                }
             </div>
             <div className={styles.banner__footer}>
                 {hasLeadBlock && (
@@ -119,29 +128,29 @@ export const RadarMainPageBanner: React.FC<IBannerProps> = ({
                 )}
             </div>
 
-            <div className={styles.banner__mainImageWrapper} style={imageOverflow ? {} : {right: 0}}>
+            <div className={styles.banner__mainImageWrapper} style={imageOverflow ? {} : { right: 0 }}>
                 <picture>
                     {mainImage[2] && (
-                        <source 
-                            media="(min-width: 1701px)" 
+                        <source
+                            media="(min-width: 1701px)"
                             srcSet={`/main_page_banners/${mainImage[2]}.png 1200w`}
                         />
                     )}
                     {mainImage[1] && mainImage[2] && (
-                        <source 
+                        <source
                             media={imageOverflow ? "(min-width: 1431px) and (max-width: 1700px)" : "(min-width: 1471px) and (max-width: 1700px)"}
                             srcSet={`/main_page_banners/${mainImage[1]}.png 800w, /main_page_banners/${mainImage[2]}.png 1200w`}
                         />
                     )}
                     {mainImage[0] && mainImage[1] && (
-                        <source 
+                        <source
                             media={imageOverflow ? "(max-width: 1430px)" : "(max-width: 1470px)"}
                             srcSet={`/main_page_banners/${mainImage[0]}.png 400w, /main_page_banners/${mainImage[1]}.png 800w`}
                         />
                     )}
-                    <img 
-                        src={mainImage[0] ? `/main_page_banners/${mainImage[0]}.png` : ''} 
-                        alt='' 
+                    <img
+                        src={mainImage[0] ? `/main_page_banners/${mainImage[0]}.png` : ''}
+                        alt=''
                     />
                 </picture>
             </div>

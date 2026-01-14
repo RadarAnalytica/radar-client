@@ -76,7 +76,7 @@
     font-family: Manrope;
     font-weight: 600;
     font-size: 18px;
-    line-height: 100%;
+    line-height: 140%;
     letter-spacing: 0%;
     color: #5329FF;
     background-color: #5329FF1A;
@@ -89,6 +89,16 @@
     @media (max-width: 1390px) {
         padding: 8px;
         font-size: 10px;
+    }
+}
+.banner__attentionBar_bottom {
+    max-width: 622px;
+
+    @media (max-width: 1430px) {
+        max-width: 508px;
+    }
+    @media (max-width: 1320px) {
+        max-width: 362px;
     }
 }
 
@@ -145,7 +155,7 @@
     }
 
     @media (max-width: 1390px) {
-        max-width: 380px;
+        max-width: 400px;
     }
 }
 
