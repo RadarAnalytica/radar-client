@@ -8,6 +8,7 @@ import { formatPrice } from '@/service/utils';
 import { useAppDispatch } from '@/redux/hooks';
 import { actions as filterActions } from '@/redux/apiServicePagesFiltersState/apiServicePagesFilterState.slice'
 
+
 /**
  *
 brand_name: "JuliaShine111"
@@ -164,19 +165,19 @@ export const RadarShopCard = ({
                         </div>
                     }
 
-                    {/* <div className={styles.widget__shopParam}>
-                            <span>Налог</span>
-                            <div className={styles.widget__shopParamItem} style={{ color: getShopParamColor((shop?.tax !== undefined && shop?.tax !== null)) }}>
-                                {(shop?.tax !== undefined && shop?.tax !== null) ? 'Установлен' : 'Не установлен'}
-                            </div>
-                            {shop?.tax !== undefined && shop?.tax !== null && <span>{formatPrice(shop?.tax, '%')}</span>}
-                            <button style={{ border: 'none', backgroundColor: 'transparent' }} onClick={setTaxAction}>
-                                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path fillRule="evenodd" clipRule="evenodd" d="M0.195262 7.49509L7 0.690357C7.92047 -0.230118 9.41286 -0.230119 10.3333 0.690356C11.2538 1.61083 11.2538 3.10322 10.3333 4.02369L3.5286 10.8284C3.40357 10.9535 3.234 11.0237 3.05719 11.0237H0.666667C0.298477 11.0237 0 10.7252 0 10.357V7.9665C0 7.78969 0.070238 7.62012 0.195262 7.49509ZM1 10.0237V8.10457L7.70711 1.39746C8.23706 0.867512 9.09628 0.867512 9.62623 1.39746C10.1562 1.92741 10.1562 2.78663 9.62623 3.31658L2.91912 10.0237H1Z" fill="#5329FF" />
-                                    <path d="M6 9.85702C5.72386 9.85702 5.5 10.0809 5.5 10.357C5.5 10.6332 5.72386 10.857 6 10.857H10.6667C10.9428 10.857 11.1667 10.6332 11.1667 10.357C11.1667 10.0809 10.9428 9.85702 10.6667 9.85702H6Z" fill="#5329FF" />
-                                </svg>
-                            </button>
-                        </div> */}
+                    <div className={styles.widget__shopParam}>
+                        <span>Налог</span>
+                        <div className={styles.widget__shopParamItem} style={{ color: getShopParamColor((shop?.tax !== undefined && shop?.tax !== null)) }}>
+                            {(shop?.tax !== undefined && shop?.tax !== null) ? 'Установлен' : 'Не установлен'}
+                        </div>
+                        {shop?.tax !== undefined && shop?.tax !== null && <span>{formatPrice(shop?.tax, '%')}</span>}
+                        <button style={{ border: 'none', backgroundColor: 'transparent' }} onClick={setTaxAction}>
+                            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path fillRule="evenodd" clipRule="evenodd" d="M0.195262 7.49509L7 0.690357C7.92047 -0.230118 9.41286 -0.230119 10.3333 0.690356C11.2538 1.61083 11.2538 3.10322 10.3333 4.02369L3.5286 10.8284C3.40357 10.9535 3.234 11.0237 3.05719 11.0237H0.666667C0.298477 11.0237 0 10.7252 0 10.357V7.9665C0 7.78969 0.070238 7.62012 0.195262 7.49509ZM1 10.0237V8.10457L7.70711 1.39746C8.23706 0.867512 9.09628 0.867512 9.62623 1.39746C10.1562 1.92741 10.1562 2.78663 9.62623 3.31658L2.91912 10.0237H1Z" fill="#5329FF" />
+                                <path d="M6 9.85702C5.72386 9.85702 5.5 10.0809 5.5 10.357C5.5 10.6332 5.72386 10.857 6 10.857H10.6667C10.9428 10.857 11.1667 10.6332 11.1667 10.357C11.1667 10.0809 10.9428 9.85702 10.6667 9.85702H6Z" fill="#5329FF" />
+                            </svg>
+                        </button>
+                    </div>
                 </div>
                 {getShopStatus(shop.is_active, shop.is_valid, shop.is_primary_collect)?.render}
             </div>

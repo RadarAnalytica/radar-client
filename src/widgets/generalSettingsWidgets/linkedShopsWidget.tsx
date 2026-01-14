@@ -7,13 +7,14 @@ import { useDemoMode } from "@/app/providers";
 import NoSubscriptionWarningBlock from '@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock';
 import { GeneralLayout } from '@/shared';
 import { RadarShopCard } from '@/features';
-import { Input, Form, Button, ConfigProvider, Modal, InputNumber } from 'antd';
+import { Input, Form, Button, ConfigProvider, Modal, InputNumber, Select } from 'antd';
 import { addShop } from '@/service/api/api';
 import WbIcon from "@/assets/WbIcon";
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { editShop } from '@/redux/editShop/editShopActions';
 import { deleteShop } from '@/redux/deleteShop/deleteShopActions';
 import { fetchFilters } from '@/redux/apiServicePagesFiltersState/filterActions';
+import { SelectIcon } from '@/shared';
 
 const initRequestStatus = {
     isLoading: false,
@@ -665,6 +666,15 @@ const TaxSetupModal = ({
                                 },
                                 Button: {
                                     controlHeightLG: 46,
+                                },
+                                Select: {
+                                    activeBorderColor: '#5329FF1A',
+                                    activeOutlineColor: 'transparent',
+                                    hoverBorderColor: '#5329FF1A',
+                                    optionActiveBg: 'transparent',
+                                    optionFontSize: 14,
+                                    optionSelectedBg: 'transparent',
+                                    optionSelectedColor: '#5329FF',
                                 }
                             }
                         }}
@@ -676,8 +686,21 @@ const TaxSetupModal = ({
                             onFinish={submitHandler}
                         >
                             <Form.Item
+                              name='taxType'
+                              label='Тип налога'
+                              className={styles.taxModal__formItem}
+                            >
+                                <Select
+                                    size='large'
+                                    suffixIcon={<SelectIcon />}
+                                    className={styles.plainSelect__select}
+                                    options={[{value: 'УСН Д'}, {value: 'УСН Д-Р'}, {value: 'Не считать налог'}]}
+                                    getPopupContainer={(triggerNode) => triggerNode.parentNode}
+                                />
+                            </Form.Item>
+                            <Form.Item
                                 name='tax'
-                                label='Налог'
+                                label='Ставка налога'
                                 className={styles.taxModal__formItem}
                                 rules={[
                                     { required: true, message: 'Пожалуйста, введите процент налога!' },
@@ -705,7 +728,19 @@ const TaxSetupModal = ({
                                     }}
                                 />
                             </Form.Item>
-
+                            <Form.Item
+                              name='vat'
+                              label=' Ставка НДС'
+                              className={styles.taxModal__formItem}
+                            >
+                                <Select
+                                    size='large'
+                                    suffixIcon={<SelectIcon />}
+                                    className={styles.plainSelect__select}
+                                    options={[{value: 'Без НДС'}, {value: '5%'}, {value: '7%'}, {value: '10%'}, {value: '22%'}]}
+                                    getPopupContainer={(triggerNode) => triggerNode.parentNode}
+                                />
+                            </Form.Item>
                             <div className={styles.taxModal__buttonsWrapper}>
                                 <ConfigProvider
                                     theme={{
@@ -843,3 +878,30 @@ const SuccessAddShopModal = ({ isVisible, onClose }) => {
         </ConfigProvider>
     );
 };
+
+/*
+  <ConfigProvider
+                    renderEmpty={() => (<div>Нет данных</div>)}
+                    theme={{
+                        token: {
+                            colorBgContainer: 'white',
+                            colorBorder: '#5329FF1A',
+                            borderRadius: 8,
+                            fontFamily: 'Manrope',
+                            fontSize: 12,
+                            fontWeight: 500,
+                        },
+                        components: {
+                            Select: {
+                                activeBorderColor: '#5329FF1A',
+                                activeOutlineColor: 'transparent',
+                                hoverBorderColor: '#5329FF1A',
+                                optionActiveBg: 'transparent',
+                                optionFontSize: 14,
+                                optionSelectedBg: 'transparent',
+                                optionSelectedColor: '#5329FF',
+                            }
+                        }
+                    }}
+                >
+                    */
