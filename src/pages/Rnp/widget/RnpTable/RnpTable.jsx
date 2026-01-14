@@ -213,7 +213,7 @@ export default function RnpTable({ columns, data, columns2, data2, expanded, el 
 						bodyCellWrapperStyle={{ borderBottom: 'none', padding: '10.5px 12px', height: '38px' }}
 						headerCellWrapperClassName={styles.headerCellWrapperCustomClassName}
 						customCellRender={{
-							idx: [],
+							idx: tableConfig?.map((col) => col.dataIndex) || [],
 							renderer: customCellRender,
 						}}
 					//benchmark={URL === 'https://test-server-pro.ru'}
