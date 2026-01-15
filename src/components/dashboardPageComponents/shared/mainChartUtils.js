@@ -337,7 +337,7 @@ export const getChartTooltip = (context, chartData) => {
             const targetColor = set.borderColor || set.backgroundColor || 'rgba(240, 173, 0, 1)';
             // Определяем единицы измерения в зависимости от типа данных
             let targetDescr;
-            if (set?.label === 'Roi' || set?.label === 'Маржинальность') {
+            if (set?.label === 'ROI' || set?.label === 'Маржинальность') {
                 targetDescr = ' %';
             } else {
                 targetDescr = set.yAxisID === 'B' ? ' шт' : ' руб';
