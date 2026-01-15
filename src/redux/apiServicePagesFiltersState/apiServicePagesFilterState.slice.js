@@ -60,15 +60,16 @@ const apiServicePagesFilterStateSlice = createSlice({
         }
         if (key === 'activeWeeks' && action.payload[key]) {
           localStorage.removeItem(`SAVED_ACTIVE_WEEKS_${action.payload.activeBrand.id}`)
-          localStorage.setItem(`SAVED_ACTIVE_WEEKS_NEW_${action.payload.activeBrand.id}`, JSON.stringify(action.payload[key]));
+          localStorage.removeItem(`SAVED_ACTIVE_WEEKS_NEW_${action.payload.activeBrand.id}`);
+          localStorage.setItem(`SAVED_ACTIVE_WEEKS_NEW_${action.payload.activeBrand.id}_${action.payload.activeBrand.created_at}`, JSON.stringify(action.payload[key]));
         }
         if (key === 'activeMonths' && action.payload[key]) {
           let previouslySavedMonths = localStorage.getItem('activeMonths')
           if (previouslySavedMonths) {
             previouslySavedMonths = JSON.parse(previouslySavedMonths)
-            localStorage.setItem(`activeMonths`, JSON.stringify({...previouslySavedMonths, [action.payload.activeBrand.id]: action.payload[key]}));
+            localStorage.setItem(`activeMonths`, JSON.stringify({...previouslySavedMonths, [`${action.payload.activeBrand.id}_${action.payload.activeBrand.created_at}`]: action.payload[key]}));
           } else {
-            localStorage.setItem(`activeMonths`, JSON.stringify({[action.payload.activeBrand.id]: action.payload[key]}));
+            localStorage.setItem(`activeMonths`, JSON.stringify({[`${action.payload.activeBrand.id}_${action.payload.activeBrand.created_at}`]: action.payload[key]}));
           }
         }
       });

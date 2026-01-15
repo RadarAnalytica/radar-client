@@ -777,7 +777,7 @@ export function getSavedActiveWeeks(activeBrand) {
   const { id, created_at } = activeBrand
   const minDate = getMinCustomDate(created_at, 68, 'days');
   const weeksListData = weeksList(minDate);
-  let savedActiveWeeks = localStorage.getItem(`SAVED_ACTIVE_WEEKS_NEW_${id}`);
+  let savedActiveWeeks = localStorage.getItem(`SAVED_ACTIVE_WEEKS_NEW_${id}_${created_at}`);
   if (savedActiveWeeks) {
     return JSON.parse(savedActiveWeeks);
   } else {
@@ -797,8 +797,8 @@ export function getSavedActiveMonths(activeBrand) {
   let savedActiveMonths = localStorage.getItem('activeMonths');
   if (savedActiveMonths) {
     const data = JSON.parse(savedActiveMonths);
-    if (id in data) {
-      let months = data[id]
+    if (`${id}_${created_at}` in data) {
+      let months = data[`${id}_${created_at}`]
       const monthFromDate = dayjs(months?.month_from);
       if (monthFromDate.isValid() && monthFromDate.isBefore(minDateObj, 'month')) {
         months = {
