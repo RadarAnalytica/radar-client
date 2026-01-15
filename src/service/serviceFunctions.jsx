@@ -110,7 +110,7 @@ export const ServiceFunctions = {
 	},
 
 	updatUser: async (authToken, userData) => {
-		const res = await fetchApi(`${URL}/api/user/me/update`, {
+		const res = await fetch(`${URL}/api/user/me/update`, {
 			method: 'PATCH',
 			headers: {
 				'content-type': 'application/json',
@@ -122,7 +122,7 @@ export const ServiceFunctions = {
 	},
 
 	updatUserPwd: async (authToken, userData) => {
-		const res = await fetchApi(`${URL}/api/user/me/update-pwd`, {
+		const res = await fetch(`${URL}/api/user/me/update-pwd`, {
 			method: 'PATCH',
 			headers: {
 				'content-type': 'application/json',
