@@ -397,7 +397,8 @@ const EditUserModal: React.FC<EditUserModalProps> = ({
                         name="name"
                         rules={[
                             { required: true, message: 'Введите имя пользователя' },
-                            { whitespace: true, message: 'Имя не может состоять только из пробелов' }
+                            { whitespace: true, message: 'Имя не может состоять только из пробелов' },
+                            { max: 100, message: 'Введите не более 100 символов' },
                         ]}
                         style={{ marginBottom: '20px' }}
                     >
