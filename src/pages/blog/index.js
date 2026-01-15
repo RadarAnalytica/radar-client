@@ -1,5 +1,6 @@
 import BlogList from "./list/BlogList";
-import BlogAdd from "./add/BlogAdd";
-import BlogUpdate from './update/BlogUpdate';
+import BlogForm from "./components/blogForm/BlogForm";
+import CategoryList from "./components/categoryList/CategoryList";
+import CategoryForm from "./components/categoryForm/CategoryForm";
 
-export { BlogList, BlogAdd, BlogUpdate };
+export { BlogList, BlogForm, CategoryList, CategoryForm };

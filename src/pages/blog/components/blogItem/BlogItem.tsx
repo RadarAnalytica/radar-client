@@ -126,14 +126,12 @@ const BlogItem = ({ title, category, preview, created_at, description, is_publis
               <Button
                 loading={status.isLoading}
                 onClick={() => setPostIdForUpdate(rest?.id)}
-                style={{fontWeight: 600}}
                 type='primary'
               >Редактировать</Button>
               <Button
                 onClick={ArticleVisibilityHandler}
                 loading={status.isLoading}
-                style={{fontWeight: 600}}
-              >{is_published ? 'Выключить' : 'Включить'}</Button>
+              >{is_published ? 'Скрыть' : 'Показывать'}</Button>
             </ConfigProvider>
           </div>
           <ConfigProvider
@@ -155,7 +153,6 @@ const BlogItem = ({ title, category, preview, created_at, description, is_publis
               type='primary'
               onClick={() => setIsConfirmationModalActive(true)}
               loading={status.isLoading}
-              style={{fontWeight: 600}}
             >Удалить</Button>
           </ConfigProvider>
         </div>

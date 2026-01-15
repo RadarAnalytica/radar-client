@@ -59,6 +59,50 @@ export const createBlogCategory = async (data, query, token) => {
         throw error;
     }
 };
+
+export const updateBlogCategory = async (categoryId, data, query, token) => {
+    try {
+        const response = await fetch(`${URL}/api/admin/blog/categories/${categoryId}?${query}`, {
+            method: 'PATCH',
+            headers: {
+                'accept': 'application/json',
+                'authorization': 'JWT ' + token,
+            },
+            body: data
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.message || 'Ошибка при обновлении категории');
+        }
+
+        return await response.json();
+    } catch (error) {
+        throw error;
+    }
+};
+
+export const deleteBlogCategory = async (categoryId, token) => {
+    try {
+        const response = await fetch(`${URL}/api/admin/blog/categories/${categoryId}`, {
+            method: 'DELETE',
+            headers: {
+                'accept': 'application/json',
+                'authorization': 'JWT ' + token,
+            },
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json().catch(() => ({}));
+            throw new Error(errorData.message || 'Ошибка при удалении категории');
+        }
+
+        // backend may return empty body for DELETE
+        return await response.json().catch(() => ({}));
+    } catch (error) {
+        throw error;
+    }
+};
 export const addShop = async (data) => {
     const { brandName, tkn, authToken } = data;
     const response = await fetch(URL + '/api/shop/', {

@@ -46,3 +46,29 @@
   align-items: center;
   color: black;
 }
+
+.currentIconWrapper {
+  padding-top: 10px;
+}
+
+.currentIcon {
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
+  border: 1px solid #0000001a;
+  border-radius: 8px;
+  padding: 8px;
+  background: #fafafa;
+}
+
+.iconLink {
+  color: #5329FF;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.iconLink:hover {
+  text-decoration: underline;
+}
+
+
