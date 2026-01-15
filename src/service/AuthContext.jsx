@@ -33,7 +33,6 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(decode(value));
   const [ impersonateUser, setImpersonateUser] = useState(null)
   const [ fullUserData, setFullUserData ] = useState(null)
-  console.log('fullUserData', fullUserData)
   let prevToken = authToken;
 
   useEffect(() => {

@@ -21,7 +21,6 @@ import SubscriptionModal from "@/components/sharedComponents/modals/subscription
 import { ServiceFunctions } from '@/service/serviceFunctions';
 import ErrorModal from '@/components/sharedComponents/modals/errorModal/errorModal';
 import { Link } from 'react-router-dom';
-import { set } from 'date-fns';
 
 const inputTheme = {
     token: {
@@ -73,7 +72,7 @@ const initStatus = {
 
 export const ProfileWidget = () => {
 
-    const { user, authToken, fullUserData } = useContext(AuthContext)
+    const { user, authToken, fullUserData, refreshUser } = useContext(AuthContext)
     const [isEditModalOpen, setIsEditModalOpen] = useState(false)
     const [isChangePasswordModalOpen, setIsChangePasswordModalOpen] = useState(false)
     const [formData, setFormData] = useState({
@@ -82,6 +81,7 @@ export const ProfileWidget = () => {
         phone: ''
     })
     const [status, setStatus] = useState(initStatus)
+    const { isDemoMode } = useDemoMode()
 
     useEffect(() => {
         if (fullUserData) {
@@ -126,6 +126,7 @@ export const ProfileWidget = () => {
                 return;
             }
             setStatus({ ...initStatus, isSuccess: true, message: 'Данные успешно обновлены' })
+            refreshUser()
         } catch (error) {
             console.error('Ошибка при сохранении:', error)
             setStatus({ ...initStatus, isError: true, message: 'Не удалось обновить данные пользователя' })
@@ -261,7 +262,7 @@ export const ProfileWidget = () => {
                 handleCloseEditModal={handleCloseEditModal}
                 formData={formData}
                 handleSaveChanges={handleSaveChanges}
-                fullUserData={fullUserData}
+                status={status}
             />
 
             <ChangePasswordModal
@@ -272,7 +273,7 @@ export const ProfileWidget = () => {
                 status={status}
             />
 
-            <SubscriptonInfo />
+            {!isDemoMode && <SubscriptonInfo />}
 
             <ErrorModal
                 open={status.isError}
@@ -295,7 +296,7 @@ interface EditUserModalProps {
         phone: string;
     };
     handleSaveChanges: (values: any) => void;
-    fullUserData: Record<string, any>
+    status: Record<string, any>
 }
 
 const EditUserModal: React.FC<EditUserModalProps> = ({
@@ -303,7 +304,7 @@ const EditUserModal: React.FC<EditUserModalProps> = ({
     handleCloseEditModal,
     formData,
     handleSaveChanges,
-    fullUserData
+    status
 }) => {
     const [form] = Form.useForm();
 
@@ -514,6 +515,9 @@ const EditUserModal: React.FC<EditUserModalProps> = ({
                             Сохранить изменения
                         </button>
                     </div>
+                    <div className="">
+                        {status.message}
+                    </div>
                 </Form>
             </ConfigProvider>
         </Modal >
@@ -710,7 +714,6 @@ const ChangePasswordModal: React.FC<ChangePasswordModalProps> = ({
 const SubscriptonInfo = () => {
     const navigate = useNavigate();
     const { authToken, user } = useContext(AuthContext);
-    const { isDemoMode } = useDemoMode();
     const [subscriptions, setSubscriptions] = useState([]);
     const [keepSubscriptionId, setKeepSubscriptionId] = useState(null);
     const [openModal, setOpenModal] = useState(false);
@@ -800,9 +803,10 @@ const SubscriptonInfo = () => {
                     setOpenModal(true);
                     setKeepSubscriptionId(subscriptionId);
                 }}
+                style={{ height: 41}}
             >
                 <img src={CloseIcon} alt="Close subscription" className="mr-5" />
-                <span>Отказаться от подписки</span>
+                <span style={{fontSize: 14}}>Отказаться от подписки</span>
             </div>
         );
     };
@@ -901,18 +905,18 @@ const SubscriptionCard = ({ item, rejectSubscription, restoreSubscription }) => 
         'января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'
     ];
 
-    const activeText = item.is_active ? "Активна" : "Неактивна";
-    const activeColor = item.is_active ? "#00B69B" : "#808080";
-    const activeBgColor = item.is_active ? "#00B69B1A" : "#A5A5A51A";
-    const activeWidth = item.is_active ? 120 : 140;
-    const toggleText = item.is_active
+    const activeText = item.active ? "Активна" : "Неактивна";
+    const activeColor = item.active ? "#00B69B" : "#808080";
+    const activeBgColor = item.active ? "#00B69B1A" : "#A5A5A51A";
+    const activeWidth = item.active ? 120 : 140;
+    const toggleText = item.active
         ? rejectSubscription({
             subscriptionId: item.id,
         })
         : restoreSubscription({
             subscriptionId: item.id,
         });
-    const paymentDateEndString = item.end_date;
+    const paymentDateEndString = item.validity_period;
     const paymentDateValue = new Date(Date.parse(paymentDateEndString));
     paymentDateValue.setDate(paymentDateValue.getDate() + 1);
     const paymentDate = `${paymentDateValue.getDate()} ${months[paymentDateValue.getMonth()]} ${paymentDateValue.getFullYear()} года`;

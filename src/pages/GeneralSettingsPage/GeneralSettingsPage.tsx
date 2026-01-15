@@ -4,6 +4,7 @@ import { Segmented, ConfigProvider } from 'antd';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { LinkedShopsWidget, ReferalProgrammWidget, ProfileWidget, UsersWidget, PaymentWidget, TariffsWidget, TariffsWidgetOld } from '@/widgets';
 import { useDemoMode } from '@/app/providers';
+import NoSubscriptionWarningBlock from '@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock';
 
 
 
@@ -66,6 +67,7 @@ const GeneralSettingsPage = () => {
                 hasShadow: false
             }}
         >
+            {isDemoMode && <NoSubscriptionWarningBlock />}
             <ConfigProvider
                 theme={segmentedTheme}
             >

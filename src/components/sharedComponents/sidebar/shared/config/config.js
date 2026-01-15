@@ -144,7 +144,7 @@ export const menuConfig = [
         id: 3,
         name: 'advertising',
         label: 'Моя реклама',
-        icon: menuIcons.seo,
+        icon: menuIcons.adv,
         children: [
             {
                 id: 1,
