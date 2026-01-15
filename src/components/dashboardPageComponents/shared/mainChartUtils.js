@@ -220,7 +220,7 @@ export const getChartData = (dataDashBoard, selectedRange, controlsState) => {
                 },
                 controlsState.isRoiActive
                 ? {
-                    label: 'Roi',
+                    label: 'ROI',
                     type: 'line',
                     borderColor: '#0099FF',
                     yAxisID: 'C', // Отдельная ось для ROI
@@ -233,7 +233,7 @@ export const getChartData = (dataDashBoard, selectedRange, controlsState) => {
                     data: dataDashBoard?.marginalityRoiChart?.map(_ => _.roi) || [],
                 }
                 : {
-                    label: 'Roi',
+                    label: 'ROI',
                     type: 'line',
                     borderColor: '#0099FF',
                     yAxisID: 'C', // Отдельная ось для ROI

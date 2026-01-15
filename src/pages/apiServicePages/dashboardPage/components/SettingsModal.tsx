@@ -9,7 +9,7 @@ import {
     Flex,
     Input,
 } from 'antd';
-import { DndContext, closestCenter, DragEndEvent, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
+import { DndContext, closestCenter, DragEndEvent, DragStartEvent, DragOverlay, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
 import { SortableContext, useSortable, verticalListSortingStrategy, arrayMove } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { restrictToVerticalAxis, restrictToParentElement } from '@dnd-kit/modifiers';
@@ -101,6 +101,7 @@ export const SettingsModal: React.FC<ISettingsModalProps> = (
     const [activeSearchValue, setActiveSearchValue] = useState(''); // Активное значение для фильтрации
     const [displayItems, setDisplayItems] = useState<Array<Record<string, any>>>([]);
     const [originalItems, setOriginalItems] = useState<Array<Record<string, any>>>([]);
+    const [activeId, setActiveId] = useState<string | null>(null);
     
     // Отслеживаем изменения формы для обновления текста кнопки
     const formValues = Form.useWatch([], form);
@@ -149,8 +150,13 @@ export const SettingsModal: React.FC<ISettingsModalProps> = (
         });
     }, [filteredItems, formValues, form]);
 
+    const handleDragStart = (event: DragStartEvent) => {
+        setActiveId(event.active.id as string);
+    };
+
     const handleDragEnd = (event: DragEndEvent) => {
         const { active, over } = event;
+        setActiveId(null);
         if (over && active.id !== over.id) {
             setDisplayItems((currentItems) => {
                 const oldIndex = currentItems.findIndex(item => item.id === active.id);
@@ -163,6 +169,12 @@ export const SettingsModal: React.FC<ISettingsModalProps> = (
             });
         }
     };
+
+    // Находим активный элемент для DragOverlay
+    const activeItem = useMemo(() => {
+        if (!activeId) return null;
+        return displayItems.find(item => item.id === activeId);
+    }, [activeId, displayItems]);
 
     const handleSelectAll = () => {
         const allChecked = filteredItems.every(item => {
@@ -193,9 +205,10 @@ export const SettingsModal: React.FC<ISettingsModalProps> = (
     const handleOk = () => {
         form.validateFields().then(values => {
             // Обновляем только элементы с dropKey === '1' (с новым порядком и видимостью)
+            // Для элементов, которые были скрыты поиском, сохраняем их текущее значение isVisible
             const updatedDropKey1Items: Array<Record<string, any>> = displayItems.map((item: Record<string, any>) => ({ 
                 ...item, 
-                isVisible: values[item.id] 
+                isVisible: values[item.id] !== undefined ? values[item.id] : item.isVisible
             }));
             
             // Создаем карту обновленных элементов для быстрого поиска
@@ -447,6 +460,7 @@ export const SettingsModal: React.FC<ISettingsModalProps> = (
                     <DndContext
                         sensors={sensors}
                         collisionDetection={closestCenter}
+                        onDragStart={handleDragStart}
                         onDragEnd={handleDragEnd}
                         modifiers={[restrictToVerticalAxis, restrictToParentElement]}
                     >
@@ -471,6 +485,33 @@ export const SettingsModal: React.FC<ISettingsModalProps> = (
                                 ) : null}
                             </div>
                         </SortableContext>
+                        <DragOverlay>
+                            {activeItem ? (
+                                <div className={styles.sortableItem} style={{ 
+                                    opacity: 1,
+                                    backgroundColor: '#f5f5f5',
+                                    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.15)',
+                                    cursor: 'grabbing'
+                                }}>
+                                    <div className={styles.dragHandle}>
+                                        <svg width="16" height="20" viewBox="0 0 16 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M2 2.62268e-07C3.10457 4.07115e-07 4 0.89543 4 2C4 3.10457 3.10457 4 2 4C0.895433 4 2.21557e-06 3.10457 2.36042e-06 2C2.50526e-06 0.89543 0.895433 1.17422e-07 2 2.62268e-07Z" fill="#999999" />
+                                            <path d="M14 16C15.1046 16 16 16.8954 16 18C16 19.1046 15.1046 20 14 20C12.8954 20 12 19.1046 12 18C12 16.8954 12.8954 16 14 16Z" fill="#999999" />
+                                            <path d="M2 16C3.10457 16 4 16.8954 4 18C4 19.1046 3.10457 20 2 20C0.895432 20 2.21557e-06 19.1046 2.36042e-06 18C2.50526e-06 16.8954 0.895433 16 2 16Z" fill="#999999" />
+                                            <path d="M14 8C15.1046 8 16 8.89543 16 10C16 11.1046 15.1046 12 14 12C12.8954 12 12 11.1046 12 10C12 8.89543 12.8954 8 14 8Z" fill="#999999" />
+                                            <path d="M2 8C3.10457 8 4 8.89543 4 10C4 11.1046 3.10457 12 2 12C0.895433 12 2.21557e-06 11.1046 2.36042e-06 10C2.50526e-06 8.89543 0.895433 8 2 8Z" fill="#999999" />
+                                            <path d="M14 -7.14702e-08C15.1046 7.33766e-08 16 0.89543 16 2C16 3.10457 15.1046 4 14 4C12.8954 4 12 3.10457 12 2C12 0.895429 12.8954 -2.16317e-07 14 -7.14702e-08Z" fill="#999999" />
+                                        </svg>
+                                    </div>
+                                    <Checkbox 
+                                        checked={form.getFieldValue(activeItem.id) !== false} 
+                                        className={styles.checkbox}
+                                    >
+                                        {activeItem.title}
+                                    </Checkbox>
+                                </div>
+                            ) : null}
+                        </DragOverlay>
                     </DndContext>
                 </Form>
             </Modal>

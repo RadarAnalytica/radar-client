@@ -121,7 +121,7 @@ const MainChartControls = ({ constrolsState, setControlsState }) => {
                         onChange={controlsCheckboxHandler}
                     >
                         <label className={styles.controls__label}>
-                           Roi, %
+                           ROI, %
                         </label>
                     </Checkbox>
                 </ConfigProvider>
