@@ -367,10 +367,13 @@
 .banner__mainImageWrapper {
     position: absolute;
     top: 0;
-    right: -120px;
+    right: 0;
     bottom: 0;
     z-index: 1;
 
+    @media (max-width: 1880px) {
+       right: -120px
+    }
     @media (max-width: 1430px) {
        right: -35px
     }
