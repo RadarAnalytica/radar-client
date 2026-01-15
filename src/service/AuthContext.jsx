@@ -32,6 +32,8 @@ export const AuthProvider = ({ children }) => {
   const [adminToken, setAdminToken] = useState();
   const [user, setUser] = useState(decode(value));
   const [ impersonateUser, setImpersonateUser] = useState(null)
+  const [ fullUserData, setFullUserData ] = useState(null)
+  console.log('fullUserData', fullUserData)
   let prevToken = authToken;
 
   useEffect(() => {
@@ -47,6 +49,28 @@ export const AuthProvider = ({ children }) => {
 
     console.log('user', user);
   }, [value]);
+
+
+  useEffect(() => {
+    const getUserData = async () => {
+      let res = await fetch(`${URL}/api/user/`, {
+        headers: {
+          'content-type': 'application/json',
+          'authorization': 'JWT ' + authToken
+        }
+      })
+
+      if (!res.ok) {
+        return;
+      }
+
+      res = await res.json();
+      setFullUserData(res)
+    }
+    if (user && authToken) {
+      getUserData()
+    }
+  }, [user, authToken])
 
 
   // To delete the cookie:
@@ -354,9 +378,10 @@ export const AuthProvider = ({ children }) => {
       adminToken,
       setAuthToken,
       impersonateUser,
-      setImpersonateUser
+      setImpersonateUser,
+      fullUserData
     }),
-    [user, authToken]
+    [user, authToken, fullUserData]
   );
 
   // useEffect(() => {

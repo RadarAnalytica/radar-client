@@ -1,19 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { GeneralLayout } from '@/shared';
 import { Segmented, ConfigProvider } from 'antd';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { LinkedShopsWidget, ReferalProgrammWidget, ProfileWidget, UsersWidget, PaymentWidget, TariffsWidget, TariffsWidgetOld } from '@/widgets';
+import { useDemoMode } from '@/app/providers';
 
-const segmentedOptions = [
-    { value: 'profile', label: 'Профиль' },
-    { value: 'shops', label: 'Подключенные магазины' },
-    // { value: 'users', label: 'Настройки пользователей' },
-    { value: 'payments', label: 'История платежей' },
-    { value: 'referral', label: 'Реферальная программа' },
-    { value: 'tariffs', label: 'Тарифы' },
-    { value: 'tariffsNew', label: 'Тарифы2' },
-    // { value: 'notifications', label: 'Бот уведомлений' },
-];
+
 
 const segmentedTheme = {
     token: {
@@ -41,6 +33,21 @@ const segmentedTheme = {
 const GeneralSettingsPage = () => {
     const [activeTab, setActiveTab] = useState(null)
     const location = useLocation()
+    const navigate = useNavigate()
+    const { isDemoUser, isDemoMode } = useDemoMode();
+
+    const segmentedOptions = useMemo(() => {
+        return [
+            { value: 'profile', label: 'Профиль' },
+            { value: 'shops', label: 'Подключенные магазины' },
+            // { value: 'users', label: 'Настройки пользователей' },
+            { value: 'payments', label: 'История платежей',  disabled: isDemoUser || isDemoMode },
+            { value: 'referral', label: 'Реферальная программа', disabled: isDemoUser || isDemoMode},
+            { value: 'tariffs', label: 'Тарифы' },
+            // { value: 'tariffsNew', label: 'Тарифы2' },
+            // { value: 'notifications', label: 'Бот уведомлений' },
+        ];
+    }, [isDemoUser])
 
     useEffect(() => {
        const { state } = location;
@@ -65,7 +72,13 @@ const GeneralSettingsPage = () => {
                 <Segmented
                     options={segmentedOptions}
                     value={activeTab}
-                    onChange={setActiveTab}
+                    onChange={(value) => {
+                        navigate(location.pathname, {
+                            state: { tab: value },
+                            replace: true
+                        })
+                        setActiveTab(value)
+                    }}
                 />
             </ConfigProvider>
 

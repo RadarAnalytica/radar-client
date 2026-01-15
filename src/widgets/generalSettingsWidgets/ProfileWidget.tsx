@@ -20,6 +20,8 @@ import Breadcrumbs from "@/components/sharedComponents/header/headerBreadcrumbs/
 import SubscriptionModal from "@/components/sharedComponents/modals/subscriptionModal/subscriptionModal";
 import { ServiceFunctions } from '@/service/serviceFunctions';
 import ErrorModal from '@/components/sharedComponents/modals/errorModal/errorModal';
+import { Link } from 'react-router-dom';
+import { set } from 'date-fns';
 
 const inputTheme = {
     token: {
@@ -71,7 +73,7 @@ const initStatus = {
 
 export const ProfileWidget = () => {
 
-    const { user, authToken } = useContext(AuthContext)
+    const { user, authToken, fullUserData } = useContext(AuthContext)
     const [isEditModalOpen, setIsEditModalOpen] = useState(false)
     const [isChangePasswordModalOpen, setIsChangePasswordModalOpen] = useState(false)
     const [formData, setFormData] = useState({
@@ -80,17 +82,16 @@ export const ProfileWidget = () => {
         phone: ''
     })
     const [status, setStatus] = useState(initStatus)
-    console.log(status)
 
     useEffect(() => {
-        if (user) {
+        if (fullUserData) {
             setFormData({
-                name: user?.name || '',
-                email: user?.email || '',
-                phone: user?.phone || ''
+                name: fullUserData?.firstname || '',
+                email: fullUserData?.email || '',
+                phone: fullUserData?.phone || ''
             })
         }
-    }, [user])
+    }, [fullUserData])
 
     const handleOpenEditModal = () => {
         setIsEditModalOpen(true)
@@ -124,8 +125,7 @@ export const ProfileWidget = () => {
                 setStatus({ ...initStatus, isError: true, message: 'Не удалось обновить данные пользователя' });
                 return;
             }
-            setIsEditModalOpen(false)
-            setStatus({ ...initStatus })
+            setStatus({ ...initStatus, isSuccess: true, message: 'Данные успешно обновлены' })
         } catch (error) {
             console.error('Ошибка при сохранении:', error)
             setStatus({ ...initStatus, isError: true, message: 'Не удалось обновить данные пользователя' })
@@ -142,8 +142,7 @@ export const ProfileWidget = () => {
                 setStatus({ ...initStatus, isError: true, message: 'Не удалось обновить данные пользователя' });
                 return;
             }
-            setIsChangePasswordModalOpen(false)
-            setStatus({ ...initStatus })
+            setStatus({ ...initStatus, isSuccess: true, message: 'Пароль успешно изменен' })
         } catch (error) {
             console.error('Ошибка при сохранении:', error)
             setStatus({ ...initStatus, isError: true, message: 'Не удалось обновить данные пользователя' })
@@ -195,6 +194,19 @@ export const ProfileWidget = () => {
         }
     ];
 
+    useEffect(() => {
+        let timeout: ReturnType<typeof setTimeout> | undefined;
+        if (status.isSuccess) {
+            timeout = setTimeout(() => {
+                setIsChangePasswordModalOpen(false)
+                setIsEditModalOpen(false)
+                setStatus(initStatus)
+            }, 2000)
+        }
+
+        return () => timeout && clearTimeout(timeout)
+    }, [status])
+
     return (
         <>
             <div className={styles.widget__userInfoBlock}>
@@ -219,7 +231,7 @@ export const ProfileWidget = () => {
                         <path d="M16 16C18.7614 16 21 13.7614 21 11C21 8.23858 18.7614 6 16 6C13.2386 6 11 8.23858 11 11C11 13.7614 13.2386 16 16 16Z" fill="#5329FF" />
                         <path d="M16 26C20.4183 26 24 23.9853 24 21.5C24 19.0147 20.4183 17 16 17C11.5817 17 8 19.0147 8 21.5C8 23.9853 11.5817 26 16 26Z" fill="#5329FF" />
                     </svg>
-                    {user?.name ?? 'Железный человек'}
+                    {fullUserData?.firstname ?? 'Железный человек'}
                 </div>
 
                 <hr style={{ height: '1px', backgroundColor: '#E8E8E8', margin: 0, padding: 0, opacity: '10%' }} />
@@ -230,7 +242,7 @@ export const ProfileWidget = () => {
                             Телефон
                         </span>
                         <span className={styles.widget__mainInfoValue}>
-                            {user?.phone ?? '—'}
+                            {(!fullUserData?.phone || fullUserData?.phone?.trim() === '+7') ? '—' : fullUserData?.phone}
                         </span>
                     </div>
                     <div className={styles.widget__mainInfoItem}>
@@ -249,6 +261,7 @@ export const ProfileWidget = () => {
                 handleCloseEditModal={handleCloseEditModal}
                 formData={formData}
                 handleSaveChanges={handleSaveChanges}
+                fullUserData={fullUserData}
             />
 
             <ChangePasswordModal
@@ -256,6 +269,7 @@ export const ProfileWidget = () => {
                 handleCloseChangePasswordModal={handleCloseChangePasswordModal}
                 handleChangePassword={handleChangePassword}
                 handleForgotPassword={handleForgotPassword}
+                status={status}
             />
 
             <SubscriptonInfo />
@@ -281,13 +295,15 @@ interface EditUserModalProps {
         phone: string;
     };
     handleSaveChanges: (values: any) => void;
+    fullUserData: Record<string, any>
 }
 
 const EditUserModal: React.FC<EditUserModalProps> = ({
     isEditModalOpen,
     handleCloseEditModal,
     formData,
-    handleSaveChanges
+    handleSaveChanges,
+    fullUserData
 }) => {
     const [form] = Form.useForm();
 
@@ -298,6 +314,10 @@ const EditUserModal: React.FC<EditUserModalProps> = ({
             phone: formData.phone ? formatPhoneNumber(formData.phone) : '+7 '
         };
         form.setFieldsValue(formattedData);
+
+        return () => {
+            form.resetFields()
+        }
     }, [formData, form]);
 
     const handleFinish = (values: any) => {
@@ -365,13 +385,13 @@ const EditUserModal: React.FC<EditUserModalProps> = ({
                     layout="vertical"
                     onFinish={handleFinish}
                     style={{ marginTop: '24px' }}
-                    requiredMark={false}
+                    // requiredMark={false}
                 >
                     <Form.Item
                         label={<span style={{ fontSize: '12px', color: '#1A1A1A', fontWeight: 500 }}>Имя пользователя</span>}
                         name="name"
                         rules={[
-                            { required: true, message: 'Имя не может быть пустым' },
+                            { required: true, message: 'Введите имя пользователя' },
                             { whitespace: true, message: 'Имя не может состоять только из пробелов' }
                         ]}
                         style={{ marginBottom: '20px' }}
@@ -386,7 +406,7 @@ const EditUserModal: React.FC<EditUserModalProps> = ({
                         />
                     </Form.Item>
 
-                    <Form.Item
+                    {/* <Form.Item
                         label={<span style={{ fontSize: '12px', color: '#1A1A1A', fontWeight: 500 }}>Контактная почта</span>}
                         name="email"
                         style={{ marginBottom: '20px' }}
@@ -401,12 +421,13 @@ const EditUserModal: React.FC<EditUserModalProps> = ({
                                 fontSize: '14px'
                             }}
                         />
-                    </Form.Item>
+                    </Form.Item> */}
 
                     <Form.Item
                         label={<span style={{ fontSize: '12px', color: '#1A1A1A', fontWeight: 500 }}>Телефон</span>}
                         name="phone"
                         rules={[
+                            {required: true},
                             {
                                 validator: (_, value) => {
                                     if (!value || value === '+7 ') {
@@ -504,13 +525,15 @@ interface ChangePasswordModalProps {
     handleCloseChangePasswordModal: () => void;
     handleChangePassword: (values: any) => void;
     handleForgotPassword: () => void;
+    status: Record<string, any>
 }
 
 const ChangePasswordModal: React.FC<ChangePasswordModalProps> = ({
     isChangePasswordModalOpen,
     handleCloseChangePasswordModal,
     handleChangePassword,
-    handleForgotPassword
+    handleForgotPassword,
+    status
 }) => {
     const [form] = Form.useForm();
 
@@ -518,6 +541,12 @@ const ChangePasswordModal: React.FC<ChangePasswordModalProps> = ({
         handleChangePassword(values);
         form.resetFields();
     };
+
+    useEffect(() => {
+        return () => {
+            form.resetFields()
+        }
+    }, [])
 
     return (
         <Modal
@@ -541,7 +570,7 @@ const ChangePasswordModal: React.FC<ChangePasswordModalProps> = ({
                     layout="vertical"
                     onFinish={handleFinish}
                     style={{ marginTop: '24px' }}
-                    requiredMark={false}
+                    // requiredMark={false}
                 >
                     <Form.Item
                         label={<span style={{ fontSize: '12px', color: '#1A1A1A', fontWeight: 500 }}>Текущий пароль</span>}
@@ -560,8 +589,8 @@ const ChangePasswordModal: React.FC<ChangePasswordModalProps> = ({
                             }}
                         />
                     </Form.Item>
-                    <a
-                        onClick={handleForgotPassword}
+                    <Link
+                        to='/reset'
                         style={{
                             fontSize: '12px',
                             color: '#5329FF',
@@ -574,7 +603,7 @@ const ChangePasswordModal: React.FC<ChangePasswordModalProps> = ({
                         }}
                     >
                         Не помню текущий пароль
-                    </a>
+                    </Link>
 
                     <Form.Item
                         label={<span style={{ fontSize: '12px', color: '#1A1A1A', fontWeight: 500 }}>Новый пароль</span>}
@@ -582,7 +611,7 @@ const ChangePasswordModal: React.FC<ChangePasswordModalProps> = ({
                         dependencies={['password']}
                         rules={[
                             { required: true, message: 'Введите новый пароль' },
-                            { min: 6, message: 'Пароль должен содержать минимум 5 символов' },
+                            { min: 6, message: 'Пароль должен содержать минимум 6 символов' },
                             ({ getFieldValue }) => ({
                                 validator(_, value) {
                                     if (!value || getFieldValue('password') !== value) {
@@ -595,7 +624,7 @@ const ChangePasswordModal: React.FC<ChangePasswordModalProps> = ({
                         style={{ marginBottom: '20px' }}
                     >
                         <Input.Password
-                            placeholder="От 5 знаков, используйте заглавные"
+                            placeholder="От 6 знаков, используйте заглавные"
                             style={{
                                 height: '38px',
                                 borderRadius: '8px',
@@ -668,6 +697,9 @@ const ChangePasswordModal: React.FC<ChangePasswordModalProps> = ({
                             Сохранить изменения
                         </button>
                     </div>
+                    <div className="">
+                        {status.message}
+                    </div>
                 </Form>
             </ConfigProvider>
         </Modal >
@@ -702,7 +734,7 @@ const SubscriptonInfo = () => {
 
     useEffect(() => {
         const checkSubscriptions = async () => {
-            const data = await fetchSubscriptions();
+            await fetchSubscriptions();
         };
 
         if (user?.subscription_status === 'expired') {

@@ -24,7 +24,7 @@ const initRequestStatus = {
 };
 
 export const LinkedShopsWidget = () => {
-    const { isDemoMode } = useDemoMode();
+    const { isDemoMode, isDemoUser } = useDemoMode();
     const { authToken } = useContext(AuthContext);
     const location = useLocation();
     const [statusBarState, setStatusBarState] = useState({
@@ -40,6 +40,7 @@ export const LinkedShopsWidget = () => {
     const lastOperationTypeRef = useRef<'add' | 'edit' | 'delete' | 'tax' | null>(null);
     const dispatch = useAppDispatch();
     const shops = useAppSelector((state) => state.shopsSlice.shops);
+    console.log(shops)
     const firstMountRef = useRef(true)
 
     const addOrEditSubmitHandler = async (fields) => {
@@ -106,9 +107,11 @@ export const LinkedShopsWidget = () => {
     // }, [location.pathname]);
 
     useLayoutEffect(() => {
-        //@ts-ignore
-        dispatch(fetchShops(authToken))
-    }, [])
+        if (!isDemoUser && !isDemoMode) {
+            //@ts-ignore
+            dispatch(fetchShops(authToken))
+        }
+    }, [isDemoUser, isDemoMode])
 
 
     useEffect(() => {
@@ -686,15 +689,15 @@ const TaxSetupModal = ({
                             onFinish={submitHandler}
                         >
                             <Form.Item
-                              name='taxType'
-                              label='Тип налога'
-                              className={styles.taxModal__formItem}
+                                name='taxType'
+                                label='Тип налога'
+                                className={styles.taxModal__formItem}
                             >
                                 <Select
                                     size='large'
                                     suffixIcon={<SelectIcon />}
                                     className={styles.plainSelect__select}
-                                    options={[{value: 'УСН Д'}, {value: 'УСН Д-Р'}, {value: 'Не считать налог'}]}
+                                    options={[{ value: 'УСН Д' }, { value: 'УСН Д-Р' }, { value: 'Не считать налог' }]}
                                     getPopupContainer={(triggerNode) => triggerNode.parentNode}
                                 />
                             </Form.Item>
@@ -729,15 +732,15 @@ const TaxSetupModal = ({
                                 />
                             </Form.Item>
                             <Form.Item
-                              name='vat'
-                              label=' Ставка НДС'
-                              className={styles.taxModal__formItem}
+                                name='vat'
+                                label=' Ставка НДС'
+                                className={styles.taxModal__formItem}
                             >
                                 <Select
                                     size='large'
                                     suffixIcon={<SelectIcon />}
                                     className={styles.plainSelect__select}
-                                    options={[{value: 'Без НДС'}, {value: '5%'}, {value: '7%'}, {value: '10%'}, {value: '22%'}]}
+                                    options={[{ value: 'Без НДС' }, { value: '5%' }, { value: '7%' }, { value: '10%' }, { value: '22%' }]}
                                     getPopupContainer={(triggerNode) => triggerNode.parentNode}
                                 />
                             </Form.Item>

@@ -32,7 +32,7 @@
 
 .modal {
     width: 100%;
-    max-width: 1022px;
+    max-width: 700px;
     border-radius: 20px;
     position: relative;
     background-color: white;
@@ -83,7 +83,7 @@
 
 .modal__header {
     width: 100%;
-    padding: 50px;
+    padding: 25px;
     position: relative;
     overflow: hidden;
     border-top-right-radius: 20px;
@@ -111,8 +111,9 @@
     text-align: inherit;
     position: relative;
     z-index: 1;
+    font-size: 22px;
 
-    font-size: 52px;
+    /* font-size: 52px;
 
     @media (max-width: 1680px) {
         font-size: 42px;
@@ -122,7 +123,7 @@
     }
     @media (max-width: 600px) {
         font-size: 30px;
-    }
+    } */
 }
 
 .modal__bodyTitle {
@@ -135,9 +136,9 @@
     line-height: 120%;
     text-align: inherit;
 
-    font-size: 46px;
+    font-size: 22px;
 
-    @media (max-width: 1680px) {
+    /* @media (max-width: 1680px) {
         font-size: 40px;
     }
     @media (max-width: 1440px) {
@@ -145,7 +146,7 @@
     }
     @media (max-width: 600px) {
         font-size: 26px;
-    }
+    } */
 }
 .modal__listTitle {
     font-family: 'Manrope';
@@ -157,9 +158,9 @@
     line-height: 120%;
     text-align: inherit;
 
-    font-size: 28px;
+    font-size: 18px;
 
-    @media (max-width: 1680px) {
+    /* @media (max-width: 1680px) {
         font-size: 22px;
     }
     @media (max-width: 1440px) {
@@ -167,21 +168,21 @@
     }
     @media (max-width: 600px) {
         font-size: 18px;
-    }
+    } */
 }
 
 .modal__actionButton {
     border: none;
     text-decoration: none;
-    border-radius: 10px;
+    border-radius: 8px;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 12px;
     color: white;
     font-family: 'Manrope';
-    font-weight: 500;
-    font-size: 20px;
+    font-weight: 600;
+    font-size: 14px;
     line-height: 140%;
     letter-spacing: 0%;
     width: max-content;
@@ -193,7 +194,8 @@
     backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
     transition: all .2s ease;
-    padding: 20px 24px;
+    padding: 0 12px;
+    height: 46px;
 
     @media (max-width: 480px) {
         padding: 20px 25px;
@@ -202,7 +204,8 @@
 }
 
 .modal__actionButton:hover {
-    background-color: #4D6ECC;
+    background-color: #4D6ECC !important;
+    color: white !important;
     transform: scale(.98);
     -webkit-transform: scale(.98);
 }
@@ -234,10 +237,10 @@
 
 .modal__body {
     width: 100%;
-    padding: 50px;
+    padding: 25px;
     display: flex;
     flex-direction: column;
-    gap: 40px;
+    gap: 25px;
 
     @media (max-width: 1050px) {
         padding: 20px 30px 30px;
@@ -280,7 +283,7 @@
     background-color: #E0EBFF;
     font-family: Manrope;
     font-weight: 500;
-    font-size: 22px;
+    font-size: 18px;
     line-height: 140%;
     letter-spacing: 0%;
     text-decoration: line-through;
@@ -302,7 +305,7 @@
     width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 14px;
+    gap: 8px;
     margin: 0;
     padding: 0;
     list-style-type: none;
@@ -318,11 +321,11 @@
     gap: 14px;
     font-family: Manrope;
     font-weight: 500;
-    font-size: 22px;
+    font-size: 14px;
     line-height: 140%;
     letter-spacing: 0%;
 
-    @media (max-width: 1919px) {
+    /* @media (max-width: 1919px) {
         font-size: 18px;
     }
 
@@ -336,7 +339,7 @@
 
     @media (max-width: 600px) {
         font-size: 15px;
-    }
+    } */
 }
 
 .modal__listItem svg {

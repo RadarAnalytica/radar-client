@@ -17,11 +17,11 @@ const tableConfig = [
         dataIndex: 'description',
         title: 'Тип платежа'
     },
-    {
-        key: 'period',
-        dataIndex: 'period',
-        title: 'Длительность'
-    },
+    // {
+    //     key: 'period',
+    //     dataIndex: 'period',
+    //     title: 'Длительность'
+    // },
     {
         key: 'amount',
         dataIndex: 'amount',
@@ -79,7 +79,7 @@ export const PaymentWidget = () => {
                 <RadarTable
                     key={JSON.stringify(tableData)}
                     config={tableConfig}
-                    dataSource={tableData}
+                    dataSource={tableData.length > 0 ? tableData : []}
                     scrollContainerRef={tableContainerRef}
                     preset='radar-table-default'
                     style={{ width: '100%', tableLayout: 'fixed' }}

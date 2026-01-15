@@ -1,6 +1,8 @@
 import styles from './headerMenu.module.css';
 import { Link } from 'react-router-dom';
 import CloseIcon from '../../../../assets/CloseIcon.svg';
+import { useMemo } from 'react';
+import { getDayDeclension } from '@/service/utils';
 
 const menuConfig = [
     {
@@ -37,7 +39,30 @@ const menuConfig = [
     },
 ]
 
-const HeaderMenu = ({ popoverCloseHandler, logout, user }) => {
+const HeaderMenu = ({ popoverCloseHandler, logout, user, fullUserData }) => {
+    const subscriptionData = useMemo(() => {
+        if (!fullUserData) return null;
+        
+        const subscriptionData = {
+            name: 'Нет подписки',
+            daysLeft: 0
+        };
+
+        if (fullUserData?.subscription_status && fullUserData.subscription_status !== 'expired') {
+            subscriptionData.name = fullUserData.subscription_status;
+        }
+
+        if (fullUserData?.subscription_end_date) {
+            const endDate = new Date(fullUserData.subscription_end_date);
+            const currentDate = new Date();
+            const diffTime = endDate - currentDate;
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            subscriptionData.daysLeft = diffDays > 0 ? diffDays : 0;
+        }
+
+        return subscriptionData;
+    }, [fullUserData])
+
     return (
         <div
             className={styles.menu}
@@ -53,16 +78,18 @@ const HeaderMenu = ({ popoverCloseHandler, logout, user }) => {
                         <path d="M7.5 9.5C8.60457 9.5 9.5 8.60457 9.5 7.5C9.5 6.39543 8.60457 5.5 7.5 5.5C6.39543 5.5 5.5 6.39543 5.5 7.5C5.5 8.60457 6.39543 9.5 7.5 9.5Z" fill="#5329FF" />
                         <path fillRule="evenodd" clipRule="evenodd" d="M9.5981 0H4.3599C1.952 0 0 1.95283 0 4.36177V9.16637C0 10.2824 0.427607 11.356 1.19482 12.1662L7.32343 18.638C8.98108 20.3885 11.744 20.4613 13.4914 18.8005L18.643 13.9044C20.387 12.2469 20.4596 9.48942 18.8052 7.74236L12.7632 1.36198C11.9398 0.492505 10.7953 0 9.5981 0ZM7.5 11C9.433 11 11 9.433 11 7.5C11 5.567 9.433 4 7.5 4C5.567 4 4 5.567 4 7.5C4 9.433 5.567 11 7.5 11ZM11.5303 15.5303L15.5303 11.5303C15.8232 11.2374 15.8232 10.7626 15.5303 10.4697C15.2374 10.1768 14.7626 10.1768 14.4697 10.4697L10.4697 14.4697C10.1768 14.7626 10.1768 15.2374 10.4697 15.5303C10.7626 15.8232 11.2374 15.8232 11.5303 15.5303Z" fill="#5329FF" />
                     </svg>
-                    {user?.subscription_status?.toString() ?? 'Нет подписки'}
+                    {subscriptionData?.name ?? 'Нет подписки'}
                 </div>
-                <span className={styles.menu__subscriptionLeft}>
-                    Осталось 14 дней
-                </span>
+                {subscriptionData?.daysLeft > 0 && (
+                    <span className={styles.menu__subscriptionLeft}>
+                        Осталось {getDayDeclension(subscriptionData?.daysLeft)}
+                    </span>
+                )}
             </div>
 
             <div className={styles.menu__userInfo}>
-                <span className={styles.menu__userName}>{user?.name ?? 'Железный Человек'}</span>
-                <span className={styles.menu__userEmail}>{user?.email ?? 'no email'}</span>
+                <span className={styles.menu__userName}>{fullUserData?.firstname ?? 'Железный Человек'}</span>
+                <span className={styles.menu__userEmail}>{fullUserData?.email ?? 'no email'}</span>
             </div>
 
             <ul className={styles.menu__linkList}>

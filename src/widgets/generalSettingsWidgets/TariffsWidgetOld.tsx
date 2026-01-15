@@ -762,6 +762,7 @@ export const TariffsWidgetOld = () => {
                 visible={descriptionItem ? true : false}
                 setIsModalVisible={() => setDescriptionItem(null)}
                 item={descriptionItem}
+                isWidgetActive={isWidgetActive}
                 action={() => {
                     if (import.meta.env.PROD && URL === 'https://radar-analytica.ru') {
                         setActivatedSubscription(descriptionItem.title);

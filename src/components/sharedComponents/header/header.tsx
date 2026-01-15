@@ -67,6 +67,8 @@ const Header = ({
     setImpersonateUser,
     //@ts-ignore
     setAuthToken,
+    //@ts-ignore
+    fullUserData
   } = useContext(AuthContext) as AuthContextType;
 
   // стейт видимости поповера меню
@@ -212,7 +214,7 @@ const Header = ({
 
               <Popover
                 {...popoverOptions}
-                content={<HeaderMenu popoverCloseHandler={menuPopoverCloseHandler} logout={logout} user={user} />}
+                content={<HeaderMenu popoverCloseHandler={menuPopoverCloseHandler} fullUserData={fullUserData} logout={logout} user={user} />}
                 open={isMenuPopoverVisible}
                 onOpenChange={menuPopoverOpenHandler}
                 className={styles.header__popover}
