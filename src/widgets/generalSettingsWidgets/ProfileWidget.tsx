@@ -628,7 +628,7 @@ const ChangePasswordModal: React.FC<ChangePasswordModalProps> = ({
                         style={{ marginBottom: '20px' }}
                     >
                         <Input.Password
-                            placeholder="От 6 знаков, используйте заглавные"
+                            placeholder="От 6 символов"
                             style={{
                                 height: '38px',
                                 borderRadius: '8px',
@@ -655,7 +655,7 @@ const ChangePasswordModal: React.FC<ChangePasswordModalProps> = ({
                         style={{ marginBottom: '20px' }}
                     >
                         <Input.Password
-                            placeholder="Повторите"
+                            placeholder="Повторите пароль"
                             style={{
                                 height: '38px',
                                 borderRadius: '8px',
