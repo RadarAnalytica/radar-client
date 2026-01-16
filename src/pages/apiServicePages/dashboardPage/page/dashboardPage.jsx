@@ -163,7 +163,7 @@ const barsConfig = [
                 hasColoredBackground
                 compareValue={{
                     comparativeValue: dataDashBoard?.buyoutPercentCompare,
-                    absoluteValue: dataDashBoard?.prev_buyoutPercent,
+                    absoluteValue: dataDashBoard?.prev_BuyoutPercent,
                     absoluteValueUnits: '%',
                     tooltipText: 'Значение предыдущего периода'
                 }}
@@ -635,7 +635,9 @@ const barsConfig = [
                 hasColoredBackground
                 compareValue={{
                     comparativeValue: dataDashBoard?.proceedsCompare,
-                    // tooltipText: 'Значение предыдущего периода'
+                    absoluteValue: dataDashBoard?.prev_sale_amount,
+                    absoluteValueUnits: '₽',
+                    tooltipText: 'Значение предыдущего периода'
                 }}
                 isLoading={loading}
                 dragHandle={() => <DragHandle context={DragHandleContext} />}
@@ -657,7 +659,9 @@ const barsConfig = [
                 hasColoredBackground
                 compareValue={{
                     comparativeValue: dataDashBoard?.grossProfitCompare,
-                    // tooltipText: 'Значение предыдущего периода'
+                    absoluteValue: dataDashBoard?.prevGrossProfit,
+                    absoluteValueUnits: '₽',
+                    tooltipText: 'Значение предыдущего периода'
                 }}
                 isLoading={loading}
                 dragHandle={() => <DragHandle context={DragHandleContext} />}
@@ -679,7 +683,9 @@ const barsConfig = [
                 hasColoredBackground
                 compareValue={{
                     comparativeValue: dataDashBoard?.ebitda_compare,
-                    // tooltipText: 'Значение предыдущего периода'
+                    absoluteValue: dataDashBoard?.prevEbitda,
+                    absoluteValueUnits: '₽',
+                    tooltipText: 'Значение предыдущего периода'
                 }}
                 isLoading={loading}
                 dragHandle={() => <DragHandle context={DragHandleContext} />}
@@ -701,7 +707,9 @@ const barsConfig = [
                 hasColoredBackground
                 compareValue={{
                     comparativeValue: dataDashBoard?.ebitda_margin_compare,
-                    // tooltipText: 'Значение предыдущего периода'
+                    absoluteValue: dataDashBoard?.prev_ebitda_margin,
+                    absoluteValueUnits: '%',
+                    tooltipText: 'Значение предыдущего периода'
                 }}
                 isLoading={loading}
                 dragHandle={() => <DragHandle context={DragHandleContext} />}
@@ -723,7 +731,9 @@ const barsConfig = [
                 hasColoredBackground
                 compareValue={{
                     comparativeValue: dataDashBoard?.gross_profit_ability_compare,
-                    //tooltipText: 'Значение предыдущего периода'
+                    absoluteValue: dataDashBoard?.prevGrossProfitAbility,
+                    absoluteValueUnits: '%',
+                    tooltipText: 'Значение предыдущего периода'
                 }}
                 isLoading={loading}
                 dragHandle={() => <DragHandle context={DragHandleContext} />}
@@ -745,7 +755,9 @@ const barsConfig = [
                 hasColoredBackground
                 compareValue={{
                     comparativeValue: dataDashBoard?.operating_profit_ability_compare,
-                    // tooltipText: 'Значение предыдущего периода'
+                    absoluteValue: dataDashBoard?.prevOperatingProfitAbility,
+                    absoluteValueUnits: '%',
+                    tooltipText: 'Значение предыдущего периода'
                 }}
                 isLoading={loading}
                 dragHandle={() => <DragHandle context={DragHandleContext} />}
@@ -919,9 +931,9 @@ const barsConfig = [
 ]
 
 const saveBarsConfig = (items, BARS_STORAGE_KEY, DASHBOARD_CONFIG_VER) => {
-    const serializableConfig = items.map((item, index) => ({ 
-        id: item.id, 
-        isVisible: item.isVisible, 
+    const serializableConfig = items.map((item, index) => ({
+        id: item.id,
+        isVisible: item.isVisible,
         rowId: item.rowId,
         order: index // Сохраняем порядок элемента
     }));
@@ -932,10 +944,10 @@ const inferBarsConfig = (barsConfig, savedConfig, DASHBOARD_CONFIG_VER) => {
     const { version, items } = savedConfig;
     if (!version || !items) return barsConfig;
     if (version !== DASHBOARD_CONFIG_VER) return barsConfig;
-    
+
     // Создаем карту для быстрого поиска сохраненных элементов
     const savedItemsMap = new Map(items.map(item => [item.id, item]));
-    
+
     // Обновляем элементы с сохраненными значениями
     const updatedConfig = barsConfig.map(item => {
         const savedItem = savedItemsMap.get(item.id);
@@ -946,7 +958,7 @@ const inferBarsConfig = (barsConfig, savedConfig, DASHBOARD_CONFIG_VER) => {
         // Если элемент не найден в сохраненных, устанавливаем isVisible по умолчанию
         return { ...item, isVisible: item.isVisible !== false };
     });
-    
+
     // Сортируем элементы согласно сохраненному порядку
     // Элементы с order идут в начале в правильном порядке, остальные - в конце
     return updatedConfig.sort((a, b) => {

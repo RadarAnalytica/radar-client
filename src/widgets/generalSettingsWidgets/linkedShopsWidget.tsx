@@ -15,6 +15,8 @@ import { editShop } from '@/redux/editShop/editShopActions';
 import { deleteShop } from '@/redux/deleteShop/deleteShopActions';
 import { fetchFilters } from '@/redux/apiServicePagesFiltersState/filterActions';
 import { SelectIcon } from '@/shared';
+import { ServiceFunctions } from '@/service/serviceFunctions';
+import moment from 'moment';
 
 const initRequestStatus = {
     isLoading: false,
@@ -22,6 +24,22 @@ const initRequestStatus = {
     isError: false,
     message: ''
 };
+
+/**
+ *     {
+        "brand_name": "Kondrs135",
+        "is_active": true,
+        "id": 235,
+        "updated_at": "2026-01-14 11:44:36.895526",
+        "is_valid": false,
+        "is_primary_collect": true,
+        "is_self_cost_set": true,
+        "is_tax_rate_set": false,
+        "tax_type": null,
+        "tax_rate": null,
+        "vat_rate": null
+    },
+ */
 
 export const LinkedShopsWidget = () => {
     const { isDemoMode, isDemoUser } = useDemoMode();
@@ -40,7 +58,6 @@ export const LinkedShopsWidget = () => {
     const lastOperationTypeRef = useRef<'add' | 'edit' | 'delete' | 'tax' | null>(null);
     const dispatch = useAppDispatch();
     const shops = useAppSelector((state) => state.shopsSlice.shops);
-    console.log(shops)
     const firstMountRef = useRef(true)
 
     const addOrEditSubmitHandler = async (fields) => {
@@ -91,7 +108,27 @@ export const LinkedShopsWidget = () => {
         if (addAndEditModalState?.type === 'tax' && addAndEditModalState?.shop && fields) {
             lastOperationTypeRef.current = 'tax';
             // логика добавления налога здесь
-            setAddShopRequestStatus({ ...initRequestStatus, isLoading: false, isSuccess: true, message: 'Налог успешно установлен' });
+            const data = {
+                shop_id: addAndEditModalState?.shop?.id,
+                effective_from: moment().format('YYYY-MM-DD'),
+                tax_type: fields?.taxType,
+                tax_rate: fields?.taxType === 'Не считать налог' ? 0 : parseInt(fields?.tax),
+                vat_rate: fields?.taxType === 'Не считать налог' ? 0 : fields?.vat === 'Без НДС' ? 0 : parseInt(fields?.vat),
+            }
+
+            try {
+                let res = await ServiceFunctions.setShopTax(authToken, data)
+                if (!res.ok) {
+                    setAddShopRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось установить налог!' });
+                    return;
+                }
+                dispatch(fetchShops(authToken))
+                setAddShopRequestStatus({ ...initRequestStatus, isLoading: false, isSuccess: true, message: 'Налог успешно установлен' });
+            } catch(e) {
+                console.error(e);
+                setAddShopRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось установить налог!' });
+            }
+          
         }
 
     }
@@ -602,11 +639,14 @@ const TaxSetupModal = ({
     submitHandler
 }) => {
     const [form] = Form.useForm();
-
+    const taxType = Form.useWatch('taxType', form);
+    const isTaxDisabled = taxType === 'Не считать налог';
 
     useEffect(() => {
         if (addAndEditModalState?.type === 'tax' && addAndEditModalState.shop) {
-            form.setFieldValue('tax', addAndEditModalState?.shop?.tax);
+            form.setFieldValue('taxType', addAndEditModalState?.shop?.tax_type);
+            form.setFieldValue('tax', addAndEditModalState?.shop?.tax_rate);
+            form.setFieldValue('vat', addAndEditModalState?.shop?.vat_rate || 'Без НДС');
         } else {
             form.resetFields();
         }
@@ -697,7 +737,7 @@ const TaxSetupModal = ({
                                     size='large'
                                     suffixIcon={<SelectIcon />}
                                     className={styles.plainSelect__select}
-                                    options={[{ value: 'УСН Д' }, { value: 'УСН Д-Р' }, { value: 'Не считать налог' }]}
+                                    options={[{ value: 'УСН-доходы' }, { value: 'УСН Д-Р' }, { value: 'Не считать налог' }]}
                                     getPopupContainer={(triggerNode) => triggerNode.parentNode}
                                 />
                             </Form.Item>
@@ -706,10 +746,10 @@ const TaxSetupModal = ({
                                 label='Ставка налога'
                                 className={styles.taxModal__formItem}
                                 rules={[
-                                    { required: true, message: 'Пожалуйста, введите процент налога!' },
+                                    { required: !isTaxDisabled, message: 'Пожалуйста, введите процент налога!' },
                                     () => ({
                                         validator(_, value) {
-                                            if (!value) {
+                                            if (!value || isTaxDisabled) {
                                                 return Promise.resolve();
                                             }
                                             if (!/^\d+$/.test(value.toString())) {
@@ -724,6 +764,7 @@ const TaxSetupModal = ({
                                     placeholder='Например, 6'
                                     size='large'
                                     style={{ width: '100%' }}
+                                    disabled={isTaxDisabled}
                                     onKeyPress={(e) => {
                                         if (!/[0-9]/.test(e.key) && e.key !== 'Backspace' && e.key !== 'Delete' && e.key !== 'Tab' && e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') {
                                             e.preventDefault();
@@ -742,6 +783,7 @@ const TaxSetupModal = ({
                                     className={styles.plainSelect__select}
                                     options={[{ value: 'Без НДС' }, { value: '5%' }, { value: '7%' }, { value: '10%' }, { value: '22%' }]}
                                     getPopupContainer={(triggerNode) => triggerNode.parentNode}
+                                    disabled={isTaxDisabled}
                                 />
                             </Form.Item>
                             <div className={styles.taxModal__buttonsWrapper}>

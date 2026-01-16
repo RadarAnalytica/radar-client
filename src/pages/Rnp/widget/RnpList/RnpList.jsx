@@ -564,7 +564,7 @@ export default function RnpList({ view, expanded, setExpanded, setAddRnpModalSho
 								resizeMode='instant'
 							/>
 						</div>}
-						{rnpDataTotal && <div className={`${styles.item_content} ${styles.item_content_total}`}>
+						{/* {rnpDataTotal && <div className={`${styles.item_content} ${styles.item_content_total}`}>
 							{loading && <div className={styles.loading_container}>
 								<span className='loader'></span>
 							</div>}
@@ -578,7 +578,7 @@ export default function RnpList({ view, expanded, setExpanded, setAddRnpModalSho
 								defaultExpandAllRows={true}
 								resizeMode='line'
 							/>
-						</div>}
+						</div>} */}
 					</>
 				)}
 				{((view === 'articles' && items?.length == 0) || (view === 'total' && !rnpDataTotal)) &&

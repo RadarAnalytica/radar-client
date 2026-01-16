@@ -233,7 +233,7 @@ export const ProfileWidget = () => {
                         <path d="M16 16C18.7614 16 21 13.7614 21 11C21 8.23858 18.7614 6 16 6C13.2386 6 11 8.23858 11 11C11 13.7614 13.2386 16 16 16Z" fill="#5329FF" />
                         <path d="M16 26C20.4183 26 24 23.9853 24 21.5C24 19.0147 20.4183 17 16 17C11.5817 17 8 19.0147 8 21.5C8 23.9853 11.5817 26 16 26Z" fill="#5329FF" />
                     </svg>
-                    {fullUserData?.firstname ?? 'Железный человек'}
+                    {fullUserData?.firstname ?? 'Без имени'}
                 </div>
 
                 <hr style={{ height: '1px', backgroundColor: '#E8E8E8', margin: 0, padding: 0, opacity: '10%' }} />
@@ -315,7 +315,6 @@ const EditUserModal: React.FC<EditUserModalProps> = ({
             ...formData,
             phone: formData.phone ? formatPhoneNumber(formData.phone) : '+7 '
         };
-        console.log(formattedData)
         form.setFieldsValue(formattedData);
     }, [formData, form, isEditModalOpen]);
 
@@ -742,12 +741,7 @@ const SubscriptonInfo = () => {
         const checkSubscriptions = async () => {
             await fetchSubscriptions();
         };
-
-        if (user?.subscription_status === 'expired') {
-            navigate('/tariffs');
-        } else {
-            checkSubscriptions();
-        }
+        checkSubscriptions();
     }, []);
 
     const handleRestoreSubscription = async (subscriptionId) => {

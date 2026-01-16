@@ -13,7 +13,7 @@ const SignInPage = () => {
       if (!user) return;
 
       if (user?.subscription_status === 'expired') {
-        navigate('/tariffs');
+        navigate('/settings', {state: {tab: 'tariffs'}})
       } else if (user.is_onboarded) {
         navigate('/main');
       } else {
