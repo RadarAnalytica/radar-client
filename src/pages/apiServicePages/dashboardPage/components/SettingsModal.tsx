@@ -75,6 +75,7 @@ const SortableItem: React.FC<SortableItemProps> = ({ id, card, form }) => {
                 valuePropName="checked"
                 initialValue={true}
                 noStyle
+                preserve
             >
                 <Checkbox className={styles.checkbox}>
                     {card.title}
@@ -102,6 +103,8 @@ export const SettingsModal: React.FC<ISettingsModalProps> = (
     const [displayItems, setDisplayItems] = useState<Array<Record<string, any>>>([]);
     const [originalItems, setOriginalItems] = useState<Array<Record<string, any>>>([]);
     const [activeId, setActiveId] = useState<string | null>(null);
+    // Отдельное состояние для отслеживания видимости ВСЕХ элементов (независимо от фильтрации)
+    const [visibilityState, setVisibilityState] = useState<Record<string, boolean>>({});
     
     // Отслеживаем изменения формы для обновления текста кнопки
     const formValues = Form.useWatch([], form);
@@ -125,10 +128,15 @@ export const SettingsModal: React.FC<ISettingsModalProps> = (
             setDisplayItems([...itemsWithDropKey1]);
             setSearchValue('');
             setActiveSearchValue(''); // Сбрасываем активный поиск
-            form.setFieldsValue(itemsWithDropKey1.reduce((acc, item) => {
-                acc[item.id] = item.isVisible;
+            
+            // Инициализируем состояние видимости для ВСЕХ элементов
+            const initialVisibility = itemsWithDropKey1.reduce((acc, item) => {
+                acc[item.id] = item.isVisible !== false;
                 return acc;
-            }, {}));
+            }, {} as Record<string, boolean>);
+            setVisibilityState(initialVisibility);
+            
+            form.setFieldsValue(initialVisibility);
         }
     }, [itemsWithDropKey1, isOpen, form]);
 
@@ -141,14 +149,11 @@ export const SettingsModal: React.FC<ISettingsModalProps> = (
         );
     }, [displayItems, activeSearchValue]);
 
-    // Проверяем, все ли элементы выбраны
+    // Проверяем, все ли отфильтрованные элементы выбраны
     const allSelected = useMemo(() => {
         if (filteredItems.length === 0) return false;
-        return filteredItems.every(item => {
-            const value = form.getFieldValue(item.id);
-            return value !== false;
-        });
-    }, [filteredItems, formValues, form]);
+        return filteredItems.every(item => visibilityState[item.id] === true);
+    }, [filteredItems, visibilityState]);
 
     const handleDragStart = (event: DragStartEvent) => {
         setActiveId(event.active.id as string);
@@ -177,25 +182,38 @@ export const SettingsModal: React.FC<ISettingsModalProps> = (
     }, [activeId, displayItems]);
 
     const handleSelectAll = () => {
-        const allChecked = filteredItems.every(item => {
-            const value = form.getFieldValue(item.id);
-            return value !== false;
+        const allChecked = filteredItems.every(item => visibilityState[item.id] === true);
+        const newValue = !allChecked;
+        
+        // Обновляем visibilityState только для отфильтрованных элементов
+        setVisibilityState(prev => {
+            const updated = { ...prev };
+            filteredItems.forEach(item => {
+                updated[item.id] = newValue;
+            });
+            return updated;
         });
-        const newValues = filteredItems.reduce((acc, item) => {
-            acc[item.id] = !allChecked;
+        
+        // Также обновляем форму для отображения чекбоксов
+        const newFormValues = filteredItems.reduce((acc, item) => {
+            acc[item.id] = newValue;
             return acc;
         }, {} as Record<string, boolean>);
-        form.setFieldsValue(newValues);
+        form.setFieldsValue(newFormValues);
     };
 
     const handleRevertToOriginal = () => {
         // Используем исходную конфигурацию (без изменений из localStorage)
         const originalDropKey1Items = originalConfig.filter(item => item.dropKey === '1');
         setDisplayItems([...originalDropKey1Items]);
-        form.setFieldsValue(originalDropKey1Items.reduce((acc, item) => {
-            acc[item.id] = item.isVisible !== false; // Устанавливаем видимость по умолчанию
+        
+        const newVisibility = originalDropKey1Items.reduce((acc, item) => {
+            acc[item.id] = item.isVisible !== false;
             return acc;
-        }, {}));
+        }, {} as Record<string, boolean>);
+        
+        setVisibilityState(newVisibility);
+        form.setFieldsValue(newVisibility);
     };
 
     const handleSearch = () => {
@@ -203,68 +221,68 @@ export const SettingsModal: React.FC<ISettingsModalProps> = (
     };
 
     const handleOk = () => {
-        form.validateFields().then(values => {
-            // Обновляем только элементы с dropKey === '1' (с новым порядком и видимостью)
-            // Для элементов, которые были скрыты поиском, сохраняем их текущее значение isVisible
-            const updatedDropKey1Items: Array<Record<string, any>> = displayItems.map((item: Record<string, any>) => ({ 
-                ...item, 
-                isVisible: values[item.id] !== undefined ? values[item.id] : item.isVisible
-            }));
+        // Используем visibilityState для получения видимости ВСЕХ элементов
+        // (это состояние хранит значения независимо от того, отрендерены ли Form.Item)
+        
+        // Обновляем только элементы с dropKey === '1' (с новым порядком и видимостью)
+        const updatedDropKey1Items: Array<Record<string, any>> = displayItems.map((item: Record<string, any>) => ({ 
+            ...item, 
+            isVisible: visibilityState[item.id] !== undefined ? visibilityState[item.id] : item.isVisible
+        }));
+        
+        // Создаем карту обновленных элементов для быстрого поиска
+        const updatedItemsMap = new Map<string, Record<string, any>>();
+        updatedDropKey1Items.forEach((item: Record<string, any>) => {
+            if (item.id) {
+                updatedItemsMap.set(item.id, item);
+            }
+        });
+        
+        // Заменяем элементы с dropKey === '1' на обновленные, сохраняя их новый порядок
+        // Остальные элементы остаются без изменений
+        const fullUpdatedConfig = items.map((item: Record<string, any>) => {
+            if (item.dropKey === '1' && item.id && updatedItemsMap.has(item.id)) {
+                return updatedItemsMap.get(item.id)!;
+            }
+            return item;
+        });
+        
+        // Теперь нужно переставить элементы с dropKey === '1' в новый порядок
+        // Находим все позиции элементов с dropKey === '1' в исходном массиве
+        const dropKey1Indices: number[] = [];
+        items.forEach((item: Record<string, any>, index: number) => {
+            if (item.dropKey === '1') {
+                dropKey1Indices.push(index);
+            }
+        });
+        
+        // Если есть элементы с dropKey === '1', переставляем их в новый порядок
+        if (dropKey1Indices.length > 0 && updatedDropKey1Items.length > 0) {
+            // Создаем новый массив с правильным порядком
+            const result: Array<Record<string, any>> = [];
+            let dropKey1Index = 0;
             
-            // Создаем карту обновленных элементов для быстрого поиска
-            const updatedItemsMap = new Map<string, Record<string, any>>();
-            updatedDropKey1Items.forEach((item: Record<string, any>) => {
-                if (item.id) {
-                    updatedItemsMap.set(item.id, item);
-                }
-            });
-            
-            // Заменяем элементы с dropKey === '1' на обновленные, сохраняя их новый порядок
-            // Остальные элементы остаются без изменений
-            const fullUpdatedConfig = items.map((item: Record<string, any>) => {
-                if (item.dropKey === '1' && item.id && updatedItemsMap.has(item.id)) {
-                    return updatedItemsMap.get(item.id)!;
-                }
-                return item;
-            });
-            
-            // Теперь нужно переставить элементы с dropKey === '1' в новый порядок
-            // Находим все позиции элементов с dropKey === '1' в исходном массиве
-            const dropKey1Indices: number[] = [];
-            items.forEach((item: Record<string, any>, index: number) => {
-                if (item.dropKey === '1') {
-                    dropKey1Indices.push(index);
-                }
-            });
-            
-            // Если есть элементы с dropKey === '1', переставляем их в новый порядок
-            if (dropKey1Indices.length > 0 && updatedDropKey1Items.length > 0) {
-                // Создаем новый массив с правильным порядком
-                const result: Array<Record<string, any>> = [];
-                let dropKey1Index = 0;
-                
-                for (let i = 0; i < fullUpdatedConfig.length; i++) {
-                    if (dropKey1Indices.includes(i)) {
-                        // Вставляем элемент с dropKey === '1' в новом порядке
-                        if (dropKey1Index < updatedDropKey1Items.length) {
-                            result.push(updatedDropKey1Items[dropKey1Index]);
-                            dropKey1Index++;
-                        }
-                    } else {
-                        // Вставляем элемент без dropKey === '1' как есть
-                        result.push(fullUpdatedConfig[i]);
+            for (let i = 0; i < fullUpdatedConfig.length; i++) {
+                if (dropKey1Indices.includes(i)) {
+                    // Вставляем элемент с dropKey === '1' в новом порядке
+                    if (dropKey1Index < updatedDropKey1Items.length) {
+                        result.push(updatedDropKey1Items[dropKey1Index]);
+                        dropKey1Index++;
                     }
+                } else {
+                    // Вставляем элемент без dropKey === '1' как есть
+                    result.push(fullUpdatedConfig[i]);
                 }
-                
-                onSave(result, BARS_STORAGE_KEY, DASHBOARD_CONFIG_VER);
-                setItems(result);
-            } else {
-                onSave(fullUpdatedConfig, BARS_STORAGE_KEY, DASHBOARD_CONFIG_VER);
-                setItems(fullUpdatedConfig);
             }
             
-            setIsOpen(false);
-        });
+            onSave(result, BARS_STORAGE_KEY, DASHBOARD_CONFIG_VER);
+            setItems(result);
+        } else {
+            onSave(fullUpdatedConfig, BARS_STORAGE_KEY, DASHBOARD_CONFIG_VER);
+            setItems(fullUpdatedConfig);
+        }
+        
+        setIsOpen(false);
     };
 
     const handleCancel = () => {
@@ -376,7 +394,17 @@ export const SettingsModal: React.FC<ISettingsModalProps> = (
                     </div>
                 }
             >
-                <Form form={form} layout="vertical">
+                <Form 
+                    form={form} 
+                    layout="vertical"
+                    onValuesChange={(changedValues) => {
+                        // Синхронизируем изменения чекбоксов с visibilityState
+                        setVisibilityState(prev => ({
+                            ...prev,
+                            ...changedValues
+                        }));
+                    }}
+                >
 
                     <div className={styles.searchContainer}>
                         <ConfigProvider

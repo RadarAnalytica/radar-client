@@ -1,3 +1,5 @@
+import { formatPrice } from "@/service/utils";
+
 // Полные названия месяцев для тултипа
 export const MONTH_NAMES_FULL = [
     'января',
@@ -342,7 +344,7 @@ export const getChartTooltip = (context, chartData) => {
             } else {
                 targetDescr = set.yAxisID === 'B' ? ' шт' : ' руб';
             }
-            let value = set?.data[targetInex] || '0';
+            let value = formatPrice(set?.data[targetInex], ' ') || '0';
             let style = '';
             style += '; border-width: 2px';
             const span =
