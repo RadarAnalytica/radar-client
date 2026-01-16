@@ -69,23 +69,24 @@ const comparsionsList = {
     "saleCountDay": "sale_count_day_comparison"
 };
 
+// Поля с обратным цветом индикации
+const REVERT_INDICATION_FIELDS = new Set([
+    'returnsSum', 
+    'returnsQuantity',
+    'return_cost',
+    'toClient',
+    'to_client_sum',
+    'fromClient',
+    'from_client_sum',
+    'commissionWB',
+    'fines',
+]);
+
 const customCellRender = (value, record, index, dataIndex) => {
     const [isImgVisible, setIsImgVisible] = useState(false);
     const comparsionKey = comparsionsList[dataIndex];
     const comparsion = record[comparsionKey];
     const rightBorders = ['category', 'sold_cost', 'return_cost', 'product_cost_stock', 'from_client_sum', 'additionalPayment', 'lostRevenue', 'byProfit', 'minDiscountPrice', 'orderSum', 'completed', 'saleCountDay'];
-
-    const isRevertIndication = index => [
-        'returnsSum', 
-        'returnsQuantity',
-        'return_cost',
-        'toClient',
-        'to_client_sum',
-        'fromClient',
-        'from_client_sum',
-        'commissionWB',
-        'fines',
-    ].includes(index);
 
     useEffect(() => {
         if (record.photo) {
@@ -134,7 +135,7 @@ const customCellRender = (value, record, index, dataIndex) => {
 
     return <div className={styles.customCell} data-border-right={rightBorders.includes(dataIndex)} title={typeof value === 'number' ? formatPrice(value, newTableConfig?.map(item => item.children).flat().find(item => item.dataIndex === dataIndex)?.units || '') : value}>
         {typeof value === 'number' ? formatPrice(value, newTableConfig?.map(item => item.children).flat().find(item => item.dataIndex === dataIndex)?.units || '') : value}
-        <RadarRateMark value={comparsion} units='%' inverseColors={isRevertIndication(dataIndex)} />
+        <RadarRateMark value={comparsion} units='%' inverseColors={REVERT_INDICATION_FIELDS.has(dataIndex)} />
     </div>;
 };
 
