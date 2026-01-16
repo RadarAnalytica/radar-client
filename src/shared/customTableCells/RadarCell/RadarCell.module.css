@@ -1,0 +1,20 @@
+.radarCell {
+    display: inline-block;
+    user-select: none;
+}
+
+.copyNotification {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(8px, -32px);
+    background-color: #1A1A1A !important;
+    color: white;
+    padding: 4px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+    pointer-events: none;
+}
+

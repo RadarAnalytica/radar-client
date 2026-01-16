@@ -189,12 +189,10 @@ async function flushQueue() {
       log("Successfully sent", envelope.id);
       await deleteEnvelope(envelope.id);
     } catch (error) {
-      if (DEBUG) continue;
-      
       log("Failed to send", envelope.id, error);
       const nextAttempt = (envelope.attempt ?? 0) + 1;
 
-      if (nextAttempt >= RETRY_DELAYS.length) {
+      if (DEBUG || nextAttempt >= RETRY_DELAYS.length) {
         console.error("Dropping envelope after max retries", envelope.id);
         await deleteEnvelope(envelope.id);
         continue;

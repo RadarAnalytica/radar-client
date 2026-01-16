@@ -20,5 +20,7 @@ export { SmallButton } from './ui/SmallButton/SmallButton';
 export { RadarMultiSelect } from './ui/RadarMultiSelect/RadarMultiSelect';
 export { RadarSelect } from './ui/RadarSelect/RadarSelect';
 export { SelectIcon } from './ui/icons/selectIcon';
-export { GeneralLayout } from './ui/GeneralLayout/GeneralLayout'
-export {  RadarMainPageBanner } from './ui/RadarMainPageBanner/RadarMainPageBanner'
+export { GeneralLayout } from './ui/GeneralLayout/GeneralLayout';
+export { RadarMainPageBanner } from './ui/RadarMainPageBanner/RadarMainPageBanner';
+export { RadarCell } from './customTableCells/RadarCell/RadarCell';
+

@@ -451,7 +451,7 @@ export default function RnpList({ view, expanded, setExpanded, setAddRnpModalSho
 	useEffect(() => {
 		// удаляем старые данные из localStorage (старый формат)
 		localStorage.removeItem('rnpOrder');
-	}, [])
+	}, []);
 
 	return (
 		<>
