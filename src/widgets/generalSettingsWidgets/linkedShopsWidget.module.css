@@ -599,3 +599,9 @@
     line-height: 100%;
     color: white;
 }
+
+
+.plainSelect__select:global(.ant-select-disabled) :global(.ant-select-selection-item),
+.plainSelect__select:global(.ant-select-disabled) :global(.ant-select-selector) {
+    color: #8c8c8c !important;
+}
