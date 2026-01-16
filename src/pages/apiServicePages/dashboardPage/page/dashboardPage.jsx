@@ -65,7 +65,7 @@ import { Link } from 'react-router-dom';
 // Контекст для передачи listeners и attributes в DragHandle
 export const DragHandleContext = React.createContext(null);
 
-const DASHBOARD_CONFIG_VER = '1';
+const DASHBOARD_CONFIG_VER = '2';
 const ROWS_STORAGE_KEY = 'dashboard_rows_config';
 const BARS_STORAGE_KEY = 'dashboard_bars_config';
 
@@ -582,6 +582,7 @@ const barsConfig = [
         title: 'Себестоимость проданных товаров',
         dropKey: '1',
         rowId: 'row-3',
+        isVisible: true,
         render: (bar, dataDashBoard, loading, selectedRange, activeBrand, authToken, filters, updateDataDashBoard, stockAnalysisData) => (
             <RadarBar
                 title='Себестоимость проданных товаров'
