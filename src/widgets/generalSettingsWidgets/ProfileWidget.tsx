@@ -315,7 +315,6 @@ const EditUserModal: React.FC<EditUserModalProps> = ({
             ...formData,
             phone: formData.phone ? formatPhoneNumber(formData.phone) : '+7 '
         };
-        console.log(formattedData)
         form.setFieldsValue(formattedData);
     }, [formData, form, isEditModalOpen]);
 
@@ -742,12 +741,7 @@ const SubscriptonInfo = () => {
         const checkSubscriptions = async () => {
             await fetchSubscriptions();
         };
-
-        if (user?.subscription_status === 'expired') {
-            navigate('/tariffs');
-        } else {
-            checkSubscriptions();
-        }
+        checkSubscriptions();
     }, []);
 
     const handleRestoreSubscription = async (subscriptionId) => {
