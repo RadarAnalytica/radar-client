@@ -75,6 +75,17 @@ const customCellRender = (value, record, index, dataIndex) => {
     const comparsion = record[comparsionKey];
     const rightBorders = ['category', 'sold_cost', 'return_cost', 'product_cost_stock', 'from_client_sum', 'additionalPayment', 'lostRevenue', 'byProfit', 'minDiscountPrice', 'orderSum', 'completed', 'saleCountDay'];
 
+    const isRevertIndication = index => [
+        'returnsSum', 
+        'returnsQuantity',
+        'return_cost',
+        'toClient',
+        'to_client_sum',
+        'fromClient',
+        'from_client_sum',
+        'commissionWB',
+        'fines',
+    ].includes(index);
 
     useEffect(() => {
         if (record.photo) {
@@ -123,7 +134,9 @@ const customCellRender = (value, record, index, dataIndex) => {
 
     return <div className={styles.customCell} data-border-right={rightBorders.includes(dataIndex)} title={typeof value === 'number' ? formatPrice(value, newTableConfig?.map(item => item.children).flat().find(item => item.dataIndex === dataIndex)?.units || '') : value}>
         {typeof value === 'number' ? formatPrice(value, newTableConfig?.map(item => item.children).flat().find(item => item.dataIndex === dataIndex)?.units || '') : value}
-        {comparsion !== null && comparsion !== undefined && <RadarRateMark value={comparsion} units='%' />}
+        {comparsion != null && 
+            <RadarRateMark value={comparsion} units='%' inverse={isRevertIndication(dataIndex)} />
+        }
     </div>;
 };
 
