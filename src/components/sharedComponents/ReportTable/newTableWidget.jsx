@@ -11,7 +11,17 @@ import { URL } from '@/service/config';
 
 const customCellRender = (value, record, index, dataIndex) => {
 	// Получение полей с обратным цветом индикации
-    const isRevertIndication = index => ['total_expenses', 'operating_expenses', 'tax'].includes(index);
+    const isRevertIndication = index => [
+		'advert',
+		'paid_acceptance',
+		'commission',
+		'storage',
+		'logistic',
+		'penalties',
+		'total_expenses',
+		'operating_expenses', 
+		'tax',
+	].includes(index);
 
 	let yearAttribute = '';
 	if (years.some(year => year.toString() === dataIndex.toString())) {
@@ -87,11 +97,12 @@ const customCellRender = (value, record, index, dataIndex) => {
 		);
 	}
 	if (dataIndex !== 'article' && record.isChild) {
+		const indicatorKey = record.parentKey === 'operating_expenses' ? 'operating_expenses' : record.key;
 		return (
 			<div className={styles.customCell} data-year-attribute={yearAttribute}>
 				<span className={styles.customCellValueText} style={{ color: 'rgba(0, 0, 0, .5)' }} title={formatPrice(value.rub.value, '₽')}><b>{formatPrice(value.rub.value, '₽')}</b></span>
 				{!yearAttribute && value.rub.comparison_percentage != null && 
-					<RadarRateMark value={value.rub.comparison_percentage} units='%' inverse={isRevertIndication(record.parentKey)} />
+					<RadarRateMark value={value.rub.comparison_percentage} units='%' inverse={isRevertIndication(indicatorKey)} />
 				}
 			</div>
 		);
@@ -101,7 +112,7 @@ const customCellRender = (value, record, index, dataIndex) => {
 			<div className={styles.customCell} data-year-attribute={yearAttribute}>
 				<span className={styles.customCellValueText} title={formatPrice(value.rub.value, '₽')}><b>{formatPrice(value.rub.value, '₽')}</b></span>
 				{!yearAttribute && value.rub.comparison_percentage != null && 
-					<RadarRateMark value={value.rub.comparison_percentage} units='%' />
+					<RadarRateMark value={value.rub.comparison_percentage} units='%' inverse={isRevertIndication(record.key)} />
 				}
 			</div>
 		);

@@ -15,7 +15,13 @@ const customCellRender = (value, record, index, dataIndex) => {
             'commission_acquiring_per_one',
             'commission_acquiring_percentage',
             'storage_per_one',
-            'cost_per_one',
+            'drr_by_sales',
+            'drr_by_orders',
+            'rk_budget_data',
+            'cpc',
+            'cpm',
+            'one_order_price',
+            'one_sale_price',
         ].includes(index);
     };
 

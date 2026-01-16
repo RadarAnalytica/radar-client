@@ -12,6 +12,11 @@ const customCellRender = (value, record, index, dataIndex) => {
     // Получение полей с обратным цветом индикации
     const isRevertIndication = (index) => {
         return [
+            'wb_commission_rub',
+            'acquiring_rub',
+            'advert_amount',
+            'drr',
+            'wb_retentions_amount',
             'return_rub', 
             'return_quantity',
             'logistics_straight_rub',
