@@ -134,9 +134,7 @@ const customCellRender = (value, record, index, dataIndex) => {
 
     return <div className={styles.customCell} data-border-right={rightBorders.includes(dataIndex)} title={typeof value === 'number' ? formatPrice(value, newTableConfig?.map(item => item.children).flat().find(item => item.dataIndex === dataIndex)?.units || '') : value}>
         {typeof value === 'number' ? formatPrice(value, newTableConfig?.map(item => item.children).flat().find(item => item.dataIndex === dataIndex)?.units || '') : value}
-        {comparsion != null && 
-            <RadarRateMark value={comparsion} units='%' inverse={isRevertIndication(dataIndex)} />
-        }
+        <RadarRateMark value={comparsion} units='%' inverseColors={isRevertIndication(dataIndex)} />
     </div>;
 };
 

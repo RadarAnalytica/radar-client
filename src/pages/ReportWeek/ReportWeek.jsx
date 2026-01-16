@@ -57,7 +57,7 @@ export default function ReportWeek() {
 					setTableColumns(parsed.config);
 				} else {
 					// Версия не совпадает, используем дефолтный конфиг
-					console.log('Report Week config version mismatch, using default config');
+					console.warn('Report Week config version mismatch, using default config');
 					setTableColumns(COLUMNS);
 				}
 			} catch (error) {
@@ -102,25 +102,6 @@ export default function ReportWeek() {
 		return weeks.map((el, i) => optionTemplate(el)).reverse();
 	}, []);
 
-	// const initTableColumns = () => {
-	// 	const savedColumnsWeek = localStorage.getItem('reportWeekColumns');
-	// 	if (savedColumnsWeek) {
-	// 		try {
-	// 			const columns = JSON.parse(savedColumnsWeek);
-	// 			return columns.map((column) => COLUMNS.find((el) => {
-	// 				if (typeof column == 'object') {
-	// 					return el.dataIndex == column.dataIndex;
-	// 				}
-	// 				return el.dataIndex == column;
-	// 			}));
-	// 		} catch (error) {
-	// 			console.error('Ошибка при обработке сохраненных настроек', error);
-	// 			return COLUMNS;
-	// 		}
-	// 	}
-	// 	return COLUMNS;
-	// };
-
 	useEffect(() => {
 		if (isDemoMode && weekOptions?.length) {
 			dispatch(fetchFilters(authToken));
@@ -158,7 +139,10 @@ export default function ReportWeek() {
 			}
 
 			progress.complete();
-			await setTimeout(() => {dataToTableData(weeks), progress.reset()}, 500);
+			await setTimeout(() => {
+				dataToTableData(weeks); 
+				progress.reset();
+			}, 500);
 		} catch (e) {
 			console.error(e);
 			dataToTableData(null);
@@ -247,8 +231,6 @@ export default function ReportWeek() {
 					return acc;
 				}
 			}, 0);
-
-
 
 			// Вариант с тултипом
 			if (summaryValue === 0) {

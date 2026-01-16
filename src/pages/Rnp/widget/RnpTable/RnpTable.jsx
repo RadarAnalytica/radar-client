@@ -3,28 +3,9 @@ import { Table as RadarTable, Tooltip as RadarTooltip } from 'radar-ui';
 import { formatPrice } from '@/service/utils';
 import styles from './RnpTable.module.css';
 import { RadarRateMark, RadarCell } from '@/shared';
-
 import { ConfigProvider, Tooltip } from 'antd';
 
 const customCellRender = (value, record, index, dataIndex) => {
-	const isRevertIndication = (index) => {
-        return [
-            'taxes_data', 
-            'tax_per_one',
-            'logistics_per_one',
-            'commission_acquiring_per_one',
-            'commission_acquiring_percentage',
-            'storage_per_one',
-            'drr_by_sales',
-            'drr_by_orders',
-            'rk_budget_data',
-            'cpc',
-            'cpm',
-            'one_order_price',
-            'one_sale_price',
-        ].includes(index);
-    };
-
 	if (dataIndex === 'summary') {
 		return (
 			<>
@@ -127,9 +108,12 @@ const customCellRender = (value, record, index, dataIndex) => {
 			{typeof value === 'object'
 				? <div className={`${styles.customCell_WithRateMark}`}>
 					<RadarCell value={value.value} copyable />
-					{value.comparison_percentage != null && 
-						<RadarRateMark value={value.comparison_percentage} units='%' inverse={isRevertIndication(record.key)} />
-					}
+					<RadarRateMark 
+						value={value.comparison_percentage} 
+						units='%' 
+						inverseColors={Boolean(record.inverseIndication)}
+						noColored={Boolean(record.noIndication)}
+					/>
 				</div>
 				: <RadarCell value={value} copyable />
 			}

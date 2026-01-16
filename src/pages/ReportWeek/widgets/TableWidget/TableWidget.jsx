@@ -96,9 +96,7 @@ const customCellRender = (value, record, index, dataIndex) => {
         return (
             <div className={styles.customCell}>
                 {formatPrice(value.value, '')}
-                {value.comparison_percentage != null && 
-                    <RadarRateMark value={value.comparison_percentage} units='%' inverse={isRevertIndication(dataIndex)} />
-                }
+                <RadarRateMark value={value.comparison_percentage} units='%' inverseColors={isRevertIndication(dataIndex)} />
             </div>
         );
     }
