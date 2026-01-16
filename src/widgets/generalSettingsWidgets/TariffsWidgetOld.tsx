@@ -15,6 +15,8 @@ import { Modal, Tooltip } from 'antd';
 import { getWordDeclension } from '@/service/utils';
 import { PlainSelect } from '@/components/sharedComponents/apiServicePagesFiltersComponent/features';
 import { PricingModal } from '@/pages/tariffsPage/features';
+import { v4 as uuid } from 'uuid';
+import moment from 'moment';
 
 
 export const pricing = [
@@ -83,12 +85,16 @@ export const TariffsWidgetOld = () => {
     const [fakeRequestStatus, setFakeRequestStatus] = useState(initRequestStatus)
     const [activeTab, setActiveTab] = useState('1 месяц')
     const [isCalculatorModalVisible, setIsCalculatorModalVisible] = useState(false)
-    const [ descriptionItem, setDescriptionItem] = useState(null)
+    const [descriptionItem, setDescriptionItem] = useState(null)
 
     const navigate = useNavigate();
     const location = useLocation();
     const userIdInvoiceHardCode = 'radar-51-20240807-161128';
     const currentPath = window.location.pathname;
+
+    const isProductionMode = useMemo(() => {
+        return import.meta.env.PROD && URL === 'https://radar-analytica.ru'
+    }, [])
 
     if (user?.is_test_used !== trialExpired) {
         user?.is_test_used ? setTrialExpired(true) : setTrialExpired(false);
@@ -365,6 +371,7 @@ export const TariffsWidgetOld = () => {
                 email: user.email,
                 accountId: `radar-${user.id}`, //идентификатор плательщика (обязательно для создания подписки)
                 data: data,
+                customFields: _?.customField ? _.customField : undefined
             },
             function (options) {
                 // success - действие при успешной оплате
@@ -626,7 +633,16 @@ export const TariffsWidgetOld = () => {
         let fakeRequestObject = JSON.parse(JSON.stringify(fakePaymentObject))
         fakeRequestObject = {
             ...fakeRequestObject,
-            Data: data
+            TransactionId: uuid(),
+            Amount: amountSubscribe,
+            InvoiceId: invoiceId,
+            PaymentAmount: amountSubscribe,
+            AccountId: `radar-${user?.id}`,
+            SubscriptionId: `sc_${invoiceId}`,
+            Data: data,
+            Email: user?.email,
+            DateTime: moment().format("YYYY-MM-DD HH:mm:ss"),
+            Token: `tk_${invoiceId}`,
         }
 
         setFakePaymentDataObject(fakeRequestObject)
@@ -680,6 +696,42 @@ export const TariffsWidgetOld = () => {
                     )
                 })}
             </div> */}
+            {!isProductionMode &&
+                <div className={styles.testButtons}>
+                    <button
+                        title='КИРИЛЛ НЕ НАЖИМАТЬ! // Здесь customFields - объект'
+                        onClick={() => {
+                            setActivatedSubscription('customField test');
+                            setIsWidgetActive(true);
+                            pay({
+                                title: 'customField test',
+                                discount: null,
+                                price: 10,
+                                oldPrice: null,
+                                color: '#8F8F8F',
+                                value: '1month',
+                                customField: { testField: 'testValue' }
+                            });
+                        }}
+                    >Боевой тест оплаты (OBJECT)</button>
+                    <button
+                        title='КИРИЛЛ НЕ НАЖИМАТЬ! // Здесь customFields - массив'
+                        onClick={() => {
+                            setActivatedSubscription('customField test');
+                            setIsWidgetActive(true);
+                            pay({
+                                title: 'customField test',
+                                discount: null,
+                                price: 10,
+                                oldPrice: null,
+                                color: '#8F8F8F',
+                                value: '1month',
+                                customField: [{ testField: 'testValue' }]
+                            });
+                        }}
+                    >Боевой тест оплаты (ARRAY)</button>
+                </div>
+            }
             <div className={styles.page__tariffsListOld}>
                 {pricing.map((item, index) => (
                     <TariffCard
@@ -1257,3 +1309,103 @@ const CalcOptionItem = ({
         </div>
     )
 }
+
+
+
+/**
+ * {
+  "TransactionId": "3261706281", // -- засунуть что-нить рандомное (uuid?)
+  "Amount": "10.00", // -- сумма подписки
+  "Currency": "RUB",
+  "PaymentAmount": "10.00", // -- сумма подписки
+  "PaymentCurrency": "RUB",
+  "OperationType": "Payment",
+  "InvoiceId": "radar-2424-05012026-104726", // -- см строку 306
+  "AccountId": "radar-2424", // -- radar-${user.id}
+  "SubscriptionId": "sc_d475206edbee8ee7bb9b8888e6594", // -- sc_invoiceId - строка 1335
+  "Name": "",
+  "Email": "aam051@yandex.ru", // -- почта юзера
+  "DateTime": "2026-01-05 05:49:44", // -- текущая
+  "IpAddress": "38.97.7.143",
+  "IpCountry": "US",
+  "IpCity": "Остин",
+  "IpRegion": "Техас",
+  "IpDistrict": "Остин",
+  "IpLatitude": "30.26715",
+  "IpLongitude": "-97.74306",
+  "CardId": "",
+  "CardFirstSix": "220070",
+  "CardLastFour": "4377",
+  "CardType": "MIR",
+  "CardExpDate": "07/34",
+  "Issuer": "T-Bank (Tinkoff)",
+  "IssuerBankCountry": "RU",
+  "Description": "Оплата подписки в Radar Analytica",
+  "AuthCode": "085458",
+  "Token": "tk_80040cbc23c68dbf209009d56aa2c", // tk_invoiceId
+  "TestMode": "0",
+  "Status": "Completed",
+  "GatewayName": "Tbank",
+  "Data": {
+    "CloudPayments": {
+      "CustomerReceipt": {
+        "Items": [
+          {
+            "label": "Подписка Радар Аналитика",
+            "price": 5460,
+            "quantity": 1,
+            "amount": 5460,
+            "vat": 20,
+            "method": 0,
+            "object": 0
+          }
+        ],
+        "email": "staf118@mail.ru",
+        "phone": "",
+        "isBso": false,
+        "amounts": {
+          "electronic": 5460,
+          "advancePayment": 0,
+          "credit": 0,
+          "provision": 0
+        }
+      },
+      "recurrent": {
+        "interval": "Month",
+        "period": 6,
+        "startDate": "2026-07-07T10:00:00",
+        "amount": 5460,
+        "customerReceipt": {
+          "Items": [
+            {
+              "label": "Подписка Радар Аналитика",
+              "price": 5460,
+              "quantity": 1,
+              "amount": 5460,
+              "vat": 20,
+              "method": 0,
+              "object": 0
+            }
+          ],
+          "email": "staf118@mail.ru",
+          "phone": "",
+          "isBso": false,
+          "amounts": {
+            "electronic": 5460,
+            "advancePayment": 0,
+            "credit": 0,
+            "provision": 0
+          }
+        }
+      }
+    }
+  },
+  "TotalFee": "3.90",
+  "CardProduct": "TKN",
+  "PaymentMethod": "TinkoffPay",
+  "Rrn": "135021423974",
+  "InstallmentTerm": "",
+  "InstallmentMonthlyPayment": "",
+  "CustomFields": ""
+}
+ */

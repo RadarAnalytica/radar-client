@@ -140,10 +140,10 @@ export const ProfileWidget = () => {
         try {
             let res = await ServiceFunctions.updatUserPwd(authToken, values);
             if (!res.ok) {
-                setStatus({ ...initStatus, isError: true, message: 'Не удалось обновить данные пользователя' });
+                res = await res.json();
+                setStatus({ ...initStatus, isError: true, message: res && typeof res === 'string' ? res : 'Не удалось обновить пароль' });
                 return;
             }
-            console.log('res', res)
             setStatus({ ...initStatus, isSuccess: true, message: 'Пароль успешно изменен' })
         } catch (error) {
             console.error('Ошибка при сохранении:', error)

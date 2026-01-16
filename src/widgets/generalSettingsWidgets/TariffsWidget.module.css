@@ -28,6 +28,26 @@
     }
 }
 
+.testButtons {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.testButtons button {
+    padding: 0 12px;
+    border-radius: 8px;
+    background-color: #5329FF;
+    border: none;
+    height: 46px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    color: white;
+}
+
 .widget__tabs {
     width: 100%;
     display: flex;
