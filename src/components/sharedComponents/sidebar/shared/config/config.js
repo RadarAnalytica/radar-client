@@ -128,7 +128,7 @@ export const menuConfig = [
                 url: '/report-main',
                 label: 'Оцифровка еженедельных отчетов (ручная)',
                 hasTopBorder: true,
-                isActive: true,
+                isActive: false,
                 isNew: false
             },
             // {

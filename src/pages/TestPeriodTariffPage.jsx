@@ -70,7 +70,7 @@ const TestPeriodTariffPage = () => {
     } else {
       if (user?.is_onboarded) {
         user?.subscription_status === 'expired'
-          ? navigate('/tariffs')
+          ? navigate('/settings', {state: {tab: 'tariffs'}})
           : navigate('/dashboard');
       } else {
         navigate('/onboarding');

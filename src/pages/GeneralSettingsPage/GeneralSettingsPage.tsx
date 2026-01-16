@@ -1,11 +1,11 @@
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useState, useMemo, useContext } from 'react';
 import { GeneralLayout } from '@/shared';
 import { Segmented, ConfigProvider } from 'antd';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { LinkedShopsWidget, ReferalProgrammWidget, ProfileWidget, UsersWidget, PaymentWidget, TariffsWidget, TariffsWidgetOld } from '@/widgets';
 import { useDemoMode } from '@/app/providers';
 import NoSubscriptionWarningBlock from '@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock';
-
+import AuthContext from '@/service/AuthContext';
 
 
 const segmentedTheme = {
@@ -36,11 +36,13 @@ const GeneralSettingsPage = () => {
     const location = useLocation()
     const navigate = useNavigate()
     const { isDemoUser, isDemoMode } = useDemoMode();
+    const { user } = useContext(AuthContext)
+
 
     const segmentedOptions = useMemo(() => {
         return [
             { value: 'profile', label: 'Профиль' },
-            { value: 'shops', label: 'Подключенные магазины' },
+            { value: 'shops', label: 'Подключенные магазины', disabled: user?.subscription_status?.toLowerCase() === 'expired' },
             // { value: 'users', label: 'Настройки пользователей' },
             { value: 'payments', label: 'История платежей',  disabled: isDemoUser || isDemoMode },
             { value: 'referral', label: 'Реферальная программа', disabled: isDemoUser || isDemoMode},

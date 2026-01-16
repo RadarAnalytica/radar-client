@@ -112,8 +112,8 @@ export const LinkedShopsWidget = () => {
                 shop_id: addAndEditModalState?.shop?.id,
                 effective_from: moment().format('YYYY-MM-DD'),
                 tax_type: fields?.taxType,
-                tax_rate: parseInt(fields?.tax),
-                vat_rate: fields?.vat === 'Без НДС' ? 0 : parseInt(fields?.vat),
+                tax_rate: fields?.taxType === 'Не считать налог' ? 0 : parseInt(fields?.tax),
+                vat_rate: fields?.taxType === 'Не считать налог' ? 0 : fields?.vat === 'Без НДС' ? 0 : parseInt(fields?.vat),
             }
 
             try {
@@ -639,13 +639,14 @@ const TaxSetupModal = ({
     submitHandler
 }) => {
     const [form] = Form.useForm();
-
+    const taxType = Form.useWatch('taxType', form);
+    const isTaxDisabled = taxType === 'Не считать налог';
 
     useEffect(() => {
         if (addAndEditModalState?.type === 'tax' && addAndEditModalState.shop) {
             form.setFieldValue('taxType', addAndEditModalState?.shop?.tax_type);
             form.setFieldValue('tax', addAndEditModalState?.shop?.tax_rate);
-            form.setFieldValue('vat', addAndEditModalState?.shop?.vat_rate ?? 'Без НДС');
+            form.setFieldValue('vat', addAndEditModalState?.shop?.vat_rate || 'Без НДС');
         } else {
             form.resetFields();
         }
@@ -745,10 +746,10 @@ const TaxSetupModal = ({
                                 label='Ставка налога'
                                 className={styles.taxModal__formItem}
                                 rules={[
-                                    { required: true, message: 'Пожалуйста, введите процент налога!' },
+                                    { required: !isTaxDisabled, message: 'Пожалуйста, введите процент налога!' },
                                     () => ({
                                         validator(_, value) {
-                                            if (!value) {
+                                            if (!value || isTaxDisabled) {
                                                 return Promise.resolve();
                                             }
                                             if (!/^\d+$/.test(value.toString())) {
@@ -763,6 +764,7 @@ const TaxSetupModal = ({
                                     placeholder='Например, 6'
                                     size='large'
                                     style={{ width: '100%' }}
+                                    disabled={isTaxDisabled}
                                     onKeyPress={(e) => {
                                         if (!/[0-9]/.test(e.key) && e.key !== 'Backspace' && e.key !== 'Delete' && e.key !== 'Tab' && e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') {
                                             e.preventDefault();
@@ -781,6 +783,7 @@ const TaxSetupModal = ({
                                     className={styles.plainSelect__select}
                                     options={[{ value: 'Без НДС' }, { value: '5%' }, { value: '7%' }, { value: '10%' }, { value: '22%' }]}
                                     getPopupContainer={(triggerNode) => triggerNode.parentNode}
+                                    disabled={isTaxDisabled}
                                 />
                             </Form.Item>
                             <div className={styles.taxModal__buttonsWrapper}>
