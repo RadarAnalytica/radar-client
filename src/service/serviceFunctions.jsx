@@ -142,6 +142,17 @@ export const ServiceFunctions = {
 		});
 		return res;
 	},
+	setShopTax: async (authToken, data) => {
+		const res = await fetchApi(`${URL}/api/tax/set`, {
+			method: 'POST',
+			headers: {
+				'content-type': 'application/json',
+				authorization: 'JWT ' + authToken,
+			},
+			body: JSON.stringify(data)
+		});
+		return res;
+	},
 
 	getDashBoard: async (token, selectedRange, idShop, filters) => {
 		//let rangeParams = rangeApiFormat(selectedRange);

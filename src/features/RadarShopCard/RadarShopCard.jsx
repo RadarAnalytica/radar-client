@@ -167,8 +167,8 @@ export const RadarShopCard = ({
 
                     <div className={styles.widget__shopParam}>
                         <span>Налог</span>
-                        <div className={styles.widget__shopParamItem} style={{ color: getShopParamColor((shop?.tax !== undefined && shop?.tax !== null)) }}>
-                            {(shop?.tax !== undefined && shop?.tax !== null) ? 'Установлен' : 'Не установлен'}
+                        <div className={styles.widget__shopParamItem} style={{ color: getShopParamColor(shop?.is_tax_rate_set) }}>
+                            {shop?.is_tax_rate_set ? 'Установлен' : 'Не установлен'}
                         </div>
                         {shop?.tax !== undefined && shop?.tax !== null && <span>{formatPrice(shop?.tax, '%')}</span>}
                         <button style={{ border: 'none', backgroundColor: 'transparent' }} onClick={setTaxAction}>
@@ -184,3 +184,19 @@ export const RadarShopCard = ({
         </div>
     );
 };
+
+/**
+ *     {
+        "brand_name": "Kondrs135",
+        "is_active": true,
+        "id": 235,
+        "updated_at": "2026-01-14 11:44:36.895526",
+        "is_valid": false,
+        "is_primary_collect": true,
+        "is_self_cost_set": true,
+        "is_tax_rate_set": false,
+        "tax_type": null,
+        "tax_rate": null,
+        "vat_rate": null
+    },
+ */
