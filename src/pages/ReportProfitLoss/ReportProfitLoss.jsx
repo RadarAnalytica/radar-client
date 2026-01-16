@@ -147,7 +147,7 @@ export default function ReportProfitLoss() {
 
 			if (parentKey === 'operating_expenses') {
 				const expenseItem = dataSource.operating_expenses?.items?.find(exp => exp.category === key);
-				return expenseItem || defaultExpenseItem;
+				return expenseItem ? { ...expenseItem, parentKey } : defaultExpenseItem;
 			}
 
 			if (key === 'operating_expenses') {
@@ -180,7 +180,7 @@ export default function ReportProfitLoss() {
 			});
 
 			if (isChildren) {
-				childrenData[parentKey] = [...(childrenData[parentKey] || []), rowObject];
+				childrenData[parentKey] = [...(childrenData[parentKey] || []), rowObject].map(item => ({ ...item, parentKey }));
 			} else {
 				tableData.push(rowObject);
 			}
@@ -203,7 +203,7 @@ export default function ReportProfitLoss() {
 						isChild: true,
 					};
 				}),
-			}
+			};
 		});
 	};
 

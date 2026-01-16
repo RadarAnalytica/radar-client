@@ -10,6 +10,9 @@ import { URL } from '@/service/config';
 
 
 const customCellRender = (value, record, index, dataIndex) => {
+	// Получение полей с обратным цветом индикации
+    const isRevertIndication = index => ['total_expenses', 'operating_expenses', 'tax'].includes(index);
+
 	let yearAttribute = '';
 	if (years.some(year => year.toString() === dataIndex.toString())) {
 		yearAttribute = 'profitLossYearCell';
@@ -20,7 +23,9 @@ const customCellRender = (value, record, index, dataIndex) => {
 			return (
 				<div className={styles.customCell} data-year-attribute={yearAttribute}>
 					<span className={styles.customCellValueText} title={formatPrice(value.rub.value, '₽')}><b>{formatPrice(value.rub.value, '₽')}</b></span>
-					{!yearAttribute && value.rub.comparison_percentage !== null && value.rub.comparison_percentage !== undefined && <RadarRateMark value={value.rub.comparison_percentage} units='%' />}
+					{!yearAttribute && value.rub.comparison_percentage != null && 
+						<RadarRateMark value={value.rub.comparison_percentage} units='%' inverse={isRevertIndication(record.key)} />
+					}
 				</div>
 			);
 		}
@@ -53,8 +58,7 @@ const customCellRender = (value, record, index, dataIndex) => {
 		);
 	}
 
-	if (
-		dataIndex === 'article' && record.isChild) {
+	if (dataIndex === 'article' && record.isChild) {
 		return (
 			<div className={`${styles.customCell} ${styles.customCellChildren}`} data-year-attribute={yearAttribute}>
 				<span className={styles.customCellValueText} style={{ color: 'rgba(0, 0, 0, .5)' }} title={value}>{value}
@@ -86,7 +90,9 @@ const customCellRender = (value, record, index, dataIndex) => {
 		return (
 			<div className={styles.customCell} data-year-attribute={yearAttribute}>
 				<span className={styles.customCellValueText} style={{ color: 'rgba(0, 0, 0, .5)' }} title={formatPrice(value.rub.value, '₽')}><b>{formatPrice(value.rub.value, '₽')}</b></span>
-				{!yearAttribute && value.rub.comparison_percentage !== null && value.rub.comparison_percentage !== undefined && <RadarRateMark value={value.rub.comparison_percentage} units='%' />}
+				{!yearAttribute && value.rub.comparison_percentage != null && 
+					<RadarRateMark value={value.rub.comparison_percentage} units='%' inverse={isRevertIndication(record.parentKey)} />
+				}
 			</div>
 		);
 	}
@@ -94,7 +100,9 @@ const customCellRender = (value, record, index, dataIndex) => {
 		return (
 			<div className={styles.customCell} data-year-attribute={yearAttribute}>
 				<span className={styles.customCellValueText} title={formatPrice(value.rub.value, '₽')}><b>{formatPrice(value.rub.value, '₽')}</b></span>
-				{!yearAttribute && value.rub.comparison_percentage !== null && value.rub.comparison_percentage !== undefined && <RadarRateMark value={value.rub.comparison_percentage} units='%' />}
+				{!yearAttribute && value.rub.comparison_percentage != null && 
+					<RadarRateMark value={value.rub.comparison_percentage} units='%' />
+				}
 			</div>
 		);
 	}
@@ -130,7 +138,6 @@ const customCellRender = (value, record, index, dataIndex) => {
 
 
 const TableWidget = ({ loading, columns, data, rowSelection = false, virtual = true, is_primary_collect, progress = null, setTableConfig }) => {
-	console.log('data', data);
 	const tableContainerRef = useRef(null);
 	const expandedRows = [...data].filter(_ => _.isExpanded).map(_ => JSON.stringify(_)).filter(Boolean);
 	const onResize = (columnKey, newWidth) => {
