@@ -1,20 +1,22 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { Table as RadarTable, Tooltip as RadarTooltip } from 'radar-ui';
-import { formatPrice } from '../../../../service/utils';
+import { formatPrice } from '@/service/utils';
 import styles from './RnpTable.module.css';
-import { RadarRateMark } from '@/shared';
+import { RadarRateMark, RadarCell } from '@/shared';
+
 import { ConfigProvider, Tooltip } from 'antd';
 
 const customCellRender = (value, record, index, dataIndex) => {
 	if (dataIndex === 'summary') {
 		return (
 			<>
-				{typeof value === 'object' ?
-					<div className={`${styles.customCell_WithRateMark}`}>
-						<div className={styles.customCellBold}>{formatPrice(value.value, '')}</div>
-						{(value.comparison_percentage !== undefined && value.comparison_percentage !== null) && <RadarRateMark value={value.comparison_percentage} units='%' />}
-					</div> :
-					<div className={styles.customCell}>{formatPrice(value, '')}</div>}
+				{typeof value === 'object' 
+					? <div className={`${styles.customCell_WithRateMark}`}>
+						<RadarCell className={styles.customCellBold} value={value.value} copyable />
+						{value.comparison_percentage != null && <RadarRateMark value={value.comparison_percentage} units='%' />}
+					</div>
+					: <RadarCell className={styles.customCell} value={value} copyable />
+				}
 			</>
 		);
 	}
@@ -97,12 +99,13 @@ const customCellRender = (value, record, index, dataIndex) => {
 	}
 	return (
 		<>
-			{typeof value === 'object' ?
-				<div className={`${styles.customCell_WithRateMark}`}>
-					<div className={styles.customCell}>{formatPrice(value.value, '')}</div>
-					{(value.comparison_percentage !== undefined && value.comparison_percentage !== null) && <RadarRateMark value={value.comparison_percentage} units='%' />}
-				</div> :
-				<div className={styles.customCell}>{formatPrice(value, '')}</div>}
+			{typeof value === 'object'
+				? <div className={`${styles.customCell_WithRateMark}`}>
+					<RadarCell value={value.value} copyable />
+					{value.comparison_percentage != null && <RadarRateMark value={value.comparison_percentage} units='%' />}
+				</div>
+				: <RadarCell value={value} copyable />
+			}
 		</>
 	);
 };

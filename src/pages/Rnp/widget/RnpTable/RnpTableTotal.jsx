@@ -16,7 +16,7 @@ const customCellRender = (value, record, index, dataIndex) => {
 					</div> :
 					<div className={styles.customCell}>{formatPrice(value, '')}</div>}
 			</>
-		)
+		);
 	}
 	if (dataIndex === 'period' && record.isParent && value !== 'Переходы (шт)') {
 		return <div className={styles.customCellBold}>

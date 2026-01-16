@@ -74,7 +74,6 @@ export default function Rnp({
 	const { isDemoMode } = useDemoMode();
 	const dispatch = useAppDispatch();
 	const { selectedRange, activeBrand, shops, activeBrandName, isFiltersLoaded } = useAppSelector((state) => state.filters);
-	console.log(activeBrandName)
 	const filters = useAppSelector((state) => state.filters);
 	const initLoad = useRef(true);
 	const pageContentRef = useRef(null);
