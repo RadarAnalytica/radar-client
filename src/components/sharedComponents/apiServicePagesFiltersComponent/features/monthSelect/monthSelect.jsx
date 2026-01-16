@@ -31,9 +31,9 @@ export const MonthSelect = ({
 
     const minDate = useMemo(() => {
         if (activeBrand?.created_at) {
-            return dayjs(activeBrand.created_at).subtract(4, 'month');
+            return dayjs(activeBrand.created_at).startOf('month').subtract(4, 'month');
         }
-        return dayjs().subtract(4, 'month');
+        return dayjs().startOf('month').subtract(4, 'month');
     }, [activeBrand]);
 
     const onChangeHandler = (data) => {

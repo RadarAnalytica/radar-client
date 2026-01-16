@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
+import moment from 'moment';
 import AuthContext from '@/service/AuthContext';
 import styles from './filters.module.css';
 import { TimeSelect, PlainSelect, FrequencyModeSelect, ShopSelect, MultiSelect, MonthSelect } from '../features';
@@ -52,11 +53,7 @@ export const Filters = React.memo(({
         selectedRange: (() => {
           const currentRange = prev?.selectedRange;
           if (currentRange && typeof currentRange === 'object' && currentRange.from && value?.created_at) {
-            const shopCreatedAt = new Date(value.created_at);
-            const rangeFrom = new Date(currentRange.from);
-            const daysSinceCreation = (rangeFrom - shopCreatedAt) / (1000 * 60 * 60 * 24);
-            console.log('daysSinceCreation', daysSinceCreation)
-            
+            const daysSinceCreation = moment(currentRange.from).diff(moment(value.created_at), 'days');
             if (daysSinceCreation < -90) {
               return { period: 30 };
             }
