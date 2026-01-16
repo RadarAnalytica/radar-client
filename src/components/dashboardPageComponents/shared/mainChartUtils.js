@@ -1,3 +1,37 @@
+import { formatPrice } from "@/service/utils";
+
+// Полные названия месяцев для тултипа
+export const MONTH_NAMES_FULL = [
+    'января',
+    'февраля',
+    'марта',
+    'апреля',
+    'мая',
+    'июня',
+    'июля',
+    'августа',
+    'сентября',
+    'октября',
+    'ноября',
+    'декабря',
+];
+
+// Сокращенные названия месяцев для оси X
+export const MONTH_NAMES_SHORT = [
+    'янв',
+    'фев',
+    'мар',
+    'апр',
+    'мая',
+    'июн',
+    'июл',
+    'авг',
+    'сен',
+    'окт',
+    'ноя',
+    'дек',
+];
+
 export const getArrayStep = (max) => {
     let expectStep = Math.ceil(max / 6);
     let range = 0;
@@ -28,35 +62,31 @@ export const getMaxValue = (chartData) => {
 };
 
 export const getMaxAmount = (chartData) => {
-    const bar = chartData?.datasets?.filter((item) => item?.type === 'bar');
-    const maxAmount = bar
+    const bAxisDatasets = chartData?.datasets?.filter((item) => item?.yAxisID === 'B');
+    const maxAmount = bAxisDatasets
         ?.map((arr) => arr?.data)
         ?.flat(1)
         ?.sort((a, b) => b - a)[0];
     return maxAmount;
 };
 
-export const getPastDays = (number, selectedRange) => {
+export const getMaxRoi = (chartData) => {
+    const cAxisDatasets = chartData?.datasets?.filter((item) => item?.yAxisID === 'C');
+    const maxRoi = cAxisDatasets
+        ?.map((arr) => arr?.data)
+        ?.flat(1)
+        ?.sort((a, b) => b - a)[0];
+    return maxRoi || 0;
+};
+
+export const getPastDays = (number, selectedRange, useShortMonth = false) => {
     const today = selectedRange.to ? new Date(selectedRange.to) : new Date();
     const pastDays = [];
+    const monthNames = useShortMonth ? MONTH_NAMES_SHORT : MONTH_NAMES_FULL;
 
     for (let i = 0; i < number; i++) {
         const pastDate = new Date(today.getTime() - i * 24 * 60 * 60 * 1000);
-        const day = pastDate.getDate().toString().padStart(2, '0');
-        const monthNames = [
-            'янв',
-            'фев',
-            'мар',
-            'апр',
-            'май',
-            'июн',
-            'июл',
-            'авг',
-            'сен',
-            'окт',
-            'ноя',
-            'дек',
-        ];
+        const day = pastDate.getDate().toString().padStart(2, '');
         const month = monthNames[pastDate.getMonth()];
 
         pastDays.push(`${day} ${month}`);
@@ -65,147 +95,183 @@ export const getPastDays = (number, selectedRange) => {
     return pastDays;
 };
 
+// Функция для преобразования сокращенной даты в полную для тултипа
+export const convertShortDateToFull = (shortDate) => {
+    let fullDate = shortDate;
+    MONTH_NAMES_SHORT.forEach((shortMonth, index) => {
+        fullDate = fullDate.replace(shortMonth, MONTH_NAMES_FULL[index]);
+    });
+    return fullDate;
+};
+
 
 export const getChartData = (dataDashBoard, selectedRange, controlsState) => {
     const countDays = dataDashBoard?.orderCountList?.length;
     return {
-        labels: getPastDays(countDays, selectedRange).reverse(),
+        labels: getPastDays(countDays, selectedRange, true).reverse(), // true = использовать сокращенные названия
         datasets: [
             controlsState.isOrderAmountActive
                 ? {
                     label: 'Заказы',
-                    borderRadius: 8,
                     type: 'line',
-                    backgroundColor: 'rgba(255, 219, 126, 1)',
+                    backgroundColor: '#5329FF',
                     borderWidth: 2,
                     pointRadius: 5,
+                    hoverRadius: 8,
                     pointBorderColor: 'white',
-                    borderColor: 'rgba(255, 219, 126, 1)',
-                    hoverBackgroundColor: 'rgba(240, 173, 0, 7)',
+                    borderColor: '#5329FF',
+                    tension: 0.4,
                     yAxisID: 'A',
                     data: dataDashBoard?.orderAmountList || [],
                     xAxisID: 'x',
                 }
                 : {
                     label: 'Заказы',
-                    borderRadius: 8,
                     type: 'line',
-                    backgroundColor: 'rgba(255, 219, 126, 1)',
+                    backgroundColor: '#5329FF',
                     borderWidth: 2,
-                    pointRadius: 5,
+                    pointRadius: 6,
+                    hoverRadius: 8,
                     pointBorderColor: 'white',
-                    borderColor: 'rgba(255, 219, 126, 1)',
-                    hoverBackgroundColor: 'rgba(240, 173, 0, 7)',
+                    borderColor: '#5329FF',
+                    tension: 0.4,
                     yAxisID: 'A',
                     data: [],
                 },
             controlsState.isSalesAmountActive
                 ? {
                     label: 'Продажи',
-                    borderRadius: 8,
                     type: 'line',
-                    backgroundColor: 'rgba(154, 129, 255, 1)',
+                    backgroundColor: '#AA5BFF',
                     borderWidth: 2,
                     pointRadius: 5,
+                    hoverRadius: 8,
                     pointBorderColor: 'white',
-                    borderColor: 'rgba(154, 129, 255, 1)',
-                    hoverBackgroundColor: 'rgba(83, 41, 255, 0.7)',
+                    borderColor: '#AA5BFF',
+                    tension: 0.4,
                     yAxisID: 'A',
                     data: dataDashBoard?.saleAmountList || [],
                 }
                 : {
                     label: 'Продажи',
-                    borderRadius: 8,
                     type: 'line',
-                    backgroundColor: 'rgba(154, 129, 255, 1)',
+                    backgroundColor: '#AA5BFF',
                     borderWidth: 2,
-                    pointRadius: 5,
+                    pointRadius: 6,
+                    hoverRadius: 8,
                     pointBorderColor: 'white',
-                    borderColor: 'rgba(154, 129, 255, 1)',
-                    hoverBackgroundColor: 'rgba(83, 41, 255, 0.7)',
+                    borderColor: '#88E473',
+                    tension: 0.4,
                     yAxisID: 'A',
                     data: [],
                 },
             controlsState.isOrderQuantityActive
                 ? {
                     label: 'Заказы',
-                    borderRadius: 3,
-                    type: 'bar',
-                    backgroundColor: (context) => {
-                        const ctx = context.chart.ctx;
-                        const gradient = ctx.createLinearGradient(0, 0, 0, 400);
-                        // gradient.addColorStop(0, 'rgba(240, 173, 0, 1)');
-                        // gradient.addColorStop(0.5, 'rgba(240, 173, 0, 0.9)');
-                        // gradient.addColorStop(1, 'rgba(240, 173, 0, 0.5)');
-                        gradient.addColorStop(0, '#F0AD00');
-                        gradient.addColorStop(1, '#F0AD0080');
-                        return gradient;
-                    },
-                    borderColor: 'transparent',
-                    borderWidth: 1,
-                    hoverBackgroundColor: 'rgba(240, 173, 0, 7)',
+                    type: 'line',
+                    borderColor: '#F0AD00',
+                    // borderColor: 'red',
                     yAxisID: 'B',
+                    tension: 0.4,
+                    pointBorderColor: 'white',
+                    backgroundColor: '#F0AD00',
+                    pointRadius: 5,
+                    hoverRadius: 8,
+                    borderWidth: 2,
                     data: dataDashBoard?.orderCountList || [],
                 }
                 : {
                     label: 'Заказы',
-                    borderRadius: 3,
-                    type: 'bar',
-                    backgroundColor: (context) => {
-                        const ctx = context.chart.ctx;
-                        const gradient = ctx.createLinearGradient(0, 0, 0, 400);
-                        // gradient.addColorStop(0, 'rgba(240, 173, 0, 1)');
-                        // gradient.addColorStop(0.5, 'rgba(240, 173, 0, 0.9)');
-                        // gradient.addColorStop(1, 'rgba(240, 173, 0, 0.5)');
-                        gradient.addColorStop(0, '#F0AD00');
-                        gradient.addColorStop(1, '#F0AD0080');
-                        return gradient;
-                    },
-                    borderColor: 'transparent',
-                    borderWidth: 1,
-                    hoverBackgroundColor: 'rgba(240, 173, 0, 7)',
+                    type: 'line',
+                    borderColor: '#F0AD00',
                     yAxisID: 'B',
+                    tension: 0.4,
+                    pointBorderColor: 'white',
+                    backgroundColor: '#F0AD00',
+                    pointRadius: 6,
+                    hoverRadius: 8,
+                    borderWidth: 2,
                     data: [],
                 },
             controlsState.isSalesQuantityActive
                 ? {
                     label: 'Продажи',
-                    borderRadius: 3,
-                    type: 'bar',
-                    backgroundColor: (context) => {
-                        const ctx = context.chart.ctx;
-                        const gradient = ctx.createLinearGradient(0, 0, 0, 500);
-                        // gradient.addColorStop(0, 'rgba(83, 41, 255, 1)');
-                        // gradient.addColorStop(0.5, 'rgba(83, 41, 255, 0.9)');
-                        // gradient.addColorStop(1, 'rgba(83, 41, 255, 0.5)');
-                        gradient.addColorStop(0, '#5329FF');
-                        gradient.addColorStop(1, '#5329FF80');
-                        return gradient;
-                    },
-                    borderColor: 'transparent',
-                    borderWidth: 1,
-                    hoverBackgroundColor: 'rgba(83, 41, 255, 0.7)',
+                    type: 'line',
+                    borderColor: '#88E473',
                     yAxisID: 'B',
+                    tension: 0.4,
+                    pointBorderColor: 'white',
+                    backgroundColor: '#88E473',
+                    pointRadius: 5,
+                    hoverRadius: 8,
+                    borderWidth: 2,
                     data: dataDashBoard?.saleCountList || [],
                 }
                 : {
                     label: 'Продажи',
-                    borderRadius: 3,
-                    type: 'bar',
-                    backgroundColor: (context) => {
-                        const ctx = context.chart.ctx;
-                        const gradient = ctx.createLinearGradient(0, 0, 0, 500);
-                        // gradient.addColorStop(0, 'rgba(83, 41, 255, 1)');
-                        // gradient.addColorStop(0.5, 'rgba(83, 41, 255, 0.9)');
-                        // gradient.addColorStop(1, 'rgba(83, 41, 255, 0.5)');
-                        gradient.addColorStop(0, '#5329FF');
-                        gradient.addColorStop(1, '#5329FF80');
-                        return gradient;
-                    },
-                    borderColor: 'transparent',
-                    borderWidth: 1,
-                    hoverBackgroundColor: 'rgba(83, 41, 255, 0.7)',
+                    type: 'line',
+                    borderColor: '#88E473',
                     yAxisID: 'B',
+                    tension: 0.4,
+                    pointBorderColor: 'white',
+                    backgroundColor: '#88E473',
+                    pointRadius: 5,
+                    hoverRadius: 8,
+                    borderWidth: 2,
+                    data: [],
+                },
+                controlsState.isRoiActive
+                ? {
+                    label: 'ROI',
+                    type: 'line',
+                    borderColor: '#0099FF',
+                    yAxisID: 'C', // Отдельная ось для ROI
+                    tension: 0.4,
+                    pointBorderColor: 'white',
+                    backgroundColor: '#0099FF',
+                    pointRadius: 5,
+                    hoverRadius: 8,
+                    borderWidth: 2,
+                    data: dataDashBoard?.marginalityRoiChart?.map(_ => _.roi) || [],
+                }
+                : {
+                    label: 'ROI',
+                    type: 'line',
+                    borderColor: '#0099FF',
+                    yAxisID: 'C', // Отдельная ось для ROI
+                    tension: 0.4,
+                    pointBorderColor: 'white',
+                    backgroundColor: '#0099FF',
+                    pointRadius: 4,
+                    hoverRadius: 8,
+                    borderWidth: 2,
+                    data: [],
+                },
+                controlsState.isMarginalityActive
+                ? {
+                    label: 'Маржинальность',
+                    type: 'line',
+                    borderColor: '#F9813C',
+                    yAxisID: 'C', // Латинская буква C для скрытой оси
+                    tension: 0.4,
+                    pointBorderColor: 'white',
+                    backgroundColor: '#F9813C',
+                    pointRadius: 5,
+                    hoverRadius: 8,
+                    borderWidth: 2,
+                    data: dataDashBoard?.marginalityRoiChart?.map(_ => _.marginality) || [],
+                }
+                : {
+                    label: 'Маржинальность',
+                    type: 'line',
+                    borderColor: '#F9813C',
+                    yAxisID: 'C', // Латинская буква C для скрытой оси
+                    tension: 0.4,
+                    pointBorderColor: 'white',
+                    backgroundColor: '#F9813C',
+                    pointRadius: 4,
+                    hoverRadius: 8,
+                    borderWidth: 2,
                     data: [],
                 },
         ],
@@ -262,21 +328,23 @@ export const getChartTooltip = (context, chartData) => {
         let innerHtml = '<thead>';
 
         titleLines.forEach(function (title) {
+            const fullDateTitle = convertShortDateToFull(title);
             innerHtml +=
                 '<tr><th style="color: silver; font-weight: 400;">' +
-                title?.split(',').join(' ') +
+                fullDateTitle?.split(',').join(' ') +
                 '</th></tr>';
         });
         innerHtml += '</thead><tbody>';
         datasets?.forEach(function (set, i) {
-            const colors = [
-                'rgba(240, 173, 0, 1)',
-                'rgba(83, 41, 255, 1)',
-            ];
-            const targetColor =
-                set.label === 'Заказы' ? colors[0] : colors[1];
-            const targetDescr = set.type === 'bar' ? ' шт' : ' руб';
-            let value = set?.data[targetInex] || '0';
+            const targetColor = set.borderColor || set.backgroundColor || 'rgba(240, 173, 0, 1)';
+            // Определяем единицы измерения в зависимости от типа данных
+            let targetDescr;
+            if (set?.label === 'ROI' || set?.label === 'Маржинальность') {
+                targetDescr = ' %';
+            } else {
+                targetDescr = set.yAxisID === 'B' ? ' шт' : ' руб';
+            }
+            let value = formatPrice(set?.data[targetInex], ' ') || '0';
             let style = '';
             style += '; border-width: 2px';
             const span =
@@ -389,11 +457,11 @@ export const getChartOptions = (chartData, days) => {
                 suggestedMax: getMaxValue(chartData),
                 min: 0,
                 grid: {
-                    drawOnChartArea: false,
+                    drawOnChartArea: true,
                     tickLength: 0,
                 },
                 border: {
-                    color: 'white',
+                    // color: 'white',
                 },
                 ticks: {
                     stepSize: getArrayStep(getMaxValue(chartData)),
@@ -403,7 +471,7 @@ export const getChartOptions = (chartData, days) => {
                         weight: 500,
                     },
                     tickMarkLength: 0,
-                    tickColor: 'transparent',
+                    // tickColor: 'transparent',
                 },
                 major: {
                     enabled: false,
@@ -423,7 +491,7 @@ export const getChartOptions = (chartData, days) => {
                     tickLength: 0,
                 },
                 border: {
-                    color: 'white',
+                    // color: 'white',
                 },
                 ticks: {
                     stepSize: getArrayStep(getMaxAmount(chartData)),
@@ -442,9 +510,25 @@ export const getChartOptions = (chartData, days) => {
                     enabled: false,
                 },
             },
-            x: {
+            C: {
+                id: 'C',
+                type: 'linear',
+                position: 'left',
+                min: 0,
+                suggestedMax: getMaxRoi(chartData),
+                display: false, // Скрываем ось ROI с графика
                 grid: {
                     drawOnChartArea: false,
+                    display: false,
+                },
+                ticks: {
+                    display: false,
+                    stepSize: getArrayStep(getMaxRoi(chartData)),
+                },
+            },
+            x: {
+                grid: {
+                    drawOnChartArea: true,
                     // display: false,
                 },
                 ticks: {

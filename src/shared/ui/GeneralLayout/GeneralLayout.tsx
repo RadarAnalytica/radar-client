@@ -5,7 +5,6 @@ import Sidebar from '@/components/sharedComponents/sidebar/sidebar';
 import MobilePlug from '@/components/sharedComponents/mobilePlug/mobilePlug';
 
 
-
 interface IGeneralLayoutProps {
     headerProps: {
         title: string | React.ReactNode,

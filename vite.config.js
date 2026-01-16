@@ -38,6 +38,10 @@ export default defineConfig({
       '@/app': resolve(__dirname, 'src/app')
     }
   },
+  optimizeDeps: {
+    include: ['date-fns', 'date-fns/locale', 'react-day-picker'],
+    exclude: []
+  },
   plugins: [
     svgr(), 
     react(),

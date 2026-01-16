@@ -1,0 +1,74 @@
+.page {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
+  gap: 40px;
+}
+
+.page__titleWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.page__title {
+  margin: 0;
+  padding: 0;
+}
+
+.page__backButton {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  margin: 0;
+  padding: 0;
+  width: 66px;
+}
+
+.form {
+  width: 100%;
+  outline: none;
+  border: none;
+}
+
+.form__submitButton {
+  margin-top: 40px;
+}
+
+.form__modalBody {
+  width: 100%;
+  padding: 50px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: black;
+}
+
+.currentIconWrapper {
+  padding-top: 10px;
+}
+
+.currentIcon {
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
+  border: 1px solid #0000001a;
+  border-radius: 8px;
+  padding: 8px;
+  background: #fafafa;
+}
+
+.iconLink {
+  color: #5329FF;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.iconLink:hover {
+  text-decoration: underline;
+}
+
+

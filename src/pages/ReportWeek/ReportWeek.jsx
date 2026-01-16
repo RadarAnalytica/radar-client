@@ -183,7 +183,7 @@ export default function ReportWeek() {
 				week_label: el.week_label,
 			};
 			Object.keys(el.data).forEach(key => {
-				if (el.data[key].rub || el.data[key].percent) {
+				if (el.data[key]?.rub || el.data[key]?.percent) {
 					Object.keys(el.data[key]).forEach(k => {
 						row[`${key}_${k}`] = el.data[key][k];
 					});
@@ -195,19 +195,16 @@ export default function ReportWeek() {
 			return row;
 		});
 
-
-
-
 		rows.forEach(row => {
 			Object.keys(row).forEach(key => {
 				if (!summary[key]) {
-					if (typeof row[key] === 'object') {
+					if (typeof row[key] === 'object' && row[key]?.value) {
 						summary[key] = row[key].value;
 					} else {
 						summary[key] = row[key];
 					}
 				} else {
-					if (typeof row[key] === 'object') {
+					if (typeof row[key] === 'object' && row[key]?.value) {
 						summary[key] += row[key].value;
 					} else {
 						summary[key] += row[key];

@@ -1,11 +1,10 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
-import { Form, ConfigProvider, Select, Input, Button, Tag, message } from 'antd';
+import { Form, ConfigProvider, Select, Input, Button, Tag } from 'antd';
 import { DatePicker } from '../../features';
 import styles from './paramsWidget.module.css';
 import moment from 'moment';
 import { ApiService } from '../../shared';
 import { useAppSelector } from '@/redux/hooks';
-import HowToLink from '@/components/sharedComponents/howToLink/howToLink';
 import { HowtoWidget } from '../howtoWidget/howtoWidget';
 import { useDemoMode } from "@/app/providers";
 
@@ -13,24 +12,6 @@ const dynamicOptions = [
     { value: 'Рост' },
     { value: 'Падение' },
 ];
-
-// const getDynamicNormilizedValue = (type, value, periodType) => {
-//     let normilizedValue = 0;
-//     if (!value) {
-//         switch (type) {
-//             case 'Рост':    return periodType === 'start' ? 0 : 10000000;
-//             case 'Падение': return periodType === 'end' ? 0 : - 10000000;
-//             default:        return normilizedValue;
-//         }
-//     }
-//     if (type === 'Рост') {
-//         normilizedValue = parseInt(value);
-//     }
-//     if (type === 'Падение') {
-//         normilizedValue = parseInt(value) * -1;
-//     }
-//     return normilizedValue;
-// }
 
 const dynamicNormalizer = (dynamic, from, to) => {
     let result = {
@@ -112,18 +93,6 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
             g30: dynamicNormalizer(fields.dynamic_30_days, fields.dynamic_30_days_from, fields.dynamic_30_days_to),
             g60: dynamicNormalizer(fields.dynamic_60_days, fields.dynamic_60_days_from, fields.dynamic_60_days_to),
             g90: dynamicNormalizer(fields.dynamic_90_days, fields.dynamic_90_days_from, fields.dynamic_90_days_to),
-            // g30: {
-            //     start: !fields.dynamic_30_days_from && !fields.dynamic_30_days_to ? 0 : getDynamicNormilizedValue(fields.dynamic_30_days, fields.dynamic_30_days_from, 'start'),
-            //     end: !fields.dynamic_30_days_from && !fields.dynamic_30_days_to ? 0 : getDynamicNormilizedValue(fields.dynamic_30_days, fields.dynamic_30_days_to, 'end')
-            // },
-            // g60: {
-            //     start: !fields.dynamic_60_days_from && !fields.dynamic_60_days_to ? 0 : getDynamicNormilizedValue(fields.dynamic_60_days, fields.dynamic_60_days_from, 'start'),
-            //     end: !fields.dynamic_60_days_from && !fields.dynamic_60_days_to ? 0 : getDynamicNormilizedValue(fields.dynamic_60_days, fields.dynamic_60_days_to, 'end')
-            // },
-            // g90: {
-            //     start: !fields.dynamic_90_days_from && !fields.dynamic_90_days_to ? 0 : getDynamicNormilizedValue(fields.dynamic_90_days, fields.dynamic_90_days_from, 'start'),
-            //     end: !fields.dynamic_90_days_from && !fields.dynamic_90_days_to ? 0 :  getDynamicNormilizedValue(fields.dynamic_90_days, fields.dynamic_90_days_to, 'end')
-            // },
             frequency: {
                 start: parseInt(fields.frequency_30_days_from) || 0,
                 end: parseInt(fields.frequency_30_days_to) || 10000000
@@ -345,11 +314,6 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                 <div className={styles.widget__header} onClick={() => setIsParamsVisible(!isParamsVisible)}>
                     <div className={styles.widget__title} role='button' tabIndex={0}>Параметры</div>
                     <div className={styles.widget__headerWrapper}>
-                        <HowToLink
-                            url='https://radar.usedocs.com/article/77127'
-                            text='Как использовать раздел'
-                            target='_blank'
-                        />
                         <button className={isParamsVisible ? `${styles.widget__openButton} ${styles.widget__openButton_opened}` : `${styles.widget__openButton} ${styles.widget__openButton_closed}`}>
                             {isParamsVisible ? 'Скрыть' : 'Раскрыть'}
                             <svg width="12" height="8" viewBox="0 0 12 8" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -996,3 +960,5 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
         </>
     );
 });
+
+ParamsWidget.displayName = 'ParamsWidget';

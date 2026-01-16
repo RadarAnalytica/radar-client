@@ -107,7 +107,7 @@ const customCellRender = (value, record, index, dataIndex) => {
 	);
 };
 
-export default function RnpTableTotal({ loading, columns, data, columns2, data2, expanded, el }) {
+export default function RnpTableTotal({ loading, columns, data, columns2, data2, expanded, el, resizeMode }) {
 	// table config
 	const [tableConfig, setTableConfig] = useState();
 	const [expandedRowKeys, setExpandedRowKeys] = useState([]);
@@ -184,7 +184,7 @@ export default function RnpTableTotal({ loading, columns, data, columns2, data2,
 						indentSize={45}
 						expandedRowKeys={expandedRowKeys}
 						onExpandedRowsChange={handleExpandedRowsChange}
-
+						resizeMode={resizeMode}
 						resizeable
 						onResize={onResize}
 
@@ -199,7 +199,7 @@ export default function RnpTableTotal({ loading, columns, data, columns2, data2,
 						bodyCellWrapperStyle={{ borderBottom: 'none', padding: '10.5px 12px' }}
 						headerCellWrapperClassName={styles.headerCellWrapperCustomClassName}
 						customCellRender={{
-							idx: [],
+							idx: tableConfig?.map((col) => col.dataIndex) || [],
 							renderer: customCellRender,
 						}}
 					/>

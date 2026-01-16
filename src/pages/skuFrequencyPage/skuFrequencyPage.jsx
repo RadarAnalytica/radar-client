@@ -10,7 +10,6 @@ import DownloadButton from '@/components/DownloadButton';
 import { actions as reqActions } from '@/redux/requestsMonitoring/requestsMonitoringSlice';
 import { actions as filterActions } from '@/redux/apiServicePagesFiltersState/apiServicePagesFilterState.slice';
 import { radarTableConfig, CURR_MONITORING_TABLE_CONFIG_VER } from './shared';
-import HowToLink from '@/components/sharedComponents/howToLink/howToLink';
 import { ServiceFunctions } from '@/service/serviceFunctions';
 import { fileDownload } from '@/service/utils';
 import ErrorModal from '@/components/sharedComponents/modals/errorModal/errorModal';
@@ -87,6 +86,8 @@ const SkuFrequencyPage = () => {
                     <div className={styles.page__headerWrapper}>
                         <Header
                             title='Поиск прибыльной ниши'
+                            howToLink="https://radar.usedocs.com/article/77617"
+                            howToLinkText="Как использовать раздел?"
                             videoReviewLink='https://play.boomstream.com/4yHYrlLW?color=%23FFFFFF&size=cover&autostart=0&loop=1&title=0'
                             hasShadow={false}
                         />
@@ -111,11 +112,6 @@ const SkuFrequencyPage = () => {
                         {/* {skuFrequencyMode === 'Продвинутый' &&
                             <OptionsSettingsWidget />
                         } */}
-                        <HowToLink
-                            text='Как использовать раздел'
-                            url='https://radar.usedocs.com/article/77617'
-                            target='_blank'
-                        />
                     </div>
 
                     <OptionsWidget />

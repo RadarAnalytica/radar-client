@@ -86,6 +86,8 @@ const TrendingRequestsPage = () => {
                     <div className={styles.page__headerWrapper}>
                         <Header
                             {...memoizedHeaderProps}
+                            howToLink="https://radar.usedocs.com/article/77127"
+                            howToLinkText="Как использовать раздел?"
                             videoReviewLink='https://play.boomstream.com/JDw00KbS?size=cover&color=%23ffffff&autostart=0&loop=1&title=0&volume=50'
                             hasShadow={false}
                         />

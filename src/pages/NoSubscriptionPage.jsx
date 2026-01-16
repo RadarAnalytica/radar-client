@@ -55,7 +55,7 @@ const NoSubscriptionPage = ({ title }) => {
               <p className={styles.page__infoText}>
                 Чтобы продолжить пользоваться сервисом выберите один из тарифов и произведите оплату
               </p>
-              <Link to='/tariffs' className={styles.page__mainLink}>Посмотреть тарифы</Link>
+              <Link to='/settings' state={{tab: 'tariffs'}} className={styles.page__mainLink}>Посмотреть тарифы</Link>
             </div>
           </div>
         </div>

@@ -64,7 +64,11 @@ const ProductGroupsPage = () => {
 
             <section className={styles.page__content}>
                 <div className={styles.page__headerWrapper}>
-                    <Header title='Группы товаров' />
+                    <Header 
+                        title='Группы товаров'
+                        howToLink="https://radar.usedocs.com/article/76887"
+                        howToLinkText="Как использовать?"
+                    />
                 </div>
 
                 {isDemoMode && <NoSubscriptionWarningBlock />}

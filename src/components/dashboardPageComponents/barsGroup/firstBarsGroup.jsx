@@ -2,7 +2,7 @@ import styles from './firstBarsGroup.module.css';
 import Bar from '../bars/bar';
 import { differenceInDays } from 'date-fns';
 import { useAppSelector } from '../../../redux/hooks';
-import { RadarBar } from '../../../shared/ui/RadarBar/RadarBar';
+import { RadarBar } from '@/shared';
 
 const FirstBarsGroup = ({ dataDashBoard, selectedRange, loading }) => {
 

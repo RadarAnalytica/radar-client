@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
+import moment from 'moment';
 import AuthContext from '@/service/AuthContext';
 import styles from './filters.module.css';
 import { TimeSelect, PlainSelect, FrequencyModeSelect, ShopSelect, MultiSelect, MonthSelect } from '../features';
@@ -27,7 +28,8 @@ export const Filters = React.memo(({
   children = null,
   disabled,
   submitHandler,
-  uncontrolledMode = false
+  uncontrolledMode = false,
+  hasShopCreationLimit = false,
 }) => {
 
   // ------ это база ------//
@@ -39,7 +41,6 @@ export const Filters = React.memo(({
   const previousFilters = useRef(null)
 
   const internalFiltersStateUpdateHandler = (key, value) => {
-    console.log(key, value)
     if (key === 'activeBrand') {
       setInternalActiveFiltersState(prev => ({
         ...prev,
@@ -47,8 +48,18 @@ export const Filters = React.memo(({
         activeBrandName: [{ value: 'Все' }],
         activeArticle: [{ value: 'Все' }],
         activeGroup: [{ id: 0, value: 'Все' }],
-        // activeWeeks: getSavedActiveWeeks(value.id),
-       // activeMonths: getSavedActiveMonths(value.id),
+        activeWeeks: getSavedActiveWeeks(value),
+        activeMonths: getSavedActiveMonths(value),
+        selectedRange: (() => {
+          const currentRange = prev?.selectedRange;
+          if (currentRange && typeof currentRange === 'object' && currentRange.from && value?.created_at) {
+            const daysSinceCreation = moment(currentRange.from).diff(moment(value.created_at), 'days');
+            if (daysSinceCreation < -90) {
+              return { period: 30 };
+            }
+          }
+          return currentRange;
+        })()
       }));
       return;
     }
@@ -87,7 +98,7 @@ export const Filters = React.memo(({
   const applyFiltersClickHandler = () => {
     dispatch(filterActions.setActiveFiltersMassively({
       ...internalActiveFiltersState,
-      activeMonths: internalActiveFiltersState.activeMonths ? internalActiveFiltersState.activeMonths : getSavedActiveMonths(internalActiveFiltersState?.activeBrand?.id)
+      activeMonths: internalActiveFiltersState.activeMonths ? internalActiveFiltersState.activeMonths : getSavedActiveMonths(internalActiveFiltersState?.activeBrand)
     }));
     submitHandler?.();
   }
@@ -140,8 +151,8 @@ export const Filters = React.memo(({
               value={internalActiveFiltersState?.activeMonths}
               isDataLoading={isDataLoading}
               minCustomDate={minCustomDate}
+              activeBrand={internalActiveFiltersState?.activeBrand}
               actionHandler={(value) => {
-                console.log(value)
                 internalFiltersStateUpdateHandler('activeMonths', value);
               }}
             />
@@ -153,7 +164,9 @@ export const Filters = React.memo(({
               isDataLoading={isDataLoading}
               maxCustomDate={maxCustomDate}
               minCustomDate={minCustomDate}
+              hasShopCreationLimit={hasShopCreationLimit}
               disabled={disabled}
+              activeBrand={internalActiveFiltersState?.activeBrand}
               customValue={uncontrolledMode ? undefined : internalActiveFiltersState?.selectedRange}
               customSubmit={uncontrolledMode ? undefined : (value) => {
                 internalFiltersStateUpdateHandler('selectedRange', value);

@@ -9,10 +9,10 @@ export const VIDEOS = [
     },
     {
         plug: c2,
-        video: 'https://play.boomstream.com/fIIHmfMP?color=%23ffffff&size=cover&loop=1&autostart=0&title=0&volume=50',
+        video: 'https://play.boomstream.com/yGygOkbh?color=%23ffffff&size=cover&loop=1&autostart=0&title=0&volume=50',
     },
     {
         plug: c3,
-        video: 'https://play.boomstream.com/yGygOkbh?color=%23ffffff&size=cover&loop=1&autostart=0&title=0&volume=50',
+        video: 'https://play.boomstream.com/fIIHmfMP?color=%23ffffff&size=cover&loop=1&autostart=0&title=0&volume=50',
     },
 ];

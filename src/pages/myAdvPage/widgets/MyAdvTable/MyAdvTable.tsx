@@ -276,6 +276,7 @@ const MyAdvTable: React.FC<MyAdvTableProps> = React.memo(({
             shopSelect={!companyId}
             brandSelect={!companyId}
             maxCustomDate={new Date(Date.now() - 24 * 60 * 60 * 1000)}
+            hasShopCreationLimit
           />
         </div>
         <div className={styles.settingsWrapper}>

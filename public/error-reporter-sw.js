@@ -272,4 +272,3 @@ function scheduleSync(delay = 0) {
     });
 }
 
-

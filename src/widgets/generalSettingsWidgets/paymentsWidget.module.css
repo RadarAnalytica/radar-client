@@ -1,0 +1,40 @@
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.widget__tableBlock {
+    background-color: white;
+    border-radius: 16px;
+    padding: 8px;
+    max-height: 75dvh;
+    overflow: hidden;
+    animation: fadeInUp 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) backwards;
+}
+
+.widget__tableWrapper {
+    overflow: auto;
+    height: 100%;
+}
+
+.widget__settingsButton {
+    position: absolute;
+    top: 16px;
+    right: 16px; 
+    background-color: #F7F7F7;
+    height: 38px;
+    width: 38px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    opacity: 1;
+    transition: all .2s ease;
+}

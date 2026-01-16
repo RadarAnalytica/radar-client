@@ -562,6 +562,22 @@ export default function RnpList({ view, expanded, setExpanded, setAddRnpModalSho
 								// columns={null}
 								columns={rnpDataTotal?.table?.columns}
 								defaultExpandAllRows={true}
+								resizeMode='instant'
+							/>
+						</div>}
+						{rnpDataTotal && <div className={`${styles.item_content} ${styles.item_content_total}`}>
+							{loading && <div className={styles.loading_container}>
+								<span className='loader'></span>
+							</div>}
+							<RnpTableTotal
+								// data={null}
+								data={rnpDataTotal?.table?.rows}
+								data2={rnpDataTotal?.table?.datasource}
+								columns2={rnpDataTotal?.table?.columns_new}
+								// columns={null}
+								columns={rnpDataTotal?.table?.columns}
+								defaultExpandAllRows={true}
+								resizeMode='line'
 							/>
 						</div>}
 					</>

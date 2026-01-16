@@ -109,6 +109,51 @@ export const ServiceFunctions = {
 		return data;
 	},
 
+	updatUser: async (authToken, userData) => {
+		const res = await fetch(`${URL}/api/user/me/update`, {
+			method: 'PATCH',
+			headers: {
+				'content-type': 'application/json',
+				authorization: 'JWT ' + authToken,
+			},
+			body: JSON.stringify(userData)
+		});
+		return res;
+	},
+
+	updatUserPwd: async (authToken, userData) => {
+		const res = await fetch(`${URL}/api/user/me/update-pwd`, {
+			method: 'PATCH',
+			headers: {
+				'content-type': 'application/json',
+				authorization: 'JWT ' + authToken,
+			},
+			body: JSON.stringify(userData)
+		});
+		return res;
+	},
+
+	getUserPayments: async (authToken) => {
+		const res = await fetchApi(`${URL}/api/user/me/payments`, {
+			headers: {
+				'content-type': 'application/json',
+				authorization: 'JWT ' + authToken,
+			},
+		});
+		return res;
+	},
+	setShopTax: async (authToken, data) => {
+		const res = await fetchApi(`${URL}/api/tax/set`, {
+			method: 'POST',
+			headers: {
+				'content-type': 'application/json',
+				authorization: 'JWT ' + authToken,
+			},
+			body: JSON.stringify(data)
+		});
+		return res;
+	},
+
 	getDashBoard: async (token, selectedRange, idShop, filters) => {
 		//let rangeParams = rangeApiFormat(selectedRange);
 		const body = getRequestObject(filters, selectedRange, idShop);

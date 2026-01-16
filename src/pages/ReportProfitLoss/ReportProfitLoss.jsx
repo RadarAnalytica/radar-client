@@ -12,12 +12,11 @@ import { Flex } from 'antd';
 import styles from './ReportProfitLoss.module.css';
 import { Filters } from '@/components/sharedComponents/apiServicePagesFiltersComponent';
 import { useAppSelector } from '@/redux/hooks';
-import HowToLink from '@/components/sharedComponents/howToLink/howToLink';
 import DataCollectWarningBlock from '@/components/sharedComponents/dataCollectWarningBlock/dataCollectWarningBlock';
 import NoSubscriptionWarningBlock from '@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock';
 import { useDemoMode } from '@/app/providers';
 import { useLoadingProgress } from '@/service/hooks/useLoadingProgress';
-import { getMinCustomDate } from '@/service/utils';
+// import { getMinCustomDate } from '@/service/utils';
 import DownloadButton from '@/components/DownloadButton';
 import { fileDownload } from '@/service/utils';
 
@@ -66,7 +65,6 @@ export default function ReportProfitLoss() {
         }
     };
 
-	
 
 	function renderColumn(data) {
 		if (typeof data !== 'object') {
@@ -149,7 +147,7 @@ export default function ReportProfitLoss() {
 
 			if (parentKey === 'operating_expenses') {
 				const expenseItem = dataSource.operating_expenses?.items?.find(exp => exp.category === key);
-				return expenseItem || defaultExpenseItem;
+				return expenseItem ? { ...expenseItem, parentKey } : defaultExpenseItem;
 			}
 
 			if (key === 'operating_expenses') {
@@ -182,7 +180,7 @@ export default function ReportProfitLoss() {
 			});
 
 			if (isChildren) {
-				childrenData[parentKey] = [...(childrenData[parentKey] || []), rowObject];
+				childrenData[parentKey] = [...(childrenData[parentKey] || []), rowObject].map(item => ({ ...item, parentKey }));
 			} else {
 				tableData.push(rowObject);
 			}
@@ -205,7 +203,7 @@ export default function ReportProfitLoss() {
 						isChild: true,
 					};
 				}),
-			}
+			};
 		});
 	};
 
@@ -293,16 +291,6 @@ export default function ReportProfitLoss() {
 		}
 	}, [isFiltersLoaded, activeBrand, activeMonths, activeBrandName, activeArticle, activeGroup]);
 
-	// useEffect(() => {
-	// 	if (!activeBrand) return;
-	// 	let savedFilterMonths = JSON.parse(localStorage.getItem('activeMonths')) || {};
-	// 	savedFilterMonths[activeBrand.id] = activeMonths;
-	// 	localStorage.setItem(
-	// 		'activeMonths',
-	// 		JSON.stringify(savedFilterMonths)
-	// 	);
-	// }, [activeMonths]);
-
 	return (
 		<main className={styles.page}>
 			<MobilePlug />
@@ -313,16 +301,17 @@ export default function ReportProfitLoss() {
 			
 			<section className={styles.page__content}>
 				<div className={styles.page__headerWrapper}>
-					<Header title="Отчет о прибыли и убытках" hasShadow={false}></Header>
+					<Header 
+						title="Отчет о прибыли и убытках"
+						howToLink="https://radar.usedocs.com/article/77557"
+						howToLinkText="Как использовать раздел?"
+						hasShadow={false} 
+					/>
 				</div>
 
 				{!loading && activeBrand?.is_primary_collect && !activeBrand?.is_self_cost_set && (
 					<SelfCostWarningBlock />
 				)}
-
-				<div className={styles.how}>
-					<HowToLink text='Как использовать раздел' url='https://radar.usedocs.com/article/77557' target='_blank' />
-				</div>
 
 				{!loading && isDemoMode && (
 					<NoSubscriptionWarningBlock />

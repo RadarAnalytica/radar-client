@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { DayPicker } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
 import { ru } from 'date-fns/locale';
@@ -50,6 +50,8 @@ export const TimeSelect = ({
     allowedRanges,
     hasLabel = true,
     disabled = false,
+    activeBrand,
+    hasShopCreationLimit = false
 }) => {
 
     const getAllowedRanges = useCallback((allowedRanges) => {
@@ -73,16 +75,26 @@ export const TimeSelect = ({
     const [selectValue, setSelectValue] = useState();
     const maxDate = maxCustomDate ? maxCustomDate : new Date();
     const today = new Date();
-    let minDate = minCustomDate ? new Date(minCustomDate) : new Date(today);
 
-    if (!minCustomDate) {
-        minDate.setDate(today.getDate() - 90);
-    }
+    const minDate = useMemo(() => {
+        if (hasShopCreationLimit && activeBrand?.created_at) {
+            const createdDate = new Date(activeBrand.created_at);
+            const minDateValue = new Date(createdDate);
+            minDateValue.setDate(createdDate.getDate() - 90);
+            return minDateValue;
+        }
+        const today = new Date();
+        let minDateValue = minCustomDate ? new Date(minCustomDate) : new Date(today);
+        if (!minCustomDate) {
+            minDateValue.setDate(today.getDate() - 90);
+        }
+        return minDateValue;
+    }, [activeBrand, minCustomDate, hasShopCreationLimit]);
 
-   
+    const startMonth = useMemo(() => {
+        return new Date(minDate);
+    }, [minDate]);
 
-    const startMonth = new Date(today);
-    startMonth.setDate(today.getDate() - 90);
     const endMonth = new Date(today);
 
     const icon = <SelectIcon />;

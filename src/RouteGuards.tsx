@@ -88,10 +88,10 @@ const config: Partial<ProtectedRouteProps> = {
     authRedirect: `/signin`,
     testPeriodProtected: false,
     testPeriodFallback: (props: any) => (<NoSubscriptionPlugPage {...props} />),
-    testPeriodRedirect: '/tariffs',
+    testPeriodRedirect: '/setting',
     expireProtected: false,
     expireFallback: (props: any) => (<NoSubscriptionPage {...props} />),
-    expireRedirect: '/tariffs',
+    expireRedirect: '/setting',
     onboardProtected: false,
     onboardFallback: () => (<MainPage />),
     onboardRedirect: '/onboarding',
@@ -100,7 +100,7 @@ const config: Partial<ProtectedRouteProps> = {
     userRoleRedirect: '/main',
     subscriptionProtected: false,
     subscriptionFallback: () => (<MainPage />),
-    subscriptionRedirect: '/tariffs',
+    subscriptionRedirect: '/setting',
     subscription: 'Smart',
     role: 'admin',
 };
@@ -167,7 +167,7 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   if (underDevProtected && process.env.NODE_ENV === 'production') {
     switch(underDevGuardType) {
       case 'redirect': {
-        navigate(underDevRedirect);
+        navigate(underDevRedirect, { state: { tab: 'tariffs'}});
         return null;
       }
       case 'fallback': {
@@ -210,7 +210,8 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   if (testPeriodProtected && user && user.subscription_status === null) {
     switch(testPeriodGuardType) {
        case 'redirect': {
-         return (<Navigate to={testPeriodRedirect} />);
+        navigate(testPeriodRedirect, {state: { tab: 'tariffs'}});
+         return null
         }
         case 'fallback': {
           return (
@@ -228,7 +229,8 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   if (expireProtected && user && user.subscription_status && user.subscription_status.toLowerCase() === 'expired') {
     switch(expireGuardType) {
       case 'redirect': {
-        return (<Navigate to={expireRedirect} />);
+        navigate(expireRedirect, {state: { tab: 'tariffs'}});
+        return null
       }
       case 'fallback': {
         return (
@@ -244,7 +246,8 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   if (onboardProtected && (isSubscribedUser || isUserHasActiveShop === false)) {
     switch(onboardGuardType) {
       case 'redirect': {
-        return (<Navigate to={onboardRedirect} />);
+        navigate(onboardRedirect, {state: { tab: 'tariffs'}});
+        return null
       }
       case 'fallback': {
         return (
@@ -262,7 +265,8 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   if (userRoleProtected && user && role && user.role !== role) {
     switch(userRoleGuardType) {
         case 'redirect': {
-          return (<Navigate to={userRoleRedirect} />);
+          navigate(userRoleRedirect, {state: { tab: 'tariffs'}});
+          return null
         }
         case 'fallback': {
         return (
@@ -283,7 +287,8 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
      */
     switch(subscriptionGuardType) {
       case 'redirect': {
-        return (<Navigate to={subscriptionRedirect} />);
+        navigate(subscriptionRedirect, {state: { tab: 'tariffs'}});
+        return null
       }
       case 'fallback': {
         return (

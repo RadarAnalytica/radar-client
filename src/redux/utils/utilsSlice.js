@@ -1,7 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { fetchUserData } from './utilsActions'
 
 const initialState = {
-    isSidebarHidden: true
+    isSidebarHidden: true,
+    userData: null
 };
 
 const utilsSlice = createSlice({
@@ -15,6 +17,12 @@ const utilsSlice = createSlice({
                 isSidebarHidden: action.payload
             };
         }
+    },
+    extraReducers: (builder) => {
+        builder
+            .addCase(fetchUserData.fulfilled, (state, action) => {
+                state.userData = action.payload;
+            })
     },
 });
 

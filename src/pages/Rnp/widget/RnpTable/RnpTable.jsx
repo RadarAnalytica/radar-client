@@ -7,13 +7,33 @@ import { RadarRateMark, RadarCell } from '@/shared';
 import { ConfigProvider, Tooltip } from 'antd';
 
 const customCellRender = (value, record, index, dataIndex) => {
+	const isRevertIndication = (index) => {
+        return [
+            'taxes_data', 
+            'tax_per_one',
+            'logistics_per_one',
+            'commission_acquiring_per_one',
+            'commission_acquiring_percentage',
+            'storage_per_one',
+            'drr_by_sales',
+            'drr_by_orders',
+            'rk_budget_data',
+            'cpc',
+            'cpm',
+            'one_order_price',
+            'one_sale_price',
+        ].includes(index);
+    };
+
 	if (dataIndex === 'summary') {
 		return (
 			<>
 				{typeof value === 'object' 
 					? <div className={`${styles.customCell_WithRateMark}`}>
 						<RadarCell className={styles.customCellBold} value={value.value} copyable />
-						{value.comparison_percentage != null && <RadarRateMark value={value.comparison_percentage} units='%' />}
+						{value.comparison_percentage != null && 
+							<RadarRateMark value={value.comparison_percentage} units='%' />
+						}
 					</div>
 					: <RadarCell className={styles.customCell} value={value} copyable />
 				}
@@ -21,33 +41,8 @@ const customCellRender = (value, record, index, dataIndex) => {
 		);
 	}
 	if (dataIndex === 'period' && record.isParent && value !== 'Переходы (шт)') {
-		return <div className={styles.customCellBold}>
-			{value}
-			{record?.tooltip && (
-				<ConfigProvider
-					theme={{
-						components: {
-							Tooltip: {
-								colorBgSpotlight: '#FFFFFF',
-								colorTextLightSolid: '#000000',
-								fontSize: 12,
-							},
-						},
-					}}
-				>
-					<Tooltip title={record?.tooltip}>
-						<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ cursor: 'pointer', minWidth: '20px', minHeight: '20px', marginLeft: '8px' }}>
-							<rect x="0.75" y="0.75" width="18.5" height="18.5" rx="9.25" stroke="black" strokeOpacity="0.1" strokeWidth="1.5" />
-							<path d="M9.064 15V7.958H10.338V15H9.064ZM8.952 6.418V5.046H10.464V6.418H8.952Z" fill="#1A1A1A" fillOpacity="0.5" />
-						</svg>
-					</Tooltip>
-				</ConfigProvider>
-			)}
-		</div>;
-	}
-	if (dataIndex === 'period' && record.isParent && value === 'Переходы (шт)') {
-		return <div className={styles.customCellBoldTooltip}>
-			<>
+		return (
+			<div className={styles.customCellBold}>
 				{value}
 				{record?.tooltip && (
 					<ConfigProvider
@@ -69,40 +64,72 @@ const customCellRender = (value, record, index, dataIndex) => {
 						</Tooltip>
 					</ConfigProvider>
 				)}
-			</>
-		</div>;
+			</div>
+		);
+	}
+	if (dataIndex === 'period' && record.isParent && value === 'Переходы (шт)') {
+		return (
+			<div className={styles.customCellBoldTooltip}>
+				{value}
+				{record?.tooltip && (
+					<ConfigProvider
+						theme={{
+							components: {
+								Tooltip: {
+									colorBgSpotlight: '#FFFFFF',
+									colorTextLightSolid: '#000000',
+									fontSize: 12,
+								},
+							},
+						}}
+					>
+						<Tooltip title={record?.tooltip}>
+							<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ cursor: 'pointer', minWidth: '20px', minHeight: '20px', marginLeft: '8px' }}>
+								<rect x="0.75" y="0.75" width="18.5" height="18.5" rx="9.25" stroke="black" strokeOpacity="0.1" strokeWidth="1.5" />
+								<path d="M9.064 15V7.958H10.338V15H9.064ZM8.952 6.418V5.046H10.464V6.418H8.952Z" fill="#1A1A1A" fillOpacity="0.5" />
+							</svg>
+						</Tooltip>
+					</ConfigProvider>
+				)}
+			</div>
+		);
 	}
 	if (dataIndex === 'period' && !record.isParent) {
-		return <div className={`${styles.customCell} ${styles.customCellIdent}`} data-rnp-is-last-child={record.isLastChild ? 'lastChild' : ''}>
-			{value}
-			{record?.tooltip && (
-				<ConfigProvider
-					theme={{
-						components: {
-							Tooltip: {
-								colorBgSpotlight: '#FFFFFF',
-								colorTextLightSolid: '#000000',
-								fontSize: 12,
+		return (
+			<div className={`${styles.customCell} ${styles.customCellIdent}`} data-rnp-is-last-child={record.isLastChild ? 'lastChild' : ''}>
+				{value}
+				{record?.tooltip && (
+					<ConfigProvider
+						theme={{
+							components: {
+								Tooltip: {
+									colorBgSpotlight: '#FFFFFF',
+									colorTextLightSolid: '#000000',
+									fontSize: 12,
+								},
 							},
-						},
-					}}
-				>
-					<Tooltip title={record?.tooltip}>
-						<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ cursor: 'pointer', minWidth: '20px', minHeight: '20px', marginLeft: '8px' }}>
-							<rect x="0.75" y="0.75" width="18.5" height="18.5" rx="9.25" stroke="black" strokeOpacity="0.1" strokeWidth="1.5" />
-							<path d="M9.064 15V7.958H10.338V15H9.064ZM8.952 6.418V5.046H10.464V6.418H8.952Z" fill="#1A1A1A" fillOpacity="0.5" />
-						</svg>
-					</Tooltip>
-				</ConfigProvider>
-			)}
-		</div>;
+						}}
+					>
+						<Tooltip title={record?.tooltip}>
+							<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ cursor: 'pointer', minWidth: '20px', minHeight: '20px', marginLeft: '8px' }}>
+								<rect x="0.75" y="0.75" width="18.5" height="18.5" rx="9.25" stroke="black" strokeOpacity="0.1" strokeWidth="1.5" />
+								<path d="M9.064 15V7.958H10.338V15H9.064ZM8.952 6.418V5.046H10.464V6.418H8.952Z" fill="#1A1A1A" fillOpacity="0.5" />
+							</svg>
+						</Tooltip>
+					</ConfigProvider>
+				)}
+			</div>
+		);
 	}
+
 	return (
 		<>
 			{typeof value === 'object'
 				? <div className={`${styles.customCell_WithRateMark}`}>
 					<RadarCell value={value.value} copyable />
-					{value.comparison_percentage != null && <RadarRateMark value={value.comparison_percentage} units='%' />}
+					{value.comparison_percentage != null && 
+						<RadarRateMark value={value.comparison_percentage} units='%' inverse={isRevertIndication(record.key)} />
+					}
 				</div>
 				: <RadarCell value={value} copyable />
 			}
@@ -216,7 +243,7 @@ export default function RnpTable({ columns, data, columns2, data2, expanded, el 
 						bodyCellWrapperStyle={{ borderBottom: 'none', padding: '10.5px 12px', height: '38px' }}
 						headerCellWrapperClassName={styles.headerCellWrapperCustomClassName}
 						customCellRender={{
-							idx: [],
+							idx: tableConfig?.map((col) => col.dataIndex) || [],
 							renderer: customCellRender,
 						}}
 					//benchmark={URL === 'https://test-server-pro.ru'}

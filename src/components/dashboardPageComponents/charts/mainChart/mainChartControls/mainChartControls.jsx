@@ -38,7 +38,7 @@ const MainChartControls = ({ constrolsState, setControlsState }) => {
                 <ConfigProvider
                     theme={{
                         token: {
-                            colorPrimary: '#5329FF',
+                            colorPrimary: '#88E473',
                             controlInteractiveSize: 20,
                         }
                     }}
@@ -60,9 +60,9 @@ const MainChartControls = ({ constrolsState, setControlsState }) => {
                 <ConfigProvider
                     theme={{
                         token: {
-                            colorPrimary: '#FFDB7E',
+                            colorPrimary: '#5329FF',
                             controlInteractiveSize: 20,
-                            borderRadiusSM: 10,
+                            // borderRadiusSM: 10,
                         }
                     }}
                 >
@@ -84,9 +84,9 @@ const MainChartControls = ({ constrolsState, setControlsState }) => {
                 <ConfigProvider
                     theme={{
                         token: {
-                            colorPrimary: '#9A81FF',
+                            colorPrimary: '#AA5BFF',
                             controlInteractiveSize: 20,
-                            borderRadiusSM: 10,
+                            // borderRadiusSM: 10,
                         }
                     }}
                 >
@@ -99,6 +99,52 @@ const MainChartControls = ({ constrolsState, setControlsState }) => {
                     >
                         <label className={styles.controls__label}>
                            Продажи, руб
+                        </label>
+                    </Checkbox>
+                </ConfigProvider>
+            </div>
+            <div className={styles.controls__controlWrapper}>
+                <ConfigProvider
+                    theme={{
+                        token: {
+                            colorPrimary: '#0099FF',
+                            controlInteractiveSize: 20,
+                            // borderRadiusSM: 10,
+                        }
+                    }}
+                >
+                    <Checkbox
+                        size='large'
+                        defaultChecked
+                        checked={constrolsState.isRoiActive}
+                        value='isRoiActive'
+                        onChange={controlsCheckboxHandler}
+                    >
+                        <label className={styles.controls__label}>
+                           ROI, %
+                        </label>
+                    </Checkbox>
+                </ConfigProvider>
+            </div>
+            <div className={styles.controls__controlWrapper}>
+                <ConfigProvider
+                    theme={{
+                        token: {
+                            colorPrimary: '#F9813C',
+                            controlInteractiveSize: 20,
+                            // borderRadiusSM: 10,
+                        }
+                    }}
+                >
+                    <Checkbox
+                        size='large'
+                        defaultChecked
+                        checked={constrolsState.isMarginalityActive}
+                        value='isMarginalityActive'
+                        onChange={controlsCheckboxHandler}
+                    >
+                        <label className={styles.controls__label}>
+                           Маржинальность, %
                         </label>
                     </Checkbox>
                 </ConfigProvider>

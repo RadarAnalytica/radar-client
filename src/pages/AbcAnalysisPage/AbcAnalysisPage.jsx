@@ -298,7 +298,7 @@ const AbcAnalysisPage = () => {
 				)}
 
 				<div className="pt-1">
-					<Filters setLoading={setLoading} isDataLoading={loading} />
+					<Filters setLoading={setLoading} isDataLoading={loading} hasShopCreationLimit />
 				</div>
 
 				{activeBrand && !activeBrand?.is_primary_collect && 

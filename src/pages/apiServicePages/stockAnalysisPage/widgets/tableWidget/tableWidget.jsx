@@ -75,6 +75,17 @@ const customCellRender = (value, record, index, dataIndex) => {
     const comparsion = record[comparsionKey];
     const rightBorders = ['category', 'sold_cost', 'return_cost', 'product_cost_stock', 'from_client_sum', 'additionalPayment', 'lostRevenue', 'byProfit', 'minDiscountPrice', 'orderSum', 'completed', 'saleCountDay'];
 
+    const isRevertIndication = index => [
+        'returnsSum', 
+        'returnsQuantity',
+        'return_cost',
+        'toClient',
+        'to_client_sum',
+        'fromClient',
+        'from_client_sum',
+        'commissionWB',
+        'fines',
+    ].includes(index);
 
     useEffect(() => {
         if (record.photo) {
@@ -116,14 +127,16 @@ const customCellRender = (value, record, index, dataIndex) => {
                 style={{ backgroundColor: getABCBarOptions(value) }}
                 title={value}
             >
-                {value}
+                {value || '-'}
             </div>
         </div>);
     }
 
     return <div className={styles.customCell} data-border-right={rightBorders.includes(dataIndex)} title={typeof value === 'number' ? formatPrice(value, newTableConfig?.map(item => item.children).flat().find(item => item.dataIndex === dataIndex)?.units || '') : value}>
         {typeof value === 'number' ? formatPrice(value, newTableConfig?.map(item => item.children).flat().find(item => item.dataIndex === dataIndex)?.units || '') : value}
-        {comparsion !== null && comparsion !== undefined && <RadarRateMark value={comparsion} units='%' />}
+        {comparsion != null && 
+            <RadarRateMark value={comparsion} units='%' inverse={isRevertIndication(dataIndex)} />
+        }
     </div>;
 };
 
@@ -155,6 +168,8 @@ const TableWidget = React.memo(({ stockAnalysisFilteredData, loading, progress, 
                 
                 return {
                     ...item.article_data,
+                    byRevenue: item?.sizes[0]?.byRevenue,
+                    byProfit: item?.sizes[0]?.byProfit,
                     vendorСode: item.article,
                     size: showSizes ? `${sizesLength} ${getWordDeclension('размер', sizesLength )}` : item.article_data?.size,
                     isParent: showSizes,

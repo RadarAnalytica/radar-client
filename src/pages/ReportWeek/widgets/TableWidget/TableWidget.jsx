@@ -9,6 +9,29 @@ import { formatPrice } from '@/service/utils';
 
 
 const customCellRender = (value, record, index, dataIndex) => {
+    // Получение полей с обратным цветом индикации
+    const isRevertIndication = (index) => {
+        return [
+            'wb_commission_rub',
+            'acquiring_rub',
+            'advert_amount',
+            'drr',
+            'wb_retentions_amount',
+            'return_rub', 
+            'return_quantity',
+            'logistics_straight_rub',
+            'logistics_reverse_rub',
+            'logistics_total_rub',
+            'logistics_per_product',
+            'storage_rub',
+            'acceptance_rub',
+            'tax_base',
+            'tax',
+            'advert_amount',
+            'penalties',
+        ].includes(index);
+    };
+
     if (record.key === 'summary' && dataIndex === 'week_label') {
         return (
             <div className={styles.summaryCell}>
@@ -65,19 +88,20 @@ const customCellRender = (value, record, index, dataIndex) => {
                         </svg>
                     </Tooltip>
                 </ConfigProvider>
-            </div>)
+            </div>
+        );
     }
 
     if (typeof value === 'object') {
         return (
             <div className={styles.customCell}>
                 {formatPrice(value.value, '')}
-                {value.comparison_percentage !== null && value.comparison_percentage !== undefined && <RadarRateMark value={value.comparison_percentage} units='%' />}
+                {value.comparison_percentage != null && 
+                    <RadarRateMark value={value.comparison_percentage} units='%' inverse={isRevertIndication(dataIndex)} />
+                }
             </div>
         );
     }
-
-
 
     return (
         <>
