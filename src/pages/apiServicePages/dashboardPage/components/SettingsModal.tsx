@@ -105,7 +105,7 @@ export const SettingsModal: React.FC<ISettingsModalProps> = (
     const [activeId, setActiveId] = useState<string | null>(null);
     // Отдельное состояние для отслеживания видимости ВСЕХ элементов (независимо от фильтрации)
     const [visibilityState, setVisibilityState] = useState<Record<string, boolean>>({});
-    
+
     // Отслеживаем изменения формы для обновления текста кнопки
     const formValues = Form.useWatch([], form);
 
@@ -128,14 +128,14 @@ export const SettingsModal: React.FC<ISettingsModalProps> = (
             setDisplayItems([...itemsWithDropKey1]);
             setSearchValue('');
             setActiveSearchValue(''); // Сбрасываем активный поиск
-            
+
             // Инициализируем состояние видимости для ВСЕХ элементов
             const initialVisibility = itemsWithDropKey1.reduce((acc, item) => {
                 acc[item.id] = item.isVisible !== false;
                 return acc;
             }, {} as Record<string, boolean>);
             setVisibilityState(initialVisibility);
-            
+
             form.setFieldsValue(initialVisibility);
         }
     }, [itemsWithDropKey1, isOpen, form]);
@@ -184,7 +184,7 @@ export const SettingsModal: React.FC<ISettingsModalProps> = (
     const handleSelectAll = () => {
         const allChecked = filteredItems.every(item => visibilityState[item.id] === true);
         const newValue = !allChecked;
-        
+
         // Обновляем visibilityState только для отфильтрованных элементов
         setVisibilityState(prev => {
             const updated = { ...prev };
@@ -193,7 +193,7 @@ export const SettingsModal: React.FC<ISettingsModalProps> = (
             });
             return updated;
         });
-        
+
         // Также обновляем форму для отображения чекбоксов
         const newFormValues = filteredItems.reduce((acc, item) => {
             acc[item.id] = newValue;
@@ -206,12 +206,12 @@ export const SettingsModal: React.FC<ISettingsModalProps> = (
         // Используем исходную конфигурацию (без изменений из localStorage)
         const originalDropKey1Items = originalConfig.filter(item => item.dropKey === '1');
         setDisplayItems([...originalDropKey1Items]);
-        
+
         const newVisibility = originalDropKey1Items.reduce((acc, item) => {
             acc[item.id] = item.isVisible !== false;
             return acc;
         }, {} as Record<string, boolean>);
-        
+
         setVisibilityState(newVisibility);
         form.setFieldsValue(newVisibility);
     };
@@ -223,13 +223,13 @@ export const SettingsModal: React.FC<ISettingsModalProps> = (
     const handleOk = () => {
         // Используем visibilityState для получения видимости ВСЕХ элементов
         // (это состояние хранит значения независимо от того, отрендерены ли Form.Item)
-        
+
         // Обновляем только элементы с dropKey === '1' (с новым порядком и видимостью)
-        const updatedDropKey1Items: Array<Record<string, any>> = displayItems.map((item: Record<string, any>) => ({ 
-            ...item, 
+        const updatedDropKey1Items: Array<Record<string, any>> = displayItems.map((item: Record<string, any>) => ({
+            ...item,
             isVisible: visibilityState[item.id] !== undefined ? visibilityState[item.id] : item.isVisible
         }));
-        
+
         // Создаем карту обновленных элементов для быстрого поиска
         const updatedItemsMap = new Map<string, Record<string, any>>();
         updatedDropKey1Items.forEach((item: Record<string, any>) => {
@@ -237,7 +237,7 @@ export const SettingsModal: React.FC<ISettingsModalProps> = (
                 updatedItemsMap.set(item.id, item);
             }
         });
-        
+
         // Заменяем элементы с dropKey === '1' на обновленные, сохраняя их новый порядок
         // Остальные элементы остаются без изменений
         const fullUpdatedConfig = items.map((item: Record<string, any>) => {
@@ -246,7 +246,7 @@ export const SettingsModal: React.FC<ISettingsModalProps> = (
             }
             return item;
         });
-        
+
         // Теперь нужно переставить элементы с dropKey === '1' в новый порядок
         // Находим все позиции элементов с dropKey === '1' в исходном массиве
         const dropKey1Indices: number[] = [];
@@ -255,13 +255,13 @@ export const SettingsModal: React.FC<ISettingsModalProps> = (
                 dropKey1Indices.push(index);
             }
         });
-        
+
         // Если есть элементы с dropKey === '1', переставляем их в новый порядок
         if (dropKey1Indices.length > 0 && updatedDropKey1Items.length > 0) {
             // Создаем новый массив с правильным порядком
             const result: Array<Record<string, any>> = [];
             let dropKey1Index = 0;
-            
+
             for (let i = 0; i < fullUpdatedConfig.length; i++) {
                 if (dropKey1Indices.includes(i)) {
                     // Вставляем элемент с dropKey === '1' в новом порядке
@@ -274,14 +274,14 @@ export const SettingsModal: React.FC<ISettingsModalProps> = (
                     result.push(fullUpdatedConfig[i]);
                 }
             }
-            
+
             onSave(result, BARS_STORAGE_KEY, DASHBOARD_CONFIG_VER);
             setItems(result);
         } else {
             onSave(fullUpdatedConfig, BARS_STORAGE_KEY, DASHBOARD_CONFIG_VER);
             setItems(fullUpdatedConfig);
         }
-        
+
         setIsOpen(false);
     };
 
@@ -349,7 +349,7 @@ export const SettingsModal: React.FC<ISettingsModalProps> = (
             <Modal
                 open={isOpen}
                 onCancel={handleCancel}
-                // onClose={handleCancel}
+                centered
                 title={
                     <div className={styles.modalHeader}>
                         <span className={styles.modalTitle}>Настройка Сводки продаж</span>
@@ -377,25 +377,10 @@ export const SettingsModal: React.FC<ISettingsModalProps> = (
                     </svg>
                 }
                 width={600}
-                footer={
-                    <div className={styles.footer}>
-                        <Button size="large" onClick={handleCancel} className={styles.cancelButton} style={{ fontSize: 14, fontWeight: 600 }}>
-                            Отменить
-                        </Button>
-                        <Button
-                            type="primary"
-                            size="large"
-                            onClick={handleOk}
-                            className={styles.saveButton}
-                            style={{ fontSize: 14, fontWeight: 600 }}
-                        >
-                            Сохранить изменения
-                        </Button>
-                    </div>
-                }
+                footer={null}
             >
-                <Form 
-                    form={form} 
+                <Form
+                    form={form}
                     layout="vertical"
                     onValuesChange={(changedValues) => {
                         // Синхронизируем изменения чекбоксов с visibilityState
@@ -404,6 +389,7 @@ export const SettingsModal: React.FC<ISettingsModalProps> = (
                             ...changedValues
                         }));
                     }}
+                    className={styles.form}
                 >
 
                     <div className={styles.searchContainer}>
@@ -502,9 +488,9 @@ export const SettingsModal: React.FC<ISettingsModalProps> = (
                                         <SortableItem key={card.id} id={card.id} card={card} form={form} />
                                     ))
                                 ) : activeSearchValue.trim() ? (
-                                    <div style={{ 
-                                        padding: '40px 20px', 
-                                        textAlign: 'center', 
+                                    <div style={{
+                                        padding: '40px 20px',
+                                        textAlign: 'center',
                                         color: '#999999',
                                         fontSize: '14px'
                                     }}>
@@ -515,7 +501,7 @@ export const SettingsModal: React.FC<ISettingsModalProps> = (
                         </SortableContext>
                         <DragOverlay>
                             {activeItem ? (
-                                <div className={styles.sortableItem} style={{ 
+                                <div className={styles.sortableItem} style={{
                                     opacity: 1,
                                     backgroundColor: '#f5f5f5',
                                     boxShadow: '0 2px 8px rgba(0, 0, 0, 0.15)',
@@ -531,8 +517,8 @@ export const SettingsModal: React.FC<ISettingsModalProps> = (
                                             <path d="M14 -7.14702e-08C15.1046 7.33766e-08 16 0.89543 16 2C16 3.10457 15.1046 4 14 4C12.8954 4 12 3.10457 12 2C12 0.895429 12.8954 -2.16317e-07 14 -7.14702e-08Z" fill="#999999" />
                                         </svg>
                                     </div>
-                                    <Checkbox 
-                                        checked={form.getFieldValue(activeItem.id) !== false} 
+                                    <Checkbox
+                                        checked={form.getFieldValue(activeItem.id) !== false}
                                         className={styles.checkbox}
                                     >
                                         {activeItem.title}
@@ -541,6 +527,20 @@ export const SettingsModal: React.FC<ISettingsModalProps> = (
                             ) : null}
                         </DragOverlay>
                     </DndContext>
+                    <div className={styles.footer}>
+                        <Button size="large" onClick={handleCancel} className={styles.cancelButton} style={{ fontSize: 14, fontWeight: 600 }}>
+                            Отменить
+                        </Button>
+                        <Button
+                            type="primary"
+                            size="large"
+                            onClick={handleOk}
+                            className={styles.saveButton}
+                            style={{ fontSize: 14, fontWeight: 600 }}
+                        >
+                            Сохранить изменения
+                        </Button>
+                    </div>
                 </Form>
             </Modal>
         </ConfigProvider>

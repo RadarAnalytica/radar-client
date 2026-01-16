@@ -110,61 +110,6 @@ export const getChartData = (dataDashBoard, selectedRange, controlsState) => {
     return {
         labels: getPastDays(countDays, selectedRange, true).reverse(), // true = использовать сокращенные названия
         datasets: [
-            controlsState.isOrderAmountActive
-                ? {
-                    label: 'Заказы',
-                    type: 'line',
-                    backgroundColor: '#5329FF',
-                    borderWidth: 2,
-                    pointRadius: 5,
-                    hoverRadius: 8,
-                    pointBorderColor: 'white',
-                    borderColor: '#5329FF',
-                    tension: 0.4,
-                    yAxisID: 'A',
-                    data: dataDashBoard?.orderAmountList || [],
-                    xAxisID: 'x',
-                }
-                : {
-                    label: 'Заказы',
-                    type: 'line',
-                    backgroundColor: '#5329FF',
-                    borderWidth: 2,
-                    pointRadius: 6,
-                    hoverRadius: 8,
-                    pointBorderColor: 'white',
-                    borderColor: '#5329FF',
-                    tension: 0.4,
-                    yAxisID: 'A',
-                    data: [],
-                },
-            controlsState.isSalesAmountActive
-                ? {
-                    label: 'Продажи',
-                    type: 'line',
-                    backgroundColor: '#AA5BFF',
-                    borderWidth: 2,
-                    pointRadius: 5,
-                    hoverRadius: 8,
-                    pointBorderColor: 'white',
-                    borderColor: '#AA5BFF',
-                    tension: 0.4,
-                    yAxisID: 'A',
-                    data: dataDashBoard?.saleAmountList || [],
-                }
-                : {
-                    label: 'Продажи',
-                    type: 'line',
-                    backgroundColor: '#AA5BFF',
-                    borderWidth: 2,
-                    pointRadius: 6,
-                    hoverRadius: 8,
-                    pointBorderColor: 'white',
-                    borderColor: '#88E473',
-                    tension: 0.4,
-                    yAxisID: 'A',
-                    data: [],
-                },
             controlsState.isOrderQuantityActive
                 ? {
                     label: 'Заказы',
@@ -220,7 +165,62 @@ export const getChartData = (dataDashBoard, selectedRange, controlsState) => {
                     borderWidth: 2,
                     data: [],
                 },
-                controlsState.isRoiActive
+            controlsState.isOrderAmountActive
+                ? {
+                    label: 'Заказы',
+                    type: 'line',
+                    backgroundColor: '#5329FF',
+                    borderWidth: 2,
+                    pointRadius: 5,
+                    hoverRadius: 8,
+                    pointBorderColor: 'white',
+                    borderColor: '#5329FF',
+                    tension: 0.4,
+                    yAxisID: 'A',
+                    data: dataDashBoard?.orderAmountList || [],
+                    xAxisID: 'x',
+                }
+                : {
+                    label: 'Заказы',
+                    type: 'line',
+                    backgroundColor: '#5329FF',
+                    borderWidth: 2,
+                    pointRadius: 6,
+                    hoverRadius: 8,
+                    pointBorderColor: 'white',
+                    borderColor: '#5329FF',
+                    tension: 0.4,
+                    yAxisID: 'A',
+                    data: [],
+                },
+            controlsState.isSalesAmountActive
+                ? {
+                    label: 'Продажи',
+                    type: 'line',
+                    backgroundColor: '#AA5BFF',
+                    borderWidth: 2,
+                    pointRadius: 5,
+                    hoverRadius: 8,
+                    pointBorderColor: 'white',
+                    borderColor: '#AA5BFF',
+                    tension: 0.4,
+                    yAxisID: 'A',
+                    data: dataDashBoard?.saleAmountList || [],
+                }
+                : {
+                    label: 'Продажи',
+                    type: 'line',
+                    backgroundColor: '#AA5BFF',
+                    borderWidth: 2,
+                    pointRadius: 6,
+                    hoverRadius: 8,
+                    pointBorderColor: 'white',
+                    borderColor: '#88E473',
+                    tension: 0.4,
+                    yAxisID: 'A',
+                    data: [],
+                },
+            controlsState.isRoiActive
                 ? {
                     label: 'ROI',
                     type: 'line',
@@ -247,7 +247,7 @@ export const getChartData = (dataDashBoard, selectedRange, controlsState) => {
                     borderWidth: 2,
                     data: [],
                 },
-                controlsState.isMarginalityActive
+            controlsState.isMarginalityActive
                 ? {
                     label: 'Маржинальность',
                     type: 'line',
@@ -318,7 +318,6 @@ export const getChartTooltip = (context, chartData) => {
     if (tooltipModel.body) {
         let datasets = chartData?.datasets
             ?.filter((obj) => obj.data?.length > 0)
-            ?.reverse();
         const datalabels = chartData?.labels;
         const targetInex = datalabels?.indexOf(tooltipModel.title[0]);
 
@@ -423,7 +422,7 @@ export const getChartTooltip = (context, chartData) => {
 
 export const getChartOptions = (chartData, days) => {
     const tickColor = '#6B7280'; // Цвет для меток на осях
-    
+
     const chartOptions = {
         responsive: true,
         maintainAspectRatio: false,
@@ -440,7 +439,7 @@ export const getChartOptions = (chartData, days) => {
                 mode: 'index',
                 axis: 'x',
                 callbacks: {},
-                external: (context) => {getChartTooltip(context, chartData);}
+                external: (context) => { getChartTooltip(context, chartData); }
             },
             verticalDashedLine: { enabled: true }
         },

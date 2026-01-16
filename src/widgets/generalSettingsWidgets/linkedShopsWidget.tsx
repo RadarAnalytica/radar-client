@@ -122,7 +122,6 @@ export const LinkedShopsWidget = () => {
                     setAddShopRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось установить налог!' });
                     return;
                 }
-                dispatch(fetchShops(authToken))
                 setAddShopRequestStatus({ ...initRequestStatus, isLoading: false, isSuccess: true, message: 'Налог успешно установлен' });
             } catch(e) {
                 console.error(e);
@@ -156,7 +155,7 @@ export const LinkedShopsWidget = () => {
         if (addShopRequestStatus.isSuccess) {
             dispatch(fetchShops(authToken))
             //@ts-ignore
-            dispatch(fetchFilters(authToken));
+            dispatch(fetchFilters({authToken, shopData: shops}));
             // Показываем модальное окно успешного добавления только если это было добавление нового магазина
             if (lastOperationTypeRef.current === 'add') {
                 setIsSuccessModalVisible(true);
@@ -651,6 +650,13 @@ const TaxSetupModal = ({
             form.resetFields();
         }
     }, [addAndEditModalState]);
+
+    useEffect(() => {
+        if (isTaxDisabled) {
+            form.setFieldValue('tax', 0);
+            form.setFieldValue('vat', 'Без НДС');
+        }
+    }, [isTaxDisabled]);
 
     return (
         <ConfigProvider

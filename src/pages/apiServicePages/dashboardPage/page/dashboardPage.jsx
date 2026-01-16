@@ -41,6 +41,7 @@ import { GeneralLayout } from '@/shared';
 import { fileDownload } from '@/service/utils';
 import DownloadButton from '@/components/DownloadButton';
 import { Link } from 'react-router-dom';
+import { TaxModal } from '@/features';
 
 
 
@@ -406,6 +407,7 @@ const barsConfig = [
                 mainValue={dataDashBoard?.tax_amount}
                 mainValueUnits='₽'
                 isLoading={loading}
+                midValue={<TaxModal updateDataDashBoard={updateDataDashBoard} />}
                 compareValue={{
                     comparativeValue: dataDashBoard?.taxCompare,
                     absoluteValue: dataDashBoard?.prev_tax,

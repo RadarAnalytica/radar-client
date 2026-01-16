@@ -5,6 +5,7 @@ import AuthContext from '@/service/AuthContext';
 import { fetchFilters } from '@/redux/apiServicePagesFiltersState/filterActions';
 import { fetchApi } from '@/service/fetchApi';
 import type { RootState, AppDispatch } from '@/redux/store.types';
+import { actions as shopsActions } from '../../redux/shops/shopsSlice'
 
 interface FiltersContextType {
   isFiltersLoading: boolean;
@@ -41,7 +42,7 @@ const FiltersProvider = ({ children }: { children: React.ReactNode }) => {
         }
         let shopsData = null;
         shopsData = await shopsResponse.json();
-
+        // dispatch(shopsActions.setShops(shopsData))
         // @ts-ignore
         await dispatch(fetchFilters({
           authToken,
