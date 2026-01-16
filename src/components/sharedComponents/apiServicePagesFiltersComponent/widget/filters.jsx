@@ -55,8 +55,9 @@ export const Filters = React.memo(({
             const shopCreatedAt = new Date(value.created_at);
             const rangeFrom = new Date(currentRange.from);
             const daysSinceCreation = (rangeFrom - shopCreatedAt) / (1000 * 60 * 60 * 24);
+            console.log('daysSinceCreation', daysSinceCreation)
             
-            if (daysSinceCreation < 90) {
+            if (daysSinceCreation < -90) {
               return { period: 30 };
             }
           }
