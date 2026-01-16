@@ -7,31 +7,27 @@ import styles from './TableWidget.module.css';
 import { RadarRateMark } from '@/shared';
 import { formatPrice } from '@/service/utils';
 
+// Поля с обратным цветом индикации
+const REVERT_INDICATION_FIELDS = new Set([
+    'wb_commission_rub',
+    'acquiring_rub',
+    'advert_amount',
+    'drr',
+    'wb_retentions_amount',
+    'return_rub', 
+    'return_quantity',
+    'logistics_straight_rub',
+    'logistics_reverse_rub',
+    'logistics_total_rub',
+    'logistics_per_product',
+    'storage_rub',
+    'acceptance_rub',
+    'tax_base',
+    'tax',
+    'penalties',
+]);
 
 const customCellRender = (value, record, index, dataIndex) => {
-    // Получение полей с обратным цветом индикации
-    const isRevertIndication = (index) => {
-        return [
-            'wb_commission_rub',
-            'acquiring_rub',
-            'advert_amount',
-            'drr',
-            'wb_retentions_amount',
-            'return_rub', 
-            'return_quantity',
-            'logistics_straight_rub',
-            'logistics_reverse_rub',
-            'logistics_total_rub',
-            'logistics_per_product',
-            'storage_rub',
-            'acceptance_rub',
-            'tax_base',
-            'tax',
-            'advert_amount',
-            'penalties',
-        ].includes(index);
-    };
-
     if (record.key === 'summary' && dataIndex === 'week_label') {
         return (
             <div className={styles.summaryCell}>
@@ -57,6 +53,7 @@ const customCellRender = (value, record, index, dataIndex) => {
             </div>
         );
     }
+    
     if (record.key === 'summary' && dataIndex !== 'week_label') {
         return (
             <div className={styles.customCell}>
@@ -96,7 +93,7 @@ const customCellRender = (value, record, index, dataIndex) => {
         return (
             <div className={styles.customCell}>
                 {formatPrice(value.value, '')}
-                <RadarRateMark value={value.comparison_percentage} units='%' inverseColors={isRevertIndication(dataIndex)} />
+                <RadarRateMark value={value.comparison_percentage} units='%' inverseColors={REVERT_INDICATION_FIELDS.has(dataIndex)} />
             </div>
         );
     }
