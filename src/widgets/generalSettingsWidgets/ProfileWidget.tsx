@@ -21,6 +21,7 @@ import SubscriptionModal from "@/components/sharedComponents/modals/subscription
 import { ServiceFunctions } from '@/service/serviceFunctions';
 import ErrorModal from '@/components/sharedComponents/modals/errorModal/errorModal';
 import { Link } from 'react-router-dom';
+import { SubscriptionCard } from '@/features';
 
 const inputTheme = {
     token: {
@@ -845,9 +846,15 @@ const SubscriptonInfo = () => {
             <div className={styles.page__subscriptionsList}>
                 {Array.isArray(subscriptions) && subscriptions && subscriptions.map((item) => {
                     return (
-                        <SubscriptionCard key={item.id} item={item} rejectSubscription={rejectSubscription} restoreSubscription={restoreSubscription} />
+                        <SubscriptionCardOld key={item.id} item={item} rejectSubscription={rejectSubscription} restoreSubscription={restoreSubscription} />
+
                     );
                 })}
+                {/* {Array.isArray(subscriptions) && subscriptions && subscriptions.map((item) => {
+                    return (
+                        <SubscriptionCard key={item.id} item={item} />
+                    );
+                })} */}
             </div>
 
             {/* modals */}
@@ -897,7 +904,7 @@ const SubscriptonInfo = () => {
     )
 }
 
-const SubscriptionCard = ({ item, rejectSubscription, restoreSubscription }) => {
+const SubscriptionCardOld = ({ item, rejectSubscription, restoreSubscription }) => {
     const months = [
         'января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'
     ];
