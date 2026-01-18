@@ -102,7 +102,7 @@ export default function OperatingExpenses() {
 	}, [expense]);
 
 	const [categoryEdit, setCategoryEdit] = useState(null);
-	const [category, setCategory] = useState([]);
+	const [category, setCategory] = useState(null);
 	const [categoryLoading, setCategoryLoading] = useState(false);
 
 	const categoryData = useMemo(() => {

@@ -149,14 +149,12 @@ const SerpPage = () => {
         if (e && e.key !== 'Enter') return;
         if (searchInputValue && activeFilter) {
             setSearchParams({ query: searchInputValue });
-            getPageData();
         }
     };
     // submit
     const searchButtonClickHandler = () => {
         if (searchInputValue && activeFilter) {
             setSearchParams({ query: searchInputValue });
-            getPageData();
         }
     };
     // change
@@ -216,7 +214,6 @@ const SerpPage = () => {
     const searchSuggestionsHandler = () => {
         setSearchInputValue('Платье женское');
         setSearchParams({ query: 'Платье женское' });
-        getPageData('Платье женское');
     };
 
 
@@ -275,21 +272,13 @@ const SerpPage = () => {
         getFiltersData();
     }, []);
 
-
-    //  query data fetching (location dependecy)
-    useEffect(() => {
-        if (searchInputValue && activeFilter) {
-            getPageData();
-        }
-    }, [activeFilter]);
-
     useEffect(() => {
         const query = searchParams.get('query');
         if (query) {
             setSearchInputValue(query);
             getPageData(query);
         }
-    }, [searchParams]);
+    }, [searchParams, activeFilter]);
 
     // render
     return (

@@ -11,7 +11,8 @@ const initialState = {
     selectedRange: {
         period: 30
     },
-    filters: undefined
+    filters: undefined,
+    isFiltersLoaded: false,
 };
 
 
@@ -79,6 +80,7 @@ const filtersRnpAddSlice = createSlice({
                 [stateKey]: data
             };
         }
+
     },
     extraReducers: (bulder) => {
         bulder
@@ -87,7 +89,8 @@ const filtersRnpAddSlice = createSlice({
                     ...state,
                     filters: action.payload.filtersData,
                     shops: action.payload.shops,
-                    ...action.payload.initState
+                    ...action.payload.initState,
+                    isFiltersLoaded: true,
                 };
             });
     }

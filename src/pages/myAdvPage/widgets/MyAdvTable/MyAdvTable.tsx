@@ -26,6 +26,7 @@ interface MyAdvTableProps {
   tableConfig: ColumnConfig[];
   setTableConfig: (config: ColumnConfig[]) => void;
   loadData: () => void;
+  paginationHandler?: (page: number, pageSize?: number) => void
 }
 
 const MyAdvTable: React.FC<MyAdvTableProps> = React.memo(({
@@ -39,6 +40,7 @@ const MyAdvTable: React.FC<MyAdvTableProps> = React.memo(({
   setSortState,
   tableConfig,
   setTableConfig,
+  paginationHandler
 }) => {
   const tableContainerRef = useRef(null);
   const navigate = useNavigate();
@@ -48,11 +50,15 @@ const MyAdvTable: React.FC<MyAdvTableProps> = React.memo(({
   const [expandedRowKeys, setExpandedRowKeys] = useState<string[]>([`${companyId || ''}_`]);
 
   const handlePageChange = (page: number, pageSize?: number) => {
-    setPageData({ ...pageData, page: page, per_page: pageSize || pageData.per_page });
     tableContainerRef.current?.scrollTo({
       top: 0,
       behavior: 'smooth'
     });
+    if (paginationHandler) {
+      paginationHandler(page, pageSize);
+      return;
+    }
+    setPageData({ ...pageData, page: page, per_page: pageSize || pageData.per_page });
   };
 
   const handleSort = (sort_field: string, sort_order: "ASC" | "DESC") => {
