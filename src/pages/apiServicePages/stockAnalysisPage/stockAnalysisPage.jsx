@@ -55,7 +55,7 @@ const StockAnalysisPage = () => {
     };
 
     useEffect(() => {
-        if (filters.activeBrand) {
+        if (filters.activeBrand && isFiltersLoaded) {
             fetchAnalysisData();
         }
     }, [isFiltersLoaded, activeBrand, selectedRange, activeBrandName, activeArticle, activeGroup]);
@@ -88,7 +88,6 @@ const StockAnalysisPage = () => {
                         <Filters
                             setLoading={setLoading}
                             isDataLoading={loading}
-                            submitHandler={fetchAnalysisData}
                             hasShopCreationLimit
                         />
                     </div>
