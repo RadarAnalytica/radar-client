@@ -107,7 +107,7 @@ export const LinkedShopsWidget = () => {
         }
         if (addAndEditModalState?.type === 'tax' && addAndEditModalState?.shop && fields) {
             lastOperationTypeRef.current = 'tax';
-            // логика добавления налога здесь
+
             const data = {
                 shop_id: addAndEditModalState?.shop?.id,
                 effective_from: moment().format('YYYY-MM-DD'),
@@ -123,11 +123,11 @@ export const LinkedShopsWidget = () => {
                     return;
                 }
                 setAddShopRequestStatus({ ...initRequestStatus, isLoading: false, isSuccess: true, message: 'Налог успешно установлен' });
-            } catch(e) {
+            } catch (e) {
                 console.error(e);
                 setAddShopRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось установить налог!' });
             }
-          
+
         }
 
     }
@@ -153,21 +153,26 @@ export const LinkedShopsWidget = () => {
     useEffect(() => {
         let timeout;
         if (addShopRequestStatus.isSuccess) {
-            dispatch(fetchShops(authToken))
-            //@ts-ignore
-            dispatch(fetchFilters({authToken, shopData: shops}));
-            // Показываем модальное окно успешного добавления только если это было добавление нового магазина
             if (lastOperationTypeRef.current === 'add') {
                 setIsSuccessModalVisible(true);
                 setAddAndEditModalState(null);
                 lastOperationTypeRef.current = null;
             }
-            setAddShopRequestStatus(initRequestStatus);
+
+            timeout = setTimeout(() => {
+                dispatch(fetchShops(authToken))
+                //@ts-ignore
+                dispatch(fetchFilters({ authToken, shopData: shops }));
+                setAddShopRequestStatus(initRequestStatus);
+                setAddAndEditModalState(null);
+            }, 1000);
         }
         if (addShopRequestStatus.isError) {
-            timeout = setTimeout(() => { setAddShopRequestStatus(initRequestStatus); }, 2000);
+            timeout = setTimeout(() => { setAddShopRequestStatus(initRequestStatus); }, 1000);
             lastOperationTypeRef.current = null;
         }
+
+        return () => timeout && clearTimeout(timeout)
     }, [addShopRequestStatus]);
 
     // useEffect(() => {
@@ -348,12 +353,12 @@ const EditAndCreateModal = ({
         }
     }, [addAndEditModalState])
 
-    useEffect(() => {
-        if (addShopRequestStatus.isSuccess) {
-            form.resetFields();
-            setAddAndEditModalState(null);
-        }
-    }, [addShopRequestStatus]);
+    // useEffect(() => {
+    //     if (addShopRequestStatus.isSuccess && addAndEditModalState?.type !== 'tax') {
+    //         form.resetFields();
+    //         setAddAndEditModalState(null);
+    //     }
+    // }, [addShopRequestStatus, addAndEditModalState]);
 
     return (
         <ConfigProvider
@@ -520,15 +525,11 @@ const EditAndCreateModal = ({
                                         {addAndEditModalState?.type === 'edit' && 'Сохранить'}
                                     </Button>
                                 </div>
-                                {addShopRequestStatus.isError &&
-                                    <div
-                                        style={{ color: '#F93C65', fontSize: 14, fontWeight: 500, lineHeight: '100%' }}
-
-                                    >
+                                {addShopRequestStatus.message &&
+                                    <div style={{ color: addShopRequestStatus.isSuccess ? '#00B69B' : addShopRequestStatus.isError ? '#F93C65' : '#1A1A1A' }}>
                                         {addShopRequestStatus.message}
                                     </div>
                                 }
-
                             </Form>
                         </ConfigProvider>
                     }
@@ -615,11 +616,8 @@ const EditAndCreateModal = ({
                                     </Button>
                                 </ConfigProvider>
                             </div>
-                            {addShopRequestStatus.isError &&
-                                <div
-                                    style={{ color: '#F93C65', fontSize: 14, fontWeight: 500, lineHeight: '100%' }}
-
-                                >
+                            {addShopRequestStatus.message &&
+                                <div style={{ color: addShopRequestStatus.isSuccess ? '#00B69B' : addShopRequestStatus.isError ? '#F93C65' : '#1A1A1A' }}>
                                     {addShopRequestStatus.message}
                                 </div>
                             }
@@ -738,6 +736,9 @@ const TaxSetupModal = ({
                                 name='taxType'
                                 label='Тип налогообложения'
                                 className={styles.taxModal__formItem}
+                                rules={[
+                                    { required: true, message: 'Укажите тип налогообложения' },
+                                ]}
                             >
                                 <Select
                                     size='large'
@@ -752,7 +753,7 @@ const TaxSetupModal = ({
                                 label='Ставка налога'
                                 className={styles.taxModal__formItem}
                                 rules={[
-                                    { required: !isTaxDisabled, message: 'Пожалуйста, введите процент налога!' },
+                                    { required: !isTaxDisabled, message: 'Введите процент налога!' },
                                     () => ({
                                         validator(_, value) {
                                             if (!value || isTaxDisabled) {
@@ -782,6 +783,9 @@ const TaxSetupModal = ({
                                 name='vat'
                                 label=' Ставка НДС'
                                 className={styles.taxModal__formItem}
+                                rules={[
+                                    { required: !isTaxDisabled, message: 'Укажите ставку НДС' },
+                                ]}
                             >
                                 <Select
                                     size='large'
@@ -839,6 +843,11 @@ const TaxSetupModal = ({
                                     Сохранить
                                 </Button>
                             </div>
+                            {addShopRequestStatus.message &&
+                                <div style={{ color: addShopRequestStatus.isSuccess ? '#00B69B' : addShopRequestStatus.isError ? '#F93C65' : '#1A1A1A' }}>
+                                    {addShopRequestStatus.message}
+                                </div>
+                            }
                         </Form>
                     </ConfigProvider>
                 </div>
