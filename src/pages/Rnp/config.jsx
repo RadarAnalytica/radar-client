@@ -284,8 +284,8 @@ const metricsOrder = [
   { key: 'roi', title: 'ROI (%)', isChildren: true, parentKey: 'expected_marginality_data', tooltip: 'Прогнозируемый коэффициент окупаемости инвестиций. Показывает, какой процент прибыли получен на каждый вложенный рубль. Рассчитывается как отношение чистой прибыли ко всем расходам, связанным с продажами и продвижением товара. Формула: (Чистая прибыль / Сумма расходов) × 100%. Расходы включают: Себестоимость проданных товаров + Логистика + Комиссия + Хранение + Штрафы - Компенсации.' },
   { key: 'profit_per_one', title: 'Прогноз. чистая прибыль на 1 ед. (руб)', isChildren: true, parentKey: 'expected_marginality_data', tooltip: 'Ожидаемая чистая прибыль на единицу товара. Формула: Прогнозируемая чистая прибыль / Количество продаж' },
   { key: 'net_profit', title: 'Прогноз. чистая прибыль (руб)', isChildren: true, parentKey: 'expected_marginality_data', tooltip: 'Ожидаемая итоговая прибыль. Формула: Оплата на РС – Себестоимость продаж – Налог' },
-  { key: 'drr_by_sales', title: 'ДРР по продажам (%)', isChildren: true, parentKey: 'expected_marginality_data', tooltip: 'Доля рекламных расходов в выручке. Формула: (Расходы на рекламу / Выручка) × 100%' },
-  { key: 'drr_by_orders', title: 'ДРР по заказам (%)', isChildren: true, parentKey: 'expected_marginality_data', tooltip: 'Доля рекламных расходов в заказах. Формула: (Расходы на рекламу / Сумма заказов) × 100%' },
+  { key: 'drr_by_sales', title: 'ДРР по продажам (%)', isChildren: true, parentKey: 'expected_marginality_data', inverseIndication: true, tooltip: 'Доля рекламных расходов в выручке. Формула: (Расходы на рекламу / Выручка) × 100%' },
+  { key: 'drr_by_orders', title: 'ДРР по заказам (%)', isChildren: true, parentKey: 'expected_marginality_data', inverseIndication: true, tooltip: 'Доля рекламных расходов в заказах. Формула: (Расходы на рекламу / Сумма заказов) × 100%' },
   { key: 'orders_count', title: 'Факт. заказы (шт)', isChildren: true, parentKey: 'expected_marginality_data', tooltip: 'Количество заказов по артикулу (из воронки продаж).' },
   { key: 'orders_amount', title: 'Факт. заказы (руб)', isChildren: true, parentKey: 'expected_marginality_data', tooltip: 'Сумма заказов по артикулу (из воронки продаж).' },
   { key: 'sales_count', title: 'Прогноз. продажи (шт)', isChildren: true, parentKey: 'expected_marginality_data', tooltip: 'Ожидаемое количество продаж за вычетом возвратов. Формула: Количество продаж – Возвраты (в штуках)' },
@@ -295,47 +295,45 @@ const metricsOrder = [
   { key: 'discount', title: 'Скидка МП (%)', isChildren: true, parentKey: 'expected_marginality_data', tooltip: 'Процент скидки, предоставленной маркетплейсом. Формула: 100 – (Цена после СПП / Цена до СПП) × 100%' },
   { key: 'buyout', title: 'Процент выкупа (%)', isChildren: true, parentKey: 'expected_marginality_data', tooltip: 'Отражает, какая доля доставленных покупателю товаров была окончательно оплачена, а не возвращена или отклонена. Формула: (Успешные продажи / Прямые доставки) × 100%' },
 
-  { key: 'rk_budget_data', title: 'Бюджет РК (руб)', isParent: true, tooltip: 'Затраты на рекламные кампании.' },
+  { key: 'rk_budget_data', title: 'Бюджет РК (руб)', isParent: true, inverseIndication: true, tooltip: 'Затраты на рекламные кампании.' },
   { key: 'ctr', title: 'CTR (%)', isChildren: true, parentKey: 'rk_budget_data', tooltip: 'Отражает, насколько эффективно ваше рекламное объявление привлекает внимание и вызывает интерес у целевой аудитории. Формула: (Клики / Просмотры) × 100%' },
   { key: 'cr', title: 'CR (%)', isChildren: true, parentKey: 'rk_budget_data', tooltip: 'Конверсия из клика в заказ. Формула: (Заказы / Клики) × 100%' },
-  { key: 'cpc', title: 'CPC (руб)', isChildren: true, parentKey: 'rk_budget_data', tooltip: 'Средняя стоимость клика. Формула: Бюджет РК / Клики' },
-  { key: 'cpm', title: 'CPM (руб)', isChildren: true, parentKey: 'rk_budget_data', tooltip: 'Средняя стоимость 1000 показов. Формула: (Бюджет РК / Показы) × 1000' },
+  { key: 'cpc', title: 'CPC (руб)', isChildren: true, parentKey: 'rk_budget_data', inverseIndication: true, tooltip: 'Средняя стоимость клика. Формула: Бюджет РК / Клики' },
+  { key: 'cpm', title: 'CPM (руб)', isChildren: true, parentKey: 'rk_budget_data', inverseIndication: true, tooltip: 'Средняя стоимость 1000 показов. Формула: (Бюджет РК / Показы) × 1000' },
   { key: 'impressions', title: 'Показы (шт)', isChildren: true, parentKey: 'rk_budget_data', tooltip: 'Количество показов рекламы.' },
   { key: 'clicks', title: 'Клики (шт)', isChildren: true, parentKey: 'rk_budget_data', tooltip: 'Количество кликов по рекламе.' },
-  { key: 'one_order_price', title: 'Стоимость 1 заказа (руб)', isChildren: true, parentKey: 'rk_budget_data', tooltip: 'Затраты на привлечение одного заказа. Формула: Бюджет РК / Заказы' },
-  { key: 'one_sale_price', title: 'Стоимость 1 продажи (руб)', isChildren: true, parentKey: 'rk_budget_data', tooltip: 'Затраты на одну продажу. Формула: Бюджет РК / Продажи' },
+  { key: 'one_order_price', title: 'Стоимость 1 заказа (руб)', isChildren: true, parentKey: 'rk_budget_data', inverseIndication: true, tooltip: 'Затраты на привлечение одного заказа. Формула: Бюджет РК / Заказы' },
+  { key: 'one_sale_price', title: 'Стоимость 1 продажи (руб)', isChildren: true, parentKey: 'rk_budget_data', inverseIndication: true, tooltip: 'Затраты на одну продажу. Формула: Бюджет РК / Продажи' },
 
   { key: 'auction_rk_budget_data', title: 'Бюджет РК (Единая ставка) (руб)', isParent: true, tooltip: 'Затраты на рекламные кампании с единой ставкой' },
   { key: 'ctr', title: 'CTR (%)', isChildren: true, parentKey: 'auction_rk_budget_data', tooltip: 'Отражает, насколько эффективно ваше рекламное объявление привлекает внимание и вызывает интерес у целевой аудитории. Формула: (Клики / Просмотры) × 100%' },
   { key: 'impressions', title: 'Показы (шт)', isChildren: true, parentKey: 'auction_rk_budget_data', tooltip: 'Количество показов рекламы.' },
   { key: 'clicks', title: 'Клики (шт)', isChildren: true, parentKey: 'auction_rk_budget_data', tooltip: 'Количество кликов по рекламе.' },
-  { key: 'cpc', title: 'CPC (руб)', isChildren: true, parentKey: 'auction_rk_budget_data', tooltip: 'Средняя стоимость клика. Формула: Бюджет РК / Клики' },
-  { key: 'cpm', title: 'CPM (руб)', isChildren: true, parentKey: 'auction_rk_budget_data', tooltip: 'Средняя стоимость 1000 показов. Формула: (Бюджет РК / Показы) × 1000' },
+  { key: 'cpc', title: 'CPC (руб)', isChildren: true, parentKey: 'auction_rk_budget_data', inverseIndication: true, tooltip: 'Средняя стоимость клика. Формула: Бюджет РК / Клики' },
+  { key: 'cpm', title: 'CPM (руб)', isChildren: true, parentKey: 'auction_rk_budget_data', inverseIndication: true, tooltip: 'Средняя стоимость 1000 показов. Формула: (Бюджет РК / Показы) × 1000' },
 
   { key: 'ark_budget_data', title: 'Бюджет РК (Ручная ставка) (руб)', isParent: true, tooltip: 'Затраты на рекламные кампании с ручной ставкой' },
   { key: 'ctr', title: 'CTR (%)', isChildren: true, parentKey: 'ark_budget_data', tooltip: 'Отражает, насколько эффективно ваше рекламное объявление привлекает внимание и вызывает интерес у целевой аудитории. Формула: (Клики / Просмотры) × 100%' },
   { key: 'impressions', title: 'Показы (шт)', isChildren: true, parentKey: 'ark_budget_data', tooltip: 'Количество показов рекламы.' },
   { key: 'clicks', title: 'Клики (шт)', isChildren: true, parentKey: 'ark_budget_data', tooltip: 'Количество кликов по рекламе.' },
-  { key: 'cpc', title: 'CPC (руб)', isChildren: true, parentKey: 'ark_budget_data', tooltip: 'Средняя стоимость клика. Формула: Бюджет РК / Клики' },
-  { key: 'cpm', title: 'CPM (руб)', isChildren: true, parentKey: 'ark_budget_data', tooltip: 'Средняя стоимость 1000 показов. Формула: (Бюджет РК / Показы) × 1000' },
+  { key: 'cpc', title: 'CPC (руб)', isChildren: true, parentKey: 'ark_budget_data', inverseIndication: true, tooltip: 'Средняя стоимость клика. Формула: Бюджет РК / Клики' },
+  { key: 'cpm', title: 'CPM (руб)', isChildren: true, parentKey: 'ark_budget_data', inverseIndication: true, tooltip: 'Средняя стоимость 1000 показов. Формула: (Бюджет РК / Показы) × 1000' },
 
   { key: 'transition_data', title: 'Переходы (шт)', isParent: true, tooltip: 'Количество переходов в карточку товара.' },
   { key: 'cart_addition_count', title: 'Добавление в корзину (шт)', isChildren: true, parentKey: 'transition_data', tooltip: 'Количество добавлений в корзину.' },
   { key: 'cart_addition_percentage', title: 'Добавление в корзину (%)', isChildren: true, parentKey: 'transition_data', tooltip: 'Доля добавлений в корзину от переходов. Формула: (Добавления в корзину / Переходы) × 100%' },
   { key: 'order_addition_percentage', title: 'Добавление в заказ (%)', isChildren: true, parentKey: 'transition_data', tooltip: 'Доля заказов от добавлений в корзину. Формула: (Заказы / Добавления в корзину) × 100%' },
 
-  { key: 'taxes_data', title: 'Расходы и налоги (%)', isParent: true, tooltip: 'Ставка налога.' },
-  { key: 'tax_per_one', title: 'Налоги на 1 ед. (руб)', isChildren: true, parentKey: 'taxes_data', tooltip: 'Налог на единицу товара. Формула: Сумма налога / Количество продаж' },
-  { key: 'logistics_per_one', title: 'Логистика на 1 ед. (руб)', isChildren: true, parentKey: 'taxes_data', tooltip: 'Логистика на единицу товара. Формула: Логистика / Количество продаж' },
-  { key: 'commission_acquiring_per_one', title: 'Комиссия + экв. на 1 ед. (руб)', isChildren: true, parentKey: 'taxes_data', tooltip: 'Комиссия и эквайринг на единицу. Формула: (Комиссия + Эквайринг) / Количество продаж' },
-  { key: 'commission_acquiring_percentage', title: 'Комиссия + экв. (%)', isChildren: true, parentKey: 'taxes_data', tooltip: 'Доля комиссии и эквайринга в выручке. Формула: ((Комиссия + Эквайринг) / Сумма продаж) × 100%' },
-  { key: 'storage_per_one', title: 'Хранение на 1 ед. (руб)', isChildren: true, parentKey: 'taxes_data', tooltip: 'Затраты на хранение на единицу товара. Формула: Хранение / Количество продаж' },
-  { key: 'cost_per_one', title: 'Себестоимость на 1 ед. (руб)', isChildren: true, parentKey: 'taxes_data', tooltip: 'Себестоимость единицы товара. Формула: Себестоимость проданных товаров / Количество продаж' },
+  { key: 'taxes_data', title: 'Расходы и налоги (%)', isParent: true, inverseIndication: true, tooltip: 'Ставка налога.' },
+  { key: 'tax_per_one', title: 'Налоги на 1 ед. (руб)', isChildren: true, parentKey: 'taxes_data', inverseIndication: true, tooltip: 'Налог на единицу товара. Формула: Сумма налога / Количество продаж' },
+  { key: 'logistics_per_one', title: 'Логистика на 1 ед. (руб)', isChildren: true, parentKey: 'taxes_data', inverseIndication: true, tooltip: 'Логистика на единицу товара. Формула: Логистика / Количество продаж' },
+  { key: 'commission_acquiring_per_one', title: 'Комиссия + экв. на 1 ед. (руб)', isChildren: true, parentKey: 'taxes_data', inverseIndication: true, tooltip: 'Комиссия и эквайринг на единицу. Формула: (Комиссия + Эквайринг) / Количество продаж' },
+  { key: 'commission_acquiring_percentage', title: 'Комиссия + экв. (%)', isChildren: true, parentKey: 'taxes_data', inverseIndication: true, tooltip: 'Доля комиссии и эквайринга в выручке. Формула: ((Комиссия + Эквайринг) / Сумма продаж) × 100%' },
+  { key: 'storage_per_one', title: 'Хранение на 1 ед. (руб)', isChildren: true, parentKey: 'taxes_data', inverseIndication: true, tooltip: 'Затраты на хранение на единицу товара. Формула: Хранение / Количество продаж' },
+  { key: 'cost_per_one', title: 'Себестоимость на 1 ед. (руб)', isChildren: true, parentKey: 'taxes_data', noIndication: true, tooltip: 'Себестоимость единицы товара. Формула: Себестоимость проданных товаров / Количество продаж' },
 ];
 
 export const getTableConfig = (initialData) => {
-
-
   const tableConfig = [
     {
       title: 'Период',
@@ -378,11 +376,13 @@ export const getTableData = (initialData) => {
   const childrenData = [];
   const tableData = [];
   metricsOrder.forEach((item, index) => {
-    const { key, title, isChildren, isParent, parentKey, tooltip } = item;
+    const { key, title, isChildren, isParent, parentKey, inverseIndication, noIndication, tooltip } = item;
     let rowObject = {
       period: title,
       isParent,
       parentKey,
+      inverseIndication,
+      noIndication,
       tooltip,
       key,
       id: `${index}-${key}`,

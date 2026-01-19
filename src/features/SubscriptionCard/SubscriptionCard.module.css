@@ -1,0 +1,373 @@
+.subscriptionCard {
+    width: 100%;
+    background-color: white;
+    border-radius: 16px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.subscriptionCard__header {
+    width: 100%;
+    border-radius: 8px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.subscriptionCard__titleWrapper {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.subscriptionCard__titleBox {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.subscriptionCard__title {
+    font-weight: 600;
+    font-size: 22px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    margin: 0;
+    padding: 0;
+}
+
+.subscriptionCard__subtitle {
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 160%;
+    letter-spacing: 0%;
+    margin: 0;
+    padding: 0;
+}
+
+.subscriptionCard__status {
+    border-radius: 8px;
+    padding: 0 12px;
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    color: white;
+    height: 29px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+}
+
+.subscriptionCard__status::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    background-color: white;
+    border-radius: 50%;
+    flex: 0 0 6px;
+}
+
+.subscriptionCard__dates {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.subscriptionCard__dateItem {
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 140%;
+    letter-spacing: 0%;
+    color: #8c8c8c;
+    display: flex;
+    align-items: center;
+    gap: 8px
+}
+
+.subscriptionCard__dateItem:before {
+    content: '';
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background-color: #8c8c8c;
+    flex: 0 0 3px;
+}
+
+.subscriptionCard__dateItem:first-of-type::before {
+    display: none;
+}
+
+.subscriptionCard__limitsBlock {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.subscriprionCard__limitsList {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+
+.subscriprionCard__limitsListItem {
+    width: 100%;
+    border-radius: 8px;
+    background-color: #F7F7F7;
+    border: 1px solid #F7F7F7;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.subscriprionCard__limitsListItem_expired {
+    background-color: #FFF1F5;
+    border: 1px solid #F93C6533;
+}
+
+.subscriprionCard__limitsItemHeader {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+}
+
+.subscriprionCard__limitsTitleWrapper {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.subscriptionCard__limitsValues {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
+.subscriprionCard__limitsValue {
+    font-weight: 500;
+    font-size: 10px;
+    line-height: 140%;
+    letter-spacing: 0%;
+    color: #8c8c8c;
+}
+
+.subscriprionCard__limitsValue:first-of-type {
+    color: #1a1a1a;
+}
+
+.subscriprionCard__limitsProgressBar {
+    width: 100%;
+    height: 4px;
+    max-height: 4px;
+    border-radius: 8px;
+    position: relative;
+    flex: 0 0 100%;
+    background-color: #E8E8E8;
+}
+
+.subscriprionCard__limitsProgressBarValue {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    border-radius: 8px;
+    background-color: #00B69B;
+    height: 100%;
+    width: 100%;
+}
+
+.subscriprionCard__limitsProgressBarValue_expired {
+    background-color: #F93C65;
+}
+
+.subscriprionCard__footer {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.subscriprionCard__manageSubscriptionButton {
+    border: none;
+    background-color: transparent;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 160%;
+    letter-spacing: 0%;
+    text-align: right;
+    color: #5329FF;
+    cursor: pointer;
+}
+
+.subscriprionCard__manageSubscriptionButton_deactivate {
+    color: #8c8c8c;
+}
+
+.subscriprionCard__inactiveControls {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.subscriprionCard__restoreButton {
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: none;
+    background-color: #5329FF;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 160%;
+    letter-spacing: 0%;
+    max-height: 38px;
+    color: white;
+}
+
+.subscriprionCard__link {
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 160%;
+    letter-spacing: 0%;
+    max-height: 38px;
+    color: #5329FF;
+    text-decoration: none;
+}
+
+/* Tariff Details Modal Styles */
+.tariffModal {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.tariffModal__title {
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 140%;
+    margin: 0;
+    padding: 0;
+    color: #1A1A1A;
+}
+
+.tariffModal__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    background-color: #F8F8F8;
+    border-radius: 8px;
+}
+
+.tariffModal__tariffName {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 140%;
+    color: #1A1A1A;
+}
+
+.tariffModal__tariffDot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #00B69B;
+    flex-shrink: 0;
+}
+
+.tariffModal__sectionsCount {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 140%;
+    color: #00B69B;
+}
+
+.tariffModal__infoBlock {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #F0F0F0;
+}
+
+.tariffModal__infoRow {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.tariffModal__infoLabel {
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 160%;
+    color: #1A1A1A;
+}
+
+.tariffModal__infoValue {
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 140%;
+    color: #8C8C8C;
+    padding-left: 22px;
+}
+
+.tariffModal__infoNote {
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 140%;
+    color: #8C8C8C;
+    padding-left: 24px;
+}
+
+.tariffModal__sections {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.tariffModal__section {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.tariffModal__sectionTitle {
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 140%;
+    color: #8C8C8C;
+}
+
+.tariffModal__sectionList {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+
+.tariffModal__sectionItem {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 160%;
+    color: #1A1A1A;
+}

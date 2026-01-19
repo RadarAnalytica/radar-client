@@ -128,7 +128,6 @@ function RnpListItem({ el, index, expanded, setExpanded, setDeleteRnpId, onReord
 
 	const handleDownload = async () => {
 		setDownloadLoading(true);
-		console.log(filters)
 		try {
 			const fileBlob = await ServiceFunctions.getDownloadReportRnp(
 				authToken,

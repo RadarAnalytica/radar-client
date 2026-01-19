@@ -9,6 +9,7 @@ import { chartCompareConfigObject, mainChartOptionsGenerator } from '../../share
 import moment from 'moment';
 import { verticalDashedLinePlugin } from '../../../../service/utils';
 import { ConfigProvider, Button } from 'antd';
+import { RadarLoader } from '@/shared';
 
 ChartJS.register(
     annotationPlugin,
@@ -100,8 +101,8 @@ const MainChartWidget = ({ id, dataType, dataHandler }) => {
 
     if (widgetData.isLoading || !isFiltersLoaded) {
         return (
-            <div className={styles.loaderWrapper}>
-                <span className='loader'></span>
+            <div className={styles.widget}>
+                <RadarLoader loaderStyle={{height: 613}} />
             </div>
         );
     }

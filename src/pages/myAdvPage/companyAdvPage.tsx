@@ -29,7 +29,7 @@ const CompanyAdvPage: React.FC = () => {
   const { companyId } = useParams<{ companyId: string }>();
   const { isDemoMode } = useDemoMode();
   const { authToken } = useContext(AuthContext);
-  const { selectedRange } = useAppSelector((state) => state.filters);
+  const { selectedRange, isFiltersLoaded } = useAppSelector((state) => state.filters);
   const [loading, setLoading] = useState(true);
   const [tableConfig, setTableConfig] = useState<ColumnConfig[]>([]);
   const [sortState, setSortState] = useState<{ sort_field: string | undefined, sort_order: "ASC" | "DESC" | undefined }>({ 
@@ -134,10 +134,10 @@ const CompanyAdvPage: React.FC = () => {
 
   // Загрузка данных компании
   useEffect(() => {
-    if (companyId) {
+    if (companyId && isFiltersLoaded) {
       loadData();
     }
-  }, [companyId, selectedRange, sortState]);
+  }, [companyId, selectedRange, sortState, isFiltersLoaded]);
 
   // Обработчик изменения конфигурации таблицы
   const handleTableConfigChange = (newConfig: ColumnConfig[]) => {

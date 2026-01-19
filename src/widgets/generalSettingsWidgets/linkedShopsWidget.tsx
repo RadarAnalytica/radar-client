@@ -736,7 +736,7 @@ const TaxSetupModal = ({
                         >
                             <Form.Item
                                 name='taxType'
-                                label='Тип налога'
+                                label='Тип налогообложения'
                                 className={styles.taxModal__formItem}
                             >
                                 <Select

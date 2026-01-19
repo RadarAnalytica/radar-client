@@ -6,10 +6,13 @@ import styles from './RadarRateMark.module.css';
 interface IRadarRateMarkProps {
     value: number | string;
     units?: string;
-    inverse?: boolean;
+    inverseColors?: boolean;
+    noColored?: boolean;
 }
 
-export const RadarRateMark: React.FC<IRadarRateMarkProps> = ({value, units = ' ', inverse = false}) => {
+export const RadarRateMark: React.FC<IRadarRateMarkProps> = ({value, units = ' ', inverseColors = false, noColored = false}) => {
+    if (value == null) return;
+
     const formattedValue = formatPrice(value.toString(), units, true);
 
     const getColorByValue = (value: number | string) => {
@@ -18,7 +21,11 @@ export const RadarRateMark: React.FC<IRadarRateMarkProps> = ({value, units = ' '
         const redColor = { backgroundColor: '#F93C650D', color: '#F93C65' };
         const grayColor = {  backgroundColor: '#1A1A1A0D', color: '#1A1A1A50' };
 
-        if (inverse) {
+        if (noColored) {
+            return grayColor;
+        }
+
+        if (inverseColors) {
             return intValue < 0 ? greenColor : intValue > 0 ? redColor : grayColor;
         } else {
             return intValue > 0 ? greenColor : intValue < 0 ? redColor : grayColor;

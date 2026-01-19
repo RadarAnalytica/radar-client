@@ -38,7 +38,7 @@ export const RadarCell: React.FC<IRadarCellProps> = ({
 
     const handleClick = () => {
         if (copyable) {
-            navigator.clipboard.writeText(value.toString()).catch(_err => console.log('Error copying to clipboard'));
+            navigator.clipboard.writeText(formatPrice(value.toString(), '')).catch(_err => console.log('Error copying to clipboard'));
             setIsCopied(true);
         }
     };

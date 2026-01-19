@@ -69,7 +69,7 @@ export const AuthProvider = ({ children }) => {
     if (user && authToken) {
       getUserData()
     }
-  }, [user, authToken])
+  }, [user])
 
 
   // To delete the cookie:

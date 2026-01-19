@@ -46,12 +46,13 @@ const MyAdvPage: React.FC = () => {
     return result;
   };
 
-  const loadData = async () => {
+  const loadData = async (currentPage: number) => {
     setLoading(true);
     progress.start();
+    const curentPageData = {...pageData, page: currentPage}
     try {
       const requestObject = getRequestObject({ activeBrandName }, selectedRange, activeBrand?.id);
-      const response: ApiResponse = await ServiceFunctions.getAdvertData(authToken, {...requestObject, ...pageData, search_query: searchQuery}, sortState);
+      const response: ApiResponse = await ServiceFunctions.getAdvertData(authToken, {...requestObject, ...curentPageData, search_query: searchQuery}, sortState);
       if (response.total) {
         setPageData(prev => ({ ...prev, total_count: response.total }));
       }
@@ -75,35 +76,18 @@ const MyAdvPage: React.FC = () => {
     const mergedConfig = mergeTableConfig(defaultConfig, savedConfig);
     setTableConfig(mergedConfig);
   }, []);
-
+  
   // Загрузка данных
   useEffect(() => {
     if (activeBrand) {
       if (activeBrand.is_primary_collect) {
-        if (pageData.page === 1) {
-          currentPageRef.current = 1;
-          loadData();
-        } else if (currentPageRef.current !== pageData.page) {
-          currentPageRef.current = pageData.page;
-          setPageData({ ...pageData, page: 1 });
-        } else {
-          loadData();
-        }
+        setPageData({...pageData, page: 1})
+        loadData(1);
       } else {
         setLoading(false);
       }
     }
   }, [searchQuery, sortState, isFiltersLoaded, activeBrand, activeBrandName, selectedRange]);
-
-  useEffect(() => {
-    if (activeBrand) {
-      if (activeBrand.is_primary_collect) {
-        loadData();
-      } else {
-        setLoading(false);
-      }
-    }
-  }, [pageData.page]);
 
   // Обработчик поиска
   const handleSearch = (query: string) => {
@@ -154,6 +138,10 @@ const MyAdvPage: React.FC = () => {
           setSortState={setSortState}
           tableConfig={tableConfig}
           setTableConfig={handleTableConfigChange}
+          paginationHandler={(page: number, pageSize?: number) => {
+              setPageData({ ...pageData, page: page, per_page: pageSize || pageData.per_page });
+              loadData(page)
+          }}
         />
       </section>
     </main>
