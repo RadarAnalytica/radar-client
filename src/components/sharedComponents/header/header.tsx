@@ -68,7 +68,9 @@ const Header = ({
     //@ts-ignore
     setAuthToken,
     //@ts-ignore
-    fullUserData
+    fullUserData,
+    //@ts-ignore
+    setFullUserData,
   } = useContext(AuthContext) as AuthContextType;
 
   // стейт видимости поповера меню
@@ -95,6 +97,28 @@ const Header = ({
     };
   }, [authToken, messages, dispatch]);
 
+  useEffect(() => {
+    const getUserData = async () => {
+      let res = await fetch(`${URL}/api/user/`, {
+        headers: {
+          'content-type': 'application/json',
+          'authorization': 'JWT ' + authToken
+        }
+      })
+
+      if (!res.ok) {
+        return;
+      }
+
+      res = await res.json();
+      setFullUserData(res)
+    }
+
+    if (!fullUserData && authToken) {
+      getUserData()
+    }
+  }, [fullUserData])
+
   // пропс для кнопки внутри меню
   const menuPopoverCloseHandler = (): void => {
     setIsMenuPopoverVisible(false);
@@ -107,32 +131,32 @@ const Header = ({
 
   const getFiltersData = async (token) => {
     try {
-        let shopsResponse = await fetch(`${URL}/api/shop/all`, {
-            method: 'GET',
-            headers: {
-                'content-type': 'application/json',
-                authorization: 'JWT ' + token,
-            }
-        });
-        let shopsData = null;
-        shopsData = await shopsResponse.json();
+      let shopsResponse = await fetch(`${URL}/api/shop/all`, {
+        method: 'GET',
+        headers: {
+          'content-type': 'application/json',
+          authorization: 'JWT ' + token,
+        }
+      });
+      let shopsData = null;
+      shopsData = await shopsResponse.json();
 
-        // @ts-ignore
-        await dispatch(fetchFilters({
-            authToken: token,
-            shopsData
-            //shopsData: null
-        }));
+      // @ts-ignore
+      await dispatch(fetchFilters({
+        authToken: token,
+        shopsData
+        //shopsData: null
+      }));
     } catch (error) {
-        console.error("FiltersProvider: Error fetching initial data:", error);
+      console.error("FiltersProvider: Error fetching initial data:", error);
     }
-};
+  };
 
   const impersonateLogout = async () => {
     setAuthToken(adminToken)
     getFiltersData(adminToken)
     setImpersonateUser(null)
-}
+  }
 
   return (
     <div className={styles.headerWrapper}>
@@ -155,13 +179,13 @@ const Header = ({
       }
       {user?.role?.toLowerCase() === 'admin' && impersonateUser &&
         <div className={styles.header__adminModeBanner}>
-            <span>
-              Вы просматриваете сервис от имени другого пользователя <br/>
-              id:{impersonateUser.id} / email:{impersonateUser.email}
-            </span>
-            <button onClick={impersonateLogout}>
-              Выйти
-            </button>
+          <span>
+            Вы просматриваете сервис от имени другого пользователя <br />
+            id:{impersonateUser.id} / email:{impersonateUser.email}
+          </span>
+          <button onClick={impersonateLogout}>
+            Выйти
+          </button>
         </div>
       }
       <header className={styles.header}>

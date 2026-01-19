@@ -73,7 +73,7 @@ const initStatus = {
 
 export const ProfileWidget = () => {
 
-    const { user, authToken, fullUserData, refreshUser } = useContext(AuthContext)
+    const { user, authToken, fullUserData, refreshUser, setFullUserData } = useContext(AuthContext)
     const [isEditModalOpen, setIsEditModalOpen] = useState(false)
     const [isChangePasswordModalOpen, setIsChangePasswordModalOpen] = useState(false)
     const [formData, setFormData] = useState({
@@ -83,6 +83,22 @@ export const ProfileWidget = () => {
     })
     const [status, setStatus] = useState(initStatus)
     const { isDemoMode } = useDemoMode()
+
+    const getUserData = async () => {
+        let res = await fetch(`${URL}/api/user/`, {
+            headers: {
+                'content-type': 'application/json',
+                'authorization': 'JWT ' + authToken
+            }
+        })
+
+        if (!res.ok) {
+            return;
+        }
+
+        res = await res.json();
+        setFullUserData(res)
+    }
 
     useEffect(() => {
         if (fullUserData) {
@@ -127,7 +143,8 @@ export const ProfileWidget = () => {
                 return;
             }
             setStatus({ ...initStatus, isSuccess: true, message: 'Данные успешно обновлены' })
-            refreshUser()
+            getUserData()
+            // refreshUser()
         } catch (error) {
             console.error('Ошибка при сохранении:', error)
             setStatus({ ...initStatus, isError: true, message: 'Не удалось обновить данные пользователя' })
@@ -721,9 +738,6 @@ const SubscriptonInfo = () => {
     const [keepSubscriptionId, setKeepSubscriptionId] = useState(null);
     const [openModal, setOpenModal] = useState(false);
     const [isTrialModalActive, setIsTrialModalActive] = useState(false)
-    const months = [
-        'января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'
-    ];
 
     const fetchSubscriptions = async () => {
         const response = await fetchApi('/api/user/subscription/all', {
