@@ -14,9 +14,9 @@
   scrollbar-width: thin;
   scrollbar-color: #5329ff80 transparent;
 
-  td[data-column-key="period"] {
+  /* td[data-column-key="period"] {
     z-index: 1;
-  }
+  } */
 }
 
 .tableContainer::-webkit-scrollbar {
@@ -58,6 +58,11 @@
   -webkit-line-clamp: 1 !important;
 }
 
+/* .tableContainer tr:first-of-type {
+  position: relative;
+  z-index: 999;
+  border: 1px solid red;
+} */
 .customCellBold {
   font-weight: 700;
   text-overflow: ellipsis;

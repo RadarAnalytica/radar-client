@@ -218,7 +218,7 @@ export default function RnpTable({ columns, data, columns2, data2, expanded, el 
 						// 	overscan: 10,
 						// 	estimateSize: 38,
 						// }}
-						stickyHeader={true}
+						stickyHeader
 						scrollContainerRef={containerRef}
 						style={{ tableLayout: 'fixed', width: 'max-content' }}
 						preset="radar-table-default"
