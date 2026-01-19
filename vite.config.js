@@ -16,11 +16,13 @@ export default defineConfig({
     sourcemap: 'hidden',
     rollupOptions: {
       input: './index.html', // Specify entry point
-      // output: {
-      //   manualChunks: {
-      //     'onboarding': ['./src/pages/Onboarding']
-      //   }
-      // }
+      output: {
+        manualChunks: {
+          'vendor-react': ['react', 'react-dom'],
+          'vendor-router': ['react-router-dom'],
+          'vendor-antd': ['antd'],
+        }
+      }
     }
   },
   server: {
