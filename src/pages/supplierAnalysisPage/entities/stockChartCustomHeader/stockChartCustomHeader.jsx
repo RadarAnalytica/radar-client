@@ -4,6 +4,7 @@ import { useAppSelector, useAppDispatch } from '../../../../redux/hooks';
 import { actions as supplierAnalysisActions } from '../../../../redux/supplierAnalysis/supplierAnalysisSlice';
 import { selectStockChartTab } from '../../../../redux/supplierAnalysis/supplierAnalysisSelectors';
 import { useCallback, memo, useEffect, useState } from 'react';
+import { selectSupplierAnalysisDataByType } from '@/redux/supplierAnalysis/supplierAnalysisSelectors';
 
 const tabs = [
     'Входящие заказы',
@@ -33,6 +34,7 @@ const theme = {
 
 const StockChartCustomHeader = memo(({stockChartTab}) => {
     const dispatch = useAppDispatch();
+    const { isLoading} = useAppSelector(state => selectSupplierAnalysisDataByType(state, 'bySizesTableData'));
     const [tabsState, setTabsState] = useState(null) 
 
     useEffect(() => {
@@ -53,6 +55,7 @@ const StockChartCustomHeader = memo(({stockChartTab}) => {
                         setTabsState(value)
                         dispatch(supplierAnalysisActions.setStockChartTab(value))
                     }}
+                    disabled={isLoading}
                 />
             </ConfigProvider>
         </div>
