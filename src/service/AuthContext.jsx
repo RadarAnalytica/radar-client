@@ -50,26 +50,26 @@ export const AuthProvider = ({ children }) => {
   }, [value]);
 
 
-  useEffect(() => {
-    const getUserData = async () => {
-      let res = await fetch(`${URL}/api/user/`, {
-        headers: {
-          'content-type': 'application/json',
-          'authorization': 'JWT ' + authToken
-        }
-      })
+  // useEffect(() => {
+  //   const getUserData = async () => {
+  //     let res = await fetch(`${URL}/api/user/`, {
+  //       headers: {
+  //         'content-type': 'application/json',
+  //         'authorization': 'JWT ' + authToken
+  //       }
+  //     })
 
-      if (!res.ok) {
-        return;
-      }
+  //     if (!res.ok) {
+  //       return;
+  //     }
 
-      res = await res.json();
-      setFullUserData(res)
-    }
-    if (authToken) {
-      getUserData()
-    }
-  }, [authToken])
+  //     res = await res.json();
+  //     setFullUserData(res)
+  //   }
+  //   if (authToken) {
+  //     getUserData()
+  //   }
+  // }, [authToken])
 
 
   // To delete the cookie:
@@ -378,7 +378,8 @@ export const AuthProvider = ({ children }) => {
       setAuthToken,
       impersonateUser,
       setImpersonateUser,
-      fullUserData
+      fullUserData,
+      setFullUserData
     }),
     [user, authToken, fullUserData]
   );
