@@ -5,6 +5,7 @@ import { URL } from '../../service/config';
 export const editShop = createAsyncThunk("editShop", async (reqData) => {
     const { shopId, authToken, name, shopToken } = reqData.editData;
     const {setAddShopRequestStatus, initRequestStatus } = reqData;
+    console.log(initRequestStatus)
     try {
         let response = await fetch(URL + '/api/shop/' + shopId, {
             method: 'PATCH',
@@ -25,7 +26,6 @@ export const editShop = createAsyncThunk("editShop", async (reqData) => {
             setAddShopRequestStatus({...initRequestStatus, isLoading: false, isError: true, message });
             return;
         }
-
         setAddShopRequestStatus({...initRequestStatus, isLoading: false, isSuccess: true, message: 'Магазин успешно обновлен'});
         const data = await response.json();
         return data;
