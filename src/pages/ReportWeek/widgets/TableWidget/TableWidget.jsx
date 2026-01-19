@@ -27,6 +27,12 @@ const REVERT_INDICATION_FIELDS = new Set([
     'penalties',
 ]);
 
+// Поля с обратным цветом индикации
+const NO_INDICATION_FIELDS = new Set([
+    'cost_price',
+    'cost_price_per_one',
+]);
+
 const customCellRender = (value, record, index, dataIndex) => {
     if (record.key === 'summary' && dataIndex === 'week_label') {
         return (
@@ -93,7 +99,12 @@ const customCellRender = (value, record, index, dataIndex) => {
         return (
             <div className={styles.customCell}>
                 {formatPrice(value.value, '')}
-                <RadarRateMark value={value.comparison_percentage} units='%' inverseColors={REVERT_INDICATION_FIELDS.has(dataIndex)} />
+                <RadarRateMark 
+                    value={value.comparison_percentage} 
+                    units='%' 
+                    inverseColors={REVERT_INDICATION_FIELDS.has(dataIndex)}
+                    noColored={NO_INDICATION_FIELDS.has(dataIndex)}
+                />
             </div>
         );
     }

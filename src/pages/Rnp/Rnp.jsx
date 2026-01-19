@@ -443,7 +443,7 @@ export default function Rnp({
 		return () => {
 			clearTimeout(timeout);
 		};
-	}, [shareButtonState])
+	}, [shareButtonState]);
 
 	const addRnpHandler = (list) => {
 		setAddRnpModalShow(false);
