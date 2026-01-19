@@ -128,7 +128,7 @@ export const menuConfig = [
                 url: '/report-main',
                 label: 'Оцифровка еженедельных отчетов (ручная)',
                 hasTopBorder: true,
-                isActive: false,
+                isActive: true,
                 isNew: false
             },
             // {
@@ -149,7 +149,7 @@ export const menuConfig = [
             {
                 id: 1,
                 url: '/my-adv',
-                label: 'Статистика',
+                label: 'Статистика РК',
                 isActive: true,
                 isNew: true
             },

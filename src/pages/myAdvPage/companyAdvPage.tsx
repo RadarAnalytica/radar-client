@@ -156,7 +156,7 @@ const CompanyAdvPage: React.FC = () => {
       <section className={styles.page__content}>
         <div className={styles.page__headerWrapper}>
           <Header 
-            title={<h2 className={styles.page__headerTitle}><Link to='/my-adv'>Статистика</Link> / <span>{data?.company_name}</span></h2>}
+            title={<h2 className={styles.page__headerTitle}><Link to='/my-adv'>Статистика РК</Link> / <span>{data?.company_name}</span></h2>}
             titlePrefix=""
             children=""
             videoReviewLink=""

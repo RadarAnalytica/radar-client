@@ -66,10 +66,10 @@ export const AuthProvider = ({ children }) => {
       res = await res.json();
       setFullUserData(res)
     }
-    if (user && authToken) {
+    if (authToken) {
       getUserData()
     }
-  }, [user])
+  }, [authToken])
 
 
   // To delete the cookie:
