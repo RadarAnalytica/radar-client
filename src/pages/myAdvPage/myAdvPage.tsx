@@ -111,7 +111,7 @@ const MyAdvPage: React.FC = () => {
       <section className={styles.page__content}>
         <div className={styles.page__headerWrapper}>
           <Header 
-            title="Статистика"
+            title="Статистика РК"
             titlePrefix=""
             children={null}
             videoReviewLink=""

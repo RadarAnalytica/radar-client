@@ -235,7 +235,7 @@ export default function ReportProfitLoss() {
 			{ key: 'gross_margin', title: 'Маржинальная прибыль', tooltip: 'Выручка за вычетом себестоимости. Формула: Выручка – Себестоимость' },
 			{ key: 'operating_expenses', title: 'Операционные расходы', inverseIndication: true, isParent: true, isExpanded: false, tooltip: 'Сумма операционных расходов за период.' },
 			{ key: 'operating_profit', title: 'Операционная прибыль (EBITDA)', tooltip: 'Прибыль до вычета налогов, процентов и амортизации. Формула: Маржинальная прибыль – (Комиссии + Логистика + Реклама)' },
-			{ key: 'tax', title: 'Налоги', inverseIndication: true },
+			//{ key: 'tax', title: 'Налоги', inverseIndication: true },
 			{ key: 'net_profit', title: 'Чистая прибыль', tooltip: 'Итоговая прибыль. Формула: Оплата на РС – Себестоимость продаж – Налог – Операционные расходы' },
 		];
 

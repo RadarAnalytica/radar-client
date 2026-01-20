@@ -9,8 +9,9 @@ import dayjs from 'dayjs';
 
 
 const createFiltersDTO = (data, shopsData) => {
-  // если магазинов меньше 5, то добавляем опцию "Все магазины"
-  const hasAllShopsOption = shopsData?.filter(_ => _.is_valid).length < 5
+  // если магазинов меньше 5, то добавляем опцию "Все магазины" - UPD от 19.01.26 - Вова сказал скрыть опцию "Все" для магазинов до дальнейших указаний (раскомментировать строку ниже если надо будет вернуть)
+  //const hasAllShopsOption = shopsData?.filter(_ => _.is_valid).length < 5
+  const hasAllShopsOption = false
   // 0 - собираем список недель для фильтр  а выбора недели
 
   // находим минимальную дату created_at по всем магазинам

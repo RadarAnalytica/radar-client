@@ -6,6 +6,7 @@ import { useAppSelector, useAppDispatch } from '@/redux/hooks';
 import AuthContext from '@/service/AuthContext';
 import moment from 'moment';
 import { ServiceFunctions } from '@/service/serviceFunctions';
+import { fetchShops } from '@/redux/shops/shopsActions';
 
 
 
@@ -20,6 +21,7 @@ const initRequestStatus = {
 export const TaxModal = ({
     updateDataDashBoard
 }) => {
+    const dispatch = useAppDispatch()
     const { activeBrand, selectedRange } = useAppSelector(store => store.filters)
     const { shops } = useAppSelector(store => store.shopsSlice)
     const [addShopRequestStatus, setAddShopRequestStatus] = useState(initRequestStatus);
@@ -28,45 +30,49 @@ export const TaxModal = ({
 
     const currShop = useMemo(() => {
         return shops?.find(_ => _.id === activeBrand.id) ?? activeBrand
-    }, [activeBrand])
+    }, [activeBrand, shops])
 
     const submitHandler = async (fields: Record<string, string>) => {
-            const data = {
-                shop_id: activeBrand?.id,
-                effective_from: moment().format('YYYY-MM-DD'),
-                tax_type: fields?.taxType,
-                tax_rate: fields?.taxType === 'Не считать налог' ? 0 : parseInt(fields?.tax),
-                vat_rate: fields?.taxType === 'Не считать налог' ? 0 : fields?.vat === 'Без НДС' ? 0 : parseInt(fields?.vat),
-            }
+        const data = {
+            shop_id: activeBrand?.id,
+            effective_from: moment().format('YYYY-MM-DD'),
+            tax_type: fields?.taxType,
+            tax_rate: fields?.taxType === 'Не считать налог' ? 0 : parseInt(fields?.tax),
+            vat_rate: fields?.taxType === 'Не считать налог' ? 0 : fields?.vat === 'Без НДС' ? 0 : parseInt(fields?.vat),
+        }
 
-            try {
-                let res = await ServiceFunctions.setShopTax(authToken, data)
-                if (!res.ok) {
-                    setAddShopRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось установить налог!' });
-                    return;
-                }
-                setAddShopRequestStatus({ ...initRequestStatus, isLoading: false, isSuccess: true, message: 'Налог успешно установлен' });
-            } catch(e) {
-                console.error(e);
+        try {
+            let res = await ServiceFunctions.setShopTax(authToken, data)
+            if (!res.ok) {
                 setAddShopRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось установить налог!' });
+                return;
             }
-          
+            setAddShopRequestStatus({ ...initRequestStatus, isLoading: false, isSuccess: true, message: 'Налог успешно установлен' });
+        } catch (e) {
+            console.error(e);
+            setAddShopRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось установить налог!' });
+        }
+
     }
 
     useEffect(() => {
         let timeout;
         if (addShopRequestStatus.isSuccess) {
-            updateDataDashBoard(selectedRange, activeBrand.id, authToken)
-            setAddShopRequestStatus(initRequestStatus);
+            
+            timeout = setTimeout(() => { 
+                setAddShopRequestStatus(initRequestStatus);
+                dispatch(fetchShops(authToken))
+                updateDataDashBoard(selectedRange, activeBrand.id, authToken);
+            }, 1500);
         }
         if (addShopRequestStatus.isError) {
-            timeout = setTimeout(() => { setAddShopRequestStatus(initRequestStatus); }, 2000);
+            timeout = setTimeout(() => { setAddShopRequestStatus(initRequestStatus); }, 1500);
         }
     }, [addShopRequestStatus]);
 
     return (
         <>
-            <button 
+            <button
                 className={styles.smallButton}
                 disabled={activeBrand?.id === 0}
                 onClick={() => setIsModalOpen(true)}
@@ -77,6 +83,7 @@ export const TaxModal = ({
                 submitHandler={submitHandler}
                 isModalOpen={isModalOpen}
                 setIsModalOpen={setIsModalOpen}
+                addShopRequestStatus={addShopRequestStatus}
             />
         </>
     )
@@ -90,21 +97,22 @@ const TaxSetupModal = ({
     shop,
     submitHandler,
     isModalOpen,
-    setIsModalOpen
+    setIsModalOpen,
+    addShopRequestStatus
 }) => {
     const [form] = Form.useForm();
     const taxType = Form.useWatch('taxType', form);
     const isTaxDisabled = taxType === 'Не считать налог';
 
     useEffect(() => {
-        if (shop) {
+        if (shop && isModalOpen) {
             form.setFieldValue('taxType', shop?.tax_type);
             form.setFieldValue('tax', shop?.tax_rate);
             form.setFieldValue('vat', shop?.vat_rate || 'Без НДС');
         } else {
             form.resetFields();
         }
-    }, [shop]);
+    }, [isModalOpen]);
 
     useEffect(() => {
         if (isTaxDisabled) {
@@ -193,6 +201,9 @@ const TaxSetupModal = ({
                                 name='taxType'
                                 label='Тип налогообложения'
                                 className={styles.taxModal__formItem}
+                                rules={[
+                                    { required: true, message: 'Укажите тип налогообложения' },
+                                ]}
                             >
                                 <Select
                                     size='large'
@@ -207,7 +218,7 @@ const TaxSetupModal = ({
                                 label='Ставка налога'
                                 className={styles.taxModal__formItem}
                                 rules={[
-                                    { required: !isTaxDisabled, message: 'Пожалуйста, введите процент налога!' },
+                                    { required: !isTaxDisabled, message: 'Введите процент налога!' },
                                     () => ({
                                         validator(_, value) {
                                             if (!value || isTaxDisabled) {
@@ -237,6 +248,9 @@ const TaxSetupModal = ({
                                 name='vat'
                                 label=' Ставка НДС'
                                 className={styles.taxModal__formItem}
+                                rules={[
+                                    { required: !isTaxDisabled, message: 'Укажите ставку НДС' },
+                                ]}
                             >
                                 <Select
                                     size='large'
@@ -294,6 +308,11 @@ const TaxSetupModal = ({
                                     Сохранить
                                 </Button>
                             </div>
+                            {addShopRequestStatus.message &&
+                                <div style={{ color: addShopRequestStatus.isSuccess ? '#00B69B' : addShopRequestStatus.isError ? '#F93C65' : '#1A1A1A' }}>
+                                    {addShopRequestStatus.message}
+                                </div>
+                            }
                         </Form>
                     </ConfigProvider>
                 </div>
