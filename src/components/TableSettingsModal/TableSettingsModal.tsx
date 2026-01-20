@@ -12,7 +12,7 @@ import {
 import { DndContext, closestCenter, DragEndEvent, DragStartEvent, DragOverlay, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
 import { SortableContext, useSortable, verticalListSortingStrategy, arrayMove } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { restrictToVerticalAxis, restrictToParentElement } from '@dnd-kit/modifiers';
+import { restrictToVerticalAxis } from '@dnd-kit/modifiers';
 
 export interface TableSettingsItem {
     id: string;
@@ -40,7 +40,6 @@ export interface TableSettingsModalProps {
 interface SortableItemProps {
     id: string;
     item: TableSettingsItem;
-    form: any;
     titleKey: string;
     isChild?: boolean;
 }
@@ -85,7 +84,31 @@ const ExpandIcon = ({ isExpanded }: { isExpanded: boolean }) => (
     </svg>
 );
 
-const SortableItem: React.FC<SortableItemProps> = ({ id, item, form, titleKey, isChild = false }) => {
+const DragOverlayItem: React.FC<{
+    item: TableSettingsItem;
+    titleKey: string;
+    checked: boolean;
+    isChild?: boolean;
+}> = ({ item, titleKey, checked, isChild = false }) => (
+    <div
+        className={`${styles.sortableItem} ${isChild ? styles.sortableItemChild : ''}`}
+        style={{
+            opacity: 1,
+            backgroundColor: '#f5f5f5',
+            boxShadow: '0 2px 8px rgba(0, 0, 0, 0.15)',
+            cursor: 'grabbing'
+        }}
+    >
+        <div className={styles.dragHandle}>
+            <DragHandleIcon />
+        </div>
+        <Checkbox checked={checked} className={styles.checkbox}>
+            {item[titleKey] || item.title}
+        </Checkbox>
+    </div>
+);
+
+const SortableItem: React.FC<SortableItemProps> = ({ id, item, titleKey, isChild = false }) => {
     const {
         attributes,
         listeners,
@@ -106,47 +129,6 @@ const SortableItem: React.FC<SortableItemProps> = ({ id, item, form, titleKey, i
             ref={setNodeRef}
             style={style}
             className={`${styles.sortableItem} ${isChild ? styles.sortableItemChild : ''}`}
-            data-dragging={isDragging}
-        >
-            <div className={styles.dragHandle} {...attributes} {...listeners}>
-                <DragHandleIcon />
-            </div>
-            <Form.Item
-                name={id}
-                valuePropName="checked"
-                initialValue={true}
-                noStyle
-                preserve
-            >
-                <Checkbox className={styles.checkbox}>
-                    {item[titleKey]}
-                </Checkbox>
-            </Form.Item>
-        </div>
-    );
-};
-
-const SortableChildItem: React.FC<SortableItemProps> = ({ id, item, form, titleKey }) => {
-    const {
-        attributes,
-        listeners,
-        setNodeRef,
-        transform,
-        transition,
-        isDragging,
-    } = useSortable({ id });
-
-    const style = {
-        transform: CSS.Transform.toString(transform),
-        transition,
-        opacity: isDragging ? 0 : 1,
-    };
-
-    return (
-        <div
-            ref={setNodeRef}
-            style={style}
-            className={`${styles.sortableItem} ${styles.sortableItemChild}`}
             data-dragging={isDragging}
         >
             <div className={styles.dragHandle} {...attributes} {...listeners}>
@@ -290,33 +272,23 @@ const SortableGroup: React.FC<SortableGroupProps> = ({
                             strategy={verticalListSortingStrategy}
                         >
                             {item.children!.map((child) => (
-                                <SortableChildItem 
+                                <SortableItem 
                                     key={child.id} 
                                     id={child.id} 
                                     item={child} 
-                                    form={form} 
                                     titleKey={titleKey}
+                                    isChild
                                 />
                             ))}
                         </SortableContext>
                         <DragOverlay>
                             {activeChildItem ? (
-                                <div className={`${styles.sortableItem} ${styles.sortableItemChild}`} style={{
-                                    opacity: 1,
-                                    backgroundColor: '#f5f5f5',
-                                    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.15)',
-                                    cursor: 'grabbing'
-                                }}>
-                                    <div className={styles.dragHandle}>
-                                        <DragHandleIcon />
-                                    </div>
-                                    <Checkbox
-                                        checked={visibilityState[activeChildItem.id] !== false}
-                                        className={styles.checkbox}
-                                    >
-                                        {activeChildItem[titleKey]}
-                                    </Checkbox>
-                                </div>
+                                <DragOverlayItem
+                                    item={activeChildItem}
+                                    titleKey={titleKey}
+                                    checked={visibilityState[activeChildItem.id] !== false}
+                                    isChild
+                                />
                             ) : null}
                         </DragOverlay>
                     </DndContext>
@@ -356,8 +328,13 @@ export const TableSettingsModal: React.FC<TableSettingsModalProps> = ({
     );
 
     // Check if items have hierarchical structure
+    // Consider hierarchy if any item has children array (even empty) or isParent flag
     const hasHierarchy = useMemo(() => {
-        return items.some(item => item[childrenKey] && item[childrenKey].length > 0);
+        return items.some(item => 
+            (item[childrenKey] && item[childrenKey].length > 0) || 
+            item.isParent ||
+            Array.isArray(item[childrenKey])
+        );
     }, [items, childrenKey]);
 
     // Normalize items to internal format
@@ -419,8 +396,15 @@ export const TableSettingsModal: React.FC<TableSettingsModalProps> = ({
         return result;
     };
 
+    // Store previous isOpen state to detect when modal opens
+    const prevIsOpenRef = React.useRef(false);
+    
     useEffect(() => {
-        if (isOpen) {
+        // Only run when modal is opening (transition from closed to open)
+        const isOpening = isOpen && !prevIsOpenRef.current;
+        prevIsOpenRef.current = isOpen;
+        
+        if (isOpening) {
             const normalized = normalizeItems(items);
             setDisplayItems(normalized);
             setSearchValue('');
@@ -430,11 +414,17 @@ export const TableSettingsModal: React.FC<TableSettingsModalProps> = ({
             setVisibilityState(initialVisibility);
             form.setFieldsValue(initialVisibility);
 
-            // Expand all groups by default
-            const groupIds = new Set(normalized.filter(item => item.children && item.children.length > 0).map(item => item.id));
+            // Expand groups that have children and are marked as expanded (or have isExpanded: true)
+            const groupIds = new Set(
+                normalized
+                    .filter(item => item.children && item.children.length > 0)
+                    .filter(item => item.isExpanded !== false) // Expand by default unless explicitly set to false
+                    .map(item => item.id)
+            );
             setExpandedGroups(groupIds);
         }
-    }, [items, isOpen, form, idKey, titleKey, visibleKey, invertVisibility, childrenKey]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isOpen]);
 
     const filteredItems = useMemo(() => {
         if (!activeSearchValue.trim()) {
@@ -563,12 +553,14 @@ export const TableSettingsModal: React.FC<TableSettingsModalProps> = ({
         setActiveSearchValue(searchValue);
     };
 
-    // Apply visibility state to items recursively
+    // Apply visibility state and expanded state to items recursively
     const applyVisibilityToItems = (items: TableSettingsItem[]): TableSettingsItem[] => {
         return items.map(item => {
             const updatedItem = {
                 ...item,
-                isVisible: visibilityState[item.id] !== undefined ? visibilityState[item.id] : item.isVisible
+                isVisible: visibilityState[item.id] !== undefined ? visibilityState[item.id] : item.isVisible,
+                // Preserve current expanded state from expandedGroups
+                isExpanded: item.children ? expandedGroups.has(item.id) : item.isExpanded
             };
             if (item.children) {
                 updatedItem.children = applyVisibilityToItems(item.children);
@@ -758,7 +750,7 @@ export const TableSettingsModal: React.FC<TableSettingsModalProps> = ({
                         collisionDetection={closestCenter}
                         onDragStart={handleDragStart}
                         onDragEnd={handleDragEnd}
-                        modifiers={[restrictToVerticalAxis, restrictToParentElement]}
+                        modifiers={[restrictToVerticalAxis]}
                     >
                         <SortableContext
                             items={filteredItems.map(item => item.id)}
@@ -767,26 +759,43 @@ export const TableSettingsModal: React.FC<TableSettingsModalProps> = ({
                             <div className={styles.list}>
                                 {filteredItems.length > 0 ? (
                                     hasHierarchy ? (
-                                        // Hierarchical rendering with groups
-                                        filteredItems.map((item) => (
-                                            <SortableGroup 
-                                                key={item.id} 
-                                                id={item.id} 
-                                                item={item} 
-                                                form={form} 
-                                                titleKey="title"
-                                                isExpanded={expandedGroups.has(item.id)}
-                                                onToggleExpand={handleToggleExpand}
-                                                visibilityState={visibilityState}
-                                                setVisibilityState={setVisibilityState}
-                                                onChildrenReorder={handleChildrenReorder}
-                                                sensors={sensors}
-                                            />
-                                        ))
+                                        // Hierarchical rendering - render groups for items with children, regular items otherwise
+                                        filteredItems.map((item) => {
+                                            // Check if item has children array (even empty means it's a group)
+                                            const isGroup = Array.isArray(item.children);
+                                            
+                                            if (isGroup) {
+                                                return (
+                                                    <SortableGroup 
+                                                        key={item.id} 
+                                                        id={item.id} 
+                                                        item={item} 
+                                                        form={form} 
+                                                        titleKey="title"
+                                                        isExpanded={expandedGroups.has(item.id)}
+                                                        onToggleExpand={handleToggleExpand}
+                                                        visibilityState={visibilityState}
+                                                        setVisibilityState={setVisibilityState}
+                                                        onChildrenReorder={handleChildrenReorder}
+                                                        sensors={sensors}
+                                                    />
+                                                );
+                                            }
+                                            
+                                            // Regular item (no children)
+                                            return (
+                                                <SortableItem 
+                                                    key={item.id} 
+                                                    id={item.id} 
+                                                    item={item} 
+                                                    titleKey="title" 
+                                                />
+                                            );
+                                        })
                                     ) : (
                                         // Flat rendering
                                         filteredItems.map((item) => (
-                                            <SortableItem key={item.id} id={item.id} item={item} form={form} titleKey="title" />
+                                            <SortableItem key={item.id} id={item.id} item={item} titleKey="title" />
                                         ))
                                     )
                                 ) : activeSearchValue.trim() ? (
@@ -803,22 +812,11 @@ export const TableSettingsModal: React.FC<TableSettingsModalProps> = ({
                         </SortableContext>
                         <DragOverlay>
                             {activeItem ? (
-                                <div className={styles.sortableItem} style={{
-                                    opacity: 1,
-                                    backgroundColor: '#f5f5f5',
-                                    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.15)',
-                                    cursor: 'grabbing'
-                                }}>
-                                    <div className={styles.dragHandle}>
-                                        <DragHandleIcon />
-                                    </div>
-                                    <Checkbox
-                                        checked={visibilityState[activeItem.id] !== false}
-                                        className={styles.checkbox}
-                                    >
-                                        {activeItem.title}
-                                    </Checkbox>
-                                </div>
+                                <DragOverlayItem
+                                    item={activeItem}
+                                    titleKey={titleKey}
+                                    checked={visibilityState[activeItem.id] !== false}
+                                />
                             ) : null}
                         </DragOverlay>
                     </DndContext>

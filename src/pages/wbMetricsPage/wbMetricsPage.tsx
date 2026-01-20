@@ -11,7 +11,7 @@ import { useDemoMode } from "@/app/providers";
 import NoSubscriptionWarningBlock from '@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock';
 import { useLoadingProgress } from '@/service/hooks/useLoadingProgress';
 import Loader from '@/components/ui/Loader';
-import DownloadButton from '@/components/DownloadButton';
+// import DownloadButton from '@/components/DownloadButton';
 import WbMetricsTable from './widgets/WbMetricsTable/WbMetricsTable';
 import TableSettingsWidget from './widgets/TableSettingsWidget/TableSettingsWidget';
 import NoData from '@/components/sharedComponents/NoData/NoData';
@@ -27,7 +27,6 @@ import styles from './wbMetricsPage.module.css';
 
 
 const WbMetricsPage: React.FC = () => {
-  console.log('__RE_RENDER__');
   const location = useLocation();
   const metricType = location.pathname.includes('/drr') ? 'drr' : 'spp';
   const { authToken } = useContext(AuthContext);
