@@ -511,6 +511,7 @@ const barsConfig = [
                 mainValue={dataDashBoard?.compensation}
                 mainValueUnits='₽'
                 isLoading={loading}
+                hasColoredBackground
                 compareValue={{
                     comparativeValue: dataDashBoard?.compensation_compare,
                     absoluteValue: dataDashBoard?.prev_compensation,
@@ -558,6 +559,7 @@ const barsConfig = [
                 tooltipText='Прибыль на единицу проданного товара'
                 mainValue={dataDashBoard?.profit_per_one}
                 mainValueUnits='₽'
+                hasColoredBackground
                 compareValue={{
                     comparativeValue: dataDashBoard?.profit_per_one_compare,
                     absoluteValue: dataDashBoard?.prev_profit_per_one,
