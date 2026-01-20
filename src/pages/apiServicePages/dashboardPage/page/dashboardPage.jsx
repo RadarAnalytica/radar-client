@@ -40,10 +40,9 @@ import { SmallButton } from '@/shared';
 import { GeneralLayout } from '@/shared';
 import { fileDownload } from '@/service/utils';
 import DownloadButton from '@/components/DownloadButton';
+import TableSettingsButton from '@/components/TableSettingsButton';
 import { Link } from 'react-router-dom';
 import { TaxModal } from '@/features';
-
-
 
 
 /*
@@ -941,7 +940,8 @@ const saveBarsConfig = (items, BARS_STORAGE_KEY, DASHBOARD_CONFIG_VER) => {
         order: index // Сохраняем порядок элемента
     }));
     localStorage.setItem(BARS_STORAGE_KEY, JSON.stringify({ version: DASHBOARD_CONFIG_VER, items: serializableConfig }));
-}
+};
+
 const inferBarsConfig = (barsConfig, savedConfig, DASHBOARD_CONFIG_VER) => {
     if (!savedConfig) return barsConfig;
     const { version, items } = savedConfig;
@@ -969,7 +969,7 @@ const inferBarsConfig = (barsConfig, savedConfig, DASHBOARD_CONFIG_VER) => {
         const orderB = b.order !== undefined ? b.order : Infinity;
         return orderA - orderB;
     });
-}
+};
 
 
 // Рендер непосредственно дашборда (карточек)
@@ -1037,6 +1037,8 @@ const MainContent = React.memo(({
         </>
     );
 });
+
+MainContent.displayName = 'MainContent';
 
 // Страница Дашборда
 const _DashboardPage = () => {
@@ -1177,19 +1179,11 @@ const _DashboardPage = () => {
                         handleDownload={handleDownload}
                         loading={pageState?.loading || downloadLoading}
                     />
-                    {!pageState.loading &&
-                        <button
-                            className={styles.page__settingsButton}
-                            onClick={() => setIsSettingsOpen(true)}
-                            disabled={pageState.loading}
-                            title='Настройка Сводки продаж'
-                        >
-                            <svg width="19" height="18" viewBox="0 0 19 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path fillRule="evenodd" clipRule="evenodd" d="M13.75 8.64276C13.75 11.1741 11.698 13.2261 9.16667 13.2261C6.63536 13.2261 4.58333 11.1741 4.58333 8.64276C4.58333 6.11146 6.63536 4.05943 9.16667 4.05943C11.698 4.05943 13.75 6.11146 13.75 8.64276ZM12.375 8.64276C12.375 10.4147 10.9386 11.8511 9.16667 11.8511C7.39475 11.8511 5.95833 10.4147 5.95833 8.64276C5.95833 6.87085 7.39475 5.43443 9.16667 5.43443C10.9386 5.43443 12.375 6.87085 12.375 8.64276Z" fill="#5329FF" />
-                                <path fillRule="evenodd" clipRule="evenodd" d="M3.78947 1.16259C2.9126 1.66885 2.61217 2.7901 3.11843 3.66697C3.68958 4.65624 2.97564 5.89284 1.83333 5.89284C0.82081 5.89284 0 6.71365 0 7.72617V9.5595C0 10.572 0.820812 11.3928 1.83333 11.3928C2.97564 11.3928 3.68959 12.6294 3.11844 13.6187C2.61218 14.4956 2.91261 15.6168 3.78948 16.1231L5.3772 17.0397C6.25407 17.546 7.37532 17.2456 7.88158 16.3687C8.45273 15.3794 9.88061 15.3794 10.4518 16.3687C10.958 17.2455 12.0793 17.546 12.9561 17.0397L14.5439 16.1231C15.4207 15.6168 15.7212 14.4955 15.2149 13.6187C14.6438 12.6294 15.3577 11.3928 16.5 11.3928C17.5125 11.3928 18.3333 10.572 18.3333 9.5595V7.72617C18.3333 6.71365 17.5125 5.89284 16.5 5.89284C15.3577 5.89284 14.6438 4.65625 15.2149 3.66698C15.7212 2.79011 15.4207 1.66886 14.5439 1.1626L12.9562 0.245933C12.0793 -0.260328 10.958 0.0401102 10.4518 0.91698C9.88062 1.90625 8.45272 1.90624 7.88157 0.916973C7.37531 0.040103 6.25406 -0.260335 5.37719 0.245926L3.78947 1.16259ZM4.30921 2.97947C4.18265 2.76026 4.25776 2.47994 4.47697 2.35338L6.06469 1.43671C6.28391 1.31015 6.56422 1.38526 6.69078 1.60447C7.79117 3.5104 10.5422 3.51043 11.6426 1.60448C11.7691 1.38526 12.0494 1.31015 12.2687 1.43672L13.8564 2.35338C14.0756 2.47995 14.1507 2.76026 14.0241 2.97948C12.9237 4.8854 14.2992 7.26784 16.5 7.26784C16.7531 7.26784 16.9583 7.47304 16.9583 7.72617V9.5595C16.9583 9.81263 16.7531 10.0178 16.5 10.0178C14.2992 10.0178 12.9237 12.4002 14.0241 14.3062C14.1507 14.5254 14.0756 14.8057 13.8564 14.9323L12.2686 15.8489C12.0494 15.9755 11.7691 15.9004 11.6425 15.6812C10.5422 13.7752 7.79118 13.7753 6.69079 15.6812C6.56423 15.9004 6.28391 15.9755 6.0647 15.8489L4.47698 14.9323C4.25777 14.8057 4.18266 14.5254 4.30922 14.3062C5.40962 12.4002 4.0341 10.0178 1.83333 10.0178C1.5802 10.0178 1.375 9.81263 1.375 9.5595V7.72617C1.375 7.47304 1.5802 7.26784 1.83333 7.26784C4.03413 7.26784 5.4096 4.8854 4.30921 2.97947Z" fill="#5329FF" />
-                            </svg>
-                        </button>
-                    }
+                    <TableSettingsButton
+                        className={styles.page__settingsButton}
+                        onClick={() => setIsSettingsOpen(true)}
+                        disabled={pageState.loading}
+                    />
                 </div>
 
                 {activeBrand && !activeBrand.is_primary_collect && (

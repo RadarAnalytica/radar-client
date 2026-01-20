@@ -1,8 +1,9 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect, useMemo } from 'react';
 import { Table as RadarTable } from 'radar-ui';
 import { useNavigate } from 'react-router-dom';
 import { Filters } from '@/components/sharedComponents/apiServicePagesFiltersComponent';
-import TableSettingsWidget from '../TableSettingsWidget/TableSettingsWidget';
+import TableSettingsModal from '@/components/TableSettingsModal';
+import TableSettingsButton from '@/components/TableSettingsButton';
 import { TABLE_CONFIG_VERSION, getDefaultTableConfig, TABLE_MAX_WIDTH } from '../../config/tableConfig';
 import styles from './MyAdvTable.module.css';
 import { CompanyData } from '../../data/mockData';
@@ -48,6 +49,67 @@ const MyAdvTable: React.FC<MyAdvTableProps> = React.memo(({
   const isDataNotCollected = activeBrand && !activeBrand?.is_primary_collect;
 
   const [expandedRowKeys, setExpandedRowKeys] = useState<string[]>([`${companyId || ''}_`]);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+
+  // Extended type for columns with children
+  interface ExtendedColumnConfig extends ColumnConfig {
+    children?: ExtendedColumnConfig[];
+    colSpan?: number;
+    isVisible?: boolean;
+  }
+
+  // Prepare columns for settings modal (with id for each item)
+  const columnsForSettings = useMemo(() => {
+    return (tableConfig as ExtendedColumnConfig[]).map((col) => ({
+      ...col,
+      id: col.key || col.dataIndex,
+      title: col.title || 'Группа',
+      isVisible: !col.hidden,
+      children: col.children?.map((child) => ({
+        ...child,
+        id: child.key || child.dataIndex,
+        title: child.title,
+        isVisible: !child.hidden,
+      })),
+    }));
+  }, [tableConfig]);
+
+  const originalColumnsForSettings = useMemo(() => {
+    const defaultConfig = getDefaultTableConfig() as ExtendedColumnConfig[];
+    return defaultConfig.map((col) => ({
+      ...col,
+      id: col.key || col.dataIndex,
+      title: col.title || 'Группа',
+      isVisible: !col.hidden,
+      children: col.children?.map((child) => ({
+        ...child,
+        id: child.key || child.dataIndex,
+        title: child.title,
+        isVisible: !child.hidden,
+      })),
+    }));
+  }, []);
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const handleSettingsSave = (updatedColumns: any[]) => {
+    // Transform back to table config format
+    const newConfig = updatedColumns.map((col) => ({
+      ...col,
+      hidden: !col.isVisible,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      colSpan: col.children?.filter((child: any) => !child.hidden)?.length || 1,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      children: col.children?.map((child: any) => ({
+        ...child,
+        hidden: !child.isVisible,
+      })),
+    }));
+    setTableConfig(newConfig as ColumnConfig[]);
+    localStorage.setItem('MY_ADV_TABLE_CONFIG', JSON.stringify({
+      version: TABLE_CONFIG_VERSION,
+      config: newConfig
+    }));
+  };
 
   const handlePageChange = (page: number, pageSize?: number) => {
     tableContainerRef.current?.scrollTo({
@@ -286,7 +348,13 @@ const MyAdvTable: React.FC<MyAdvTableProps> = React.memo(({
           />
         </div>
         <div className={styles.settingsWrapper}>
-          {!isDataNotCollected && <TableSettingsWidget tableConfig={tableConfig} setTableConfig={setTableConfig} />}
+          {!isDataNotCollected && (
+            <TableSettingsButton
+              className={styles.settingsButton}
+              onClick={() => setIsSettingsOpen(true)}
+              disabled={loading}
+            />
+          )}
         </div>
       </div>
 
@@ -351,6 +419,18 @@ const MyAdvTable: React.FC<MyAdvTableProps> = React.memo(({
           </div>
         </div>
       )}
+
+      <TableSettingsModal
+        isOpen={isSettingsOpen}
+        onClose={() => setIsSettingsOpen(false)}
+        title="Настройки таблицы"
+        items={columnsForSettings}
+        onSave={handleSettingsSave}
+        originalItems={originalColumnsForSettings}
+        idKey="id"
+        titleKey="title"
+        childrenKey="children"
+      />
     </div>
   );
 });

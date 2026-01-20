@@ -140,7 +140,7 @@ const MyAdvPage: React.FC = () => {
           setTableConfig={handleTableConfigChange}
           paginationHandler={(page: number, pageSize?: number) => {
               setPageData({ ...pageData, page: page, per_page: pageSize || pageData.per_page });
-              loadData(page)
+              loadData(page);
           }}
         />
       </section>

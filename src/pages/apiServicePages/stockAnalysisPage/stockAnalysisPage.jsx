@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext, useEffect, useMemo } from 'react';
 import { useAppSelector } from '@/redux/hooks';
 import Sidebar from '@/components/sharedComponents/sidebar/sidebar';
 import Header from '@/components/sharedComponents/header/header';
@@ -14,6 +14,11 @@ import NoSubscriptionWarningBlock from '@/components/sharedComponents/noSubscrip
 import { useDemoMode } from '@/app/providers';
 import { useLoadingProgress } from '@/service/hooks/useLoadingProgress';
 import { CURR_STOCK_ANALYSIS_TABLE_CONFIG_VER } from './shared';
+import { newTableConfig } from './shared/configs/newTableConfig';
+import TableSettingsModal from '@/components/TableSettingsModal';
+import TableSettingsButton from '@/components/TableSettingsButton';
+
+const STORAGE_KEY = 'STOCK_ANALYSIS_TABLE_CONFIG';
 
 const StockAnalysisPage = () => {
     const { authToken } = useContext(AuthContext);
@@ -25,6 +30,71 @@ const StockAnalysisPage = () => {
     const [hasSelfCostPrice, setHasSelfCostPrice] = useState(false);
     const [loading, setLoading] = useState(true);
     const progress = useLoadingProgress({ loading });
+    const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+    const [tableConfig, setTableConfig] = useState(newTableConfig);
+
+    // Load saved config from localStorage
+    useEffect(() => {
+        const savedConfigData = localStorage.getItem(STORAGE_KEY);
+        if (savedConfigData) {
+            try {
+                const parsed = JSON.parse(savedConfigData);
+                if (parsed.version === CURR_STOCK_ANALYSIS_TABLE_CONFIG_VER) {
+                    setTableConfig(parsed.config);
+                }
+            } catch (error) {
+                console.error('Error parsing saved table config:', error);
+            }
+        }
+    }, []);
+
+    // Prepare columns for settings modal (with id for each item)
+    const columnsForSettings = useMemo(() => {
+        return tableConfig.map((col) => ({
+            ...col,
+            id: col.key || col.dataIndex,
+            title: col.title || 'Группа',
+            isVisible: !col.hidden,
+            children: col.children?.map((child) => ({
+                ...child,
+                id: child.key || child.dataIndex,
+                title: child.title,
+                isVisible: !child.hidden,
+            })),
+        }));
+    }, [tableConfig]);
+
+    const originalColumnsForSettings = useMemo(() => {
+        return newTableConfig.map((col) => ({
+            ...col,
+            id: col.key || col.dataIndex,
+            title: col.title || 'Группа',
+            isVisible: !col.hidden,
+            children: col.children?.map((child) => ({
+                ...child,
+                id: child.key || child.dataIndex,
+                title: child.title,
+                isVisible: !child.hidden,
+            })),
+        }));
+    }, []);
+
+    const handleSettingsSave = (updatedColumns) => {
+        // Transform back to table config format
+        const newConfig = updatedColumns.map((col) => ({
+            ...col,
+            hidden: !col.isVisible,
+            children: col.children?.map((child) => ({
+                ...child,
+                hidden: !child.isVisible,
+            })),
+        }));
+        setTableConfig(newConfig);
+        localStorage.setItem(STORAGE_KEY, JSON.stringify({
+            version: CURR_STOCK_ANALYSIS_TABLE_CONFIG_VER,
+            config: newConfig
+        }));
+    };
 
     const fetchAnalysisData = async () => {
         setLoading(true);
@@ -99,11 +169,18 @@ const StockAnalysisPage = () => {
                     }
 
                     {activeBrand?.is_primary_collect &&
-                        <SearchWidget
-                            stockAnalysisData={stockAnalysisData}
-                            setStockAnalysisFilteredData={setStockAnalysisFilteredData}
-                            filters={filters}
-                        />
+                        <div className={styles.controlsRow}>
+                            <SearchWidget
+                                stockAnalysisData={stockAnalysisData}
+                                setStockAnalysisFilteredData={setStockAnalysisFilteredData}
+                                filters={filters}
+                            />
+                            <TableSettingsButton
+                                className={styles.settingsButton}
+                                onClick={() => setIsSettingsOpen(true)}
+                                disabled={loading}
+                            />
+                        </div>
                     }
                 </div>
 
@@ -113,10 +190,24 @@ const StockAnalysisPage = () => {
                         loading={loading}
                         progress={progress.value}
                         configVersion={CURR_STOCK_ANALYSIS_TABLE_CONFIG_VER}
-                        configKey='STOCK_ANALYSIS_TABLE_CONFIG'
+                        configKey={STORAGE_KEY}
+                        config={tableConfig}
+                        setTableConfig={setTableConfig}
                     />
                 }
             </section>
+
+            <TableSettingsModal
+                isOpen={isSettingsOpen}
+                onClose={() => setIsSettingsOpen(false)}
+                title="Настройки таблицы"
+                items={columnsForSettings}
+                onSave={handleSettingsSave}
+                originalItems={originalColumnsForSettings}
+                idKey="id"
+                titleKey="title"
+                childrenKey="children"
+            />
         </main>
     );
 };

@@ -140,13 +140,17 @@ const customCellRender = (value, record, index, dataIndex) => {
 };
 
 
-const TableWidget = React.memo(({ stockAnalysisFilteredData, loading, progress, config, initPaginationState, hasShadow = true, configVersion, configKey, maxHeight }) => {
+const TableWidget = React.memo(({ stockAnalysisFilteredData, loading, progress, config, initPaginationState, hasShadow = true, configVersion, configKey, maxHeight, setTableConfig: setTableConfigExternal }) => {
     const containerRef = useRef(null); // реф скролл-контейнера (используется чтобы седить за позицией скрола)
     const [tableData, setTableData] = useState(); // данные для рендера таблицы
     const [sortState, setSortState] = useState(initSortState); // стейт сортировки (см initSortState)
     const [paginationState, setPaginationState] = useState(initPaginationState || { current: 1, total: 1, pageSize: 25 });
-    const [tableConfig, setTableConfig] = useState(config || newTableConfig);
+    const [tableConfigLocal, setTableConfigLocal] = useState(config || newTableConfig);
     const [expandedRowKeys, setExpandedRowKeys] = useState([]);
+    
+    // Use external config if provided, otherwise use local state
+    const tableConfig = config || tableConfigLocal;
+    const setTableConfig = setTableConfigExternal || setTableConfigLocal;
 
     // задаем начальную дату
     useEffect(() => {

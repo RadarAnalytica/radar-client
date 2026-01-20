@@ -10,7 +10,7 @@ import Header from '@/components/sharedComponents/header/header';
 import Sidebar from '@/components/sharedComponents/sidebar/sidebar';
 import SelfCostWarningBlock from '@/components/sharedComponents/selfCostWraningBlock/selfCostWarningBlock';
 import DataCollectWarningBlock from '@/components/sharedComponents/dataCollectWarningBlock/dataCollectWarningBlock';
-import { ConfigProvider, Button, Flex } from 'antd';
+import { ConfigProvider, Flex } from 'antd';
 import ruRU from 'antd/locale/ru_RU';
 import { Table as RadarTable } from 'radar-ui';
 import { getAbcAnalysisTableConfig, ABC_ANALYSIS_TABLE_CONFIG_VER } from './widgets/table/radarTableConfig';
@@ -22,6 +22,10 @@ import { formatPrice } from '@/service/utils';
 import { Tooltip } from 'antd';
 import { useTableColumnResize } from '@/service/hooks/useTableColumnResize';
 import { getWordDeclension } from '@/service/utils';
+import TableSettingsModal from '@/components/TableSettingsModal';
+import TableSettingsButton from '@/components/TableSettingsButton';
+
+const ABC_CONFIG_STORAGE_KEY_PREFIX = 'abcAnalysisTableConfig_';
 
 const AbcAnalysisPage = () => {
 	const filters = useAppSelector(state => state.filters);
@@ -45,9 +49,94 @@ const AbcAnalysisPage = () => {
 	}));
 	const [sortState, setSortState] = useState({ sort_field: null, sort_order: null });
 	const [expandedRowKeys, setExpandedRowKeys] = useState([]);
+	const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
 	// Получаем текущую конфигурацию для активного viewType
 	const tableConfig = useMemo(() => tableConfigs[viewType] || getAbcAnalysisTableConfig(viewType), [tableConfigs, viewType]);
+
+	// Load saved configs from localStorage on mount
+	useEffect(() => {
+		['proceeds', 'profit'].forEach(type => {
+			const storageKey = `${ABC_CONFIG_STORAGE_KEY_PREFIX}${type}`;
+			const savedConfigData = localStorage.getItem(storageKey);
+			if (savedConfigData) {
+				try {
+					const parsed = JSON.parse(savedConfigData);
+					if (parsed.version === ABC_ANALYSIS_TABLE_CONFIG_VER) {
+						setTableConfigs(prev => ({
+							...prev,
+							[type]: parsed.config
+						}));
+					}
+				} catch (error) {
+					console.error('Error parsing saved table config:', error);
+				}
+			}
+		});
+	}, []);
+
+	// Get original config to determine which columns should be available for current viewType
+	const originalConfig = useMemo(() => getAbcAnalysisTableConfig(viewType), [viewType]);
+
+	// Get keys of columns that are hidden by default in original config (not available for this viewType)
+	const hiddenByDefaultKeys = useMemo(() => {
+		return new Set(originalConfig.filter(col => col.hidden).map(col => col.key || col.dataIndex));
+	}, [originalConfig]);
+
+	// Prepare columns for settings modal - exclude columns hidden by default in original config
+	const columnsForSettings = useMemo(() => {
+		return tableConfig
+			.filter(col => !hiddenByDefaultKeys.has(col.key || col.dataIndex))
+			.map((col) => ({
+				...col,
+				id: col.key || col.dataIndex,
+				title: col.title,
+				isVisible: !col.hidden,
+			}));
+	}, [tableConfig, hiddenByDefaultKeys]);
+
+	const originalColumnsForSettings = useMemo(() => {
+		return originalConfig
+			.filter(col => !col.hidden)
+			.map((col) => ({
+				...col,
+				id: col.key || col.dataIndex,
+				title: col.title,
+				isVisible: true,
+			}));
+	}, [originalConfig]);
+
+	const handleSettingsSave = (updatedColumns) => {
+		// Get the columns that are hidden by default (not shown in settings)
+		const hiddenByDefaultColumns = tableConfig.filter(col => 
+			hiddenByDefaultKeys.has(col.key || col.dataIndex)
+		);
+		
+		// Transform updated columns back to table config format
+		const updatedVisibleColumns = updatedColumns.map((col) => ({
+			...col,
+			hidden: !col.isVisible,
+		}));
+		
+		// Reorder based on updatedColumns order, keeping hidden-by-default columns at the end
+		const reorderedConfig = [
+			...updatedVisibleColumns,
+			...hiddenByDefaultColumns
+		];
+		
+		// Update current viewType config
+		setTableConfigs(prev => ({
+			...prev,
+			[viewType]: reorderedConfig
+		}));
+		
+		// Save to localStorage
+		const storageKey = `${ABC_CONFIG_STORAGE_KEY_PREFIX}${viewType}`;
+		localStorage.setItem(storageKey, JSON.stringify({
+			version: ABC_ANALYSIS_TABLE_CONFIG_VER,
+			config: reorderedConfig
+		}));
+	};
 
 	const updateDataAbcAnalysis = async (
 		viewType,
@@ -333,19 +422,26 @@ const AbcAnalysisPage = () => {
 							>
 
 							{!loading && (<div className="abcAnalysis">
-								<Flex gap={12} className={styles.view} align='center'>
-									<button
-										className={`${styles.viewButton} ${viewType == 'proceeds' ? styles.viewButtonActive : ''}`}
-										onClick={() => viewTypeHandler('proceeds')}
-									>
-										По выручке
-									</button>
-									<button
-										className={`${styles.viewButton} ${viewType == 'profit' ? styles.viewButtonActive : ''}`}
-										onClick={() => viewTypeHandler('profit')}
-									>
-										По прибыли
-									</button>
+								<Flex gap={12} className={styles.view} align='center' justify='space-between'>
+									<Flex gap={12} align='center'>
+										<button
+											className={`${styles.viewButton} ${viewType == 'proceeds' ? styles.viewButtonActive : ''}`}
+											onClick={() => viewTypeHandler('proceeds')}
+										>
+											По выручке
+										</button>
+										<button
+											className={`${styles.viewButton} ${viewType == 'profit' ? styles.viewButtonActive : ''}`}
+											onClick={() => viewTypeHandler('profit')}
+										>
+											По прибыли
+										</button>
+									</Flex>
+									<TableSettingsButton
+										className={styles.settingsButton}
+										onClick={() => setIsSettingsOpen(true)}
+										disabled={loading}
+									/>
 								</Flex>
 
 								<div className={styles.tableContainer}>
@@ -411,6 +507,17 @@ const AbcAnalysisPage = () => {
 					)}
 				</div>
 			</section>
+
+			<TableSettingsModal
+				isOpen={isSettingsOpen}
+				onClose={() => setIsSettingsOpen(false)}
+				title="Настройки таблицы"
+				items={columnsForSettings}
+				onSave={handleSettingsSave}
+				originalItems={originalColumnsForSettings}
+				idKey="id"
+				titleKey="title"
+			/>
 		</main>
 	);
 };
