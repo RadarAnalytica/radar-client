@@ -5,6 +5,7 @@ import { ServiceFunctions } from '@/service/serviceFunctions';
 import AuthContext from '@/service/AuthContext';
 import { RadarLoader } from '@/shared';
 import ErrorModal from '@/components/sharedComponents/modals/errorModal/errorModal';
+import moment from 'moment';
 
 const tableConfig = [
     {
@@ -53,9 +54,17 @@ export const PaymentWidget = () => {
                     return;
                 }
 
-                const data = await res.json()
+                const data: any[] = await res.json()
                 setStatus(initStatus)
-                setTableData(data)
+                setTableData(
+                    data.sort((a,b) => {
+                        if (moment(a.date) > moment(b.date)) {
+                            return -1
+                        } else {
+                            return 1
+                        }
+                    }).map(_ => ({..._, date: moment(_.date).format('DD.MM.YYYY')}))
+                )
 
             } catch (e) {
                 setStatus({ ...initStatus, isError: true, message: 'Не удалось загрузить данные платежей' });
