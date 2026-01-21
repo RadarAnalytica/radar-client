@@ -47,7 +47,7 @@ const GeneralSettingsPage = () => {
             { value: 'payments', label: 'История платежей',  disabled: isDemoUser || isDemoMode },
             { value: 'referral', label: 'Реферальная программа', disabled: isDemoUser || isDemoMode},
             { value: 'tariffs', label: 'Тарифы' },
-            // { value: 'tariffsNew', label: 'Тарифы2' },
+            { value: 'tariffsNew', label: 'Тарифы2' },
             // { value: 'notifications', label: 'Бот уведомлений' },
         ];
     }, [isDemoUser])

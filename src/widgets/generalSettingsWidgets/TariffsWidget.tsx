@@ -20,6 +20,7 @@ import moment from 'moment';
 export const tariffsList = [
     {
         title: 'Старт',
+        id: 'start',
         priceList: {
             "1 месяц": { price: 1300, oldPrice: null },
             "3 месяца": { price: 3315, oldPrice: 3900 },
@@ -30,18 +31,69 @@ export const tariffsList = [
         price: 1300,
         oldPrice: null,
         value: 'start',
-        features: [
-            'Анализ конкурентов',
-            'Анализ ниш и трендов',
-            'Мои финансы',
-            'SEO',
-            'Lorem',
-            'Ipsum',
+        primaryColor: '#00B69B',
+        secondaryColor: '#00B69B12',
+        newFeatures: [
+            { title: 'API', text: '1 подключенный магазин', iconIndex: 0 },
+            { title: 'Продажи до 1,5 млн рублей ', text: 'Без учета СПП и WB кошелька', iconIndex: 1 },
         ],
-        description: 'Важно: в течение этого периода вы можете оцифровать не более 5 календарных недель.'
+        whatsInside: [
+            {
+                title: 'Мои финансы',
+                children: [
+                    { title: 'Сводка продаж', isIncluded: true },
+                    { title: 'Отчет по неделям', isIncluded: true },
+                    { title: 'РНП', isIncluded: false },
+                    { title: 'Отчет о прибыли и убытках', isIncluded: false }
+                ]
+            },
+            {
+                title: 'Анализ конкурентов',
+                children: [
+                    { title: 'Калькулятор Unit-экономики', isIncluded: true },
+                    { title: 'Анализ артикула', isIncluded: false },
+                    { title: 'Анализ поставщика', isIncluded: false }
+                ]
+            },
+            {
+                title: 'Мои товары',
+                children: [
+                    { title: 'Аналитика по товарам', isIncluded: true },
+                    { title: 'Контроль СПП', isIncluded: true },
+                    { title: 'Создание до 5 групп товаров', isIncluded: true },
+                    { title: 'АВС - анализ', isIncluded: false }
+                ]
+            },
+            {
+                title: 'Моя реклама',
+                children: [
+                    { title: 'Контроль ДРР', isIncluded: true },
+                    { title: 'Аналитика РК', isIncluded: false }
+                ]
+            },
+            {
+                title: 'Анализ ниши и трендов',
+                children: [
+                    { title: 'Поиск прибыльной ниши', isIncluded: false },
+                    { title: 'Поиск трендовых запросов', isIncluded: false },
+                    { title: 'Анализ трендовой динамики запросов', isIncluded: false }
+                ]
+            },
+            {
+                title: 'SEO',
+                children: [
+                    { title: 'Трекинг позиций', isIncluded: false },
+                    { title: 'Проверка выдачи SERP', isIncluded: false },
+                    { title: 'Проверка позиций', isIncluded: false },
+                    { title: 'Подбор ключевых запросов', isIncluded: false },
+                    { title: 'Сравнение SEO с ТОПами', isIncluded: false }
+                ]
+            }
+        ]
     },
     {
-        title: 'Старт',
+        title: 'Оптимальный',
+        id: 'optimal',
         priceList: {
             "1 месяц": { price: 1300, oldPrice: null },
             "3 месяца": { price: 3315, oldPrice: 3900 },
@@ -49,19 +101,72 @@ export const tariffsList = [
             "12 месяцев": { price: 7800, oldPrice: 15600 },
         },
         discount: '-15%',
+        primaryColor: '#00B69B',
+        secondaryColor: '#00B69B12',
         price: 1300,
         oldPrice: null,
         value: 'start',
-        features: [
-            'Анализ конкурентов',
-            'Анализ ниш и трендов',
-            'Мои финансы',
-            'SEO'
+        newFeatures: [
+            { title: 'API', text: '1 подключенный магазин', iconIndex: 0 },
+            { title: 'Продажи до 1,5 млн рублей ', text: 'Без учета СПП и WB кошелька', iconIndex: 1 },
         ],
-        description: 'Важно: в течение этого периода вы можете оцифровать не более 5 календарных недель.'
+        whatsInside: [
+            {
+                title: 'Мои финансы',
+                children: [
+                    { title: 'Сводка продаж', isIncluded: true },
+                    { title: 'Отчет по неделям', isIncluded: true },
+                    { title: 'РНП', isIncluded: false },
+                    { title: 'Отчет о прибыли и убытках', isIncluded: false }
+                ]
+            },
+            {
+                title: 'Анализ конкурентов',
+                children: [
+                    { title: 'Калькулятор Unit-экономики', isIncluded: true },
+                    { title: 'Анализ артикула', isIncluded: false },
+                    { title: 'Анализ поставщика', isIncluded: false }
+                ]
+            },
+            {
+                title: 'Мои товары',
+                children: [
+                    { title: 'Аналитика по товарам', isIncluded: true },
+                    { title: 'Контроль СПП', isIncluded: true },
+                    { title: 'Создание до 5 групп товаров', isIncluded: true },
+                    { title: 'АВС - анализ', isIncluded: false }
+                ]
+            },
+            {
+                title: 'Моя реклама',
+                children: [
+                    { title: 'Контроль ДРР', isIncluded: true },
+                    { title: 'Аналитика РК', isIncluded: false }
+                ]
+            },
+            {
+                title: 'Анализ ниши и трендов',
+                children: [
+                    { title: 'Поиск прибыльной ниши', isIncluded: false },
+                    { title: 'Поиск трендовых запросов', isIncluded: false },
+                    { title: 'Анализ трендовой динамики запросов', isIncluded: false }
+                ]
+            },
+            {
+                title: 'SEO',
+                children: [
+                    { title: 'Трекинг позиций', isIncluded: false },
+                    { title: 'Проверка выдачи SERP', isIncluded: false },
+                    { title: 'Проверка позиций', isIncluded: false },
+                    { title: 'Подбор ключевых запросов', isIncluded: false },
+                    { title: 'Сравнение SEO с ТОПами', isIncluded: false }
+                ]
+            }
+        ]
     },
     {
-        title: 'Старт',
+        title: 'Расширенный',
+        id: 'maximum',
         priceList: {
             "1 месяц": { price: 1300, oldPrice: null },
             "3 месяца": { price: 3315, oldPrice: 3900 },
@@ -71,17 +176,70 @@ export const tariffsList = [
         discount: null,
         price: 1300,
         oldPrice: null,
+        primaryColor: '#00B69B',
+        secondaryColor: '#00B69B12',
         value: 'start',
-        features: [
-            'Анализ конкурентов',
-            'Анализ ниш и трендов',
-            'Мои финансы',
-            'SEO'
+        newFeatures: [
+            { title: 'API', text: '1 подключенный магазин', iconIndex: 0 },
+            { title: 'Продажи до 1,5 млн рублей ', text: 'Без учета СПП и WB кошелька', iconIndex: 1 },
         ],
-        description: 'Важно: в течение этого периода вы можете оцифровать не более 5 календарных недель.'
+        whatsInside: [
+            {
+                title: 'Мои финансы',
+                children: [
+                    { title: 'Сводка продаж', isIncluded: true },
+                    { title: 'Отчет по неделям', isIncluded: true },
+                    { title: 'РНП', isIncluded: false },
+                    { title: 'Отчет о прибыли и убытках', isIncluded: false }
+                ]
+            },
+            {
+                title: 'Анализ конкурентов',
+                children: [
+                    { title: 'Калькулятор Unit-экономики', isIncluded: true },
+                    { title: 'Анализ артикула', isIncluded: false },
+                    { title: 'Анализ поставщика', isIncluded: false }
+                ]
+            },
+            {
+                title: 'Мои товары',
+                children: [
+                    { title: 'Аналитика по товарам', isIncluded: true },
+                    { title: 'Контроль СПП', isIncluded: true },
+                    { title: 'Создание до 5 групп товаров', isIncluded: true },
+                    { title: 'АВС - анализ', isIncluded: false }
+                ]
+            },
+            {
+                title: 'Моя реклама',
+                children: [
+                    { title: 'Контроль ДРР', isIncluded: true },
+                    { title: 'Аналитика РК', isIncluded: false }
+                ]
+            },
+            {
+                title: 'Анализ ниши и трендов',
+                children: [
+                    { title: 'Поиск прибыльной ниши', isIncluded: false },
+                    { title: 'Поиск трендовых запросов', isIncluded: false },
+                    { title: 'Анализ трендовой динамики запросов', isIncluded: false }
+                ]
+            },
+            {
+                title: 'SEO',
+                children: [
+                    { title: 'Трекинг позиций', isIncluded: false },
+                    { title: 'Проверка выдачи SERP', isIncluded: false },
+                    { title: 'Проверка позиций', isIncluded: false },
+                    { title: 'Подбор ключевых запросов', isIncluded: false },
+                    { title: 'Сравнение SEO с ТОПами', isIncluded: false }
+                ]
+            }
+        ]
     },
     {
-        title: 'Старт',
+        title: 'Премиум',
+        id: 'premium',
         priceList: {
             "1 месяц": { price: 1300, oldPrice: null },
             "3 месяца": { price: 3315, oldPrice: 3900 },
@@ -91,17 +249,18 @@ export const tariffsList = [
         discount: null,
         price: 1300,
         oldPrice: null,
+        primaryColor: '#0080FF',
+        secondaryColor: '#0080FF12',
         value: 'start',
-        features: [
-            'Анализ конкурентов',
-            'Анализ ниш и трендов',
-            'Мои финансы',
-            'SEO'
+        newFeatures: [
+            { title: 'API', text: '1 подключенный магазин', iconIndex: 0 },
+            { title: 'Продажи до 1,5 млн рублей ', text: 'Без учета СПП и WB кошелька', iconIndex: 1 },
         ],
         description: 'Важно: в течение этого периода вы можете оцифровать не более 5 календарных недель.'
     },
     {
-        title: 'Старт',
+        title: 'Агентский',
+        id: 'agency',
         priceList: {
             "1 месяц": { price: 1300, oldPrice: null },
             "3 месяца": { price: 3315, oldPrice: 3900 },
@@ -109,16 +268,17 @@ export const tariffsList = [
             "12 месяцев": { price: 7800, oldPrice: 15600 },
         },
         discount: null,
+        primaryColor: '#F0AD00',
+        secondaryColor: '#F0AD0012',
         price: 1300,
         oldPrice: null,
         value: 'start',
-        features: [
-            'Анализ конкурентов',
-            'Анализ ниш и трендов',
-            'Мои финансы',
-            'SEO'
+        newFeatures: [
+            { title: 'API', text: '1 подключенный магазин', iconIndex: 0 },
+            { title: 'Продажи до 1,5 млн рублей ', text: 'Без учета СПП и WB кошелька', iconIndex: 1 },
         ],
-        description: 'Важно: в течение этого периода вы можете оцифровать не более 5 календарных недель.'
+        description: `Важно: в течение этого периода вы можете оцифровать не более 5 календарных недель. Lorem Важно: в течение этого периода вы можете оцифровать не более 5 календарных недель. Lorem Важно: в течение этого периода вы можете оцифровать не более 5 календарных недель. Lorem
+        Важно: в течение этого периода вы можете оцифровать не более 5 календарных недель. `
     },
 ];
 
@@ -152,7 +312,8 @@ export const TariffsWidget = () => {
     const [fakePaymentDataObject, setFakePaymentDataObject] = useState(null)
     const [fakeRequestStatus, setFakeRequestStatus] = useState(initRequestStatus)
     const [activeTab, setActiveTab] = useState('1 месяц')
-    const [isCalculatorModalVisible, setIsCalculatorModalVisible] = useState(false)
+    const [isCartModalVisible, setIsCartModalVisible] = useState(false)
+    const [activeCartTariff, setActiveCartTariff] = useState(null)
 
     const navigate = useNavigate();
     const location = useLocation();
@@ -768,15 +929,17 @@ export const TariffsWidget = () => {
                         isWidgetActive={isWidgetActive}
                         activeTab={activeTab}
                         action={() => {
-                            if (import.meta.env.PROD && URL === 'https://radar-analytica.ru') {
-                                setActivatedSubscription(item.title);
-                                setIsWidgetActive(true);
-                                pay(item);
-                            } else {
-                                setActivatedSubscription(item.title);
-                                setIsWidgetActive(true);
-                                fakePayFunction(item)
-                            }
+                            // if (import.meta.env.PROD && URL === 'https://radar-analytica.ru') {
+                            //     setActivatedSubscription(item.title);
+                            //     setIsWidgetActive(true);
+                            //     pay(item);
+                            // } else {
+                            //     setActivatedSubscription(item.title);
+                            //     setIsWidgetActive(true);
+                            //     fakePayFunction(item)
+                            // }
+                            setIsCartModalVisible(true)
+                            setActiveCartTariff(item)
                         }}
                     />
                 ))}
@@ -791,7 +954,7 @@ export const TariffsWidget = () => {
                         <p className={styles.calcBlock__title}>От 500 ₽</p>
                     </div>
 
-                    <button className={styles.calcBlock__button} onClick={() => setIsCalculatorModalVisible(true)}>
+                    <button className={styles.calcBlock__button} onClick={() => setIsCartModalVisible(true)}>
                         Настроить
                     </button>
 
@@ -801,9 +964,11 @@ export const TariffsWidget = () => {
                 </div>
             </div>
 
-            <TariffCalculator
-                open={isCalculatorModalVisible}
-                setIsOpen={setIsCalculatorModalVisible}
+            <Cart
+                open={isCartModalVisible}
+                setIsOpen={setIsCartModalVisible}
+                activeCartTariff={activeCartTariff}
+                setActiveCartTariff={setActiveCartTariff}
             />
 
             <Modal
@@ -866,108 +1031,143 @@ const cardFeaturesIcons = [
 
 const TariffCard = ({ item, isWidgetActive, action, activatedSubscription, activeTab }) => {
 
+    const [isDetailsOpen, setIsDetailsOpen] = useState(false)
+
     const currentPrice = useMemo(() => {
         return item?.priceList[activeTab]
     }, [activeTab, item])
 
-    const hiddenFeatures = useMemo(() => {
-        return item.features.slice(3)
-    }, [item])
-
     return (
-        <div className={styles.tariffCard}>
-            <div className={styles.tariffCard__header}>
-                <div className={styles.tariffCard__title}>
-                    {item.title}
-                </div>
-                {item.discount && <div className={styles.tariffCard__discount}>{item.discount}</div>}
-            </div>
-            <div className={styles.tariffCard__priceBlock}>
-                <div className={styles.tariffCard__price}>
-                    <p className={styles.tariffCard__newPrice} style={{ color: currentPrice.oldPrice ? '#5329FF' : '#1A1A1A' }}>{formatPrice(currentPrice.price.toString(), '₽')}</p>
-                    {currentPrice.oldPrice && <div className={styles.tariffCard__oldPrice}>{currentPrice.oldPrice}</div>}
-                </div>
-            </div>
-            <hr className={styles.tariffCard__divider} style={{ margin: 0, padding: 0 }} />
-
-            <div className={styles.tariffCard__features}>
-                {item?.features?.map((f, idx) => {
-                    return idx < 3 && (
-                        <div className={styles.tariffCard__featuresList} key={f}>
-                            {cardFeaturesIcons[idx]}
-                            {f}
+        <>
+            <div className={styles.tariffCard}>
+                <div className={styles.tariffCard__mainWrapper} style={{ height: item.whatsInside ? 'auto' : '100%' }}>
+                    <div className={styles.tariffCard__wrapper}>
+                        <div className={styles.tariffCard__header} style={{ backgroundColor: item.secondaryColor }}>
+                            <div className={styles.tariffCard__title} style={{ '--pseudo-bg-color': item.primaryColor } as React.CSSProperties}>
+                                {item.title}
+                            </div>
+                            {item.discount && <div className={styles.tariffCard__discount} style={{ backgroundColor: item.primaryColor }}>{item.discount}</div>}
                         </div>
-                    )
-                })}
-                {hiddenFeatures?.length > 0 &&
-                    <Tooltip
-                        arrow={false}
-                        color='white'
-                        title={hiddenFeatures.toString(', ')}
-                    >
-                        <button className={styles.tariffCard__infoButton}>
-                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <rect x="0.75" y="0.75" width="18.5" height="18.5" rx="9.25" stroke="#5329FF" strokeOpacity="0.1" strokeWidth="1.5" />
-                                <path d="M9.064 15V7.958H10.338V15H9.064ZM8.952 6.418V5.046H10.464V6.418H8.952Z" fill="#5329FF" fillOpacity="0.5" />
-                            </svg>
-                            И еще {hiddenFeatures.length} {getWordDeclension({
-                                one: 'раздел',
-                                few: 'раздела',
-                                many: 'разделов'
-                            }, hiddenFeatures.length)}
-                        </button>
-                    </Tooltip>
-                }
-                {/* <div className={styles.tariffCard__someText}>
-                    Подписка предоставляет доступ к сервису на весь оплаченный период.
-                </div> */}
-                <div className={`${styles.tariffCard__feature} ${styles.tariffCard__feature_visible}`}>
-                    {item.description}
-                </div>
-            </div>
-            <ConfigProvider
-                theme={{
-                    token: {
-                        colorPrimary: '#5329FF1A',
-                        colorPrimaryHover: '#5329FF1A',
-                        fontSize: 12,
-                        //@ts-ignore
-                        fontWeight: 700,
-                        height: 46,
-                        width: '100%',
-                        controlHeightLG: 46,
-                    },
-                    components: {
-                        Button: {
-                            primaryShadow: 'transparent',
-                            primaryColor: '#5329FF'
+                        <div className={styles.tariffCard__priceBlock}>
+                            <div className={styles.tariffCard__price}>
+                                <p className={styles.tariffCard__newPrice} style={{ color: currentPrice.oldPrice ? '#5329FF' : '#1A1A1A' }}>{formatPrice(currentPrice.price.toString(), '₽')}</p>
+                                {currentPrice.oldPrice && <div className={styles.tariffCard__oldPrice}>{currentPrice.oldPrice}</div>}
+                            </div>
+                        </div>
+                        <hr className={styles.tariffCard__divider} style={{ margin: 0, padding: 0 }} />
+
+                        <div className={styles.tariffCard__features}>
+                            {item?.newFeatures?.map((f) => {
+                                return (
+                                    <div key={f.title} className={styles.tariffCard__featuresListWrapper}>
+                                        <div className={styles.tariffCard__featuresList} key={f.title}>
+                                            {cardFeaturesIcons[f.iconIndex]}
+                                            {f.title}
+                                        </div>
+                                        <span>{f.text}</span>
+                                    </div>
+                                )
+                            })}
+                        </div>
+                    </div>
+
+                    <div className={styles.tariffCard__wrapper}>
+                        {item.description &&
+                            <div className={`${styles.tariffCard__feature} ${styles.tariffCard__feature_visible}`}>
+                                {item.description}
+                            </div>
                         }
-                    }
-                }}
-            >
-                <Button
-                    size='large'
-                    type='primary'
-                    onClick={() => action()}
-                    loading={isWidgetActive && activatedSubscription && activatedSubscription === item.title}
-                    disabled={activatedSubscription && activatedSubscription !== item.title && isWidgetActive}
-                    style={{ color: '#5329FF', fontWeight: 600 }}
-                >
-                    Активировать
-                </Button>
-            </ConfigProvider>
-        </div>
+                        <ConfigProvider
+                            theme={{
+                                token: {
+                                    colorPrimary: '#5329FF1A',
+                                    colorPrimaryHover: '#5329FF1A',
+                                    fontSize: 12,
+                                    //@ts-ignore
+                                    fontWeight: 700,
+                                    height: 46,
+                                    width: '100%',
+                                    controlHeightLG: 46,
+                                },
+                                components: {
+                                    Button: {
+                                        primaryShadow: 'transparent',
+                                        primaryColor: '#5329FF'
+                                    }
+                                }
+                            }}
+                        >
+                            <Button
+                                size='large'
+                                type='primary'
+                                onClick={() => action()}
+                                loading={isWidgetActive && activatedSubscription && activatedSubscription === item.title}
+                                disabled={activatedSubscription && activatedSubscription !== item.title && isWidgetActive}
+                                style={{ color: '#5329FF', fontWeight: 600 }}
+                            >
+                                Активировать
+                            </Button>
+                        </ConfigProvider>
+                    </div>
+                </div>
+
+                {item.whatsInside &&
+                    <div className={styles.tariffCard__mainWrapper} style={{ gap: 0 }}>
+                        <div className={styles.tariffCard__accordSummary} onClick={() => setIsDetailsOpen(!isDetailsOpen)}>
+                            Что входит?
+                            <span>
+                                <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path fillRule="evenodd" clipRule="evenodd" d="M5 10C7.76142 10 10 7.76142 10 5C10 2.23858 7.76142 0 5 0C2.23858 0 0 2.23858 0 5C0 7.76142 2.23858 10 5 10ZM7.39016 3.89017C7.53661 3.74372 7.53661 3.50628 7.39016 3.35983C7.24372 3.21339 7.00628 3.21339 6.85983 3.35983L4.375 5.84467L3.14017 4.60984C2.99372 4.46339 2.75628 4.46339 2.60983 4.60984C2.46339 4.75628 2.46339 4.99372 2.60983 5.14017L4.10983 6.64017C4.25628 6.78661 4.49372 6.78661 4.64017 6.64017L7.39016 3.89017Z" fill="#00B69B" />
+                                </svg>
+                                7 разделов
+                            </span>
+                        </div>
+                        <ul className={isDetailsOpen ? `${styles.tariffCard__accordContent} ${styles.tariffCard__accordContent_open}` : styles.tariffCard__accordContent}>
+                            {item.whatsInside.map((_, idx) => (
+                                <li key={idx}>
+                                    {_.title}
+                                    <ul className={styles.tariffCard__innerList}>
+                                        {_.children.map(child => (
+                                            <li key={child.title} style={{ color: child.isIncluded ? '#1A1A1A' : '#8C8C8C' }}>
+                                                {child.isIncluded &&
+                                                    <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <path fillRule="evenodd" clipRule="evenodd" d="M5 10C7.76142 10 10 7.76142 10 5C10 2.23858 7.76142 0 5 0C2.23858 0 0 2.23858 0 5C0 7.76142 2.23858 10 5 10ZM7.39016 3.89017C7.53661 3.74372 7.53661 3.50628 7.39016 3.35983C7.24372 3.21339 7.00628 3.21339 6.85983 3.35983L4.375 5.84467L3.14017 4.60984C2.99372 4.46339 2.75628 4.46339 2.60983 4.60984C2.46339 4.75628 2.46339 4.99372 2.60983 5.14017L4.10983 6.64017C4.25628 6.78661 4.49372 6.78661 4.64017 6.64017L7.39016 3.89017Z" fill="#00B69B" />
+                                                    </svg>
+                                                }
+                                                {!child.isIncluded &&
+                                                    <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <path fillRule="evenodd" clipRule="evenodd" d="M5 10C7.76142 10 10 7.76142 10 5C10 2.23858 7.76142 0 5 0C2.23858 0 0 2.23858 0 5C0 7.76142 2.23858 10 5 10ZM3.85095 3.32062C3.7045 3.17417 3.46706 3.17417 3.32062 3.32062C3.17417 3.46707 3.17417 3.7045 3.32062 3.85095L4.46967 5L3.32062 6.14905C3.17417 6.2955 3.17417 6.53293 3.32062 6.67938C3.46706 6.82583 3.7045 6.82583 3.85095 6.67938L5 5.53033L6.14905 6.67938C6.29549 6.82583 6.53293 6.82583 6.67938 6.67938C6.82582 6.53293 6.82582 6.2955 6.67938 6.14905L5.53033 5L6.67938 3.85095C6.82582 3.7045 6.82582 3.46707 6.67938 3.32062C6.53293 3.17417 6.29549 3.17418 6.14905 3.32062L5 4.46967L3.85095 3.32062Z" fill="#B0B0B0" />
+                                                    </svg>
+                                                }
+                                                {child.title}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                }
+            </div>
+        </>
     );
 };
 
 
 const sections = [
-    { id: 'competitors', name: 'Анализ конкурентов', price: 3000, oldPrice: 3900, pricePerMonth: 1000 },
-    { id: 'niches', name: 'Анализ ниш и трендов', price: 3000, oldPrice: 3900, pricePerMonth: 1000 },
-    { id: 'finances', name: 'Мои финансы', price: 3000, oldPrice: 3900, pricePerMonth: 1000 },
-    { id: 'advertising', name: 'Моя реклама', price: 3000, oldPrice: 3900, pricePerMonth: 1000 },
-    { id: 'seo', name: 'SEO', price: 3000, oldPrice: 3900, pricePerMonth: 1000 },
-    { id: 'rnp', name: 'РНП (Рука на пульсе)', price: 3000, oldPrice: 3900, pricePerMonth: 1000, isNew: true },
+    {
+        id: 'competitors', title: 'Анализ конкурентов', price: 3000, oldPrice: 3900, pricePerMonth: 1000,
+        children: [
+            { id: 'calc', title: 'Калькулятор Unit-экономики', price: 3000, oldPrice: 3900, pricePerMonth: 1000, isActive: false, },
+            { id: 'skuAnalysis', title: 'Анализ артикула', price: 3000, oldPrice: 3900, pricePerMonth: 1000, isActive: false },
+            { id: 'supplierAnalysis', title: 'ААнализ поставщика', price: 3000, oldPrice: 3900, pricePerMonth: 1000, isActive: false },
+        ]
+    },
+    { id: 'niches', title: 'Анализ ниш и трендов', price: 3000, oldPrice: 3900, pricePerMonth: 1000 },
+    { id: 'finances', title: 'Мои финансы', price: 3000, oldPrice: 3900, pricePerMonth: 1000 },
+    { id: 'advertising', title: 'Моя реклама', price: 3000, oldPrice: 3900, pricePerMonth: 1000 },
+    { id: 'seo', title: 'SEO', price: 3000, oldPrice: 3900, pricePerMonth: 1000 },
+    { id: 'rnp', title: 'РНП (Рука на пульсе)', price: 3000, oldPrice: 3900, pricePerMonth: 1000, isNew: true },
 ];
 
 const inputTheme = {
@@ -997,35 +1197,48 @@ const inputTheme = {
     }
 }
 
-const TariffCalculator = ({ open, setIsOpen }) => {
+const Cart = ({ open, setIsOpen, activeCartTariff, setActiveCartTariff }) => {
 
     const [activeTab, setActiveTab] = useState('3 месяца')
-    const [selectedSections, setSelectedSections] = useState<string[]>([])
+    const [selectedSections, setSelectedSections] = useState<any[]>([{ id: 'api', title: 'API', price: 3000, oldPrice: 3900, pricePerMonth: 1000, value: 1 }])
     const [promocode, setPromocode] = useState('')
     const [paymentMethod, setPaymentMethod] = useState('instant')
 
-    const toggleSection = (sectionId: string) => {
-        setSelectedSections(prev =>
-            prev.includes(sectionId)
-                ? prev.filter(id => id !== sectionId)
-                : [...prev, sectionId]
-        )
+    const toggleSection = (sectionId: string, childId?: string) => {
+
+        if (!childId) {
+            let currSection = sections.find(_ => _.id === sectionId)
+            if (!currSection) return;
+            setSelectedSections((prev) => {
+                const includeIndex = prev.findIndex(_ => _.id === sectionId);
+                if (includeIndex !== -1) {
+                    const prevCopy = [...prev]
+                    prevCopy.splice(includeIndex, 1)
+                    return prevCopy
+                } else {
+                    if (currSection.children) {
+                        currSection.children = currSection.children.map(child => ({...child, isActive: true}))
+                    }
+                    return [...prev, currSection]
+                }
+            })
+        } 
     }
 
     const removeSection = (sectionId: string) => {
         setSelectedSections(prev => prev.filter(id => id !== sectionId))
     }
 
-    const selectedSectionsData = sections.filter(s => selectedSections.includes(s.id))
-    const totalPrice = selectedSectionsData.reduce((sum, s) => sum + s.price, 0)
-    const totalDiscount = selectedSectionsData.reduce((sum, s) => sum + (s.oldPrice - s.price), 0)
+    // const selectedSectionsData = sections.filter(s => selectedSections.includes(s.id))
+    const totalSelectionsPrice = selectedSections.reduce((sum, s) => sum + s.price, 0)
+    const totalSelectionsDiscount = selectedSections.reduce((sum, s) => sum + (s.oldPrice - s.price), 0)
 
     return (
         <Modal
             open={open}
             footer={null}
             width={960}
-            onCancel={() => setIsOpen(false)}
+            onCancel={() => { setIsOpen(false); setActiveCartTariff(null); setSelectedSections([]) }}
             closeIcon={
                 <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M6 4.66688L10.6669 0L12 1.33312L7.33312 6L12 10.6669L10.6669 12L6 7.33312L1.33312 12L0 10.6669L4.66688 6L0 1.33312L1.33312 0L6 4.66688Z" fill="#1A1A1A" fillOpacity="0.5" />
@@ -1033,7 +1246,10 @@ const TariffCalculator = ({ open, setIsOpen }) => {
             }
         >
             <div className={styles.tariffCalc}>
-                <p className={styles.tariffCalc__title}>Калькулятор тарифа</p>
+                <p className={styles.tariffCalc__title}>
+                    {activeCartTariff && `Тариф ${activeCartTariff.title}`}
+                    {!activeCartTariff && `Калькулятор тарифа`}
+                </p>
 
                 <div className={styles.widget__tabs}>
                     {tabs.map(_ => {
@@ -1053,212 +1269,363 @@ const TariffCalculator = ({ open, setIsOpen }) => {
                 </div>
 
                 <div className={styles.tariffCalc__body}>
-                    <div className={styles.tariffCalc__bodyLeft}>
-                        <div className={styles.tariffCalc__params}>
-                            <p className={styles.tariffCalc__subtitle}>Разделы</p>
+                    {/* если кликнули на регулярный тариф (предустановленный) то просто показываем его описание */}
+                    {activeCartTariff &&
+                        <div className={styles.tariffCalc__bodyLeft}>
+                            <div className={styles.tariffCalc__params}>
+                                <div className={styles.tariffCard__features}>
+                                    {activeCartTariff?.newFeatures?.map((f) => {
+                                        return (
+                                            <div key={f.title} className={styles.tariffCard__featuresListWrapper}>
+                                                <div className={styles.tariffCard__featuresList} key={f.title}>
+                                                    {cardFeaturesIcons[f.iconIndex]}
+                                                    {f.title}
+                                                </div>
+                                                <span>{f.text}</span>
+                                            </div>
+                                        )
+                                    })}
+                                </div>
+                                {activeCartTariff.whatsInside &&
+                                    <div
+                                        className={styles.tariffCard__mainWrapper}
+                                        style={{
+                                            gap: 0,
+                                            backgroundColor: 'transparent',
+                                            padding: '12px 0',
+                                            borderTop: '1px solid #E8E8E8',
+                                            borderRadius: 0
+                                        }}
+                                    >
+                                        <div className={styles.tariffCard__accordSummary}>
+                                            Что входит?
+                                        </div>
+                                        <ul className={styles.tariffCard__accordContent} style={{ maxHeight: '2000px', opacity: 1 }}>
+                                            {activeCartTariff.whatsInside.map((_, idx) => (
+                                                <li key={idx} style={{ border: idx === 0 && 'none' }}>
+                                                    {_.title}
+                                                    <ul className={styles.tariffCard__innerList}>
+                                                        {_.children.map(child => (
+                                                            <li key={child.title} style={{ color: child.isIncluded ? '#1A1A1A' : '#8C8C8C' }}>
+                                                                {child.isIncluded &&
+                                                                    <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                        <path fillRule="evenodd" clipRule="evenodd" d="M5 10C7.76142 10 10 7.76142 10 5C10 2.23858 7.76142 0 5 0C2.23858 0 0 2.23858 0 5C0 7.76142 2.23858 10 5 10ZM7.39016 3.89017C7.53661 3.74372 7.53661 3.50628 7.39016 3.35983C7.24372 3.21339 7.00628 3.21339 6.85983 3.35983L4.375 5.84467L3.14017 4.60984C2.99372 4.46339 2.75628 4.46339 2.60983 4.60984C2.46339 4.75628 2.46339 4.99372 2.60983 5.14017L4.10983 6.64017C4.25628 6.78661 4.49372 6.78661 4.64017 6.64017L7.39016 3.89017Z" fill="#00B69B" />
+                                                                    </svg>
+                                                                }
+                                                                {!child.isIncluded &&
+                                                                    <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                        <path fillRule="evenodd" clipRule="evenodd" d="M5 10C7.76142 10 10 7.76142 10 5C10 2.23858 7.76142 0 5 0C2.23858 0 0 2.23858 0 5C0 7.76142 2.23858 10 5 10ZM3.85095 3.32062C3.7045 3.17417 3.46706 3.17417 3.32062 3.32062C3.17417 3.46707 3.17417 3.7045 3.32062 3.85095L4.46967 5L3.32062 6.14905C3.17417 6.2955 3.17417 6.53293 3.32062 6.67938C3.46706 6.82583 3.7045 6.82583 3.85095 6.67938L5 5.53033L6.14905 6.67938C6.29549 6.82583 6.53293 6.82583 6.67938 6.67938C6.82582 6.53293 6.82582 6.2955 6.67938 6.14905L5.53033 5L6.67938 3.85095C6.82582 3.7045 6.82582 3.46707 6.67938 3.32062C6.53293 3.17417 6.29549 3.17418 6.14905 3.32062L5 4.46967L3.85095 3.32062Z" fill="#B0B0B0" />
+                                                                    </svg>
+                                                                }
+                                                                {child.title}
+                                                            </li>
+                                                        ))}
+                                                    </ul>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    }
+                    {/* Если это калькулятор, то показываем опции для выбора */}
+                    {!activeCartTariff &&
+                        <div className={styles.tariffCalc__bodyLeft}>
+                            <div className={styles.tariffCalc__params}>
+                                <div className={styles.tariffCalc__sectionWrapper}>
+                                    <div className={styles.tariffCalc__section}>
+                                        <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+                                            <div className={styles.tariffCard__featuresList}>
+                                                <svg width="14" height="16" viewBox="0 0 14 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path fillRule="evenodd" clipRule="evenodd" d="M5.34167 0.380004L1.175 2.98417C0.444048 3.44102 0 4.24219 0 5.10417V10.6663C0 11.5282 0.444049 12.3294 1.175 12.7863L5.34167 15.3904C6.15235 15.8971 7.18099 15.8971 7.99166 15.3904L12.1583 12.7863C12.8893 12.3294 13.3333 11.5282 13.3333 10.6663V5.10417C13.3333 4.24219 12.8893 3.44102 12.1583 2.98417L7.99166 0.380004C7.18099 -0.126668 6.15234 -0.126668 5.34167 0.380004ZM7.70833 7.88208C7.70833 7.30678 7.24196 6.84041 6.66667 6.84041C6.09137 6.84041 5.625 7.30678 5.625 7.88208V7.88808C5.625 8.46338 6.09137 8.92975 6.66667 8.92975C7.24196 8.92975 7.70833 8.46338 7.70833 7.88808V7.88208Z" fill="#363538" />
+                                                </svg>
+                                                API
+                                            </div>
+                                            <span style={{ fontSize: '10px', color: '#8c8c8c' }}>Количество подключенных магазинов</span>
+                                        </div>
+                                        <div className={styles.tariffCalc__counter}>
+                                            <button className={styles.tariffCalc__counterButton}>-</button>
+                                            <div className={styles.tariffCalc__counterValue}>
+                                                1
+                                            </div>
+                                            <button className={styles.tariffCalc__counterButton}>+</button>
+                                        </div>
+                                    </div>
+                                </div>
 
-                            <div className={styles.tariffCalc__sections}>
-                                {sections.map(section => {
-                                    const isSelected = selectedSections.includes(section.id)
-                                    return (
-                                        <CalcOptionItem
-                                            key={section.id}
-                                            section={section}
-                                            onChange={() => toggleSection(section.id)}
-                                            isSelected={isSelected}
+                                <p className={styles.tariffCalc__subtitle}>Разделы</p>
+
+                                <div className={styles.tariffCalc__sections}>
+                                    {sections.map(section => {
+                                        const isSelected = selectedSections.findIndex(_ => _.id === section.id) !== -1
+                                        return (
+                                            <CalcOptionItem
+                                                key={section.id}
+                                                section={section}
+                                                onChange={() => toggleSection(section.id)}
+                                                isSelected={isSelected}
+                                            />
+                                        )
+                                    })}
+                                </div>
+                            </div>
+                            {/* limits */}
+                            {/* <div className={styles.tariffCalc__limits}>
+                                <p className={styles.tariffCalc__subtitle}>Лимиты</p>
+                                <div className={styles.tariffCalc__selectWrapper}>
+                                    <div>
+                                        <PlainSelect
+                                            optionsData={[
+                                                { value: 0, label: 'до 3 магазинов' },
+                                                { value: 1, label: 'до 5 магазинов' },
+                                                { value: 2, label: 'до 10 магазинов' },
+                                                { value: 3, label: 'более 10 магазинов' },
+                                            ]}
+                                            value={0}
+                                            label='Лимит магазинов'
+                                            selectId='shopLimit'
+                                            handler={() => { }}
+                                            disabled={false}
+                                            allowClear={false}
+                                            style={{ maxWidth: 'unset' }}
+                                            mode=''
                                         />
-                                    )
-                                })}
-                            </div>
-                        </div>
-
-                        <div className={styles.tariffCalc__limits}>
-                            <p className={styles.tariffCalc__subtitle}>Лимиты</p>
-                            <div className={styles.tariffCalc__selectWrapper}>
-                                <div>
-                                    <PlainSelect
-                                        optionsData={[
-                                            { value: 0, label: 'до 3 магазинов' },
-                                            { value: 1, label: 'до 5 магазинов' },
-                                            { value: 2, label: 'до 10 магазинов' },
-                                            { value: 3, label: 'более 10 магазинов' },
-                                        ]}
-                                        value={0}
-                                        label='Лимит магазинов'
-                                        selectId='shopLimit'
-                                        handler={() => { }}
-                                        disabled={false}
-                                        allowClear={false}
-                                        style={{ maxWidth: 'unset' }}
-                                        mode=''
-                                    />
+                                    </div>
+                                    <div>
+                                        <PlainSelect
+                                            optionsData={[
+                                                { value: 0, label: 'до 1 000 000 рублей' },
+                                                { value: 1, label: 'до 3 000 000 рублейти' },
+                                                { value: 2, label: 'до 5 000 000 рублей' },
+                                                { value: 3, label: 'до 10 000 000 рублей' },
+                                                { value: 4, label: 'более 10 000 000 рублей' },
+                                            ]}
+                                            value={0}
+                                            label=' Лимит выручки'
+                                            selectId='shopLimit'
+                                            handler={() => { }}
+                                            disabled={false}
+                                            allowClear={false}
+                                            style={{ maxWidth: 'unset' }}
+                                            mode=''
+                                        />
+                                    </div>
                                 </div>
-                                <div>
-                                    <PlainSelect
-                                        optionsData={[
-                                            { value: 0, label: 'до 1 000 000 рублей' },
-                                            { value: 1, label: 'до 3 000 000 рублейти' },
-                                            { value: 2, label: 'до 5 000 000 рублей' },
-                                            { value: 3, label: 'до 10 000 000 рублей' },
-                                            { value: 4, label: 'более 10 000 000 рублей' },
-                                        ]}
-                                        value={0}
-                                        label=' Лимит выручки'
-                                        selectId='shopLimit'
-                                        handler={() => { }}
-                                        disabled={false}
-                                        allowClear={false}
-                                        style={{ maxWidth: 'unset' }}
-                                        mode=''
-                                    />
-                                </div>
-                            </div>
+                            </div> */}
                         </div>
-                    </div>
+                    }
 
                     <div className={styles.tariffCalc__cart}>
                         <p className={styles.tariffCalc__subtitle}>Корзина</p>
 
-                        <div className={styles.tariffCalc__cartContent}>
+                        {selectedSections.length === 0 && !activeCartTariff ? (
+                            <div className={styles.tariffCalc__emptyCart}>
+                                <p className={styles.tariffCalc__emptyCartText}>
+                                    В вашей корзине пока ничего нет
+                                </p>
+                                <p className={styles.tariffCalc__emptyCartSubtext}>
+                                    Добавьте хотя бы один раздел
+                                </p>
+                            </div>
+                        ) : (
+                            <div className={styles.tariffCalc__cartContent}>
 
-                            <div className={styles.tariffCalc__selectedSections}>
-                                {selectedSectionsData?.map(section => (
-                                    <div key={section.id} className={styles.tariffCalc__cartItem}>
-                                        <div className={styles.tariffCalc__cartItemLeft}>
-                                            <span className={styles.tariffCalc__cartItemPeriod}>{activeTab}</span>
-                                            <span className={styles.tariffCalc__cartItemName}>{section.name}</span>
-                                            <div className={styles.tariffCalc__cartItemPrices}>
-                                                <span className={styles.tariffCalc__cartItemPrice}>
-                                                    {formatPrice(section.price.toString(), '₽')}
-                                                </span>
-                                                <span className={styles.tariffCalc__cartItemOldPrice}>
-                                                    {formatPrice(section.oldPrice.toString(), '₽')}
-                                                </span>
+                                <div className={styles.tariffCalc__selectedSections}>
+                                    {selectedSections?.map(section => (
+                                        <div key={section.id} className={styles.tariffCalc__cartItem}>
+                                            <span className={styles.tariffCalc__cartItemName}>{section.title}</span>
+                                            {section.children && section.children?.map(_ => _.isActive && (
+                                                <div className={styles.tariffCalc__options} key={_.title}>
+                                                    <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <path fillRule="evenodd" clipRule="evenodd" d="M5 10C7.76142 10 10 7.76142 10 5C10 2.23858 7.76142 0 5 0C2.23858 0 0 2.23858 0 5C0 7.76142 2.23858 10 5 10ZM7.39016 3.89017C7.53661 3.74372 7.53661 3.50628 7.39016 3.35983C7.24372 3.21339 7.00628 3.21339 6.85983 3.35983L4.375 5.84467L3.14017 4.60984C2.99372 4.46339 2.75628 4.46339 2.60983 4.60984C2.46339 4.75628 2.46339 4.99372 2.60983 5.14017L4.10983 6.64017C4.25628 6.78661 4.49372 6.78661 4.64017 6.64017L7.39016 3.89017Z" fill="#00B69B" />
+                                                    </svg>
+                                                    {_.title}
+                                                </div>
+                                            ))}
+                                            <div className={styles.tariffCalc__cartItemLeft}>
+                                                <span className={styles.tariffCalc__cartItemPeriod}>{activeTab}</span>
+                                                <div className={styles.tariffCalc__cartItemPrices}>
+                                                    <span className={styles.tariffCalc__cartItemPrice}>
+                                                        {formatPrice(section.price.toString(), '₽')}
+                                                    </span>
+                                                    <span className={styles.tariffCalc__cartItemOldPrice}>
+                                                        {formatPrice(section.oldPrice.toString(), '₽')}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <button
+                                                className={styles.tariffCalc__removeButton}
+                                                onClick={() => removeSection(section.id)}
+                                            >
+                                                <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M8.0459 0.219727C8.3388 -0.0731134 8.81357 -0.0731489 9.10645 0.219727C9.39923 0.512609 9.39926 0.987406 9.10645 1.28027L5.72363 4.66309L9.10645 8.0459C9.3992 8.3388 9.39929 8.8136 9.10645 9.10645C8.8136 9.39929 8.3388 9.3992 8.0459 9.10645L4.66309 5.72363L1.28027 9.10645C0.987424 9.39924 0.512614 9.39918 0.219727 9.10645C-0.0730958 8.81357 -0.0730958 8.33878 0.219727 8.0459L3.60254 4.66309L0.219727 1.28027C-0.0731667 0.98738 -0.0731667 0.51262 0.219727 0.219727C0.51262 -0.0731666 0.98738 -0.0731666 1.28027 0.219727L4.66309 3.60254L8.0459 0.219727Z" fill="#8C8C8C" />
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    ))}
+                                    {activeCartTariff &&
+                                        <div className={styles.tariffCalc__cartItem}>
+                                            <span className={styles.tariffCalc__cartItemName}>{activeCartTariff.title}</span>
+                                            <div className={styles.tariffCalc__cartItemLeft}>
+                                                <span className={styles.tariffCalc__cartItemPeriod}>{activeTab}</span>
+                                                <div className={styles.tariffCalc__cartItemPrices}>
+                                                    <span className={styles.tariffCalc__cartItemPrice}>
+                                                        {formatPrice(activeCartTariff?.price?.toString(), '₽')}
+                                                    </span>
+                                                    {activeCartTariff?.oldPrice &&
+                                                        <span className={styles.tariffCalc__cartItemOldPrice}>
+                                                            {formatPrice(activeCartTariff?.oldPrice?.toString(), '₽')}
+                                                        </span>
+                                                    }
+                                                </div>
                                             </div>
                                         </div>
-                                        <button
-                                            className={styles.tariffCalc__removeButton}
-                                            onClick={() => removeSection(section.id)}
-                                        >
-                                            <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M8.0459 0.219727C8.3388 -0.0731134 8.81357 -0.0731489 9.10645 0.219727C9.39923 0.512609 9.39926 0.987406 9.10645 1.28027L5.72363 4.66309L9.10645 8.0459C9.3992 8.3388 9.39929 8.8136 9.10645 9.10645C8.8136 9.39929 8.3388 9.3992 8.0459 9.10645L4.66309 5.72363L1.28027 9.10645C0.987424 9.39924 0.512614 9.39918 0.219727 9.10645C-0.0730958 8.81357 -0.0730958 8.33878 0.219727 8.0459L3.60254 4.66309L0.219727 1.28027C-0.0731667 0.98738 -0.0731667 0.51262 0.219727 0.219727C0.51262 -0.0731666 0.98738 -0.0731666 1.28027 0.219727L4.66309 3.60254L8.0459 0.219727Z" fill="#8C8C8C" />
-                                            </svg>
-                                        </button>
-                                    </div>
-                                ))}
-                            </div>
-
-                            {selectedSectionsData.length > 0 &&
-                                <>
-                                    <div className={styles.tariffCalc__promocode}>
-                                        <p className={styles.tariffCalc__promocodeLabel}>Промокод</p>
-                                        <ConfigProvider
-                                            theme={inputTheme}
-                                        >
-                                            <Input
-                                                placeholder="Если есть"
-                                                value={promocode}
-                                                onChange={(e) => setPromocode(e.target.value)}
-                                                style={{
-                                                    height: '38px',
-                                                    borderRadius: '8px',
-                                                    fontSize: '14px',
-                                                    border: '1px solid #E8E8E8'
-                                                }}
-                                            />
-                                        </ConfigProvider>
-                                    </div>
-
-
-
-                                    <div className={styles.tariffCalc__calculations}>
-                                        <p className={styles.tariffCalc__calculationsLabel}>Расчеты</p>
-                                        <div className={styles.tariffCalc__calculationRow}>
-                                            <span>Оплата за разделы</span>
-                                            <span>{formatPrice((totalPrice + totalDiscount).toString(), '₽')}</span>
-                                        </div>
-                                        <div className={styles.tariffCalc__calculationRow} style={{ color: '#00B69B' }}>
-                                            <span>Скидки</span>
-                                            <span>−{formatPrice(totalDiscount.toString(), '₽')}</span>
-                                        </div>
-                                    </div>
-
-
-                                    <div className={styles.tariffCalc__paymentMethod}>
-                                        <p className={styles.tariffCalc__paymentMethodLabel}>Способ получения</p>
-                                        <ConfigProvider
-                                            theme={{
-                                                token: {
-                                                    colorPrimary: '#5329FF',
-                                                }
-                                            }}
-                                        >
-                                            <Radio.Group
-                                                value={paymentMethod}
-                                                onChange={(e) => setPaymentMethod(e.target.value)}
-                                                style={{ width: '100%' }}
-                                            >
-                                                <Radio value="instant" style={{ width: '100%', marginBottom: '12px' }}>
-                                                    <div>
-                                                        <div style={{ fontWeight: 500, fontSize: '14px', color: '#1A1A1A' }}>
-                                                            Моментально
-                                                        </div>
-                                                        <div style={{ fontSize: '12px', color: '#8C8C8C' }}>
-                                                            Применить подписку сразу после оплаты
-                                                        </div>
-                                                    </div>
-                                                </Radio>
-                                                <Radio value="after_subscription">
-                                                    <div>
-                                                        <div style={{ fontWeight: 500, fontSize: '14px', color: '#1A1A1A' }}>
-                                                            После текущей подписки
-                                                        </div>
-                                                        <div style={{ fontSize: '12px', color: '#8C8C8C' }}>
-                                                            Применить подписку после окончания текущей
-                                                        </div>
-                                                    </div>
-                                                </Radio>
-                                            </Radio.Group>
-                                        </ConfigProvider>
-                                    </div>
-                                </>
-                            }
-
-                            <div className={styles.tariffCalc__total}>
-                                <div className={styles.tariffCalc__totalRow}>
-                                    <span style={{ fontSize: '14px', fontWeight: 500 }}>Итого</span>
-                                    <span style={{ fontSize: '18px', fontWeight: 700 }}>
-                                        {formatPrice(totalPrice.toString(), '₽')}
-                                    </span>
+                                    }
                                 </div>
-                            </div>
 
-                            {selectedSectionsData.length > 0 &&
-                                <ConfigProvider
-                                    theme={{
-                                        token: {
-                                            colorPrimary: '#5329FF',
-                                            fontSize: 12,
-                                            controlHeightLG: 38,
-                                        },
-                                    }}
-                                >
-                                    <Button
-                                        type="primary"
-                                        size="large"
-                                        block
-                                        disabled={selectedSectionsData.length === 0}
-                                        style={{
-                                            marginTop: '16px',
-                                            borderRadius: '8px',
-                                            fontWeight: 600
+                                {(selectedSections.length > 0 || activeCartTariff) &&
+                                    <>
+                                        <div className={styles.tariffCalc__promocode}>
+                                            <p className={styles.tariffCalc__promocodeLabel}>Промокод</p>
+                                            <ConfigProvider
+                                                theme={inputTheme}
+                                            >
+                                                <Input
+                                                    placeholder="Если есть"
+                                                    value={promocode}
+                                                    onChange={(e) => setPromocode(e.target.value)}
+                                                    style={{
+                                                        height: '38px',
+                                                        borderRadius: '8px',
+                                                        fontSize: '14px',
+                                                        border: '1px solid #E8E8E8'
+                                                    }}
+                                                />
+                                            </ConfigProvider>
+                                        </div>
+
+
+
+                                        <div className={styles.tariffCalc__calculations}>
+                                            <p className={styles.tariffCalc__calculationsLabel}>Расчеты</p>
+                                            {selectedSections.length > 0 &&
+                                                <>
+                                                    <div className={styles.tariffCalc__calculationRow}>
+                                                        <span>Оплата за разделы</span>
+                                                        <span>{formatPrice((totalSelectionsPrice + totalSelectionsDiscount).toString(), '₽')}</span>
+                                                    </div>
+                                                    <div className={styles.tariffCalc__calculationRow} style={{ color: '#00B69B' }}>
+                                                        <span>Скидки</span>
+                                                        <span>−{formatPrice(totalSelectionsDiscount.toString(), '₽')}</span>
+                                                    </div>
+                                                </>
+                                            }
+                                            {activeCartTariff &&
+                                                <>
+                                                    <div className={styles.tariffCalc__calculationRow}>
+                                                        <span>Оплата за тариф</span>
+                                                        <span>{formatPrice(activeCartTariff?.price?.toString(), '₽')}</span>
+                                                    </div>
+                                                    <div className={styles.tariffCalc__calculationRow} style={{ color: '#00B69B' }}>
+                                                        <span>Скидки</span>
+                                                        {activeCartTariff?.oldPrice &&
+                                                            <span>−{formatPrice((activeCartTariff?.price - (activeCartTariff?.oldPrice)).toString(), '₽')}</span>
+                                                        }
+                                                        {!activeCartTariff?.oldPrice &&
+                                                            <span>{formatPrice('0', '₽')}</span>
+                                                        }
+                                                    </div>
+                                                </>
+                                            }
+
+
+                                        </div>
+
+
+                                        <div className={styles.tariffCalc__paymentMethod}>
+                                            <p className={styles.tariffCalc__paymentMethodLabel}>Способ получения</p>
+                                            <ConfigProvider
+                                                theme={{
+                                                    token: {
+                                                        colorPrimary: '#5329FF',
+                                                    }
+                                                }}
+                                            >
+                                                <Radio.Group
+                                                    value={paymentMethod}
+                                                    onChange={(e) => setPaymentMethod(e.target.value)}
+                                                    style={{ width: '100%' }}
+                                                >
+                                                    <Radio value="instant" style={{ width: '100%', marginBottom: '12px' }}>
+                                                        <div>
+                                                            <div style={{ fontWeight: 500, fontSize: '14px', color: '#1A1A1A' }}>
+                                                                Моментально
+                                                            </div>
+                                                            <div style={{ fontSize: '12px', color: '#8C8C8C' }}>
+                                                                Применить подписку сразу после оплаты
+                                                            </div>
+                                                        </div>
+                                                    </Radio>
+                                                    <Radio value="after_subscription">
+                                                        <div>
+                                                            <div style={{ fontWeight: 500, fontSize: '14px', color: '#1A1A1A' }}>
+                                                                После текущей подписки
+                                                            </div>
+                                                            <div style={{ fontSize: '12px', color: '#8C8C8C' }}>
+                                                                Применить подписку после окончания текущей
+                                                            </div>
+                                                        </div>
+                                                    </Radio>
+                                                </Radio.Group>
+                                            </ConfigProvider>
+                                        </div>
+                                    </>
+                                }
+
+                                <div className={styles.tariffCalc__total}>
+                                    <div className={styles.tariffCalc__totalRow}>
+                                        <span style={{ fontSize: '14px', fontWeight: 500 }}>Итого</span>
+                                        {selectedSections.length > 0 &&
+                                            <span style={{ fontSize: '18px', fontWeight: 700 }}>
+                                                {formatPrice(totalSelectionsPrice?.toString(), '₽')}
+                                            </span>
+                                        }
+                                        {activeCartTariff &&
+                                            <span style={{ fontSize: '18px', fontWeight: 700 }}>
+                                                {formatPrice(activeCartTariff?.price?.toString(), '₽')}
+                                            </span>
+                                        }
+                                    </div>
+                                </div>
+
+                                {(selectedSections.length > 0 || activeCartTariff) &&
+                                    <ConfigProvider
+                                        theme={{
+                                            token: {
+                                                colorPrimary: '#5329FF',
+                                                fontSize: 12,
+                                                controlHeightLG: 38,
+                                            },
                                         }}
                                     >
-                                        К оплате
-                                    </Button>
-                                </ConfigProvider>
-                            }
-                        </div>
+                                        <Button
+                                            type="primary"
+                                            size="large"
+                                            block
+                                            disabled={selectedSections.length === 0 && !activeCartTariff}
+                                            style={{
+                                                marginTop: '16px',
+                                                borderRadius: '8px',
+                                                fontWeight: 600
+                                            }}
+                                        >
+                                            К оплате
+                                        </Button>
+                                    </ConfigProvider>
+                                }
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>
@@ -1303,14 +1670,11 @@ const CalcOptionItem = ({
                     </ConfigProvider>
                     <div className={styles.tariffCalc__sectionInfo}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                            <span className={styles.tariffCalc__sectionName}>{section.name}</span>
+                            <span className={styles.tariffCalc__sectionName}>{section.title}</span>
                             {section.isNew && (
                                 <span className={styles.tariffCalc__newBadge}>New!</span>
                             )}
                         </div>
-                        {/* <span className={styles.tariffCalc__sectionDescription}>
-                    Описание что входит в раздел
-                </span> */}
                     </div>
                 </div>
                 <div className={styles.tariffCalc__sectionPrices}>
@@ -1323,11 +1687,44 @@ const CalcOptionItem = ({
                     </div>
                 </div>
             </div>
-            {isDescriptionOpen &&
+            {isDescriptionOpen && section.children &&
                 <div className={styles.tariffCalc__sectionDescriptionWrapper}>
-                    <span className={styles.tariffCalc__sectionDescription}>
-                        Описание что входит в раздел
-                    </span>
+                    {section.children.map(_ => (
+                        <div className={styles.tariffCalc__sectionDescription}>
+                            <div className={styles.tariffCalc__switch}>
+                                <ConfigProvider
+                                    theme={{
+                                        token: {
+                                            colorPrimary: '#5329FF',
+                                        },
+                                    }}
+                                >
+                                    <Switch
+                                        size='small'
+                                        checked={_.isActive}
+                                        onChange={onChange}
+                                    />
+                                </ConfigProvider>
+                                <div className={styles.tariffCalc__sectionInfo}>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                        <span className={styles.tariffCalc__sectionName}>{_.title}</span>
+                                        {_.isNew && (
+                                            <span className={styles.tariffCalc__newBadge}>New!</span>
+                                        )}
+                                    </div>
+                                </div>
+                            </div>
+                            <div className={styles.tariffCalc__sectionPrices}>
+                                <span className={styles.tariffCalc__oldPrice}>{formatPrice(_.oldPrice.toString(), '₽')}</span>
+                                <div className={styles.tariffCalc__priceWrapper}>
+                                    <span className={styles.tariffCalc__newPrice} style={{ color: !isSelected ? '#1A1A1A' : '' }}>{formatPrice(section.price.toString(), '₽')}</span>
+                                    <span className={styles.tariffCalc__pricePerMonth}>
+                                        {formatPrice(_.pricePerMonth.toString(), '₽/мес')}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    ))}
                 </div>
             }
         </div>
