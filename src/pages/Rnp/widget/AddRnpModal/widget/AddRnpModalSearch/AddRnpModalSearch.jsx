@@ -18,27 +18,12 @@ function AddRnpModalSearch({
     submitSearch(value);
   };
 
-  useEffect(() => {
-    let timeout = null;
-
-    if (!searchValue) {
-      timeout = setTimeout(() => {
-        submitSearch(null);
-      }, 1000);
-    } else {
-      clearTimeout(timeout);
-    }
-
-    return () => clearTimeout(timeout);
-
-  }, [searchValue]);
-
   return (
     <ConfigProvider
         theme={{
             token: {
                 colorPrimary: '#5329FF',
-                fontSize: 14,
+                fontSize: 12,
                 contentFontSizeLG: 16,
                 controlHeightLG: 38,
                 fontFamily: 'Manrope',
