@@ -252,7 +252,9 @@ export default function TableSettingModal({
 									initialValue={!el.hidden}
 									onChange={checkChangeHandler}
 								>
-									<Checkbox >
+									<Checkbox
+										disabled={el.dataIndex === 'week_label' || el.dataIndex === 'revenue_quantity' || el.dataIndex === 'revenue_rub'}
+									>
 										{el.title}
 									</Checkbox>
 								</Form.Item>

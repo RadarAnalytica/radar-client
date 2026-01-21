@@ -143,3 +143,9 @@
     -webkit-line-clamp: 1 !important;
     white-space: nowrap !important;
   }
+
+.radar-table th[data-column-key="week_label"] {
+  max-width: 800px !important;
+  background-color: red !important;
+  color: red !important;
+}
