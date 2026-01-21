@@ -27,9 +27,7 @@ const MainChartControls = ({ constrolsState, setControlsState }) => {
                         value='isOrderQuantityActive'
                         onChange={controlsCheckboxHandler}
                     >
-                        <label className={styles.controls__label}>
-                            Заказы, шт
-                        </label>
+                        Заказы, шт
                     </Checkbox>
                 </ConfigProvider>
             </div>
@@ -49,9 +47,7 @@ const MainChartControls = ({ constrolsState, setControlsState }) => {
                         value='isSalesQuantityActive'
                         onChange={controlsCheckboxHandler}
                     >
-                        <label className={styles.controls__label}>
-                           Продажи, шт
-                        </label>
+                        Продажи, шт
                     </Checkbox>
                 </ConfigProvider>
             </div>
@@ -73,9 +69,7 @@ const MainChartControls = ({ constrolsState, setControlsState }) => {
                         value='isOrderAmountActive'
                         onChange={controlsCheckboxHandler}
                     >
-                        <label className={styles.controls__label}>
-                           Заказы, руб
-                        </label>
+                        Заказы, руб
                     </Checkbox>
                 </ConfigProvider>
             </div>
@@ -97,9 +91,7 @@ const MainChartControls = ({ constrolsState, setControlsState }) => {
                         value='isSalesAmountActive'
                         onChange={controlsCheckboxHandler}
                     >
-                        <label className={styles.controls__label}>
-                           Продажи, руб
-                        </label>
+                        Продажи, руб
                     </Checkbox>
                 </ConfigProvider>
             </div>
@@ -120,9 +112,7 @@ const MainChartControls = ({ constrolsState, setControlsState }) => {
                         value='isRoiActive'
                         onChange={controlsCheckboxHandler}
                     >
-                        <label className={styles.controls__label}>
-                           ROI, %
-                        </label>
+                        ROI, %
                     </Checkbox>
                 </ConfigProvider>
             </div>
@@ -143,9 +133,7 @@ const MainChartControls = ({ constrolsState, setControlsState }) => {
                         value='isMarginalityActive'
                         onChange={controlsCheckboxHandler}
                     >
-                        <label className={styles.controls__label}>
-                           Маржинальность, %
-                        </label>
+                        Маржинальность, %
                     </Checkbox>
                 </ConfigProvider>
             </div>

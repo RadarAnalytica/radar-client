@@ -66,7 +66,7 @@ import { TaxModal } from '@/features';
 // Контекст для передачи listeners и attributes в DragHandle
 export const DragHandleContext = React.createContext(null);
 
-const DASHBOARD_CONFIG_VER = '2';
+const DASHBOARD_CONFIG_VER = '3';
 const ROWS_STORAGE_KEY = 'dashboard_rows_config';
 const BARS_STORAGE_KEY = 'dashboard_bars_config';
 
@@ -289,6 +289,7 @@ const barsConfig = [
                 mainValue={dataDashBoard?.returnAmount}
                 mainValueUnits='₽'
                 hasColoredBackground
+                negativeDirection='up'
                 compareValue={{
                     comparativeValue: dataDashBoard?.returnAmountCompare,
                     absoluteValue: dataDashBoard?.prev_return_amount,
@@ -312,6 +313,7 @@ const barsConfig = [
                 tooltipText='Суммарные расходы на логистику, определяются расчетным способом от количества заказов'
                 mainValue={dataDashBoard?.logistics}
                 hasColoredBackground
+                negativeDirection='up'
                 midValue={<SmallButton title='Детализация' dataDashBoard={dataDashBoard} dataType='logistic' />}
                 compareValue={{
                     comparativeValue: dataDashBoard?.logisticsCompare,
@@ -336,6 +338,7 @@ const barsConfig = [
                 tooltipText='Расходы на хранение товаров на складах WB'
                 mainValue={dataDashBoard?.storageData}
                 hasColoredBackground
+                negativeDirection='up'
                 compareValue={{
                     comparativeValue: dataDashBoard?.storageDataCompare,
                     absoluteValue: dataDashBoard?.prev_storageData,
@@ -360,6 +363,8 @@ const barsConfig = [
                 mainValue={dataDashBoard?.paid_acceptance}
                 mainValueUnits='₽'
                 isLoading={loading}
+                hasColoredBackground
+                negativeDirection='up'
                 compareValue={{
                     comparativeValue: dataDashBoard?.paid_acceptance_compare,
                     absoluteValue: dataDashBoard?.prev_paid_acceptance,
@@ -384,6 +389,7 @@ const barsConfig = [
                 mainValueUnits='₽'
                 midValue={<SmallButton title='Детализация' dataDashBoard={dataDashBoard} dataType='comission' />}
                 hasColoredBackground
+                negativeDirection='up'
                 compareValue={{
                     comparativeValue: dataDashBoard?.commissionWBCompare,
                     absoluteValue: dataDashBoard?.prev_commissionWB,
@@ -407,6 +413,8 @@ const barsConfig = [
                 mainValue={dataDashBoard?.tax_amount}
                 mainValueUnits='₽'
                 isLoading={loading}
+                hasColoredBackground
+                negativeDirection='up'
                 midValue={<TaxModal updateDataDashBoard={updateDataDashBoard} />}
                 compareValue={{
                     comparativeValue: dataDashBoard?.taxCompare,
@@ -431,6 +439,7 @@ const barsConfig = [
                 mainValue={dataDashBoard?.advertAmount}
                 mainValueUnits='₽'
                 hasColoredBackground
+                negativeDirection='up'
                 compareValue={{
                     comparativeValue: dataDashBoard?.advertAmountCompare,
                     absoluteValue: dataDashBoard?.prev_advertAmount,
@@ -455,6 +464,8 @@ const barsConfig = [
                 mainValue={dataDashBoard?.penalty}
                 midValue={<SmallButton title='Детализация' dataDashBoard={dataDashBoard} dataType='penalty' />}
                 mainValueUnits='₽'
+                hasColoredBackground
+                negativeDirection='up'
                 isLoading={loading}
                 compareValue={{
                     comparativeValue: dataDashBoard?.penalty_compare,
@@ -500,6 +511,7 @@ const barsConfig = [
                 mainValue={dataDashBoard?.compensation}
                 mainValueUnits='₽'
                 isLoading={loading}
+                hasColoredBackground
                 compareValue={{
                     comparativeValue: dataDashBoard?.compensation_compare,
                     absoluteValue: dataDashBoard?.prev_compensation,
@@ -522,6 +534,8 @@ const barsConfig = [
                 tooltipText='Логистика на единицу проданного товара'
                 mainValue={dataDashBoard?.logistic_per_one}
                 mainValueUnits='₽'
+                hasColoredBackground
+                negativeDirection='up'
                 isLoading={loading}
                 compareValue={{
                     comparativeValue: dataDashBoard?.logistic_per_one_compare,
@@ -545,6 +559,7 @@ const barsConfig = [
                 tooltipText='Прибыль на единицу проданного товара'
                 mainValue={dataDashBoard?.profit_per_one}
                 mainValueUnits='₽'
+                hasColoredBackground
                 compareValue={{
                     comparativeValue: dataDashBoard?.profit_per_one_compare,
                     absoluteValue: dataDashBoard?.prev_profit_per_one,
@@ -568,6 +583,8 @@ const barsConfig = [
                 tooltipText='Расчетная величина, определенная как произведение средней скорости продаж на количество дней, в которых товар отсутствовал на полках магазина или на складе'
                 mainValue={dataDashBoard?.lostSalesAmount}
                 mainValueUnits='₽'
+                hasColoredBackground
+                negativeDirection='up'
                 compareValue={{
                     comparativeValue: dataDashBoard?.lost_sales_amount_compare,
                     absoluteValue: dataDashBoard?.prev_lostSalesAmount,
@@ -592,6 +609,7 @@ const barsConfig = [
                 mainValue={dataDashBoard?.costPriceAmount}
                 midValue={<Link className={styles.smallButton} to='/selfcost' target='_blank'>Изменить</Link>}
                 mainValueUnits='₽'
+                neuturalComparsionColor
                 compareValue={{
                     comparativeValue: dataDashBoard?.costPriceAmountCompare,
                     absoluteValue: dataDashBoard?.prev_costPriceAmount,
