@@ -25,6 +25,14 @@ const AddRnpModal = ({ isAddRnpModalVisible, setIsAddRnpModalVisible, addRnp }) 
     const { activeBrandName, activeBrand } = useAppSelector((state) => state.filtersRnpAdd);
     const filters = useAppSelector((state) => state.filtersRnpAdd);
     const [rnpSelected, setRnpSelected] = useState(null);
+    const [page, setPage] = useState(1);
+    const [loading, setLoading] = useState(true);
+    const [localrnpDataArticle, setLocalrnpDataArticle] = useState(null);
+    const [search, setSearch] = useState(null);
+    const [error, setError] = useState(null);
+    const initLoad = useRef(true);
+    const isFirstMount = useRef(true);
+    console.log('search', search)
 
     const MAX_RNP_SKU_LIMIT = useMemo(() => {
         let limit = 25 // default limit
@@ -53,13 +61,6 @@ const AddRnpModal = ({ isAddRnpModalVisible, setIsAddRnpModalVisible, addRnp }) 
         return shops.find((shop) => shop.id === activeBrand.id);
     }, [activeBrand, shops]);
 
-    const [page, setPage] = useState(1);
-    const [loading, setLoading] = useState(true);
-    const [localrnpDataArticle, setLocalrnpDataArticle] = useState(null);
-    const [search, setSearch] = useState(null);
-    const [error, setError] = useState(null);
-    const initLoad = useRef(true);
-    const isFirstMount = useRef(true);
 
     const submitRnpDataArticle = () => {
         addRnp(rnpSelected);
@@ -128,128 +129,129 @@ const AddRnpModal = ({ isAddRnpModalVisible, setIsAddRnpModalVisible, addRnp }) 
                 centered
             // loading={loading || !isFiltersLoaded}
             >
-                {(loading || !isFiltersLoaded) &&
-                    <RadarLoader loaderStyle={{ height: 764 }} />
-                }
-                {!loading && isFiltersLoaded &&
-                    <div className={styles.modal__content}>
-                        <div className={styles.modal__header}>
-                            <p className={styles.modal__title}>Добавить артикулы</p>
+                <div className={styles.modal__content}>
+                    {(loading || !isFiltersLoaded) &&
+                        <div className={styles.modal__loaderWrapper}>
+                            <RadarLoader loaderStyle={{ height: '100%' }} />
                         </div>
-                        <div className={styles.control}>
-                            <Filters
-                                isDataLoading={loading}
-                                slice={'filtersRnpAdd'}
-                                filterActions={filterActions}
-                                // fetchFilters={fetchFiltersRnpAdd}
-                                timeSelect={false}
-                                open={isAddRnpModalVisible}
-                                articleSelect={false}
-                                groupSelect={false}
-                                categorySelect={false}
-                            />
-                        </div>
-                        <div className={loading ? styles.hide : styles.control}><AddRnpModalSearch loading={loading} submitSearch={setSearch} /></div>
-                        {/* loader */}
-                        {/* {(loading || !rnpSelected || !isFiltersLoaded) && <div className={styles.loading}><span className='loader'></span></div>} */}
-                        <ConfigProvider
-                            theme={{
-                                token: {
-                                    colorText: '#5329FF',
-                                    colorPrimary: '#5329FF',
-                                    colorBgTextHover: '#5329FF0D',
-                                    controlInteractiveSize: 20
-                                },
-                                components: {
-                                    Pagination: {
-                                        itemActiveBg: '#EEEAFF',
-                                        itemBg: '#F7F7F7',
-                                        itemColor: '#8C8C8C',
-                                    }
+                    }
+                    <div className={styles.modal__header}>
+                        <p className={styles.modal__title}>Добавить артикулы</p>
+                    </div>
+                    <div className={styles.control}>
+                        <Filters
+                            isDataLoading={loading}
+                            slice={'filtersRnpAdd'}
+                            filterActions={filterActions}
+                            // fetchFilters={fetchFiltersRnpAdd}
+                            timeSelect={false}
+                            open={isAddRnpModalVisible}
+                            articleSelect={false}
+                            groupSelect={false}
+                            categorySelect={false}
+                        />
+                    </div>
+                    <div className={styles.control}><AddRnpModalSearch loading={loading} submitSearch={setSearch} /></div>
+                    {/* loader */}
+                    {/* {(loading || !rnpSelected || !isFiltersLoaded) && <div className={styles.loading}><span className='loader'></span></div>} */}
+                    <ConfigProvider
+                        theme={{
+                            token: {
+                                colorText: '#5329FF',
+                                colorPrimary: '#5329FF',
+                                colorBgTextHover: '#5329FF0D',
+                                controlInteractiveSize: 20
+                            },
+                            components: {
+                                Pagination: {
+                                    itemActiveBg: '#EEEAFF',
+                                    itemBg: '#F7F7F7',
+                                    itemColor: '#8C8C8C',
                                 }
-                            }}
-                        >
+                            }
+                        }}
+                    >
 
-                            {!isDemoMode && shopStatus && !shopStatus?.is_primary_collect && (
-                                <div className={styles.data_collect}>
-                                    <DataCollectWarningBlock
-                                        bigPreview={false}
-                                    />
-                                </div>
-                            )}
+                        {!isDemoMode && shopStatus && !shopStatus?.is_primary_collect && (
+                            <div className={styles.data_collect}>
+                                <DataCollectWarningBlock
+                                    bigPreview={false}
+                                />
+                            </div>
+                        )}
 
-                            {/* shopStatus && shopStatus?.is_primary_collect */}
+                        {/* shopStatus && shopStatus?.is_primary_collect */}
 
-                            {shopStatus && shopStatus?.is_primary_collect && localrnpDataArticle && localrnpDataArticle?.data?.length == 0 && (<div className={styles.empty}>Ничего не найдено</div>)}
-                            {shopStatus && shopStatus?.is_primary_collect && localrnpDataArticle && localrnpDataArticle?.data?.length > 0 && (<div className={styles.modal__container}>
-                                {localrnpDataArticle?.data?.map((el, i) => (
-                                    <Flex key={i} className={styles.item} gap={20}>
-                                        {(rnpSelected.length >= MAX_RNP_SKU_LIMIT && !rnpSelected.includes(el.wb_id)) &&
-                                            <Tooltip title={`Максимальное количество артикулов в РНП - ${MAX_RNP_SKU_LIMIT}`} arrow={false}>
-                                                <Checkbox
-                                                    defaultChecked={rnpSelected?.includes(el.wb_id)}
-                                                    data-value={el.wb_id}
-                                                    onChange={() => selectRnpHandler(el.wb_id)}
-                                                    disabled={rnpSelected.length >= MAX_RNP_SKU_LIMIT && !rnpSelected.includes(el.wb_id)}
-                                                />
-                                            </Tooltip>
-                                        }
-                                        {(rnpSelected.length < MAX_RNP_SKU_LIMIT || rnpSelected.includes(el.wb_id)) &&
+                        {shopStatus && shopStatus?.is_primary_collect && localrnpDataArticle && localrnpDataArticle?.data?.length == 0 && (<div className={styles.empty}>Ничего не найдено</div>)}
+                        {shopStatus && shopStatus?.is_primary_collect && localrnpDataArticle && localrnpDataArticle?.data?.length > 0 && (<div className={styles.modal__container}>
+                            {localrnpDataArticle?.data?.map((el, i) => (
+                                <Flex key={i} className={styles.item} gap={20}>
+                                    {(rnpSelected.length >= MAX_RNP_SKU_LIMIT && !rnpSelected.includes(el.wb_id)) &&
+                                        <Tooltip title={`Максимальное количество артикулов в РНП - ${MAX_RNP_SKU_LIMIT}`} arrow={false}>
                                             <Checkbox
                                                 defaultChecked={rnpSelected?.includes(el.wb_id)}
                                                 data-value={el.wb_id}
                                                 onChange={() => selectRnpHandler(el.wb_id)}
                                                 disabled={rnpSelected.length >= MAX_RNP_SKU_LIMIT && !rnpSelected.includes(el.wb_id)}
                                             />
-                                        }
-                                        <RnpItem
-                                            title={el.title}
-                                            photo={el.photo}
-                                            wb_id={el.wb_id}
-                                            shop={el.shop_name}
+                                        </Tooltip>
+                                    }
+                                    {(rnpSelected.length < MAX_RNP_SKU_LIMIT || rnpSelected.includes(el.wb_id)) &&
+                                        <Checkbox
+                                            defaultChecked={rnpSelected?.includes(el.wb_id)}
+                                            data-value={el.wb_id}
+                                            onChange={() => selectRnpHandler(el.wb_id)}
+                                            disabled={rnpSelected.length >= MAX_RNP_SKU_LIMIT && !rnpSelected.includes(el.wb_id)}
                                         />
-                                    </Flex>
-                                ))}
-                            </div>)}
+                                    }
+                                    <RnpItem
+                                        title={el.title}
+                                        photo={el.photo}
+                                        wb_id={el.wb_id}
+                                        shop={el.shop_name}
+                                    />
+                                </Flex>
+                            ))}
+                        </div>)}
 
-                            {shopStatus?.is_primary_collect && <Pagination
-                                locale={{
-                                    items_per_page: 'записей на странице',
-                                    jump_to: 'Перейти',
-                                    jump_to_confirm: 'подтвердить',
-                                    page: 'Страница',
-                                    prev_page: 'Предыдущая страница',
-                                    next_page: 'Следующая страница',
-                                    prev_5: 'Предыдущие 5 страниц',
-                                    next_5: 'Следующие 5 страниц',
-                                    prev_3: 'Предыдущие 3 страниц',
-                                    next_3: 'Следующие 3 страниц',
-                                }}
-                                defaultCurrent={1}
-                                current={page}
-                                onChange={(page) => {
-                                    setPage(page);
-                                    updateData(page);
-                                }}
-                                total={localrnpDataArticle?.total_count}
-                                pageSize={localrnpDataArticle?.per_page}
-                                showSizeChanger={false}
-                                hideOnSinglePage={true}
-                            />}
-                        </ConfigProvider>
-                        <div style={{
-                            width: '100%',
-                            display: 'flex',
-                            justifyContent: 'flex-end'
-                        }}>
-                            <AddRnpModalFooter
-                                addProducts={submitRnpDataArticle}
-                                setIsAddRnpModalVisible={setIsAddRnpModalVisible}
-                                isDataLoading={loading}
-                                submitDisabled={localrnpDataArticle?.length === 0}
-                            />
-                        </div>
-                    </div>}
+                        {shopStatus?.is_primary_collect && <Pagination
+                            locale={{
+                                items_per_page: 'записей на странице',
+                                jump_to: 'Перейти',
+                                jump_to_confirm: 'подтвердить',
+                                page: 'Страница',
+                                prev_page: 'Предыдущая страница',
+                                next_page: 'Следующая страница',
+                                prev_5: 'Предыдущие 5 страниц',
+                                next_5: 'Следующие 5 страниц',
+                                prev_3: 'Предыдущие 3 страниц',
+                                next_3: 'Следующие 3 страниц',
+                            }}
+                            defaultCurrent={1}
+                            current={page}
+                            onChange={(page) => {
+                                setPage(page);
+                                updateData(page);
+                            }}
+                            total={localrnpDataArticle?.total_count}
+                            pageSize={localrnpDataArticle?.per_page}
+                            showSizeChanger={false}
+                            hideOnSinglePage={true}
+                        />}
+                    </ConfigProvider>
+                    <div style={{
+                        width: '100%',
+                        display: 'flex',
+                        justifyContent: 'flex-end'
+                    }}>
+                        <AddRnpModalFooter
+                            addProducts={submitRnpDataArticle}
+                            setIsAddRnpModalVisible={setIsAddRnpModalVisible}
+                            isDataLoading={loading}
+                            submitDisabled={localrnpDataArticle?.length === 0}
+                        />
+                    </div>
+                </div>
             </Modal>
             <ErrorModal open={!!error} message={error} onCancel={() => setError(null)} />
         </>
