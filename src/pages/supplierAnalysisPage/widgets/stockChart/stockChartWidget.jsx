@@ -153,7 +153,7 @@ const StockChartWidget = ({
                 }
             </div>
 
-            {(isLoading || !isFiltersLoaded) ?
+            {(isLoading || !isFiltersLoaded || !chartData) ?
                 <div className={styles.widget__chartWrapper}><RadarLoader loaderStyle={{ height: 559 }} /></div>
                 :
                 <div className={styles.widget__chartWrapper}>

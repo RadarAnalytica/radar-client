@@ -39,7 +39,7 @@
 
 .widget__loaderWrapper {
     width: 100%;
-    height: 100%;
+    height: 660px;
     display: flex;
     justify-content: center;
     align-items: center;

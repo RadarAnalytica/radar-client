@@ -142,7 +142,7 @@ const TableWidget = ({ data, tableConfig, minRowHeight = '40px' }) => {
         setTableData([...sortedData]);
     };
 
-    if (dataStatus.isLoading) {
+    if (dataStatus.isLoading || !tableData) {
         return (
             <div className={styles.widget}>
                 <div className={styles.widget__loaderWrapper}>

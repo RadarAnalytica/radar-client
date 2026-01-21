@@ -230,7 +230,7 @@ const TableWidget = memo(({
     if ((isLoading || !isFiltersLoaded) && !tableData) {
         return (
             <div className={styles.widget}>
-                <div className={styles.loaderWrapper} style={{ height: containerHeight }}>
+                <div className={styles.loaderWrapper} style={{ height: containerHeight ?? '80vh' }}>
                     <span className='loader'></span>
                 </div>
             </div>
@@ -278,7 +278,8 @@ const TableWidget = memo(({
 
     return tableData && (
         <div className={styles.widget}>
-            {(!isFiltersLoaded || isLoading) &&<div className={styles.widget__innerLoader}>
+            {(!isFiltersLoaded || isLoading) &&
+            <div className={styles.widget__innerLoader}>
                 <RadarLoader />
             </div>}
             <div className={styles.widget__tableWrapper} ref={containerRef}>
