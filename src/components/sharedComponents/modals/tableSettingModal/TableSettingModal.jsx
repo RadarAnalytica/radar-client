@@ -13,6 +13,8 @@ import styles from './TableSettingModal.module.css';
 import { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'antd/es/form/Form';
 
+const DISABLED_INDEXES = ['week_label', 'revenue_quantity', 'revenue_rub'];
+
 export default function TableSettingModal({
 	isModalOpen = true,
 	closeModal,
@@ -55,9 +57,15 @@ export default function TableSettingModal({
 		const data = form.getFieldsValue();
 
 		setShownColumns(shownColumns.map(_ => {
+			if (DISABLED_INDEXES.includes(_.dataIndex)) {
+				return _;
+			}
 			return { ..._, hidden: type === 'select' ? false : true };
 		}));
 		for (const check in data) {
+			if (DISABLED_INDEXES.includes(check)) {
+				continue;
+			}
 			form.setFieldValue(check, type === 'select' ? true : false);
 		}
 	}
@@ -227,10 +235,14 @@ export default function TableSettingModal({
 						type='link'
 						size='small'
 						onClick={() => {
-							const type = shownColumns.some((el) => el.hidden) ? 'select' : 'deselect';
+							const enabledColumns = shownColumns.filter((el) => !DISABLED_INDEXES.includes(el.dataIndex));
+							const type = enabledColumns.some((el) => el.hidden) ? 'select' : 'deselect';
 							сheckAllHandler(type);
 						}}>
-						{shownColumns.some((el) => el.hidden) ? 'Выбрать все' : 'Снять все'}
+						{(() => {
+							const enabledColumns = shownColumns.filter((el) => !DISABLED_INDEXES.includes(el.dataIndex));
+							return enabledColumns.some((el) => el.hidden) ? 'Выбрать все' : 'Снять все';
+						})()}
 					</Button>
 					{/* <Checkbox
 						className={styles.item}
@@ -253,7 +265,7 @@ export default function TableSettingModal({
 									onChange={checkChangeHandler}
 								>
 									<Checkbox
-										disabled={el.dataIndex === 'week_label' || el.dataIndex === 'revenue_quantity' || el.dataIndex === 'revenue_rub'}
+										disabled={DISABLED_INDEXES.includes(el.dataIndex)}
 									>
 										{el.title}
 									</Checkbox>
