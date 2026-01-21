@@ -27,7 +27,6 @@ import styles from './wbMetricsPage.module.css';
 
 
 const WbMetricsPage: React.FC = () => {
-  console.log('__RE_RENDER__');
   const location = useLocation();
   const metricType = location.pathname.includes('/drr') ? 'drr' : 'spp';
   const { authToken } = useContext(AuthContext);
