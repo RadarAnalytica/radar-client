@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { Filters } from '@/components/sharedComponents/apiServicePagesFiltersComponent';
 import TableSettingsModal, { mapConfigToSettingsItems, mapSettingsToConfig } from '@/components/TableSettingsModal';
 import TableSettingsButton from '@/components/TableSettingsButton';
-import { TABLE_CONFIG_VERSION, getDefaultTableConfig, TABLE_MAX_WIDTH } from '../../config/tableConfig';
+import { getDefaultTableConfig, saveTableConfig, TABLE_MAX_WIDTH } from '../../config/tableConfig';
 import styles from './MyAdvTable.module.css';
 import { CompanyData } from '../../data/mockData';
 import { ColumnConfig } from '../../config/tableConfig';
@@ -76,10 +76,7 @@ const MyAdvTable: React.FC<MyAdvTableProps> = React.memo(({
       colSpan: col.children?.filter((child) => !child.hidden)?.length || 1,
     }));
     setTableConfig(newConfig as ColumnConfig[]);
-    localStorage.setItem('MY_ADV_TABLE_CONFIG', JSON.stringify({
-      version: TABLE_CONFIG_VERSION,
-      config: newConfig
-    }));
+    saveTableConfig(newConfig as ColumnConfig[]);
   };
 
   const handlePageChange = (page: number, pageSize?: number) => {
@@ -131,15 +128,9 @@ const MyAdvTable: React.FC<MyAdvTableProps> = React.memo(({
       });
     };
 
-    // Обновляем состояние
-    setTableConfig((prevConfig: ColumnConfig[]) => {
-      const updatedConfig = updateColumnWidth(prevConfig);
-      localStorage.setItem('MY_ADV_TABLE_CONFIG', JSON.stringify({
-        version: TABLE_CONFIG_VERSION,
-        config: updatedConfig
-      }));
-      return updatedConfig;
-    });
+    const updatedConfig = updateColumnWidth(tableConfig as ColumnConfig[]);
+    setTableConfig(updatedConfig);
+    saveTableConfig(updatedConfig);
   };
 
   const handleCompanyClick = (companyId: number) => {
@@ -253,45 +244,6 @@ const MyAdvTable: React.FC<MyAdvTableProps> = React.memo(({
       </div>
     );
   };
-
-  // Загрузка конфигурации таблицы из localStorage
-  useEffect(() => {
-    let savedTableConfigData = localStorage.getItem('MY_ADV_TABLE_CONFIG');
-    if (savedTableConfigData) {
-      try {
-        const parsed = JSON.parse(savedTableConfigData);
-        
-        // Проверяем версию конфига
-        if (parsed.version === TABLE_CONFIG_VERSION) {
-          setTableConfig(parsed.config);
-        } else {
-          // Версия не совпадает, используем дефолтный конфиг
-          console.log('Table config version mismatch, using default config');
-          const defaultConfig = getDefaultTableConfig();
-          setTableConfig(defaultConfig);
-          localStorage.setItem('MY_ADV_TABLE_CONFIG', JSON.stringify({
-            version: TABLE_CONFIG_VERSION,
-            config: defaultConfig
-          }));
-        }
-      } catch (error) {
-        console.error('Error parsing saved table config:', error);
-        const defaultConfig = getDefaultTableConfig();
-        setTableConfig(defaultConfig);
-        localStorage.setItem('MY_ADV_TABLE_CONFIG', JSON.stringify({
-          version: TABLE_CONFIG_VERSION,
-          config: defaultConfig
-        }));
-      }
-    } else {
-      const defaultConfig = getDefaultTableConfig();
-      setTableConfig(defaultConfig);
-      localStorage.setItem('MY_ADV_TABLE_CONFIG', JSON.stringify({
-        version: TABLE_CONFIG_VERSION,
-        config: defaultConfig
-      }));
-    }
-  }, []);
 
   useEffect(() => {
     const { current } = tableContainerRef;

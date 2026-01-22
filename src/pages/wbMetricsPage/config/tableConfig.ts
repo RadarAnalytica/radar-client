@@ -145,17 +145,34 @@ export const mergeTableConfig = (
 ): ColumnConfig[] => {
   if (!savedColumns) return defaultColumns;
 
-  // Создаем Map для быстрого доступа к сохраненным настройкам
-  const savedMap = new Map(savedColumns.map(col => [col.key, col]));
+  const defaultMap = new Map(defaultColumns.map(col => [col.key, col]));
+  const usedKeys = new Set<string>();
+  const mergedColumns: ColumnConfig[] = [];
 
-  // Применяем сохраненные настройки видимости к дефолтным колонкам
-  return defaultColumns.map(col => {
-    const saved = savedMap.get(col.key);
-    if (saved && col.canToggle) {
-      // Применяем только настройку hidden для колонок, которые можно переключать
-      return { ...col, hidden: saved.hidden };
+  savedColumns.forEach((savedCol) => {
+    const defaultCol = defaultMap.get(savedCol.key);
+    if (!defaultCol) {
+      return;
     }
-    return col;
+    const merged: ColumnConfig = {
+      ...defaultCol,
+      ...savedCol,
+    };
+
+    if (!defaultCol.canToggle) {
+      merged.hidden = defaultCol.hidden;
+    }
+
+    mergedColumns.push(merged);
+    usedKeys.add(savedCol.key);
   });
+
+  defaultColumns.forEach((defaultCol) => {
+    if (!usedKeys.has(defaultCol.key)) {
+      mergedColumns.push(defaultCol);
+    }
+  });
+
+  return mergedColumns;
 };
 

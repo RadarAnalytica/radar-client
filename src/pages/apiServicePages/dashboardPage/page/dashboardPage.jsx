@@ -1252,6 +1252,7 @@ const _DashboardPage = () => {
                     <TableSettingsButton
                         onClick={() => setIsSettingsOpen(true)}
                         disabled={pageState.loading}
+                        title='Настройка сводки продаж'
                     />
                 </div>
 

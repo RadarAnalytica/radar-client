@@ -59,19 +59,19 @@ const AbcAnalysisPage = () => {
 		['proceeds', 'profit'].forEach(type => {
 			const storageKey = `${ABC_CONFIG_STORAGE_KEY_PREFIX}${type}`;
 			const savedConfigData = localStorage.getItem(storageKey);
-			if (savedConfigData) {
-				try {
-					const parsed = JSON.parse(savedConfigData);
-					if (parsed.version === ABC_ANALYSIS_TABLE_CONFIG_VER) {
-						setTableConfigs(prev => ({
-							...prev,
-							[type]: parsed.config
-						}));
+				if (savedConfigData) {
+					try {
+						const parsed = JSON.parse(savedConfigData);
+						if (parsed.version === ABC_ANALYSIS_TABLE_CONFIG_VER && Array.isArray(parsed.config)) {
+							setTableConfigs(prev => ({
+								...prev,
+								[type]: parsed.config
+							}));
+						}
+					} catch (error) {
+						console.error('Error parsing saved table config:', error);
 					}
-				} catch (error) {
-					console.error('Error parsing saved table config:', error);
 				}
-			}
 		});
 	}, []);
 
@@ -346,7 +346,7 @@ const AbcAnalysisPage = () => {
 	// Используем хук для управления изменением размеров колонок
     const { config: currentTableConfig, onResize: onResizeGroup } = useTableColumnResize(
         tableConfig, 
-        `abcAnalysisTableConfig_${viewType}`,
+        `abcAnalysisTableColumnWidths_${viewType}`,
         0,
         400,
         ABC_ANALYSIS_TABLE_CONFIG_VER

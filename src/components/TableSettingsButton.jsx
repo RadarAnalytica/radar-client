@@ -1,13 +1,13 @@
 import React from 'react';
 import styles from './TableSettingsButton.module.css';
 
-const TableSettingsButton = ({ onClick, disabled, className = '' }) => {
+const TableSettingsButton = ({ onClick, disabled, className = '', title = 'Настройка таблицы' }) => {
   return (
     <button
       className={`${styles.settingsButton} ${className}`}
       onClick={onClick}
       disabled={disabled}
-      title='Настройка Сводки продаж'
+      title={title}
     >
       <svg width="19" height="18" viewBox="0 0 19 18" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path fillRule="evenodd" clipRule="evenodd" d="M13.75 8.64276C13.75 11.1741 11.698 13.2261 9.16667 13.2261C6.63536 13.2261 4.58333 11.1741 4.58333 8.64276C4.58333 6.11146 6.63536 4.05943 9.16667 4.05943C11.698 4.05943 13.75 6.11146 13.75 8.64276ZM12.375 8.64276C12.375 10.4147 10.9386 11.8511 9.16667 11.8511C7.39475 11.8511 5.95833 10.4147 5.95833 8.64276C5.95833 6.87085 7.39475 5.43443 9.16667 5.43443C10.9386 5.43443 12.375 6.87085 12.375 8.64276Z" fill="#5329FF" />

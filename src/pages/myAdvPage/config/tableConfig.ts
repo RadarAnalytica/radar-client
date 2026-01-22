@@ -117,15 +117,67 @@ export const mergeTableConfig = (
 ): ColumnConfig[] => {
   if (!savedColumns) return defaultColumns;
 
-  // Создаем Map для быстрого доступа к сохраненным настройкам
-  const savedMap = new Map(savedColumns.map(col => [col.key, col]));
+  type ExtendedColumnConfig = ColumnConfig & {
+    children?: ExtendedColumnConfig[];
+    colSpan?: number;
+  };
 
-  // Применяем сохраненные настройки видимости к дефолтным колонкам
-  return defaultColumns.map(col => {
-    const saved = savedMap.get(col.key);
-    if (saved && col.canToggle) {
-      // Применяем только настройку hidden для колонок, которые можно переключать
-      return { ...col, hidden: saved.hidden };
+  const mergeChildren = (
+    defaultChildren: ExtendedColumnConfig[] = [],
+    savedChildren: ExtendedColumnConfig[] = []
+  ): ExtendedColumnConfig[] => {
+    if (!defaultChildren.length) return savedChildren;
+    const defaultMap = new Map(defaultChildren.map(child => [child.key, child]));
+    const usedKeys = new Set<string>();
+
+    const merged = savedChildren.map((savedChild) => {
+      const defaultChild = defaultMap.get(savedChild.key);
+      usedKeys.add(savedChild.key);
+      return { ...defaultChild, ...savedChild };
+    });
+
+    defaultChildren.forEach((defaultChild) => {
+      if (!usedKeys.has(defaultChild.key)) {
+        merged.push(defaultChild);
+      }
+    });
+
+    return merged;
+  };
+
+  const defaultMap = new Map(defaultColumns.map(col => [col.key, col as ExtendedColumnConfig]));
+  const usedKeys = new Set<string>();
+  const mergedColumns: ExtendedColumnConfig[] = [];
+
+  savedColumns.forEach((savedCol) => {
+    const saved = savedCol as ExtendedColumnConfig;
+    const defaultCol = defaultMap.get(saved.key);
+    const base = defaultCol ?? saved;
+    const mergedCol: ExtendedColumnConfig = { ...base, ...saved };
+
+    if (Array.isArray(base.children) || Array.isArray(saved.children)) {
+      const defaultChildren = base.children ?? [];
+      const savedChildren = saved.children ?? [];
+      mergedCol.children = mergeChildren(defaultChildren, savedChildren);
+      mergedCol.colSpan = mergedCol.children.filter(child => !child.hidden).length || 1;
+    }
+
+    mergedColumns.push(mergedCol);
+    usedKeys.add(saved.key);
+  });
+
+  defaultColumns.forEach((defaultCol) => {
+    if (!usedKeys.has(defaultCol.key)) {
+      mergedColumns.push(defaultCol as ExtendedColumnConfig);
+    }
+  });
+
+  return mergedColumns.map((col) => {
+    if (Array.isArray(col.children)) {
+      return {
+        ...col,
+        colSpan: col.children.filter(child => !child.hidden).length || 1
+      };
     }
     return col;
   });
