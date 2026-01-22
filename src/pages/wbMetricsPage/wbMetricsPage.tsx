@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useMemo } from 'react';
+import React, { useState, useEffect, useContext, useMemo, useCallback } from 'react';
 import { useLocation } from 'react-router-dom';
 import AuthContext from '@/service/AuthContext';
 import MobilePlug from '@/components/sharedComponents/mobilePlug/mobilePlug';
@@ -13,7 +13,8 @@ import { useLoadingProgress } from '@/service/hooks/useLoadingProgress';
 import Loader from '@/components/ui/Loader';
 // import DownloadButton from '@/components/DownloadButton';
 import WbMetricsTable from './widgets/WbMetricsTable/WbMetricsTable';
-import TableSettingsWidget from './widgets/TableSettingsWidget/TableSettingsWidget';
+import TableSettingsModal, { TableSettingsItem } from '@/components/TableSettingsModal';
+import TableSettingsButton from '@/components/TableSettingsButton';
 import NoData from '@/components/sharedComponents/NoData/NoData';
 import DataCollectWarningBlock from '@/components/sharedComponents/dataCollectWarningBlock/dataCollectWarningBlock';
 import { 
@@ -39,6 +40,7 @@ const WbMetricsPage: React.FC = () => {
   const [sortState, setSortState] = useState({ sort_field: undefined, sort_order: undefined });
   const [data, setData] = useState(null);
   const [pageData, setPageData] = useState({ page: 1, per_page: 25, total_count: 0 });
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   
   const progress = useLoadingProgress({ loading });
   const pageTitle = metricType === 'drr' ? 'Контроль ДРР' : 'Контроль СПП';
@@ -83,16 +85,53 @@ const WbMetricsPage: React.FC = () => {
     }
   }, [data, metricType]);
 
-  // Обработчик изменения конфигурации таблицы
-  const handleTableConfigChange = (newConfig: ColumnConfig[]) => {
+  // Prepare columns for settings modal (only toggleable columns)
+  const columnsForSettings = useMemo(() => {
+    return tableConfig
+      .filter(col => col.canToggle)
+      .map((col) => ({
+        ...col,
+        id: col.key || col.dataIndex,
+        title: col.title,
+        isVisible: !col.hidden,
+      }));
+  }, [tableConfig]);
+
+  // Original columns for "Reset to default" button
+  const originalColumnsForSettings = useMemo(() => {
+    if (!data?.data[0]?.control_data) return [];
+    const defaultConfig = getDefaultTableConfig(data.data[0].control_data);
+    return defaultConfig
+      .filter(col => col.canToggle)
+      .map((col) => ({
+        ...col,
+        id: col.key || col.dataIndex,
+        title: col.title,
+        isVisible: !col.hidden,
+      }));
+  }, [data]);
+
+  // Handle settings save
+  const handleSettingsSave = useCallback((updatedColumns: TableSettingsItem[]) => {
+    const allColumnsMap = new Map(tableConfig.map(col => [col.key || col.dataIndex, col]));
+    const reorderedToggleable = updatedColumns.map(updatedCol => {
+      const originalCol = allColumnsMap.get(updatedCol.id);
+      return originalCol ? { ...originalCol, hidden: !updatedCol.isVisible } : null;
+    }).filter((col): col is ColumnConfig => col !== null);
+    
+    const toggleableQueue = [...reorderedToggleable];
+    const newConfig = tableConfig.map((col) => {
+      if (!col.canToggle) {
+        return col;
+      }
+
+      const nextToggleable = toggleableQueue.shift();
+      return nextToggleable ?? col;
+    });
+    
     setTableConfig(newConfig);
     saveTableConfig(newConfig, metricType);
-  };
-
-  const downloadHandler = async () => {
-    // TODO: Implement Excel download
-    console.log('Download Excel for', metricType);
-  };
+  }, [tableConfig, metricType]);
   
 
   return (
@@ -126,14 +165,10 @@ const WbMetricsPage: React.FC = () => {
             />
 
             <div className={styles.page__controlsButtonsWrapper}>
-                <TableSettingsWidget
-                    tableConfig={tableConfig}
-                    setTableConfig={handleTableConfigChange}
+                <TableSettingsButton
+                    onClick={() => setIsSettingsOpen(true)}
+                    disabled={loading}
                 />
-                {/* <DownloadButton
-                    handleDownload={downloadHandler}
-                    loading={false}
-                /> */}
             </div>
         </div>
 
@@ -161,6 +196,19 @@ const WbMetricsPage: React.FC = () => {
           : <NoData />
         )}
       </section>
+
+      <TableSettingsModal
+        isOpen={isSettingsOpen}
+        onClose={() => setIsSettingsOpen(false)}
+        title="Настройки таблицы"
+        items={columnsForSettings}
+        onSave={handleSettingsSave}
+        originalItems={originalColumnsForSettings}
+        idKey="id"
+        titleKey="title"
+        visibleKey="isVisible"
+        invertVisibility={false}
+      />
     </main>
   );
 };

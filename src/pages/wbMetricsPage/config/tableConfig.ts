@@ -112,7 +112,6 @@ const formatDateHeader = (dateString: string): string => {
 export const getTableConfigStorageKey = (metricType: string) => `wbMetrics_tableConfig__${metricType}`;
 
 export const saveTableConfig = (columns: ColumnConfig[], metricType: string): void => {
-  console.log('columns', columns);
   try {
     const configData: TableConfigData = {
       version: TABLE_CONFIG_VERSION,

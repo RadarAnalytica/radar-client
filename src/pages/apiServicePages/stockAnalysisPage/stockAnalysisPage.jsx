@@ -15,7 +15,7 @@ import { useDemoMode } from '@/app/providers';
 import { useLoadingProgress } from '@/service/hooks/useLoadingProgress';
 import { CURR_STOCK_ANALYSIS_TABLE_CONFIG_VER } from './shared';
 import { newTableConfig } from './shared/configs/newTableConfig';
-import TableSettingsModal from '@/components/TableSettingsModal';
+import TableSettingsModal, { mapConfigToSettingsItems, mapSettingsToConfig } from '@/components/TableSettingsModal';
 import TableSettingsButton from '@/components/TableSettingsButton';
 
 const STORAGE_KEY = 'STOCK_ANALYSIS_TABLE_CONFIG';
@@ -50,45 +50,15 @@ const StockAnalysisPage = () => {
 
     // Prepare columns for settings modal (with id for each item)
     const columnsForSettings = useMemo(() => {
-        return tableConfig.map((col) => ({
-            ...col,
-            id: col.key || col.dataIndex,
-            title: col.title || 'Группа',
-            isVisible: !col.hidden,
-            children: col.children?.map((child) => ({
-                ...child,
-                id: child.key || child.dataIndex,
-                title: child.title,
-                isVisible: !child.hidden,
-            })),
-        }));
+        return mapConfigToSettingsItems(tableConfig);
     }, [tableConfig]);
 
     const originalColumnsForSettings = useMemo(() => {
-        return newTableConfig.map((col) => ({
-            ...col,
-            id: col.key || col.dataIndex,
-            title: col.title || 'Группа',
-            isVisible: !col.hidden,
-            children: col.children?.map((child) => ({
-                ...child,
-                id: child.key || child.dataIndex,
-                title: child.title,
-                isVisible: !child.hidden,
-            })),
-        }));
+        return mapConfigToSettingsItems(newTableConfig);
     }, []);
 
     const handleSettingsSave = (updatedColumns) => {
-        // Transform back to table config format
-        const newConfig = updatedColumns.map((col) => ({
-            ...col,
-            hidden: !col.isVisible,
-            children: col.children?.map((child) => ({
-                ...child,
-                hidden: !child.isVisible,
-            })),
-        }));
+        const newConfig = mapSettingsToConfig(updatedColumns);
         setTableConfig(newConfig);
         localStorage.setItem(STORAGE_KEY, JSON.stringify({
             version: CURR_STOCK_ANALYSIS_TABLE_CONFIG_VER,
@@ -176,7 +146,6 @@ const StockAnalysisPage = () => {
                                 filters={filters}
                             />
                             <TableSettingsButton
-                                className={styles.settingsButton}
                                 onClick={() => setIsSettingsOpen(true)}
                                 disabled={loading}
                             />

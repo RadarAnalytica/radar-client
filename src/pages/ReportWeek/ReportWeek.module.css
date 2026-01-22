@@ -85,25 +85,3 @@
     flex-flow: row nowrap;
     gap: 12px;
 }
-
-.settingsButton {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 38px;
-    height: 38px;
-    background-color: #E7E1FE;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.2s;
-}
-
-.settingsButton:hover {
-    background-color: #d4cbf7;
-}
-
-.settingsButton:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-}

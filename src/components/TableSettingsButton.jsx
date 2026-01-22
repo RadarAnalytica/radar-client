@@ -1,9 +1,10 @@
 import React from 'react';
+import styles from './TableSettingsButton.module.css';
 
-const TableSettingsButton = ({ onClick, disabled, className }) => {
+const TableSettingsButton = ({ onClick, disabled, className = '' }) => {
   return (
     <button
-      className={className}
+      className={`${styles.settingsButton} ${className}`}
       onClick={onClick}
       disabled={disabled}
       title='Настройка Сводки продаж'

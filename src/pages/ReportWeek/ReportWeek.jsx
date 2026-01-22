@@ -8,7 +8,7 @@ import { ServiceFunctions } from '@/service/serviceFunctions';
 import { fileDownload } from '@/service/utils';
 import { Filters } from '@/components/sharedComponents/apiServicePagesFiltersComponent';
 import styles from './ReportWeek.module.css';
-import TableSettingsModal from '@/components/TableSettingsModal';
+import TableSettingsModal, { mapConfigToSettingsItems, mapSettingsToConfig } from '@/components/TableSettingsModal';
 import { useAppSelector, useAppDispatch } from '@/redux/hooks';
 import { actions as filterActions } from '@/redux/apiServicePagesFiltersState/apiServicePagesFilterState.slice';
 import SelfCostWarningBlock from '@/components/sharedComponents/selfCostWraningBlock/selfCostWarningBlock';
@@ -275,30 +275,15 @@ export default function ReportWeek() {
 
 	// Преобразуем колонки для TableSettingsModal
 	const columnsForSettings = useMemo(() => {
-		return tableColumns.map((col) => ({
-			...col,
-			id: col.dataIndex,
-			title: col.title,
-			isVisible: !col.hidden,
-		}));
+		return mapConfigToSettingsItems(tableColumns, { idKey: 'dataIndex', titleKey: 'title' });
 	}, [tableColumns]);
 
 	const originalColumnsForSettings = useMemo(() => {
-		return COLUMNS.map((col) => ({
-			...col,
-			id: col.dataIndex,
-			title: col.title,
-			isVisible: !col.hidden,
-		}));
+		return mapConfigToSettingsItems(COLUMNS, { idKey: 'dataIndex', titleKey: 'title' });
 	}, []);
 
 	const handleSettingsSave = (updatedColumns) => {
-		// Преобразуем обратно в формат таблицы
-		const newTableColumns = updatedColumns.map((col) => ({
-			...col,
-			dataIndex: col.id,
-			hidden: !col.isVisible,
-		}));
+		const newTableColumns = mapSettingsToConfig(updatedColumns, { idKey: 'dataIndex', titleKey: 'title' });
 		setTableColumns(newTableColumns);
 		localStorage.setItem('reportWeekTableConfig', JSON.stringify({
 			version: CURR_REPORT_WEEK_COLUMNS_CONFIG_VER,
@@ -360,7 +345,6 @@ export default function ReportWeek() {
 							loading={loading || downloadLoading}
 						/>
 						<TableSettingsButton
-							className={styles.settingsButton}
 							onClick={() => setIsSettingsOpen(true)}
 							disabled={loading}
 						/>

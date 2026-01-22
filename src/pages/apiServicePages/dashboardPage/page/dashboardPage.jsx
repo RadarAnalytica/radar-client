@@ -34,7 +34,7 @@ import { DndContext, pointerWithin, rectIntersection, useDndMonitor, DragOverlay
 import { SortableContext, arrayMove, rectSortingStrategy, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { DragHandle } from '@/shared/ui/DragHandler/DragHandler';
 import { SortableRow } from '../components/SortableRow';
-import { SettingsModal } from '../components/SettingsModal';
+import TableSettingsModal from '@/components/TableSettingsModal';
 import { v4 as uuidv4 } from 'uuid';
 import { SmallButton } from '@/shared';
 import { GeneralLayout } from '@/shared';
@@ -1023,14 +1023,16 @@ const MainContent = React.memo(({
                         return (
                             <div className={row.container} key={row.id}>
                                 {row.render(row, dataDashBoard, loading, selectedRange, activeBrand, authToken, filters, updateDataDashBoard, stockAnalysisData)}
-                            </div>)
+                            </div>
+                        );
                     }
 
                     if (!row.container && row.isVisible) {
                         return (
                             <React.Fragment key={row.id}>
                                 {row.render(row, dataDashBoard, loading, selectedRange, activeBrand, authToken, filters, updateDataDashBoard, stockAnalysisData)}
-                            </React.Fragment>)
+                            </React.Fragment>
+                        );
                     }
                 })}
             </div >
@@ -1057,6 +1059,74 @@ const _DashboardPage = () => {
         shopStatus: null,
         error: false
     });
+    const settingsItems = useMemo(() => {
+        return items
+            .filter((item) => item.dropKey === '1')
+            .map((item) => ({
+                ...item,
+                id: item.id,
+                title: item.title,
+                isVisible: item.isVisible !== false,
+            }));
+    }, [items]);
+
+    const originalSettingsItems = useMemo(() => {
+        return barsConfig
+            .filter((item) => item.dropKey === '1')
+            .map((item) => ({
+                ...item,
+                id: item.id,
+                title: item.title,
+                isVisible: item.isVisible !== false,
+            }));
+    }, []);
+
+    const handleSettingsSave = useCallback((updatedColumns) => {
+        const updatedItems = updatedColumns.map((item) => ({
+            ...item,
+            isVisible: item.isVisible !== false,
+        }));
+        const updatedItemsMap = new Map(updatedItems.map((item) => [item.id, item]));
+        const dropKey1Indices = [];
+        items.forEach((item, index) => {
+            if (item.dropKey === '1') {
+                dropKey1Indices.push(index);
+            }
+        });
+        const dropKey1IndexSet = new Set(dropKey1Indices);
+
+        const mergedConfig = items.map((item) => {
+            if (item.dropKey === '1' && updatedItemsMap.has(item.id)) {
+                const updatedItem = updatedItemsMap.get(item.id);
+                return { ...item, ...updatedItem, isVisible: updatedItem.isVisible !== false };
+            }
+            return item;
+        });
+
+        if (dropKey1Indices.length > 0 && updatedItems.length > 0) {
+            const result = [];
+            let dropKey1Index = 0;
+
+            for (let i = 0; i < mergedConfig.length; i++) {
+                if (dropKey1IndexSet.has(i)) {
+                    if (dropKey1Index < updatedItems.length) {
+                        const updatedItem = updatedItems[dropKey1Index];
+                        result.push({ ...mergedConfig[i], ...updatedItem, isVisible: updatedItem.isVisible !== false });
+                        dropKey1Index++;
+                    }
+                } else {
+                    result.push(mergedConfig[i]);
+                }
+            }
+
+            saveBarsConfig(result, BARS_STORAGE_KEY, DASHBOARD_CONFIG_VER);
+            setItems(result);
+            return;
+        }
+
+        saveBarsConfig(mergedConfig, BARS_STORAGE_KEY, DASHBOARD_CONFIG_VER);
+        setItems(mergedConfig);
+    }, [items]);
 
     const updateDataDashBoard = async (selectedRange, activeBrand, authToken) => {
         setPageState(prev => ({ ...prev, loading: true }));
@@ -1180,7 +1250,6 @@ const _DashboardPage = () => {
                         loading={pageState?.loading || downloadLoading}
                     />
                     <TableSettingsButton
-                        className={styles.page__settingsButton}
                         onClick={() => setIsSettingsOpen(true)}
                         disabled={pageState.loading}
                     />
@@ -1204,15 +1273,16 @@ const _DashboardPage = () => {
                     setItems={setItems}
                 />
 
-                <SettingsModal
+                <TableSettingsModal
                     isOpen={isSettingsOpen}
-                    setIsOpen={setIsSettingsOpen}
-                    BARS_STORAGE_KEY={BARS_STORAGE_KEY}
-                    DASHBOARD_CONFIG_VER={DASHBOARD_CONFIG_VER}
-                    items={items}
-                    setItems={setItems}
-                    onSave={saveBarsConfig}
-                    originalConfig={barsConfig}
+                    onClose={() => setIsSettingsOpen(false)}
+                    title="Настройка Сводки продаж"
+                    items={settingsItems}
+                    onSave={handleSettingsSave}
+                    originalItems={originalSettingsItems}
+                    idKey="id"
+                    titleKey="title"
+                    visibleKey="isVisible"
                 />
             </section>
         </GeneralLayout>

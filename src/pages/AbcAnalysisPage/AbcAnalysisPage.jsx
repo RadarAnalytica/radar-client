@@ -22,7 +22,7 @@ import { formatPrice } from '@/service/utils';
 import { Tooltip } from 'antd';
 import { useTableColumnResize } from '@/service/hooks/useTableColumnResize';
 import { getWordDeclension } from '@/service/utils';
-import TableSettingsModal from '@/components/TableSettingsModal';
+import TableSettingsModal, { mapConfigToSettingsItems, mapSettingsToConfig } from '@/components/TableSettingsModal';
 import TableSettingsButton from '@/components/TableSettingsButton';
 
 const ABC_CONFIG_STORAGE_KEY_PREFIX = 'abcAnalysisTableConfig_';
@@ -85,25 +85,14 @@ const AbcAnalysisPage = () => {
 
 	// Prepare columns for settings modal - exclude columns hidden by default in original config
 	const columnsForSettings = useMemo(() => {
-		return tableConfig
-			.filter(col => !hiddenByDefaultKeys.has(col.key || col.dataIndex))
-			.map((col) => ({
-				...col,
-				id: col.key || col.dataIndex,
-				title: col.title,
-				isVisible: !col.hidden,
-			}));
+		const mapped = mapConfigToSettingsItems(tableConfig);
+		return mapped.filter((col) => !hiddenByDefaultKeys.has(col.key || col.dataIndex || col.id));
 	}, [tableConfig, hiddenByDefaultKeys]);
 
 	const originalColumnsForSettings = useMemo(() => {
-		return originalConfig
-			.filter(col => !col.hidden)
-			.map((col) => ({
-				...col,
-				id: col.key || col.dataIndex,
-				title: col.title,
-				isVisible: true,
-			}));
+		return mapConfigToSettingsItems(
+			originalConfig.filter((col) => !col.hidden)
+		);
 	}, [originalConfig]);
 
 	const handleSettingsSave = (updatedColumns) => {
@@ -112,11 +101,7 @@ const AbcAnalysisPage = () => {
 			hiddenByDefaultKeys.has(col.key || col.dataIndex)
 		);
 		
-		// Transform updated columns back to table config format
-		const updatedVisibleColumns = updatedColumns.map((col) => ({
-			...col,
-			hidden: !col.isVisible,
-		}));
+		const updatedVisibleColumns = mapSettingsToConfig(updatedColumns);
 		
 		// Reorder based on updatedColumns order, keeping hidden-by-default columns at the end
 		const reorderedConfig = [
@@ -438,7 +423,6 @@ const AbcAnalysisPage = () => {
 										</button>
 									</Flex>
 									<TableSettingsButton
-										className={styles.settingsButton}
 										onClick={() => setIsSettingsOpen(true)}
 										disabled={loading}
 									/>

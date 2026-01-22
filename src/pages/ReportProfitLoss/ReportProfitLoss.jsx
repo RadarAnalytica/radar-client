@@ -554,14 +554,14 @@ export default function ReportProfitLoss() {
 						//minCustomDate={getMinCustomDate(activeBrand?.created_at, 6, 'month')}
 					/>
 					<div className={styles.controlsButtons}>
+						<DownloadButton
+							handleDownload={handleDownload}
+							loading={loading || downloadLoading}
+						/>
 						<TableSettingsButton
 							className={styles.settingsButton}
 							onClick={() => setIsSettingsOpen(true)}
 							disabled={loading || !rawResponseData}
-						/>
-						<DownloadButton
-							handleDownload={handleDownload}
-							loading={loading || downloadLoading}
 						/>
 					</div>
 				</div>

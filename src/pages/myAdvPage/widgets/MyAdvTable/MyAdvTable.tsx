@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect, useMemo } from 'react';
 import { Table as RadarTable } from 'radar-ui';
 import { useNavigate } from 'react-router-dom';
 import { Filters } from '@/components/sharedComponents/apiServicePagesFiltersComponent';
-import TableSettingsModal from '@/components/TableSettingsModal';
+import TableSettingsModal, { mapConfigToSettingsItems, mapSettingsToConfig } from '@/components/TableSettingsModal';
 import TableSettingsButton from '@/components/TableSettingsButton';
 import { TABLE_CONFIG_VERSION, getDefaultTableConfig, TABLE_MAX_WIDTH } from '../../config/tableConfig';
 import styles from './MyAdvTable.module.css';
@@ -60,49 +60,20 @@ const MyAdvTable: React.FC<MyAdvTableProps> = React.memo(({
 
   // Prepare columns for settings modal (with id for each item)
   const columnsForSettings = useMemo(() => {
-    return (tableConfig as ExtendedColumnConfig[]).map((col) => ({
-      ...col,
-      id: col.key || col.dataIndex,
-      title: col.title || 'Группа',
-      isVisible: !col.hidden,
-      children: col.children?.map((child) => ({
-        ...child,
-        id: child.key || child.dataIndex,
-        title: child.title,
-        isVisible: !child.hidden,
-      })),
-    }));
+    return mapConfigToSettingsItems(tableConfig as ExtendedColumnConfig[]);
   }, [tableConfig]);
 
   const originalColumnsForSettings = useMemo(() => {
     const defaultConfig = getDefaultTableConfig() as ExtendedColumnConfig[];
-    return defaultConfig.map((col) => ({
-      ...col,
-      id: col.key || col.dataIndex,
-      title: col.title || 'Группа',
-      isVisible: !col.hidden,
-      children: col.children?.map((child) => ({
-        ...child,
-        id: child.key || child.dataIndex,
-        title: child.title,
-        isVisible: !child.hidden,
-      })),
-    }));
+    return mapConfigToSettingsItems(defaultConfig);
   }, []);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleSettingsSave = (updatedColumns: any[]) => {
-    // Transform back to table config format
-    const newConfig = updatedColumns.map((col) => ({
+    const mappedConfig = mapSettingsToConfig(updatedColumns) as ExtendedColumnConfig[];
+    const newConfig = mappedConfig.map((col) => ({
       ...col,
-      hidden: !col.isVisible,
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      colSpan: col.children?.filter((child: any) => !child.hidden)?.length || 1,
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      children: col.children?.map((child: any) => ({
-        ...child,
-        hidden: !child.isVisible,
-      })),
+      colSpan: col.children?.filter((child) => !child.hidden)?.length || 1,
     }));
     setTableConfig(newConfig as ColumnConfig[]);
     localStorage.setItem('MY_ADV_TABLE_CONFIG', JSON.stringify({
@@ -350,7 +321,6 @@ const MyAdvTable: React.FC<MyAdvTableProps> = React.memo(({
         <div className={styles.settingsWrapper}>
           {!isDataNotCollected && (
             <TableSettingsButton
-              className={styles.settingsButton}
               onClick={() => setIsSettingsOpen(true)}
               disabled={loading}
             />
