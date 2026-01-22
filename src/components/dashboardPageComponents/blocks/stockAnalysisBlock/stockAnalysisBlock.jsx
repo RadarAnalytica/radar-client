@@ -59,12 +59,11 @@ const StockAnalysisBlock = memo(({ dashboardLoading, dragHandle, data}) => {
     //     }
     // }, [filters]);
 
-    // раскоментить когда введем днд (данные буду фетчится в основной странице дашборда)
     useEffect(() => {
         if (data) {
             setStockAnalysisData(data);
             setStockAnalysisFilteredData(data);
-            setHasSelfCostPrice(data.every(_ => _.costPriceOne !== null));
+            setHasSelfCostPrice(data?.every(_ => _?.costPriceOne !== null));
         }
     }, [data]);
 

@@ -83,7 +83,7 @@ const StockAnalysisPage = () => {
             await setTimeout(() => {
                 setStockAnalysisData(data);
                 setStockAnalysisFilteredData(data);
-                setHasSelfCostPrice(data.every(_ => _.costPriceOne !== null));
+                setHasSelfCostPrice(data?.every(_ => _.costPriceOne !== null));
                 setLoading(false);
                 progress.reset();
             }, 500);

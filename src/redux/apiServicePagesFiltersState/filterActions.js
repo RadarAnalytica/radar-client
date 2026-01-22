@@ -29,7 +29,7 @@ const createFiltersDTO = (data, shopsData) => {
       value: 'Все',
       id: 0,
       is_primary_collect: data?.some(_ => _.shop_data.is_primary_collect),
-      is_self_cost_set: shopsData?.filter(_ => _.is_valid).length > 0 ? shopsData?.filter(_ => _.is_valid).every(_ => _.is_self_cost_set) : false,
+      is_self_cost_set: shopsData?.filter(_ => _.is_valid).length > 0 ? shopsData?.filter(_ => _.is_valid)?.every(_ => _.is_self_cost_set) : false,
       created_at: minCreatedAt,
     },
     ...data?.map(_ => ({
