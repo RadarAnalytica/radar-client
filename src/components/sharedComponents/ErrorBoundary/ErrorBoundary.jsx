@@ -17,11 +17,12 @@ class ErrorBoundary extends React.Component {
     super(props);
     this.state = { hasError: false, error: null, errorInfo: null };
     this.enabled = true;
+    this.isDev = location.hostname === 'localhost';
   }
 
   static getDerivedStateFromError(error) {
     // Если ошибка связана с загрузкой чанков или css, просто перезагружаем страницу
-    if (RELOAD_PAGE_ERRORS.some(e => String(error)?.includes(e))) {
+    if (!this.isDev && RELOAD_PAGE_ERRORS.some(e => String(error)?.includes(e))) {
       setTimeout(() => window.location.reload(), 500);
       return;
     }

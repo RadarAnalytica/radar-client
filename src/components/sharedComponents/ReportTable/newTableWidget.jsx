@@ -151,6 +151,7 @@ const customCellRender = (value, record, index, dataIndex) => {
 const TableWidget = ({ loading, columns, data, rowSelection = false, virtual = true, is_primary_collect, progress = null, setTableConfig }) => {
 	const tableContainerRef = useRef(null);
 	const expandedRows = [...data].filter(_ => _.isExpanded).map(_ => JSON.stringify(_)).filter(Boolean);
+
 	const onResize = (columnKey, newWidth) => {
 		const mouseHandler = (e) => {
 			e.preventDefault();
@@ -196,8 +197,9 @@ const TableWidget = ({ loading, columns, data, rowSelection = false, virtual = t
 				</div>}
 				{!loading &&
 					<RadarTable
+						key={JSON.stringify(columns)}
 						resizeable
-						treeMode={true}
+						treeMode
 						indentSize={30}
 						onResize={onResize}
 						layout='vertical'

@@ -196,7 +196,7 @@ const WbMetricsTable: React.FC<WbMetricsTableProps> = React.memo(({
     TABLE_CONFIG_VERSION
   );
   
-  
+
   return (
     <div className={styles.tableContainer}>
       <div className={styles.tableWrapper} ref={tableContainerRef}>
@@ -222,7 +222,6 @@ const WbMetricsTable: React.FC<WbMetricsTableProps> = React.memo(({
               onChange: handlePageChange,
               showQuickJumper: true,
             }}
-            style={{ fontFamily: 'Manrope', width: 'max-content', tableLayout: 'fixed' }}
             bodyCellWrapperStyle={{
               justifyContent: 'flex-start',
               height: '70px',

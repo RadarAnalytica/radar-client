@@ -447,7 +447,7 @@ export default function ReportProfitLoss() {
 				children: parent.isParent ? (children.length > 0 ? children : []) : undefined,
 			};
 		});
-	}, []);
+	}, []);	
 
 	// Prepare rows for settings modal - transform to hierarchical structure
 	const rowsForSettings = useMemo(() => {

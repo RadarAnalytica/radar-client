@@ -298,6 +298,7 @@ const TableWidget = React.memo(({ stockAnalysisFilteredData, loading, progress, 
             <div className={styles.widget__scrollContainer} ref={containerRef} style={{ maxHeight: maxHeight ?? '100%' }}>
                 {tableData && tableData.length > 0 && tableConfig &&
                     <RadarTable
+                        key={JSON.stringify(tableConfig)}
                         rowKey={(record) => `${record.vendorCode}_${record.sku}_${record?.children?.length || 0}`}
                         config={tableConfig}
                         dataSource={[...tableData.slice((paginationState.current - 1) * paginationState.pageSize, paginationState.current * paginationState.pageSize)]}
