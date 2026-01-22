@@ -278,7 +278,7 @@ let configItemTemplate = {
 
   }
 };
-const metricsOrder = [
+export const metricsOrder = [
   { key: 'expected_marginality_data', title: 'Прогноз. маржинальность (%)', isParent: true, tooltip: 'Ожидаемая доля чистой прибыли в выручке от продаж. Формула: (Чистая прибыль / Сумма продаж) × 100%' },
   { key: 'plan_marginality', title: 'План. маржинальность (%)', isChildren: true, parentKey: 'expected_marginality_data', tooltip: 'Доля чистой прибыли в выручке от продаж. Формула: (Чистая прибыль / Сумма продаж) × 100%' },
   { key: 'roi', title: 'ROI (%)', isChildren: true, parentKey: 'expected_marginality_data', tooltip: 'Прогнозируемый коэффициент окупаемости инвестиций. Показывает, какой процент прибыли получен на каждый вложенный рубль. Рассчитывается как отношение чистой прибыли ко всем расходам, связанным с продажами и продвижением товара. Формула: (Чистая прибыль / Сумма расходов) × 100%. Расходы включают: Себестоимость проданных товаров + Логистика + Комиссия + Хранение + Штрафы - Компенсации.' },
@@ -372,10 +372,10 @@ export const getTableConfig = (initialData) => {
 };
 
 
-export const getTableData = (initialData) => {
+export const getTableData = (initialData, metrics = metricsOrder) => {
   const childrenData = [];
   const tableData = [];
-  metricsOrder.forEach((item, index) => {
+  metrics.forEach((item, index) => {
     const { key, title, isChildren, isParent, parentKey, inverseIndication, noIndication, tooltip } = item;
     let rowObject = {
       period: title,
