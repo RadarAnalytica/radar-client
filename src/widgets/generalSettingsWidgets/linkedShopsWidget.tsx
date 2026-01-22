@@ -158,11 +158,12 @@ export const LinkedShopsWidget = () => {
                 setAddAndEditModalState(null);
                 lastOperationTypeRef.current = null;
             }
-
             timeout = setTimeout(() => {
-                dispatch(fetchShops(authToken))
-                //@ts-ignore
-                dispatch(fetchFilters({ authToken, shopData: shops }));
+                if (!isDemoUser && !isDemoMode) {
+                    dispatch(fetchShops(authToken))
+                    //@ts-ignore
+                    dispatch(fetchFilters({ authToken, shopData: shops }));
+                }
                 setAddShopRequestStatus(initRequestStatus);
                 setAddAndEditModalState(null);
             }, 1000);

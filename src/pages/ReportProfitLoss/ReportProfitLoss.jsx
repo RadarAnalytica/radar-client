@@ -250,6 +250,7 @@ export default function ReportProfitLoss() {
 			{ key: 'gross_margin', title: 'Маржинальная прибыль', tooltip: 'Выручка за вычетом себестоимости. Формула: Выручка – Себестоимость' },
 			{ key: 'operating_expenses', title: 'Операционные расходы', inverseIndication: true, isParent: true, isExpanded: false, tooltip: 'Сумма операционных расходов за период.' },
 			{ key: 'operating_profit', title: 'Операционная прибыль (EBITDA)', tooltip: 'Прибыль до вычета налогов, процентов и амортизации. Формула: Маржинальная прибыль – (Комиссии + Логистика + Реклама)' },
+			{ key: 'tax', title: 'Налоги', inverseIndication: true },
 			{ key: 'net_profit', title: 'Чистая прибыль', tooltip: 'Итоговая прибыль. Формула: Оплата на РС – Себестоимость продаж – Налог – Операционные расходы' },
 		];
 
@@ -258,7 +259,7 @@ export default function ReportProfitLoss() {
 			try {
 				// Data structure: apiData[0].data.operating_expenses.items
 				const operatingExpensesItems = apiData[0]?.data?.operating_expenses?.items;
-				
+
 				if (Array.isArray(operatingExpensesItems) && operatingExpensesItems.length > 0) {
 					const categories = [...new Set(operatingExpensesItems.map(item => item.category || 'Без статьи'))];
 					categories.sort().forEach(category => {
@@ -286,11 +287,11 @@ export default function ReportProfitLoss() {
 
 		// Create maps for quick lookup
 		const configMap = new Map(config.map((item) => [item.key, item]));
-		
+
 		// Separate parents and children from config for ordering
 		const parentOrders = new Map();
 		const childOrdersByParent = new Map();
-		
+
 		config.forEach((item, idx) => {
 			if (item.parentKey) {
 				// It's a child
@@ -303,7 +304,7 @@ export default function ReportProfitLoss() {
 				parentOrders.set(item.key, item.order ?? idx);
 			}
 		});
-		
+
 		// Apply visibility, order, and isExpanded from config
 		const result = metricsOrder.map(metric => {
 			const savedConfig = configMap.get(metric.key);
@@ -337,10 +338,10 @@ export default function ReportProfitLoss() {
 			}
 			childrenByParent[child.parentKey].push(child);
 		});
-		
+
 		// Sort parents
 		parents.sort((a, b) => (a.order ?? 999) - (b.order ?? 999));
-		
+
 		// Sort children within each parent and rebuild flat array
 		const sortedResult = [];
 		parents.forEach(parent => {
@@ -370,10 +371,10 @@ export default function ReportProfitLoss() {
 
 		// Get metrics order with dynamic items from API
 		let metricsOrder = getDefaultMetricsOrder(data);
-		
+
 		// Apply saved configuration (visibility and order)
 		metricsOrder = applyRowsConfig(metricsOrder, config);
-		
+
 		setData([...getData(data, metricsOrder)]);
 		setColumns(getConfig(data));
 	}, [rowsConfig, getDefaultMetricsOrder, applyRowsConfig]);
@@ -409,20 +410,20 @@ export default function ReportProfitLoss() {
 	const groupMetricsToHierarchy = useCallback((metricsOrder, configMap = null) => {
 		const parents = [];
 		const childrenByParent = {};
-		
+
 		// First pass: separate parents and children
 		metricsOrder.forEach((metric, index) => {
 			const savedConfig = configMap?.get(metric.key);
 			const isVisible = savedConfig ? !savedConfig.hidden : true;
 			const order = savedConfig?.order ?? index;
-			
+
 			const item = {
 				...metric,
 				id: metric.key,
 				isVisible,
 				order,
 			};
-			
+
 			if (metric.isChildren && metric.parentKey) {
 				if (!childrenByParent[metric.parentKey]) {
 					childrenByParent[metric.parentKey] = [];
@@ -432,10 +433,10 @@ export default function ReportProfitLoss() {
 				parents.push(item);
 			}
 		});
-		
+
 		// Sort parents by order
 		parents.sort((a, b) => (a.order ?? 999) - (b.order ?? 999));
-		
+
 		// Attach children to parents and sort children
 		return parents.map(parent => {
 			const children = childrenByParent[parent.key] || [];
@@ -447,26 +448,26 @@ export default function ReportProfitLoss() {
 				children: parent.isParent ? (children.length > 0 ? children : []) : undefined,
 			};
 		});
-	}, []);	
+	}, []);
 
 	// Prepare rows for settings modal - transform to hierarchical structure
 	const rowsForSettings = useMemo(() => {
 		if (!rawResponseData?.data?.length) return [];
-		
+
 		const metricsOrder = getDefaultMetricsOrder(rawResponseData.data);
-		
+
 		// Apply current config to get visibility and order
 		const configMap = rowsConfig ? new Map(rowsConfig.map((item) => [item.key, item])) : null;
-		
+
 		return groupMetricsToHierarchy(metricsOrder, configMap);
 	}, [rawResponseData, rowsConfig, getDefaultMetricsOrder, groupMetricsToHierarchy]);
 
 	// Original rows for "Reset to default" button
 	const originalRowsForSettings = useMemo(() => {
 		if (!rawResponseData?.data?.length) return [];
-		
+
 		const metricsOrder = getDefaultMetricsOrder(rawResponseData.data);
-		
+
 		return groupMetricsToHierarchy(metricsOrder, null);
 	}, [rawResponseData, getDefaultMetricsOrder, groupMetricsToHierarchy]);
 
@@ -475,7 +476,7 @@ export default function ReportProfitLoss() {
 		// Flatten hierarchical structure back to flat config
 		const flatConfig = [];
 		let orderIndex = 0;
-		
+
 		updatedItems.forEach(item => {
 			flatConfig.push({
 				key: item.id,
@@ -484,7 +485,7 @@ export default function ReportProfitLoss() {
 				isParent: item.isParent,
 				isExpanded: item.isExpanded,
 			});
-			
+
 			if (item.children && item.children.length > 0) {
 				item.children.forEach(child => {
 					flatConfig.push({
@@ -497,14 +498,14 @@ export default function ReportProfitLoss() {
 				});
 			}
 		});
-		
+
 		// Save to state and localStorage
 		setRowsConfig(flatConfig);
 		localStorage.setItem(ROWS_CONFIG_STORAGE_KEY, JSON.stringify({
 			version: ROWS_CONFIG_VERSION,
 			config: flatConfig,
 		}));
-		
+
 		// Reprocess data with new config
 		if (rawResponseData) {
 			dataToTableData(rawResponseData, flatConfig);

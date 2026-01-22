@@ -179,13 +179,13 @@ export default function ReportWeek() {
 		rows.forEach(row => {
 			Object.keys(row).forEach(key => {
 				if (!summary[key]) {
-					if (typeof row[key] === 'object' && row[key]?.value) {
+					if (typeof row[key] === 'object') {
 						summary[key] = row[key].value;
 					} else {
 						summary[key] = row[key];
 					}
 				} else {
-					if (typeof row[key] === 'object' && row[key]?.value) {
+					if (typeof row[key] === 'object') {
 						summary[key] += row[key].value;
 					} else {
 						summary[key] += row[key];

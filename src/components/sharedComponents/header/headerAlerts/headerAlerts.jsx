@@ -135,12 +135,13 @@ const MessageItem = ({
         <li
             id={`message_id_${m.id}`}
             className={isNew ? `${styles.list__item} ${styles.list__item_new}` : styles.list__item}
-            onClick={() => setIsMessageOpen(!isMessageOpen)}
+            //onClick={() => setIsMessageOpen(!isMessageOpen)}
         >
             {isNew &&
                 <span className={styles.list__newLabel}>Новое</span>
             }
-            <div className={isMessageOpen ? styles.list__itemBody : styles.list__itemBody_short}>
+            {/* <div className={isMessageOpen ? styles.list__itemBody : styles.list__itemBody_short}> */}
+            <div className={styles.list__itemBody}>
                 {m.text}
             </div>
             <div className={styles.list__itemHeader}>

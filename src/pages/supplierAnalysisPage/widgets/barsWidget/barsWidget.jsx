@@ -84,7 +84,7 @@ const BarsWidget = ({ dataHandler, dataType, id }) => {
 
     if (widgetData.isLoading || !isFiltersLoaded) {
         return (
-            <div className={styles.loaderWrapper}>
+            <div className={styles.loaderWrapper} style={{ height: 102}}>
                 <span className='loader'></span>
             </div>
         );

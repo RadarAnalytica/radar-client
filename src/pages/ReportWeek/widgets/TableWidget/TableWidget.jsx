@@ -206,7 +206,7 @@ export default function TableWidget({ loading, columns, data, rowSelection = fal
                         }}
                         scrollContainerRef={tableContainerRef}
                         stickyHeader={true}
-                        style={{ fontFamily: 'Manrope', tableLayout: 'fixed' }}
+                        style={{ fontFamily: 'Manrope' }}
                         pagination={false}
                         paginationContainerStyle={{ display: 'none' }}
                         bodyRowClassName={styles.bodyRowSpecial}

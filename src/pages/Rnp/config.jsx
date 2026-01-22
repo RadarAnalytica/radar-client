@@ -325,7 +325,7 @@ const metricsOrder = [
   { key: 'order_addition_percentage', title: 'Добавление в заказ (%)', isChildren: true, parentKey: 'transition_data', tooltip: 'Доля заказов от добавлений в корзину. Формула: (Заказы / Добавления в корзину) × 100%' },
 
   { key: 'taxes_data', title: 'Расходы и налоги (%)', isParent: true, inverseIndication: true, tooltip: 'Ставка налога.' },
-  //{ key: 'tax_per_one', title: 'Налоги на 1 ед. (руб)', isChildren: true, parentKey: 'taxes_data', inverseIndication: true, tooltip: 'Налог на единицу товара. Формула: Сумма налога / Количество продаж' },
+  { key: 'tax_per_one', title: 'Налоги на 1 ед. (руб)', isChildren: true, parentKey: 'taxes_data', inverseIndication: true, tooltip: 'Налог на единицу товара. Формула: Сумма налога / Количество продаж' },
   { key: 'logistics_per_one', title: 'Логистика на 1 ед. (руб)', isChildren: true, parentKey: 'taxes_data', inverseIndication: true, tooltip: 'Логистика на единицу товара. Формула: Логистика / Количество продаж' },
   { key: 'commission_acquiring_per_one', title: 'Комиссия + экв. на 1 ед. (руб)', isChildren: true, parentKey: 'taxes_data', inverseIndication: true, tooltip: 'Комиссия и эквайринг на единицу. Формула: (Комиссия + Эквайринг) / Количество продаж' },
   { key: 'commission_acquiring_percentage', title: 'Комиссия + экв. (%)', isChildren: true, parentKey: 'taxes_data', inverseIndication: true, tooltip: 'Доля комиссии и эквайринга в выручке. Формула: ((Комиссия + Эквайринг) / Сумма продаж) × 100%' },
