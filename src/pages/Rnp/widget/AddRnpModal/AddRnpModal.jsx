@@ -25,6 +25,7 @@ const AddRnpModal = ({ isAddRnpModalVisible, setIsAddRnpModalVisible, addRnp }) 
     const { activeBrandName, activeBrand } = useAppSelector((state) => state.filtersRnpAdd);
     const filters = useAppSelector((state) => state.filtersRnpAdd);
     const [rnpSelected, setRnpSelected] = useState(null);
+    console.log('rnpSelected', rnpSelected)
     const [page, setPage] = useState(1);
     const [loading, setLoading] = useState(true);
     const [localrnpDataArticle, setLocalrnpDataArticle] = useState(null);
@@ -32,7 +33,6 @@ const AddRnpModal = ({ isAddRnpModalVisible, setIsAddRnpModalVisible, addRnp }) 
     const [error, setError] = useState(null);
     const initLoad = useRef(true);
     const isFirstMount = useRef(true);
-    console.log('search', search)
 
     const MAX_RNP_SKU_LIMIT = useMemo(() => {
         let limit = 25 // default limit
@@ -89,6 +89,7 @@ const AddRnpModal = ({ isAddRnpModalVisible, setIsAddRnpModalVisible, addRnp }) 
                 currentPage,
                 search,
             );
+            console.log('response', response)
             if (rnpSelected === null) {
                 setRnpSelected(response?.rnp_wb_ids || []);
             }
@@ -184,34 +185,38 @@ const AddRnpModal = ({ isAddRnpModalVisible, setIsAddRnpModalVisible, addRnp }) 
 
                         {shopStatus && shopStatus?.is_primary_collect && localrnpDataArticle && localrnpDataArticle?.data?.length == 0 && (<div className={styles.empty}>Ничего не найдено</div>)}
                         {shopStatus && shopStatus?.is_primary_collect && localrnpDataArticle && localrnpDataArticle?.data?.length > 0 && (<div className={styles.modal__container}>
-                            {localrnpDataArticle?.data?.map((el, i) => (
-                                <Flex key={i} className={styles.item} gap={20}>
-                                    {(rnpSelected.length >= MAX_RNP_SKU_LIMIT && !rnpSelected.includes(el.wb_id)) &&
-                                        <Tooltip title={`Максимальное количество артикулов в РНП - ${MAX_RNP_SKU_LIMIT}`} arrow={false}>
+                            {localrnpDataArticle?.data?.map((el, i) => {
+                                // console.log(el.wb_id === '412369904' ? el.isSelected : '')
+                                // console.log(rnpSelected?.includes(el.wb_id))
+                                return (
+                                    <Flex key={i} className={styles.item} gap={20}>
+                                        {rnpSelected.length >= MAX_RNP_SKU_LIMIT && !rnpSelected.includes(el.wb_id)&&
+                                            <Tooltip title={`Максимальное количество артикулов в РНП - ${MAX_RNP_SKU_LIMIT}`} arrow={false}>
+                                                <Checkbox
+                                                    checked={rnpSelected?.includes(el.wb_id)}
+                                                    data-value={el.wb_id}
+                                                    onChange={() => selectRnpHandler(el.wb_id)}
+                                                    disabled={rnpSelected.length >= MAX_RNP_SKU_LIMIT && !rnpSelected.includes(el.wb_id)}
+                                                />
+                                            </Tooltip>
+                                        }
+                                        {(rnpSelected.length < MAX_RNP_SKU_LIMIT || rnpSelected.includes(el.wb_id)) &&
                                             <Checkbox
-                                                defaultChecked={rnpSelected?.includes(el.wb_id)}
+                                                checked={rnpSelected?.includes(el.wb_id)}
                                                 data-value={el.wb_id}
                                                 onChange={() => selectRnpHandler(el.wb_id)}
                                                 disabled={rnpSelected.length >= MAX_RNP_SKU_LIMIT && !rnpSelected.includes(el.wb_id)}
                                             />
-                                        </Tooltip>
-                                    }
-                                    {(rnpSelected.length < MAX_RNP_SKU_LIMIT || rnpSelected.includes(el.wb_id)) &&
-                                        <Checkbox
-                                            defaultChecked={rnpSelected?.includes(el.wb_id)}
-                                            data-value={el.wb_id}
-                                            onChange={() => selectRnpHandler(el.wb_id)}
-                                            disabled={rnpSelected.length >= MAX_RNP_SKU_LIMIT && !rnpSelected.includes(el.wb_id)}
+                                        }
+                                        <RnpItem
+                                            title={el.title}
+                                            photo={el.photo}
+                                            wb_id={el.wb_id}
+                                            shop={el.shop_name}
                                         />
-                                    }
-                                    <RnpItem
-                                        title={el.title}
-                                        photo={el.photo}
-                                        wb_id={el.wb_id}
-                                        shop={el.shop_name}
-                                    />
-                                </Flex>
-                            ))}
+                                    </Flex>
+                                )
+                            })}
                         </div>)}
 
                         {shopStatus?.is_primary_collect && <Pagination
