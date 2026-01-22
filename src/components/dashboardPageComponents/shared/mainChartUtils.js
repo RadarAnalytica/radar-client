@@ -109,172 +109,32 @@ export const getChartData = (dataDashBoard, selectedRange, controlsState) => {
     const countDays = dataDashBoard?.orderCountList?.length;
     return {
         labels: getPastDays(countDays, selectedRange, true).reverse(), // true = использовать сокращенные названия
-        datasets: [
-            controlsState.isOrderQuantityActive
-                ? {
-                    label: 'Заказы',
-                    type: 'line',
-                    borderColor: '#F0AD00',
-                    // borderColor: 'red',
-                    yAxisID: 'B',
-                    tension: 0.4,
-                    pointBorderColor: 'white',
-                    backgroundColor: '#F0AD00',
-                    pointRadius: 5,
-                    hoverRadius: 8,
-                    borderWidth: 2,
-                    data: dataDashBoard?.orderCountList || [],
+        datasets: controlsState.map(_ => {
+            const {key, subkey, isActive} = _
+            let dataset = []
+            if (isActive) {
+                if (subkey) {
+                    dataset = dataDashBoard[key]?.map(_ => _[subkey])
+                } else {
+                    dataset = Object.keys(dataDashBoard?.date_chart_data).map(_ => dataDashBoard?.date_chart_data[_][key])
                 }
-                : {
-                    label: 'Заказы',
-                    type: 'line',
-                    borderColor: '#F0AD00',
-                    yAxisID: 'B',
-                    tension: 0.4,
-                    pointBorderColor: 'white',
-                    backgroundColor: '#F0AD00',
-                    pointRadius: 6,
-                    hoverRadius: 8,
-                    borderWidth: 2,
-                    data: [],
-                },
-            controlsState.isSalesQuantityActive
-                ? {
-                    label: 'Продажи',
-                    type: 'line',
-                    borderColor: '#88E473',
-                    yAxisID: 'B',
-                    tension: 0.4,
-                    pointBorderColor: 'white',
-                    backgroundColor: '#88E473',
-                    pointRadius: 5,
-                    hoverRadius: 8,
-                    borderWidth: 2,
-                    data: dataDashBoard?.saleCountList || [],
-                }
-                : {
-                    label: 'Продажи',
-                    type: 'line',
-                    borderColor: '#88E473',
-                    yAxisID: 'B',
-                    tension: 0.4,
-                    pointBorderColor: 'white',
-                    backgroundColor: '#88E473',
-                    pointRadius: 5,
-                    hoverRadius: 8,
-                    borderWidth: 2,
-                    data: [],
-                },
-            controlsState.isOrderAmountActive
-                ? {
-                    label: 'Заказы',
-                    type: 'line',
-                    backgroundColor: '#5329FF',
-                    borderWidth: 2,
-                    pointRadius: 5,
-                    hoverRadius: 8,
-                    pointBorderColor: 'white',
-                    borderColor: '#5329FF',
-                    tension: 0.4,
-                    yAxisID: 'A',
-                    data: dataDashBoard?.orderAmountList || [],
-                    xAxisID: 'x',
-                }
-                : {
-                    label: 'Заказы',
-                    type: 'line',
-                    backgroundColor: '#5329FF',
-                    borderWidth: 2,
-                    pointRadius: 6,
-                    hoverRadius: 8,
-                    pointBorderColor: 'white',
-                    borderColor: '#5329FF',
-                    tension: 0.4,
-                    yAxisID: 'A',
-                    data: [],
-                },
-            controlsState.isSalesAmountActive
-                ? {
-                    label: 'Продажи',
-                    type: 'line',
-                    backgroundColor: '#AA5BFF',
-                    borderWidth: 2,
-                    pointRadius: 5,
-                    hoverRadius: 8,
-                    pointBorderColor: 'white',
-                    borderColor: '#AA5BFF',
-                    tension: 0.4,
-                    yAxisID: 'A',
-                    data: dataDashBoard?.saleAmountList || [],
-                }
-                : {
-                    label: 'Продажи',
-                    type: 'line',
-                    backgroundColor: '#AA5BFF',
-                    borderWidth: 2,
-                    pointRadius: 6,
-                    hoverRadius: 8,
-                    pointBorderColor: 'white',
-                    borderColor: '#88E473',
-                    tension: 0.4,
-                    yAxisID: 'A',
-                    data: [],
-                },
-            controlsState.isRoiActive
-                ? {
-                    label: 'ROI',
-                    type: 'line',
-                    borderColor: '#0099FF',
-                    yAxisID: 'C', // Отдельная ось для ROI
-                    tension: 0.4,
-                    pointBorderColor: 'white',
-                    backgroundColor: '#0099FF',
-                    pointRadius: 5,
-                    hoverRadius: 8,
-                    borderWidth: 2,
-                    data: dataDashBoard?.marginalityRoiChart?.map(_ => _.roi) || [],
-                }
-                : {
-                    label: 'ROI',
-                    type: 'line',
-                    borderColor: '#0099FF',
-                    yAxisID: 'C', // Отдельная ось для ROI
-                    tension: 0.4,
-                    pointBorderColor: 'white',
-                    backgroundColor: '#0099FF',
-                    pointRadius: 4,
-                    hoverRadius: 8,
-                    borderWidth: 2,
-                    data: [],
-                },
-            controlsState.isMarginalityActive
-                ? {
-                    label: 'Маржинальность',
-                    type: 'line',
-                    borderColor: '#F9813C',
-                    yAxisID: 'C', // Латинская буква C для скрытой оси
-                    tension: 0.4,
-                    pointBorderColor: 'white',
-                    backgroundColor: '#F9813C',
-                    pointRadius: 5,
-                    hoverRadius: 8,
-                    borderWidth: 2,
-                    data: dataDashBoard?.marginalityRoiChart?.map(_ => _.marginality) || [],
-                }
-                : {
-                    label: 'Маржинальность',
-                    type: 'line',
-                    borderColor: '#F9813C',
-                    yAxisID: 'C', // Латинская буква C для скрытой оси
-                    tension: 0.4,
-                    pointBorderColor: 'white',
-                    backgroundColor: '#F9813C',
-                    pointRadius: 4,
-                    hoverRadius: 8,
-                    borderWidth: 2,
-                    data: [],
-                },
-        ],
+            }
+
+            return {
+                label: _.title,
+                type: 'line',
+                borderColor: _.color,
+                // borderColor: 'red',
+                yAxisID: _.YAxis,
+                tension: 0.4,
+                pointBorderColor: 'white',
+                backgroundColor: _.color,
+                pointRadius: 5,
+                hoverRadius: 8,
+                borderWidth: 2,
+                data: dataset
+            }
+        })
     };
 
 };

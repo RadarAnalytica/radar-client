@@ -4,139 +4,58 @@ import { Checkbox, ConfigProvider } from 'antd';
 const MainChartControls = ({ constrolsState, setControlsState }) => {
 
     const controlsCheckboxHandler = (e) => {
-        setControlsState({
-            ...constrolsState,
-            [e.target.value]: e.target.checked
+        const { value } = e.target
+        setControlsState((prev) => {
+            return [...prev].map(_ => {
+                if (_.id === value) {
+                    return {
+                        ..._,
+                        isActive: !_.isActive
+                    }
+                } else {
+                    return _;
+                };
+            })
         });
     };
 
+    const selectAllHAndler = () => {
+        if (constrolsState?.every(_ => _.isActive)) {
+            setControlsState(prev => prev.map(_ => ({..._, isActive: false})))
+        } else {
+            setControlsState(prev => prev.map(_ => ({..._, isActive: true})))
+        }
+    }
+
     return (
         <div className={styles.controls}>
-            <div className={styles.controls__controlWrapper}>
-                <ConfigProvider
-                    theme={{
-                        token: {
-                            colorPrimary: '#F0AD00',
-                            controlInteractiveSize: 20,
-                        }
-                    }}
-                >
-                    <Checkbox
-                        size='large'
-                        checked={constrolsState.isOrderQuantityActive}
-                        value='isOrderQuantityActive'
-                        onChange={controlsCheckboxHandler}
+            {constrolsState.map(_ => (
+                <div className={styles.controls__controlWrapper} key={_.color}>
+                    <ConfigProvider
+                        theme={{
+                            token: {
+                                colorPrimary: _.color,
+                                controlInteractiveSize: 20,
+                            }
+                        }}
                     >
-                        Заказы, шт
-                    </Checkbox>
-                </ConfigProvider>
-            </div>
-
-            <div className={styles.controls__controlWrapper}>
-                <ConfigProvider
-                    theme={{
-                        token: {
-                            colorPrimary: '#88E473',
-                            controlInteractiveSize: 20,
-                        }
-                    }}
-                >
-                    <Checkbox
-                        size='large'
-                        checked={constrolsState.isSalesQuantityActive}
-                        value='isSalesQuantityActive'
-                        onChange={controlsCheckboxHandler}
-                    >
-                        Продажи, шт
-                    </Checkbox>
-                </ConfigProvider>
-            </div>
-
-            <div className={styles.controls__controlWrapper}>
-                <ConfigProvider
-                    theme={{
-                        token: {
-                            colorPrimary: '#5329FF',
-                            controlInteractiveSize: 20,
-                            // borderRadiusSM: 10,
-                        }
-                    }}
-                >
-                    <Checkbox
-                        size='large'
-                        defaultChecked
-                        checked={constrolsState.isOrderAmountActive}
-                        value='isOrderAmountActive'
-                        onChange={controlsCheckboxHandler}
-                    >
-                        Заказы, руб
-                    </Checkbox>
-                </ConfigProvider>
-            </div>
-
-            <div className={styles.controls__controlWrapper}>
-                <ConfigProvider
-                    theme={{
-                        token: {
-                            colorPrimary: '#AA5BFF',
-                            controlInteractiveSize: 20,
-                            // borderRadiusSM: 10,
-                        }
-                    }}
-                >
-                    <Checkbox
-                        size='large'
-                        defaultChecked
-                        checked={constrolsState.isSalesAmountActive}
-                        value='isSalesAmountActive'
-                        onChange={controlsCheckboxHandler}
-                    >
-                        Продажи, руб
-                    </Checkbox>
-                </ConfigProvider>
-            </div>
-            <div className={styles.controls__controlWrapper}>
-                <ConfigProvider
-                    theme={{
-                        token: {
-                            colorPrimary: '#0099FF',
-                            controlInteractiveSize: 20,
-                            // borderRadiusSM: 10,
-                        }
-                    }}
-                >
-                    <Checkbox
-                        size='large'
-                        defaultChecked
-                        checked={constrolsState.isRoiActive}
-                        value='isRoiActive'
-                        onChange={controlsCheckboxHandler}
-                    >
-                        ROI, %
-                    </Checkbox>
-                </ConfigProvider>
-            </div>
-            <div className={styles.controls__controlWrapper}>
-                <ConfigProvider
-                    theme={{
-                        token: {
-                            colorPrimary: '#F9813C',
-                            controlInteractiveSize: 20,
-                            // borderRadiusSM: 10,
-                        }
-                    }}
-                >
-                    <Checkbox
-                        size='large'
-                        defaultChecked
-                        checked={constrolsState.isMarginalityActive}
-                        value='isMarginalityActive'
-                        onChange={controlsCheckboxHandler}
-                    >
-                        Маржинальность, %
-                    </Checkbox>
-                </ConfigProvider>
-            </div>
+                        <Checkbox
+                            size='large'
+                            checked={_.isActive}
+                            value={_.id}
+                            onChange={controlsCheckboxHandler}
+                        >
+                            <span className={styles.controls__label}>{_.title}, {_.units}</span>
+                        </Checkbox>
+                    </ConfigProvider>
+                </div>
+            ))}
+            <button 
+                className={styles.controls__selectAllButton}
+                onClick={selectAllHAndler}
+            >
+                {constrolsState?.every(_ => _.isActive) ? 'Снять все' : 'Выбрать все'}
+            </button>
         </div>
     );
 };

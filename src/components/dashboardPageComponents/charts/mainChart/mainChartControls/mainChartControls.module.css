@@ -1,8 +1,7 @@
 .controls {
     display: flex;
-    justify-content: flex-end;
-    align-items: center;
     gap: 12px;
+    flex-wrap: wrap;
 }
 
 .controls__controlWrapper {}
@@ -14,4 +13,15 @@
     line-height: 100%;
     letter-spacing: 0%;
     color: #1A1A1A;
+    white-space: nowrap;
+}
+
+.controls__selectAllButton {
+    border: none;
+    color: var(--primary-color);
+    background-color: transparent;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 160%;
+    letter-spacing: 0%;
 }
