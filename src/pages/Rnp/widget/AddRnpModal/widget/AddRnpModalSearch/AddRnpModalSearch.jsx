@@ -12,9 +12,9 @@ function AddRnpModalSearch({
 
   const finishHandler = (data) => {
     const value = data.search.trim();
-    if (!value){
-      return;
-    }
+    // if (!value){
+    //   return;
+    // }
     submitSearch(value);
   };
 
@@ -54,6 +54,7 @@ function AddRnpModalSearch({
               size='large'
               name='search'
               allowClear={true}
+              onClear={() => submitSearch('')}
             />
           </Form.Item>
           <Button
