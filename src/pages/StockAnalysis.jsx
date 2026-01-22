@@ -70,7 +70,7 @@ const StockAnalysis = () => {
           );
         }
         setStockAnalysisData(data);
-        setHasSelfCostPrice(data.every(_ => _.costPriceOne !== null));
+        setHasSelfCostPrice(data?.every(_ => _.costPriceOne !== null));
 
       }
       prevDays.current = selectedRange;
