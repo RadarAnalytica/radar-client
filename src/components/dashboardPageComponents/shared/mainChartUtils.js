@@ -201,7 +201,7 @@ export const getChartTooltip = (context, chartData) => {
             if (set?.label === 'ROI' || set?.label === 'Маржинальность') {
                 targetDescr = ' %';
             } else {
-                targetDescr = set.yAxisID === 'B' ? ' шт' : ' руб';
+                targetDescr = set.yAxisID === 'B' ? ' шт' : set.yAxisID === 'C' ? '%' : ' руб';
             }
             let value = formatPrice(set?.data[targetInex], ' ') || '0';
             let style = '';
