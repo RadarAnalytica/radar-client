@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useMemo, useRef, useCallback } from 'react';
+import React, { useLayoutEffect, useMemo, useRef } from 'react';
 import AuthContext from '../../service/AuthContext';
 import { useState, useEffect, useContext } from 'react';
 import { ConfigProvider, Flex, Button } from 'antd';
@@ -39,9 +39,14 @@ import { fileDownload } from '@/service/utils';
 import DownloadButton from '@/components/DownloadButton';
 import TableSettingsModal from '@/components/TableSettingsModal';
 import TableSettingsButton from '@/components/TableSettingsButton';
-
-const ROWS_CONFIG_STORAGE_KEY = 'rnp_rowsConfig';
-const ROWS_CONFIG_VERSION = '1.0.0';
+import {
+	loadRowsConfig,
+	saveRowsConfig,
+	applyRowsConfig,
+	groupMetricsToHierarchy,
+	buildRowsConfigFromSettings,
+	buildRnpItem,
+} from './rnpTableSettings';
 
 const sortBySavedSortState = (data, activeBrand) => {
 	const { id } = activeBrand;
@@ -104,179 +109,23 @@ export default function Rnp({
 
 	// Load rows config from localStorage on mount
 	useEffect(() => {
-		try {
-			const savedConfig = localStorage.getItem(ROWS_CONFIG_STORAGE_KEY);
-			if (savedConfig) {
-				const parsed = JSON.parse(savedConfig);
-				if (parsed.version === ROWS_CONFIG_VERSION) {
-					setRowsConfig(parsed.config);
-				}
-			}
-		} catch (error) {
-			console.error('Error loading rows config:', error);
-		}
-	}, []);
-
-	// Apply saved config to metrics order
-	const applyRowsConfig = useCallback((metrics, config) => {
-		if (!config) return metrics;
-
-		const configMap = new Map(config.map((item) => [item.key, item]));
-		const parentOrders = new Map();
-		const childOrdersByParent = new Map();
-
-		config.forEach((item, idx) => {
-			if (item.parentKey) {
-				if (!childOrdersByParent.has(item.parentKey)) {
-					childOrdersByParent.set(item.parentKey, new Map());
-				}
-				childOrdersByParent.get(item.parentKey).set(item.key, item.order ?? idx);
-			} else {
-				parentOrders.set(item.key, item.order ?? idx);
-			}
-		});
-
-		const result = metrics.map(metric => {
-			const savedConfig = configMap.get(metric.key);
-			if (savedConfig) {
-				let order;
-				if (metric.isChildren && metric.parentKey) {
-					const childOrders = childOrdersByParent.get(metric.parentKey);
-					order = childOrders?.get(metric.key) ?? 999;
-				} else {
-					order = parentOrders.get(metric.key) ?? 999;
-				}
-				return {
-					...metric,
-					hidden: savedConfig.hidden,
-					order,
-				};
-			}
-			return { ...metric, hidden: false, order: 999 };
-		});
-
-		const parents = result.filter(item => !item.isChildren);
-		const childrenByParent = {};
-		result.filter(item => item.isChildren).forEach(child => {
-			if (!childrenByParent[child.parentKey]) {
-				childrenByParent[child.parentKey] = [];
-			}
-			childrenByParent[child.parentKey].push(child);
-		});
-
-		parents.sort((a, b) => (a.order ?? 999) - (b.order ?? 999));
-
-		const sortedResult = [];
-		parents.forEach(parent => {
-			if (!parent.hidden) {
-				sortedResult.push(parent);
-				const children = childrenByParent[parent.key] || [];
-				children.sort((a, b) => (a.order ?? 999) - (b.order ?? 999));
-				children.forEach(child => {
-					if (!child.hidden) {
-						sortedResult.push(child);
-					}
-				});
-			}
-		});
-
-		return sortedResult;
-	}, []);
-
-	// Helper to group metrics into hierarchical structure for settings modal
-	const groupMetricsToHierarchy = useCallback((metrics, configMap = null) => {
-		const parents = [];
-		const childrenByParent = {};
-
-		metrics.forEach((metric, index) => {
-			const savedConfig = configMap?.get(metric.key);
-			const isVisible = savedConfig ? !savedConfig.hidden : true;
-			const order = savedConfig?.order ?? index;
-
-			const item = {
-				...metric,
-				id: metric.key,
-				title: metric.title,
-				isVisible,
-				order,
-			};
-
-			if (metric.isChildren && metric.parentKey) {
-				if (!childrenByParent[metric.parentKey]) {
-					childrenByParent[metric.parentKey] = [];
-				}
-				childrenByParent[metric.parentKey].push(item);
-			} else {
-				parents.push(item);
-			}
-		});
-
-		parents.sort((a, b) => (a.order ?? 999) - (b.order ?? 999));
-
-		return parents.map(parent => {
-			const children = childrenByParent[parent.key] || [];
-			children.sort((a, b) => (a.order ?? 999) - (b.order ?? 999));
-			return {
-				...parent,
-				children: parent.isParent ? (children.length > 0 ? children : []) : undefined,
-			};
-		});
+		setRowsConfig(loadRowsConfig());
 	}, []);
 
 	const rowsForSettings = useMemo(() => {
 		const configMap = rowsConfig ? new Map(rowsConfig.map((item) => [item.key, item])) : null;
 		return groupMetricsToHierarchy(metricsOrder, configMap);
-	}, [rowsConfig, groupMetricsToHierarchy]);
+	}, [rowsConfig]);
 
 	const originalRowsForSettings = useMemo(() => {
 		return groupMetricsToHierarchy(metricsOrder, null);
-	}, [groupMetricsToHierarchy]);
+	}, []);
 
-	const handleSettingsSave = useCallback((updatedItems) => {
-		const flatConfig = [];
-		let orderIndex = 0;
-
-		updatedItems.forEach(item => {
-			flatConfig.push({
-				key: item.id,
-				hidden: !item.isVisible,
-				order: orderIndex++,
-				isParent: item.isParent,
-			});
-
-			if (item.children && item.children.length > 0) {
-				item.children.forEach(child => {
-					flatConfig.push({
-						key: child.id,
-						hidden: !child.isVisible,
-						order: orderIndex++,
-						parentKey: item.id,
-						isChildren: true,
-					});
-				});
-			}
-		});
-
+	const handleSettingsSave = (updatedItems) => {
+		const flatConfig = buildRowsConfigFromSettings(updatedItems);
 		setRowsConfig(flatConfig);
-		localStorage.setItem(ROWS_CONFIG_STORAGE_KEY, JSON.stringify({
-			version: ROWS_CONFIG_VERSION,
-			config: flatConfig,
-		}));
-	}, []);
-
-	const buildRnpItem = useCallback((article, metrics) => {
-		const tableConfig = getTableConfig(article);
-		const tableData = getTableData(article, metrics);
-		return {
-			table: {
-				columns_new: tableConfig,
-				datasource: tableData,
-				columns: [],
-				rows: [],
-			},
-			article_data: article?.article_data,
-		};
-	}, []);
+		saveRowsConfig(flatConfig);
+	};
 
 	const updateRnpListByArticle = async (signal, filters, authToken, publicUserCredentials, isPublicVersion) => {
 		setLoading(true);
@@ -424,7 +273,7 @@ export default function Rnp({
 		const { data } = response;
 		setRawRnpByArticle(data);
 		const metricsForData = applyRowsConfig(metricsOrder, rowsConfig);
-		const list = data.map((article) => buildRnpItem(article, metricsForData));
+		const list = data.map((article) => buildRnpItem(article, metricsForData, getTableConfig, getTableData));
 
 		// Применяем сортировку согласно сохраненному порядку
 		const sortedList = activeBrand ? sortBySavedSortState(list, activeBrand) : list;
@@ -439,23 +288,23 @@ export default function Rnp({
 		}
 		setRawRnpTotal(article);
 		const metricsForData = applyRowsConfig(metricsOrder, rowsConfig);
-		const item = buildRnpItem(article, metricsForData);
+		const item = buildRnpItem(article, metricsForData, getTableConfig, getTableData);
 		setRnpDataTotal(item);
 	};
 
 	useEffect(() => {
 		if (!rawRnpByArticle) return;
 		const metricsForData = applyRowsConfig(metricsOrder, rowsConfig);
-		const list = rawRnpByArticle.map((article) => buildRnpItem(article, metricsForData));
+		const list = rawRnpByArticle.map((article) => buildRnpItem(article, metricsForData, getTableConfig, getTableData));
 		const sortedList = activeBrand ? sortBySavedSortState(list, activeBrand) : list;
 		setRnpDataByArticle(sortedList);
-	}, [rawRnpByArticle, rowsConfig, activeBrand, applyRowsConfig, buildRnpItem]);
+	}, [rawRnpByArticle, rowsConfig, activeBrand]);
 
 	useEffect(() => {
 		if (!rawRnpTotal) return;
 		const metricsForData = applyRowsConfig(metricsOrder, rowsConfig);
-		setRnpDataTotal(buildRnpItem(rawRnpTotal, metricsForData));
-	}, [rawRnpTotal, rowsConfig, applyRowsConfig, buildRnpItem]);
+		setRnpDataTotal(buildRnpItem(rawRnpTotal, metricsForData, getTableConfig, getTableData));
+	}, [rawRnpTotal, rowsConfig]);
 
 	const deleteHandler = (value) => {
 		deleteRnp(value);

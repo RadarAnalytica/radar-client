@@ -1,4 +1,4 @@
-export const ABC_ANALYSIS_TABLE_CONFIG_VER = '1.0.5';
+export const ABC_ANALYSIS_TABLE_CONFIG_VER = '1.0.6';
 
 export const getAbcAnalysisTableConfig = (viewType) => {
     const amountTitle = {
@@ -21,6 +21,8 @@ export const getAbcAnalysisTableConfig = (viewType) => {
             sortable: false,
             hidden: false,
             fixed: true,
+            undraggable: true,
+            canToggle: false,
         },
         {
             title: 'Размер',
@@ -127,6 +129,8 @@ export const getAbcAnalysisTableConfig = (viewType) => {
             maxWidth: 400,
             sortable: true,
             hidden: false,
+            undraggable: true,
+            canToggle: false,
         },
     ];
 };

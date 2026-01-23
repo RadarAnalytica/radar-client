@@ -48,6 +48,12 @@ const StockAnalysisPage = () => {
         }
     }, []);
 
+    const borderedColumns = useMemo(() => (
+        tableConfig
+            .map((item) => item.children?.[item.children.length - 1]?.dataIndex)
+            .filter(Boolean)
+    ), [tableConfig]);
+
     // Prepare columns for settings modal (with id for each item)
     const columnsForSettings = useMemo(() => {
         return mapConfigToSettingsItems(tableConfig);
@@ -59,6 +65,10 @@ const StockAnalysisPage = () => {
 
     const handleSettingsSave = (updatedColumns) => {
         const newConfig = mapSettingsToConfig(updatedColumns);
+        newConfig.map(item => {
+            item.colSpan = item.children.filter(item => !item.hidden).length ?? 0;
+        });
+        
         setTableConfig(newConfig);
         localStorage.setItem(STORAGE_KEY, JSON.stringify({
             version: CURR_STOCK_ANALYSIS_TABLE_CONFIG_VER,
@@ -162,6 +172,7 @@ const StockAnalysisPage = () => {
                         configKey={STORAGE_KEY}
                         config={tableConfig}
                         setTableConfig={setTableConfig}
+                        borderedColumns={borderedColumns}
                     />
                 }
             </section>

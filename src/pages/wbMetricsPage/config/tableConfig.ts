@@ -11,6 +11,7 @@ export interface ColumnConfig {
   sortable: boolean;
   hidden: boolean;
   canToggle?: boolean;
+  customizable?: boolean;
   align?: 'left' | 'center' | 'right';
   className?: string;
 }
@@ -30,7 +31,9 @@ export const getDefaultTableConfig = (controlData?: any[]): ColumnConfig[] => {
       fixed: true,
       sortable: false,
       hidden: false,
+      customizable: true,
       canToggle: false,
+      undraggable: true,
     },
     {
       key: 'vendor_code',
@@ -38,6 +41,7 @@ export const getDefaultTableConfig = (controlData?: any[]): ColumnConfig[] => {
       dataIndex: 'vendor_code',
       width: 250,
       sortable: false,
+      customizable: true,
       hidden: false,
       canToggle: true,
     },
@@ -48,6 +52,7 @@ export const getDefaultTableConfig = (controlData?: any[]): ColumnConfig[] => {
       width: 150,
       sortable: false,
       hidden: false,
+      customizable: true,
       canToggle: true,
     },
     {
@@ -57,6 +62,7 @@ export const getDefaultTableConfig = (controlData?: any[]): ColumnConfig[] => {
       width: 150,
       sortable: false,
       hidden: false,
+      customizable: true,
       canToggle: true,
     },
     {
@@ -66,6 +72,7 @@ export const getDefaultTableConfig = (controlData?: any[]): ColumnConfig[] => {
       width: 150,
       sortable: false,
       hidden: false,
+      customizable: true,
       canToggle: true,
     },
     {
@@ -75,7 +82,8 @@ export const getDefaultTableConfig = (controlData?: any[]): ColumnConfig[] => {
       width: 150,
       sortable: false,
       hidden: false,
-      canToggle: false,
+      canToggle: true,
+      customizable: true,
       className: 'chart-column',
     },
   ].map(_ => ({ ..._, key: _.dataIndex, maxWidth: _.width * 2, minWidth: _.width / 2 }));
@@ -92,7 +100,6 @@ export const getDefaultTableConfig = (controlData?: any[]): ColumnConfig[] => {
       align: 'center' as const,
       sortable: false,
       hidden: false,
-      canToggle: false,
       className: wd === 0 || wd === 6 ? 'day-header-cell --weekend' : 'day-header-cell',
     };
   });

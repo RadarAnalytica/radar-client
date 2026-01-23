@@ -12,7 +12,7 @@ import {
 import { DndContext, closestCenter, DragEndEvent, DragStartEvent, DragOverlay, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
 import { SortableContext, useSortable, verticalListSortingStrategy, arrayMove } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { restrictToVerticalAxis } from '@dnd-kit/modifiers';
+import { restrictToVerticalAxis, restrictToParentElement } from '@dnd-kit/modifiers';
 
 export interface TableSettingsItem {
     id: string;
@@ -109,6 +109,8 @@ const DragOverlayItem: React.FC<{
 );
 
 const SortableItem: React.FC<SortableItemProps> = ({ id, item, titleKey, isChild = false }) => {
+    const isUndraggable = Boolean(item.undraggable);
+    const isToggleDisabled = item.canToggle === false;
     const {
         attributes,
         listeners,
@@ -116,7 +118,7 @@ const SortableItem: React.FC<SortableItemProps> = ({ id, item, titleKey, isChild
         transform,
         transition,
         isDragging,
-    } = useSortable({ id });
+    } = useSortable({ id, disabled: isUndraggable });
 
     const style = {
         transform: CSS.Transform.toString(transform),
@@ -130,8 +132,14 @@ const SortableItem: React.FC<SortableItemProps> = ({ id, item, titleKey, isChild
             style={style}
             className={`${styles.sortableItem} ${isChild ? styles.sortableItemChild : ''}`}
             data-dragging={isDragging}
+            data-undraggable={isUndraggable || undefined}
         >
-            <div className={styles.dragHandle} {...attributes} {...listeners}>
+            <div
+                className={styles.dragHandle}
+                data-undraggable={isUndraggable || undefined}
+                {...(!isUndraggable ? attributes : {})}
+                {...(!isUndraggable ? listeners : {})}
+            >
                 <DragHandleIcon />
             </div>
             <Form.Item
@@ -141,7 +149,7 @@ const SortableItem: React.FC<SortableItemProps> = ({ id, item, titleKey, isChild
                 noStyle
                 preserve
             >
-                <Checkbox className={styles.checkbox}>
+                <Checkbox className={styles.checkbox} disabled={isToggleDisabled}>
                     {item[titleKey]}
                 </Checkbox>
             </Form.Item>
@@ -162,6 +170,8 @@ const SortableGroup: React.FC<SortableGroupProps> = ({
     sensors
 }) => {
     const [activeChildId, setActiveChildId] = useState<string | null>(null);
+    const isUndraggable = Boolean(item.undraggable);
+    const isToggleDisabled = item.canToggle === false;
     
     const {
         attributes,
@@ -170,7 +180,7 @@ const SortableGroup: React.FC<SortableGroupProps> = ({
         transform,
         transition,
         isDragging,
-    } = useSortable({ id });
+    } = useSortable({ id, disabled: isUndraggable });
 
     const style = {
         transform: CSS.Transform.toString(transform),
@@ -191,6 +201,11 @@ const SortableGroup: React.FC<SortableGroupProps> = ({
             const oldIndex = item.children.findIndex(child => child.id === active.id);
             const newIndex = item.children.findIndex(child => child.id === over.id);
             if (oldIndex !== -1 && newIndex !== -1) {
+                const activeChild = item.children[oldIndex];
+                const overChild = item.children[newIndex];
+                if (activeChild?.undraggable || overChild?.undraggable) {
+                    return;
+                }
                 onChildrenReorder(id, oldIndex, newIndex);
             }
         }
@@ -230,8 +245,14 @@ const SortableGroup: React.FC<SortableGroupProps> = ({
                 style={style}
                 className={`${styles.sortableItem} ${styles.sortableItemGroup}`}
                 data-dragging={isDragging}
+                data-undraggable={isUndraggable || undefined}
             >
-                <div className={styles.dragHandle} {...attributes} {...listeners}>
+                <div
+                    className={styles.dragHandle}
+                    data-undraggable={isUndraggable || undefined}
+                    {...(!isUndraggable ? attributes : {})}
+                    {...(!isUndraggable ? listeners : {})}
+                >
                     <DragHandleIcon />
                 </div>
                 {hasChildren && (
@@ -248,6 +269,7 @@ const SortableGroup: React.FC<SortableGroupProps> = ({
                     checked={allChildrenSelected}
                     indeterminate={someChildrenSelected}
                     onChange={(e) => handleParentCheckboxChange(e.target.checked)}
+                    disabled={isToggleDisabled}
                 >
                     {item[titleKey] || 'Группа'}
                 </Checkbox>
@@ -265,7 +287,7 @@ const SortableGroup: React.FC<SortableGroupProps> = ({
                         collisionDetection={closestCenter}
                         onDragStart={handleChildDragStart}
                         onDragEnd={handleChildDragEnd}
-                        modifiers={[restrictToVerticalAxis]}
+                        modifiers={[restrictToVerticalAxis, restrictToParentElement]}
                     >
                         <SortableContext
                             items={item.children!.map(child => child.id)}
@@ -326,6 +348,18 @@ export const TableSettingsModal: React.FC<TableSettingsModalProps> = ({
             },
         })
     );
+
+    const parentByChildId = useMemo(() => {
+        const map: Record<string, string> = {};
+        displayItems.forEach(item => {
+            if (item.children && item.children.length > 0) {
+                item.children.forEach(child => {
+                    map[child.id] = item.id;
+                });
+            }
+        });
+        return map;
+    }, [displayItems]);
 
     // Check if items have hierarchical structure
     // Consider hierarchy if any item has children array (even empty) or isParent flag
@@ -431,14 +465,31 @@ export const TableSettingsModal: React.FC<TableSettingsModalProps> = ({
             return displayItems;
         }
         
-        // Filter including children
-        return displayItems.filter(item => {
-            const parentMatches = item.title?.toLowerCase().includes(activeSearchValue.toLowerCase());
-            const childMatches = item.children?.some(child => 
-                child.title?.toLowerCase().includes(activeSearchValue.toLowerCase())
+        const query = activeSearchValue.toLowerCase();
+
+        return displayItems.reduce<TableSettingsItem[]>((acc, item) => {
+            const parentMatches = item.title?.toLowerCase().includes(query);
+
+            if (!item.children) {
+                if (parentMatches) {
+                    acc.push(item);
+                }
+                return acc;
+            }
+
+            const filteredChildren = item.children.filter(child =>
+                child.title?.toLowerCase().includes(query)
             );
-            return parentMatches || childMatches;
-        });
+
+            if (parentMatches || filteredChildren.length > 0) {
+                acc.push({
+                    ...item,
+                    children: filteredChildren,
+                });
+            }
+
+            return acc;
+        }, []);
     }, [displayItems, activeSearchValue]);
 
     // Collect all items for "select all" calculation
@@ -470,8 +521,13 @@ export const TableSettingsModal: React.FC<TableSettingsModalProps> = ({
             setDisplayItems((currentItems) => {
                 const oldIndex = currentItems.findIndex(item => item.id === active.id);
                 const newIndex = currentItems.findIndex(item => item.id === over.id);
+                const activeItem = currentItems[oldIndex];
+                const overItem = currentItems[newIndex];
 
                 if (oldIndex !== -1 && newIndex !== -1) {
+                    if (activeItem?.undraggable || overItem?.undraggable) {
+                        return currentItems;
+                    }
                     return arrayMove(currentItems, oldIndex, newIndex);
                 }
                 return currentItems;
@@ -674,9 +730,24 @@ export const TableSettingsModal: React.FC<TableSettingsModalProps> = ({
                     form={form}
                     layout="vertical"
                     onValuesChange={(changedValues) => {
+                        const parentUpdates: Record<string, boolean> = {};
+                        Object.entries(changedValues).forEach(([id, value]) => {
+                            if (value === true) {
+                                const parentId = parentByChildId[id];
+                                if (parentId && visibilityState[parentId] === false) {
+                                    parentUpdates[parentId] = true;
+                                }
+                            }
+                        });
+
+                        if (Object.keys(parentUpdates).length > 0) {
+                            form.setFieldsValue(parentUpdates);
+                        }
+
                         setVisibilityState(prev => ({
                             ...prev,
-                            ...changedValues
+                            ...changedValues,
+                            ...parentUpdates,
                         }));
                     }}
                     className={styles.form}
