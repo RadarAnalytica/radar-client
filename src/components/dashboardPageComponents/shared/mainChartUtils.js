@@ -113,11 +113,7 @@ export const getChartData = (dataDashBoard, selectedRange, controlsState) => {
             const {key, subkey, isActive} = _
             let dataset = []
             if (isActive) {
-                if (subkey) {
-                    dataset = dataDashBoard[key]?.map(_ => _[subkey])
-                } else {
-                    dataset = Object.keys(dataDashBoard?.date_chart_data).map(_ => dataDashBoard?.date_chart_data[_][key])
-                }
+                dataset = Object.keys(dataDashBoard?.date_chart_data).map(_ => dataDashBoard?.date_chart_data[_][key])
             }
 
             return {

@@ -24,10 +24,10 @@ ChartJS.register(
 );
 
 const initChartControlsState = [
-    { key: 'orderCountList', title: 'Заказы', color: '#F0AD00', units: 'шт', YAxis: 'B', isActive: true },
-    { key: 'saleCountList', title: 'Продажи', color: '#88E473', units: 'шт', YAxis: 'B', isActive: true },
-    { key: 'orderAmountList', title: 'Заказы', color: '#5329FF', units: 'руб', YAxis: 'A', isActive: true },
-    { key: 'saleAmountList', title: 'Продажи', color: '#AA5BFF', units: 'руб', YAxis: 'A', isActive: true },
+    { key: 'order_count', title: 'Заказы', color: '#F0AD00', units: 'шт', YAxis: 'B', isActive: true },
+    { key: 'sale_count', title: 'Продажи', color: '#88E473', units: 'шт', YAxis: 'B', isActive: true },
+    { key: 'order_amount', title: 'Заказы', color: '#5329FF', units: 'руб', YAxis: 'A', isActive: true },
+    { key: 'sale_amount', title: 'Продажи', color: '#AA5BFF', units: 'руб', YAxis: 'A', isActive: true },
     { key: 'avg_price_before_discount', title: 'Средняя цена до скидок МП', color: '#90DAFF', units: 'руб', YAxis: 'A', isActive: true },
     { key: 'drr_sales_percent', title: 'ДРРп', color: '#F93C94', units: '%', YAxis: 'C', isActive: true },
     { key: 'drr_orders_percent', title: 'ДРРз', color: '#FFA1EB', units: '%', YAxis: 'C', isActive: true },
@@ -40,9 +40,9 @@ const initChartControlsState = [
     { key: 'commission_percent', title: 'Комиссия', color: '#00AF4F', units: '%', YAxis: 'C', isActive: true },
     { key: 'operating_expenses_percent', title: 'Опер. расходы', color: '#0014C3', units: '%', YAxis: 'C', isActive: true },
     { key: 'penalty', title: 'Штрафы', color: '#D54AFF', units: 'руб', YAxis: 'A', isActive: true },
-    { key: 'marginalityRoiChart', subkey: 'marginality', title: 'Маржинальность', color: '#F9813C', units: '%', YAxis: 'C', isActive: true },
+    { key: 'marginality', title: 'Маржинальность', color: '#F9813C', units: '%', YAxis: 'C', isActive: true },
     { key: 'returns_count', title: 'Возвраты', color: '#5F00B2', units: 'шт', YAxis: 'B', isActive: true },
-    { key: 'marginalityRoiChart', subkey: 'roi', title: 'ROI', color: '#0099FF', units: '%', YAxis: 'C', isActive: true },
+    { key: 'roi', title: 'ROI', color: '#0099FF', units: '%', YAxis: 'C', isActive: true },
     { key: 'storage', title: 'Хранение', color: '#936701', units: 'руб', YAxis: 'A', isActive: true },
 ].map(_ => ({ ..._, id: _.subkey ?? _.key }))
 
