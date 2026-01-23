@@ -55,7 +55,7 @@ const StockAnalysisPage = () => {
     };
 
     useEffect(() => {
-        if (filters.activeBrand && isFiltersLoaded) {
+        if (activeBrand && isFiltersLoaded && activeBrand.is_primary_collect) {
             fetchAnalysisData();
         }
     }, [isFiltersLoaded, activeBrand, selectedRange, activeBrandName, activeArticle, activeGroup]);
