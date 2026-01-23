@@ -58,6 +58,9 @@ const StockAnalysisPage = () => {
         if (activeBrand && isFiltersLoaded && activeBrand.is_primary_collect) {
             fetchAnalysisData();
         }
+        if (activeBrand && !activeBrand.is_primary_collect && isFiltersLoaded && loading) {
+            setLoading(false)
+        }
     }, [isFiltersLoaded, activeBrand, selectedRange, activeBrandName, activeArticle, activeGroup]);
 
 
