@@ -53,7 +53,7 @@ export const getDefaultTableConfig = (): ColumnConfig[] => {
         {title: 'Корзина → Заказ', dataIndex: 'cart_order', sortable: true, fixed: false, width: 50, tooltipText: 'Показывает эффективность завершения покупки. Отражает, насколько легко пользователю оформить заказ после добавления в корзину'},
         {title: 'Просмотр → Заказ', dataIndex: 'view_order', sortable: true, fixed: false, width: 50, tooltipText: 'Ключевой показатель общей эффективности кампании: какая часть всех показов привела к оформлению заказа. Формула: (Заказы / Просмотры) * 100%'},
         {title: 'Прогноз Заказ → Выкуп', dataIndex: 'expected_order_purchase', sortable: true, fixed: false, width: 50, tooltipText: 'Ожидаемая доля заказанных товаров, которая будет оплачена. Для точности используется конверсия в выкуп по заказам, завершенным 14 дней назад, что исключает влияние "висящих" заказов'},
-        {title: 'Прогноз Клик → Выкуп', dataIndex: 'expected_click_purchase', sortable: true, fixed: false, width: 50, tooltipText: 'Показывает, какой процент кликов по рекламе в итоге конвертируется в выкуп. Расчет основан на финальных данных о выкупе товаров за предыдущие периоды'},
+        {title: 'Прогноз Клик → Выкуп', dataIndex: 'expected_click_purchase', sortable: true, fixed: false, width: 50, style: {borderRight: '1px solid #E8E8E8'}, tooltipText: 'Показывает, какой процент кликов по рекламе в итоге конвертируется в выкуп. Расчет основан на финальных данных о выкупе товаров за предыдущие периоды'},
       ].map(_ => ({ ..._, key: _.dataIndex, minWidth: _.width, maxWidth: TABLE_MAX_WIDTH }))
     },
     {
@@ -76,7 +76,7 @@ export const getDefaultTableConfig = (): ColumnConfig[] => {
         {title: 'Заказов на сумму', dataIndex: 'orders_amount', sortable: true, fixed: false, width: 50, tooltipText: 'Общий объем заказов, привлеченных кампанией, в денежном выражении. До вычета возможных отмен и невыкупов'},
         {title: 'Прогноз выкуп на сумму', dataIndex: 'expected_purchase_amount', sortable: true, fixed: false, width: 50, tooltipText: 'Оценка реальной выручки от кампании после выкупа товаров. Прогноз строится на финальном проценте выкупа, рассчитанном по заказам двухнедельной давности с известным итогом. Это позволяет оценить рентабельность кампании без искажений из-за незавершённых заказов. Формула: Сумма заказов × Исторический % выкупа'},
         {title: 'Расходы на рекламу', dataIndex: 'ad_spend', sortable: true, fixed: false, width: 50, tooltipText: 'Общая сумма, списанная площадкой за показы вашего рекламного объявления в выбранном периоде'},
-      ].map(_ => ({ ..._, key: _.dataIndex, minWidth: _.width, maxWidth: TABLE_MAX_WIDTH, className: 'myAdvTableGroupCell' }))
+      ].map(_ => ({ ..._, key: _.dataIndex, minWidth: _.width, maxWidth: TABLE_MAX_WIDTH }))
     },
   ].map(_ => ({ ..._, colSpan: _?.children?.length || 1 }));
 

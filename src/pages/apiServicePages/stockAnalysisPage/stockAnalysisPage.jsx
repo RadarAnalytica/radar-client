@@ -66,7 +66,7 @@ const StockAnalysisPage = () => {
     const handleSettingsSave = (updatedColumns) => {
         const newConfig = mapSettingsToConfig(updatedColumns);
         newConfig.map(item => {
-            item.colSpan = item.children.filter(item => !item.hidden).length ?? 0;
+            item.colSpan = item.children.filter(item => !item.hidden).length || 1;
         });
         
         setTableConfig(newConfig);
