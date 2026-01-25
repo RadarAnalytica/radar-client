@@ -347,7 +347,7 @@ export const TariffsWidgetOld = () => {
             },
         };
 
-        const data = {};
+        let data = {};
         //@ts-ignore
         data.CloudPayments = {
             CustomerReceipt: receipt, //чек для первого платежа
@@ -360,6 +360,13 @@ export const TariffsWidgetOld = () => {
             },
         };
 
+        data = {
+            ...data,
+            "testProp1": 'testString',
+            "testProp2": {testKey: 'testString2'},
+            "testProp3": ['testString']
+        }
+
         await widget.charge(
             {
                 // options
@@ -371,7 +378,7 @@ export const TariffsWidgetOld = () => {
                 email: user.email,
                 accountId: `radar-${user.id}`, //идентификатор плательщика (обязательно для создания подписки)
                 data: data,
-                СustomFields: {testKey: 'TestString'}
+                СustomFields: {testKey: 'testString', testKey2: {testkey2: 'testString'}, testKey3: ['testArray3']}
             },
             function (options) {
                 // success - действие при успешной оплате
