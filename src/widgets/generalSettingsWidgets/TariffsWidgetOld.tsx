@@ -371,7 +371,7 @@ export const TariffsWidgetOld = () => {
                 email: user.email,
                 accountId: `radar-${user.id}`, //идентификатор плательщика (обязательно для создания подписки)
                 data: data,
-                customFields: _?.customField ? _.customField : undefined
+                СustomFields: {testKey: 'TestString'}
             },
             function (options) {
                 // success - действие при успешной оплате
