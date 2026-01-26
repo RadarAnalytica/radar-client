@@ -244,6 +244,17 @@
     text-decoration: none;
 }
 
+.subscriprionCard__purchcaseLimitsButton {
+    border: none;
+    background-color: transparent;
+    width: max-content;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 160%;
+    letter-spacing: 0%;
+    color: #5329FF;
+}
+
 /* Tariff Details Modal Styles */
 .tariffModal {
     display: flex;
@@ -370,4 +381,108 @@
     font-size: 14px;
     line-height: 160%;
     color: #1A1A1A;
+}
+
+
+
+/* purchcaseModal */
+
+.purchcaseModal {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.purchcaseModal__info {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.purchcaseModal__usageBadge {
+    background-color: #F7F7F7;
+    border-radius: 4px;
+    padding: 4px;
+    font-weight: 500;
+    font-size: 10px;
+    line-height: 140%;
+    letter-spacing: 0%;
+    max-height: 22px;
+}
+
+.purchcaseModal__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+}
+
+
+
+/* limit card */
+
+.limitCard {
+    width: 100%;
+    background-color: #F7F7F7;
+    border-radius: 8px;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.limitCard__header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #E8E8E8;
+}
+
+.limitCard__amount {
+    font-weight: 600;
+    font-size: 22px;
+    line-height: 100%;
+    letter-spacing: 0%;
+}
+
+.limitCard__title {
+    font-weight: 500;
+    font-size: 10px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    text-align: right;
+    color: #8C8C8C;
+}
+
+.limitCard__priceBlock {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding-bottom: 8px;
+}
+
+.limitCard__priceWrapper {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+}
+
+.limitCard__price {
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    margin: 0;
+    padding: 0;
+}
+
+.limitCard__smallText {
+    font-weight: 600;
+    font-size: 10px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    text-align: left;
+    color: #8C8C8C;
 }

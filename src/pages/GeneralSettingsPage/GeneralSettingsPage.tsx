@@ -46,8 +46,8 @@ const GeneralSettingsPage = () => {
             // { value: 'users', label: 'Настройки пользователей' },
             { value: 'payments', label: 'История платежей',  disabled: isDemoUser || isDemoMode },
             { value: 'referral', label: 'Реферальная программа', disabled: isDemoUser || isDemoMode},
+            // { value: 'tariffsOld', label: 'Тарифы_Old' },
             { value: 'tariffs', label: 'Тарифы' },
-            { value: 'tariffsNew', label: 'Тарифы2' },
             // { value: 'notifications', label: 'Бот уведомлений' },
         ];
     }, [isDemoUser])
@@ -91,8 +91,8 @@ const GeneralSettingsPage = () => {
             {activeTab === 'users' && <UsersWidget />}
             {activeTab === 'payments' && <PaymentWidget />}
             {activeTab === 'referral' && <ReferalProgrammWidget />}
-            {activeTab === 'tariffsNew' && <TariffsWidget />}
-            {activeTab === 'tariffs' && <TariffsWidgetOld />}
+            {activeTab === 'tariffs' && <TariffsWidget />}
+            {/* {activeTab === 'tariffsOld' && <TariffsWidgetOld />} */}
         </GeneralLayout>
     )
 }
