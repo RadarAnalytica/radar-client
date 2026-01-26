@@ -78,8 +78,8 @@
   justify-content: flex-end;
 }
 
-:global(.myAdvTableGroupCell), :global(.radar-table__header-cell[data-column-key="m03"]) {
-  border-left: 1px solid #E8E8E8;
+:global(.radar-table__header-cell[data-column-key="m02"]) {
+  border-right: 1px solid #E8E8E8 !important;
 }
 
 :global(.radar-table__body-cell-wrapper) {
@@ -189,10 +189,13 @@
       }
     }
   }
-  
-  :global(.radar-table__body-cell:has(.viewsCell)), 
-  :global(.radar-table__header-cell.viewsCell) {
-    border-left: 1px solid #E8E8E8;
+
+  :global(.radar-table__body-cell:has([data-border-right="true"])) {
+    border-right: 1px solid #E8E8E8 !important;
+
+    &:last-child {
+      border-right: none !important;
+    }
   }
 
   :global(.radar-table-row:hover) {

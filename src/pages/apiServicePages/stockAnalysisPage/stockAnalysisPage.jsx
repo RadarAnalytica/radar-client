@@ -48,6 +48,15 @@ const StockAnalysisPage = () => {
         }
     }, []);
 
+    const borderedColumns = useMemo(() => (
+        tableConfig
+            .map((item) => {
+                const lastVisibleChild = item.children?.filter((child) => !child.hidden).slice(-1)[0];
+                return lastVisibleChild?.dataIndex;
+            })
+            .filter(Boolean)
+    ), [tableConfig]);
+
     // Prepare columns for settings modal (with id for each item)
     const columnsForSettings = useMemo(() => {
         return mapConfigToSettingsItems(tableConfig);
@@ -58,7 +67,29 @@ const StockAnalysisPage = () => {
     }, []);
 
     const handleSettingsSave = (updatedColumns) => {
-        const newConfig = mapSettingsToConfig(updatedColumns);
+        const mappedConfig = mapSettingsToConfig(updatedColumns);
+        const newConfig = mappedConfig.map((col) => {
+            const visibleChildren = col.children?.filter((child) => !child.hidden) ?? [];
+            const lastVisibleKey = visibleChildren[visibleChildren.length - 1]?.key;
+            const updatedChildren = col.children?.map((child) => {
+                if (!child.key) return child;
+                if (child.key === lastVisibleKey) {
+                    return { ...child, style: { ...(child.style ?? {}), borderRight: '1px solid #E8E8E8' } };
+                }
+                if (child.style?.borderRight) {
+                    const { borderRight: _borderRight, ...rest } = child.style;
+                    return { ...child, style: rest };
+                }
+                return child;
+            });
+
+            return {
+                ...col,
+                children: updatedChildren,
+                colSpan: visibleChildren.length || 1,
+            };
+        });
+        
         setTableConfig(newConfig);
         localStorage.setItem(STORAGE_KEY, JSON.stringify({
             version: CURR_STOCK_ANALYSIS_TABLE_CONFIG_VER,
@@ -165,6 +196,7 @@ const StockAnalysisPage = () => {
                         configKey={STORAGE_KEY}
                         config={tableConfig}
                         setTableConfig={setTableConfig}
+                        borderedColumns={borderedColumns}
                     />
                 }
             </section>

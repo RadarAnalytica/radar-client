@@ -14,6 +14,29 @@ import DataCollectWarningBlock from '@/components/sharedComponents/dataCollectWa
 import { useAppSelector } from '@/redux/hooks';
 import { formatNumberWithSpaces } from '@/service/utils';
 
+const PERCENT_FIELDS = new Set([
+  'view_click',
+  'click_cart',
+  'cart_order',
+  'view_order',
+  'expected_order_purchase',
+  'expected_click_purchase',
+  'drr_orders',
+  'drr_purchase',
+]);
+
+const MONEY_FIELDS = new Set([
+  'cpc',
+  'cpm',
+  'cp_cart',
+  'cpo',
+  'expected_cps',
+  'orders_amount',
+  'expected_purchase_amount',
+  'ad_spend',
+  'avg_cpm',
+]);
+
 interface MyAdvTableProps {
   companyId?: string | number;
   data: CompanyData[];
@@ -68,13 +91,40 @@ const MyAdvTable: React.FC<MyAdvTableProps> = React.memo(({
     return mapConfigToSettingsItems(defaultConfig);
   }, []);
 
+  const borderedColumns = useMemo(() => (
+    (tableConfig as ExtendedColumnConfig[])
+      .map((item) => {
+        const lastVisibleChild = item.children?.filter((child) => !child.hidden).slice(-1)[0];
+        return lastVisibleChild?.dataIndex;
+      })
+      .filter(Boolean)
+  ), [tableConfig]);
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleSettingsSave = (updatedColumns: any[]) => {
     const mappedConfig = mapSettingsToConfig(updatedColumns) as ExtendedColumnConfig[];
-    const newConfig = mappedConfig.map((col) => ({
-      ...col,
-      colSpan: col.children?.filter((child) => !child.hidden)?.length || 1,
-    }));
+    const newConfig = mappedConfig.map((col) => {
+      const visibleChildren = col.children?.filter((child) => !child.hidden) ?? [];
+      const lastVisibleKey = visibleChildren[visibleChildren.length - 1]?.key;
+      const updatedChildren = col.children?.map((child) => {
+        if (!child.key) return child;
+        if (child.key === lastVisibleKey) {
+          return { ...child, style: { ...(child.style ?? {}), borderRight: '1px solid #E8E8E8' } };
+        }
+        if (child.style?.borderRight) {
+          const { borderRight, ...rest } = child.style;
+          return { ...child, style: rest };
+        }
+        return child;
+      });
+
+      return {
+        ...col,
+        children: updatedChildren,
+        colSpan: visibleChildren.length || 1,
+      };
+    });
+    
     setTableConfig(newConfig as ColumnConfig[]);
     saveTableConfig(newConfig as ColumnConfig[]);
   };
@@ -138,18 +188,18 @@ const MyAdvTable: React.FC<MyAdvTableProps> = React.memo(({
   };
 
   const customCellRender = (value: unknown, record: CompanyData, index: number, dataIndex: string) => {
-    // Рендер для компании (кликабельная)
+    const hasBorderRight = borderedColumns?.includes?.(dataIndex);
+
     if (dataIndex === 'company_name') {
-      // const imageSize = { width: 30, height: 40 };
       const isDateCell = Boolean(record.date);
       return (
         isDateCell 
-          ? <div className={styles.cellDate}>{value}</div>
+          ? <div className={styles.cellDate} data-border-right={hasBorderRight}>{value}</div>
           : (
-            <div className={styles.companyCell}>
+            <div className={styles.companyCell} data-border-right={hasBorderRight}>
               {/* {record.company_photo 
                 ? <img src={record.company_photo} alt={companyName} {...imageSize} className={styles.companyImage} />
-                : <div className={styles.companyImage} style={imageSize} />
+                : <div className={styles.companyImage} style={imageSize} /> { width: 30, height: 40 }
               } */}
               <span className={styles.companyName}>
                 {value}
@@ -172,6 +222,7 @@ const MyAdvTable: React.FC<MyAdvTableProps> = React.memo(({
           className={`${styles.labelCell} ${styles.badgeCell}`} 
           style={{ backgroundColor: badgeColor }}
           title={statusValue}
+          data-border-right={hasBorderRight}
         >
           {statusValue}
         </span>
@@ -180,7 +231,7 @@ const MyAdvTable: React.FC<MyAdvTableProps> = React.memo(({
 
     if (dataIndex === 'company_type' && value) {
       return (
-        <span className={`${styles.labelCell} ${styles.companyType}`}>
+        <span className={`${styles.labelCell} ${styles.companyType}`} data-border-right={hasBorderRight}>
           {String(value ?? '')}
         </span>
       );
@@ -188,29 +239,29 @@ const MyAdvTable: React.FC<MyAdvTableProps> = React.memo(({
 
     if (dataIndex === 'views') {
       return (
-        <span className={`${styles.labelCell} viewsCell`}>
+        <span className={`${styles.labelCell} viewsCell`} data-border-right={hasBorderRight}>
           {formatNumberWithSpaces(value)}
         </span>
       );
     }
 
     // Рендер для процентов (view_click, click_cart и т.д.)
-    if (['view_click', 'click_cart', 'cart_order', 'view_order', 'expected_order_purchase', 'expected_click_purchase', 'drr_orders', 'drr_purchase'].includes(dataIndex)) {
+    if (PERCENT_FIELDS.has(dataIndex)) {
       const percentValue = typeof value === 'number' ? `${value.toFixed(2)}%` : String(value ?? '');
       return (
-        <div className={styles.customCell} title={percentValue}>
+        <div className={styles.customCell} data-border-right={hasBorderRight} title={percentValue}>
           {formatNumberWithSpaces(percentValue)}
         </div>
       );
     }
 
     // Рендер для денежных значений
-    if (['cpc', 'cpm', 'cp_cart', 'cpo', 'expected_cps', 'orders_amount', 'expected_purchase_amount', 'ad_spend', 'avg_cpm'].includes(dataIndex)) {
+    if (MONEY_FIELDS.has(dataIndex)) {
       const formattedValue = typeof value === 'number' 
         ? new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB', minimumFractionDigits: 0 }).format(value)
         : value;
       return (
-        <div className={styles.customCell} title={String(formattedValue ?? '')}>
+        <div className={styles.customCell} data-border-right={hasBorderRight} title={String(formattedValue ?? '')}>
           {String(formattedValue ?? '')}
         </div>
       );
@@ -222,7 +273,7 @@ const MyAdvTable: React.FC<MyAdvTableProps> = React.memo(({
         ? new Intl.NumberFormat('ru-RU', { minimumFractionDigits: 1, maximumFractionDigits: 1 }).format(value)
         : value;
       return (
-        <div className={styles.customCell} title={String(formattedValue ?? '')}>
+        <div className={styles.customCell} data-border-right={hasBorderRight} title={String(formattedValue ?? '')}>
           {String(formattedValue ?? '')}
         </div>
       );
@@ -232,14 +283,14 @@ const MyAdvTable: React.FC<MyAdvTableProps> = React.memo(({
     if (typeof value === 'number') {
       const formattedValue = new Intl.NumberFormat('ru-RU').format(value);
       return (
-        <div className={styles.customCell} title={formattedValue}>
+        <div className={styles.customCell} data-border-right={hasBorderRight} title={formattedValue}>
           {formattedValue}
         </div>
       );
     }
 
     return (
-      <div className={`${styles.customCell} ${toCamelCase(dataIndex)}Cell`} title={String(value ?? '')}>
+      <div className={`${styles.customCell} ${toCamelCase(dataIndex)}Cell`} data-border-right={hasBorderRight} title={String(value ?? '')}>
         {String(value ?? '')}
       </div>
     );

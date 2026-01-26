@@ -12,7 +12,7 @@ import styles from './Rnp.module.css';
 import { useAppSelector, useAppDispatch } from '../../redux/hooks';
 import { ServiceFunctions } from '../../service/serviceFunctions';
 import { RnpFilters } from './widget/RnpFilters/RnpFilters';
-import { COLUMNS, ROWS, renderFunction, getTableConfig, getTableData } from './config';
+import { COLUMNS, ROWS, renderFunction, getTableConfig, getTableData, metricsOrder } from './config';
 import { format } from 'date-fns';
 import { ru } from 'date-fns/locale';
 import RnpList from './widget/RnpList/RnpList';
@@ -37,6 +37,16 @@ import { useSearchParams } from 'react-router-dom';
 import { encodeUnicodeToBase64, decodeBase64ToUnicode } from '@/components/unitCalculatorPageComponents/UnitCalcUtils';
 import { fileDownload } from '@/service/utils';
 import DownloadButton from '@/components/DownloadButton';
+import TableSettingsModal from '@/components/TableSettingsModal';
+import TableSettingsButton from '@/components/TableSettingsButton';
+import {
+	loadRowsConfig,
+	saveRowsConfig,
+	applyRowsConfig,
+	groupMetricsToHierarchy,
+	buildRowsConfigFromSettings,
+	buildRnpItem,
+} from './rnpTableSettings';
 
 const sortBySavedSortState = (data, activeBrand) => {
 	const { id } = activeBrand;
@@ -92,6 +102,30 @@ export default function Rnp({
 	const [shareButtonState, setShareButtonState] = useState('Поделиться');
 	const [publicUserCredentials, setPublicUserCredentials] = useState(null) // user_id & secret for requests from public version of te page
 	const abortControllerRef = useRef(null);
+	const [rowsConfig, setRowsConfig] = useState(null);
+	const [rawRnpByArticle, setRawRnpByArticle] = useState(null);
+	const [rawRnpTotal, setRawRnpTotal] = useState(null);
+	const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+
+	// Load rows config from localStorage on mount
+	useEffect(() => {
+		setRowsConfig(loadRowsConfig());
+	}, []);
+
+	const rowsForSettings = useMemo(() => {
+		const configMap = rowsConfig ? new Map(rowsConfig.map((item) => [item.key, item])) : null;
+		return groupMetricsToHierarchy(metricsOrder, configMap);
+	}, [rowsConfig]);
+
+	const originalRowsForSettings = useMemo(() => {
+		return groupMetricsToHierarchy(metricsOrder, null);
+	}, []);
+
+	const handleSettingsSave = (updatedItems) => {
+		const flatConfig = buildRowsConfigFromSettings(updatedItems);
+		setRowsConfig(flatConfig);
+		saveRowsConfig(flatConfig);
+	};
 
 	const updateRnpListByArticle = async (signal, filters, authToken, publicUserCredentials, isPublicVersion) => {
 		setLoading(true);
@@ -237,21 +271,9 @@ export default function Rnp({
 
 	const dataToRnpList = (response) => {
 		const { data } = response;
-		const list = response.data.map((article, i) => {
-			const tableConfig = getTableConfig(article);
-			const tableData = getTableData(article);
-			const item = {
-				table: {
-					columns_new: tableConfig,
-					datasource: tableData,
-					columns: [],
-					rows: [],
-				},
-				article_data: article?.article_data,
-			};
-
-			return item;
-		});
+		setRawRnpByArticle(data);
+		const metricsForData = applyRowsConfig(metricsOrder, rowsConfig);
+		const list = data.map((article) => buildRnpItem(article, metricsForData, getTableConfig, getTableData));
 
 		// Применяем сортировку согласно сохраненному порядку
 		const sortedList = activeBrand ? sortBySavedSortState(list, activeBrand) : list;
@@ -264,20 +286,25 @@ export default function Rnp({
 			setRnpDataTotal(null);
 			return;
 		}
-		const tableConfig = getTableConfig(article);
-		const tableData = getTableData(article);
-		const item = {
-			table: {
-				columns_new: tableConfig,
-				datasource: tableData,
-				columns: [],
-				rows: [],
-			},
-			article_data: article?.article_data,
-		};
-
+		setRawRnpTotal(article);
+		const metricsForData = applyRowsConfig(metricsOrder, rowsConfig);
+		const item = buildRnpItem(article, metricsForData, getTableConfig, getTableData);
 		setRnpDataTotal(item);
 	};
+
+	useEffect(() => {
+		if (!rawRnpByArticle) return;
+		const metricsForData = applyRowsConfig(metricsOrder, rowsConfig);
+		const list = rawRnpByArticle.map((article) => buildRnpItem(article, metricsForData, getTableConfig, getTableData));
+		const sortedList = activeBrand ? sortBySavedSortState(list, activeBrand) : list;
+		setRnpDataByArticle(sortedList);
+	}, [rawRnpByArticle, rowsConfig, activeBrand]);
+
+	useEffect(() => {
+		if (!rawRnpTotal) return;
+		const metricsForData = applyRowsConfig(metricsOrder, rowsConfig);
+		setRnpDataTotal(buildRnpItem(rawRnpTotal, metricsForData, getTableConfig, getTableData));
+	}, [rawRnpTotal, rowsConfig]);
 
 	const deleteHandler = (value) => {
 		deleteRnp(value);
@@ -645,6 +672,16 @@ export default function Rnp({
 							</div>
 						)
 					}
+
+					<div className={styles.controlsButtons}>
+						{!isPublicVersion && (
+							<TableSettingsButton
+								className={styles.settingsButton}
+								onClick={() => setIsSettingsOpen(true)}
+								disabled={loading || !rnpDataByArticle}
+							/>
+						)}
+					</div>
 				</div>
 
 				{!loading && activeBrand && !activeBrand?.is_primary_collect && !isPublicVersion && (
@@ -700,6 +737,19 @@ export default function Rnp({
 
 				<ErrorModal open={!!error} message={error} onCancel={() => setError(null)} />
 			</section>
+
+			{!isPublicVersion && (
+				<TableSettingsModal
+					isOpen={isSettingsOpen}
+					onClose={() => setIsSettingsOpen(false)}
+					title="Настройки строк РНП"
+					items={rowsForSettings}
+					onSave={handleSettingsSave}
+					originalItems={originalRowsForSettings}
+					idKey="id"
+					titleKey="title"
+				/>
+			)}
 		</main>
 	);
 }

@@ -82,18 +82,17 @@ const REVERT_INDICATION_FIELDS = new Set([
     'fines',
 ]);
 
-const customCellRender = (value, record, index, dataIndex) => {
+const customCellRender = (value, record, index, dataIndex, borderedColumns) => {
     const [isImgVisible, setIsImgVisible] = useState(false);
     const comparsionKey = comparsionsList[dataIndex];
     const comparsion = record[comparsionKey];
-    const rightBorders = ['category', 'sold_cost', 'return_cost', 'product_cost_stock', 'from_client_sum', 'additionalPayment', 'lostRevenue', 'byProfit', 'minDiscountPrice', 'orderSum', 'completed', 'saleCountDay'];
+    const hasBorderRight = borderedColumns?.includes?.(dataIndex);
 
     useEffect(() => {
         if (record.photo) {
             setIsImgVisible(true);
         }
     }, [record.photo]);
-
 
     if (dataIndex === 'productName') {
         const paddingLeft = record.isParent === false ? '28px' : !record.children?.length ? '36px' : '0px';
@@ -122,7 +121,7 @@ const customCellRender = (value, record, index, dataIndex) => {
         );
     }
     if (dataIndex === 'byRevenue' || dataIndex === 'byProfit') {
-        return (<div className={styles.productCustomCell} data-border-right={rightBorders.includes(dataIndex)}>
+        return (<div className={styles.productCustomCell} data-border-right={hasBorderRight}>
             <div
                 className={styles.abcBar}
                 style={{ backgroundColor: getABCBarOptions(value) }}
@@ -133,14 +132,14 @@ const customCellRender = (value, record, index, dataIndex) => {
         </div>);
     }
 
-    return <div className={styles.customCell} data-border-right={rightBorders.includes(dataIndex)} title={typeof value === 'number' ? formatPrice(value, newTableConfig?.map(item => item.children).flat().find(item => item.dataIndex === dataIndex)?.units || '') : value}>
+    return <div className={styles.customCell} data-border-right={hasBorderRight} title={typeof value === 'number' ? formatPrice(value, newTableConfig?.map(item => item.children).flat().find(item => item.dataIndex === dataIndex)?.units || '') : value}>
         {typeof value === 'number' ? formatPrice(value, newTableConfig?.map(item => item.children).flat().find(item => item.dataIndex === dataIndex)?.units || '') : value}
         <RadarRateMark value={comparsion} units='%' inverseColors={REVERT_INDICATION_FIELDS.has(dataIndex)} />
     </div>;
 };
 
 
-const TableWidget = React.memo(({ stockAnalysisFilteredData, loading, progress, config, initPaginationState, hasShadow = true, configVersion, configKey, maxHeight, setTableConfig: setTableConfigExternal }) => {
+const TableWidget = React.memo(({ stockAnalysisFilteredData, loading, progress, config, initPaginationState, hasShadow = true, configVersion, configKey, maxHeight, setTableConfig: setTableConfigExternal, borderedColumns }) => {
     const containerRef = useRef(null); // реф скролл-контейнера (используется чтобы седить за позицией скрола)
     const [tableData, setTableData] = useState(); // данные для рендера таблицы
     const [sortState, setSortState] = useState(initSortState); // стейт сортировки (см initSortState)
@@ -151,6 +150,11 @@ const TableWidget = React.memo(({ stockAnalysisFilteredData, loading, progress, 
     // Use external config if provided, otherwise use local state
     const tableConfig = config || tableConfigLocal;
     const setTableConfig = setTableConfigExternal || setTableConfigLocal;
+
+    // Обертка для customCellRender с tableConfig
+    const customCellRenderWithConfig = (value, record, index, dataIndex) => {
+        return customCellRender(value, record, index, dataIndex, borderedColumns);
+    };
 
     // задаем начальную дату
     useEffect(() => {
@@ -328,7 +332,7 @@ const TableWidget = React.memo(({ stockAnalysisFilteredData, loading, progress, 
                         scrollContainerRef={containerRef}
                         customCellRender={{
                             idx: [],
-                            renderer: customCellRender,
+                            renderer: customCellRenderWithConfig,
                         }}
                         headerCellWrapperStyle={{
                             fontSize: 'inherit',
@@ -374,7 +378,7 @@ const TableWidget = React.memo(({ stockAnalysisFilteredData, loading, progress, 
                         scrollContainerRef={containerRef}
                         customCellRender={{
                             idx: [],
-                            renderer: customCellRender,
+                            renderer: customCellRenderWithConfig,
                         }}
                         headerCellWrapperStyle={{
                             minHeight: '0px',

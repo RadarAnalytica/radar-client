@@ -5,6 +5,30 @@
     border-bottom-left-radius: 16px;
     box-shadow: 0px 0px 20px 0px #00000014;
     background: white;
+
+    :global(.parent-header) {
+        color: black;
+        font-size: 18px;
+        border-right: 1px solid #E8E8E8 !important;
+
+        &:last-child {
+            border-right: none !important;
+        }
+    }
+
+    :global(.child-header) {
+        background: '#F7F6FE';
+        vertical-align: 'middle';
+        font-size: '14px';
+    }
+
+    :global(.radar-table__body-cell:has(div[data-border-right="true"])) {
+        border-right: 1px solid #E8E8E8 !important;
+
+        &:last-child {
+            border-right: none !important;
+        }
+    }
 }
 
 .widget__scrollContainer {
@@ -189,7 +213,6 @@
     padding-left: 5px;
     min-width: 300px;
     max-width: 300px;
-
 }
 
 .table__headerItem_short {
@@ -402,10 +425,6 @@
 .bodyRowSpecial:hover td {
     background-color: #FAFAFA !important;
     transition: background-color 0.2s ease;
-}
-
-:global(.radar-table__body-cell:has(div[data-border-right="true"])) {
-    border-right: 1px solid #E8E8E8 !important;
 }
 
 .productCustomCellImgWrapper {

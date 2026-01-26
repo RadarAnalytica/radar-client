@@ -88,7 +88,7 @@ const WbMetricsPage: React.FC = () => {
   // Prepare columns for settings modal (only toggleable columns)
   const columnsForSettings = useMemo(() => {
     return tableConfig
-      .filter(col => col.canToggle)
+      .filter(col => col.customizable)
       .map((col) => ({
         ...col,
         id: col.key || col.dataIndex,
@@ -102,7 +102,7 @@ const WbMetricsPage: React.FC = () => {
     if (!data?.data[0]?.control_data) return [];
     const defaultConfig = getDefaultTableConfig(data.data[0].control_data);
     return defaultConfig
-      .filter(col => col.canToggle)
+      .filter(col => col.customizable)
       .map((col) => ({
         ...col,
         id: col.key || col.dataIndex,
@@ -121,7 +121,7 @@ const WbMetricsPage: React.FC = () => {
     
     const toggleableQueue = [...reorderedToggleable];
     const newConfig = tableConfig.map((col) => {
-      if (!col.canToggle) {
+      if (!col.customizable) {
         return col;
       }
 
