@@ -98,7 +98,7 @@ const customCellRender = (value, record, index, dataIndex) => {
     if (typeof value === 'object') {
         return (
             <div className={styles.customCell}>
-                {formatPrice(value.value, '')}
+                <span>{formatPrice(value.value, '')}</span>
                 <RadarRateMark 
                     value={value.comparison_percentage} 
                     units='%' 
