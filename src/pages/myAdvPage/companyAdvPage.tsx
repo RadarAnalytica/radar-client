@@ -126,7 +126,7 @@ const CompanyAdvPage: React.FC = () => {
   // Инициализация конфигурации таблицы
   useEffect(() => {
     const defaultConfig = getDefaultTableConfig();
-    const savedConfig = loadTableConfig();
+    const savedConfig = loadTableConfig(true);
     const mergedConfig = mergeTableConfig(defaultConfig, savedConfig);
     setTableConfig(mergedConfig);
     setPageData({ page: 1, per_page: 50, total_count: 1 });
@@ -142,7 +142,7 @@ const CompanyAdvPage: React.FC = () => {
   // Обработчик изменения конфигурации таблицы
   const handleTableConfigChange = (newConfig: ColumnConfig[]) => {
     setTableConfig(newConfig);
-    saveTableConfig(newConfig);
+    saveTableConfig(newConfig, true);
   };
 
   return (

@@ -126,7 +126,7 @@ const MyAdvTable: React.FC<MyAdvTableProps> = React.memo(({
     });
     
     setTableConfig(newConfig as ColumnConfig[]);
-    saveTableConfig(newConfig as ColumnConfig[]);
+    saveTableConfig(newConfig as ColumnConfig[], Boolean(companyId));
   };
 
   const handlePageChange = (page: number, pageSize?: number) => {

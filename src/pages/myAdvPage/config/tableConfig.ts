@@ -83,27 +83,31 @@ export const getDefaultTableConfig = (): ColumnConfig[] => {
   return columns;
 };
 
-export const getTableConfigStorageKey = () => TABLE_CONFIG_STORAGE_KEY;
+export const getTableConfigStorageKey = (isCompanyPage = false) => isCompanyPage 
+  ? `${TABLE_CONFIG_STORAGE_KEY}_company` 
+  : TABLE_CONFIG_STORAGE_KEY;
 
-export const saveTableConfig = (columns: ColumnConfig[]): void => {
+export const saveTableConfig = (columns: ColumnConfig[], isCompanyPage = false): void => {
   try {
     const configData: TableConfigData = {
       version: TABLE_CONFIG_VERSION,
       columns,
     };
-    localStorage.setItem(getTableConfigStorageKey(), JSON.stringify(configData));
+    console.trace('123');
+    
+    localStorage.setItem(getTableConfigStorageKey(isCompanyPage), JSON.stringify(configData));
   } catch (error) {
     console.error('Error saving table config:', error);
   }
 };
 
-export const loadTableConfig = (): ColumnConfig[] | null => {
+export const loadTableConfig = (isCompanyPage = false): ColumnConfig[] | null => {
   try {
-    const savedData = localStorage.getItem(getTableConfigStorageKey());
+    const savedData = localStorage.getItem(getTableConfigStorageKey(isCompanyPage));
     if (!savedData) return null;
     const configData: TableConfigData = JSON.parse(savedData);
     if (configData.version !== TABLE_CONFIG_VERSION) {
-      localStorage.removeItem(getTableConfigStorageKey());
+      localStorage.removeItem(getTableConfigStorageKey(isCompanyPage));
       return null;
     }
     return configData.columns;
