@@ -243,5 +243,5 @@
 }
 
 .form {
-    /* height: 50vh; */
+    overflow: hidden;
 }

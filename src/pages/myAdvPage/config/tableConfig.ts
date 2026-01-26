@@ -93,8 +93,6 @@ export const saveTableConfig = (columns: ColumnConfig[], isCompanyPage = false):
       version: TABLE_CONFIG_VERSION,
       columns,
     };
-    console.trace('123');
-    
     localStorage.setItem(getTableConfigStorageKey(isCompanyPage), JSON.stringify(configData));
   } catch (error) {
     console.error('Error saving table config:', error);

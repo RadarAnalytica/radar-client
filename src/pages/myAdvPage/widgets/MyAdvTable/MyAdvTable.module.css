@@ -2,6 +2,10 @@
   :global(.loader-container) {
     height: min(400px, 100vh - 280px) !important;
   }
+
+  :global(.group-header) {
+    white-space: nowrap;
+  }
 }
 
 .tableContainer {

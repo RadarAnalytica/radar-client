@@ -36,8 +36,8 @@ export default function ReportProfitLoss() {
 	const [data, setData] = useState([]);
 	const [downloadLoading, setDownloadLoading] = useState(false);
 	const [isSettingsOpen, setIsSettingsOpen] = useState(false);
-	const [rowsConfig, setRowsConfig] = useState(null); // Saved rows visibility/order config
-	const [rawResponseData, setRawResponseData] = useState(null); // Store raw API response for reprocessing
+	const [rowsConfig, setRowsConfig] = useState(getRowsConfigFromStorage);
+	const [rawResponseData, setRawResponseData] = useState(null);
 
 	const shopStatus = useMemo(() => {
 		if (!activeBrand || !shops) return null;
@@ -56,21 +56,6 @@ export default function ReportProfitLoss() {
 		return shops.find(shop => shop.id === activeBrand.id);
 	}, [activeBrand, shops]);
 
-	// Load rows config from localStorage on mount
-	useEffect(() => {
-		try {
-			const savedConfig = localStorage.getItem(ROWS_CONFIG_STORAGE_KEY);
-			if (savedConfig) {
-				const parsed = JSON.parse(savedConfig);
-				if (parsed.version === ROWS_CONFIG_VERSION) {
-					setRowsConfig(parsed.config);
-				}
-			}
-		} catch (error) {
-			console.error('Error loading rows config:', error);
-		}
-	}, []);
-
 	const handleDownload = async () => {
         setDownloadLoading(true);
         try {
@@ -88,6 +73,19 @@ export default function ReportProfitLoss() {
         }
     };
 
+	function getRowsConfigFromStorage() {
+		try {
+			if (typeof window === 'undefined') return null;
+			const savedConfig = window.localStorage.getItem(ROWS_CONFIG_STORAGE_KEY);
+			if (!savedConfig) return null;
+			const parsed = JSON.parse(savedConfig);
+			if (parsed.version !== ROWS_CONFIG_VERSION) return null;
+			return parsed.config;
+		} catch (error) {
+			console.error('Error loading rows config:', error);
+			return null;
+		}
+	}
 
 	function renderColumn(data) {
 		if (typeof data !== 'object') {
