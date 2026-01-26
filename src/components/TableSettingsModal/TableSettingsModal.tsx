@@ -303,7 +303,7 @@ const SortableGroup: React.FC<SortableGroupProps> = ({
                                 />
                             ))}
                         </SortableContext>
-                        <DragOverlay>
+                        <DragOverlay dropAnimation={null}>
                             {activeChildItem ? (
                                 <DragOverlayItem
                                     item={activeChildItem}
@@ -882,7 +882,7 @@ export const TableSettingsModal: React.FC<TableSettingsModalProps> = ({
                                 ) : null}
                             </div>
                         </SortableContext>
-                        <DragOverlay>
+                        <DragOverlay dropAnimation={null}>
                             {activeItem ? (
                                 <DragOverlayItem
                                     item={activeItem}
