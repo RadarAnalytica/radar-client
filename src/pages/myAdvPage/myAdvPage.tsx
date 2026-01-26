@@ -80,7 +80,7 @@ const MyAdvPage: React.FC = () => {
   useEffect(() => {
     if (activeBrand) {
       if (activeBrand.is_primary_collect) {
-        setPageData({...pageData, page: 1})
+        setPageData({...pageData, page: 1});
         loadData(1);
       } else {
         setLoading(false);
