@@ -50,7 +50,10 @@ const StockAnalysisPage = () => {
 
     const borderedColumns = useMemo(() => (
         tableConfig
-            .map((item) => item.children?.[item.children.length - 1]?.dataIndex)
+            .map((item) => {
+                const lastVisibleChild = item.children?.filter((child) => !child.hidden).slice(-1)[0];
+                return lastVisibleChild?.dataIndex;
+            })
             .filter(Boolean)
     ), [tableConfig]);
 
@@ -64,9 +67,27 @@ const StockAnalysisPage = () => {
     }, []);
 
     const handleSettingsSave = (updatedColumns) => {
-        const newConfig = mapSettingsToConfig(updatedColumns);
-        newConfig.map(item => {
-            item.colSpan = item.children.filter(item => !item.hidden).length || 1;
+        const mappedConfig = mapSettingsToConfig(updatedColumns);
+        const newConfig = mappedConfig.map((col) => {
+            const visibleChildren = col.children?.filter((child) => !child.hidden) ?? [];
+            const lastVisibleKey = visibleChildren[visibleChildren.length - 1]?.key;
+            const updatedChildren = col.children?.map((child) => {
+                if (!child.key) return child;
+                if (child.key === lastVisibleKey) {
+                    return { ...child, style: { ...(child.style ?? {}), borderRight: '1px solid #E8E8E8' } };
+                }
+                if (child.style?.borderRight) {
+                    const { borderRight: _borderRight, ...rest } = child.style;
+                    return { ...child, style: rest };
+                }
+                return child;
+            });
+
+            return {
+                ...col,
+                children: updatedChildren,
+                colSpan: visibleChildren.length || 1,
+            };
         });
         
         setTableConfig(newConfig);

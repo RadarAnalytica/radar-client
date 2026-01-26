@@ -58,6 +58,7 @@ export const newTableConfig = [
                 fixed: true,
                 key: 'size',
                 className: 'child-header',
+                style: { borderRight: '1px solid #E8E8E8' }
             },
         ].map(_ => ({..._, maxWidth: _.width * 2, minWidth: _.width / 2})),
     },
@@ -88,6 +89,7 @@ export const newTableConfig = [
                 maxWidth: 300,
                 key: 'category',
                 className: 'child-header',
+                style: { borderRight: '1px solid #E8E8E8' }
             }
         ].map(_ => ({..._, maxWidth: _.width * 2, minWidth: _.width / 2})),
     },
@@ -184,6 +186,7 @@ export const newTableConfig = [
                 units: '₽',
                 tooltipText: 'Неполученная выручка из-за отсутствия товара. Формула: Дни отсутствия × Средняя выручка в день',
                 className: 'child-header',
+                style: { borderRight: '1px solid #E8E8E8' }
             },
         ].map(_ => ({..._, maxWidth: _.width * 2})),
     },
@@ -244,6 +247,7 @@ export const newTableConfig = [
                 units: 'шт',
                 tooltipText: 'Общее количество доставок (выкуп + невыкуп).',
                 className: 'child-header',
+                style: { borderRight: '1px solid #E8E8E8' }
             },
         ].map(_ => ({..._, maxWidth: _.width * 2})),
     },
@@ -292,6 +296,7 @@ export const newTableConfig = [
                 units: '₽',
                 tooltipText: 'Себестоимость проданных единиц.',
                 className: 'child-header',
+                style: { borderRight: '1px solid #E8E8E8' }
             },
         ].map(_ => ({..._, maxWidth: _.width * 2})),
     },
@@ -344,6 +349,7 @@ export const newTableConfig = [
                 units: '₽',
                 tooltipText: 'Себестоимость возвращённых единиц.',
                 className: 'child-header',
+                style: { borderRight: '1px solid #E8E8E8' }
             },
         ].map(_ => ({..._, maxWidth: _.width * 2})),
     },
@@ -384,6 +390,7 @@ export const newTableConfig = [
                 units: '₽',
                 tooltipText: 'Сумма себестоимостей остатков (без фулфилмента).',
                 className: 'child-header',
+                style: { borderRight: '1px solid #E8E8E8' }
             },
         ].map(_ => ({..._, maxWidth: _.width * 2})),
     },
@@ -448,6 +455,7 @@ export const newTableConfig = [
                 units: '₽',
                 tooltipText: 'Затраты на обратную доставку.',
                 className: 'child-header',
+                style: { borderRight: '1px solid #E8E8E8' }
             },
         ].map(_ => ({..._, maxWidth: _.width * 2})),
     },
@@ -496,6 +504,7 @@ export const newTableConfig = [
                 units: '₽',
                 tooltipText: 'Доплаты по товару.',
                 className: 'child-header',
+                style: { borderRight: '1px solid #E8E8E8' }
             },
         ].map(_ => ({..._, maxWidth: _.width * 2})),
     },
@@ -530,6 +539,7 @@ export const newTableConfig = [
                 key: 'byProfit',
                 tooltipText: 'Категория товара по прибыли.',
                 className: 'child-header',
+                style: { borderRight: '1px solid #E8E8E8' }
             },
         ].map(_ => ({..._, maxWidth: _.width * 2})),
     },
@@ -582,6 +592,7 @@ export const newTableConfig = [
                 units: '₽',
                 tooltipText: 'Минимальная цена с учётом скидки продавца.',
                 className: 'child-header',
+                style: { borderRight: '1px solid #E8E8E8' }
             },
         ].map(_ => ({..._, maxWidth: _.width * 2})),
     },
@@ -696,7 +707,7 @@ export const newTableConfig = [
                 units: 'шт',
                 tooltipText: 'Остаток товара на складах WB (ФБС + ФБО).',
                 className: 'child-header',
-                style: { borderRadius: '12px 0 0 12px' },
+                style: { borderRadius: '12px 0 0 12px', borderRight: '1px solid #E8E8E8' },
             },
         ].map(_ => ({..._, maxWidth: _.width * 2})),
     },
