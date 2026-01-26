@@ -45,6 +45,10 @@
     gap: 8px;
   }
 
+  .customCell > span {
+    width: 100%;
+  }
+
   .container {
     position: relative;
     padding: 8px;
@@ -135,11 +139,11 @@
   }
 
 
-  .bodyCellWrapperCustomClass {
+  /* .bodyCellWrapperCustomClass {
     overflow: hidden !important;
     text-overflow: ellipsis !important;
     display: -webkit-box !important;
     -webkit-box-orient: vertical !important;
     -webkit-line-clamp: 1 !important;
     white-space: nowrap !important;
-  }
+  } */
