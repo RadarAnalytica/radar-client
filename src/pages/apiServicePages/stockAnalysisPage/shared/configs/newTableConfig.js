@@ -9,7 +9,6 @@ export const newTableConfig = [
         canToggle: false,
         dataIndex: 'productInfo',
         key: 'productInfo',
-        className: 'parent-header',
         style: {zIndex: 3},
         children: [
             {
@@ -23,8 +22,6 @@ export const newTableConfig = [
                 maxWidth: 300,
                 fixed: true,
                 key: 'productName',
-                className: 'child-header',
-                style: { borderRadius: '12px 0 0 12px' }
             },
             {
                 title: 'Артикул',
@@ -35,7 +32,6 @@ export const newTableConfig = [
                 maxWidth: 300,
                 fixed: true,
                 key: 'vendorСode',
-                className: 'child-header',
             },
             {
                 title: 'SKU',
@@ -46,7 +42,6 @@ export const newTableConfig = [
                 maxWidth: 300,
                 fixed: true,
                 key: 'sku',
-                className: 'child-header',
             },
             {
                 title: 'Размер',
@@ -57,7 +52,6 @@ export const newTableConfig = [
                 maxWidth: 200,
                 fixed: true,
                 key: 'size',
-                className: 'child-header',
                 style: { borderRight: '1px solid #E8E8E8' }
             },
         ].map(_ => ({..._, maxWidth: _.width * 2, minWidth: _.width / 2})),
@@ -68,7 +62,6 @@ export const newTableConfig = [
         hidden: false,
         dataIndex: 'brandCategory',
         key: 'brandCategory',
-        className: 'parent-header',
         style: {zIndex: 2},
         children: [
             {
@@ -78,7 +71,6 @@ export const newTableConfig = [
                 width: 120,
                 minWidth: 120,
                 key: 'brandName',
-                className: 'child-header',
             },
             {
                 title: 'Категория',
@@ -88,7 +80,6 @@ export const newTableConfig = [
                 minWidth: 120,
                 maxWidth: 300,
                 key: 'category',
-                className: 'child-header',
                 style: { borderRight: '1px solid #E8E8E8' }
             }
         ].map(_ => ({..._, maxWidth: _.width * 2, minWidth: _.width / 2})),
@@ -100,7 +91,6 @@ export const newTableConfig = [
         hidden: false,
         dataIndex: 'profit',
         key: 'profit',
-        className: 'parent-header',
         style: {zIndex: 2},
         children: [
             {
@@ -113,7 +103,6 @@ export const newTableConfig = [
                 key: 'toPayoff',
                 units: '₽',
                 tooltipText: 'Сумма, которую продавец получит за товар. Формула: Оплата на РС – Хранение',
-                className: 'child-header',
             },
             {
                 title: 'Маржинальная прибыль',
@@ -125,7 +114,6 @@ export const newTableConfig = [
                 key: 'marginalProfit',
                 units: '₽',
                 tooltipText: 'Прибыль до вычета расходов. Формула: Сумма продаж – Себестоимость проданных товаров',
-                className: 'child-header',
             },
             {
                 title: 'Средняя прибыль',
@@ -137,7 +125,6 @@ export const newTableConfig = [
                 key: 'averageProfit',
                 units: '₽',
                 tooltipText: 'Средняя прибыль за день. Формула: (Сумма продаж – Текущая себестоимость × Количество продаж) / Количество дней',
-                className: 'child-header',
             },
             {
                 title: 'Рентабельность реализованной продукции',
@@ -149,7 +136,6 @@ export const newTableConfig = [
                 key: 'profitabilityOfProductsSold',
                 units: '%',
                 tooltipText: 'Рентабельность продаж. Формула: (Количество продаж / Сумма продаж) × 100%',
-                className: 'child-header',
             },
             {
                 title: 'Маржинальность',
@@ -161,7 +147,6 @@ export const newTableConfig = [
                 key: 'marginal',
                 units: '%',
                 tooltipText: 'Маржинальность продаж. Формула: (Сумма продаж – Текущая себестоимость × Количество продаж) / Сумма продаж × 100%',
-                className: 'child-header',
             },
             {
                 title: 'Годовая рентабельность товарных запасов',
@@ -173,7 +158,6 @@ export const newTableConfig = [
                 key: 'annualReturnOnInventory',
                 units: '%',
                 tooltipText: 'Рентабельность запасов в пересчёте на год. Формула: ((Оплата на РС – Себестоимость проданных товаров) / Себестоимость товарного запаса) × (365 / Дней в периоде)',
-                className: 'child-header',
             },
             {
                 title: 'Упущенная выручка',
@@ -185,7 +169,6 @@ export const newTableConfig = [
                 key: 'lostRevenue',
                 units: '₽',
                 tooltipText: 'Неполученная выручка из-за отсутствия товара. Формула: Дни отсутствия × Средняя выручка в день',
-                className: 'child-header',
                 style: { borderRight: '1px solid #E8E8E8' }
             },
         ].map(_ => ({..._, maxWidth: _.width * 2})),
@@ -197,7 +180,6 @@ export const newTableConfig = [
         hidden: false,
         dataIndex: 'buyouts',
         key: 'buyouts',
-        className: 'parent-header',
         style: {zIndex: 2},
         children: [
             {
@@ -210,7 +192,6 @@ export const newTableConfig = [
                 key: 'purchased',
                 units: 'шт',
                 tooltipText: 'Количество выкупленных единиц.',
-                className: 'child-header',
             },
             {
                 title: 'Не выкуплено',
@@ -222,7 +203,6 @@ export const newTableConfig = [
                 key: 'notPurchased',
                 units: 'шт',
                 tooltipText: 'Количество невыкупленных единиц.',
-                className: 'child-header',
             },
             {
                 title: 'Процент выкупа',
@@ -234,7 +214,6 @@ export const newTableConfig = [
                 key: 'purchasedPercent',
                 units: '%',
                 tooltipText: 'Доля выкупленных единиц от всех доставленных. Формула: (Выкуплено / (Выкуплено + Не выкуплено)) × 100%',
-                className: 'child-header',
             },
             {
                 title: 'Завершены',
@@ -246,7 +225,6 @@ export const newTableConfig = [
                 key: 'completed',
                 units: 'шт',
                 tooltipText: 'Общее количество доставок (выкуп + невыкуп).',
-                className: 'child-header',
                 style: { borderRight: '1px solid #E8E8E8' }
             },
         ].map(_ => ({..._, maxWidth: _.width * 2})),
@@ -258,7 +236,6 @@ export const newTableConfig = [
         hidden: false,
         dataIndex: 'sales',
         key: 'sales',
-        className: 'parent-header',
         style: {zIndex: 2},
         children: [
             {
@@ -271,7 +248,6 @@ export const newTableConfig = [
                 key: 'saleSum',
                 units: '₽',
                 tooltipText: 'Выручка от продаж товара.',
-                className: 'child-header',
             },
             {
                 title: 'Количество',
@@ -283,7 +259,6 @@ export const newTableConfig = [
                 key: 'quantity',
                 units: 'шт',
                 tooltipText: 'Количество проданных единиц.',
-                className: 'child-header',
             },
             {
                 title: 'Себестоимость проданных товаров',
@@ -295,7 +270,6 @@ export const newTableConfig = [
                 key: 'sold_cost',
                 units: '₽',
                 tooltipText: 'Себестоимость проданных единиц.',
-                className: 'child-header',
                 style: { borderRight: '1px solid #E8E8E8' }
             },
         ].map(_ => ({..._, maxWidth: _.width * 2})),
@@ -307,7 +281,6 @@ export const newTableConfig = [
         hidden: false,
         dataIndex: 'returns',
         key: 'returns',
-        className: 'parent-header',
         style: {zIndex: 2},
         children: [
             {
@@ -320,7 +293,6 @@ export const newTableConfig = [
                 key: 'returnsSum',
                 units: '₽',
                 tooltipText: 'Сумма возвратов по товару.',
-                className: 'child-header',
             },
             {
                 title: 'Количество',
@@ -348,7 +320,6 @@ export const newTableConfig = [
                 key: 'return_cost',
                 units: '₽',
                 tooltipText: 'Себестоимость возвращённых единиц.',
-                className: 'child-header',
                 style: { borderRight: '1px solid #E8E8E8' }
             },
         ].map(_ => ({..._, maxWidth: _.width * 2})),
@@ -360,7 +331,6 @@ export const newTableConfig = [
         hidden: false,
         dataIndex: 'costPrice',
         key: 'costPrice',
-        className: 'parent-header',
         style: {zIndex: 2},
         children: [
             {
@@ -389,7 +359,6 @@ export const newTableConfig = [
                 key: 'product_cost_stock',
                 units: '₽',
                 tooltipText: 'Сумма себестоимостей остатков (без фулфилмента).',
-                className: 'child-header',
                 style: { borderRight: '1px solid #E8E8E8' }
             },
         ].map(_ => ({..._, maxWidth: _.width * 2})),
@@ -401,7 +370,6 @@ export const newTableConfig = [
         hidden: false,
         dataIndex: 'logistics',
         key: 'logistics',
-        className: 'parent-header',
         style: {zIndex: 2},
         children: [
             {
@@ -414,7 +382,6 @@ export const newTableConfig = [
                 key: 'toClient',
                 units: 'шт',
                 tooltipText: 'Количество прямых доставок.',
-                className: 'child-header',
             },
             {
                 title: 'Сумма',
@@ -442,7 +409,6 @@ export const newTableConfig = [
                 key: 'fromClient',
                 units: 'шт',
                 tooltipText: 'Количество обратных доставок.',
-                className: 'child-header',
             },
             {
                 title: 'Сумма',
@@ -454,7 +420,6 @@ export const newTableConfig = [
                 key: 'from_client_sum',
                 units: '₽',
                 tooltipText: 'Затраты на обратную доставку.',
-                className: 'child-header',
                 style: { borderRight: '1px solid #E8E8E8' }
             },
         ].map(_ => ({..._, maxWidth: _.width * 2})),
@@ -466,7 +431,6 @@ export const newTableConfig = [
         hidden: false,
         dataIndex: 'otherExpenses',
         key: 'otherExpenses',
-        className: 'parent-header',
         style: {zIndex: 2},
         children: [
             {
@@ -479,7 +443,6 @@ export const newTableConfig = [
                 key: 'commissionWB',
                 units: '₽',
                 tooltipText: 'Комиссия по товару.',
-                className: 'child-header',
             },
             {
                 title: 'Штрафы',
@@ -491,7 +454,6 @@ export const newTableConfig = [
                 key: 'fines',
                 units: '₽',
                 tooltipText: 'Штрафы по товару.',
-                className: 'child-header',
             },
             {
                 title: 'Доплаты',
@@ -503,7 +465,6 @@ export const newTableConfig = [
                 key: 'additionalPayment',
                 units: '₽',
                 tooltipText: 'Доплаты по товару.',
-                className: 'child-header',
                 style: { borderRight: '1px solid #E8E8E8' }
             },
         ].map(_ => ({..._, maxWidth: _.width * 2})),
@@ -515,7 +476,6 @@ export const newTableConfig = [
         hidden: false,
         dataIndex: 'abcAnalysis',
         key: 'abcAnalysis',
-        className: 'parent-header',
         style: {zIndex: 2},
         children: [
             {
@@ -527,7 +487,6 @@ export const newTableConfig = [
                 maxWidth: 200,
                 key: 'byRevenue',
                 tooltipText: 'Категория товара по объёму выручки.',
-                className: 'child-header',
             },
             {
                 title: 'По прибыли',
@@ -538,7 +497,6 @@ export const newTableConfig = [
                 maxWidth: 200,
                 key: 'byProfit',
                 tooltipText: 'Категория товара по прибыли.',
-                className: 'child-header',
                 style: { borderRight: '1px solid #E8E8E8' }
             },
         ].map(_ => ({..._, maxWidth: _.width * 2})),
@@ -550,7 +508,6 @@ export const newTableConfig = [
         hidden: false,
         dataIndex: 'price',
         key: 'price',
-        className: 'parent-header',
         style: {zIndex: 2},
         children: [
             {
@@ -563,7 +520,6 @@ export const newTableConfig = [
                 key: 'basic',
                 units: '₽',
                 tooltipText: 'Цена продавца без скидок.',
-                className: 'child-header',
             },
             {
                 title: 'Макс. скидка',
@@ -591,7 +547,6 @@ export const newTableConfig = [
                 key: 'minDiscountPrice',
                 units: '₽',
                 tooltipText: 'Минимальная цена с учётом скидки продавца.',
-                className: 'child-header',
                 style: { borderRight: '1px solid #E8E8E8' }
             },
         ].map(_ => ({..._, maxWidth: _.width * 2})),
@@ -650,7 +605,6 @@ export const newTableConfig = [
         hidden: false,
         dataIndex: 'speed',
         key: 'speed',
-        className: 'parent-header',
         style: {zIndex: 2},
         children: [
             // {
@@ -693,7 +647,6 @@ export const newTableConfig = [
         hidden: false,
         dataIndex: 'balance',
         key: 'balance',
-        className: 'parent-header',
         style: {zIndex: 2},
         children: [
             {
@@ -706,8 +659,6 @@ export const newTableConfig = [
                 key: 'dataRadar',
                 units: 'шт',
                 tooltipText: 'Остаток товара на складах WB (ФБС + ФБО).',
-                className: 'child-header',
-                style: { borderRadius: '12px 0 0 12px', borderRight: '1px solid #E8E8E8' },
             },
         ].map(_ => ({..._, maxWidth: _.width * 2})),
     },

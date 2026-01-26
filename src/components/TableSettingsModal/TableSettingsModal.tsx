@@ -697,6 +697,7 @@ export const TableSettingsModal: React.FC<TableSettingsModalProps> = ({
                 open={isOpen}
                 onCancel={handleCancel}
                 centered
+                className={styles.tableSettingsModal}
                 title={
                     <div className={styles.modalHeader}>
                         <span className={styles.modalTitle}>{title}</span>
