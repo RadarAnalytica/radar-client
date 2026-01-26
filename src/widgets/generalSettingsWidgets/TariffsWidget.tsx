@@ -16,8 +16,11 @@ import { getWordDeclension } from '@/service/utils';
 import { PlainSelect } from '@/components/sharedComponents/apiServicePagesFiltersComponent/features';
 import { v4 as uuid } from 'uuid';
 import moment from 'moment';
+import { Checkout } from '@/features';
+import type { ITariffCard, IPaymentItem, IPromocode } from '@/shared/models/tariffs/tariffs';
+import { Link } from 'react-router-dom';
 
-export const tariffsList = [
+export const tariffsList: ITariffCard[] = [
     {
         title: 'Старт',
         id: 'start',
@@ -89,7 +92,8 @@ export const tariffsList = [
                     { title: 'Сравнение SEO с ТОПами', isIncluded: false }
                 ]
             }
-        ]
+        ],
+        buttonType: 'modal'
     },
     {
         title: 'Оптимальный',
@@ -162,7 +166,8 @@ export const tariffsList = [
                     { title: 'Сравнение SEO с ТОПами', isIncluded: false }
                 ]
             }
-        ]
+        ],
+        buttonType: 'modal'
     },
     {
         title: 'Расширенный',
@@ -235,7 +240,8 @@ export const tariffsList = [
                     { title: 'Сравнение SEO с ТОПами', isIncluded: false }
                 ]
             }
-        ]
+        ],
+        buttonType: 'modal'
     },
     {
         title: 'Премиум',
@@ -256,7 +262,8 @@ export const tariffsList = [
             { title: 'API', text: '1 подключенный магазин', iconIndex: 0 },
             { title: 'Продажи до 1,5 млн рублей ', text: 'Без учета СПП и WB кошелька', iconIndex: 1 },
         ],
-        description: 'Важно: в течение этого периода вы можете оцифровать не более 5 календарных недель.'
+        description: 'Важно: в течение этого периода вы можете оцифровать не более 5 календарных недель.',
+        buttonType: 'link'
     },
     {
         title: 'Агентский',
@@ -278,7 +285,8 @@ export const tariffsList = [
             { title: 'Продажи до 1,5 млн рублей ', text: 'Без учета СПП и WB кошелька', iconIndex: 1 },
         ],
         description: `Важно: в течение этого периода вы можете оцифровать не более 5 календарных недель. Lorem Важно: в течение этого периода вы можете оцифровать не более 5 календарных недель. Lorem Важно: в течение этого периода вы можете оцифровать не более 5 календарных недель. Lorem
-        Важно: в течение этого периода вы можете оцифровать не более 5 календарных недель. `
+        Важно: в течение этого периода вы можете оцифровать не более 5 календарных недель. `,
+        buttonType: 'link'
     },
 ];
 
@@ -290,35 +298,40 @@ const initRequestStatus = {
 }
 
 const tabs = [
-    { title: '1 месяц', discount: null },
-    { title: '3 месяца', discount: '-15%' },
-    { title: '6 месяцев', discount: '-15%' },
-    { title: '12 месяцев', discount: '-15%' },
+    { title: '1 месяц', discount: null, value: '1month' },
+    { title: '3 месяца', discount: '-15%', value: '3month' },
+    { title: '6 месяцев', discount: '-15%', value: '6month' },
+    { title: '12 месяцев', discount: '-15%', value: '12month' },
 ]
+
+/*
+{
+  "price": 10174,
+  "oldPrice": 11970,
+  "value": "3month"
+}
+  */
 
 
 export const TariffsWidget = () => {
     // ------------ states and vars ---------------//
     const { user, logout, authToken } = useContext(AuthContext);
-    const [activatedSubscription, setActivatedSubscription] = useState(null)
-    const [modalItem, setModalItem] = useState(undefined);
-    const [isScriptLoaded, setIsScriptLoaded] = useState(false);
-    const [isWidgetActive, setIsWidgetActive] = useState(false);
     const { isDemoUser } = useDemoMode();
-    const [trialExpired, setTrialExpired] = useState(user?.is_test_used);
+    const [activatedSubscription, setActivatedSubscription] = useState(null) // подписка на которую кликнули
+    const [isWidgetActive, setIsWidgetActive] = useState(false); // активен ли виджет клаудпэйментс
+    const [trialExpired, setTrialExpired] = useState(user?.is_test_used); // хз зачем это в отдельное состояние вынесли но пусть будет
     const [subscriptionDiscount, setSubscriptionDiscount] = useState(
         user?.is_subscription_discount
-    );
-    const [fakePaymentDataObject, setFakePaymentDataObject] = useState(null)
-    const [fakeRequestStatus, setFakeRequestStatus] = useState(initRequestStatus)
-    const [activeTab, setActiveTab] = useState('1 месяц')
-    const [isCartModalVisible, setIsCartModalVisible] = useState(false)
-    const [activeCartTariff, setActiveCartTariff] = useState(null)
+    );// хз зачем это в отдельное состояние вынесли но пусть будет
+    const [fakePaymentDataObject, setFakePaymentDataObject] = useState(null) // имитируем обьект клаудпейментс для тестовой оплаты
+    const [fakeRequestStatus, setFakeRequestStatus] = useState(initRequestStatus) // статус тестового запроса
+    const [activeTab, setActiveTab] = useState('1 месяц') // табы выбора периода тарифа
+    const [isCartModalVisible, setIsCartModalVisible] = useState(false) // видимость модалки корзины
+    const [activeCartTariff, setActiveCartTariff] = useState<ITariffCard | null>(null) // Выбраный тариф для показа в модалке корзины
+    const [isDetailsOpen, setIsDetailsOpen] = useState(false) // Стейт показа что входит в тариф
 
     const navigate = useNavigate();
     const location = useLocation();
-    const userIdInvoiceHardCode = 'radar-51-20240807-161128';
-    const currentPath = window.location.pathname;
 
     if (user?.is_test_used !== trialExpired) {
         user?.is_test_used ? setTrialExpired(true) : setTrialExpired(false);
@@ -402,17 +415,11 @@ export const TariffsWidget = () => {
             script.src = 'https://widget.cloudpayments.ru/bundles/cloudpayments.js';
             script.async = true;
 
-            script.onload = () => {
-                setIsScriptLoaded(true);
-            };
-
             document.body.appendChild(script);
         };
         //@ts-ignore
         if (!window.cp) {
             loadCloudPaymentsScript();
-        } else {
-            setIsScriptLoaded(true);
         }
 
         return () => {
@@ -423,12 +430,16 @@ export const TariffsWidget = () => {
         };
     }, []);
     // -------------------------------- pay function -------------------------------//
-    const pay = async (_) => {
+    const pay = async (
+        _: IPaymentItem,
+        paymentType: 'instant' | 'after_subscription' | 'boost',
+        promocode?: IPromocode
+    ) => {
         if (isDemoUser) {
             await logout();
             return;
         }
-        const selectedPeriod = _.value;
+        const selectedPeriod = _.period;
         const refresh_result = await refreshUserToken();
 
         const decodedUser = jwtDecode(refresh_result);
@@ -442,16 +453,13 @@ export const TariffsWidget = () => {
             setTrialExpired(false);
             newTrialExpired = false;
         }
-
-        // console.log('user', user);
-        // console.log('selectedPeriod', selectedPeriod);
-        // console.log('trialExpired', trialExpired);
-        // console.log('newTrialExpired', newTrialExpired);
-
+        let promocodeStartDateBonus = promocode && promocode.type === 'time' ? promocode.amount : 0;
         let periodSubscribe = '';
         let amountSubscribe = 0;
         let firstAmount = 0;
-        let startDateSubscribe = new Date();
+        // ---------------------------------------------------------------------------------------------------------//
+        let startDateSubscribe = new Date(); // <------- HERE WILL BE A PART WITH 'INSTANT' | 'AFTER CURRENT' LOGIC ACCORDING TO @PAYMENTTYPE ARG
+        // ---------------------------------------------------------------------------------------------------------//
         // проверяем время с 10:10 по 10 мск
         if (startDateSubscribe.getUTCHours() > 10 || (startDateSubscribe.getUTCHours() == 10 && startDateSubscribe.getUTCMinutes() > 10)) {
             startDateSubscribe.setDate(startDateSubscribe.getDate() + 1);
@@ -475,50 +483,47 @@ export const TariffsWidget = () => {
             .replaceAll(':', '')}`;
 
         if (selectedPeriod === '1month') {
-            amountSubscribe = _.price;
+            amountSubscribe = _.fullPrice;
             firstAmount = _.price;
             //@ts-ignore
             periodSubscribe = 1;
             if (newTrialExpired) {
                 startDateSubscribe.setMonth(
                     //@ts-ignore
-                    startDateSubscribe.getMonth() + periodSubscribe
+                    startDateSubscribe.getMonth() + periodSubscribe + promocodeStartDateBonus
                 );
             } else {
-                startDateSubscribe.setDate(startDateSubscribe.getDate() + (user?.test_days || 3));
+                startDateSubscribe.setDate(startDateSubscribe.getDate() + (user?.test_days || 3)) + promocodeStartDateBonus;
             }
         }
         if (selectedPeriod === '3month') {
-            amountSubscribe = _.price;
-            //firstAmount = !subscriptionDiscount ? 8073 : 4485;
+            amountSubscribe = _.fullPrice;
             firstAmount = _.price;
             //@ts-ignore
             periodSubscribe = 3;
             startDateSubscribe.setMonth(
                 //@ts-ignore
-                startDateSubscribe.getMonth() + periodSubscribe
+                startDateSubscribe.getMonth() + periodSubscribe + promocodeStartDateBonus
             );
         }
         if (selectedPeriod === '6month') {
-            amountSubscribe = _.price;
-            //firstAmount = !subscriptionDiscount ? 10764 : 5382;
+            amountSubscribe = _.fullPrice;
             firstAmount = _.price;
             //@ts-ignore
             periodSubscribe = 6;
             startDateSubscribe.setMonth(
                 //@ts-ignore
-                startDateSubscribe.getMonth() + periodSubscribe
+                startDateSubscribe.getMonth() + periodSubscribe + promocodeStartDateBonus
             );
         }
         if (selectedPeriod === '12month') {
-            amountSubscribe = _.price;
-            //firstAmount = !subscriptionDiscount ? 10764 : 5382;
+            amountSubscribe = _.fullPrice;
             firstAmount = _.price;
             //@ts-ignore
             periodSubscribe = 12;
             startDateSubscribe.setMonth(
                 //@ts-ignore
-                startDateSubscribe.getMonth() + periodSubscribe
+                startDateSubscribe.getMonth() + periodSubscribe + promocodeStartDateBonus
             );
         }
         // console.log('periodSubscribe', periodSubscribe);
@@ -547,7 +552,7 @@ export const TariffsWidget = () => {
             sberPaySupport: true,
         });
 
-        const receipt = {
+        const receiptReccurentPayments = {
             Items: [
                 //товарные позиции
                 {
@@ -570,17 +575,40 @@ export const TariffsWidget = () => {
                 provision: 0.0, // Сумма оплаты встречным предоставлением (сертификаты, др. мат.ценности) (2 знака после точки)
             },
         };
+        const receiptFirstPayment = {
+            Items: [
+                //товарные позиции
+                {
+                    label: 'Подписка Радар Аналитика', //наименование товара
+                    price: firstAmount, //цена
+                    quantity: 1.0, //количество
+                    amount: firstAmount, //сумма
+                    vat: 20, //ставка НДС
+                    method: 0, // тег-1214 признак способа расчета - признак способа расчета
+                    object: 0, // тег-1212 признак предмета расчета - признак предмета товара, работы, услуги, платежа, выплаты, иного предмета расчета
+                },
+            ],
+            email: user.email, //e-mail покупателя, если нужно отправить письмо с чеком
+            phone: '', //телефон покупателя в любом формате, если нужно отправить сообщение со ссылкой на чек
+            isBso: false, //чек является бланком строгой отчетности
+            amounts: {
+                electronic: firstAmount, // Сумма оплаты электронными деньгами
+                advancePayment: 0.0, // Сумма из предоплаты (зачетом аванса) (2 знака после точки)
+                credit: 0.0, // Сумма постоплатой(в кредит) (2 знака после точки)
+                provision: 0.0, // Сумма оплаты встречным предоставлением (сертификаты, др. мат.ценности) (2 знака после точки)
+            },
+        };
 
         const data = {};
         //@ts-ignore
         data.CloudPayments = {
-            CustomerReceipt: receipt, //чек для первого платежа
+            CustomerReceipt: receiptFirstPayment, //чек для первого платежа
             recurrent: {
                 interval: 'Month',
                 period: periodSubscribe,
                 startDate: startDateSubscribe,
                 amount: amountSubscribe,
-                customerReceipt: receipt, //чек для регулярных платежей
+                customerReceipt: receiptReccurentPayments, //чек для регулярных платежей
             },
         };
 
@@ -705,12 +733,16 @@ export const TariffsWidget = () => {
     };
 
     // -------------------------------- fake pay function (for dev or test purposes only) -------------------------------//
-    const fakePayFunction = async (_) => {
+    const fakePayFunction = async (
+        _: IPaymentItem,
+        paymentType: 'instant' | 'after_subscription' | 'boost',
+        promocode?: IPromocode
+    ) => {
         if (isDemoUser) {
             await logout();
             return;
         }
-        const selectedPeriod = _.value;
+        const selectedPeriod = _.period;
         const refresh_result = await refreshUserToken();
 
         const decodedUser = jwtDecode(refresh_result);
@@ -928,16 +960,9 @@ export const TariffsWidget = () => {
                         activatedSubscription={activatedSubscription}
                         isWidgetActive={isWidgetActive}
                         activeTab={activeTab}
+                        isDetailsOpen={isDetailsOpen}
+                        setIsDetailsOpen={setIsDetailsOpen}
                         action={() => {
-                            // if (import.meta.env.PROD && URL === 'https://radar-analytica.ru') {
-                            //     setActivatedSubscription(item.title);
-                            //     setIsWidgetActive(true);
-                            //     pay(item);
-                            // } else {
-                            //     setActivatedSubscription(item.title);
-                            //     setIsWidgetActive(true);
-                            //     fakePayFunction(item)
-                            // }
                             setIsCartModalVisible(true)
                             setActiveCartTariff(item)
                         }}
@@ -954,23 +979,132 @@ export const TariffsWidget = () => {
                         <p className={styles.calcBlock__title}>От 500 ₽</p>
                     </div>
 
-                    <button className={styles.calcBlock__button} onClick={() => setIsCartModalVisible(true)}>
+                    <ConfigProvider
+                        theme={{
+                            token: {
+                                colorPrimary: 'white',
+                                colorPrimaryHover: 'white',
+                                fontSize: 12,
+                                //@ts-ignore
+                                fontWeight: 700,
+                                height: 46,
+                                width: '100%',
+                                controlHeightLG: 46,
+                            },
+                            components: {
+                                Button: {
+                                    primaryShadow: 'transparent',
+                                    primaryColor: '#5329FF',
+                                    colorPrimaryActive: 'white'
+                                }
+                            }
+                        }}
+                    >
+                        <Button
+                            size='large'
+                            type='primary'
+                            loading={isWidgetActive && activatedSubscription && activatedSubscription === 'calculator'}
+                            disabled={activatedSubscription && activatedSubscription !== 'calculator' && isWidgetActive}
+                            style={{ color: '#5329FF', fontWeight: 600 }}
+                            onClick={() => setIsCartModalVisible(true)}
+                            className={styles.calcBlock__button}
+                        >
+                            Настроить
+                        </Button>
+                    </ConfigProvider>
+
+                    {/* <button className={styles.calcBlock__button} onClick={() => setIsCartModalVisible(true)}>
                         Настроить
-                    </button>
+                    </button> */}
 
                     <div className={styles.calcBlock__imageWrapper}>
                         <img src={cover} alt='' />
                     </div>
                 </div>
             </div>
-
-            <Cart
+            {/* cart */}
+            <Modal
                 open={isCartModalVisible}
-                setIsOpen={setIsCartModalVisible}
-                activeCartTariff={activeCartTariff}
-                setActiveCartTariff={setActiveCartTariff}
-            />
-
+                footer={null}
+                width={960}
+                onCancel={() => { setIsCartModalVisible(false); setActiveCartTariff(null); }}
+                closeIcon={
+                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M6 4.66688L10.6669 0L12 1.33312L7.33312 6L12 10.6669L10.6669 12L6 7.33312L1.33312 12L0 10.6669L4.66688 6L0 1.33312L1.33312 0L6 4.66688Z" fill="#1A1A1A" fillOpacity="0.5" />
+                    </svg>
+                }
+            >
+                <Checkout
+                    activeCartTariff={activeCartTariff}
+                    externalActiveTab={activeTab as '1 месяц' | '3 месяца' | '6 месяцев' | '12 месяцев'}
+                    setExternalActiveTab={setActiveTab}
+                    tabs={tabs as Array<{ title: '1 месяц' | '3 месяца' | '6 месяцев' | '12 месяцев', discount: string | null, value: string }>}
+                    payFunction={(item: IPaymentItem, paymentType: 'instant' | 'after_subscription' | 'boost', promocode?: IPromocode) => {
+                        setIsCartModalVisible(false)
+                        setActivatedSubscription(item.title);
+                        setIsWidgetActive(true);
+                        pay(item, paymentType, promocode);
+                        // if (import.meta.env.PROD && URL === 'https://radar-analytica.ru') {
+                        //     setIsCartModalVisible(false)
+                        //     setActivatedSubscription(item.title);
+                        //     setIsWidgetActive(true);
+                        //     pay(item, paymentType, promocode);
+                        // } else {
+                        //     setIsCartModalVisible(false)
+                        //     setActivatedSubscription(item.title);
+                        //     setIsWidgetActive(true);
+                        //     fakePayFunction(item, paymentType, promocode)
+                        // }
+                    }}
+                >
+                    {activeCartTariff &&
+                        <>
+                            <div className={styles.tariffCard__features}>
+                                {activeCartTariff?.newFeatures?.map((f) => {
+                                    return (
+                                        <div key={f.title} className={styles.tariffCard__featuresListWrapper}>
+                                            <div className={styles.tariffCard__featuresList} key={f.title}>
+                                                {cardFeaturesIcons[f.iconIndex]}
+                                                {f.title}
+                                            </div>
+                                            <span>{f.text}</span>
+                                        </div>
+                                    )
+                                })}
+                            </div>
+                            {activeCartTariff?.whatsInside &&
+                                <div className={styles.tariffCard__mainWrapper} style={{ gap: 0, backgroundColor: 'transparent', padding: 0 }}>
+                                    <ul className={`${styles.tariffCard__accordContent} ${styles.tariffCard__accordContent_open}`} style={{ margin: 0 }}>
+                                        {activeCartTariff?.whatsInside.map((_, idx) => (
+                                            <li key={idx}>
+                                                {_.title}
+                                                <ul className={styles.tariffCard__innerList}>
+                                                    {_.children.map(child => (
+                                                        <li key={child.title} style={{ color: child.isIncluded ? '#1A1A1A' : '#8C8C8C' }}>
+                                                            {child.isIncluded &&
+                                                                <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                    <path fillRule="evenodd" clipRule="evenodd" d="M5 10C7.76142 10 10 7.76142 10 5C10 2.23858 7.76142 0 5 0C2.23858 0 0 2.23858 0 5C0 7.76142 2.23858 10 5 10ZM7.39016 3.89017C7.53661 3.74372 7.53661 3.50628 7.39016 3.35983C7.24372 3.21339 7.00628 3.21339 6.85983 3.35983L4.375 5.84467L3.14017 4.60984C2.99372 4.46339 2.75628 4.46339 2.60983 4.60984C2.46339 4.75628 2.46339 4.99372 2.60983 5.14017L4.10983 6.64017C4.25628 6.78661 4.49372 6.78661 4.64017 6.64017L7.39016 3.89017Z" fill="#00B69B" />
+                                                                </svg>
+                                                            }
+                                                            {!child.isIncluded &&
+                                                                <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                    <path fillRule="evenodd" clipRule="evenodd" d="M5 10C7.76142 10 10 7.76142 10 5C10 2.23858 7.76142 0 5 0C2.23858 0 0 2.23858 0 5C0 7.76142 2.23858 10 5 10ZM3.85095 3.32062C3.7045 3.17417 3.46706 3.17417 3.32062 3.32062C3.17417 3.46707 3.17417 3.7045 3.32062 3.85095L4.46967 5L3.32062 6.14905C3.17417 6.2955 3.17417 6.53293 3.32062 6.67938C3.46706 6.82583 3.7045 6.82583 3.85095 6.67938L5 5.53033L6.14905 6.67938C6.29549 6.82583 6.53293 6.82583 6.67938 6.67938C6.82582 6.53293 6.82582 6.2955 6.67938 6.14905L5.53033 5L6.67938 3.85095C6.82582 3.7045 6.82582 3.46707 6.67938 3.32062C6.53293 3.17417 6.29549 3.17418 6.14905 3.32062L5 4.46967L3.85095 3.32062Z" fill="#B0B0B0" />
+                                                                </svg>
+                                                            }
+                                                            {child.title}
+                                                        </li>
+                                                    ))}
+                                                </ul>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            }
+                        </>
+                    }
+                </Checkout>
+            </Modal>
+            {/* test payment */}
             <Modal
                 open={fakePaymentDataObject && isWidgetActive ? true : false}
                 //open
@@ -1011,27 +1145,20 @@ const cardFeaturesIcons = [
         </svg>
     ),
     (
-        <svg width="13" height="14" viewBox="0 0 13 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M2.29167 9.79167H1.45833V8.54167H2.29167C2.63684 8.54167 2.91667 8.26184 2.91667 7.91667C2.91667 7.57149 2.63684 7.29167 2.29167 7.29167H1.45833V6.04167H2.29167C2.63684 6.04167 2.91667 5.76184 2.91667 5.41667C2.91667 5.07149 2.63684 4.79167 2.29167 4.79167H1.45833V3.54167H2.29167C2.63684 3.54167 2.91667 3.26184 2.91667 2.91667C2.91667 2.57149 2.63684 2.29167 2.29167 2.29167H1.62432C2.06174 0.960862 3.31449 0 4.79167 0H8.95833C10.7993 0 12.2917 1.49238 12.2917 3.33333V10C12.2917 11.8409 10.7993 13.3333 8.95833 13.3333H4.79167C3.31449 13.3333 2.06174 12.3725 1.62432 11.0417H2.29167C2.63684 11.0417 2.91667 10.7618 2.91667 10.4167C2.91667 10.0715 2.63684 9.79167 2.29167 9.79167Z" fill="#363538" />
-            <path d="M1.62432 2.29167H0.625C0.279822 2.29167 0 2.57149 0 2.91667C0 3.26184 0.279822 3.54167 0.625 3.54167H1.45833V3.33333C1.45833 2.96956 1.51661 2.6194 1.62432 2.29167Z" fill="#363538" />
-            <path d="M1.45833 4.79167H0.625C0.279822 4.79167 0 5.07149 0 5.41667C0 5.76184 0.279822 6.04167 0.625 6.04167H1.45833V4.79167Z" fill="#363538" />
-            <path d="M1.45833 7.29167H0.625C0.279822 7.29167 0 7.57149 0 7.91667C0 8.26184 0.279822 8.54167 0.625 8.54167H1.45833V7.29167Z" fill="#363538" />
-            <path d="M1.62432 11.0417H0.625C0.279822 11.0417 0 10.7618 0 10.4167C0 10.0715 0.279822 9.79167 0.625 9.79167H1.45833V10C1.45833 10.3638 1.51661 10.7139 1.62432 11.0417Z" fill="#363538" />
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path fillRule="evenodd" clipRule="evenodd" d="M3.77473 3.98136C3.77445 3.97372 3.77431 3.96604 3.77431 3.95833C3.77431 1.77221 5.54652 0 7.73265 0C9.91877 0 11.691 1.77221 11.691 3.95833C11.691 3.96604 11.6908 3.97372 11.6906 3.98136C13.1462 4.15302 14.3397 5.26725 14.5857 6.74367L15.4191 11.7437C15.7577 13.7754 14.1909 15.625 12.1311 15.625H3.33416C1.27436 15.625 -0.29245 13.7754 0.0461785 11.7437L0.879512 6.74367C1.12558 5.26723 2.31903 4.153 3.77473 3.98136ZM5.02431 3.95833C5.02431 2.46256 6.23688 1.25 7.73265 1.25C9.22842 1.25 10.441 2.46256 10.441 3.95833H5.02431ZM4.39921 8.125C4.85945 8.125 5.23254 7.7519 5.23254 7.29167C5.23254 6.83143 4.85945 6.45833 4.39921 6.45833C3.93897 6.45833 3.56588 6.83143 3.56588 7.29167C3.56588 7.7519 3.93897 8.125 4.39921 8.125ZM11.8992 7.29167C11.8992 7.7519 11.5261 8.125 11.0659 8.125C10.6056 8.125 10.2325 7.7519 10.2325 7.29167C10.2325 6.83143 10.6056 6.45833 11.0659 6.45833C11.5261 6.45833 11.8992 6.83143 11.8992 7.29167Z" fill="#1A1A1A" />
         </svg>
     ),
     (
-        <svg width="14" height="17" viewBox="0 0 14 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M6.66667 0C2.98477 0 0 2.91667 0 6.66667C0 9.52258 1.93333 11.4118 2.85523 12.1504C3.14378 12.3815 3.33333 12.7246 3.33333 13.0943C3.33333 13.6866 3.81343 14.1667 4.40566 14.1667H8.92767C9.5199 14.1667 10 13.6866 10 13.0943C10 12.7246 10.1895 12.3815 10.4781 12.1504C11.4 11.4118 13.3333 9.52258 13.3333 6.66667C13.3333 2.91667 10.3486 0 6.66667 0Z" fill="#363538" />
-            <path d="M4.26942 14.8002C3.92893 14.7434 3.60692 14.9734 3.55017 15.3139C3.49342 15.6544 3.72344 15.9764 4.06392 16.0332C5.7872 16.3204 7.54613 16.3204 9.26941 16.0332C9.6099 15.9764 9.83991 15.6544 9.78316 15.3139C9.72642 14.9734 9.4044 14.7434 9.06392 14.8002C7.4767 15.0647 5.85664 15.0647 4.26942 14.8002Z" fill="#363538" />
+        <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path fillRule="evenodd" clipRule="evenodd" d="M0.475024 5.45829L2.77899 1.61835C3.3814 0.614329 4.46642 0 5.6373 0H9.3627C10.5336 0 11.6186 0.614329 12.221 1.61835L14.525 5.45829C14.8358 5.97635 15 6.56913 15 7.17328V11.6667C15 13.5076 13.5076 15 11.6667 15H3.33333C1.49238 15 0 13.5076 0 11.6667V7.17328C0 6.56913 0.164193 5.97635 0.475024 5.45829ZM6.16593 5.83333H8.83422C10.105 5.83333 10.9083 4.46815 10.2911 3.35726C9.9972 2.82815 9.4395 2.5 8.83422 2.5H6.16593C5.56065 2.5 5.00295 2.82815 4.709 3.35726C4.09184 4.46815 4.89512 5.83333 6.16593 5.83333Z" fill="#1A1A1A" />
         </svg>
     )
 ]
 
 
 
-const TariffCard = ({ item, isWidgetActive, action, activatedSubscription, activeTab }) => {
-
-    const [isDetailsOpen, setIsDetailsOpen] = useState(false)
+const TariffCard = ({ item, isWidgetActive, action, activatedSubscription, activeTab, isDetailsOpen, setIsDetailsOpen }) => {
 
     const currentPrice = useMemo(() => {
         return item?.priceList[activeTab]
@@ -1092,21 +1219,38 @@ const TariffCard = ({ item, isWidgetActive, action, activatedSubscription, activ
                                 components: {
                                     Button: {
                                         primaryShadow: 'transparent',
-                                        primaryColor: '#5329FF'
+                                        primaryColor: '#5329FF',
+                                        colorPrimaryActive: '#5329FF1A'
                                     }
                                 }
                             }}
                         >
-                            <Button
-                                size='large'
-                                type='primary'
-                                onClick={() => action()}
-                                loading={isWidgetActive && activatedSubscription && activatedSubscription === item.title}
-                                disabled={activatedSubscription && activatedSubscription !== item.title && isWidgetActive}
-                                style={{ color: '#5329FF', fontWeight: 600 }}
-                            >
-                                Активировать
-                            </Button>
+                            {item.buttonType === 'modal' &&
+                                <Button
+                                    size='large'
+                                    type='primary'
+                                    onClick={() => action()}
+                                    loading={isWidgetActive && activatedSubscription && activatedSubscription === item.title}
+                                    disabled={activatedSubscription && activatedSubscription !== item.title && isWidgetActive}
+                                    style={{ color: '#5329FF', fontWeight: 600 }}
+                                >
+                                    Активировать
+                                </Button>
+                            }
+                            {item.buttonType === 'link' &&
+                                <Button
+                                    size='large'
+                                    variant='solid'
+                                    color='primary'
+                                    href='https://t.me/radar_analytica_support'
+                                    target='_blank'
+                                    loading={isWidgetActive && activatedSubscription && activatedSubscription === item.title}
+                                    disabled={activatedSubscription && activatedSubscription !== item.title && isWidgetActive}
+                                    style={{ color: '#5329FF', fontWeight: 600, textDecoration: 'none' }}
+                                >
+                                    Связаться
+                                </Button>
+                            }
                         </ConfigProvider>
                     </div>
                 </div>
@@ -1154,580 +1298,4 @@ const TariffCard = ({ item, isWidgetActive, action, activatedSubscription, activ
 };
 
 
-const sections = [
-    {
-        id: 'competitors', title: 'Анализ конкурентов', price: 3000, oldPrice: 3900, pricePerMonth: 1000,
-        children: [
-            { id: 'calc', title: 'Калькулятор Unit-экономики', price: 3000, oldPrice: 3900, pricePerMonth: 1000, isActive: false, },
-            { id: 'skuAnalysis', title: 'Анализ артикула', price: 3000, oldPrice: 3900, pricePerMonth: 1000, isActive: false },
-            { id: 'supplierAnalysis', title: 'ААнализ поставщика', price: 3000, oldPrice: 3900, pricePerMonth: 1000, isActive: false },
-        ]
-    },
-    { id: 'niches', title: 'Анализ ниш и трендов', price: 3000, oldPrice: 3900, pricePerMonth: 1000 },
-    { id: 'finances', title: 'Мои финансы', price: 3000, oldPrice: 3900, pricePerMonth: 1000 },
-    { id: 'advertising', title: 'Моя реклама', price: 3000, oldPrice: 3900, pricePerMonth: 1000 },
-    { id: 'seo', title: 'SEO', price: 3000, oldPrice: 3900, pricePerMonth: 1000 },
-    { id: 'rnp', title: 'РНП (Рука на пульсе)', price: 3000, oldPrice: 3900, pricePerMonth: 1000, isNew: true },
-];
-
-const inputTheme = {
-    token: {
-        colorBgContainer: 'white',
-        colorBorder: '#5329FF1A',
-        borderRadius: 8,
-        fontFamily: 'Manrope',
-        fontSize: 12,
-        fontWeight: 500,
-        controlHeightLG: 38,
-    },
-    components: {
-        Input: {
-            activeBorderColor: '#5329FF1A',
-            hoverBorderColor: '#5329FF1A',
-            activeOutlineColor: 'transparent',
-            hoverBg: 'white',
-            activeShadow: 'transparent',
-            activeBg: 'white',
-        },
-        Select: {
-            activeBorderColor: '#5329FF1A',
-            hoverBorderColor: '#5329FF1A',
-            activeOutlineColor: 'transparent',
-        }
-    }
-}
-
-const Cart = ({ open, setIsOpen, activeCartTariff, setActiveCartTariff }) => {
-
-    const [activeTab, setActiveTab] = useState('3 месяца')
-    const [selectedSections, setSelectedSections] = useState<any[]>([{ id: 'api', title: 'API', price: 3000, oldPrice: 3900, pricePerMonth: 1000, value: 1 }])
-    const [promocode, setPromocode] = useState('')
-    const [paymentMethod, setPaymentMethod] = useState('instant')
-
-    const toggleSection = (sectionId: string, childId?: string) => {
-
-        if (!childId) {
-            let currSection = sections.find(_ => _.id === sectionId)
-            if (!currSection) return;
-            setSelectedSections((prev) => {
-                const includeIndex = prev.findIndex(_ => _.id === sectionId);
-                if (includeIndex !== -1) {
-                    const prevCopy = [...prev]
-                    prevCopy.splice(includeIndex, 1)
-                    return prevCopy
-                } else {
-                    if (currSection.children) {
-                        currSection.children = currSection.children.map(child => ({...child, isActive: true}))
-                    }
-                    return [...prev, currSection]
-                }
-            })
-        } 
-    }
-
-    const removeSection = (sectionId: string) => {
-        setSelectedSections(prev => prev.filter(id => id !== sectionId))
-    }
-
-    // const selectedSectionsData = sections.filter(s => selectedSections.includes(s.id))
-    const totalSelectionsPrice = selectedSections.reduce((sum, s) => sum + s.price, 0)
-    const totalSelectionsDiscount = selectedSections.reduce((sum, s) => sum + (s.oldPrice - s.price), 0)
-
-    return (
-        <Modal
-            open={open}
-            footer={null}
-            width={960}
-            onCancel={() => { setIsOpen(false); setActiveCartTariff(null); setSelectedSections([]) }}
-            closeIcon={
-                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M6 4.66688L10.6669 0L12 1.33312L7.33312 6L12 10.6669L10.6669 12L6 7.33312L1.33312 12L0 10.6669L4.66688 6L0 1.33312L1.33312 0L6 4.66688Z" fill="#1A1A1A" fillOpacity="0.5" />
-                </svg>
-            }
-        >
-            <div className={styles.tariffCalc}>
-                <p className={styles.tariffCalc__title}>
-                    {activeCartTariff && `Тариф ${activeCartTariff.title}`}
-                    {!activeCartTariff && `Калькулятор тарифа`}
-                </p>
-
-                <div className={styles.widget__tabs}>
-                    {tabs.map(_ => {
-                        return (
-                            <button
-                                className={_.title === activeTab ? `${styles.widget__tab} ${styles.widget__tab_active}` : styles.widget__tab}
-                                onClick={() => setActiveTab(_.title)}
-                                key={_.title}
-                            >
-                                {_.title}
-                                {_.discount &&
-                                    <div className={_.title === activeTab ? styles.widget__tabDiscount_active : styles.widget__tabDiscount}>{_.discount}</div>
-                                }
-                            </button>
-                        )
-                    })}
-                </div>
-
-                <div className={styles.tariffCalc__body}>
-                    {/* если кликнули на регулярный тариф (предустановленный) то просто показываем его описание */}
-                    {activeCartTariff &&
-                        <div className={styles.tariffCalc__bodyLeft}>
-                            <div className={styles.tariffCalc__params}>
-                                <div className={styles.tariffCard__features}>
-                                    {activeCartTariff?.newFeatures?.map((f) => {
-                                        return (
-                                            <div key={f.title} className={styles.tariffCard__featuresListWrapper}>
-                                                <div className={styles.tariffCard__featuresList} key={f.title}>
-                                                    {cardFeaturesIcons[f.iconIndex]}
-                                                    {f.title}
-                                                </div>
-                                                <span>{f.text}</span>
-                                            </div>
-                                        )
-                                    })}
-                                </div>
-                                {activeCartTariff.whatsInside &&
-                                    <div
-                                        className={styles.tariffCard__mainWrapper}
-                                        style={{
-                                            gap: 0,
-                                            backgroundColor: 'transparent',
-                                            padding: '12px 0',
-                                            borderTop: '1px solid #E8E8E8',
-                                            borderRadius: 0
-                                        }}
-                                    >
-                                        <div className={styles.tariffCard__accordSummary}>
-                                            Что входит?
-                                        </div>
-                                        <ul className={styles.tariffCard__accordContent} style={{ maxHeight: '2000px', opacity: 1 }}>
-                                            {activeCartTariff.whatsInside.map((_, idx) => (
-                                                <li key={idx} style={{ border: idx === 0 && 'none' }}>
-                                                    {_.title}
-                                                    <ul className={styles.tariffCard__innerList}>
-                                                        {_.children.map(child => (
-                                                            <li key={child.title} style={{ color: child.isIncluded ? '#1A1A1A' : '#8C8C8C' }}>
-                                                                {child.isIncluded &&
-                                                                    <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                                        <path fillRule="evenodd" clipRule="evenodd" d="M5 10C7.76142 10 10 7.76142 10 5C10 2.23858 7.76142 0 5 0C2.23858 0 0 2.23858 0 5C0 7.76142 2.23858 10 5 10ZM7.39016 3.89017C7.53661 3.74372 7.53661 3.50628 7.39016 3.35983C7.24372 3.21339 7.00628 3.21339 6.85983 3.35983L4.375 5.84467L3.14017 4.60984C2.99372 4.46339 2.75628 4.46339 2.60983 4.60984C2.46339 4.75628 2.46339 4.99372 2.60983 5.14017L4.10983 6.64017C4.25628 6.78661 4.49372 6.78661 4.64017 6.64017L7.39016 3.89017Z" fill="#00B69B" />
-                                                                    </svg>
-                                                                }
-                                                                {!child.isIncluded &&
-                                                                    <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                                        <path fillRule="evenodd" clipRule="evenodd" d="M5 10C7.76142 10 10 7.76142 10 5C10 2.23858 7.76142 0 5 0C2.23858 0 0 2.23858 0 5C0 7.76142 2.23858 10 5 10ZM3.85095 3.32062C3.7045 3.17417 3.46706 3.17417 3.32062 3.32062C3.17417 3.46707 3.17417 3.7045 3.32062 3.85095L4.46967 5L3.32062 6.14905C3.17417 6.2955 3.17417 6.53293 3.32062 6.67938C3.46706 6.82583 3.7045 6.82583 3.85095 6.67938L5 5.53033L6.14905 6.67938C6.29549 6.82583 6.53293 6.82583 6.67938 6.67938C6.82582 6.53293 6.82582 6.2955 6.67938 6.14905L5.53033 5L6.67938 3.85095C6.82582 3.7045 6.82582 3.46707 6.67938 3.32062C6.53293 3.17417 6.29549 3.17418 6.14905 3.32062L5 4.46967L3.85095 3.32062Z" fill="#B0B0B0" />
-                                                                    </svg>
-                                                                }
-                                                                {child.title}
-                                                            </li>
-                                                        ))}
-                                                    </ul>
-                                                </li>
-                                            ))}
-                                        </ul>
-                                    </div>
-                                }
-                            </div>
-                        </div>
-                    }
-                    {/* Если это калькулятор, то показываем опции для выбора */}
-                    {!activeCartTariff &&
-                        <div className={styles.tariffCalc__bodyLeft}>
-                            <div className={styles.tariffCalc__params}>
-                                <div className={styles.tariffCalc__sectionWrapper}>
-                                    <div className={styles.tariffCalc__section}>
-                                        <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-                                            <div className={styles.tariffCard__featuresList}>
-                                                <svg width="14" height="16" viewBox="0 0 14 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path fillRule="evenodd" clipRule="evenodd" d="M5.34167 0.380004L1.175 2.98417C0.444048 3.44102 0 4.24219 0 5.10417V10.6663C0 11.5282 0.444049 12.3294 1.175 12.7863L5.34167 15.3904C6.15235 15.8971 7.18099 15.8971 7.99166 15.3904L12.1583 12.7863C12.8893 12.3294 13.3333 11.5282 13.3333 10.6663V5.10417C13.3333 4.24219 12.8893 3.44102 12.1583 2.98417L7.99166 0.380004C7.18099 -0.126668 6.15234 -0.126668 5.34167 0.380004ZM7.70833 7.88208C7.70833 7.30678 7.24196 6.84041 6.66667 6.84041C6.09137 6.84041 5.625 7.30678 5.625 7.88208V7.88808C5.625 8.46338 6.09137 8.92975 6.66667 8.92975C7.24196 8.92975 7.70833 8.46338 7.70833 7.88808V7.88208Z" fill="#363538" />
-                                                </svg>
-                                                API
-                                            </div>
-                                            <span style={{ fontSize: '10px', color: '#8c8c8c' }}>Количество подключенных магазинов</span>
-                                        </div>
-                                        <div className={styles.tariffCalc__counter}>
-                                            <button className={styles.tariffCalc__counterButton}>-</button>
-                                            <div className={styles.tariffCalc__counterValue}>
-                                                1
-                                            </div>
-                                            <button className={styles.tariffCalc__counterButton}>+</button>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <p className={styles.tariffCalc__subtitle}>Разделы</p>
-
-                                <div className={styles.tariffCalc__sections}>
-                                    {sections.map(section => {
-                                        const isSelected = selectedSections.findIndex(_ => _.id === section.id) !== -1
-                                        return (
-                                            <CalcOptionItem
-                                                key={section.id}
-                                                section={section}
-                                                onChange={() => toggleSection(section.id)}
-                                                isSelected={isSelected}
-                                            />
-                                        )
-                                    })}
-                                </div>
-                            </div>
-                            {/* limits */}
-                            {/* <div className={styles.tariffCalc__limits}>
-                                <p className={styles.tariffCalc__subtitle}>Лимиты</p>
-                                <div className={styles.tariffCalc__selectWrapper}>
-                                    <div>
-                                        <PlainSelect
-                                            optionsData={[
-                                                { value: 0, label: 'до 3 магазинов' },
-                                                { value: 1, label: 'до 5 магазинов' },
-                                                { value: 2, label: 'до 10 магазинов' },
-                                                { value: 3, label: 'более 10 магазинов' },
-                                            ]}
-                                            value={0}
-                                            label='Лимит магазинов'
-                                            selectId='shopLimit'
-                                            handler={() => { }}
-                                            disabled={false}
-                                            allowClear={false}
-                                            style={{ maxWidth: 'unset' }}
-                                            mode=''
-                                        />
-                                    </div>
-                                    <div>
-                                        <PlainSelect
-                                            optionsData={[
-                                                { value: 0, label: 'до 1 000 000 рублей' },
-                                                { value: 1, label: 'до 3 000 000 рублейти' },
-                                                { value: 2, label: 'до 5 000 000 рублей' },
-                                                { value: 3, label: 'до 10 000 000 рублей' },
-                                                { value: 4, label: 'более 10 000 000 рублей' },
-                                            ]}
-                                            value={0}
-                                            label=' Лимит выручки'
-                                            selectId='shopLimit'
-                                            handler={() => { }}
-                                            disabled={false}
-                                            allowClear={false}
-                                            style={{ maxWidth: 'unset' }}
-                                            mode=''
-                                        />
-                                    </div>
-                                </div>
-                            </div> */}
-                        </div>
-                    }
-
-                    <div className={styles.tariffCalc__cart}>
-                        <p className={styles.tariffCalc__subtitle}>Корзина</p>
-
-                        {selectedSections.length === 0 && !activeCartTariff ? (
-                            <div className={styles.tariffCalc__emptyCart}>
-                                <p className={styles.tariffCalc__emptyCartText}>
-                                    В вашей корзине пока ничего нет
-                                </p>
-                                <p className={styles.tariffCalc__emptyCartSubtext}>
-                                    Добавьте хотя бы один раздел
-                                </p>
-                            </div>
-                        ) : (
-                            <div className={styles.tariffCalc__cartContent}>
-
-                                <div className={styles.tariffCalc__selectedSections}>
-                                    {selectedSections?.map(section => (
-                                        <div key={section.id} className={styles.tariffCalc__cartItem}>
-                                            <span className={styles.tariffCalc__cartItemName}>{section.title}</span>
-                                            {section.children && section.children?.map(_ => _.isActive && (
-                                                <div className={styles.tariffCalc__options} key={_.title}>
-                                                    <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                        <path fillRule="evenodd" clipRule="evenodd" d="M5 10C7.76142 10 10 7.76142 10 5C10 2.23858 7.76142 0 5 0C2.23858 0 0 2.23858 0 5C0 7.76142 2.23858 10 5 10ZM7.39016 3.89017C7.53661 3.74372 7.53661 3.50628 7.39016 3.35983C7.24372 3.21339 7.00628 3.21339 6.85983 3.35983L4.375 5.84467L3.14017 4.60984C2.99372 4.46339 2.75628 4.46339 2.60983 4.60984C2.46339 4.75628 2.46339 4.99372 2.60983 5.14017L4.10983 6.64017C4.25628 6.78661 4.49372 6.78661 4.64017 6.64017L7.39016 3.89017Z" fill="#00B69B" />
-                                                    </svg>
-                                                    {_.title}
-                                                </div>
-                                            ))}
-                                            <div className={styles.tariffCalc__cartItemLeft}>
-                                                <span className={styles.tariffCalc__cartItemPeriod}>{activeTab}</span>
-                                                <div className={styles.tariffCalc__cartItemPrices}>
-                                                    <span className={styles.tariffCalc__cartItemPrice}>
-                                                        {formatPrice(section.price.toString(), '₽')}
-                                                    </span>
-                                                    <span className={styles.tariffCalc__cartItemOldPrice}>
-                                                        {formatPrice(section.oldPrice.toString(), '₽')}
-                                                    </span>
-                                                </div>
-                                            </div>
-                                            <button
-                                                className={styles.tariffCalc__removeButton}
-                                                onClick={() => removeSection(section.id)}
-                                            >
-                                                <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M8.0459 0.219727C8.3388 -0.0731134 8.81357 -0.0731489 9.10645 0.219727C9.39923 0.512609 9.39926 0.987406 9.10645 1.28027L5.72363 4.66309L9.10645 8.0459C9.3992 8.3388 9.39929 8.8136 9.10645 9.10645C8.8136 9.39929 8.3388 9.3992 8.0459 9.10645L4.66309 5.72363L1.28027 9.10645C0.987424 9.39924 0.512614 9.39918 0.219727 9.10645C-0.0730958 8.81357 -0.0730958 8.33878 0.219727 8.0459L3.60254 4.66309L0.219727 1.28027C-0.0731667 0.98738 -0.0731667 0.51262 0.219727 0.219727C0.51262 -0.0731666 0.98738 -0.0731666 1.28027 0.219727L4.66309 3.60254L8.0459 0.219727Z" fill="#8C8C8C" />
-                                                </svg>
-                                            </button>
-                                        </div>
-                                    ))}
-                                    {activeCartTariff &&
-                                        <div className={styles.tariffCalc__cartItem}>
-                                            <span className={styles.tariffCalc__cartItemName}>{activeCartTariff.title}</span>
-                                            <div className={styles.tariffCalc__cartItemLeft}>
-                                                <span className={styles.tariffCalc__cartItemPeriod}>{activeTab}</span>
-                                                <div className={styles.tariffCalc__cartItemPrices}>
-                                                    <span className={styles.tariffCalc__cartItemPrice}>
-                                                        {formatPrice(activeCartTariff?.price?.toString(), '₽')}
-                                                    </span>
-                                                    {activeCartTariff?.oldPrice &&
-                                                        <span className={styles.tariffCalc__cartItemOldPrice}>
-                                                            {formatPrice(activeCartTariff?.oldPrice?.toString(), '₽')}
-                                                        </span>
-                                                    }
-                                                </div>
-                                            </div>
-                                        </div>
-                                    }
-                                </div>
-
-                                {(selectedSections.length > 0 || activeCartTariff) &&
-                                    <>
-                                        <div className={styles.tariffCalc__promocode}>
-                                            <p className={styles.tariffCalc__promocodeLabel}>Промокод</p>
-                                            <ConfigProvider
-                                                theme={inputTheme}
-                                            >
-                                                <Input
-                                                    placeholder="Если есть"
-                                                    value={promocode}
-                                                    onChange={(e) => setPromocode(e.target.value)}
-                                                    style={{
-                                                        height: '38px',
-                                                        borderRadius: '8px',
-                                                        fontSize: '14px',
-                                                        border: '1px solid #E8E8E8'
-                                                    }}
-                                                />
-                                            </ConfigProvider>
-                                        </div>
-
-
-
-                                        <div className={styles.tariffCalc__calculations}>
-                                            <p className={styles.tariffCalc__calculationsLabel}>Расчеты</p>
-                                            {selectedSections.length > 0 &&
-                                                <>
-                                                    <div className={styles.tariffCalc__calculationRow}>
-                                                        <span>Оплата за разделы</span>
-                                                        <span>{formatPrice((totalSelectionsPrice + totalSelectionsDiscount).toString(), '₽')}</span>
-                                                    </div>
-                                                    <div className={styles.tariffCalc__calculationRow} style={{ color: '#00B69B' }}>
-                                                        <span>Скидки</span>
-                                                        <span>−{formatPrice(totalSelectionsDiscount.toString(), '₽')}</span>
-                                                    </div>
-                                                </>
-                                            }
-                                            {activeCartTariff &&
-                                                <>
-                                                    <div className={styles.tariffCalc__calculationRow}>
-                                                        <span>Оплата за тариф</span>
-                                                        <span>{formatPrice(activeCartTariff?.price?.toString(), '₽')}</span>
-                                                    </div>
-                                                    <div className={styles.tariffCalc__calculationRow} style={{ color: '#00B69B' }}>
-                                                        <span>Скидки</span>
-                                                        {activeCartTariff?.oldPrice &&
-                                                            <span>−{formatPrice((activeCartTariff?.price - (activeCartTariff?.oldPrice)).toString(), '₽')}</span>
-                                                        }
-                                                        {!activeCartTariff?.oldPrice &&
-                                                            <span>{formatPrice('0', '₽')}</span>
-                                                        }
-                                                    </div>
-                                                </>
-                                            }
-
-
-                                        </div>
-
-
-                                        <div className={styles.tariffCalc__paymentMethod}>
-                                            <p className={styles.tariffCalc__paymentMethodLabel}>Способ получения</p>
-                                            <ConfigProvider
-                                                theme={{
-                                                    token: {
-                                                        colorPrimary: '#5329FF',
-                                                    }
-                                                }}
-                                            >
-                                                <Radio.Group
-                                                    value={paymentMethod}
-                                                    onChange={(e) => setPaymentMethod(e.target.value)}
-                                                    style={{ width: '100%' }}
-                                                >
-                                                    <Radio value="instant" style={{ width: '100%', marginBottom: '12px' }}>
-                                                        <div>
-                                                            <div style={{ fontWeight: 500, fontSize: '14px', color: '#1A1A1A' }}>
-                                                                Моментально
-                                                            </div>
-                                                            <div style={{ fontSize: '12px', color: '#8C8C8C' }}>
-                                                                Применить подписку сразу после оплаты
-                                                            </div>
-                                                        </div>
-                                                    </Radio>
-                                                    <Radio value="after_subscription">
-                                                        <div>
-                                                            <div style={{ fontWeight: 500, fontSize: '14px', color: '#1A1A1A' }}>
-                                                                После текущей подписки
-                                                            </div>
-                                                            <div style={{ fontSize: '12px', color: '#8C8C8C' }}>
-                                                                Применить подписку после окончания текущей
-                                                            </div>
-                                                        </div>
-                                                    </Radio>
-                                                </Radio.Group>
-                                            </ConfigProvider>
-                                        </div>
-                                    </>
-                                }
-
-                                <div className={styles.tariffCalc__total}>
-                                    <div className={styles.tariffCalc__totalRow}>
-                                        <span style={{ fontSize: '14px', fontWeight: 500 }}>Итого</span>
-                                        {selectedSections.length > 0 &&
-                                            <span style={{ fontSize: '18px', fontWeight: 700 }}>
-                                                {formatPrice(totalSelectionsPrice?.toString(), '₽')}
-                                            </span>
-                                        }
-                                        {activeCartTariff &&
-                                            <span style={{ fontSize: '18px', fontWeight: 700 }}>
-                                                {formatPrice(activeCartTariff?.price?.toString(), '₽')}
-                                            </span>
-                                        }
-                                    </div>
-                                </div>
-
-                                {(selectedSections.length > 0 || activeCartTariff) &&
-                                    <ConfigProvider
-                                        theme={{
-                                            token: {
-                                                colorPrimary: '#5329FF',
-                                                fontSize: 12,
-                                                controlHeightLG: 38,
-                                            },
-                                        }}
-                                    >
-                                        <Button
-                                            type="primary"
-                                            size="large"
-                                            block
-                                            disabled={selectedSections.length === 0 && !activeCartTariff}
-                                            style={{
-                                                marginTop: '16px',
-                                                borderRadius: '8px',
-                                                fontWeight: 600
-                                            }}
-                                        >
-                                            К оплате
-                                        </Button>
-                                    </ConfigProvider>
-                                }
-                            </div>
-                        )}
-                    </div>
-                </div>
-            </div>
-        </Modal>
-    )
-}
-
-
-const CalcOptionItem = ({
-    section,
-    isSelected,
-    onChange,
-}) => {
-
-    const [isDescriptionOpen, setIsDescriptionOpen] = useState(false)
-
-    return (
-        <div className={styles.tariffCalc__sectionWrapper}>
-            <div className={styles.tariffCalc__section}>
-                <div className={styles.tariffCalc__sectionLeft}>
-                    <button className={isDescriptionOpen ? `${styles.tariffCalc__accButton} ${styles.tariffCalc__accButton_active}` : styles.tariffCalc__accButton} onClick={() => setIsDescriptionOpen(!isDescriptionOpen)}>
-                        <svg width="11" height="7" viewBox="0 0 11 7" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path fillRule="evenodd" clipRule="evenodd" d="M0.223128 0.223128C0.520632 -0.074376 1.00298 -0.074376 1.30048 0.223128L5.33264 4.25529L9.3648 0.223128C9.6623 -0.074376 10.1447 -0.074376 10.4422 0.223128C10.7397 0.520632 10.7397 1.00298 10.4422 1.30048L5.33264 6.41L0.223128 1.30048C-0.074376 1.00298 -0.074376 0.520632 0.223128 0.223128Z" fill="#8C8C8C" />
-                        </svg>
-                    </button>
-                    <ConfigProvider
-                        theme={{
-                            token: {
-                                colorPrimary: '#5329FF',
-                            },
-                            components: {
-                                Switch: {
-                                    trackMinWidth: 32
-                                }
-                            }
-                        }}
-                    >
-                        <Switch
-                            checked={isSelected}
-                            onChange={onChange}
-                        />
-                    </ConfigProvider>
-                    <div className={styles.tariffCalc__sectionInfo}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                            <span className={styles.tariffCalc__sectionName}>{section.title}</span>
-                            {section.isNew && (
-                                <span className={styles.tariffCalc__newBadge}>New!</span>
-                            )}
-                        </div>
-                    </div>
-                </div>
-                <div className={styles.tariffCalc__sectionPrices}>
-                    <span className={styles.tariffCalc__oldPrice}>{formatPrice(section.oldPrice.toString(), '₽')}</span>
-                    <div className={styles.tariffCalc__priceWrapper}>
-                        <span className={styles.tariffCalc__newPrice} style={{ color: !isSelected ? '#1A1A1A' : '' }}>{formatPrice(section.price.toString(), '₽')}</span>
-                        <span className={styles.tariffCalc__pricePerMonth}>
-                            {formatPrice(section.pricePerMonth.toString(), '₽/мес')}
-                        </span>
-                    </div>
-                </div>
-            </div>
-            {isDescriptionOpen && section.children &&
-                <div className={styles.tariffCalc__sectionDescriptionWrapper}>
-                    {section.children.map(_ => (
-                        <div className={styles.tariffCalc__sectionDescription}>
-                            <div className={styles.tariffCalc__switch}>
-                                <ConfigProvider
-                                    theme={{
-                                        token: {
-                                            colorPrimary: '#5329FF',
-                                        },
-                                    }}
-                                >
-                                    <Switch
-                                        size='small'
-                                        checked={_.isActive}
-                                        onChange={onChange}
-                                    />
-                                </ConfigProvider>
-                                <div className={styles.tariffCalc__sectionInfo}>
-                                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                        <span className={styles.tariffCalc__sectionName}>{_.title}</span>
-                                        {_.isNew && (
-                                            <span className={styles.tariffCalc__newBadge}>New!</span>
-                                        )}
-                                    </div>
-                                </div>
-                            </div>
-                            <div className={styles.tariffCalc__sectionPrices}>
-                                <span className={styles.tariffCalc__oldPrice}>{formatPrice(_.oldPrice.toString(), '₽')}</span>
-                                <div className={styles.tariffCalc__priceWrapper}>
-                                    <span className={styles.tariffCalc__newPrice} style={{ color: !isSelected ? '#1A1A1A' : '' }}>{formatPrice(section.price.toString(), '₽')}</span>
-                                    <span className={styles.tariffCalc__pricePerMonth}>
-                                        {formatPrice(_.pricePerMonth.toString(), '₽/мес')}
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                    ))}
-                </div>
-            }
-        </div>
-    )
-}
 

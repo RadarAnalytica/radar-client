@@ -860,15 +860,9 @@ const SubscriptonInfo = () => {
             <div className={styles.page__subscriptionsList}>
                 {Array.isArray(subscriptions) && subscriptions && subscriptions.map((item) => {
                     return (
-                        <SubscriptionCardOld key={item.id} item={item} rejectSubscription={rejectSubscription} restoreSubscription={restoreSubscription} />
-
-                    );
-                })}
-                {/* {Array.isArray(subscriptions) && subscriptions && subscriptions.map((item) => {
-                    return (
                         <SubscriptionCard key={item.id} item={item} />
                     );
-                })} */}
+                })}
             </div>
 
             {/* modals */}
@@ -917,80 +911,3 @@ const SubscriptonInfo = () => {
         </>
     )
 }
-
-const SubscriptionCardOld = ({ item, rejectSubscription, restoreSubscription }) => {
-    const months = [
-        'января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'
-    ];
-
-    const activeText = item.active ? "Активна" : "Неактивна";
-    const activeColor = item.active ? "#00B69B" : "#808080";
-    const activeBgColor = item.active ? "#00B69B1A" : "#A5A5A51A";
-    const activeWidth = item.active ? 120 : 140;
-    const toggleText = item.active
-        ? rejectSubscription({
-            subscriptionId: item.id,
-        })
-        : restoreSubscription({
-            subscriptionId: item.id,
-        });
-    const paymentDateEndString = item.validity_period;
-    const paymentDateValue = new Date(Date.parse(paymentDateEndString));
-    paymentDateValue.setDate(paymentDateValue.getDate() + 1);
-    const paymentDate = `${paymentDateValue.getDate()} ${months[paymentDateValue.getMonth()]} ${paymentDateValue.getFullYear()} года`;
-
-    const activeTillPeriodValue = new Date(Date.parse(paymentDateEndString));
-    const activeTillPeriod = `${activeTillPeriodValue.getDate()} ${months[activeTillPeriodValue.getMonth()]} ${activeTillPeriodValue.getFullYear()} года`;
-
-
-    return (
-        <div className={styles.subscriptionCard}>
-            <div className={styles.subscriptionCard__header}>
-                <div className={styles.subscriptionCard__titleBlock}>
-                    <svg width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <rect width="60" height="60" rx="8.10135" fill="#5329FF" />
-                        <path d="M25.8451 19H22.3146C21.3046 19 20.3812 19.5707 19.9295 20.4741L17.1416 26.0498L22.6954 26.7163L25.8451 19Z" fill="white" />
-                        <path d="M17.5731 28.116L25.7709 38.2075L22.5863 28.7175L17.5731 28.116Z" fill="white" />
-                        <path d="M31.2227 40.8794C30.4292 41.1327 29.5708 41.1327 28.7772 40.8795L24.7584 28.9037C28.2493 29.1204 31.7504 29.1204 35.2414 28.9037L31.2227 40.8794Z" fill="white" />
-                        <path d="M34.229 38.2072L42.4266 28.116L37.4134 28.7175L34.229 38.2072Z" fill="white" />
-                        <path d="M42.8581 26.0498L40.0702 20.4741C39.6185 19.5707 38.6952 19 37.6851 19H34.1549L37.3043 26.7163L42.8581 26.0498Z" fill="white" />
-                        <path d="M31.9947 19H28.0052L24.7802 26.9012C28.2565 27.1213 31.7433 27.1213 35.2196 26.9012L31.9947 19Z" fill="white" />
-                    </svg>
-
-                    <div className={styles.subscriptionCard__titleWrapper}>
-                        <p className={styles.subscriptionCard__title}>
-                            {item.plan_name ?? 'Подписка'}
-                        </p>
-                        <span style={{ fontSize: '14px' }}>Действует до {activeTillPeriod}</span>
-                    </div>
-
-                </div>
-                <StatusInfo
-                    title={activeText}
-                    fill={activeColor}
-                    width={activeWidth}
-                    bg={activeBgColor}
-                />
-            </div>
-
-            {!item.is_trial &&
-                <>
-                    <p className={styles.subscriptionCard__paymentDate}>Следующее списание средств {paymentDate}</p>
-                    <div className={styles.subscriptionCard__footer}>
-                        {toggleText}
-                    </div>
-                </>
-            }
-
-        </div>
-    );
-};
-
-const StatusInfo = ({ title, fill, width, bg }) => {
-    return (
-        <div style={{ fontSize: '14px', background: bg, height: 40, display: 'flex', alignItems: 'center', gap: 8, padding: '0 8px', borderRadius: 8, alignSelf: 'flex-start' }}>
-            <div style={{ width: 4, height: 4, borderRadius: '50%', background: fill }}></div>
-            {title}
-        </div>
-    );
-};

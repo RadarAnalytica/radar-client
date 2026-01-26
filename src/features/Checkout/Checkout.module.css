@@ -1,0 +1,184 @@
+.widget__tabs {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    animation: fadeInUp 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) backwards;
+}
+
+.widget__tab {
+    height: 38px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    padding: 0 12px;
+    border: 1px solid #5329FF33;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 160%;
+    letter-spacing: 0%;
+    background-color: transparent;
+    color: #1A1A1A80;
+    transition: all .2s ease;
+}
+
+.widget__tab:not(.widget__tab_active):hover {
+    opacity: .5;
+}
+
+.widget__tabDiscount {
+    padding: 2px 4px;
+    border-radius: 4px;
+    background-color: #5329FF1A;
+    color: #5329FF;
+}
+
+.widget__tabDiscount_active {
+    padding: 2px 4px;
+    border-radius: 4px;
+    background-color: white;
+    color: #5329FF;
+}
+
+.widget__tab_active {
+    color: white;
+    background-color: #5329FF;
+    border-color: #5329FF;
+}
+
+.tariffCard__featuresList {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 140%;
+    letter-spacing: 0%;
+}
+
+.tariffCalc {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 0 4px;
+}
+
+.tariffCalc__title {
+    font-weight: 600;
+    font-size: 22px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    margin: 0;
+    padding: 0;
+}
+
+.tariffCalc__body {
+    display: flex;
+    gap: 16px;
+}
+
+.tariffCalc__bodyLeft {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.tariffCalc__subtitle {
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    margin: 0;
+    padding: 0;
+}
+
+.tariffCalc__params {
+    display: flex;
+    flex-direction: column;
+    border-radius: 16px;
+    padding: 16px;
+    gap: 12px;
+    background-color: #F7F7F7;
+    height: fit-content;
+}
+
+.tariffCalc__limits {
+    display: flex;
+    flex-direction: column;
+    border-radius: 16px;
+    padding: 16px;
+    gap: 12px;
+    background-color: #F7F7F7;
+    height: fit-content;
+}
+
+.tariffCalc__selectWrapper {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.tariffCalc__selectWrapper>div {
+    width: 50%;
+    flex: 1 1 auto;
+}
+
+.tariffCalc__sections {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.tariffCalc__sectionWrapper {
+    display: flex;
+    flex-direction: column;
+    padding: 12px;
+    gap: 12px;
+    background-color: white;
+    border-radius: 8px;
+    /* border-bottom: 1px solid #E8E8E8; */
+}
+
+.tariffCalc__section {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.tariffCalc__sectionWrapper:last-of-type {
+    border: none
+}
+
+.tariffCalc__counter {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.tariffCalc__counterButton {
+    height: 38px;
+    width: 38px;
+    border-radius: 8px;
+    background-color: white;
+    border: 1px solid #5329FF1A;
+    color: #8c8c8c;
+    font-size: 22px;
+}
+
+.tariffCalc__counterValue {
+    width: 100px;
+    height: 38px;
+    border-radius: 8px;
+    background-color: white;
+    border: 1px solid #5329FF1A;
+    font-size: 14px;
+    font-weight: 500;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

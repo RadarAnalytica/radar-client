@@ -1,0 +1,108 @@
+.tariffCalc__sectionWrapper {
+    display: flex;
+    flex-direction: column;
+    padding: 12px;
+    gap: 12px;
+    background-color: white;
+    border-radius: 8px;
+    /* border-bottom: 1px solid #E8E8E8; */
+}
+
+.tariffCalc__section {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.tariffCalc__sectionWrapper:last-of-type {
+    border: none
+}
+
+.tariffCalc__sectionLeft {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+}
+
+.tariffCalc__accButton {
+    border: none;
+    background-color: transparent;
+    transform: rotate(0);
+    transition: all .2s ease;
+}
+
+.tariffCalc__accButton_active {
+    transform: rotate(180deg);
+}
+
+.tariffCalc__sectionInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.tariffCalc__sectionName {
+    font-size: 14px;
+    font-weight: 500;
+    color: #1A1A1A;
+}
+
+.tariffCalc__sectionDescription {
+    font-size: 12px;
+    color: #8C8C8C;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 20px;
+}
+
+.tariffCalc__newBadge {
+    background: #5329FF;
+    color: white;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 6px;
+    border-radius: 4px;
+}
+
+.tariffCalc__sectionPrices {
+    display: flex;
+    gap: 12px;
+}
+
+.tariffCalc__priceWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    align-items: flex-end;
+}
+
+.tariffCalc__oldPrice {
+    font-size: 14px;
+    color: #8C8C8C;
+    text-decoration: line-through;
+}
+
+.tariffCalc__newPrice {
+    font-size: 14px;
+    font-weight: 600;
+    color: #5329FF;
+}
+
+.tariffCalc__pricePerMonth {
+    font-size: 12px;
+    color: #8C8C8C;
+}
+
+.tariffCalc__sectionDescriptionWrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+.tariffCalc__switch {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}

@@ -483,6 +483,7 @@ export const TariffsWidgetOld = () => {
 
     // -------------------------------- fake pay function (for dev or test purposes only) -------------------------------//
     const fakePayFunction = async (_) => {
+        console.log(JSON.stringify(_, null, 2))
         if (isDemoUser) {
             await logout();
             return;
