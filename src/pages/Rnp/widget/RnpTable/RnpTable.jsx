@@ -201,7 +201,7 @@ export default function RnpTable({ columns, data, columns2, data2, expanded, el 
 					<RadarTable
 						key={containerRef?.current}
 						rowKey={(record) => record.id}
-						dataSource={data2}
+						dataSource={data2?.length > 0 ? data2 : [{}]}
 						config={tableConfig}
 						treeMode
 						indentSize={45}
