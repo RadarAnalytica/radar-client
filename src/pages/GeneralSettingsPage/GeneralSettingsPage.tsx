@@ -2,7 +2,7 @@ import { useEffect, useState, useMemo, useContext } from 'react';
 import { GeneralLayout } from '@/shared';
 import { Segmented, ConfigProvider } from 'antd';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { LinkedShopsWidget, ReferalProgrammWidget, ProfileWidget, UsersWidget, PaymentWidget, TariffsWidget, TariffsWidgetOld } from '@/widgets';
+import { LinkedShopsWidget, ReferalProgrammWidget, ProfileWidget, UsersWidget, PaymentWidget, TariffsWidget, NotificationsWidget } from '@/widgets';
 import { useDemoMode } from '@/app/providers';
 import NoSubscriptionWarningBlock from '@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock';
 import AuthContext from '@/service/AuthContext';
@@ -46,9 +46,8 @@ const GeneralSettingsPage = () => {
             // { value: 'users', label: 'Настройки пользователей' },
             { value: 'payments', label: 'История платежей',  disabled: isDemoUser || isDemoMode },
             { value: 'referral', label: 'Реферальная программа', disabled: isDemoUser || isDemoMode},
-            // { value: 'tariffsOld', label: 'Тарифы_Old' },
             { value: 'tariffs', label: 'Тарифы' },
-            // { value: 'notifications', label: 'Бот уведомлений' },
+            { value: 'notifications', label: 'Бот уведомлений' },
         ];
     }, [isDemoUser])
 
@@ -92,7 +91,7 @@ const GeneralSettingsPage = () => {
             {activeTab === 'payments' && <PaymentWidget />}
             {activeTab === 'referral' && <ReferalProgrammWidget />}
             {activeTab === 'tariffs' && <TariffsWidget />}
-            {/* {activeTab === 'tariffsOld' && <TariffsWidgetOld />} */}
+            {activeTab === 'notifications' && <NotificationsWidget />}
         </GeneralLayout>
     )
 }
