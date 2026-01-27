@@ -28,6 +28,9 @@ import { useDemoMode } from '@/app/providers';
 import { useLoadingProgress } from '@/service/hooks/useLoadingProgress';
 import Loader from '@/components/ui/Loader';
 import SuccessModal from '@/components/sharedComponents/modals/successModal/successModal';
+import UploadExcelButton from '@/components/UploadExcelButton';
+import UploadExcelModal from '@/components/sharedComponents/modals/uploadExcelModal/uploadExcelModal';
+import { fileDownload } from '@/service/utils';
 
 const initAlertState = {
 	status: '',
@@ -71,6 +74,11 @@ export default function OperatingExpenses() {
 		total: 1,
 	});
 	const [templates, setTemplates] = useState([]);
+	const [isUploadModalVisible, setIsUploadModalVisible] = useState(false);
+	const [uploadFile, setUploadFile] = useState(null);
+	const [uploadResult, setUploadResult] = useState(null);
+	const [uploadError, setUploadError] = useState(null);
+	const [isUploading, setIsUploading] = useState(false);
 
 	const expenseData = useMemo(() => {
 		const columns = EXPENSE_COLUMNS.map((column, i) => {
@@ -569,6 +577,61 @@ export default function OperatingExpenses() {
 		}
 	};
 
+	const handleExcelUpload = async (file) => {
+		setIsUploading(true);
+		setUploadError(null);
+		setUploadResult(null);
+		try {
+			const response = await ServiceFunctions.postOperatingExpensesUpload(authToken, file);
+
+			if (response && "success_count" in response) {
+				setUploadFile(null);
+
+				const resultObject = {
+					total_processed_rows: {value: response.total_processed_rows, title: 'Строк обработано'},
+					success_count: {value: response.success_count, title: 'Успешно загружено'},
+					error_count: {value: response.error_count, title: 'Ошибок'},
+				};
+
+				setUploadResult(resultObject);
+				if (response.error_count === 0) {
+					await updateExpenses(true);
+					setAlertState({ message: 'Данные успешно загружены', status: 'success', isVisible: true });
+				} else {
+					setAlertState({ message: 'Данные загружены с ошибками', status: 'warning', isVisible: true });
+				}
+			}
+		} catch (error) {
+			console.error('handleExcelUpload error', error);
+			setUploadError('Что-то пошло не так :( Попробуйте обновить страницу');
+			setAlertState({ message: 'Не удалось загрузить файл', status: 'error', isVisible: true });
+		} finally {
+			setIsUploading(false);
+		}
+	};
+
+	const handleUploadModalClose = () => {
+		if (isUploading) return;
+		setIsUploadModalVisible(false);
+		setUploadFile(null);
+		setUploadResult(null);
+		setUploadError(null);
+	};
+
+	const handleTemplateDownload = async () => {
+		setIsUploading(true);
+		setUploadError(null);
+		try {
+			const fileBlob = await ServiceFunctions.getOperatingExpensesTemplateDownload(authToken);
+			fileDownload(fileBlob, 'Операционные_расходы.xlsx');
+		} catch (error) {
+			console.error('handleTemplateDownload error', error);
+			setUploadError('Что-то пошло не так :( Попробуйте обновить страницу');
+		} finally {
+			setIsUploading(false);
+		}
+	};
+
 	return (
 		<main className={styles.page}>
 			<MobilePlug />
@@ -628,16 +691,20 @@ export default function OperatingExpenses() {
 						</Flex>
 					</Flex>
 				)}
-				
-				{view === 'expense' && 
+
+				{view === 'expense' && (
 					<div className={styles.controls}>
 						<Filters
 							isDataLoading={loading}
 							groupSelect={false}
 							opExpensesArticles
 						/>
+						<UploadExcelButton
+							onClick={() => setIsUploadModalVisible(true)}
+							loading={isUploading || loading}
+						/>
 					</div>
-				}
+				)}
 
 				{/* Заглушка для не активированных брендов */}
 				{activeBrand && !activeBrand?.is_primary_collect && 
@@ -811,6 +878,19 @@ export default function OperatingExpenses() {
 					setIsVisible={(isVisible) => setAlertState({ ...alertState, isVisible })}
 					message={alertState.message}
 					type={alertState.status}
+				/>
+
+				<UploadExcelModal
+					open={isUploadModalVisible}
+					onClose={handleUploadModalClose}
+					onUpload={handleExcelUpload}
+					loading={isUploading}
+					error={uploadError}
+					result={uploadResult}
+					title="Загрузка файла"
+					file={uploadFile}
+					setFile={setUploadFile}
+					onDownloadTemplate={handleTemplateDownload}
 				/>
 			</section>
 		</main>
