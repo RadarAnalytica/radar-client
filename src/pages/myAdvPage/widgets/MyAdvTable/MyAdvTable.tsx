@@ -158,7 +158,7 @@ const MyAdvTable: React.FC<MyAdvTableProps> = React.memo(({
     const updateColumnWidth = (columns: any[]): any[] => {
       return columns.map(col => {
         // Если это группа с children
-        if (col.children && col.children.length > 0) {
+        if (col?.children?.length > 0) {
           const updatedChildren = updateColumnWidth(col.children);
 
           // Всегда пересчитываем ширину группы на основе суммы ширин дочерних колонок

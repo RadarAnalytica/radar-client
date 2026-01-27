@@ -213,14 +213,14 @@ const SortableGroup: React.FC<SortableGroupProps> = ({
 
     // Handle parent checkbox change - toggle all children
     const handleParentCheckboxChange = (checked: boolean) => {
+        const updates: Record<string, boolean> = { [id]: checked };
         if (hasChildren) {
-            const updates: Record<string, boolean> = { [id]: checked };
             item.children!.forEach(child => {
                 updates[child.id] = checked;
             });
-            setVisibilityState(prev => ({ ...prev, ...updates }));
-            form.setFieldsValue(updates);
         }
+        setVisibilityState(prev => ({ ...prev, ...updates }));
+        form.setFieldsValue(updates);
     };
 
     // Check if all children are selected
