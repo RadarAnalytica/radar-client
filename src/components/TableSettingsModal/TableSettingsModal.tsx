@@ -323,24 +323,37 @@ const SortableGroup: React.FC<SortableGroupProps> = ({
 
     // Handle parent checkbox change - toggle all children
     const handleParentCheckboxChange = (checked: boolean) => {
-        const updates: Record<string, boolean> = { [id]: checked };
+        const updates: Record<string, boolean> = {};
+        if (item.canToggle !== false) {
+            updates[id] = checked;
+        }
         if (hasChildren) {
             item.children!.forEach(child => {
-                updates[child.id] = checked;
+                if (child.canToggle !== false) {
+                    updates[child.id] = checked;
+                }
             });
         }
         setVisibilityState(prev => ({ ...prev, ...updates }));
         form.setFieldsValue(updates);
     };
 
-    // Check if all children are selected
-    const allChildrenSelected = hasChildren 
-        ? item.children!.every(child => visibilityState[child.id] !== false)
+    const toggleableChildren = hasChildren
+        ? item.children!.filter(child => child.canToggle !== false)
+        : [];
+
+    // Check if all children are selected (ignore non-toggleable children)
+    const allChildrenSelected = hasChildren
+        ? (toggleableChildren.length === 0
+            ? visibilityState[id] !== false
+            : toggleableChildren.every(child => visibilityState[child.id] !== false))
         : visibilityState[id] !== false;
 
     // Check if some (but not all) children are selected
     const someChildrenSelected = hasChildren
-        ? item.children!.some(child => visibilityState[child.id] !== false) && !allChildrenSelected
+        ? (toggleableChildren.length > 0
+            ? toggleableChildren.some(child => visibilityState[child.id] !== false) && !allChildrenSelected
+            : false)
         : false;
 
     // Get active child item for overlay
@@ -591,18 +604,23 @@ export const TableSettingsModal: React.FC<TableSettingsModalProps> = ({
         }, []);
     }, [displayItems, activeSearchValue]);
 
+    const isToggleable = React.useCallback(
+        (item: TableSettingsItem) => item.canToggle !== false,
+        []
+    );
+
     // Collect all items for "select all" calculation
     const allSelectableItems = useMemo(() => {
         const result: TableSettingsItem[] = [];
         filteredItems.forEach(item => {
             if (item.children && item.children.length > 0) {
-                result.push(...item.children);
-            } else {
+                result.push(...item.children.filter(isToggleable));
+            } else if (isToggleable(item)) {
                 result.push(item);
             }
         });
         return result;
-    }, [filteredItems]);
+    }, [filteredItems, isToggleable]);
 
     const allSelected = useMemo(() => {
         if (allSelectableItems.length === 0) return false;
@@ -707,10 +725,14 @@ export const TableSettingsModal: React.FC<TableSettingsModalProps> = ({
             const updated = { ...prev };
             // Update parents and children
             filteredItems.forEach(item => {
-                updated[item.id] = newValue;
+                if (isToggleable(item)) {
+                    updated[item.id] = newValue;
+                }
                 if (item.children) {
                     item.children.forEach(child => {
-                        updated[child.id] = newValue;
+                        if (isToggleable(child)) {
+                            updated[child.id] = newValue;
+                        }
                     });
                 }
             });
@@ -719,10 +741,14 @@ export const TableSettingsModal: React.FC<TableSettingsModalProps> = ({
 
         const newFormValues: Record<string, boolean> = {};
         filteredItems.forEach(item => {
-            newFormValues[item.id] = newValue;
+            if (isToggleable(item)) {
+                newFormValues[item.id] = newValue;
+            }
             if (item.children) {
                 item.children.forEach(child => {
-                    newFormValues[child.id] = newValue;
+                    if (isToggleable(child)) {
+                        newFormValues[child.id] = newValue;
+                    }
                 });
             }
         });
