@@ -154,6 +154,48 @@ export const ServiceFunctions = {
 		return res;
 	},
 
+	getTaxRates: async (authToken, shopId, year) => {
+		// TODO: Заменить на реальный API вызов когда будет готов бэкенд
+		// const res = await fetchApi(`${URL}/api/tax/get?shop_id=${shopId}&year=${year}`, {
+		// 	method: 'GET',
+		// 	headers: {
+		// 		'content-type': 'application/json',
+		// 		authorization: 'JWT ' + authToken,
+		// 	}
+		// });
+		// return await res.json();
+		
+		// Моковые данные для демонстрации
+		return {
+			shop_id: shopId,
+			data: [
+				{
+					year: year,
+					rates: [
+						{
+							effective_from: `${year}-01-01`,
+							tax_type: 'УСН-доходы',
+							tax_rate: 6,
+							vat_rate: 10
+						},
+						{
+							effective_from: `${year}-02-01`,
+							tax_type: 'УСН-доходы',
+							tax_rate: 6,
+							vat_rate: 10
+						},
+						{
+							effective_from: `${year}-03-01`,
+							tax_type: 'УСН-доходы',
+							tax_rate: 6,
+							vat_rate: 10
+						}
+					]
+				}
+			]
+		};
+	},
+
 	getDashBoard: async (token, selectedRange, idShop, filters) => {
 		//let rangeParams = rangeApiFormat(selectedRange);
 		const body = getRequestObject(filters, selectedRange, idShop);

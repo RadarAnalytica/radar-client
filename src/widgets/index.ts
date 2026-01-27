@@ -15,3 +15,4 @@ export { PositionTrackingMainPageWidget } from './PositionTrackingMainPageWidget
 export { PositionTrackingSkuFilters } from './PositionTrackingSkuFilters/PositionTrackingSkuFilters';
 export { TariffsWidget } from './generalSettingsWidgets/TariffsWidget';
 export { TariffsWidgetOld } from './generalSettingsWidgets/TariffsWidgetOld';
+export { TaxWidget } from './generalSettingsWidgets/TaxWidget';

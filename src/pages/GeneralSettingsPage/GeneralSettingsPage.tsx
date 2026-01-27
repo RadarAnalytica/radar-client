@@ -2,7 +2,7 @@ import { useEffect, useState, useMemo, useContext } from 'react';
 import { GeneralLayout } from '@/shared';
 import { Segmented, ConfigProvider } from 'antd';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { LinkedShopsWidget, ReferalProgrammWidget, ProfileWidget, UsersWidget, PaymentWidget, TariffsWidget, TariffsWidgetOld } from '@/widgets';
+import { LinkedShopsWidget, ReferalProgrammWidget, ProfileWidget, UsersWidget, PaymentWidget, TariffsWidget, TariffsWidgetOld, TaxWidget } from '@/widgets';
 import { useDemoMode } from '@/app/providers';
 import NoSubscriptionWarningBlock from '@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock';
 import AuthContext from '@/service/AuthContext';
@@ -32,11 +32,11 @@ const segmentedTheme = {
 
 
 const GeneralSettingsPage = () => {
-    const [activeTab, setActiveTab] = useState(null)
-    const location = useLocation()
-    const navigate = useNavigate()
+    const [activeTab, setActiveTab] = useState(null);
+    const location = useLocation();
+    const navigate = useNavigate();
     const { isDemoUser, isDemoMode } = useDemoMode();
-    const { user } = useContext(AuthContext)
+    const { user } = useContext(AuthContext);
 
 
     const segmentedOptions = useMemo(() => {
@@ -47,19 +47,20 @@ const GeneralSettingsPage = () => {
             { value: 'payments', label: 'История платежей',  disabled: isDemoUser || isDemoMode },
             { value: 'referral', label: 'Реферальная программа', disabled: isDemoUser || isDemoMode},
             { value: 'tariffs', label: 'Тарифы' },
+            { value: 'tax', label: 'Налоги' },
             // { value: 'tariffsNew', label: 'Тарифы2' },
             // { value: 'notifications', label: 'Бот уведомлений' },
         ];
-    }, [isDemoUser])
+    }, [isDemoUser]);
 
     useEffect(() => {
        const { state } = location;
        if (state && state?.tab) {
-        setActiveTab(state.tab)
+        setActiveTab(state.tab);
        } else {
-        setActiveTab('profile')
+        setActiveTab('profile');
        }
-    }, [location])
+    }, [location]);
 
     return (
         <GeneralLayout
@@ -80,8 +81,8 @@ const GeneralSettingsPage = () => {
                         navigate(location.pathname, {
                             state: { tab: value },
                             replace: true
-                        })
-                        setActiveTab(value)
+                        });
+                        setActiveTab(value);
                     }}
                 />
             </ConfigProvider>
@@ -93,8 +94,9 @@ const GeneralSettingsPage = () => {
             {activeTab === 'referral' && <ReferalProgrammWidget />}
             {activeTab === 'tariffsNew' && <TariffsWidget />}
             {activeTab === 'tariffs' && <TariffsWidgetOld />}
+            {activeTab === 'tax' && <TaxWidget />}
         </GeneralLayout>
-    )
-}
+    );
+};
 
 export default GeneralSettingsPage;
