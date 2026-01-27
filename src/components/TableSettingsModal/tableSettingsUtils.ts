@@ -170,6 +170,16 @@ export const mergeProductInfoPseudoGroup = (
   const { stickyTitle = 'О товаре' } = options;
   const result: TableSettingsItem[] = [];
 
+  const createEmptyRegularParent = (stickyParent: TableSettingsItem): TableSettingsItem => ({
+    ...stickyParent,
+    id: `${stickyParent.id}__regular`,
+    title: '',
+    fixed: false,
+    children: [],
+    __pseudoGroup: undefined,
+    __pseudoGroupParts: undefined,
+  });
+
   for (let index = 0; index < items.length; index += 1) {
     const current = items[index];
     const next = items[index + 1];
@@ -196,6 +206,22 @@ export const mergeProductInfoPseudoGroup = (
         },
       });
       index += 1;
+      continue;
+    }
+
+    if (isProductInfoGroup) {
+      result.push({
+        ...current,
+        children: [...(current.children ?? [])].map(child => ({
+          ...child,
+          fixed: child.fixed === true,
+        })),
+        __pseudoGroup: true,
+        __pseudoGroupParts: {
+          stickyParent: current,
+          regularParent: createEmptyRegularParent(current),
+        },
+      });
       continue;
     }
 
