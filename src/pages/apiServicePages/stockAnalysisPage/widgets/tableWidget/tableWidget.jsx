@@ -115,7 +115,7 @@ const customCellRender = (value, record, index, dataIndex, borderedColumns) => {
     }
     if (dataIndex === 'vendorСode' || dataIndex === 'sku' || dataIndex === 'size') {
         return (
-            <div className={styles.fixedCell}>
+            <div className={styles.fixedCell} data-border-right={hasBorderRight}>
                 <div className={styles.fixedCellTitle} title={value}><span>{value}</span></div>
             </div>
         );
