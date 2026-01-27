@@ -29,6 +29,9 @@ export const applyRowsConfig = (metrics, config) => {
   if (!config) return metrics;
 
   const configMap = new Map(config.map((item) => [item.key, item]));
+  const getConfigKey = (metric) => (
+    metric.isChildren && metric.parentKey ? `${metric.parentKey}__${metric.key}` : metric.key
+  );
   const parentOrders = new Map();
   const childOrdersByParent = new Map();
 
@@ -44,7 +47,9 @@ export const applyRowsConfig = (metrics, config) => {
   });
 
   const result = metrics.map(metric => {
-    const savedConfig = configMap.get(metric.key);
+    const configKey = getConfigKey(metric);
+    const savedConfig = configMap.get(configKey)
+      ?? (metric.isChildren && metric.parentKey ? configMap.get(metric.key) : null);
     if (savedConfig) {
       let order;
       if (metric.isChildren && metric.parentKey) {
@@ -93,18 +98,26 @@ export const applyRowsConfig = (metrics, config) => {
 export const groupMetricsToHierarchy = (metrics, configMap = null) => {
   const parents = [];
   const childrenByParent = {};
+  const createChildId = (parentKey, key) => `${parentKey}__${key}`;
+  const getConfigKey = (metric) => (
+    metric.isChildren && metric.parentKey ? `${metric.parentKey}__${metric.key}` : metric.key
+  );
 
   metrics.forEach((metric, index) => {
-    const savedConfig = configMap?.get(metric.key);
+    const configKey = getConfigKey(metric);
+    const savedConfig = configMap?.get(configKey)
+      ?? (metric.isChildren && metric.parentKey ? configMap?.get(metric.key) : null);
     const isVisible = savedConfig ? !savedConfig.hidden : true;
     const order = savedConfig?.order ?? index;
 
     const item = {
       ...metric,
-      id: metric.key,
+      id: metric.parentKey ? createChildId(metric.parentKey, metric.key) : metric.key,
+      key: metric.key,
       title: metric.title,
       isVisible,
       order,
+      isExpanded: metric.isChildren ? undefined : savedConfig?.isExpanded,
     };
 
     if (metric.isChildren && metric.parentKey) {
@@ -124,6 +137,7 @@ export const groupMetricsToHierarchy = (metrics, configMap = null) => {
     children.sort((a, b) => (a.order ?? 999) - (b.order ?? 999));
     return {
       ...parent,
+      isExpanded: parent.isExpanded ?? true,
       children: parent.isParent ? (children.length > 0 ? children : []) : undefined,
     };
   });
@@ -134,20 +148,24 @@ export const buildRowsConfigFromSettings = (updatedItems) => {
   let orderIndex = 0;
 
   updatedItems.forEach(item => {
+    const parentKey = item.key ?? item.id;
     flatConfig.push({
-      key: item.id,
+      key: parentKey,
       hidden: !item.isVisible,
       order: orderIndex++,
       isParent: item.isParent,
+      isExpanded: item.isExpanded,
     });
 
     if (item.children && item.children.length > 0) {
       item.children.forEach(child => {
+        const childKey = child.key ?? child.id;
+        const compositeKey = `${parentKey}__${childKey}`;
         flatConfig.push({
-          key: child.id,
+          key: compositeKey,
           hidden: !child.isVisible,
           order: orderIndex++,
-          parentKey: item.id,
+          parentKey,
           isChildren: true,
         });
       });
