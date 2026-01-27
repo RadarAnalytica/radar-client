@@ -20,7 +20,6 @@ import { useLoadingProgress } from '@/service/hooks/useLoadingProgress';
 import Loader from '@/components/ui/Loader';
 import { formatPrice } from '@/service/utils';
 import { Tooltip } from 'antd';
-import { useTableColumnResize } from '@/service/hooks/useTableColumnResize';
 import { getWordDeclension } from '@/service/utils';
 import TableSettingsModal, { mapConfigToSettingsItems, mapSettingsToConfig } from '@/components/TableSettingsModal';
 import TableSettingsButton from '@/components/TableSettingsButton';
@@ -343,14 +342,29 @@ const AbcAnalysisPage = () => {
 		return <Tooltip title={value}>{value}</Tooltip>;
 	};
 
-	// Используем хук для управления изменением размеров колонок
-    const { config: currentTableConfig, onResize: onResizeGroup } = useTableColumnResize(
-        tableConfig, 
-        `abcAnalysisTableColumnWidths_${viewType}`,
-        0,
-        400,
-        ABC_ANALYSIS_TABLE_CONFIG_VER
-    );
+	// Обработчик изменения размера колонок
+	const onResizeGroup = (columnKey, newWidth) => {
+		const updatedConfig = tableConfig.map(col => {
+			if (col.key === columnKey || col.dataIndex === columnKey) {
+				return { ...col, width: newWidth };
+			}
+			return col;
+		});
+
+		const storageKey = `${ABC_CONFIG_STORAGE_KEY_PREFIX}${viewType}`;
+		
+		// Сохраняем в localStorage
+		localStorage.setItem(storageKey, JSON.stringify({
+			version: ABC_ANALYSIS_TABLE_CONFIG_VER,
+			config: updatedConfig
+		}));
+
+		// Обновляем состояние
+		setTableConfigs(prev => ({
+			...prev,
+			[viewType]: updatedConfig
+		}));
+	};
 
 	return (
 		<main className={styles.page}>
@@ -430,10 +444,10 @@ const AbcAnalysisPage = () => {
 
 								<div className={styles.tableContainer}>
 									<div className={styles.tableScrollContainer} ref={scrollContainerRef}>
-										{tableData && tableData.length > 0 && currentTableConfig && (
+										{tableData && tableData.length > 0 && tableConfig && (
 											<RadarTable
 												rowKey={(record) => record.expandedKey}
-												config={currentTableConfig.filter(col => !col.hidden)}
+												config={tableConfig}
 												dataSource={tableData}
 												preset='radar-table-simple'
 												className='abc-analysis-table'
@@ -478,7 +492,7 @@ const AbcAnalysisPage = () => {
 												}}
 												style={{
 													tableLayout: 'fixed',
-													width: 'max-content',
+													width: '100%',
 												}}
 											/>
 										)}
