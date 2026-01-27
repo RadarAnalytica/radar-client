@@ -64,6 +64,17 @@ interface SortableGroupProps {
     sensors: ReturnType<typeof useSensors>;
 }
 
+const resolveItemTitle = (item: TableSettingsItem, titleKey: string) => {
+    const titleValue = item[titleKey];
+    if (typeof titleValue === 'string') {
+        return titleValue;
+    }
+    if (titleValue != null) {
+        return String(titleValue);
+    }
+    return item.title ?? '';
+};
+
 const DragHandleIcon = () => (
     <svg width="16" height="20" viewBox="0 0 16 20" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M2 2.62268e-07C3.10457 4.07115e-07 4 0.89543 4 2C4 3.10457 3.10457 4 2 4C0.895433 4 2.21557e-06 3.10457 2.36042e-06 2C2.50526e-06 0.89543 0.895433 1.17422e-07 2 2.62268e-07Z" fill="#999999" />
@@ -110,7 +121,7 @@ const DragOverlayItem: React.FC<{
             <DragHandleIcon />
         </div>
         <Checkbox checked={checked} className={styles.checkbox}>
-            {item[titleKey] || item.title}
+            {resolveItemTitle(item, titleKey)}
         </Checkbox>
     </div>
 );
@@ -157,7 +168,7 @@ const SortableItem: React.FC<SortableItemProps> = ({ id, item, titleKey, isChild
                 preserve
             >
                 <Checkbox className={styles.checkbox} disabled={isToggleDisabled}>
-                    {item[titleKey]}
+                    {resolveItemTitle(item, titleKey)}
                 </Checkbox>
             </Form.Item>
         </div>
@@ -278,7 +289,7 @@ const SortableGroup: React.FC<SortableGroupProps> = ({
                     onChange={(e) => handleParentCheckboxChange(e.target.checked)}
                     disabled={isToggleDisabled}
                 >
-                    {item[titleKey] || 'Группа'}
+                    {resolveItemTitle(item, titleKey) || 'Группа'}
                 </Checkbox>
                 {hasChildren && (
                     <span className={styles.childrenCount}>
@@ -417,16 +428,23 @@ export const TableSettingsModal: React.FC<TableSettingsModalProps> = ({
                 isExpanded: item.isExpanded,
             });
 
-            return [
-                {
+            const restoredGroups: TableSettingsItem[] = [];
+
+            if (stickyChildren.length > 0) {
+                restoredGroups.push({
                     ...applyPseudoState(stickyParent),
                     children: stickyChildren,
-                },
-                {
+                });
+            }
+
+            if (regularChildren.length > 0) {
+                restoredGroups.push({
                     ...applyPseudoState(regularParent),
                     children: regularChildren,
-                },
-            ];
+                });
+            }
+
+            return restoredGroups;
         });
     };
 
@@ -454,7 +472,7 @@ export const TableSettingsModal: React.FC<TableSettingsModalProps> = ({
     // Consider hierarchy if any item has children array (even empty) or isParent flag
     const hasHierarchy = useMemo(() => {
         return items.some(item => 
-            (item[childrenKey] && item[childrenKey].length > 0) || 
+            (Array.isArray(item[childrenKey]) && item[childrenKey].length > 0) || 
             item.isParent ||
             Array.isArray(item[childrenKey])
         );
@@ -463,18 +481,20 @@ export const TableSettingsModal: React.FC<TableSettingsModalProps> = ({
     // Normalize items to internal format
     const normalizeItems = (itemsToNormalize: TableSettingsItem[]): TableSettingsItem[] => {
         return itemsToNormalize.map((item, index) => {
-            const id = item[idKey] || item.id || item.key || item.dataIndex;
-            const itemTitle = item[titleKey] || item.title;
+            const id = String(item[idKey] ?? item.id ?? item.key ?? item.dataIndex ?? index);
+            const itemTitle = resolveItemTitle(item, titleKey);
             let isVisible: boolean;
 
             if (invertVisibility) {
                 isVisible = item.hidden !== undefined ? !item.hidden : true;
             } else {
-                isVisible = item[visibleKey] !== undefined ? item[visibleKey] : true;
+                const visibleValue = item[visibleKey];
+                isVisible = typeof visibleValue === 'boolean' ? visibleValue : true;
             }
 
-            const children = item[childrenKey] 
-                ? normalizeItems(item[childrenKey])
+            const childrenValue = item[childrenKey];
+            const children = Array.isArray(childrenValue)
+                ? normalizeItems(childrenValue as TableSettingsItem[])
                 : undefined;
 
             return {
