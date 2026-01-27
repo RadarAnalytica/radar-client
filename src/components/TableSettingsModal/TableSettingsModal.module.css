@@ -188,6 +188,12 @@
     margin-left: 4px;
 }
 
+.pseudoGroupDivider {
+    height: 1px;
+    background-color: #e8e8e8;
+    margin: 6px 12px 6px 44px;
+}
+
 .dragHandle {
     cursor: grab;
     display: flex;

@@ -9,6 +9,7 @@ import {
     Flex,
     Input,
 } from 'antd';
+import type { FormInstance } from 'antd';
 import { DndContext, closestCenter, DragEndEvent, DragStartEvent, DragOverlay, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
 import { SortableContext, useSortable, verticalListSortingStrategy, arrayMove } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
@@ -20,7 +21,13 @@ export interface TableSettingsItem {
     isVisible?: boolean;
     hidden?: boolean;
     children?: TableSettingsItem[];
-    [key: string]: any;
+    fixed?: boolean;
+    __pseudoGroup?: boolean;
+    __pseudoGroupParts?: {
+        stickyParent: TableSettingsItem;
+        regularParent: TableSettingsItem;
+    };
+    [key: string]: unknown;
 }
 
 export interface TableSettingsModalProps {
@@ -47,13 +54,13 @@ interface SortableItemProps {
 interface SortableGroupProps {
     id: string;
     item: TableSettingsItem;
-    form: any;
+    form: FormInstance;
     titleKey: string;
     isExpanded: boolean;
     onToggleExpand: (id: string) => void;
     visibilityState: Record<string, boolean>;
     setVisibilityState: React.Dispatch<React.SetStateAction<Record<string, boolean>>>;
-    onChildrenReorder: (parentId: string, oldIndex: number, newIndex: number) => void;
+    onChildrenReorder: (parentId: string, oldIndex: number, newIndex: number, activeChildId: string) => void;
     sensors: ReturnType<typeof useSensors>;
 }
 
@@ -206,7 +213,7 @@ const SortableGroup: React.FC<SortableGroupProps> = ({
                 if (activeChild?.undraggable || overChild?.undraggable) {
                     return;
                 }
-                onChildrenReorder(id, oldIndex, newIndex);
+                onChildrenReorder(id, oldIndex, newIndex, String(active.id));
             }
         }
     };
@@ -293,15 +300,29 @@ const SortableGroup: React.FC<SortableGroupProps> = ({
                             items={item.children!.map(child => child.id)}
                             strategy={verticalListSortingStrategy}
                         >
-                            {item.children!.map((child) => (
-                                <SortableItem 
-                                    key={child.id} 
-                                    id={child.id} 
-                                    item={child} 
-                                    titleKey={titleKey}
-                                    isChild
-                                />
-                            ))}
+                            {item.children!.map((child, index) => {
+                                const dividerIndex = item.__pseudoGroup
+                                    ? item.children!.findIndex(current => current.fixed !== true)
+                                    : -1;
+                                const shouldRenderDivider = item.__pseudoGroup
+                                    && dividerIndex > 0
+                                    && dividerIndex < item.children!.length
+                                    && index === dividerIndex - 1;
+
+                                return (
+                                    <React.Fragment key={child.id}>
+                                        <SortableItem 
+                                            id={child.id} 
+                                            item={child} 
+                                            titleKey={titleKey}
+                                            isChild
+                                        />
+                                        {shouldRenderDivider && (
+                                            <div className={styles.pseudoGroupDivider} />
+                                        )}
+                                    </React.Fragment>
+                                );
+                            })}
                         </SortableContext>
                         <DragOverlay dropAnimation={null}>
                             {activeChildItem ? (
@@ -340,6 +361,74 @@ export const TableSettingsModal: React.FC<TableSettingsModalProps> = ({
     const [activeId, setActiveId] = useState<string | null>(null);
     const [visibilityState, setVisibilityState] = useState<Record<string, boolean>>({});
     const [expandedGroups, setExpandedGroups] = useState<Set<string>>(new Set());
+
+    const mergeProductInfoGroups = (itemsToMerge: TableSettingsItem[]): TableSettingsItem[] => {
+        const result: TableSettingsItem[] = [];
+
+        for (let index = 0; index < itemsToMerge.length; index += 1) {
+            const current = itemsToMerge[index];
+            const next = itemsToMerge[index + 1];
+            const isProductInfoGroup = current?.title === 'О товаре';
+            const isEmptyTitleGroup = next && (next.title === '' || next.title == null);
+
+            if (isProductInfoGroup && isEmptyTitleGroup) {
+                const stickyChildren = (current.children ?? []).map(child => ({
+                    ...child,
+                    fixed: child.fixed === true,
+                }));
+                const regularChildren = (next.children ?? []).map(child => ({
+                    ...child,
+                    fixed: child.fixed === true ? true : false,
+                }));
+
+                result.push({
+                    ...current,
+                    children: [...stickyChildren, ...regularChildren],
+                    __pseudoGroup: true,
+                    __pseudoGroupParts: {
+                        stickyParent: current,
+                        regularParent: next,
+                    },
+                });
+                index += 1;
+                continue;
+            }
+
+            result.push(current);
+        }
+
+        return result;
+    };
+
+    const splitProductInfoGroups = (itemsToSplit: TableSettingsItem[]): TableSettingsItem[] => {
+        return itemsToSplit.flatMap((item) => {
+            if (!item.__pseudoGroup || !item.__pseudoGroupParts) {
+                return [item];
+            }
+
+            const { stickyParent, regularParent } = item.__pseudoGroupParts;
+            const children = item.children ?? [];
+            const stickyChildren = children.filter(child => child.fixed === true);
+            const regularChildren = children.filter(child => child.fixed !== true);
+
+            const applyPseudoState = (parent: TableSettingsItem) => ({
+                ...parent,
+                isVisible: item.isVisible,
+                isExpanded: item.isExpanded,
+            });
+
+            return [
+                {
+                    ...applyPseudoState(stickyParent),
+                    children: stickyChildren,
+                },
+                {
+                    ...applyPseudoState(regularParent),
+                    children: regularChildren,
+                },
+            ];
+        });
+    };
 
     const sensors = useSensors(
         useSensor(PointerSensor, {
@@ -440,11 +529,12 @@ export const TableSettingsModal: React.FC<TableSettingsModalProps> = ({
         
         if (isOpening) {
             const normalized = normalizeItems(items);
-            setDisplayItems(normalized);
+            const mergedItems = mergeProductInfoGroups(normalized);
+            setDisplayItems(mergedItems);
             setSearchValue('');
             setActiveSearchValue('');
 
-            const initialVisibility = collectVisibilityStates(normalized);
+            const initialVisibility = collectVisibilityStates(mergedItems);
             setVisibilityState(initialVisibility);
             form.setFieldsValue(initialVisibility);
 
@@ -535,10 +625,36 @@ export const TableSettingsModal: React.FC<TableSettingsModalProps> = ({
         }
     };
 
-    const handleChildrenReorder = (parentId: string, oldIndex: number, newIndex: number) => {
+    const handleChildrenReorder = (parentId: string, oldIndex: number, newIndex: number, _activeChildId: string) => {
         setDisplayItems(currentItems => {
             return currentItems.map(item => {
                 if (item.id === parentId && item.children) {
+                    if (item.__pseudoGroup) {
+                        const oldStickyCount = item.children.filter(child => child.fixed === true).length;
+                        const activeWasFixed = item.children[oldIndex]?.fixed === true;
+                        const movedChildren = arrayMove(item.children, oldIndex, newIndex);
+
+                        let updatedStickyCount = oldStickyCount;
+                        if (activeWasFixed && newIndex >= oldStickyCount) {
+                            updatedStickyCount -= 1;
+                        }
+                        if (!activeWasFixed && newIndex < oldStickyCount) {
+                            updatedStickyCount += 1;
+                        }
+
+                        updatedStickyCount = Math.max(1, Math.min(updatedStickyCount, movedChildren.length));
+
+                        const normalizedChildren = movedChildren.map((child, index) => ({
+                            ...child,
+                            fixed: index < updatedStickyCount,
+                        }));
+
+                        return {
+                            ...item,
+                            children: normalizedChildren,
+                        };
+                    }
+
                     return {
                         ...item,
                         children: arrayMove(item.children, oldIndex, newIndex)
@@ -598,9 +714,10 @@ export const TableSettingsModal: React.FC<TableSettingsModalProps> = ({
 
     const handleRevertToOriginal = () => {
         const normalized = normalizeItems(originalItems);
-        setDisplayItems(normalized);
+        const mergedItems = mergeProductInfoGroups(normalized);
+        setDisplayItems(mergedItems);
 
-        const newVisibility = collectVisibilityStates(normalized);
+        const newVisibility = collectVisibilityStates(mergedItems);
         setVisibilityState(newVisibility);
         form.setFieldsValue(newVisibility);
     };
@@ -627,7 +744,8 @@ export const TableSettingsModal: React.FC<TableSettingsModalProps> = ({
 
     const handleOk = () => {
         const updatedItems = applyVisibilityToItems(displayItems);
-        const denormalized = denormalizeItems(updatedItems);
+        const restoredItems = splitProductInfoGroups(updatedItems);
+        const denormalized = denormalizeItems(restoredItems);
         onSave(denormalized);
         onClose();
     };
