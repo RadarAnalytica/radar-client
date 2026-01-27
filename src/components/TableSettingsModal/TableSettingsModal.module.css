@@ -194,6 +194,16 @@
     margin: 6px 12px 6px 44px;
 }
 
+.pseudoGroupDropZone {
+    height: 12px;
+    margin: 2px 12px 6px 44px;
+    border-radius: 6px;
+}
+
+.pseudoGroupDropZone[data-over="true"] {
+    background-color: #f3f0ff;
+}
+
 .dragHandle {
     cursor: grab;
     display: flex;
