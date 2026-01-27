@@ -70,6 +70,7 @@ const StockAnalysisPage = () => {
         const mappedConfig = mapSettingsToConfig(updatedColumns);
         const newConfig = mappedConfig.map((col) => {
             const visibleChildren = col.children?.filter((child) => !child.hidden) ?? [];
+            const colSpan = visibleChildren.length || 0;
             const lastVisibleKey = visibleChildren[visibleChildren.length - 1]?.key;
             const updatedChildren = col.children?.map((child) => {
                 if (!child.key) return child;
@@ -85,8 +86,9 @@ const StockAnalysisPage = () => {
 
             return {
                 ...col,
+                colSpan,
+                hidden: colSpan === 0,
                 children: updatedChildren,
-                colSpan: visibleChildren.length || 1,
             };
         });
         
