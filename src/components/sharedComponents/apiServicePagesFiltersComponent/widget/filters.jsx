@@ -30,6 +30,7 @@ export const Filters = React.memo(({
   submitHandler,
   uncontrolledMode = false,
   hasShopCreationLimit = false,
+  hasTitles = true
 }) => {
 
   // ------ это база ------//
@@ -104,7 +105,7 @@ export const Filters = React.memo(({
   }
 
   useEffect(() => {
-    if (filtersState && !uncontrolledMode) {
+    if (filtersState) {
       let internalFiltersStateObject = {}
       Object.keys(filtersState).forEach(key => {
         if (key.toLowerCase().includes('active') || key.toLowerCase().includes('selectedrange')) {
@@ -126,7 +127,7 @@ export const Filters = React.memo(({
             <RadarMultiSelect
               selectId={filters.find((el) => el?.shop?.id === internalActiveFiltersState?.activeBrand?.id)?.weeks?.enLabel}
               label={`${filters.find((el) => el?.shop?.id === internalActiveFiltersState?.activeBrand?.id)?.weeks?.ruLabel}:`}
-              value={internalActiveFiltersState?.activeWeeks && internalActiveFiltersState?.activeWeeks?.length > 0 ? internalActiveFiltersState?.activeWeeks.map(_ => _.value) : [{value: 'Все'}]}
+              value={internalActiveFiltersState?.activeWeeks && internalActiveFiltersState?.activeWeeks?.length > 0 ? internalActiveFiltersState?.activeWeeks.map(_ => _.value) : [{ value: 'Все' }]}
               optionsData={filters.find((el) => el.shop.id === internalActiveFiltersState.activeBrand.id).weeks.data}
               isDataLoading={isDataLoading}
               disabled={disabled}
@@ -196,7 +197,7 @@ export const Filters = React.memo(({
           <div className={styles.filters__inputWrapper}>
             <RadarSelect
               selectId='store'
-              label='Магазин:'
+              label={hasTitles ? 'Магазин:' : ''}
               value={internalActiveFiltersState.activeBrand?.brand_name}
               optionsData={shops.map(_ => ({ value: _.brand_name, label: _.brand_name }))}
               isDataLoading={isDataLoading}
@@ -204,8 +205,11 @@ export const Filters = React.memo(({
               hasDropdownSearch={!shops.some(_ => _.id === 0)}
               actionHandler={(value) => {
                 const normalizedValue = shops.find(_ => _.brand_name.toLowerCase() === value.toLowerCase());
-                internalFiltersStateUpdateHandler('activeBrand', normalizedValue);
-                // dispatch(filterActions.setActiveShop(normalizedValue));
+                if (!uncontrolledMode) {
+                  internalFiltersStateUpdateHandler('activeBrand', normalizedValue);
+                } else {
+                  dispatch(filterActions.setActiveShop(normalizedValue));
+                }
               }}
             />
           </div>
@@ -262,7 +266,7 @@ export const Filters = React.memo(({
             </React.Fragment>
           );
         })}
-        
+
         {!uncontrolledMode && isFiltersLoaded && <button
           className={styles.filters__submitButton}
           onClick={applyFiltersClickHandler}
