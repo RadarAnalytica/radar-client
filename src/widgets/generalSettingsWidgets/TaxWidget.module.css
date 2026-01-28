@@ -1,0 +1,248 @@
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.widget {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px 0;
+    animation: fadeInUp 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.widget__header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.widget__filters {
+    display: flex;
+    align-items: flex-end;
+    gap: 20px;
+    flex-wrap: wrap;
+    flex: 1;
+}
+
+.filter__item {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 200px;
+}
+
+.filter__label {
+    font-family: Manrope;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 160%;
+    color: #1A1A1A;
+    margin: 0;
+}
+
+.filter__select {
+    width: 100%;
+}
+
+.filter__divider {
+    width: 1px;
+    height: 40px;
+    background-color: #E8E8E8;
+    margin: 0 10px;
+}
+
+.widget__saveButton {
+    height: 38px;
+    font-weight: 600;
+    padding: 0 20px;
+    flex-shrink: 0;
+    align-self: flex-end;
+}
+
+.widget__quarters {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+
+.quarter__block {
+    background-color: #F7F7F7;
+    border-radius: 1rem;
+    padding: 1.25rem 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    animation: fadeInUp 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) backwards;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.quarter__block:nth-child(1) {
+    animation-delay: 0.05s;
+}
+
+.quarter__block:nth-child(2) {
+    animation-delay: 0.1s;
+}
+
+.quarter__block:nth-child(3) {
+    animation-delay: 0.15s;
+}
+
+.quarter__block:nth-child(4) {
+    animation-delay: 0.2s;
+}
+
+.quarter__blockDisabled {
+    opacity: 0.5;
+}
+
+.quarter__header {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.quarter__title {
+    margin: 0;
+    padding: 0;
+    font-family: Manrope;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 100%;
+    color: #1A1A1A;
+}
+
+.quarter__inputs {
+    display: flex;
+    gap: 12px;
+    width: 100%;
+}
+
+.quarter__inputGroup {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.quarter__inputLabel {
+    font-family: Manrope;
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 140%;
+    color: #1A1A1A;
+}
+
+.quarter__input {
+    width: 100%;
+}
+
+.quarter__divider {
+    width: 100%;
+    height: 1px;
+    background-color: #E8E8E8;
+}
+
+.quarter__collapse {
+    background: transparent;
+    border: none;
+}
+
+.quarter__collapse :global(.ant-collapse-item) {
+    border: none;
+    background: transparent;
+}
+
+.quarter__collapse :global(.ant-collapse-header) {
+    padding: 0 !important;
+    background: transparent;
+    border: none;
+    font-family: Manrope;
+    font-weight: 600;
+    font-size: 14px;
+    color: #5329FF;
+    cursor: pointer;
+}
+
+.quarter__collapse :global(.ant-collapse-content) {
+    border: none;
+    background: transparent;
+    padding: 16px 0 0 0 !important;
+}
+
+.quarter__collapse :global(.ant-collapse-content-box) {
+    padding: 0 !important;
+}
+
+.quarter__collapseIcon {
+    transition: all .2s ease;
+}
+
+.quarter__collapseIconHidden {
+    transform: rotate(-90deg);
+}
+
+.quarter__panel {
+    background: transparent;
+    border: none;
+}
+
+.quarter__months {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.month__row {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+    width: 100%;
+}
+
+.month__name {
+    font-family: Manrope;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 160%;
+    color: #1A1A1A;
+}
+
+.month__inputs {
+    display: flex;
+    gap: 12px;
+    flex: 1;
+}
+
+.month__inputGroup {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.month__inputLabel {
+    font-family: Manrope;
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 160%;
+    color: #1A1A1A;
+}
+
+.month__input {
+    width: 100%;
+}

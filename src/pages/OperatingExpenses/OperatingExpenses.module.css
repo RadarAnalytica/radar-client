@@ -39,11 +39,11 @@
 /* Report */
 
 .controls{
-    /* display: flex;
+    display: flex;
     flex-flow: row nowrap;
     justify-content: space-between;
     align-items: end;
-    gap: 16px; */
+    gap: 16px;
 }
 
 .loading{
