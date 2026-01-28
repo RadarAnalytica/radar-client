@@ -621,7 +621,8 @@ export default function Rnp({
 									{!isPublicVersion && view === 'total' &&
 										<DownloadButton
 											handleDownload={handleDownload}
-											loading={loading || downloadLoading}
+											loading={downloadLoading}
+											disabled={loading}
 										/>
 									}
 								</div>

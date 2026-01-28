@@ -2,7 +2,14 @@ import React from 'react';
 import { Button, ConfigProvider } from 'antd';
 import { useDemoMode } from "@/app/providers";
 
-const UploadExcelButton = ({ onClick, loading, disabled = false, title }) => {
+interface UploadExcelButtonProps {
+  onClick: () => void;
+  loading?: boolean;
+  disabled?: boolean;
+  title?: string;
+}
+
+const UploadExcelButton: React.FC<UploadExcelButtonProps> = ({ onClick, loading = false, disabled = false, title }) => {
   const { isDemoMode } = useDemoMode();
 
   const isDisabled = isDemoMode || disabled;
