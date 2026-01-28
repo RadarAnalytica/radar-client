@@ -583,29 +583,18 @@ export default function OperatingExpenses() {
 		setUploadResult(null);
 		try {
 			const response = await ServiceFunctions.postOperatingExpensesUpload(authToken, file);
-
-			if (response && "success_count" in response) {
-				setUploadFile(null);
-
-				const resultObject = {
-					total_processed_rows: {value: response.total_processed_rows, title: 'Строк обработано'},
-					success_count: {value: response.success_count, title: 'Успешно загружено'},
-					error_count: {value: response.error_count, title: 'Ошибок'},
-				};
-
-				setUploadResult(resultObject);
-				if (response.error_count === 0) {
-					await updateExpenses(true);
-					setAlertState({ message: 'Данные успешно загружены', status: 'success', isVisible: true });
-				} else {
-					setAlertState({ message: 'Данные загружены с ошибками', status: 'warning', isVisible: true });
-				}
+			if (response?.message === 'success') {
+				await updateExpenses(true);
+				setAlertState({ message: 'Данные успешно загружены', status: 'success', isVisible: true });
+			} else {
+				setAlertState({ message: 'Данные загружены с ошибками', status: 'warning', isVisible: true });
 			}
 		} catch (error) {
 			console.error('handleExcelUpload error', error);
 			setUploadError('Что-то пошло не так :( Попробуйте обновить страницу');
 			setAlertState({ message: 'Не удалось загрузить файл', status: 'error', isVisible: true });
 		} finally {
+			setIsUploadModalVisible(false);
 			setIsUploading(false);
 		}
 	};
@@ -674,6 +663,10 @@ export default function OperatingExpenses() {
 									},
 								}}
 							>
+								<UploadExcelButton
+									onClick={() => setIsUploadModalVisible(true)}
+									loading={isUploading || loading}
+								/>
 								{view !== 'template' && (
 									<Button
 										type="primary"
@@ -698,10 +691,6 @@ export default function OperatingExpenses() {
 							isDataLoading={loading}
 							groupSelect={false}
 							opExpensesArticles
-						/>
-						<UploadExcelButton
-							onClick={() => setIsUploadModalVisible(true)}
-							loading={isUploading || loading}
 						/>
 					</div>
 				)}
