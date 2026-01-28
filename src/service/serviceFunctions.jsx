@@ -143,50 +143,64 @@ export const ServiceFunctions = {
 		return res;
 	},
 	setShopTax: async (authToken, data) => {
-		const res = await fetchApi(`${URL}/api/tax/set`, {
-			method: 'POST',
-			headers: {
-				'content-type': 'application/json',
-				authorization: 'JWT ' + authToken,
-			},
-			body: JSON.stringify(data)
-		});
-		return res;
+		return {
+			ok: true,
+			status: 200,
+			json: async () => ({
+				status: 'ok',
+				payload: data
+			})
+		};
 	},
 
-	getTaxRates: async (authToken, shopId, year) => {
-		// TODO: Заменить на реальный API вызов когда будет готов бэкенд
-		// const res = await fetchApi(`${URL}/api/tax/get?shop_id=${shopId}&year=${year}`, {
-		// 	method: 'GET',
-		// 	headers: {
-		// 		'content-type': 'application/json',
-		// 		authorization: 'JWT ' + authToken,
-		// 	}
-		// });
-		// return await res.json();
-		
-		// Моковые данные для демонстрации
+	getTaxRates: async (authToken, shopId) => {
+		await new Promise(resolve => setTimeout(resolve, 2000));
+		const currentYear = new Date().getFullYear();
+		const previousYear = currentYear - 1;
 		return {
 			shop_id: shopId,
 			data: [
 				{
-					year: year,
+					year: previousYear,
 					rates: [
 						{
-							effective_from: `${year}-01-01`,
+							effective_from: `${previousYear}-03-01`,
 							tax_type: 'УСН-доходы',
 							tax_rate: 6,
 							vat_rate: 10
 						},
 						{
-							effective_from: `${year}-02-01`,
+							effective_from: `${previousYear}-04-01`,
 							tax_type: 'УСН-доходы',
 							tax_rate: 6,
 							vat_rate: 10
 						},
 						{
-							effective_from: `${year}-03-01`,
+							effective_from: `${previousYear}-12-01`,
 							tax_type: 'УСН-доходы',
+							tax_rate: 6,
+							vat_rate: 10
+						}
+					]
+				},
+				{
+					year: currentYear,
+					rates: [
+						{
+							effective_from: `${currentYear}-01-01`,
+							tax_type: 'Не считать налог',
+							tax_rate: 6,
+							vat_rate: 10
+						},
+						{
+							effective_from: `${currentYear}-02-01`,
+							tax_type: 'Не считать налог',
+							tax_rate: 6,
+							vat_rate: 10
+						},
+						{
+							effective_from: `${currentYear}-05-01`,
+							tax_type: 'Не считать налог',
 							tax_rate: 6,
 							vat_rate: 10
 						}
