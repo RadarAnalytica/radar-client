@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useMemo } from 'react';
+import React, { useState, useEffect, useContext, useMemo, useRef } from 'react';
 import styles from './TaxWidget.module.css';
 import { useAppSelector } from '@/redux/hooks';
 import AuthContext from '@/service/AuthContext';
@@ -123,6 +123,8 @@ export const TaxWidget = () => {
     const [loading, setLoading] = useState(false);
     const [saving, setSaving] = useState(false);
     const [expandedQuarters, setExpandedQuarters] = useState<string[]>(['1', '2', '3', '4']);
+    const [isDirty, setIsDirty] = useState(false);
+    const initialYearFormsRef = useRef<Record<number, YearFormData>>({});
 
     const shopOptions = useMemo(() => {
         if (!shops || shops.length === 0) return [];
@@ -153,6 +155,8 @@ export const TaxWidget = () => {
 
                 setYearForms(newYearForms);
                 setYearOptions(newYearOptions);
+                initialYearFormsRef.current = newYearForms;
+                setIsDirty(false);
 
                 if (newYearOptions.length > 0) {
                     setSelectedYear(prevYear => {
@@ -171,6 +175,13 @@ export const TaxWidget = () => {
 
         loadTaxData();
     }, [selectedShopId, authToken]);
+
+    useEffect(() => {
+        if (loading) return;
+        const current = JSON.stringify(yearForms);
+        const initial = JSON.stringify(initialYearFormsRef.current);
+        setIsDirty(current !== initial);
+    }, [yearForms, loading]);
 
     // Установка первого магазина по умолчанию
     useEffect(() => {
@@ -268,6 +279,8 @@ export const TaxWidget = () => {
             }
 
             alert('Данные успешно сохранены');
+            initialYearFormsRef.current = yearForms;
+            setIsDirty(false);
         } catch (error) {
             console.error('Ошибка при сохранении:', error);
             alert('Произошла ошибка при сохранении данных');
@@ -365,6 +378,7 @@ export const TaxWidget = () => {
                         type="primary"
                         onClick={handleSave}
                         loading={saving}
+                        disabled={!activeYearForm || !isDirty || saving}
                         className={styles.widget__saveButton}
                     >
                         Сохранить
