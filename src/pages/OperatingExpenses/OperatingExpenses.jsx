@@ -722,8 +722,8 @@ export default function OperatingExpenses() {
 							>
 								<UploadExcelButton
 									onClick={() => setIsUploadModalVisible(true)}
-									loading={isUploading || loading}
-									disabled={isFileProcessing}
+									loading={isUploading || isFileProcessing}
+									disabled={loading || isFileProcessing}
 									title={isFileProcessing ? 'Файл обрабатывается' : undefined}
 								/>
 								{view !== 'template' && (
