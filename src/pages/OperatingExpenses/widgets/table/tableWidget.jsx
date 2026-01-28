@@ -46,7 +46,9 @@ const customCellExpenseRender = (
         if (record.key === 'summary') {
             return <div className={styles.customCell}>{value || '-'}</div>;
         }
-        return <div className={styles.customCell}>{value ? 'Включено' : 'Не включено'}</div>;
+        return <div className={`${styles.customCell} ${styles.booleanCell}`} data-value={Boolean(value)}>
+            {value ? 'Включено' : 'Не включено'}
+        </div>;
     }
     if (dataIndex === 'description' || dataIndex === 'expense_categories' || dataIndex === 'vendor_code' || dataIndex === 'brand_name') {
         return (
