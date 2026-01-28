@@ -101,6 +101,8 @@ export default function OperatingExpenses() {
 				date: 'Итого:',
 				value: totalSum || '-',
 				description: '-',
+				is_tax_included: '-',
+				is_vat_included: '-',
 				expense_categories: '-',
 				vendor_code: '-',
 				brand_name: '-',

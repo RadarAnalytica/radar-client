@@ -42,6 +42,12 @@ const customCellExpenseRender = (
     if (dataIndex === 'date_from' || dataIndex === 'finished_at') {
         return <div className={styles.customCell}>{value ? moment(value).format('DD.MM.YYYY') : '-'}</div>;
     }
+    if (dataIndex === 'is_tax_included' || dataIndex === 'is_vat_included') {
+        if (record.key === 'summary') {
+            return <div className={styles.customCell}>{value || '-'}</div>;
+        }
+        return <div className={styles.customCell}>{value ? 'Включено' : 'Не включено'}</div>;
+    }
     if (dataIndex === 'description' || dataIndex === 'expense_categories' || dataIndex === 'vendor_code' || dataIndex === 'brand_name') {
         return (
             <div className={`${styles.customCell} text-break`} title={value}>
@@ -101,6 +107,8 @@ const customCellExpenseRender = (
                                         brand_names: response.brand_names,
                                         value: response.value,
                                         description: response.description,
+                                        is_tax_included: response.is_tax_included,
+                                        is_vat_included: response.is_vat_included,
                                         expense_categories: response.expense_categories,
                                         date_from: response.date_from,
                                     }
@@ -148,6 +156,8 @@ const customCellExpenseRender = (
                                     month: response.period_type === 'month' ? response.period_values : null,
                                     periodic_expense_id: response.id,
                                     is_periodic: true,
+                                    is_tax_included: response.is_tax_included,
+                                    is_vat_included: response.is_vat_included,
                                 }
                             });
                             return;
