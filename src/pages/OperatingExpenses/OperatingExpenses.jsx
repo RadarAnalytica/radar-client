@@ -38,6 +38,8 @@ const initAlertState = {
 	message: '',
 };
 
+const FILE_PROCESS_ID_KEY = 'operatingExpensesUploadProcessId';
+
 export default function OperatingExpenses() {
 	const dispatch = useAppDispatch();
 	const { authToken } = useContext(AuthContext);
@@ -79,6 +81,8 @@ export default function OperatingExpenses() {
 	const [uploadResult, setUploadResult] = useState(null);
 	const [uploadError, setUploadError] = useState(null);
 	const [isUploading, setIsUploading] = useState(false);
+	const [fileProcessId, setFileProcessId] = useState(() => localStorage.getItem(FILE_PROCESS_ID_KEY));
+	const [isFileProcessing, setIsFileProcessing] = useState(() => Boolean(localStorage.getItem(FILE_PROCESS_ID_KEY)));
 
 	const expenseData = useMemo(() => {
 		const columns = EXPENSE_COLUMNS.map((column, i) => {
@@ -270,6 +274,55 @@ export default function OperatingExpenses() {
 			}
 		}
 	}, [activeBrand, templatePagination.page]);
+
+	const clearFileProcess = () => {
+		localStorage.removeItem(FILE_PROCESS_ID_KEY);
+		setFileProcessId(null);
+		setIsFileProcessing(false);
+	};
+
+	useEffect(() => {
+		if (!fileProcessId || !authToken) {
+			setIsFileProcessing(false);
+			return;
+		}
+
+		let isMounted = true;
+
+		const checkFileStatus = async () => {
+			try {
+				const res = await ServiceFunctions.getOperatingExpensesFileStatus(authToken, fileProcessId);
+				if (!isMounted) return;
+
+				const status = res?.status;
+				if (status === 'processing') {
+					setIsFileProcessing(true);
+					return;
+				}
+
+				clearFileProcess();
+
+				if (status === 'success') {
+					setAlertState({ message: res?.message || 'Файл успешно обработан', status: 'success', isVisible: true });
+					await updateExpenses(true);
+				} else {
+					setAlertState({ message: res?.message || 'Не удалось обработать файл', status: 'error', isVisible: true });
+				}
+			} catch (error) {
+				if (!isMounted) return;
+				clearFileProcess();
+				setAlertState({ message: 'Не удалось проверить статус файла', status: 'error', isVisible: true });
+			}
+		};
+
+		checkFileStatus();
+		const intervalId = setInterval(checkFileStatus, 1000);
+
+		return () => {
+			isMounted = false;
+			clearInterval(intervalId);
+		};
+	}, [fileProcessId, authToken]);
 
 	const modalExpenseHandlerClose = () => {
 		setExpenseModal({ mode: null, isOpen: false, data: null });
@@ -583,7 +636,11 @@ export default function OperatingExpenses() {
 		setUploadResult(null);
 		try {
 			const response = await ServiceFunctions.postOperatingExpensesUpload(authToken, file);
-			if (response?.message === 'success') {
+			if (response?.process_id) {
+				localStorage.setItem(FILE_PROCESS_ID_KEY, response.process_id);
+				setFileProcessId(response.process_id);
+				setIsFileProcessing(true);
+			} else if (response?.message === 'success') {
 				await updateExpenses(true);
 				setAlertState({ message: 'Данные успешно загружены', status: 'success', isVisible: true });
 			} else {
@@ -665,7 +722,9 @@ export default function OperatingExpenses() {
 							>
 								<UploadExcelButton
 									onClick={() => setIsUploadModalVisible(true)}
-									loading={isUploading || loading}
+									loading={isUploading || isFileProcessing}
+									disabled={loading || isFileProcessing}
+									title={isFileProcessing ? 'Файл обрабатывается' : undefined}
 								/>
 								{view !== 'template' && (
 									<Button

@@ -2602,9 +2602,10 @@ export interface IPositionCheckMainTableData {
 			throw error; // Прокидываем ошибку выше
 		}
 	},
-	getOperatingExpensesFileStatus: async (token) => {
+	getOperatingExpensesFileStatus: async (token, processId) => {
 		try {
-			const res = await fetch(`${URL}/api/operating-expenses/expense/get-file-status`, {
+			const query = processId ? `?process_id=${encodeURIComponent(processId)}` : '';
+			const res = await fetch(`${URL}/api/operating-expenses/expense/get-file-status${query}`, {
 				method: 'GET',
 				headers: {
 					accept: 'application/json',
