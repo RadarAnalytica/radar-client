@@ -56,7 +56,6 @@ const BARS_CONFIG = [
 const BarsWidget = ({ dataHandler, dataType, id }) => {
     const dispatch = useAppDispatch();
     const widgetData = useAppSelector(state => selectSupplierAnalysisDataByType(state, dataType));
-    const { isSidebarHidden } = useAppSelector(store => store.utils);
     const { selectedRange, isFiltersLoaded } = useAppSelector(store => store.filters);
 
 
@@ -84,7 +83,7 @@ const BarsWidget = ({ dataHandler, dataType, id }) => {
 
     if (widgetData.isLoading || !isFiltersLoaded) {
         return (
-            <div className={styles.loaderWrapper} style={{ height: 102}}>
+            <div className={styles.loaderWrapper} style={{ height: 102 }}>
                 <span className='loader'></span>
             </div>
         );
@@ -137,23 +136,23 @@ const BarsWidget = ({ dataHandler, dataType, id }) => {
     }
 
     return (
-        <div className={isSidebarHidden ? styles.widget : `${styles.widget} ${styles.widget_2cols}`}>
-            {widgetData?.data && Object.keys(widgetData.data).map((_, id) => {
-                const CONFIG = BARS_CONFIG.find(i => i.index === _);
-                return CONFIG && (
-                    <>
+        <div className={styles.widget}>
+            {widgetData?.data && Object?.keys(widgetData?.data)
+                ?.filter(key => BARS_CONFIG.find(i => i.index === key))
+                ?.map((key) => {
+                    const CONFIG = BARS_CONFIG.find(i => i.index === key);
+                    return (
                         <RadarBar
-                            key={id}
+                            key={key}
                             title={CONFIG?.title}
-                            mainValue={widgetData?.data[_]}
+                            mainValue={widgetData?.data[key]}
                             mainValueUnits={CONFIG?.units}
                             midValue={widgetData?.data[CONFIG.additionalData?.index]}
                             midValueUnits={CONFIG?.additionalData?.units}
-                            elementsStyles={{ title: CONFIG?.index === 'brands' ? {color: '#5329FF'} : {}}}
+                            elementsStyles={{ title: CONFIG?.index === 'brands' ? { color: '#5329FF' } : {} }}
                         />
-                    </>
-                );
-            })}
+                    );
+                })}
         </div>
     );
 };

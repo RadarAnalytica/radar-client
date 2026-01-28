@@ -35,7 +35,7 @@ import {
     selectSupplierCurrentBrand
 } from '@/redux/supplierAnalysis/supplierAnalysisSelectors';
 import NoSubscriptionWarningBlock
-  from "@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock";
+    from "@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock";
 import { useDemoMode } from "@/app/providers";
 
 const SupplierIdPage = () => {
@@ -44,12 +44,12 @@ const SupplierIdPage = () => {
     const mainSupplierData = useAppSelector(selectMainSupplierData);
     const stockChartTab = useAppSelector(selectStockChartTab);
     const supplierCurrentBrand = useAppSelector(selectSupplierCurrentBrand);
-    const ordersStructureTab = useAppSelector(selectOrdersStructureTab);
+    // const ordersStructureTab = useAppSelector(selectOrdersStructureTab);
     const { isFiltersLoaded } = useAppSelector(store => store.filters);
     const isAnyDataLoading = useAppSelector(store => store.supplierAnalysis.isAnyDataLoading);
     const params = useParams();
     const navigate = useNavigate();
-    
+
     // Максимальная дата для календаря - вчерашний день (блокируем сегодня)
     const maxDate = (() => {
         const yesterday = new Date();
@@ -133,7 +133,7 @@ const SupplierIdPage = () => {
                     <div className={styles.page__filtersWrapper} title={isDemoMode && 'Данный фильтр недоступен в демо-режиме'}>
                         <div className={`${styles.page__filtersWrapper__filters} ${isDemoMode && 'pe-none'}`}>
                             <Filters
-                                setLoading={() => {}}
+                                setLoading={() => { }}
                                 shopSelect={false}
                                 brandSelect={false}
                                 articleSelect={false}
@@ -177,7 +177,7 @@ const SupplierIdPage = () => {
                         dataType='byBrandsTableData'
                         dataHandler={fetchSupplierAnalysisByBrandTableData}
                         hasPagination
-                         minRowHeight='75px'
+                        minRowHeight='75px'
                     />
                 </div>
                 {/* Продажи по категориям поставщика */}
@@ -189,12 +189,13 @@ const SupplierIdPage = () => {
                         dataType='bySubjectsTableData'
                         dataHandler={fetchSupplierAnalysisBySubjectsTableData}
                         hasPagination
-                         minRowHeight='50px'
+                        minRowHeight='50px'
                     />
                 </div>
                 {/* Структура заказов по складам и размерам */}
                 <div className={styles.page__tableWrapper}>
-                    <OrdersTableCustomHeader ordersStructureTab={ordersStructureTab} />
+                    {/* <OrdersTableCustomHeader ordersStructureTab={ordersStructureTab} /> */}
+                    <OrdersTableCustomHeader />
                     <TableTabsWrapper />
                 </div>
 
@@ -227,7 +228,7 @@ const TableTabsWrapper = () => {
 
     return (
         <>
-            {ordersStructureTab === 'По складам (последние 30 дней)' &&
+            <div style={{ display: ordersStructureTab === 'По складам (последние 30 дней)' ? 'block' : 'none' }}>
                 <TableWidget
                     tableConfig={ordersStructByWarehousesTableConfig}
                     id={mainSupplierData?.supplier_id}
@@ -236,8 +237,8 @@ const TableTabsWrapper = () => {
                     containerHeight='450px'
                     minRowHeight='50px'
                 />
-            }
-            {ordersStructureTab === 'По размерам' &&
+            </div>
+            <div style={{ display: ordersStructureTab === 'По размерам' ? 'block' : 'none' }}>
                 <TableWidget
                     tableConfig={ordersStructBySizesTableConfig}
                     id={mainSupplierData?.supplier_id}
@@ -246,7 +247,7 @@ const TableTabsWrapper = () => {
                     containerHeight='450px'
                     minRowHeight='50px'
                 />
-            }
+            </div>
         </>
     );
 };
@@ -307,7 +308,7 @@ const ChartTabsWrapper = () => {
     useEffect(() => {
         setConfig(getStockChartProps(stockChartTab));
     }, [stockChartTab]);
-    
+
     return <StockChartWidget {...config} />;
 };
 
