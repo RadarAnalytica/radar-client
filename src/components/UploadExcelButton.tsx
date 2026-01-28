@@ -2,8 +2,20 @@ import React from 'react';
 import { Button, ConfigProvider } from 'antd';
 import { useDemoMode } from "@/app/providers";
 
-const UploadExcelButton = ({ onClick, loading }) => {
+interface UploadExcelButtonProps {
+  onClick: () => void;
+  loading?: boolean;
+  disabled?: boolean;
+  title?: string;
+}
+
+const UploadExcelButton: React.FC<UploadExcelButtonProps> = ({ onClick, loading = false, disabled = false, title }) => {
   const { isDemoMode } = useDemoMode();
+
+  const isDisabled = isDemoMode || disabled;
+  const buttonTitle = isDemoMode
+    ? 'Загрузка доступна после активации подписки'
+    : (title || 'Загрузить Excel-файл');
 
   return (
     <>
@@ -30,8 +42,8 @@ const UploadExcelButton = ({ onClick, loading }) => {
           size='large'
           loading={loading}
           onClick={() => !loading && onClick()}
-          disabled={isDemoMode}
-          title={isDemoMode ? 'Загрузка доступна после активации подписки' : 'Загрузить Excel-файл'}
+          disabled={isDisabled}
+          title={buttonTitle}
           style={{ fontWeight: 600, height: 38, width: 158, fontSize: 14 }}
         >
           {!loading && <svg width="16" height="18" viewBox="0 0 16 18" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ flex: '0 0 auto'}}>

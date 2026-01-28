@@ -555,7 +555,8 @@ export default function ReportProfitLoss() {
 					<div className={styles.controlsButtons}>
 						<DownloadButton
 							handleDownload={handleDownload}
-							loading={loading || downloadLoading}
+							loading={downloadLoading}
+							disabled={loading}
 						/>
 						<TableSettingsButton
 							className={styles.settingsButton}
