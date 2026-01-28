@@ -11,16 +11,14 @@ const tabs = [
     'По размерам'
 ];
 
-const OrdersTableCustomHeader = ({ ordersStructureTab }) => {
-
+const OrdersTableCustomHeader = React.memo(() => {
     const dispatch = useAppDispatch();
-    const [tabsState, setTabsState] = useState(null) 
+    const [tabsState, setTabsState] = useState('По складам (последние 30 дней)')
 
-    useEffect(() => {
-        if (!tabsState && ordersStructureTab) {
-            setTabsState(ordersStructureTab)
-        }
-    }, [ordersStructureTab, tabsState])
+    const handleChange = (value) => {
+        setTabsState(value);
+        dispatch(supplierAnalysisActions.setOrdersStructureTab(value));
+    };
 
     return (
         <div className={styles.header}>
@@ -28,7 +26,8 @@ const OrdersTableCustomHeader = ({ ordersStructureTab }) => {
             <ConfigProvider
                 theme={{
                     token: {
-                        fontSize: '14px'
+                        fontSize: '14px',
+                        motionDurationSlow: '0.15s'
                     },
                     components: {
                         Segmented: {
@@ -48,14 +47,11 @@ const OrdersTableCustomHeader = ({ ordersStructureTab }) => {
                     size='large'
                     options={tabs}
                     value={tabsState}
-                    onChange={(value) => {
-                        setTabsState(value)
-                        dispatch(supplierAnalysisActions.setOrdersStructureTab(value))
-                    }}
+                    onChange={handleChange}
                 />
             </ConfigProvider>
         </div>
     );
-};
+});
 
 export default OrdersTableCustomHeader;
