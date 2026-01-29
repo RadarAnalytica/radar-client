@@ -38,13 +38,13 @@ interface TaxYearData {
 }
 
 const taxTypeOptions = [
+    { value: 'Не считать налог', label: 'Не считать налог' },
     { value: 'УСН-доходы', label: 'УСН-доходы' },
     { value: 'УСН Д-Р', label: 'УСН Д-Р' },
-    { value: 'Не считать налог', label: 'Не считать налог' },
     { value: 'Считать от РС', label: 'Считать от РС' }
 ];
 
-const DEFAULT_TAX_TYPE = 'УСН-доходы';
+const DEFAULT_TAX_TYPE = 'Не считать налог';
 
 const getQuarterMonths = (quarter: number): number[] => {
     switch (quarter) {
