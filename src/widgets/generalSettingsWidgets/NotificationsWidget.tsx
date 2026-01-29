@@ -321,7 +321,6 @@ export const NotificationsWidget = () => {
                 isDataLoading={!preferences || !isFiltersLoaded}
                 disabled={!preferences || !isFiltersLoaded}
                 uncontrolledMode
-                hasTitles={false}
             />
 
             <div className={styles.widget__grid}>
