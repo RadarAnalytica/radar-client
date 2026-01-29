@@ -129,7 +129,7 @@ export const TaxWidget = () => {
 
     const shopOptions = useMemo(() => {
         if (!shops || shops.length === 0) return [];
-        return shops.map(shop => ({
+        return shops?.filter(shop => shop.is_valid).map(shop => ({
             value: shop.id,
             label: shop.brand_name
         }));
@@ -186,8 +186,8 @@ export const TaxWidget = () => {
 
     // Установка первого магазина по умолчанию
     useEffect(() => {
-        if (shops?.length > 0 && !selectedShopId) {
-            setSelectedShopId(shops[0].id);
+        if (shopOptions?.length > 0 && !selectedShopId) {
+            setSelectedShopId(shopOptions[0].value);
         }
     }, [shops, selectedShopId]);
 
