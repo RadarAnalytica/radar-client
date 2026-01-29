@@ -1,3 +1,4 @@
+export { NotificationsWidget } from './generalSettingsWidgets/NotificationsWidget';
 export { PaymentWidget } from './generalSettingsWidgets/paymentsWidget';
 export { UsersWidget } from './generalSettingsWidgets/usersWidget';
 export { ProfileWidget } from './generalSettingsWidgets/ProfileWidget';
