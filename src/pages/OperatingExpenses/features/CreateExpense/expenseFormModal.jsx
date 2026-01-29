@@ -808,12 +808,34 @@ export default function ExpenseFormModal({
 						<Row className={styles.modal__part} gutter={16}>
 							<Col>
 								<Form.Item name="is_tax_included" valuePropName="checked">
-									<Checkbox>Включать в расчет налога</Checkbox>
+									<Checkbox
+										onChange={(e) => {
+											const checked = e.target.checked;
+											form.setFieldsValue({
+												is_tax_included: checked,
+												is_vat_included: checked,
+											});
+										}}
+									>
+										Включать в расчет налога
+									</Checkbox>
 								</Form.Item>
 							</Col>
 							<Col>
 								<Form.Item name="is_vat_included" valuePropName="checked">
-									<Checkbox>Включать в расчет НДС</Checkbox>
+									<Checkbox
+										onChange={(e) => {
+											const checked = e.target.checked;
+											form.setFieldsValue(checked ? {
+												is_tax_included: true,
+												is_vat_included: true,
+											} : {
+												is_vat_included: false,
+											});
+										}}
+									>
+										Включать в расчет НДС
+									</Checkbox>
 								</Form.Item>
 							</Col>
 						</Row>

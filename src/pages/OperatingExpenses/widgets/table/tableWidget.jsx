@@ -47,7 +47,7 @@ const customCellExpenseRender = (
             return <div className={styles.customCell}>{value || '-'}</div>;
         }
         return <div className={`${styles.customCell} ${styles.booleanCell}`} data-value={Boolean(value)}>
-            {value ? 'Включено' : 'Не включено'}
+            {value ? 'Включен' : 'Не включен'}
         </div>;
     }
     if (dataIndex === 'description' || dataIndex === 'expense_categories' || dataIndex === 'vendor_code' || dataIndex === 'brand_name') {
