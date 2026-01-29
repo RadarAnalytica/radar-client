@@ -48,7 +48,7 @@ const GeneralSettingsPage = () => {
             { value: 'referral', label: 'Реферальная программа', disabled: isDemoUser || isDemoMode},
             { value: 'tariffs', label: 'Тарифы' },
             // { value: 'tariffsNew', label: 'Тарифы2' },
-            { value: 'notifications', label: 'Бот уведомлений' },
+            { value: 'notifications', label: 'Бот уведомлений', disabled: isDemoUser || isDemoMode },
         ];
     }, [isDemoUser])
 
