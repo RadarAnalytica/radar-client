@@ -49,7 +49,7 @@ const GeneralSettingsPage = () => {
             { value: 'tariffs', label: 'Тарифы' },
             { value: 'tax', label: 'Налоги' },
             // { value: 'tariffsNew', label: 'Тарифы2' },
-            { value: 'notifications', label: 'Бот уведомлений' },
+            { value: 'notifications', label: 'Бот уведомлений', disabled: isDemoUser || isDemoMode },
         ];
     }, [isDemoUser]);
 

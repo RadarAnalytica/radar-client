@@ -321,7 +321,6 @@ export const NotificationsWidget = () => {
                 isDataLoading={!preferences || !isFiltersLoaded}
                 disabled={!preferences || !isFiltersLoaded}
                 uncontrolledMode
-                hasTitles={false}
             />
 
             <div className={styles.widget__grid}>
@@ -593,7 +592,14 @@ const SettingsBlock: React.FC<ISettingsBlockProps> = ({
                         placeholder={"Поиск метрики"}
                         disabled={!enabled}
                         value={searchValue}
-                        onChange={(e) => setSearchValue(e.target.value)}
+                        onChange={(e) => {
+                            const newValue = e.target.value;
+                            setSearchValue(newValue);
+                            // Если значение удалено (пустое), сразу сбрасываем поиск
+                            if (!newValue.trim()) {
+                                setActiveSearchValue('');
+                            }
+                        }}
                         prefix={
                             <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M9.12793 0C14.1687 0.000149462 18.2549 4.08714 18.2549 9.12793C18.2548 11.3852 17.4328 13.4488 16.0752 15.042L20 18.9678L19.4834 19.4834L18.9678 20L15.042 16.0752C13.4488 17.4328 11.3852 18.2548 9.12793 18.2549C4.08714 18.2549 0.000149459 14.1687 0 9.12793C0 4.08705 4.08705 0 9.12793 0ZM9.12793 1.46094C4.89354 1.46094 1.46094 4.89354 1.46094 9.12793C1.46109 13.3622 4.89363 16.7949 9.12793 16.7949C13.3621 16.7948 16.7948 13.3621 16.7949 9.12793C16.7949 4.89363 13.3622 1.46109 9.12793 1.46094Z" fill="#8C8C8C" />
