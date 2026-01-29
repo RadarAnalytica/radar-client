@@ -135,6 +135,7 @@ const segmentedTheme = {
     token: {
         fontSize: 12,
         fontWeight: 500,
+        motionDurationSlow: '0.15s'
     },
     components: {
         Segmented: {
@@ -149,6 +150,7 @@ const segmentedTheme = {
         }
     }
 }
+
 const inputTheme = {
     token: {
         colorBgContainer: 'white',
@@ -1597,7 +1599,8 @@ interface PositionTrackingSkuTableProps {
     tableType: 'Кластеры' | 'По запросам'
 }
 const PositionTrackingSkuTable = memo(({ requestStatus, skuData, tableType }: PositionTrackingSkuTableProps) => {
-
+    // console.log('table block render')
+    // const [tableType, setTableType] = useState<'Кластеры' | 'По запросам'>('Кластеры')
     const [sortState, setSortState] = useState<{ sort_field: string, sort_order: 'ASC' | 'DESC' }>({ sort_field: 'frequency', sort_order: 'DESC' });
     const [tableConfig, setTableConfig] = useState<Record<string, any>[]>(null);
     const [paginationState, setPaginationState] = useState<{ current: number, pageSize: number, total: number }>({ current: 1, pageSize: 12, total: 0 });
@@ -1670,6 +1673,9 @@ const PositionTrackingSkuTable = memo(({ requestStatus, skuData, tableType }: Po
 
 
             <div className={styles.page__table}>
+                {/* <ConfigProvider theme={segmentedTheme}>
+                    <Segmented options={['Кластеры', 'По запросам']} size='large' value={tableType} onChange={(value) => setTableType(value as 'Кластеры' | 'По запросам')} />
+                </ConfigProvider> */}
                 {!requestStatus.isLoading && tableData && tableData.length > 0 && tableConfig &&
                     <div className={styles.page__tableContainer} ref={tableContainerRef}>
                         <RadarTable

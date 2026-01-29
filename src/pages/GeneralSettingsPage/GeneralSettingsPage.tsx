@@ -2,7 +2,7 @@ import { useEffect, useState, useMemo, useContext } from 'react';
 import { GeneralLayout } from '@/shared';
 import { Segmented, ConfigProvider } from 'antd';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { LinkedShopsWidget, ReferalProgrammWidget, ProfileWidget, UsersWidget, PaymentWidget, TariffsWidget, TariffsWidgetOld, TaxWidget } from '@/widgets';
+import { LinkedShopsWidget, ReferalProgrammWidget, ProfileWidget, UsersWidget, PaymentWidget, TariffsWidget, TariffsWidgetOld, TaxWidget, NotificationsWidget } from '@/widgets';
 import { useDemoMode } from '@/app/providers';
 import NoSubscriptionWarningBlock from '@/components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock';
 import AuthContext from '@/service/AuthContext';
@@ -49,7 +49,7 @@ const GeneralSettingsPage = () => {
             { value: 'tariffs', label: 'Тарифы' },
             { value: 'tax', label: 'Налоги' },
             // { value: 'tariffsNew', label: 'Тарифы2' },
-            // { value: 'notifications', label: 'Бот уведомлений' },
+            { value: 'notifications', label: 'Бот уведомлений' },
         ];
     }, [isDemoUser]);
 
@@ -95,6 +95,7 @@ const GeneralSettingsPage = () => {
             {activeTab === 'tariffsNew' && <TariffsWidget />}
             {activeTab === 'tariffs' && <TariffsWidgetOld />}
             {activeTab === 'tax' && <TaxWidget />}
+            {activeTab === 'notifications' && <NotificationsWidget />}
         </GeneralLayout>
     );
 };

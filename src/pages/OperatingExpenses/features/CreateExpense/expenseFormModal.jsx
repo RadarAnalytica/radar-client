@@ -61,6 +61,8 @@ const getRequestObject = (values, editData, mode, isTemplate = false) => {
 			description: values.description,
 			value: values.value,
 			date_from: formattedDateStart,
+			is_tax_included: values.is_tax_included,
+			is_vat_included: values.is_vat_included,
 			period_type: values.frequency,
 			period_values: values.frequency === 'week'
 				? values.week
@@ -88,6 +90,8 @@ const getRequestObject = (values, editData, mode, isTemplate = false) => {
 			description: values.description,
 			value: values.value,
 			date: formattedDateStart,
+			is_tax_included: values.is_tax_included,
+			is_vat_included: values.is_vat_included,
 			items: distributeItems,
 		};
 
@@ -255,6 +259,8 @@ export default function ExpenseFormModal({
 					end_date: formattedEndDate,
 					description: editData.description,
 					value: editData.value,
+					is_tax_included: editData.is_tax_included,
+					is_vat_included: editData.is_vat_included,
 				});
 			}
 
@@ -283,6 +289,8 @@ export default function ExpenseFormModal({
 					end_date: formattedEndDate,
 					description: editData.description,
 					value: editData.value,
+					is_tax_included: editData.is_tax_included,
+					is_vat_included: editData.is_vat_included,
 				});
 			}
 		}
@@ -352,6 +360,8 @@ export default function ExpenseFormModal({
 							brand_names: [],
 							shops: [],
 							expense_categories: null,
+							is_tax_included: false,
+							is_vat_included: false,
 						}}
 					>
 						{/* Тип операции (для режима создания) */}
@@ -793,6 +803,42 @@ export default function ExpenseFormModal({
 								</Form.Item>
 							</ConfigProvider>
 						</div>
+
+						{/* Налог и НДС */}
+						<Row className={styles.modal__part} gutter={16}>
+							<Col>
+								<Form.Item name="is_tax_included" valuePropName="checked">
+									<Checkbox
+										onChange={(e) => {
+											const checked = e.target.checked;
+											form.setFieldsValue({
+												is_tax_included: checked,
+												is_vat_included: checked,
+											});
+										}}
+									>
+										Включать в расчет налога
+									</Checkbox>
+								</Form.Item>
+							</Col>
+							<Col>
+								<Form.Item name="is_vat_included" valuePropName="checked">
+									<Checkbox
+										onChange={(e) => {
+											const checked = e.target.checked;
+											form.setFieldsValue(checked ? {
+												is_tax_included: true,
+												is_vat_included: true,
+											} : {
+												is_vat_included: false,
+											});
+										}}
+									>
+										Включать в расчет НДС
+									</Checkbox>
+								</Form.Item>
+							</Col>
+						</Row>
 
 						{/* Распределение на магазины/артикулы/бренды */}
 						<div className={styles.modal__part}>

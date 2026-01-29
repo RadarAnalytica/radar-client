@@ -10,7 +10,7 @@ import {
     Input,
 } from 'antd';
 import type { FormInstance } from 'antd';
-import { DndContext, closestCenter, DragEndEvent, DragMoveEvent, DragOverEvent, DragStartEvent, DragOverlay, PointerSensor, useDroppable, useSensor, useSensors } from '@dnd-kit/core';
+import { DndContext, closestCenter, DragEndEvent, DragOverEvent, DragStartEvent, DragOverlay, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
 import { SortableContext, useSortable, verticalListSortingStrategy, arrayMove } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { restrictToVerticalAxis, restrictToParentElement } from '@dnd-kit/modifiers';
@@ -73,7 +73,7 @@ interface SortableGroupProps {
         oldIndex: number,
         newIndex: number,
         activeChildId: string,
-        options?: { forceRegular?: boolean }
+        options?: { forceRegular?: boolean; dividerIndex?: number; childOrder?: string[] }
     ) => void;
     sensors: ReturnType<typeof useSensors>;
 }
@@ -178,6 +178,21 @@ const SortableItem: React.FC<SortableItemProps> = ({ id, item, titleKey, isChild
     );
 };
 
+const SortableDivider: React.FC<{ id: string }> = ({ id }) => {
+    const { setNodeRef, transform, transition } = useSortable({ id });
+
+    const style = {
+        transform: CSS.Transform.toString(transform),
+        transition,
+    };
+
+    return (
+        <div ref={setNodeRef} style={style} className={styles.pseudoGroupDividerItem}>
+            <div className={styles.pseudoGroupDivider} />
+        </div>
+    );
+};
+
 const SortableGroup: React.FC<SortableGroupProps> = ({ 
     id, 
     item, 
@@ -193,13 +208,8 @@ const SortableGroup: React.FC<SortableGroupProps> = ({
     const [activeChildId, setActiveChildId] = useState<string | null>(null);
     const isUndraggable = Boolean(item.undraggable);
     const isToggleDisabled = item.canToggle === false;
-    const regularDropId = `${id}__regular_drop`;
-    const { setNodeRef: setRegularDropRef, isOver: isRegularOver } = useDroppable({
-        id: regularDropId,
-    });
-    const dragOverTimeoutRef = useRef<number | null>(null);
-    const dragOverTargetRef = useRef<string | null>(null);
     const childrenContainerRef = useRef<HTMLDivElement | null>(null);
+    const dividerId = `${id}__divider`;
     
     const {
         attributes,
@@ -217,59 +227,21 @@ const SortableGroup: React.FC<SortableGroupProps> = ({
     };
 
     const hasChildren = item.children && item.children.length > 0;
+    const stickyCount = item.__pseudoGroup && item.children
+        ? item.children.filter(child => child.fixed === true).length
+        : 0;
+    const shouldUseDivider = Boolean(item.__pseudoGroup && item.children && item.children.length > 0);
+    const sortableChildIds = item.children ? item.children.map(child => child.id) : [];
+    const sortableIds = shouldUseDivider
+        ? [
+            ...sortableChildIds.slice(0, Math.min(stickyCount, sortableChildIds.length)),
+            dividerId,
+            ...sortableChildIds.slice(Math.min(stickyCount, sortableChildIds.length)),
+        ]
+        : sortableChildIds;
 
     const handleChildDragStart = (event: DragStartEvent) => {
-        if (dragOverTimeoutRef.current) {
-            window.clearTimeout(dragOverTimeoutRef.current);
-            dragOverTimeoutRef.current = null;
-            dragOverTargetRef.current = null;
-        }
         setActiveChildId(event.active.id as string);
-    };
-
-    const cancelScheduledRegularMove = () => {
-        if (dragOverTimeoutRef.current) {
-            window.clearTimeout(dragOverTimeoutRef.current);
-            dragOverTimeoutRef.current = null;
-            dragOverTargetRef.current = null;
-        }
-    };
-
-    const scheduleMoveToRegular = (activeId: string) => {
-        if (dragOverTimeoutRef.current) {
-            return;
-        }
-        dragOverTargetRef.current = 'near_bottom';
-        dragOverTimeoutRef.current = window.setTimeout(() => {
-            dragOverTimeoutRef.current = null;
-            const oldIndex = item.children?.findIndex(child => child.id === activeId) ?? -1;
-            if (!item.children || oldIndex === -1) {
-                return;
-            }
-            const targetIndex = Math.max(0, item.children.length - 1);
-            onChildrenReorder(id, oldIndex, targetIndex, String(activeId), { forceRegular: true });
-        }, 200);
-    };
-
-    const handleChildDragMove = (event: DragMoveEvent) => {
-        if (!item.__pseudoGroup || !item.children || !item.children.every(child => child.fixed === true)) {
-            cancelScheduledRegularMove();
-            return;
-        }
-
-        const containerRect = childrenContainerRef.current?.getBoundingClientRect();
-        const activeRect = event.active.rect.current.translated ?? event.active.rect.current.initial;
-        if (!containerRect || !activeRect) {
-            cancelScheduledRegularMove();
-            return;
-        }
-
-        const isNearBottom = activeRect.bottom >= containerRect.bottom - 8;
-        if (isNearBottom) {
-            scheduleMoveToRegular(String(event.active.id));
-        } else {
-            cancelScheduledRegularMove();
-        }
     };
 
     const handleChildDragOver = (event: DragOverEvent) => {
@@ -278,32 +250,44 @@ const SortableGroup: React.FC<SortableGroupProps> = ({
         }
 
         const overId = event.over?.id;
-        if (overId !== regularDropId) {
-            cancelScheduledRegularMove();
+        if (!overId || String(overId) === String(event.active.id)) {
             return;
         }
 
-        if (dragOverTargetRef.current === regularDropId) {
+        const activeId = String(event.active.id);
+        const currentIds = sortableIds;
+        const oldIndex = currentIds.findIndex(currentId => currentId === activeId);
+        const overIndex = currentIds.findIndex(currentId => currentId === overId);
+        if (oldIndex === -1 || overIndex === -1) {
             return;
         }
 
-        dragOverTargetRef.current = regularDropId;
-        scheduleMoveToRegular(String(event.active.id));
+        const activeChild = item.children.find(child => child.id === activeId);
+        const overChild = overId === dividerId
+            ? null
+            : item.children.find(child => child.id === overId);
+        if (activeChild?.undraggable || overChild?.undraggable) {
+            return;
+        }
+
+        const nextIds = arrayMove(currentIds, oldIndex, overIndex);
+        const nextDividerIndex = nextIds.findIndex(currentId => currentId === dividerId);
+        const nextChildOrder = nextIds.filter(currentId => currentId !== dividerId);
+        onChildrenReorder(id, oldIndex, overIndex, activeId, {
+            dividerIndex: nextDividerIndex,
+            childOrder: nextChildOrder,
+        });
     };
 
     const handleChildDragEnd = (event: DragEndEvent) => {
         const { active, over } = event;
         setActiveChildId(null);
-        cancelScheduledRegularMove();
+        if (item.__pseudoGroup) {
+            return;
+        }
         if (over && item.children) {
             const oldIndex = item.children.findIndex(child => child.id === active.id);
             if (oldIndex !== -1) {
-                if (over.id === regularDropId) {
-                    const targetIndex = Math.max(0, item.children.length - 1);
-                    onChildrenReorder(id, oldIndex, targetIndex, String(active.id), { forceRegular: true });
-                    return;
-                }
-
                 if (active.id === over.id) {
                     return;
                 }
@@ -409,51 +393,36 @@ const SortableGroup: React.FC<SortableGroupProps> = ({
                         sensors={sensors}
                         collisionDetection={closestCenter}
                         onDragStart={handleChildDragStart}
-                        onDragMove={handleChildDragMove}
                         onDragOver={handleChildDragOver}
                         onDragEnd={handleChildDragEnd}
                         modifiers={[restrictToVerticalAxis, restrictToParentElement]}
                     >
                         <SortableContext
-                            items={item.children!.map(child => child.id)}
+                            items={sortableIds}
                             strategy={verticalListSortingStrategy}
                         >
-                            {item.children!.map((child, index) => {
-                                const firstRegularIndex = item.__pseudoGroup
-                                    ? item.children!.findIndex(current => current.fixed !== true)
-                                    : -1;
-                                const dividerIndex = item.__pseudoGroup
-                                    ? (firstRegularIndex === -1 ? item.children!.length : firstRegularIndex)
-                                    : -1;
-                                const shouldRenderDivider = item.__pseudoGroup
-                                    && dividerIndex > 0
-                                    && dividerIndex < item.children!.length
-                                    && index === dividerIndex - 1;
-                                const shouldRenderEndDivider = item.__pseudoGroup
-                                    && dividerIndex === item.children!.length
-                                    && index === item.children!.length - 1;
+                            {sortableIds.map((sortableId) => {
+                                if (sortableId === dividerId) {
+                                    return (
+                                        <SortableDivider key={dividerId} id={dividerId} />
+                                    );
+                                }
+
+                                const child = item.children!.find(current => current.id === sortableId);
+                                if (!child) {
+                                    return null;
+                                }
 
                                 return (
-                                    <React.Fragment key={child.id}>
-                                        <SortableItem 
-                                            id={child.id} 
-                                            item={child} 
-                                            titleKey={titleKey}
-                                            isChild
-                                        />
-                                        {(shouldRenderDivider || shouldRenderEndDivider) && (
-                                            <div className={styles.pseudoGroupDivider} />
-                                        )}
-                                    </React.Fragment>
+                                    <SortableItem
+                                        key={child.id}
+                                        id={child.id}
+                                        item={child}
+                                        titleKey={titleKey}
+                                        isChild
+                                    />
                                 );
                             })}
-                            {item.__pseudoGroup && item.children!.every(child => child.fixed === true) && (
-                                <div
-                                    ref={setRegularDropRef}
-                                    className={styles.pseudoGroupDropZone}
-                                    data-over={isRegularOver || undefined}
-                                />
-                            )}
                         </SortableContext>
                         <DragOverlay dropAnimation={null}>
                             {activeChildItem ? (
@@ -657,31 +626,30 @@ export const TableSettingsModal: React.FC<TableSettingsModalProps> = ({
         oldIndex: number,
         newIndex: number,
         _activeChildId: string,
-        options?: { forceRegular?: boolean }
+        options?: { forceRegular?: boolean; dividerIndex?: number; childOrder?: string[] }
     ) => {
         setDisplayItems(currentItems => {
             return currentItems.map(item => {
                 if (item.id === parentId && item.children) {
                     if (item.__pseudoGroup) {
-                        const oldStickyCount = item.children.filter(child => child.fixed === true).length;
-                        const activeWasFixed = item.children[oldIndex]?.fixed === true;
-                        const boundedIndex = Math.max(0, Math.min(newIndex, item.children.length - 1));
-                        const movedChildren = arrayMove(item.children, oldIndex, boundedIndex);
+                        const childOrder = options?.childOrder;
+                        const nextChildren = childOrder
+                            ? childOrder
+                                .map(childId => item.children!.find(child => child.id === childId))
+                                .filter((child): child is TableSettingsItem => Boolean(child))
+                            : arrayMove(
+                                item.children,
+                                oldIndex,
+                                Math.max(0, Math.min(newIndex, item.children.length - 1))
+                            );
 
-                        let updatedStickyCount = oldStickyCount;
-                        if (options?.forceRegular && activeWasFixed) {
-                            updatedStickyCount -= 1;
-                        } else if (activeWasFixed && newIndex >= oldStickyCount) {
-                            updatedStickyCount -= 1;
-                        } else if (!activeWasFixed && newIndex < oldStickyCount) {
-                            updatedStickyCount += 1;
-                        }
+                        const dividerIndex = typeof options?.dividerIndex === 'number'
+                            ? options.dividerIndex
+                            : nextChildren.findIndex(child => child.fixed !== true);
 
-                        updatedStickyCount = Math.max(1, Math.min(updatedStickyCount, movedChildren.length));
-
-                        const normalizedChildren = movedChildren.map((child, index) => ({
+                        const normalizedChildren = nextChildren.map((child, index) => ({
                             ...child,
-                            fixed: index < updatedStickyCount,
+                            fixed: dividerIndex > -1 ? index < dividerIndex : child.fixed === true,
                         }));
 
                         return {

@@ -61,6 +61,7 @@
     width: 1px;
     height: 40px;
     background-color: #E8E8E8;
+    margin: 0 10px;
 }
 
 .widget__saveButton {

@@ -342,7 +342,8 @@ export default function ReportWeek() {
 					<div className={styles.btns}>
 						<DownloadButton
 							handleDownload={handleDownload}
-							loading={loading || downloadLoading}
+							loading={downloadLoading}
+							disabled={loading}
 						/>
 						<TableSettingsButton
 							onClick={() => setIsSettingsOpen(true)}

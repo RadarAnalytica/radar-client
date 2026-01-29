@@ -16,7 +16,8 @@ const tabs = [
 
 const theme = {
     token: {
-        fontSize: '14px'
+        fontSize: '14px',
+        motionDurationSlow: '0.15s'
     },
     components: {
         Segmented: {
@@ -34,7 +35,7 @@ const theme = {
 
 const StockChartCustomHeader = memo(({stockChartTab}) => {
     const dispatch = useAppDispatch();
-    const { isLoading} = useAppSelector(state => selectSupplierAnalysisDataByType(state, 'bySizesTableData'));
+    const { isLoading } = useAppSelector(state => selectSupplierAnalysisDataByType(state, 'bySizesTableData'));
     const [tabsState, setTabsState] = useState(null) 
 
     useEffect(() => {

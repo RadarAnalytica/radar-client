@@ -191,8 +191,12 @@
 .pseudoGroupDivider {
     height: 1px;
     background-color: #e8e8e8;
-    margin: 6px 12px 6px 44px;
+    margin: 0 12px 0 44px;
     animation: pseudoGroupDividerFadeIn 0.3s ease;
+}
+
+.pseudoGroupDividerItem {
+    padding: 6px 0;
 }
 
 @keyframes pseudoGroupDividerFadeIn {

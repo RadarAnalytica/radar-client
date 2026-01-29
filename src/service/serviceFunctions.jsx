@@ -2574,5 +2574,65 @@ export interface IPositionCheckMainTableData {
 			throw new Error(error);
 		}
 	},
+	getOperatingExpensesTemplateDownload: async (token) => {
+		try {
+			const res = await fetch(`${URL}/api/operating-expenses/expense/template/download`, {
+				method: 'GET',
+				headers: {
+					accept: 'application/json',
+					authorization: 'JWT ' + token,
+				},
+			});
+			const data = await res.blob();
+			return data;
+		} catch (error) {
+			console.error('getOperatingExpensesTemplateDownload error', error);
+			throw error;
+		}
+	},
+	postOperatingExpensesUpload: async (token, file) => {
+		const formData = new FormData();
+		formData.append('file', file);
+
+		try {
+			const response = await fetch(`${URL}/api/operating-expenses/expense/create-from-file`, {
+				method: 'POST',
+				headers: {
+					Authorization: 'JWT ' + token,
+				},
+				body: formData,
+			});
+
+			if (response.ok) {
+				return await response.json();
+			} else {
+				console.error('Ошибка при загрузке файла:', response.statusText);
+				throw new Error(response.statusText);
+			}
+
+		} catch (error) {
+			console.error('Ошибка сети или запроса:', error);
+			throw error; // Прокидываем ошибку выше
+		}
+	},
+	getOperatingExpensesFileStatus: async (token, processId) => {
+		try {
+			const query = processId ? `?process_id=${encodeURIComponent(processId)}` : '';
+			const res = await fetch(`${URL}/api/operating-expenses/expense/get-file-status${query}`, {
+				method: 'GET',
+				headers: {
+					accept: 'application/json',
+					authorization: 'JWT ' + token,
+				},
+			});
+			if (!res.ok) {
+				throw new Error('Ошибка запроса');
+			}
+			return await res.json();
+		} catch (error) {
+			console.error('getOperatingExpensesFileStatus error', error);
+			throw error;
+		}
+	},
 };
 

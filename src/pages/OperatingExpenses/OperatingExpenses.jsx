@@ -28,12 +28,17 @@ import { useDemoMode } from '@/app/providers';
 import { useLoadingProgress } from '@/service/hooks/useLoadingProgress';
 import Loader from '@/components/ui/Loader';
 import SuccessModal from '@/components/sharedComponents/modals/successModal/successModal';
+import UploadExcelButton from '@/components/UploadExcelButton';
+import UploadExcelModal from '@/components/sharedComponents/modals/uploadExcelModal/uploadExcelModal';
+import { fileDownload } from '@/service/utils';
 
 const initAlertState = {
 	status: '',
 	isVisible: false,
 	message: '',
 };
+
+const FILE_PROCESS_ID_KEY = 'operatingExpensesUploadProcessId';
 
 export default function OperatingExpenses() {
 	const dispatch = useAppDispatch();
@@ -71,6 +76,13 @@ export default function OperatingExpenses() {
 		total: 1,
 	});
 	const [templates, setTemplates] = useState([]);
+	const [isUploadModalVisible, setIsUploadModalVisible] = useState(false);
+	const [uploadFile, setUploadFile] = useState(null);
+	const [uploadResult, setUploadResult] = useState(null);
+	const [uploadError, setUploadError] = useState(null);
+	const [isUploading, setIsUploading] = useState(false);
+	const [fileProcessId, setFileProcessId] = useState(() => localStorage.getItem(FILE_PROCESS_ID_KEY));
+	const [isFileProcessing, setIsFileProcessing] = useState(() => Boolean(localStorage.getItem(FILE_PROCESS_ID_KEY)));
 
 	const expenseData = useMemo(() => {
 		const columns = EXPENSE_COLUMNS.map((column, i) => {
@@ -89,6 +101,8 @@ export default function OperatingExpenses() {
 				date: 'Итого:',
 				value: totalSum || '-',
 				description: '-',
+				is_tax_included: '-',
+				is_vat_included: '-',
 				expense_categories: '-',
 				vendor_code: '-',
 				brand_name: '-',
@@ -262,6 +276,55 @@ export default function OperatingExpenses() {
 			}
 		}
 	}, [activeBrand, templatePagination.page]);
+
+	const clearFileProcess = () => {
+		localStorage.removeItem(FILE_PROCESS_ID_KEY);
+		setFileProcessId(null);
+		setIsFileProcessing(false);
+	};
+
+	useEffect(() => {
+		if (!fileProcessId || !authToken) {
+			setIsFileProcessing(false);
+			return;
+		}
+
+		let isMounted = true;
+
+		const checkFileStatus = async () => {
+			try {
+				const res = await ServiceFunctions.getOperatingExpensesFileStatus(authToken, fileProcessId);
+				if (!isMounted) return;
+
+				const status = res?.status;
+				if (status === 'processing') {
+					setIsFileProcessing(true);
+					return;
+				}
+
+				clearFileProcess();
+
+				if (status === 'success') {
+					setAlertState({ message: res?.message || 'Файл успешно обработан', status: 'success', isVisible: true });
+					await updateExpenses(true);
+				} else {
+					setAlertState({ message: res?.message || 'Не удалось обработать файл', status: 'error', isVisible: true });
+				}
+			} catch (error) {
+				if (!isMounted) return;
+				clearFileProcess();
+				setAlertState({ message: 'Не удалось проверить статус файла', status: 'error', isVisible: true });
+			}
+		};
+
+		checkFileStatus();
+		const intervalId = setInterval(checkFileStatus, 1000);
+
+		return () => {
+			isMounted = false;
+			clearInterval(intervalId);
+		};
+	}, [fileProcessId, authToken]);
 
 	const modalExpenseHandlerClose = () => {
 		setExpenseModal({ mode: null, isOpen: false, data: null });
@@ -569,6 +632,54 @@ export default function OperatingExpenses() {
 		}
 	};
 
+	const handleExcelUpload = async (file) => {
+		setIsUploading(true);
+		setUploadError(null);
+		setUploadResult(null);
+		try {
+			const response = await ServiceFunctions.postOperatingExpensesUpload(authToken, file);
+			if (response?.process_id) {
+				localStorage.setItem(FILE_PROCESS_ID_KEY, response.process_id);
+				setFileProcessId(response.process_id);
+				setIsFileProcessing(true);
+			} else if (response?.message === 'success') {
+				await updateExpenses(true);
+				setAlertState({ message: 'Данные успешно загружены', status: 'success', isVisible: true });
+			} else {
+				setAlertState({ message: 'Данные загружены с ошибками', status: 'warning', isVisible: true });
+			}
+		} catch (error) {
+			console.error('handleExcelUpload error', error);
+			setUploadError('Что-то пошло не так :( Попробуйте обновить страницу');
+			setAlertState({ message: 'Не удалось загрузить файл', status: 'error', isVisible: true });
+		} finally {
+			setIsUploadModalVisible(false);
+			setIsUploading(false);
+		}
+	};
+
+	const handleUploadModalClose = () => {
+		if (isUploading) return;
+		setIsUploadModalVisible(false);
+		setUploadFile(null);
+		setUploadResult(null);
+		setUploadError(null);
+	};
+
+	const handleTemplateDownload = async () => {
+		setIsUploading(true);
+		setUploadError(null);
+		try {
+			const fileBlob = await ServiceFunctions.getOperatingExpensesTemplateDownload(authToken);
+			fileDownload(fileBlob, 'Операционные_расходы.xlsx');
+		} catch (error) {
+			console.error('handleTemplateDownload error', error);
+			setUploadError('Что-то пошло не так :( Попробуйте обновить страницу');
+		} finally {
+			setIsUploading(false);
+		}
+	};
+
 	return (
 		<main className={styles.page}>
 			<MobilePlug />
@@ -611,6 +722,12 @@ export default function OperatingExpenses() {
 									},
 								}}
 							>
+								<UploadExcelButton
+									onClick={() => setIsUploadModalVisible(true)}
+									loading={isUploading || isFileProcessing}
+									disabled={loading || isFileProcessing}
+									title={isFileProcessing ? 'Файл обрабатывается' : undefined}
+								/>
 								{view !== 'template' && (
 									<Button
 										type="primary"
@@ -628,8 +745,8 @@ export default function OperatingExpenses() {
 						</Flex>
 					</Flex>
 				)}
-				
-				{view === 'expense' && 
+
+				{view === 'expense' && (
 					<div className={styles.controls}>
 						<Filters
 							isDataLoading={loading}
@@ -637,7 +754,7 @@ export default function OperatingExpenses() {
 							opExpensesArticles
 						/>
 					</div>
-				}
+				)}
 
 				{/* Заглушка для не активированных брендов */}
 				{activeBrand && !activeBrand?.is_primary_collect && 
@@ -811,6 +928,19 @@ export default function OperatingExpenses() {
 					setIsVisible={(isVisible) => setAlertState({ ...alertState, isVisible })}
 					message={alertState.message}
 					type={alertState.status}
+				/>
+
+				<UploadExcelModal
+					open={isUploadModalVisible}
+					onClose={handleUploadModalClose}
+					onUpload={handleExcelUpload}
+					loading={isUploading}
+					error={uploadError}
+					result={uploadResult}
+					title="Загрузка файла"
+					file={uploadFile}
+					setFile={setUploadFile}
+					onDownloadTemplate={handleTemplateDownload}
 				/>
 			</section>
 		</main>

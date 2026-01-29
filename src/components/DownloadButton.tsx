@@ -2,8 +2,15 @@ import React from 'react';
 import { Button, ConfigProvider } from 'antd';
 import { useDemoMode } from "@/app/providers";
 
-const DownloadButton = ({ handleDownload, loading }) => {
+interface DownloadButtonProps {
+  handleDownload: () => void;
+  loading?: boolean;
+  disabled?: boolean;
+}
+
+const DownloadButton: React.FC<DownloadButtonProps> = ({ handleDownload, loading = false, disabled = false }) => {
   const { isDemoMode } = useDemoMode();
+  const isDisabled = isDemoMode || disabled;
 
   return (
     <>
@@ -30,7 +37,7 @@ const DownloadButton = ({ handleDownload, loading }) => {
           size='large'
           loading={loading}
           onClick={() => !loading && handleDownload()}
-          disabled={isDemoMode}
+          disabled={isDisabled}
           title={isDemoMode ? 'Скачивание доступно после активации подписки' : 'Скачать таблицу в виде Excel-файла'}
           style={{ fontWeight: 600, height: 38, width: 149, fontSize: 14 }}
         >
