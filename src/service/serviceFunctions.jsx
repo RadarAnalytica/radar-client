@@ -142,72 +142,29 @@ export const ServiceFunctions = {
 		});
 		return res;
 	},
+
 	setShopTax: async (authToken, data) => {
-		return {
-			ok: true,
-			status: 200,
-			json: async () => ({
-				status: 'ok',
-				payload: data
-			})
-		};
+		const res = await fetchApi('/api/tax/set', {
+			method: 'POST',
+			headers: {
+				'content-type': 'application/json',
+				authorization: 'JWT ' + authToken,
+			},
+			body: JSON.stringify(data)
+		});
+		return res;
 	},
 
-	getTaxRates: async (authToken, shopId) => {
-		await new Promise(resolve => setTimeout(resolve, 2000));
-		const currentYear = new Date().getFullYear();
-		const previousYear = currentYear - 1;
-		return {
-			shop_id: shopId,
-			data: [
-				{
-					year: previousYear,
-					rates: [
-						{
-							effective_from: `${previousYear}-03-01`,
-							tax_type: 'УСН-доходы',
-							tax_rate: 6,
-							vat_rate: 10
-						},
-						{
-							effective_from: `${previousYear}-04-01`,
-							tax_type: 'УСН-доходы',
-							tax_rate: 6,
-							vat_rate: 10
-						},
-						{
-							effective_from: `${previousYear}-12-01`,
-							tax_type: 'УСН-доходы',
-							tax_rate: 6,
-							vat_rate: 10
-						}
-					]
-				},
-				{
-					year: currentYear,
-					rates: [
-						{
-							effective_from: `${currentYear}-01-01`,
-							tax_type: 'Не считать налог',
-							tax_rate: 6,
-							vat_rate: 10
-						},
-						{
-							effective_from: `${currentYear}-02-01`,
-							tax_type: 'Не считать налог',
-							tax_rate: 6,
-							vat_rate: 10
-						},
-						{
-							effective_from: `${currentYear}-05-01`,
-							tax_type: 'Не считать налог',
-							tax_rate: 6,
-							vat_rate: 10
-						}
-					]
-				}
-			]
-		};
+	getShopTax: async (authToken, shopId) => {
+		const res = await fetchApi(`/api/tax/get?shop_id=${shopId}`, {
+			method: 'GET',
+			headers: {
+				'content-type': 'application/json',
+				authorization: 'JWT ' + authToken,
+			},
+		});
+		const data = await res.json();
+		return data;
 	},
 
 	getDashBoard: async (token, selectedRange, idShop, filters) => {

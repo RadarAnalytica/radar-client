@@ -7,6 +7,7 @@ import { SelectIcon } from '@/shared';
 import { monthNames } from '@/service/utils';
 import { ServiceFunctions } from '@/service/serviceFunctions';
 import Loader from '@/components/ui/Loader';
+import NoData from '@/components/sharedComponents/NoData/NoData';
 
 const { Panel } = Collapse;
 
@@ -143,7 +144,7 @@ export const TaxWidget = () => {
         const loadTaxData = async () => {
             setLoading(true);
             try {
-                const data = await ServiceFunctions.getTaxRates(authToken, selectedShopId);
+                const data = await ServiceFunctions.getShopTax(authToken, selectedShopId);
                 const yearData = Array.isArray(data?.data) ? data.data : [];
                 const newYearForms: Record<number, YearFormData> = {};
                 const newYearOptions = yearData
@@ -320,36 +321,35 @@ export const TaxWidget = () => {
         >
             <div className={styles.widget}>
                 <div className={styles.widget__header}>
-                    <div className={styles.widget__filters}>
-                        <div className={styles.filter__item}>
+                <div className={styles.widget__filters}>
+                <div className={styles.filter__item}>
                             <label className={styles.filter__label}>Магазин:</label>
                             <Select
                                 value={selectedShopId}
                                 onChange={setSelectedShopId}
                                 options={shopOptions}
                                 className={styles.filter__select}
-                                style={{ width: '240px' }}
                                 suffixIcon={<SelectIcon />}
                                 placeholder="Выберите магазин"
                                 getPopupContainer={(triggerNode) => triggerNode.parentNode}
                             />
                         </div>
                         
-                        <div className={styles.filter__item_group}>
-                            <div className={styles.filter__item}>
-                                <label className={styles.filter__label}>Год:</label>
-                                <Select
-                                    value={yearOptions.length > 0 ? selectedYear : undefined}
-                                    onChange={setSelectedYear}
-                                    options={yearOptions}
-                                    className={styles.filter__select}
-                                    style={{ width: '140px' }}
-                                    suffixIcon={<SelectIcon />}
-                                    getPopupContainer={(triggerNode) => triggerNode.parentNode}
-                                />
-                            </div>
-                            
-                            <div className={styles.filter__item}>
+                        <div className={styles.filter__divider}></div>
+                        
+                        <div className={styles.filter__item}>
+                            <label className={styles.filter__label}>Год:</label>
+                            <Select
+                                value={selectedYear}
+                                onChange={setSelectedYear}
+                                options={yearOptions}
+                                className={styles.filter__select}
+                                suffixIcon={<SelectIcon />}
+                                getPopupContainer={(triggerNode) => triggerNode.parentNode}
+                            />
+                        </div>
+                        
+                        <div className={styles.filter__item}>
                                 <label className={styles.filter__label}>Режим налогообложения:</label>
                                 <Select
                                     value={activeYearForm?.tax_type || DEFAULT_TAX_TYPE}
@@ -365,13 +365,11 @@ export const TaxWidget = () => {
                                     }}
                                     options={taxTypeOptions}
                                     className={styles.filter__select}
-                                    style={{ width: '240px' }}
                                     suffixIcon={<SelectIcon />}
                                     getPopupContainer={(triggerNode) => triggerNode.parentNode}
                                     disabled={!activeYearForm}
                                 />
                             </div>
-                        </div>
                     </div>
                     
                     <Button
@@ -380,13 +378,14 @@ export const TaxWidget = () => {
                         loading={saving}
                         disabled={!activeYearForm || !isDirty || saving}
                         className={styles.widget__saveButton}
+                        title={!isDirty ? 'Начните заполнять форму' : 'Сохранить данные по налогам'}
                     >
                         Сохранить
                     </Button>
                 </div>
 
             {loading && <Loader loading={loading} progress={null} />}
-            {!loading && yearOptions.map((yearOption) => {
+            {!loading && yearOptions.length > 0 ? yearOptions.map((yearOption) => {
                 const yearForm = yearForms[yearOption.value];
                 if (!yearForm) return null;
 
@@ -499,7 +498,7 @@ export const TaxWidget = () => {
                         </div>
                     </div>
                 );
-            })}
+            }) : <NoData message="Нет данных по налогам у выбранного магазина" />}
         </div>
         </ConfigProvider>
     );
