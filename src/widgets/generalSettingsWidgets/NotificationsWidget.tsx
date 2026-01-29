@@ -9,6 +9,8 @@ import { restrictToVerticalAxis, restrictToParentElement } from '@dnd-kit/modifi
 import { URL } from '@/service/config';
 import { useAppSelector } from '@/redux/hooks';
 import AuthContext from '@/service/AuthContext';
+import ErrorModal from '@/components/sharedComponents/modals/errorModal/errorModal';
+import SuccessModal from '@/components/sharedComponents/modals/successModal/successModal';
 
 // Types for API response
 interface TelegramMetricConfig {
@@ -89,7 +91,9 @@ const inputTheme = {
 const checkboxTheme = {
     token: {
         colorPrimary: '#5329FF',
-        controlInteractiveSize: 20
+        controlInteractiveSize: 20,
+        colorBgContainerDisabled: 'rgba(0,0,0,0.1)',
+        colorTextDisabled: 'rgba(0,0,0,0.5)'
     },
     components: {
         Checkbox: {
@@ -107,6 +111,9 @@ export const NotificationsWidget = () => {
     const [preferences, setPreferences] = useState<TelegramPreferencesResponse | null>(null)
     const [modalVisible, setModalVisible] = useState(false);
     const [modalContent, setModalContent] = useState<{ title: string; message: string; link?: string } | null>(null);
+    const [errorModalVisible, setErrorModalVisible] = useState(false);
+    const [errorMessage, setErrorMessage] = useState<string>('');
+    const [successModalVisible, setSuccessModalVisible] = useState(false);
 
     // Weekly block states
     const [weeklyEnabled, setWeeklyEnabled] = useState(false);
@@ -174,6 +181,8 @@ export const NotificationsWidget = () => {
 
         } catch (e) {
             console.log(e)
+            setErrorMessage('Ошибка загрузки параметров уведомлений');
+            setErrorModalVisible(true);
         }
     }
 
@@ -195,7 +204,7 @@ export const NotificationsWidget = () => {
                 setModalContent({
                     title: 'Подключение Telegram-бота',
                     message: 'Для активации уведомлений подключите нашего телеграм-бота по этой',
-                    link: `https://t.me/<bot_username>?start=${user.id}`
+                    link: `https://t.me/everydayquestgroupBOT?start=${user.id}`
                 });
                 setModalVisible(true);
                 return;
@@ -260,16 +269,21 @@ export const NotificationsWidget = () => {
             });
 
             if (!res.ok) {
-                console.error('Failed to save preferences');
+                const errorText = await res.text();
+                console.error('Failed to save preferences:', errorText);
+                setErrorMessage('Ошибка сохранения настроек уведомлений');
+                setErrorModalVisible(true);
                 return;
             }
 
             const updatedData: TelegramPreferencesResponse = await res.json();
             setPreferences(updatedData);
-            console.log('Preferences saved successfully');
+            setSuccessModalVisible(true);
 
         } catch (e) {
             console.error('Error saving preferences:', e);
+            setErrorMessage('Ошибка сохранения настроек уведомлений');
+            setErrorModalVisible(true);
         }
     };
 
@@ -304,8 +318,8 @@ export const NotificationsWidget = () => {
                 groupSelect={false}
                 weekSelect={false}
                 monthSelect={false}
-                // isDataLoading
-                // disabled
+                isDataLoading={!preferences || !isFiltersLoaded}
+                disabled={!preferences || !isFiltersLoaded}
                 uncontrolledMode
                 hasTitles={false}
             />
@@ -376,6 +390,25 @@ export const NotificationsWidget = () => {
                     }
                 </div>
             </Modal>
+
+            <ErrorModal
+                open={errorModalVisible}
+                message={errorMessage}
+                onOk={() => setErrorModalVisible(false)}
+                onClose={() => setErrorModalVisible(false)}
+                onCancel={() => setErrorModalVisible(false)}
+                footer={null}
+            />
+
+            <SuccessModal
+                open={successModalVisible}
+                message="Настройки уведомлений успешно сохранены"
+                onOk={() => setSuccessModalVisible(false)}
+                onClose={() => setSuccessModalVisible(false)}
+                onCancel={() => setSuccessModalVisible(false)}
+                footer={null}
+                title={null}
+            />
         </div>
     )
 }
@@ -727,7 +760,7 @@ const SortableItem: React.FC<SortableItemProps> = ({ id, card, checked, onToggle
             <div
                 className={styles.dragHandle}
                 {...(disabled ? {} : { ...attributes, ...listeners })}
-                style={disabled ? { cursor: 'not-allowed', opacity: 0.5 } : {}}
+                style={disabled ? { cursor: 'not-allowed', opacity: 0.7 } : {}}
             >
                 <svg width="16" height="20" viewBox="0 0 16 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M2 2.62268e-07C3.10457 4.07115e-07 4 0.89543 4 2C4 3.10457 3.10457 4 2 4C0.895433 4 2.21557e-06 3.10457 2.36042e-06 2C2.50526e-06 0.89543 0.895433 1.17422e-07 2 2.62268e-07Z" fill="#999999" />
